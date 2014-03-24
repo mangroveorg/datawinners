@@ -81,11 +81,7 @@ def create_type(request):
             success = True
             UserActivityLog().log(request, action=ADDED_SUBJECT_TYPE, detail=entity_name[0].capitalize())
         except EntityTypeAlreadyDefined:
-            if request.POST["referer"] == 'project':
-                message = _("%s already registered as a subject type. Please select %s from the drop down menu.") % (
-                    entity_name[0], entity_name[0])
-            else:
-                message = _("%s already registered as a subject type.") % (entity_name[0],)
+            message = _("%s already registered as a subject type.") % (entity_name[0],)
     else:
         message = form.errors['entity_type_regex']
     return HttpResponse(json.dumps({'success': success, 'message': _(message)}))

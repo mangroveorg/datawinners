@@ -18,3 +18,4 @@ SUBJECT_CB_LOCATOR = "#subjects_table_wrapper tbody tr td:first-child input#%s"
 CHECKALL_CB = by_xpath(".//*[@id='subjects_table']/thead/tr/th[1]/input")
 SPECIFIC_TYPE_CB_BY_CSS = "[name=type][value=%s]"
 REGISTER_SUBJECT_LINK = by_id('register_subjects')
+QUESTION_TITLE = by_css("#question_title")

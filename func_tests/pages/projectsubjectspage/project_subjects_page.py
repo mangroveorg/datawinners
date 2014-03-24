@@ -21,6 +21,9 @@ class ProjectSubjectsPage(Page):
     def get_selected_question_label(self):
         return self.driver.find(SELECTED_QUESTION_LABEL).text
 
+    def type_question_name(self, name):
+        self.driver.find_text_box(QUESTION_TITLE).enter_text(name)
+
     def click_submit_button(self):
         self.driver.find(SUBMIT_BTN).click()
 

@@ -7,10 +7,28 @@
         <span data-bind="hidden: uniqueIdType">{% trans 'Add a unique id type' %} </span>
         <span data-bind="text: uniqueIdType"></span>
     </div>
+    <div class="validationMessage" data-bind="ifnot: uniqueIdType.valid">
+        <span id="unique_id_type_validation_message" class="validationText" data-bind="text: uniqueIdType.error"></span>
+    </div>
+
     <div data-bind="visible: $root.isUniqueIdTypeVisible">
-        <input type="text" data-bind="value: $root.newUniqueIdType"/>
-        <button data-bind="click: $root.addNewUniqueIdType">Add</button>
+        <div>
+            <input type="text" data-bind="value: $root.newUniqueIdType"/>
+            <button class="blue" data-bind="click: $root.addNewUniqueIdType">Add</button>
+        </div>
+        <div class="validationMessage" data-bind="ifnot: $root.newUniqueIdType.valid">
+            <span class="validationText" data-bind="text: $root.newUniqueIdType.error"></span>
+        </div>
+
+        <div>
+            <p>Example:
+            People: Patient, Farmer, Child,
+            Places: Region, District, Commune,
+            Things: Clinic, School, Retail Shop, Training,
+            Meeting, Conference, Waybill, Receipt, Bill of Lading </p>
+        </div>
         <hr/>
+        <strong>{% trans "Use Existing"%}</strong>
         <ul data-bind="foreach: $root.uniqueIdTypes">
             <li data-bind="text: $data, click: $root.selectUniqueIdType"></li>
         </ul>

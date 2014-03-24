@@ -5,19 +5,23 @@ function ProjectQuestionnaireViewModel() {
 
     self.isUniqueIdTypeVisible = ko.observable(false);
 
-    self.showUniqueIdTypes = function() {
+    self.showUniqueIdTypes = function () {
+        _clearNewUniqueIdError();
         self.isUniqueIdTypeVisible(true);
     };
 
-    self.selectUniqueIdType = function(uniqueIdType) {
+    ko.postbox.subscribe("uniqueIdTypeSelected", _clearNewUniqueIdError, self);
+
+    self.selectUniqueIdType = function (uniqueIdType) {
         ProjectQuestionnaireViewModel.prototype.selectedQuestion().uniqueIdType(uniqueIdType);
         self.isUniqueIdTypeVisible(false);
+        _clearNewUniqueIdError();
     };
 
-    self.newUniqueIdType = null;
+    self.newUniqueIdType = DW.ko.createValidatableObservable();
 
-    self.addNewUniqueIdType = function (){
-        var newUniqueIdType = self.newUniqueIdType;
+    self.addNewUniqueIdType = function () {
+        var newUniqueIdType = self.newUniqueIdType();
         $.post('/entity/type/create', {entity_type_regex: newUniqueIdType})
             .done(function (responseString) {
                 var response = $.parseJSON(responseString);
@@ -25,10 +29,20 @@ function ProjectQuestionnaireViewModel() {
                     var array = self.uniqueIdTypes();
                     array.push(newUniqueIdType);
                     array.sort();
+                    self.newUniqueIdType.clearError();
                     self.uniqueIdTypes.valueHasMutated();
                 }
+                else {
+                    self.newUniqueIdType.setError(response.message);
+                }
             });
-    ;}
+    };
+
+    function _clearNewUniqueIdError() {
+        self.newUniqueIdType("");
+        self.newUniqueIdType.clearError();
+    }
+
 }
 
 ProjectQuestionnaireViewModel.prototype = new QuestionnaireViewModel();

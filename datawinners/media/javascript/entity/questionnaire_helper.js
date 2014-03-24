@@ -111,7 +111,7 @@ DW.question.prototype = {
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
         this.isEntityQuestion = ko.observable(q.type == 'short_code');
-        this.uniqueIdType = ko.observable(q.uniqueIdType);
+        this.uniqueIdType = DW.ko.createValidatableObservable({value: q.uniqueIdType});
 
         this.showDateFormats = ko.computed(function () {
             return this.type() == "date";
@@ -143,6 +143,7 @@ DW.question.prototype = {
             self.max_length.clearError();
             self.range_max.clearError();
             self.range_min.clearError();
+            self.uniqueIdType.clearError();
             _clearChoiceErrors();
         };
 
@@ -213,7 +214,11 @@ DW.question.prototype = {
         };
 
         self.showUniqueId = ko.computed(function(){
-            return this.answerType() == "unique_id";
+            var isUniqueId = this.answerType() == "unique_id";
+            if (isUniqueId)
+            //Notifying parent view model when selected question is of type unique id.
+                ko.postbox.publish("uniqueIdTypeSelected","");
+            return isUniqueId;
         }, self);
 
 
@@ -314,6 +319,7 @@ DW.question.prototype = {
             this.max_length.valueHasMutated();
             this.range_min.valueHasMutated();
             this.range_max.valueHasMutated();
+            this.uniqueIdType.valueHasMutated();
 
             var isChoiceAnswerValid = true;
             if (this.showAddChoice()) {
@@ -324,7 +330,7 @@ DW.question.prototype = {
             }
 
             return this.title.valid() && this.answerType.valid() && this.max_length.valid()
-                && this.range_min.valid() && this.range_max.valid() && isChoiceAnswerValid;
+                && this.range_min.valid() && this.range_max.valid() && isChoiceAnswerValid && this.uniqueIdType.valid();
         };
         this._initializeObservableValidations();
         this._initializeObservers();
@@ -385,6 +391,13 @@ DW.question.prototype = {
           DW.ko.numericValidator(this.range_max);
           this._validateMinRangeIsLessThanMaxRange();
 
+       }, this);
+
+       this.uniqueIdType.subscribe(function(){
+           if(!this.showUniqueId())
+               return;
+
+           DW.ko.mandatoryValidator(this.uniqueIdType);
        }, this);
 
     }
