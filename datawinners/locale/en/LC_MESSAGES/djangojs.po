@@ -1070,3 +1070,6 @@ msgstr ""
 
 msgid "Telephone number"
 msgstr ""
+
+msgid "Please insert a valid number."
+msgstr ""
