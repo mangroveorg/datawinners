@@ -4475,7 +4475,7 @@ msgstr ""
 msgid "Copy an Existing Questionnaire"
 msgstr ""
 
-msgid "Use a Questionnaire Template"
+msgid "Use a Template"
 msgstr ""
 
 msgid "Insert a name for this Questionnaire"

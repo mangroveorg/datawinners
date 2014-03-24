@@ -1623,7 +1623,7 @@
             }
         ], 
         "name": "grant reception", 
-        "language": "en", 
+        "language": "en",
         "validators": [
             {
                 "cls": "mandatory"
@@ -2797,7 +2797,7 @@
                 "name": "Letter Sound Knowledge - list any incorrect letters", 
                 "defaultValue": "", 
                 "instruction": "Answer must be a word", 
-                "label": "Letter Sound Knowledge - list any incorrect letters", 
+                "label": "Letter Sound Knowledge - list any incorrect letters",
                 "length": {
                     "min": 1
                 }, 
@@ -3267,7 +3267,7 @@
         "form_code": "invoice"
     }, 
     {
-        "category": "Socio-économique", 
+        "category": "Socio-économique",
         "json_fields": [
             {
                 "code": "q2", 
@@ -4912,7 +4912,7 @@
         "form_code": "clinique"
     }, 
     {
-        "category": "Education", 
+        "category": "Éducation",
         "json_fields": [
             {
                 "required": true, 
@@ -5045,7 +5045,7 @@
         "form_code": "recens"
     }, 
     {
-        "category": "Education", 
+        "category": "Éducation",
         "json_fields": [
             {
                 "required": true, 
@@ -5104,7 +5104,7 @@
         "form_code": "subv"
     }, 
     {
-        "category": "Education", 
+        "category": "Éducation",
         "json_fields": [
             {
                 "required": true, 
@@ -5163,7 +5163,7 @@
         "form_code": "livre"
     }, 
     {
-        "category": "Education", 
+        "category": "Éducation",
         "json_fields": [
             {
                 "required": true, 
@@ -5738,7 +5738,7 @@
         "form_code": "sto"
     }, 
     {
-        "category": "Education", 
+        "category": "Éducation",
         "json_fields": [
             {
                 "required": true, 

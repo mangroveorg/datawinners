@@ -2315,7 +2315,7 @@ msgid "Basic Information"
 msgstr "Renseignements de Base"
 
 msgid "Example: Teacher attendance in Antananarivo"
-msgstr "Exemple: Taux d’Assiduité des Enseignants à Antananarivo"
+msgstr "Exemple: Présence des professeurs à Antananarivo"
 
 msgid "Example: Collect data from 100 primary school in Antananarivo in an effort to increase teacher attendance from 50% to 80%"
 msgstr "Exemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignants de 50% à 80%"
@@ -4684,8 +4684,8 @@ msgstr "Choisissez comment vous souhaitez commencer"
 msgid "Copy an Existing Questionnaire"
 msgstr "Copier un Questionnaire existant"
 
-msgid "Use a Questionnaire Template"
-msgstr "Utilisez un modèle de Questionnaire"
+msgid "Use a Template"
+msgstr "Utiliser un modèle"
 
 msgid "Choose your language"
 msgstr "Choisissez votre langue"

@@ -65,7 +65,7 @@ def get_category_mapping_fr():
                     [u'rapport mensuel sur les clients', u'Rapport de stock mensuel', u'Entretien avec la patiente',
                      u'Enquête hebdomadaire auprès des sites sentinelles']})
     map.update({u'Sécurité alimentaire': [u'Lettre de transport envoyée', u'Lettre de transport reçue']})
-    map.update({u'Education': [u'Recensement des étudiants', u'Réception de subvention', u'Réception de livres scolaires', u'Résultats de test standardisés',
+    map.update({u'Éducation': [u'Recensement des étudiants', u'Réception de subvention', u'Réception de livres scolaires', u'Résultats de test standardisés',
                               u'Evaluation de la lecture en primaire']})
     map.update({u'Alerte précoce': [u'contrôle hebdomadaire', u'catastrophes survenant rapidement']})
     map.update({u'Agriculture': [u'recensement du cheptel']})
