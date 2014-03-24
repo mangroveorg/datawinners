@@ -773,7 +773,7 @@ msgstr ""
 
 #: media/javascript/project/delete_project.js:3
 msgid "Delete this Questionnaire?"
-msgstr "Supprimer ce questionnaire?"
+msgstr "Supprimer ce Questionnaire?"
 
 #: media/javascript/project/import_section.js:7
 msgid "Import a List"
@@ -1102,13 +1102,13 @@ msgid "Insert a name for this Questionnaire"
 msgstr "Insérer un nom pour ce Questionnaire"
 
 msgid "Delete this Questionnaire"
-msgstr "Supprimer ce questionnaire"
+msgstr "Supprimer ce Questionnaire"
 
 msgid "Select an Answer Type"
 msgstr "Sélectionnez un type de réponse"
 
 msgid "Word or Phrase"
-msgstr "Mot"
+msgstr "Mot et Phrase"
 
 msgid "Number"
 msgstr "Chiffre"
@@ -1116,7 +1116,7 @@ msgstr "Chiffre"
 msgid "Date"
 msgstr "Date"
 
-msgid "List of Choices"
+msgid "Multiple Choice"
 msgstr "Liste de choix"
 
 msgid "GPS Coordinates"

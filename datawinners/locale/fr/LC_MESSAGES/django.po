@@ -1196,7 +1196,7 @@ msgid "Select what kind of answer you want from your Data Senders."
 msgstr "Quel type de réponse attendez-vous de vos expéditeurs"
 
 msgid "Word or Phrase"
-msgstr "Mot"
+msgstr "Mot et Phrase"
 
 msgid "Number"
 msgstr "Chiffre"
@@ -1204,11 +1204,8 @@ msgstr "Chiffre"
 msgid "Date"
 msgstr "Date"
 
-msgid "List of Choices"
-msgstr "Liste de choix"
-
 msgid "Multiple Choice"
-msgstr "Choix multiples"
+msgstr "Liste de choix"
 
 msgid "GPS Coordinates"
 msgstr "Coordonnées GPS"
@@ -4703,7 +4700,7 @@ msgid "Choose a template and edit it to fit your needs."
 msgstr "Choisissez un modèle et modifiez-le selon vos besoins."
 
 msgid "Delete this Questionnaire"
-msgstr "Supprimer ce questionnaire"
+msgstr "Supprimer ce Questionnaire"
 
 msgid "Your Most Recent Questionnaires"
 msgstr "Vos questionnaires les plus récents"
