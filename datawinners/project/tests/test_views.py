@@ -129,24 +129,11 @@ class TestProjectViews(unittest.TestCase):
     def test_should_get_question_list(self):
         form_model = Mock()
         form_model.fields = [{}]
-        form_model.is_entity_type_reporter.return_value = False
 
         with patch("datawinners.project.preview_views.get_preview_for_field") as preview_of_field:
             preview_of_field.return_value = {"description": "description"}
             questions = get_questions(form_model)
             self.assertEquals(questions[0]["description"], "description")
-
-    def test_should_get_question_list_when_entity_is_reporter(self):
-        form_model = Mock()
-        form_model.fields = [{}]
-        form_model.is_entity_type_reporter.return_value = True
-
-        with patch("datawinners.project.preview_views.get_preview_for_field") as preview_of_field:
-            preview_of_field.return_value = {"description": "description"}
-            with patch("datawinners.project.preview_views.hide_entity_question") as hide_entity_question:
-                hide_entity_question.return_value = {"description": "description"}
-                questions = get_questions(form_model)
-                self.assertEquals(len(questions), 1)
 
     def test_should_get_correct_add_link_for_project(self):
         project = Mock(spec=Project)

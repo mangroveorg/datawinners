@@ -1,19 +1,19 @@
 from collections import OrderedDict
 import json
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.generic.base import View
+from mangrove.form_model.form_model import get_form_model_by_code
+
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
-from datawinners.entity.import_data import get_filename_and_contents
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager
 from datawinners.project.models import Project
 from datawinners.project.submission.submission_import import SubmissionImporter
-from datawinners.project.submission.util import get_submission_form_fields_for_user
-from mangrove.form_model.form_model import get_form_model_by_code
 
 
 class SubmissionQuotaService(object):
@@ -69,5 +69,5 @@ class ImportSubmissionView(View):
         return super(ImportSubmissionView, self).dispatch(*args, **kwargs)
 
     def _get_question_code_map(self, form_model, request):
-        submission_headers_for_user = get_submission_form_fields_for_user(form_model, request)
+        submission_headers_for_user = form_model.form_fields
         return OrderedDict([(field["code"], field["label"]) for field in submission_headers_for_user])

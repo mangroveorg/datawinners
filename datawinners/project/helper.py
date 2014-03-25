@@ -7,20 +7,19 @@ from babel.dates import format_date
 from django.http import Http404
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
-
-from datawinners.accountmanagement.models import NGOUserProfile
-from datawinners.scheduler.smsclient import SMSClient
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField, UniqueIdField
+from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
-from mangrove.form_model.validation import  TextLengthConstraint
 from mangrove.utils.types import  is_sequence, sequence_to_str
-from datawinners.sms.models import MSG_TYPE_USER_MSG
-import models
-from models import Reminder
 from mangrove.transport.repository.survey_responses import get_survey_responses
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.request import Request
+
+from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.scheduler.smsclient import SMSClient
+from datawinners.sms.models import MSG_TYPE_USER_MSG
+import models
+from models import Reminder
 
 
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION = "%b. %d, %Y, %I:%M %p"
@@ -32,9 +31,6 @@ NOT_AVAILABLE_DS = "Unknown"
 
 logger = logging.getLogger("datawinners.reminders")
 
-
-def hide_entity_question(fields):
-    return [each for each in fields if not each.is_entity_field]
 
 def get_according_value(value_dict, question):
     value = value_dict.get(question.code.lower(), '--')
