@@ -57,26 +57,26 @@ class TestQuestionnaireBuilderIT(unittest.TestCase):
                               constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")])
         cls.form_model = FormModel(cls.manager, name="aids", label="Aids form_model",
                                    form_code=FORM_CODE_1, type='survey', fields=[question1, question2])
-        cls.form_model__id = cls.form_model.save()
+        cls.form_model__id = cls.form_model.id
 
-    def _create_form_model_without_uniq_id(self):
-        question1 = TextField(name="question1_Name", code="Q1", label="What is your name",
-                              defaultValue="some default value",
-                              constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")],
-        )
-        question2 = IntegerField(name="Father's age", code="Q2", label="What is your Father's Age",
-                                 constraints=[NumericRangeConstraint(min=15, max=120)])
-        question3 = SelectField(name="Color", code="Q3", label="What is your favourite color",
-                                options=[("RED", 1), ("YELLOW", 2)])
-        self.summary_form_model = FormModel(self.manager,name="aids",
-                                            label="Aids form_model",
-                                            form_code=FORM_CODE_2, type="survey",
-                                            fields=[question1, question2, question3])
-        self.summary_form_model__id = self.summary_form_model.save()
+    # def _create_form_model_without_uniq_id(self):
+    #     question1 = TextField(name="question1_Name", code="Q1", label="What is your name",
+    #                           defaultValue="some default value",
+    #                           constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")],
+    #     )
+    #     question2 = IntegerField(name="Father's age", code="Q2", label="What is your Father's Age",
+    #                              constraints=[NumericRangeConstraint(min=15, max=120)])
+    #     question3 = SelectField(name="Color", code="Q3", label="What is your favourite color",
+    #                             options=[("RED", 1), ("YELLOW", 2)])
+    #     self.summary_form_model = FormModel(self.manager,name="aids",
+    #                                         label="Aids form_model",
+    #                                         form_code=FORM_CODE_2, type="survey",
+    #                                         fields=[question1, question2, question3])
+    #     self.summary_form_model__id = self.summary_form_model.save()
 
     def test_should_update_questionnaire_when_entity_type_is_not_reporter(self):
         #self._create_form_model()
-        form_model = self.manager.get(self.form_model__id, FormModel)
+        form_model = self.form_model
         post = [{"title": "What is your age", "code": "age", "type": "integer", "choices": [],
                  "is_entity_question": False,
                  "range_min": 0, "range_max": 100}]
@@ -87,14 +87,13 @@ class TestQuestionnaireBuilderIT(unittest.TestCase):
 
     def test_should_no_snapshot_when_questionnaire_first_created(self):
         #self._create_form_model()
-        form_model = self.manager.get(self.form_model__id, FormModel)
-        self.assertEqual(0, len(form_model.snapshots))
+        self.assertEqual(0, len(self.form_model.snapshots))
 
     def test_should_save_snapshots_when_questionnaires_field_modified(self):
         #self._create_form_model()
-        form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
-        original_fields = form_model._doc.json_fields
-        revision = form_model._doc['_rev']
+        form_model = self.form_model
+        original_fields = form_model.fields
+        revision = form_model._doc.rev
 
         post = [
             {"title": "q1", "type": "text", "choices": [], "is_entity_question": False, "code": "q1", "min_length": 1,
@@ -102,12 +101,12 @@ class TestQuestionnaireBuilderIT(unittest.TestCase):
             {"title": "q2", "type": "integer", "choices": [], "is_entity_question": False, "code": "q2", "range_min": 0,
              "range_max": 100}]
         QuestionnaireBuilder(form_model, self.manager).update_questionnaire_with_questions(post)
-        form_model.save()
-        form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
+        # form_model.save()
+        # form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
 
         self.assertEqual(1, len(form_model.snapshots))
         self.assertEqual(revision, form_model.snapshots.keys()[-1])
-        expect = [(each['code'], each['label']) for each in original_fields]
+        expect = [(each.code, each.label) for each in original_fields]
         self.assertListEqual(expect, [(each.code, each.label) for each in form_model.snapshots[revision]])
 
 

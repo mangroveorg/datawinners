@@ -24,7 +24,7 @@ def get_questions(form_model):
 
 def get_questionnaire_form_model(manager, project_info, post):
     return create_questionnaire(post, manager, name=unicode(project_info['name']),
-                                language=unicode(project_info['language']))
+                                language=unicode(project_info['language']), reporter_id=None)
 
 def get_sms_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
@@ -57,13 +57,10 @@ def add_link_context(project):
 
 def get_web_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
-    project = Project(name=unicode(project_info['name']), entity_type=unicode(REPORTER),
-                      devices=[u'sms', u'web', u'smartPhone'], language=unicode(project_info['language']))
-
-    questionnaire_form = SurveyResponseForm(form_model,SubjectQuestionFieldCreator(manager, project))
+    questionnaire_form = SurveyResponseForm(form_model, SubjectQuestionFieldCreator(manager, form_model))
     return {'project': project_info,
             'questionnaire_form': questionnaire_form,
-            'add_link': add_link_context(project), }
+            'add_link': add_link_context(form_model)}
 
 
 @valid_web_user

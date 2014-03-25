@@ -5,7 +5,7 @@ from datawinners.project.subject_question_creator import SubjectQuestionFieldCre
 
 
 class EditSubmissionForm(Form):
-    def __init__(self, manager, project, questionnaire_form_model, data):
+    def __init__(self, manager, questionnaire_form_model, data):
         super(EditSubmissionForm, self).__init__(data=data)
         self.form_model = questionnaire_form_model
         self.fields['form_code'] = CharField(widget=HiddenInput, initial=questionnaire_form_model.form_code)
@@ -17,7 +17,7 @@ class EditSubmissionForm(Form):
 
         for field in questionnaire_form_model.fields:
             if field.is_entity_field:
-                self.fields[field.code] = SubjectQuestionFieldCreator(manager, project).create(field)
+                self.fields[field.code] = SubjectQuestionFieldCreator(manager, self.form_model).create(field)
             else:
                 form_field = FormField().create(field)
                 form_field.initial = data.get(field.code) if data.get(field.code) is not None else data.get(

@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 import jsonpickle
+from mangrove.transport import TransportInfo
 
 from datawinners import settings
 from datawinners import utils
@@ -21,8 +22,7 @@ from datawinners.project.models import get_all_projects, Project, delete_datasen
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports
 from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
-from mangrove.form_model.form_model import REPORTER, header_fields, get_form_model_by_code, FormModel
-from mangrove.transport import TransportInfo
+from mangrove.form_model.form_model import REPORTER, header_fields, get_form_model_by_code
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization
 from mangrove.transport.player.parser import XlsDatasenderParser
@@ -136,7 +136,7 @@ class DataSenderActionView(View):
         project_ids = request.POST.get('project_id').split(';')
         questionnaires = []
         for project_id in project_ids:
-            questionnaire = FormModel.get(manager, project_id)
+            questionnaire = Project.get(manager, project_id)
             if questionnaire is not None:
                 questionnaires.append(questionnaire)
         return questionnaires

@@ -47,17 +47,17 @@ def _make_message(row):
 @is_not_expired
 def get_submission_breakup(request, project_id):
     dbm = get_database_manager(request.user)
-    form_model = FormModel.get(dbm, project_id)
-    submission_success, submission_errors = submission_stats(dbm, form_model.form_code)
+    questionnaire = Project.get(dbm, project_id)
+    submission_success, submission_errors = submission_stats(dbm, questionnaire.form_code)
     response = json.dumps([submission_success, submission_errors])
     return HttpResponse(response)
 
 @valid_web_user
 def get_submissions_about_project(request, project_id):
     dbm = get_database_manager(request.user)
-    form_model = FormModel.get(dbm, project_id)
-    rows = dbm.load_all_rows_in_view('undeleted_survey_response', reduce=False, descending=True, startkey=[form_model.form_code, {}],
-                                     endkey=[form_model.form_code], limit=7)
+    questionnaire = Project.get(dbm, project_id)
+    rows = dbm.load_all_rows_in_view('undeleted_survey_response', reduce=False, descending=True, startkey=[questionnaire.form_code, {}],
+                                     endkey=[questionnaire.form_code], limit=7)
     submission_list = []
     for row in rows:
         reporter = _find_reporter_name(dbm, row)
@@ -114,7 +114,7 @@ def start(request):
 @valid_web_user
 def map_entities(request):
     dbm = get_database_manager(request.user)
-    questionnaire = FormModel.get(dbm, request.GET['project_id'])
+    questionnaire = Project.get(dbm, request.GET['project_id'])
     if not questionnaire.entity_type:
         entity_list = []
         for short_code in questionnaire.data_senders:

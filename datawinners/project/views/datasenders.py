@@ -98,7 +98,7 @@ def _add_imported_datasenders_to_project(imported_datasenders_id, manager, proje
 @is_not_expired
 def registered_datasenders(request, project_id):
     manager = get_database_manager(request.user)
-    questionnaire = FormModel.get(manager, project_id)
+    questionnaire = Project.get(manager, project_id)
     project_links = get_project_link(questionnaire)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():

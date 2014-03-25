@@ -3,8 +3,9 @@ from django.forms import ChoiceField
 from mock import Mock, patch, PropertyMock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField
-from datawinners.project.models import Project
-from datawinners.project.questionnaire_fields import EntityField, FormField
+from datawinners.project.questionnaire_fields import EntityField
+from mangrove.form_model.form_model import EntityFormModel
+
 
 class TestSubjectField(unittest.TestCase):
 
@@ -13,13 +14,13 @@ class TestSubjectField(unittest.TestCase):
 
             choices = ChoiceField(choices=[('sub1', 'one_subject'), ('sub2', 'another_subject')])
             subject_choice_fields.return_value = choices
-            project = Project(entity_type="some_subject")
+            project = EntityFormModel(dbm=Mock(spec=DatabaseManager), entity_type=["some_subject"])
 
-            subject_field = EntityField(Mock(spec = DatabaseManager), project)
+            subject_field = EntityField(Mock(spec=DatabaseManager), project)
             question_field = Mock(spec=TextField)
             question_code = PropertyMock(return_value="eid")
             type(question_field).code = question_code
 
             result_field = subject_field.create(question_field, 'some_subject')
 
-            self.assertEquals(result_field.get('eid'),choices)
+            self.assertEquals(result_field.get('eid'), choices)
