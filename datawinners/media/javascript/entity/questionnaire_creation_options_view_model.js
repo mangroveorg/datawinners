@@ -8,7 +8,6 @@ var questionnaireCreationOptionsViewModel = {
         showAjaxLoader: ko.observable(),
         templateGroupingData: ko.observable(),
         existingQuestionnaires: ko.observable(),
-//        selectedQuestionnaire: ko.observable(),
         selectedQuestionnaireId: ko.observable(),
         selectedTemplate: ko.observable(),
         selectedCreationOption: ko.observable(100), //don't select any option by default
@@ -22,12 +21,14 @@ var questionnaireCreationOptionsViewModel = {
         },
 
         selectQuestionnaire: function(questionnaire){
+            var questionnaire_id = questionnaire.id;
             var that = questionnaireCreationOptionsViewModel;
-            that.selectedQuestionnaireId(questionnaire.id)
+            that.selectedQuestionnaireId(null);
             that.showAjaxLoader(true);
-            questionnaireDataFetcher.getQuestionnaire(questionnaire.id).done(function(questionnaireData){
+            questionnaireDataFetcher.getQuestionnaire(questionnaire_id).done(function(questionnaireData){
                 that.showAjaxLoader(false);
                 that.selectedQuestionnaire(questionnaireData);
+                that.selectedQuestionnaireId(questionnaire_id);
             });
 
         },
