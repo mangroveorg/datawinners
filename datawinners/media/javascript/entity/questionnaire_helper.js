@@ -70,7 +70,7 @@ DW.question = function (question) {
         instruction: gettext("Answer must be a text"),
         newly_added_question: false,
         event_time_field_flag: false,
-        uniqueIdType : null
+        unique_id_type : null
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
@@ -111,7 +111,7 @@ DW.question.prototype = {
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
         this.isEntityQuestion = ko.observable(q.type == 'short_code');
-        this.uniqueIdType = DW.ko.createValidatableObservable({value: q.uniqueIdType});
+        this.uniqueIdType = DW.ko.createValidatableObservable({value: q.unique_id_type});
 
         this.showDateFormats = ko.computed(function () {
             return this.type() == "date";

@@ -118,7 +118,7 @@ class TestQuestionBuilder(unittest.TestCase):
 
     def test_creates_questions_from_dict(self):
         post = [{"title": "q1", "description": "desc1", "type": "unique_id", "choices": [],
-                 "min_length": 1, "uniqueIdType": "clinic"},
+                 "min_length": 1, "unique_id_type": "clinic"},
                 {"title": "q2", "description": "desc2", "type": "integer", "choices": [],
                  "is_entity_question": False, "range_min": 0, "range_max": 100},
                 {"title": "q3", "description": "desc3", "type": "select",
