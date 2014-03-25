@@ -30,14 +30,14 @@ class TestProjectModel(unittest.TestCase):
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
             defaultValue="some default value",
             constraints=[TextLengthConstraint(5, 10)])
-        cls.project1 = FormModel(dbm=cls.manager, name=project1_name, goals="Testing",
+        cls.project1 = Project(dbm=cls.manager, name=project1_name, goals="Testing",
                                  devices=['web'], form_code="abc",
                                  fields=[question1, question2])
-        cls.project1_id = cls.project1.save()
-        cls.project2 = FormModel(dbm=cls.manager, name=project2_name, goals="Testing",
+        cls.project1_id = cls.project1.save(cls.manager)
+        cls.project2 = Project(dbm=cls.manager, name=project2_name, goals="Testing",
                                  devices=['web'], form_code="def",
                                  fields=[question1, question2])
-        cls.project2_id = cls.project2.save()
+        cls.project2_id = cls.project2.save(cls.manager)
 
 
 
@@ -49,12 +49,11 @@ class TestProjectModel(unittest.TestCase):
     def test_get_associated_data_senders(self):
         entity = Entity(self.manager, entity_type=["reporter"], short_code="rep1")
         entity_id = entity.save()
-        questionnaire = FormModel(dbm=self.manager, name="TestDS", goals="Testing",
+        project = Project(dbm=self.manager, name="TestDS", goals="Testing",
                                   devices=['web'], form_code="ds_form",
                                   fields=[])
-        questionnaire.data_senders = ["rep1"]
-        questionnaire.save()
-        project = Project(questionnaire)
+        project.data_senders = ["rep1"]
+        project.save(self.manager)
         result = project.get_associated_datasenders(self.manager)
 
         self.assertEquals(result[0].short_code, entity.short_code)
@@ -73,6 +72,7 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(FormModel.get(self.manager, self.project1_id).id, self.project1_id)
 
     def test_should_update_project(self):
+        self.project1 = Project.get(self.manager, self.project1_id)
         self.project1.update(dict(name=project1_name, devices=['web', 'sms'], goals="New goals"))
         self.project1.save(self.manager)
         self.assertEquals(self.project1.name, project1_name.lower())
@@ -80,16 +80,16 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(self.project1.devices, ['web', 'sms'])
 
     def test_project_name_should_be_unique(self):
-        project = FormModel(dbm=self.manager, name=project2_name, goals="Testing",
+        project = Project(dbm=self.manager, name=project2_name, goals="Testing",
                             devices=['web'], form_code="name_form",
                             fields=[])
         with self.assertRaises(Exception) as cm:
-            project.save()
+            project.save(self.manager)
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 
     def test_project_name_should_be_case_insensitively_unique(self):
-        project = Project(name=project2_name.upper(), goals="Testing", entity_type="Clinic", devices=['web'])
+        project = Project(self.manager,name=project2_name.upper(), goals="Testing", devices=['web'])
         with self.assertRaises(Exception) as cm:
             project.save(self.manager)
         the_exception = cm.exception
@@ -112,7 +112,7 @@ class TestProjectModel(unittest.TestCase):
             "has_deadline": "True",
             "frequency_period": "month"
         }
-        project_reminders = Project(name="ReminderProject")
+        project_reminders = Project(self.manager,name="ReminderProject")
         project_reminders.reminder_and_deadline = reminder_and_deadline_for_month
         self.assertEquals(5, project_reminders.get_deadline_day())
 
@@ -130,7 +130,7 @@ class TestProjectModel(unittest.TestCase):
             "has_deadline": "True",
             "frequency_period": "month"
         }
-        project = Project()
+        project = Project(self.manager,name="New project")
         project.reminder_and_deadline = reminder_and_deadline_for_month
         project.data_senders = ["rep1", "rep2", "rep3", "rep4", "rep5"]
         dbm = Mock(spec=DatabaseManager)
@@ -151,13 +151,13 @@ class TestProjectModel(unittest.TestCase):
         self.assertIn("rep5", [ds["short_code"] for ds in data_senders])
 
     def test_should_delete_datasender_from_project(self):
-        self.project1 = Project.load(self.manager.database, self.project1_id)
+        self.project1 = Project.get(self.manager, self.project1_id)
         self.project1.data_senders = ['rep1', 'rep2']
         datasender_to_be_deleted = 'rep1'
         with patch("datawinners.search.datasender_index.update_datasender_index_by_id") as update_datasender_index_by_id:
             update_datasender_index_by_id.return_value = None
             self.project1.delete_datasender(self.manager, datasender_to_be_deleted)
-            self.project1 = Project.load(self.manager.database, self.project1_id)
+            self.project1 = Project.get(self.manager, self.project1_id)
             expected_data_senders = ['rep2']
             self.assertEqual(self.project1.data_senders, expected_data_senders)
 

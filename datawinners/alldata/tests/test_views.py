@@ -19,7 +19,7 @@ class TestViews(TestCase):
                                         name = "Project Name",
                                         created = "2012-05-23T02:57:09.788294+00:00"))
 
-        project = Project(dbm=manager)
+        project = Project(dbm=manager, name="Project Name")
 
         profile = Mock(spec = NGOUserProfile)
 

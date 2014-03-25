@@ -181,6 +181,10 @@ class Project(FormModel):
     def data_senders(self):
         return self._doc.data_senders
 
+    @property
+    def goals(self):
+        return self._doc.goals
+
     @data_senders.setter
     def data_senders(self,value):
         self._doc.data_senders = value
@@ -261,13 +265,13 @@ class Project(FormModel):
     def save(self, dbm, process_post_update=True):
         assert isinstance(dbm, DatabaseManager)
         self._check_if_project_name_unique(dbm)
-        return FormModel.save(self)
+        return super(Project,self).save()
 
     def update(self, value_dict):
-        attribute_list = [item[0] for item in (self.items())]
+        attribute_list = [item[0] for item in (self._doc.items())]
         for key in value_dict:
             if key in attribute_list:
-                setattr(self, key, value_dict.get(key).lower()) if key == 'name' else setattr(self, key,
+                setattr(self._doc, key, value_dict.get(key).lower()) if key == 'name' else setattr(self._doc, key,
                                                                                               value_dict.get(key))
 
     # def delete(self, dbm):

@@ -175,7 +175,7 @@ def _get_changed_data(project, project_info):
 def edit_project(request, project_id):
     manager = get_database_manager(request.user)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    questionnaire = FormModel.get(manager, project_id)
+    questionnaire = Project.get(manager, project_id)
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     if request.method == 'GET':
@@ -199,7 +199,7 @@ def edit_project(request, project_id):
                                                  project_info.get('language'))
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
-            questionnaire.save()
+            questionnaire.save(manager)
 
             deleted_question_codes = _get_deleted_question_codes(old_codes=old_field_codes,
                                                                  new_codes=questionnaire.field_codes())
