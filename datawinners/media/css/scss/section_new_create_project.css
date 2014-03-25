@@ -867,8 +867,35 @@ fieldset {
 .questionnaire_save_tooltip p {
   width: 200px; }
 
-.uniqueIdType {
-  border: 1px solid #000000;
-  background: url("/media/images/arrow_dd.png") no-repeat scroll right -3px;
-  cursor: pointer;
-  width: 200px; }
+.uniqueIdTypeSection {
+  line-height: 1.5em; }
+  .uniqueIdTypeSection .uniqueIdType {
+    border: 1px solid #888888;
+    background: url("/media/images/arrow_dd.png") no-repeat scroll right -3px;
+    cursor: pointer;
+    width: 200px;
+    padding-left: 5px; }
+  .uniqueIdTypeSection .uniqueIdTypeContents {
+    border: 1px solid gray;
+    box-shadow: 10px 10px 5px #888888;
+    width: 350px;
+    padding: 10px; }
+    .uniqueIdTypeSection .uniqueIdTypeContents .newUniqueIdName {
+      width: 260px;
+      margin: 5px 10px 5px 0; }
+    .uniqueIdTypeSection .uniqueIdTypeContents .section-example {
+      color: #666666;
+      font-style: italic; }
+    .uniqueIdTypeSection .uniqueIdTypeContents hr {
+      background-color: #444;
+      box-shadow: 8px 2px 2px #888888;
+      margin: 10px 0 10px 0; }
+    .uniqueIdTypeSection .uniqueIdTypeContents .uniqueIdList {
+      line-height: 10px; }
+      .uniqueIdTypeSection .uniqueIdTypeContents .uniqueIdList li {
+        cursor: pointer;
+        overflow: none;
+        padding: 5px 0 5px 0;
+        margin: 0px !important; }
+        .uniqueIdTypeSection .uniqueIdTypeContents .uniqueIdList li:hover {
+          background-color: #0099ff; }
