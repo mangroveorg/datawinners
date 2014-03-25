@@ -92,7 +92,7 @@ def create_project(request):
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
 
     if request.method == 'GET':
-        cancel_link = reverse('dashboard') if request.GET['prev'] == 'dash' else reverse('index')
+        cancel_link = reverse('dashboard') if request.GET.get('prev', None) == 'dash' else reverse('index')
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
