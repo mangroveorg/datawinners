@@ -281,7 +281,7 @@ class TestView(TestCase):
 
     def test_should_convert_datetime_to_string_after_subject_import(self):
         form_model = Mock(spec=FormModel)
-        date_field = DateField('name', 'code', 'Date of birth', '', ddtype=Mock())
+        date_field = DateField('name', 'code', 'Date of birth', '')
         form_model.fields = [Mock(spec=TextField), date_field]
         subjects_data = {u'fac8': OrderedDict([('q2', u'Safidy'), ('q7', datetime.datetime(2010, 10, 10, 0, 0)), ('q6', u'fac8')]),
                         u'fac9': OrderedDict([('q2', u'Emission'), ('q7', datetime.datetime(1947, 6, 26, 0, 0)), ('q6', u'fac9')]),
