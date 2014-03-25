@@ -1,9 +1,12 @@
 from datetime import date
-from datawinners.accountmanagement.models import Organization, MessageTracker
+
 from django.utils import unittest
-from mock import Mock,patch
-from datawinners.project.models import  Reminder, Project, RemindTo, ReminderRepository
-from datawinners.scheduler.scheduler import   send_reminders_on, send_reminders_for_an_organization
+from mock import Mock, patch
+
+from datawinners.accountmanagement.models import Organization, MessageTracker
+from datawinners.project.models import Reminder, RemindTo, ReminderRepository, Project
+from datawinners.scheduler.scheduler import send_reminders_on, send_reminders_for_an_organization
+
 
 #TODO: reinder to be sent to only those not sent
 #TODO: reinder to be sent to all ds
@@ -15,14 +18,13 @@ from datawinners.sms.models import MSG_TYPE_REMINDER
 
 
 class TestScheduler(unittest.TestCase):
-
     def setUp(self):
         self.FROM_NUMBER = "from_num"
         self.mock_date = Mock(spec=date)
-        self.data_senders = [  {  'name' : 'reporter1', 'mobile_number' : 'tel1' },
-         {  'name' : 'reporter2', 'mobile_number' : 'tel2' },
-         {  'name' : 'reporter3', 'mobile_number' : 'tel3' },
-             {  'name' : 'reporter4', 'mobile_number' : 'tel4' }
+        self.data_senders = [{'name': 'reporter1', 'mobile_number': 'tel1'},
+                             {'name': 'reporter2', 'mobile_number': 'tel2'},
+                             {'name': 'reporter3', 'mobile_number': 'tel3'},
+                             {'name': 'reporter4', 'mobile_number': 'tel4'}
         ]
         self.project = Mock(spec=Project)
         self.project.get_data_senders.return_value = self.data_senders
@@ -53,8 +55,8 @@ class TestScheduler(unittest.TestCase):
 
         self.reminders = [self.reminder1, self.reminder2, self.reminder3]
         self.sms_client = SMSClient()
-        self.sms_client.send_sms=Mock()
-        self.sms_client.send_sms.return_value=True
+        self.sms_client.send_sms = Mock()
+        self.sms_client.send_sms.return_value = True
 
 
     def tearDown(self):
@@ -64,40 +66,44 @@ class TestScheduler(unittest.TestCase):
             pass
 
     def test_should_return_reminders_scheduled_for_the_day(self):
-        reminders_sent, total_reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
+        reminders_sent, total_reminders_sent = send_reminders_on(self.project, self.reminders, self.mock_date,
+                                                                 self.sms_client, self.FROM_NUMBER, None)
 
-        self.assertEqual(2,len(reminders_sent))
-        self.assertIn(self.reminder1,reminders_sent)
-        self.assertIn(self.reminder3,reminders_sent)
+        self.assertEqual(2, len(reminders_sent))
+        self.assertIn(self.reminder1, reminders_sent)
+        self.assertIn(self.reminder3, reminders_sent)
         self.assertEqual(8, total_reminders_sent)
 
     def test_should_send_reminders_to_all_data_senders(self):
-        send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
+        send_reminders_on(self.project, self.reminders, self.mock_date, self.sms_client, self.FROM_NUMBER, None)
 
         count = 0
-        for reminder in [self.reminder1,self.reminder3]:
+        for reminder in [self.reminder1, self.reminder3]:
             for ds in self.data_senders:
-                self.assertEqual((("from_num", ds["mobile_number"],reminder.message, MSG_TYPE_REMINDER),{}),self.sms_client.send_sms.call_args_list[count])
-                count+=1
+                self.assertEqual((("from_num", ds["mobile_number"], reminder.message, MSG_TYPE_REMINDER), {}),
+                                 self.sms_client.send_sms.call_args_list[count])
+                count += 1
 
     def test_should_send_reminders_to_only_data_senders_who_have_not_sent_in_for_period(self):
         self.reminder1.remind_to = RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS
         self.reminder3.remind_to = RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS
-        who_have_not_sent_data = [self.data_senders[0],self.data_senders[3]]
+        who_have_not_sent_data = [self.data_senders[0], self.data_senders[3]]
         self.reminder1.get_sender_list.return_value = who_have_not_sent_data
         self.reminder3.get_sender_list.return_value = who_have_not_sent_data
 
-        send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
+        send_reminders_on(self.project, self.reminders, self.mock_date, self.sms_client, self.FROM_NUMBER, None)
 
         count = 0
-        for reminder in [self.reminder1,self.reminder3]:
+        for reminder in [self.reminder1, self.reminder3]:
             for ds in who_have_not_sent_data:
-                self.assertEqual((("from_num", ds["mobile_number"],reminder.message, MSG_TYPE_REMINDER),{}),self.sms_client.send_sms.call_args_list[count])
-                count+=1
+                self.assertEqual((("from_num", ds["mobile_number"], reminder.message, MSG_TYPE_REMINDER), {}),
+                                 self.sms_client.send_sms.call_args_list[count])
+                count += 1
 
     def test_should_log_reminders_when_sent(self):
         dbm_mock = Mock(spec=DatabaseManager)
-        sent_reminders, total_reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER, dbm_mock)
+        sent_reminders, total_reminders_sent = send_reminders_on(self.project, self.reminders, self.mock_date,
+                                                                 self.sms_client, self.FROM_NUMBER, dbm_mock)
         self.assertIn(self.reminder1, sent_reminders)
         self.reminder1.log.assert_called_once()
 
@@ -105,45 +111,44 @@ class TestScheduler(unittest.TestCase):
         self.reminder3.log.assert_called_once()
 
         self.assertNotIn(self.reminder2, sent_reminders)
-        self.assertEqual(0,self.reminder2.log.call_count)
+        self.assertEqual(0, self.reminder2.log.call_count)
 
     def test_get_paid_org_should_return_only_paid_org(self):
 
         TRIAL_ORGANIZATION_PARAMS = {'organization_name': 'myCompany',
-                                 'organization_sector': 'Public Health',
-                                 'organization_city': 'xian',
-                                 'organization_country': 'china',
-                                 }
+                                     'organization_sector': 'Public Health',
+                                     'organization_city': 'xian',
+                                     'organization_country': 'china',
+        }
         self.organization = Organization.create_trial_organization(TRIAL_ORGANIZATION_PARAMS)
         self.organization.save()
         organizations = _get_active_paid_organization()
-        self.assertNotIn(self.organization,organizations)
+        self.assertNotIn(self.organization, organizations)
 
     def test_get_active_paid_org_should_not_return_deactivate_org(self):
         ORG_DETAILS = {'organization_name': 'myCompany',
-                                   'organization_sector': 'Public Health',
-                                   'organization_city': 'xian',
-                                   'organization_country': 'china',
-                                   'organization_address': 'myAddress',
-                                   'organization_addressline2': 'myAddressL2',
-                                   'organization_state': "MyState",
-                                   'organization_zipcode': "1234565",
-                                   'organization_office_phone': "123113123",
-                                   'organization_website': "meme@my.com",
-                                   'language': "en"
-                                  }
+                       'organization_sector': 'Public Health',
+                       'organization_city': 'xian',
+                       'organization_country': 'china',
+                       'organization_address': 'myAddress',
+                       'organization_addressline2': 'myAddressL2',
+                       'organization_state': "MyState",
+                       'organization_zipcode': "1234565",
+                       'organization_office_phone': "123113123",
+                       'organization_website': "meme@my.com",
+                       'language': "en"
+        }
         deactivated_organization = Organization.create_organization(ORG_DETAILS)
         deactivated_organization.status = "Deactivated"
         deactivated_organization.save()
-
 
         activated_organization = Organization.create_organization(ORG_DETAILS)
         activated_organization.save()
 
         organizations = _get_active_paid_organization()
 
-        self.assertNotIn(deactivated_organization,organizations)
-        self.assertIn(activated_organization,organizations)
+        self.assertNotIn(deactivated_organization, organizations)
+        self.assertIn(activated_organization, organizations)
 
         activated_organization.delete()
         deactivated_organization.delete()
@@ -160,11 +165,12 @@ class TestScheduler(unittest.TestCase):
         self.sms_client.send_reminder.side_effect = expected_side_effect
 
         reminders = [self.reminder1, self.reminder4, self.reminder3]
-        reminders_sent, total_reminders_sent = send_reminders_on(self.project, reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
-        self.assertEqual(2,len(reminders_sent))
-        self.assertNotIn(self.reminder4,reminders_sent)
-        self.assertIn(self.reminder1,reminders_sent)
-        self.assertIn(self.reminder3,reminders_sent)
+        reminders_sent, total_reminders_sent = send_reminders_on(self.project, reminders, self.mock_date,
+                                                                 self.sms_client, self.FROM_NUMBER, None)
+        self.assertEqual(2, len(reminders_sent))
+        self.assertNotIn(self.reminder4, reminders_sent)
+        self.assertIn(self.reminder1, reminders_sent)
+        self.assertIn(self.reminder3, reminders_sent)
 
     def test_should_not_update_message_tracker_counts_if_no_reminders_are_sent_for_an_organization(self):
         org_mock = Mock(spec=Organization)
@@ -176,8 +182,8 @@ class TestScheduler(unittest.TestCase):
 
             get_reminder_repository_mock.return_value = reminder_repository_mock
             send_reminders_for_an_organization(org_mock, date.today(), self.sms_client,
-                self.FROM_NUMBER, None)
-            self.assertEqual(0,org_mock._get_message_tracker.call_count)
+                                               self.FROM_NUMBER, None)
+            self.assertEqual(0, org_mock._get_message_tracker.call_count)
 
     def test_should_update_message_trackers_on_sending_reminders_for_organization(self):
         org_mock = Mock(spec=Organization)
@@ -192,5 +198,5 @@ class TestScheduler(unittest.TestCase):
             reminder_repository_mock.get_all_reminders_for.return_value = [self.reminder1]
             get_reminder_repository_mock.return_value = reminder_repository_mock
             send_reminders_for_an_organization(org_mock, date.today(), self.sms_client,
-                self.FROM_NUMBER, dbm)
+                                               self.FROM_NUMBER, dbm)
             org_mock.increment_message_count_for.assert_called_once_with(sent_reminders_count=4)

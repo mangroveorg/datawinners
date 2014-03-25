@@ -4,13 +4,13 @@ from datawinners.project.questionnaire_fields import EntityField, FormField
 
 
 class EditSubmissionForm(Form):
-    def __init__(self, manager, project, questionnaire_form_model, data):
+    def __init__(self, manager, questionnaire_form_model, data):
         super(EditSubmissionForm, self).__init__(data=data)
         self.form_model = questionnaire_form_model
         self.fields['form_code'] = CharField(widget=HiddenInput, initial=questionnaire_form_model.form_code)
         if questionnaire_form_model.entity_question is not None:
             entity_question = questionnaire_form_model.entity_question
-            choices = EntityField(manager, project).create(entity_question, project.entity_type)
+            choices = EntityField(manager, questionnaire_form_model).create(entity_question, questionnaire_form_model.entity_type)
             self.fields[entity_question.code] = choices.get(entity_question.code)
             self.short_code_question_code = questionnaire_form_model.entity_question.code
 

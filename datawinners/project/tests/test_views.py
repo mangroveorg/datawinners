@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpRequest
 from mock import Mock, patch, call
-from mangrove.form_model.field import TextField, DateField
 from mangrove.transport import Response
 
+from mangrove.datastore.database import DatabaseManager
+from mangrove.form_model.field import TextField, DateField
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
@@ -19,6 +20,7 @@ from datawinners.project.views.views import get_preview_and_instruction_links_fo
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 from datawinners.project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field, _get_changed_data
 from datawinners.questionnaire.questionnaire_builder import get_max_code
+from mangrove.form_model.form_model import FormModel
 
 
 class TestProjectViews(unittest.TestCase):
@@ -252,7 +254,8 @@ class TestProjectViews(unittest.TestCase):
 
     def test_should_get_changed_data_when_project_is_edited(self):
         project_info = {'name':'changed name','language':'en'}
-        project = Project(name='old name', language='en')
+        project = Project(dbm=Mock(spec= DatabaseManager), name='old name', language='en',
+                            form_code="change_form", fields=[])
         changed_dict = _get_changed_data(project,project_info)
         self.assertDictEqual({'Name':'changed name'},changed_dict)
 
@@ -317,7 +320,7 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
 
         def _initialize(self, project_id):
             self.manager = None
-            self.questionnaire = self.questionnaire = Project(entity_type="someTest")
+            self.questionnaire = Mock(spec=FormModel)
             self.is_data_sender = True
             self.disable_link_class, self.hide_link_class = None, None
             self.form_code = None

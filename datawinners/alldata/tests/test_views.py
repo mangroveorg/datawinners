@@ -19,14 +19,14 @@ class TestViews(TestCase):
                                         name = "Project Name",
                                         created = "2012-05-23T02:57:09.788294+00:00"))
 
-        project = Project(entity_type="clinic")
+        project = Project(dbm=manager)
 
         profile = Mock(spec = NGOUserProfile)
 
         questionnaire = Mock()
         questionnaire.form_code = "q01"
 
-        with patch("datawinners.project.models.Project.load") as get_project:
+        with patch("datawinners.project.models.Project.get") as get_project:
             get_project.return_value = project
             with patch.object(DatabaseManager, "get") as db_manager:
                 db_manager.return_value = questionnaire

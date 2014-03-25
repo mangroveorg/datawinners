@@ -47,7 +47,7 @@ class TestUserAssociationToProject(unittest.TestCase):
             with patch("datawinners.accountmanagement.views.get_all_projects") as get_all_projects_mock:
                 get_all_projects_mock.return_value = [{'value':{'_id': 'id1'}}]
                 project_mock = MagicMock(spec=Project)
-                ProjectMock.load.return_value = project_mock
+                ProjectMock.get.return_value = project_mock
                 project_mock.data_senders = []
 
                 associate_user_with_existing_project(dbm, 'rep123')

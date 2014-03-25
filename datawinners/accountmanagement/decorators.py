@@ -1,13 +1,15 @@
 import logging
+
 from django.conf import settings as django_settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from mangrove.form_model.form_model import FormModel
+from django.contrib.auth.models import User
+
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.local_settings import CRS_ORG_ID
 from datawinners.main.database import get_database_manager
 from datawinners.project.models import get_all_projects, Project
-from django.contrib.auth.models import User
+
 
 logger = logging.getLogger("django")
 
@@ -143,9 +145,9 @@ def project_has_web_device(f):
         request = args[0]
         user = request.user
         dbm = get_database_manager(user)
-        form_model_id = kw["project_id"]
-        form_model = FormModel.get(dbm,form_model_id)
-        if "web" not in form_model.devices:
+        project_id = kw["project_id"]
+        questionnaire = Project.get(dbm,project_id)
+        if "web" not in questionnaire.devices:
             referer = django_settings.HOME_PAGE
             return HttpResponseRedirect(referer)
         return f(*args, **kw)

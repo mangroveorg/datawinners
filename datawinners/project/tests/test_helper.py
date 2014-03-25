@@ -281,7 +281,7 @@ class TestPreviewCreator(unittest.TestCase):
         entity_ids = ['rep1', 'rep2']
         with patch("datawinners.project.models.Project") as mock_project_class:
             mock_project = Mock(spec=Project)
-            mock_project_class.load.return_value = mock_project
+            mock_project_class.get.return_value = mock_project
             with patch("datawinners.project.models.get_all_projects") as all_projects:
                 all_projects.return_value = [{'value': {'_id': 1}}]
                 dbm = Mock()

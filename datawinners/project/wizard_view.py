@@ -36,17 +36,17 @@ def create_questionnaire(post, manager, name, language, reporter_id):
     questionnaire_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    form_model = FormModel(manager, name=name, type='survey',
+    questionnaire = Project(manager, name=name, type='survey',
                            fields=[], form_code=questionnaire_code, language=language,
                            devices=[u'sms', u'web', u'smartPhone'])
     if reporter_id is not None:
-        datasender_list = form_model.data_senders
+        datasender_list = questionnaire.data_senders
         datasender_list.append(reporter_id)
-        form_model.data_senders = datasender_list
+        questionnaire.data_senders = datasender_list
 
-    QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
+    QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
 
-    return form_model
+    return questionnaire
 
 
 def update_questionnaire(questionnaire, post, name, manager, language):
@@ -118,7 +118,7 @@ def create_project(request):
                 json.dumps({'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}))
 
         try:
-            questionnaire.save()
+            questionnaire.save(manager)
         except DataObjectAlreadyExists:
             return HttpResponse(json.dumps(
                 {'success': False, 'error_message': "Questionnaire with this code already exists",
@@ -230,8 +230,7 @@ def edit_project(request, project_id):
 @is_not_expired
 def reminder_settings(request, project_id):
     dbm = get_database_manager(request.user)
-    #project = Project.load(dbm.database, project_id)
-    questionnaire = FormModel.get(dbm, project_id)
+    questionnaire = Project.get(dbm, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)

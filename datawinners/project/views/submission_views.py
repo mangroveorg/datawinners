@@ -105,15 +105,15 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
     org_id = helper.get_org_id_by_user(request.user)
 
     if request.method == 'GET':
-        form_model = get_form_model_by_code(manager, questionnaire_code)
+        questionnaire = Project.get(manager, project_id)
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
-        if form_model.is_void():
+        if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
 
         result_dict = {
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             }
-        result_dict.update(project_info(request, form_model, questionnaire_code))
+        result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/analysis_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
@@ -206,7 +206,7 @@ def edit(request, project_id, survey_response_id, tab=0):
     form_ui_model.update({"back_link": back_link})
     if request.method == 'GET':
         form_initial_values = construct_request_dict(survey_response, questionnaire_form_model)
-        survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, questionnaire_form_model, form_initial_values)
+        survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, form_initial_values)
 
         form_ui_model.update(get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
                                               disable_link_class))
@@ -224,15 +224,14 @@ def edit(request, project_id, survey_response_id, tab=0):
         form_ui_model.update({"redirect_url": request.POST.get("redirect_url")})
         form_ui_model.update({"click_after_reload": request.POST.get("click_after_reload")})
         if request.POST.get("discard"):
-            survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, questionnaire_form_model,
-                                                      survey_response.values)
+            survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, survey_response.values)
 
             form_ui_model.update(
                 get_form_context(project, survey_response_form, manager, hide_link_class, disable_link_class))
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                                       context_instance=RequestContext(request))
         else:
-            survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model, request.POST)
+            survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, request.POST)
 
         form_ui_model.update(
             get_form_context(project, survey_response_form, manager, hide_link_class, disable_link_class))

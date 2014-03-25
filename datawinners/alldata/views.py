@@ -42,7 +42,7 @@ def get_project_analysis_and_log_link(project_id, questionnaire_code):
 
 def get_project_info(manager, raw_project):
     project_id = raw_project['value']['_id']
-    questionnaire = FormModel.get(manager,project_id)
+    questionnaire = Project.get(manager, project_id)
     questionnaire_code = questionnaire.form_code
 
     analysis, disabled, log = get_project_analysis_and_log_link(project_id, questionnaire_code)

@@ -10,7 +10,6 @@ from mangrove.bootstrap import initializer
 from datawinners.main.utils import create_views
 from datawinners.project.models import Project, get_all_projects, get_all_project_names
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
-from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import TextField, UniqueIdField
 from mangrove.form_model.form_model import FormModel, REPORTER
@@ -27,24 +26,20 @@ class TestProjectModel(unittest.TestCase):
         cls.manager = get_db_manager('http://localhost:5984/', cls.db_name)
         initializer._create_views(cls.manager)
         create_views(cls.manager)
-        cls.project1 = Project(name=project1_name, goals="Testing", entity_type="Clinic", devices=['web'])
-        cls.project1_id = cls.project1.save(cls.manager)
-        cls.project2 = Project(name=project2_name, goals="Testing", entity_type="Clinic", devices=['web'])
-        cls.project2_id = cls.project2.save(cls.manager)
-
-        cls._create_form_model_for_project(cls.project1)
-
-    @classmethod
-    def _create_form_model_for_project(cls, project):
         question1 = UniqueIdField(unique_id_type='clinic',name="entity_question", code="ID", label="What is associated entity")
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
             defaultValue="some default value",
             constraints=[TextLengthConstraint(5, 10)])
-        cls.form_model = FormModel(cls.manager, name=cls.project1.name, form_code="abc",
-            fields=[question1, question2])
-        qid = cls.form_model.save()
-        project.qid = qid
-        project.save(cls.manager)
+        cls.project1 = FormModel(dbm=cls.manager, name=project1_name, goals="Testing",
+                                 devices=['web'], form_code="abc",
+                                 fields=[question1, question2])
+        cls.project1_id = cls.project1.save()
+        cls.project2 = FormModel(dbm=cls.manager, name=project2_name, goals="Testing",
+                                 devices=['web'], form_code="def",
+                                 fields=[question1, question2])
+        cls.project2_id = cls.project2.save()
+
+
 
     @classmethod
     def tearDownClass(cls):
@@ -52,12 +47,14 @@ class TestProjectModel(unittest.TestCase):
         get_cache_manager().flush_all()
 
     def test_get_associated_data_senders(self):
-        entity = Entity(self.manager,entity_type=["reporter"], short_code="rep1")
+        entity = Entity(self.manager, entity_type=["reporter"], short_code="rep1")
         entity_id = entity.save()
-        project = Project(name="TestDS", goals="Testing", devices=['web'])
-        project.data_senders = ["rep1"]
-        project.save(self.manager)
-
+        questionnaire = FormModel(dbm=self.manager, name="TestDS", goals="Testing",
+                                  devices=['web'], form_code="ds_form",
+                                  fields=[])
+        questionnaire.data_senders = ["rep1"]
+        questionnaire.save()
+        project = Project(questionnaire)
         result = project.get_associated_datasenders(self.manager)
 
         self.assertEquals(result[0].short_code, entity.short_code)
@@ -73,10 +70,9 @@ class TestProjectModel(unittest.TestCase):
         self.assertTrue(project2_name.lower() in projects_names)
 
     def test_get_one_project(self):
-        self.assertEquals(Project.load(self.manager.database, self.project1_id)['_id'], self.project1_id)
+        self.assertEquals(FormModel.get(self.manager, self.project1_id).id, self.project1_id)
 
     def test_should_update_project(self):
-        self.project1 = Project.load(self.manager.database, self.project1_id)
         self.project1.update(dict(name=project1_name, devices=['web', 'sms'], goals="New goals"))
         self.project1.save(self.manager)
         self.assertEquals(self.project1.name, project1_name.lower())
@@ -84,9 +80,11 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(self.project1.devices, ['web', 'sms'])
 
     def test_project_name_should_be_unique(self):
-        project = Project(name=project2_name, goals="Testing", entity_type="Clinic", devices=['web'])
+        project = FormModel(dbm=self.manager, name=project2_name, goals="Testing",
+                            devices=['web'], form_code="name_form",
+                            fields=[])
         with self.assertRaises(Exception) as cm:
-            project.save(self.manager)
+            project.save()
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 

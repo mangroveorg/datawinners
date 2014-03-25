@@ -134,10 +134,9 @@ def index(request):
     for row in rows:
         project_id = row['value']['_id']
         link = reverse('project-overview', args=[project_id])
-        activate_link = reverse('activate_project', args=[project_id])
         delete_link = reverse('delete_project', args=[project_id])
         project = dict(delete_link=delete_link, name=row['value']['name'], created=row['value']['created'],
-                       link=link, activate_link=activate_link)
+                       link=link)
         project_list.append(project)
     project_list.sort(key=itemgetter('name'))
     return render_to_response('project/index.html', {'projects': project_list},
@@ -177,7 +176,7 @@ def undelete_project(request, project_id):
 @is_project_exist
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
-    questionnaire = FormModel.get(manager, project_id)
+    questionnaire = Project.get(manager, project_id)
 
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
@@ -289,7 +288,7 @@ def _get_data_senders(dbm, form, project):
 @is_not_expired
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
-    questionnaire = FormModel.get(dbm, project_id)
+    questionnaire = Project.get(dbm, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
@@ -369,13 +368,13 @@ def get_project_link(project):
 @valid_web_user
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
-    questionnaire = FormModel.get(manager, project_id)
+    questionnaire = Project.get(manager, project_id)
     project_links = get_project_link(questionnaire)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     subject = get_entity_type_info(questionnaire.entity_type, manager=manager)
-    subject_form_model = get_form_model_by_entity_type(manager, [questionnaire.entity_type])
+    subject_form_model = get_form_model_by_entity_type(manager, questionnaire.entity_type)
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/subjects/registered_subjects_list.html',
                               {'project': questionnaire,
@@ -411,7 +410,7 @@ def get_preview_and_instruction_links_for_questionnaire():
 def questionnaire(request, project_id):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
-        questionnaire = FormModel.get(manager, project_id)
+        questionnaire = Project.get(manager, project_id)
         if questionnaire.is_void():
             return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")
         fields = questionnaire.fields
