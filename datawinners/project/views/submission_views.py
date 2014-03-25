@@ -79,8 +79,8 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
     org_id = helper.get_org_id_by_user(request.user)
 
     if request.method == 'GET':
-        form_model = get_form_model_by_code(manager, questionnaire_code)
-        if form_model.is_void():
+        questionnaire = Project.get(manager,project_id)
+        if questionnaire.is_void():
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
             return HttpResponseRedirect(dashboard_page)
 
@@ -89,7 +89,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "tab": tab,
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             }
-        result_dict.update(project_info(request, form_model, questionnaire_code))
+        result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/submission_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
