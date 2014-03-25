@@ -208,9 +208,10 @@
   font-size: 13px;
   background: white;
   display: none;
+  position: absolute;
   margin-top: 37px;
   z-index: 1002;
-  top: 63px;
+  top: 186px;
   left: 0px;
   box-shadow: 3px 3px 5px gray, -3px 3px 5px gray;
   background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f2f2f2));
