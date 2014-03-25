@@ -1,4 +1,5 @@
 import unittest
+from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
 from pages.createquestionnairepage.create_questionnaire_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
@@ -27,11 +28,13 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
+    @attr('functional_test')
     def test_should_not_select_any_question_by_default(self):
         self.create_questionnaire_page.refresh()
         select_or_add_question_message = self.create_questionnaire_page.get_select_or_edit_question_message()
         self.assertTrue(select_or_add_question_message.is_displayed(), "Select/add question text not present")
 
+    @attr('functional_test')
     def test_should_clear_questionnaire_form_on_recreating_questionnaire(self):
         create_questionnaire_page = self.create_questionnaire_page
         self.create_questionnaire_page.refresh()
@@ -46,7 +49,7 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         self.assertEqual(create_questionnaire_page.get_existing_questions_count(), 0, "No questions should be present for a blank questionnaire")
         self.assertTrue(create_questionnaire_page.get_select_or_edit_question_message().is_displayed(), "No question should be selected by default")
 
-
+    @attr('functional_test')
     def test_submitting_a_blank_questionnaire(self):
         self.global_navigation.navigate_to_view_all_project_page().navigate_to_create_project_page()\
             .select_blank_questionnaire_creation_option()
@@ -70,7 +73,7 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         self.assertTrue(create_questionnaire_page.is_empty_submission_popup_present(),
                         "Empty Questionnaire popup did not show up")
 
-
+    @attr('functional_test')
     def test_add_question_with_invalid_selections(self):
         create_questionnaire_page = self.create_questionnaire_page
         create_questionnaire_page.refresh()
@@ -78,6 +81,7 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         self._validate_number_answer_type()
         self._validate_multiple_choice_type()
 
+    @attr('functional_test')
     def test_submitting_a_questionnaire_with_already_existing_questionnaire_code(self):
         create_questionnaire_page = self.create_questionnaire_page
         create_questionnaire_page.refresh()
@@ -90,6 +94,7 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         self.assertEqual(create_questionnaire_page.get_duplicate_questionnaire_code_error_message(),
                          "Questionnaire with this code already exists", "Duplicate questionnaire code should show up")
 
+    @attr('functional_test')
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
         create_questionnaire_page = self.create_questionnaire_page
         modified_warning_dialog = QuestionnaireModifiedDialog(self.driver)

@@ -60,7 +60,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
         cls.questionnaire_tab_page = overview_page.navigate_to_questionnaire_tab()
         return overview_page.get_project_title(), questionnaire_code
 
-
+    @attr('functional_test')
     def test_editing_existing_questionnaire(self):
         self.global_navigation.navigate_to_view_all_project_page()
         ProjectsPage(self.driver).navigate_to_project_overview_page(TestProjectQuestionnaire.project_name)\
@@ -78,6 +78,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
         questionnaire_tab_page.submit_questionnaire()
         self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of unaltered questionnaire failed")
 
+    @attr('functional_test')
     def test_add_question_with_invalid_selections(self):
         questionnaire_tab_page = self.questionnaire_tab_page
         questionnaire_tab_page.refresh()
@@ -85,6 +86,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
         self._validate_number_answer_type()
         self._validate_multiple_choice_type()
 
+    @attr('functional_test')
     def test_adding_questions_with_valid_answer_types(self):
         questionnaire_tab_page = self.questionnaire_tab_page
         questionnaire_tab_page.refresh()
@@ -110,6 +112,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
         self._expect_redistribute_dialog_to_be_shown()
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 8, "Question count of updated questionnaire does not match")
 
+    @attr('functional_test')
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
         modified_warning_dialog = QuestionnaireModifiedDialog(self.driver)
         self._verify_edit_dialog_cancel(modified_warning_dialog)
