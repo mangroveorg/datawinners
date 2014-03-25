@@ -155,7 +155,7 @@ class Project(FormModel):
 
     def _set_doc(self, form_code, is_registration_model, label, language, name, type):
         doc = ProjectDocument()
-        doc.name = name
+        doc.name = name.lower() if name else None
         doc.set_label(label)
         doc.form_code = form_code
         doc.type = type
@@ -167,7 +167,6 @@ class Project(FormModel):
                  language='en', type="survey", fields=[]):
         FormModel.__init__(self, dbm=dbm, form_code=form_code, is_registration_model=False,
                            label="", language=language, name=name, type=type, fields=fields)
-        # self.devices = []
         if self._doc:
             self._doc.goals = goals
             self._doc.devices = devices

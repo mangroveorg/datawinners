@@ -568,15 +568,15 @@ class SurveyWebQuestionnaireRequest():
     def __init__(self, request, project_id=None):
         self.request = request
         self.manager = get_database_manager(self.request.user)
-        self.form_model = FormModel.get(self.manager, project_id)
-        self.form_code = self.form_model.form_code
+        self.questionnaire = Project.get(self.manager, project_id)
+        self.form_code = self.questionnaire.form_code
         self.feeds_dbm = get_feeds_database(request.user)
-        self.subject_field_creator = SubjectQuestionFieldCreator(self.manager, self.form_model)
+        self.subject_field_creator = SubjectQuestionFieldCreator(self.manager, self.questionnaire)
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
 
     def form(self, initial_data=None):
-        return SurveyResponseForm(self.form_model, self.subject_field_creator,
+        return SurveyResponseForm(self.questionnaire, self.subject_field_creator,
                                   data=initial_data, is_datasender=self.is_data_sender)
 
     @property
@@ -585,14 +585,14 @@ class SurveyWebQuestionnaireRequest():
 
     def response_for_get_request(self, initial_data=None, is_update=False):
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
-        if self.form_model.is_void():
+        if self.questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
         questionnaire_form = self.form(initial_data=initial_data)
-        form_context = get_form_context(self.form_model, questionnaire_form, self.manager, self.hide_link_class,
+        form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, is_update)
         form_context.update({
                                 'is_quota_reached': is_quota_reached(self.request),
-                                'questionnaire_code': self.form_model.form_code,
+                                'questionnaire_code': self.questionnaire.form_code,
                             })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
@@ -604,7 +604,7 @@ class SurveyWebQuestionnaireRequest():
         #else:
         reporter_id = user_profile.reporter_id
 
-        additional_feed_dictionary = get_feed_dictionary(self.form_model)
+        additional_feed_dictionary = get_feed_dictionary(self.questionnaire)
         web_player = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id)
         response = web_player.add_survey_response(created_request, reporter_id, additional_feed_dictionary,
                                                   websubmission_logger)
@@ -619,7 +619,7 @@ class SurveyWebQuestionnaireRequest():
         questionnaire_form = self.form(self.request.POST)
         quota_reached = is_quota_reached(self.request)
         if not questionnaire_form.is_valid() or quota_reached:
-            form_context = get_form_context(self.form_model, questionnaire_form, self.manager, self.hide_link_class,
+            form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                             self.disable_link_class)
             form_context.update({'is_quota_reached': quota_reached})
             return render_to_response(self.template, form_context,
@@ -636,16 +636,16 @@ class SurveyWebQuestionnaireRequest():
                 ReportRouter().route(get_organization(self.request).org_id, response)
                 success_message = _("Successfully submitted")
             else:
-                questionnaire_form._errors = helper.errors_to_list(response.errors, self.form_model.fields)
+                questionnaire_form._errors = helper.errors_to_list(response.errors, self.questionnaire.fields)
         except DataObjectNotFound as exception:
             logger.exception(exception)
             message = exception_messages.get(DataObjectNotFound).get(WEB)
-            error_message = _(message) % (self.form_model.entity_type[0], self.form_model.entity_type[0])
+            error_message = _(message) % (self.questionnaire.entity_type[0], self.questionnaire.entity_type[0])
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
-        _project_context = get_form_context(self.form_model, questionnaire_form, self.manager, self.hide_link_class,
+        _project_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                             self.disable_link_class, is_update=is_update)
 
         _project_context.update({'success_message': success_message, 'error_message': error_message,
@@ -690,25 +690,25 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
-        form_model = FormModel.get(manager, project_id)
-        if form_model.is_void():
+        questionnaire = Project.get(manager, project_id)
+        if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
-        fields = form_model.fields
+        fields = questionnaire.fields
         #if form_model.is_entity_type_reporter():
         #    fields = helper.hide_entity_question(form_model.fields)
-        project_links = make_project_links(form_model)
+        project_links = make_project_links(questionnaire)
         questions = []
         for field in fields:
             question = helper.get_preview_for_field(field)
             questions.append(question)
         example_sms = "%s" % (
-            form_model.form_code)
+            questionnaire.form_code)
         example_sms += get_example_sms(fields)
 
     template = 'project/questionnaire_preview.html' if sms_preview else 'project/questionnaire_preview_list.html'
     return render_to_response(template,
-                              {"questions": questions, 'questionnaire_code': form_model.form_code,
-                               'project': form_model, 'project_links': project_links,
+                              {"questions": questions, 'questionnaire_code': questionnaire.form_code,
+                               'project': questionnaire, 'project_links': project_links,
                                'is_quota_reached': is_quota_reached(request),
                                'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
                               context_instance=RequestContext(request))
