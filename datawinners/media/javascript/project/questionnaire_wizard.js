@@ -4,7 +4,7 @@ function _isQuestionnaireChanged() {
            DW.isQuestionsReOrdered(question_list) || existing_questionnaire_code != questionnaireViewModel.questionnaireCode();
 }
 $(document).ready(function () {
-    window.questionnaireViewModel = new QuestionnaireViewModel();
+    window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
     DW.init_inform_datasender_about_changes();
     DW.init_empty_questionnaire_warning();
     var options = {

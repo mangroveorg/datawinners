@@ -69,7 +69,7 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
         if form_model.form_code == GLOBAL_REGISTRATION_FORM_CODE:
             return None
 
-        if form_model.entity_question is not None:
+        if form_model.entity_questions:
             return self._process_registration_when_entity_question_is_present(form_model, submission_values)
         else:
             return self._process_registration_when_entity_question_is_absent(form_model, submission_values)

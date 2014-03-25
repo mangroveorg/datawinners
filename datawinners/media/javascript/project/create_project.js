@@ -96,7 +96,6 @@ DW.projectRouter = Sammy(function () {
 function _initializeViewModel() {
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
     window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
-    questionnaireViewModel.uniqueIdTypes(unique_id_types);
     ko.applyBindings(questionnaireViewModel, $('#create_questionnaire')[0]);
     ko.applyBindings(questionnaireCreationOptionsViewModel, $('#project_profile')[0]);
 }

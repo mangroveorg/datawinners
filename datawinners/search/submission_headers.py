@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from collections import OrderedDict
-from datawinners.search.index_utils import es_field_name
+from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.form_model.form_model import header_fields
 
@@ -16,22 +16,24 @@ class SubmissionHeader():
         def key_attribute(field):
             return field.code.lower()
 
-        entity_question_code = self.form_model.entity_question.code if self.form_model.entity_type else None
+        entity_questions = self.form_model.entity_questions
+        entity_question_dict = dict((field.code, field) for field in entity_questions)
         headers = header_fields(self.form_model, key_attribute)
         for field_code, val in headers.items():
             key = es_field_name(field_code, self.form_model.id)
-            if not header_dict.has_key(key):
-                if entity_question_code and field_code.lower() == entity_question_code.lower():
-                    self.add_unique_id_field(header_dict)
-                    continue
+            if field_code in entity_question_dict.keys():
+                self.add_unique_id_field(entity_question_dict.get(field_code), header_dict)
+            else:
                 header_dict.update({key: val})
 
         return header_dict
 
-    def add_unique_id_field(self, header_dict):
-        subject_title = self.form_model.entity_type[0].title()
-        header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
-        header_dict.update({'entity_short_code': "%s ID" % subject_title})
+    def add_unique_id_field(self, unique_id_field, header_dict):
+        unique_id_question_code = unique_id_field.code
+        subject_title = unique_id_field.unique_id_type
+        unique_id_field_name = es_field_name(unique_id_question_code, self.form_model.id)
+        header_dict.update({unique_id_field_name: unique_id_field.label})
+        header_dict.update({es_unique_id_code_field_name(unique_id_field_name): "%s ID" % subject_title})
 
     def get_header_field_names(self):
         return self.get_header_dict().keys()

@@ -12,7 +12,8 @@ class WebForm(Form):
         super(WebForm, self).__init__(data=data)
         self.form_model = form_model
         ## This case of checking for None entity question happens when we preview the questionnaire while creating a project.
-        self.short_code_question_code = self.form_model.entity_question.code if self.form_model.entity_question else None
+        #todo: Check what is this for
+        self.short_code_question_code = self.form_model.entity_questions[0].code if self.form_model.entity_questions else None
         self.fields['form_code'] = CharField(widget=HiddenInput, initial=form_model.form_code)
 
 

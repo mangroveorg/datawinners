@@ -1,6 +1,7 @@
 import unittest
 from django.forms import ChoiceField
-from mock import Mock, PropertyMock, patch
+from mock import Mock, PropertyMock, patch, MagicMock
+from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import IntegerField, DateField, GeoCodeField, TextField, UniqueIdField
 from mangrove.form_model.form_model import FormModel
@@ -19,7 +20,6 @@ class TestSubmissionForm(unittest.TestCase):
         type(self.form_model).fields = PropertyMock(
             return_value=[TextField(name="q1", code="q1", label="some"),
                           TextField(name="q2", code="q2", label="some")])
-        type(self.form_model).entity_question = PropertyMock(return_value=None)
         submission_form = EditSubmissionForm(self.manager, self.project, self.form_model, initial_dict)
 
         self.assertEquals('Ans1', submission_form.fields.get('q1').initial)
@@ -31,7 +31,6 @@ class TestSubmissionForm(unittest.TestCase):
         type(self.form_model).fields = PropertyMock(
             return_value=[TextField(name="Q1", code="Q1", label="some" ),
                           TextField(name="Q2", code="Q2", label="some" )])
-        type(self.form_model).entity_question = PropertyMock(return_value=None)
         submission_form = EditSubmissionForm(self.manager, self.project, self.form_model, initial_dict)
 
         self.assertEquals('Ans1', submission_form.fields.get('Q1').initial)
@@ -42,7 +41,6 @@ class TestSubmissionForm(unittest.TestCase):
                   DateField('Date', 'date_field_code', 'date_label', 'dd.mm.yyyy', Mock),
                   GeoCodeField('', 'geo_field_code', '', Mock),
                   TextField('', 'text_field_code', '')]
-        type(self.form_model).entity_question = PropertyMock(return_value=None)
         type(self.form_model).fields = PropertyMock(return_value=fields)
 
         submission_form_create = EditSubmissionForm(self.manager, self.project, self.form_model, {})
@@ -51,16 +49,14 @@ class TestSubmissionForm(unittest.TestCase):
         self.assertListEqual(submission_form_create.fields.keys(), expected_field_keys)
 
     def test_entity_question_form_field_created(self):
-        form_model = Mock(spec=FormModel)
+        form_model = MagicMock(spec=FormModel)
         fields = [
-            UniqueIdField("clinic","entity question", "eid", "what are you reporting on?")]
-        type(form_model).form_code = PropertyMock(return_value='001')
-        type(form_model).fields = PropertyMock(return_value=fields)
-        type(form_model).entity_question = PropertyMock(return_value=fields[0])
+            UniqueIdField("clinic","entity question", "q1", "what are you reporting on?")]
+        form_model.form_code = '001'
+        form_model.fields = fields
 
-        with patch('datawinners.project.questionnaire_fields.EntityField.create') as create_entity_field:
+        with patch.object(SubjectQuestionFieldCreator, 'create') as create_entity_field:
             choice_field = ChoiceField(('sub1', 'sub2', 'sub3'))
-            create_entity_field.return_value = {'eid': choice_field}
+            create_entity_field.return_value = choice_field
             submission_form = EditSubmissionForm(self.manager, self.project, form_model, {})
-            self.assertEqual('eid', submission_form.short_code_question_code)
-            self.assertEqual(choice_field, submission_form.fields['eid'])
+            self.assertEqual(choice_field, submission_form.fields['q1'])

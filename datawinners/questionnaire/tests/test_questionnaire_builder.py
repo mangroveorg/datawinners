@@ -31,7 +31,7 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         dbm = Mock(spec=DatabaseManager)
         form_model = MagicMock(spec=FormModel)
         form_model.fields = [TextField('name', 'code', 'label')]
-        form_model.entity_question = None
+        form_model.entity_questions = []
         QuestionnaireBuilder(form_model, dbm).update_unique_id_validator()
 
         form_model.remove_validator.assert_called_once_with(UniqueIdExistsValidator)

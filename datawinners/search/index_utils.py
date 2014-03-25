@@ -94,5 +94,8 @@ def es_field_name(field_code, form_model_id):
     return field_code if is_submission_meta_field(field_code) else "%s_%s" % (form_model_id, lower(field_code))
 
 
+def es_unique_id_code_field_name(field_code):
+    return field_code+'_unique_code'
+
 def is_submission_meta_field(field_name):
     return submission_meta_field_names.has_key(field_name)

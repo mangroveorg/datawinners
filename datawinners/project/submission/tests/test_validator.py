@@ -8,8 +8,6 @@ class TestImportSubmissionValidator(TestCase):
 
     def test_should_return_valid_rows(self):
         form_model_mock = MagicMock(spec=FormModel)
-        entity_question = PropertyMock(return_value=None)
-        type(form_model_mock).entity_question = entity_question
         form_model_mock.validate_submission.return_value = ([],[])
         validator = SubmissionWorkbookRowValidator(Mock(), form_model_mock,Mock())
         parsed_rows = [("form_code",{}), ("form_code",{})]

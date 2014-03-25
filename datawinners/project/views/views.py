@@ -31,6 +31,7 @@ from datawinners.entity.helper import process_create_data_sender_form, get_organ
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_map_key
+from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException
 from mangrove.form_model import form_model
@@ -459,6 +460,7 @@ def questionnaire(request, project_id):
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,
                                    'post_url': reverse(edit_project, args=[project_id]),
+                                    'unique_id_types': get_unique_id_types(manager),
                                    'preview_links': get_preview_and_instruction_links_for_questionnaire()},
                                   context_instance=RequestContext(request))
 

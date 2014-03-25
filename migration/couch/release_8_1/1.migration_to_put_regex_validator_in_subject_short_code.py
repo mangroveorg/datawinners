@@ -23,7 +23,7 @@ function(doc) {
 
 
 def add_regex_constraint_to_short_code(form_model, logger):
-    form_model.entity_question.set_constraints(
+    form_model.entity_questions.set_constraints(
         [TextLengthConstraint(max=20)._to_json(), ShortCodeRegexConstraint("^[a-zA-Z0-9]+$")._to_json()])
     form_model.save()
     logger.info("migrated form code: %s" % form_model.form_code)

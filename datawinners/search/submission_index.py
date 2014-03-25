@@ -11,7 +11,7 @@ from datawinners.project.models import get_all_projects
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
-from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, es_field_name, _add_date_field_mapping
+from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, es_field_name, _add_date_field_mapping, es_unique_id_code_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 
@@ -164,17 +164,24 @@ def update_submission_search_for_subject_edition(entity_doc, dbm):
     entity_type = entity_doc.entity_type
     projects = dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True)
     form_models = _get_form_models_from_projects(dbm, projects)
-
     for form_model in form_models:
-        entity_field_name = lower(form_model.entity_question.code)
-        fields_mapping = {es_field_name(entity_field_name, form_model.id): entity_doc.data['name']['value']}
-        args = {'entity_short_code_value': entity_doc.short_code}
-        survey_response_filtered_query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, form_model.id,
-                                                                                      **args)
+        entity_field_code = None
+        for field in form_model.entity_questions:
+            if [field.unique_id_type] == entity_type:
+                entity_field_code = field.code
 
-        for survey_response in survey_response_filtered_query.all():
-            SubmissionIndexUpdateHandler(dbm.database_name, form_model.id).update_field_in_submission_index(
-                survey_response._id, fields_mapping)
+        if entity_field_code:
+            unique_id_field_name = es_field_name(entity_field_code, form_model.id)
+
+            fields_mapping = {unique_id_field_name: entity_doc.data['name']['value']}
+            args = {es_unique_id_code_field_name(unique_id_field_name): entity_doc.short_code}
+
+            survey_response_filtered_query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, form_model.id,
+                                                                                          **args)
+
+            for survey_response in survey_response_filtered_query.all():
+                SubmissionIndexUpdateHandler(dbm.database_name, form_model.id).update_field_in_submission_index(
+                    survey_response._id, fields_mapping)
 
 
 def update_submission_search_index(submission_doc, dbm, refresh_index=True):
@@ -233,9 +240,9 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
     for field in form_model.fields:
         entry = submission_values.get(lower(field.code))
         if field.is_entity_field:
-            entity_name = lookup_entity_name(dbm, entry, form_model.entity_type)
+            entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
             entry_code = UNKNOWN if entity_name == UNKNOWN else entry
-            search_dict.update({"entity_short_code": entry_code or UNKNOWN})
+            search_dict.update({es_unique_id_code_field_name(es_field_name(lower(field.code), form_model.id)): entry_code or UNKNOWN})
             entry = entity_name
         elif field.type == "select":
             field = _update_select_field_by_revision(field, form_model, submission_doc)
@@ -254,8 +261,8 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
                 if form_model.revision != submission_doc.form_model_revision:
                     old_submission_value = entry
                     to_format = field.date_format
-                    current_format = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision).__date__(entry)
-                    entry = current_format.strftime(DateField.DATE_DICTIONARY.get(to_format))
+                    current_date = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision).__date__(entry)
+                    entry = current_date.strftime(DateField.DATE_DICTIONARY.get(to_format))
                     logger.info("Converting old date submission from %s to %s" % (old_submission_value, entry))
             except Exception as ignore_conversion_errors:
                 pass

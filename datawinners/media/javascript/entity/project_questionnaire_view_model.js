@@ -1,7 +1,7 @@
 function ProjectQuestionnaireViewModel() {
     var self = this;
 
-    self.uniqueIdTypes = ko.observableArray([]);
+    self.uniqueIdTypes = ko.observableArray(uniqueIdTypes);
 
     self.isUniqueIdTypeVisible = ko.observable(false);
 

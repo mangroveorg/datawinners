@@ -46,7 +46,6 @@ class TestSMSResponse(unittest.TestCase):
         dbm_mock = Mock()
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'Clinic X', 'q2':'cli001'}
-        form_model_mock.entity_question.code = 'eid'
         with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_mock:
             get_form_model_mock.return_value = form_model_mock
             response_text = SMSResponse(response).text(dbm_mock)

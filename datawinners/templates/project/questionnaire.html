@@ -25,12 +25,6 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
-    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/new_questionnaire_charcount.js"></script>
-    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
     <script type="text/javascript">
         var question_list = $.parseJSON({{existing_questions|safe}});
         var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
@@ -43,7 +37,15 @@
         var project_name = "{{ project.name }}";
         var project_has_submissions = "{{ project_has_submissions }}";
         var post_url = "{{ post_url }}"
+        var uniqueIdTypes = {{ unique_id_types|safe }}
     </script>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/project_questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/new_questionnaire_charcount.js"></script>
+    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>

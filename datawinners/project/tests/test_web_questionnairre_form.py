@@ -61,7 +61,6 @@ class TestSurveyResponseForm(TestCase):
         form = SurveyResponseForm(form_model, subject_field_creator)
 
         self.assertEquals(form.fields["rep_on"], mock_field)
-        self.assertEquals(type(form.fields['entity_question_code'].widget), HiddenInput)
 
     def test_should_not_create_subject_fields_if_entity_field_is_not_present_in_form_model(self):
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[],

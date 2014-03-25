@@ -33,7 +33,7 @@ class QuestionnaireBuilder(object):
 
     def update_unique_id_validator(self):
         if not isinstance(self.form_model,EntityFormModel):
-            if self.form_model.entity_question:
+            if self.form_model.entity_questions:
                 self.form_model.add_validator(UniqueIdExistsValidator)
             else:
                 self.form_model.remove_validator(UniqueIdExistsValidator)

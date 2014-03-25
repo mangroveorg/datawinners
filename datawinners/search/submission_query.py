@@ -1,6 +1,8 @@
 import elasticutils
 from datawinners.search.filters import SubmissionDateRangeFilter, ReportingDateRangeFilter
+from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
 from datawinners.search.submission_headers import HeaderFactory
+from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.settings import ELASTIC_SEARCH_URL
 from datawinners.search.query import QueryBuilder, Query
 
@@ -61,17 +63,22 @@ class SubmissionQueryResponseCreator():
                 entity_name, short_code)]) if entity_name else submission.append(entity_name)
 
     def create_response(self, required_field_names, query):
+        entity_question_codes = [es_field_name(field.code, self.form_model.id) for field in
+                                 self.form_model.entity_questions]
+        meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
+        meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
+
         submissions = []
         for res in query.values_dict(tuple(required_field_names)):
             submission = [res._id]
-
             for key in required_field_names:
-                meta_fields = ['ds_id', 'entity_short_code']
                 if not key in meta_fields:
-                    if self.form_model.entity_type and key.lower().endswith(self.form_model.entity_question.code.lower()):
-                        self.combine_name_and_id(res.get('entity_short_code'), res.get(key), submission)
-                    elif key == 'ds_name':
-                        self.combine_name_and_id(res.get('ds_id'), res.get('ds_name'), submission)
+                    if key in entity_question_codes:
+                        self.combine_name_and_id(short_code=res.get(es_unique_id_code_field_name(key)),
+                                                 entity_name=res.get(key), submission=submission)
+                    elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
+                        self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
+                                                 res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY), submission)
                     else:
                         submission.append(res.get(key))
             submissions.append(submission)
