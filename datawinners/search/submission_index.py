@@ -165,7 +165,7 @@ def update_submission_search_for_subject_edition(entity_doc, dbm):
     entity_type = entity_doc.entity_type
     projects = []
     for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True):
-        projects.append(Project.new_from_doc(dbm,ProjectDocument.wrap(row['value'])))
+        projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['value'])))
     #form_models = _get_form_models_from_projects(dbm, projects)
     for project in projects:
         entity_field_code = None
