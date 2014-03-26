@@ -42,27 +42,6 @@ function QuestionnaireViewModel(){
         self.removeQuestion(questionToBeDeleted);
     };
 
-    self.removeQuestion = function(question) {
-        if (!question.newly_added_question()) {
-            self.hasDeletedOldQuestion = true;
-            DW.questionnaire_was_changed = true;
-        }
-        self.questions.remove(question);
-        if (question == self.selectedQuestion()) {
-          self.selectedQuestion(null);
-        }
-        self.hasAddedNewQuestions = true;
-    };
-
-    self.validateAndRemoveQuestion = function(question){
-        if (self.isEditMode && self.hasExistingData && !question.newly_added_question()) {
-            questionToBeDeleted = question;
-            DW.has_submission_delete_warning.show_warning();
-        }
-        else
-            self.removeQuestion(question);
-    };
-
     //TODO: Verify usage
     self.removeIfQuestionIsSelectedQuestion = function(question) {
         if (self.selectedQuestion() == question) {
@@ -224,3 +203,24 @@ function QuestionnaireViewModel(){
 
 };
 
+QuestionnaireViewModel.prototype.validateAndRemoveQuestion = function(question){
+        if (this.isEditMode && this.hasExistingData && !question.newly_added_question()) {
+            this.setQuestionToBeDeleted(question);
+            DW.has_submission_delete_warning.show_warning();
+        }
+        else{
+            this.removeQuestion(question);
+        }
+};
+
+QuestionnaireViewModel.prototype.removeQuestion = function(question) {
+        if (!question.newly_added_question()) {
+            this.hasDeletedOldQuestion = true;
+            DW.questionnaire_was_changed = true;
+        }
+        this.questions.remove(question);
+        if (question == this.selectedQuestion()) {
+          this.selectedQuestion(null);
+        }
+        this.hasAddedNewQuestions = true;
+};

@@ -43,6 +43,7 @@ function ProjectQuestionnaireViewModel() {
         self.newUniqueIdType.clearError();
     }
 
+    self.validateAndRemoveQuestion = self.validateAndRemoveQuestion.bind(self);
 }
 
 ProjectQuestionnaireViewModel.prototype = new QuestionnaireViewModel();
