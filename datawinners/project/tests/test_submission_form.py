@@ -11,7 +11,7 @@ from datawinners.project.submission_form import EditSubmissionForm
 class TestSubmissionForm(unittest.TestCase):
     def setUp(self):
         self.manager = Mock(spec=DatabaseManager)
-        self.project = Mock(spec=Project)
+        self.project = Mock(spec=Project, get_data_senders=Mock(return_value=[{'short_code':'ds1', 'name':'DS Name'}]))
 
     def test_should_set_initial_values_for_submissions_with_lower_case_question_codes(self):
         initial_dict = {'q1': 'Ans1', 'q2': 'Ans2'}
@@ -42,7 +42,7 @@ class TestSubmissionForm(unittest.TestCase):
         type(self.project).fields = PropertyMock(return_value=fields)
 
         submission_form_create = EditSubmissionForm(self.manager, self.project, {})
-        expected_field_keys = ['form_code', 'integer_field_code', 'date_field_code', 'geo_field_code',
+        expected_field_keys = ['form_code', 'dsid', 'integer_field_code', 'date_field_code', 'geo_field_code',
                                'text_field_code']
         self.assertListEqual(submission_form_create.fields.keys(), expected_field_keys)
 

@@ -113,9 +113,9 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, single_choice_field, geo_field, date_field]
 
-        request_dict = construct_request_dict(survey_response, questionnaire_form_model)
+        request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'dsid')
         expected_dict = OrderedDict({'q1': '23', 'q2': 'sometext', 'q3': 'a', 'GEO': '2.34,5.64', 'DATE': '12.12.2012',
-                                     'form_code': 'test_form_code'})
+                                     'form_code': 'test_form_code', 'dsid':'dsid'})
         self.assertEqual(expected_dict, request_dict)
 
     def test_multiple_choice_field_should_be_split(self):
@@ -131,8 +131,8 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
 
-        result_dict = construct_request_dict(survey_response, questionnaire_form_model)
-        expected_dict = {'q1': '23', 'q2': 'sometext', 'Q3': ['a', 'b'], 'form_code': 'test_form_code'}
+        result_dict = construct_request_dict(survey_response, questionnaire_form_model, 'dsid')
+        expected_dict = {'q1': '23', 'q2': 'sometext', 'Q3': ['a', 'b'], 'form_code': 'test_form_code', 'dsid':'dsid'}
         self.assertEqual(expected_dict, result_dict)
 
     def test_should_return_none_if_survey_response_questionnaire_is_different_from_form_model(self):
@@ -147,8 +147,8 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model = Mock(spec=FormModel)
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
-        result_dict = construct_request_dict(survey_response, questionnaire_form_model)
-        expected_dict = {'q1': None, 'q2': None, 'Q3': None, 'form_code': 'test_form_code'}
+        result_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
+        expected_dict = {'q1': None, 'q2': None, 'Q3': None, 'form_code': 'test_form_code', 'dsid':'id'}
         self.assertEqual(expected_dict, result_dict)
 
     def test_should_create_request_dict(self):
@@ -164,8 +164,8 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
 
-        request_dict = construct_request_dict(survey_response, questionnaire_form_model)
-        expected_dict = {'q1': 23, 'q2': 'sometext', 'q3': ['a', 'b'], 'form_code': 'test_form_code'}
+        request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
+        expected_dict = {'q1': 23, 'q2': 'sometext', 'q3': ['a', 'b'], 'form_code': 'test_form_code', 'dsid':'id'}
         self.assertEqual(request_dict, expected_dict)
 
     def test_should_create_request_dict_with_older_survey_response(self):
@@ -181,8 +181,8 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
 
-        request_dict = construct_request_dict(survey_response, questionnaire_form_model)
-        expected_dict = {'q1': 23, 'q2': 'sometext', 'q4': None, 'form_code': 'test_form_code'}
+        request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
+        expected_dict = {'q1': 23, 'q2': 'sometext', 'q4': None, 'form_code': 'test_form_code', 'dsid':'id'}
         self.assertEqual(request_dict, expected_dict)
 
     def test_get_submission_ids_to_delete_should_give_back_selected_ids_if_select_all_flag_is_false(self):

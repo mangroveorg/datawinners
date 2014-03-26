@@ -1,6 +1,8 @@
-from django.forms import CharField, HiddenInput
+from django.forms import CharField, HiddenInput, ChoiceField
 from django.forms.forms import Form
-from datawinners.project.questionnaire_fields import EntityField, FormField
+from django.utils.translation import ugettext_lazy as _
+
+from datawinners.project.questionnaire_fields import FormField, as_choices
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 
 
@@ -9,11 +11,10 @@ class EditSubmissionForm(Form):
         super(EditSubmissionForm, self).__init__(data=data)
         self.form_model = questionnaire_form_model
         self.fields['form_code'] = CharField(widget=HiddenInput, initial=questionnaire_form_model.form_code)
-        #if questionnaire_form_model.entity_questions is not None:
-        #    entity_question = questionnaire_form_model.entity_questions
-        #    choices = EntityField(manager, project).create(entity_question, project.entity_type)
-        #    self.fields[entity_question.code] = choices.get(entity_question.code)
-        #    self.short_code_question_code = questionnaire_form_model.entity_questions.code
+        choices = as_choices(project.get_data_senders(manager))
+        self.fields['dsid'] = ChoiceField(label=_('I am submitting this data on behalf of'),
+                                          choices=choices,
+                                          help_text=_('Choose Data Sender from this list.'))
 
         for field in questionnaire_form_model.fields:
             if field.is_entity_field:

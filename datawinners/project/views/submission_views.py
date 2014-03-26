@@ -16,6 +16,7 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
+from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
@@ -176,7 +177,7 @@ def build_static_info_context(manager, survey_response, ui_model=None):
     return form_ui_model
 
 
-def construct_request_dict(survey_response, questionnaire_form_model):
+def construct_request_dict(survey_response, questionnaire_form_model, short_code):
     result_dict = {}
     for field in questionnaire_form_model.fields:
         value = survey_response.values.get(field.code) if survey_response.values.get(
@@ -186,6 +187,7 @@ def construct_request_dict(survey_response, questionnaire_form_model):
             value = re.findall(r'[1-9]?[a-z]', value) if value else value
         result_dict.update({field.code: value})
     result_dict.update({'form_code': questionnaire_form_model.form_code})
+    result_dict.update({'dsid': short_code})
     return result_dict
 
 
@@ -204,8 +206,9 @@ def edit(request, project_id, survey_response_id, tab=0):
                                 "tab": tab})
     form_ui_model = build_static_info_context(manager, survey_response)
     form_ui_model.update({"back_link": back_link})
+    short_code = get_data_sender(manager, survey_response)[1]
     if request.method == 'GET':
-        form_initial_values = construct_request_dict(survey_response, questionnaire_form_model)
+        form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
         survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, form_initial_values)
 
         form_ui_model.update(get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
@@ -249,7 +252,7 @@ def edit(request, project_id, survey_response_id, tab=0):
             additional_feed_dictionary = get_project_details_dict_for_feed(project)
             user_profile = NGOUserProfile.objects.get(user=request.user)
             feeds_dbm = get_feeds_database(request.user)
-            owner_id = request.POST.get("eid")
+            owner_id = request.POST.get("dsid")
 
             response = WebPlayerV2(manager, feeds_dbm, user_profile.reporter_id) \
                 .edit_survey_response(created_request, survey_response, owner_id,

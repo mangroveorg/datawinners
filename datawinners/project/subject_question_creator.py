@@ -2,6 +2,7 @@ from django import forms
 from django.forms.fields import ChoiceField
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
+
 from datawinners.utils import translate, get_text_language_by_instruction
 
 
@@ -22,17 +23,12 @@ class SubjectQuestionFieldCreator(object):
     def get_value(self, subject):
         return subject['name'] + '  (' + subject['short_code'] + ')'
 
-    def _get_choice_field(self, data_sender_choices, subject_field, help_text, widget=None):
-        subject_choice_field = ChoiceField(required=subject_field.is_required(), choices=data_sender_choices,
+    def _get_choice_field(self, subject_choices, subject_field, help_text, widget=None):
+        subject_choice_field = ChoiceField(required=subject_field.is_required(), choices=subject_choices,
                                            label=subject_field.name, widget=widget,
                                            initial=subject_field.value, help_text=help_text)
         subject_choice_field.widget.attrs['class'] = 'subject_field'
         return subject_choice_field
-
-    def _data_sender_choice_fields(self, subject_field, widget=None):
-        data_senders = self.project.get_data_senders(self.dbm)
-        data_sender_choices = self._get_all_choices(data_senders)
-        return self._get_choice_field(data_sender_choices, subject_field, help_text=subject_field.instruction, widget=widget)
 
     def _get_all_options(self, entity_type):
         start_key = [[entity_type]]
@@ -51,6 +47,3 @@ class SubjectQuestionFieldCreator(object):
 
     def _data_to_choice(self, subject):
         return self.get_key(subject), self.get_value(subject)
-
-    def _get_all_choices(self, entities):
-        return [(entity['short_code'], entity['name'] + '  (' + entity['short_code'] + ')') for entity in entities]

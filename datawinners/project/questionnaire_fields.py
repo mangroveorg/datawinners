@@ -17,6 +17,10 @@ from mangrove.utils.types import is_empty
 from datawinners.utils import translate, get_text_language_by_instruction
 
 
+def as_choices(entities):
+        return [(entity['short_code'], entity['name'] + '  (' + entity['short_code'] + ')') for entity in entities]
+
+
 class FormField(object):
     def create(self, field):
         try:
@@ -206,11 +210,8 @@ class EntityField(object):
 
     def _data_sender_choice_fields(self, subject_field):
         data_senders = self.project.get_data_senders(self.dbm)
-        data_sender_choices = self._get_all_choices(data_senders)
+        data_sender_choices = as_choices(data_senders)
         return self._get_choice_field(data_sender_choices, subject_field, help_text=subject_field.instruction)
-
-    def _get_all_choices(self, entities):
-        return [(entity['short_code'], entity['name'] + '  (' + entity['short_code'] + ')') for entity in entities]
 
     def _subject_choice_fields(self, entity_type, subject_field):
         subjects, fields, label = load_all_entities_of_type(self.dbm, type=entity_type)
@@ -254,6 +255,6 @@ class StrippedCharField(forms.CharField):
         self.strip = strip
 
     def clean(self, value):
-        if self.strip:
+        if value and self.strip:
             value = value.strip()
         return super(StrippedCharField, self).clean(value)
