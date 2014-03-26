@@ -1,11 +1,9 @@
 from django.utils.translation import ugettext
-from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, field_attributes,ShortCodeField
+from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, ShortCodeField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, EntityFormModel
-from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint, ShortCodeRegexConstraint
+from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
 from mangrove.form_model.validators import UniqueIdExistsValidator
-from mangrove.utils.helpers import slugify
-from mangrove.utils.types import is_not_empty, is_empty
+from mangrove.utils.types import is_empty
 from datawinners.entity.helper import question_code_generator
 
 
@@ -95,11 +93,6 @@ class QuestionBuilder(object):
 
     def _create_text_question(self, post_dict, code):
         constraints = self._add_text_length_constraint(post_dict)
-        options = post_dict.get("options")
-        if options:
-            short_code_constraint = options.get("short_code")
-            if short_code_constraint:
-                constraints.append(ShortCodeRegexConstraint(short_code_constraint))
         return TextField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
                          constraints=constraints,
                          instruction=post_dict.get("instruction"), required=post_dict.get("required"))
@@ -163,11 +156,9 @@ class QuestionBuilder(object):
         #                     instruction=post_dict.get("instruction"))
 
     def _create_short_code_field(self, post_dict, code):
-        constraints = self._add_text_length_constraint(post_dict)
-        constraints.append(ShortCodeRegexConstraint(post_dict.get("options").get("short_code")))
         return ShortCodeField(name=self._get_name(post_dict), code=code,
                              label=post_dict["title"],
-                             instruction=post_dict.get("instruction"),constraints=constraints)
+                             instruction=post_dict.get("instruction"))
 def get_max_code(fields):
     json_fields = [f._to_json() for f in fields]
     return get_max_code_in_question_set(json_fields)

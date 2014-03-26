@@ -98,7 +98,7 @@ def create_project(request):
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
                                    'post_url': reverse(create_project),
-                                   'unique_id_types': get_unique_id_types(manager),
+                                   'unique_id_types': [unique_id_type.capitalize() for unique_id_type in get_unique_id_types(manager)],
                                    'cancel_link': cancel_link}, context_instance=RequestContext(request))
 
     if request.method == 'POST':

@@ -96,8 +96,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
     question6 = ShortCodeField(name=SHORT_CODE_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's Unique ID Number?") % {'entity_type': entity_name},
         defaultValue="some default value",
-        instruction=unicode(_("Enter an id, or allow us to generate it")),
-        constraints=[TextLengthConstraint(max=20), ShortCodeRegexConstraint("^[a-zA-Z0-9]+$")], required=False)
+        instruction=unicode(_("Enter an id, or allow us to generate it")), required=False)
     questions = [question1, question2, question3, question4, question5, question6]
 
     form_model = EntityFormModel(manager, name=entity_name, form_code=form_code, fields=questions, is_registration_model=True,

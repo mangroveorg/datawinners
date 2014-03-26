@@ -23,10 +23,10 @@ class SubjectRegistrationForm(WebForm):
         self.country = country
         self.fields[u't'] = CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])
         for field in self.form_model.fields:
-            if not field.is_entity_field:
-                self.fields[field.code] = FormField().create(field)
-            else:
+            if field.is_entity_field:
                 self.fields[field.code] = self.regex_field(field)
+            else:
+                self.fields[field.code] = FormField().create(field)
 
     def regex_field(self, field):
         max_length = None
