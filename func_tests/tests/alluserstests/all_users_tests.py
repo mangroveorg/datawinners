@@ -50,10 +50,6 @@ class TestAllUsers(HeadlessRunnerTest):
         self.driver.go_to(LOGOUT)
         new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
         login(self.driver, new_user_credential)
-        # self.driver.go_to(ALL_USERS_URL)
-        # all_users_page = AllUsersPage(self.driver)
-        # add_user_page = all_users_page.navigate_to_add_user()
-        # add_user_page.add_user_with(ADD_USER_DATA)
         self.driver.go_to(url("/project/"))
         project_name, questionnaire_code = self.create_project()
         self.send_submission(questionnaire_code)

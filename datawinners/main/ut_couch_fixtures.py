@@ -429,7 +429,7 @@ def create_project12(manager, questions):
 
 
 def create_project13(manager, questions):
-    questionnaire13 = Project(manager, name="Clinic DS W/O Monthly Submission (Same)",
+    questionnaire13 = Project(manager, name="clinic13 test project",
                                 form_code="cli013", type='survey',
                                 fields=questions, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"

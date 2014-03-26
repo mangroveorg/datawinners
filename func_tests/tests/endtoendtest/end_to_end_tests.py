@@ -296,19 +296,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         project_page.delete_project(self.project_name)
         self.assertFalse(project_page.is_project_present(self.project_name))
 
-    def verify_summary_report_project_creation(self):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('#global_dashboard_link'))
-        global_navigation_page = GlobalNavigationPage(self.driver)
-        dashboard_page = global_navigation_page.navigate_to_dashboard_page()
-        create_project_page = dashboard_page.navigate_to_create_project_page()
-        create_project_page.create_project_with(VALID_SUMMARY_REPORT_DATA)
-        create_project_page.continue_create_project()
-        questionnaire_page = CreateQuestionnairePage(self.driver)
-        overview_page = questionnaire_page.save_and_create_project_successfully()
-        self.summary_project_name = overview_page.get_project_title()
-        self.summary_project_questionnaire_code = overview_page.get_questionnaire_code()
-        return overview_page
-
 
     @attr('smoke')
     def test_end_to_end(self):

@@ -151,21 +151,21 @@ def index(request):
 @is_not_expired
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
-    form_model = FormModel.get(manager,project_id)
+    questionnaire = Project.get(manager,project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if form_model.is_void():
+    if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    helper.delete_project(manager, form_model)
+    helper.delete_project(manager, questionnaire)
     undelete_link = reverse(undelete_project, args=[project_id])
     if len(get_all_projects(manager)) > 0:
         messages.info(request, undelete_link)
-    UserActivityLog().log(request, action=DELETED_PROJECT, project=form_model.name)
+    UserActivityLog().log(request, action=DELETED_PROJECT, project=questionnaire.name)
     return HttpResponseRedirect(reverse(index))
 
 
 def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
-    questionnaire = FormModel.get(manager,project_id)
+    questionnaire = Project.get(manager,project_id)
     helper.delete_project(manager, questionnaire, void=False)
     return HttpResponseRedirect(reverse(index))
 
@@ -256,7 +256,7 @@ def _format_reminders(reminders, project_id):
 def sent_reminders(request, project_id):
     dbm = get_database_manager(request.user)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    questionnaire = FormModel.get(dbm, project_id)
+    questionnaire = Project.get(dbm, project_id)
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     organization = Organization.objects.get(org_id=request.user.get_profile().org_id)
@@ -374,7 +374,8 @@ def registered_subjects(request, project_id=None):
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    subject = get_entity_type_info(questionnaire.entity_type, manager=manager)
+    #DC/Pooja | To be removed when playing multiple subject id on my subjects page
+    subject = get_entity_type_info(questionnaire.entity_type[0], manager=manager)
     subject_form_model = get_form_model_by_entity_type(manager, questionnaire.entity_type)
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/subjects/registered_subjects_list.html',
@@ -441,16 +442,12 @@ def questionnaire(request, project_id):
 def get_questionnaire_ajax(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire_form = Project.get(manager,project_id)
-    existing_questions = _get_questions(manager, questionnaire_form)
+    existing_questions = Project.fields
     return HttpResponse(json.dumps({
                                 'name': questionnaire_form.name,
                                 'language': questionnaire_form.language,
                                 'questions': existing_questions
                            }, default=field_to_json), content_type='application/json')
-
-def _get_form_code(manager, project):
-    return FormModel.get(manager, project.qid).form_code
-
 
 class SubjectWebQuestionnaireRequest():
     def __init__(self, request, project_id):
@@ -459,12 +456,12 @@ class SubjectWebQuestionnaireRequest():
 
     def _initialize(self, project_id):
         self.manager = get_database_manager(self.request.user)
-        self.questionnaire = FormModel.get(self.manager,project_id)
+        self.questionnaire = Project.get(self.manager,project_id)
         if self.questionnaire.is_void():
             return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
-        self.form_code = _get_form_code(self.manager, self.questionnaire)
+        self.form_code = self.questionnaire.form_code
         self.form_model = _get_subject_form_model(self.manager, self.questionnaire.entity_type)
         self.subject_registration_code = get_form_code_by_entity_type(self.manager, [self.questionnaire.entity_type])
 
@@ -725,7 +722,7 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
 @valid_web_user
 def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
-    questionnaire = FormModel.get(manager, project_id)
+    questionnaire = Project.get(manager, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
@@ -747,7 +744,7 @@ def subject_registration_form_preview(request, project_id=None):
 def sender_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    questionnaire = FormModel.get(manager,project_id)
+    questionnaire = Project.get(manager,project_id)
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     if request.method == "GET":
@@ -775,7 +772,7 @@ def _get_subject_form_model(manager, entity_type):
 @valid_web_user
 def edit_my_subject_questionnaire(request, project_id):
     manager = get_database_manager(request.user)
-    questionnaire = FormModel.get(manager, project_id)
+    questionnaire = Project.get(manager, project_id)
     project_links = get_project_link(questionnaire)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
@@ -814,7 +811,7 @@ def append_success_to_context(context, form):
 @is_not_expired
 def create_data_sender_and_web_user(request, project_id):
     manager = get_database_manager(request.user)
-    questionnaire = FormModel.get(manager, project_id)
+    questionnaire = Project.get(manager, project_id)
     project_links = get_project_link(questionnaire)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():

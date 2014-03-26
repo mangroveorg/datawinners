@@ -19,7 +19,7 @@ class TestDeleteSubmission(unittest.TestCase):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
 
         self.dbm = get_db_manager('hni_testorg_slx364903')
-        self.project, self.form_model = self.project_info('cli001')
+        self.form_model = self.project_info('cli001')
 
     def test_should_delete_all_submissions_given_delete_all_flag_true(self):
         unique_text = random_string()
@@ -27,7 +27,7 @@ class TestDeleteSubmission(unittest.TestCase):
         self.create_errorred_submissions(1, unique_text)
         self.assertEqual(len(self.get_submissions('all', unique_text)), 3)
 
-        resp = self.client.post('/project/' + self.project.id + '/submissions/delete/',
+        resp = self.client.post('/project/' + self.form_model.id + '/submissions/delete/',
                                 {'all_selected': 'true', 'submission_type': 'all',
                                  'search_filters': json.dumps({'search_text': unique_text})})
 
@@ -40,7 +40,7 @@ class TestDeleteSubmission(unittest.TestCase):
         self.create_errorred_submissions(1, unique_text)
         self.assertEqual(len(self.get_submissions('success', unique_text)), 2)
 
-        resp = self.client.post('/project/' + self.project.id + '/submissions/delete/',
+        resp = self.client.post('/project/' + self.form_model.id + '/submissions/delete/',
                                 {'all_selected': 'true', 'submission_type': 'success',
                                  'search_filters': json.dumps({'search_text': unique_text})})
 
@@ -71,6 +71,4 @@ class TestDeleteSubmission(unittest.TestCase):
         return submissions
 
     def project_info(self, form_code):
-        form_model = get_form_model_by_code(self.dbm, form_code)
-        project = project_by_form_model_id(self.dbm, form_model.id)
-        return project, form_model
+        return get_form_model_by_code(self.dbm, form_code)

@@ -3,11 +3,12 @@ from collections import OrderedDict
 from string import lower
 
 from babel.dates import format_datetime
+from mangrove.datastore.documents import ProjectDocument
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
 
 from mangrove.form_model.field import DateField
-from datawinners.project.models import get_all_projects
+from datawinners.project.models import get_all_projects, Project
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
@@ -142,7 +143,7 @@ def update_submission_search_for_datasender_edition(entity_doc, dbm):
 
     kwargs = {"%s%s"%(SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): entity_doc.short_code}
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
-    project_form_model_ids = [project.value['qid'] for project in get_all_projects(dbm)]
+    project_form_model_ids = [project.id for project in get_all_projects(dbm)]
 
     filtered_query = SubmissionQueryBuilder().query_all(dbm.database_name, *project_form_model_ids, **kwargs)
 
@@ -162,25 +163,27 @@ def update_submission_search_for_subject_edition(entity_doc, dbm):
     from datawinners.search.submission_query import SubmissionQueryBuilder
 
     entity_type = entity_doc.entity_type
-    projects = dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True)
-    form_models = _get_form_models_from_projects(dbm, projects)
-    for form_model in form_models:
+    projects = []
+    for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True):
+        projects.append(Project.new_from_doc(dbm,ProjectDocument.wrap(row['value'])))
+    #form_models = _get_form_models_from_projects(dbm, projects)
+    for project in projects:
         entity_field_code = None
-        for field in form_model.entity_questions:
+        for field in project.entity_questions:
             if [field.unique_id_type] == entity_type:
                 entity_field_code = field.code
 
         if entity_field_code:
-            unique_id_field_name = es_field_name(entity_field_code, form_model.id)
+            unique_id_field_name = es_field_name(entity_field_code, project.id)
 
             fields_mapping = {unique_id_field_name: entity_doc.data['name']['value']}
             args = {es_unique_id_code_field_name(unique_id_field_name): entity_doc.short_code}
 
-            survey_response_filtered_query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, form_model.id,
+            survey_response_filtered_query = SubmissionQueryBuilder(project).query_all(dbm.database_name, project.id,
                                                                                           **args)
 
             for survey_response in survey_response_filtered_query.all():
-                SubmissionIndexUpdateHandler(dbm.database_name, form_model.id).update_field_in_submission_index(
+                SubmissionIndexUpdateHandler(dbm.database_name, project.id).update_field_in_submission_index(
                     survey_response._id, fields_mapping)
 
 

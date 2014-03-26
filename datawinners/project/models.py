@@ -283,9 +283,6 @@ class Project(FormModel):
         self.void = void
         self.save(dbm, process_post_update=False)
 
-    def is_deleted(self):
-        return self.void
-
     def delete_datasender(self, dbm, entity_id):
         from datawinners.search.datasender_index import update_datasender_index_by_id
         self.data_senders.remove(entity_id)

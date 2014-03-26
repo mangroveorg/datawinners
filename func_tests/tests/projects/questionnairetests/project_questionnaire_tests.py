@@ -5,7 +5,7 @@ from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 import time
 
-from framework.base_test import setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.dashboardpage.dashboard_page import DashboardPage
@@ -34,11 +34,11 @@ def verify_on_edit_project_page(verify_edit_page_functionality):
     return project_overview_page.navigate_to_edit_project_page()
 
 
-class TestProjectQuestionnaire(unittest.TestCase):
+class TestProjectQuestionnaire(HeadlessRunnerTest):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver(browser="phantom")
+        HeadlessRunnerTest.setUpClass()
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)

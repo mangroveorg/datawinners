@@ -261,7 +261,7 @@ def reminder_settings(request, project_id):
             action = _get_activity_log_action(reminder_list, form.cleaned_data)
             questionnaire, set_deadline = _add_reminder_info_to_project(form.cleaned_data, questionnaire, organization,
                                                                   reminder_list=reminder_list)
-            questionnaire.save()
+            questionnaire.save(dbm)
             if action is not None:
                 UserActivityLog().log(request, action=action, project=questionnaire.name)
             if set_deadline:

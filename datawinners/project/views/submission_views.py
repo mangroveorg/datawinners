@@ -133,17 +133,17 @@ def get_survey_response_ids_from_request(dbm, request, form_model):
 
 def delete(request, project_id):
     dbm = get_database_manager(request.user)
-    form_model = FormModel.get(dbm, project_id)
+    questionnaire = Project.get(dbm, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if form_model.is_void():
+    if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    survey_response_ids = get_survey_response_ids_from_request(dbm, request, form_model)
+    survey_response_ids = get_survey_response_ids_from_request(dbm, request, questionnaire)
     received_times = []
     for survey_response_id in survey_response_ids:
         survey_response = SurveyResponse.get(dbm, survey_response_id)
         received_times.append(datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
         feeds_dbm = get_feeds_database(request.user)
-        additional_feed_dictionary = get_project_details_dict_for_feed(form_model)
+        additional_feed_dictionary = get_project_details_dict_for_feed(questionnaire)
         delete_response = WebPlayerV2(dbm, feeds_dbm).delete_survey_response(survey_response,
                                                                              additional_feed_dictionary,
                                                                              websubmission_logger)
@@ -153,7 +153,7 @@ def delete(request, project_id):
                                   survey_response.data_record.id)
 
     if len(received_times):
-        UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=form_model.name,
+        UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=questionnaire.name,
                               detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
         response = encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
     else:
@@ -192,7 +192,7 @@ def construct_request_dict(survey_response, questionnaire_form_model):
 @valid_web_user
 def edit(request, project_id, survey_response_id, tab=0):
     manager = get_database_manager(request.user)
-    questionnaire_form_model = FormModel.get(manager, project_id)
+    questionnaire_form_model = Project.get(manager, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire_form_model.is_void():
         return HttpResponseRedirect(dashboard_page)

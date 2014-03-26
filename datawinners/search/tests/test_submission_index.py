@@ -51,7 +51,8 @@ class TestSubmissionIndex(unittest.TestCase):
             lookup_entity_name.return_value = 'test1'
             _update_with_form_model_fields(None, submission_doc, search_dict, self.form_model)
             self.assertEquals(
-                {'1212_q1': 'test1', "1212_q1_unique_code": "test_id", '1212_q2': 'wrong number', '1212_q3': 'wrong text',
+                {'1212_q1': 'test1', "1212_q1_unique_code": "test_id", '1212_q2': 'wrong number',
+                 '1212_q3': 'wrong text',
                  'void': False},
                 search_dict)
 
@@ -90,30 +91,23 @@ class TestSubmissionIndex(unittest.TestCase):
         entity_doc.entity_type = ['clinic']
         entity_doc.short_code = 'cli001'
         entity_doc.data = data
+        with patch.object(SubmissionQueryBuilder, 'query_all') as query_all:
+            with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
+                load_all_rows_in_view.return_value = [{'value': {'name': "project name", "form_code": "cli001",
+                                                                 "json_fields": [
+                                                                     {"name": "unique_id_field", "type": "unique_id",
+                                                                      "unique_id_type": 'clinic', "code": 'q1'}],
+                                                                 "_id": "form_model_id"}}]
+                survey_response_index1 = Mock(_id='id1')
+                filtered_query = Mock(spec=elasticutils.S)
+                filtered_query.all.return_value = [survey_response_index1]
 
-        with patch(
-                'datawinners.search.submission_index._get_form_models_from_projects') as get_form_models_from_projects:
-            with patch.object(SubmissionQueryBuilder, 'query_all') as query_all:
+                query_all.return_value = filtered_query
 
-                form_model1 = MagicMock(spec=FormModel, id='form_model_id')
-                entity_name = MagicMock()
-                entity_name.code = 'q1'
-                form_model1.entity_questions = [UniqueIdField('clinic','name', 'q1', 'which clinic')]
+                with patch.object(SubmissionIndexUpdateHandler,
+                                  'update_field_in_submission_index') as update_field_in_submission_index:
+                    update_submission_search_for_subject_edition(entity_doc, dbm)
 
-                get_form_models_from_projects.return_value = [form_model1]
-
-                with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-                    load_all_rows_in_view.return_value = []
-                    survey_response_index1 = Mock(_id='id1')
-                    filtered_query = Mock(spec=elasticutils.S)
-                    filtered_query.all.return_value = [survey_response_index1]
-
-                    query_all.return_value = filtered_query
-
-                    with patch.object(SubmissionIndexUpdateHandler,
-                                      'update_field_in_submission_index') as update_field_in_submission_index:
-
-                        update_submission_search_for_subject_edition(entity_doc, dbm)
-
-                        query_all.assert_called_with('db_name', 'form_model_id', **{'form_model_id_q1_unique_code': 'cli001'})
-                        update_field_in_submission_index.assert_called_with('id1', {'form_model_id_q1': 'bangalore'})
+                    query_all.assert_called_with('db_name', 'form_model_id',
+                                                 **{'form_model_id_q1_unique_code': 'cli001'})
+                    update_field_in_submission_index.assert_called_with('id1', {'form_model_id_q1': 'bangalore'})

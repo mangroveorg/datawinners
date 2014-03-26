@@ -1,16 +1,15 @@
 import unittest
+from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
-from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_DATA_SENDER1, VALID_DATA_FOR_PROJECT, \
-    VALID_SUBJECT_TYPE2, QUESTIONS, CODE, QUESTION, QUESTIONNAIRE_CODE, DEFAULT_QUESTION, GEN_RANDOM, \
-    TYPE, NUMBER, MIN, MAX, ENTITY_TYPE, DATE, DATE_FORMAT, DD_MM_YYYY, CHARACTER_REMAINING, PAGE_TITLE
-from tests.registrationtests.registration_data import REGISTRATION_PASSWORD
+    QUESTIONS, CODE, QUESTION, QUESTIONNAIRE_CODE, DEFAULT_QUESTION, GEN_RANDOM, \
+    TYPE, NUMBER, MIN, MAX, DATE, DATE_FORMAT, DD_MM_YYYY, CHARACTER_REMAINING, PAGE_TITLE
 from tests.registrationtests.trial_registration_tests import register_and_get_email_for_trial
-from tests.endtoendtest.end_to_end_tests import activate_account, do_login
+from tests.endtoendtest.end_to_end_tests import activate_account
 from testdata.test_data import LOGOUT
 
 QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
@@ -21,7 +20,7 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                       CHARACTER_REMAINING: "127 / 160 characters used",
                       PAGE_TITLE: "Data Senders"}
 
-
+@attr("functional_test")
 class TestTrialDataSenders(unittest.TestCase):
     emails = []
 
@@ -39,11 +38,6 @@ class TestTrialDataSenders(unittest.TestCase):
         add_subject_type_page.click_on_accordian_link()
         add_subject_type_page.add_entity_type_with(valid_subject_type)
 
-    def create_project(self, create_project_page):
-        create_project_page.select_report_type(VALID_DATA_FOR_PROJECT)
-        self.add_subject_type(VALID_SUBJECT_TYPE2[ENTITY_TYPE])
-        return create_project_page.create_project_with(
-            VALID_DATA_FOR_PROJECT).continue_create_project().save_and_create_project_successfully()
 
     def add_trial_organization_with_data_sender(self):
         registration_confirmation_page, email = register_and_get_email_for_trial(self.driver)
@@ -51,8 +45,9 @@ class TestTrialDataSenders(unittest.TestCase):
         activate_account(self.driver, email)
         global_navigation_page = GlobalNavigationPage(self.driver)
         create_project_page = global_navigation_page.navigate_to_dashboard_page().navigate_to_create_project_page()
-        create_project_page.create_project_with(VALID_DATA_FOR_PROJECT).continue_create_project()
-        CreateQuestionnairePage(self.driver).save_and_create_project_successfully()
+        questionnaire_page = create_project_page.select_blank_questionnaire_creation_option()
+        questionnaire_page.create_questionnaire_with(VALID_DATA_FOR_PROJECT, QUESTIONNAIRE_DATA)
+        questionnaire_page.save_and_create_project_successfully()
 
         add_data_sender_page = global_navigation_page.navigate_to_all_data_sender_page().navigate_to_add_a_data_sender_page()
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_DATA_SENDER1)

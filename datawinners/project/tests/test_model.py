@@ -69,7 +69,7 @@ class TestProjectModel(unittest.TestCase):
         self.assertTrue(project2_name.lower() in projects_names)
 
     def test_get_one_project(self):
-        self.assertEquals(FormModel.get(self.manager, self.project1_id).id, self.project1_id)
+        self.assertEquals(Project.get(self.manager, self.project1_id).id, self.project1_id)
 
     def test_should_update_project(self):
         self.project1 = Project.get(self.manager, self.project1_id)

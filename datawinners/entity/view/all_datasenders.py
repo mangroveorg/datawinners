@@ -196,7 +196,7 @@ class DisassociateDataSendersView(DataSenderActionView):
 
         for project in projects:
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
-            if project.is_deleted():
+            if project.is_void():
                 return HttpResponseRedirect(dashboard_page)
             for rep_id in selected_rep_ids:
                 if rep_id in project.data_senders:
