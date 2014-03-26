@@ -8,7 +8,7 @@ SELECTED_TEMPLATE_NAME = 'livestock census'
 SELECTED_TEMPLATE_QUESTIONS = [u'Date of visit', u'Province', u'District', u'Name of location visited', u'Type of Production', u'Number of Bulls',
      u'Number of Cows', u'Number of Heifers', u'Number of Calves', u'Number of Oxen', u'Number of total cattle',
      u'Number of Sheep', u'Number of Goats', u'Number of Donkeys', u'Number of Horses', u'Number of Poultry']
-BLANK_QUESTIONNAIRE_SELECTION_ACCORDION = ".//*[@id='questionnaire_types']/div[1]/span[2]"
+BLANK_QUESTIONNAIRE_SELECTION_ACCORDION = "#questionnaire_types .questionnaire_type_header:first-child span.header"
 SELECT_USING_TEMPLATE_ACCORDION = ".//*[@id='questionnaire_types']/div[4]/span[2]"
 AJAX_LOADER_HORIZONTAL = by_css('.ajax-loader-horizontal')
 AJAX_LOADER = by_css('.ajax-loader')

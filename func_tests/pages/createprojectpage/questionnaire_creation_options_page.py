@@ -13,7 +13,7 @@ class QuestionnaireCreationOptionsPage(Page):
 
 
     def select_blank_questionnaire_creation_option(self):
-        blank_questionnaire_accoridion = self.driver.find_element_by_xpath(BLANK_QUESTIONNAIRE_SELECTION_ACCORDION)
+        blank_questionnaire_accoridion = self.driver.find(by_css(BLANK_QUESTIONNAIRE_SELECTION_ACCORDION))
         blank_questionnaire_accoridion.click()
         sleep(1)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CONTINUE_BTN, True)

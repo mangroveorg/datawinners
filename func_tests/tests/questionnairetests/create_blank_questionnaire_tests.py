@@ -1,9 +1,9 @@
 import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
 from pages.createquestionnairepage.create_questionnaire_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import LoginPage, login
 from pages.projectspage.projects_page import ProjectsPage
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
@@ -11,15 +11,12 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS, DIALOG_PROJECT_DATA
 
 
-class TestCreateBlankQuestionnaire(unittest.TestCase):
+class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver(browser="phantom")
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        global_navigation = GlobalNavigationPage(cls.driver)
-        dashboard_page = global_navigation.navigate_to_dashboard_page()
+        HeadlessRunnerTest.setUpClass()
+        cls.global_navigation = login(cls.driver)
+        dashboard_page = cls.global_navigation.navigate_to_dashboard_page()
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
         cls.create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
 
