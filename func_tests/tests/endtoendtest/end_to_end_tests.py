@@ -152,7 +152,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
 
         create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
-        create_questionnaire_page.create_questionnaire_with(VALID_DATA_FOR_PROJECT,QUESTIONNAIRE_DATA)
+        create_questionnaire_page.create_questionnaire_with(VALID_DATA_FOR_PROJECT, QUESTIONNAIRE_DATA)
 
 
         #create_project_page.select_report_type(VALID_DATA_FOR_PROJECT)

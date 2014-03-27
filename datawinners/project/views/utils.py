@@ -43,7 +43,7 @@ def _get_subject_info(manager, project):
     subject = get_entity_type_info(project.entity_type, manager=manager)
     subject_info = {'subject': subject,
                     'add_link': add_link(project),
-                    "entity_type": project.entity_type[0]}
+                    "entity_type": project.entity_type}
     return subject_info
 
 

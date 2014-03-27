@@ -193,13 +193,17 @@ def project_overview(request, project_id=None):
              'web_questionnaire_list': reverse('web_questionnaire', args=[project_id])}
     add_data_senders_to_see_on_map_msg = _(
         "Register Data Senders to see them on this map") if number_data_sender == 0 else ""
-    add_subjects_to_see_on_map_msg = _(
-        "Register %s to see them on this map") % questionnaire.entity_type[0] if get_entity_count_for_type(manager,
-                                                                                                  questionnaire.entity_type[0]) == 0 else ""
+    add_subjects_to_see_on_map_msg =""
+    entity_type = None
+    if not is_empty(questionnaire.entity_type):
+        add_subjects_to_see_on_map_msg = _(
+            "Register %s to see them on this map") % questionnaire.entity_type[0] if get_entity_count_for_type(manager,
+                                                                                                      questionnaire.entity_type[0]) == 0 else ""
+        entity_type = questionnaire.entity_type[0]
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': questionnaire,
-        'entity_type': questionnaire.entity_type[0],
+        'entity_type': entity_type,
         'project_links': project_links,
         'is_quota_reached': is_quota_reached(request),
         'number_of_questions': number_of_questions,
