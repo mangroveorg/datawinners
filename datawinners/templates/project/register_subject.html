@@ -47,7 +47,7 @@
 
 {% block content %}
     <h2>{% trans "My Subjects" %}</h2>
-    {% with entity_type=project.entity_type create_entity_link=register_subjects_link %}
+    {% with entity_type=project.entity_type.0 create_entity_link=register_subjects_link %}
         {% include 'help/subjects_help.html' %}
     {% endwith %}
 
@@ -59,7 +59,7 @@
     {% endblock %}
     </div>
     <div class="instruction">
-        {% blocktrans with project.entity_type as entity_type %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
+        {% blocktrans with project.entity_type.0 as entity_type %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
     </div>
 
     <div id="my_subjects_links">
@@ -74,8 +74,8 @@
     </div>
 
     <div>
-        <h2 class="font_size_14">{% blocktrans with project.entity_type as entity_type %}Web {{ entity_type }} Registration Form{% endblocktrans %}</h2>
-        <div class="instruction">{% blocktrans with project.entity_type as entity_type and project_links.datasenders_link as url %}All Data Senders who have access to this form can register a new {{ entity_type }} online. You can give them web submission access on the <a href="{{ url }}">All Data Senders</a> page.{% endblocktrans %}</div>
+        <h2 class="font_size_14">{% blocktrans with project.entity_type.0 as entity_type %}Web {{ entity_type }} Registration Form{% endblocktrans %}</h2>
+        <div class="instruction">{% blocktrans with project.entity_type.0 as entity_type and project_links.datasenders_link as url %}All Data Senders who have access to this form can register a new {{ entity_type }} online. You can give them web submission access on the <a href="{{ url }}">All Data Senders</a> page.{% endblocktrans %}</div>
         <br/>
         <br/>
     </div>

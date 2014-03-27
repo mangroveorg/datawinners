@@ -22,7 +22,7 @@
                 </li>
                 {% if project.entity_type %}
                     <li><a id="subjects_edit_link"
-                           href="{{ project_links.register_subjects_link_web_view }}">{% trans "Add a new" %} {{ project.entity_type }} </a>
+                           href="{{ project_links.register_subjects_link_web_view }}">{% trans "Add a new" %} {{ project.entity_type.0 }} </a>
 
                         <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
                     </li>

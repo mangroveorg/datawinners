@@ -194,12 +194,12 @@ def project_overview(request, project_id=None):
     add_data_senders_to_see_on_map_msg = _(
         "Register Data Senders to see them on this map") if number_data_sender == 0 else ""
     add_subjects_to_see_on_map_msg = _(
-        "Register %s to see them on this map") % questionnaire.entity_type if get_entity_count_for_type(manager,
-                                                                                                  questionnaire.entity_type) == 0 else ""
+        "Register %s to see them on this map") % questionnaire.entity_type[0] if get_entity_count_for_type(manager,
+                                                                                                  questionnaire.entity_type[0]) == 0 else ""
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': questionnaire,
-        'entity_type': questionnaire.entity_type,
+        'entity_type': questionnaire.entity_type[0],
         'project_links': project_links,
         'is_quota_reached': is_quota_reached(request),
         'number_of_questions': number_of_questions,
@@ -479,7 +479,7 @@ class SubjectWebQuestionnaireRequest():
 
 
     def success_message(self, response_short_code):
-        detail_dict = dict({"Subject Type": self.questionnaire.entity_type.capitalize(), "Unique ID": response_short_code})
+        detail_dict = dict({"Subject Type": self.questionnaire.entity_type[0].capitalize(), "Unique ID": response_short_code})
         UserActivityLog().log(self.request, action=REGISTERED_SUBJECT, project=self.questionnaire.name,
                               detail=json.dumps(detail_dict))
         return (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (response_short_code,)
@@ -498,7 +498,7 @@ class SubjectWebQuestionnaireRequest():
     def _update_form_context(self, form_context, questionnaire_form, web_view_enabled=True):
         form_context.update({'extension_template': 'project/subjects.html',
                              'form_code': self.subject_registration_code,
-                             'entity_type': self.questionnaire.entity_type,
+                             'entity_type': self.questionnaire.entity_type[0],
                              "questionnaire_form": questionnaire_form,
                              "questions": self.form_model.fields,
                              "org_number": get_organization_telephone_number(self.request),
@@ -710,7 +710,7 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
     if type_of_subject == 'reporter':
         registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     else:
-        entity_type = [project.entity_type]
+        entity_type = project.entity_type
         registration_questionnaire = get_form_model_by_entity_type(manager, entity_type)
         if registration_questionnaire is None:
             registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
@@ -790,7 +790,7 @@ def edit_my_subject_questionnaire(request, project_id):
                                'existing_questions': repr(existing_questions),
                                'questionnaire_code': reg_form.form_code,
                                'language': reg_form.activeLanguages[0],
-                               'entity_type': questionnaire.entity_type,
+                               'entity_type': questionnaire.entity_type[0],
                                'subject': subject,
                                'post_url': reverse(subject_save_questionnaire)},
                               context_instance=RequestContext(request))

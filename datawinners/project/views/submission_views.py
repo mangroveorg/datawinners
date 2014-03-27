@@ -230,14 +230,14 @@ def edit(request, project_id, survey_response_id, tab=0):
             survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, survey_response.values)
 
             form_ui_model.update(
-                get_form_context(project, survey_response_form, manager, hide_link_class, disable_link_class))
+                get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                                       context_instance=RequestContext(request))
         else:
             survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, request.POST)
 
         form_ui_model.update(
-            get_form_context(project, survey_response_form, manager, hide_link_class, disable_link_class))
+            get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
             form_ui_model.update({'error_message': error_message})
@@ -249,7 +249,7 @@ def edit(request, project_id, survey_response_id, tab=0):
         if len(survey_response_form.changed_data) or is_errored_before_edit:
             created_request = helper.create_request(survey_response_form, request.user.username)
 
-            additional_feed_dictionary = get_project_details_dict_for_feed(project)
+            additional_feed_dictionary = get_project_details_dict_for_feed(questionnaire_form_model)
             user_profile = NGOUserProfile.objects.get(user=request.user)
             feeds_dbm = get_feeds_database(request.user)
             owner_id = request.POST.get("dsid")
@@ -262,7 +262,7 @@ def edit(request, project_id, survey_response_id, tab=0):
                 build_static_info_context(manager, survey_response, form_ui_model)
                 ReportRouter().route(get_organization(request).org_id, response)
                 _update_static_info_block_status(form_ui_model, is_errored_before_edit)
-                log_edit_action(original_survey_response, survey_response, request, project.name,
+                log_edit_action(original_survey_response, survey_response, request, questionnaire_form_model.name,
                                 questionnaire_form_model)
                 if request.POST.get("redirect_url"):
                     return HttpResponseRedirect(request.POST.get("redirect_url"))

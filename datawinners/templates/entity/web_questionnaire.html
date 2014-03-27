@@ -43,7 +43,7 @@
 {% endblock %}
 {% block help_accordian %}
     <div class="instruction">
-        {% blocktrans with project.entity_type as entity_type %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
+        {% blocktrans with project.entity_type.0 as entity_type %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
     </div>
 {% endblock %}
 {% block secondary_navigation %}

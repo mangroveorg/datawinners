@@ -48,7 +48,7 @@ def sms_preview(request):
 
 def add_link_context(project):
     if project.entity_type:
-        text = _("Register a %(subject)s") % {'subject': project.entity_type}
+        text = _("Register a %(subject)s") % {'subject': project.entity_type[0]}
         return {'url': '#', 'text': text}
     else:
         text = _("Add a datasender")

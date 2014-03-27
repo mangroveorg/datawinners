@@ -13,7 +13,7 @@
                 <span>
                     <select id="id_entity_type" name="type" data-bind="value: message.t">
                         {% for entity_type in entity_types %}
-                            <option value="{{ entity_type.0 }}" {% ifequal project.entity_type entity_type.0 %}selected="selected" {% endifequal %}>{{ entity_type.0 }}</option>
+                            <option value="{{ entity_type.0 }}" {% ifequal project.entity_type.0 entity_type.0 %}selected="selected" {% endifequal %}>{{ entity_type.0 }}</option>
                         {% endfor %}
                     </select>
                     {%  include 'entity/create_type.html' %}
