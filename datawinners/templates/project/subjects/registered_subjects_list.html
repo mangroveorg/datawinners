@@ -46,10 +46,10 @@
             <h2>{% trans "My Subjects" %}</h2>
         </div>
         <div class="grid_12 float_right omega text_align_right">
-            <a href="{{ project_links.register_subjects_link_web_view }}">{% trans "Register a" %} {{ project.entity_type|capfirst }}</a>
+            <a href="{{ project_links.register_subjects_link_web_view }}">{% trans "Register a" %} {{ entity_type|capfirst }}</a>
             &nbsp;|&nbsp;
             <a href="javascript:void(0);" class="import-subject"
-               id="import-{{ project.entity_type }}">{% trans "Import a List" %}</a>
+               id="import-{{ entity_type }}">{% trans "Import a List" %}</a>
             <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
                class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit Registration Form</a>
             &nbsp;|&nbsp;
@@ -61,7 +61,7 @@
         </div>
         <div class="clear-both"></div>
     </div>
-    {% with entity_type=project.entity_type create_entity_link=project_links.register_subjects_link %}
+    {% with entity_type=entity_type create_entity_link=project_links.register_subjects_link %}
         {% include 'help/subjects_help.html' %}
     {% endwith %}
 
@@ -77,7 +77,7 @@
 
     <div class="help_accordion">
         {# Make sure that this block translation stays in a single line as otherwise django will not be able to find out that message id#}
-        {% blocktrans with project.entity_type as entity_type %}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}
+        {% blocktrans%}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}
     </div>
     {% include "flash_message.html" %}
 
