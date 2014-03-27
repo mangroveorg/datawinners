@@ -15,7 +15,7 @@ SMS = "sms"
 SUCCESS_MESSAGE = "success_message"
 
 VALID_ANSWERS = [
-    {QCODE: 'EID', ANSWER: 'Indore Clinic', TYPE: SELECT},
+    {QCODE: 'eid', ANSWER: 'Indore Clinic', TYPE: SELECT},
     {QCODE: 'NA', ANSWER: 'Bob', TYPE: TEXT},
     {QCODE: 'FA', ANSWER: '89', TYPE: TEXT},
     {QCODE: 'RD', ANSWER: '25.12.2011', TYPE: TEXT},
