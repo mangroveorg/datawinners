@@ -21,21 +21,21 @@ class TestDeleteSubjectType(HeadlessRunnerTest):
     def setUp(self):
         self.driver.refresh()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_shown_action_button(self):
         subject_type_page = self.page
         subject_type_page.click_all_subject_type()
         subject_type_page.click_action_button()
         self.assertTrue(subject_type_page.actions_menu_shown())
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_not_shown_action_button(self):
         subject_type_page = self.page
         subject_type_page.click_all_subject_type(check=False)
         subject_type_page.click_action_button()
         self.assertFalse(subject_type_page.actions_menu_shown())
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_delete_subjectType(self):
         subject_type_page = self.page
         subject_type_page.click_one_subject_type()
