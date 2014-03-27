@@ -265,7 +265,7 @@ function handle_datasender_delete(table, allIds, all_selected){
 
 function init_dialog_box_for_web_users() {
     var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>" +
-        "${location}</td><td>${contactInformation}</td><td>" +
+        "${location}</td><td>" +
         "<input type='text' style='width:150px' class='ds-email ${hideInput}' ${input_field_disabled}/>" +
         "<label style='font-weight:inherit'>${email}</label>" +
         "</td></tr>";
@@ -416,7 +416,6 @@ function populate_dialog_box_for_web_users(table, all_selected) {
         data_sender.short_name = $($(row).children()[2]).html();
         data_sender.name = $($(row).children()[1]).html();
         data_sender.location = $($(row).children()[4]).html();
-        data_sender.contactInformation = $($(row).children()[8]).html();
         data_sender.email = $($(row).children()[6]).html();
         data_sender.input_field_disabled = "disabled";
         if (!$.trim(data_sender.email)) {
