@@ -93,7 +93,7 @@ class TestSubmissionIndex(unittest.TestCase):
         entity_doc.data = data
         with patch.object(SubmissionQueryBuilder, 'query_all') as query_all:
             with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-                load_all_rows_in_view.return_value = [{'value': {'name': "project name", "form_code": "cli001",
+                load_all_rows_in_view.return_value = [{'doc': {'name': "project name", "form_code": "cli001",
                                                                  "json_fields": [
                                                                      {"name": "unique_id_field", "type": "unique_id",
                                                                       "unique_id_type": 'clinic', "code": 'q1'}],
