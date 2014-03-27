@@ -13,12 +13,11 @@ from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
-# from mangrove.form_model.form_model import get_form_model_by_entity_type
 from mangrove.form_model.form_model import NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
-    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, EMAIL_FIELD, get_form_model_by_code, EntityFormModel
+    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, EMAIL_FIELD, get_form_model_by_code, EntityFormModel, get_form_model_by_entity_type
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint, ShortCodeRegexConstraint
 from mangrove.transport.player.player import WebPlayer
@@ -121,6 +120,12 @@ def create_registration_form(manager, entity_name):
     form_model = _create_registration_form(manager, entity_name, form_code, [entity_name])
     form_model.save()
     return form_model
+
+def delete_registration_form(manager, entity_name):
+    assert is_sequence(entity_name)
+    for entity in entity_name:
+        form_model = get_form_model_by_entity_type(manager,[entity])
+        form_model.delete()
 
 def get_country_appended_location(location_hierarchy, country):
     location_hierarchy_split = location_hierarchy.split(',')

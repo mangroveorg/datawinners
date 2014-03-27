@@ -23,6 +23,7 @@
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
     <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
 {% endblock %}
 
 
@@ -31,6 +32,10 @@
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
+    <script type="text/javascript" src="/media/javascript/action_dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/subject_type_list.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript">
         var upload_url = window.location.pathname;
     </script>
@@ -42,19 +47,21 @@
         <a id="add_new_subject_type" href="javascript:void(0);">{% trans "Add a  Subject Type" %}</a>
     </div>
     <div>
-        {% include 'project/all_subjects_help.html' %}
+   {% include 'project/all_subjects_help.html' %}
         {% if messages %}
-            <ul class="messages">
                 {% for message in messages %}
-                    <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
+                    <div style="clear: both;" class="{% if 'success' in message.tags %} success-message-box  message-box {% endif %}"  >
+                        <span class="message-span">{{ message }}</span>
+                    </div>
                 {% endfor %}
-            </ul>
         {% endif %}
-
+        <br/>
+        {% include "subject_action.html" %}
         {% if all_data %}
             {% include 'subject_type_table.html' %}
         {% endif %}
-
+        <br/>
+        {% include "subject_action.html" %}
 
         <div id="subjects_create_type">
             {% trans "Enter the Name of your specific Subject Type" %}

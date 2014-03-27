@@ -21,7 +21,7 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
     valid_web_user
 from datawinners.entity.entity_export_helper import get_subject_headers
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
-from datawinners.main.database import get_database_manager
+from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.utils import get_database_name
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import es_field_name
@@ -32,11 +32,12 @@ from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, delete_entity_instance, put_email_information_to_entity, \
-    get_organization_telephone_number
+    get_organization_telephone_number, delete_registration_form
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from mangrove.datastore.entity_type import define_type
+from mangrove.datastore.entity_type import define_type, delete_type
+from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
     QuestionAlreadyExistsException
@@ -109,6 +110,18 @@ def all_subject_types(request):
                               },
                               context_instance=RequestContext(request))
 
+def delete_subject_types(request):
+    manager = get_database_manager(request.user)
+    subject_types = request.POST.get("all_ids")
+    subject_types = subject_types.split(";")
+    delete_registration_form(manager, subject_types)
+    delete_type(manager, subject_types)
+    for subject_type in subject_types:
+        ent = get_all_entities(manager, [subject_type])
+        for entities in ent:
+            entities.delete()
+    messages.success(request, _("Identification Number Type(s) successfully deleted."))
+    return HttpResponse(json.dumps({'success': True}))
 
 @csrf_view_exempt
 @csrf_response_exempt

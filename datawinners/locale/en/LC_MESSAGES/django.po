@@ -4504,3 +4504,15 @@ msgstr "Example:<br/><strong>People</strong>: Patient, Farmer, Child,<br/><stron
 
 msgid "unique_id_learn_more"
 msgstr "Select Identification Number if you plan to collect data about the same people (example: patients), places (districts) or things (schools) more than one time."
+
+msgid "Are you sure you want to delete the Identification Number Type"
+msgstr ""
+
+msgid "You will lose all registered Identification Numbers."
+msgstr ""
+
+msgid "Identification Number Type(s) successfully deleted."
+msgstr ""
+
+msgid "Select an Identification Number Type"
+msgstr ""

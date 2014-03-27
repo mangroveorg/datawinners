@@ -60,3 +60,44 @@ class AddSubjectTypePage(Page):
         """
         self.driver.find(ADD_NEW_SUBJECT_TYPE_LINK).click()
         return self
+
+    def click_all_subject_type(self, check=True):
+        checkbox = self.driver.find(CHECK_ALL_SUBJECT_TYPE_LOCATOR)
+        if (checkbox.get_attribute("checked") != "true" and check) or \
+                (checkbox.get_attribute("checked") == "true" and not check):
+            checkbox.click()
+        return self
+
+    def click_action_button(self):
+        self.driver.find(ALL_SUBJECT_TYPE_ACTION_SELECT).click()
+        return self
+
+    def actions_menu_shown(self):
+        return self.driver.find(ACTION_MENU).is_displayed()
+
+    def get_message(self):
+        if self.driver.is_element_present(MESSAGES_CONTAINER):
+            return self.driver.find(MESSAGES_CONTAINER).text
+        return False
+    def click_one_subject_type(self):
+        self.driver.find(CHECK_ONE_SUBJECT_TYPE).click()
+        return self
+
+    def select_delete_action(self, confirm=False, cancel=False):
+        action_to_be_performed = DELETE
+        self.perform_user_action(action_to_be_performed)
+        if confirm:
+            self.confirm_delete()
+        if cancel:
+            self.cancel_delete()
+
+    def confirm_delete(self):
+        self.driver.find(CONFIRM_DELETE_BUTTON).click()
+
+    def cancel_delete(self):
+        self.driver.find(CANCEL_DELETE_BUTTON).click()
+
+    def perform_user_action(self, action_to_be_performed):
+        self.click_action_button()
+        option = self.driver.find_visible_element(by_id(action_to_be_performed))
+        option.click()

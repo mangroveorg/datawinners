@@ -1,5 +1,4 @@
 {% load i18n %}
-
 <div id="all_subjects">
     <form method="post" action="{% url datawinners.entity.views.export_subject %}" id="subject-export-form">
         <input type="hidden" name="entity_type" id="type_to_export"/>
@@ -12,6 +11,7 @@
     <table class="all_subject_type_table styled_table">
         <thead>
         <tr>
+            <th><input type="checkbox" id="check_all_type"></th>
             <th class="header_subject_type">{% trans "Subject Type" %}</th>
             <th class="registered_subjects"> {% trans "Registered Subjects" %}</th>
             <th>{% trans "Questionnaires" %}</th>
@@ -19,10 +19,32 @@
         </thead>
         {% for entity,projects in all_data.items %}
             <tr class="list_header">
+                <td><input type="checkbox" value="{{ entity }}" class="subject_type_entry"></td>
                 <td><a class="header" href="/entity/subjects/{{ entity }}">{{ entity|capfirst }}</a></td>
                 <td><span class="success_error">{{ subjects_count|get_count:entity }}</span></td>
-                <td><span class="success_error">{{ projects|join:", " }}</span></td>
+                <td><span class="success_error questionnaires"><span>{{ projects|join:"</span>, <span> " }}</span></span></td>
             </tr>
         {% endfor %}
     </table>
+</div>
+<div id="delete_subject_type_warning_dialog">
+        <p class="warning_message">
+            {% trans "Are you sure you want to delete the Identification Number Type " %}<b><span class="delete_subjects_list_label"></span></b>?
+            {% trans "You will lose all registered Identification Numbers."%}
+        </p>
+        </br>
+
+        <div class="text_align_right">
+            <a class="cancel_link no_button">{% trans "No" %}</a>
+            <a class="button yes_button">{% trans "Yes, Delete" %}</a>
+        </div>
+</div>
+<div id="delete_subject_type_associated_questionnaires_warning_dialog" style="display:none">
+        <p class="warning_message">
+
+        </p>
+
+        <div class="text_align_right">
+            <a class="button yes_button">{% trans "OK" %}</a>
+        </div>
 </div>

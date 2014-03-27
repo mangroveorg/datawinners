@@ -4722,3 +4722,14 @@ msgstr "Exemple :<br/><strong>Personne</strong>: Patient, Fermier, Enfant<br/><s
 
 msgid "unique_id_learn_more"
 msgstr "Sélectionnez Numéro d'identification si vous souhaitez collecter des données sur les mêmes personnes (exemple : patients), lieux (districts) ou choses (écoles) plus d'une fois"
+msgid "Are you sure you want to delete the Identification Number Type "
+msgstr "Etes-vous sûr de vouloir supprimer le(s) Type(s) de Numéro d’Identification "
+
+msgid "You will lose all registered Identification Numbers."
+msgstr "Vous perdrez tous les Numéros d’identification enregistrés."
+
+msgid "Identification Number Type(s) successfully deleted."
+msgstr "Type(s) de Numéro d'Identification supprimé(s) avec succès."
+
+msgid "Select an Identification Number Type"
+msgstr "Sélectionnez un Type de Numéro d'Identification"

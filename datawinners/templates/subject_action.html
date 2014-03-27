@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<div id="action_dropdown_subject">
+    <div id="action_button"  class="action_bar clear-both" style="margin-bottom: 20px">
+        <div class="btn-group">
+            <button class="btn dropdown-toggle action" href="#" data-dropdown="#action">{% trans "Actions" %}
+                <span class="caret"></span>
+            </button>
+        </div>
+    </div>
+    <div id="action" class="dropdown">
+        <ul class="dropdown-menu">
+            <li><a id="delete" action-dropdown = "delete">{% trans "Delete" %}</a></li>
+        </ul>
+    </div>
+    <div id="none-selected" class="dropdown">
+        <div class="dropdown-panel">
+            {% trans "Select an Identification Number Type" %}
+        </div>
+    </div>
+</div>

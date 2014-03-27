@@ -1073,3 +1073,18 @@ msgstr ""
 
 msgid "Please insert a valid number."
 msgstr ""
+
+msgid "Delete the Identification Number Type"
+msgstr ""
+
+msgid "Delete Associated Questionnaires First"
+msgstr ""
+
+msgid "The following Questionnaire(s) are collecting data about <b>"
+msgstr ""
+
+msgid "If you want to delete the Identification Number Type <b>"
+msgstr ""
+
+msgid "</b>, you need to delete the Questionnaire(s) first."
+msgstr ""
