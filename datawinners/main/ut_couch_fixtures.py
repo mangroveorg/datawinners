@@ -1247,7 +1247,7 @@ def load_sms_data_for_cli001(manager):
 
 def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)
-    question1 = UniqueIdField(unique_id_type=CLINIC_ENTITY_TYPE[0], label="entity_question", code="EID",
+    question1 = UniqueIdField(unique_id_type=CLINIC_ENTITY_TYPE[0], label="What is associatéd entity?", code="EID",
                               name="What is associatéd entity?",
                               instruction="Answer must be 12 characters maximum")
     question2 = TextField(label="Name", code="NA", name="What is your namé?",
