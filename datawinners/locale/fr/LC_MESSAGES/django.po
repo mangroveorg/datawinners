@@ -4713,3 +4713,12 @@ msgstr "Choisissez un Questionnaire existant et modifiez-le selon vos besoins."
 
 msgid "Languages for SMS Reply Messages"
 msgstr "Langue pour les messages de retour SMS"
+
+msgid "Identification Number"
+msgstr "Numéro d'identification"
+
+msgid "unique_id_example_text"
+msgstr "Exemple :<br/>Personne : Patient, Fermier, Enfant<br/>Lieux : Région, District, Commune<br/>Choses : Clinique, Ecole, Détaillant, Formation, Réunion, Conférence, Lettre de transport, Reçu, Connaissement"
+
+msgid "unique_id_learn_more"
+msgstr "Sélectionnez Numéro d'identification si vous souhaitez collecter des données sur les mêmes personnes (exemple : patients), lieux (districts) ou choses (écoles) plus d'une fois"

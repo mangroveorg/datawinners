@@ -4495,3 +4495,12 @@ msgstr ""
 
 msgid "Choose a template and edit it to fit your needs."
 msgstr ""
+
+msgid "Identification Number"
+msgstr ""
+
+msgid "unique_id_example_text"
+msgstr "Example:<br/>People: Patient, Farmer, Child,<br/>Places: Region, District, Commune,<br/>Things: Clinic, School, Retail Shop, Training, Meeting, Conference, Waybill, Receipt, Bill of Lading"
+
+msgid "unique_id_learn_more"
+msgstr "Select Identification Number if you plan to collect data about the same people (example: patients), places (districts) or things (schools) more than one time."

@@ -1,6 +1,17 @@
 {% load i18n %}
 
 <div class="uniqueIdTypeSection">
+
+    <div class="unique_id_learn_more">
+        <p class="questionnaire-instruction-text">{% trans "Identification numbers improve the accuracy of your data." %}</p>
+        <a data-bind="click: $root.toggleLearnMoreBlockVisibility, hidden: $root.learnMoreBlockVisible"
+           class="show_link">{% trans "Learn More" %}</a>
+
+        <div data-bind="visible: $root.learnMoreBlockVisible" class="unique_id_help">
+            <p>{% trans "unique_id_learn_more" %}</p>
+            <a data-bind="click: $root.toggleLearnMoreBlockVisibility" class="hide_link">{% trans "Hide help" %}</a>
+        </div>
+    </div>
     <span>{% trans 'I want to use Identification Numbers for my' %}</span>
 
     <div class="uniqueIdType" data-bind="click: $root.showUniqueIdTypes">
@@ -21,14 +32,10 @@
         </div>
 
         <div class="section-example">
-            <p>Example: <br>
-            People: Patient, Farmer, Child, <br>
-            Places: Region, District, Commune, <br>
-            Things: Clinic, School, Retail Shop, Training,<br>
-            Meeting, Conference, Waybill, Receipt, Bill of Lading </p>
+            <p>{% trans "unique_id_example_text" %}</p>
         </div>
         <hr/>
-        <strong class="list-heading">{% trans "Use Existing"%}</strong>
+        <strong class="list-heading">{% trans "Use Existing" %}</strong>
         <ul class="uniqueIdList" data-bind="foreach: $root.uniqueIdTypes">
             <li data-bind="text: $data, click: $root.selectUniqueIdType"></li>
         </ul>

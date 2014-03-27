@@ -37,7 +37,7 @@
                 <strong>{% trans "What do I need to do?" %}</strong><br/>
                 {% trans "r_tooltip_question_detail_type" %}
             </p></div>
-            <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
+            <p class="margin_bottom_10 questionnaire-instruction-text">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
             <div class="dropdown">
                 <select name="answer_type" data-bind="value: answerType" autofocus>
@@ -47,7 +47,7 @@
                     <option value="date"> {% trans 'Date' %} </option>
                     <option value="choice"> {% trans 'Multiple Choice' %} </option>
                     <option value="geocode"> {% trans 'GPS Coordinates' %} </option>
-                    <option value="unique_id"> {% trans 'Unique id' %} </option>
+                    <option value="unique_id"> {% trans 'Identification Number' %} </option>
                 </select>
                 <div class="validationMessage" data-bind="ifnot: answerType.valid">
                     <span class="validationText" data-bind="text: answerType.error"></span>

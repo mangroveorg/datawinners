@@ -137,6 +137,10 @@ fieldset {
   width: 525px !important;
   border: 1px solid #ccbf97;
   background-color: #FFF;
+  .questionnaire-instruction-text{
+    font-style: italic;
+    color: #888888;
+  }
   #question_title {
     width: 500px !important;
   }
@@ -431,6 +435,9 @@ fieldset {
 
 .uniqueIdTypeSection{
   line-height: 1.5em;
+  .unique_id_learn_more{
+    margin: 0 0 20px 0;
+  }
   .uniqueIdType{
     border: 1px solid #888888;
     background: url('/media/images/arrow_dd.png') no-repeat scroll right -3px;

@@ -44,6 +44,13 @@ function ProjectQuestionnaireViewModel() {
     }
 
     self.validateAndRemoveQuestion = self.validateAndRemoveQuestion.bind(self);
+
+    self.learnMoreBlockVisible = ko.observable(false);
+
+    self.toggleLearnMoreBlockVisibility = function(){
+        var isVisible = self.learnMoreBlockVisible();
+        self.learnMoreBlockVisible(!isVisible);
+    }
 }
 
 ProjectQuestionnaireViewModel.prototype = new QuestionnaireViewModel();
