@@ -450,12 +450,25 @@ fieldset {
     border: 1px solid gray;
     box-shadow: 10px 10px 5px #888888;
     width: 350px;
-    padding: 10px;
-    .newUniqueIdName{
-      width: 260px;
-      margin: 5px 10px 5px 0;
+    padding: 4px 4px 10px 10px;
+    .close-contents{
+      background: url("/media/images/close_button.png") no-repeat 0;
+      cursor: pointer;
+      display: inline;
+      float: right;
+      width: 18px;
+      height: 18px;
+    }
+
+    .newUniqueIdBox{
+      margin: 5px 0 5px 0;
+      .newUniqueIdName{
+        width: 230px;
+        margin: 5px 10px 5px 0;
+      }
     }
     .section-example{
+      margin-top: 5px;
       color: #666666;
       font-style: italic;
     }
@@ -466,6 +479,8 @@ fieldset {
     }
     .uniqueIdList{
       line-height: 10px;
+      height: 200px;
+      overflow: auto;
       li{
         cursor: pointer;
         overflow: none;

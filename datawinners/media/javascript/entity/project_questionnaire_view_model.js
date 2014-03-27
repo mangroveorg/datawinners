@@ -3,11 +3,15 @@ function ProjectQuestionnaireViewModel() {
 
     self.uniqueIdTypes = ko.observableArray(uniqueIdTypes);
 
+    self.showUniqueIdTypeList = ko.computed(function(){
+        return self.uniqueIdTypes().length == 0;
+    }, self);
     self.isUniqueIdTypeVisible = ko.observable(false);
 
-    self.showUniqueIdTypes = function () {
+    self.toggleUniqueIdTypesVisibility = function () {
+        var isVisible = self.isUniqueIdTypeVisible();
         _clearNewUniqueIdError();
-        self.isUniqueIdTypeVisible(true);
+        self.isUniqueIdTypeVisible(!isVisible);
     };
 
     ko.postbox.subscribe("uniqueIdTypeSelected", _clearNewUniqueIdError, self);

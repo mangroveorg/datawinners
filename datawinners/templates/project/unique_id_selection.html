@@ -14,7 +14,7 @@
     </div>
     <span>{% trans 'I want to use Identification Numbers for my' %}</span>
 
-    <div class="uniqueIdType" data-bind="click: $root.showUniqueIdTypes">
+    <div class="uniqueIdType" data-bind="click: $root.toggleUniqueIdTypesVisibility">
         <span class="grey" data-bind="hidden: uniqueIdType">{% trans 'Add a unique id type' %} </span>
         <span data-bind="text: uniqueIdType"></span>
     </div>
@@ -23,7 +23,8 @@
     </div>
 
     <div class="uniqueIdTypeContents" data-bind="visible: $root.isUniqueIdTypeVisible">
-        <div>
+        <div class="close-contents" data-bind="click: $root.toggleUniqueIdTypesVisibility"></div>
+        <div class="newUniqueIdBox">
             <input class="newUniqueIdName" type="text" data-bind="value: $root.newUniqueIdType"/>
             <button class="button_blue" data-bind="click: $root.addNewUniqueIdType">Add</button>
         </div>
@@ -34,8 +35,10 @@
         <div class="section-example">
             <p>{% trans "unique_id_example_text" %}</p>
         </div>
-        <hr/>
-        <strong class="list-heading">{% trans "Use Existing" %}</strong>
+        <div data-bind="hidden: $root.showUniqueIdTypeList">
+            <hr/>
+            <strong class="list-heading">{% trans "Use Existing" %}</strong>
+        </div>
         <ul class="uniqueIdList" data-bind="foreach: $root.uniqueIdTypes">
             <li data-bind="text: $data, click: $root.selectUniqueIdType"></li>
         </ul>
