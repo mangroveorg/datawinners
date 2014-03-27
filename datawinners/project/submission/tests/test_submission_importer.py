@@ -20,7 +20,7 @@ class TestSubmissionPersister(TestCase):
         valid_rows = [{"key": "value1"}, {"key": "value2"}]
         with patch(
                 "datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-            service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
+            service, project, user, form_model = Mock(), Mock(), Mock(), MagicMock()
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = False
             user_profile.reporter_id = "some_rep_id"
@@ -56,7 +56,7 @@ class TestSubmissionPersister(TestCase):
         valid_rows = [{"key": "value1"}, {"key": "value2"}]
         with patch(
                 "datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-            service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
+            service, project, user, form_model = Mock(), Mock(), Mock(), MagicMock()
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = False
             user_profile.reporter_id = "some_rep_id"
@@ -75,7 +75,7 @@ class TestSubmissionPersister(TestCase):
         valid_rows = [{}]
         with patch(
                 "datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-            service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
+            service, project, user, form_model = Mock(), Mock(), Mock(), MagicMock()
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = True
             user_profile.reporter_id = "some_rep_id"

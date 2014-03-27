@@ -78,7 +78,7 @@ class TestProjectViews(unittest.TestCase):
     def test_for_websubmission_on_subjects_should_provide_add_links(self):
         project = Mock(spec=Project)
         project.id = "1"
-        project.entity_type = "clinic"
+        project.entity_type = ["clinic"]
         link = add_link(project)
         self.assertEqual(reverse('subject_questionnaire', args=[project.id])+"?web_view=True", link.url)
         self.assertEqual('Register a clinic', link.text)
