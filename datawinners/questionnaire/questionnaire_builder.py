@@ -27,7 +27,7 @@ class QuestionnaireBuilder(object):
         return new_fields
 
     def update_unique_id_validator(self):
-        if not isinstance(self.form_model,EntityFormModel):
+        if not isinstance(self.form_model, EntityFormModel):
             if self.form_model.entity_questions:
                 self.form_model.add_validator(UniqueIdExistsValidator)
             else:
@@ -73,7 +73,8 @@ class QuestionBuilder(object):
     def create_entity_id_question_for_activity_report(self):
         entity_id_code = "eid"
         name = ugettext("I am submitting this data on behalf of")
-        entity_id_question = UniqueIdField('reporter',name=name, code=entity_id_code, label=name, instruction=ugettext("Choose Data Sender from this list."))
+        entity_id_question = UniqueIdField('reporter', name=name, code=entity_id_code, label=name,
+                                           instruction=ugettext("Choose Data Sender from this list."))
         return entity_id_question
 
 
@@ -149,16 +150,18 @@ class QuestionBuilder(object):
         return post_dict["uniqueIdType"].strip().lower()
 
     def _create_unique_id_question(self, post_dict, code):
-        return UniqueIdField(unique_id_type=self._get_unique_id_type(post_dict), name=self._get_name(post_dict), code=code,
+        return UniqueIdField(unique_id_type=self._get_unique_id_type(post_dict), name=self._get_name(post_dict),
+                             code=code,
                              label=post_dict["title"],
-                             instruction=post_dict.get("instruction"))
-        #return UniqueIdField(unique_id_type=post_dict["unique_id_type"],name=self._get_name(post_dict), code=code, label=post_dict["title"],
-        #                     instruction=post_dict.get("instruction"))
+                             instruction=ugettext(
+                                 "Enter the Unique Id of the %s" % self._get_unique_id_type(post_dict)))
 
     def _create_short_code_field(self, post_dict, code):
         return ShortCodeField(name=self._get_name(post_dict), code=code,
-                             label=post_dict["title"],
-                             instruction=post_dict.get("instruction"))
+                              label=post_dict["title"],
+                              instruction=post_dict.get("instruction"))
+
+
 def get_max_code(fields):
     json_fields = [f._to_json() for f in fields]
     return get_max_code_in_question_set(json_fields)

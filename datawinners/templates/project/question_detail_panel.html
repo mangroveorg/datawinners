@@ -47,7 +47,7 @@
                     <option value="date"> {% trans 'Date' %} </option>
                     <option value="choice"> {% trans 'Multiple Choice' %} </option>
                     <option value="geocode"> {% trans 'GPS Coordinates' %} </option>
-                    <option value="unique_id"> {% trans 'Identification Number' %} </option>
+                    <option title="{% trans 'unique_id_learn_more' %}" value="unique_id"> {% trans 'Identification Number' %} </option>
                 </select>
                 <div class="validationMessage" data-bind="ifnot: answerType.valid">
                     <span class="validationText" data-bind="text: answerType.error"></span>
