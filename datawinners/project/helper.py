@@ -212,7 +212,7 @@ def get_feed_dictionary(project):
         project_dict = {
             'id': project.id,
             'name': project.name,
-            'type': project.entity_type[0],
+            'type': project.entity_type,
         }
         additional_feed_dictionary.update({'project': project_dict})
         return additional_feed_dictionary
