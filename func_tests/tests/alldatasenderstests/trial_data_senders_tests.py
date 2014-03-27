@@ -1,6 +1,6 @@
 import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
@@ -21,11 +21,9 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                       PAGE_TITLE: "Data Senders"}
 
 @attr("functional_test")
-class TestTrialDataSenders(unittest.TestCase):
+class TestTrialDataSenders(HeadlessRunnerTest):
     emails = []
 
-    def setUp(self):
-        self.driver = setup_driver()
 
     def create_questionnaire(self, create_questionnaire_page):
         create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)

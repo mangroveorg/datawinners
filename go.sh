@@ -76,11 +76,12 @@ function function_test {
 	echo "running function test"
 	export WORKSPACE=~/workspace/datawinners
     cd $WORKSPACE
+    export PYTHONPATH=$WORKSPACE:$WORKSPACE/func_tests
     dropdb ftdb || echo ftdb database is not present
 	createdb -T template_postgis ftdb
-	ps -ef|grep Xvfb |grep -v grep || Xvfb :99 -ac >>/dev/null 2>&1 &
-    export DISPLAY=":99"
-    export PYTHONPATH=$WORKSPACE
+	#ps -ef|grep Xvfb |grep -v grep || Xvfb :99 -ac >>/dev/null 2>&1 &
+    #export DISPLAY=":99"
+    #export PYTHONPATH=$WORKSPACE
     pip install -r requirements.pip
     cp datawinners/config/local_settings_ft.py datawinners/local_settings.py
     cp datawinners/config/local_settings_ft.py func_tests/resources/local_settings.py
@@ -91,8 +92,8 @@ function function_test {
     python manage.py recreatedb
     python manage.py compilemessages
 
-    gunicorn_django -D -b 0.0.0.0:9000 --pid=/tmp/mangrove_gunicorn_${JOB_NAME} -w 10
-    cd $WORKSPACE/func_tests  && nosetests -vx -a "functional_test" --with-xunit --xunit-file=${WORKSPACE}/xunit.xml --processes=5 --process-timeout=900
+    gunicorn_django -D -b 0.0.0.0:9000 --pid=/tmp/mangrove_gunicorn_${JOB_NAME} -w 8
+    cd $WORKSPACE/func_tests  && nosetests -v -a "functional_test" --with-xunit --xunit-file=${WORKSPACE}/xunit.xml --processes=1 --process-timeout=900
 
 }
 
