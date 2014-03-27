@@ -1,7 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import re
 from string import lower
 from django.utils.translation import ugettext as _
-from mangrove.errors.MangroveException import MangroveException
+from mangrove.errors.MangroveException import MangroveException, DataObjectNotFound
 from mangrove.form_model.form_model import  get_form_model_by_code
 from mangrove.utils.types import is_empty
 from datawinners.messageprovider.messages import exception_messages, DEFAULT, get_submission_success_message, get_registration_success_message, get_validation_failure_error_message, get_subject_info
@@ -34,17 +35,37 @@ def index_of_question(form_model, question_code):
     return [index for index, field in enumerate(form_model.fields) if field.code.lower() == lower(question_code)][0] + 1
 
 
+def _is_unique_id_not_present_error(error):
+    re_match = re.match(r"(\w+) with Unique Identification Number \(ID\) = (\w+) not found", error)
+    if re_match:
+        return True, re_match.group(1), re_match.group(2)
+    else:
+        return False, None, None
+
+
+def _get_error_message(keys, response):
+    error = response.errors.values()[0]
+    is_unique_id_error_present, unique_id_type, invalid_unique_id_code = _is_unique_id_not_present_error(error)
+    if is_unique_id_error_present:
+        return get_exception_message_for(
+            DataObjectNotFound(unique_id_type, 'Unique Identification Number(ID)', invalid_unique_id_code),
+            channel='sms')
+    else:
+        error_text = "%s %s" % (_("singular_question"), keys[0])
+        return get_validation_failure_error_message(response) % error_text.strip()
+
+
 def get_submission_error_message_for(response, form_model):
     errors = response.errors
     if isinstance(errors, dict) and form_model:
         keys = [_("question_prefix%s") % index_of_question(form_model, question_code) for question_code in errors.keys()]
         keys.sort()
         if len(keys) == 1:
-            errors_text = "%s %s" % (_("singular_question"), keys[0])
+            error_message = _get_error_message(keys, response)
         else:
             and_msg = "ending_and" if len(keys) >= 3 else "and"
             errors_text = "%s %s %s %s" % (_("plural_question"), _("sms_glue").join(keys[:-1]),  _(and_msg), keys[-1])
-        error_message = get_validation_failure_error_message(response) % errors_text.strip()
+            error_message = get_validation_failure_error_message(response) % errors_text.strip()
     else:
         error_message = errors
     return error_message
