@@ -265,7 +265,7 @@ class Project(FormModel):
     def save(self, dbm, process_post_update=True):
         assert isinstance(dbm, DatabaseManager)
         self._check_if_project_name_unique(dbm)
-        return super(Project,self).save()
+        return super(Project, self).save()
 
     def update(self, value_dict):
         attribute_list = [item[0] for item in (self._doc.items())]
@@ -280,7 +280,7 @@ class Project(FormModel):
 
     #The method name sucks but until we make Project DataObject we can't make the method name 'void'
     def set_void(self, dbm, void=True):
-        self.void = void
+        self._doc.void = void
         self.save(dbm, process_post_update=False)
 
     def delete_datasender(self, dbm, entity_id):
