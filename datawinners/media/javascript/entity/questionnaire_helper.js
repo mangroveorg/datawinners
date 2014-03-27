@@ -40,7 +40,7 @@ DW.instruction_template = {
     "dd.mm.yyyy": "25.12.2011",
     "mm.dd.yyyy": "12.25.2011",
     "mm.yyyy": "12.2011",
-    "unique_id_question": gettext("Answer must be 20 characters maximum"),
+    "short_code_question": gettext("Answer must be 20 characters maximum"),
     "telephone_number": gettext("Answer must be country code plus telephone number. Example: 261333745269")
 };
 DW.date_template = {
@@ -246,7 +246,7 @@ DW.question.prototype = {
         this.instruction = ko.dependentObservable({
             read: function () {
                 if (this.isEntityQuestion() && this.max_length() == 20) {
-                    return DW.instruction_template.unique_id_question;
+                    return DW.instruction_template.short_code_question;
                 }
 
                 if (this.type() == "text") {
@@ -288,6 +288,9 @@ DW.question.prototype = {
                 }
                 if (this.type() == "select") {
                     return DW.instruction_template.multi_select;
+                }
+                if (this.type() == "unique_id") {
+                    return DW.instruction_template.short_code_question;
                 }
                 return "No instruction can be generated";
             },

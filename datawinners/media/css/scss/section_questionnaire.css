@@ -9,7 +9,7 @@
   height: 23px;
   background: url("/media/images/arrow_dd.png") no-repeat scroll right -3px;
   font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
-  font-size: 15px !important;
+  font-size: 11px !important;
   margin-left: 0px; }
   .dropdown_style option, .wizard_content .content_wrapper .questionnaire_code #select option, .questionnare_content #question-detail-panel .dropdown select option, #question_form select#project_language option {
     padding: 5px; }

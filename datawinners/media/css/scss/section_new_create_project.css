@@ -879,7 +879,8 @@ fieldset {
     background: url("/media/images/arrow_dd.png") no-repeat scroll right -3px;
     cursor: pointer;
     width: 200px;
-    padding-left: 5px; }
+    padding-left: 5px;
+    font-size: 11px; }
   .uniqueIdTypeSection .uniqueIdTypeContents {
     border: 1px solid gray;
     box-shadow: 10px 10px 5px #888888;
