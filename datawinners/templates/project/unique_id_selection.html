@@ -26,10 +26,10 @@
         <div class="close-contents" data-bind="click: $root.toggleUniqueIdTypesVisibility"></div>
         <div class="newUniqueIdBox">
             <input class="newUniqueIdName" type="text" data-bind="value: $root.newUniqueIdType"/>
-            <button class="button_blue" data-bind="click: $root.addNewUniqueIdType">Add</button>
+            <button class="button_blue" data-bind="click: $root.addNewUniqueIdType">{% trans "Add" %}</button>
         </div>
         <div class="validationMessage" data-bind="ifnot: $root.newUniqueIdType.valid">
-            <span class="validationText" data-bind="text: $root.newUniqueIdType.error"></span>
+            <span id="new_type_validation_message" class="validationText" data-bind="text: $root.newUniqueIdType.error"></span>
         </div>
 
         <div class="section-example">

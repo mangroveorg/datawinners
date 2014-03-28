@@ -14,7 +14,7 @@ function ProjectQuestionnaireViewModel() {
         self.isUniqueIdTypeVisible(!isVisible);
     };
 
-    ko.postbox.subscribe("uniqueIdTypeSelected", _clearNewUniqueIdError, self);
+    ko.postbox.subscribe("uniqueIdTypeSelected", _resetUniqueIdTypeContentState, self);
 
     self.selectUniqueIdType = function (uniqueIdType) {
         ProjectQuestionnaireViewModel.prototype.selectedQuestion().uniqueIdType(uniqueIdType);
@@ -45,6 +45,11 @@ function ProjectQuestionnaireViewModel() {
     function _clearNewUniqueIdError() {
         self.newUniqueIdType("");
         self.newUniqueIdType.clearError();
+    }
+
+    function _resetUniqueIdTypeContentState() {
+        _clearNewUniqueIdError();
+        self.isUniqueIdTypeVisible(false);
     }
 
     self.validateAndRemoveQuestion = self.validateAndRemoveQuestion.bind(self);

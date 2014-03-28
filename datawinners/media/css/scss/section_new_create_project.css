@@ -908,7 +908,7 @@ fieldset {
       margin: 10px 0 10px 0; }
     .uniqueIdTypeSection .uniqueIdTypeContents .uniqueIdList {
       line-height: 10px;
-      height: 200px;
+      max-height: 200px;
       overflow: auto; }
       .uniqueIdTypeSection .uniqueIdTypeContents .uniqueIdList li {
         cursor: pointer;
