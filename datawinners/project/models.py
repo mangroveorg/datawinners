@@ -262,9 +262,9 @@ class Project(FormModel):
         if len(rows) and rows[0]['value'] != self.id:
             raise DataObjectAlreadyExists('Questionnaire', "Name", "'%s'" % self.name)
 
-    def save(self, dbm, process_post_update=True):
-        assert isinstance(dbm, DatabaseManager)
-        self._check_if_project_name_unique(dbm)
+    def save(self, process_post_update=True):
+        assert isinstance(self._dbm, DatabaseManager)
+        self._check_if_project_name_unique(self._dbm)
         return super(Project, self).save()
 
     def update(self, value_dict):
@@ -279,14 +279,14 @@ class Project(FormModel):
     #         dbm.database.delete(self)
 
     #The method name sucks but until we make Project DataObject we can't make the method name 'void'
-    def set_void(self, dbm, void=True):
+    def set_void(self, void=True):
         self._doc.void = void
-        self.save(dbm, process_post_update=False)
+        self.save(process_post_update=False)
 
     def delete_datasender(self, dbm, entity_id):
         from datawinners.search.datasender_index import update_datasender_index_by_id
         self.data_senders.remove(entity_id)
-        self.save(dbm, process_post_update=False)
+        self.save(process_post_update=False)
         update_datasender_index_by_id(entity_id,dbm)
 
     def associate_data_sender_to_project(self, dbm, data_sender_code):
@@ -296,7 +296,7 @@ class Project(FormModel):
         # blank id was sent from client side. So introduced this check.
         if data_sender_code:
             self.data_senders.append(data_sender_code)
-            self.save(dbm, process_post_update=False)
+            self.save(process_post_update=False)
             update_datasender_index_by_id(data_sender_code,dbm)
 
 

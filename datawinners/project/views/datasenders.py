@@ -89,7 +89,7 @@ def parse_successful_imports(successful_imports):
 
 def _add_imported_datasenders_to_project(imported_datasenders_id, manager, project):
     project.data_senders.extend(imported_datasenders_id)
-    project.save(manager)
+    project.save()
 
 
 

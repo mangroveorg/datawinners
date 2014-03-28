@@ -120,7 +120,7 @@ def create_project(request):
                 json.dumps({'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}))
 
         try:
-            questionnaire.save(manager)
+            questionnaire.save()
         except DataObjectAlreadyExists:
             return HttpResponse(json.dumps(
                 {'success': False, 'error_message': "Questionnaire with this code already exists",
@@ -199,7 +199,7 @@ def edit_project(request, project_id):
                                                  project_info.get('language'))
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
-            questionnaire.save(manager)
+            questionnaire.save()
 
             deleted_question_codes = _get_deleted_question_codes(old_codes=old_field_codes,
                                                                  new_codes=questionnaire.field_codes())
@@ -261,7 +261,7 @@ def reminder_settings(request, project_id):
             action = _get_activity_log_action(reminder_list, form.cleaned_data)
             questionnaire, set_deadline = _add_reminder_info_to_project(form.cleaned_data, questionnaire, organization,
                                                                   reminder_list=reminder_list)
-            questionnaire.save(dbm)
+            questionnaire.save()
             if action is not None:
                 UserActivityLog().log(request, action=action, project=questionnaire.name)
             if set_deadline:

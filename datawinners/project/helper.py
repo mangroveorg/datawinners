@@ -107,7 +107,7 @@ def get_preview_for_field(field):
 
 def delete_project(manager, questionnaire, void=True):
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=questionnaire.id))]
-    questionnaire.set_void(manager, void)
+    questionnaire.set_void(void)
     [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
 
 def get_activity_report_questions(dbm):

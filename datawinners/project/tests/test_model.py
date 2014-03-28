@@ -33,11 +33,11 @@ class TestProjectModel(unittest.TestCase):
         cls.project1 = Project(dbm=cls.manager, name=project1_name, goals="Testing",
                                  devices=['web'], form_code="abc",
                                  fields=[question1, question2])
-        cls.project1_id = cls.project1.save(cls.manager)
+        cls.project1_id = cls.project1.save()
         cls.project2 = Project(dbm=cls.manager, name=project2_name, goals="Testing",
                                  devices=['web'], form_code="def",
                                  fields=[question1, question2])
-        cls.project2_id = cls.project2.save(cls.manager)
+        cls.project2_id = cls.project2.save()
 
 
 
@@ -53,7 +53,7 @@ class TestProjectModel(unittest.TestCase):
                                   devices=['web'], form_code="ds_form",
                                   fields=[])
         project.data_senders = ["rep1"]
-        project.save(self.manager)
+        project.save()
         result = project.get_associated_datasenders(self.manager)
 
         self.assertEquals(result[0].short_code, entity.short_code)
@@ -74,7 +74,7 @@ class TestProjectModel(unittest.TestCase):
     def test_should_update_project(self):
         self.project1 = Project.get(self.manager, self.project1_id)
         self.project1.update(dict(name=project1_name, devices=['web', 'sms'], goals="New goals"))
-        self.project1.save(self.manager)
+        self.project1.save()
         self.assertEquals(self.project1.name, project1_name.lower())
         self.assertEquals(self.project1.goals, 'New goals')
         self.assertEquals(self.project1.devices, ['web', 'sms'])
@@ -84,21 +84,21 @@ class TestProjectModel(unittest.TestCase):
                             devices=['web'], form_code="name_form",
                             fields=[])
         with self.assertRaises(Exception) as cm:
-            questionnaire.save(self.manager)
+            questionnaire.save()
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 
     def test_project_name_should_be_case_insensitively_unique(self):
         questionnaire = Project(self.manager,name=project2_name.upper(), goals="Testing", devices=['web'])
         with self.assertRaises(Exception) as cm:
-            questionnaire.save(self.manager)
+            questionnaire.save()
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 
     def test_should_check_for_unique_name_while_update_project(self):
         self.project1.update(dict(name=project2_name, devices=['web', 'sms'], goals="New goals"))
         with self.assertRaises(Exception) as cm:
-            self.project1.save(self.manager)
+            self.project1.save()
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 

@@ -180,10 +180,10 @@ def create_project1(manager, questions, weekly_reminder_and_deadline):
     )
     questionnaire1.reminder_and_deadline = weekly_reminder_and_deadline
     try:
-        qid = questionnaire1.save(manager)
+        qid = questionnaire1.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli001").delete()
-        qid = questionnaire1.save(manager)
+        qid = questionnaire1.save()
     reminder = Reminder(project_id=questionnaire1.id, day=2, reminder_mode=ReminderMode.BEFORE_DEADLINE,
                         organization_id='SLX364903',
                         message="2 day(s) are remainning to deadline. Please send your data for Clinic Test Project1.")
@@ -199,7 +199,7 @@ def create_project1(manager, questions, weekly_reminder_and_deadline):
     reminder.save()
     # Associate datasenders/reporters with project 1
     questionnaire1.data_senders.extend(["rep5", "rep6", "rep1", "rep8", "rep9", "rep3"])
-    questionnaire1.save(manager)
+    questionnaire1.save()
 
 
 def create_project2(manager, questions):
@@ -209,10 +209,10 @@ def create_project2(manager, questions):
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
     try:
-        qid2 = questionnaire2.save(manager)
+        qid2 = questionnaire2.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli002").delete()
-        qid2 = questionnaire2.save(manager)
+        qid2 = questionnaire2.save()
 
 
 def create_project3(manager, questions):
@@ -222,10 +222,10 @@ def create_project3(manager, questions):
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
     try:
-        qid3 = questionnaire3.save(manager)
+        qid3 = questionnaire3.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli003").delete()
-        qid3 = questionnaire3.save(manager)
+        qid3 = questionnaire3.save()
 
 
 def create_project4(manager, questions):
@@ -235,10 +235,10 @@ def create_project4(manager, questions):
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
     try:
-        qid4 = questionnaire4.save(manager)
+        qid4 = questionnaire4.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli004").delete()
-        qid4 = questionnaire4.save(manager)
+        qid4 = questionnaire4.save()
 
 
 def create_project5(manager, questions):
@@ -248,10 +248,10 @@ def create_project5(manager, questions):
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
     try:
-        qid5 = questionnaire5.save(manager)
+        qid5 = questionnaire5.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli005").delete()
-        qid5 = questionnaire5.save(manager)
+        qid5 = questionnaire5.save()
 
 
 def create_project6(manager, questions):
@@ -261,10 +261,10 @@ def create_project6(manager, questions):
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
     try:
-        qid6 = questionnaire6.save(manager)
+        qid6 = questionnaire6.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli006").delete()
-        qid6 = questionnaire6.save(manager)
+        qid6 = questionnaire6.save()
 
 
 def create_project7(manager, questions):
@@ -274,10 +274,10 @@ def create_project7(manager, questions):
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
     try:
-        qid7 = questionnaire7.save(manager)
+        qid7 = questionnaire7.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli007").delete()
-        qid7 = questionnaire7.save(manager)
+        qid7 = questionnaire7.save()
 
 
 def create_project11(manager, questions):
@@ -295,10 +295,10 @@ def create_project11(manager, questions):
     }
     questionnaire11.reminder_and_deadline = weekly_reminder_and_deadline
     try:
-        qid11 = questionnaire11.save(manager)
+        qid11 = questionnaire11.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli011").delete()
-        qid11 = questionnaire11.save(manager)
+        qid11 = questionnaire11.save()
     reminder = Reminder(project_id=questionnaire11.id, day=3, reminder_mode=ReminderMode.BEFORE_DEADLINE,
                         organization_id='SLX364903',
                         message="3 day(s) are remainning to deadline. Please send your data for Clinic All DS (Following).")
@@ -314,7 +314,7 @@ def create_project11(manager, questions):
     reminder.save()
     # Associate datasenders/reporters with project 11
     questionnaire11.data_senders.extend(["rep5", "rep6", "rep7"])
-    questionnaire11.save(manager)
+    questionnaire11.save()
 
 
 def create_project10(manager, questions):
@@ -332,10 +332,10 @@ def create_project10(manager, questions):
     }
     questionnaire10.reminder_and_deadline = weekly_reminder_and_deadline
     try:
-        qid10 = questionnaire10.save(manager)
+        qid10 = questionnaire10.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli010").delete()
-        qid10 = questionnaire10.save(manager)
+        qid10 = questionnaire10.save()
     reminder = Reminder(project_id=questionnaire10.id, day=1, reminder_mode=ReminderMode.BEFORE_DEADLINE,
                         organization_id='SLX364903',
                         message="1 day is remainning to deadline. Please send your data for Clinic DS W/O Submission (Following).")
@@ -351,7 +351,7 @@ def create_project10(manager, questions):
     reminder.save()
     # Associate datasenders/reporters with project 1
     questionnaire10.data_senders.extend(["rep5", "rep6", "rep7"])
-    questionnaire10.save(manager)
+    questionnaire10.save()
 
 
 def create_project9(manager, questions, weekly_reminder_and_deadline):
@@ -362,10 +362,10 @@ def create_project9(manager, questions, weekly_reminder_and_deadline):
     )
     questionnaire9.reminder_and_deadline = weekly_reminder_and_deadline
     try:
-        qid = questionnaire9.save(manager)
+        qid = questionnaire9.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli009").delete()
-        qid = questionnaire9.save(manager)
+        qid = questionnaire9.save()
 
     # Create reminders for project2 and project 9
     reminder = Reminder(project_id=questionnaire9.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
@@ -374,7 +374,7 @@ def create_project9(manager, questions, weekly_reminder_and_deadline):
     reminder.save()
     # Associate datasenders/reporters with project 9
     questionnaire9.data_senders.extend(["rep3", "rep4"])
-    questionnaire9.save(manager)
+    questionnaire9.save()
 
 
 def create_project8(manager, questions):
@@ -384,10 +384,10 @@ def create_project8(manager, questions):
                                devices=["sms"], sender_group="close"
     )
     try:
-        qid8 = questionnaire8.save(manager)
+        qid8 = questionnaire8.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli008").delete()
-        qid8 = questionnaire8.save(manager)
+        qid8 = questionnaire8.save()
 
 
 def create_project12(manager, questions):
@@ -405,10 +405,10 @@ def create_project12(manager, questions):
     }
     questionnaire12.reminder_and_deadline = weekly_reminder_and_deadline
     try:
-        qid12 = questionnaire12.save(manager)
+        qid12 = questionnaire12.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli012").delete()
-        qid12 = questionnaire12.save(manager)
+        qid12 = questionnaire12.save()
         # Create reminders for project12
     reminder = Reminder(project_id=questionnaire12.id, day=4, reminder_mode=ReminderMode.BEFORE_DEADLINE,
                         organization_id='SLX364903',
@@ -425,7 +425,7 @@ def create_project12(manager, questions):
     reminder.save()
     # Associate datasenders/reporters with project 1
     questionnaire12.data_senders.extend(["rep5", "rep6", "rep7"])
-    questionnaire12.save(manager)
+    questionnaire12.save()
 
 
 def create_project13(manager, questions):
@@ -443,10 +443,10 @@ def create_project13(manager, questions):
     }
     questionnaire13.reminder_and_deadline = monthly_reminder_and_deadline
     try:
-        qid13 = questionnaire13.save(manager)
+        qid13 = questionnaire13.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli013").delete()
-        qid13 = questionnaire13.save(manager)
+        qid13 = questionnaire13.save()
 
     # Create reminders for project13
     reminder = Reminder(project_id=questionnaire13.id, day=15, reminder_mode=ReminderMode.BEFORE_DEADLINE,
@@ -464,7 +464,7 @@ def create_project13(manager, questions):
     reminder.save()
     # Associate datasenders/reporters with project 1
     questionnaire13.data_senders.extend(["rep5", "rep6", "rep7"])
-    questionnaire13.save(manager)
+    questionnaire13.save()
 
 
 def create_project14(manager, questions):
@@ -482,10 +482,10 @@ def create_project14(manager, questions):
     }
     questionnaire14.reminder_and_deadline = monthly_reminder_and_deadline
     try:
-        qid14 = questionnaire14.save(manager)
+        qid14 = questionnaire14.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli014").delete()
-        qid14 = questionnaire14.save(manager)
+        qid14 = questionnaire14.save()
 
     # Create reminders for project14
     reminder = Reminder(project_id=questionnaire14.id, day=10, reminder_mode=ReminderMode.BEFORE_DEADLINE,
@@ -503,7 +503,7 @@ def create_project14(manager, questions):
     reminder.save()
     # Associate datasenders/reporters with project 1
     questionnaire14.data_senders.extend(["rep5", "rep6", "rep7"])
-    questionnaire14.save(manager)
+    questionnaire14.save()
 
 
 def create_project15(manager, questions):
@@ -521,10 +521,10 @@ def create_project15(manager, questions):
     }
     questionnaire15.reminder_and_deadline = monthly_reminder_and_deadline
     try:
-        qid15 = questionnaire15.save(manager)
+        qid15 = questionnaire15.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli015").delete()
-        qid15 = questionnaire15.save(manager)
+        qid15 = questionnaire15.save()
         # Create reminders for project15
     reminder = Reminder(project_id=questionnaire15.id, day=5, reminder_mode=ReminderMode.BEFORE_DEADLINE,
                         organization_id='SLX364903',
@@ -541,7 +541,7 @@ def create_project15(manager, questions):
     reminder.save()
     # Associate datasenders/reporters with project 1
     questionnaire15.data_senders.extend(["rep5", "rep6", "rep7"])
-    questionnaire15.save(manager)
+    questionnaire15.save()
 
 
 def create_project16(manager, questions):
@@ -559,10 +559,10 @@ def create_project16(manager, questions):
     }
     questionnaire16.reminder_and_deadline = monthly_reminder_and_deadline
     try:
-        qid16 = questionnaire16.save(manager)
+        qid16 = questionnaire16.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli016").delete()
-        qid16 = questionnaire16.save(manager)
+        qid16 = questionnaire16.save()
 
     # Create reminders for project16
     reminder = Reminder(project_id=questionnaire16.id, day=2, reminder_mode=ReminderMode.BEFORE_DEADLINE,
@@ -580,7 +580,7 @@ def create_project16(manager, questions):
     reminder.save()
     # Associate datasenders/reporters with project 1
     questionnaire16.data_senders.extend(["rep5", "rep6", "rep7"])
-    questionnaire16.save(manager)
+    questionnaire16.save()
 
 
 def create_project17(manager, questions_):
@@ -590,10 +590,10 @@ def create_project17(manager, questions_):
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
     try:
-        qid17 = questionnaire17.save(manager)
+        qid17 = questionnaire17.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli017").delete()
-        qid17 = questionnaire17.save(manager)
+        qid17 = questionnaire17.save()
 
 
 def create_project18(manager, questions_):
@@ -603,10 +603,10 @@ def create_project18(manager, questions_):
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
     try:
-        qid18 = questionnaire18.save(manager)
+        qid18 = questionnaire18.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli018").delete()
-        qid18 = questionnaire18.save(manager)
+        qid18 = questionnaire18.save()
 
 
 def create_project19(ENTITY_TYPE, manager):
@@ -617,10 +617,10 @@ def create_project19(ENTITY_TYPE, manager):
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
     try:
-        qid19 = questionnaire19.save(manager)
+        qid19 = questionnaire19.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "peo019").delete()
-        qid19 = questionnaire19.save(manager)
+        qid19 = questionnaire19.save()
 
 
 def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager):
@@ -641,10 +641,10 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
 
     )
     try:
-        qid = questionnaire.save(manager)
+        qid = questionnaire.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, clinic_code).delete()
-        qid = questionnaire.save(manager)
+        qid = questionnaire.save()
 
 
 def create_clinic_projects(entity_type, manager):
@@ -1289,17 +1289,17 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
         "should_send_reminder_to_all_ds": True
     }
     try:
-        qid = questionnaire.save(manager)
+        qid = questionnaire.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli051").delete()
-        qid = questionnaire.save(manager)
+        qid = questionnaire.save()
     Reminder.objects.filter(project_id=questionnaire.id).delete()
 
     questionnaire.reminder_and_deadline = weekly_reminder_and_deadline
 
     if (register_a_datasender):
         questionnaire.data_senders.extend(["rep1"])
-        questionnaire.save(manager)
+        questionnaire.save()
 
     return questionnaire
 

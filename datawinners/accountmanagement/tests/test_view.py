@@ -53,4 +53,4 @@ class TestUserAssociationToProject(unittest.TestCase):
                 associate_user_with_existing_project(dbm, 'rep123')
 
                 self.assertEquals(project_mock.data_senders, ['rep123'])
-                project_mock.save.assert_called_once_with(dbm, process_post_update=True)
+                project_mock.save.assert_called_once_with(process_post_update=True)
