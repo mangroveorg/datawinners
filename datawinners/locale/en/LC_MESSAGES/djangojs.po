@@ -1088,3 +1088,6 @@ msgstr ""
 
 msgid "</b>, you need to delete the Questionnaire(s) first."
 msgstr ""
+
+msgid "Save"
+msgstr ""

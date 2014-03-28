@@ -9,6 +9,8 @@
     <script src="/media/javascript/project/sms_tester.js" type="text/javascript"></script>
     <script src="/media/javascript/project/questionnaire_preview.js" type="text/javascript"></script>
     <script src="/media/javascript/project/bind_project_links.js" type="text/javascript"></script>
+    <script src="/media/javascript/jquery_inline/jquery.inlineEdit.js" type="text/javascript"></script>
+    <script src="/media/javascript/project/rename_project.js" type="text/javascript"></script>
     <script type="text/javascript">
         var subject_type = "{{ entity_type|capfirst }}";
     </script>
@@ -28,13 +30,17 @@
     <script type="text/javascript">
         var questionnaire_preview_link ="{{ project_links.questionnaire_preview_link }}";
         var sms_questionnaire_preview_link = "{{ project_links.sms_questionnaire_preview_link }}";
+
     </script>
     {% endcompress %}
 {% endblock %}
 
 {% block section_title %}
-    <div class="project_detail" id="img_need_help">
-        <h2 class="project_title" > {{ project.name }}</h2>
+    <div class="project_detail_header" id="img_need_help">
+        <div class="project_title_div">
+            <span class="editableSingle project_title" pid="{{ project.id }}">{{ project.name }}</span>
+            <a class="project_rename" style="border-left: 0px none;">{% trans "Edit Name" %}</a>
+        </div>
         <input type="hidden" id="project_name" value="{{ project.name }}"/>
         <div class="project_detail">
             {% include 'project/sms_tester_form.html' %}

@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_view_exempt
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -60,7 +60,8 @@ from datawinners.project import helper
 from datawinners.project.utils import make_project_links
 from datawinners.project.helper import is_project_exist, get_feed_dictionary
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_PROJECT
+from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_PROJECT, \
+    RENAMED_PROJECT
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -161,6 +162,21 @@ def delete_project(request, project_id):
         messages.info(request, undelete_link)
     UserActivityLog().log(request, action=DELETED_PROJECT, project=questionnaire.name)
     return HttpResponseRedirect(reverse(index))
+
+@csrf_view_exempt
+@valid_web_user
+def rename_project(request, project_id):
+    manager = get_database_manager(request.user)
+    questionnaire = Project.get(manager,project_id)
+    new_project_name = request.POST.get('data', '').strip()
+    if len(new_project_name) == 0:
+        return HttpResponse(json.dumps(0), content_type='application/json')
+
+    if (questionnaire.name != new_project_name):
+        questionnaire.name=new_project_name
+        questionnaire.save(manager, process_post_update=True)
+        UserActivityLog().log(request, action=RENAMED_PROJECT, project=questionnaire.name)
+    return HttpResponse(json.dumps(1), content_type='application/json')
 
 
 def undelete_project(request, project_id):

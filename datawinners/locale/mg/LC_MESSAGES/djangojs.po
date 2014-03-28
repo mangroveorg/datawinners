@@ -487,3 +487,6 @@ msgstr "Un accès à la page d'envoi web a été donné à vos envoyeurs de donn
 
 msgid "Warning: Empty questionnaire"
 msgstr ""
+
+msgid "Save"
+msgstr ""

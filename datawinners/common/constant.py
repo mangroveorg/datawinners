@@ -8,6 +8,7 @@ CREATED_PROJECT = 'Created Project'
 ACTIVATED_PROJECT = 'Activated Project'
 EDITED_PROJECT = 'Edited Project'
 DELETED_PROJECT = 'Deleted Project'
+RENAMED_PROJECT = 'Renamed Project'
 ADDED_SUBJECT_TYPE = "Added Subject Type"
 EDITED_REGISTRATION_FORM = "Edited Registration Form"
 REGISTERED_SUBJECT = "Registered Subject"

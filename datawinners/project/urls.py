@@ -8,7 +8,8 @@ from datawinners.project.wizard_view import create_project, edit_project, remind
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
 from datawinners.project.views import submission_views
 from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \
-    registered_subjects, broadcast_message, sent_reminders, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject, get_questionnaire_ajax
+    registered_subjects, broadcast_message, sent_reminders, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject, get_questionnaire_ajax, \
+    rename_project
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -54,6 +55,7 @@ urlpatterns = patterns('',
                        url(r'^project/sent_reminders/(?P<project_id>.+?)/$', sent_reminders, name='sent_reminders'),
                        url(r'^project/set_reminder/(?P<project_id>.+?)/$', reminder_settings, name='reminder_settings'),
                        url(r'^project/delete/(?P<project_id>.+?)/$', delete_project, name="delete_project"),
+                       (r'^project/rename/(?P<project_id>.+?)$', rename_project),
                        (r'^project/undelete/(?P<project_id>.+?)/$', undelete_project),
                        url(r'^project/edit_subjects/(?P<project_id>.+?)/$', edit_my_subject_questionnaire,
                            name="edit_my_subject_questionnaire"),
