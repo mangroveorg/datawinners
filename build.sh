@@ -14,6 +14,7 @@ function main {
 		init) init_env;;
 		pc) pre_commit;;
 		ut) unit_test;;
+		mut) mangrove_unit_test;;
 		ft) function_test;;
 		st) smoke_test;;
 		couch) recreate_couch_db;;

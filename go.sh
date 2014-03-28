@@ -59,6 +59,11 @@ function unit_test {
 	(cd "$DWROOT_DIR/datawinners" && python manage.py test --verbosity=2 --with-xunit --xunit-file=/tmp/nosetests.xml)
 }
 
+function mangrove_unit_test {
+	echo "running mangrove unit test"
+	(cd ~/virtual_env/datawinners/src/mangrove/mangrove && nosetests -v)
+}
+
 function js_tests {
     echo "running javascript unit tests"
     (cd "$DWROOT_DIR/datawinners/tests/js_test" && ./phantomjs.runner.sh ./jasmine_runner/*.html)
