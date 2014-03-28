@@ -1,6 +1,6 @@
 DW.questionnaire_tab_get_post_data = function(){
     return {'questionnaire-code':$('#questionnaire-code').val(),
-        'question-set':JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2),
+        'question-set':JSON.stringify(ko.toJS(questionnaireViewModel.questions())),
         'project_id': $("#project-id").val(),
         'project_state': 'Active'
     };

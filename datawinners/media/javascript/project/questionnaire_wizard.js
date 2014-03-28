@@ -104,7 +104,7 @@ $(document).ready(function() {
 
     function submit_questionnaire() {
 
-        var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
+        var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()));
 
 
 

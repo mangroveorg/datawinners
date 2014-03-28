@@ -33,7 +33,7 @@ DW.instruction_and_preview.prototype = {
 
     get_post_data: function(){
         return {'questionnaire-code':$('#questionnaire-code').val(),
-            'question-set':JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2),
+            'question-set':JSON.stringify(ko.toJS(questionnaireViewModel.questions())),
             'profile_form':basic_project_info.values(),
             'project_state':"Test"};
     },

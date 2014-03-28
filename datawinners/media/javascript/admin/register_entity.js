@@ -21,7 +21,7 @@ $(document).ready(function() {
             if (DW.viewModel.message.s()){
                 DW.viewModel.message.s(DW.viewModel.message.s().toLowerCase());
             }
-            $.post('/submit', {'format': 'json', 'data': JSON.stringify(ko.toJS(DW.viewModel), null, 1)},
+            $.post('/submit', {'format': 'json', 'data': JSON.stringify(ko.toJS(DW.viewModel))},
                     function(response) {
                         var d = $.parseJSON(response);
                         $('#message').remove();
