@@ -170,12 +170,12 @@ def data_sender_short_codes(request, manager):
 class AssociateDataSendersView(DataSenderActionView):
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        projects = self._get_projects(manager, request)
+        questionnaires = self._get_projects(manager, request)
         projects_name = Set()
-        for project in projects:
+        for questionnaire in questionnaires:
             for id in data_sender_short_codes(request, manager):
-                project.associate_data_sender_to_project(manager, id)
-            projects_name.add(project.name.capitalize())
+                questionnaire.associate_data_sender_to_project(manager, id)
+            projects_name.add(questionnaire.name.capitalize())
         ids = request.POST["ids"].split(';')
         if len(ids):
             UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
@@ -189,19 +189,19 @@ class AssociateDataSendersView(DataSenderActionView):
 class DisassociateDataSendersView(DataSenderActionView):
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        projects = self._get_projects(manager, request)
+        questionnaires = self._get_projects(manager, request)
         projects_name = Set()
         removed_rep_ids = Set()
         selected_rep_ids = data_sender_short_codes(request, manager)
 
-        for project in projects:
+        for questionnaire in questionnaires:
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
-            if project.is_void():
+            if questionnaire.is_void():
                 return HttpResponseRedirect(dashboard_page)
             for rep_id in selected_rep_ids:
-                if rep_id in project.data_senders:
-                    project.delete_datasender(manager, rep_id)
-                    projects_name.add(project.name.capitalize())
+                if rep_id in questionnaire.data_senders:
+                    questionnaire.delete_datasender(manager, rep_id)
+                    projects_name.add(questionnaire.name.capitalize())
                     removed_rep_ids.add(rep_id)
 
         if len(removed_rep_ids):

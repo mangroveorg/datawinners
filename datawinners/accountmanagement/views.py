@@ -108,9 +108,9 @@ def associate_user_with_existing_project(manager, reporter_id):
     rows = get_all_projects(manager)
     for row in rows:
         project_id = row['value']['_id']
-        project = Project.get(manager, project_id)
-        project.data_senders.append(reporter_id)
-        project.save(manager, process_post_update=True)
+        questionnaire = Project.get(manager, project_id)
+        questionnaire.data_senders.append(reporter_id)
+        questionnaire.save(manager, process_post_update=True)
 
 @login_required
 @session_not_expired

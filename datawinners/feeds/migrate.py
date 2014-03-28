@@ -21,9 +21,9 @@ class FeedBuilder:
 
     def project_info(self, form_code):
         form_model = get_form_model_by_code(self.dbm, form_code)
-        project = project_by_form_model_id(self.dbm, form_model.id)
+        questionnaire = project_by_form_model_id(self.dbm, form_model.id)
 
-        return {'project': {'id': project.id, 'name': project.name, 'type': project.entity_type}}
+        return {'project': {'id': questionnaire.id, 'name': questionnaire.name, 'type': questionnaire.entity_type}}
 
     def enriched_dbm(self, survey_response):
         form_model = get_form_model_by_code(self.dbm, survey_response.form_code)

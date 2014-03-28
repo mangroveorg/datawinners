@@ -80,18 +80,18 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(self.project1.devices, ['web', 'sms'])
 
     def test_project_name_should_be_unique(self):
-        project = Project(dbm=self.manager, name=project2_name, goals="Testing",
+        questionnaire = Project(dbm=self.manager, name=project2_name, goals="Testing",
                             devices=['web'], form_code="name_form",
                             fields=[])
         with self.assertRaises(Exception) as cm:
-            project.save(self.manager)
+            questionnaire.save(self.manager)
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 
     def test_project_name_should_be_case_insensitively_unique(self):
-        project = Project(self.manager,name=project2_name.upper(), goals="Testing", devices=['web'])
+        questionnaire = Project(self.manager,name=project2_name.upper(), goals="Testing", devices=['web'])
         with self.assertRaises(Exception) as cm:
-            project.save(self.manager)
+            questionnaire.save(self.manager)
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 
@@ -130,20 +130,20 @@ class TestProjectModel(unittest.TestCase):
             "has_deadline": "True",
             "frequency_period": "month"
         }
-        project = Project(self.manager,name="New project")
-        project.reminder_and_deadline = reminder_and_deadline_for_month
-        project.data_senders = ["rep1", "rep2", "rep3", "rep4", "rep5"]
+        questionnaire = Project(self.manager,name="New project")
+        questionnaire.reminder_and_deadline = reminder_and_deadline_for_month
+        questionnaire.data_senders = ["rep1", "rep2", "rep3", "rep4", "rep5"]
         dbm = Mock(spec=DatabaseManager)
 
         with patch("datawinners.project.models.get_reporters_who_submitted_data_for_frequency_period") as get_reporters_who_submitted_data_for_frequency_period_mock:
             with patch("datawinners.project.models.load_data_senders") as load_data_senders_mock:
                 load_data_senders_mock.return_value = (
-                [{"cols": ["%s" % rep, rep], "short_code": "%s" % rep}  for rep in project.data_senders], ["short_code", "mobile_number"],
+                [{"cols": ["%s" % rep, rep], "short_code": "%s" % rep}  for rep in questionnaire.data_senders], ["short_code", "mobile_number"],
                 ["What is DS Unique ID", "What is DS phone number"])
                 get_reporters_who_submitted_data_for_frequency_period_mock.return_value = [
                     self._create_reporter_entity("rep1"), self._create_reporter_entity("rep3")]
 
-                data_senders = project.get_data_senders_without_submissions_for(date(2011, 11, 5), dbm)
+                data_senders = questionnaire.get_data_senders_without_submissions_for(date(2011, 11, 5), dbm)
 
         self.assertEqual(3, len(data_senders))
         self.assertIn("rep2", [ds["short_code"] for ds in data_senders])

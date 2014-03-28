@@ -76,12 +76,12 @@ def dashboard(request):
     manager = get_database_manager(request.user)
     user_profile = NGOUserProfile.objects.get(user=request.user)
     organization = Organization.objects.get(org_id=user_profile.org_id)
-    project_list = []
+    questionnaire_list = []
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=8)
     for row in rows:
         link = reverse("project-overview", args=(row['value']['_id'],))
-        project = dict(name=row['value']['name'], link=link, id=row['value']['_id'])
-        project_list.append(project)
+        questionnaire = dict(name=row['value']['name'], link=link, id=row['value']['_id'])
+        questionnaire_list.append(questionnaire)
     language = request.session.get("django_language", "en")
     has_reached_sms_limit = organization.has_exceeded_message_limit()
     has_reached_submission_limit = organization.has_exceeded_submission_limit()
@@ -90,7 +90,7 @@ def dashboard(request):
     if "deleted" in request.GET.keys():
         message_box_deleted = [_('The questionnaire you are requesting for has been deleted from the system.')]
     return render_to_response('dashboard/home.html',
-                              {"projects": project_list, 'trial_account': organization.in_trial_mode,
+                              {"projects": questionnaire_list, 'trial_account': organization.in_trial_mode,
                                'has_reached_sms_limit':has_reached_sms_limit, 'message_box_deleted':message_box_deleted,
                                'has_reached_submission_limit':has_reached_submission_limit,
                                'language':language, 'counters':organization.get_counters()}, context_instance=RequestContext(request))

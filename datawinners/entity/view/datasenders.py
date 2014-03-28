@@ -147,14 +147,14 @@ class RegisterDatasenderView(TemplateView):
 
         if message is not None and reporter_id:
             if form.cleaned_data['project_id'] != "":
-                project = Project.get(dbm, form.cleaned_data['project_id'])
-                project.associate_data_sender_to_project(dbm, reporter_id)
-                project = project.name
+                questionnaire = Project.get(dbm, form.cleaned_data['project_id'])
+                questionnaire.associate_data_sender_to_project(dbm, reporter_id)
+                questionnaire = questionnaire.name
             else:
-                project = ""
+                questionnaire = ""
             if not len(form.errors):
                 UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
-                                      detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
+                                      detail=json.dumps(dict({"Unique ID": reporter_id})), project=questionnaire)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
                                   {

@@ -152,13 +152,6 @@ def update_submission_search_for_datasender_edition(entity_doc, dbm):
             survey_response._id, fields_mapping)
 
 
-def _get_form_models_from_projects(dbm, projects):
-    form_models = []
-    for project in projects:
-        form_models.append(FormModel.get(dbm, project.doc['qid']))
-    return form_models
-
-
 def update_submission_search_for_subject_edition(entity_doc, dbm):
     from datawinners.search.submission_query import SubmissionQueryBuilder
 
@@ -166,7 +159,6 @@ def update_submission_search_for_subject_edition(entity_doc, dbm):
     projects = []
     for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True):
             projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc'])))
-    #form_models = _get_form_models_from_projects(dbm, projects)
     for project in projects:
         entity_field_code = None
         for field in project.entity_questions:
