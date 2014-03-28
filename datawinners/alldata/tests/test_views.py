@@ -19,7 +19,7 @@ class TestViews(TestCase):
                                         name = "Project Name",
                                         created = "2012-05-23T02:57:09.788294+00:00"))
 
-        questionnaire = Project(dbm=manager, name="Project Name")
+        project = Project(dbm=manager, name="Project Name")
 
         profile = Mock(spec = NGOUserProfile)
 
@@ -27,7 +27,7 @@ class TestViews(TestCase):
         questionnaire.form_code = "q01"
 
         with patch("datawinners.project.models.Project.get") as get_project:
-            get_project.return_value = questionnaire
+            get_project.return_value = project
             with patch.object(DatabaseManager, "get") as db_manager:
                 db_manager.return_value = questionnaire
                 with patch("django.contrib.auth.models.User.get_profile") as get_profile:

@@ -40,8 +40,8 @@ def get_project_analysis_and_log_link(project_id, questionnaire_code):
     return analysis, disabled, log
 
 
-def get_project_info(manager, questionnaire):
-    project_id = questionnaire['value']['_id']
+def get_project_info(manager, project):
+    project_id = project['value']['_id']
     questionnaire = Project.get(manager, project_id)
     questionnaire_code = questionnaire.form_code
 
@@ -50,7 +50,7 @@ def get_project_info(manager, questionnaire):
     web_submission_link = reverse("web_questionnaire", args=[project_id])
 
     web_submission_link_disabled = 'disable_link'
-    if 'web' in questionnaire['value']['devices']:
+    if 'web' in project['value']['devices']:
         web_submission_link_disabled = ""
 
     create_subjects_link = ''
@@ -59,17 +59,17 @@ def get_project_info(manager, questionnaire):
                                                            web_view=True)
 
     project_info = dict(project_id=project_id,
-                        name=questionnaire['value']['name'],
+                        name=project['value']['name'],
                         qid=questionnaire_code,
-                        created=questionnaire['value']['created'],
+                        created=project['value']['created'],
                         link=(reverse('project-overview', args=[project_id])),
                         log=log, analysis=analysis, disabled=disabled,
                         web_submission_link=web_submission_link,
                         web_submission_link_disabled=web_submission_link_disabled,
                         create_subjects_link=create_subjects_link,
                         entity_type=questionnaire.entity_type,
-                        encoded_name=urlquote(questionnaire['value']['name']),
-                        import_template_file_name=slugify(questionnaire['value']['name']))
+                        encoded_name=urlquote(project['value']['name']),
+                        import_template_file_name=slugify(project['value']['name']))
     return project_info
 
 
