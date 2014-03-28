@@ -175,8 +175,8 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._validate_errored_choice_inputs()
         self._validate_valid_choice_inputs()
         #cleaning up state
+        questionnaire_tab_page.delete_question(11)
         questionnaire_tab_page.delete_question(10)
-        questionnaire_tab_page.delete_question(9)
 
     def _validate_valid_choice_inputs(self):
         questionnaire_tab_page = self.questionnaire_tab_page
@@ -184,7 +184,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.change_nth_option_of_choice(2, "choice2")
         questionnaire_tab_page.change_nth_option_of_choice(3, "choice3")
         questionnaire_tab_page.click_add_question_link()
-        self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 10,
+        self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 11,
                          "Choice question should not have validation errors")
 
     def _validate_errored_choice_inputs(self):
@@ -215,8 +215,8 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._validate_range_for_max_less_than_min_input()
         self._validate_range_for_valid_input()
         #cleaning up state
+        questionnaire_tab_page.delete_question(11)
         questionnaire_tab_page.delete_question(10)
-        questionnaire_tab_page.delete_question(9)
 
     def _validate_range_for_valid_input(self):
         questionnaire_tab_page = self.questionnaire_tab_page
@@ -258,8 +258,8 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._validate_max_length_for_mandatory_entry()
         self._validate_max_length_for_valid_entry()
         #cleaning up state
+        questionnaire_tab_page.delete_question(11)
         questionnaire_tab_page.delete_question(10)
-        questionnaire_tab_page.delete_question(9)
 
     def _validate_max_length_for_invalid_entry(self):
         questionnaire_tab_page = self.questionnaire_tab_page
@@ -474,13 +474,13 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_page.click_add_question_link()
         self._validate_errored_unique_id_input(create_questionnaire_page)
 
-        create_questionnaire_page.delete_question(9)
+        create_questionnaire_page.delete_question(10)
         create_questionnaire_page.click_add_question_link()
         create_questionnaire_page.set_question_title("Unique Id question")
         create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7])
         self._validate_duplicate_unique_id(create_questionnaire_page)
         #cleaning up state
-        create_questionnaire_page.delete_question(9)
+        create_questionnaire_page.delete_question(10)
 
 
     def _validate_errored_unique_id_input(self, create_questionnaire_page):
