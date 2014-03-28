@@ -40,7 +40,7 @@ class AddSubjectTypePage(Page):
         self.driver.find_text_box(NEW_SUBJECT_TB).enter_text(entity_type)
         self.driver.find(ADD_BTN).click()
         if wait:
-            self.driver.wait_until_element_is_not_present(5, by_css("#type_message .ajax_loader"))
+            self.driver.wait_until_element_is_not_present(5, by_css("#type_message .ajax_loader_small"))
         return self
 
     def get_error_message(self):
@@ -79,8 +79,8 @@ class AddSubjectTypePage(Page):
         if self.driver.is_element_present(MESSAGES_CONTAINER):
             return self.driver.find(MESSAGES_CONTAINER).text
         return False
-    def click_one_subject_type(self):
-        self.driver.find(CHECK_ONE_SUBJECT_TYPE).click()
+    def click_subject_type(self, subject_type):
+        self.driver.find(by_xpath("//input[@value='%s']"%subject_type)).click()
         return self
 
     def select_delete_action(self, confirm=False, cancel=False):

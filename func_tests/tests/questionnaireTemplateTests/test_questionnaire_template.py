@@ -4,7 +4,7 @@ from nose.plugins.attrib import attr
 import sys
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
-from framework.utils.common_utils import by_css
+from framework.utils.common_utils import by_css, random_string
 from mangrove.datastore.database import _delete_db_and_remove_db_manager
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
@@ -29,5 +29,6 @@ class TestProjectCreationFromTemplate(HeadlessRunnerTest):
         create_questionnaire_page = create_questionnaire_options_page.continue_to_questionnaire_page()
         create_questionnaire_page.type_project_name(NEW_PROJECT_DATA)
         self.assertEqual(create_questionnaire_page.get_existing_questions(), SELECTED_TEMPLATE_QUESTIONS)
+        self.driver.find(by_css("#questionnaire-code")).send_keys(random_string(5))
         project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
         self.assertIsNotNone(project_overview_page.get_project_title())
