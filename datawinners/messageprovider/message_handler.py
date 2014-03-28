@@ -48,7 +48,7 @@ def _get_error_message(keys, response):
     is_unique_id_error_present, unique_id_type, invalid_unique_id_code = _is_unique_id_not_present_error(error)
     if is_unique_id_error_present:
         return get_exception_message_for(
-            DataObjectNotFound(unique_id_type, 'Unique Identification Number(ID)', invalid_unique_id_code),
+            DataObjectNotFound(unique_id_type, invalid_unique_id_code, unique_id_type),
             channel='sms')
     else:
         error_text = "%s %s" % (_("singular_question"), keys[0])
