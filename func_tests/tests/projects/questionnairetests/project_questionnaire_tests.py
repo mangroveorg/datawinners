@@ -85,6 +85,8 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._validate_word_answer_type()
         self._validate_number_answer_type()
         self._validate_multiple_choice_type()
+        self._validate_unique_id_type()
+
 
     @attr('functional_test')
     def test_adding_questions_with_valid_answer_types(self):
@@ -463,3 +465,33 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
     def goto_dashboard(self):
         self.driver.go_to(url("/dashboard/"))
         return DashboardPage(self.driver)
+
+    def _validate_unique_id_type(self):
+        create_questionnaire_page = self.create_questionnaire_page
+        create_questionnaire_page.click_add_question_link()
+        create_questionnaire_page.set_question_title("Unique Id question")
+        create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[6])
+        create_questionnaire_page.click_add_question_link()
+        self._validate_errored_unique_id_input(create_questionnaire_page)
+
+        create_questionnaire_page.delete_question(9)
+        create_questionnaire_page.click_add_question_link()
+        create_questionnaire_page.set_question_title("Unique Id question")
+        create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7])
+        self._validate_duplicate_unique_id(create_questionnaire_page)
+        #cleaning up state
+        create_questionnaire_page.delete_question(9)
+
+
+    def _validate_errored_unique_id_input(self, create_questionnaire_page):
+        is_visible, message = create_questionnaire_page.get_unique_id_error_msg()
+        self.assertTrue(is_visible, "Mandatory validaton error msg for unique id not visible")
+        self.assertEqual(message, MANDATORY_FIELD_ERROR_MESSAGE, "Error message is incorrect for choice1")
+
+    def _validate_duplicate_unique_id(self, create_questionnaire_page):
+        new_type_name = fetch_(NEW_UNIQUE_ID_TYPE, from_(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7]))
+
+        create_questionnaire_page.add_new_unique_id_type(new_type_name)
+        is_visible, message = create_questionnaire_page.get_new_unique_id_error_msg()
+        self.assertTrue(is_visible)
+        self.assertEqual(message, '%s already registered as a subject type.' % new_type_name)

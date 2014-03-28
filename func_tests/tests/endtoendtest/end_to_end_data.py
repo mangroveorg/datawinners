@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners.messageprovider.tests.test_message_handler import THANKS
+from framework.utils.common_utils import random_number
 from tests.websubmissiontests.web_submission_data import QCODE, ANSWER, TEXT, SELECT, CHECKBOX
 
 WELCOME_MESSAGE = 'message'
@@ -86,6 +87,10 @@ SUBJECT_COUNT = "subject_count"
 DATA_SENDER_COUNT = "data_sender_count"
 QUESTIONNAIRE = "questionnaire"
 REMINDERS = "reminders"
+
+NEW_UNIQUE_ID_TYPE = "new_unique_id_type"
+EXISTING_UNIQUE_ID_TYPE = "existing_unique_id_type"
+UNIQUE_ID = "unique_id"
 
 SENDER = "from"
 RECEIVER = "to"
@@ -176,12 +181,13 @@ VALID_DATA_FOR_REMINDER = {PAGE_TITLE: "Review & Test"}
 
 QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                       DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
-                      QUESTIONS: [{QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
+                      QUESTIONS: [
+                                {QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
                                    DATE_FORMAT: DD_MM_YYYY},
-                                  {QUESTION: u"Water Level", CODE: u"q4", TYPE: NUMBER, MIN: u"1", MAX: u"1000"},
-                                  {QUESTION: u"Date of report in MM.YYY format", CODE: u"q5", TYPE: DATE,
+                                {QUESTION: u"Water Level", CODE: u"q4", TYPE: NUMBER, MIN: u"1", MAX: u"1000"},
+                                {QUESTION: u"Date of report in MM.YYY format", CODE: u"q5", TYPE: DATE,
                                    DATE_FORMAT: MM_YYYY},
-                                  {QUESTION: u"Date of report in MM.DD.YYY format", CODE: u"q6", TYPE: DATE,
+                                {QUESTION: u"Date of report in MM.DD.YYY format", CODE: u"q6", TYPE: DATE,
                                    DATE_FORMAT: MM_DD_YYYY},
                                   {QUESTION: u"Color of Water", CODE: u"q7", TYPE: LIST_OF_CHOICES,
                                    CHOICE: ["LIGHT RED", "LIGHT YELLOW", "DARK YELLOW"],
@@ -191,7 +197,12 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                                   {QUESTION: u"Bacterias in water", CODE: u"q9", TYPE: LIST_OF_CHOICES,
                                    CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
                                    ALLOWED_CHOICE: MULTIPLE_ANSWERS},
-                                  {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO}],
+                                  {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO},
+                                 {QUESTION: u"Unique Id question", CODE: u"q11", TYPE: UNIQUE_ID,
+                                      NEW_UNIQUE_ID_TYPE: 'gaming', EXISTING_UNIQUE_ID_TYPE: ''},
+                                 {QUESTION: u"Unique Id question 2", CODE: u"q12", TYPE: UNIQUE_ID,
+                                      NEW_UNIQUE_ID_TYPE: 'school', EXISTING_UNIQUE_ID_TYPE: ''},
+                      ],
                       CHARACTER_REMAINING: "69 / 160 characters used (1 SMS)",
                       PAGE_TITLE: "Data Senders"}
 
@@ -206,6 +217,8 @@ WEB_ANSWERS = [
     {QCODE: 'q7', ANSWER: 'web admin', TYPE: TEXT},
     {QCODE: 'q8', ANSWER: ['b'], TYPE: CHECKBOX},
     {QCODE: 'q9', ANSWER: '12.0,12.0', TYPE: TEXT},
+    {QCODE: 'q10', ANSWER: 'game1', TYPE: SELECT},
+    {QCODE: 'q11', ANSWER: 'school1', TYPE: SELECT},
 ]
 EDITED_WEB_ANSWERS = [
     #{QCODE: 'q1', ANSWER: 'Test (wp01)', TYPE: SELECT},
@@ -231,11 +244,11 @@ SUMMARY_DATA_LOG = {
     UNIQUE_VALUE: "25.09.1999"
 }
 SMS_DATA_LOG = {
-    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae,Bacteroids 27.178057,-78.007789",
+    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae,Bacteroids 27.178057,-78.007789 Strike game1 last school1",
     UNIQUE_VALUE: "Mr.Tessy"}
 
 WEB_ANSWER_LOG = {
-    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 25.12.2010 5.0 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0",
+    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 25.12.2010 5.0 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0 Strike game1 last school1",
     UNIQUE_VALUE: 'web admin'
 }
 
@@ -246,7 +259,7 @@ EDITED_WEB_ANSWER_LOG = {
 
 VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                       RECEIVER: "",
-                      SMS: "WPS01 11.10.2011 98 04.2011 04.12.2011 c Mr.Tessy ab 27.178057,-78.007789",
+                      SMS: "WPS01 11.10.2011 98 04.2011 04.12.2011 c Mr.Tessy ab 27.178057,-78.007789 game1 school1",
                       SUCCESS_MESSAGE: 'Thank you'}
 
 VALID_DATA_FOR_SMS_LIGHT_BOX = {
@@ -274,11 +287,29 @@ INVALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
                                 GPS: "48.955267  1.816013",
                                 SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}
 
-VALID_DATA_FOR_SUBJECT_REG = {ENTITY_TYPE: "Gaming",
+VALID_DATA_FOR_SUBJECT_REG = {ENTITY_TYPE: "Hospital",
                           SUB_UNIQUE_ID: None,
+                          SUB_FIRST_NAME: "clinic",
+                          SUB_LAST_NAME: "special",
+                          LOCATION: "India",
+                          GEO_CODE: "47.411631 28.369885",
+                          MOBILE_NUMBER: random_number(8),
+                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
+
+VALID_DATA_FOR_SUB_GAMING = {ENTITY_TYPE: "gaming",
+                          SUB_UNIQUE_ID: 'game1',
                           SUB_FIRST_NAME: "Counter",
                           SUB_LAST_NAME: "Strike",
                           LOCATION: "India",
                           GEO_CODE: "47.411631 28.369885",
-                          MOBILE_NUMBER: "123456789",
+                          MOBILE_NUMBER: random_number(8),
+                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
+
+VALID_DATA_FOR_SUBJECT_SCHOOL = {ENTITY_TYPE: "school",
+                          SUB_UNIQUE_ID: 'school1',
+                          SUB_FIRST_NAME: "first",
+                          SUB_LAST_NAME: "last",
+                          LOCATION: "India",
+                          GEO_CODE: "47.411631 28.369885",
+                          MOBILE_NUMBER: "9900099000",
                           SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}

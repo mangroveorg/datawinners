@@ -13,19 +13,22 @@ from framework.utils.common_utils import generateId, CommonUtilities
 from selenium.common.exceptions import NoSuchElementException
 from tests.testsettings import UI_TEST_TIMEOUT
 from pages.page import Page
+import time
 
 MANDATORY_FIELD_ERROR_MESSAGE = "This field is required."
+
 
 class CreateQuestionnairePage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
         self.SELECT_FUNC = {
-                                WORD: self.configure_word_type_question,
-                                NUMBER: self.configure_number_type_question,
-                                DATE: self.configure_date_type_question,
-                                LIST_OF_CHOICES: self.configure_list_of_choices_type_question,
-                                GEO: self.configure_geo_type_question
-                            }
+            WORD: self.configure_word_type_question,
+            NUMBER: self.configure_number_type_question,
+            DATE: self.configure_date_type_question,
+            LIST_OF_CHOICES: self.configure_list_of_choices_type_question,
+            GEO: self.configure_geo_type_question,
+            UNIQUE_ID: self.configure_unique_id_type_question
+        }
 
     def create_questionnaire_with(self, project_data, questionnaire_data):
         """
@@ -198,7 +201,7 @@ class CreateQuestionnairePage(Page):
         for choice in choices:
             if index > 1:
                 self.driver.find(ADD_CHOICE_LINK).click()
-                box = self.driver.find_text_box(by_id("choice_text%d" % (index-1)))
+                box = self.driver.find_text_box(by_id("choice_text%d" % (index - 1)))
                 box.send_keys(choice)
             index += 1
         box = self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[1]" + CHOICE_TB_XPATH_LOCATOR))
@@ -210,6 +213,38 @@ class CreateQuestionnairePage(Page):
             self.driver.find_radio_button(MULTIPLE_ANSWER_RB).click()
         return self
 
+    def select_unique_id_type_from_list(self, unique_id_type):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, UNIQUE_ID_CHOICE_BOX, True).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, UNIQUE_ID_COMBO_BOX, True)
+
+        for element in self.driver.find_elements_(UNIQUE_ID_TYPE_LIST):
+            if element.text == unique_id_type:
+                element.click()
+
+    def add_new_unique_id_type(self, new_unique_id_type):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, UNIQUE_ID_CHOICE_BOX, True).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, UNIQUE_ID_COMBO_BOX, True)
+
+        self.driver.find_text_box(NEW_UNIQUE_ID_TEXT).enter_text(new_unique_id_type)
+        self.driver.find(NEW_UNIQUE_ID_ADD_BUTTON).click()
+
+    def configure_unique_id_type_question(self, question_data):
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(UNIQUE_ID_OPTION)
+        existing_unique_id_type = fetch_(EXISTING_UNIQUE_ID_TYPE, from_(question_data))
+        new_unique_id_type = fetch_(NEW_UNIQUE_ID_TYPE, from_(question_data))
+
+        if existing_unique_id_type:
+            self.select_unique_id_type_from_list(existing_unique_id_type)
+            return self
+        elif new_unique_id_type:
+            self.add_new_unique_id_type(new_unique_id_type)
+            time.sleep(2)
+            for element in self.driver.find_elements_(UNIQUE_ID_TYPE_LIST):
+                if element.text == new_unique_id_type:
+                    element.click()
+            return self
+        else:
+            return self
 
     def configure_geo_type_question(self, question_data):
         """
@@ -430,7 +465,7 @@ class CreateQuestionnairePage(Page):
         return {'code': code, 'text': text}
 
     def delete_option_for_multiple_choice_question(self, index):
-        self.driver.find(by_id("delete_choice%d" % (index-1))).click()
+        self.driver.find(by_id("delete_choice%d" % (index - 1))).click()
 
 
     def change_date_type_question(self, date_format):
@@ -463,8 +498,8 @@ class CreateQuestionnairePage(Page):
         Function change a text of one question
 
         """
-        self.driver.find_elements_(by_css(".questions li"))[index-1].click()
-        self.driver.find_elements_(by_css(".questions li .delete_link"))[index-1].click()
+        self.driver.find_elements_(by_css(".questions li"))[index - 1].click()
+        self.driver.find_elements_(by_css(".questions li .delete_link"))[index - 1].click()
 
     def get_question_type(self, index):
         question_locator = QUESTION_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
@@ -473,10 +508,10 @@ class CreateQuestionnairePage(Page):
         return self.driver.find(CURRENT_QUESTION_TYPE_LOCATOR).get_attribute("value")
 
     def get_nth_option_of_choice(self, index):
-        return self.driver.find(by_id("choice_text%d" % (index-1)))
+        return self.driver.find(by_id("choice_text%d" % (index - 1)))
 
     def change_nth_option_of_choice(self, index, new_text):
-        self.driver.find_text_box(by_id("choice_text%d" % (index-1))).enter_text(new_text)
+        self.driver.find_text_box(by_id("choice_text%d" % (index - 1))).enter_text(new_text)
 
     def change_number_question_limit(self, max_value, min_value=0):
         self.set_min_range_limit(min_value)
@@ -578,11 +613,17 @@ class CreateQuestionnairePage(Page):
         return self._get_validation_message_for("questionnaire_code_validation_message")
 
     def get_choice_error_message(self, index):
-        return self._get_validation_message_for("choice_validation_message%d" % (index-1))
+        return self._get_validation_message_for("choice_validation_message%d" % (index - 1))
 
     def get_duplicate_questionnaire_code_error_message(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#project-message-label .error_message"))
         return self.driver.find_element_by_css_selector("#project-message-label .error_message").text
+
+    def get_unique_id_error_msg(self):
+        return self._get_validation_message_for("unique_id_type_validation_message")
+
+    def get_new_unique_id_error_msg(self):
+        return self._get_validation_message_for("new_type_validation_message")
 
     def get_questionnaire_language(self):
         return Select(self.driver.find(by_name("project_language"))).first_selected_option.text
@@ -599,6 +640,7 @@ class CreateQuestionnairePage(Page):
 
     def back_to_questionnaire_creation_page(self):
         from pages.createprojectpage.questionnaire_creation_options_page import QuestionnaireCreationOptionsPage
+
         self.driver.find_element_by_id("back_to_create_options").click()
         QuestionnaireModifiedDialog(self.driver).ignore_changes()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(".//*[@id='project_profile']/h5"), True)

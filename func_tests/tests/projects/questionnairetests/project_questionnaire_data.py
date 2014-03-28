@@ -1,5 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners.messageprovider.tests.test_message_handler import THANKS
+from framework.utils.common_utils import random_number
+from mangrove.utils.test_utils.database_utils import uniq
 
 PROJECT_NAME = "project_name"
 PAGE_TITLE = "page_title"
@@ -23,6 +25,7 @@ WORD = "word"
 DATE = "date"
 LIST_OF_CHOICES = "list_of_choices"
 GEO = "geo"
+UNIQUE_ID = "unique_id"
 DD_MM_YYYY = "dd.mm.yyyy"
 MM_DD_YYYY = "mm.dd.yyyy"
 MM_YYYY = "mm.yyyy"
@@ -39,6 +42,8 @@ PROJECT_BACKGROUND = "project_background"
 REPORT_TYPE = "report_type"
 SUBJECT = "subject"
 DEVICES = "devices"
+NEW_UNIQUE_ID_TYPE = "new_unique_id_type"
+EXISTING_UNIQUE_ID_TYPE = "existing_unique_id_type"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 
@@ -167,6 +172,10 @@ QUESTIONS_WITH_INVALID_ANSWER_DETAILS =[
                                                    u"Neurological disorders "],
                                           ALLOWED_CHOICE: MULTIPLE_ANSWERS},
                                          {QUESTION: u"What is the GPS codé for clinic", CODE: u"q7", TYPE: GEO},
+                                         {QUESTION: u"Unique Id question", CODE: u"q8", TYPE: UNIQUE_ID,
+                                          NEW_UNIQUE_ID_TYPE: '', EXISTING_UNIQUE_ID_TYPE: ''},
+                                         {QUESTION: u"Unique Id question", CODE: u"q8", TYPE: UNIQUE_ID,
+                                          NEW_UNIQUE_ID_TYPE: 'new type'+random_number(3), EXISTING_UNIQUE_ID_TYPE: ''},
                                      ]
 
 EDIT_PROJECT_DATA = {
@@ -175,7 +184,7 @@ EDIT_PROJECT_DATA = {
 
 EDIT_PROJECT_QUESTIONNAIRE_DATA = {
                       QUESTIONNAIRE_CODE: None, GEN_RANDOM: False,
-                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
+                      #DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
                       QUESTIONS: [{QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
                                    DATE_FORMAT: DD_MM_YYYY},
                                   {QUESTION: u"Water Level", CODE: u"q4", TYPE: NUMBER, MIN: u"1", MAX: u"1000"},
@@ -191,7 +200,10 @@ EDIT_PROJECT_QUESTIONNAIRE_DATA = {
                                   {QUESTION: u"Bacterias in water", CODE: u"q9", TYPE: LIST_OF_CHOICES,
                                    CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
                                    ALLOWED_CHOICE: MULTIPLE_ANSWERS},
-                                  {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO}],
+                                  {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO},
+                                 {QUESTION: u"Unique Id question", CODE: u"q11", TYPE: UNIQUE_ID,
+                                  NEW_UNIQUE_ID_TYPE: 'new type'+random_number(3), EXISTING_UNIQUE_ID_TYPE: ''},
+                                  ],
                       CHARACTER_REMAINING: "69 / 160 characters used (1 SMS)",
                       PAGE_TITLE: "Data Senders"
                      }

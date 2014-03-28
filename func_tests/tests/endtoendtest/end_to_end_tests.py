@@ -40,12 +40,11 @@ from pages.alldatasenderspage.all_data_senders_locator import DELETE_BUTTON as C
 from tests.registrationtests.trial_registration_tests import register_and_get_email_for_trial
 from tests.testsettings import UI_TEST_TIMEOUT
 
+
 def add_trial_organization_and_login(driver):
     registration_confirmation_page, email = register_and_get_email_for_trial(driver)
     activate_account(driver, email)
     return email
-
-
 
 
 def activate_account(driver, email):
@@ -68,6 +67,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
 
     def tearDown(self):
         import sys
+
         exception_info = sys.exc_info()
         if exception_info != (None, None, None):
             import os
@@ -146,7 +146,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.assertRegexpMatches(submission_log_page.get_submission_message(sms_log),
                                  fetch_(SUBMISSION, from_(sms_log)))
 
-    def verify_individual_report_project_creation(self):
+    def verify_project_creation(self):
         global_navigation = GlobalNavigationPage(self.driver)
         dashboard_page = global_navigation.navigate_to_dashboard_page()
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
@@ -154,14 +154,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
         create_questionnaire_page.create_questionnaire_with(VALID_DATA_FOR_PROJECT, QUESTIONNAIRE_DATA)
 
-
-        #create_project_page.select_report_type(VALID_DATA_FOR_PROJECT)
-        #self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE2[ENTITY_TYPE])
-        #self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE1[ENTITY_TYPE])
-        #create_questionnaire_page = self.create_project(create_project_page)
-        #self.project_name = self.create_questionnaire(create_questionnaire_page)
-
-        #create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
         index = 1
         for question in fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA)):
             question_link_text = fetch_(QUESTION, from_(question))
@@ -170,16 +162,24 @@ class TestApplicationEndToEnd(unittest.TestCase):
         project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
         self.project_name = project_overview_page.get_project_title()
 
-
-    def add_subject(self):
+    def add_subject(self, subject_type, subject_data):
         global_navigation = GlobalNavigationPage(self.driver)
         global_navigation.navigate_to_all_subject_page()
         all_subject_type_page = AllSubjectTypePage(self.driver)
-        add_subject_page = all_subject_type_page.add_new_subject_type("Gaming").select_subject_type("Gaming")\
+        add_subject_page = all_subject_type_page.add_new_subject_type(subject_type).select_subject_type(subject_type) \
             .navigate_to_register_subject_page()
-        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT_REG)
+        add_subject_page.add_subject_with(subject_data)
         add_subject_page.submit_subject()
-        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT_REG)), add_subject_page.get_flash_message())
+        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(subject_data)), add_subject_page.get_flash_message())
+
+    def register_new_subject_of_type(self, subject_type, subject_data):
+        global_navigation = GlobalNavigationPage(self.driver)
+        global_navigation.navigate_to_all_subject_page()
+        all_subject_type_page = AllSubjectTypePage(self.driver)
+        add_subject_page = all_subject_type_page.select_subject_type(subject_type).navigate_to_register_subject_page()
+        add_subject_page.add_subject_with(subject_data)
+        add_subject_page.submit_subject()
+        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(subject_data)), add_subject_page.get_flash_message())
 
     def add_edit_datasender(self):
         global_navigation = GlobalNavigationPage(self.driver)
@@ -191,7 +191,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_WITH_EMAIL)), success_msg)
         add_data_sender_page.navigate_to_datasender_page()
         all_data_sender_page = AllDataSendersPage(self.driver)
-
 
         rep_id = success_msg.replace(VALID_DATA_WITH_EMAIL[SUCCESS_MESSAGE], '')
         all_data_sender_page.select_a_data_sender_by_id(rep_id)
@@ -210,9 +209,9 @@ class TestApplicationEndToEnd(unittest.TestCase):
 
     def verify_admin_present_in_my_datasenders_page(self):
         global_navigation = GlobalNavigationPage(self.driver)
-        all_project_page=global_navigation.navigate_to_view_all_project_page()
-        project_overview_page=all_project_page.navigate_to_project_overview_page(self.project_name)
-        my_datasenders_page=project_overview_page.navigate_to_datasenders_page()
+        all_project_page = global_navigation.navigate_to_view_all_project_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page(self.project_name)
+        my_datasenders_page = project_overview_page.navigate_to_datasenders_page()
         my_datasenders_page.search_with(self.email)
         self.assertTrue(
             self.driver.is_element_present(my_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
@@ -301,9 +300,15 @@ class TestApplicationEndToEnd(unittest.TestCase):
     def test_end_to_end(self):
         self.email = None
         organization_sms_tel_number = self.do_org_registartion()
-        self.verify_individual_report_project_creation()
-        self.add_subject()
+
+        self.verify_project_creation()
+
+        self.register_new_subject_of_type('Gaming', VALID_DATA_FOR_SUB_GAMING)
+        self.register_new_subject_of_type('School', VALID_DATA_FOR_SUBJECT_SCHOOL)
+
+        self.add_subject('Hospital', VALID_DATA_FOR_SUBJECT_REG)
         self.add_edit_delete_subject()
+
         ds_email = self.add_edit_datasender()
         self.verify_admin_present_in_my_datasenders_page()
         self.verify_submission_via_sms(organization_sms_tel_number)
@@ -311,7 +316,3 @@ class TestApplicationEndToEnd(unittest.TestCase):
         #self.admin_edit_delete_submissions()
         time.sleep(2)
         self.delete_project()
-
-        #project_overview_page = self.verify_summary_report_project_creation()
-        #project_overview_page.navigate_to_web_questionnaire_page().fill_and_submit_answer(ANSWER_FOR_SUMMARY_PROJECT)
-        #self.verify_submission(SUMMARY_DATA_LOG, self.summary_project_name)

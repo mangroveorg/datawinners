@@ -1,6 +1,7 @@
 import unittest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
+from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage, login
@@ -8,7 +9,7 @@ from pages.projectspage.projects_page import ProjectsPage
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS, DIALOG_PROJECT_DATA
+from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS, DIALOG_PROJECT_DATA, NEW_UNIQUE_ID_TYPE
 
 
 class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
@@ -43,12 +44,14 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_page.submit_errored_questionnaire()
         create_questionnaire_page.back_to_questionnaire_creation_page().select_blank_questionnaire_creation_option()
         self.assertEqual(create_questionnaire_page.get_questionnaire_title(), "", "Questionnaire title should be blank")
-        self.assertEqual(create_questionnaire_page.get_existing_questions_count(), 0, "No questions should be present for a blank questionnaire")
-        self.assertTrue(create_questionnaire_page.get_select_or_edit_question_message().is_displayed(), "No question should be selected by default")
+        self.assertEqual(create_questionnaire_page.get_existing_questions_count(), 0,
+                         "No questions should be present for a blank questionnaire")
+        self.assertTrue(create_questionnaire_page.get_select_or_edit_question_message().is_displayed(),
+                        "No question should be selected by default")
 
     @attr('functional_test')
     def test_submitting_a_blank_questionnaire(self):
-        self.global_navigation.navigate_to_view_all_project_page().navigate_to_create_project_page()\
+        self.global_navigation.navigate_to_view_all_project_page().navigate_to_create_project_page() \
             .select_blank_questionnaire_creation_option()
         create_questionnaire_page = self.create_questionnaire_page
         create_questionnaire_page.set_questionnaire_title("")
@@ -77,6 +80,7 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         self._validate_word_answer_type()
         self._validate_number_answer_type()
         self._validate_multiple_choice_type()
+        self._validate_unique_id_type()
 
     @attr('functional_test')
     def test_submitting_a_questionnaire_with_already_existing_questionnaire_code(self):
@@ -248,7 +252,32 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_page.delete_question(2)
         create_questionnaire_page.delete_question(1)
 
+    def _validate_unique_id_type(self):
+        create_questionnaire_page = self.create_questionnaire_page
+        create_questionnaire_page.click_add_question_link()
+        create_questionnaire_page.set_question_title("Unique Id question")
+        create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[6])
+        create_questionnaire_page.click_add_question_link()
+        self._validate_errored_unique_id_input(create_questionnaire_page)
+
+        create_questionnaire_page.delete_question(1)
+        create_questionnaire_page.click_add_question_link()
+        create_questionnaire_page.set_question_title("Unique Id question")
+        create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7])
+        self._validate_duplicate_unique_id(create_questionnaire_page)
+        #cleaning up state
+        create_questionnaire_page.delete_question(1)
 
 
+    def _validate_errored_unique_id_input(self, create_questionnaire_page):
+        is_visible, message = create_questionnaire_page.get_unique_id_error_msg()
+        self.assertTrue(is_visible, "Mandatory validaton error msg for unique id not visible")
+        self.assertEqual(message, MANDATORY_FIELD_ERROR_MESSAGE, "Error message is incorrect for choice1")
 
+    def _validate_duplicate_unique_id(self, create_questionnaire_page):
+        new_type_name = fetch_(NEW_UNIQUE_ID_TYPE, from_(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7]))
 
+        create_questionnaire_page.add_new_unique_id_type(new_type_name)
+        is_visible, message = create_questionnaire_page.get_new_unique_id_error_msg()
+        self.assertTrue(is_visible)
+        self.assertEqual(message, '%s already registered as a subject type.' % new_type_name)

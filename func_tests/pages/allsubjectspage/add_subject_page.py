@@ -28,7 +28,7 @@ class AddSubjectPage(Page):
         short_name = fetch_(SUB_UNIQUE_ID, from_(addition_data))
         if short_name is not None:
             self.driver.find(AUTO_GENERATE_CB).click()
-            short_name = short_name + generateId()
+            short_name = short_name
             self.driver.find_text_box(UNIQUE_ID_TB).enter_text(short_name)
         self.driver.find_text_box(FNAME_TB).enter_text(
             fetch_(SUB_FIRST_NAME, from_(addition_data)))
