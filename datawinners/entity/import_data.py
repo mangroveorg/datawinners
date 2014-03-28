@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
 import logging
+import re
 
 from django.conf import settings
 from django.db.utils import IntegrityError
@@ -244,8 +245,10 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
         elif 'longer' in value:
             errors.append(_("Answer %s for question %s is longer than allowed") % (answer, question_label))
 
-        elif 'Subject does not matched' in value:
-            errors.append(_("The unique ID %s of the Subject does not match with any existing Subject ID. Please correct and import again.") % (answer))
+        elif re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", value):
+            re_match = re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", value)
+            unique_id_type = re_match.group(1)
+            errors.append(_("The unique ID %s of the %s does not match with any existing Identification number. Please correct and import again.") % (answer, unique_id_type))
 
         elif 'Data Sender ID not matched' in value:
             errors.append(_("The unique ID %s of the Data Sender does not match with any existing Data Sender ID. Please correct and import again.") % (answer))

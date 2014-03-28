@@ -36,7 +36,7 @@ def index_of_question(form_model, question_code):
 
 
 def _is_unique_id_not_present_error(error):
-    re_match = re.match(r"(\w+) with Unique Identification Number \(ID\) = (\w+) not found", error)
+    re_match = re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", error)
     if re_match:
         return True, re_match.group(1), re_match.group(2)
     else:
