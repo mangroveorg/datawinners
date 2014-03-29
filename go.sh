@@ -47,6 +47,7 @@ function prepare_env {
 }
 
 function restore_couchdb_and_postgres {
+  	check_host_is_dev && \
   	restore_postgresql_database && \
   	recreate_couch_db && \
   	recreate_feed_db && \
@@ -70,10 +71,12 @@ function js_tests {
 }
 
 function recreate_couch_db {
+    check_host_is_dev && \
 	(cd "$DWROOT_DIR/datawinners" && python manage.py recreatedb)
 }
 
 function recreate_feed_db {
+    check_host_is_dev && \
 	(cd "$DWROOT_DIR/datawinners" && python manage.py recreatefeeddb)
 }
 
@@ -109,6 +112,7 @@ function smoke_test {
 }
 
 function restore_postgresql_database {
+	check_host_is_dev && \
 	echo "recreating database"
 	dropdb mangrove && createdb -T template_postgis mangrove && \
 	(cd "$DWROOT_DIR/datawinners" && python manage.py syncdb --noinput && python manage.py migrate && python manage.py loadshapes)
@@ -128,6 +132,15 @@ function compile_messages {
 
 function run_server {
     cd "$DWROOT_DIR/datawinners" && python manage.py runserver 0.0.0.0:8000
+}
+
+function check_host_is_dev {
+    if [[ "$HOSTNAME" = *dwdev* ]]
+    then
+      return 0
+    else
+      return 1
+    fi
 }
 
 function show_help {
