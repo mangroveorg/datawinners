@@ -15,7 +15,7 @@ from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
 
 
-QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "addtest", GEN_RANDOM: True,
+QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "add", GEN_RANDOM: True,
                       DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
                       QUESTIONS: [{QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
                                    DATE_FORMAT: DD_MM_YYYY}]}

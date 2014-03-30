@@ -43,7 +43,7 @@ class CreateQuestionnairePage(Page):
         questionnaire_code = fetch_(QUESTIONNAIRE_CODE, from_(questionnaire_data))
         gen_ramdom = fetch_(GEN_RANDOM, from_(questionnaire_data))
         if gen_ramdom:
-            questionnaire_code = questionnaire_code + generateId()
+            questionnaire_code = questionnaire_code + generateId(3)
         if fetch_(QUESTIONNAIRE_CODE, from_(questionnaire_data)):
             self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).enter_text(questionnaire_code)
         for question in fetch_(QUESTIONS, from_(questionnaire_data)):

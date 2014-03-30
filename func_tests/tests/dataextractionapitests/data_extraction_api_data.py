@@ -60,7 +60,7 @@ QUESTIONNAIRE_CODE = "questionnaire_code"
 QUESTION = "question"
 QUESTIONS = "questions"
 
-QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: u"cli005", GEN_RANDOM: True,
+QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: u"c05", GEN_RANDOM: True,
                                             QUESTIONS: [{QUESTION: "How many grades did you get last year?", CODE: "GRADES",
                                                  TYPE: NUMBER, MIN: "1", MAX: "100"}]}
 QUESTION_NAME = QUESTIONNAIRE_DATA[QUESTIONS][0][QUESTION]
