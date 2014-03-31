@@ -174,7 +174,7 @@ def rename_project(request, project_id):
 
     if (questionnaire.name != new_project_name):
         questionnaire.name=new_project_name
-        questionnaire.save(manager, process_post_update=True)
+        questionnaire.save(process_post_update=True)
         UserActivityLog().log(request, action=RENAMED_PROJECT, project=questionnaire.name)
     return HttpResponse(json.dumps(1), content_type='application/json')
 
