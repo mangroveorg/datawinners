@@ -62,6 +62,9 @@ class TestSubmissionLog(HeadlessRunnerTest):
                                              questionnaire_data=DATE_PROJECT_QUESTIONNAIRE_DATA, monthly=False):
         self._create_project(project_data, questionnaire_data, monthly)
         project_name, questionnaire_code = self._get_project_details()
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        all_datasenders_page = AllDataSendersPage(self.driver)
+        all_datasenders_page.associate_datasender_to_projects("rep8", [project_name])
         self._submit_sms_data(questionnaire_code, monthly=monthly)
         return project_name
 

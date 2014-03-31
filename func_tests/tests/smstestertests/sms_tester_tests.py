@@ -71,3 +71,8 @@ class TestSMSTester(unittest.TestCase):
     def test_sms_player_for_unregistered_subject_and_invalid_geo_code(self):
         self.assertEqual(send_sms_with(UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA),
                          fetch_(ERROR_MSG, from_(UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA)))
+
+    @attr('functional_test')
+    def test_should_not_allow_not_linked_datasender_to_submit_data(self):
+        self.assertEqual(send_sms_with(UNAUTHORIZED_DATASENDER),
+                         fetch_(ERROR_MSG, from_(UNAUTHORIZED_DATASENDER)))

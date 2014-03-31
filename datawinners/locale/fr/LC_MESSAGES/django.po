@@ -4733,3 +4733,6 @@ msgstr "Type(s) de Numéro d'Identification supprimé(s) avec succès."
 
 msgid "Select an Identification Number Type"
 msgstr "Sélectionnez un Type de Numéro d'Identification"
+
+msgid "Error. You are not authorized to submit data to this Questionnaire. Please contact your project manager."
+msgstr "Erreur. Vous n'êtes pas autorisé à soumettre des données pour ce Questionnaire. Veuillez contacter votre Gestionnaire de projet."

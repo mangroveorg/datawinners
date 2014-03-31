@@ -4516,3 +4516,6 @@ msgstr ""
 
 msgid "Select an Identification Number Type"
 msgstr ""
+
+msgid "Error. You are not authorized to submit data to this Questionnaire. Please contact your project manager."
+msgstr ""

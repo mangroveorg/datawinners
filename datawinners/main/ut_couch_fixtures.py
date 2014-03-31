@@ -1398,7 +1398,7 @@ def load_data():
     create_trial_organization('chinatwu2@gmail.com', 'COJ00001', True)
     create_trial_organization('chinatwu3@gmail.com', 'COJ00002', False)
     create_trial_organization('chinatwu4@gmail.com', 'COJ00003', False)
-    create_trial_organization('mamytest@mailinator.com', 'SLX364903', False)
+    create_trial_organization('mamytest@mailinator.com', 'SLX364903', True)
     create_project_for_nigeria_test_orgnization()
     create_datasender_for_nigeria_test_organization()
 

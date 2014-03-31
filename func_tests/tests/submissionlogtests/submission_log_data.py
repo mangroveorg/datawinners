@@ -38,7 +38,7 @@ DATASENDER_DETAILS = {NAME: "Dookudu",
                       GPS: "-21.7622088847 48.0690991394",
                       SUCCESS_MSG: "Registration successful. ID is: rep"}
 
-VALID_DATA = {SENDER: MOBILE_NUMBER_RANDOM,
+VALID_DATA = {SENDER: "1234567890",
               RECEIVER: '919880734937',
               SMS: "cli001 .EID cid003 .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
               SUCCESS_MESSAGE: "Thank you"}

@@ -105,6 +105,10 @@ def get_registration_success_message(response):
 def get_wrong_number_of_answer_error_message():
     return _("Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.")
 
+
+def get_datasender_not_linked_to_project_error_message():
+    return _("Error. You are not authorized to submit data to this Questionnaire. Please contact your project manager.")
+
 def get_subject_info(response, form_model):
     subject_name = ''
     if form_model:

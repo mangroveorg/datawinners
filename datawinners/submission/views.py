@@ -23,6 +23,7 @@ from datawinners.messageprovider.handlers import create_failure_log
 from datawinners.submission.organization_finder import OrganizationFinder
 from datawinners.submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor, get_vumi_parameters
 from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
+from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsLinkedToProject
 from datawinners.utils import  get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.feeds.database import get_feeds_db_for_org
@@ -198,7 +199,8 @@ def submit_to_player(incoming_request):
     try:
         dbm = incoming_request['dbm']
         post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request),
-                                      PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request)]
+                                      PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request),
+                                      PostSMSProcessorCheckDSIsLinkedToProject(dbm, incoming_request)]
         sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy),
             post_sms_parser_processors=post_sms_parser_processors, feeds_dbm=incoming_request['feeds_dbm'])
         mangrove_request = Request(message=incoming_request['incoming_message'],
