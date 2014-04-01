@@ -176,6 +176,9 @@ class Project(FormModel):
                                           "has_deadline": True,
                                           "deadline_month": "5",
                                           "frequency_period": "month"}
+    @classmethod
+    def from_form_model(cls, form_model):
+        return super(Project, cls).new_from_doc(form_model._dbm, ProjectDocument.wrap(form_model._doc._data))
 
     @property
     def data_senders(self):

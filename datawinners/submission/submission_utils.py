@@ -3,11 +3,13 @@ from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
 from mangrove.transport.contract.response import Response
-from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
-from datawinners.messageprovider.messages import get_datasender_not_linked_to_project_error_message
-from datawinners.project.models import project_by_form_model_id
 from mangrove.transport.repository.reporters import find_reporter_entity
 from mangrove.form_model.form_model import EntityFormModel
+
+from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
+from datawinners.messageprovider.messages import get_datasender_not_linked_to_project_error_message
+from datawinners.project.models import Project
+
 
 class PostSMSProcessorLanguageActivator(object):
     def __init__(self, dbm, request):
@@ -102,6 +104,6 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         reporter_entity = find_reporter_entity(self.dbm, self.request.get('transport_info').source)
         if reporter_entity.short_code == "test" or \
            isinstance(form_model, EntityFormModel) or \
-           reporter_entity.short_code in  form_model.data_senders:
+           reporter_entity.short_code in Project.from_form_model(form_model).data_senders:
             return None
         return self._get_response()

@@ -111,9 +111,12 @@ class TestSubmissionLog(HeadlessRunnerTest):
 
     @attr("functional_test")
     def test_should_update_submission_log_when_DS_info_is_edited(self):
-        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
-        all_datasenders_page = AllDataSendersPage(self.driver)
-        ds_id = self.register_datasender(DATASENDER_DETAILS, all_datasenders_page)
+        all_project_page = self.dashboard.navigate_to_view_all_project_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page("clinic test project1")
+        my_data_sender_page = project_overview_page.navigate_to_datasenders_page()
+        add_ds_page = my_data_sender_page.navigate_to_add_a_data_sender_page()
+        add_ds_page.enter_data_sender_details_from(DATASENDER_DETAILS)
+        ds_id = add_ds_page.get_registered_datasender_id()
 
         send_valid_sms_with(VALID_DATA)
 
@@ -122,6 +125,8 @@ class TestSubmissionLog(HeadlessRunnerTest):
         self.assertTrue(DATASENDER_DETAILS[NAME] in submission_log_page.get_cell_value(row=1, column=2))
 
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        all_datasenders_page = AllDataSendersPage(self.driver)
+
         all_datasenders_page.search_with(ds_id)
         all_datasenders_page.wait_for_table_to_load()
 
