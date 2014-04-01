@@ -2014,9 +2014,6 @@ msgid "Error: Invalid Submission. No valid question found. Check the Question Co
 "and resend SMS with the right Question code."
 msgstr "Erreur. Trouvez le code questionnaire sur le questionnaire imprimé et envoyez de nouveau le SMS en commençant par ce code questionnaire."
 
-msgid "Error. This project is not yet active. Submissions can be made only for an active project."
-msgstr "Erreur. Ce projet n'est pas encore actif. Les soumissions ne peuvent etre effectuees uniquement pour un projet actif."
-
 msgid "Error. Internal error. Please call technical support"
 msgstr "Erreur. Erreur interne. Veuillez contacter le support technique"
 

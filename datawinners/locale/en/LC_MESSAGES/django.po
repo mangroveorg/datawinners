@@ -1942,9 +1942,6 @@ msgid "Error: Invalid Submission. No valid question found. Check the Question Co
 "and resend SMS with the right Question code."
 msgstr ""
 
-msgid "Error. This project is not yet active. Submissions can be made only for an active project."
-msgstr ""
-
 msgid "Error. Internal error. Please call technical support"
 msgstr ""
 

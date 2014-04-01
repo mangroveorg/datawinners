@@ -1786,10 +1786,6 @@ msgstr "Diso. Diso ny valiny hoan'i %s. Azafady avereno alefa manontolo ny SMS-n
 msgid"Questionnaire ID %s doesnt exist."
 msgstr "Tsy misy ny kaodin'ny lisitry ny fanontaniana %s"
 
-msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend "
-"SMS starting with this questionnaire code."
-msgstr "Diso ny  kaodin'ny lisitry ny fanontaniana %s. Jereo eo amin'ny lisitry ny fanontaniana ilay izy ary "
-"alefaso indray ny SMS-nao  manomboka amin'io kaody io"
 
 msgid "This %s is not yet registered in the system. Please check the %s's unique ID number and resubmit."
 msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny kaody ID ho an'i %s ary avereno alefa ny SMS-nao"
@@ -1833,9 +1829,6 @@ msgid "Error: Invalid Submission. No valid question found. Check the Question Co
 "questionnaire and resend SMS with the right Question code."
 msgstr "Diso: Tsy manara-penitra ny firafitry ny SMS-nao. Amarino ao amin'ny lisitry ny kaodin'ny fanontaniana "
 "ary avereno alefa sy SMS-nao"
-
-msgid "Error. This project is not yet active. Submissions can be made only for an active project."
-msgstr "Diso. Tsy mbola afaka iasàna io lisitry ny fanontaniana io. Ho an’ireo izay efa misokatra ihany no azo andefasana SMS."
 
 msgid "Error. Internal error. Please call technical support"
 msgstr "Diso. Misy olana ara teknika. Azafady antsoy fangalana torohevitra"
