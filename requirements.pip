@@ -8,7 +8,7 @@ simplejson
 jsonpickle
 ipython
 mock
-selenium==2.35
+selenium==2.40.0
 iso8601==0.1.4
 pytz==2013b
 django-registration==0.8
@@ -41,4 +41,4 @@ djangorestframework
 django-urlmiddleware
 celery
 flower
--e git+https://github.com/mangroveorg/mangrove.git@10_1_release#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@10_2_release#egg=mangrove
