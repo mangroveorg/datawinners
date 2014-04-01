@@ -4736,3 +4736,6 @@ msgstr "Sélectionnez un Type de Numéro d'Identification"
 
 msgid "Error. You are not authorized to submit data to this Questionnaire. Please contact your project manager."
 msgstr "Erreur. Vous n'êtes pas autorisé à soumettre des données pour ce Questionnaire. Veuillez contacter votre Gestionnaire de projet."
+
+msgid "The Data Sender %s (%s) is not linked to your Questionnaire."
+msgstr "L'expéditeur de données %s (%s) n'est pas relié à votre questionnaire."
