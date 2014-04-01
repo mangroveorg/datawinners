@@ -648,9 +648,26 @@ table.error_table td {
   display: none !important; }
 
 .project_title_div {
-  width: 600px; }
+  width: 100%; }
   .project_title_div .project_rename {
     display: none;
     font-size: 12px; }
   .project_title_div:hover .project_rename {
     display: inline; }
+
+.editFieldSaveControllers .error {
+  display: none; }
+  .editFieldSaveControllers .error .message {
+    background-color: #C20303;
+    border: 0px none transparent;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    padding: 5px 10px; }
+  .editFieldSaveControllers .error .error_arrow_left {
+    display: inline-block;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-right: 6px solid #C20303; }

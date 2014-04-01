@@ -127,7 +127,7 @@ $.inlineEdit = function(urls, options){
 				', <a href="javascript:;" class="editFieldRemove">Remove</a>' +
 				'<a href="javascript:;" class="editFieldCancel">Cancel</a></div>');
 		} else {
-			$('.editFieldWrapper:last').append('<div class="editFieldSaveControllers"><button>' + options.save_label+  '</button>' +
+			$('.editFieldWrapper:last').append('<div class="editFieldSaveControllers"><span class="error"><span class="error_arrow_left"></span><span class="message"></span></span><button>' + options.save_label+  '</button>' +
 				'<a href="javascript:;" class="editFieldCancel">' + options.cancel_label+ '</a></div>');
 		}
 		$('.editFieldSaveControllers > button').click(editSave);
@@ -270,6 +270,7 @@ $.inlineEdit = function(urls, options){
 	function editSave()
 	{
 		$('.editFieldSaveControllers > button, .editField').attr('disabled', 'disabled');
+        $(".editFieldSaveControllers .error").hide();
 		$('.editField').each(function(){
 			var $td = $(this).parents('.editableSingle, .editableMulti');
 			var typeAndUrl = getTypeAndUrl($td);
@@ -282,15 +283,17 @@ $.inlineEdit = function(urls, options){
 				url: url + id,
 				data: {data: value},
 				type: 'POST',
-				success: function(msg){
-					if (msg == 1) {
+				success: function(resp){
+					if (resp.status == "success") {
 						removeEditField($td, value, true, options.colors.success);
 					} else {
-						removeEditField($td, getInitialValue($td), false, options.colors.error);
+                        $(".editFieldSaveControllers .error .message").html(resp.message);
+                        $(".editFieldSaveControllers .error").show()
+                        $('.editFieldSaveControllers > button, .editField').removeAttr('disabled');
 					}
 
 					options.afterSave({
-						success: msg == 1,
+						success: resp.status == "success",
 						type: typeAndUrl.type,
 						id: id,
 						value: value

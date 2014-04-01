@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from time import sleep
 from django.test import Client
 from nose.plugins.attrib import attr
 from selenium.webdriver.support.wait import WebDriverWait
@@ -35,11 +36,10 @@ class TestProjectOverview(HeadlessRunnerTest):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
         project_id = create_multi_choice_project(self.client)
         self.driver.go_to(url('/project/overview/%s' %project_id))
+        project_name = self.driver.find(by_css(".project_title")).text
         self.driver.find(by_css(".project_title")).click()
-        self.driver.find(by_css(".project_title input.editField")).send_keys("renamed_")
+        self.driver.find_text_box(by_css(".project_title input.editField")).enter_text("renamed_%s" %project_name)
         self.driver.find(by_css(".project_title .editFieldSaveControllers button")).click()
         WebDriverWait(self.driver._driver, UI_TEST_TIMEOUT).until_not(lambda driver: driver.find_elements_by_css_selector('.editFieldSaveControllers button'))
-
         self.driver.go_to(url("/project/registered_datasenders/%s/" % project_id))
-        self.assertEqual("Tester Pune",self.driver.find(by_css(".sorting_1")).text)
-        self.assertTrue(self.driver.find(by_css(".project_title")).text.startswith("renamed"))
+        self.assertTrue(self.driver.find(by_css(".project_title")).text.startswith("renamed"), self.driver.find(by_css(".project_title")).text)

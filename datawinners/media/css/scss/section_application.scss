@@ -140,12 +140,34 @@ table.error_table {
   display: none !important;
 }
 .project_title_div{
-  width: 600px;
+  width: 100%;
   .project_rename {
       display: none;
       font-size: 12px;
   }
   &:hover .project_rename{
       display: inline;
+  }
+}
+
+.editFieldSaveControllers .error{
+   display: none;
+   .message{
+    background-color: #C20303;
+    border: 0px none transparent;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    padding: 5px 10px;
+  }
+  .error_arrow_left{
+//    background: url("/media/images/arrow_error.png") no-repeat scroll left 11px rgba(0, 0, 0, 0);
+    display: inline-block;
+  	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+
+	border-right:6px solid #C20303;
   }
 }

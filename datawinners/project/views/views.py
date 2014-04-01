@@ -174,9 +174,12 @@ def rename_project(request, project_id):
 
     if (questionnaire.name != new_project_name):
         questionnaire.name=new_project_name
-        questionnaire.save(process_post_update=True)
-        UserActivityLog().log(request, action=RENAMED_PROJECT, project=questionnaire.name)
-    return HttpResponse(json.dumps(1), content_type='application/json')
+        try :
+            questionnaire.save(process_post_update=True)
+            UserActivityLog().log(request, action=RENAMED_PROJECT, project=questionnaire.name)
+        except DataObjectAlreadyExists as e:
+            return HttpResponse(json.dumps({"status":"error", "message":"Questionnaire with same name already exists."}), content_type='application/json')
+    return HttpResponse(json.dumps({"status":"success"}), content_type='application/json')
 
 
 def undelete_project(request, project_id):
