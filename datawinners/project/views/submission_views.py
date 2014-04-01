@@ -206,10 +206,12 @@ def edit(request, project_id, survey_response_id, tab=0):
                                 "tab": tab})
     form_ui_model = build_static_info_context(manager, survey_response)
     form_ui_model.update({"back_link": back_link})
-    short_code = get_data_sender(manager, survey_response)[1]
+    data_sender = get_data_sender(manager, survey_response)
+    short_code = data_sender[1]
     if request.method == 'GET':
         form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
-        survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, form_initial_values)
+        survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, form_initial_values,
+                                                  datasender_name=data_sender[0])
 
         form_ui_model.update(get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
                                               disable_link_class))

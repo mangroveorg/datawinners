@@ -4,16 +4,19 @@ from django.utils.translation import ugettext_lazy as _
 
 from datawinners.project.questionnaire_fields import FormField, as_choices
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
+from django.core.exceptions import ValidationError
 
 
 class EditSubmissionForm(Form):
-    def __init__(self, manager, project, data):
+    def __init__(self, manager, project, data, datasender_name=""):
         super(EditSubmissionForm, self).__init__(data=data)
         self.form_model = project
         self.fields['form_code'] = CharField(widget=HiddenInput, initial=project.form_code)
         choices = as_choices(project.get_data_senders(manager))
+        error_message = _("The Data Sender %s (%s) is not linked to your Questionnaire.") % (datasender_name, data.get("dsid"))
         self.fields['dsid'] = ChoiceField(label=_('I am submitting this data on behalf of'),
                                           choices=choices,
+                                          error_messages={'invalid_choice':error_message},
                                           help_text=_('Choose Data Sender from this list.'))
 
         for field in project.fields:
