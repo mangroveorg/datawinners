@@ -35,7 +35,8 @@ def send_sms_with(sms):
     return resp.content
 
 def send_valid_sms_with(sms):
-    assert "Thank" in send_sms_with(sms)
+    response = send_sms_with(sms)
+    assert "Thank" in response, " Thank not found in response [%s]"% response
 
 
 class TestSubmissionLog(HeadlessRunnerTest):

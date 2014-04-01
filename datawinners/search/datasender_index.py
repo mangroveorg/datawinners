@@ -39,8 +39,8 @@ def create_datasender_mapping(dbm, form_model):
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
 
 
-def update_datasender_for_project_change(project_doc, dbm,old_project):
-    if old_project and project_doc.name != old_project.name:
+def update_datasender_for_project_change(project_doc, dbm, old_project=None):
+    if not old_project or project_doc.name != old_project.name:
         project = Project.new_from_doc(dbm, project_doc)
         for entity_doc in project.get_associated_datasenders(dbm):
             update_datasender_index(entity_doc, dbm)
