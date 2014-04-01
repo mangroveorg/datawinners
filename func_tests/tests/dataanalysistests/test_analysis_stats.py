@@ -12,8 +12,8 @@ class TestAnalysisStats(unittest.TestCase):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
         data = {"search_filters": "{\"search_text\":\"Shweta\"}"}
         res = self.client.post("/project/submissions/cli018/analysis", data)
-        expected = [{"count": 3, "term": "B+"}, {"count": 2, "term": "O+"}, {"count": 1, "term": "O-"},
-                    {"count": 1, "term": "AB"}]
+        expected = [{"count": 3, "term": u"B+"}, {"count": 2, "term": u"O+"}, {"count": 1, "term": u"O-"},
+                    {"count": 1, "term": u"AB"}]
         response = json.loads(res.content)
         self.assertEquals(response['result'].get('What is your blood group?').get('data'), expected)
         self.assertEquals(response['result'].get('What is your blood group?').get('field_type'), 'select1')
