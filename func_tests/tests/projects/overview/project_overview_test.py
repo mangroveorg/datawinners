@@ -1,30 +1,45 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.test import Client
 from nose.plugins.attrib import attr
-from framework.base_test import HeadlessRunnerTest
+from selenium.webdriver.support.wait import WebDriverWait
 
-from pages.loginpage.login_page import LoginPage
+from framework.base_test import HeadlessRunnerTest
+from framework.utils.common_utils import by_css
+from pages.loginpage.login_page import login
 from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_page import SmsQuestionnairePreviewPage
 from testdata.test_data import *
-from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.overview.project_overview_data import PROJECT_NAME, PREVIEW_TITLE, MC_QUESTION_CONTENT
+from tests.testdatasetup.project import create_multi_choice_project
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class TestProjectOverview(HeadlessRunnerTest):
-    def prerequisites_of_project_overview(self):
-        # doing successful login with valid credentials
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(self.driver)
-        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-
-        # going on all project page
-        return global_navigation.navigate_to_view_all_project_page()
+    @classmethod
+    def setUpClass(cls):
+        HeadlessRunnerTest.setUpClass()
+        cls.dashboard = login(cls.driver)
 
     @attr('functional_test')
     def test_project_overview_sms_questionnaire(self):
-        all_project_page = self.prerequisites_of_project_overview()
+        all_project_page = self.dashboard.navigate_to_view_all_project_page()
         project_overview_page = all_project_page.navigate_to_project_overview_page(PROJECT_NAME)
         light_box = project_overview_page.open_sms_questionnaire_preview()
         self.assertEqual(light_box.get_title_of_light_box(), PREVIEW_TITLE)
         sms_questionnaire_preview_page = SmsQuestionnairePreviewPage(self.driver)
         self.assertTrue(sms_questionnaire_preview_page.has_preview_steps())
         self.assertEqual(MC_QUESTION_CONTENT, sms_questionnaire_preview_page.get_question_content(5))
+
+    @attr('functional_test')
+    def test_rename_project_should_reindex_ds(self):
+        self.client = Client()
+        self.client.login(username='tester150411@gmail.com', password='tester150411')
+        project_id = create_multi_choice_project(self.client)
+        self.driver.go_to(url('/project/overview/%s' %project_id))
+        self.driver.find(by_css(".project_title")).click()
+        self.driver.find(by_css(".project_title input.editField")).send_keys("renamed_")
+        self.driver.find(by_css(".project_title .editFieldSaveControllers button")).click()
+        WebDriverWait(self.driver._driver, UI_TEST_TIMEOUT).until_not(lambda driver: driver.find_elements_by_css_selector('.editFieldSaveControllers button'))
+
+        self.driver.go_to(url("/project/registered_datasenders/%s/" % project_id))
+        self.assertEqual("Tester Pune",self.driver.find(by_css(".sorting_1")).text)
+        self.assertTrue(self.driver.find(by_css(".project_title")).text.startswith("renamed"))
