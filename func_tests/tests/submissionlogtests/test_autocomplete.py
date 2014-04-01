@@ -28,11 +28,9 @@ class TestAutoCompleteView(unittest.TestCase):
         response = self.client.get('/entity/Clinic/autocomplete/?term=' + subject_name)
         response = json.loads(response.content)
         self.assertGreaterEqual(len(response), 0)
-        print response
 
     def test_query_subject_by_id(self):
         subject_id = "cid001"
         response = self.client.get('/entity/Clinic/autocomplete/?term=' + subject_id)
         response = json.loads(response.content)
         self.assertGreaterEqual(len(response), 0)
-        print response
