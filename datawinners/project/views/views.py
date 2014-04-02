@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_view_exempt
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, is_not_expired, is_new_user, project_has_web_device, valid_web_user
 
@@ -170,17 +170,17 @@ def rename_project(request, project_id):
     questionnaire = Project.get(manager,project_id)
     new_project_name = request.POST.get('data', '').strip()
     if len(new_project_name) == 0:
-        return HttpResponse(json.dumps(0), content_type='application/json')
+        return HttpResponse(json.dumps({"status":"error", "message":ugettext("This field is required.")}), content_type='application/json')
 
     if (questionnaire.name != new_project_name):
         questionnaire.name=new_project_name
         try :
             questionnaire.save(process_post_update=True)
             UserActivityLog().log(request, action=RENAMED_PROJECT, project=questionnaire.name)
+            return HttpResponse(json.dumps({"status":"success"}), content_type='application/json')
         except DataObjectAlreadyExists as e:
-            return HttpResponse(json.dumps({"status":"error", "message":"Questionnaire with same name already exists."}), content_type='application/json')
+            return HttpResponse(json.dumps({"status":"error", "message":ugettext("Questionnaire with same name already exists.")}), content_type='application/json')
     return HttpResponse(json.dumps({"status":"success"}), content_type='application/json')
-
 
 def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
