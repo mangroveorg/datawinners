@@ -38,8 +38,18 @@ class TestProjectOverview(HeadlessRunnerTest):
         self.driver.go_to(url('/project/overview/%s' %project_id))
         project_name = self.driver.find(by_css(".project_title")).text
         self.driver.find(by_css(".project_title")).click()
+        self.enter_project_name_and_validate_error_msg("clinic test project", "Questionnaire with same name already exists.")
+        self.enter_project_name_and_validate_error_msg("", "This field is required.")
+
         self.driver.find_text_box(by_css(".project_title input.editField")).enter_text("renamed_%s" %project_name)
         self.driver.find(by_css(".project_title .editFieldSaveControllers button")).click()
         WebDriverWait(self.driver._driver, UI_TEST_TIMEOUT).until_not(lambda driver: driver.find_elements_by_css_selector('.editFieldSaveControllers button'))
         self.driver.go_to(url("/project/registered_datasenders/%s/" % project_id))
         self.assertTrue(self.driver.find(by_css(".project_title")).text.startswith("renamed"), self.driver.find(by_css(".project_title")).text)
+
+    def enter_project_name_and_validate_error_msg(self, project_name_text, message):
+        self.driver.find_text_box(by_css(".project_title input.editField")).enter_text(project_name_text)
+        self.driver.find(by_css(".project_title .editFieldSaveControllers button")).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".error .message"))
+        WebDriverWait(self.driver._driver, UI_TEST_TIMEOUT).until(lambda driver: driver.find_element_by_css_selector(".error .message").text != "")
+        self.assertEqual(self.driver.find(by_css(".error .message")).text, message)
