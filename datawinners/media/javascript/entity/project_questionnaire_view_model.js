@@ -35,6 +35,7 @@ function ProjectQuestionnaireViewModel() {
                     array.sort();
                     self.newUniqueIdType.clearError();
                     self.uniqueIdTypes.valueHasMutated();
+                    self.selectUniqueIdType(newUniqueIdType);
                 }
                 else {
                     self.newUniqueIdType.setError(response.message);
