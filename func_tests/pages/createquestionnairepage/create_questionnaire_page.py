@@ -238,10 +238,7 @@ class CreateQuestionnairePage(Page):
             return self
         elif new_unique_id_type:
             self.add_new_unique_id_type(new_unique_id_type)
-            time.sleep(2)
-            for element in self.driver.find_elements_(UNIQUE_ID_TYPE_LIST):
-                if element.text == new_unique_id_type:
-                    element.click()
+            self.driver.wait_until_element_is_not_present(5, UNIQUE_ID_COMBO_BOX)
             return self
         else:
             return self

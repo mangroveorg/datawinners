@@ -1,14 +1,10 @@
-import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
+from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import MANDATORY_FIELD_ERROR_MESSAGE
-from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
-from pages.loginpage.login_page import LoginPage, login
+from pages.loginpage.login_page import login
 from pages.projectspage.projects_page import ProjectsPage
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE
-from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS, DIALOG_PROJECT_DATA, NEW_UNIQUE_ID_TYPE
 
 
