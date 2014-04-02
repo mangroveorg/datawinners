@@ -9,7 +9,7 @@ from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, url
 from tests.allsubjectstests.all_subjects_data import SUBJECT_TYPE, SUBJECT_TYPE_WHITE_SPACES, ERROR_MSG_INVALID_ENTRY, SUBJECT_TYPE_SPL_CHARS, SUBJECT_TYPE_BLANK, ERROR_MSG_EMPTY_ENTRY
 from tests.logintests.login_data import VALID_CREDENTIALS
-
+from unittest.case import SkipTest
 
 @attr('suit_1')
 class TestSubjectsPage(unittest.TestCase):
@@ -38,7 +38,7 @@ class TestSubjectsPage(unittest.TestCase):
         all_subjects_page.click_add_a_subject_type_link()
         all_subjects_page.add_entity_type_with(entity_type)
 
-
+    @SkipTest
     @attr('functional_test')
     def test_all_subjects_page(self):
         self.driver.go_to(url("/entity/subjects/clinic/"))
@@ -56,7 +56,7 @@ class TestSubjectsPage(unittest.TestCase):
         for row in subjects_page.rows()[1:]:
             self.assertIn("tes", row.text.lower())
 
-
+    @SkipTest
     @attr('functional_test')
     def test_add_duplicate_subjectType(self):
         self.driver.go_to(url("/entity/subjects/"))
@@ -69,6 +69,7 @@ class TestSubjectsPage(unittest.TestCase):
         error_msg = self.driver.find(by_id("type_message")).text
         self.assertEquals(error_msg, subject_type_name)
 
+    @SkipTest
     @attr('functional_test')
     def test_add_invalid_subjectType(self):
         self.driver.go_to(url("/entity/subjects/"))
