@@ -1,8 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-from mangrove.datastore.database import DatabaseManager
 
-from mock import Mock, patch
+from mock import Mock, patch, MagicMock
 from django.utils.translation import get_language, activate
 from mangrove.form_model.field import TextField
 
@@ -149,3 +148,38 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
             form_submission=form_submission_mock)
         message = get_success_msg_for_registration_using(response, "web")
         self.assertEqual(expected_message, message)
+
+    def test_should_return_unique_id_field_errors_separately_when_multiple_answer_type_errors_present(self):
+        errors = {"q1": "clinic with Unique Identification Number (ID) = cli001 not found",
+                  "q2": "Expected date found number"}
+        form_model = MagicMock()
+        response = MagicMock(errors=errors)
+        with patch(
+                "datawinners.messageprovider.message_handler.get_exception_message_for") as get_exception_message_for:
+            get_exception_message_for.return_value = "cli001 is not one of the registered clinics"
+
+            error_message = get_submission_error_message_for(response, form_model)
+
+            expected = "cli001 is not one of the registered clinics"
+            self.assertEqual(error_message, expected)
+
+    def test_should_return_first_unique_id_field_errors_separately_when_multiple_answer_type_errors_present(self):
+        # When there are multiple unique id questions in the questionnaire, error response should contain first
+        # unique id error among unique ids.
+
+        errors = {
+                  "q1": "answer exceeds number of characters.",
+                  "q2": "clinic with Unique Identification Number (ID) = cli001 not found",
+                  "q3": "school with Unique Identification Number (ID) = sch001 not found",
+                  "q4": "Expected date found number"
+        }
+        form_model = MagicMock()
+        response = MagicMock(errors=errors)
+        with patch(
+                "datawinners.messageprovider.message_handler.get_exception_message_for") as get_exception_message_for:
+            get_exception_message_for.return_value = "cli001 is not one of the registered clinics"
+
+            error_message = get_submission_error_message_for(response, form_model)
+
+            expected = "cli001 is not one of the registered clinics"
+            self.assertEqual(error_message, expected)

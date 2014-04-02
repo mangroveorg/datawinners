@@ -35,29 +35,31 @@ def index_of_question(form_model, question_code):
     return [index for index, field in enumerate(form_model.fields) if field.code.lower() == lower(question_code)][0] + 1
 
 
-def _is_unique_id_not_present_error(error):
-    re_match = re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", error)
-    if re_match:
-        return True, re_match.group(1), re_match.group(2)
-    else:
-        return False, None, None
+def _is_unique_id_not_present_error(errors):
+    for error in errors.values():
+        re_match = re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", error)
+        if re_match:
+            return True, re_match.group(1), re_match.group(2)
+    return False, None, None
 
 
 def _get_error_message(keys, response):
     error = response.errors.values()[0]
-    is_unique_id_error_present, unique_id_type, invalid_unique_id_code = _is_unique_id_not_present_error(error)
-    if is_unique_id_error_present:
-        return get_exception_message_for(
-            DataObjectNotFound(unique_id_type, invalid_unique_id_code, unique_id_type),
-            channel='sms')
-    else:
-        error_text = "%s %s" % (_("singular_question"), keys[0])
-        return get_validation_failure_error_message(response) % error_text.strip()
+    error_text = "%s %s" % (_("singular_question"), keys[0])
+    return get_validation_failure_error_message(response) % error_text.strip()
 
 
 def get_submission_error_message_for(response, form_model):
     errors = response.errors
     if isinstance(errors, dict) and form_model:
+
+        is_unique_id_error_present, unique_id_type, invalid_unique_id_code = _is_unique_id_not_present_error(errors)
+        if is_unique_id_error_present:
+            return get_exception_message_for(
+                DataObjectNotFound(unique_id_type, invalid_unique_id_code, unique_id_type),
+                channel='sms')
+
+
         keys = [_("question_prefix%s") % index_of_question(form_model, question_code) for question_code in errors.keys()]
         keys.sort()
         if len(keys) == 1:

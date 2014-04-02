@@ -25,7 +25,7 @@
     <div class="uniqueIdTypeContents" data-bind="visible: $root.isUniqueIdTypeVisible">
         <div class="close-contents" data-bind="click: $root.toggleUniqueIdTypesVisibility"></div>
         <div class="newUniqueIdBox">
-            <input class="newUniqueIdName" type="text" data-bind="value: $root.newUniqueIdType"/>
+            <input class="newUniqueIdName" type="text" maxlength="20" data-bind="value: $root.newUniqueIdType"/>
             <button class="button_blue" data-bind="click: $root.addNewUniqueIdType">{% trans "Add" %}</button>
         </div>
         <div class="validationMessage" data-bind="ifnot: $root.newUniqueIdType.valid">
