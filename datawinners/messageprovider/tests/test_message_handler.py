@@ -8,7 +8,7 @@ from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException,\
     MangroveException, EntityQuestionCodeNotSubmitted, SMSParserWrongNumberOfAnswersException
-from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
+from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using, _is_unique_id_not_present_error
 from mangrove.transport.contract.response import create_response_from_form_submission
 from datawinners.messageprovider.message_builder import ResponseBuilder
 
@@ -183,3 +183,10 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
 
             expected = "cli001 is not one of the registered clinics"
             self.assertEqual(error_message, expected)
+
+    def test_should_return_invalid_unique_id_code_and_unique_id_type_from_error_message(self):
+        errors = {"q2": "my clinics with Unique Identification Number (ID) = cl.i0.01 not found"}
+        is_errors_present,unique_id_type,invalid_code = _is_unique_id_not_present_error(errors)
+        self.assertTrue(is_errors_present)
+        self.assertEqual(unique_id_type, "my clinics")
+        self.assertEqual(invalid_code, "cl.i0.01")
