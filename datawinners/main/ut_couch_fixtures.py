@@ -15,6 +15,7 @@ from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.initial_template_creation import create_questionnaire_templates
+from mangrove.form_model.validators import UniqueIdExistsValidator
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField, UniqueIdField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
@@ -208,6 +209,11 @@ def create_project2(manager, questions):
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
+    questionnaire2.data_senders.extend(["rep5", "rep6", "rep1", "rep8", "rep9", "rep3"])
+
+    if questionnaire2.entity_questions:
+        questionnaire2.add_validator(UniqueIdExistsValidator)
+
     try:
         qid2 = questionnaire2.save()
     except DataObjectAlreadyExists as e:
