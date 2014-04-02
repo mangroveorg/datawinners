@@ -21,7 +21,8 @@ from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
-from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, SurveyResponseForm
+from datawinners.project.submission_form import SurveyResponseForm
+from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 from datawinners.project.wizard_view import edit_project
 from datawinners.scheduler.smsclient import NoSMSCException
 from mangrove.datastore.entity import get_by_short_code
@@ -614,10 +615,7 @@ class SurveyWebQuestionnaireRequest():
 
     def player_response(self, created_request):
         user_profile = NGOUserProfile.objects.get(user=self.request.user)
-        #if self.project.entity_type == u"reporter":
-        #    reporter_id = created_request.message.get('eid')
-        #else:
-        reporter_id = user_profile.reporter_id
+        reporter_id = created_request.message.get('dsid', user_profile.reporter_id)
 
         additional_feed_dictionary = get_feed_dictionary(self.questionnaire)
         web_player = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id)
@@ -642,8 +640,8 @@ class SurveyWebQuestionnaireRequest():
 
         success_message = None
         error_message = None
-        if self.is_data_sender:
-            questionnaire_form.cleaned_data['eid'] = self.request.user.get_profile().reporter_id
+        # if self.is_data_sender:
+        #     questionnaire_form.cleaned_data['eid'] = self.request.user.get_profile().reporter_id
         try:
             created_request = helper.create_request(questionnaire_form, self.request.user.username, is_update=is_update)
             response = self.player_response(created_request)
@@ -664,7 +662,7 @@ class SurveyWebQuestionnaireRequest():
                                             self.disable_link_class, is_update=is_update)
 
         _project_context.update({'success_message': success_message, 'error_message': error_message,
-                                 'questionnaire_form':self.form(), })
+                                 'questionnaire_form': self.form(), })
 
         return render_to_response(self.template, _project_context,
                                   context_instance=RequestContext(self.request))

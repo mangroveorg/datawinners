@@ -55,17 +55,3 @@ class SubjectRegistrationForm(WebForm):
         return self.cleaned_data
 
 
-class SurveyResponseForm(WebForm):
-    def __init__(self, form_model, subject_question_creator, data=None, is_datasender=False):
-        super(SurveyResponseForm, self).__init__(form_model, data)
-        for field in self.form_model.fields:
-            if isinstance(field,UniqueIdField):
-                self.fields[field.code] = subject_question_creator.create(field, is_datasender=is_datasender)
-                #self.fields['entity_question_code'] = CharField(required=False, widget=HiddenInput,
-                #                                                label=field.code)
-            else:
-                self.fields[field.code] = FormField().create(field)
-
-    def clean(self):
-        #self.cleaned_data.pop('entity_question_code', '')
-        return self.cleaned_data
