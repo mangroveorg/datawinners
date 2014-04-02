@@ -9,6 +9,7 @@ from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ADD_SUBJECT, LOGOUT
 from tests.logintests.login_data import VALID_CREDENTIALS, DATA_SENDER_CREDENTIALS
 from tests.addsubjecttests.add_subject_data import *
+from unittest.case import SkipTest
 
 
 @attr('suit_1')
@@ -92,6 +93,7 @@ class TestAddSubject(unittest.TestCase):
         message = fetch_(ERROR_MSG, from_(CLINIC_WITH_INVALID_UID))
         self.assertRegexpMatches(message, add_subject_page.get_error_message())
 
+    @SkipTest
     @attr('functional_test')
     def test_cancel_link_should_be_available_for_datasender(self):
         self.driver.go_to(LOGOUT)
