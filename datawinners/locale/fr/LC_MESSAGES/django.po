@@ -4717,6 +4717,9 @@ msgstr "Numéro d'identification"
 msgid "unique_id_example_text"
 msgstr "Exemple :<br/><strong>Personne</strong>: Patient, Fermier, Enfant<br/><strong>Lieux</strong>: Région, District, Commune<br/><strong>Choses</strong>: Clinique, Ecole, Détaillant, Formation, Réunion, Conférence, Lettre de transport, Reçu, Connaissement"
 
+msgid "Identification numbers improve the accuracy of your data."
+msgstr "Les numéros d'identification améliorent l'exactitude de vos données."
+
 msgid "unique_id_learn_more"
 msgstr "Sélectionnez Numéro d'identification si vous souhaitez collecter des données sur les mêmes personnes (exemple : patients), lieux (districts) ou choses (écoles) plus d'une fois"
 msgid "Are you sure you want to delete the Identification Number Type "
