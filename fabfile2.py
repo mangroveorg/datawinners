@@ -167,8 +167,8 @@ def _deploy_datawinners(context):
         replace_setting_file_for_environment(context.environment)
         activate_and_run(context.virtual_env, "python manage.py migrate")
         activate_and_run(context.virtual_env, "python manage.py compilemessages")
-        activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
-        activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
+        #activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
+        #activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
 
     migrate_couchdb(context)
     _link_repo(context, DATAWINNERS)
