@@ -365,6 +365,10 @@ fieldset {
       background: url(/media/images/accordion_arrows.png) no-repeat left -50px transparent;
       border: none;
     }
+    div{
+      text-transform: capitalize;
+    }
+
   }
   .ui-accordion-content {
     border: none;
@@ -375,6 +379,7 @@ fieldset {
       padding-left: 10px;
       margin: 4px 0 0;
       cursor: pointer;
+      text-transform:capitalize;
       &:hover{
           background-color: #d7e4ed;
       }
@@ -413,6 +418,7 @@ fieldset {
   .project-name-header{
     margin-left: -20px;
     padding-bottom: 10px;
+    text-transform: capitalize;
   }
 
 }
