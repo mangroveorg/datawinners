@@ -59,9 +59,9 @@
         {% include "subject_action.html" %}
         {% if all_data %}
             {% include 'subject_type_table.html' %}
+            <br/>
+            {% include "subject_action.html" %}
         {% endif %}
-        <br/>
-        {% include "subject_action.html" %}
 
         <div id="subjects_create_type">
             {% trans "Enter the Name of your specific Subject Type" %}
