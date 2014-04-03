@@ -69,7 +69,7 @@
     <div class="help_accordion">
         {% trans "View and edit your Questionnaire." %}
     </div>
-    <form id="question_form">
+    <form id="question_form" class="clear_both">
         {% csrf_token %}
         <input id='project-id' type='hidden' value="{{ project.id }}"/>
         <fieldset>
