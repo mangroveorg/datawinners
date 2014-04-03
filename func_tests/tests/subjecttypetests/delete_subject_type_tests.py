@@ -16,10 +16,10 @@ class TestDeleteSubjectType(HeadlessRunnerTest):
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
         login(cls.driver)
-        cls.driver.go_to(DATA_WINNER_ALL_SUBJECT)
-        cls.page = AddSubjectTypePage(cls.driver)
 
     def setUp(self):
+        self.driver.go_to(DATA_WINNER_ALL_SUBJECT)
+        self.page = AddSubjectTypePage(self.driver)
         self.driver.refresh()
 
     @attr('functional_test')
