@@ -47,7 +47,7 @@ from datawinners.project.Header import SubmissionsPageHeader
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
-from datawinners.project.submission_form import EditSubmissionForm
+from datawinners.project.submission_form import SurveyResponseForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.transport.contract.survey_response import SurveyResponse
 
@@ -210,7 +210,7 @@ def edit(request, project_id, survey_response_id, tab=0):
     short_code = data_sender[1]
     if request.method == 'GET':
         form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
-        survey_response_form = EditSubmissionForm(questionnaire_form_model, form_initial_values,
+        survey_response_form = SurveyResponseForm(questionnaire_form_model, form_initial_values,
                                                   datasender_name=data_sender[0])
 
         form_ui_model.update(get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
@@ -229,14 +229,14 @@ def edit(request, project_id, survey_response_id, tab=0):
         form_ui_model.update({"redirect_url": request.POST.get("redirect_url")})
         form_ui_model.update({"click_after_reload": request.POST.get("click_after_reload")})
         if request.POST.get("discard"):
-            survey_response_form = EditSubmissionForm(questionnaire_form_model, survey_response.values)
+            survey_response_form = SurveyResponseForm(questionnaire_form_model, survey_response.values)
 
             form_ui_model.update(
                 get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                                       context_instance=RequestContext(request))
         else:
-            survey_response_form = EditSubmissionForm(questionnaire_form_model, request.POST)
+            survey_response_form = SurveyResponseForm(questionnaire_form_model, request.POST)
 
         form_ui_model.update(
             get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))

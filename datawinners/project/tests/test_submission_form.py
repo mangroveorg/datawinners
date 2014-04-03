@@ -5,7 +5,7 @@ from datawinners.project.models import Project
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import IntegerField, DateField, GeoCodeField, TextField, UniqueIdField
-from datawinners.project.submission_form import EditSubmissionForm
+from datawinners.project.submission_form import SurveyResponseForm
 
 
 class TestSubmissionForm(unittest.TestCase):
@@ -18,7 +18,7 @@ class TestSubmissionForm(unittest.TestCase):
         type(self.project).fields = PropertyMock(
             return_value=[TextField(name="q1", code="q1", label="some"),
                           TextField(name="q2", code="q2", label="some")])
-        submission_form = EditSubmissionForm(self.project, initial_dict)
+        submission_form = SurveyResponseForm(self.project, initial_dict)
 
         self.assertEquals('Ans1', submission_form.fields.get('q1').initial)
         self.assertEquals('Ans2', submission_form.fields.get('q2').initial)
@@ -29,7 +29,7 @@ class TestSubmissionForm(unittest.TestCase):
         type(self.project).fields = PropertyMock(
             return_value=[TextField(name="Q1", code="Q1", label="some" ),
                           TextField(name="Q2", code="Q2", label="some" )])
-        submission_form = EditSubmissionForm(self.project, initial_dict)
+        submission_form = SurveyResponseForm(self.project, initial_dict)
 
         self.assertEquals('Ans1', submission_form.fields.get('Q1').initial)
         self.assertEquals('Ans2', submission_form.fields.get('Q2').initial)
@@ -41,7 +41,7 @@ class TestSubmissionForm(unittest.TestCase):
                   TextField('', 'text_field_code', '')]
         type(self.project).fields = PropertyMock(return_value=fields)
 
-        submission_form_create = EditSubmissionForm(self.project, {})
+        submission_form_create = SurveyResponseForm(self.project, {})
         expected_field_keys = ['form_code', 'dsid', 'integer_field_code', 'date_field_code', 'geo_field_code',
                                'text_field_code']
         self.assertListEqual(submission_form_create.fields.keys(), expected_field_keys)
@@ -57,5 +57,5 @@ class TestSubmissionForm(unittest.TestCase):
         with patch.object(SubjectQuestionFieldCreator, 'create') as create_entity_field:
             choice_field = ChoiceField(('sub1', 'sub2', 'sub3'))
             create_entity_field.return_value = choice_field
-            submission_form = EditSubmissionForm(project,  {})
+            submission_form = SurveyResponseForm(project,  {})
             self.assertEqual(choice_field, submission_form.fields['q1'])
