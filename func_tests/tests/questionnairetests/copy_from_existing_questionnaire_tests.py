@@ -20,6 +20,7 @@ class TestCopyExistingQuestionnaire(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
+    @attr("functional_test")
     def test_to_copy_existing_questionnaire(self):
         create_questionnaire_options_page = self.global_navigation.navigate_to_dashboard_page()\
                                                 .navigate_to_create_project_page()

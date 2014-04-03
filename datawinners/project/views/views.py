@@ -460,7 +460,7 @@ def questionnaire(request, project_id):
 def get_questionnaire_ajax(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire_form = Project.get(manager,project_id)
-    existing_questions = Project.fields
+    existing_questions = questionnaire_form.fields
     return HttpResponse(json.dumps({
                                 'name': questionnaire_form.name,
                                 'language': questionnaire_form.language,
