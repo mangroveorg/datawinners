@@ -306,6 +306,7 @@ def import_subjects_from_project_wizard(request, form_code):
         request, manager,
         default_parser=XlsOrderedParser,
         form_code=form_code)
+    subject_details = {}
 
     if len(short_code_subject_details_dict) != 0:
         detail_dict = dict()
