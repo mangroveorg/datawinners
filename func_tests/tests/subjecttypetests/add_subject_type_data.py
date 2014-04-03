@@ -14,3 +14,5 @@ BLANK = {ENTITY_TYPE: "", ERROR_MESSAGE: u"You can't leave this empty."}
 INVALID_ENTITY = {ENTITY_TYPE: "W@terpo!nt", ERROR_MESSAGE: u"Please use only letters (a-z), numbers, and spaces."}
 SUCCESSFULLY_DELETED_SUBJECT_TYPE_MSG = u"Identification Number Type(s) successfully deleted."
 DELETE = "delete"
+
+

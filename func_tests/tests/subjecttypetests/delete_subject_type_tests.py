@@ -7,7 +7,8 @@ from framework.utils.common_utils import generateId, random_string
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.loginpage.login_page import login
 from testdata.test_data import DATA_WINNER_ALL_SUBJECT
-from tests.addsubjecttypetests.add_subject_type_data import *
+from tests.addsubjecttests.add_subject_data import SUBJECT_DATA_WITHOUT_UNIQUE_ID
+from tests.subjecttypetests.add_subject_type_data import *
 
 
 class TestDeleteSubjectType(HeadlessRunnerTest):
@@ -40,10 +41,27 @@ class TestDeleteSubjectType(HeadlessRunnerTest):
         subject_type = random_string(5)
         subject_type_page = self.page
         subject_type_page.click_on_accordian_link()
-        subject_type_page.add_entity_type_with(subject_type, wait=False)
+        subject_type_page.successfully_add_entity_type_with(subject_type)
+
+        subject_page = subject_type_page.select_subject_type(subject_type)
+        subject_page.wait_for_processing()
+        add_subjects_page = subject_page.navigate_to_register_subject_page()
+        add_subjects_page.add_subject_with(SUBJECT_DATA_WITHOUT_UNIQUE_ID)
+        add_subjects_page.submit_subject()
+        add_subjects_page.navigate_to_all_subjects()
+
         subject_type_page.click_subject_type(subject_type)
         subject_type_page.select_delete_action(confirm=True)
         message = subject_type_page.get_message()
         self.assertEqual(message, SUCCESSFULLY_DELETED_SUBJECT_TYPE_MSG)
+
+        subject_type_page.click_on_accordian_link()
+        subject_type_page.successfully_add_entity_type_with(subject_type)
+        subject_page = subject_type_page.select_subject_type(subject_type)
+        subject_page.wait_for_processing()
+        self.assertTrue(subject_page.empty_table_text_visible())
+
+
+
 
 

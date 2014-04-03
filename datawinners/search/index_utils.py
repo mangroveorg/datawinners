@@ -99,3 +99,7 @@ def es_unique_id_code_field_name(field_code):
 
 def is_submission_meta_field(field_name):
     return submission_meta_field_names.has_key(field_name)
+
+def delete_mapping(db_name, doc_type):
+    es = get_elasticsearch_handle()
+    es.delete_all(db_name, doc_type)

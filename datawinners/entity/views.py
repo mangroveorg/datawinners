@@ -24,7 +24,7 @@ from datawinners.entity.subjects import load_subject_type_with_projects, get_sub
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.utils import get_database_name
 from datawinners.search.entity_search import SubjectQuery
-from datawinners.search.index_utils import es_field_name
+from datawinners.search.index_utils import es_field_name, delete_mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.field import field_to_json, DateField
 from mangrove.transport import Channel
@@ -118,6 +118,7 @@ def delete_subject_types(request):
     delete_registration_form(manager, subject_types)
     delete_type(manager, subject_types)
     for subject_type in subject_types:
+        delete_mapping(manager.database_name, subject_type)
         ent = get_all_entities(manager, [subject_type])
         for entities in ent:
             entities.delete()
@@ -126,7 +127,7 @@ def delete_subject_types(request):
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_new_user
 @is_datasender

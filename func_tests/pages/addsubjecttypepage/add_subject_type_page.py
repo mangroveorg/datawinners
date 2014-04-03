@@ -2,10 +2,11 @@
 
 from framework.utils.common_utils import generateId
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
+from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from pages.page import Page
 from framework.utils.data_fetcher import from_, fetch_
 from pages.addsubjecttypepage.add_subject_type_locator import *
-from tests.addsubjecttypetests.add_subject_type_data import *
+from tests.subjecttypetests.add_subject_type_data import *
 from time import sleep
 
 
@@ -79,9 +80,14 @@ class AddSubjectTypePage(Page):
         if self.driver.is_element_present(MESSAGES_CONTAINER):
             return self.driver.find(MESSAGES_CONTAINER).text
         return False
+
     def click_subject_type(self, subject_type):
         self.driver.find(by_xpath("//input[@value='%s']"%subject_type)).click()
         return self
+
+    def select_subject_type(self, subject_type):
+        self.driver.find_element_by_link_text(subject_type.capitalize()).click()
+        return AllSubjectsListPage(self.driver)
 
     def select_delete_action(self, confirm=False, cancel=False):
         action_to_be_performed = DELETE

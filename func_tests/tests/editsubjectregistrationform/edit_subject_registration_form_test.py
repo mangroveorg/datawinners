@@ -4,7 +4,7 @@ from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.loginpage.login_page import LoginPage, login
 from pages.projectsubjectspage.project_subjects_page import ProjectSubjectsPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, url
-from tests.addsubjecttypetests.add_subject_type_data import VALID_ENTITY, ENTITY_TYPE
+from tests.subjecttypetests.add_subject_type_data import VALID_ENTITY, ENTITY_TYPE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from nose.plugins.attrib import attr
 

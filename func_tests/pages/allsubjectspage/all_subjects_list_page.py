@@ -74,3 +74,6 @@ class AllSubjectsListPage(Page):
 
     def is_subject_present(self, subject_id):
         return self.driver.is_element_present(by_css("input[value=%s]" % subject_id))
+
+    def empty_table_text_visible(self):
+        return self.driver.find(by_css(".dataTables_empty")).is_displayed()

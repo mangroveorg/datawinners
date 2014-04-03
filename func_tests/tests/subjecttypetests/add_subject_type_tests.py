@@ -7,7 +7,7 @@ from framework.utils.common_utils import generateId
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.loginpage.login_page import login
 from testdata.test_data import DATA_WINNER_ALL_SUBJECT
-from tests.addsubjecttypetests.add_subject_type_data import *
+from tests.subjecttypetests.add_subject_type_data import *
 
 
 class TestAddSubjectType(HeadlessRunnerTest):
