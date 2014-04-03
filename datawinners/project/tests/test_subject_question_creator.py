@@ -33,13 +33,13 @@ class TestSubjectQuestionCreator(unittest.TestCase):
         project = self._get_mock_project()
         option_list = [('clinic1', 'Clinic One  (clinic1)'), ('clinic2', 'Clinic Two  (clinic2)')]
         expected_choices = [('clinic1', 'Clinic One  (clinic1)'), ('clinic2', 'Clinic Two  (clinic2)')]
-        subject_question_field_creator = SubjectQuestionFieldCreator(self.dbm, project)
+        subject_question_field_creator = SubjectQuestionFieldCreator(project)
         subject_question_field_creator._get_all_options = Mock(return_value=option_list)
         display_subject_field = subject_question_field_creator.create(subject_field)
 
         self.assertEqual(expected_choices, display_subject_field.choices)
 
-        subject_question_code_hidden_field_dict = SubjectQuestionFieldCreator(self.dbm, project) \
+        subject_question_code_hidden_field_dict = SubjectQuestionFieldCreator(project) \
             .create_code_hidden_field(subject_field)
 
         self.assertEqual(expected_code, subject_question_code_hidden_field_dict['entity_question_code'].label)
@@ -60,12 +60,3 @@ class TestSubjectQuestionCreator(unittest.TestCase):
         return project
 
 
-    def test_should_build_choice_from_subject(self):
-        creator = SubjectQuestionFieldCreator(None, None)
-
-        data = {'name': 'lastlast', 'location': u'ff,Madagascar', 'geo_code': '18.1324, 27.6547',
-                'short_code': u'123ABC', 'unique_id': '123abc'}
-
-        choice = creator._data_to_choice(data)
-
-        self.assertEqual((u'123abc', u'lastlast  (123ABC)'), choice)

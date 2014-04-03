@@ -7,21 +7,15 @@ from datawinners.utils import translate, get_text_language_by_instruction
 
 
 class SubjectQuestionFieldCreator(object):
-    def __init__(self, dbm, project):
+    def __init__(self, project):
         self.project = project
-        self.dbm = dbm
+        self.dbm = project._dbm
 
-    def create(self, subject_field, is_datasender=False):
+    def create(self, subject_field):
         return self._subjects_choice_fields(subject_field)
 
     def create_code_hidden_field(self, subject_field):
         return {'entity_question_code': forms.CharField(required=False, widget=HiddenInput, label=subject_field.code)}
-
-    def get_key(self, subject):
-        return subject['unique_id']
-
-    def get_value(self, subject):
-        return subject['name'] + '  (' + subject['short_code'] + ')'
 
     def _get_choice_field(self, subject_choices, subject_field, help_text, widget=None):
         subject_choice_field = ChoiceField(required=subject_field.is_required(), choices=subject_choices,
@@ -44,6 +38,3 @@ class SubjectQuestionFieldCreator(object):
         instruction_for_subject_field = translate("Choose Subject from this list.", func=ugettext, language=language)
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
 
-
-    def _data_to_choice(self, subject):
-        return self.get_key(subject), self.get_value(subject)

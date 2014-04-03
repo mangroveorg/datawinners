@@ -3,20 +3,32 @@ import json
 import datetime
 import logging
 from operator import itemgetter
-from time import mktime
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.views.decorators.csrf import csrf_exempt, csrf_view_exempt
+from django.views.decorators.csrf import csrf_view_exempt
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, ugettext
+from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity_type import get_unique_id_types
+from mangrove.datastore.queries import get_entity_count_for_type
+from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound
+from mangrove.form_model import form_model
+from mangrove.form_model.field import field_to_json
+from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER, header_fields, get_form_code_by_entity_type
+from mangrove.transport.player.player import WebPlayer
+from mangrove.utils.json_codecs import encode_json
+from mangrove.utils.types import is_empty, is_string
+from mangrove.transport.contract.transport_info import Channel
+from mangrove.transport.player.new_players import WebPlayerV2
+from mangrove.transport.repository.survey_responses import survey_response_count
+
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, is_not_expired, is_new_user, project_has_web_device, valid_web_user
-
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -25,24 +37,12 @@ from datawinners.project.submission_form import SurveyResponseForm
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 from datawinners.project.wizard_view import edit_project
 from datawinners.scheduler.smsclient import NoSMSCException
-from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_data_sender_form, get_organization_telephone_number
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_map_key
-from mangrove.datastore.entity_type import get_unique_id_types
-from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
-from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException
-from mangrove.form_model import form_model
-from mangrove.form_model.field import field_to_json
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER, header_fields, get_form_code_by_entity_type
-from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.services.survey_response_service import SurveyResponseService
-from mangrove.utils.json_codecs import encode_json
-from mangrove.utils.types import is_empty, is_string
-from mangrove.transport.contract.transport_info import Channel
 import datawinners.utils as utils
 from datawinners.entity.import_data import load_all_entities_of_type, get_entity_type_info
 from datawinners.location.LocationTree import get_location_tree
@@ -53,20 +53,14 @@ from datawinners.project.models import Project, Reminder, ReminderMode, get_all_
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, viewable_questionnaire, initialize_values, get_example_sms_message, get_example_sms
-# from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
-from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project import helper
 from datawinners.project.utils import make_project_links
 from datawinners.project.helper import is_project_exist, get_feed_dictionary
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_PROJECT, \
-    RENAMED_PROJECT
-from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
-from mangrove.transport.player.new_players import WebPlayerV2
-from mangrove.transport.repository.survey_responses import survey_response_count, get_survey_responses
+from datawinners.common.constant import DELETED_PROJECT, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, RENAMED_PROJECT
+from datawinners.project.views.utils import get_form_context
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
 
@@ -587,13 +581,11 @@ class SurveyWebQuestionnaireRequest():
         self.questionnaire = Project.get(self.manager, project_id)
         self.form_code = self.questionnaire.form_code
         self.feeds_dbm = get_feeds_database(request.user)
-        self.subject_field_creator = SubjectQuestionFieldCreator(self.manager, self.questionnaire)
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
 
     def form(self, initial_data=None):
-        return SurveyResponseForm(self.questionnaire, self.subject_field_creator,
-                                  data=initial_data, is_datasender=self.is_data_sender)
+        return SurveyResponseForm(self.questionnaire, data=initial_data, is_datasender=self.is_data_sender)
 
     @property
     def template(self):

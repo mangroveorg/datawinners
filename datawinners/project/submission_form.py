@@ -8,12 +8,12 @@ from datawinners.project.subject_question_creator import SubjectQuestionFieldCre
 from django.core.exceptions import ValidationError
 
 class BaseSubmissionForm(Form):
-    def __init__(self, data, form_model, is_datasender, datasender_name):
+    def __init__(self, data, project, is_datasender, datasender_name):
         super(BaseSubmissionForm, self).__init__(data)
-        self.form_model = form_model
-        self.fields['form_code'] = CharField(widget=HiddenInput, initial=form_model.form_code)
+        self.form_model = project
+        self.fields['form_code'] = CharField(widget=HiddenInput, initial=project.form_code)
         if not is_datasender:
-            choices = as_choices(form_model.get_data_senders(form_model._dbm))
+            choices = as_choices(project.get_data_senders(project._dbm))
 
             if data:
                 error_message = {'invalid_choice':_("The Data Sender %s (%s) is not linked to your Questionnaire.") % (datasender_name, data.get("dsid"))}
@@ -26,12 +26,12 @@ class BaseSubmissionForm(Form):
 
 
 class SurveyResponseForm(BaseSubmissionForm):
-    def __init__(self, form_model, subject_question_creator, data=None, is_datasender=False):
-        super(SurveyResponseForm, self).__init__(data, form_model, is_datasender, "")
+    def __init__(self, project, data=None, is_datasender=False):
+        super(SurveyResponseForm, self).__init__(data, project, is_datasender, "")
 
         for field in self.form_model.fields:
             if isinstance(field, UniqueIdField):
-                self.fields[field.code] = subject_question_creator.create(field, is_datasender=is_datasender)
+                self.fields[field.code] = SubjectQuestionFieldCreator(self.form_model).create(field)
             else:
                 self.fields[field.code] = FormField().create(field)
 
@@ -40,13 +40,13 @@ class SurveyResponseForm(BaseSubmissionForm):
 
 
 class EditSubmissionForm(BaseSubmissionForm):
-    def __init__(self, manager, project, data, datasender_name=""):
+    def __init__(self, project, data, datasender_name=""):
         super(EditSubmissionForm, self).__init__(data, project, False, datasender_name)
 
 
         for field in project.fields:
             if field.is_entity_field:
-                self.fields[field.code] = SubjectQuestionFieldCreator(manager, self.form_model).create(field)
+                self.fields[field.code] = SubjectQuestionFieldCreator(self.form_model).create(field)
             else:
                 form_field = FormField().create(field)
                 form_field.initial = data.get(field.code) if data.get(field.code) is not None else data.get(

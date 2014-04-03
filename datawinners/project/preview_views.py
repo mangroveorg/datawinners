@@ -57,7 +57,7 @@ def add_link_context(project):
 
 def get_web_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
-    questionnaire_form = SurveyResponseForm(form_model, SubjectQuestionFieldCreator(manager, form_model))
+    questionnaire_form = SurveyResponseForm(form_model)
     return {'project': project_info,
             'questionnaire_form': questionnaire_form,
             'add_link': add_link_context(form_model)}

@@ -1,11 +1,14 @@
 from unittest import TestCase
+from couchdb import Database
 from django.forms import RegexField, HiddenInput
 from mock import Mock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField, UniqueIdField, ShortCodeField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, EntityFormModel
+from datawinners.project.models import Project
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
-from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, WebForm, SurveyResponseForm
+from datawinners.project.submission_form import SurveyResponseForm
+from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, WebForm
 
 
 class TestWebForm(TestCase):
@@ -48,23 +51,24 @@ class TestSubjectRegistrationForm(TestCase):
 
 class TestSurveyResponseForm(TestCase):
     def setUp(self):
-        self.dbm = Mock(spec=DatabaseManager)
+        self.dbm = Mock(spec=DatabaseManager, database=Mock(spec=Database, name="abc"))
 
     def test_should_create_subject_field(self):
-        entity_field = UniqueIdField("","reporting on", "rep_on", "rep")
-        form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
+        self.dbm.database.view = Mock(return_value=Mock(rows=[{"key":(0,"cli1"),"value":"Clinic One"}]))
+        entity_field = UniqueIdField("","reporting on", "rep_on", "rep", instruction="")
+        project = Project(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
                                type="business")
 
         subject_field_creator = Mock(spec=SubjectQuestionFieldCreator)
         mock_field = Mock()
         subject_field_creator.create.return_value = mock_field
-        form = SurveyResponseForm(form_model, subject_field_creator)
+        form = SurveyResponseForm(project, None,  True)
 
-        self.assertEquals(form.fields["rep_on"], mock_field)
+        self.assertEquals(form.fields["rep_on"].choices, [('cli1', 'Clinic One(cli1)')])
 
     def test_should_not_create_subject_fields_if_entity_field_is_not_present_in_form_model(self):
-        form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[],
+        form_model = Project(self.dbm, 'some form', 'some', 'form_code_1', fields=[],
                                type="business")
-        form = SurveyResponseForm(form_model, Mock(spec=SubjectQuestionFieldCreator))
+        form = SurveyResponseForm(form_model, data=None, is_datasender=True)
 
         self.assertIsNone(form.fields.get('entity_question_code'))
