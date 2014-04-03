@@ -40,7 +40,7 @@ class SurveyResponseForm(BaseSubmissionForm):
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        cleaned_data.pop('dsid')
+        cleaned_data.pop('dsid', None)
         return cleaned_data
 
 #
