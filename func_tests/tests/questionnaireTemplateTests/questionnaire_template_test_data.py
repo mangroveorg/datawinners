@@ -4,7 +4,7 @@ GEN_RANDOM = "gen_random"
 
 NEW_PROJECT_DATA = {'project_name': "new project ", GEN_RANDOM: True}
 
-SELECTED_TEMPLATE_NAME = 'livestock census'
+SELECTED_TEMPLATE_NAME = u'Livestock Census'
 SELECTED_TEMPLATE_QUESTIONS = [u'Date of visit', u'Province', u'District', u'Name of location visited', u'Type of Production', u'Number of Bulls',
      u'Number of Cows', u'Number of Heifers', u'Number of Calves', u'Number of Oxen', u'Number of total cattle',
      u'Number of Sheep', u'Number of Goats', u'Number of Donkeys', u'Number of Horses', u'Number of Poultry']
