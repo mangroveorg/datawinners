@@ -23,7 +23,7 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         form_model = MagicMock(spec=FormModel)
         form_model.fields = [UniqueIdField('clinic', 'name', 'code', 'label')]
 
-        QuestionnaireBuilder(form_model, dbm).update_unique_id_validator()
+        QuestionnaireBuilder(form_model, dbm)._update_unique_id_validator()
 
         form_model.add_validator.assert_called_once_with(UniqueIdExistsValidator)
 
@@ -32,7 +32,7 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         form_model = MagicMock(spec=FormModel)
         form_model.fields = [TextField('name', 'code', 'label')]
         form_model.entity_questions = []
-        QuestionnaireBuilder(form_model, dbm).update_unique_id_validator()
+        QuestionnaireBuilder(form_model, dbm)._update_unique_id_validator()
 
         form_model.remove_validator.assert_called_once_with(UniqueIdExistsValidator)
 

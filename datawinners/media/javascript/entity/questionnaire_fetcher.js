@@ -78,23 +78,36 @@ DW.QuestionnaireFetcher = function(){
         };
    };
 
+   var _mapSelectAll = function(questionnaireData){
+       return questionnaireData;
+   };
+
+   this.getQuestionLabels = function(questionnaireId){
+       return this._getQuestionnaire(questionnaireId, _mapResponseToQuestions)
+   };
+
    this.getQuestionnaire = function(questionnaireId){
+       return this._getQuestionnaire(questionnaireId, _mapSelectAll)
+   };
+
+   this._getQuestionnaire = function(questionnaireId, mapFunction){
         var defd = $.Deferred();
+        //if (typeof mapFunction != "function" ) mapFunction = function(data){return data};
 
         if(!questionnaireDataCache[questionnaireId])
         {
             $.ajax({
-                        type: 'GET',
-                        url: '/project/questionnaire/ajax/' + questionnaireId,
-                        dataType: "json",
-                        success: function (response) {
-                            questionnaireDataCache[questionnaireId] = response;
-                            defd.resolve(_mapResponseToQuestions(questionnaireDataCache[questionnaireId]));
-                        }
+                    type: 'GET',
+                    url: '/project/questionnaire/ajax/' + questionnaireId,
+                    dataType: "json",
+                    success: function (response) {
+                        questionnaireDataCache[questionnaireId] = response;
+                        defd.resolve(mapFunction(questionnaireDataCache[questionnaireId]));
+                    }
             });
         }
         else{
-            defd.resolve(_mapResponseToQuestions(questionnaireDataCache[questionnaireId]));
+            defd.resolve(mapFunction(questionnaireDataCache[questionnaireId]));
         }
 
         return defd.promise();

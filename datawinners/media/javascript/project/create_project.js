@@ -18,6 +18,7 @@ basic_project_info = function(){
 
 DW.post_project_data = function (callback) {
     var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()));
+    var post_create_request = function(original_questionnaire){
 
     var post_data = {
                       'questionnaire-code':questionnaireViewModel.questionnaireCode(),
@@ -25,18 +26,31 @@ DW.post_project_data = function (callback) {
                       'profile_form':basic_project_info(),
                       'csrfmiddlewaretoken':$('#question_form input[name=csrfmiddlewaretoken]').val()
                     };
+        if (typeof original_questionnaire != "undefined"){
+            post_data["datasenders"] = JSON.stringify(original_questionnaire.datasenders);
+            post_data["reminder_and_deadline"] = JSON.stringify(original_questionnaire.reminder_and_deadline);
+        }
 
-    $.post(post_url , post_data).done(function(response){
-        var responseJson = $.parseJSON(response);
-        if (responseJson.success) {
-           return callback(responseJson);
-        }
-        else {
-            $.unblockUI();
-            questionnaireViewModel.errorInResponse(true);
-            questionnaireViewModel.responseErrorMsg(responseJson.error_message);
-        }
+        $.post(post_url , post_data).done(function(response){
+            var responseJson = $.parseJSON(response);
+            if (responseJson.success) {
+               return callback(responseJson);
+            }
+            else {
+                $.unblockUI();
+                questionnaireViewModel.errorInResponse(true);
+                questionnaireViewModel.responseErrorMsg(responseJson.error_message);
+            }
+        });
+    };
+    original_questionnaire_id = questionnaireCreationOptionsViewModel.selectedQuestionnaireId();
+    if(original_questionnaire_id){
+    questionnaireDataFetcher.getQuestionnaire(questionnaireCreationOptionsViewModel.selectedQuestionnaireId()).done(function(original_questionnaire){
+        post_create_request(original_questionnaire);
     });
+    } else {
+        post_create_request();
+    }
 };
 
 

@@ -4522,3 +4522,6 @@ msgstr ""
 
 msgid "The Data Sender %s (%s) is not linked to your Questionnaire."
 msgstr ""
+
+msgid "You haven't created any Questionnaires yet. Once you do, a list of your Questionnaires will appear here. You can then choose one as a template and edit it to fit your needs."
+msgstr ""

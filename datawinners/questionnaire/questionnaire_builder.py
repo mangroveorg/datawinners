@@ -14,7 +14,7 @@ class QuestionnaireBuilder(object):
         self.question_builder = question_builder
         self.question_code_generator = question_code_generator()
 
-    def generate_fields_by_question_set(self, max_code, question_set):
+    def _generate_fields_by_question_set(self, max_code, question_set):
         new_fields = []
 
         for question in question_set:
@@ -26,7 +26,7 @@ class QuestionnaireBuilder(object):
             new_fields.append(field)
         return new_fields
 
-    def update_unique_id_validator(self):
+    def _update_unique_id_validator(self):
         if not isinstance(self.form_model, EntityFormModel):
             if self.form_model.entity_questions:
                 self.form_model.add_validator(UniqueIdExistsValidator)
@@ -36,12 +36,15 @@ class QuestionnaireBuilder(object):
     def update_questionnaire_with_questions(self, question_set):
         origin_json_fields = [f._to_json() for f in self.form_model.fields]
         max_code = get_max_code_in_question_set(origin_json_fields or question_set)
-        new_fields = self.generate_fields_by_question_set(max_code, question_set)
+        new_fields = self._generate_fields_by_question_set(max_code, question_set)
         self.form_model.create_snapshot()
         self.form_model.delete_all_fields()
         [self.form_model.add_field(each) for each in new_fields]
-        self.update_unique_id_validator()
+        self._update_unique_id_validator()
+        return self
 
+    def update_reminder(self, reminder_and_deadline):
+        self.form_model.reminder_and_deadline = reminder_and_deadline
 
 class QuestionBuilder(object):
     def __init__(self, dbm):

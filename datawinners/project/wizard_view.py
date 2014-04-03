@@ -33,19 +33,24 @@ from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
 
 
+
 def create_questionnaire(post, manager, name, language, reporter_id):
     questionnaire_code = post['questionnaire-code'].lower()
+    datasenders = json.loads(post.get('datasenders', "[]"))
     json_string = post['question-set']
     question_set = json.loads(json_string)
     questionnaire = Project(manager, name=name, type='survey',
                            fields=[], form_code=questionnaire_code, language=language,
                            devices=[u'sms', u'web', u'smartPhone'])
     if reporter_id is not None:
-        datasender_list = questionnaire.data_senders
-        datasender_list.append(reporter_id)
-        questionnaire.data_senders = datasender_list
+        questionnaire.data_senders.append(reporter_id)
 
-    QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
+    if datasenders:
+        questionnaire.data_senders.extend(filter(lambda ds: ds != reporter_id, datasenders))
+
+    QuestionnaireBuilder(questionnaire, manager)\
+        .update_questionnaire_with_questions(question_set)\
+        .update_reminder(json.loads(post.get('reminder_and_deadline', '{}')))
 
     return questionnaire
 

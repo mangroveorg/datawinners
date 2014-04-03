@@ -459,12 +459,14 @@ def questionnaire(request, project_id):
 @is_project_exist
 def get_questionnaire_ajax(request, project_id):
     manager = get_database_manager(request.user)
-    questionnaire_form = Project.get(manager,project_id)
-    existing_questions = questionnaire_form.fields
+    project = Project.get(manager,project_id)
+    existing_questions = project.fields
     return HttpResponse(json.dumps({
-                                'name': questionnaire_form.name,
-                                'language': questionnaire_form.language,
-                                'questions': existing_questions
+                                'name': project.name,
+                                'language': project.language,
+                                'questions': existing_questions,
+                                'datasenders': project.data_senders,
+                                'reminder_and_deadline':project.reminder_and_deadline
                            }, default=field_to_json), content_type='application/json')
 
 class SubjectWebQuestionnaireRequest():

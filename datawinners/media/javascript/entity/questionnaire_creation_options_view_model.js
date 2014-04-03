@@ -25,7 +25,7 @@ var questionnaireCreationOptionsViewModel = {
             var that = questionnaireCreationOptionsViewModel;
             that.selectedQuestionnaireId(null);
             that.showAjaxLoader(true);
-            questionnaireDataFetcher.getQuestionnaire(questionnaire_id).done(function(questionnaireData){
+            questionnaireDataFetcher.getQuestionLabels(questionnaire_id).done(function(questionnaireData){
                 that.showAjaxLoader(false);
                 that.selectedQuestionnaire(questionnaireData);
                 that.selectedQuestionnaireId(questionnaire_id);
