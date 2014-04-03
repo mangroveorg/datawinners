@@ -3,7 +3,7 @@ DEBUG=False
 
 
 ADMINS = (
-    ('TW', 'sairama@thoughtworks.com,ramyar@thoughtworks.com,wamikas@thoughtworks.com'),
+    ('TW', 'sairama@thoughtworks.com,ramyar@thoughtworks.com,wamikas@thoughtworks.com,herihaja@hni.org'),
 )
 
 DATABASES = {
