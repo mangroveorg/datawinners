@@ -173,8 +173,8 @@ class ReporterRegistrationForm(Form):
 
     def update_errors(self, validation_errors):
         mapper = {MOBILE_NUMBER_FIELD_CODE: 'telephone_number'}
-        validation_error = validation_errors.get(MOBILE_NUMBER_FIELD_CODE)
-        self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]]= self.error_class([validation_error])
+        error = _(u'Sorry, the telephone number %s has already been registered.') % self.cleaned_data.get('telephone_number')
+        self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]]= self.error_class([error])
 
 
 

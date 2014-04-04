@@ -4688,7 +4688,7 @@ msgid "Start with a blank Questionnaire and add your list of questions"
 msgstr "Commencez avec un Questionnaire vierge et ajoutez votre liste de questions"
 
 msgid "Sorry, the telephone number %s has already been registered."
-msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée."
+msgstr "Désolé, le numéro de téléphone %s a déjà été enregistré."
 
 msgid "Select an Answer Type"
 msgstr "Sélectionnez un type de réponse"
