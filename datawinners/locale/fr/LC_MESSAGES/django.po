@@ -4742,3 +4742,13 @@ msgstr "L'expéditeur de données %s (%s) n'est pas relié à votre questionnair
 
 msgid "You haven't created any Questionnaires yet. Once you do, a list of your Questionnaires will appear here. You can then choose one as a template and edit it to fit your needs."
 msgstr "Vous n'avez créé aucun Questionnaire pour l'instant. Une fois que vous en créez un, la liste de vos Questionnaires sera affichée ici. Vous pouvez par la suite choisir un comme modèle et le modifier selon vos besoins."
+
+msgid "Use Existing"
+msgstr "Utiliser un Type de Numéro d'identification existant"
+
+msgid "I want to use Identification Numbers for my"
+msgstr "Je veux utiliser des Numéros d'Identification pour mon (ma)"
+
+msgid "Add a unique id type"
+msgstr "Ajouter un type de ID unique"
+
