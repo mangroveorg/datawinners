@@ -44,7 +44,8 @@ class QuestionnaireBuilder(object):
         return self
 
     def update_reminder(self, reminder_and_deadline):
-        self.form_model.reminder_and_deadline = reminder_and_deadline
+        if reminder_and_deadline:
+            self.form_model.reminder_and_deadline = reminder_and_deadline
 
 class QuestionBuilder(object):
     def __init__(self, dbm):
