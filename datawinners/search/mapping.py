@@ -4,7 +4,7 @@ from datawinners.search.submission_index import create_submission_mapping
 from mangrove.form_model.form_model import FormModel, REGISTRATION_FORM_CODE, EntityFormModel
 
 
-def form_model_change_handler(form_model_doc, dbm):
+def form_model_change_handler(form_model_doc, dbm, old_form_model_doc=None):
     form_model = FormModel.new_from_doc(dbm, form_model_doc)
     if form_model.form_code != 'delete':
         create_submission_mapping(dbm, form_model)

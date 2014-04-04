@@ -43,7 +43,7 @@ LOGGING = {
             'backupCount': BACK_UP_COUNT
         },
         'tasks-log-file': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.handlers.CompressRotatingFileHandler',
             'filename': os.path.join(LOG_FOLDER, TASKS_LOG_FILE_NAME),
             'mode': 'a', #append+create
@@ -127,7 +127,7 @@ LOGGING = {
             'handlers': ['log-file'],
             'propagate': True,
         },
-        'datawinners': {
+        'datawinners.tasks': {
             'level': 'ERROR',
             'handlers': ['tasks-log-file'],
             'propagate': True,
