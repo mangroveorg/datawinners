@@ -53,8 +53,8 @@ def merge_project_and_form_model_for(dbm):
                 del form_model_doc['state']
             except KeyError as e:
                 logging.warn(e)
-            questionnaire = Project.new_from_doc(dbm, (ProjectDocument.wrap(form_model_doc)))
-            super(Project, questionnaire).save()
+            dbm._save_document(form_model_doc)
+
             update_reminders(dbm, project_data)
             dbm.database.delete(row.doc)
         except Exception as e:

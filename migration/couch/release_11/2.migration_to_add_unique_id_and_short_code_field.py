@@ -21,6 +21,18 @@ function(doc) {
 """
 
 
+def _save_form_model_doc(dbm, form_model):
+    form_model._doc.json_fields = [f._to_json() for f in form_model._form_fields]
+    form_model._doc.validators = [validator.to_json() for validator in form_model.validators]
+    form_model.create_snapshot()
+    json_snapshots = {}
+    for key, value in form_model._snapshots.items():
+        json_snapshots[key] = [each._to_json() for each in value]
+    form_model._doc.snapshots = json_snapshots
+    form_model._delete_form_model_from_cache()
+    dbm._save_document(form_model._doc)
+
+
 def add_unique_id_and_short_code_field(dbm):
     for row in dbm.database.query(list_all_form_models, include_docs=True):
         try:
@@ -58,11 +70,15 @@ def add_unique_id_and_short_code_field(dbm):
                                     row.get('value').pop('test')
                         else:
                             for row in survey_response_rows:
-                                row.get('value').get('values').pop(f.get('code'))
-                                if row.get('value').get('test'):
-                                    row.get('value').pop('test')
-                                survey_response = SurveyResponseDocument._wrap_row(row)
-                                dbm._save_document(survey_response)
+                                try:
+                                    row.get('value').get('values').pop(f.get('code'))
+                                    if row.get('value').get('test'):
+                                        row.get('value').pop('test')
+                                    survey_response = SurveyResponseDocument._wrap_row(row)
+                                    dbm._save_document(survey_response)
+                                except Exception as e:
+                                    logging.error("Survey response update failed for database %s for id %s" %(dbm.database_name,row.get('id')))
+                                    logging.error(e)
                         short_code_dict = f
                         break
                 #Remove entity type from questionnaire form models.
@@ -75,7 +91,7 @@ def add_unique_id_and_short_code_field(dbm):
                     form_model._form_fields.insert(index,short_code_field)
                 if validator:
                     form_model.add_validator(validator)
-                form_model.save()
+                _save_form_model_doc(dbm, form_model)
         except Exception as e:
             logging.error('Failed form model for database : %s, doc with id: %s', dbm.database_name,
                           row.id)
