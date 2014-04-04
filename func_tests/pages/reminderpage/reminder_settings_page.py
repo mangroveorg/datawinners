@@ -15,16 +15,25 @@ class ReminderSettingsPage(Page):
         self.disable_reminder_dict = {BEFORE_DEADLINE: self.disable_before_deadline_reminder,
                                  ON_DEADLINE: self.disable_on_deadline_reminder,
                            AFTER_DEADLINE: self.disable_after_deadline_reminder}
+    def get_frequency(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, FREQUENCY_PERIOD_DD, True)
+        return self.driver.find_drop_down(FREQUENCY_PERIOD_DD).get_selected()
 
     def set_frequency(self, frequency):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, FREQUENCY_PERIOD_DD, True)
         self.driver.find_drop_down(FREQUENCY_PERIOD_DD).set_selected_by_text(frequency)
+
+    def get_deadline_type_for_week(self):
+        return self.driver.find_drop_down(WEEK_DEADLINE_TYPE_DD).get_selected()
 
     def set_deadline_type_for_week(self, deadline_type):
         self.driver.find_drop_down(WEEK_DEADLINE_TYPE_DD).set_selected_by_text(deadline_type)
 
     def set_deadline_type_for_month(self, deadline_type):
         self.driver.find_drop_down(MONTH_DEADLINE_TYPE_DD).set_selected_by_text(deadline_type)
+
+    def get_week_day(self):
+        return self.driver.find_drop_down(DAYS_OF_WEEK_DD).get_selected()
 
     def set_week_day(self, day_name):
         self.driver.find_drop_down(DAYS_OF_WEEK_DD).set_selected_by_text(day_name)

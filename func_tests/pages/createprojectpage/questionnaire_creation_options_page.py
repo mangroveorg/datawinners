@@ -46,7 +46,7 @@ class QuestionnaireCreationOptionsPage(Page):
         create_by_template_option = self.driver.find(by_id("copy_existing_questionnaire"))
         create_by_template_option.click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT,by_id("existing_questionnaires"),True)
-        projects = self.driver.find_elements_(by_css(".questionnaire_data div"))
+        projects = self.driver.find_elements_(by_css(".questionnaire_data div.highlight_on_hover"))
         return [project.text for project in projects]
 
     def continue_to_questionnaire_page(self):
