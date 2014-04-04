@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
+import logging
 
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
@@ -248,7 +249,10 @@ class OrganizationAdmin(DatawinnerAdmin):
             feed_dbm = feeds_db_for(feed_database_name)
             del feed_dbm.server[feed_database_name]
             es = get_elasticsearch_handle()
-            es.delete_index(dbm.database_name)
+            try:
+                es.delete_index(dbm.database_name)
+            except Exception as e:
+                logging.info("Could not delete index " + str(e.message))
 
     delete_organizations.short_description = "Delete accounts"
 
