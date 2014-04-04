@@ -250,7 +250,7 @@ def _send_upgrade_email(user, language):
     subject = render_to_string('accountmanagement/upgrade_email_subject_' + language + '.txt')
     subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
     site = Site.objects.get_current()
-    body = render_to_string('accountmanagement/upgrade_email_' + language + '.html', {'username': user.first_name + ' ' + user.last_name})
+    body = render_to_string('accountmanagement/upgrade_email_' + language + '.html', {'username': user.first_name, 'site':site})
     email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
     email.send()
