@@ -19,7 +19,7 @@ from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
-from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
@@ -117,7 +117,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
     def create_project(self, create_project_page):
         create_project_page.create_project_with(VALID_DATA_FOR_PROJECT)
         create_project_page.continue_create_project()
-        return CreateQuestionnairePage(self.driver)
+        return QuestionnaireTabPage(self.driver)
 
     def create_questionnaire(self, create_questionnaire_page):
         create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)

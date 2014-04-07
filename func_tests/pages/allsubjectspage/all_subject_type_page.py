@@ -1,13 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import re
 
-from framework.utils.common_utils import CommonUtilities
 from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.allsubjectspage.all_subjects_locator import *
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from pages.page import Page
+from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from testdata.test_data import url
-from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -30,8 +29,7 @@ class AllSubjectTypePage(Page):
 
         Return true or false
          """
-        commUtils = CommonUtilities(self.driver)
-        if commUtils.is_element_present(by_xpath(SUBJECT_TYPE_LINK % subject)):
+        if self.driver.is_element_present(by_xpath(SUBJECT_TYPE_LINK % subject)):
             return True
         else:
             return False
@@ -46,7 +44,7 @@ class AllSubjectTypePage(Page):
         self.driver.go_to(url("/entity/subject/edit/%s/" % entity_type.lower()))
         if close_warning:
             self.driver.find(CONTINUE_EDITING_BUTTON).click()
-        return CreateQuestionnairePage(self.driver)
+        return QuestionnaireTabPage(self.driver)
 
     def click_checkall_checkbox_for_entity_type(self, entity_type):
         commUtils = CommonUtilities(self.driver)

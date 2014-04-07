@@ -10,7 +10,7 @@ import requests
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.common_utils import by_css
 from framework.utils.data_fetcher import fetch_, from_
-from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import LoginPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage

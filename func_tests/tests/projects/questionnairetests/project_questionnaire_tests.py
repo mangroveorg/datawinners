@@ -5,9 +5,9 @@ from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 import time
 
-from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
+from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.data_fetcher import fetch_, from_
-from pages.createquestionnairepage.create_questionnaire_page import MANDATORY_FIELD_ERROR_MESSAGE
+from pages.questionnairetabpage.questionnaire_tab_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
@@ -43,10 +43,6 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
         cls.project_name, cls.questionnaire_code = cls._create_project(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
-
-    @classmethod
-    def tearDownClass(cls):
-        teardown_driver(cls.driver)
 
     @classmethod
     def _create_project(cls, project_data, questionnaire_data):

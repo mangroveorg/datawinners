@@ -1,7 +1,7 @@
 from time import sleep
 from framework.utils.common_utils import by_id, by_xpath, by_css
 from pages.createprojectpage.create_project_locator import CONTINUE_BTN
-from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.page import Page
 from tests.questionnaireTemplateTests.questionnaire_template_test_data import BLANK_QUESTIONNAIRE_SELECTION_ACCORDION, SELECT_USING_TEMPLATE_ACCORDION, AJAX_LOADER_HORIZONTAL, TEMPLATE_CATEGORY_ACCORDION, SELECTED_TEMPLATE_QUESTIONS_DIV, TEMPLATE_NAME_DIV, TEMPLATE_NAME_HEADER, TEMPLATE_QUESTIONS
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -21,7 +21,7 @@ class QuestionnaireCreationOptionsPage(Page):
 
     def go_to_create_questionnaire_page(self):
         self.driver.find(CONTINUE_BTN).click()
-        return CreateQuestionnairePage(self.driver)
+        return QuestionnaireTabPage(self.driver)
 
     def select_create_questionnaire_by_template_option(self):
         create_by_template_option = self.driver.find_element_by_xpath(SELECT_USING_TEMPLATE_ACCORDION)
@@ -52,7 +52,7 @@ class QuestionnaireCreationOptionsPage(Page):
     def continue_to_questionnaire_page(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CONTINUE_BTN, True)
         self.driver.find(CONTINUE_BTN).click()
-        return CreateQuestionnairePage(self.driver)
+        return QuestionnaireTabPage(self.driver)
 
     def get_template_name(self):
         return self.driver.find(TEMPLATE_NAME_HEADER).text

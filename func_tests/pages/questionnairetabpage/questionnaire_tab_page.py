@@ -1,15 +1,25 @@
 from selenium.common.exceptions import NoSuchElementException
-from framework.utils.common_utils import by_css, by_id, generateId, CommonUtilities, by_xpath
+from selenium.webdriver.support.select import Select
+
+from framework.utils.common_utils import by_css, by_id, generateId, CommonUtilities, by_xpath, by_name
 from framework.utils.data_fetcher import fetch_, from_
 from framework.utils.global_constant import WAIT_FOR_TITLE
+from pages.createdatasenderquestionnairepage.create_data_sender_questionnaire_page import CreateDataSenderQuestionnairePage
 from pages.createprojectpage.create_project_locator import PROJECT_NAME_TB, SAVE_AND_CREATE_BTN, INFORM_DATASENDERS_OK_BUTTON_BY_CSS
-from pages.createquestionnairepage.create_questionnaire_locator import ADD_A_QUESTION_LINK, CHARACTER_LIMIT_RB, WORD_OR_PHRASE_MAX_LENGTH_TB, QUESTIONNAIRE_CODE_TB, SAVE_CHANGES_BTN, QUESTION_TB, WORD_OR_PHRASE, ANSWER_TYPE_DROPDOWN, NO_CHARACTER_LIMIT_RB, NUMBER_OPTION, NUMBER_MIN_LENGTH_TB, NUMBER_MAX_LENGTH_TB, MONTH_YEAR_RB, DATE_OPTION, MULTIPLE_ANSWER_RB, ONLY_ONE_ANSWER_RB, CHOICE_XPATH_LOCATOR, CHOICE_TB_XPATH_LOCATOR, QUESTION_LINK_CSS_LOCATOR_PART1, QUESTION_LINK_CSS_LOCATOR_PART2, CURRENT_QUESTION_TYPE_LOCATOR, PERIOD_QUESTION_TIP_CSS_LOCATOR, DATE_MONTH_YEAR_RB, MONTH_DATE_YEAR_RB, BACK_LINK, GPS_COORDINATES, LIST_OF_CHOICES_OPTION, ADD_CHOICE_LINK, SUCCESS_MESSAGE_LABEL, CHARACTER_COUNT, LAST_QUESTION_LINK_LOCATOR, CODE_TB, PREVIOUS_STEP_LINK, CHOICE_S_XPATH_LOCATOR
+from pages.createquestionnairepage.create_questionnaire_locator import ADD_A_QUESTION_LINK, CHARACTER_LIMIT_RB, WORD_OR_PHRASE_MAX_LENGTH_TB, QUESTIONNAIRE_CODE_TB, SAVE_CHANGES_BTN, QUESTION_TB, WORD_OR_PHRASE, ANSWER_TYPE_DROPDOWN, NO_CHARACTER_LIMIT_RB, NUMBER_OPTION, NUMBER_MIN_LENGTH_TB, NUMBER_MAX_LENGTH_TB, MONTH_YEAR_RB, DATE_OPTION, MULTIPLE_ANSWER_RB, ONLY_ONE_ANSWER_RB, CHOICE_XPATH_LOCATOR, CHOICE_TB_XPATH_LOCATOR, QUESTION_LINK_CSS_LOCATOR_PART1, QUESTION_LINK_CSS_LOCATOR_PART2, CURRENT_QUESTION_TYPE_LOCATOR, PERIOD_QUESTION_TIP_CSS_LOCATOR, DATE_MONTH_YEAR_RB, MONTH_DATE_YEAR_RB, BACK_LINK, GPS_COORDINATES, LIST_OF_CHOICES_OPTION, ADD_CHOICE_LINK, \
+    CHARACTER_COUNT, LAST_QUESTION_LINK_LOCATOR, CODE_TB, PREVIOUS_STEP_LINK, CHOICE_S_XPATH_LOCATOR, \
+    UNIQUE_ID_CHOICE_BOX, UNIQUE_ID_TYPE_LIST, UNIQUE_ID_COMBO_BOX, UNIQUE_ID_OPTION, NEW_UNIQUE_ID_TEXT, NEW_UNIQUE_ID_ADD_BUTTON
 from pages.page import Page
-from tests.projects.questionnairetests.project_questionnaire_data import TYPE, PROJECT_NAME, GEN_RANDOM, QUESTIONS, QUESTIONNAIRE_CODE, QUESTION, LIMIT, LIMITED, NO_LIMIT, MAX, MIN, MM_YYYY, ONLY_ONE_ANSWER, MULTIPLE_ANSWERS, CHOICE, MM_DD_YYYY, DD_MM_YYYY, GEO, CODE, ALLOWED_CHOICE, LIST_OF_CHOICES, WORD, NUMBER, DATE, DATE_FORMAT
+from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
+from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
+from tests.projects.questionnairetests.project_questionnaire_data import TYPE, PROJECT_NAME, GEN_RANDOM, QUESTIONS, QUESTIONNAIRE_CODE, QUESTION, LIMIT, LIMITED, NO_LIMIT, MAX, MIN, MM_YYYY, ONLY_ONE_ANSWER, MULTIPLE_ANSWERS, CHOICE, MM_DD_YYYY, DD_MM_YYYY, GEO, CODE, ALLOWED_CHOICE, LIST_OF_CHOICES, WORD, NUMBER, DATE, DATE_FORMAT, \
+    UNIQUE_ID, EXISTING_UNIQUE_ID_TYPE, NEW_UNIQUE_ID_TYPE
 from tests.testsettings import UI_TEST_TIMEOUT
+
 
 SUCCESS_PROJECT_SAVE_MESSAGE = "Your changes have been saved."
 DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE = "Questionnaire with this code already exists"
+MANDATORY_FIELD_ERROR_MESSAGE = "This field is required."
 
 class QuestionnaireTabPage(Page):
 
@@ -20,7 +30,8 @@ class QuestionnaireTabPage(Page):
                                 NUMBER: self.configure_number_type_question,
                                 DATE: self.configure_date_type_question,
                                 LIST_OF_CHOICES: self.configure_list_of_choices_type_question,
-                                GEO: self.configure_geo_type_question
+            GEO: self.configure_geo_type_question,
+            UNIQUE_ID: self.configure_unique_id_type_question
                             }
 
     def create_questionnaire_with(self, project_data, questionnaire_data):
@@ -36,7 +47,7 @@ class QuestionnaireTabPage(Page):
         questionnaire_code = fetch_(QUESTIONNAIRE_CODE, from_(questionnaire_data))
         gen_ramdom = fetch_(GEN_RANDOM, from_(questionnaire_data))
         if gen_ramdom:
-            questionnaire_code = questionnaire_code + generateId()
+            questionnaire_code = questionnaire_code + generateId(3)
         if fetch_(QUESTIONNAIRE_CODE, from_(questionnaire_data)):
             self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).enter_text(questionnaire_code)
         self.add_questions(questionnaire_data)
@@ -98,7 +109,7 @@ class QuestionnaireTabPage(Page):
         """
         self.driver.find(SAVE_CHANGES_BTN).click()
         self.driver.wait_for_page_with_title(WAIT_FOR_TITLE, "Data Senders")
-        #return CreateDataSenderQuestionnairePage(self.driver)
+        return CreateDataSenderQuestionnairePage(self.driver)
 
     def save_questionnaire(self):
         """
@@ -222,6 +233,35 @@ class QuestionnaireTabPage(Page):
             self.driver.find_radio_button(MULTIPLE_ANSWER_RB).click()
         return self
 
+    def select_unique_id_type_from_list(self, unique_id_type):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, UNIQUE_ID_CHOICE_BOX, True).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, UNIQUE_ID_COMBO_BOX, True)
+
+        for element in self.driver.find_elements_(UNIQUE_ID_TYPE_LIST):
+            if element.text == unique_id_type:
+                element.click()
+
+    def add_new_unique_id_type(self, new_unique_id_type):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, UNIQUE_ID_CHOICE_BOX, True).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, UNIQUE_ID_COMBO_BOX, True)
+
+        self.driver.find_text_box(NEW_UNIQUE_ID_TEXT).enter_text(new_unique_id_type)
+        self.driver.find(NEW_UNIQUE_ID_ADD_BUTTON).click()
+
+    def configure_unique_id_type_question(self, question_data):
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(UNIQUE_ID_OPTION)
+        existing_unique_id_type = fetch_(EXISTING_UNIQUE_ID_TYPE, from_(question_data))
+        new_unique_id_type = fetch_(NEW_UNIQUE_ID_TYPE, from_(question_data))
+
+        if existing_unique_id_type:
+            self.select_unique_id_type_from_list(existing_unique_id_type)
+            return self
+        elif new_unique_id_type:
+            self.add_new_unique_id_type(new_unique_id_type)
+            self.driver.wait_until_element_is_not_present(5, UNIQUE_ID_COMBO_BOX)
+            return self
+        else:
+            return self
 
     def configure_geo_type_question(self, question_data):
         """
@@ -328,12 +368,10 @@ class QuestionnaireTabPage(Page):
 
 
     def get_page_title(self):
-        """
-        Function to return the page title
-
-        Return title
-        """
-        return self.driver.wait_for_page_with_title
+        try:
+            return self.driver.find_element_by_css_selector('.project_title').text
+        except NoSuchElementException:
+            return ""
 
 
     def get_word_type_question(self):
@@ -441,6 +479,9 @@ class QuestionnaireTabPage(Page):
     def get_questionnaire_code(self):
         return self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).get_attribute("value")
 
+    def get_questionnaire_title(self):
+        return self.driver.find_text_box(by_id("questionnaire_title")).get_attribute("value")
+
     def get_option_by_index_for_multiple_choice_question(self, index):
         code = self.driver.find(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_S_XPATH_LOCATOR)).text
         text = self.driver.find_text_box(
@@ -540,14 +581,14 @@ class QuestionnaireTabPage(Page):
         if locator and locator.is_displayed():
             locator.click()
 
-    def submit_questionnaire(self):
-        self.driver.find(by_id("submit-button")).click()
 
     def change_question_type(self, question):
         self.SELECT_FUNC[fetch_(TYPE, from_(question))](question)
 
-    def set_questionnaire_title(self, title):
-        self.driver.find_text_box(by_id("questionnaire_title")).enter_text(title)
+    def set_questionnaire_title(self, title, generate_random=False):
+        questionnaire_title = title + generateId() if generate_random else title
+        self.driver.find_text_box(by_id("questionnaire_title")).enter_text(questionnaire_title)
+        return questionnaire_title
 
     def set_question_title(self, title):
         self.driver.find_text_box(by_id("question_title")).enter_text(title)
@@ -592,3 +633,54 @@ class QuestionnaireTabPage(Page):
     def get_duplicate_questionnaire_code_error_message(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#project-message-label .error_message"))
         return self.driver.find_element_by_css_selector("#project-message-label .error_message").text
+
+    def get_unique_id_error_msg(self):
+        return self._get_validation_message_for("unique_id_type_validation_message")
+
+    def get_new_unique_id_error_msg(self):
+        return self._get_validation_message_for("new_type_validation_message")
+
+    def get_questionnaire_language(self):
+        return Select(self.driver.find(by_name("project_language"))).first_selected_option.text
+
+    def set_questionnaire_language(self, language):
+        Select(self.driver.find(by_name("project_language"))).select_by_visible_text(language)
+
+    def get_existing_questions(self):
+        questions = []
+        questions_divs = self.driver.find_elements_(by_css('#qns_list>ol>li>a'))
+        for q in questions_divs:
+            questions.append(q.text)
+        return questions
+
+    def back_to_questionnaire_creation_page(self):
+        from pages.createprojectpage.questionnaire_creation_options_page import QuestionnaireCreationOptionsPage
+
+        self.driver.find_element_by_id("back_to_create_options").click()
+        QuestionnaireModifiedDialog(self.driver).ignore_changes()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(".//*[@id='project_profile']/h5"), True)
+        return QuestionnaireCreationOptionsPage(self.driver)
+
+    def set_questionnaire_title(self, title, generate_random=False):
+        questionnaire_title = title + generateId() if generate_random else title
+        self.driver.find_text_box(by_id("questionnaire_title")).enter_text(questionnaire_title)
+        return questionnaire_title
+
+    def save_and_create_project_successfully(self, click_ok=True):
+        self.driver.find(SAVE_AND_CREATE_BTN).click()
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Questionnaires - Overview")
+        if click_ok:
+            self.got_redistribute_questionnaire_message()
+        return ProjectOverviewPage(self.driver)
+
+    def submit_errored_questionnaire(self):
+        self.driver.find(SAVE_AND_CREATE_BTN).click()
+
+    def submit_questionnaire(self):
+        self.driver.find(SAVE_CHANGES_BTN).click()
+
+    def save_and_create_project(self, click_ok=True):
+        self.driver.find(SAVE_AND_CREATE_BTN).click()
+        if click_ok:
+            self.got_redistribute_questionnaire_message()
+        return self

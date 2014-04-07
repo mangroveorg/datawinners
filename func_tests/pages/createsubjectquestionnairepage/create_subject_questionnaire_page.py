@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from framework.utils.global_constant import WAIT_FOR_TITLE
-from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.createsubjectquestionnairepage.create_subject_questionnaire_locator import *
 from pages.page import Page
 
@@ -20,7 +20,7 @@ class CreateSubjectQuestionnairePage(Page):
         """
         self.driver.find(SAVE_CHANGES_BTN).click()
         self.driver.wait_for_page_with_title( WAIT_FOR_TITLE, "Questionnaire")
-        return CreateQuestionnairePage(self.driver)
+        return QuestionnaireTabPage(self.driver)
 
     def get_page_title(self):
         """
