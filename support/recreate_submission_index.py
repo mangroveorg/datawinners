@@ -28,6 +28,9 @@ def create_index():
                 "Mapping update failed for database %s for form model %s " % (database_name, form_model_doc.form_code))
             logging.error(e)
 
-
-call_command("syncviews", "syncall")
+try:
+    call_command("syncviews", "syncall")
+except Exception as e:
+    logging.error("syncing views failed for one or more databases")
+    logging.error(e)
 create_index()
