@@ -29,6 +29,7 @@
     <script type="text/javascript">
         var edit_url_template = "{% url edit_my_subject project_id entity_type "entity_id_placeholder" %}";
         var upload_url = "{% url import_subjects form_code %}";
+        var default_url = "{% url registered_subjects_default project_id%}";
     </script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
@@ -38,9 +39,18 @@
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript" src="/media/javascript/subjects/subjects_export.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/registered_subjects.js"></script>
 {% endblock %}
 
 {% block content %}
+    <div>
+    <ul>
+        {% for entity_type in entity_types %}
+            <li class="chosen_entity_type">{{ entity_type }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+
     <div>
         <div class="grid_8 alpha">
             <h2>{% trans "My Subjects" %}</h2>
@@ -50,8 +60,8 @@
             &nbsp;|&nbsp;
             <a href="javascript:void(0);" class="import-subject"
                id="import-{{ entity_type }}">{% trans "Import a List" %}</a>
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
-               class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit Registration Form</a>
+            <a href="{% url datawinners.entity.views.edit_subject_questionnaire entity_type %}"
+               class="none edit-form-link" id="link-to-edit-form-{{ entity_type }}">Edit Registration Form</a>
             &nbsp;|&nbsp;
             <a id='subject_export_link' href="#">{% trans "Export" %}</a>
         </div>

@@ -147,7 +147,7 @@ def index(request):
 @is_not_expired
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
-    questionnaire = Project.get(manager,project_id)
+    questionnaire = Project.get(manager, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
@@ -158,28 +158,33 @@ def delete_project(request, project_id):
     UserActivityLog().log(request, action=DELETED_PROJECT, project=questionnaire.name)
     return HttpResponseRedirect(reverse(index))
 
+
 @csrf_view_exempt
 @valid_web_user
 def rename_project(request, project_id):
     manager = get_database_manager(request.user)
-    questionnaire = Project.get(manager,project_id)
+    questionnaire = Project.get(manager, project_id)
     new_project_name = request.POST.get('data', '').strip()
     if len(new_project_name) == 0:
-        return HttpResponse(json.dumps({"status":"error", "message":ugettext("This field is required.")}), content_type='application/json')
+        return HttpResponse(json.dumps({"status": "error", "message": ugettext("This field is required.")}),
+                            content_type='application/json')
 
     if (questionnaire.name != new_project_name):
-        questionnaire.name=new_project_name
-        try :
+        questionnaire.name = new_project_name
+        try:
             questionnaire.save(process_post_update=True)
             UserActivityLog().log(request, action=RENAMED_PROJECT, project=questionnaire.name)
-            return HttpResponse(json.dumps({"status":"success"}), content_type='application/json')
+            return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
         except DataObjectAlreadyExists as e:
-            return HttpResponse(json.dumps({"status":"error", "message":ugettext("Questionnaire with same name already exists.")}), content_type='application/json')
-    return HttpResponse(json.dumps({"status":"success"}), content_type='application/json')
+            return HttpResponse(
+                json.dumps({"status": "error", "message": ugettext("Questionnaire with same name already exists.")}),
+                content_type='application/json')
+    return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
+
 
 def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
-    questionnaire = Project.get(manager,project_id)
+    questionnaire = Project.get(manager, project_id)
     helper.delete_project(manager, questionnaire, void=False)
     return HttpResponseRedirect(reverse(index))
 
@@ -207,12 +212,13 @@ def project_overview(request, project_id=None):
              'web_questionnaire_list': reverse('web_questionnaire', args=[project_id])}
     add_data_senders_to_see_on_map_msg = _(
         "Register Data Senders to see them on this map") if number_data_sender == 0 else ""
-    add_subjects_to_see_on_map_msg =""
+    add_subjects_to_see_on_map_msg = ""
     entity_type = None
     if not is_empty(questionnaire.entity_type):
         add_subjects_to_see_on_map_msg = _(
             "Register %s to see them on this map") % questionnaire.entity_type[0] if get_entity_count_for_type(manager,
-                                                                                                      questionnaire.entity_type[0]) == 0 else ""
+                                                                                                               questionnaire.entity_type[
+                                                                                                                   0]) == 0 else ""
         entity_type = questionnaire.entity_type[0]
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/overview.html', RequestContext(request, {
@@ -230,7 +236,7 @@ def project_overview(request, project_id=None):
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
         'questionnaire_code': questionnaire_code,
-        'org_number':get_organization_telephone_number(request)
+        'org_number': get_organization_telephone_number(request)
     }))
 
 
@@ -260,7 +266,7 @@ def _format_reminder(reminder, project_id):
     return dict(message=reminder.message, id=reminder.id,
                 to=_format_string_for_reminder_table(reminder.remind_to),
                 when=_make_reminder_mode(reminder.reminder_mode, reminder.day))
-                # delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
+    # delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
 
 
 def _format_reminders(reminders, project_id):
@@ -316,7 +322,7 @@ def broadcast_message(request, project_id):
     organization = utils.get_organization(request)
 
     account_type = organization.account_type
-    if(account_type == 'Pro'):
+    if (account_type == 'Pro'):
         account_type = True
 
     if request.method == 'GET':
@@ -360,7 +366,7 @@ def broadcast_message(request, project_id):
                                       {'project': questionnaire,
                                        "project_links": make_project_links(questionnaire),
                                        'is_quota_reached': is_quota_reached(request, organization=organization),
-                                       "form": form,"account_type":account_type,
+                                       "form": form, "account_type": account_type,
                                        "ong_country": organization.country, "no_smsc": no_smsc,
                                        'failed_numbers': ",".join(failed_numbers), "success": success},
                                       context_instance=RequestContext(request))
@@ -378,35 +384,37 @@ def _get_all_data_senders(dbm):
     return [dict(zip(fields, data["cols"])) for data in data_senders]
 
 
-
-def get_project_link(project):
-    project_links = make_project_links(project)
+def get_project_link(project, entity_type):
+    project_links = make_project_links(project, entity_type)
     return project_links
 
 
 @valid_web_user
-def registered_subjects(request, project_id=None):
+def registered_subjects(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-    project_links = get_project_link(questionnaire)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    #DC/Pooja | To be removed when playing multiple subject id on my subjects page
-    subject = get_entity_type_info(questionnaire.entity_type[0], manager=manager)
-    subject_form_model = get_form_model_by_entity_type(manager, questionnaire.entity_type)
+    current_entity_type = entity_type
+    if not current_entity_type:
+        current_entity_type = questionnaire.entity_type[0]
+
+    project_links = get_project_link(questionnaire, current_entity_type)
+    subject_form_model = get_form_model_by_entity_type(manager, [current_entity_type])
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/subjects/registered_subjects_list.html',
                               {'project': questionnaire,
                                'project_links': project_links,
                                'is_quota_reached': is_quota_reached(request),
-                               "subject": subject,
+                               #"subject": subject,
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
-                               'entity_type': subject.get('entity'),
+                               'entity_type': current_entity_type,
+                               'entity_types': questionnaire.entity_type,
                                'subject_headers': header_fields(subject_form_model),
                                'questionnaire_code': questionnaire.form_code,
-                               'form_code': subject.get('code')}, context_instance=RequestContext(request))
+                               'form_code': subject_form_model.form_code}, context_instance=RequestContext(request))
 
 
 def _get_questions_for_datasenders_registration_for_print_preview(questions):
@@ -448,42 +456,44 @@ def questionnaire(request, project_id):
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,
                                    'post_url': reverse(edit_project, args=[project_id]),
-                                    'unique_id_types': get_unique_id_types(manager),
+                                   'unique_id_types': get_unique_id_types(manager),
                                    'preview_links': get_preview_and_instruction_links_for_questionnaire()},
                                   context_instance=RequestContext(request))
-
-
 
 
 @valid_web_user
 @is_project_exist
 def get_questionnaire_ajax(request, project_id):
     manager = get_database_manager(request.user)
-    project = Project.get(manager,project_id)
+    project = Project.get(manager, project_id)
     existing_questions = project.fields
     return HttpResponse(json.dumps({
-                                'name': project.name,
-                                'language': project.language,
-                                'questions': existing_questions,
-                                'datasenders': project.data_senders,
-                                'reminder_and_deadline':project.reminder_and_deadline
-                           }, default=field_to_json), content_type='application/json')
+                                       'name': project.name,
+                                       'language': project.language,
+                                       'questions': existing_questions,
+                                       'datasenders': project.data_senders,
+                                       'reminder_and_deadline': project.reminder_and_deadline
+                                   }, default=field_to_json), content_type='application/json')
+
 
 class SubjectWebQuestionnaireRequest():
-    def __init__(self, request, project_id):
+    def __init__(self, request, project_id, entity_type=None):
         self.request = request
-        self._initialize(project_id)
+        self._initialize(project_id, entity_type)
 
-    def _initialize(self, project_id):
+    def _initialize(self, project_id, entity_type=None):
         self.manager = get_database_manager(self.request.user)
-        self.questionnaire = Project.get(self.manager,project_id)
+        self.questionnaire = Project.get(self.manager, project_id)
         if self.questionnaire.is_void():
             return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
-        self.form_code = self.questionnaire.form_code
-        self.form_model = _get_subject_form_model(self.manager, self.questionnaire.entity_type)
-        self.subject_registration_code = get_form_code_by_entity_type(self.manager, [self.questionnaire.entity_type])
+        #self.form_code = self.questionnaire.form_code
+        if not entity_type:
+            entity_type = self.questionnaire.entity_type[0]
+        self.entity_type = entity_type
+        self.form_model = _get_subject_form_model(self.manager, entity_type)
+        self.subject_registration_code = get_form_code_by_entity_type(self.manager, [entity_type])
 
     def form(self, initial_data=None, country=None):
         return SubjectRegistrationForm(self.form_model, data=initial_data, country=country)
@@ -499,7 +509,8 @@ class SubjectWebQuestionnaireRequest():
 
 
     def success_message(self, response_short_code):
-        detail_dict = dict({"Subject Type": self.questionnaire.entity_type[0].capitalize(), "Unique ID": response_short_code})
+        detail_dict = dict(
+            {"Subject Type": self.questionnaire.entity_type[0].capitalize(), "Unique ID": response_short_code})
         UserActivityLog().log(self.request, action=REGISTERED_SUBJECT, project=self.questionnaire.name,
                               detail=json.dumps(detail_dict))
         return (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (response_short_code,)
@@ -508,7 +519,7 @@ class SubjectWebQuestionnaireRequest():
     def response_for_get_request(self, initial_data=None, is_update=False):
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
-                                        self.disable_link_class, is_update)
+                                        self.disable_link_class, entity_type=self.entity_type, is_update=is_update)
         self._update_form_context(form_context, questionnaire_form,
                                   web_view_enabled=self.request.GET.get("web_view", False))
         form_context.update({'is_quota_reached': is_quota_reached(self.request)})
@@ -518,18 +529,18 @@ class SubjectWebQuestionnaireRequest():
     def _update_form_context(self, form_context, questionnaire_form, web_view_enabled=True):
         form_context.update({'extension_template': 'project/subjects.html',
                              'form_code': self.subject_registration_code,
-                             'entity_type': self.questionnaire.entity_type[0],
+                             'entity_type': self.entity_type,
                              "questionnaire_form": questionnaire_form,
                              "questions": self.form_model.fields,
                              "org_number": get_organization_telephone_number(self.request),
                              "example_sms": get_example_sms_message(self.form_model.fields,
                                                                     self.subject_registration_code),
                              "web_view": web_view_enabled,
-                             "back_link": reverse("registered_subjects", args=[self.questionnaire.id]),
+                             "back_link": reverse("registered_subjects", args=[self.questionnaire.id, self.entity_type]),
                              "edit_subject_questionnaire_link": reverse('edit_my_subject_questionnaire',
-                                                                        args=[self.questionnaire.id]),
+                                                                        args=[self.questionnaire.id, self.entity_type]),
                              "register_subjects_link": reverse('subject_questionnaire',
-                                                               args=[self.questionnaire.id]) + "?web_view=True"}
+                                                               args=[self.questionnaire.id, self.entity_type]) + "?web_view=True"}
         )
 
     def invalid_data_response(self, questionnaire_form, is_update):
@@ -601,9 +612,9 @@ class SurveyWebQuestionnaireRequest():
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, is_update)
         form_context.update({
-                                'is_quota_reached': is_quota_reached(self.request),
-                                'questionnaire_code': self.questionnaire.form_code,
-                            })
+            'is_quota_reached': is_quota_reached(self.request),
+            'questionnaire_code': self.questionnaire.form_code,
+        })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
 
@@ -682,8 +693,8 @@ def survey_web_questionnaire(request, project_id=None):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
-def subject_web_questionnaire(request, project_id=None):
-    subject_request = SubjectWebQuestionnaireRequest(request, project_id)
+def subject_web_questionnaire(request, project_id=None, entity_type=None):
+    subject_request = SubjectWebQuestionnaireRequest(request, project_id, entity_type)
     if request.method == 'GET':
         return subject_request.response_for_get_request()
     elif request.method == 'POST':
@@ -700,7 +711,7 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
         questionnaire = Project.get(manager, project_id)
         if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
-        #if form_model.is_entity_type_reporter():
+            #if form_model.is_entity_type_reporter():
         #    fields = helper.hide_entity_question(form_model.fields)
         project_links = make_project_links(questionnaire)
         questions = []
@@ -725,26 +736,28 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
     if type_of_subject == 'reporter':
         registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     else:
-        entity_type = project.entity_type
-        registration_questionnaire = get_form_model_by_entity_type(manager, entity_type)
+        entity_type = type_of_subject
+        registration_questionnaire = get_form_model_by_entity_type(manager, [entity_type])
         if registration_questionnaire is None:
             registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     questions = viewable_questionnaire(registration_questionnaire)
-    project_links = make_project_links(project)
+    project_links = make_project_links(project, entity_type)
     return registration_questionnaire.fields, project_links, questions, registration_questionnaire
 
 
 @valid_web_user
-def subject_registration_form_preview(request, project_id=None):
+def subject_registration_form_preview(request, project_id=None, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
+    if not entity_type:
+        entity_type = questionnaire.entity_type[0]
     if request.method == "GET":
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                               questionnaire,
-                                                                                              questionnaire.entity_type)
+                                                                                              entity_type)
         example_sms = get_example_sms_message(fields, registration_questionnaire.form_code)
         return render_to_response('project/questionnaire_preview_list.html',
                                   {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
@@ -759,7 +772,7 @@ def subject_registration_form_preview(request, project_id=None):
 def sender_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    questionnaire = Project.get(manager,project_id)
+    questionnaire = Project.get(manager, project_id)
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     if request.method == "GET":
@@ -785,19 +798,21 @@ def _get_subject_form_model(manager, entity_type):
 
 
 @valid_web_user
-def edit_my_subject_questionnaire(request, project_id):
+def edit_my_subject_questionnaire(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-    project_links = get_project_link(questionnaire)
+    if not entity_type:
+        entity_type = questionnaire.entity_type[0]
+    project_links = get_project_link(questionnaire, entity_type)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    reg_form = _get_subject_form_model(manager, questionnaire.entity_type)
+    reg_form = _get_subject_form_model(manager, entity_type)
     if reg_form is None:
         reg_form = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = reg_form.fields
     existing_questions = json.dumps(fields, default=field_to_json)
-    subject = get_entity_type_info(questionnaire.entity_type, manager=manager)
+    subject = get_entity_type_info(entity_type, manager=manager)
     return render_to_response('project/subject_questionnaire.html',
                               {'project': questionnaire,
                                'project_links': project_links,
@@ -805,7 +820,7 @@ def edit_my_subject_questionnaire(request, project_id):
                                'existing_questions': repr(existing_questions),
                                'questionnaire_code': reg_form.form_code,
                                'language': reg_form.activeLanguages[0],
-                               'entity_type': questionnaire.entity_type[0],
+                               'entity_type': entity_type,
                                'subject': subject,
                                'post_url': reverse(subject_save_questionnaire)},
                               context_instance=RequestContext(request))
@@ -855,7 +870,7 @@ def create_data_sender_and_web_user(request, project_id):
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
 
         if not len(form.errors) and reporter_id:
-            project= Project(questionnaire)
+            project = Project(questionnaire)
             project.associate_data_sender_to_project(manager, reporter_id)
             if form.requires_web_access():
                 email_id = request.POST['email']
