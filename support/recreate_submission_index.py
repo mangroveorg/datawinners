@@ -29,5 +29,5 @@ def create_index():
             logging.error(e)
 
 
-call_command("syncviews")
+call_command("syncviews", "syncall")
 create_index()
