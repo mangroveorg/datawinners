@@ -128,7 +128,7 @@ class TestProjectViews(unittest.TestCase):
 
                 self.assertEquals(preview_context['questionnaire_code'], 'q01')
                 self.assertEquals(preview_context['questions'], questions)
-                self.assertEquals(preview_context['project'], project_info)
+                self.assertEquals(preview_context['project_name'], project_info)
                 self.assertEquals(preview_context['example_sms'], "form code answer1")
 
 
