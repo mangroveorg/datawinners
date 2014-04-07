@@ -102,7 +102,6 @@ class TestProjectViews(unittest.TestCase):
     def test_should_get_correct_context_for_sms_preview(self):
         questions = {}
         manager = {}
-        project = {"name": "project_name", "entity_type": "clinic", "language": "en"}
         form_model = Mock()
         form_model.fields = [{}]
         form_model.form_code = "form code"
@@ -128,7 +127,7 @@ class TestProjectViews(unittest.TestCase):
 
                 self.assertEquals(preview_context['questionnaire_code'], 'q01')
                 self.assertEquals(preview_context['questions'], questions)
-                self.assertEquals(preview_context['project_name'], project_info)
+                self.assertEquals(preview_context['project_name'], "project_name")
                 self.assertEquals(preview_context['example_sms'], "form code answer1")
 
 
