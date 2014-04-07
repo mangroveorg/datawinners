@@ -39,7 +39,7 @@ def create_questionnaire(post, manager, name, language, reporter_id):
     datasenders = json.loads(post.get('datasenders', "[]"))
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    questionnaire = Project(manager, name=name, type='survey',
+    questionnaire = Project(manager, name=name,
                            fields=[], form_code=questionnaire_code, language=language,
                            devices=[u'sms', u'web', u'smartPhone'])
     if reporter_id is not None:

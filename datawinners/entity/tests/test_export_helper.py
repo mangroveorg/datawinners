@@ -76,7 +76,7 @@ class TestExcelHeaders(unittest.TestCase):
                              IntegerField("age","q2","What is your age"),
                              DateField("reporting date","q3","What is the reporting date","dd.mm.yyyy"),
                              UniqueIdField("clinic","eid","eid","What is the subject id")]
-        form_model = FormModel(Mock(spec=DatabaseManager), name="some_name", form_code="cli00_mp", fields=form_model_fields, type="type1")
+        form_model = FormModel(Mock(spec=DatabaseManager), name="some_name", form_code="cli00_mp", fields=form_model_fields)
 
         headers = get_submission_headers(fields, form_model)
 

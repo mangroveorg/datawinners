@@ -161,8 +161,7 @@ class SubmissionParserTest(TestCase):
         fields = \
             [UniqueIdField('clinic',name="Q1", code="EID", label="What is the reporter ID?"),
              TextField(name="Q2", code="DATE", label="What is the reporting period for the activity?")]
-        self.form_model = FormModel(self.dbm, "abc", "abc", form_code="cli001", fields=fields,
-                               type="survey")
+        self.form_model = FormModel(self.dbm, "abc", "abc", form_code="cli001", fields=fields)
         self.project = Mock(Project)
 
     def add_datasender_col(self):

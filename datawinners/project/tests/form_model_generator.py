@@ -9,24 +9,24 @@ class FormModelGenerator(object):
         self.init_form_model_fields()
 
     def form_model(self, form_code="cli002"):
-        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code=form_code, type='survey',
+        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code=form_code, 
             fields=[self.eid_field, self.rp_field, self.symptoms_field, self.blood_type_field],
             )
 
     def subject_form_model_without_rp(self):
-        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
+        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", 
             fields=[self.eid_field, self.symptoms_field, self.blood_type_field], )
 
     def summary_form_model_without_rp(self):
-        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
+        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", 
             fields=[self.eid_field, self.symptoms_field, self.blood_type_field])
 
     def summary_form_model_with_rp(self):
-        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
+        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", 
             fields=[self.rp_field, self.eid_field, self.symptoms_field, self.blood_type_field])
 
     def form_model_with_gps_question(self):
-        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
+        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", 
             fields=[self.eid_field, self.gps_field], )
 
     def init_form_model_fields(self):

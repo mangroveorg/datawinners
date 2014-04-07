@@ -175,7 +175,7 @@ def create_questions(unique_id_type):
 
 def create_project1(manager, questions, weekly_reminder_and_deadline):
     questionnaire1 = Project(manager, name="Clinic Test Project1",
-                               form_code="cli001", type='survey',
+                               form_code="cli001", 
                                fields=questions, devices=["sms", "web", "smartPhone"], sender_group="close",
                                goals="This project is for automation"
     )
@@ -205,7 +205,7 @@ def create_project1(manager, questions, weekly_reminder_and_deadline):
 
 def create_project2(manager, questions):
     questionnaire2 = Project(manager, name="Clinic2 Test Project",
-                               form_code="cli002", type='survey',
+                               form_code="cli002", 
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -223,7 +223,7 @@ def create_project2(manager, questions):
 
 def create_project3(manager, questions):
     questionnaire3 = Project(manager, name="Clinic3 Test Project",
-                               form_code="cli003", type='survey',
+                               form_code="cli003", 
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -236,7 +236,7 @@ def create_project3(manager, questions):
 
 def create_project4(manager, questions):
     questionnaire4 = Project(manager, name="Clinic4 Test Project",
-                               form_code="cli004", type='survey',
+                               form_code="cli004", 
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -249,7 +249,7 @@ def create_project4(manager, questions):
 
 def create_project5(manager, questions):
     questionnaire5 = Project(manager, name="Clinic5 Test Project",
-                               form_code="cli005", type='survey',
+                               form_code="cli005", 
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -262,7 +262,7 @@ def create_project5(manager, questions):
 
 def create_project6(manager, questions):
     questionnaire6 = Project(manager, name="Clinic6 Test Project",
-                               form_code="cli006", type='survey',
+                               form_code="cli006", 
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -275,7 +275,7 @@ def create_project6(manager, questions):
 
 def create_project7(manager, questions):
     questionnaire7 = Project(manager, name="Clinic7 Test Project",
-                               form_code="cli007", type='survey',
+                               form_code="cli007", 
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -288,7 +288,7 @@ def create_project7(manager, questions):
 
 def create_project11(manager, questions):
     questionnaire11 = Project(manager, name="Clinic All DS (Following)",
-                                form_code="cli011", type='survey',
+                                form_code="cli011", 
                                 fields=questions, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -325,7 +325,7 @@ def create_project11(manager, questions):
 
 def create_project10(manager, questions):
     questionnaire10 = Project(manager, name="Clinic DS W/O Submission (Following)",
-                                form_code="cli010", type='survey',
+                                form_code="cli010", 
                                 fields=questions, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -362,7 +362,7 @@ def create_project10(manager, questions):
 
 def create_project9(manager, questions, weekly_reminder_and_deadline):
     questionnaire9 = Project(manager, name="Clinic9 Reminder Test Project",
-                               form_code="cli009", type='survey',
+                               form_code="cli009", 
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -385,7 +385,7 @@ def create_project9(manager, questions, weekly_reminder_and_deadline):
 
 def create_project8(manager, questions):
     questionnaire8 = Project(manager, name="Clinic8 Test Project",
-                               form_code="cli008", type='survey',
+                               form_code="cli008", 
                                fields=questions, goals="This project is for automation",
                                devices=["sms"], sender_group="close"
     )
@@ -398,7 +398,7 @@ def create_project8(manager, questions):
 
 def create_project12(manager, questions):
     questionnaire12 = Project(manager, name="Clinic DS W/O Submission (That)",
-                                form_code="cli012", type='survey',
+                                form_code="cli012", 
                                 fields=questions, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -436,7 +436,7 @@ def create_project12(manager, questions):
 
 def create_project13(manager, questions):
     questionnaire13 = Project(manager, name="clinic13 test project",
-                                form_code="cli013", type='survey',
+                                form_code="cli013", 
                                 fields=questions, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -475,7 +475,7 @@ def create_project13(manager, questions):
 
 def create_project14(manager, questions):
     questionnaire14 = Project(manager, name="Clinic DS W/O Monthly Submission (following)",
-                                form_code="cli014", type='survey',
+                                form_code="cli014", 
                                 fields=questions, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -514,7 +514,7 @@ def create_project14(manager, questions):
 
 def create_project15(manager, questions):
     questionnaire15 = Project(manager, name="Clinic All DS Monthly Submission (following)",
-                                form_code="cli015", type='survey',
+                                form_code="cli015", 
                                 fields=questions, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -552,7 +552,7 @@ def create_project15(manager, questions):
 
 def create_project16(manager, questions):
     questionnaire16 = Project(manager, name="Clinic All DS Monthly Submission (that)",
-                                form_code="cli016", type='survey',
+                                form_code="cli016", 
                                 fields=questions, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -591,7 +591,7 @@ def create_project16(manager, questions):
 
 def create_project17(manager, questions_):
     questionnaire17 = Project(manager, name="Clinic17 Test Project",
-                                form_code="cli017", type='survey',
+                                form_code="cli017", 
                                 fields=questions_, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -604,7 +604,7 @@ def create_project17(manager, questions_):
 
 def create_project18(manager, questions_):
     questionnaire18 = Project(manager, name="Test data sorting",
-                                form_code="cli018", type='survey',
+                                form_code="cli018", 
                                 fields=questions_, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -618,7 +618,7 @@ def create_project18(manager, questions_):
 def create_project19(ENTITY_TYPE, manager):
     questions_ = create_questions(ENTITY_TYPE)
     questionnaire19 = Project(manager, name="Project having people as subject",
-                                form_code="peo019", type='survey',
+                                form_code="peo019", 
                                 fields=questions_, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
@@ -641,7 +641,7 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
                           event_time_field_flag=True)
 
     questionnaire = Project(manager, name="Clinic Test Project With Monthly Reporting Period",
-                              form_code=clinic_code, type='survey',
+                              form_code=clinic_code, 
                               fields=[question1, question2], goals="This project is for automation",
                               devices=["sms", "web", "smartPhone"], sender_group="close"
 
@@ -1281,7 +1281,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
                             single_select_flag=False,
                             instruction="Choose 1 or more answers from the list.", required=False)
     questionnaire = Project(manager, name="Clinic Test Project",
-                           form_code="cli051", type='survey',
+                           form_code="cli051", 
                            fields=[question1, question2, question3, question4, question5, question6, question7,
                                    question8], goals="This project is for automation",
                            devices=["sms", "web", "smartPhone"], sender_group="close"

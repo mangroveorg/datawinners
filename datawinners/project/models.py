@@ -153,20 +153,19 @@ class ReminderLog(DataObject):
 class Project(FormModel):
     __document_class__ = ProjectDocument
 
-    def _set_doc(self, form_code, is_registration_model, label, language, name, type):
+    def _set_doc(self, form_code, is_registration_model, label, language, name):
         doc = ProjectDocument()
         doc.name = name.lower() if name else None
         doc.set_label(label)
         doc.form_code = form_code
-        doc.type = type
         doc.active_languages = [language]
         doc.is_registration_model = is_registration_model
         DataObject._set_document(self, doc)
 
     def __init__(self, dbm, form_code=None, name=None, goals="", devices=None, sender_group=None,
-                 language='en', type="survey", fields=[]):
+                 language='en', fields=[]):
         FormModel.__init__(self, dbm=dbm, form_code=form_code, is_registration_model=False,
-                           label="", language=language, name=name, type=type, fields=fields)
+                           label="", language=language, name=name,  fields=fields)
         if self._doc:
             self._doc.goals = goals
             self._doc.devices = devices

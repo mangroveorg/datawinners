@@ -17,8 +17,7 @@ class TestWebForm(TestCase):
 
     def test_hidden_form_code_field_created(self):
         entity_field = UniqueIdField('clinic',"reporting on", "rep_on", "rep")
-        form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
-                               type="business")
+        form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field])
         form = WebForm(form_model, None)
         self.assertEquals(len(form.fields), 1)
         self.assertEquals(type(form.fields['form_code'].widget), HiddenInput)
@@ -31,7 +30,7 @@ class TestSubjectRegistrationForm(TestCase):
     def test_regex_field_created_for_entity_question(self):
         entity_field = ShortCodeField("reporting on", "rep_on", "rep")
         form_model = EntityFormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
-                               entity_type=['Clinic'], type="business")
+                               entity_type=['Clinic'])
 
         form = SubjectRegistrationForm(form_model)
         self.assertEquals(type(form.fields['rep_on']), RegexField)
@@ -40,7 +39,7 @@ class TestSubjectRegistrationForm(TestCase):
     def test_append_country_to_location(self):
         location_field = TextField(LOCATION_TYPE_FIELD_NAME, "location_code", "some label")
         form_model = EntityFormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[location_field],
-                               entity_type=['Clinic'], type="business")
+                               entity_type=['Clinic'])
 
         form = SubjectRegistrationForm(form_model,
                                        data={'location_code': "Bangalore", 'form_code': 'form_code_1', 't': ['Clinic']},
@@ -56,8 +55,7 @@ class TestSurveyResponseForm(TestCase):
     def test_should_create_subject_field(self):
         self.dbm.database.view = Mock(return_value=Mock(rows=[{"key":(0,"cli1"),"value":"Clinic One"}]))
         entity_field = UniqueIdField("","reporting on", "rep_on", "rep", instruction="")
-        project = Project(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
-                               type="business")
+        project = Project(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field])
 
         subject_field_creator = Mock(spec=SubjectQuestionFieldCreator)
         mock_field = Mock()
@@ -67,8 +65,7 @@ class TestSurveyResponseForm(TestCase):
         self.assertEquals(form.fields["rep_on"].choices, [('cli1', 'Clinic One(cli1)')])
 
     def test_should_not_create_subject_fields_if_entity_field_is_not_present_in_form_model(self):
-        form_model = Project(self.dbm, 'some form', 'some', 'form_code_1', fields=[],
-                               type="business")
+        form_model = Project(self.dbm, 'some form', 'some', 'form_code_1', fields=[])
         form = SurveyResponseForm(form_model, data=None, is_datasender=True)
 
         self.assertIsNone(form.fields.get('entity_question_code'))

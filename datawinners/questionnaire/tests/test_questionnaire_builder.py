@@ -56,7 +56,7 @@ class TestQuestionnaireBuilderIT(unittest.TestCase):
                               defaultValue="some default value",
                               constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")])
         cls.form_model = FormModel(cls.manager, name="aids", label="Aids form_model",
-                                   form_code=FORM_CODE_1, type='survey', fields=[question1, question2])
+                                   form_code=FORM_CODE_1, fields=[question1, question2])
         cls.form_model__id = cls.form_model.id
 
     # def _create_form_model_without_uniq_id(self):
