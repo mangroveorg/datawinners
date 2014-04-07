@@ -5,14 +5,14 @@ from django.utils.http import urlquote
 from datawinners.utils import get_organization
 from datawinners.accountmanagement.models import Organization
 
-def make_subject_links(project_id):
-    subject_links = {'subjects_link': reverse('registered_subjects', args=[project_id]),
-                     'subjects_edit_link': reverse('edit_my_subject_questionnaire', args=[project_id]),
-                     'register_subjects_link': reverse('subject_questionnaire', args=[project_id]),
-                     'register_subjects_link_web_view': reverse('subject_questionnaire', args=[project_id]) + "?web_view=True",
-                     'registered_subjects_link': reverse('registered_subjects', args=[project_id]),
+def make_subject_links(project_id, entity_type=None):
+    subject_links = {'subjects_link': reverse('registered_subjects', args=[project_id, entity_type]),
+                     'subjects_edit_link': reverse('edit_my_subject_questionnaire', args=[project_id, entity_type]),
+                     'register_subjects_link': reverse('subject_questionnaire', args=[project_id, entity_type]),
+                     'register_subjects_link_web_view': reverse('subject_questionnaire', args=[project_id, entity_type]) + "?web_view=True",
+                     'registered_subjects_link': reverse('registered_subjects', args=[project_id, entity_type]),
                      'subject_registration_preview_link': reverse('subject_registration_form_preview',
-                         args=[project_id])}
+                         args=[project_id, entity_type])}
     return subject_links
 
 def make_data_sender_links(project_id):
@@ -22,8 +22,10 @@ def make_data_sender_links(project_id):
     return datasender_links
 
 
-def make_project_links(project):
+def make_project_links(project, entity_type=None):
     project_id = project.id
+    if not entity_type:
+        entity_type = project.entity_type[0]
     project_links = {'overview_link': reverse("project-overview", args=[project_id]),
                      'delete_project_link': reverse("delete_project", args=[project_id]),
                      'questionnaire_preview_link': reverse("questionnaire_preview", args=[project_id]),
@@ -34,7 +36,7 @@ def make_project_links(project):
                      'submission_log_link': reverse("submissions", args=[project_id, project.form_code]),
                      'reminders_link': reverse('reminder_settings', args=[project_id])}
 
-    project_links.update(make_subject_links(project_id))
+    project_links.update(make_subject_links(project_id, entity_type))
     project_links.update(make_data_sender_links(project_id))
 
     project_links['sender_registration_preview_link'] = reverse("sender_registration_form_preview", args=[project_id])

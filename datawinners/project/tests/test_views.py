@@ -53,16 +53,17 @@ class TestProjectViews(unittest.TestCase):
 
     def test_should_return_subject_project_links(self):
         project_id = "1"
-        subject_links = make_subject_links(project_id)
-        self.assertEqual(reverse('registered_subjects', args=[project_id]), subject_links['subjects_link'])
-        self.assertEqual(reverse('edit_my_subject_questionnaire', args=[project_id]), subject_links['subjects_edit_link'])
-        self.assertEqual(reverse('subject_registration_form_preview', args=[project_id]),
+        entity_type = "entity_type"
+        subject_links = make_subject_links(project_id, entity_type)
+        self.assertEqual(reverse('registered_subjects', args=[project_id, entity_type]), subject_links['subjects_link'])
+        self.assertEqual(reverse('edit_my_subject_questionnaire', args=[project_id, entity_type]), subject_links['subjects_edit_link'])
+        self.assertEqual(reverse('subject_registration_form_preview', args=[project_id, entity_type]),
                          subject_links['subject_registration_preview_link'])
-        self.assertEqual(reverse('registered_subjects', args=[project_id]),
+        self.assertEqual(reverse('registered_subjects', args=[project_id, entity_type]),
                          subject_links['registered_subjects_link'])
-        self.assertEqual(reverse('subject_questionnaire', args=[project_id]),
+        self.assertEqual(reverse('subject_questionnaire', args=[project_id, entity_type]),
                          subject_links['register_subjects_link'])
-        self.assertEqual(reverse('subject_questionnaire', args=[project_id]) + "?web_view=True",
+        self.assertEqual(reverse('subject_questionnaire', args=[project_id, entity_type]) + "?web_view=True",
                          subject_links['register_subjects_link_web_view'])
 
     # def test_should_return_datasender_project_links(self):
@@ -78,9 +79,9 @@ class TestProjectViews(unittest.TestCase):
     def test_for_websubmission_on_subjects_should_provide_add_links(self):
         project = Mock(spec=Project)
         project.id = "1"
-        project.entity_type = ["clinic"]
-        link = add_link(project)
-        self.assertEqual(reverse('subject_questionnaire', args=[project.id])+"?web_view=True", link.url)
+        entity_type = "clinic"
+        link = add_link(project, entity_type)
+        self.assertEqual(reverse('subject_questionnaire', args=[project.id, entity_type])+"?web_view=True", link.url)
         self.assertEqual('Register a clinic', link.text)
 
     # def test_for_websubmission_on_datasenders_should_provide_add_links(self):
@@ -267,7 +268,7 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
                                 get_org.return_value = organization
                                 subject_form.return_value = Mock()
                                 router.return_value = Mock()
-                                subject_web_request = self.StubSubjectWebQuestionnaireRequest(request, "project_id",
+                                subject_web_request = self.StubSubjectWebQuestionnaireRequest(request, "project_id","entity_type",
                                                                                               form)
                                 subject_web_request.post()
 
@@ -293,7 +294,7 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
                                 get_org.return_value = organization
                                 subject_form.return_value = Mock()
                                 router.return_value = Mock()
-                                subject_web_request = self.StubSubjectWebQuestionnaireRequest(request, "project_id",
+                                subject_web_request = self.StubSubjectWebQuestionnaireRequest(request, "project_id","entity_type",
                                                                                               form)
                                 subject_web_request.post(is_update=True)
 
@@ -302,19 +303,20 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
 
 
     class StubSubjectWebQuestionnaireRequest(SubjectWebQuestionnaireRequest):
-        def __init__(self, request, project_id, form_list):
+        def __init__(self, request, project_id, entity_type,form_list):
             self.form_list = form_list
-            SubjectWebQuestionnaireRequest.__init__(self, request, project_id)
+            SubjectWebQuestionnaireRequest.__init__(self, request, project_id,entity_type)
             self.form_model = None
 
 
-        def _initialize(self, project_id):
+        def _initialize(self, project_id, entity_type):
             self.manager = None
             self.questionnaire = Mock(spec=FormModel)
             self.is_data_sender = True
             self.disable_link_class, self.hide_link_class = None, None
             self.form_code = None
             self.form_model = None
+            self.entity_type = entity_type
 
 
         def player_response(self, created_request):
