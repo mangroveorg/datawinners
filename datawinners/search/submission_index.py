@@ -129,15 +129,16 @@ class SubmissionSearchStore():
         return {doc_type: mapping}
 
     def _verify_unique_id_change(self):
-        old_unique_id_types = [(field.code, field.unique_id_type) for field in self.old_form_model.fields if
-                               isinstance(field, UniqueIdField)]
-        new_unique_id_types = [(field.code, field.unique_id_type) for field in self.latest_form_model.fields if
-                               isinstance(field, UniqueIdField)]
-        old_unique_id_types.sort()
-        new_unique_id_types.sort()
+        if self.old_form_model:
+            old_unique_id_types = [(field.code, field.unique_id_type) for field in self.old_form_model.fields if
+                                   isinstance(field, UniqueIdField)]
+            new_unique_id_types = [(field.code, field.unique_id_type) for field in self.latest_form_model.fields if
+                                   isinstance(field, UniqueIdField)]
+            old_unique_id_types.sort()
+            new_unique_id_types.sort()
 
-        if old_unique_id_types != new_unique_id_types:
-            raise FieldTypeChangeException()
+            if old_unique_id_types != new_unique_id_types:
+                raise FieldTypeChangeException()
 
 
 class FieldTypeChangeException(Exception):
