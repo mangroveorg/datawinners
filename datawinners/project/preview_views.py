@@ -23,8 +23,8 @@ def get_questions(form_model):
 
 
 def get_questionnaire_form_model(manager, project_info, post):
-    return create_questionnaire(post, manager, name=unicode(project_info['name']),
-                                language=unicode(project_info['language']), reporter_id=None)
+    return create_questionnaire(post, manager, name=unicode(project_info.name),
+                                language=unicode(project_info.activeLanguages[0]), reporter_id=None)
 
 def get_sms_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
@@ -89,7 +89,7 @@ def questionnaire_sms_preview(request):
     context = {'org_number': get_organization_telephone_number(request)}
     project_info = FormModel.get(manager, request.POST['project_id'])
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project_info.is_deleted():
+    if project_info.is_void():
         return HttpResponseRedirect(dashboard_page)
     if project_info:
         context.update(get_sms_preview_context(manager, request.POST, project_info))
@@ -102,7 +102,7 @@ def questionnaire_web_preview(request):
     manager = get_database_manager(request.user)
     project_info = FormModel.get(manager, request.POST["project_id"])
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project_info.is_deleted():
+    if project_info.is_void():
         return HttpResponseRedirect(dashboard_page)
     context = get_web_preview_context(manager, request.POST, project_info) if project_info else {}
     return render_to_response("project/web_instruction_preview.html",
