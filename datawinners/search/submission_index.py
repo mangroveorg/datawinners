@@ -3,18 +3,17 @@ from collections import OrderedDict
 from string import lower
 
 from babel.dates import format_datetime
-from mangrove.datastore.documents import ProjectDocument
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
+from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
-
-from mangrove.form_model.field import DateField
+from mangrove.form_model.field import DateField, UniqueIdField
 from datawinners.project.models import get_all_projects, Project
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, es_field_name, _add_date_field_mapping, es_unique_id_code_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+from mangrove.form_model.form_model import get_form_model_by_code
 
 
 logger = logging.getLogger("datawinners")
@@ -26,17 +25,17 @@ def get_code_from_es_field_name(es_field_name, form_model_id):
             return item
 
 
-def create_submission_mapping(dbm, form_model):
+def create_submission_mapping(dbm, latest_form_model, old_form_model):
     es = get_elasticsearch_handle()
-    SubmissionSearchStore(dbm, es, form_model).update_store()
-
+    SubmissionSearchStore(dbm, es, latest_form_model, old_form_model).update_store()
 
 
 class SubmissionSearchStore():
-    def __init__(self, dbm, es, form_model):
+    def __init__(self, dbm, es, latest_form_model, old_form_model):
         self.dbm = dbm
         self.es = es
-        self.form_model = form_model
+        self.latest_form_model = latest_form_model
+        self.old_form_model = old_form_model
 
     def update_store(self):
         mapping = self.get_mappings()
@@ -44,11 +43,12 @@ class SubmissionSearchStore():
             mapping_old = self.get_old_mappings()
             if mapping_old:
                 self._verify_change_involving_date_field(mapping, mapping_old)
+                self._verify_unique_id_change()
             if not mapping_old or self._has_fields_changed(mapping, mapping_old):
-                self.es.put_mapping(self.dbm.database_name, self.form_model.id, mapping)
+                self.es.put_mapping(self.dbm.database_name, self.latest_form_model.id, mapping)
 
-        except (ElasticHttpError, ChangeInvolvingDateFieldException) as e:
-            if isinstance(e, ChangeInvolvingDateFieldException) or e[1].startswith('MergeMappingException'):
+        except (ElasticHttpError, FieldTypeChangeException) as e:
+            if isinstance(e, FieldTypeChangeException) or e[1].startswith('MergeMappingException'):
                 self.recreate_elastic_store()
             else:
                 logger.error(e)
@@ -59,7 +59,8 @@ class SubmissionSearchStore():
         new_fields_with_format = set(
             [k + f["fields"][k + "_value"]["type"] for k, f in mapping.values()[0]['properties'].items()])
         old_fields_with_format = set(
-            [k + f["fields"][k + "_value"]["type"] for k, f in mapping_old.values()[0]['properties'].items() if f.get("fields")])
+            [k + f["fields"][k + "_value"]["type"] for k, f in mapping_old.values()[0]['properties'].items() if
+             f.get("fields")])
 
         return new_fields_with_format != old_fields_with_format
 
@@ -74,12 +75,12 @@ class SubmissionSearchStore():
              if f.get('fields') and f["fields"][k + "_value"]["type"] == "date" and k in new_q_code])
         date_format_changed = old_date_fields_with_format != new_date_fields_with_format
         if date_format_changed:
-            raise ChangeInvolvingDateFieldException()
+            raise FieldTypeChangeException()
 
     def get_old_mappings(self):
         mapping_old = []
         try:
-            mapping_old = self.es.get_mapping(index=self.dbm.database_name, doc_type=self.form_model.id)
+            mapping_old = self.es.get_mapping(index=self.dbm.database_name, doc_type=self.latest_form_model.id)
         except ElasticHttpNotFoundError as e:
             pass
         return mapping_old
@@ -87,17 +88,23 @@ class SubmissionSearchStore():
     def get_mappings(self):
         fields_definition = []
         fields_definition.extend(get_submission_meta_fields())
-        for field in self.form_model.fields:
+        for field in self.latest_form_model.fields:
+            if isinstance(field, UniqueIdField):
+                unique_id_field_name = es_field_name(field.code, self.latest_form_model.id)
+                fields_definition.append(
+                    get_field_definition(field, field_name=es_unique_id_code_field_name(unique_id_field_name)))
             fields_definition.append(
-                get_field_definition(field, field_name=es_field_name(field.code, self.form_model.id)))
-        mapping = self.get_fields_mapping_by_field_def(doc_type=self.form_model.id, fields_definition=fields_definition)
+                get_field_definition(field, field_name=es_field_name(field.code, self.latest_form_model.id)))
+        mapping = self.get_fields_mapping_by_field_def(doc_type=self.latest_form_model.id,
+                                                       fields_definition=fields_definition)
         return mapping
 
     def recreate_elastic_store(self):
-        self.es.send_request('DELETE', [self.dbm.database_name, self.form_model.id, '_mapping'])
-        self.es.put_mapping(self.dbm.database_name, self.form_model.id, self.get_mappings())
+        self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
+        self.es.put_mapping(self.dbm.database_name, self.latest_form_model.id, self.get_mappings())
         from datawinners.search.submission_index_task import async_populate_submission_index
-        async_populate_submission_index.delay(self.dbm.database_name, self.form_model.form_code)
+
+        async_populate_submission_index.delay(self.dbm.database_name, self.latest_form_model.form_code)
 
     def _add_text_field_mapping_for_submission(self, mapping_fields, field_def):
         name = field_def["name"]
@@ -121,8 +128,19 @@ class SubmissionSearchStore():
                 self._add_text_field_mapping_for_submission(mapping_fields, field_def)
         return {doc_type: mapping}
 
+    def _verify_unique_id_change(self):
+        old_unique_id_types = [(field.code, field.unique_id_type) for field in self.old_form_model.fields if
+                               isinstance(field, UniqueIdField)]
+        new_unique_id_types = [(field.code, field.unique_id_type) for field in self.latest_form_model.fields if
+                               isinstance(field, UniqueIdField)]
+        old_unique_id_types.sort()
+        new_unique_id_types.sort()
 
-class ChangeInvolvingDateFieldException(Exception):
+        if old_unique_id_types != new_unique_id_types:
+            raise FieldTypeChangeException()
+
+
+class FieldTypeChangeException(Exception):
     def __str__(self):
         return self.message
 
@@ -141,7 +159,7 @@ def submission_update_on_entity_edition(entity_doc, dbm):
 def update_submission_search_for_datasender_edition(entity_doc, dbm):
     from datawinners.search.submission_query import SubmissionQueryBuilder
 
-    kwargs = {"%s%s"%(SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): entity_doc.short_code}
+    kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): entity_doc.short_code}
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
     project_form_model_ids = [project.id for project in get_all_projects(dbm)]
 
@@ -158,7 +176,7 @@ def update_submission_search_for_subject_edition(entity_doc, dbm):
     entity_type = entity_doc.entity_type
     projects = []
     for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True):
-            projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc'])))
+        projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc'])))
     for project in projects:
         entity_field_code = None
         for field in project.entity_questions:
@@ -172,7 +190,7 @@ def update_submission_search_for_subject_edition(entity_doc, dbm):
             args = {es_unique_id_code_field_name(unique_id_field_name): entity_doc.short_code}
 
             survey_response_filtered_query = SubmissionQueryBuilder(project).query_all(dbm.database_name, project.id,
-                                                                                          **args)
+                                                                                       **args)
 
             for survey_response in survey_response_filtered_query.all():
                 SubmissionIndexUpdateHandler(dbm.database_name, project.id).update_field_in_submission_index(
@@ -231,13 +249,14 @@ def _update_select_field_by_revision(field, form_model, submission_doc):
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     #Submission value may have capitalized keys in some cases. This conversion is to do
     #case insensitive lookup.
-    submission_values = OrderedDict((k.lower(), v) for k,v in submission_doc.values.iteritems())
+    submission_values = OrderedDict((k.lower(), v) for k, v in submission_doc.values.iteritems())
     for field in form_model.fields:
         entry = submission_values.get(lower(field.code))
         if field.is_entity_field:
             entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
             entry_code = UNKNOWN if entity_name == UNKNOWN else entry
-            search_dict.update({es_unique_id_code_field_name(es_field_name(lower(field.code), form_model.id)): entry_code or UNKNOWN})
+            search_dict.update(
+                {es_unique_id_code_field_name(es_field_name(lower(field.code), form_model.id)): entry_code or UNKNOWN})
             entry = entity_name
         elif field.type == "select":
             field = _update_select_field_by_revision(field, form_model, submission_doc)
@@ -256,7 +275,9 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
                 if form_model.revision != submission_doc.form_model_revision:
                     old_submission_value = entry
                     to_format = field.date_format
-                    current_date = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision).__date__(entry)
+                    current_date = form_model.get_field_by_code_and_rev(field.code,
+                                                                        submission_doc.form_model_revision).__date__(
+                        entry)
                     entry = current_date.strftime(DateField.DATE_DICTIONARY.get(to_format))
                     logger.info("Converting old date submission from %s to %s" % (old_submission_value, entry))
             except Exception as ignore_conversion_errors:

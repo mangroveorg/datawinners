@@ -6,8 +6,9 @@ from mangrove.form_model.form_model import FormModel, REGISTRATION_FORM_CODE, En
 
 def form_model_change_handler(form_model_doc, dbm, old_form_model_doc=None):
     form_model = FormModel.new_from_doc(dbm, form_model_doc)
+    old_form_model = FormModel.new_from_doc(dbm, old_form_model_doc)
     if form_model.form_code != 'delete':
-        create_submission_mapping(dbm, form_model)
+        create_submission_mapping(dbm, form_model, old_form_model)
 
 def entity_form_model_change_handler(entity_form_model_doc,dbm):
     entity_form_model = EntityFormModel.new_from_doc(dbm,entity_form_model_doc)
