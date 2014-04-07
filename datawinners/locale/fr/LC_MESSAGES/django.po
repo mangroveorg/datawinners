@@ -4752,3 +4752,8 @@ msgstr "Je veux utiliser des Numéros d'Identification pour mon (ma)"
 msgid "Add a unique id type"
 msgstr "Ajouter un type de ID unique"
 
+msgid "Edit Name"
+msgstr "Modifier le nom"
+
+msgid "Questionnaire with same name already exists."
+msgstr "Un Questionnaire portant le même nom existe déjà."
