@@ -32,7 +32,7 @@ def get_sms_preview_context(manager, post, project_info):
     example_sms += get_example_sms(form_model.fields)
     return {"questionnaire_code": post["questionnaire-code"],
             "questions": get_questions(form_model),
-            "project": project_info,
+            "project_name": project_info.name,
             "example_sms": example_sms}
 
 
@@ -44,6 +44,20 @@ def sms_preview(request):
     context.update(get_sms_preview_context(manager, request.POST, project_info))
 
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
+
+@valid_web_user
+def questionnaire_sms_preview(request):
+    manager = get_database_manager(request.user)
+    context = {'org_number': get_organization_telephone_number(request)}
+    project_info = FormModel.get(manager, request.POST['project_id'])
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project_info.is_void():
+        return HttpResponseRedirect(dashboard_page)
+    if project_info:
+        context.update(get_sms_preview_context(manager, request.POST, project_info))
+
+    return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
+
 
 
 def add_link_context(project):
@@ -83,18 +97,6 @@ def smart_phone_preview(request):
                               context_instance=RequestContext(request))
 
 
-@valid_web_user
-def questionnaire_sms_preview(request):
-    manager = get_database_manager(request.user)
-    context = {'org_number': get_organization_telephone_number(request)}
-    project_info = FormModel.get(manager, request.POST['project_id'])
-    dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project_info.is_void():
-        return HttpResponseRedirect(dashboard_page)
-    if project_info:
-        context.update(get_sms_preview_context(manager, request.POST, project_info))
-
-    return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
 
 
 @valid_web_user

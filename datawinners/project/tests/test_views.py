@@ -5,7 +5,7 @@ import unittest
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpRequest
-from mock import Mock, patch, call
+from mock import Mock, patch, call, MagicMock
 from mangrove.transport import Response
 
 from mangrove.datastore.database import DatabaseManager
@@ -115,16 +115,20 @@ class TestProjectViews(unittest.TestCase):
                 "question-set": "",
                 "profile_form": '{"name":"project_name", "entity_type":"clinic", "language":"en"}'}
 
-        project_info = {"name": "project_name", "entity_type": "clinic", "language": "en"}
+        project_info = MagicMock(spec=FormModel)
+        project_info.name = "project_name"
+        project_info.activeLanguages = ['en']
 
         with patch("datawinners.project.preview_views.create_questionnaire") as questionnaire:
             questionnaire.return_value = form_model
             with patch("datawinners.project.preview_views.get_questions") as get_questions:
                 get_questions.return_value = questions
+
                 preview_context = get_sms_preview_context(manager, post, project_info)
+
                 self.assertEquals(preview_context['questionnaire_code'], 'q01')
                 self.assertEquals(preview_context['questions'], questions)
-                self.assertEquals(preview_context['project'], project)
+                self.assertEquals(preview_context['project'], project_info)
                 self.assertEquals(preview_context['example_sms'], "form code answer1")
 
 
