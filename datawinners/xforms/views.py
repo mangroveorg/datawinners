@@ -20,19 +20,30 @@ from datawinners.submission.views import check_quotas_and_update_users
 logger = logging.getLogger("datawinners.xform")
 sp_submission_logger = logging.getLogger("sp-submission")
 
+
+def is_not_local_address(remote_address):
+    return remote_address not in ["127.0.0.1", "localhost"]
+
+
 def restrict_request_country(f):
     def wrapper(*args, **kw):
         request = args[0]
         user = request.user
+
         org = Organization.objects.get(org_id=user.get_profile().org_id)
         try:
-            country_code = GeoIP().country_code(request.META.get('REMOTE_ADDR'))
+            remote_address = request.META.get('REMOTE_ADDR')
+            if is_not_local_address(remote_address):
+                country_code = GeoIP().country_code(remote_address)
+                log_message = 'User: %s, IP: %s resolved in %s, for Oragnization id: %s located in country: %s ' %\
+                      (user, request.META.get('REMOTE_ADDR'), country_code, org.org_id, org.country)
+            else:
+                log_message = "Skipping resolving ip to country for local address %s" % remote_address
+            logger.info(log_message)
         except Exception as e:
             logger.exception("Error resolving country from IP : \n%s" % e)
             raise
-        log_message = 'User: %s, IP: %s resolved in %s, for Oragnization id: %s located in country: %s ' %\
-                      (user, request.META.get('REMOTE_ADDR'), country_code, org.org_id, org.country)
-        logger.info(log_message)
+
         return f(*args, **kw)
 
     return wrapper
@@ -43,7 +54,7 @@ def restrict_request_country(f):
 @restrict_request_country
 def formList(request):
     rows = get_all_project_for_user(request.user)
-    form_tuples = [(row['value']['name'], row['value']['qid']) for row in rows]
+    form_tuples = [(row['value']['name'], row['id']) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
     response = HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
     response['X-OpenRosa-Version'] = '1.0'
@@ -56,7 +67,7 @@ def get_errors(errors):
 
 def __authorized_to_make_submission_on_requested_form(request_user, submission_file):
     rows = get_all_project_for_user(request_user)
-    questionnaire_ids = [(row['value']['qid']) for row in rows]
+    questionnaire_ids = [(row['id']) for row in rows]
     dom = xml.dom.minidom.parseString(submission_file)
     requested_qid = dom.getElementsByTagName('data')[0].getAttribute('id')
     return requested_qid in questionnaire_ids
