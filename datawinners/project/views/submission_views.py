@@ -195,6 +195,15 @@ def construct_request_dict(survey_response, questionnaire_form_model, short_code
             for answer_value in list(value):
                 value_list.append(options[answer_value])
             value = ",".join(value_list)
+        elif isinstance(original_field, SelectField) and isinstance(field, SelectField):
+            original_value_list = list(value)
+            original_option_map = original_field.get_options_map()
+            latest_option_map = field.get_options_map()
+            new_value_list = []
+            for item in original_value_list:
+                if original_option_map.get(item) == latest_option_map.get(item):
+                    new_value_list.append(item)
+            value = "".join(new_value_list)
         if isinstance(field, SelectField) and field.type == 'select':
             #check if select field answer is present in survey response
             value = re.findall(r'[1-9]?[a-z]', value) if value else value
