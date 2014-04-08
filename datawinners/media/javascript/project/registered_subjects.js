@@ -13,7 +13,7 @@ $(document).ready(function () {
     });
 
     $('.chosen_entity_type li').click(function () {
-        var chosen_entity_type = $(this).text();
+        var chosen_entity_type = $(this).text().toLowerCase();
         var url = default_url+'entity/'+chosen_entity_type;
         window.location = url;
     });
