@@ -185,7 +185,7 @@ class FilePlayer(Player):
             if self.form_code is not None and form_code != self.form_code:
                 form_model = get_form_model_by_code(self.dbm, self.form_code)
                 raise FormCodeDoesNotMatchException(
-                    ugettext('Some unexpected error happened. Please check the excel file and import again.') %
+                    ugettext('Some unexpected error happened. Please check the excel file or download the latest template and import again.') %
                     form_model.entity_type[0], form_code=form_code)
         return form_model
 
@@ -432,7 +432,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
     except FormCodeDoesNotMatchException as e:
         error_message = e.message
     except Exception:
-        error_message = _(u"Some unexpected error happened. Please check the excel file and import again.")
+        error_message = _(u"Some unexpected error happened. Please check the excel file or download the latest template and import again.")
 
     return error_message, failure_imports, response_message, imported_entities
 
