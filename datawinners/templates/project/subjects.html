@@ -29,8 +29,10 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
+        var entity_types = {{ entity_types|safe }};
         var upload_url = "{% url import_subjects form_code %}";
-        var web_view = "{{web_view}}"
+        var web_view = "{{web_view}}";
+        var default_url = "{% url registered_subjects_default project_id%}";
     </script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
@@ -44,25 +46,29 @@
     <script type="text/javascript" src="/media/javascript/common/location_auto_suggest_widget.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/web_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
-
+    <script type="text/javascript" src="/media/javascript/project/registered_subjects.js"></script>
 {% endblock %}
 
 {% block content %}
-    <div>
-        <div class="grid_8 alpha">
-            <h2>{% trans "My Subjects" %}</h2>
+    {% block secodary_navigation_subject_types %}
+        {{ block.super }}
+        <div>
+            <div class="grid_8 alpha">
+                <h2>{{ entity_type|capfirst }}</h2>
+            </div>
+            <div class="grid_12 float_right omega text_align_right">
+                <ul>
+                    {% block secondary_navigation %} {% endblock %}
+                </ul>
+            </div>
+            {% csrf_token %}
+            <div class="clear-both"></div>
         </div>
-        <div class="grid_12 float_right omega text_align_right">
-            <ul>
-                {% block secondary_navigation %} {% endblock %}
-            </ul>
-        </div>
-        {% csrf_token %}
-        <div class="clear-both"></div>
-    </div>
+
+    {% endblock %}
 
     <div id="my_subjects">
-        {% with create_entity_link=register_subjects_link%}
+        {% with create_entity_link=register_subjects_link %}
             {% include 'help/subjects_help.html' %}
         {% endwith %}
 
