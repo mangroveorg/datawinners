@@ -7,7 +7,7 @@
         {% if user|in_group:"NGO Admins,Project Managers,Read Only Users" %}
             <li class="{% ifactivetab 'tab_nav' 'projects' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="projects_tab" href="{{ project_links.projects_link }}"
-                   class="{{ disable_link_class }}">{% trans "Data per Project" %}</a>
+                   class="{{ disable_link_class }}">{% trans "Data per Questionnaire" %}</a>
             </li>
         {% endif %}
         

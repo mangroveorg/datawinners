@@ -45,10 +45,14 @@
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/registered_subjects.js"></script>
 
     <script type="text/javascript">
+        var entity_types = {{ entity_types|safe }};
         var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
         var upload_url = "{% url datawinners.entity.views.all_subject_types %}";
+        var default_url = "{% url registered_subjects_default project_id %}";
+
     </script>
 
 {% endblock %}
@@ -59,7 +63,8 @@
     <p>{% trans "Review the questions by clicking on each" %}</p>
 {% endblock %}
 {% block content %}
-    <h2>{% trans "My Subjects" %}</h2>
+    {% block secodary_navigation_subject_types %}{{ block.super }}{% endblock %}
+    <h2>{{ entity_type|capfirst }}</h2>
     {% with entity_type=project.entity_type.0 create_entity_link=project_links.register_subjects_link form_code=questionnaire_code %}
         {% include 'help/subjects_help.html' %}
     {% endwith %}

@@ -824,6 +824,8 @@ def edit_my_subject_questionnaire(request, project_id, entity_type=None):
                                'questionnaire_code': reg_form.form_code,
                                'language': reg_form.activeLanguages[0],
                                'entity_type': entity_type,
+                               'project_id': questionnaire.id,
+                               'entity_types': questionnaire.entity_type,
                                'subject': subject,
                                'post_url': reverse(subject_save_questionnaire)},
                               context_instance=RequestContext(request))
