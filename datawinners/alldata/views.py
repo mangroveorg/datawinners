@@ -53,10 +53,10 @@ def get_project_info(manager, project):
     if 'web' in project['value']['devices']:
         web_submission_link_disabled = ""
 
-    create_subjects_link = ''
-    if questionnaire.entity_type:
-        create_subjects_link = append_query_strings_to_url(reverse("create_subject", args=[questionnaire.entity_type[0]]),
-                                                           web_view=True)
+    create_subjects_links = {}
+    for entity_type in questionnaire.entity_type:
+        create_subjects_links.update({entity_type: append_query_strings_to_url(reverse("create_subject", args=[entity_type]),
+                                                           web_view=True)})
 
     project_info = dict(project_id=project_id,
                         name=project['value']['name'],
@@ -66,7 +66,7 @@ def get_project_info(manager, project):
                         log=log, analysis=analysis, disabled=disabled,
                         web_submission_link=web_submission_link,
                         web_submission_link_disabled=web_submission_link_disabled,
-                        create_subjects_link=create_subjects_link,
+                        create_subjects_link=create_subjects_links,
                         entity_type=questionnaire.entity_type,
                         encoded_name=urlquote(project['value']['name']),
                         import_template_file_name=slugify(project['value']['name']))

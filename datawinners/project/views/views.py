@@ -13,6 +13,7 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, ugettext
+from datawinners.common.urlextension import append_query_strings_to_url
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.datastore.queries import get_entity_count_for_type
@@ -215,6 +216,11 @@ def project_overview(request, project_id=None):
     add_subjects_to_see_on_map_msg = ""
     entity_type = None
     if not is_empty(questionnaire.entity_type):
+        subject_links = {}
+        for entity_type in questionnaire.entity_type:
+            subject_links.update({entity_type: append_query_strings_to_url(reverse("create_subject", args=[entity_type]),
+                                                           web_view=True)})
+        links.update({'create_subjects_links': subject_links})
         add_subjects_to_see_on_map_msg = _(
             "Register %s to see them on this map") % questionnaire.entity_type[0] if get_entity_count_for_type(manager,
                                                                                                                questionnaire.entity_type[

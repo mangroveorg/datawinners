@@ -65,8 +65,8 @@
                                href="javascript:void(0);">{% trans "Import a List of Submissions" %}</a>
 
                             {% if project.create_subjects_link %}
-                                |<a href="{{ project.create_subjects_link}}" class="register-subject-link">
-                                {% for entity_type in project.entity_type %}
+                                {% for entity_type, subject_link in project.create_subjects_link.iteritems %}
+                                    |<a href="{{ subject_link}}" class="register-subject-link">
                                     {% trans "Register a new " %}{{ entity_type }}</a>
                                 {% endfor %}
                             {% endif %}
