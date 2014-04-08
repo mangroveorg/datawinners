@@ -2668,6 +2668,9 @@ msgstr ""
 msgid "My %(entity_type)s List"
 msgstr ""
 
+msgid "My %(entity_type)s"
+msgstr ""
+
 msgid "%(entity_type)s Registration Form"
 msgstr ""
 
@@ -4530,4 +4533,7 @@ msgid "Edit Name"
 msgstr ""
 
 msgid "Questionnaire with same name already exists."
+msgstr ""
+
+msgid "My Identification Numbers"
 msgstr ""

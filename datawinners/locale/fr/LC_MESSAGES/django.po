@@ -2774,6 +2774,9 @@ msgstr "Cacher l'aide"
 msgid "My %(entity_type)s List"
 msgstr "Ma liste de %(entity_type)s"
 
+msgid "My %(entity_type)s"
+msgstr "Mes %(entity_type)s"
+
 msgid "%(entity_type)s Registration Form"
 msgstr "Formulaire d'enregistrement de %(entity_type)s"
 
@@ -4755,3 +4758,6 @@ msgstr "Modifier le nom"
 
 msgid "Questionnaire with same name already exists."
 msgstr "Un Questionnaire portant le même nom existe déjà."
+
+msgid "My Identification Numbers"
+msgstr "Mes Numéros d'identification"

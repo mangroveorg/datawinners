@@ -224,6 +224,7 @@ def project_overview(request, project_id=None):
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': questionnaire,
         'entity_type': entity_type,
+        'entity_types': questionnaire.entity_type,
         'project_links': project_links,
         'is_quota_reached': is_quota_reached(request),
         'number_of_questions': number_of_questions,

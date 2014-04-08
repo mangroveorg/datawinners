@@ -75,7 +75,13 @@
         </li>
         {% if entity_type%}
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-                <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "My Subjects" %}</a>
+                <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">
+                    {% if entity_types|length > 1 %}
+                        {% trans "My Identification Numbers" %}
+                    {% else %}
+                        {% blocktrans with entity_type|capfirst as entity_type %}My {{ entity_type }}{% endblocktrans %}
+                    {% endif %}
+                </a>
             </li>
         {% endif %}
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
@@ -113,8 +119,9 @@
 {% block secodary_navigation_subject_types %}
     <div class="entity_types">
         <ul class="secondary_tab chosen_entity_type">
+            <li></li>{# Dummy li for space in the beginning. #}
             {% for entity_type in entity_types %}
-                <li>{{ entity_type }}</li>
+                <li>{{ entity_type|capfirst }}</li>
             {% endfor %}
         </ul>
     </div>
