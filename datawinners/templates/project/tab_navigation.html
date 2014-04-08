@@ -54,8 +54,9 @@
 
     <div id="delete_project_block">
         <p class="warning_message">{% trans "Export all submissions prior to deleting your questionnaire." %}</p>
-        <a href="#" class="cancel_link cancel_{% trans "en" %}">{% trans "Cancel" %}</a>
-        <a href="#" class="button" id="confirm_delete">{% trans "Delete Questionnaire Now" %}</a>
+        <a href="#" class="button float_right" id="confirm_delete">{% trans "Delete Questionnaire Now" %}</a>
+        <a href="#" class="cancel_link float_right cancel_{% trans "en" %}">{% trans "Cancel" %}</a>
+        <div class="clear-both">&nbsp;</div>
     </div>
 {% endblock %}
 
