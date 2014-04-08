@@ -71,7 +71,8 @@ class Organization(models.Model):
                                     website=org_details.get('organization_website'),
                                     org_id=OrganizationIdCreator().generateId(),
                                     language=org_details.get('language'),
-                                    account_type=org_details.get('account_type')
+                                    account_type=org_details.get('account_type'),
+                                    status="Pending Activation"
         )
         organization._configure_organization_settings()
         return organization
@@ -84,7 +85,8 @@ class Organization(models.Model):
                                     country=org_details.get('organization_country'),
                                     org_id=OrganizationIdCreator().generateId(),
                                     account_type='Basic',
-                                    language=org_details.get('language')
+                                    language=org_details.get('language'),
+                                    status="Pending Activation"
         )
         organization._configure_organization_settings()
         return organization

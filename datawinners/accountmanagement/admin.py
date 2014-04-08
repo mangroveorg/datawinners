@@ -223,19 +223,23 @@ class OrganizationAdmin(DatawinnerAdmin):
         return queryset, use_distinct
 
     def deactivate_organizations(modeladmin, request, queryset):
-        queryset.exclude(status='Deactivated').update(status='Deactivated',
+        queryset.exclude(status__in=['Deactivated','Pending Activation']).update(status='Deactivated',
                                                       status_changed_datetime=datetime.datetime.now())
         messages.success(request, _('The accounts selected have been deactivated successfully.'))
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-        related_users = User.objects.filter(ngouserprofile__org_id__in=selected).update(is_active=False)
+        orgs_id = Organization.objects.filter(org_id__in=selected).exclude(status='Pending Activation').\
+            values_list('org_id', flat=True)
+        User.objects.filter(ngouserprofile__org_id__in=orgs_id).update(is_active=False)
 
     deactivate_organizations.short_description = "Deactivate accounts"
 
     def activate_organizations(modeladmin, request, queryset):
-        queryset.exclude(status='Activated').update(status='Activated', status_changed_datetime=datetime.datetime.now())
+        queryset.exclude(status__in=['Activated','Pending Activation']).update(status='Activated', status_changed_datetime=datetime.datetime.now())
         messages.success(request, _('The accounts selected have been activated successfully.'))
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-        related_users = User.objects.filter(ngouserprofile__org_id__in=selected).update(is_active=True)
+        orgs_id = Organization.objects.filter(org_id__in=selected).exclude(status='Pending Activation').\
+            values_list('org_id', flat=True)
+        User.objects.filter(ngouserprofile__org_id__in=orgs_id).update(is_active=True)
 
     activate_organizations.short_description = "Activate accounts"
 

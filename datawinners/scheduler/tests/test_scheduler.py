@@ -143,6 +143,7 @@ class TestScheduler(unittest.TestCase):
         deactivated_organization.save()
 
         activated_organization = Organization.create_organization(ORG_DETAILS)
+        activated_organization.status = 'Activated'
         activated_organization.save()
 
         organizations = _get_active_paid_organization()
