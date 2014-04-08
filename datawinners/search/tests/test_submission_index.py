@@ -24,12 +24,10 @@ class TestSubmissionIndex(unittest.TestCase):
 
     def test_should_update_search_dict_with_form_field_questions_for_success_submissions(self):
         search_dict = {}
-        self.form_model.fields = [self.field1, self.field2, self.field3, self.field4, self.field5]
-        values = {'q1': 'cid005',
-                  'q2': "name",
-                  'q3': "3,3",
-                  'q4': "ab",
-                  'q5': '11.12.2012'}
+        self.form_model.fields = [self.field4]
+        values = {
+                  'q4': "ab"
+                  }
         submission_doc = SurveyResponseDocument(values=values, status="success")
         self.form_model.get_field_by_code_and_rev.return_value = self.field4
         with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
@@ -38,9 +36,9 @@ class TestSubmissionIndex(unittest.TestCase):
             _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
 
             self.assertEquals(
-                {'1212_q1': 'clinic1', "1212_q1_unique_code": "cid005", '1212_q2': 'name', '1212_q3': '3,3',
+                {
                  '1212_q4': ['one', 'two'],
-                 '1212_q5': '11.12.2012', 'void': False}, search_dict)
+                 'void': False}, search_dict)
 
     def test_should_update_search_dict_with_form_field_questions_for_error_submissions(self):
         search_dict = {}
