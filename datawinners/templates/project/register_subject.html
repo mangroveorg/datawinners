@@ -46,10 +46,8 @@
 {% endblock %}
 
 {% block content %}
-    <h2>{% trans "My Subjects" %}</h2>
-    {% with entity_type=project.entity_type.0 create_entity_link=register_subjects_link %}
-        {% include 'help/subjects_help.html' %}
-    {% endwith %}
+    <h2>{{ entity_type|capfirst }}</h2>
+    {% include 'help/subjects_help.html' %}
 
     {% include "registered_subjects_import_popup.html" %}
     <div id="my_subjects">
@@ -59,7 +57,7 @@
     {% endblock %}
     </div>
     <div class="instruction">
-        {% blocktrans with project.entity_type.0 as entity_type %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
+        {% blocktrans %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
     </div>
 
     <div id="my_subjects_links">

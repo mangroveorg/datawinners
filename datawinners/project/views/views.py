@@ -530,6 +530,8 @@ class SubjectWebQuestionnaireRequest():
         form_context.update({'extension_template': 'project/subjects.html',
                              'form_code': self.subject_registration_code,
                              'entity_type': self.entity_type,
+                             'entity_types': self.questionnaire.entity_type,
+                             'project_id': self.questionnaire.id,
                              "questionnaire_form": questionnaire_form,
                              "questions": self.form_model.fields,
                              "org_number": get_organization_telephone_number(self.request),

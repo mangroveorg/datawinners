@@ -5,15 +5,15 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript">
+        var subject_type = "{{ entity_type|capfirst }}";
+    </script>
     <script src="/media/javascript/project/delete_project.js" type="text/javascript"></script>
     <script src="/media/javascript/project/sms_tester.js" type="text/javascript"></script>
     <script src="/media/javascript/project/questionnaire_preview.js" type="text/javascript"></script>
     <script src="/media/javascript/project/bind_project_links.js" type="text/javascript"></script>
     <script src="/media/javascript/jquery_inline/jquery.inlineEdit.js" type="text/javascript"></script>
     <script src="/media/javascript/project/rename_project.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        var subject_type = "{{ entity_type|capfirst }}";
-    </script>
 {% endblock %}
 
 {% block page_scss %}
@@ -110,13 +110,22 @@
 </ul>
 {% endblock %}
 
+{% block secodary_navigation_subject_types %}
+    <div class="entity_types">
+        <ul class="secondary_tab chosen_entity_type">
+            {% for entity_type in entity_types %}
+                <li>{{ entity_type }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
 {% block secondary_navigation_subjects %}
 <ul class="secondary_tab">
     <li class="{% ifactivetab 'secondary_tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.registered_subjects_link }}">{% blocktrans%}My {{ entity_type | capfirst }} List{% endblocktrans %}</a>
+        <a href="{{ project_links.registered_subjects_link }}">{% blocktrans with entity_type|capfirst as entity_type %}My {{ entity_type }} List{% endblocktrans %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.register_subjects_link }}">{% blocktrans%}{{ entity_type | capfirst }} Registration Form{% endblocktrans %}</a>
+        <a href="{{ project_links.register_subjects_link }}">{% blocktrans with entity_type|capfirst as entity_type %}{{ entity_type }} Registration Form{% endblocktrans %}</a>
     </li>
 </ul>
 {% endblock %}

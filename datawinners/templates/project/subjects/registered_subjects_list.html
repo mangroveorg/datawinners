@@ -27,6 +27,7 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
+        var entity_types = {{ entity_types|safe }};
         var edit_url_template = "{% url edit_my_subject project_id entity_type "entity_id_placeholder" %}";
         var upload_url = "{% url import_subjects form_code %}";
         var default_url = "{% url registered_subjects_default project_id%}";
@@ -43,17 +44,13 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-    <ul>
-        {% for entity_type in entity_types %}
-            <li class="chosen_entity_type">{{ entity_type }}</li>
-        {% endfor %}
-    </ul>
-    </div>
+    {{ block.super }}
+{% block secodary_navigation_subject_types %}
+    {{ block.super }}
 
     <div>
         <div class="grid_8 alpha">
-            <h2>{% trans "My Subjects" %}</h2>
+            <h2>{{ entity_type|capfirst }}</h2>
         </div>
         <div class="grid_12 float_right omega text_align_right">
             <a href="{{ project_links.register_subjects_link_web_view }}">{% trans "Register a" %} {{ entity_type|capfirst }}</a>
@@ -75,8 +72,7 @@
         {% include 'help/subjects_help.html' %}
     {% endwith %}
 
-
-
+{% endblock %}
 
     <div id="my_subjects">
         {% block secondary_navigation_subjects %}
