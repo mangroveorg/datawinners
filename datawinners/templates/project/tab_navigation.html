@@ -73,7 +73,7 @@
             <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link}}"
                class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
         </li>
-        {% if entity_type%}
+        {% if project.entity_type %}
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">
                     {% if entity_types|length > 1 %}
@@ -121,7 +121,7 @@
         <ul class="secondary_tab chosen_entity_type">
             <li></li>{# Dummy li for space in the beginning. #}
             {% for entity_type in entity_types %}
-                <li>{{ entity_type|capfirst }}</li>
+                <li><a>{{ entity_type|capfirst }}</a></li>
             {% endfor %}
         </ul>
     </div>

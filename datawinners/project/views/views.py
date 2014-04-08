@@ -391,7 +391,7 @@ def _get_all_data_senders(dbm):
     return [dict(zip(fields, data["cols"])) for data in data_senders]
 
 
-def get_project_link(project, entity_type):
+def get_project_link(project, entity_type=None):
     project_links = make_project_links(project, entity_type)
     return project_links
 
@@ -458,6 +458,7 @@ def questionnaire(request, project_id):
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,
                                    'project': questionnaire,
+                                   'entity_types': questionnaire.entity_type,
                                    'project_has_submissions': project_has_submissions,
                                    'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request),
