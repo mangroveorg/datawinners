@@ -177,11 +177,25 @@ def build_static_info_context(manager, survey_response, ui_model=None):
     return form_ui_model
 
 
+def _get_options_map(original_field):
+    options_map = {}
+    for option in original_field.options:
+        options_map.update({option['val']:option['text']})
+    return options_map
+
+
 def construct_request_dict(survey_response, questionnaire_form_model, short_code):
     result_dict = {}
     for field in questionnaire_form_model.fields:
         value = survey_response.values.get(field.code) if survey_response.values.get(
             field.code) else survey_response.values.get(field.code.lower())
+        original_field = questionnaire_form_model.get_field_by_code_and_rev(field.code, survey_response.form_model_revision)
+        if isinstance(original_field, SelectField) and not isinstance(field, SelectField):
+            options = _get_options_map(original_field)
+            value_list = []
+            for answer_value in list(value):
+                value_list.append(options[answer_value])
+            value = ",".join(value_list)
         if isinstance(field, SelectField) and field.type == 'select':
             #check if select field answer is present in survey response
             value = re.findall(r'[1-9]?[a-z]', value) if value else value

@@ -185,6 +185,45 @@ class TestSubmissionViews(unittest.TestCase):
         expected_dict = {'q1': 23, 'q2': 'sometext', 'q4': None, 'form_code': 'test_form_code', 'dsid':'id'}
         self.assertEqual(request_dict, expected_dict)
 
+
+    def test_should_replace_answer_option_values_with_options_text_when_answer_type_is_changed_from_multi_select_choice_field(self):
+        survey_response_doc = SurveyResponseDocument(values={'q1': 'ac', })
+        survey_response = SurveyResponse(Mock())
+        survey_response._doc = survey_response_doc
+        choice_field = SelectField(name='question one', code='q1', label='question one',
+                                   options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
+                                   single_select_flag=False)
+        text_field = TextField(name='question one', code='q1', label='question one')
+
+        questionnaire_form_model = Mock(spec=FormModel)
+        questionnaire_form_model.form_code = 'test_form_code'
+        questionnaire_form_model.fields = [text_field]
+        questionnaire_form_model.get_field_by_code_and_rev.return_value = choice_field
+        request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
+
+        expected_dict = {'q1': 'one,three', 'form_code': 'test_form_code', 'dsid':'id'}
+        self.assertEqual(request_dict, expected_dict)
+
+    def test_should_replace_answer_option_values_with_options_text_when_answer_type_is_changed_from_single_select_choice_field(self):
+        survey_response_doc = SurveyResponseDocument(values={'q1': 'a', })
+        survey_response = SurveyResponse(Mock())
+        survey_response._doc = survey_response_doc
+        choice_field = SelectField(name='question one', code='q1', label='question one',
+                                   options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
+                                   single_select_flag=True)
+        text_field = TextField(name='question one', code='q1', label='question one')
+
+        questionnaire_form_model = Mock(spec=FormModel)
+        questionnaire_form_model.form_code = 'test_form_code'
+        questionnaire_form_model.fields = [text_field]
+        questionnaire_form_model.get_field_by_code_and_rev.return_value = choice_field
+        request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
+
+        expected_dict = {'q1': 'one', 'form_code': 'test_form_code', 'dsid':'id'}
+        self.assertEqual(request_dict, expected_dict)
+
+
+
     def test_get_submission_ids_to_delete_should_give_back_selected_ids_if_select_all_flag_is_false(self):
         dbm = Mock(spec=DatabaseManager)
         request = Mock(spec=HttpRequest)
