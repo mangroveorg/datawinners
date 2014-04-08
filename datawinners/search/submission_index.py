@@ -6,7 +6,7 @@ from babel.dates import format_datetime
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
-from mangrove.form_model.field import DateField, UniqueIdField
+from mangrove.form_model.field import DateField, UniqueIdField, SelectField
 from datawinners.project.models import get_all_projects, Project
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
@@ -104,7 +104,7 @@ class SubmissionSearchStore():
         self.es.put_mapping(self.dbm.database_name, self.latest_form_model.id, self.get_mappings())
         from datawinners.search.submission_index_task import async_populate_submission_index
 
-        async_populate_submission_index.delay(self.dbm.database_name, self.latest_form_model.form_code)
+        async_populate_submission_index(self.dbm.database_name, self.latest_form_model.form_code)
 
     def _add_text_field_mapping_for_submission(self, mapping_fields, field_def):
         name = field_def["name"]
@@ -247,6 +247,21 @@ def _update_select_field_by_revision(field, form_model, submission_doc):
     return field_by_revision if field_by_revision else field
 
 
+def _get_options_map(original_field):
+    options_map = {}
+    for option in original_field.options:
+        options_map.update({option['val']:option['text']})
+    return options_map
+
+
+def _get_select_field_answer_from_snapshot(entry, field_for_revision):
+    options = field_for_revision.get_options_map()
+    value_list = []
+    for answer_value in list(entry):
+        value_list.append(options[answer_value])
+    return ",".join(value_list)
+
+
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     #Submission value may have capitalized keys in some cases. This conversion is to do
     #case insensitive lookup.
@@ -271,15 +286,22 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
                 entry = field.get_option_value_list(entry)
             elif field.type == "select1":
                 entry = ",".join(field.get_option_value_list(entry))
+        elif field.type == 'text':
+            field_for_revision = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
+            if isinstance(field_for_revision, SelectField):
+                entry = _get_select_field_answer_from_snapshot(entry, field_for_revision)
         elif field.type == "date":
             try:
                 if form_model.revision != submission_doc.form_model_revision:
                     old_submission_value = entry
                     to_format = field.date_format
-                    current_date = form_model.get_field_by_code_and_rev(field.code,
-                                                                        submission_doc.form_model_revision).__date__(
-                        entry)
-                    entry = current_date.strftime(DateField.DATE_DICTIONARY.get(to_format))
+                    field_for_revision = form_model.get_field_by_code_and_rev(field.code,
+                                                                        submission_doc.form_model_revision)
+                    if isinstance(field_for_revision, DateField):
+                        current_date = field_for_revision.__date__(entry)
+                        entry = current_date.strftime(DateField.DATE_DICTIONARY.get(to_format))
+                    elif isinstance(field_for_revision, SelectField):
+                        entry = _get_select_field_answer_from_snapshot(entry, field_for_revision)
                     logger.info("Converting old date submission from %s to %s" % (old_submission_value, entry))
             except Exception as ignore_conversion_errors:
                 pass

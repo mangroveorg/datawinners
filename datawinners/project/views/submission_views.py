@@ -183,7 +183,6 @@ def _get_options_map(original_field):
         options_map.update({option['val']:option['text']})
     return options_map
 
-
 def construct_request_dict(survey_response, questionnaire_form_model, short_code):
     result_dict = {}
     for field in questionnaire_form_model.fields:
