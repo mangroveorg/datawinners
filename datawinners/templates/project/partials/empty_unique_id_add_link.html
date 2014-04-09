@@ -1,0 +1,11 @@
+{% load i18n %}
+{% with  field.field.entity_type as entity_type %}
+    <div id="add_link" class="clear-left padding_top_20">
+        <p class="instructions italic">
+            {% blocktrans %}You have not registered a {{ entity_type }}
+                yet.{% endblocktrans %}
+        </p>
+        <a href={% url create_subject entity_type %}>
+            {% blocktrans %}Register a {{ entity_type }}{% endblocktrans %}</a>
+    </div>
+{% endwith %}

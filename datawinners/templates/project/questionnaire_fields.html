@@ -30,18 +30,7 @@
                 <h6>
                     {{ field.label }}
                     {% if field.name == 'dsid' %}
-
-                        <span id="tooltip1" style="position:absolute;">
-                                <img src="/media/images/help_icon.png" class="help_icon">
-                                <div class="tooltip">
-                                    <p>
-                                        {% if not project.entity_type %}
-                                            {% trans "tooltip_questionnaire_form_data_sender_entity_question" %}
-                                        {% else %}
-                                            {% trans "tooltip_questionnaire_form_subject_entity_question" %}
-                                        {% endif %}
-                                    </p></div>
-                            </span>
+                        {% include 'project/partials/tooltip_datasender.html' %}
                     {% endif %}
                 </h6>
                 <input id='code1' type="hidden" value="{{ field.name }}"/>
@@ -51,12 +40,24 @@
                 </p>
 
                 <div class="answer">
-                    {% if field|field_type == 'ChoiceField' %}
-                        <span class="single_select_question" wmwrap="true">
-                                    {{ field }}
-                                </span>
+                    {% if field|field_type == 'UniqueIdChoiceField' %}
+
+                        {% if field.field.choices|length == 0 %}
+                            {% include 'project/partials/empty_unique_id_add_link.html' %}
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+
                     {% else %}
-                        {{ field }}
+                        {% if field|field_type == 'ChoiceField' %}
+                            <span class="single_select_question" wmwrap="true">
+                                {{ field }}
+                            </span>
+
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+
                     {% endif %}
 
                     <ul class="errorlist">
@@ -70,29 +71,6 @@
                     </ul>
                     <div class="clear-left"></div>
                 </div>
-                <div id="add_link" class="clear-left padding_top_20" style="display:none">
-                    <p class="instructions italic">
-                        {% if not project.entity_type %}
-                            {% trans "You have not registered a reporter yet." %}
-                        {% else %}
-                            {% blocktrans with project.entity_type.0 as subject %}You have not registered a {{ subject }} yet.{% endblocktrans %}
-                        {% endif %}
-                    </p>
-                    <a id="datasenders_edit_link" href="{{ add_link.url }}" {% if add_link.url == '#' %}
-                       class="inactive_link ui-state-disabled" {% endif %}>
-                        {{ add_link.text }}
-                    </a>
-                </div>
-                {% if field.name == questionnaire_form.short_code_question_code %}
-                    <script type="text/javascript">
-                        if ($(".subject_field option").size() == 0) {
-                            $("#add_link").show();
-                            $("#id_{{ field.name }}").hide();
-                            $("#ins_{{ field.name }}").hide();
-                        }
-                    </script>
-
-                {% endif %}
             </li>
         {% endif %}
     {% endfor %}

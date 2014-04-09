@@ -1,9 +1,14 @@
 from django import forms
-from django.forms.fields import ChoiceField
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
 
 from datawinners.utils import translate, get_text_language_by_instruction
+
+
+class UniqueIdChoiceField(forms.ChoiceField):
+    def __init__(self, entity_type, *args, **kwargs):
+        super(UniqueIdChoiceField, self).__init__(*args, **kwargs)
+        self.entity_type = entity_type
 
 
 class SubjectQuestionFieldCreator(object):
@@ -18,9 +23,10 @@ class SubjectQuestionFieldCreator(object):
         return {'entity_question_code': forms.CharField(required=False, widget=HiddenInput, label=subject_field.code)}
 
     def _get_choice_field(self, subject_choices, subject_field, help_text, widget=None):
-        subject_choice_field = ChoiceField(required=subject_field.is_required(), choices=subject_choices,
-                                           label=subject_field.name, widget=widget,
-                                           initial=subject_field.value, help_text=help_text)
+        subject_choice_field = UniqueIdChoiceField(entity_type=subject_field.unique_id_type,
+                                                   required=subject_field.is_required(), choices=subject_choices,
+                                                   label=subject_field.name, widget=widget,
+                                                   initial=subject_field.value, help_text=help_text)
         subject_choice_field.widget.attrs['class'] = 'subject_field'
         return subject_choice_field
 
@@ -35,6 +41,7 @@ class SubjectQuestionFieldCreator(object):
     def _subjects_choice_fields(self, subject_field):
         all_subject_choices = self._get_all_options(subject_field.unique_id_type)
         language = get_text_language_by_instruction(subject_field.instruction)
-        instruction_for_subject_field = translate("Choose Subject from this list.", func=ugettext, language=language)
+        instruction_for_subject_field = translate("Choose Subject from this list.", func=ugettext,
+                                                  language=language) if all_subject_choices else ''
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
 

@@ -208,7 +208,9 @@ select {
   width: auto;
   height: 25px;
   border-color: #cccccc;
-  background: #FFFFFF; }
+  background: #FFFFFF;
+  float: left;
+}
 
 .multiple_select {
   height: auto; }
