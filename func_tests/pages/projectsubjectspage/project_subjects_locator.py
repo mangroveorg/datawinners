@@ -19,3 +19,4 @@ CHECKALL_CB = by_xpath(".//*[@id='subjects_table']/thead/tr/th[1]/input")
 SPECIFIC_TYPE_CB_BY_CSS = "[name=type][value=%s]"
 REGISTER_SUBJECT_LINK = by_id('register_subjects')
 QUESTION_TITLE = by_css("#question_title")
+SUBJECT_TYPE_LIST = by_css(".entity_types ul li")

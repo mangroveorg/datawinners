@@ -71,6 +71,10 @@ class ProjectSubjectsPage(Page):
         WebDriverWait(self.driver, 1).until(
             lambda driver: driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[2]/td[1]/input")).is_displayed())
 
+    def wait_for_empty_table_to_load(self):
+        WebDriverWait(self.driver, 1).until(
+            lambda driver: driver.find(by_id('subjects_table')).is_displayed())
+
     def click_checkall_checkbox(self):
         self.driver.find(CHECKALL_CB).click()
     def get_number_of_selected_subjects(self):
@@ -109,3 +113,26 @@ class ProjectSubjectsPage(Page):
         WebDriverWait(self.driver, UI_TEST_TIMEOUT).until_not(lambda driver: driver.find(CHECKALL_CB).is_enabled(),
                                                 message="Check-All box is not disabled")
         return not self.driver.find(CHECKALL_CB).is_enabled()
+
+    def _subject_type_list(self):
+        entity_types = self.driver.find_visible_elements_(SUBJECT_TYPE_LIST)
+        list = {}
+        for entity_type in entity_types:
+            if not entity_type.text: continue
+            list.update({entity_type.text: entity_type.get_attribute('class')})
+        return list
+
+    def get_subject_type_names(self):
+        list = self._subject_type_list()
+        return list.keys()
+
+    def get_active_subject_type(self):
+        for entity_type, class_name in self._subject_type_list().items():
+            if class_name == 'active':
+                return entity_type
+
+    def navigate_to_nth_entity_type(self, position):
+        entity_types = self.driver.find_visible_elements_(SUBJECT_TYPE_LIST)
+        entity_types[position].click()
+        self.wait_for_empty_table_to_load()
+        return self

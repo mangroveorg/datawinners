@@ -27,6 +27,9 @@ class ProjectOverviewPage(Page):
         self.driver.find(SUBJECTS_TAB).click()
         return ProjectSubjectsPage(self.driver)
 
+    def subject_tab_text(self):
+        return self.driver.find(SUBJECTS_TAB).text
+
     def navigate_to_reminder_page(self):
         self.driver.find(MESSAGES_AND_REMINDERS_TAB).click()
         return AllReminderPage(self.driver)

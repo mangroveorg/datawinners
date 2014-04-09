@@ -407,6 +407,7 @@ def registered_subjects(request, project_id, entity_type=None):
     if not current_entity_type:
         current_entity_type = questionnaire.entity_type[0]
 
+    subject = get_entity_type_info(current_entity_type, manager=manager)
     project_links = get_project_link(questionnaire, current_entity_type)
     subject_form_model = get_form_model_by_entity_type(manager, [current_entity_type])
     in_trial_mode = _in_trial_mode(request)
@@ -414,7 +415,7 @@ def registered_subjects(request, project_id, entity_type=None):
                               {'project': questionnaire,
                                'project_links': project_links,
                                'is_quota_reached': is_quota_reached(request),
-                               #"subject": subject,
+                               "subject": subject,
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
                                'entity_type': current_entity_type,
