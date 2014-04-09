@@ -29,6 +29,6 @@ class TestProjectCreationFromTemplate(HeadlessRunnerTest):
         create_questionnaire_page = create_questionnaire_options_page.continue_to_questionnaire_page()
         create_questionnaire_page.type_project_name(NEW_PROJECT_DATA)
         self.assertEqual(create_questionnaire_page.get_existing_questions(), SELECTED_TEMPLATE_QUESTIONS)
-        create_questionnaire_page.set_questionnaire_code("liv" + random_string(3))
+        self.driver.find(by_css("#questionnaire-code")).send_keys(random_string(5))
         project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
         self.assertIsNotNone(project_overview_page.get_project_title())

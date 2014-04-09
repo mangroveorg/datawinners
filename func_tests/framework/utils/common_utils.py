@@ -61,13 +61,10 @@ def get_epoch_last_ten_digit():
     return epoch_last_ten_digit
 
 
-def generateId(length=6):
+def generateId():
     epoch_last_three_digit = get_epoch_last_three_digit()
-    generated = str(epoch_last_three_digit) + get_random_three_digit_string()
-    while len(generated) > length:
-        to_remove = random.randint(1, len(generated))
-        generated = generated[:to_remove-1] + generated[to_remove:]
-    return generated
+    return str(epoch_last_three_digit) + get_random_three_digit_string()
+
 
 # End of class and Starting of normal functions
 def by_css(element_locator):
