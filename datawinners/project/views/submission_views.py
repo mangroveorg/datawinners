@@ -176,12 +176,28 @@ def build_static_info_context(manager, survey_response, ui_model=None):
     form_ui_model.update({'status': ugettext('Success') if survey_response.status else ugettext('Error')})
     return form_ui_model
 
+def _convert_choice_options_to_options_text(field, answer):
+    options = field.get_options_map()
+    value_list = []
+    for answer_value in list(answer):
+        value_list.append(options[answer_value])
+    return ",".join(value_list)
 
-def _get_options_map(original_field):
-    options_map = {}
-    for option in original_field.options:
-        options_map.update({option['val']:option['text']})
-    return options_map
+def _filter_submission_choice_options_based_on_current_answer_choices(answer, original_field, latest_field):
+    original_value_list = list(answer)
+    original_option_map = original_field.get_options_map()
+    latest_option_map = latest_field.get_options_map()
+    new_value_list = []
+    for item in original_value_list:
+        if original_option_map.get(item) == latest_option_map.get(item):
+            new_value_list.append(item)
+    return "".join(new_value_list)
+
+def _is_original_question_changed_from_choice_answer_type(original_field, latest_field):
+    return isinstance(original_field, SelectField) and not isinstance(latest_field, SelectField)
+
+def _is_original_field_and_latest_field_of_type_choice_answer(original_field, latest_field):
+    return isinstance(original_field, SelectField) and isinstance(latest_field, SelectField)
 
 def construct_request_dict(survey_response, questionnaire_form_model, short_code):
     result_dict = {}
@@ -189,21 +205,10 @@ def construct_request_dict(survey_response, questionnaire_form_model, short_code
         value = survey_response.values.get(field.code) if survey_response.values.get(
             field.code) else survey_response.values.get(field.code.lower())
         original_field = questionnaire_form_model.get_field_by_code_and_rev(field.code, survey_response.form_model_revision)
-        if isinstance(original_field, SelectField) and not isinstance(field, SelectField):
-            options = _get_options_map(original_field)
-            value_list = []
-            for answer_value in list(value):
-                value_list.append(options[answer_value])
-            value = ",".join(value_list)
-        elif isinstance(original_field, SelectField) and isinstance(field, SelectField):
-            original_value_list = list(value)
-            original_option_map = original_field.get_options_map()
-            latest_option_map = field.get_options_map()
-            new_value_list = []
-            for item in original_value_list:
-                if original_option_map.get(item) == latest_option_map.get(item):
-                    new_value_list.append(item)
-            value = "".join(new_value_list)
+        if _is_original_question_changed_from_choice_answer_type(original_field, field):
+            value = _convert_choice_options_to_options_text(original_field, value)
+        elif _is_original_field_and_latest_field_of_type_choice_answer(original_field, field):
+            value = _filter_submission_choice_options_based_on_current_answer_choices(value, original_field, field)
         if isinstance(field, SelectField) and field.type == 'select':
             #check if select field answer is present in survey response
             value = re.findall(r'[1-9]?[a-z]', value) if value else value
