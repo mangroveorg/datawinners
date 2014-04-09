@@ -9,7 +9,7 @@
             <li class ="{% ifactivetab 'main_nav' 'dashboard' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="global_dashboard_link" href="{% url datawinners.dashboard.views.dashboard %}" class="{{ disable_link_class }}">{% trans "Dashboard" %}</a>
             </li>
-            <li  class ="{% ifactivetab 'main_nav' 'projects' %}active{% else %}inactive{% endifactivetab %}">
+            <li  class ="{% ifactivetab 'main_nav' 'questionnaires' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="global_projects_link" href="{% url index %}" class="{{ disable_link_class }}">{% trans "Questionnaires" %}</a>
             </li>
             <li  class ="{% ifactivetab 'main_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
