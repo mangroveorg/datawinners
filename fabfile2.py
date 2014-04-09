@@ -165,6 +165,7 @@ def _deploy_datawinners(context):
 
     with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS)):
         replace_setting_file_for_environment(context.environment)
+        print "Current environment is %s" % context.environment
         migrate_params = "--ignore-ghost-migrations" if context.environment != 'prod' else ""
         activate_and_run(context.virtual_env, "python manage.py migrate %s" % migrate_params)
         activate_and_run(context.virtual_env, "python manage.py migrate")
