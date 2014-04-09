@@ -144,8 +144,6 @@ function QuestionnaireViewModel(){
         if (questionnaireCode.valid()) {
             if (_isWhiteSpacesPresent(questionnaireCode()))
                 questionnaireCode.setError(gettext("Space is not allowed in questionnaire code"));
-            else if (_hasCorrectQuestionnaireCodeLength(questionnaireCode()))
-                questionnaireCode.setError(gettext("Should be between 3 and 6 in length"));
             else
                 questionnaireCode.clearError();
         }
@@ -203,10 +201,6 @@ function QuestionnaireViewModel(){
         });
     };
 
-    _hasCorrectQuestionnaireCodeLength = function(val) {
-        var trimmed_value = val.trim();
-        return trimmed_value.length > 6 || trimmed_value.length < 3;
-    };
 };
 
 QuestionnaireViewModel.prototype.validateAndRemoveQuestion = function(question){
