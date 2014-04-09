@@ -1,5 +1,6 @@
 from framework.utils.common_utils import by_css
 from pages.page import Page
+from tests.testsettings import UI_TEST_TIMEOUT
 
 CANCEL_LINK = by_css('div.ui-dialog[style*="block"] > div.ui-dialog-content > div > a.no_button')
 CONFIRM_LINK = by_css('div.ui-dialog[style*="block"] > div.ui-dialog-content > div > a.yes_button')
@@ -19,4 +20,5 @@ class WarningDialog(Page):
         self.driver.find(self.confirm_link).click()
 
     def get_message(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, self.message_link, True)
         return self.driver.find(self.message_link).text
