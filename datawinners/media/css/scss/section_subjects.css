@@ -1470,5 +1470,9 @@ div.border_top_bottom {
 .error_body td {
   padding-left: 21px; }
 
-.chosen_entity_type li {
-  cursor: pointer; }
+.chosen_entity_type {
+  height: 43px; }
+  .chosen_entity_type li {
+    cursor: pointer; }
+  .chosen_entity_type li.active {
+    padding-bottom: 17px; }

@@ -39,9 +39,11 @@ class SubjectQuestionFieldCreator(object):
         return all_subject_choices # [(u'cid001', u'Test (cid001)'),(u'cid002', u'Test(cid002')..]
 
     def _subjects_choice_fields(self, subject_field):
-        all_subject_choices = self._get_all_options(subject_field.unique_id_type)
+        unique_id_type = subject_field.unique_id_type
+        all_subject_choices = self._get_all_options(unique_id_type)
         language = get_text_language_by_instruction(subject_field.instruction)
-        instruction_for_subject_field = translate("Choose Subject from this list.", func=ugettext,
-                                                  language=language) if all_subject_choices else ''
+        instruction_for_subject_field = translate(
+            "Choose %(entity_type)s from this list." % {'entity_type': unique_id_type}, func=ugettext,
+            language=language) if all_subject_choices else ''
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
 

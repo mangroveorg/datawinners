@@ -60,21 +60,11 @@ def questionnaire_sms_preview(request):
 
 
 
-def add_link_context(project):
-    if project.entity_type:
-        text = _("Register a %(subject)s") % {'subject': project.entity_type[0]}
-        return {'url': '#', 'text': text}
-    else:
-        text = _("Add a datasender")
-        return {'url': '#', 'text': text}
-
-
 def get_web_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
     questionnaire_form = SurveyResponseForm(form_model)
     return {'project': project_info,
-            'questionnaire_form': questionnaire_form,
-            'add_link': add_link_context(form_model)}
+            'questionnaire_form': questionnaire_form}
 
 
 @valid_web_user

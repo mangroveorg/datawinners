@@ -535,6 +535,12 @@ span.paginate_more_disabled {
 .error_body td{
     padding-left: 21px;
 }
-.chosen_entity_type li{
-  cursor: pointer;
+.chosen_entity_type{
+  height: 43px;
+  li{
+    cursor: pointer;
+  }
+  li.active{
+    padding-bottom: 17px;
+  }
 }
