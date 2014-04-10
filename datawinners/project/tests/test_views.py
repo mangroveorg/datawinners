@@ -13,7 +13,7 @@ from mangrove.form_model.field import TextField, DateField
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
-from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
+from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context
 from datawinners.project.utils import make_subject_links
 from datawinners.project.views.views import get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
@@ -114,14 +114,6 @@ class TestProjectViews(unittest.TestCase):
             questions = get_questions(form_model)
             self.assertEquals(questions[0]["description"], "description")
 
-    def test_should_get_correct_add_link_for_project(self):
-        project = Mock(spec=Project)
-        project.entity_type = None
-        project.id = "pid"
-        add_link_dict = add_link_context(project)
-        self.assertEquals(add_link_dict['text'], 'Add a datasender')
-        self.assertEquals(add_link_dict['url'], "#")
-
     def test_should_get_correct_context_for_web_preview(self):
         manager = {}
         form_model = {}
@@ -133,13 +125,10 @@ class TestProjectViews(unittest.TestCase):
             with patch("datawinners.project.preview_views.SurveyResponseForm") as SurveyResponseForm:
                 mock_form = Mock(spec=SurveyResponseForm)
                 SurveyResponseForm.return_value = mock_form
-                with patch("datawinners.project.preview_views.add_link_context") as add_link:
-                    add_link.return_value = {'text': 'Add a datasender'}
-                    web_preview_context = get_web_preview_context(manager, {}, project_info)
-                    project = web_preview_context['project']
-                    questionnaire_form = web_preview_context['questionnaire_form']
-                    self.assertEquals(questionnaire_form, mock_form)
-                    self.assertEquals(web_preview_context['add_link']['text'], 'Add a datasender')
+                web_preview_context = get_web_preview_context(manager, {}, project_info)
+                project = web_preview_context['project']
+                questionnaire_form = web_preview_context['questionnaire_form']
+                self.assertEquals(questionnaire_form, mock_form)
 
 
     def test_should_get_correct_instruction_and_preview_links_for_questionnaire(self):
