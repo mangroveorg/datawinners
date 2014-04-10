@@ -30,7 +30,7 @@
         $(document).ready(function() {
             $( "#how_to" ).accordion({ collapsible: true, active: 0 });
             var marker_image = $('#marker_image').html();
-            init('{{ entity_type  }}', marker_image );
+            init(marker_image );
         });
     </script>
    {% endif %}
@@ -47,15 +47,9 @@
         <!--Success Message div-->
         {% include 'project/success_message.html' %}
         <div class="my_sub"><p><b>
-{#        {% if project.is_activity_report %}#}
             <div>{% trans "Subjects"%}: {% trans "Data Senders"%}</div>
             <div>{{ add_data_senders_to_see_on_map_msg }}</div>
             <span style="display: none" id="marker_image">map_marker_red.png</span>
-{#        {% else %}#}
-{#            <div>{% trans "Subjects"%}: {{ project.entity_type }}</div>#}
-{#            <div>{{ add_subjects_to_see_on_map_msg }}</div>#}
-{#            <span style="display: none" id="marker_image">map_marker_blue.png</span>#}
-{#        {% endif %}#}
         </b></p></div>
 
         <!--Map div-->
