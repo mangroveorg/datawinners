@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
+import os
 import unittest
 import time
 
@@ -295,6 +296,10 @@ class TestApplicationEndToEnd(unittest.TestCase):
         project_page.delete_project(self.project_name)
         self.assertFalse(project_page.is_project_present(self.project_name))
 
+    def create_screenshot(self, filename="error_screen_shot.png"):
+        if not os.path.exists("screenshots"):
+            os.mkdir("screenshots")
+        self.driver.save_screenshot("screenshots/%s" % filename)
 
     @attr('smoke')
     def test_end_to_end(self):
@@ -307,6 +312,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.register_new_subject_of_type('School', VALID_DATA_FOR_SUBJECT_SCHOOL)
 
         self.add_subject('Hospital', VALID_DATA_FOR_SUBJECT_REG)
+        self.create_screenshot()
         self.add_edit_delete_subject()
 
         ds_email = self.add_edit_datasender()
