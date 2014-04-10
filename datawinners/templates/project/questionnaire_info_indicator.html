@@ -10,7 +10,7 @@
             </p>
         </div>
         <div class="validationMessage" data-bind="ifnot: projectName.valid">
-               <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error"></span>
+               <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error, scrollToElement: projectName.error"></span>
         </div>
         <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
     </div>
