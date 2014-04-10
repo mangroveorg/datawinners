@@ -817,6 +817,7 @@ def edit_my_subject_questionnaire(request, project_id, entity_type=None):
     subject = get_entity_type_info(entity_type, manager=manager)
     return render_to_response('project/subject_questionnaire.html',
                               {'project': questionnaire,
+                               'entity_type': entity_type,
                                'project_links': project_links,
                                'is_quota_reached': is_quota_reached(request),
                                'existing_questions': repr(existing_questions),
