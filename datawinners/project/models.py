@@ -11,7 +11,7 @@ from datawinners.entity.data_sender import load_data_senders
 from datawinners.scheduler.deadline import Deadline, Month, Week
 from mangrove.datastore.database import DatabaseManager, DataObject
 from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField, attributes, ProjectDocument
-from mangrove.datastore.entity import Entity, get_by_short_code
+from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.transport.repository.reporters import get_reporters_who_submitted_data_for_frequency_period
@@ -259,14 +259,19 @@ class Project(FormModel):
                 return True
         return False
 
-    def _check_if_project_name_unique(self, dbm):
-        rows = dbm.load_all_rows_in_view('project_names', key=self.name)
+    def is_project_name_unique(self):
+        rows = self._dbm.load_all_rows_in_view('project_names', key=self.name)
         if len(rows) and rows[0]['value'] != self.id:
+            return False
+        return True
+
+    def _check_if_project_name_unique(self):
+        if not self.is_project_name_unique():
             raise DataObjectAlreadyExists('Questionnaire', "Name", "'%s'" % self.name)
 
     def save(self, process_post_update=True):
         assert isinstance(self._dbm, DatabaseManager)
-        self._check_if_project_name_unique(self._dbm)
+        self._check_if_project_name_unique()
         return super(Project, self).save()
 
     def update(self, value_dict):
