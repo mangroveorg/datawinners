@@ -223,16 +223,8 @@ def edit_project(request, project_id):
             return HttpResponse(
                 json.dumps({'success': False, 'error_in_project_section': False, 'error_message': _(ex.message)}))
         except DataObjectAlreadyExists:
-            return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False,
-                                            'error_message': 'Questionnaire with this code already exists'}))
-
-        #try:
-        #
-        #    project.save(manager, process_post_update=is_project_name_changed)
-        #except DataObjectAlreadyExists as ex:
-        #    message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
-        #    return HttpResponse(
-        #        json.dumps({'success': False, 'error_message': message, 'error_in_project_section': True}))
+            return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False, "code_has_error":True,
+                                            'error_message': 'Questionnaire with same code already exists.'}))
 
         return HttpResponse(json.dumps({'success': True, 'project_id': project_id}))
 

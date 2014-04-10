@@ -588,8 +588,8 @@ def save_questionnaire(request):
                 detail_dict.update({"form_code": new_short_code})
             except DataObjectAlreadyExists as e:
                 if e.message.find("Form") >= 0:
-                    return HttpResponse(json.dumps({'success': False,
-                                                    'error_message': "Questionnaire with this code already exists"}))
+                    return HttpResponse(json.dumps({'success': False,"code_has_error":True,
+                                                    'error_message': "Questionnaire with same code already exists"}))
                 return HttpResponseServerError(e.message)
 
         json_string = request.POST['question-set']

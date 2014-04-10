@@ -62,12 +62,21 @@ $(document).ready(function () {
                 html("<label class='error_message'>" + responseText + "</label>").show();
             flash_message[0].scrollIntoView();
         }
+        function show_code_error(responseText) {
+            questionnaireViewModel.questionnaireCode.valid(false);
+            questionnaireViewModel.questionnaireCode.error(responseText);
+            var flash_message = $("#questionnaire_code_validation_message");
+            flash_message[0].scrollIntoView();
+        }
 
         $.post(post_url, post_data,
             function (response) {
                 var responseJson = $.parseJSON(response);
                 if (!responseJson.success) {
-                    show_error(responseJson.error_message)
+                    if(!responseJson.code_has_error)
+                        show_error(responseJson.error_message);
+                    else
+                        show_code_error(responseJson.error_message);
                 }
                 else {
                     var flash_message = $("#message-label");

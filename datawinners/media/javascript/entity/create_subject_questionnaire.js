@@ -27,8 +27,15 @@ DW.post_subject_data = function(){
             flash_message[0].scrollIntoView();
             DW.hide_message();
         } else {
-            flash_message.removeClass('none').removeClass("success-message-box").addClass("message-box")
-                .html("<label class='error_message'> " + gettext(responseJson.error_message) + ".</label>").show();
+            if(!responseJson.code_has_error){
+                flash_message.removeClass('none').removeClass("success-message-box").addClass("message-box")
+                    .html("<label class='error_message'> " + gettext(responseJson.error_message) + ".</label>").show();
+            }
+            else {
+                questionnaireViewModel.questionnaireCode.valid(false);
+                questionnaireViewModel.questionnaireCode.error(responseJson.error_message);
+                flash_message = $("#questionnaire_code_validation_message");
+            }
             flash_message[0].scrollIntoView();
         }
 
