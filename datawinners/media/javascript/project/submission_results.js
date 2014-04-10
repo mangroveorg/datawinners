@@ -192,9 +192,9 @@ DW.DateFilter = function (postFilterSelectionCallBack) {
     var postFilterSelection = postFilterSelectionCallBack;
 
     self.init = function () {
-        self.filterSelects = $('#submissionDatePicker, #reportingPeriodPicker');
-        $('#submissionDatePicker').datePicker({eventCallback: _closeFilterSelects, onCloseCallback: _onCloseSubmissionDatePicker});
-        $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: _closeFilterSelects, onCloseCallback: _onCloseSubmissionDatePicker});
+        self.filterSelects = $('.datepicker');
+        self.filterSelects.datePicker({eventCallback: _closeFilterSelects, onCloseCallback: _onCloseSubmissionDatePicker});
+//        $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: _closeFilterSelects, onCloseCallback: _onCloseSubmissionDatePicker});
 
     };
 

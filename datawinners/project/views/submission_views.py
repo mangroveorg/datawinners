@@ -85,10 +85,18 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
             return HttpResponseRedirect(dashboard_page)
 
+        date_fields_array = []
+        for date_field in questionnaire.date_fields:
+            date_fields_array.append({
+                'code': date_field.code,
+                'label': date_field.label,
+                'is_month_format': date_field.is_monthly_format
+            })
 
         result_dict = {
             "tab": tab,
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
+            "date_fields": date_fields_array
             }
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/submission_results.html', result_dict,

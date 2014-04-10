@@ -1,0 +1,15 @@
+{% load i18n %}
+<div class="float_left date_filter">
+    <div class="filter_label">
+        <label>{{ date.label }}</label>
+    </div>
+    <div class="float_left">
+        <input type="text" readonly="true" class="datepicker"
+               {% if date.is_month_format %}
+                   data-ismonthly="true"
+               {% endif %}
+               data-question-code="{{ date.code }}"
+               value="{{ date.label }}"/>
+        <span class="dateErrorDiv" class="error_arrow"></span>
+    </div>
+</div>
