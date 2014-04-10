@@ -867,13 +867,14 @@ def create_data_sender_and_web_user(request, project_id):
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
         form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
+        reporter_id = None
         try:
             reporter_id, message = process_create_data_sender_form(manager, form, org_id)
         except DataObjectAlreadyExists as e:
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
 
         if not len(form.errors) and reporter_id:
-            project = Project(questionnaire)
+            project = questionnaire
             project.associate_data_sender_to_project(manager, reporter_id)
             if form.requires_web_access():
                 email_id = request.POST['email']
