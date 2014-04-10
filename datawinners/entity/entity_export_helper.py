@@ -2,6 +2,8 @@ from django.utils.translation import ugettext_lazy as _, ugettext
 import xlwt
 from mangrove.form_model.field import UniqueIdField,ShortCodeField,field_attributes
 
+BEHALF_OF = "I am submitting this data on behalf of"
+
 
 def get_styles():
     bold = xlwt.easyfont('bold true, height 220, name Helvetica Neue')
@@ -11,24 +13,33 @@ def get_styles():
     return bold, brown, italic, gray
 
 
+def add_to_header(headers, label, instruction, example):
+    bold, brown, italic, gray = get_styles()
+    headers.append(((label, bold), (u"\n\n%s" % instruction, brown), (u"\n\n%s" % example, italic)))
+
+
 def get_subject_headers(fields):
     headers = []
-    bold, brown, italic, gray = get_styles()
     for field in fields:
         context = InstructionContext(field=field, entity_type=None)
         instruction, example = SubjectInstructionBuilder.fetch_instruction(context)
-        headers.append(((field["label"], bold), (u"\n%s" % instruction, brown), (u"\n\n%s" % example, italic)))
+        add_to_header(headers, field["label"], instruction, example)
     return headers
 
 
-def get_submission_headers(fields, form_model):
+def get_submission_headers(fields, form_model, is_org_user=False):
     headers = []
-    bold, brown, italic, gray = get_styles()
+
+    if is_org_user:
+        add_to_header(headers, BEHALF_OF,
+                      _("If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."), \
+                  _("Example: rep42"))
+
     for field in fields:
         #context = InstructionContext(field, form_model.entity_type[0])
         context = InstructionContext(field, form_model.entity_type)
         instruction, example = SubmissionInstructionBuilder.fetch_instruction(context)
-        headers.append(((field["label"], bold), (u"\n\n%s" % instruction, gray), (u"\n\n%s" % example, italic)))
+        add_to_header(headers, field["label"], instruction, example)
     return headers
 
 
@@ -145,18 +156,6 @@ class EntityIdRegistrationInstruction:
     def get_instruction(context):
         return _("Assign a unique ID for each Subject."), _(
             "Leave this column blank if you want DataWinners to assign an ID for you.")
-
-
-#class SummaryProjectSubmissionInstruction:
-#    @staticmethod
-#    def matches_criteria(context):
-#        return context.field.get("type")==field_attributes.UNIQUE_ID_FIELD and context.entity_type == []
-#
-#    @staticmethod
-#    def get_instruction(context):
-#        return _(
-#            "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."), \
-#               _("Example: rep42")
 
 
 class EntityProjectSubmissionInstruction:

@@ -24,6 +24,7 @@ class TestSubmissionImport(unittest.TestCase):
         sheet = workbook.sheet_by_index(0)
         self.assertEqual(
             [
+                u'I am submitting this data on behalf of\n\nIf you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank.\n\nExample: rep42',
                 u'What is associat\xe9d entity?\n\nEnter the unique ID for each clinic.\nYou can find the clinic List on the My Subjects page.\n\nExample: cli01',
                 u'Name\n\nAnswer must be a word 10 characters maximum\n\n',
                 u'Father age\n\nEnter a number between 18-100.\n\n',
@@ -32,4 +33,4 @@ class TestSubmissionImport(unittest.TestCase):
                 u'Symptoms\n\nEnter 1 or more answers from the list.\n\nExample: a or ab',
                 u'What is the GPS code for clinic?\n\nAnswer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy.\n\nExample: -18.1324,27.6547',
                 u'Required Medicines\n\nEnter 1 or more answers from the list.\n\nExample: a or ab'
-              ], sheet.row_values(0, 0, 8))
+              ], sheet.row_values(0, 0, 9))

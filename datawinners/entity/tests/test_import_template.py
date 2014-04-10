@@ -1,6 +1,8 @@
 import unittest
+from django.contrib.auth.models import User
 
 from django.http import HttpRequest
+from django.utils.unittest.case import TestCase
 from mock import patch, Mock, PropertyMock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
@@ -13,7 +15,7 @@ valid_web_user_patch.start()
 from datawinners.entity.view.import_template import import_template
 
 
-class TestImportTemplate(unittest.TestCase):
+class TestImportTemplate(TestCase):
     def test_should_create_workbook_response_with_subject_headers_when_importing_subjects(self):
         request = HttpRequest()
         request.GET['filename']='file'
@@ -40,7 +42,7 @@ class TestImportTemplate(unittest.TestCase):
     def test_should_create_workbook_response_with_submission_headers_when_importing_submissions(self):
         request = HttpRequest()
         request.GET['filename']='file%20name'
-        request.user = 'someuser'
+        request.user = Mock(spec=User)
 
         with patch('datawinners.entity.view.import_template.get_database_manager') as get_db_manager:
             with patch('datawinners.entity.view.import_template.get_form_model_by_code') as get_form_model_by_code:
@@ -58,7 +60,7 @@ class TestImportTemplate(unittest.TestCase):
                             import_template(request, '001')
 
                             workbook_response_factory.assert_called_with('001','file name','Import_Submissions')
-                            get_submission_headers.assert_called_with([{'code': 'cli001'}], form_model)
+                            get_submission_headers.assert_called_with([{'code': 'cli001'}], form_model, True)
                             workbook_response_factory.create_workbook_response.assert_called_with([['What is the submission date']],['cli001'])
 
     valid_web_user_patch.stop()

@@ -7,6 +7,7 @@ import xlrd
 from datawinners.accountmanagement.helper import is_org_user
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
+from datawinners.entity.entity_export_helper import BEHALF_OF
 from datawinners.entity.import_data import get_filename_and_contents
 from datawinners.project.helper import get_feed_dictionary, get_web_transport_info
 from datawinners.project.submission.validator import SubmissionWorkbookRowValidator
@@ -37,12 +38,11 @@ class SubmissionImporter():
             if len(tabular_data) <= 1:
                 raise ImportValidationError(gettext("The imported file is empty."))
             q_answer_dicts = SubmissionWorkbookMapper(tabular_data, self.form_model).process()
-            SubmissionWorkbookValidator(self.form_model).validate(
-                q_answer_dicts)
+            SubmissionWorkbookValidator(self.form_model).validate(q_answer_dicts)
 
             user_profile = NGOUserProfile.objects.filter(user=self.user)[0]
             #todo add this when default reporter question gets added
-            #self._add_reporter_id_for_datasender(q_answer_dicts, user_profile, is_organization_user, is_summary_project)
+            self._add_reporter_id_for_datasender(q_answer_dicts, user_profile, is_organization_user)
 
             valid_rows, invalid_row_details = self.submission_validator.validate_rows(q_answer_dicts)
             ignored_entries, saved_entries = self.submission_persister.save_submissions(is_organization_user,
@@ -80,16 +80,10 @@ class SubmissionImporter():
 
         for row in parsed_rows:
             if is_organization_user:
-                if row['eid'] == '':
-                    row.update({'eid': user_profile.reporter_id})
+                if row['dsid'] == '':
+                    row.update({'dsid': user_profile.reporter_id})
             else:
-                row.update({"eid": user_profile.reporter_id})
-
-    def _uploaded_submission_has_reporter_id(self, parsed_rows):
-        for row in parsed_rows:
-            if "eid" in row[1].keys():
-                return True
-        return False
+                row.update({"dsid": user_profile.reporter_id})
 
 
 class SubmissionImportResponse():
@@ -122,12 +116,11 @@ class SubmissionPersister():
         return ignored_entries, saved_entries
 
     def _save_survey(self, user_profile, valid_row):
-        reporter_id = user_profile.reporter_id
         service = SurveyResponseService(self.dbm, logger, self.feed_dbm, user_profile.reporter_id)
         additional_feed_dictionary = get_feed_dictionary(self.form_model)
         transport_info = get_web_transport_info(self.user.username)
         return service.save_survey(self.form_model.form_code, valid_row, [],
-                                   transport_info, valid_row, reporter_id, additional_feed_dictionary)
+                                   transport_info, valid_row, valid_row.get('dsid'), additional_feed_dictionary)
 
 
 class SubmissionWorkbookValidator():
@@ -136,7 +129,7 @@ class SubmissionWorkbookValidator():
 
     def validate(self, q_answer_dicts):
         expected_cols = [f.code for f in self.form_model.fields]
-        if set(q_answer_dicts[0].keys()) != set(expected_cols):
+        if set(filter(lambda x: x!="dsid", q_answer_dicts[0].keys())) != set(expected_cols):
             raise ImportValidationError(gettext(
                 "The columns you are importing do not match the current Questionnaire. Please download the latest template for importing."))
         return None
@@ -145,6 +138,10 @@ class SubmissionWorkbookValidator():
 class ImportValidationError(Exception):
     def __init__(self, message):
         super(Exception, self).__init__(message)
+
+
+def is_on_behalf_of_reporter_question(question_label):
+    return BEHALF_OF in question_label
 
 
 class SubmissionWorkbookMapper():
@@ -156,8 +153,11 @@ class SubmissionWorkbookMapper():
         col_mapping = {}
         for i, col in enumerate(header_row):
             question_label = col.split('\n')[0].strip()
-            field = [field for field in self.form_model.fields if question_label == field.label.strip()][0]
-            col_mapping.update({field.code: i})
+            if is_on_behalf_of_reporter_question(question_label):
+                col_mapping.update({'dsid':i})
+            else:
+                field = [field for field in self.form_model.fields if question_label == field.label.strip()][0]
+                col_mapping.update({field.code: i})
         return col_mapping
 
     def process(self):
@@ -173,6 +173,8 @@ class SubmissionWorkbookMapper():
         result = []
         for data in rows[1:]:
             row_value = OrderedDict()
+            if col_mapping.has_key('dsid'):
+                row_value.update({'dsid': data[col_mapping['dsid']]})
             for field in self.form_model.fields:
                 if col_mapping.has_key(field.code):
                     row_value.update({field.code: data[col_mapping[field.code]]})

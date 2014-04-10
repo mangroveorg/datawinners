@@ -44,10 +44,10 @@ class TestExcelHeaders(unittest.TestCase):
 
         header_instructions = self._get_header_component(headers, 1)
         self.assertEqual(
-            ["\nAnswer must be a word", "\nEnter a number between 12-15.",
-             "\nAnswer must be a date in the following format: day.month.year",
-             "\nAssign a unique ID for each Subject.", '\nEnter name of the location.',
-             "\nEnter 1 or more answers from the list."], header_instructions)
+            ["\n\nAnswer must be a word", "\n\nEnter a number between 12-15.",
+             "\n\nAnswer must be a date in the following format: day.month.year",
+             "\n\nAssign a unique ID for each Subject.", '\n\nEnter name of the location.',
+             "\n\nEnter 1 or more answers from the list."], header_instructions)
 
         header_examples = self._get_header_component(headers, 2)
         self.assertEqual(

@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from unittest import TestCase, SkipTest
 from mock import Mock, patch, MagicMock, PropertyMock
 from datawinners.project.submission.validator import SubmissionWorkbookRowValidator
@@ -10,7 +11,7 @@ class TestImportSubmissionValidator(TestCase):
         form_model_mock = MagicMock(spec=FormModel)
         form_model_mock.validate_submission.return_value = ([],[])
         validator = SubmissionWorkbookRowValidator(Mock(), form_model_mock)
-        parsed_rows = [("form_code",{}), ("form_code",{})]
+        parsed_rows = [OrderedDict(), OrderedDict()]
 
         valid_rows, invalid_rows = validator.validate_rows(parsed_rows)
 
@@ -27,7 +28,7 @@ class TestImportSubmissionValidator(TestCase):
         with patch("datawinners.project.submission.validator.translate_errors") as translate_errors:
             translate_errors.return_value = ["error_msg"]
             validator = SubmissionWorkbookRowValidator(Mock(), form_model_mock)
-            parsed_rows = [("form_code",{}), ("form_code",{})]
+            parsed_rows = [OrderedDict(), OrderedDict()]
 
             valid_rows, invalid_rows = validator.validate_rows(parsed_rows)
 

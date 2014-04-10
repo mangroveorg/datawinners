@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 import xlwt
 from datawinners.accountmanagement.decorators import valid_web_user
+from datawinners.accountmanagement.helper import is_org_user
 from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
 from datawinners.entity.views import add_codes_sheet
 from datawinners.main.database import get_database_manager
@@ -21,7 +22,7 @@ def import_template(request, form_code):
     else:
         form_fields = form_model.form_fields
         field_codes = _field_codes(form_fields)
-        headers = get_submission_headers(form_fields, form_model)
+        headers = get_submission_headers(form_fields, form_model, is_org_user(request.user))
         sheet_name = "Import_Submissions"
 
     filename = unquote(request.GET["filename"])

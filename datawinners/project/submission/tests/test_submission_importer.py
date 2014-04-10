@@ -84,13 +84,13 @@ class TestSubmissionPersister(TestCase):
             submission_persister.save_submissions(True, user_profile, valid_rows)
             self.assertEqual(submission_quota_service.increment_web_submission_count.call_count, 1)
 
-    def test_should_save_survey_with_uploaded_entrys_report_id_for_summary_project_when_user_is_logged_in(self):
+    def test_should_save_survey_with_uploaded_entries_report_id_for_summary_project_when_user_is_logged_in(self):
         submission_quota_service = MagicMock()
         submission_quota_service.has_exceeded_quota_and_notify_users.return_value = False
         user_profile = MagicMock()
         expected_reporter_id = "rep_1"
         user_profile.reporter_id = expected_reporter_id
-        valid_row = {"eid": expected_reporter_id}
+        valid_row = {"dsid": expected_reporter_id}
         valid_rows = [valid_row]
         with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
             service, project, user, form_model = Mock(), MagicMock(), Mock(), MagicMock()
@@ -98,7 +98,7 @@ class TestSubmissionPersister(TestCase):
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = True
             form_model.form_code = "form_code"
-            form_model.fields=[UniqueIdField(unique_id_type ='reporter', name="Q1", code="EID", label="What is the reporter ID?")]
+            form_model.fields=[TextField(name="test", code="test", label="test")]
 
             submission_persister = SubmissionPersister(user, None, None, form_model, submission_quota_service)
             with patch(
@@ -111,37 +111,6 @@ class TestSubmissionPersister(TestCase):
                     get_web_transport_info.return_value = transport_info
 
                     submission_persister.save_submissions(True, user_profile, valid_rows)
-
-                    service.save_survey.assert_called_with("form_code", valid_row, [],
-                                                           transport_info, valid_row, expected_reporter_id,
-                                                           additional_feed_dictionary)
-
-
-    def test_should_save_survey_with_logged_in_datasenders_reporter_id(self):
-        submission_quota_service = MagicMock()
-        submission_quota_service.has_exceeded_quota_and_notify_users.return_value = False
-        user_profile = MagicMock()
-        expected_reporter_id = "rep_1"
-        user_profile.reporter_id = expected_reporter_id
-        valid_row = {}
-        valid_rows = [valid_row]
-        with patch(
-                "datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-            service, project, user, form_model = Mock(), MagicMock(), Mock(), MagicMock()
-            SurveyResponseService.return_value = service
-            project.is_summary_project.return_value = True
-            form_model.form_code = "form_code"
-            submission_persister = SubmissionPersister(user, None, None, form_model, submission_quota_service)
-            with patch(
-                    "datawinners.project.submission.submission_import.get_web_transport_info") as get_web_transport_info:
-                with patch(
-                        "datawinners.project.submission.submission_import.get_feed_dictionary") as get_feed_dictionary:
-                    transport_info = None
-                    additional_feed_dictionary = None
-                    get_feed_dictionary.return_value = additional_feed_dictionary
-                    get_web_transport_info.return_value = transport_info
-
-                    submission_persister.save_submissions(False, user_profile, valid_rows)
 
                     service.save_survey.assert_called_with("form_code", valid_row, [],
                                                            transport_info, valid_row, expected_reporter_id,
