@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from datawinners.project.models import Project
 from mangrove.form_model.form_model import FormModel
 
 from datawinners import settings
@@ -23,8 +24,8 @@ def get_questions(form_model):
 
 
 def get_questionnaire_form_model(manager, project_info, post):
-    return create_questionnaire(post, manager, name=unicode(project_info.name),
-                                language=unicode(project_info.activeLanguages[0]), reporter_id=None)
+    return create_questionnaire(post, manager, name=unicode(project_info.get('name')),
+                                language=unicode(project_info.get('language')), reporter_id=None)
 
 def get_sms_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
@@ -32,7 +33,7 @@ def get_sms_preview_context(manager, post, project_info):
     example_sms += get_example_sms(form_model.fields)
     return {"questionnaire_code": post["questionnaire-code"],
             "questions": get_questions(form_model),
-            "project_name": project_info.name,
+            "project_name": project_info.get('name'),
             "example_sms": example_sms}
 
 
@@ -60,11 +61,15 @@ def questionnaire_sms_preview(request):
 
 
 
-def get_web_preview_context(manager, post, project_info):
+def get_web_preview_context_from_project_data(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
     questionnaire_form = SurveyResponseForm(form_model)
     return {'project': project_info,
             'questionnaire_form': questionnaire_form}
+
+def get_web_preview_context_from_existing_project(project_info):
+    return {'project': project_info,
+            'questionnaire_form': SurveyResponseForm(project_info)}
 
 
 @valid_web_user
@@ -73,7 +78,7 @@ def web_preview(request):
     manager = get_database_manager(request.user)
 
     return render_to_response("project/web_instruction_preview.html",
-                              get_web_preview_context(manager, request.POST, project_info),
+                              get_web_preview_context_from_project_data(manager, request.POST, project_info),
                               context_instance=RequestContext(request))
 
 
@@ -92,11 +97,11 @@ def smart_phone_preview(request):
 @valid_web_user
 def questionnaire_web_preview(request):
     manager = get_database_manager(request.user)
-    project_info = FormModel.get(manager, request.POST["project_id"])
+    project = Project.get(manager, request.POST["project_id"])
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project_info.is_void():
+    if project.is_void():
         return HttpResponseRedirect(dashboard_page)
-    context = get_web_preview_context(manager, request.POST, project_info) if project_info else {}
+    context = get_web_preview_context_from_existing_project(project) if project else {}
     return render_to_response("project/web_instruction_preview.html",
                               context,
                               context_instance=RequestContext(request))

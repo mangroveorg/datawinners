@@ -39,10 +39,6 @@ class TestSubjectQuestionCreator(unittest.TestCase):
 
         self.assertEqual(expected_choices, display_subject_field.choices)
 
-        subject_question_code_hidden_field_dict = SubjectQuestionFieldCreator(project) \
-            .create_code_hidden_field(subject_field)
-
-        self.assertEqual(expected_code, subject_question_code_hidden_field_dict['entity_question_code'].label)
 
     def _get_unique_id_field(self, code):
         field_name = 'unique_id_field'

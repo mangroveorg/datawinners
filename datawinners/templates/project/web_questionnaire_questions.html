@@ -1,10 +1,5 @@
 {% load i18n %}
 {% include "project/message.html" %}
-{% for field in questionnaire_form %}
-    {% if field.is_hidden and field.name == 'entity_question_code' %}
-        <input id='code' type="hidden" value="{{ field.label }}"/>
-    {% endif %}
-{% endfor %}
 <form method="POST">
     {% csrf_token %}
     {% include "project/questionnaire_fields.html" %}

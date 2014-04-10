@@ -19,9 +19,6 @@ class SubjectQuestionFieldCreator(object):
     def create(self, subject_field):
         return self._subjects_choice_fields(subject_field)
 
-    def create_code_hidden_field(self, subject_field):
-        return {'entity_question_code': forms.CharField(required=False, widget=HiddenInput, label=subject_field.code)}
-
     def _get_choice_field(self, subject_choices, subject_field, help_text, widget=None):
         subject_choice_field = UniqueIdChoiceField(entity_type=subject_field.unique_id_type,
                                                    required=subject_field.is_required(), choices=subject_choices,

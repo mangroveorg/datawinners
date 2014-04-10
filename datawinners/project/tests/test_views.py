@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import json
 
 import unittest
 
@@ -13,7 +14,7 @@ from mangrove.form_model.field import TextField, DateField
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
-from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context
+from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context_from_project_data
 from datawinners.project.utils import make_subject_links
 from datawinners.project.views.views import get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
@@ -88,15 +89,11 @@ class TestProjectViews(unittest.TestCase):
                 "question-set": "",
                 "profile_form": '{"name":"project_name", "entity_type":"clinic", "language":"en"}'}
 
-        project_info = MagicMock(spec=FormModel)
-        project_info.name = "project_name"
-        project_info.activeLanguages = ['en']
-
+        project_info = json.loads(post['profile_form'])
         with patch("datawinners.project.preview_views.create_questionnaire") as questionnaire:
             questionnaire.return_value = form_model
             with patch("datawinners.project.preview_views.get_questions") as get_questions:
                 get_questions.return_value = questions
-
                 preview_context = get_sms_preview_context(manager, post, project_info)
 
                 self.assertEquals(preview_context['questionnaire_code'], 'q01')
@@ -125,7 +122,7 @@ class TestProjectViews(unittest.TestCase):
             with patch("datawinners.project.preview_views.SurveyResponseForm") as SurveyResponseForm:
                 mock_form = Mock(spec=SurveyResponseForm)
                 SurveyResponseForm.return_value = mock_form
-                web_preview_context = get_web_preview_context(manager, {}, project_info)
+                web_preview_context = get_web_preview_context_from_project_data(manager, {}, project_info)
                 project = web_preview_context['project']
                 questionnaire_form = web_preview_context['questionnaire_form']
                 self.assertEquals(questionnaire_form, mock_form)
