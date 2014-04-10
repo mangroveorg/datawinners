@@ -5,9 +5,9 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript">
-        var subject_type = "{{ entity_type|capfirst }}";
-    </script>
+{#    <script type="text/javascript">#}
+{#        var subject_type = "{{ entity_type|capfirst }}";#}
+{#    </script>#}
     <script src="/media/javascript/project/delete_project.js" type="text/javascript"></script>
     <script src="/media/javascript/project/sms_tester.js" type="text/javascript"></script>
     <script src="/media/javascript/project/questionnaire_preview.js" type="text/javascript"></script>
@@ -73,17 +73,19 @@
             <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link}}"
                class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
         </li>
-        {% if project.entity_type %}
+        {% with project.entity_type as entity_types %}
+        {% if entity_types %}
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">
                     {% if entity_types|length > 1 %}
                         {% trans "My Identification Numbers" %}
                     {% else %}
-                        {% blocktrans with entity_type|capfirst as entity_type %}My {{ entity_type }}{% endblocktrans %}
+                        {% blocktrans with entity_types.0|capfirst as entity_type %}My {{ entity_type }}{% endblocktrans %}
                     {% endif %}
                 </a>
             </li>
         {% endif %}
+        {% endwith %}
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
             <a id="reminders_tab" href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
         </li>
@@ -120,7 +122,7 @@
     <div class="entity_types">
         <ul class="secondary_tab chosen_entity_type">
             <li></li>{# Dummy li for space in the beginning. #}
-            {% for entity_type in entity_types %}
+            {% for entity_type in project.entity_type %}
                 <li><a>{{ entity_type|capfirst }}</a></li>
             {% endfor %}
         </ul>

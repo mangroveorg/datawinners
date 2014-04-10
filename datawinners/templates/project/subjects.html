@@ -29,7 +29,8 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
-        var entity_types = {{ entity_types|safe }};
+        var entity_types = {{ project.entity_type|safe }};
+        var subject_type = "{{ entity_type|capfirst }}";
         var upload_url = "{% url import_subjects form_code %}";
         var web_view = "{{web_view}}";
         var default_url = "{% url registered_subjects_default project_id%}";

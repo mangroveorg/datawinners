@@ -214,7 +214,6 @@ def project_overview(request, project_id=None):
     add_data_senders_to_see_on_map_msg = _(
         "Register Data Senders to see them on this map") if number_data_sender == 0 else ""
     add_subjects_to_see_on_map_msg = ""
-    entity_type = None
     if not is_empty(questionnaire.entity_type):
         subject_links = {}
         for entity_type in questionnaire.entity_type:
@@ -225,12 +224,9 @@ def project_overview(request, project_id=None):
             "Register %s to see them on this map") % questionnaire.entity_type[0] if get_entity_count_for_type(manager,
                                                                                                                questionnaire.entity_type[
                                                                                                                    0]) == 0 else ""
-        entity_type = questionnaire.entity_type[0]
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': questionnaire,
-        'entity_type': entity_type,
-        'entity_types': questionnaire.entity_type,
         'project_links': project_links,
         'is_quota_reached': is_quota_reached(request),
         'number_of_questions': number_of_questions,
@@ -419,7 +415,6 @@ def registered_subjects(request, project_id, entity_type=None):
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
                                'entity_type': current_entity_type,
-                               'entity_types': questionnaire.entity_type,
                                'subject_headers': header_fields(subject_form_model),
                                'questionnaire_code': questionnaire.form_code,
                                'form_code': subject_form_model.form_code}, context_instance=RequestContext(request))
@@ -459,7 +454,6 @@ def questionnaire(request, project_id):
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,
                                    'project': questionnaire,
-                                   'entity_types': questionnaire.entity_type,
                                    'project_has_submissions': project_has_submissions,
                                    'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request),
@@ -498,8 +492,6 @@ class SubjectWebQuestionnaireRequest():
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
         #self.form_code = self.questionnaire.form_code
-        if not entity_type:
-            entity_type = self.questionnaire.entity_type[0]
         self.entity_type = entity_type
         self.form_model = _get_subject_form_model(self.manager, entity_type)
         self.subject_registration_code = get_form_code_by_entity_type(self.manager, [entity_type])
@@ -539,7 +531,6 @@ class SubjectWebQuestionnaireRequest():
         form_context.update({'extension_template': 'project/subjects.html',
                              'form_code': self.subject_registration_code,
                              'entity_type': self.entity_type,
-                             'entity_types': self.questionnaire.entity_type,
                              'project_id': self.questionnaire.id,
                              "questionnaire_form": questionnaire_form,
                              "questions": self.form_model.fields,
@@ -831,9 +822,7 @@ def edit_my_subject_questionnaire(request, project_id, entity_type=None):
                                'existing_questions': repr(existing_questions),
                                'questionnaire_code': reg_form.form_code,
                                'language': reg_form.activeLanguages[0],
-                               'entity_type': entity_type,
                                'project_id': questionnaire.id,
-                               'entity_types': questionnaire.entity_type,
                                'subject': subject,
                                'post_url': reverse(subject_save_questionnaire)},
                               context_instance=RequestContext(request))
@@ -917,7 +906,7 @@ def project_has_data(request, questionnaire_code=None):
 def edit_my_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
     subject = get_by_short_code(manager, entity_id, [entity_type.lower()])
-    subject_request = SubjectWebQuestionnaireRequest(request, project_id)
+    subject_request = SubjectWebQuestionnaireRequest(request, project_id, entity_type)
     form_model = subject_request.form_model
     if request.method == 'GET':
         initialize_values(form_model, subject)

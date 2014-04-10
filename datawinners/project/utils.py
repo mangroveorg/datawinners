@@ -24,6 +24,8 @@ def make_data_sender_links(project_id):
 
 def make_project_links(project, entity_type=None):
     project_id = project.id
+    #Anywhere from project tabs , clicking on my identification number tab should always take
+    # to first unique id type page.
     if not entity_type:
         entity_type = project.entity_type[0] if project.entity_type else None
     project_links = {'overview_link': reverse("project-overview", args=[project_id]),
