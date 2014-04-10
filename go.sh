@@ -80,6 +80,13 @@ function recreate_feed_db {
 	(cd "$DWROOT_DIR/datawinners" && python manage.py recreatefeeddb)
 }
 
+function kill_gunicorn {
+    if [ -f /tmp/mangrove_gunicorn_${JOB_NAME} ]
+    then
+        kill -9 `cat /tmp/mangrove_gunicorn_${JOB_NAME}`
+    fi
+}
+
 function function_test {
 	echo "running function test"
 	export WORKSPACE=~/workspace/datawinners
@@ -99,12 +106,10 @@ function function_test {
     python manage.py migrate --noinput
     python manage.py recreatedb
     python manage.py compilemessages
-    if [ -f /tmp/mangrove_gunicorn_${JOB_NAME} ]
-    then
-        kill -9 `cat /tmp/mangrove_gunicorn_${JOB_NAME}`
-    fi
+    kill_gunicorn
     gunicorn_django -D -b 0.0.0.0:9000 --pid=/tmp/mangrove_gunicorn_${JOB_NAME} -w 8
     cd $WORKSPACE/func_tests  && nosetests -v -a "functional_test" --with-xunit --xunit-file=${WORKSPACE}/xunit.xml --processes=1 --process-timeout=900
+    kill_gunicorn
 
 }
 
