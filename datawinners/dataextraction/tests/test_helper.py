@@ -3,7 +3,7 @@ from mangrove.datastore.database import DatabaseManager
 from mock import Mock
 from mock import patch
 from datawinners.dataextraction.models import DataExtractionResult
-from datawinners.dataextraction.helper import get_data_for_subject, encapsulate_data_for_subject, get_data_for_form, encapsulate_data_for_form, generate_filename
+from datawinners.dataextraction.helper import get_data_for_form, encapsulate_data_for_form, generate_filename
 
 DATA_FROM_DB = [{"id": "1", "key": [["clinic"], "cid001", 1],
                  "value": {"submission_time": "2012-08-08 03:21:23.469462+00:00",
@@ -21,116 +21,6 @@ TRANSFORMED_DATA = [{"submission_time": "2012-08-08 03:21:23.469462+00:00",
                                                   20.34567]}}]
 
 class TestHelper(TestCase):
-    def test_should_return_data_of_subject_by_type_and_id(self):
-        dbm = Mock(spec=DatabaseManager)
-        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-            load_all_rows_in_view.return_value = DATA_FROM_DB
-            subject_data = get_data_for_subject(dbm, "clinic", "cid001")
-            self.assertTrue(isinstance(subject_data, list))
-            self.assertEqual(2, len(subject_data))
-
-    def test_should_return_data_of_subject_by_type_and_id_and_date(self):
-        dbm = Mock(spec=DatabaseManager)
-        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-            load_all_rows_in_view.return_value = DATA_FROM_DB
-            subject_data = get_data_for_subject(dbm, "clinic", "cid001", "06-08-2012", "06-08-2012")
-            self.assertTrue(isinstance(subject_data, list))
-            self.assertEqual(2, len(subject_data))
-
-    def test_should_return_data_of_subject_by_type_and_id_and_start_date(self):
-        dbm = Mock(spec=DatabaseManager)
-        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-            load_all_rows_in_view.return_value = DATA_FROM_DB
-            subject_data = get_data_for_subject(dbm, "clinic", "cid001", "06-08-2012")
-            self.assertTrue(isinstance(subject_data, list))
-            self.assertEqual(2, len(subject_data))
-
-    def test_should_return_data_with_success_status_and_value_for_subject(self):
-        dbm = Mock()
-        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
-            get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
-                entity_type_already_defined.return_value = True
-                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
-                    check_if_subject_exists.return_value = True
-                    data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001")
-                    self.assertIsInstance(data_for_subject, DataExtractionResult)
-                    self.assertTrue(data_for_subject.success)
-                    self.assertEqual(2, len(data_for_subject.submissions))
-
-    def test_should_return_data_with_success_status_and_no_data_message_for_subject_when_no_data(self):
-        dbm = Mock()
-        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
-            get_data_for_subject.return_value = []
-            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
-                entity_type_already_defined.return_value = True
-                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
-                    check_if_subject_exists.return_value = True
-                    data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001")
-                    self.assertIsInstance(data_for_subject, DataExtractionResult)
-                    self.assertTrue(data_for_subject.success)
-                    self.assertEqual(0, len(data_for_subject.submissions))
-                    self.assertEqual("No submission under this subject during this period.",
-                        data_for_subject.message)
-
-    def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_subject_type(self):
-        dbm = Mock()
-        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
-            get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
-                entity_type_already_defined.return_value = False
-                not_defined_entity = "clinic"
-                data_for_subject = encapsulate_data_for_subject(dbm, not_defined_entity, "cid001")
-                self.assertIsInstance(data_for_subject, DataExtractionResult)
-                self.assertFalse(data_for_subject.success)
-                self.assertEqual(data_for_subject.message, "Subject type [%s] is not defined." % not_defined_entity)
-                self.assertEqual(0, len(data_for_subject.submissions))
-
-    def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_subject_id(self):
-        dbm = Mock()
-        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
-            get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
-                entity_type_already_defined.return_value = True
-                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
-                    check_if_subject_exists.return_value = False
-                    not_registered_subject = "cid001"
-                    data_for_subject = encapsulate_data_for_subject(dbm, "clinic", not_registered_subject)
-                    self.assertIsInstance(data_for_subject, DataExtractionResult)
-                    self.assertFalse(data_for_subject.success)
-                    self.assertEqual(data_for_subject.message,
-                        "Subject [%s] is not registered." % not_registered_subject)
-                    self.assertEqual(0, len(data_for_subject.submissions))
-
-
-    def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_date_format(self):
-        dbm = Mock()
-        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
-            get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
-                entity_type_already_defined.return_value = True
-                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
-                    check_if_subject_exists.return_value = True
-                    data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001", "03082012", "06082012")
-                    self.assertIsInstance(data_for_subject, DataExtractionResult)
-                    self.assertFalse(data_for_subject.success)
-                    self.assertEqual(data_for_subject.message,
-                        "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011")
-                    self.assertEqual(0, len(data_for_subject.submissions))
-
-    def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_date(self):
-        dbm = Mock()
-        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
-            get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
-                entity_type_already_defined.return_value = True
-                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
-                    check_if_subject_exists.return_value = True
-                    data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001", "06-08-2012", "03-08-2012")
-                    self.assertIsInstance(data_for_subject, DataExtractionResult)
-                    self.assertFalse(data_for_subject.success)
-                    self.assertEqual(data_for_subject.message, "Start date must before end date.")
-                    self.assertEqual(0, len(data_for_subject.submissions))
 
     def test_should_return_data_of_form_by_form_code(self):
         dbm = Mock(spec=DatabaseManager)
