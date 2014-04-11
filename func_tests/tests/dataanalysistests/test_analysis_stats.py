@@ -22,7 +22,7 @@ class TestAnalysisStats(unittest.TestCase):
         for option in ["a", "b", "d", "a"]:
             send_valid_sms_with({SENDER: '1234123413', RECEIVER: '919880734937', SMS: "%s %s" % (form_code, option)})
 
-        data = {"search_filters": "{\"search_text\":\"\"}"}
+        data = {"search_filters": "{\"search_text\":\"\",\"dateQuestionFilters\":{}}"}
         res = self.client.post("/project/submissions/%s/analysis" % form_code, data)
         expected = set([(2, "A"), (1, "B"), (0, "AB"), (1, "O")])
         response = json.loads(res.content)

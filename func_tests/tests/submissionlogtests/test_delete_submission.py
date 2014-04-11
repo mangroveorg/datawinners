@@ -29,7 +29,10 @@ class TestDeleteSubmission(unittest.TestCase):
 
         resp = self.client.post('/project/' + self.form_model.id + '/submissions/delete/',
                                 {'all_selected': 'true', 'submission_type': 'all',
-                                 'search_filters': json.dumps({'search_text': unique_text})})
+                                 'search_filters': json.dumps({'search_text': unique_text,
+                                                                "dateQuestionFilters":{}
+                                                              })
+                                })
 
         self.assertEqual(json.loads(resp.content)['success'], True)
         self.assertEqual(len(self.get_submissions('all', unique_text)), 0)
@@ -42,7 +45,8 @@ class TestDeleteSubmission(unittest.TestCase):
 
         resp = self.client.post('/project/' + self.form_model.id + '/submissions/delete/',
                                 {'all_selected': 'true', 'submission_type': 'success',
-                                 'search_filters': json.dumps({'search_text': unique_text})})
+                                 'search_filters': json.dumps({'search_text': unique_text,
+                                                                "dateQuestionFilters":{}})})
 
         self.assertEqual(json.loads(resp.content)['success'], True)
         self.assertEqual(len(self.get_submissions('success', unique_text)), 0)
@@ -65,7 +69,7 @@ class TestDeleteSubmission(unittest.TestCase):
             self.client.post("/submission", data)
 
     def get_submissions(self, filter_type, search_text):
-        query_params = {'search_filters': {'search_text': search_text}}
+        query_params = {'search_filters': {'search_text': search_text,"dateQuestionFilters":{}}}
         query_params.update({'filter': filter_type})
         submissions = SubmissionQuery(self.form_model, query_params).query(self.dbm.database_name)
         return submissions
