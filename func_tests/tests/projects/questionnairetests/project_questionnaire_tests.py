@@ -101,13 +101,14 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.submit_questionnaire()
         self._expect_empty_questionnaire_dialog_to_be_shown()
         questionnaire_tab_page.add_questions(ADDITIONAL_TAB_QUESTIONNAIRE_DATA)
-        questionnaire_tab_page.set_questionnaire_code(TestProjectQuestionnaire.questionnaire_code)
-        questionnaire_tab_page.submit_questionnaire()
-        self.assertEqual(questionnaire_tab_page.get_error_message(), DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE, "Duplicate error message not shown")
         questionnaire_tab_page.set_questionnaire_code(questionnaire_code)
         questionnaire_tab_page.submit_questionnaire()
-        self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of questionnaire failed")
+        #questionnaire_tab_page.got_redistribute_questionnaire_message()
+        #self.assertEqual(questionnaire_tab_page.get_error_message(), DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE, "Duplicate error message not shown")
+        #questionnaire_tab_page.set_questionnaire_code(questionnaire_code)
+        #questionnaire_tab_page.submit_questionnaire()
         self._expect_redistribute_dialog_to_be_shown()
+        self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of questionnaire failed")
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 8, "Question count of updated questionnaire does not match")
 
     @attr('functional_test')
@@ -124,7 +125,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
         questionnaire_tab_page.submit_questionnaire()
         self.global_navigation.navigate_to_dashboard_page()
-        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
         modified_warning_dialog.cancel()
         self.assertEqual(questionnaire_tab_page.get_questionnaire_title(), self.project_name,
                          "Should continue to stay on questionnaire page")
@@ -143,7 +144,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.set_question_title("some question")
         questionnaire_tab_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
         all_projects_page = self.global_navigation.navigate_to_view_all_project_page()
-        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
         modified_warning_dialog.save_changes()
         self._expect_redistribute_dialog_to_be_shown()
         all_projects_page.wait_for_page_to_load()
