@@ -153,8 +153,7 @@ def create_questions(unique_id_type):
                              instruction="Answer must be a number between 18-100.")
     question4 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
                           date_format="dd.mm.yyyy",
-                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
-                          event_time_field_flag=True)
+                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
     question5 = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
                             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
                             instruction="Choose 1 answer from the list.")
@@ -637,8 +636,7 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
                               instruction="Answer must be 12 characters maximum")
     question2 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
                           date_format="mm.yyyy",
-                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
-                          event_time_field_flag=True)
+                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
 
     questionnaire = Project(manager, name="Clinic Test Project With Monthly Reporting Period",
                               form_code=clinic_code, 
