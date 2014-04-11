@@ -73,9 +73,7 @@
     {% load compress %}
     {% compress js %}
         <script type="text/javascript">
-            var date_format = '{{ date_format }}';
             var entity_type = '{{ entity_type }}';
-            var has_reporting_period = {{ has_reporting_period|lower }};
             var render_table_url = '/project/submissions/{{ questionnaire_code }}';
             var project_id = '{{ project.id }}';
             var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
@@ -101,9 +99,6 @@
         <div id="filter_section" class="alpha data_ana float_left">
             {% include 'project/partials/filters/_filter_by_data_sender.html' %}
             {% include 'project/partials/filters/_filter_by_submission_date.html' %}
-            {% if has_reporting_period %}
-                {% include 'project/partials/filters/_filter_by_reporting_period.html' %}
-            {% endif %}
             {% include 'project/partials/filters/_filter_by_subject.html' %}
             {% include 'project/partials/filters/_filter_by_keyword.html' %}
             <br/>
