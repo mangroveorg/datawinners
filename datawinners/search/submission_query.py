@@ -1,5 +1,5 @@
 import elasticutils
-from datawinners.search.filters import SubmissionDateRangeFilter, ReportingDateRangeFilter
+from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
 from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
@@ -31,14 +31,20 @@ class SubmissionQueryBuilder(QueryBuilder):
         query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
         return self.filter_by_submission_type(query, query_params)
 
+    def _add_date_range_filters(self, query, search_filter_param):
+        date_filters = search_filter_param.get("dateQuestionFilters")
+        for question_code, date_range in date_filters.items():
+            if date_range:
+                query = DateQuestionRangeFilter(date_range, self.form_model, question_code).build_filter_query(query)
+        return query
+
     def add_query_criteria(self, query_fields, query, query_text, query_params=None):
         query = super(SubmissionQueryBuilder, self).add_query_criteria(query_fields, query, query_text, query_params)
         search_filter_param = query_params.get('search_filters')
         if search_filter_param:
             submission_date_range = search_filter_param.get("submissionDatePicker")
-            reporting_date_range = search_filter_param.get("reportingPeriodPicker")
             query = SubmissionDateRangeFilter(submission_date_range).build_filter_query(query)
-            query = ReportingDateRangeFilter(reporting_date_range, self.form_model).build_filter_query(query)
+            query = self._add_date_range_filters(query, search_filter_param)
             datasender_filter = search_filter_param.get("datasenderFilter")
             if datasender_filter:
                 query = query.filter(ds_id=datasender_filter)

@@ -59,21 +59,21 @@ class SubmissionDateRangeFilter(DateRangeFilter):
     def get_python_date_format(self, date):
         return '%d.%m.%Y'
 
-class ReportingDateRangeFilter(DateRangeFilter):
-    def __init__(self, date_range, form_model):
-        self.reporting_date_field = form_model.event_time_question
+class DateQuestionRangeFilter(DateRangeFilter):
+    def __init__(self, date_range, form_model, date_question_code):
+        self.date_field = form_model.get_field_by_code(date_question_code)
         self.form_model = form_model
         DateRangeFilter.__init__(self, date_range)
 
     def get_persisted_date_format(self):
-        if self.reporting_date_field:
-            return DateField.FORMAT_DATE_DICTIONARY.get(self.reporting_date_field.date_format)
+        if self.date_field:
+            return DateField.FORMAT_DATE_DICTIONARY.get(self.date_field.date_format)
         return None
 
     def get_date_field_name(self):
-        return es_field_name(self.reporting_date_field.code, self.form_model.id)
+        return es_field_name(self.date_field.code, self.form_model.id)
 
     def get_python_date_format(self, date):
-        if self.reporting_date_field:
-            return DateField.DATE_DICTIONARY.get(self.reporting_date_field.date_format)
+        if self.date_field:
+            return DateField.DATE_DICTIONARY.get(self.date_field.date_format)
         return None

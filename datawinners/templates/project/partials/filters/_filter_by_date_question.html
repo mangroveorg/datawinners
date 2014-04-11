@@ -4,12 +4,12 @@
         <label>{{ date.label }}</label>
     </div>
     <div class="float_left">
-        <input type="text" readonly="true" class="datepicker"
-               {% if date.is_month_format %}
-                   data-ismonthly="true"
-               {% endif %}
+        <input id="date-question-filter-{{ date.code }}" type="text" readonly="true" class="datepicker date-question-filter"
+               {% if date.is_month_format %} data-ismonthly="true" {% endif %}
                data-question-code="{{ date.code }}"
-               value="{{ date.label }}"/>
+               data-format="{{ date.format }}"
+               value="{% trans "All Dates" %}"/>
         <span class="dateErrorDiv" class="error_arrow"></span>
+        <div class="month_date_picker_div"></div>
     </div>
 </div>

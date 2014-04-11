@@ -90,7 +90,8 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             date_fields_array.append({
                 'code': date_field.code,
                 'label': date_field.label,
-                'is_month_format': date_field.is_monthly_format
+                'is_month_format': date_field.is_monthly_format,
+                'format': date_field.date_format
             })
 
         result_dict = {
@@ -316,7 +317,7 @@ def log_edit_action(old_survey_response, new_survey_response, request, project_n
     changed_answers = deepcopy(differences.changed_answers)
     if differences.changed_answers:
         for key, value in differences.changed_answers.iteritems():
-            question_field = form_model._get_field_by_code(key)
+            question_field = form_model.get_field_by_code(key)
             question_label = question_field.label
             #replacing question code with actual question text
             changed_answers[question_label] = changed_answers.pop(key)
@@ -484,7 +485,7 @@ def create_statistics_response(facet_results, form_model):
     analysis_response = {}
     for facet_result in facet_results:
         field_code = get_code_from_es_field_name(facet_result['es_field_name'], form_model.id)
-        field = form_model._get_field_by_code(field_code)
+        field = form_model.get_field_by_code(field_code)
 
         field_options = [option['text'] for option in field.options]
         facet_result_options = []

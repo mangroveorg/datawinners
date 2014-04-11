@@ -61,14 +61,14 @@
                             month_name:'',
                             id:"monthpicker_start"
                         }
-                        , options),
+                        , options.start),
                     settings_end = $.extend({
                             year:year,
                             month:month,
                             month_name:'',
                             id:"monthpicker_end"
                         }
-                        , options);
+                        , options.end);
 
                 settings.dateSeparator = settings.pattern.replace(/(mmm|mm|m|yyyy|yy|y)/ig, '');
 
@@ -117,11 +117,11 @@
             showMPWidget(mp_data.settings_start);
             showMPWidget(mp_data.settings_end);
 
-            $("#month_date_picker_div").show();
+            $(this).parent().children(".month_date_picker_div").show();
         },
 
         hide:function () {
-            $("#month_date_picker_div").hide();
+            $(this).parent().children(".month_date_picker_div").hide();
         },
 
         setValue:function (global_settings, settings_start, settings_end) {
@@ -142,10 +142,7 @@
             var borderEnd = jQuery('<div id="end_border" ></div>');
             borderStart.append(start_widget);
             borderEnd.append(end_widget);
-
-            $("#month_date_picker_div").append(borderStart);
-            $("#month_date_picker_div").append(borderEnd);
-            $("#month_date_picker_div").hide()
+            $(this).parent().children(".month_date_picker_div").append(borderStart).append(borderEnd).hide();
         },
 
         mountWidget:function (global_settings, settings) {
@@ -295,7 +292,7 @@
 })(jQuery);
 
 function showMP(monthPicker) {
-    var mp = $("#month_date_picker_div");
+    var mp = monthPicker.parent().children(".month_date_picker_div");
     if (!mp.is(':visible')) {
         monthPicker.monthpicker('show');
     }

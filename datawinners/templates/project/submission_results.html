@@ -106,6 +106,7 @@
             {% endif %}
             {% include 'project/partials/filters/_filter_by_subject.html' %}
             {% include 'project/partials/filters/_filter_by_keyword.html' %}
+            <br/>
             {% for date_field in date_fields %}
                     {% include 'project/partials/filters/_filter_by_date_question.html' with date=date_field %}
             {% endfor %}

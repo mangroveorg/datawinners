@@ -291,7 +291,7 @@ def get_json_field_infos(fields):
 def put_email_information_to_entity(dbm, entity, email):
     email_field_code = "email"
     form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
-    email_field_label = form_model._get_field_by_code(email_field_code).name
+    email_field_label = form_model.get_field_by_code(email_field_code).name
     data = (email_field_label, email)
     entity.update_latest_data([data])
 

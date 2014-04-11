@@ -59,7 +59,7 @@ class TestSubmissionViews(unittest.TestCase):
         choice_field = SelectField(name='question three', code='q3', label='question three',
                                    options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
                                    single_select_flag=False)
-        form_model._get_field_by_code.side_effect = lambda x: {'q1': int_field, 'q2': text_field, 'q3': choice_field}[x]
+        form_model.get_field_by_code.side_effect = lambda x: {'q1': int_field, 'q2': text_field, 'q3': choice_field}[x]
 
         with patch('datawinners.project.views.submission_views.UserActivityLog') as activity_log:
             with patch(
@@ -75,7 +75,7 @@ class TestSubmissionViews(unittest.TestCase):
                                         'question two': {'old': 'text2', 'new': 'correct text'},
                                         'question three': {'old': u'one', 'new': u'one, two'}}}
 
-                form_model._get_field_by_code.assert_calls_with([call('q1'), call('q2'), call('q3')])
+                form_model.get_field_by_code.assert_calls_with([call('q1'), call('q2'), call('q3')])
                 mock_log.log.assert_called_once_with(request, action=EDITED_DATA_SUBMISSION, project=project_name,
                                                      detail=json.dumps(expected_changed_answer_dict))
 
@@ -275,7 +275,7 @@ class TestSubmissionAnalysisResponseCreation(unittest.TestCase):
 
         form_model = MagicMock(spec=FormModel)
         form_model.id = '0dab4170697411e3985908002738abcf'
-        form_model._get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
+        form_model.get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
                                                                  label="What is your blood group?",
                                                                  options=[{"text": "O+"}, {"text": "B+"},
                                                                           {"text": "A-"}], single_select_flag=False,
@@ -294,7 +294,7 @@ class TestSubmissionAnalysisResponseCreation(unittest.TestCase):
 
         form_model = MagicMock(spec=FormModel)
         form_model.id = '0dab4170697411e3985908002738abcf'
-        form_model._get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
+        form_model.get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
                                                                  label="What is your blood group?",
                                                                  options=[{"text": "O+"}, {"text": "B+"}], single_select_flag=False,
                                                                  required=False)

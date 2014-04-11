@@ -193,9 +193,23 @@ DW.DateFilter = function (postFilterSelectionCallBack) {
 
     self.init = function () {
         self.filterSelects = $('.datepicker');
-        self.filterSelects.datePicker({eventCallback: _closeFilterSelects, onCloseCallback: _onCloseSubmissionDatePicker});
-//        $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: _closeFilterSelects, onCloseCallback: _onCloseSubmissionDatePicker});
-
+        _.each(self.filterSelects, function(dateTimePickerInput){
+            var dateInput = $(dateTimePickerInput);
+            var format = dateInput.data("format");
+            var qcode = dateInput.data("question-code");
+            var options = {
+                             eventCallback: _closeFilterSelects,
+                             onCloseCallback: _onCloseSubmissionDatePicker,
+                             monthpicker:{
+                                     start: {'id': "start" + qcode},
+                                     end: {'id': "end" + qcode}
+                             }
+                          };
+            if(format){
+                options['date_format'] = format;
+            }
+            dateInput.datePicker(options);
+        });
     };
 
     function _closeFilterSelects() {

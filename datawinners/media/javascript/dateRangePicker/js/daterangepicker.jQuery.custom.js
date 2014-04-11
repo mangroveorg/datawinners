@@ -18,7 +18,7 @@
  * --------------------------------------------------------------------
  */
 jQuery.fn.daterangepicker = function(settings){
-	var rangeInput = jQuery(this);
+    var rangeInput = jQuery(this);
 
 	//defaults
 	var options = jQuery.extend({
@@ -285,14 +285,6 @@ jQuery.fn.daterangepicker = function(settings){
             if($('.btnDone').parents('.ui-daterangepicker:visible').data('ismonthly')){
                 rp.find('.ui-datepicker-inline').hide();
                 showMP($('#' + rp.data('for')));
-                if ($('#monthpicker_start').size() == 1 && $('#monthpicker_start').parent('.hasDatepicker:visible').size() == 0) {
-                    //$('.range-start>.ui-datepicker').empty();
-                    //$('#monthpicker_start').appendTo($('.range-start'));
-                    //$('#monthpicker_end').appendTo($('.range-end'));
-                }
-            } else {
-                rp.find('#monthpicker_start').hide();
-                rp.find('#monthpicker_end').hide();
             }
 		}
 		else {
@@ -322,7 +314,7 @@ jQuery.fn.daterangepicker = function(settings){
         rpPickers.find('.range-end').datepicker('setDate', inputDateB);
 
         if(rangeInput.data('ismonthly')){
-            var mps = rangeInput.monthpicker();
+            var mps = rangeInput.monthpicker(settings.monthpicker);
             mps[0].appendTo(rpPickers.find(".range-start"));
             mps[1].appendTo(rpPickers.find(".range-end"));
         }

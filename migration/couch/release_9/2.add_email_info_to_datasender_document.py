@@ -35,7 +35,7 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
         logger.warning(f.message)
         return
 
-    email_field_label = form_model._get_field_by_code(email_field_code).name
+    email_field_label = form_model.get_field_by_code(email_field_code).name
 
     org_id = OrganizationSetting.objects.get(document_store=manager.database_name).organization_id
     user_profiles = NGOUserProfile.objects.filter(org_id=org_id)

@@ -1,16 +1,18 @@
 $.fn.datePicker = function (options) {
     return this.each(function () {
         var $this = $(this);
-        var config = $.extend({}, options || {});
+        var config = $.extend({
+            'date_format': 'dd.mm.yyyy'
+        }, options || {});
         var widget = $this.daterangepicker(getSettings(config, config.header || gettext('All Dates'), $this.data('ismonthly')))
-        if ($this.data('ismonthly') != undefined) widget.monthpicker();
+        if ($this.data('ismonthly') != undefined) widget.monthpicker(options.monthpicker);
         $this.click(function () {
-            var $monthpicker = $('#monthpicker_start, #monthpicker_end', $('.ranges'));
-            if ($this.data('ismonthly')) {
-                $monthpicker.show();
-            } else {
-                $monthpicker.hide();
-            }
+//            var $monthpicker = $('#monthpicker_start, #monthpicker_end', $('.ranges'));
+//            if ($this.data('ismonthly')) {
+//                $monthpicker.show();
+//            } else {
+//                $monthpicker.hide();
+//            }
             var $visible_datepickers = $('.ui-daterangepicker:visible');
             $visible_datepickers.each(function (index, picker) {
                 if ($(picker).data('for') != $this.attr('id')) {
@@ -19,7 +21,7 @@ $.fn.datePicker = function (options) {
             });
         });
 
-        function getDateFormat(date_format) {
+        function getModifiedDateFormat(date_format) {
             return date_format.replace('yyyy', 'yy');
         }
 
@@ -47,7 +49,7 @@ $.fn.datePicker = function (options) {
                 presets: {dateRange: gettext('Choose Date(s)')},
                 earliestDate: '1/1/2011',
                 latestDate: '21/12/2012',
-                dateFormat: getDateFormat(date_format),
+                dateFormat: getModifiedDateFormat(config.date_format),
                 rangeSplitter: '-',
                 closeOnSelect:false
             };
@@ -55,25 +57,14 @@ $.fn.datePicker = function (options) {
                 settings.presets = {dateRange: gettext('Choose Month(s)')}
             } else {
                 settings.presetRanges = settings.presetRanges.concat(year_to_date_setting);
-                if (typeof(ismonthly) == "undefined") {
-                    settings.dateFormat = 'dd.mm.yy';
-                }
             }
-            settings.eventCallback = config.eventCallback
-            settings.onClose = config.onCloseCallback
+            settings.eventCallback = config.eventCallback;
+            settings.onClose = config.onCloseCallback;
+            settings.monthpicker = config.monthpicker;
             return settings;
         }
     })
 };
-
-DW.get_criteria = function () {
-    var search = $('.dataTables_filter input').val();
-    $(".dateErrorDiv").hide();
-    return {
-        'search': search
-    };
-};
-
 
 DW.get_datepicker_value = function ($datePicker, default_text) {
     var data = $datePicker.val().split("-");

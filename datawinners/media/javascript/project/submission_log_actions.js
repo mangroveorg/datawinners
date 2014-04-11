@@ -8,11 +8,18 @@ DW.SubmissionLogActionHandler = function (submission_type, project_id) {
 }
 
 var filter_as_json = function () {
+                var dateQuestionFilters = {
+                };
+                _.each($(".date-question-filter"), function(dateFilterItem){
+                    var dateFilter = $(dateFilterItem);
+                    dateQuestionFilters[dateFilter.data('question-code')] = dateFilter.val();
+                });
                 return {"submissionDatePicker": $('#submissionDatePicker').val(),
                         "datasenderFilter": $("#data_sender_filter").data('ds_id'),
                         "reportingPeriodPicker": $('#reportingPeriodPicker').val(),
                         "subjectFilter":$('#subject_filter').data('value'),
-                        "search_text":$('#search_text').val()
+                        "search_text":$('#search_text').val(),
+                        "dateQuestionFilters": dateQuestionFilters
                 };
 };
 
