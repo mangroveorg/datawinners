@@ -146,23 +146,6 @@ def create_project(request):
              'error_in_project_section': False, 'code_has_errors': code_has_errors,
              'name_has_errors': name_has_errors}))
 
-
-def get_reporting_period_field(questionnaire):
-    for question in questionnaire:
-        if question.is_event_time_field:
-            return question
-    return None
-
-
-def is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire):
-    old_reporting_period_question = get_reporting_period_field(old_questionnaire)
-    new_reporting_period_question = get_reporting_period_field(questionnaire)
-    if old_reporting_period_question and new_reporting_period_question:
-        if old_reporting_period_question.date_format != new_reporting_period_question.date_format:
-            return True
-    return False
-
-
 def _get_deleted_question_codes(new_codes, old_codes):
     diff = set(old_codes) - set(new_codes)
     return filter(diff.__contains__, old_codes)

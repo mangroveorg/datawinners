@@ -1,22 +1,17 @@
 import unittest
-from unittest import TestCase
+
+from mock import Mock
+
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import HierarchyField, TextField, DateField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, GEO_CODE
-from mock import Mock
-from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_fields_question_code, get_report_period_question_name_and_datetime_format
+from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, GEO_CODE
+from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_fields_question_code
+
 
 class TestHelper(unittest.TestCase):
     def setUp(self):
         self.report_period_question_name = 'q1'
         self.datetime_format = 'dd.mm.yyyy'
-
-    def test_should_return_report_period_question_name_and_datetime_format(self):
-        form_model = self._get_form_model()
-        form_model.add_field(self.get_report_period_field())
-        question_name, datetime_format = get_report_period_question_name_and_datetime_format(form_model)
-        self.assertEquals(question_name, self.report_period_question_name)
-        self.assertEquals(datetime_format, self.datetime_format)
 
     def test_should_give_location_code(self):
         form_model = self._get_form_model()

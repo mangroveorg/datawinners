@@ -32,8 +32,7 @@ class FormModelGenerator(object):
     def init_form_model_fields(self):
         self.eid_field = UniqueIdField(unique_id_type='clinic',label="What is associated entity?", code="EID", name="What is associatéd entity?")
         self.rp_field = DateField(label="Report date", code="RD", name="What is réporting date?",
-            date_format="dd.mm.yyyy", event_time_field_flag=True,
-            instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
+            date_format="dd.mm.yyyy", instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
         self.symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False)

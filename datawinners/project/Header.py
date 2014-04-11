@@ -31,7 +31,7 @@ class Header(object):
         return filter(lambda each: each, self._prefix()) + self._fields_header()
 
     def _prefix(self):
-        return [self._id(), self._subject_header(), self._reporting_period_header(), self._submission_date_header(),
+        return [self._id(), self._subject_header(), self._submission_date_header(),
                 self._data_sender_header()]
 
     def _submission_date_header(self):
@@ -40,18 +40,13 @@ class Header(object):
     def _data_sender_header(self):
         return ugettext("Data Sender"), ''
 
-    def _reporting_period_header(self):
-        rp_field = self._form_model.event_time_question
-        return (ugettext("Reporting Period"), rp_field.date_format) if rp_field else None
-
     def _subject_header(self):
         subject_type = self._form_model.entity_type[0]
         return (ugettext(subject_type).capitalize(), '')
 
     def _fields_header(self):
         return [(field.label, field.date_format if isinstance(field, DateField) else (
-            "gps" if isinstance(field, GeoCodeField)  else "")) for field in self._form_model.fields[1:] if
-                not field.is_event_time_field]
+            "gps" if isinstance(field, GeoCodeField)  else "")) for field in self._form_model.fields[1:]]
 
     def _id(self):
         return "Submission Id", ''

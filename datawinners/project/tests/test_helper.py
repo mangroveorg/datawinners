@@ -157,29 +157,6 @@ class TestHelper(unittest.TestCase):
         fields = [eid_field, na_field, fa_field, rd_field, bg_field, sy_field, gps_field, rm_field]
         return fields
 
-    def _create_report_period_question(self, form_model):
-        rd_field = Mock(spec=DateField)
-        rd_field.code = "rd"
-        rd_field.event_time_field_flag = True
-        rd_field.date_format = "dd.mm.yyyy"
-        form_model.event_time_question = rd_field
-
-    def _prepare_submission_data(self, load_all_rows_in_view, get_data_sender, get_by_short_code,
-                                 has_report_period_question):
-        # load_all_rows_in_view.return_value = SUBMISSIONS
-        get_data_sender.return_value = ("Sender1", "rep1")
-        entity = Mock(spec=Entity)
-        get_by_short_code.return_value = entity
-        entity.data = {"name": {"value": "realname"}}
-        entity.short_code = "cli13"
-        form_model = Mock(spec=FormModel)
-        form_model.fields = self._get_form_fields()
-        form_model.form_code = FORM_CODE
-        form_model.entity_type = ["clinic"]
-        if has_report_period_question:
-            self._create_report_period_question(form_model)
-        return form_model
-
     def test_should_raise_Http404_if_project_can_not_be_found(self):
         wrapped_func = is_project_exist(lambda: None.qid)
         with self.assertRaises(Http404):

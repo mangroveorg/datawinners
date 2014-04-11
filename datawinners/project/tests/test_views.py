@@ -18,7 +18,7 @@ from datawinners.project.preview_views import get_sms_preview_context, get_quest
 from datawinners.project.utils import make_subject_links
 from datawinners.project.views.views import get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from datawinners.project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field, _get_changed_data
+from datawinners.project.wizard_view import get_preview_and_instruction_links, _get_changed_data
 from datawinners.questionnaire.questionnaire_builder import get_max_code
 from mangrove.form_model.form_model import FormModel
 
@@ -170,24 +170,6 @@ class TestProjectViews(unittest.TestCase):
                   TextField(name="f3", code="c4", label="f4"),
                   TextField(name="f5", code="c5", label="f5")]
         self.assertEqual(1, get_max_code(fields))
-
-
-    def test_should_return_reporting_period_field_if_questionnaire_contains(self):
-        dateField = DateField(name="f2", code="c2", label="f2", date_format="dd.mm.yyyy",
-                              event_time_field_flag=True)
-        fields = [
-            TextField(name="f1", code="c1", label="f1"),
-            dateField]
-        self.assertEqual(fields[1], get_reporting_period_field(fields))
-
-
-    def test_should_return_none_if_questionnaire_dose_not_contains(self):
-        dateField = DateField(name="f2", code="c2", label="f2", date_format="dd.mm.yyyy",
-                              event_time_field_flag=False)
-        fields = [
-            TextField(name="f1", code="c1", label="f1"),
-            dateField]
-        self.assertEqual(None, get_reporting_period_field(fields))
 
 
     def test_should_return_origin_value_for_item_is_non_tuple_data(self):

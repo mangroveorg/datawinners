@@ -17,10 +17,6 @@ def get_geo_code_field_question_code(form_model):
     geo_code_fields = filter(lambda field: field.type == GeoCodeField.type, form_model.fields)
     return geo_code_fields[0].code if not is_empty(geo_code_fields) else None
 
-def get_report_period_question_name_and_datetime_format(form_model):
-    field = form_model.event_time_question
-    return None if field is None else field.code.lower(), field.date_format
-
 def get_geo_code_fields_question_code(form_model):
     return [field.code for field in form_model.fields if field.type == GeoCodeField.type]
 

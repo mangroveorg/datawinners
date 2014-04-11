@@ -118,8 +118,7 @@ class QuestionBuilder(object):
         return DateField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
                          date_format=post_dict.get('date_format'),
                          instruction=post_dict.get("instruction"),
-                         required=post_dict.get("required"),
-                         event_time_field_flag=post_dict.get('event_time_field_flag', False), )
+                         required=post_dict.get("required"))
 
 
     def _create_geo_code_question(self, post_dict, code):

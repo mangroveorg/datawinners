@@ -55,22 +55,16 @@ def make_project_links(project, entity_type=None):
 
 
 def project_info(request, form_model, questionnaire_code): #revisit:export
-    rp_field = form_model.event_time_question
     organization = get_organization(request)
     in_trial_mode = organization.in_trial_mode
-    has_rp = rp_field is not None
-    is_monthly_reporting = rp_field.date_format.find('dd') < 0 if has_rp else False
+    return {
 
-    return {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
-            "is_monthly_reporting": is_monthly_reporting,
-            'project_links': (make_project_links(form_model)),
+        'project_links': (make_project_links(form_model)),
             'is_quota_reached':is_quota_reached(request, organization=organization),
             'project': form_model,
             'encoded_project_name': (urlquote(form_model.name)),
             'import_template_file_name': slugify(form_model.name),
             'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
-            'reporting_period_question_text': rp_field.label if has_rp else None,
-            'has_reporting_period': has_rp,
             }
 
 def is_quota_reached(request, organization=None, org_id=None):
