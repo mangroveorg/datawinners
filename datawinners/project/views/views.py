@@ -217,7 +217,7 @@ def project_overview(request, project_id=None):
     if not is_empty(questionnaire.entity_type):
         subject_links = {}
         for entity_type in questionnaire.entity_type:
-            subject_links.update({entity_type: append_query_strings_to_url(reverse("create_subject", args=[entity_type]),
+            subject_links.update({entity_type: append_query_strings_to_url(reverse("subject_questionnaire", args=[project_id, entity_type]),
                                                            web_view=True)})
         links.update({'create_subjects_links': subject_links})
         add_subjects_to_see_on_map_msg = _(
