@@ -103,11 +103,11 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.add_questions(ADDITIONAL_TAB_QUESTIONNAIRE_DATA)
         questionnaire_tab_page.set_questionnaire_code(TestProjectQuestionnaire.questionnaire_code)
         questionnaire_tab_page.submit_questionnaire()
-        self.assertEqual(questionnaire_tab_page.get_error_message(), DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE, "Duplicate error message not shown")
+        self.assertEqual(questionnaire_tab_page.get_error_message(), DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE,"Duplicate error message not shown")
         questionnaire_tab_page.set_questionnaire_code(questionnaire_code)
         questionnaire_tab_page.submit_questionnaire()
-        self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of questionnaire failed")
         self._expect_redistribute_dialog_to_be_shown()
+        self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of questionnaire failed")
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 8, "Question count of updated questionnaire does not match")
 
     @attr('functional_test')

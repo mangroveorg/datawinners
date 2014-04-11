@@ -18,7 +18,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 
 
 SUCCESS_PROJECT_SAVE_MESSAGE = "Your changes have been saved."
-DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE = "Questionnaire with this code already exists"
+DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE = "Questionnaire with same code already exists."
 MANDATORY_FIELD_ERROR_MESSAGE = "This field is required."
 
 class QuestionnaireTabPage(Page):
@@ -291,8 +291,8 @@ class QuestionnaireTabPage(Page):
 
         Return success message
         """
-        success_message = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#message-label .error_message"))
-        return success_message.text
+        error_msg = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#questionnaire_code_validation_message"))
+        return error_msg.text
 
 
 
