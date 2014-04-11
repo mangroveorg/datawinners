@@ -80,6 +80,7 @@ class TestProjectViews(unittest.TestCase):
         form_model = Mock()
         form_model.fields = [{}]
         form_model.form_code = "form code"
+        form_model.name="project_name"
         project_form = Mock()
         project_form.cleaned_data = {
             "name": "project_name", "entity_type": "clinic", "language": "en"
