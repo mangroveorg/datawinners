@@ -28,12 +28,12 @@ def get_questionnaire_form_model(manager, project_info, post):
                                 language=unicode(project_info.get('language')), reporter_id=None)
 
 def get_sms_preview_context(manager, post, project_info):
-    form_model = get_questionnaire_form_model(manager, project_info, post)
+    form_model = project_info if isinstance(project_info, FormModel) else get_questionnaire_form_model(manager, project_info, post)
     example_sms = "%s" % form_model.form_code
     example_sms += get_example_sms(form_model.fields)
     return {"questionnaire_code": post["questionnaire-code"],
             "questions": get_questions(form_model),
-            "project_name": project_info.get('name'),
+            "project_name": form_model.name,
             "example_sms": example_sms}
 
 
