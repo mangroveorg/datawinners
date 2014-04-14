@@ -209,6 +209,7 @@ def edit_project(request, project_id):
             return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False, "code_has_error":True,
                                             'error_message': 'Questionnaire with same code already exists.'}))
 
+        messages.add_message(request,messages.INFO,"success")
         return HttpResponse(json.dumps({'success': True, 'project_id': project_id}))
 
 

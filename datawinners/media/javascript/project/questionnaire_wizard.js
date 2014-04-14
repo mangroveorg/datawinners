@@ -33,6 +33,13 @@ $(document).ready(function () {
     $('#question_form').live("click", DW.charCount);
     $('.delete').live("click", DW.charCount);
 
+    if(success == "True"){
+        var flash_message = $("#message-label");
+        flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
+        html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
+        flash_message[0].scrollIntoView();
+        hide_message();
+    }
     function hide_message() {
         $('#message-label').delay(5000).fadeOut();
     }
@@ -79,24 +86,16 @@ $(document).ready(function () {
                         show_code_error(responseJson.error_message);
                 }
                 else {
-                    var flash_message = $("#message-label");
-                    flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
-                    html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
-                    flash_message[0].scrollIntoView();
-
-                    if (_isQuestionnaireChanged()) {
-                        questionnaireViewModel.set_all_questions_as_old_questions();
-                        existing_questionnaire_code = questionnaireViewModel.questionnaireCode();
-                        DW.questionnaire_was_changed = false;
-                        DW.existing_question_codes = questionnaireViewModel.getQuestionCodes();
-                        if(callBack)
-                            DW.inform_datasender_about_changes.continue_handler = function(){
+                    if(_isQuestionnaireChanged()) {
+                        DW.inform_datasender_about_changes.continue_handler = function(){
+                            window.location.reload();
+                            if (callBack)
                                 callBack();
-                            };
+                        };
                         DW.inform_datasender_about_changes.show_warning();
-
                     }
-                    hide_message();
+                    else
+                        window.location.reload();
                 }
             }).error(function (e) {
                 show_error(e.responseText);
