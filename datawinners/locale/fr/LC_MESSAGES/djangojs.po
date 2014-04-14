@@ -1123,7 +1123,7 @@ msgid "GPS Coordinates"
 msgstr "Coordonnées GPS"
 
 msgid "Telephone number"
-msgstr "Telephone number"
+msgstr "Numéro de téléphone"
 
 msgid "Please insert a valid number."
 msgstr "Veuillez entrer un nombre valide."
