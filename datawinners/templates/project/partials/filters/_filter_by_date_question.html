@@ -1,7 +1,12 @@
 {% load i18n %}
-<div class="float_left date_filter">
+<div class="float_left filter-question">
     <div class="filter_label">
-        <label>{{ date.label }}</label>
+        <label class="help_icon">{{ date.label }}</label>
+         <div class="tooltip">
+            <p>
+               {{ date.label }}
+            </p>
+         </div>
     </div>
     <div class="float_left">
         <input id="date-question-filter-{{ date.code }}" type="text" readonly="true" class="datepicker date-question-filter"

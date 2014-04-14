@@ -55,7 +55,7 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet"/>
+{#    <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet"/>#}
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
     <link href="/media/css/scss/util.css" rel="stylesheet"/>
     <link href="/media/css/scss/submission_log.css" media="screen" rel="stylesheet"/>
@@ -97,18 +97,25 @@
     {% include "project/submission_page_hint.html" %}
     <div class="heading_block clearfix margin_bottom_10">
         <div id="filter_section" class="alpha data_ana float_left">
+            {% include 'project/partials/filters/_filter_by_keyword.html' %}
             {% include 'project/partials/filters/_filter_by_data_sender.html' %}
             {% include 'project/partials/filters/_filter_by_submission_date.html' %}
-            {% include 'project/partials/filters/_filter_by_subject.html' %}
-            {% include 'project/partials/filters/_filter_by_keyword.html' %}
-            <br/>
-            {% for date_field in date_fields %}
+            <div id="show_filters">
+                <a >More Filters</a>
+            </div>
+
+            <div id="questionnaire_field_filters" style="visibility: hidden;">
+                {% include 'project/partials/filters/_filter_by_subject.html' %}
+                {% for date_field in date_fields %}
                     {% include 'project/partials/filters/_filter_by_date_question.html' with date=date_field %}
-            {% endfor %}
+                {% endfor %}
+                <div id="hide_filters">
+                    <a>Less Filters</a>
+                </div>
+            </div>
             <!--[if IE 7]>
             <div class="float_right"></div>
             <![endif]-->
-            <div id="search_box"></div>
         </div>
     </div>
     <div id="submission_logs" class="grid_23 alpha margin_top_20">

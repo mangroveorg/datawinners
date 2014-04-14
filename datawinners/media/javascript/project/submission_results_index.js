@@ -64,6 +64,7 @@ $(document).ready(function () {
     $(".ui-corner-top").removeClass("ui-corner-top");
 
     new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
+    new DW.FilterSection().init();
 });
 
 

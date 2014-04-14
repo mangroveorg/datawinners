@@ -3,7 +3,7 @@
     background: url("/media/images/arrow_dd.png") no-repeat scroll right 0px transparent;
     font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
     font-size: 11px !important;
-    height: 23px !important;
+    height: 22px !important;
   }
 
   .datepicker.disabled {
@@ -75,8 +75,8 @@
   }
 
   div#keyword_input_container {
-    width: 180px;
-    height: 66px;
+    width: 270px;
+    height: 53px;
   }
 
   div#go_button_container {
@@ -106,23 +106,36 @@
     }
   }
   #filter_section {
+    width: 80%;
     > div {
-      width: 200px;
+      width: 175px;
       float: left;
       input[type='text'], select {
-        width: 80%;
+        width: 173px;
       }
       > div {
         width: 100%;
       }
       padding-top: 5px;
     }
-    > div.date_filter {
-      width: 240px;
+    #questionnaire_field_filters {
+      clear: both;
+      width: 80%;
+
+      > div.filter-question {
+        width: 175px;
+        float: left;
+        input[type='text'], select {
+          width: 173px;
+        }
+        padding-bottom: 10px;
+
+      }
     }
+
     #search_box {
       input[type='text'] {
-        width: 260px;
+        width: 270px;
       }
     }
 
@@ -142,6 +155,10 @@
       margin-bottom: 5px;
       font-weight: bold;
       margin-right: 0px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 175px
     }
   }
   #dateRangePicker {
@@ -172,4 +189,27 @@
     //for firefox 3.6+
     border: 1px solid #666666
   }
+}
+
+.filter-question{
+  margin-right: 30px;
+}
+
+.filter-input {
+  //width:80%;
+  height: 22px;
+  margin: 0 10 0 5;
+  border-color: #CCC;
+  padding-left: 5px;
+}
+
+#data-sender-filter {
+  width: 176px !important;
+  input{
+    width: 100% !important;
+  }
+}
+
+#show_filters, #hide_filters{
+  padding-top: 38px !important;
 }

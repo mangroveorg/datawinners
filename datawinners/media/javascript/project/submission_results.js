@@ -189,7 +189,6 @@ DW.SubjectFilter = function (postFilterSelectionCallBack) {
 
 DW.DateFilter = function (postFilterSelectionCallBack) {
     var self = this;
-    var postFilterSelection = postFilterSelectionCallBack;
 
     self.init = function () {
         self.filterSelects = $('.datepicker');
@@ -198,8 +197,7 @@ DW.DateFilter = function (postFilterSelectionCallBack) {
             var format = dateInput.data("format");
             var qcode = dateInput.data("question-code");
             var options = {
-                             eventCallback: _closeFilterSelects,
-                             onCloseCallback: _onCloseSubmissionDatePicker,
+                             onCloseCallback: postFilterSelectionCallBack,
                              monthpicker:{
                                      start: {'id': "start" + qcode},
                                      end: {'id': "end" + qcode}
@@ -210,15 +208,6 @@ DW.DateFilter = function (postFilterSelectionCallBack) {
             }
             dateInput.datePicker(options);
         });
-    };
-
-    function _closeFilterSelects() {
-        self.filterSelects.dropdownchecklist('close');
-    };
-
-    function _onCloseSubmissionDatePicker() {
-        self.filterSelects.dropdownchecklist('close');
-        postFilterSelection();
     };
 };
 
@@ -237,4 +226,39 @@ DW.SearchTextFilter = function (postFilterSelectionCallBack) {
         })
     };
 
+};
+
+DW.FilterSection = function(){
+    var self = this;
+    var showFilter;
+    var hideFilter;
+    var filterSection;
+
+    function _removeTooltipForShortQuestionLabels() {
+        $.each($("#questionnaire_field_filters").find('.help_icon'), function (index, element) {
+            if (element.offsetWidth >= element.scrollWidth) {
+                $(element).removeData('tooltip').unbind().next('div.tooltip').remove();
+            }
+        });
+    }
+
+    self.init = function(){
+        showFilter = $("#show_filters");
+        hideFilter = $("#hide_filters");
+        filterSection = $("#questionnaire_field_filters");
+        _initializeEventHandlers();
+        _removeTooltipForShortQuestionLabels();
+    }
+
+    function _initializeEventHandlers(){
+        showFilter.on("click", function () {
+            $(this).addClass('none');
+            filterSection.css('visibility','visible');
+        });
+
+        hideFilter.on("click", function () {
+            filterSection.css('visibility','hidden');
+            showFilter.removeClass('none');
+        });
+    }
 };

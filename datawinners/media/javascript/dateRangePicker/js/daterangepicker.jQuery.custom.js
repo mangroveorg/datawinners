@@ -282,7 +282,7 @@ jQuery.fn.daterangepicker = function(settings){
             setTimeout(function(){doneBtn.fadeIn();}, 400);
             rp.find('.range-start').restoreDateFromData().show();
             rp.find('.range-end').restoreDateFromData().show();
-            if($('.btnDone').parents('.ui-daterangepicker:visible').data('ismonthly')){
+            if(rp.data('ismonthly')){
                 rp.find('.ui-datepicker-inline').hide();
                 showMP($('#' + rp.data('for')));
             }

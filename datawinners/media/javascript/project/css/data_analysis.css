@@ -8,13 +8,6 @@
   font-weight: normal;
   height: 100%; }
 
-.filter-input {
-  width: 80%;
-  height: 24px;
-  margin: 0 10 0 5;
-  border-color: #CCC;
-  padding-left: 5px; }
-
 .disabled {
   background-color: #EBEBE4 !important;
   color: #888; }
@@ -64,3 +57,7 @@
 
 .ui-daterangepickercontain .ranges, .ui-daterangepickercontain .range-end, .ui-daterangepickercontain .range-start {
   display: block; }
+
+table.styled_table thead th {
+  padding-right: 30px;
+  vertical-align: top !important; }
