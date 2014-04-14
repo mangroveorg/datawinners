@@ -21,6 +21,7 @@ from datawinners.utils import get_organization
 from datawinners.project.utils import is_quota_reached
 from datawinners.entity.views import create_subject
 from django.http import Http404
+from operator import itemgetter
 
 REPORTER_ENTITY_TYPE = u'reporter'
 
@@ -99,7 +100,7 @@ def is_crs_user(request):
 def index(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
     project_list = get_project_list(request)
-
+    project_list.sort(key=itemgetter('name'))
     smart_phone_instruction_link = reverse("smart_phone_instruction")
 
     activation_success = request.GET.get('activation', False)
