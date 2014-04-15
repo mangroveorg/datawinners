@@ -138,5 +138,9 @@
   #data-sender-filter input {
     width: 100% !important; }
 
-#show_filters, #hide_filters {
+#show_filters {
   padding-top: 38px !important; }
+
+#hide_filters {
+  width: 81px !important;
+  float: right; }

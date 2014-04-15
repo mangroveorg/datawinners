@@ -246,19 +246,23 @@ DW.FilterSection = function(){
         showFilter = $("#show_filters");
         hideFilter = $("#hide_filters");
         filterSection = $("#questionnaire_field_filters");
+        filterSection.addClass('none');
         _initializeEventHandlers();
         _removeTooltipForShortQuestionLabels();
-    }
+    };
 
     function _initializeEventHandlers(){
         showFilter.on("click", function () {
             $(this).addClass('none');
-            filterSection.css('visibility','visible');
+//            filterSection.css('visibility','visible');
+            filterSection.removeClass('none');
         });
 
         hideFilter.on("click", function () {
-            filterSection.css('visibility','hidden');
+//            filterSection.css('visibility','hidden');
+            filterSection.addClass('none');
             showFilter.removeClass('none');
+
         });
     }
 };

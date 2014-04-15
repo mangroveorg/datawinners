@@ -104,7 +104,7 @@
                 <a >More Filters</a>
             </div>
 
-            <div id="questionnaire_field_filters" style="visibility: hidden;">
+            <div id="questionnaire_field_filters">
                 {% include 'project/partials/filters/_filter_by_subject.html' %}
                 {% for date_field in date_fields %}
                     {% include 'project/partials/filters/_filter_by_date_question.html' with date=date_field %}
