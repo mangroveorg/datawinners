@@ -450,9 +450,9 @@ def questionnaire(request, project_id):
         success, error = submission_stats(manager, questionnaire.form_code)
         project_has_submissions = (success + error > 0)
         in_trial_mode = _in_trial_mode(request)
-        success = False
+        is_success = False
         if "success" in [m.message for m in messages.get_messages(request)]:
-            success = True
+            is_success = True
         return render_to_response('project/questionnaire.html',
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,
@@ -461,7 +461,7 @@ def questionnaire(request, project_id):
                                    'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,
-                                   'success':success,
+                                   'is_success':is_success,
                                    'post_url': reverse(edit_project, args=[project_id]),
                                    'unique_id_types': get_unique_id_types(manager),
                                    'preview_links': get_preview_and_instruction_links_for_questionnaire()},

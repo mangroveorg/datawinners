@@ -33,7 +33,7 @@ $(document).ready(function () {
     $('#question_form').live("click", DW.charCount);
     $('.delete').live("click", DW.charCount);
 
-    if(success == "True"){
+    if(is_success == "True"){
         var flash_message = $("#message-label");
         flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
         html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
