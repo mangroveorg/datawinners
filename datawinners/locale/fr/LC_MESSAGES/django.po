@@ -4761,3 +4761,9 @@ msgstr "Un Questionnaire portant le même nom existe déjà."
 
 msgid "My Identification Numbers"
 msgstr "Mes Numéros d'identification"
+
+msgid "More Filters"
+msgstr "plus de filtres"
+
+msgid "Less Filters"
+msgstr "moins de filtres"
