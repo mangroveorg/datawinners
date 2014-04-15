@@ -141,7 +141,8 @@ EMPTY_QUESTIONNAIRE_MSG = 'Please add at least one question'
 
 WATERPOINT_QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
                                  DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "WID"},
-                                 QUESTIONS: [{QUESTION: "Water Level", CODE: "WL", TYPE: NUMBER, MIN: "1", MAX: "10"},
+                                 QUESTIONS: [{QUESTION: "Water point", CODE: "Wp", TYPE: UNIQUE_ID, NEW_UNIQUE_ID_TYPE: "", EXISTING_UNIQUE_ID_TYPE: "Waterpoint"},
+                                             {QUESTION: "Water Level", CODE: "WL", TYPE: NUMBER, MIN: "1", MAX: "10"},
                                              {QUESTION: "Date of report", CODE: "DR", TYPE: DATE,
                                               DATE_FORMAT: DD_MM_YYYY},
                                              {QUESTION: "Color of Water", CODE: "WC", TYPE: LIST_OF_CHOICES,

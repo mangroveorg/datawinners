@@ -7,12 +7,12 @@ from django.utils.unittest.case import SkipTest
 import jsonpickle
 from nose.plugins.attrib import attr
 import requests
-from framework.base_test import setup_driver, teardown_driver
-from framework.utils.common_utils import by_css
+from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
+from framework.utils.common_utils import by_css, by_xpath
 from framework.utils.data_fetcher import fetch_, from_
 from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.dashboardpage.dashboard_page import DashboardPage
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import LoginPage, login
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON, DELETE_BUTTON
 from pages.warningdialog.warning_dialog import WarningDialog
@@ -26,21 +26,16 @@ from tests.submissionlogtests.edit_survey_response_data import ANSWERS_TO_BE_SUB
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
 
 
-class TestFeeds(unittest.TestCase):
+class TestFeeds(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
-        cls._login()
+        HeadlessRunnerTest.setUpClass()
+        cls.navigation_page = login(cls.driver)
         cls.project_overview_page = cls._create_project()
 
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
-
-    @classmethod
-    def _login(cls):
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        cls.navigation_page = LoginPage(cls.driver).do_successful_login_with(VALID_CREDENTIALS)
 
     @classmethod
     def _create_project(cls):
@@ -58,13 +53,9 @@ class TestFeeds(unittest.TestCase):
         submission_page = project_overview_page.navigate_to_web_questionnaire_page()
         time.sleep(2)
         submission_page.fill_and_submit_answer(ANSWERS_TO_BE_SUBMITTED)
-        self._create_screenshot("api_feed_sub_success.png")
+        self.driver.create_screenshot("api_feed_sub_success.png")
         self.assertEqual(submission_page.get_success_message(), "Successfully submitted", "Web submission failed")
 
-    def _create_screenshot(self, filename):
-        if not os.path.exists("screenshots"):
-            os.mkdir("screenshots")
-        TestFeeds.driver.save_screenshot("screenshots/" + filename)
 
     def _edit_data(self):
         analysis_page = self.project_overview_page.navigate_to_data_page()
@@ -85,7 +76,6 @@ class TestFeeds(unittest.TestCase):
     def get_feed_response(self, questionnaire_code, start_date, end_date):
         url = "http://localhost:" + get_test_port() + "/feeds/" + questionnaire_code + "?start_date=" + start_date + "&end_date=" + end_date
         actual_data = requests.get(url, auth=('tester150411@gmail.com', 'tester150411' ))
-        print actual_data.content # Added to troubleshoot failure on CI
         response_list = jsonpickle.decode(actual_data.content)
         return response_list
 
@@ -101,15 +91,15 @@ class TestFeeds(unittest.TestCase):
         analysis_page = self.project_overview_page.navigate_to_data_page()
         submission_log_page = analysis_page.navigate_to_all_data_record_page()
         self.driver.wait_until_element_is_not_present(20, by_css("loading")) #wait for table to load
-        submission_log_page.check_submission_by_row_number(1)
-        self._create_screenshot("api_test_row_to_be_deleted.png")
+        self.driver.find(by_xpath("//table[@class='submission_table']//td[text()='admin1']/../td/input")).click()
+        #submission_log_page.check_submission_by_row_number(1)
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
 
 
     def assert_feed_values(self, feed_entry, expected_data, reporter_id, status):
-        self.assertEquals(feed_entry['values'], expected_data)
+        self.assertDictEqual(feed_entry['values'], expected_data)
         self.assertEquals(reporter_id, feed_entry['data_sender_id'])
         self.assertRegexpMatches(feed_entry['feed_modified_time'],
                                  '\d{4}-\d{2}-\d{2}\W\d{2}:\d{2}:\d{2}\.\d{6}\+\d{2}\:\d{2}')
@@ -119,42 +109,43 @@ class TestFeeds(unittest.TestCase):
 
 
     @attr('functional_test')
-    @SkipTest
     def test_feeds(self):
         start_date = self._get_encoded_date()
         questionnaire_code = self.project_overview_page.get_questionnaire_code()
         project_name = self.project_overview_page.get_project_title()
 
         self._submit_errorred_data(questionnaire_code)
+        time.sleep(10)
         end_date = self._get_encoded_date()
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(1, len(response_list))
         feed_entry = response_list[-1]
-        expected_data = {'q1': 'wp01', 'q3': '5', 'q2': '25.12.2010', 'q5': 'a', 'q4': '24.12.2010', 'q7': 'f',
-                         'q6': 'admin', 'q8': '12,12'}
+        expected_data = {'q3': '5', 'q2': 'wp01', 'q5': 'a', 'q4': '25.12.2010', 'q7': 'f', 'q6': 'admin', 'q8': '12,12'}
         status = "error"
-        reporter_id = "rep8"
+        reporter_id = "rep276"
         self.assert_feed_values(feed_entry, expected_data, reporter_id, status)
 
         self._submit_success_data(project_name)
+        time.sleep(2)
         end_date = self._get_encoded_date()
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list))
         feed_entry = response_list[-1]
-        expected_data = {'q1': 'wp01', 'q3': '5.0', 'q2': '25.12.2010', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
+        expected_data = {'q2': {'deleted': False, 'id': 'wp01', 'name': 'Test'}, 'q3': '5.0', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
                          'q6': 'admin', 'q8': '12.0,12.0'}
         rep_id = "rep276"
         status = "success"
         self.assert_feed_values(feed_entry, expected_data, rep_id, status)
 
         self._edit_data()
+        time.sleep(2)
         end_date = self._get_encoded_date()
         edited_response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(edited_response_list))
         edited_feed_entry = edited_response_list[-1]
-        expected_data_after_edit = {'q1': 'wp02', 'q3': '8.0', 'q2': '25.12.2013', 'q5': ['b'], 'q4': '24.12.2012',
-                                    'q7': ['a', 'b'],
-                                    'q6': 'admin1', 'q8': '-18,27'}
+        expected_data_after_edit = {"q3": "8.0", "q2": {"deleted": False, "id": "wp01", "name": "Test"},
+                                    "q5": ["b"], "q4": "24.12.2012",  "q7": ["a", "b"], "q6": "admin1",
+                                    "q8": "-18,27"}
         self.assert_feed_values(edited_feed_entry, expected_data_after_edit, rep_id, status)
 
         self.delete_submission()
@@ -162,13 +153,9 @@ class TestFeeds(unittest.TestCase):
         time.sleep(10)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
         
-        print "Submission entries start"
-        for r in response_list_after_delete:
-            print r["status"]
-        print "Submission entries stop"
         self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]
-        expected_data_after_delete = {'q1': 'wp02', 'q3': '8.0', 'q2': '25.12.2013', 'q5': ['b'], 'q4': '24.12.2012',
+        expected_data_after_delete = {'q2': {"deleted": False, "id": "wp01", "name": "Test"}, 'q3': '8.0', 'q5': ['b'], 'q4': '24.12.2012',
                                       'q7': ['a', 'b'],
                                       'q6': 'admin1', 'q8': '-18,27'}
         status = "deleted"

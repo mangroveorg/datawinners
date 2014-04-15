@@ -44,7 +44,7 @@ class WebSubmissionPage(Page):
 
     def select_checkbox(self, data):
         for answer in data[ANSWER]:
-            self.driver.find(by_css("input[id^='id_%s'][value='%s']" % (data[QCODE], answer))).click()
+            self.driver.find(by_css("input[name='%s'][value='%s']" % (data[QCODE], answer))).click()
 
     def type_text(self, data):
         self.driver.find_text_box(by_css("input#id_%s" % data[QCODE])).enter_text(data[ANSWER])
