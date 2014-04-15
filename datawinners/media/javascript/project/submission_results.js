@@ -257,7 +257,6 @@ DW.FilterSection = function(){
         hideFilter = $("#hide_filters");
         filterSection = $("#questionnaire_field_filters");
         _initializeEventHandlers();
-        console.log("local tooltip");
         _removeAllTooltips();
         _initializeTooltipForLongQuestionLabels();
         filterSection.addClass('none');

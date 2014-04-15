@@ -27,9 +27,7 @@ $(document).ready(function() {
     });
 
     $.addwatermarks();
-    console.log("global tooltip");
-    DW.ToolTip()
-
+    DW.ToolTip();
     DW.flash_message();
 
     function move_focus_to_first_error_field(){
