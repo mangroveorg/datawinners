@@ -1119,6 +1119,9 @@ msgstr "Date"
 msgid "Multiple Choice"
 msgstr "Liste de choix"
 
+msgid "List of Choices"
+msgstr "Liste de choix"
+
 msgid "GPS Coordinates"
 msgstr "Coordonnées GPS"
 

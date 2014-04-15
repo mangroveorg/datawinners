@@ -1091,3 +1091,6 @@ msgstr ""
 
 msgid "Save"
 msgstr ""
+
+msgid "List of Choices"
+msgstr ""
