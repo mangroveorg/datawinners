@@ -49,7 +49,6 @@
     <link href="/media/css/plugins/jquery_pagination/pagination.css" media="screen" rel="stylesheet"/>
     <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet"/>
     <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet"/>
-    <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
     <link href="/media/css/scss/import_popup.css" rel="stylesheet">
 {% endblock %}
 
@@ -66,6 +65,7 @@
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
     <link href="/media/css/scss/import_submission.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
 
 {% endblock %}
 
@@ -95,29 +95,7 @@
     </div>
     {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
     {% include "project/submission_page_hint.html" %}
-    <div class="heading_block clearfix margin_bottom_10">
-        <div id="filter_section" class="alpha data_ana float_left">
-            {% include 'project/partials/filters/_filter_by_keyword.html' %}
-            {% include 'project/partials/filters/_filter_by_data_sender.html' %}
-            {% include 'project/partials/filters/_filter_by_submission_date.html' %}
-            <div id="show_filters">
-                <a >More Filters</a>
-            </div>
-
-            <div id="questionnaire_field_filters">
-                {% include 'project/partials/filters/_filter_by_subject.html' %}
-                {% for date_field in date_fields %}
-                    {% include 'project/partials/filters/_filter_by_date_question.html' with date=date_field %}
-                {% endfor %}
-                <div id="hide_filters">
-                    <a>Less Filters</a>
-                </div>
-            </div>
-            <!--[if IE 7]>
-            <div class="float_right"></div>
-            <![endif]-->
-        </div>
-    </div>
+    {% include "project/submission_filters.html" %}
     <div id="submission_logs" class="grid_23 alpha margin_top_20">
         <div id="tabs" class="ui-tabs ui-widget ui-widget-content">
             <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header">

@@ -41,6 +41,7 @@
     <script src="/media/javascript/project/colorShadeGenerator.js"></script>
     <script type="text/javascript" src="/media/javascript/project/data_analysis_chart_view.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_results.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/submission_analysis.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_analysis_index.js"></script>
     <script type="text/javascript" src="/media/javascript/project/import_submission.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_log_actions.js"></script>
@@ -56,7 +57,6 @@
     <link href="/media/css/plugins/jquery_pagination/pagination.css" media="screen" rel="stylesheet"/>
     <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet"/>
     <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet"/>
-    <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
     <link href="/media/css/scss/import_popup.css" rel="stylesheet">
 {% endblock %}
 
@@ -75,7 +75,7 @@
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
     <link href="/media/css/scss/import_submission.css" rel="stylesheet"/>
-
+    <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block content %}
@@ -109,19 +109,7 @@
     <div id="page_hint" class="help_accordion margin_top_15 display_none">
         <div>{% trans "Analyze your successful submissions" %}</div>
     </div>
-    <div class="heading_block clearfix margin_bottom_10">
-        <div id="filter_section" class="alpha data_ana float_left">
-            {% include 'project/partials/filters/_filter_by_subject.html' %}
-            {% include 'project/partials/filters/_filter_by_submission_date.html' %}
-            {% include 'project/partials/filters/_filter_by_data_sender.html' %}
-            {% include 'project/partials/filters/_filter_by_keyword.html' %}
-            <!--[if IE 7]>
-            <div class="float_right"></div>
-        <![endif]-->
-            <div id="search_box"></div>
-        </div>
-    </div>
-
+    {% include "project/submission_filters.html" %}
     <div class="view_data_block grid_23 alpha">
         <div style="width: 100%;float: left;">
             <div class="grid_12 show_data_block alpha" id="chart_info"></div>

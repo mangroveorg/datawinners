@@ -234,32 +234,42 @@ DW.FilterSection = function(){
     var hideFilter;
     var filterSection;
 
-    function _removeTooltipForShortQuestionLabels() {
+    function _destroyTooltip(element) {
+        $(element).removeData('tooltip').unbind();
+    }
+
+    function _initializeTooltipForLongQuestionLabels() {
         $.each($("#questionnaire_field_filters").find('.help_icon'), function (index, element) {
-            if (element.offsetWidth >= element.scrollWidth) {
-                $(element).removeData('tooltip').unbind().next('div.tooltip').remove();
+            if (element.offsetWidth < element.scrollWidth) {
+                DW.ToolTip({target: $(element)});
             }
         });
     }
+
+    function _removeAllTooltips(){
+        $.each($("#questionnaire_field_filters").find('.help_icon'), function (index, element) {
+           _destroyTooltip(element);
+        });
+    };
 
     self.init = function(){
         showFilter = $("#show_filters");
         hideFilter = $("#hide_filters");
         filterSection = $("#questionnaire_field_filters");
-        filterSection.addClass('none');
         _initializeEventHandlers();
-        _removeTooltipForShortQuestionLabels();
+        console.log("local tooltip");
+        _removeAllTooltips();
+        _initializeTooltipForLongQuestionLabels();
+        filterSection.addClass('none');
     };
 
     function _initializeEventHandlers(){
         showFilter.on("click", function () {
             $(this).addClass('none');
-//            filterSection.css('visibility','visible');
             filterSection.removeClass('none');
         });
 
         hideFilter.on("click", function () {
-//            filterSection.css('visibility','hidden');
             filterSection.addClass('none');
             showFilter.removeClass('none');
 

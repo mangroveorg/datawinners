@@ -1,0 +1,25 @@
+{% load i18n %}
+
+<div class="heading_block clearfix margin_bottom_10">
+        <div id="filter_section" class="alpha data_ana float_left">
+            {% include 'project/partials/filters/_filter_by_keyword.html' %}
+            {% include 'project/partials/filters/_filter_by_data_sender.html' %}
+            {% include 'project/partials/filters/_filter_by_submission_date.html' %}
+            <div id="show_filters">
+                <a >More Filters</a>
+            </div>
+
+            <div id="questionnaire_field_filters">
+                {% include 'project/partials/filters/_filter_by_subject.html' %}
+                {% for date_field in date_fields %}
+                    {% include 'project/partials/filters/_filter_by_date_question.html' with date=date_field %}
+                {% endfor %}
+                <div id="hide_filters">
+                    <a>Less Filters</a>
+                </div>
+            </div>
+            <!--[if IE 7]>
+            <div class="float_right"></div>
+            <![endif]-->
+        </div>
+</div>
