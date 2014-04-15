@@ -283,7 +283,7 @@ class QuestionnaireTabPage(Page):
         Return success message
         """
         success_message = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#message-label .success"))
-        return success_message.text
+        return self.driver.execute_script("return arguments[0].innerHTML", success_message)
 
     def get_error_message(self):
         """

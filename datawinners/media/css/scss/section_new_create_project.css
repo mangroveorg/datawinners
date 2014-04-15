@@ -879,6 +879,7 @@ fieldset {
   .uniqueIdTypeSection .unique_id_learn_more {
     margin: 0 0 20px 0; }
   .uniqueIdTypeSection .uniqueIdType {
+    text-transform: capitalize;
     border: 1px solid #888888;
     background: url("/media/images/arrow_dd.png") no-repeat scroll right -3px;
     cursor: pointer;
@@ -915,6 +916,7 @@ fieldset {
       max-height: 200px;
       overflow: auto; }
       .uniqueIdTypeSection .uniqueIdTypeContents .uniqueIdList li {
+        text-transform: capitalize;
         cursor: pointer;
         overflow: none;
         padding: 5px 0 5px 0;
