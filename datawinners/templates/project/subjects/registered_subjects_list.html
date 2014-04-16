@@ -57,7 +57,7 @@
             &nbsp;|&nbsp;
             <a href="javascript:void(0);" class="import-subject"
                id="import-{{ entity_type }}">{% trans "Import a List" %}</a>
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire entity_type %}"
+            <a href="{% url datawinners.project.views.views.edit_my_subject_questionnaire project_id,entity_type %}"
                class="none edit-form-link" id="link-to-edit-form-{{ entity_type }}">Edit Registration Form</a>
             &nbsp;|&nbsp;
             <a id='subject_export_link' href="#">{% trans "Export" %}</a>
