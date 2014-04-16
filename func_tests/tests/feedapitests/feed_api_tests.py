@@ -112,7 +112,7 @@ class TestFeeds(HeadlessRunnerTest):
                                  '\d{4}-\d{2}-\d{2}\W\d{2}:\d{2}:\d{2}\.\d{6}\+\d{2}\:\d{2}')
         self.assertEquals(feed_entry['status'], status)
 
-
+    @SkipTest
     @attr('functional_test')
     def test_feeds(self):
         start_date = self._get_encoded_date()
