@@ -150,39 +150,47 @@ DW.SubjectFilter = function (postFilterSelectionCallBack) {
     var postFilterSelection = postFilterSelectionCallBack;
 
     self.init = function () {
-        self.filter = $("#subject_filter");
-        self.filter.data('value', '');
+        self.filters = $(".subject_filter");
+        self.filters.each(function(i,el){$(el).data('value', '');})
         self.initialize_autocomplete();
         self.initialize_events();
     };
 
     self.initialize_autocomplete = function () {
         var self = this;
-        self.filter.autocomplete({
-            "source": "/entity/" + entity_type + "/autocomplete/",
+        self.filters.each(function(i, el){
+        var $el = $(el);
+        $el.autocomplete({
+            "source": "/entity/" + $el.attr('entity_type') + "/autocomplete/",
             "select": function (event, ui) {
-                self.filter.data('value', ui.item.id);
-                self.filter.data('label', ui.item.label);
+                $el.data('value', ui.item.id);
+                $el.data('label', ui.item.label);
                 postFilterSelection();
             }
         }).data("autocomplete")._renderItem = function (ul, item) {
             return $("<li></li>").data("item.autocomplete", item).append($("<a>" + item.label + ' <span class="small_grey">' + item.id + '</span></a>')).appendTo(ul);
         };
+            });
     };
 
     self.initialize_events = function () {
         // change on autocomplete is not working in certain cases like select an item and then clear doesn't fire change event. so using input element's change.
-        self.filter.change(function () {
-            if (self.filter.val() == '') {
-                self.filter.data('value', '');
+        self.filters.each(function(i, el){
+            $(el).change(function () {
+            if ($(el).val() == '') {
+                $(el).data('value', '');
                 postFilterSelection();
             }
         });
+        })
 
-        self.filter.on("blur", function() {
-            if (self.filter.data('label') != self.filter.val()) {
-                self.filter.val("");
+        self.filters.each(function(i,el){
+            $(el).on("blur", function() {
+            if ($(el).data('label') != $(el).val()) {
+                $(el).val("");
             }
+        });
+
         });
     };
 };
