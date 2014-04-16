@@ -128,6 +128,9 @@ def restart_couchdb():
 def restart_scheduler():
     sudo("/etc/init.d/reminders restart")
 
+def restart_memcache():
+    sudo("service memcached restart")
+
 def migrate_couchdb(context):
     if context.couch_migration_file:
         with cd('%s/datawinners' % context.code_dir):
@@ -173,7 +176,9 @@ def _deploy_datawinners(context):
         #activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
         #activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
 
+    restart_memcache()
     migrate_couchdb(context)
+    restart_memcache()
     _link_repo(context, DATAWINNERS)
 
 
