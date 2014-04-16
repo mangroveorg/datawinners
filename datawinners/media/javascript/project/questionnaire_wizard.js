@@ -55,10 +55,14 @@ $(document).ready(function () {
             return false;
 
         var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()));
+        var has_callback = false;
+        if(callBack)
+            has_callback = true;
         DW.loading();
         var post_data = {
                             'questionnaire-code': questionnaireViewModel.questionnaireCode(),
                             'question-set': data,
+                            'has_callback': has_callback,
                             'profile_form':basic_project_info()
                         };
 
