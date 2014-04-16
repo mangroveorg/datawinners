@@ -77,7 +77,7 @@ def sms(request):
     return response
 
 
-@login_required(login_url='/login')
+@login_required
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])
