@@ -26,6 +26,14 @@ from tests.submissionlogtests.edit_survey_response_data import ANSWERS_TO_BE_SUB
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
 
 
+def sleep_until(f, timeout):
+    for i in xrange(timeout):
+        if f():
+            break
+        else:
+            time.sleep(1000)
+
+
 class TestFeeds(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
@@ -51,7 +59,6 @@ class TestFeeds(HeadlessRunnerTest):
         project_overview_page = view_all_project_page.navigate_to_project_overview_page(project_name)
 
         submission_page = project_overview_page.navigate_to_web_questionnaire_page()
-        time.sleep(2)
         submission_page.fill_and_submit_answer(ANSWERS_TO_BE_SUBMITTED)
         self.driver.create_screenshot("api_feed_sub_success.png")
         self.assertEqual(submission_page.get_success_message(), "Successfully submitted", "Web submission failed")
@@ -63,12 +70,10 @@ class TestFeeds(HeadlessRunnerTest):
         submission_log_page.check_submission_by_row_number(1)
         submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
         submission_page = WebSubmissionPage(self.driver)
-        time.sleep(2)
         submission_page.fill_and_submit_answer(EDITED_ANSWERS)
         self.assertEqual(submission_page.get_success_message(), "Your changes have been saved.", "Edit of web submission failed")
 
     def _get_encoded_date(self):
-        time.sleep(1)
         date = datetime.utcnow()
         date = urllib2.quote(date.strftime(DATE_FORMAT).encode("utf-8"))
         return date
@@ -115,8 +120,8 @@ class TestFeeds(HeadlessRunnerTest):
         project_name = self.project_overview_page.get_project_title()
 
         self._submit_errorred_data(questionnaire_code)
-        time.sleep(10)
         end_date = self._get_encoded_date()
+        sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) > 0, 30)
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(1, len(response_list))
         feed_entry = response_list[-1]
@@ -126,8 +131,8 @@ class TestFeeds(HeadlessRunnerTest):
         self.assert_feed_values(feed_entry, expected_data, reporter_id, status)
 
         self._submit_success_data(project_name)
-        time.sleep(2)
         end_date = self._get_encoded_date()
+        sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list))
         feed_entry = response_list[-1]
@@ -138,8 +143,8 @@ class TestFeeds(HeadlessRunnerTest):
         self.assert_feed_values(feed_entry, expected_data, rep_id, status)
 
         self._edit_data()
-        time.sleep(2)
         end_date = self._get_encoded_date()
+        sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         edited_response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(edited_response_list))
         edited_feed_entry = edited_response_list[-1]
@@ -150,9 +155,8 @@ class TestFeeds(HeadlessRunnerTest):
 
         self.delete_submission()
         end_date = self._get_encoded_date()
-        time.sleep(10)
+        sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
-        
         self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]
         expected_data_after_delete = {'q2': {"deleted": False, "id": "wp01", "name": "Test"}, 'q3': '8.0', 'q5': ['b'], 'q4': '24.12.2012',
