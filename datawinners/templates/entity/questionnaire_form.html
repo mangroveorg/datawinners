@@ -15,7 +15,7 @@
                     <input id="qtype" type="hidden" value="subject"/>
                     <input id="questionnaire-code" data-bind="value: questionnaireCode"/>
                     <div class="validationMessage" data-bind="ifnot: questionnaireCode.valid">
-                        <span id="questionnaire_code_validation_message" class="validationText" data-bind="text: questionnaireCode.error"></span>
+                        <span id="questionnaire_code_validation_message" class="validationText" data-bind="text: questionnaireCode.error, scrollToElement: questionnaireCode.error"></span>
                     </div>
                     <input id="entity-type" type="hidden" value="{{ entity_type }}" name="entity-type"/>
                     <input id="saved-questionnaire-code" type="hidden" value="{{ questionnaire_code }}"/>
