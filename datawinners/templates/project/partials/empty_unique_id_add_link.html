@@ -4,6 +4,6 @@
         <p class="instructions italic">
             {% blocktrans %}You have not registered a {{ entity_type }} yet.{% endblocktrans %}
         </p>
-        <a href={% url subject_questionnaire project.id,entity_type %}>{% blocktrans %}Register a {{ entity_type }}{% endblocktrans %}</a>
+        <a href={% url subject_questionnaire project.id,entity_type %}?web_view=True>{% blocktrans %}Register a {{ entity_type }}{% endblocktrans %}</a>
     </div>
 {% endwith %}
