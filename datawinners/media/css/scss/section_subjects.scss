@@ -414,6 +414,10 @@ span.paginate_more_disabled {
   float: right;
 }
 
+select[name=datasender_table_length], select[name=subjects_table_length]{
+float: none;
+}
+
 #subjects_table_filter {
   float: right;
   >input {

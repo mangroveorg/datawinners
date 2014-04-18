@@ -1573,7 +1573,7 @@ msgid "Enter your Subjects individually"
 msgstr "Entrer les sujets un par un"
 
 msgid "Import a List"
-msgstr "Importer une liste"
+msgstr "Importer une Liste"
 
 msgid "tooltip_subject_import"
 msgstr ""
@@ -4611,7 +4611,7 @@ msgid "Example: %s"
 msgstr "Exemple: %s"
 
 msgid "Enter any information you want to find"
-msgstr "Tapez toute information que vous recherchez"
+msgstr "Tapez I'information que vous recherchez"
 
 msgid "Datasender Name"
 msgstr "Expéditeurs"

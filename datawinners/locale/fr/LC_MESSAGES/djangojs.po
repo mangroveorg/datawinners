@@ -119,7 +119,7 @@ msgid "Select 1 Data Sender only"
 msgstr "Sélectionnez seulement 1 Expéditeur de Données"
 
 msgid "Data Sender"
-msgstr "Expéditeurs de donnée"
+msgstr "Expéditeurs de Donnée"
 
 #: media/javascript/data_modified_warning.js:53
 msgid "You Have Unsaved Changes"
@@ -999,7 +999,7 @@ msgid "Select all <b> %(total_number_of_records)s </b>datasenders"
 msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>expéditeurs"
 
 msgid "Enter any information you want to find"
-msgstr "Tapez toute information que vous recherchez"
+msgstr "Tapez I'information que vous recherchez"
 
 msgid "You have selected all %(total_number_of_records)s %(concept)s(s)."
 msgstr "Vous avez sélectionné tous les %(total_number_of_records)s %(concept)s(s)."
@@ -1014,7 +1014,7 @@ msgid "<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"
 msgstr "<b>%(start)s à %(end)s</b> de %(total)s %(subject_type)s(s)"
 
 msgid "<b>%(start)s to %(end)s</b> of %(total)s Data Senders"
-msgstr "<b>%(start)s à %(end)s</b> de %(total)s Expéditeurs de données"
+msgstr "<b>%(start)s à %(end)s</b> de %(total)s Expéditeurs de Données"
 
 msgid "<b> 0 to 0</b> of 0"
 msgstr "<b> 0 à 0</b> de 0"
