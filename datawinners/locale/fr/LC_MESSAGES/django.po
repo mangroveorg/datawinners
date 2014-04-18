@@ -1100,7 +1100,7 @@ msgid "Save & Create Questionnaire"
 msgstr "Enregistrer & créer le Questionnaire"
 
 msgid "Create Questionnaire"
-msgstr "Créez questionnaire"
+msgstr "Créez Questionnaire"
 
 msgid "Back"
 msgstr "Retour"
@@ -4680,7 +4680,7 @@ msgid "Copy an Existing Questionnaire"
 msgstr "Copier un Questionnaire existant"
 
 msgid "Use a Template"
-msgstr "Utiliser un modèle"
+msgstr "Utiliser un Modèle"
 
 msgid "Choose your language"
 msgstr "Choisissez votre langue"
