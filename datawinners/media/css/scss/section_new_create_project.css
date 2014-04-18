@@ -5,10 +5,10 @@
   padding-left: 0; }
 
 .padding_top_null {
-  padding-top: 0!important; }
+  padding-top: 0 !important; }
 
 .padding_bottom_null {
-  padding-bottom: 0!important; }
+  padding-bottom: 0 !important; }
 
 .padding_20 {
   padding: 20px; }
@@ -72,7 +72,7 @@
   margin-left: 20px; }
 
 .margin_left_180 {
-  margin-left: 180px!important; }
+  margin-left: 180px !important; }
 
 .margin_right_20 {
   margin-right: 20px; }
@@ -173,7 +173,7 @@ table.no_border td, table.no_border th {
   padding-left: 25px; }
 
 .cancel_link {
-  color: #0070AC !important;
+  color: #0070ac !important;
   margin-right: 10px;
   margin-top: 6px; }
 
@@ -495,21 +495,21 @@ div.border_top_bottom {
   border: 1px solid #D5B071 !important;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
-  background: #F8EDB8!important;
+  background: #f8edb8 !important;
   background: -webkit-gradient(linear, left top, left bottom, from(#f8edb8), to(#fde8a0)) !important;
   background: -moz-linear-gradient(top, #f8edb8, #fde8a0) !important;
   color: #C29870 !important;
-  font-family: "Arial"!important;
-  font-weight: bold!important;
-  padding: 6px 23px 5px 22px!important;
-  cursor: default!important;
-  cursor: hand!important; }
+  font-family: "Arial" !important;
+  font-weight: bold !important;
+  padding: 6px 23px 5px 22px !important;
+  cursor: default !important;
+  cursor: hand !important; }
 
 .can-not-submit-link-quest {
-  color: #066B06!important;
+  color: #066b06 !important;
   text-decoration: none;
   font-size: 12px;
-  cursor: default!important; }
+  cursor: default !important; }
   .can-not-submit-link-quest:hover {
     text-decoration: none; }
 
@@ -646,6 +646,10 @@ fieldset {
   width: 525px !important;
   border: 1px solid #ccbf97;
   background-color: #FFF; }
+  #question-detail-panel .questionnaire-instruction {
+    padding-top: 20px;
+    border-top: 1px solid #CCCCCC;
+    width: 505px; }
   #question-detail-panel .questionnaire-instruction-text {
     font-style: italic;
     color: #888888; }
@@ -880,12 +884,15 @@ fieldset {
     margin: 0 0 20px 0; }
   .uniqueIdTypeSection .uniqueIdType {
     text-transform: capitalize;
-    border: 1px solid #888888;
     background: url("/media/images/arrow_dd.png") no-repeat scroll right -3px;
     cursor: pointer;
-    width: 200px;
     padding-left: 5px;
-    font-size: 11px; }
+    font-size: 11px;
+    border: 2px solid;
+    border-color: #646464 #EBEBEB #EBEBEB #646464;
+    border-image: none;
+    width: 188px;
+    height: 19px; }
   .uniqueIdTypeSection .uniqueIdTypeContents {
     border: 1px solid gray;
     box-shadow: 10px 10px 5px #888888;

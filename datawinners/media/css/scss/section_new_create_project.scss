@@ -137,6 +137,11 @@ fieldset {
   width: 525px !important;
   border: 1px solid #ccbf97;
   background-color: #FFF;
+  .questionnaire-instruction {
+    padding-top: 20px;
+    border-top: 1px solid #CCCCCC;
+    width: 505px;
+  }
   .questionnaire-instruction-text{
     font-style: italic;
     color: #888888;
@@ -446,12 +451,15 @@ fieldset {
   }
   .uniqueIdType{
     text-transform: capitalize;
-    border: 1px solid #888888;
     background: url('/media/images/arrow_dd.png') no-repeat scroll right -3px;
     cursor: pointer;
-    width: 200px;
     padding-left: 5px;
     font-size: 11px;
+    border:2px solid;
+    border-color: #646464 #EBEBEB #EBEBEB #646464;
+    border-image: none;
+    width: 188px;
+    height: 19px;
   }
   .uniqueIdTypeContents{
     border: 1px solid gray;
