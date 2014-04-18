@@ -244,7 +244,7 @@ class OrganizationAdmin(DatawinnerAdmin):
     activate_organizations.short_description = "Activate accounts"
 
     def delete_organizations(modeladmin, request, queryset):
-        orgs = queryset.filter(status='Deactivated')
+        orgs = queryset.filter(status__in=['Deactivated', "Pending Activation"])
         for organization in orgs:
             dbm = get_database_manager_for_org(organization)
             organization.purge_all_data()
