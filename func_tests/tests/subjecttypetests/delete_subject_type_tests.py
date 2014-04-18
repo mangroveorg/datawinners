@@ -3,7 +3,7 @@ from nose.plugins.attrib import attr
 
 from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.data_fetcher import from_, fetch_
-from framework.utils.common_utils import generateId, random_string
+from framework.utils.common_utils import generateId, random_string, by_css
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.loginpage.login_page import login
 from testdata.test_data import DATA_WINNER_ALL_SUBJECT
@@ -52,6 +52,7 @@ class TestDeleteSubjectType(HeadlessRunnerTest):
 
         subject_type_page.click_subject_type(subject_type)
         subject_type_page.select_delete_action(confirm=True)
+        self.driver.wait_until_element_is_not_present(5, by_css("#type_message .ajax_loader_small"))
         message = subject_type_page.get_message()
         self.assertEqual(message, SUCCESSFULLY_DELETED_SUBJECT_TYPE_MSG)
 

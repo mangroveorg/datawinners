@@ -648,14 +648,14 @@ msgid "view all questionnaires"
 msgstr "Voir tous les questionnaires"
 
 msgid ""
-" Once you have created questionnaires, a list of your %(text)s will appear here."
-msgstr "Une fois que vous avez créé des questionnaires, la liste de vos %(text)s apparaitront à cet endroit."
+" Once you have created Questionnaires, a list of your %(text)s will appear here."
+msgstr "Une fois que vous avez créé des Questionnaires, une liste de vos %(text)s sera affichée ici."
 
 msgid "To get started with DataWinners"
 msgstr "Pour commençer à utiliser DataWinners"
 
 msgid "order_to_create_project"
-msgstr "créez un nouveau questionnaire"
+msgstr "créez un nouveau Questionnaire"
 
 msgid "Add a data sender"
 msgstr "Ajouter un Expéditeur"
@@ -4767,3 +4767,6 @@ msgstr "plus de filtres"
 
 msgid "Less Filters"
 msgstr "moins de filtres"
+
+msgid "Identification Numbers"
+msgstr "Numéros d'Identification"

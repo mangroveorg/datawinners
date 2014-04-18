@@ -341,9 +341,6 @@ msgstr ""
 msgid "Guide"
 msgstr ""
 
-msgid "Create a new project"
-msgstr ""
-
 msgid "Are you sure you want to cancel this project?"
 msgstr ""
 
@@ -595,7 +592,7 @@ msgid "To get started with DataWinners"
 msgstr ""
 
 msgid "order_to_create_project"
-msgstr "create a new questionnaire"
+msgstr "create a new Questionnaire"
 
 msgid "Add a data sender"
 msgstr ""

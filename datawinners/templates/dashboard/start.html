@@ -1,5 +1,5 @@
 {% extends 'layout_application.html' %}
-{% block page_title %} Start Page {% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
 {% block section_title %} {{ title }} {% endblock %}
 {% load i18n %}
 {% load dw_tabs %}
@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-    {% blocktrans %} Once you have created questionnaires, a list of your {{ text }} will appear here.{% endblocktrans %}
+    {% blocktrans %} Once you have created Questionnaires, a list of your {{ text }} will appear here.{% endblocktrans %}
 
-    {% trans "To get started with DataWinners" %}, <a id="create_project_link" href="{% url create_project %}?prev=dash">{% trans "order_to_create_project"%}</a>
+    {% trans "To get started with DataWinners" %}, <a id="create_project_link" href="{% url create_project %}?prev=dash"> {% trans  "order_to_create_project" %} </a>
 {% endblock %}
