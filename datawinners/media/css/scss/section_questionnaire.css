@@ -336,13 +336,15 @@
   padding-top: 10px; }
 
 .select_question_message {
-  padding: 200px 29px 200px 29px;
-  font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
-  font-style: italic;
+  padding: 76px 29px 200px 29px;
+  font-family: ArchitectsDaughter, Lucida Grande, Lucida Sans, Arial, sans-serif;
+  font-weight: bold;
   font-size: 120%;
   width: 450px;
   text-align: center;
-  color: #888888; }
+  color: black;
+  background: url(/media/images/dw_select_question_arrow.jpg) no-repeat left 54px;
+  background-size: 128px; }
 
 .validationMessage {
   background: url(/media/images/arrow_error.png) no-repeat left 3px;
