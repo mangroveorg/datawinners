@@ -74,4 +74,4 @@ def migrate_to_merge_form_model_and_project(db_name):
         logger.exception(e.message)
 
 
-migrate(all_db_names(), migrate_to_merge_form_model_and_project, version=(11, 0, 3))
+migrate(all_db_names(), migrate_to_merge_form_model_and_project, version=(11, 0, 4))
