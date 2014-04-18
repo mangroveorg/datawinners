@@ -131,6 +131,10 @@ def restart_scheduler():
 def restart_memcache():
     sudo("service memcached restart")
 
+def restart_celery():
+    sudo("service celeryd restart")
+
+
 def migrate_couchdb(context):
     if context.couch_migration_file:
         with cd('%s/datawinners' % context.code_dir):
@@ -173,6 +177,7 @@ def _deploy_datawinners(context):
         activate_and_run(context.virtual_env, "python manage.py migrate %s" % migrate_params)
         activate_and_run(context.virtual_env, "python manage.py migrate")
         activate_and_run(context.virtual_env, "python manage.py compilemessages")
+        restart_celery()
         #activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
         #activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
 
