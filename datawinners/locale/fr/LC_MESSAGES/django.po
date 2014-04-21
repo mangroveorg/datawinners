@@ -4640,8 +4640,8 @@ msgstr "Télécharger un fichier"
 msgid "The questionnaire you are requesting for has been deleted from the system."
 msgstr "Le questionnaire que vous recherchez a été effacé du système."
 
-msgid "Select a question to edit or add another question."
-msgstr "Sélectionner une question pour modifier ou ajouter une autre question."
+msgid "Add or edit a question"
+msgstr "Ajouter ou modifier une question"
 
 msgid "Move Up"
 msgstr "Monter"

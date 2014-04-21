@@ -63,7 +63,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
                                  .navigate_to_questionnaire_tab()
         questionnaire_tab_page = self.questionnaire_tab_page
         self.assertEqual(questionnaire_tab_page.get_select_or_edit_question_message(),
-                         "Select a question to edit or add another question.",
+                         "Add or edit a question",
                          "No question should be selected by default")
         self.assertIn(EDIT_PROJECT_DATA[PROJECT_NAME], questionnaire_tab_page.get_questionnaire_title())
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(),
