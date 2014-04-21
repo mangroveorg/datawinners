@@ -123,7 +123,8 @@ class SubmissionLogPage(Page):
             (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_ID %datasender))).click()
 
     def filter_by_subject(self, subject):
-        self.driver.find_text_box(by_css("#subject_filter")).enter_text(subject)
+        self.driver.find(by_css("#show_filters")).click()
+        self.driver.find_text_box(by_css(".subject_filter")).enter_text(subject)
         try:
             (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_NAME %subject))).click()
         except CouldNotLocateElementException:

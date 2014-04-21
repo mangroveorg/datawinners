@@ -33,9 +33,10 @@ class SubmissionQueryBuilder(QueryBuilder):
 
     def _add_date_range_filters(self, query, search_filter_param):
         date_filters = search_filter_param.get("dateQuestionFilters")
-        for question_code, date_range in date_filters.items():
-            if date_range:
-                query = DateQuestionRangeFilter(date_range, self.form_model, question_code).build_filter_query(query)
+        if date_filters:
+            for question_code, date_range in date_filters.items():
+                if date_range:
+                    query = DateQuestionRangeFilter(date_range, self.form_model, question_code).build_filter_query(query)
         return query
 
     def add_query_criteria(self, query_fields, query, query_text, query_params=None):
@@ -48,9 +49,8 @@ class SubmissionQueryBuilder(QueryBuilder):
             datasender_filter = search_filter_param.get("datasenderFilter")
             if datasender_filter:
                 query = query.filter(ds_id=datasender_filter)
-            subjectFilter = search_filter_param.get("subjectFilter")
-            if subjectFilter:
-                query = query.filter(entity_short_code=subjectFilter)
+
+            query = self._add_unique_id_filters(query, search_filter_param.get("uniqueIdFilters"))
         return query
 
     def query_all(self, database_name, *doc_types, **filter_params):
@@ -58,6 +58,16 @@ class SubmissionQueryBuilder(QueryBuilder):
         query_all_results = query[:query.count()]
         return query_all_results.filter(**filter_params)
 
+    def _add_unique_id_filters(self, query, uniqueIdFilters):
+        if uniqueIdFilters:
+            for uniqueIdType, uniqueIdFilter in uniqueIdFilters.iteritems():
+                if uniqueIdFilter:
+                    search_options = elasticutils.F()
+                    for question in [question for question in self.form_model.entity_questions if question.unique_id_type == uniqueIdType]:
+                        es_field_code = es_unique_id_code_field_name(es_field_name(question.code, self.form_model.id))
+                        search_options |= elasticutils.F(**{es_field_code : uniqueIdFilter})
+                    query = query.filter(search_options)
+        return query
 
 class SubmissionQueryResponseCreator():
     def __init__(self, form_model):

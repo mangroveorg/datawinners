@@ -6,7 +6,7 @@ from nose.plugins.attrib import attr
 import requests
 
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import by_css, skipUntil
+from framework.utils.common_utils import by_css
 from framework.utils.data_fetcher import fetch_, from_
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatapage.all_data_page import AllDataPage
@@ -178,7 +178,6 @@ class TestSubmissionLog(HeadlessRunnerTest):
         web_submission_page.fill_questionnaire_with(submission)
         web_submission_page.submit_answers()
 
-    @skipUntil("2014-03-30")#subject filter not available yet
     @attr("functional_test")
     def test_should_filter_by_name_and_id_of_datasender_and_subject(self):
 
@@ -204,6 +203,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
         self._verify_filtered_records_by_datasender_name_or_id(datasender_id, submission_log_page)
 
         project_short_code = fetch_("short_code", from_(SUBJECT_DATA))
+        submission_log_page.refresh()
         submission_log_page.filter_by_subject(project_short_code)
         submission_log_page.wait_for_table_data_to_load()
         self._verify_filtered_records_by_subject_name_or_id(project_short_code, submission_log_page)
@@ -226,7 +226,6 @@ class TestSubmissionLog(HeadlessRunnerTest):
             all_reporting_dates.append(submission_log_page.get_cell_value(i, rp_column))
         self.assertTrue(set(all_reporting_dates).issubset(dates))
 
-    @skipUntil("2014-03-30") #Removed subject type.
     @attr("functional_test")
     def test_date_filters(self):
         if not self.reporting_period_project_name:
@@ -291,33 +290,6 @@ class TestSubmissionLog(HeadlessRunnerTest):
 
         #self.assert_reporting_period_values(submission_log_page, total_number_of_rows)
 
-    @skipUntil("2014-04-30") #Removed default reporting date question.
-    @attr("functional_test")
-    def test_reporting_period_month_filters(self):
-        monthly_rp_project_name = self.populate_data_for_date_range_filters(monthly=True)
-
-        submission_log_page = self.go_to_submission_log_page(project_name=monthly_rp_project_name)
-
-        submission_log_page.filter_by_reporting_month(MONTHLY_DATE_RANGE)
-
-        submission_log_page.wait_for_table_data_to_load()
-        total_number_of_rows = submission_log_page.get_total_number_of_records()
-        self.assertEqual(total_number_of_rows, 2)
-        self.assert_reporting_period_values(submission_log_page, total_number_of_rows, monthly=True)
-
-        submission_log_page.filter_by_reporting_month(CURRENT_MONTH)
-
-        submission_log_page.wait_for_table_data_to_load()
-        total_number_of_rows = submission_log_page.get_total_number_of_records()
-        self.assertEqual(total_number_of_rows, 2)
-        self.assert_reporting_period_values(submission_log_page, total_number_of_rows, monthly=True)
-
-        submission_log_page.filter_by_reporting_month(LAST_MONTH)
-
-        submission_log_page.wait_for_table_data_to_load()
-        total_number_of_rows = submission_log_page.get_total_number_of_records()
-        self.assertEqual(total_number_of_rows, 1)
-        self.assert_reporting_period_values(submission_log_page, total_number_of_rows, monthly=True)
 
     def verify_sort_data_by_date(self, submission_log_page, column, sort_predicate,
                                  date_format=SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG):

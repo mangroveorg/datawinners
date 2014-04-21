@@ -1,9 +1,13 @@
 {% load i18n %}
-<div class="{% if not entity_type%} none {% endif %} float_left filter-question">
-    <div class="filter_label" for="subjectSelect">
+{% if project.entity_type %}
+    {% for entity_type in project.entity_type %}
+<div class="float_left filter-question">
+    <div class="filter_label">
         <label class="full_width">{{ entity_type }}</label>
     </div>
     <div class="float_left ">
-        <input id="subject_filter" type="text" watermark="{% trans "All Subjects"%}" entity_type="{{ entity_type }}" placeholder="{% trans "All Subjects"%}" entity_type="{{ entity_type }}"/>
+        <input class="subject_filter" type="text" watermark="{% trans "All Subjects"%}" entity_type="{{ entity_type }}" placeholder="{% trans "All Subjects"%}" />
     </div>
 </div>
+    {% endfor %}
+{% endif %}

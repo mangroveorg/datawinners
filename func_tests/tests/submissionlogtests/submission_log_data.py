@@ -109,7 +109,7 @@ SUBJECT_DATA = {
     SHORT_CODE: 'cid%s'%CLINIC_ID
 }
 
-SMS_WEB_SUBMISSION = {SENDER: '1234123413',
+SMS_WEB_SUBMISSION = {SENDER: '1234567890',
                       RECEIVER: '919880734937',
                       SMS: "cli001 .EID cid%s .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a"%CLINIC_ID,
                       SUCCESS_MESSAGE: "Thank you"}
