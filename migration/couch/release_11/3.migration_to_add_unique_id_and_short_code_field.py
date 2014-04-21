@@ -81,6 +81,9 @@ def add_unique_id_and_short_code_field(dbm):
                                     logging.error(e)
                         short_code_dict = f
                         break
+                    #Remove event_time flag from reporting date question
+                    elif f.get('type') == 'date' and 'event_time_field_flag' in f:
+                        f.pop('event_time_field_flag')
                 #Remove entity type from questionnaire form models.
                 if document_data.get('entity_type'):
                     document_data.pop('entity_type')
@@ -88,7 +91,7 @@ def add_unique_id_and_short_code_field(dbm):
                 json_data.remove(short_code_dict)
                 form_model = FormModel.new_from_doc(dbm, (FormModelDocument.wrap(document_data)))
                 if short_code_field:
-                    form_model._form_fields.insert(index,short_code_field)
+                    form_model._form_fields.insert(index, short_code_field)
                 if validator:
                     form_model.add_validator(validator)
                 _save_form_model_doc(dbm, form_model)

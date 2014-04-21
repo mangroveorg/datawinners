@@ -1,6 +1,5 @@
 import logging
 
-from django.core.management import call_command
 from mangrove.datastore.documents import FormModelDocument, SurveyResponseDocument, ProjectDocument
 
 from datawinners.main.couchdb.utils import all_db_names
@@ -9,10 +8,7 @@ from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.search import form_model_change_handler
 from datawinners.main.database import get_db_manager
 from datawinners.search.submission_index import _update_with_form_model_fields, _meta_fields
-
-
-logging.basicConfig(filename='/var/log/datawinners/migration_release_recreate_index.log', level=logging.DEBUG,
-                    format="%(asctime)s | %(thread)d | %(levelname)s | %(name)s | %(message)s")
+from migration.couch.utils import migrate
 
 
 def create_submission_index(dbm, row):
@@ -34,31 +30,24 @@ def create_submission_index(dbm, row):
 
     if survey_response_docs:
         es.bulk_index(dbm.database_name, form_model.id, survey_response_docs)
-        logging.info('Created index for survey response docs ' + str([doc.get('id') for doc in survey_response_docs]))
 
 
-def create_index():
-    databases_to_index = all_db_names()
-    for database_name in databases_to_index:
-        try:
-            dbm = get_db_manager(database_name)
-            for row in dbm.load_all_rows_in_view('questionnaire'):
-                form_model_doc = FormModelDocument.wrap(row["value"])
-                form_model_change_handler(form_model_doc, dbm)
-                try:
-                    create_submission_index(dbm, row)
-                except Exception as e:
-                    logging.error("Index update failed for database %s and for formmodel %s" % (database_name, row.id))
-                    logging.error(e)
-        except Exception as e:
-            logging.error(
-                "Mapping update failed for database %s for form model %s " % (database_name, form_model_doc.form_code))
-            logging.error(e)
+def create_index(database_name):
+    try:
+        dbm = get_db_manager(database_name)
+        logger = logging.getLogger(database_name)
 
+        for row in dbm.load_all_rows_in_view('questionnaire'):
+            form_model_doc = FormModelDocument.wrap(row["value"])
+            form_model_change_handler(form_model_doc, dbm)
+            try:
+                create_submission_index(dbm, row)
+            except Exception as e:
+                logger.error("Index update failed for database %s and for formmodel %s" % (database_name, row.id))
+                logger.error(e)
+    except Exception as e:
+        logger.error(
+            "Mapping update failed for database %s for form model %s " % (database_name, form_model_doc.form_code))
+        logger.error(e)
 
-try:
-    call_command("syncviews", "syncall")
-except Exception as e:
-    logging.error("syncing views failed for one or more databases")
-    logging.error(e)
-create_index()
+migrate(all_db_names(), create_index, version=(11, 0, 6), threads=2)

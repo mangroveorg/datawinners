@@ -178,8 +178,8 @@ def _deploy_datawinners(context):
         activate_and_run(context.virtual_env, "python manage.py migrate")
         activate_and_run(context.virtual_env, "python manage.py compilemessages")
         restart_celery()
-        #activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
-        #activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
+        activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
+        activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
 
     restart_memcache()
     migrate_couchdb(context)
