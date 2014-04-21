@@ -3,6 +3,7 @@ from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
 
 from datawinners.utils import translate, get_text_language_by_instruction
+from django.utils.translation import ugettext as _
 
 
 class UniqueIdChoiceField(forms.ChoiceField):
@@ -39,8 +40,9 @@ class SubjectQuestionFieldCreator(object):
         unique_id_type = subject_field.unique_id_type
         all_subject_choices = self._get_all_options(unique_id_type)
         language = get_text_language_by_instruction(subject_field.instruction)
-        instruction_for_subject_field = translate(
-            "Choose %(entity_type)s from this list." % {'entity_type': unique_id_type}, func=ugettext,
-            language=language) if all_subject_choices else ''
+        # instruction_for_subject_field = translate(
+        #     "Choose a %(entity_type)s from this list." % {'entity_type': unique_id_type}, func=ugettext,
+        #     language=language) if all_subject_choices else ''
+        instruction_for_subject_field = _("Choose a %(entity_type)s from this list.") % {'entity_type':unique_id_type}
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
 

@@ -40,6 +40,7 @@ from tests.registrationtests.registration_tests import register_and_get_email
 from pages.alldatasenderspage.all_data_senders_locator import DELETE_BUTTON as CONFIRM_DELETE
 from tests.registrationtests.trial_registration_tests import register_and_get_email_for_trial
 from tests.testsettings import UI_TEST_TIMEOUT
+from tests.utils import get_subject_short_code
 
 
 def add_trial_organization_and_login(driver):
@@ -64,7 +65,7 @@ def do_login(driver, email, password):
 
 class TestApplicationEndToEnd(unittest.TestCase):
     def setUp(self):
-        self.driver = setup_driver(browser="phantom")
+        self.driver = setup_driver()
 
     def tearDown(self):
         import sys
@@ -171,7 +172,9 @@ class TestApplicationEndToEnd(unittest.TestCase):
             .navigate_to_register_subject_page()
         add_subject_page.add_subject_with(subject_data)
         add_subject_page.submit_subject()
-        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(subject_data)), add_subject_page.get_flash_message())
+        flash_message = add_subject_page.get_flash_message()
+        message = fetch_(SUCCESS_MESSAGE, from_(subject_data)) % get_subject_short_code(flash_message)
+        self.assertIn(message, flash_message)
 
     def register_new_subject_of_type(self, subject_type, subject_data):
         global_navigation = GlobalNavigationPage(self.driver)
@@ -180,7 +183,9 @@ class TestApplicationEndToEnd(unittest.TestCase):
         add_subject_page = all_subject_type_page.select_subject_type(subject_type).navigate_to_register_subject_page()
         add_subject_page.add_subject_with(subject_data)
         add_subject_page.submit_subject()
-        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(subject_data)), add_subject_page.get_flash_message())
+        flash_message = add_subject_page.get_flash_message()
+        message = fetch_(SUCCESS_MESSAGE, from_(subject_data)) % get_subject_short_code(flash_message)
+        self.assertIn(message, flash_message)
 
     def add_edit_datasender(self):
         global_navigation = GlobalNavigationPage(self.driver)
@@ -265,12 +270,12 @@ class TestApplicationEndToEnd(unittest.TestCase):
 
     def add_edit_delete_subject(self):
         add_subject_page = AddSubjectPage(self.driver)
-        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
+        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT_REG)
         add_subject_page.submit_subject()
-        message = fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT))
         flash_message = add_subject_page.get_flash_message()
+        subject_short_code = get_subject_short_code(flash_message)
+        message = fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT_REG)) % subject_short_code
         self.assertIn(message, flash_message)
-        subject_short_code = flash_message.replace(message, '')
 
         add_subject_page.navigate_to_subject_list()
         all_subjects_list_page = AllSubjectsListPage(self.driver)

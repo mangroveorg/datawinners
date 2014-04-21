@@ -74,7 +74,7 @@ VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "Clinic",
                           LOCATION: "Monodova",
                           GEO_CODE: "47.411631 28.369885",
                           MOBILE_NUMBER: MOBILE_NUMBER_FOR_SUBJECT,
-                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
+                          SUCCESS_MESSAGE: "Clinic with Identification Number %s successfully registered."}
 
 VALID_SMS_FOR_EDIT_SUBJECT = {SENDER: '1234567890',
                               RECEIVER: '919880734937',

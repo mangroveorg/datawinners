@@ -496,8 +496,8 @@ def create_subject(request, entity_type=None):
                 create_request(questionnaire_form, request.user.username), logger=websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
-                success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
-                    response.short_code,)
+                success_message = _("%s with Identification Number %s successfully registered.") % (entity_type.capitalize(),response.short_code)
+
                 detail_dict = dict({"Subject Type": entity_type.capitalize(), "Unique ID": response.short_code})
                 UserActivityLog().log(request, action=REGISTERED_SUBJECT, detail=json.dumps(detail_dict))
                 questionnaire_form = SubjectRegistrationForm(form_model)

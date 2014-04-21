@@ -514,12 +514,12 @@ class SubjectWebQuestionnaireRequest():
 
 
     def success_message(self, response_short_code):
+        entity_type = self.questionnaire.entity_type[0].capitalize()
         detail_dict = dict(
-            {"Subject Type": self.questionnaire.entity_type[0].capitalize(), "Unique ID": response_short_code})
+            {"Subject Type": entity_type, "Unique ID": response_short_code})
         UserActivityLog().log(self.request, action=REGISTERED_SUBJECT, project=self.questionnaire.name,
                               detail=json.dumps(detail_dict))
-        return (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (response_short_code,)
-
+        return (_("%s with Identification Number %s successfully registered.")) % (entity_type,response_short_code)
 
     def response_for_get_request(self, initial_data=None, is_update=False):
         questionnaire_form = self.form(initial_data=initial_data)

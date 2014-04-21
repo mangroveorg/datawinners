@@ -32,6 +32,14 @@ class TestRegistrationPage(HeadlessRunnerTest):
         self.assertEquals(registration_page.get_error_message(), UNMATCHED_PASSWORD_ERROR_MESSAGE)
 
     @attr('functional_test')
+    def test_register_ngo_with_white_space_passwords(self):
+        self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
+        registration_page = RegistrationPage(self.driver)
+        registration_page.register_with(WHITE_SPACE_IN_SOME_FIELDS)
+        self.assertEquals(registration_page.get_error_message(), WHITE_SPACES_ERROR_MESSAGE)
+
+
+    @attr('functional_test')
     def test_register_ngo_without_entering_data(self):
         self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
         registration_page = RegistrationPage(self.driver)
@@ -94,9 +102,3 @@ class TestRegistrationPage(HeadlessRunnerTest):
         registration_page.register_with(BEGIN_END_SPACED_PASSWORD)
         self.assertEquals(BEGIN_END_SPACED_PASSWORD_ERROR_MESSAGE, registration_page.get_error_message())
 
-    @attr('functional_test')
-    def test_register_ngo_with_unmatched_passwords(self):
-        self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
-        registration_page = RegistrationPage(self.driver)
-        registration_page.register_with(WHITE_SPACE_IN_SOME_FIELDS)
-        self.assertEquals(registration_page.get_error_message(), WHITE_SPACES_ERROR_MESSAGE)

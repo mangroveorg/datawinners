@@ -9,6 +9,7 @@ from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ADD_SUBJECT, LOGOUT
 from tests.logintests.login_data import DATA_SENDER_CREDENTIALS
 from tests.addsubjecttests.add_subject_data import *
+from tests.utils import get_subject_short_code
 
 
 class TestAddSubject(HeadlessRunnerTest):
@@ -40,8 +41,10 @@ class TestAddSubject(HeadlessRunnerTest):
         add_subject_page = AddSubjectPage(self.driver)
         add_subject_page.add_subject_with(SUBJECT_DATA_WITHOUT_UNIQUE_ID)
         add_subject_page.submit_subject()
+        flash_message = add_subject_page.get_flash_message()
         message = fetch_(SUCCESS_MSG, from_(SUBJECT_DATA_WITHOUT_UNIQUE_ID))
-        self.assertRegexpMatches(add_subject_page.get_flash_message(), message)
+        message = message % get_subject_short_code(flash_message)
+        self.assertRegexpMatches(flash_message, message)
 
     def assertErrorMessage(self, add_subject_page, message):
         actual_message = add_subject_page.get_error_message()

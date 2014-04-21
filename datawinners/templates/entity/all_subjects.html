@@ -10,7 +10,7 @@
 
 {% block secondary_navigation %}
     <li class="float_left"><a href="{% url all_subject_type_page %}">
-        « {% trans "Back to All Subjects List" %}</a>
+        « {% trans "Back to Identification Number List" %}</a>
     </li>
     <li class="float_right"><a id="register_subjects" href="{% url create_subject entity_type %}?web_view=True">{% trans "Register a" %} {{ entity_type|capfirst }}</a>&nbsp;|&nbsp;
         <a href="javascript:void(0);" class="import-subject">{% trans "Import a List" %}</a>&nbsp;|&nbsp;
@@ -33,10 +33,10 @@
         {% include 'subject_table.html' %}
     {% endwith %}
     <div id="delete_entity_block">
-        <p class="warning_message">{% trans "entity delete error text" %}</p>
+        <p class="warning_message">{% blocktrans with entity_type|capfirst as entity_type %}If you delete this {{ entity_type }}, you can no longer collect data about it.{% endblocktrans %}</p>
         <a href="" class="button"
-           id="ok_button">{% trans "Yes, Delete" %}</a>
-        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
+           id="ok_button" style="margin-top: 13px">{% trans "Yes, Delete" %}</a>
+        <a href="#" class="cancel_link" style="margin-top: 20px">{% trans "Cancel" %}</a>
     </div>
     <form name="export_subjects" action="{% url export_subject %}" method="post">
         {% csrf_token %}

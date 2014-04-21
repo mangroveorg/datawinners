@@ -16,7 +16,7 @@ ERROR_MSG = "message"
 SUB_FIRST_NAME = "sub_first_name"
 SUB_LAST_NAME = "sub_last_name"
 SUB_UNIQUE_ID = "sub_unique_id"
-SUCCESSFUL_MESSAGE = "Successfully submitted. Unique identification number\(ID\) is: "
+SUCCESSFUL_MESSAGE = "Clinic with Identification Number %s successfully registered."
 
 VALID_DATA = {ENTITY_TYPE: "clinic",
               SUB_FIRST_NAME: "Clinic Monodova",
@@ -25,7 +25,7 @@ VALID_DATA = {ENTITY_TYPE: "clinic",
               GEO_CODE: "47.411631 28.369885",
               MOBILE_NUMBER: "345-678-90",
               SUB_UNIQUE_ID: None,
-              SUCCESS_MSG: "Successfully submitted. Unique identification number(ID) is: "}
+              SUCCESS_MSG: "Clinic with Identification Number %s successfully registered."}
 VALID_DATA_FOR_EDIT = {ENTITY_TYPE: "clinic",
                        SUB_FIRST_NAME: "Clinic Monodova editted",
                        SUB_LAST_NAME: "wat",

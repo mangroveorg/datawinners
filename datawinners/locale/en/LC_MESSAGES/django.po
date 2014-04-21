@@ -2874,9 +2874,6 @@ msgstr "A Subject is what your Questionnaire is about; a speciﬁc person, place
 "<li>An engineer measures the ﬂow rate of a water pump. The Subject is the water pump.</li>"
 "<li>A sales person sells products to a retailer. The Subject is the retailer.</li></ul>"
 
-msgid "register_subject_for_projects_question"
-msgstr "Why should I register Subjects for my projects?"
-
 msgid "register_subject_for_projects_answer"
 msgstr "<ul class='bulleted'><li>Register your Subjects to see them displayed on a map on your Questionaire’s Overview tab.</li>"
 "<li>Register a unique identiﬁcation number for each Subject to:"
@@ -3601,11 +3598,8 @@ msgstr ""
 msgid "%dth"
 msgstr ""
 
-msgid "entity delete error text"
-msgstr ""
-        "If you delete a Subject, you can no longer collect data about it.\n"
-        "However, you can still view previously collected data for this Subject on the Data pages.\n\n"
-        "Are you sure you want to delete?"
+msgid "If you delete a %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for this Subject on the Data pages. Are you sure you want to delete?"
+msgstr "If you delete a %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for this Subject on the Data pages. Are you sure you want to delete?"
 
 msgid "Yes, Delete"
 msgstr ""
@@ -4533,4 +4527,7 @@ msgid "Questionnaire with same name already exists."
 msgstr ""
 
 msgid "My Identification Numbers"
+msgstr ""
+
+msgid "%s with Identification Number %s successfully registered."
 msgstr ""

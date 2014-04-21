@@ -24,6 +24,7 @@ from tests.dataanalysistests.data_analysis_data import DAILY_DATE_RANGE, CURRENT
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
+from tests.utils import get_subject_short_code
 
 
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
@@ -147,8 +148,9 @@ class TestSubmissionLog(HeadlessRunnerTest):
         message = fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT))
 
         flash_message = add_subject_page.get_flash_message()
+        subject_short_code = get_subject_short_code(flash_message)
+        message = message % subject_short_code
         self.assertIn(message, flash_message)
-        subject_short_code = flash_message.replace(message, '')
 
         VALID_SMS_FOR_EDIT_SUBJECT[SMS] = VALID_SMS_FOR_EDIT_SUBJECT[SMS].replace('short_code', subject_short_code, 1)
         send_valid_sms_with(VALID_SMS_FOR_EDIT_SUBJECT)

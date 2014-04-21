@@ -111,8 +111,11 @@ msgstr "Retourner à la Liste des Expéditeurs de Données"
 msgid "Subjects"
 msgstr "Sujets"
 
-msgid "All Subjects"
-msgstr "Tous les Sujets"
+msgid  "Identification Number Type"
+msgstr "Type de Numéro d'Identification"
+
+msgid  "Number Registered"
+msgstr "Numéro enregistré"
 
 msgid "Data Records"
 msgstr "Enregistrements"
@@ -754,8 +757,8 @@ msgstr "Ajouter un Expéditeur"
 msgid "Add a Subject"
 msgstr "Ajouter un sujet"
 
-msgid "Add a  Subject Type"
-msgstr "Ajouter un nouveau type de sujet"
+msgid "Add a New Identification Number Type"
+msgstr "Ajouter un Nouveau Type de Numéro d'Identification"
 
 msgid "New Subject(eg clinic, waterpoint etc)"
 msgstr "Nouveau sujet (ex : clinique, pompe publique, etc...)"
@@ -2038,8 +2041,8 @@ msgstr "Définir des Messages de Rappel"
 msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your questionnaire."
 msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre questionnaire."
 
-msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."
-msgstr "Enregistrer chaque Sujet (exemples: patient, boutique de vente au détail, village) pour lesquel vous avez besoin de collecter des données et que vous souhaitez suivre sur une carte."
+msgid "Register each %(entity_type)s you need to collect data about and want to see on a map."
+msgstr "Enregistrer chaque %(entity_type)s sur lequel vous souhaitez collecter des données et souhaitez voir sur une carte."
 
 msgid "Set up automatic SMS Reminders to be sent to your Data Senders (e.g. field staff) to ensure the timely collection of your data."
 msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Expéditeurs de Données (exemple: vers le personnel de terrain) pour assurer une collecte en temps opportun de vos données."
@@ -2765,14 +2768,17 @@ msgstr "Entrez le numéro de téléphone sans le code pays. Exemple : 033 37 452
 msgid "Define what information you want to collect about each %(entity_type)s."
 msgstr "Définissez quelles informations vous souhaitez collecter sur chaque %(entity_type)s."
 
-msgid "View and manage all of the people, places, things or events that you want to collect data about, such as patients, villages, clinics or trainings."
-msgstr "Visualisez et gérez toutes les personnes, places, choses ou événements sur lesquels vous voulez collecter des données, tels que des patients, des villages, des cliniques ou des formations."
+msgid "View and manage all of the people, places, things or events that you want to collect data about."
+msgstr "Visualisez et gérez toutes les personnes, places, choses ou événements sur lesquels vous voulez collecter des données."
 
 msgid "Hide help"
 msgstr "Cacher l'aide"
 
 msgid "My %(entity_type)s List"
 msgstr "Ma liste de %(entity_type)s"
+
+msgid "My "
+msgstr "Mon "
 
 msgid "My %(entity_type)s"
 msgstr "Mes %(entity_type)s"
@@ -2813,8 +2819,8 @@ msgstr ""
 msgid "Add a new"
 msgstr "Ajouter un(e)"
 
-msgid "Enter the Name of your specific Subject Type"
-msgstr "Entrez le nom de votre type de sujet spécifique"
+msgid "Enter the Name"
+msgstr "Tapez le nom"
 
 msgid "Example: Person (Patient, Farmer), Place (Region, Village), Thing (Health center, School, Water pump, Retail shop), Event (Training, Public gathering)"
 msgstr "Exemple: Personne (Patient, Fermier), Place (Région, Village), Chose (Centre de santé, Pompe à eau, Magasin détaillant), Event (Formation, Rassmeblement public)"
@@ -3719,11 +3725,8 @@ msgstr "%d"
 msgid "%dth"
 msgstr "%d"
 
-msgid "entity delete error text"
-msgstr ""
-       "Si vous supprimer un(e) Sujet, vous ne pourrez plus collecter des données s’y rapportant.\n"
-       "Cependant, vous pourrez encore voir les données collectées auparavant pour ce(tte) Sujet dans les pages Données.\n\n"
-       "Etes-vous sûr de vouloir supprimer ?"
+msgid "If you delete this %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for this Subject on the Data pages. Are you sure you want to delete?"
+msgstr "Si vous supprimez ce/cette %(entity_type)s, vous ne pouvez plus collecter des données le concernant. Cependant, vous pouvez toujours voir les données collectées précedemment sur les pages Données. \n\n Etes-vous sûr de vouloir supprimer? "
 
 msgid "Yes, Delete"
 msgstr "Oui, Supprimer"
@@ -4326,8 +4329,8 @@ msgstr "Vous avez activé votre compte avec succès. Bonne soumission de donnée
 msgid "Your account has been deactivated. Please contact the datawinners support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a> for reactivation of the account."
 msgstr "Votre compte a été désactivé. Veuillez contacter le support DataWinners à l'adresse <a href='mailto:support@datawinners.com'>support@datawinners.com</a> pour réactiver le compte."
 
-msgid "Back to All Subjects List"
-msgstr "Retour à la page Tous les Sujets"
+msgid "Back to Identification Number List"
+msgstr "Retour à la liste de Numéros d'Identification"
 
 msgid "Example SMS:"
 msgstr "Exemple de SMS:"
@@ -4447,6 +4450,9 @@ msgid "Statistics"
 msgstr "Statistiques"
 
 msgid "Submissions Received"
+msgstr "Soumissions"
+
+msgid "Submissions"
 msgstr "Soumissions"
 
 msgid "This Month"
@@ -4770,3 +4776,9 @@ msgstr "moins de filtres"
 
 msgid "Identification Numbers"
 msgstr "Numéros d'Identification"
+
+msgid "%s with Identification Number %s successfully registered."
+msgstr "Le/la %s portant le Numéro d'Identification %s a été enregistré avec succès."
+
+msgid "Choose a %(entity_type)s from this list."
+msgstr "Choisissez un %(entity_type)s dans la liste."

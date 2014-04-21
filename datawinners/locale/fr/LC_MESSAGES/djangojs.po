@@ -346,8 +346,8 @@ msgid "Read More"
 msgstr "En lire plus"
 
 #: media/javascript/entity/create_type.js:73
-msgid "Add a New Subject Type"
-msgstr "Ajouter un nouveau type de Sujet"
+msgid "Add a New Identification Number Type"
+msgstr "Ajouter un Nouveau Type de Numéro d'Identification"
 
 #: media/javascript/entity/entity_actions.js:5
 #: media/javascript/entity/entity_actions_all_subjects.js:3

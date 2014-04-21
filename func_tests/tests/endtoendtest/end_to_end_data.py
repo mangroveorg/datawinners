@@ -155,7 +155,7 @@ VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "waterpoint",
                           LOCATION: "Monodova",
                           GEO_CODE: "47.411631 28.369885",
                           MOBILE_NUMBER: "3456789012",
-                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
+                          SUCCESS_MESSAGE: "Waterpoint with Identification Number %s successfully registered."}
 
 VALID_DATA_FOR_EDIT = {ENTITY_TYPE: "waterpoint",
                        SUB_UNIQUE_ID: None,
@@ -294,7 +294,7 @@ VALID_DATA_FOR_SUBJECT_REG = {ENTITY_TYPE: "Hospital",
                           LOCATION: "India",
                           GEO_CODE: "47.411631 28.369885",
                           MOBILE_NUMBER: random_number(8),
-                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
+                          SUCCESS_MESSAGE: "Hospital with Identification Number %s successfully registered."}
 
 VALID_DATA_FOR_SUB_GAMING = {ENTITY_TYPE: "gaming",
                           SUB_UNIQUE_ID: 'game1',
@@ -303,7 +303,7 @@ VALID_DATA_FOR_SUB_GAMING = {ENTITY_TYPE: "gaming",
                           LOCATION: "India",
                           GEO_CODE: "47.411631 28.369885",
                           MOBILE_NUMBER: random_number(8),
-                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
+                          SUCCESS_MESSAGE: "Gaming with Identification Number %s successfully registered."}
 
 VALID_DATA_FOR_SUBJECT_SCHOOL = {ENTITY_TYPE: "school",
                           SUB_UNIQUE_ID: 'school1',
@@ -312,4 +312,4 @@ VALID_DATA_FOR_SUBJECT_SCHOOL = {ENTITY_TYPE: "school",
                           LOCATION: "India",
                           GEO_CODE: "47.411631 28.369885",
                           MOBILE_NUMBER: "9900099000",
-                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
+                          SUCCESS_MESSAGE: "School with Identification Number %s successfully registered."}

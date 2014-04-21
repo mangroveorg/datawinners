@@ -11,6 +11,7 @@ from tests.addsubjecttests.add_subject_data import VALID_DATA, SUCCESS_MSG
 from tests.datasendertests.data_sender_data import PAGE_TITLE, SECTION_TITLE, SUBJECT_TYPE
 from tests.logintests.login_data import DATA_SENDER_CREDENTIALS
 from tests.testsettings import UI_TEST_TIMEOUT
+from tests.utils import get_subject_short_code
 from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA, PROJECT_NAME, VALID_ANSWERS
 
 
@@ -62,7 +63,9 @@ class DataSenderTest(HeadlessRunnerTest):
         add_subject_page.add_subject_with(VALID_DATA)
         add_subject_page.submit_subject()
         message = fetch_(SUCCESS_MSG, from_(VALID_DATA))
-        self.assertIn(message, add_subject_page.get_flash_message())
+        flash_message = add_subject_page.get_flash_message()
+        message = message % get_subject_short_code(flash_message)
+        self.assertIn(message, flash_message)
 
     @attr("functional_test")
     def test_go_back_to_project_list_from_register_subject_page(self):

@@ -99,7 +99,10 @@ def dashboard(request):
 @valid_web_user
 def start(request):
     text_dict = {'project': _('Questionnaires'), 'datasenders': _('Data Senders'),
-                 'subjects': _('Identification Numbers'), 'alldata': _('Data Records')}
+                 'subjects': _('Identification Numbers'), 'alldata': _('Submissions')}
+
+    title_dict = {'project': _('Questionnaires'), 'datasenders': _('Data Senders'),
+                 'subjects': _('Identification Numbers'), 'alldata': _('All Data')}
 
     tabs_dict = {'project': 'questionnaires', 'datasenders': 'data_senders',
                  'subjects': 'subjects', 'alldata': 'all_data'}
@@ -107,8 +110,9 @@ def start(request):
     page = page.split('/')
     url_tokens = [each for each in page if each != '']
     text = text_dict[url_tokens[-1]]
+    title = title_dict[url_tokens[-1]]
     return render_to_response('dashboard/start.html',
-            {'text': text, 'title': text, 'active_tab': tabs_dict[url_tokens[-1]]},
+            {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]]},
                               context_instance=RequestContext(request))
 
 @valid_web_user
