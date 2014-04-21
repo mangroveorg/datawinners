@@ -198,6 +198,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
         self._verify_filtered_records_by_subject_name_or_id(project_name, submission_log_page)
 
         datasender_id = 'rep276'
+        submission_log_page.refresh()
         submission_log_page.filter_by_datasender(datasender_id)
         submission_log_page.wait_for_table_data_to_load()
         self._verify_filtered_records_by_datasender_name_or_id(datasender_id, submission_log_page)

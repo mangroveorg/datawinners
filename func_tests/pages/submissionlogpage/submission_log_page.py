@@ -116,19 +116,19 @@ class SubmissionLogPage(Page):
 
     def filter_by_datasender(self,datasender):
         self.driver.find_text_box(by_css("#data_sender_filter")).enter_text(datasender)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".ui-autocomplete span.small_grey"), True)
         try:
             (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_NAME %datasender))).click()
         except CouldNotLocateElementException:
-            time.sleep(1)
             (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_ID %datasender))).click()
 
     def filter_by_subject(self, subject):
         self.driver.find(by_css("#show_filters")).click()
         self.driver.find_text_box(by_css(".subject_filter")).enter_text(subject)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".ui-autocomplete span.small_grey"))
         try:
             (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_NAME %subject))).click()
         except CouldNotLocateElementException:
-            time.sleep(1)
             (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_ID %subject))).click()
 
     def get_cell_value(self, row, column):
