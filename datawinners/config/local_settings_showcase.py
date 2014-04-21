@@ -3,9 +3,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 COMPRESS_ENABLED = True
 
-ADMINS = (
-    ('TW', 'sairama@thoughtworks.com,wamikas@thoughtworks.com'),
-)
+ADMINS = (('QA1', 'sairama@thoughtworks.com'), ('BA', 'harikat@thoughtworks.com'), ('QA2', 'wamikas@thoughtworks.com'))
 
 COMPRESS = False
 
