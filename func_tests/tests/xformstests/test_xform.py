@@ -16,19 +16,17 @@ class TestXform(unittest.TestCase):
         cls.client.set_authorization('tester150411@gmail.com', 'tester150411', method="Digest")
         cls.register_people_one(cls.client)
 
-    @attr('functional_test')
+    @attr("functional_test")
     def test_xforms_list(self):
         response = self.client.get('/xforms/formList')
         self.assertTrue(blood_test_project_name(self.unique_id).lower() in response.content)
 
-    @attr('functional_test')
+    @attr("functional_test")
     def test_xform_for_project(self):
         response = self.client.get('/xforms/%s' % self.project_id)
         self.assertTrue("<h:title>%s</h:title>"%blood_test_project_name(self.unique_id).lower() in response.content)
         self.assertTrue("<value>%s</value>"%self.people_one_id in response.content, response.content)
         self.assertTrue("<value>cid001</value>" in response.content, response.content)
-
-
 
 
     @classmethod
