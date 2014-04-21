@@ -42,14 +42,11 @@ DW.post_project_data = function (callback) {
                     questionnaireViewModel.errorInResponse(true);
                 }
                 if(responseJson.code_has_errors) {
-                    questionnaireViewModel.questionnaireCode.valid(false);
-                    questionnaireViewModel.questionnaireCode.error(responseJson.error_message['code']);
+                    questionnaireViewModel.questionnaireCode.setError(responseJson.error_message['code']);
                 }
                 if(responseJson.name_has_errors) {
-                    questionnaireViewModel.projectName.valid(false);
-                    questionnaireViewModel.projectName.error(responseJson.error_message['name']);
+                    questionnaireViewModel.projectName.setError(responseJson.error_message['name']);
                 }
-//                questionnaireViewModel.responseErrorMsg(responseJson.error_message);
             }
         });
     };
