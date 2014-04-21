@@ -810,7 +810,7 @@ fieldset {
 .questionnaire_selection {
   float: left;
   width: 250px;
-  height: 300px;
+  height: 462px;
   overflow: auto;
   background: #EBEBEB;
   padding: 10px 0 10px 10px; }
@@ -831,15 +831,16 @@ fieldset {
     border: none;
     background: transparent;
     padding: 0 0 5px 15px; }
-    .questionnaire_selection .ui-accordion-content span {
+    .questionnaire_selection .ui-accordion-content div {
       display: block;
       padding-left: 10px;
       margin: 4px 0 0;
       cursor: pointer;
+      height: 26px;
       text-transform: capitalize; }
-      .questionnaire_selection .ui-accordion-content span:hover {
+      .questionnaire_selection .ui-accordion-content div:hover {
         background-color: #d7e4ed; }
-      .questionnaire_selection .ui-accordion-content span + .selected-notify {
+      .questionnaire_selection .ui-accordion-content div + .selected-notify {
         width: 0;
         height: 0;
         border-top: 10px solid transparent;
@@ -850,13 +851,15 @@ fieldset {
         display: none; }
 
 .selected {
-  background-color: #d7e4ed; }
+  background: url("/media/images/questions_hover_arrow.png") no-repeat scroll right top transparent;
+  background-color: #d7e4ed;
+  left: 269px; }
   .selected + .selected-notify {
     display: inline-block; }
 
 .selected_questions {
   overflow: auto;
-  height: 288px;
+  height: 450px;
   width: 450px;
   background: #FFF;
   border-radius: 2px;
@@ -916,7 +919,6 @@ fieldset {
       font-style: italic; }
     .uniqueIdTypeSection .uniqueIdTypeContents hr {
       background-color: #444;
-      box-shadow: 8px 2px 2px #888888;
       margin: 10px 0 10px 0; }
     .uniqueIdTypeSection .uniqueIdTypeContents .uniqueIdList {
       line-height: 10px;

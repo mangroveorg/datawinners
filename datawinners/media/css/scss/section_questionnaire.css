@@ -14,6 +14,11 @@
   .dropdown_style option, .wizard_content .content_wrapper .questionnaire_code #select option, .questionnare_content #question-detail-panel .dropdown select option, #question_form select#project_language option {
     padding: 5px; }
 
+.advanced_type {
+  font-size: 10px;
+  font-style: italic;
+  padding-top: 10px !important; }
+
 .max_char {
   display: inline;
   margin-top: 20px; }
@@ -35,6 +40,9 @@
   max-height: 399px;
   overflow-y: auto;
   overflow-x: hidden; }
+
+#questionnaire_title {
+  text-transform: capitalize; }
 
 #question-detail-panel .mobile {
   background: url("/media/images/mobile2.jpg") no-repeat left top;
@@ -315,7 +323,8 @@
   padding-top: 20px; }
   #questionnaire_types .questionnaire_type_header {
     border-bottom: 1px solid #CCCCCC !important;
-    padding: 10px; }
+    padding: 10px;
+    margin-top: 0px; }
     #questionnaire_types .questionnaire_type_header .header {
       font-weight: normal;
       background: url(/media/images/accordion_arrows.png) no-repeat left -34px;

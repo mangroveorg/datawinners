@@ -15,6 +15,12 @@
       padding: 5px;
     }
 }
+
+.advanced_type{
+  font-size: 10px;
+  font-style: italic;
+  padding-top: 10px !important;
+}
 .max_char {
   display: inline;
   margin-top: 20px;
@@ -42,6 +48,9 @@
   overflow-x: hidden;
 }
 
+#questionnaire_title {
+  text-transform: capitalize;
+}
 #question-detail-panel .mobile {
   background: url("/media/images/mobile2.jpg") no-repeat left top;
   height: 300px;
@@ -431,6 +440,7 @@
   .questionnaire_type_header {
     border-bottom: 1px solid #CCCCCC !important;
     padding: 10px;
+    margin-top: 0px;
     .header {
       font-weight: normal;
       background: url(/media/images/accordion_arrows.png) no-repeat left -34px;

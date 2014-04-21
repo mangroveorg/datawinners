@@ -51,6 +51,7 @@
                     label{
                         font-size:16px;
                         float:none;
+                        width: auto;
                     }
                     label.error{
                         font-size:14px;
@@ -62,6 +63,24 @@
             }
             .question{
                 width: 525px !important;
+                margin-top: 20px;
+            }
+            .question_type {
+                border-top: 1px solid #CCCCCC;
+                padding-top: 14px;
+                width: 505px
+            }
+            li {
+              .questionnaire-instruction {
+                border-top: 1px solid #CCCCCC;
+                padding-top: 14px;
+                width: 505px
+              }
+            }
+            .sms-preview {
+              border-top: 1px solid #CCCCCC;
+              padding: 14px 0 5px;
+              width: 505px;
             }
             .alpha_list{
                 li {

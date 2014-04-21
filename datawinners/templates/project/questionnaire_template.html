@@ -15,8 +15,9 @@
             <div data-bind="foreach: templateGroupingData, accordion: {}">
                 <div class="questionnaire_data" data-bind="text: category, click: $root.removeTemplateId"></div>
                 <div data-bind="foreach: $data.templates">
-                    <span data-bind="text: name, click: $root.chooseTemplate, css:{selected: $data.id == $root.selectedTemplateId()}">
-                     </span>
+                    <div data-bind="text: name, click: $root.chooseTemplate, css:{selected: $data.id == $root.selectedTemplateId()}">
+{#                        <span class="selected_project_arrow inline" data-bind="css:{inline:$data.id == $root.selectedTemplateId()}"></span>#}
+                    </div>
 
                     <div class="selected-notify"></div>
                 </div>

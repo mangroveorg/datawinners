@@ -32,6 +32,8 @@ DW.instruction_template = {
     "max_number": gettext("Answer must be a number. The maximum is %d."),
     "range_number": gettext("Answer must be a number between %d-%d."),
     "text": gettext("Answer must be a word"),
+    "unique_id_type": gettext("Answer must be the Identification Number of the %s you are reporting on."),
+    "unique_id": gettext("Answer must be the Identification Number."),
     "max_text": gettext("Answer must be a word %d characters maximum"),
     "date": gettext("Answer must be a date in the following format: %s. Example: %s"),
     "single_select": gettext("Choose 1 answer from the list. Example: a"),
@@ -290,7 +292,10 @@ DW.question.prototype = {
                     return DW.instruction_template.multi_select;
                 }
                 if (this.type() == "unique_id") {
-                    return DW.instruction_template.short_code_question;
+                    if (this.uniqueIdType()){
+                        return $.sprintf(DW.instruction_template.unique_id_type, this.uniqueIdType());
+                    }
+                    return DW.instruction_template.unique_id;
                 }
                 return "No instruction can be generated";
             },

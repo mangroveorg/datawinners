@@ -4,13 +4,11 @@
   src: url("/media/css/font/chalkdust-webfont.eot?#iefix") format("embedded-opentype"), url("/media/css/font/chalkdust-webfont.woff") format("woff"), url("/media/css/font/chalkdust-webfont.ttf") format("truetype"), url("/media/css/font/chalkdust-webfont.svg#ChalkDustRegular") format("svg");
   font-weight: normal;
   font-style: normal; }
-
 @font-face {
   font-family: 'ArchitectsDaughter';
   src: url("/media/css/font/ArchitectsDaughter.ttf");
   font-weight: normal;
   font-style: normal; }
-
 .preview_block {
   text-align: right; }
 
@@ -221,7 +219,8 @@ p.instructions {
       display: block; }
     .questionnare_content #question-detail-panel .question_type {
       padding-top: 14px;
-      border-top: 1px solid #ccc; }
+      border-top: 1px solid #ccc;
+      width: 505px; }
     .questionnare_content #question-detail-panel .alpha_list {
       margin-left: 30px; }
       .questionnare_content #question-detail-panel .alpha_list input {
@@ -247,7 +246,7 @@ p.instructions {
   display: none; }
 
 div.sms_tester_form div.warning-message-box p {
-  background: url("/media/images/icons.png") no-repeat scroll left -70px rgba(0, 0, 0, 0); }
+  background: url("/media/images/icons.png") no-repeat scroll left -70px transparent; }
 div.sms_tester_form div.warning-message-box a {
   color: #0070ac; }
   div.sms_tester_form div.warning-message-box a.padding_top_10 {

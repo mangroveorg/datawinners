@@ -47,6 +47,7 @@
                     <option value="date"> {% trans 'Date' %} </option>
                     <option value="choice"> {% trans 'Multiple Choice' %} </option>
                     <option value="geocode"> {% trans 'GPS Coordinates' %} </option>
+                    <option disabled="disabled" class="advanced_type" value="">{% trans 'Advanced Answer Types' %}</option>
                     <option title="{% trans 'unique_id_learn_more' %}" value="unique_id"> {% trans 'Identification Number' %} </option>
                 </select>
                 <div class="validationMessage" data-bind="ifnot: answerType.valid">
@@ -139,7 +140,7 @@
 
         <li>
             <div class="questionnaire-instruction" data-bind="visible: type()">
-                <label>{% trans "Instructions" %}<img src="/media/images/help_icon.png" class="help_icon" data-bind="initializeTooltip:true"
+                <label>{% trans "Instructions for DataSenders" %}<img src="/media/images/help_icon.png" class="help_icon" data-bind="initializeTooltip:true"
                                                       style="margin-top:-6px;"></label>
 
                 <div class="tooltip"><p>

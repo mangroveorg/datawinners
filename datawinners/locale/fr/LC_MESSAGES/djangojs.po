@@ -1148,3 +1148,9 @@ msgstr "</b>, vous devez d’abord supprimer le(s) Questionnaire(s)."
 
 msgid "Save"
 msgstr "Enregistrer"
+
+msgid "Answer must be the Identification Number of the %s you are reporting on."
+msgstr "La réponse doit être le Numéro d’identification du %s sur lequel votre rapport porte."
+
+msgid "Add"
+msgstr "Ajouter"

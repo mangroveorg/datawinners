@@ -86,7 +86,9 @@
                            {% trans "Add or edit a question"%}
                         </div>
 
-                        <div class="grid_13 alpha omega" data-bind="visible: selectedQuestion">
+
+                        <div class="grid_13 alpha omega sms-preview" data-bind="visible: selectedQuestion">
+                            <label>{% trans "SMS Preview" %}</label>
                             <div id='char-count-span'>
                                 <span id='char-count'>
                                 </span>
@@ -97,7 +99,6 @@
                                 </p></div>
                             </div>
                         </div>
-
                         <div class="mobile"  data-bind="visible: selectedQuestion">
                             <textarea name="message" data-bind="text: generateSmsPreview" cols="30" rows="4" id="sms_preview" readonly="true"></textarea>
                         </div>

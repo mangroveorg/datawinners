@@ -23,14 +23,14 @@ function ProjectQuestionnaireViewModel() {
     };
 
     self.newUniqueIdType = DW.ko.createValidatableObservable();
-    self.uniqueIdButtonText = ko.observable("Add");
+    self.uniqueIdButtonText = ko.observable(gettext("Add"));
 
     self.addNewUniqueIdType = function () {
         var newUniqueIdType = self.newUniqueIdType();
-        self.uniqueIdButtonText("Adding..");
+        self.uniqueIdButtonText(gettext("Adding.."));
         $.post('/entity/type/create', {entity_type_regex: newUniqueIdType})
             .done(function (responseString) {
-                self.uniqueIdButtonText('Add');
+                self.uniqueIdButtonText(gettext('Add'));
                 var response = $.parseJSON(responseString);
                 if (response.success) {
                     var array = self.uniqueIdTypes();

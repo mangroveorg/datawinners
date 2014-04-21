@@ -352,7 +352,7 @@ fieldset {
 .questionnaire_selection {
   float: left;
   width: 250px;
-  height: 300px;
+  height: 462px;
   overflow: auto;
   background: #EBEBEB;
   padding: 10px 0 10px 10px;
@@ -379,11 +379,12 @@ fieldset {
     border: none;
     background: transparent;
     padding: 0 0 5px 15px;
-    span {
+    div {
       display: block;
       padding-left: 10px;
       margin: 4px 0 0;
       cursor: pointer;
+      height: 26px;
       text-transform:capitalize;
       &:hover{
           background-color: #d7e4ed;
@@ -403,15 +404,21 @@ fieldset {
 }
 
 .selected {
-        background-color: #d7e4ed;
         & + .selected-notify {
           display: inline-block;
         }
-      }
+      background: url("/media/images/questions_hover_arrow.png") no-repeat scroll right top rgba(0, 0, 0, 0);
+      background-color: #d7e4ed;
+  //        display: none;
+        left: 269px;
+//        padding: 16px;
+//        position: absolute;
+//        top: 32%;
+  }
 
 .selected_questions {
   overflow: auto;
-  height: 288px;
+  height: 450px;
   width: 450px;
   background: #FFF;
   border-radius: 2px;
@@ -489,7 +496,6 @@ fieldset {
     }
     hr{
       background-color:#444;
-      box-shadow: 8px 2px 2px #888888;
       margin:10px 0 10px 0;
     }
     .uniqueIdList{

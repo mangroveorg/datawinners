@@ -39,14 +39,28 @@
         padding: 0 !important; }
         #questionnaire .questionnare_content #question-detail-panel ul li label {
           font-size: 16px;
-          float: none; }
+          float: none;
+          width: auto; }
         #questionnaire .questionnare_content #question-detail-panel ul li label.error {
           font-size: 14px;
           font-weight: normal;
           width: auto;
           margin-left: 10px; }
       #questionnaire .questionnare_content #question-detail-panel .question {
-        width: 525px !important; }
+        width: 525px !important;
+        margin-top: 20px; }
+      #questionnaire .questionnare_content #question-detail-panel .question_type {
+        border-top: 1px solid #CCCCCC;
+        padding-top: 14px;
+        width: 505px; }
+      #questionnaire .questionnare_content #question-detail-panel li .questionnaire-instruction {
+        border-top: 1px solid #CCCCCC;
+        padding-top: 14px;
+        width: 505px; }
+      #questionnaire .questionnare_content #question-detail-panel .sms-preview {
+        border-top: 1px solid #CCCCCC;
+        padding: 14px 0 5px;
+        width: 505px; }
       #questionnaire .questionnare_content #question-detail-panel .alpha_list li {
         margin: 0 30px;
         padding: 0 0 4px 0 !important;
