@@ -35,4 +35,4 @@ def convert_field_code_to_lower_case(db_name):
         logger.exception(e.message)
 
 
-migrate(all_db_names(), convert_field_code_to_lower_case, version=(11, 0, 5), threads=6)
+migrate(all_db_names(), convert_field_code_to_lower_case, version=(11, 0, 5), threads=3)

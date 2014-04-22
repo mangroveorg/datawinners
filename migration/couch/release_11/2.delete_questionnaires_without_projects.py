@@ -36,7 +36,7 @@ def delete_questionnaires_without_projects(db_name):
             form_model_doc = row.doc
             projects = dbm.database.query(get_project_from_qid, include_docs=True, key=row.id)
             if not projects:
-                submissions = dbm.database.query(get_submissions_for_formmodel, key=form_model_doc['form_code'])
+                submissions = dbm.database.query(get_submissions_for_formmodel,include_docs=True, key=form_model_doc['form_code'])
                 for submission in submissions:
                     logger.info("deleting submission with id:%s", submission.id)
                     dbm.database.delete(submission.doc)
@@ -47,4 +47,4 @@ def delete_questionnaires_without_projects(db_name):
                 'something failed for for database : %s, project_doc with id: %s' % (dbm.database_name, row.id))
             logger.error(e)
 
-migrate(all_db_names(), delete_questionnaires_without_projects, version=(11, 0, 2))
+migrate(all_db_names(), delete_questionnaires_without_projects, version=(11, 0, 2), threads=3)

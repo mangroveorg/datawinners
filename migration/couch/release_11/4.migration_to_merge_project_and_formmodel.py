@@ -19,12 +19,11 @@ function(doc) {
 
 
 def update_reminders(dbm, project_data, logger):
-    project_id = project_data.get('id')
+    project_id = project_data.get('_id')
     for reminder in (Reminder.objects.filter(project_id=project_id)):
         try:
             form_model_id = project_data.get("qid")
             reminder.project_id = form_model_id
-            #Bulk update?
             reminder.save()
             rows = dbm.view.reminder_log(startkey=project_id, endkey=project_id, include_docs=True)
             for row in rows:
@@ -56,6 +55,7 @@ def merge_project_and_form_model_for(dbm, logger):
             dbm._save_document(form_model_doc)
 
             update_reminders(dbm, project_data, logger)
+            logger.info("Deleting project with id: %s", row.id)
             dbm.database.delete(row.doc)
         except Exception as e:
             logger.error('Merging project and form_model failed for database : %s, project_doc with id: %s',
@@ -74,4 +74,4 @@ def migrate_to_merge_form_model_and_project(db_name):
         logger.exception(e.message)
 
 
-migrate(all_db_names(), migrate_to_merge_form_model_and_project, version=(11, 0, 4))
+migrate(all_db_names(), migrate_to_merge_form_model_and_project, version=(11, 0, 4), threads=3)

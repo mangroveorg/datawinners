@@ -112,4 +112,4 @@ def migrate_form_model_to_add_eid_fields(db_name):
         logger.exception(e.message)
 
 
-migrate(all_db_names(), migrate_form_model_to_add_eid_fields, version=(11, 0, 3))
+migrate(all_db_names(), migrate_form_model_to_add_eid_fields, version=(11, 0, 3), threads=3)
