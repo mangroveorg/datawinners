@@ -91,8 +91,8 @@ EXISTING_EMAIL_ADDRESS = {ORGANIZATION_NAME: u"NGO 001",
                           ADMIN_MOBILE_NUMBER: "2345234",
                           REGISTRATION_PASSWORD: u"ngo001",
                           REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
-                          PRO:PRO,
-                          PAY_MONTHLY:PAY_MONTHLY}
+                          PRO: PRO,
+                          PAY_MONTHLY: PAY_MONTHLY}
 
 EXISTING_EMAIL_ADDRESS_ERROR_MESSAGE = u"Office Phone Number optional Please enter a valid phone number.Email address This email address is already in use. Please supply a different email address."
 
@@ -113,9 +113,13 @@ UNMATCHED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
                       EMAIL: u"valid@email.com",
                       ADMIN_MOBILE_NUMBER: "(91)678646792-67",
                       REGISTRATION_PASSWORD: u"password",
-                      REGISTRATION_CONFIRM_PASSWORD: u"different_password"}
+                      REGISTRATION_CONFIRM_PASSWORD: u"different_password",
+                      PRO: PRO}
 
-UNMATCHED_PASSWORD_ERROR_MESSAGE = u"Password The two password fields didn't match. Example: Minimum of 6 characters in lengthInvoice Period Monthly: $ 399 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 359 per month Save 10% by paying 6 months in advance This field is required."
+UNMATCHED_PASSWORD_ERROR_MESSAGE = u"Password The two password fields didn't match. Example: " \
+                                   u"Minimum of 6 characters in lengthInvoice Period Monthly: $ 199 per month Renews automatically each month. " \
+                                   u"Cancel at any time without penalty. 6 months:$ 149 per month Save 25% by paying 6 months in advance 12 months:$ 99 per month Save 50% " \
+                                   u"by paying 12 months in advance This field is required.   Invoice Total:$"
 
 WITHOUT_ENTERING_REQUIRED_FIELDS = {ORGANIZATION_NAME: u"",
                                     ORGANIZATION_SECTOR: u"PublicHealth",
@@ -150,7 +154,7 @@ WITHOUT_PREFERRED_PAYMENT = {ORGANIZATION_NAME: u"ÑGÓ 001",
                              REGISTRATION_PASSWORD: u"ngo001",
                              REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
                              PAY_MONTHLY: PAY_MONTHLY,
-                             PRO:PRO}
+                             PRO: PRO}
 
 WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE = u"Organization Name This field is required.Address This field is required.City This field is required.Postal \/ Zip Code This field is required.Country.*Islands This field is required.First name This field is required.Last name This field is required.Email address This field is required.Password This field is required. Example: Minimum of 6 characters in lengthPassword \(again\) This field is required.Account Type Pro Collect unlimited data via 2 channels: Android \\(Smartphone, Tablet\\) \\& Web Pro SMS Collect unlimited data via 3 channels: SMS, Android \\(Smartphone, Tablet\\) \\& Web This field is required."
 
@@ -170,8 +174,8 @@ INVALID_WEBSITE_URL = {ORGANIZATION_NAME: u"NGO 001",
                        ADMIN_MOBILE_NUMBER: "6786679267",
                        REGISTRATION_PASSWORD: u"ngo001",
                        REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
-                       PRO:PRO,
-                       PAY_MONTHLY:PAY_MONTHLY}
+                       PRO: PRO,
+                       PAY_MONTHLY: PAY_MONTHLY}
 
 INVALID_WEBSITE_URL_ERROR_MESSAGE = u"Office Phone Number optional Please enter a valid phone number.Website optional Enter a valid URL. Example: www.organization.com"
 
@@ -199,22 +203,22 @@ BEGIN_END_SPACED_PASSWORD_ERROR_MESSAGE = u"Password There should not be any spa
 INVALID_EMAIL_ERROR_MESSAGE = u"Email address Enter a valid email address. Example:name@organization.com"
 
 WHITE_SPACE_IN_SOME_FIELDS = {ORGANIZATION_NAME: u" ",
-                      ORGANIZATION_SECTOR: u"PublicHealth",
-                      ORGANIZATION_ADDRESS: u"Address Line One",
-                      ORGANIZATION_CITY: u" ",
-                      ORGANIZATION_STATE: u"Maharashtra",
-                      ORGANIZATION_COUNTRY: u"MG",
-                      ORGANIZATION_ZIPCODE: u"411028",
-                      ORGANIZATION_OFFICE_PHONE: u"26123456789",
-                      ORGANIZATION_WEBSITE: u"http://www.localhost.com/",
-                      TITLE: u"Mr",
-                      FIRST_NAME: u" ",
-                      LAST_NAME: u" ",
-                      EMAIL: u"whitespace@mailinator.com",
-                      ADMIN_MOBILE_NUMBER: "2618893",
-                      REGISTRATION_PASSWORD: u"password!231",
-                      REGISTRATION_CONFIRM_PASSWORD: u"password!231",
-                      PAY_MONTHLY: PAY_MONTHLY,
-                      WIRE_TRANSFER: WIRE_TRANSFER,
-                      PRO:PRO}
+                              ORGANIZATION_SECTOR: u"PublicHealth",
+                              ORGANIZATION_ADDRESS: u"Address Line One",
+                              ORGANIZATION_CITY: u" ",
+                              ORGANIZATION_STATE: u"Maharashtra",
+                              ORGANIZATION_COUNTRY: u"MG",
+                              ORGANIZATION_ZIPCODE: u"411028",
+                              ORGANIZATION_OFFICE_PHONE: u"26123456789",
+                              ORGANIZATION_WEBSITE: u"http://www.localhost.com/",
+                              TITLE: u"Mr",
+                              FIRST_NAME: u" ",
+                              LAST_NAME: u" ",
+                              EMAIL: u"whitespace@mailinator.com",
+                              ADMIN_MOBILE_NUMBER: "2618893",
+                              REGISTRATION_PASSWORD: u"password!231",
+                              REGISTRATION_CONFIRM_PASSWORD: u"password!231",
+                              PAY_MONTHLY: PAY_MONTHLY,
+                              WIRE_TRANSFER: WIRE_TRANSFER,
+                              PRO: PRO}
 WHITE_SPACES_ERROR_MESSAGE = u"Organization Name This field is required.City This field is required.First name This field is required.Last name This field is required."
