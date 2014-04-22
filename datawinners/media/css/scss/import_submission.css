@@ -17,7 +17,7 @@ form ul li {
     width: 350px;
     height: 100px;
     border-color: #cccccc;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li label {
     font-size: 14px;
     display: block;
@@ -27,7 +27,7 @@ form ul li {
     font-weight: bold; }
   form ul li input {
     float: left;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li span[wmwrap=true] {
     float: left;
     top: 3px; }
@@ -74,7 +74,7 @@ div.error_arrow {
 span.error_arrow, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 3px;
   display: inline;
-  float: left!important; }
+  float: left !important; }
 
 span .error_arrow label, div.error_arrow label, label.error_arrow label {
   float: none;
@@ -207,8 +207,10 @@ label {
 select {
   width: auto;
   height: 25px;
-  border-color: #cccccc;
-  background: #FFFFFF; }
+  background: #FFFFFF;
+  -webkit-border-radius: 0px;
+  border: 2px solid;
+  border-color: #646464 #EBEBEB #EBEBEB #646464; }
 
 .multiple_select {
   height: auto; }
@@ -571,7 +573,7 @@ form div.action-section {
   padding-top: 10px; }
 
 .file_upload_disabled {
-  background: -moz-linear-gradient(center top, #f8edb8, #fde8a0) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+  background: -moz-linear-gradient(center top, #f8edb8, #fde8a0) repeat scroll 0 0 transparent !important;
   float: left;
   width: auto;
   text-align: center;

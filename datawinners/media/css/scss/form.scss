@@ -261,8 +261,10 @@ label{
 select{
     width:auto;
     height:25px;
-    border-color:$border_color;
     background:#FFFFFF;
+    -webkit-border-radius: 0px;
+    border: 2px solid;
+    border-color: #646464 #EBEBEB #EBEBEB #646464;
 }
 .multiple_select{
     height: auto;
