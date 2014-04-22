@@ -33,7 +33,7 @@ def _save_form_model_doc(dbm, form_model):
     dbm._save_document(form_model._doc)
 
 
-def add_unique_id_and_short_code_field(dbm):
+def add_unique_id_and_short_code_field(dbm, logger):
     for row in dbm.database.query(list_all_form_models, include_docs=True):
         try:
             document_data = row.doc
@@ -77,8 +77,8 @@ def add_unique_id_and_short_code_field(dbm):
                                     survey_response = SurveyResponseDocument._wrap_row(row)
                                     dbm._save_document(survey_response)
                                 except Exception as e:
-                                    logging.error("Survey response update failed for database %s for id %s" %(dbm.database_name,row.get('id')))
-                                    logging.error(e)
+                                    logger.error("Survey response update failed for database %s for id %s" %(dbm.database_name,row.get('id')))
+                                    logger.error(e)
                         short_code_dict = f
                         break
                     #Remove event_time flag from reporting date question
@@ -96,9 +96,9 @@ def add_unique_id_and_short_code_field(dbm):
                     form_model.add_validator(validator)
                 _save_form_model_doc(dbm, form_model)
         except Exception as e:
-            logging.error('Failed form model for database : %s, doc with id: %s', dbm.database_name,
+            logger.error('Failed form model for database : %s, doc with id: %s', dbm.database_name,
                           row.id)
-            logging.error(e)
+            logger.error(e)
 
 
 def migrate_form_model_to_add_eid_fields(db_name):
@@ -106,7 +106,7 @@ def migrate_form_model_to_add_eid_fields(db_name):
     try:
         logger.info('Starting migration')
         dbm = get_db_manager(db_name)
-        add_unique_id_and_short_code_field(dbm)
+        add_unique_id_and_short_code_field(dbm, logger)
         mark_as_completed(db_name)
     except Exception as e:
         logger.exception(e.message)
