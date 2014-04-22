@@ -324,9 +324,18 @@ fieldset {
 }
 
 .validationMessage {
-  background: url(/media/images/arrow_error.png) no-repeat left 3px;
+  background: url(/media/images/arrow_error.png) no-repeat ;
+  background-position: left 3px;
   display: inline;
 }
+
+
+.choiceValidationMessage{
+  @extend .validationMessage;
+  background-position: left 6px !important;
+  display:block;
+}
+
 
 .validationText {
   color: #FFFFFF;
