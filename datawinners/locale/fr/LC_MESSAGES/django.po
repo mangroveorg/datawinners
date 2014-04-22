@@ -1434,8 +1434,8 @@ msgstr "Sélectionner"
 msgid "Unique ID"
 msgstr "ID unique"
 
-msgid "Questionnaires - Subjects"
-msgstr "Questionnaires - Sujets"
+msgid "Questionnaires - Identification Numbers"
+msgstr "Questionnaires - Numéros d'identification"
 
 msgid "Add Reminder"
 msgstr "Ajouter un message de rappel"
@@ -2769,7 +2769,7 @@ msgid "Define what information you want to collect about each %(entity_type)s."
 msgstr "Définissez quelles informations vous souhaitez collecter sur chaque %(entity_type)s."
 
 msgid "View and manage all of the people, places, things or events that you want to collect data about."
-msgstr "Visualisez et gérez toutes les personnes, places, choses ou événements sur lesquels vous voulez collecter des données."
+msgstr "Voyez et gérez tous les gens, lieux, choses, ou événements sur lesquels vous souhaitez collecter des données."
 
 msgid "Hide help"
 msgstr "Cacher l'aide"
@@ -3725,7 +3725,7 @@ msgstr "%d"
 msgid "%dth"
 msgstr "%d"
 
-msgid "If you delete this %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for this Subject on the Data pages. Are you sure you want to delete?"
+msgid "If you delete this %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for it on the Data pages. Are you sure you want to delete?"
 msgstr "Si vous supprimez ce/cette %(entity_type)s, vous ne pouvez plus collecter des données le concernant. Cependant, vous pouvez toujours voir les données collectées précedemment sur les pages Données. \n\n Etes-vous sûr de vouloir supprimer? "
 
 msgid "Yes, Delete"

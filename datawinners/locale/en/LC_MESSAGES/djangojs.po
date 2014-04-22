@@ -1092,9 +1092,6 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-msgid "List of Choices"
-msgstr ""
-
 msgid "Answer must be the Identification Number of the %s you are reporting on."
 msgstr ""
 
