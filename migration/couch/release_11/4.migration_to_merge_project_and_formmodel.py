@@ -18,7 +18,7 @@ function(doc) {
 """
 
 
-def update_reminders(dbm, project_data):
+def update_reminders(dbm, project_data, logger):
     project_id = project_data.get('id')
     for reminder in (Reminder.objects.filter(project_id=project_id)):
         try:
@@ -32,11 +32,11 @@ def update_reminders(dbm, project_data):
                 doc.project_id = form_model_id
                 dbm._save_document(doc)
         except Exception as e:
-            logging.error("Reminder save failed for database %s for project id %s" % (dbm.database_name, project_id))
-            logging.error(e)
+            logger.error("Reminder save failed for database %s for project id %s" % (dbm.database_name, project_id))
+            logger.error(e)
 
 
-def merge_project_and_form_model_for(dbm):
+def merge_project_and_form_model_for(dbm, logger):
     for row in dbm.database.query(list_all_projects, include_docs=True):
         try:
             project_data = row.doc
@@ -52,15 +52,15 @@ def merge_project_and_form_model_for(dbm):
             try:
                 del form_model_doc['state']
             except KeyError as e:
-                logging.warn(e)
+                logger.warn(e)
             dbm._save_document(form_model_doc)
 
-            update_reminders(dbm, project_data)
+            update_reminders(dbm, project_data, logger)
             dbm.database.delete(row.doc)
         except Exception as e:
-            logging.error('Merging project and form_model failed for database : %s, project_doc with id: %s',
+            logger.error('Merging project and form_model failed for database : %s, project_doc with id: %s',
                           dbm.database_name, row.id)
-            logging.error(e)
+            logger.error(e)
 
 
 def migrate_to_merge_form_model_and_project(db_name):
@@ -68,7 +68,7 @@ def migrate_to_merge_form_model_and_project(db_name):
     try:
         logger.info('Starting migration')
         dbm = get_db_manager(db_name)
-        merge_project_and_form_model_for(dbm)
+        merge_project_and_form_model_for(dbm, logger)
         mark_as_completed(db_name)
     except Exception as e:
         logger.exception(e.message)
