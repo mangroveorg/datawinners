@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     (r'^submission/breakup/(?P<project_id>.+?)/$', get_submission_breakup),
     (r'^submission/details/(?P<project_id>.+?)/$', get_submissions_about_project),
     (r'^get_geojson/(?P<project_id>.+?)/$', geo_json_for_project),
+    (r'^get_geojson/(?P<project_id>.+?)/(?P<entity_type>.+?)$', geo_json_for_project),
     (r'^maps/entity_type$', render_map)
     )

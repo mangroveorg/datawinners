@@ -8,10 +8,9 @@ def _get_lowest_administrative_boundary(location_path):
     return lowest_admin_boundary, len(location_path) - 1
 
 
-def _get_geo_json_for_entity_from_geo_code(entity, geometry, entity_types):
+def _get_geo_json_for_entity_from_geo_code(entity, geometry):
     geometry["coordinates"] = [geometry["coordinates"][1], geometry["coordinates"][0]]
-    geometry_geo_json = {"type": "Feature", "geometry": entity.geometry,
-                         "properties": {"style": "datasender" if entity.is_reporter else "entity_" + str(1 + entity_types.index(entity.type_string))}}
+    geometry_geo_json = {"type": "Feature", "geometry": entity.geometry}
     return geometry_geo_json
 
 
@@ -32,13 +31,13 @@ def _get_geo_json_from_location_path(location_path, tree):
     return geojson_feature
 
 
-def create_location_geojson(entity_list, entity_types=[]):
+def create_location_geojson(entity_list):
     location_list = []
     for entity in entity_list:
         geometry_geo_json = None
         if entity.geometry:
             try:
-                geometry_geo_json = _get_geo_json_for_entity_from_geo_code(entity, entity.geometry, entity_types)
+                geometry_geo_json = _get_geo_json_for_entity_from_geo_code(entity, entity.geometry)
             except IndexError:
                 geometry_geo_json = None
         if geometry_geo_json is not None:

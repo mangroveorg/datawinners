@@ -116,25 +116,26 @@ def start(request):
                               context_instance=RequestContext(request))
 
 @valid_web_user
-def geo_json_for_project(request, project_id):
+def geo_json_for_project(request, project_id, entity_type=None):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
     entity_list = []
-    for short_code in questionnaire.data_senders:
-        try:
-            entity = get_by_short_code(dbm, short_code, ["reporter"])
-        except DataObjectNotFound:
-            continue
-        entity_list.append(entity)
 
-    for unique_id_type in questionnaire.entity_type:
+    if entity_type:
         try:
-            unique_ids = get_all_entities(dbm, [unique_id_type])
+            unique_ids = get_all_entities(dbm, [entity_type])
         except DataObjectNotFound:
             pass
         entity_list.extend(unique_ids)
+    else:
+        for short_code in questionnaire.data_senders:
+            try:
+                entity = get_by_short_code(dbm, short_code, ["reporter"])
+            except DataObjectNotFound:
+                continue
+            entity_list.append(entity)
 
-    location_geojson = helper.create_location_geojson(entity_list, questionnaire.entity_type)
+    location_geojson = helper.create_location_geojson(entity_list)
     return HttpResponse(location_geojson)
 
 def render_map(request):

@@ -19,18 +19,20 @@
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet" />
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
     <link href="/media/css/scss/section_application.css" rel="stylesheet"/>
+    {% if GOOGLE_MAPS_ENABLED %}
     <link rel="stylesheet" href="/media/javascript/OpenLayers-2.13.1/theme/default/style.css" media="screen">
-
+    <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map.css" media="screen">
+    {% endif %}
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
   {% if GOOGLE_MAPS_ENABLED %}
     <script type="text/javascript">
+        var entity_types = {{ project.entity_type|safe }};
         $(document).ready(function() {
             $( "#how_to" ).accordion({ collapsible: true, active: 0 });
-            var marker_image = $('#marker_image').html();
-            init(marker_image );
+            init_map();
         });
     </script>
    {% endif %}
@@ -49,7 +51,6 @@
         <div class="my_sub"><p><b>
             <div>{% trans "Subjects"%}: {% trans "Data Senders"%}</div>
             <div>{{ add_data_senders_to_see_on_map_msg }}</div>
-            <span style="display: none" id="marker_image">map_marker_red.png</span>
         </b></p></div>
 
         <!--Map div-->
