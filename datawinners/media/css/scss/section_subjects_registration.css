@@ -8,8 +8,7 @@
       font-weight: normal; }
     #questionnaire .questionnaire_code input {
       width: 90px;
-      height: 25px;
-      border-color: #CCCCCC; }
+      height: 25px; }
     #questionnaire .questionnaire_code h5 {
       margin-bottom: 10px; }
     #questionnaire .questionnaire_code li > label {

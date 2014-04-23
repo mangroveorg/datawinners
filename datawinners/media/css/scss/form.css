@@ -7,7 +7,7 @@ form ul li {
   form ul li input[type=text], form ul li input[type=password] {
     width: 350px;
     height: 25px;
-    border-color: #cccccc; }
+    border-color: #646464 #ebebeb #ebebeb #646464; }
   form ul li a {
     color: #0070ac; }
   form ul li a:hover {
@@ -16,8 +16,8 @@ form ul li {
   form ul li textarea {
     width: 350px;
     height: 100px;
-    border-color: #cccccc;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    border-color: #646464 #ebebeb #ebebeb #646464;
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li label {
     font-size: 14px;
     display: block;
@@ -27,7 +27,7 @@ form ul li {
     font-weight: bold; }
   form ul li input {
     float: left;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li span[wmwrap=true] {
     float: left;
     top: 3px; }
@@ -74,7 +74,7 @@ div.error_arrow {
 span.error_arrow, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 3px;
   display: inline;
-  float: left!important; }
+  float: left !important; }
 
 span .error_arrow label, div.error_arrow label, label.error_arrow label {
   float: none;
@@ -161,7 +161,7 @@ span .error_arrow label, div.error_arrow label, label.error_arrow label {
 .application_register form ul li input[type=text], .application_register form ul li input[type=password] {
   width: 200px;
   height: 15px;
-  border-color: #cccccc; }
+  border-color: #646464 #ebebeb #ebebeb #646464; }
 .application_register form ul li label {
   font-size: 14px;
   display: block;
@@ -173,7 +173,7 @@ span .error_arrow label, div.error_arrow label, label.error_arrow label {
 input[type=text], textarea {
   width: 350px;
   height: 25px;
-  border-color: #cccccc; }
+  border-color: #646464 #ebebeb #ebebeb #646464; }
 
 input[type=button] {
   border: 0px; }
@@ -197,7 +197,7 @@ a:hover {
 textarea {
   width: 350px;
   height: 100px;
-  border-color: #cccccc; }
+  border-color: #646464 #ebebeb #ebebeb #646464; }
 
 label {
   font-size: 14px;
@@ -207,8 +207,19 @@ label {
 select {
   width: auto;
   height: 25px;
-  border-color: #cccccc;
-  background: #FFFFFF; }
+  background: #FFFFFF;
+  -webkit-border-radius: 0px;
+  border: 2px solid;
+  border-color: #646464 #EBEBEB #EBEBEB #646464; }
+
+input {
+  width: auto;
+  height: 30px;
+  background: #FFFFFF;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border: 2px solid;
+  border-color: #646464 #EBEBEB #EBEBEB #646464; }
 
 .multiple_select {
   height: auto; }
@@ -286,10 +297,10 @@ select {
   cursor: hand; }
 
 .button_wizard_next {
-  /*width: 180px;*/
+  width: 180px;
   height: 29px;
   border: none !important;
-  background: url("/media/images/button_wizard_next.png") no-repeat top left / 100% 29px;
+  background: url("/media/images/button_wizard_next.png") no-repeat top left;
   color: #6F451D !important;
   font-family: "Arial";
   font-size: 11px !important;
@@ -361,11 +372,6 @@ select {
     box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
     opacity: 0.9; }
 
-.cancel_project {
-  line-height: 29px;
-  text-decoration: none !important;
-  margin: 0 10px; }
-
 #type_message {
   float: left;
   clear: both; }
@@ -403,7 +409,7 @@ select {
 
 /* Accordian */
 .ui-accordion {
-  width: 95% !important; }
+  width: 100% !important; }
   .ui-accordion label.example {
     width: 300px;
     font-weight: normal;

@@ -86,6 +86,9 @@ fieldset {
   font-size: 14px;
   .cancel_project {
     font-size: 14px;
+    line-height: 29px;
+    text-decoration: none !important;
+    margin: 0 0px;
   }
   .project_title {
     font-size: 30px;
@@ -95,6 +98,13 @@ fieldset {
   }
 }
 
+#continue_project {
+    margin-left: 10px;
+}
+
+#save_and_create {
+  margin-left: 10px;
+}
 .cancel-link {
   verticle-align: middle;
 }
@@ -459,7 +469,10 @@ fieldset {
     width: 200px;
   }
 }
-
+.blank_questionnaire_help {
+  color: #888888;
+  font-style: italic;
+}
 .uniqueIdTypeSection{
   line-height: 1.5em;
   .unique_id_learn_more{
@@ -500,7 +513,7 @@ fieldset {
     }
     .section-example{
       margin-top: 5px;
-      color: #666666;
+      color: #888888;
       font-style: italic;
     }
     hr{

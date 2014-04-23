@@ -1,6 +1,6 @@
 $text_box_width: 350px;
 $select_box_width:150px;
-$border_color: #CCCCCC;
+$border_color: #646464 #EBEBEB #EBEBEB #646464;
 $link_color:#0070ac;
 
 form{
@@ -266,6 +266,16 @@ select{
     border: 2px solid;
     border-color: #646464 #EBEBEB #EBEBEB #646464;
 }
+
+input {
+    width:auto;
+    height:30px;
+    background:#FFFFFF;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border: 2px solid;
+    border-color: #646464 #EBEBEB #EBEBEB #646464;
+}
 .multiple_select{
     height: auto;
 }
@@ -424,12 +434,6 @@ select{
     }
 }
 
-.cancel_project {
-    line-height: 29px;
-    text-decoration: none !important;
-    margin: 0 10px;
-}
-
 #type_message{
     float: left;
     clear: both;
@@ -471,7 +475,7 @@ select{
 
 /* Accordian */
 .ui-accordion{
-    width:95% !important;
+    width:100% !important;
     label.example{
         width:300px;
         font-weight:normal;

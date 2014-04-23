@@ -225,7 +225,7 @@ form ul li {
   form ul li input[type=text], form ul li input[type=password] {
     width: 350px;
     height: 25px;
-    border-color: #cccccc; }
+    border-color: #646464 #ebebeb #ebebeb #646464; }
   form ul li a {
     color: #0070ac; }
   form ul li a:hover {
@@ -234,7 +234,7 @@ form ul li {
   form ul li textarea {
     width: 350px;
     height: 100px;
-    border-color: #cccccc;
+    border-color: #646464 #ebebeb #ebebeb #646464;
     font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li label {
     font-size: 14px;
@@ -379,7 +379,7 @@ span .error_arrow label, div.error_arrow label, label.error_arrow label {
 .application_register form ul li input[type=text], .application_register form ul li input[type=password] {
   width: 200px;
   height: 15px;
-  border-color: #cccccc; }
+  border-color: #646464 #ebebeb #ebebeb #646464; }
 .application_register form ul li label {
   font-size: 14px;
   display: block;
@@ -391,7 +391,7 @@ span .error_arrow label, div.error_arrow label, label.error_arrow label {
 input[type=text], textarea {
   width: 350px;
   height: 25px;
-  border-color: #cccccc; }
+  border-color: #646464 #ebebeb #ebebeb #646464; }
 
 input[type=button] {
   border: 0px; }
@@ -415,7 +415,7 @@ a:hover {
 textarea {
   width: 350px;
   height: 100px;
-  border-color: #cccccc; }
+  border-color: #646464 #ebebeb #ebebeb #646464; }
 
 label {
   font-size: 14px;
@@ -427,6 +427,15 @@ select {
   height: 25px;
   background: #FFFFFF;
   -webkit-border-radius: 0px;
+  border: 2px solid;
+  border-color: #646464 #EBEBEB #EBEBEB #646464; }
+
+input {
+  width: auto;
+  height: 30px;
+  background: #FFFFFF;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
   border: 2px solid;
   border-color: #646464 #EBEBEB #EBEBEB #646464; }
 
@@ -581,11 +590,6 @@ select {
     box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
     opacity: 0.9; }
 
-.cancel_project {
-  line-height: 29px;
-  text-decoration: none !important;
-  margin: 0 10px; }
-
 #type_message {
   float: left;
   clear: both; }
@@ -623,7 +627,7 @@ select {
 
 /* Accordian */
 .ui-accordion {
-  width: 95% !important; }
+  width: 100% !important; }
   .ui-accordion label.example {
     width: 300px;
     font-weight: normal;
