@@ -9,7 +9,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.datastore.entity import get_by_short_code, Entity
+from mangrove.datastore.entity import get_by_short_code, Entity, get_all_entities
 from mangrove.datastore.queries import get_entities_by_type
 from mangrove.form_model.form_model import FormModel
 
@@ -127,7 +127,14 @@ def geo_json_for_project(request, project_id):
             continue
         entity_list.append(entity)
 
-    location_geojson = helper.create_location_geojson(entity_list)
+    for unique_id_type in questionnaire.entity_type:
+        try:
+            unique_ids = get_all_entities(dbm, [unique_id_type])
+        except DataObjectNotFound:
+            pass
+        entity_list.extend(unique_ids)
+
+    location_geojson = helper.create_location_geojson(entity_list, questionnaire.entity_type)
     return HttpResponse(location_geojson)
 
 def render_map(request):

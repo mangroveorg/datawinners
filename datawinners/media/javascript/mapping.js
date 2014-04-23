@@ -21,13 +21,21 @@ function init(marker_image) {
             sphericalMercator: true
             });
 
-   var myStyles = new OpenLayers.StyleMap({
+   var styleMap = new OpenLayers.StyleMap({
        "default": new OpenLayers.Style({
            externalGraphic:'/media/images/' + marker_image,
            pointRadius:8
 
        })
    });
+   var lookup_map_pin = {
+       "datasender": {externalGraphic:'/media/images/pin_datasender.png', graphicWidth:48, graphicHeight:43}
+   }
+   for (var i=1;i<=10; i++){
+       lookup_map_pin["entity_" + i] = {externalGraphic:'/media/images/pin_entity_'+ i +'.png', graphicWidth:48, graphicHeight:43}
+   }
+
+   styleMap.addUniqueValueRules("default", "style", lookup_map_pin);
    var vectorLyr = new OpenLayers.Layer.Vector('Points',{
        strategies: [new OpenLayers.Strategy.Fixed()],
        projection: new OpenLayers.Projection("EPSG:4326"),
@@ -35,7 +43,7 @@ function init(marker_image) {
              url: '/get_geojson/'+project_id + "/",
              format: new OpenLayers.Format.GeoJSON()
        }),
-               styleMap:myStyles
+               styleMap:styleMap
     });
   map.addLayers([layer,vectorLyr]);
   var proj = new OpenLayers.Projection("EPSG:4326");
