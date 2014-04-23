@@ -19,7 +19,8 @@ $(document).ready(function () {
             table_source_url: render_table_url + '?type=' + submissionTabs.getActiveTabName(),
             row_check_box_visible: submissionTabs.isTableEntriesCheckable(),
             actions_menu: _getTableActionsMenu(submissionTabs),
-            tabName: submissionTabs.getActiveTabName()
+            tabName: submissionTabs.getActiveTabName(),
+            sortCol : 2
         };
         new DW.SubmissionLogTable(submission_table_options);
     };

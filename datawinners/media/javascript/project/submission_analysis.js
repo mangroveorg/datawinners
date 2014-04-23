@@ -27,7 +27,8 @@ DW.SubmissionAnalysisView = function(){
             table_source_url: render_table_url + '?type=' + submissionTabs.getActiveTabName(),
             row_check_box_visible: false,
             actions_menu: [],
-            tabName: submissionTabs.getActiveTabName()
+            tabName: submissionTabs.getActiveTabName(),
+            sortCol : 1
         };
         new DW.SubmissionLogTable(submission_table_options);
     };

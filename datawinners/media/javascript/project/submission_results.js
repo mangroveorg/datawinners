@@ -67,7 +67,7 @@ DW.SubmissionLogTable = function (options) {
                 "bServerSide": true,
                 "oLanguage": {"sEmptyTable": no_data_help[options.tabName]},
                 "aaSorting": [
-                    [ 2, "desc"]
+                    [ options.sortCol, "desc"]
                 ],
                 "aoColumnDefs": [
                     {"aTargets": [0], "sWidth": "30px"}
