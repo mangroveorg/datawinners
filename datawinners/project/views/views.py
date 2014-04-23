@@ -686,7 +686,7 @@ class SurveyWebQuestionnaireRequest():
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
-def survey_web_questionnaire(request, project_id=None):
+def survey_web_questionnaire(request, project_id):
     survey_request = SurveyWebQuestionnaireRequest(request, project_id)
     if request.method == 'GET':
         return survey_request.response_for_get_request()
@@ -694,7 +694,7 @@ def survey_web_questionnaire(request, project_id=None):
         return survey_request.response_for_post_request()
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_project_exist
 @is_datasender_allowed
