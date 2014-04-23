@@ -624,10 +624,8 @@ class SurveyWebQuestionnaireRequest():
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
 
-    def player_response(self, created_request):
+    def player_response(self, created_request, reporter_id):
         user_profile = NGOUserProfile.objects.get(user=self.request.user)
-        reporter_id = created_request.message.get('dsid', user_profile.reporter_id)
-
         additional_feed_dictionary = get_feed_dictionary(self.questionnaire)
         web_player = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id)
         response = web_player.add_survey_response(created_request, reporter_id, additional_feed_dictionary,
@@ -655,7 +653,8 @@ class SurveyWebQuestionnaireRequest():
         #     questionnaire_form.cleaned_data['eid'] = self.request.user.get_profile().reporter_id
         try:
             created_request = helper.create_request(questionnaire_form, self.request.user.username, is_update=is_update)
-            response = self.player_response(created_request)
+            reporter_id = self.request.POST.get('dsid')
+            response = self.player_response(created_request, reporter_id)
             if response.success:
                 ReportRouter().route(get_organization(self.request).org_id, response)
                 success_message = _("Successfully submitted")
