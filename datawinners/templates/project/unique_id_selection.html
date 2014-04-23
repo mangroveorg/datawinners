@@ -28,7 +28,7 @@
             <input class="newUniqueIdName" type="text" maxlength="20" data-bind="value: $root.newUniqueIdType"/>
             <button class="button_blue" data-bind="click: $root.addNewUniqueIdType, text:$root.uniqueIdButtonText"></button>
         </div>
-        <div class="validationMessage" data-bind="ifnot: $root.newUniqueIdType.valid">
+        <div class="validationMessage" data-bind="ifnot: $root.newUniqueIdType.valid" style="float:left;">
             <span id="new_type_validation_message" class="validationText" data-bind="text: $root.newUniqueIdType.error"></span>
         </div>
 
