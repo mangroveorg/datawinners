@@ -627,6 +627,8 @@ class SurveyWebQuestionnaireRequest():
     def player_response(self, created_request, reporter_id):
         user_profile = NGOUserProfile.objects.get(user=self.request.user)
         additional_feed_dictionary = get_feed_dictionary(self.questionnaire)
+        if not reporter_id:
+            reporter_id = user_profile.reporter_id
         web_player = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id)
         response = web_player.add_survey_response(created_request, reporter_id, additional_feed_dictionary,
                                                   websubmission_logger)
