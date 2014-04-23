@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from time import sleep
 from pages.alldatapage.all_data_page import AllDataPage
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.dashboardpage.dashboard_page import DashboardPage
@@ -56,6 +57,7 @@ class GlobalNavigationPage(Page):
 
         Return dashboard page
          """
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         self.driver.find(DASHBOARD_PAGE_LINK).click()
         return DashboardPage(self.driver)
 

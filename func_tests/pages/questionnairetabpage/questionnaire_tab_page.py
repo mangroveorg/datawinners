@@ -144,6 +144,7 @@ class QuestionnaireTabPage(Page):
 
         return self
         """
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, QUESTION_TB, True)
         self.driver.find_text_box(QUESTION_TB).enter_text(fetch_(QUESTION, from_(question_data)))
         return self
 
