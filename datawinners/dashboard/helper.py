@@ -32,7 +32,7 @@ def _get_geo_json_from_location_path(location_path, tree):
     return geojson_feature
 
 
-def create_location_geojson(entity_list, entity_types):
+def create_location_geojson(entity_list, entity_types=[]):
     location_list = []
     for entity in entity_list:
         geometry_geo_json = None
