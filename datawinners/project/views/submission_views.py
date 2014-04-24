@@ -46,7 +46,7 @@ from datawinners.project.utils import project_info, is_quota_reached
 from datawinners.project.Header import SubmissionsPageHeader
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
-from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
+from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed, is_original_question_changed_from_choice_answer_type, is_original_field_and_latest_field_of_type_choice_answer, convert_choice_options_to_options_text, filter_submission_choice_options_based_on_current_answer_choices
 from datawinners.project.submission_form import SurveyResponseForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.transport.contract.survey_response import SurveyResponse
@@ -224,28 +224,8 @@ def build_static_info_context(manager, survey_response, ui_model=None):
     form_ui_model.update({'status': ugettext('Success') if survey_response.status else ugettext('Error')})
     return form_ui_model
 
-def _convert_choice_options_to_options_text(field, answer):
-    options = field.get_options_map()
-    value_list = []
-    for answer_value in list(answer):
-        value_list.append(options[answer_value])
-    return ",".join(value_list)
 
-def _filter_submission_choice_options_based_on_current_answer_choices(answer, original_field, latest_field):
-    original_value_list = list(answer)
-    original_option_map = original_field.get_options_map()
-    latest_option_map = latest_field.get_options_map()
-    new_value_list = []
-    for item in original_value_list:
-        if original_option_map.get(item) == latest_option_map.get(item):
-            new_value_list.append(item)
-    return "".join(new_value_list)
 
-def _is_original_question_changed_from_choice_answer_type(original_field, latest_field):
-    return isinstance(original_field, SelectField) and not isinstance(latest_field, SelectField)
-
-def _is_original_field_and_latest_field_of_type_choice_answer(original_field, latest_field):
-    return isinstance(original_field, SelectField) and isinstance(latest_field, SelectField)
 
 def construct_request_dict(survey_response, questionnaire_form_model, short_code):
     result_dict = {}
@@ -253,10 +233,10 @@ def construct_request_dict(survey_response, questionnaire_form_model, short_code
         value = survey_response.values.get(field.code) if survey_response.values.get(
             field.code) else survey_response.values.get(field.code.lower())
         original_field = questionnaire_form_model.get_field_by_code_and_rev(field.code, survey_response.form_model_revision)
-        if _is_original_question_changed_from_choice_answer_type(original_field, field):
-            value = _convert_choice_options_to_options_text(original_field, value)
-        elif _is_original_field_and_latest_field_of_type_choice_answer(original_field, field):
-            value = _filter_submission_choice_options_based_on_current_answer_choices(value, original_field, field)
+        if is_original_question_changed_from_choice_answer_type(original_field, field):
+            value = convert_choice_options_to_options_text(original_field, value)
+        elif is_original_field_and_latest_field_of_type_choice_answer(original_field, field):
+            value = filter_submission_choice_options_based_on_current_answer_choices(value, original_field, field)
         if isinstance(field, SelectField) and field.type == 'select':
             #check if select field answer is present in survey response
             value = re.findall(r'[1-9]?[a-z]', value) if value else value

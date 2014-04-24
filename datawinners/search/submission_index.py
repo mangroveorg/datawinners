@@ -4,6 +4,7 @@ from string import lower
 
 from babel.dates import format_datetime
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
+from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, convert_choice_options_to_options_text
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
 from mangrove.form_model.field import DateField, UniqueIdField, SelectField
@@ -269,11 +270,16 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
     for field in form_model.fields:
         entry = submission_values.get(lower(field.code))
         if field.is_entity_field:
-            entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
-            entry_code = UNKNOWN if entity_name == UNKNOWN else entry
-            search_dict.update(
-                {es_unique_id_code_field_name(es_field_name(lower(field.code), form_model.id)): entry_code or UNKNOWN})
-            entry = entity_name
+            if entry:
+                original_field = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
+
+                if is_original_question_changed_from_choice_answer_type(original_field, field):
+                    entry = convert_choice_options_to_options_text(original_field, entry)
+                entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
+                entry_code = entry
+                search_dict.update(
+                    {es_unique_id_code_field_name(es_field_name(lower(field.code), form_model.id)): entry_code or UNKNOWN})
+                entry = entity_name
         elif field.type == "select":
             field = _update_select_field_by_revision(field, form_model, submission_doc)
             if field.type == "select":

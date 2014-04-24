@@ -54,14 +54,14 @@ class TestSubmissionIndex(unittest.TestCase):
                  'void': False},
                 search_dict)
 
-    def test_should_update_search_dict_with_none_for_missing_entity_answer_in_submission(self):
+    def test_should_not_update_search_dict_with_uid_field(self):
         search_dict = {}
         self.form_model.fields = [self.field1, self.field2, self.field3]
         values = {'q2': 'wrong number', 'q3': 'wrong text'}
         submission_doc = SurveyResponseDocument(values=values, status="error")
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
-            {'1212_q1': 'N/A', "1212_q1_unique_code": 'N/A', '1212_q2': 'wrong number', '1212_q3': 'wrong text',
+            {'1212_q2': 'wrong number', '1212_q3': 'wrong text',
              'void': False},
             search_dict)
 
@@ -109,3 +109,22 @@ class TestSubmissionIndex(unittest.TestCase):
                     query_all.assert_called_with('db_name', 'form_model_id',
                                                  **{'form_model_id_q1_unique_code': 'cli001'})
                     update_field_in_submission_index.assert_called_with('id1', {'form_model_id_q1': 'bangalore'})
+
+
+    def test_should_get_comma_separated_list_if_field_changed_from_choice_to_unique_id(self):
+        search_dict = {}
+
+        options=[{'text':'option1','val':'a'},{'text':'option2','val':'b'}]
+
+        self.form_model.fields = [self.field1]
+        original_field = SelectField('selectField','q1','q1',options)
+        self.form_model.get_field_by_code_and_rev.return_value = original_field
+        values = {'q1':'ab','q2': 'wrong number', 'q3': 'wrong text'}
+        submission_doc = SurveyResponseDocument(values=values, status="error")
+        with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
+            lookup_entity_name.return_value = 'N/A'
+
+            _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
+            self.assertEquals(
+                {'1212_q1': 'N/A', '1212_q1_unique_code': 'option1,option2', 'void': False},
+                search_dict)

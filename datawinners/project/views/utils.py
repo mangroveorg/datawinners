@@ -1,11 +1,8 @@
-from collections import namedtuple
-
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy as _
+from mangrove.form_model.field import SelectField
 
 from datawinners.entity.import_data import get_entity_type_info
-from datawinners.project.utils import make_project_links, make_data_sender_links, make_subject_links
-from mangrove.form_model.form_model import REPORTER
+from datawinners.project.utils import make_project_links
 
 
 def get_form_context(questionnaire, survey_response_form, manager, hide_link_class, disable_link_class,entity_type=None, is_update=False):
@@ -41,3 +38,26 @@ def get_project_details_dict_for_feed(project):
     return additional_feed_dictionary
 
 
+
+def is_original_question_changed_from_choice_answer_type(original_field, latest_field):
+    return isinstance(original_field, SelectField) and not isinstance(latest_field, SelectField)
+
+def is_original_field_and_latest_field_of_type_choice_answer(original_field, latest_field):
+    return isinstance(original_field, SelectField) and isinstance(latest_field, SelectField)
+
+def convert_choice_options_to_options_text(field, answer):
+    options = field.get_options_map()
+    value_list = []
+    for answer_value in list(answer):
+        value_list.append(options[answer_value])
+    return ",".join(value_list)
+
+def filter_submission_choice_options_based_on_current_answer_choices(answer, original_field, latest_field):
+    original_value_list = list(answer)
+    original_option_map = original_field.get_options_map()
+    latest_option_map = latest_field.get_options_map()
+    new_value_list = []
+    for item in original_value_list:
+        if original_option_map.get(item) == latest_option_map.get(item):
+            new_value_list.append(item)
+    return "".join(new_value_list)

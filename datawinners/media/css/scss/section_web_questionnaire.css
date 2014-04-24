@@ -51,3 +51,6 @@ a#cancel_leave {
 #cancel_submission_warning_message .font_size_13 {
   font-size: 13px;
   margin: 10px 0; }
+
+.subject_field {
+  float: left !important; }
