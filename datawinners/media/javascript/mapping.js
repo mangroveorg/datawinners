@@ -43,7 +43,7 @@ function init_map() {
 
     for (var i = 0; i < entity_types.length; i++) {
         var entity_type = entity_types[i];
-        var image_url = '/media/images/pin_entity_' + (i + 1) + ".png";
+        var image_url = '/media/images/pin_entity_' + (i%10 + 1) + ".png";
         add_layer(entity_type, image_url, geo_url + "/" + entity_type)
     }
 
