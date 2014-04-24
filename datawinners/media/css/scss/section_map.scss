@@ -1,7 +1,14 @@
 .labelSpan{
   display: inline;
   text-transform: capitalize;
+  img {
+    width:20px;
+    height:20px;
+  }
 }
 .dataLbl{
   display: none;
+}
+div.dataLayersDiv input{
+  height: auto;
 }

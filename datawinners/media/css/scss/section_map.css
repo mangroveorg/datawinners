@@ -1,6 +1,12 @@
 .labelSpan {
   display: inline;
   text-transform: capitalize; }
+  .labelSpan img {
+    width: 20px;
+    height: 20px; }
 
 .dataLbl {
   display: none; }
+
+div.dataLayersDiv input {
+  height: auto; }

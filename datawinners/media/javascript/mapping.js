@@ -24,6 +24,7 @@ function init_map() {
     }));
 
     function add_layer(name, image, url) {
+        name = '<img src="' + image + '">' + name;
         layers.push(new OpenLayers.Layer.Vector(name, {
             strategies: [new OpenLayers.Strategy.Fixed()],
             projection: new OpenLayers.Projection("EPSG:4326"),
