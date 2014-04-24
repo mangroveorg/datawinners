@@ -21,7 +21,7 @@ def add_to_header(headers, label, instruction, example):
 def get_subject_headers(fields):
     headers = []
     for field in fields:
-        context = InstructionContext(field=field, entity_type=None)
+        context = InstructionContext(field=field, unique_id_types=None)
         instruction, example = SubjectInstructionBuilder.fetch_instruction(context)
         add_to_header(headers, field["label"], instruction, example)
     return headers
@@ -36,7 +36,6 @@ def get_submission_headers(fields, form_model, is_org_user=False):
                   _("Example: rep42"))
 
     for field in fields:
-        #context = InstructionContext(field, form_model.entity_type[0])
         context = InstructionContext(field, form_model.entity_type)
         instruction, example = SubmissionInstructionBuilder.fetch_instruction(context)
         add_to_header(headers, field["label"], instruction, example)
@@ -165,9 +164,9 @@ class EntityProjectSubmissionInstruction:
 
     @staticmethod
     def get_instruction(context):
-        return _("Enter the unique ID for each %s.\nYou can find the %s List on the My Subjects page.") % (
-            context.entity_type[0], context.entity_type[0]), \
-               (_("Example: %s")) % 'cli01'
+        page_name = "Identification Numbers" if context.has_multiple_unique_ids else "%s" % context.field['unique_id_type']
+        return _("Enter the unique ID for each %s.\nYou can find the %s List on the My %s page.") % (
+            context.field['unique_id_type'], context.field['unique_id_type'], page_name), (_("Example: %s")) % 'cli01'
 
 
 class SubjectInstructionBuilder:
@@ -185,7 +184,6 @@ class SubjectInstructionBuilder:
 
 class SubmissionInstructionBuilder:
     field_instructions = [
-        #SummaryProjectSubmissionInstruction,
                           EntityProjectSubmissionInstruction,
                           IntegerFieldInstruction, TextFieldInstruction,
                           GeoCodeFieldInstruction, DateFieldInstruction, MultiSelectFieldInstruction,
@@ -202,6 +200,6 @@ class SubmissionInstructionBuilder:
 
 
 class InstructionContext():
-    def __init__(self, field, entity_type):
+    def __init__(self, field, unique_id_types):
         self.field = field
-        self.entity_type = entity_type
+        self.has_multiple_unique_ids = unique_id_types is not None and len(unique_id_types) > 1

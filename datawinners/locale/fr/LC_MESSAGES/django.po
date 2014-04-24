@@ -4604,7 +4604,7 @@ msgstr "Tapez un chiffre"
 msgid "If you are sending data on behalf of someone, you can enter their Data Sender ID."
 msgstr "Si vous envoyez des données pour le compte de quelqu'un, vous pouvez taper leur code unique d'Expéditeur de Données."
 
-msgid "Enter the unique ID for each %s.\nYou can find the %s List on the My Subjects page."
+msgid "Enter the unique ID for each %s.\nYou can find the %s List on the My %s page."
 msgstr "Tapez le code unique pour chaque %s.\n Vous pouvez trouver la liste des  %s sur la page Mes Sujets."
 
 msgid "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."
