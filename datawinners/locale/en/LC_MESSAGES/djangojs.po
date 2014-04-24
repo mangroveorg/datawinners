@@ -1095,5 +1095,11 @@ msgstr ""
 msgid "Answer must be the Identification Number of the %s you are reporting on."
 msgstr ""
 
+msgid "Answer must be the Identification Number."
+msgstr ""
+
 msgid "Add"
+msgstr ""
+
+msgid "Adding.."
 msgstr ""

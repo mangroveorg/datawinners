@@ -4531,3 +4531,9 @@ msgstr ""
 
 msgid "%s with Identification Number %s successfully registered."
 msgstr ""
+
+msgid "Advanced Answer Types"
+msgstr ""
+
+msgid "Instructions for Data Senders"
+msgstr ""

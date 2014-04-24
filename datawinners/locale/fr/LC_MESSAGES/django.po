@@ -4777,8 +4777,14 @@ msgstr "moins de filtres"
 msgid "Identification Numbers"
 msgstr "Numéros d'Identification"
 
+msgid "Instructions for Data Senders"
+msgstr "Instructions pour les Expéditeurs de Données"
+
 msgid "%s with Identification Number %s successfully registered."
 msgstr "Le/la %s portant le Numéro d'Identification %s a été enregistré avec succès."
 
 msgid "Choose a %(entity_type)s from this list."
 msgstr "Choisissez un %(entity_type)s dans la liste."
+
+msgid "Advanced Answer Types"
+msgstr "Types de réponse avancés"
