@@ -164,9 +164,11 @@ class EntityProjectSubmissionInstruction:
 
     @staticmethod
     def get_instruction(context):
-        page_name = "Identification Numbers" if context.has_multiple_unique_ids else "%s" % context.field['unique_id_type']
+        unique_id_type = context.field['unique_id_type']
+        page_name = _("Identification Numbers") if context.has_multiple_unique_ids else "%s" % unique_id_type
+
         return _("Enter the unique ID for each %s.\nYou can find the %s List on the My %s page.") % (
-            context.field['unique_id_type'], context.field['unique_id_type'], page_name), (_("Example: %s")) % 'cli01'
+            unique_id_type, unique_id_type, page_name), (_("Example: %s")) % 'cli01'
 
 
 class SubjectInstructionBuilder:
