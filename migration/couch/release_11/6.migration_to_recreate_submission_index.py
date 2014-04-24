@@ -8,7 +8,7 @@ from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.search import form_model_change_handler
 from datawinners.main.database import get_db_manager
 from datawinners.search.submission_index import _update_with_form_model_fields, _meta_fields
-from migration.couch.utils import migrate
+from migration.couch.utils import migrate, mark_as_completed
 
 
 def create_submission_index(dbm, row):
@@ -42,6 +42,7 @@ def create_index(database_name):
             form_model_change_handler(form_model_doc, dbm)
             try:
                 create_submission_index(dbm, row)
+                mark_as_completed(database_name)
             except Exception as e:
                 logger.error("Index update failed for database %s and for formmodel %s" % (database_name, row.id))
                 logger.error(e)
