@@ -30,7 +30,7 @@ from datawinners.search.index_utils import es_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQuery
-from mangrove.form_model.field import SelectField
+from mangrove.form_model.field import SelectField, DateField, UniqueIdField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -83,6 +83,32 @@ def _get_date_fields_info(questionnaire):
     return date_fields_array
 
 
+def _is_unique_id_type_present(fields_array, unique_id_type):
+    return len([item for item in fields_array if item['type'] == 'unique_id' and item['entity_type'] == unique_id_type]) > 0
+
+
+def _get_filterable_fields(questionnaire):
+    fields_array = []
+    for field in questionnaire.fields:
+        if isinstance(field, DateField):
+            fields_array.append({
+                'type': 'date',
+                'code': field.code,
+                'label': field.label,
+                'is_month_format': field.is_monthly_format,
+                'format': field.date_format
+            })
+        elif isinstance(field, UniqueIdField):
+            if not _is_unique_id_type_present(fields_array, field.unique_id_type):
+                fields_array.append({
+                    'type': 'unique_id',
+                    'code': field.code,
+                    'entity_type': field.unique_id_type,
+                })
+    return fields_array
+
+
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -97,13 +123,16 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
             return HttpResponseRedirect(dashboard_page)
 
-        date_fields_array = _get_date_fields_info(questionnaire)
+        filterable_fields = _get_filterable_fields(questionnaire)
+        first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {
             "tab": tab,
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
-            "date_fields": date_fields_array
-            }
+            "first_filterable_field": first_filterable_fields,
+            "filterable_fields": filterable_fields
+        }
+
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/submission_results.html', result_dict,
                                   context_instance=RequestContext(request))
@@ -124,12 +153,14 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
         if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
-        date_fields_array = _get_date_fields_info(questionnaire)
+
+        filterable_fields = _get_filterable_fields(questionnaire)
+        first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
-            "date_fields": date_fields_array
-
+            "first_filterable_field": first_filterable_fields,
+            "filterable_fields": filterable_fields
             }
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/analysis_results.html', result_dict,

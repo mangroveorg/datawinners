@@ -5,14 +5,25 @@
             {% include 'project/partials/filters/_filter_by_keyword.html' %}
             {% include 'project/partials/filters/_filter_by_data_sender.html' %}
             {% include 'project/partials/filters/_filter_by_submission_date.html' %}
-            <div id="show_filters">
-                <a >{% trans 'More Filters' %}</a>
-            </div>
-
+            {% if first_filterable_field %}
+                {% if first_filterable_field.type == 'unique_id' %}
+                    {% include 'project/partials/filters/_filter_by_subject.html' with entity_type=first_filterable_field.entity_type%}
+                {% else %}
+                    {% include 'project/partials/filters/_filter_by_date_question.html' with date=first_filterable_field %}
+                {% endif %}
+            {% endif %}
+            {% if filterable_fields %}
+                <div id="show_filters">
+                    <a >{% trans 'More Filters' %}</a>
+                </div>
+            {% endif %}
             <div id="questionnaire_field_filters">
-                {% include 'project/partials/filters/_filter_by_subject.html' %}
-                {% for date_field in date_fields %}
-                    {% include 'project/partials/filters/_filter_by_date_question.html' with date=date_field %}
+                {% for field in filterable_fields %}
+                    {% if field.type == 'unique_id' %}
+                        {% include 'project/partials/filters/_filter_by_subject.html' with entity_type=field.entity_type%}
+                    {% else %}
+                        {% include 'project/partials/filters/_filter_by_date_question.html' with date=field %}
+                    {% endif %}
                 {% endfor %}
                 <div id="hide_filters">
                     <a>{% trans 'Less Filters' %}</a>

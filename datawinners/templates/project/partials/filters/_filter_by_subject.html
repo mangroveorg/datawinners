@@ -1,6 +1,4 @@
 {% load i18n %}
-{% if project.entity_type %}
-    {% for entity_type in project.entity_type %}
 <div class="float_left filter-question">
     <div class="filter_label">
         <label class="full_width">{{ entity_type|capfirst }}</label>
@@ -9,5 +7,3 @@
         <input class="subject_filter" type="text" watermark="{% trans 'All'%} {{ entity_type|capfirst }}" entity_type="{{ entity_type }}" placeholder="{% trans 'All'%} {{ entity_type|capfirst }}" />
     </div>
 </div>
-    {% endfor %}
-{% endif %}
