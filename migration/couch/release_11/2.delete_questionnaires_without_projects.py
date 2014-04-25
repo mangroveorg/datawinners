@@ -2,7 +2,7 @@ import logging
 
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.main.database import get_db_manager
-from migration.couch.utils import migrate
+from migration.couch.utils import migrate, mark_as_completed
 
 list_all_formmodels_of_projects = """
 function(doc) {
@@ -42,6 +42,7 @@ def delete_questionnaires_without_projects(db_name):
                     dbm.database.delete(submission.doc)
                 logger.info("deleting form_model with id:%s and code:%s", row.id, form_model_doc['form_code'])
                 dbm.database.delete(form_model_doc)
+                mark_as_completed(db_name)
         except Exception as e:
             logger.error(
                 'something failed for for database : %s, project_doc with id: %s' % (dbm.database_name, row.id))
