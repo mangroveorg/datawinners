@@ -27,7 +27,7 @@ class TestExporter(unittest.TestCase):
         workbook = xlrd.open_workbook(xlfile_name)
         print "file is %s" % xlfile_name
         sheet = workbook.sheet_by_index(0)
-        self.assertEqual([u'Datasender Name', u'Datasender Id', u'Submission Date', u'Status', u'What is associat\xe9d entity?', u'clinic ID',
+        self.assertEqual([u'Data Sender', u'Datasender Id', u'Submission Date', u'Status', u'What is associat\xe9d entity?', u'clinic ID',
                           u"What is your namé?", u"What is age öf father?",u'What is réporting date?',
                           u"What is your blood group?", u"What aré symptoms?",
                           u'What is the GPS code for clinic? Latitude', u'What is the GPS code for clinic? Longitude',
