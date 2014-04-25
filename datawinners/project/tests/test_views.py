@@ -7,10 +7,11 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpRequest
 from mock import Mock, patch, call, MagicMock
+from datawinners.project.views.submission_views import _get_filterable_fields
 from mangrove.transport import Response
 
 from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.field import TextField, DateField
+from mangrove.form_model.field import TextField, DateField, UniqueIdField
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
@@ -243,6 +244,39 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
                                 self.assertTrue(subject_form.call_args_list == [call(None, data={}, country="country")]
                                     , msg="this should be called only once with the arguments as listed above")
 
+
+    def test_should_return_date_and_unique_id_fields_from_questionnaire(self):
+        questionnaire = MagicMock()
+        questionnaire.fields = [
+                                TextField("Some word question", "q1", "Some word question"),
+                                UniqueIdField("goats", "What goat are you reporting on?", "q2", "What goat are you reporting on?"),
+                                DateField("When did you buy the goat?", "q3", "When did you buy the goat?", "dd.mm.yyyy"),
+                                DateField("When did you sell the goat?", "q4", "When did you sell the goat?", "mm.yyyy")
+                               ]
+
+        fields_array = _get_filterable_fields(questionnaire)
+
+        self.assertEqual(len(fields_array), 3)
+        self.assertDictEqual(fields_array[0], {'type': 'unique_id', 'code': 'q2', 'entity_type': 'goats'})
+        self.assertDictEqual(fields_array[1], {'type': 'date', 'code': 'q3', 'label': 'When did you buy the goat?',
+                'is_month_format': False, 'format': 'dd.mm.yyyy'})
+        self.assertDictEqual(fields_array[2], {'type': 'date', 'code': 'q4', 'label': 'When did you sell the goat?',
+                'is_month_format': True, 'format': 'mm.yyyy'})
+
+    def test_should_return_unique_entries_when_multiple_unique_id_fields_of_same_type_are_present_from_questionnaire(self):
+        questionnaire = MagicMock()
+        questionnaire.fields = [
+                                TextField("Some word question", "q1", "Some word question"),
+                                UniqueIdField("goats", "What goat are you reporting on?", "q2", "What goat are you reporting on?"),
+                                UniqueIdField("chicken", "What chicken are you reporting on?", "q3", "What chicken are you reporting on?"),
+                                UniqueIdField("goats", "What goat are you reporting on?", "q4", "What goat are you reporting on?"),
+                               ]
+
+        fields_array = _get_filterable_fields(questionnaire)
+
+        self.assertEqual(len(fields_array), 2)
+        self.assertDictEqual(fields_array[0], {'type': 'unique_id', 'code': 'q2', 'entity_type': 'goats'})
+        self.assertDictEqual(fields_array[1], {'type': 'unique_id', 'code': 'q3', 'entity_type': 'chicken'})
 
     class StubSubjectWebQuestionnaireRequest(SubjectWebQuestionnaireRequest):
         def __init__(self, request, project_id, entity_type,form_list):

@@ -118,7 +118,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
     org_id = helper.get_org_id_by_user(request.user)
 
     if request.method == 'GET':
-        questionnaire = Project.get(manager,project_id)
+        questionnaire = Project.get(manager, project_id)
         if questionnaire.is_void():
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
             return HttpResponseRedirect(dashboard_page)
