@@ -21,14 +21,13 @@
   font-style: italic;
   padding-top: 10px !important;
 }
-.max_char {
-  display: inline;
-  margin-top: 20px;
-  #max_length {
-    width: 40px;
-    float: none;
-    margin-left: 20px;
-  }
+#max_length {
+  width: 40px;
+  float: none;
+  margin-left: 20px;
+}
+div.margin_top_20 input{
+  height:auto !important;
 }
 
 #range_min {

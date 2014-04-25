@@ -118,21 +118,21 @@
         </li>
         <li data-bind="visible: showAddTextLength">
             <div class="margin_top_20">
+
                 <input type="radio" name="text_length" value="length_unlimited" checked="true"
                        data-bind="checked:length_limiter, enable: newly_added_question"/>
                 {% trans "No, answer has no character limit" %}<br/>
 
-                <div class="max_char">
-                    <input type="radio" name="text_length" value="length_limited"
-                           data-bind="checked:length_limiter, valueUpdate: 'keyup', enable: newly_added_question"/>
-                    {% trans "Yes, maximum number of characters should be" %}
-                    <div>
-                        <input name="max_length" type="text" id="max_length"
-                               data-bind="value:max_length, visible: showLengthLimiter, valueUpdate: 'keyup', enable: newly_added_question"/>
-                    </div>
-                    <div class="validationMessage" data-bind="ifnot: max_length.valid">
-                        <span class="validationText" data-bind="text: max_length.error"></span>
-                    </div>
+                <div class="clear"></div>
+                <input type="radio" name="text_length" value="length_limited"
+                       data-bind="checked:length_limiter, valueUpdate: 'keyup', enable: newly_added_question"/>
+                {% trans "Yes, maximum number of characters should be" %}
+                <div>
+                    <input name="max_length" type="text" id="max_length"
+                           data-bind="value:max_length, visible: showLengthLimiter, valueUpdate: 'keyup', enable: newly_added_question"/>
+                </div>
+                <div class="validationMessage" data-bind="ifnot: max_length.valid">
+                    <span class="validationText" data-bind="text: max_length.error"></span>
                 </div>
             </div>
         </li>
