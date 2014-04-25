@@ -52,7 +52,7 @@ class SubmissionAnalysisHeader(SubmissionHeader):
 
         header_dict.update({"date": "Submission Date"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
         return header_dict
 
 
@@ -61,7 +61,7 @@ class AllSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
         header_dict.update({"date": "Submission Date"})
         header_dict.update({"status": "Status"})
 
@@ -72,7 +72,7 @@ class SuccessSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
         header_dict.update({"date": "Submission Date"})
         return header_dict
 
@@ -81,7 +81,7 @@ class ErroredSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
         header_dict.update({"date": "Submission Date"})
         header_dict.update({"error_msg": "Error Message"})
         return header_dict
