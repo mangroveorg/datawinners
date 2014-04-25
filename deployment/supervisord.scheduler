@@ -27,5 +27,6 @@ serverurl=unix:///tmp/supervisor.sock ; use a unix:// URL  for a unix socket
 [program:reminders]
 command=python manage.py runscheduler
 stdout_logfile=./logs/%(program_name)s.log
+stopasgroup=true
 
 
