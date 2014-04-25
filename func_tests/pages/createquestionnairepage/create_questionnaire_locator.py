@@ -36,9 +36,9 @@ UNIQUE_ID_COMBO_BOX = by_css('.uniqueIdTypeContents')
 NEW_UNIQUE_ID_ADD_BUTTON = by_css('.newUniqueIdBox .button_blue')
 UNIQUE_ID_TYPE_LIST = by_css('.uniqueIdList li')
 NO_CHARACTER_LIMIT_RB = by_xpath(
-    "//li[not(contains(@style,'none')) and contains(@data-bind,'showAddTextLength')]/div/input[@value='length_unlimited']")
+    "//*/input[@value='length_unlimited']")
 CHARACTER_LIMIT_RB = by_xpath(
-    "//li[not(contains(@style,'none')) and contains(@data-bind,'showAddTextLength')]/div/div/input[@value='length_limited']")
+    "//*/input[@value='length_limited']")
 WORD_OR_PHRASE_MAX_LENGTH_TB = by_xpath(
     "//li[not(contains(@style,'none')) and contains(@data-bind,'showAddTextLength')]//../input[@id='max_length' and not(contains(@style,'none'))]")
 NUMBER_RB = by_css("input[value='integer']")
