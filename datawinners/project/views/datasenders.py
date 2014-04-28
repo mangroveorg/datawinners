@@ -22,8 +22,8 @@ from datawinners.entity.helper import rep_id_name_dict_of_users
 from datawinners.main.database import get_database_manager
 from datawinners.project.models import Project
 from datawinners.project.views.views import get_project_link, _in_trial_mode
+from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.entity_search import MyDataSenderQuery
-from mangrove.form_model.form_model import FormModel
 from mangrove.transport.player.parser import XlsDatasenderParser
 from mangrove.utils.types import is_empty
 from datawinners.project.utils import is_quota_reached
@@ -89,7 +89,10 @@ def parse_successful_imports(successful_imports):
 
 def _add_imported_datasenders_to_project(imported_datasenders_id, manager, project):
     project.data_senders.extend(imported_datasenders_id)
-    project.save()
+    project.save(process_post_update=False)
+    for datasender_id in imported_datasenders_id:
+        update_datasender_index_by_id(datasender_id, manager)
+
 
 
 
