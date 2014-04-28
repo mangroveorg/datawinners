@@ -355,10 +355,10 @@ input {
 }
 
 .button_wizard_next{
-    width: 180px;
+    width: 214px;
     height: 29px;
     border: none !important;
-    background: url("/media/images/button_wizard_next.png") no-repeat top left;
+    background: url("/media/images/button_wizard_next.png") no-repeat top left / 100% 100% rgba(0, 0, 0, 0);
     color: #6F451D !important;
     font-family: "Arial";
     font-size: 11px !important;
