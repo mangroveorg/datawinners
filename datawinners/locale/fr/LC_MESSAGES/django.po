@@ -2311,9 +2311,6 @@ msgstr "Votre rapport porte sur quel sujet?"
 msgid "Basic Information"
 msgstr "Renseignements de Base"
 
-msgid "Example: Teacher attendance in Antananarivo"
-msgstr "Exemple: Présence des professeurs à Antananarivo"
-
 msgid "Example: Collect data from 100 primary school in Antananarivo in an effort to increase teacher attendance from 50% to 80%"
 msgstr "Exemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignants de 50% à 80%"
 

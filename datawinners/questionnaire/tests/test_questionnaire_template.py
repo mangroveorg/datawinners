@@ -6,7 +6,7 @@ from mangrove.datastore.database import DatabaseManager
 from datawinners.questionnaire.library import QuestionnaireLibrary
 
 
-class testQuestionnaireTemplate(TestCase):
+class TestQuestionnaireTemplate(TestCase):
     def test_get_category_to_doc_mappings(self):
         with patch('datawinners.questionnaire.library.get_db_manager') as get_db_manager:
             mock_dbm = MagicMock(spec=DatabaseManager)

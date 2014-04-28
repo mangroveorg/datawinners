@@ -2213,9 +2213,6 @@ msgstr ""
 msgid "Basic Information"
 msgstr ""
 
-msgid "Example: Teacher attendance in Antananarivo"
-msgstr ""
-
 msgid "Example: Collect data from 100 primary school in Antananarivo in an effort to increase teacher attendance from 50% to 80%"
 msgstr ""
 
