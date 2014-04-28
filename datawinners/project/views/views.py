@@ -224,7 +224,13 @@ def project_overview(request, project_id=None):
             "Register %s to see them on this map") % questionnaire.entity_type[0] if get_entity_count_for_type(manager,
                                                                                                                questionnaire.entity_type[
                                                                                                                    0]) == 0 else ""
+    entity_type = ""
+    has_multiple_unique_id = False
     in_trial_mode = _in_trial_mode(request)
+    if len(questionnaire.entity_type) == 1:
+        entity_type = questionnaire.entity_type[0]
+    if len(questionnaire.entity_type) > 1:
+        has_multiple_unique_id = True
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': questionnaire,
         'project_links': project_links,
@@ -239,6 +245,8 @@ def project_overview(request, project_id=None):
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
         'questionnaire_code': questionnaire_code,
+        'has_multiple_unique_id':has_multiple_unique_id,
+        'entity_type':entity_type,
         'org_number': get_organization_telephone_number(request)
     }))
 

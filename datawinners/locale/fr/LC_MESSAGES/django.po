@@ -4788,3 +4788,6 @@ msgstr "Choisissez un %(entity_type)s dans la liste."
 
 msgid "Advanced Answer Types"
 msgstr "Types de réponse avancés"
+
+msgid "My"
+msgstr "Mes"
