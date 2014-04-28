@@ -370,7 +370,7 @@ fieldset {
 
 .questionnaire_selection {
   float: left;
-  width: 250px;
+  width: 260px;
   height: 462px;
   overflow: auto;
   background: #EBEBEB;
@@ -403,7 +403,6 @@ fieldset {
       padding-left: 10px;
       margin: 4px 0 0;
       cursor: pointer;
-      height: 26px;
       text-transform:capitalize;
       &:hover{
           background-color: #d7e4ed;
@@ -426,7 +425,7 @@ fieldset {
         & + .selected-notify {
           display: inline-block;
         }
-      background: url("/media/images/questions_hover_arrow.png") no-repeat scroll right top rgba(0, 0, 0, 0);
+      background: url("/media/images/questions_hover_arrow.png") no-repeat scroll right top/auto 100% rgba(0, 0, 0, 0);
       background-color: #d7e4ed;
   //        display: none;
         left: 269px;
