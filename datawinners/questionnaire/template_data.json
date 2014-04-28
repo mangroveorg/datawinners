@@ -446,7 +446,7 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "household"
+        "form_code": "house"
     }, 
     {
         "category": "Food Security", 
@@ -754,20 +754,19 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "received"
+        "form_code": "waybr"
     }, 
     {
         "category": "Early Warning", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "dd.mm.yyyy", 
                 "required": true, 
                 "name": "Date", 
                 "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011", 
-                "label": "Date", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Date"
             }, 
             {
                 "required": true, 
@@ -1089,14 +1088,13 @@
         "category": "Early Warning", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "dd.mm.yyyy", 
                 "required": true, 
                 "name": "Date", 
                 "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011", 
-                "label": "Date", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Date"
             }, 
             {
                 "required": true, 
@@ -1183,16 +1181,13 @@
                 "label": "Number of people killed"
             }, 
             {
+                "code": "q6", 
+                "range": {}, 
                 "required": true, 
                 "name": "Number of houses destroyed", 
-                "defaultValue": "", 
-                "instruction": "Answer must be a word", 
-                "label": "Number of houses destroyed", 
-                "length": {
-                    "min": 1
-                }, 
-                "code": "q6", 
-                "type": "text"
+                "instruction": "Answer must be a number.", 
+                "type": "integer", 
+                "label": "Number of houses destroyed"
             }, 
             {
                 "code": "q7", 
@@ -1315,14 +1310,13 @@
         "category": "Health", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "mm.yyyy", 
                 "required": true, 
                 "name": "Reporting Month and Year", 
                 "instruction": "Answer must be a date in the following format: month.year. Example: 12.2011", 
-                "label": "Reporting Month and Year", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Reporting Month and Year"
             }, 
             {
                 "required": true, 
@@ -1623,7 +1617,7 @@
             }
         ], 
         "name": "grant reception", 
-        "language": "en",
+        "language": "en", 
         "validators": [
             {
                 "cls": "mandatory"
@@ -1688,7 +1682,7 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "textbook"
+        "form_code": "text"
     }, 
     {
         "category": "Education", 
@@ -1815,14 +1809,13 @@
         "category": "Health", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "mm.yyyy", 
                 "required": true, 
                 "name": "Month and Year", 
                 "instruction": "Answer must be a date in the following format: month.year. Example: 12.2011", 
-                "label": "Month and Year", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Month and Year"
             }, 
             {
                 "required": true, 
@@ -1946,10 +1939,13 @@
             }, 
             {
                 "code": "q12", 
-                "range": {}, 
+                "range": {
+                    "max": "100", 
+                    "min": "0"
+                }, 
                 "required": true, 
                 "name": "Stock (individual doses) of ACT 1-5 years on hand at beginning of month", 
-                "instruction": "Answer must be a number.", 
+                "instruction": "Answer must be a number between 0-100.", 
                 "type": "integer", 
                 "label": "Stock (individual doses) of ACT 1-5 years on hand at beginning of month"
             }, 
@@ -2304,7 +2300,7 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "interview"
+        "form_code": "interv"
     }, 
     {
         "category": "Agriculture", 
@@ -2512,20 +2508,19 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "livestock"
+        "form_code": "cens"
     }, 
     {
         "category": "Health", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "dd.mm.yyyy", 
                 "required": true, 
                 "name": "Which weekly period are you reporting on (choose a Friday)?", 
                 "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011", 
-                "label": "Which weekly period are you reporting on (choose a Friday)?", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Which weekly period are you reporting on (choose a Friday)?"
             }, 
             {
                 "required": true, 
@@ -2797,7 +2792,7 @@
                 "name": "Letter Sound Knowledge - list any incorrect letters", 
                 "defaultValue": "", 
                 "instruction": "Answer must be a word", 
-                "label": "Letter Sound Knowledge - list any incorrect letters",
+                "label": "Letter Sound Knowledge - list any incorrect letters", 
                 "length": {
                     "min": 1
                 }, 
@@ -3264,7 +3259,7 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "invoice"
+        "form_code": "inv"
     }, 
     {
         "category": "Socio-économique", 
@@ -4027,14 +4022,13 @@
         "category": "Alerte précoce", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "dd.mm.yyyy", 
                 "required": true, 
                 "name": "Date", 
                 "instruction": "La réponse doit être une date au format : jour.mois.année. Exemple : 25.12.2011", 
-                "label": "Date", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Date"
             }, 
             {
                 "required": true, 
@@ -4356,14 +4350,13 @@
         "category": "Agriculture", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "dd.mm.yyyy", 
                 "required": true, 
                 "name": "Date de la visite ?", 
                 "instruction": "La réponse doit être une date au format : jour.mois.année. Exemple : 25.12.2011", 
-                "label": "Date de la visite ?", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Date de la visite ?"
             }, 
             {
                 "required": true, 
@@ -4559,7 +4552,7 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "cheptel"
+        "form_code": "chep"
     }, 
     {
         "category": "Alerte précoce", 
@@ -4787,14 +4780,13 @@
         "category": "Santé", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "mm.yyyy", 
                 "required": true, 
                 "name": "Mois et année du rapport", 
                 "instruction": "La réponse doit être une date au format : mois.année. Exemple : 12.2011", 
-                "label": "Mois et année du rapport", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Mois et année du rapport"
             }, 
             {
                 "required": true, 
@@ -4909,10 +4901,10 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "clinique"
+        "form_code": "clin"
     }, 
     {
-        "category": "Éducation",
+        "category": "Éducation", 
         "json_fields": [
             {
                 "required": true, 
@@ -5045,7 +5037,7 @@
         "form_code": "recens"
     }, 
     {
-        "category": "Éducation",
+        "category": "Éducation", 
         "json_fields": [
             {
                 "required": true, 
@@ -5104,7 +5096,7 @@
         "form_code": "subv"
     }, 
     {
-        "category": "Éducation",
+        "category": "Éducation", 
         "json_fields": [
             {
                 "required": true, 
@@ -5163,7 +5155,7 @@
         "form_code": "livre"
     }, 
     {
-        "category": "Éducation",
+        "category": "Éducation", 
         "json_fields": [
             {
                 "required": true, 
@@ -5287,14 +5279,13 @@
         "category": "Santé", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "dd.mm.yyyy", 
                 "required": true, 
                 "name": "Sur quelle période hebdomadaire porte votre rapport ? (choisissez un vendredi)", 
                 "instruction": "La réponse doit être une date au format : jour.mois.année. Exemple : 25.12.2011", 
-                "label": "Sur quelle période hebdomadaire porte votre rapport ? (choisissez un vendredi)", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Sur quelle période hebdomadaire porte votre rapport ? (choisissez un vendredi)"
             }, 
             {
                 "required": true, 
@@ -5550,14 +5541,13 @@
         "category": "Santé", 
         "json_fields": [
             {
+                "code": "q1", 
                 "date_format": "mm.yyyy", 
                 "required": true, 
                 "name": "Mois et Année", 
                 "instruction": "La réponse doit être une date au format : mois.année. Exemple : 12.2011", 
-                "label": "Mois et Année", 
-                "code": "q1", 
-                "event_time_field_flag": true, 
-                "type": "date"
+                "type": "date", 
+                "label": "Mois et Année"
             }, 
             {
                 "required": true, 
@@ -5704,16 +5694,13 @@
                 "label": "Stock de ACT (doses individuelles) 1-5 ans reçues durant le mois"
             }, 
             {
+                "code": "q15", 
+                "range": {}, 
                 "required": true, 
                 "name": "Stock de ACT (doses individuelles) 1-5 ans distribuées au cours du mois", 
-                "defaultValue": "", 
-                "instruction": "La réponse doit être un mot", 
-                "label": "Stock de ACT (doses individuelles) 1-5 ans distribuées au cours du mois", 
-                "length": {
-                    "min": 1
-                }, 
-                "code": "q15", 
-                "type": "text"
+                "instruction": "La réponse doit être un nombre", 
+                "type": "integer", 
+                "label": "Stock de ACT (doses individuelles) 1-5 ans distribuées au cours du mois"
             }, 
             {
                 "code": "q20", 
@@ -5738,7 +5725,7 @@
         "form_code": "sto"
     }, 
     {
-        "category": "Éducation",
+        "category": "Éducation", 
         "json_fields": [
             {
                 "required": true, 
@@ -6040,7 +6027,7 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "lecture"
+        "form_code": "lect"
     }, 
     {
         "category": "Commercial", 
@@ -6224,7 +6211,7 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "facture"
+        "form_code": "fact"
     }, 
     {
         "category": "Santé", 
@@ -6531,6 +6518,6 @@
                 "cls": "mandatory"
             }
         ], 
-        "form_code": "entretien"
+        "form_code": "ent"
     }
 ]

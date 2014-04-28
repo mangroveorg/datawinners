@@ -11,13 +11,13 @@ from datawinners.project.models import get_all_projects, Project
 def generate_template_data():
     templates = []
     #database which has template specific projects.
-    test_dbm = get_db_manager('hni_testorg_slx364903')
+    test_dbm = get_db_manager('hni_templates_aoi959205')
     projects = get_all_projects(test_dbm)
     for doc in projects:
         form_model = FormModel.get(test_dbm, doc.id)
         json_obj = {}
         json_obj.update({"name": form_model.name})
-        json_obj.update({"language": form_model.language})
+        json_obj.update({"language": form_model.activeLanguages[0]})
         json_obj.update({"category": _get_category(form_model)})
         json_obj.update({"form_code": form_model.form_code})
         fields = _remove_entity_field(form_model)
@@ -32,7 +32,7 @@ def generate_template_data():
 
 def _get_category(project):
     project_name = project.name
-    language = project.language
+    language = project.activeLanguages[0]
     project_name = project_name.strip()
     project_to_category_map = get_category_mapping_fr() if language=='fr' else get_category_mapping_en()
     for category, project_names in project_to_category_map.iteritems():
@@ -41,7 +41,7 @@ def _get_category(project):
 
 
 def _remove_entity_field(form_model):
-    return [each for each in form_model.fields if not each.is_entity_field]
+    return [each for each in form_model.fields if not each.code == "eid"]
 
 
 def get_category_mapping_en():
