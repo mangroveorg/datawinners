@@ -4070,13 +4070,13 @@ msgid "Deleted Data Sender"
 msgstr "Expéditeur supprimé"
 
 msgid "All"
-msgstr "Toutes"
+msgstr "Tous"
 
 msgid "You have not registered a reporter yet."
 msgstr "Vous n’avez pas encore enregistré un expéditeur."
 
 msgid "View and manage the users of your DataWinners account."
-msgstr "Voir et gerer les utilisateurs de votre compte DataWinners."
+msgstr "Voir et gérer les utilisateurs de votre compte DataWinners."
 
 msgid "You have made changes to your Questionnaire."
 msgstr "Vous avez apporté des modifications à votre Questionnaire."
@@ -4788,3 +4788,18 @@ msgstr "Types de réponse avancés"
 
 msgid "My"
 msgstr "Mes"
+
+msgid "My Data Senders linked to this project"
+msgstr "Mes Expéditeurs de données liés à ce Projet"
+
+msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your project."
+msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre projet."
+
+msgid "Register each Identification Number you need to collect data about and want to track on a map."
+msgstr "Enregistrer chaque Numéro d'identification sur lequel vous souhaitez collecter des Données et voulez suivre sur une carte."
+
+msgid "Add new Identification Numbers"
+msgstr "Ajouter de nouveaux Numéros d'identification"
+
+msgid "Enter the Unique Id of the %s"
+msgstr "Tapez le code unique du/de la %s"

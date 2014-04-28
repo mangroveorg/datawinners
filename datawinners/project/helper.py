@@ -99,11 +99,17 @@ def remove_reporter(entity_type_list):
 
 
 def get_preview_for_field(field):
-    preview = {"description": field.name, "code": field.code, "type": field.type, "instruction": field.instruction}
+    preview = {"description": field.name, "code": field.code, "type": field.type, "instruction": _get_instruction_text(field)}
     constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else\
     [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
     return preview
+
+def _get_instruction_text(field):
+    if field.type == 'unique_id':
+        instruction_prefix = field.instruction.split(" %s" % field.unique_id_type)[0]
+        return ugettext(instruction_prefix + " %s") % field.unique_id_type
+    return field.instruction
 
 def delete_project(manager, questionnaire, void=True):
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=questionnaire.id))]

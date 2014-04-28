@@ -21,12 +21,17 @@
                     <p class="black_italic">{% trans "Register each Data Sender (e.g. field staff) to enable them to send data into your project." %} </p>
                 </li>
                 {% if project.entity_type %}
-                    {% for entity_type, subject_link in links.create_subjects_links.iteritems %}
-                        <li><a id="subjects_edit_link"
-                               href="{{ subject_link }}">{% trans "Add a new" %} {{ entity_type }} </a>
-                        </li>
-                    {% endfor %}
-                    <li><p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
+                    {% if has_multiple_unique_id %}
+                         <li><a href="{{ project_links.subjects_link }}">{% trans "Add new Identification Numbers" %} </a>
+                            </li>
+                    {% else %}
+                        {% for entity_type, subject_link in links.create_subjects_links.iteritems %}
+                            <li><a id="subjects_edit_link"
+                                   href="{{ subject_link }}">{% trans "Add a new" %} {{ entity_type|capfirst }} </a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    <li><p class="black_italic">{% trans "Register each Identification Number you need to collect data about and want to track on a map." %} </p>
                     </li>
                 {% endif %}
 
