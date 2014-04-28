@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext
 import elasticutils
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
 from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
@@ -95,6 +96,8 @@ class SubmissionQueryResponseCreator():
                     elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
                         self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
                                                  res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY), submission)
+                    elif key == 'status':
+                        submission.append(ugettext(res.get(key)))
                     else:
                         submission.append(res.get(key))
             submissions.append(submission)
