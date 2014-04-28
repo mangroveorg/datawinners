@@ -4520,7 +4520,7 @@ msgstr ""
 msgid "Select an Identification Number Type"
 msgstr ""
 
-msgid "Error. You are not authorized to submit data to this Questionnaire. Please contact your project manager."
+msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr ""
 
 msgid "The Data Sender %s (%s) is not linked to your Questionnaire."

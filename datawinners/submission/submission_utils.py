@@ -1,6 +1,8 @@
 from django.utils import translation
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
+from mangrove.errors.MangroveException import NumberNotRegisteredException
+from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
 from mangrove.transport.contract.response import Response
 from mangrove.transport.repository.reporters import find_reporter_entity
@@ -101,9 +103,38 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
 
     def process(self, form_code, submission_values):
         form_model = get_form_model_by_code(self.dbm, form_code)
-        reporter_entity = find_reporter_entity(self.dbm, self.request.get('transport_info').source)
+        reporter_entity = self.request.get('reporter_entity')
         if reporter_entity.short_code == "test" or \
            isinstance(form_model, EntityFormModel) or \
            reporter_entity.short_code in Project.from_form_model(form_model).data_senders:
             return None
         return self._get_response()
+
+
+class PostSMSProcessorCheckDSIsRegistered(object):
+
+    def __init__(self, dbm, request):
+        self.dbm = dbm
+        self.request = request
+
+    def process(self, form_code, submission_values):
+        exception = self.request.get('exception')
+        if self.request.get('reporter_entity') and isinstance(exception, NumberNotRegisteredException):
+            response = Response(reporters=[], survey_response_id=None)
+            response.success = True
+            response.errors = get_datasender_not_linked_to_project_error_message()
+            return response
+
+class PostSMSProcessorCheckLimits(object):
+
+    def __init__(self, dbm, request):
+        self.dbm = dbm
+        self.request = request
+
+    def process(self, form_code, submission_values):
+        exception = self.request.get('exception')
+        form_model = get_form_model_by_code(self.dbm, form_code)
+        if exception and (isinstance(exception, ExceedSubmissionLimitException) or isinstance(exception, ExceedSMSLimitException)):
+            if not self.request.get('organization').has_exceeded_message_limit() and isistance(form_model, EntityFormModel):
+                return
+            raise exception

@@ -21,7 +21,7 @@ def get_exception_message_for(exception, channel=None, formatter=default_formatt
     if channel is not None:
         message_dict = exception_messages.get(ex_type)
         if message_dict is None:
-            return exception.message
+            return _(exception.message)
         message = message_dict.get(channel)
         if is_empty(message):
             message = exception_messages[ex_type].get(DEFAULT)

@@ -14,6 +14,12 @@ def default_exception_handler_with_logger(exception, request):
     create_failure_log(exception_message, request)
     return exception_message
 
+def wrong_questionnaire_code_handler(exception, request):
+    if request.get('exception'):
+        handler = exception_handlers.get(type(exception), default_exception_handler)
+        return handler(request.get('exception'), request)
+    return default_exception_handler_with_logger(exception, request)
+
 def data_object_not_found_handler(exception, request):
     return get_exception_message_for(exception=exception, channel=SMS, formatter=data_object_not_found_formatter)
 
@@ -24,7 +30,7 @@ def sms_parser_wrong_number_of_answers_handler(exception, request):
 exception_handlers = {
 
     ex.DataObjectNotFound : data_object_not_found_handler,
-    ex.FormModelDoesNotExistsException : default_exception_handler_with_logger,
+    ex.FormModelDoesNotExistsException : wrong_questionnaire_code_handler,
     ex.NumberNotRegisteredException : default_exception_handler_with_logger,
     ex.SubmissionParseException : default_exception_handler_with_logger,
     ex.SMSParserInvalidFormatException : default_exception_handler_with_logger,

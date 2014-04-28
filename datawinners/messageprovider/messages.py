@@ -11,6 +11,10 @@ SUBMISSION = u"submission"
 REGISTRATION = u"registration"
 SMART_PHONE=u"smartPhone"
 
+NOT_AUTHORIZED_DATASENDER_MSG = "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+SUBMISSION_LIMIT_REACHED_MSG = "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
+SMS_LIMIT_REACHED_MSG = "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+
 DEFAULT_EXCEPTION_MESSAGE = u"An exception has occurred"
 
 exception_messages = {
@@ -107,7 +111,7 @@ def get_wrong_number_of_answer_error_message():
 
 
 def get_datasender_not_linked_to_project_error_message():
-    return _("Error. You are not authorized to submit data to this Questionnaire. Please contact your project manager.")
+    return _(NOT_AUTHORIZED_DATASENDER_MSG)
 
 def get_subject_info(response, form_model):
     subject_name = ''

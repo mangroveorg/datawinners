@@ -2906,5 +2906,5 @@ msgstr "Misaotra %(datasender)s. Voarainay ny SMS-nao"
 msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
 msgstr "Nahatratra 1000 ny tatitra maimaimpoana nalefanao.Antsoy ny tompon’andraikitra hisoratra anarana amin’ny tolotra andoavambola hahafahanao manohy mandefa tatitra"
 
-msgid "Error. You are not authorized to submit data to this Questionnaire. Please contact your project manager."
-msgstr "Diso. Tsy afaka mandefa valin'io lisitra fanontaniana io ianao. Azafady ampilazao ny mpitantana tetikasa."
+msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana."
