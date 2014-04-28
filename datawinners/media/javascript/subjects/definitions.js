@@ -117,7 +117,7 @@ DW.SubjectRegistrationForm = function (form_selector) {
     };
 
     this.disable = function () {
-        var visible_elements = $('input:visible:not([type="submit"]), select:visible', form_selector);
+        var visible_elements = $('input:visible:not([type="submit"],[type="checkbox"]), select:visible', form_selector);
         visible_elements.attr("value", "");
         //This is explicitly called here as otherwise the watermark api does not kick in, that api should have
         //listened to the change event but currently its attached to blur
