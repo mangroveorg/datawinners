@@ -694,7 +694,7 @@ fieldset {
   font-size: 13px; }
 
 .alpha_list input {
-  width: 300px !important; }
+  width: 180px !important; }
 
 #project-message-label {
   width: 86%;
@@ -800,7 +800,7 @@ fieldset {
 
 .choiceValidationMessage {
   background-position: left 6px !important;
-  display: block; }
+  display: inline-block; }
 
 .validationText {
   color: #FFFFFF;
@@ -903,6 +903,7 @@ fieldset {
   .uniqueIdTypeSection .unique_id_learn_more {
     margin: 0 0 20px 0; }
   .uniqueIdTypeSection .uniqueIdType {
+    float: left;
     text-transform: capitalize;
     background: url("/media/images/arrow_dd.png") no-repeat scroll right -3px;
     cursor: pointer;

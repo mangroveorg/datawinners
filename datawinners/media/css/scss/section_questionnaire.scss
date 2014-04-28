@@ -495,7 +495,7 @@ div.margin_top_20 input{
 .choiceValidationMessage{
   @extend .validationMessage;
   background-position: left 6px !important;
-  display:block;
+  display:inline-block;
 }
 
 .validationText {

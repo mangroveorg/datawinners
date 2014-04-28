@@ -14,12 +14,14 @@
     </div>
     <span>{% trans 'I want to use Identification Numbers for my' %}</span>
 
-    <div class="uniqueIdType" data-bind="click: $root.toggleUniqueIdTypesVisibility">
-        <span class="grey" data-bind="hidden: uniqueIdType">{% trans 'Add a unique id type' %} </span>
-        <span data-bind="text: uniqueIdType"></span>
-    </div>
-    <div class="validationMessage" data-bind="ifnot: uniqueIdType.valid">
-        <span id="unique_id_type_validation_message" class="validationText" data-bind="text: uniqueIdType.error"></span>
+    <div>
+        <div class="uniqueIdType" data-bind="click: $root.toggleUniqueIdTypesVisibility">
+            <span class="grey" data-bind="hidden: uniqueIdType">{% trans 'Add a unique id type' %} </span>
+            <span data-bind="text: uniqueIdType"></span>
+        </div>
+        <div class="validationMessage" data-bind="ifnot: uniqueIdType.valid">
+            <span id="unique_id_type_validation_message" class="validationText" data-bind="text: uniqueIdType.error"></span>
+        </div>
     </div>
 
     <div class="uniqueIdTypeContents" data-bind="visible: $root.isUniqueIdTypeVisible">
