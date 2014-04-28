@@ -2053,8 +2053,8 @@ msgstr "Créez votre projet en quelques étapes faciles."
 msgid "Name your project and provide basic information about it."
 msgstr "Nommez votre projet et fournissez des informations élémentaires."
 
-msgid "Write and Edit Your Questions."
-msgstr "Saisissez et éditez vos Questions."
+msgid "Write and Edit Your Questions"
+msgstr "Saisissez et éditez vos Questions"
 
 msgid "Save and create your project."
 msgstr "Sauvegardez et créez votre projet."
@@ -2100,9 +2100,6 @@ msgstr "Enregistrer comme ébauche"
 
 msgid "Time Period"
 msgstr "Période"
-
-msgid "tooltip_project_name"
-msgstr "Donnez à votre projet un nom court et descriptif afin que vous puissiez l'identifier parmi une liste de tous les projets."
 
 msgid "tooltip_error_language"
 msgstr " Vos Expéditeurs recevront des messages de confirmation et d'erreur automatiques provenant de DataWinners selon leur Soumission. Choisissez la langue de ces messages."
@@ -4706,8 +4703,8 @@ msgstr "Supprimer ce Questionnaire"
 msgid "Your Most Recent Questionnaires"
 msgstr "Vos questionnaires les plus récents"
 
-msgid "Questionnaire Name:"
-msgstr "Questionnaire Nom:"
+msgid "Questionnaire Name"
+msgstr "Questionnaire Nom"
 
 msgid "Choose an existing Questionnaire and edit it to fit your needs."
 msgstr "Choisissez un Questionnaire existant et modifiez-le selon vos besoins."

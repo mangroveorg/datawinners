@@ -1319,7 +1319,7 @@ msgstr ""
 msgid "SMS your answers to"
 msgstr ""
 
-msgid "Questionnaire Name:"
+msgid "Questionnaire Name"
 msgstr ""
 
 msgid "Questionnarie Code:"
@@ -1978,7 +1978,7 @@ msgstr ""
 msgid "Name your project and provide basic information about it."
 msgstr ""
 
-msgid "Write and edit your questions."
+msgid "Write and edit your questions"
 msgstr ""
 
 msgid "Save and create your project."
@@ -2025,9 +2025,6 @@ msgstr ""
 
 msgid "Time Period"
 msgstr ""
-
-msgid "tooltip_project_name"
-msgstr "Give your project a short, descriptive name so you can identify it among a list of all projects."
 
 msgid "tooltip_error_language"
 msgstr "Your Data Senders will receive automatic Confirmation and Error messages from DataWinners based on their submission. Choose the language of these messages."
