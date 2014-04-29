@@ -52,7 +52,7 @@ PLUS_IN_THE_BEGINNING = {SENDER: "1234567890",
 UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
                             RECEIVER: "919880734937",
                             SMS: "cli002 .EID CID005 . .NA Mr. Kessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM ac",
-                            ERROR_MSG: "Your telephone number is not yet registered in our system. Please contact your supervisor."}
+                            ERROR_MSG: "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."}
 
 REGISTER_DATA_SENDER = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
@@ -72,7 +72,7 @@ REGISTER_NEW_SUBJECT = {SENDER: "1234567890",
 REGISTER_EXISTING_SUBJECT_SHORT_CODE = {SENDER: "1234567890",
                                         RECEIVER: "919880734937",
                                         SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur .S cid001 . ",
-                                        ERROR_MSG: "The Unique ID Number cid001 is already used for the clinic Test. Register your clinic with a different ID."}
+                                        ERROR_MSG: "Error. Cid001 already exists. Register your clinic with a different Identification Number.."}
 
 REGISTER_INVALID_GEO_CODE = {SENDER: "1234567890",
                              RECEIVER: "919880734937",
@@ -117,12 +117,12 @@ UNREGISTERED_FROM_NUMBER_FOR_ORDERED_SMS = {SENDER: "123445567",
 UNREGISTER_ENTITY_ID = {SENDER: "123445567",
                         RECEIVER: "919880734937",
                         SMS: "cli002  cid0090   Mr.Dessy  58   17.05.2011  b  ade    27.178057,-78.007789 a",
-                        ERROR_MSG: "This clinic cid0090 is not registered in our system.Please register this clinic or contact your supervisor."}
+                        ERROR_MSG: "Error. Clinic cid0090 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."}
 
 UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA = {SENDER: "1234567890",
                                               RECEIVER: "919880734937",
                                               SMS: "cli002 cid0090 Mr.Dessy 20 17.12.2011 b ade 27.178057,-78.007789 a",
-                                              ERROR_MSG: "Error. The clinic cid0090 is not registered in our system. Please register this clinic or contact your supervisor."}
+                                              ERROR_MSG: "Error. clinic cid0090 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.."}
 
 UNAUTHORIZED_DATASENDER = { SENDER: "2619876",
                             RECEIVER: "919880734937",

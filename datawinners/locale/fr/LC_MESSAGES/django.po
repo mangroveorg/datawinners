@@ -1969,15 +1969,14 @@ msgid "This %s is not yet registered in the system. Please check the %s’s uniq
 msgstr "Ce/cette %s n'est pas enregistré(e) dans notre système. Vérifiez le numéro ID unique de %s et envoyez "
 "de nouveau le SMS"
 
-msgid "Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
+msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
 msgstr "Erreur, le/la %s %s n'est pas enregistre(e) dans notre systeme. Veuillez enregistrer ce/cette %s ou contactez votre superviseur."
 
 msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
 
-msgid "Your telephone number is not yet registered in our system. Please contact your supervisor."
-msgstr "Votre numero de telephone n'est pas encore enregistre dans notre systeme. Veuillez contacter "
-"votre superviseur."
+msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgstr "Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
 
 msgid "All questions must be unique"
 msgstr "Toutes les questions doivent être uniques. Veuillez supprimer les doublons"
@@ -2278,8 +2277,8 @@ msgstr "Réponse incorrecte pour la question %s. Veuillez envoyer de nouveau la 
 msgid"Questionnaire ID %s doesnt exist."
 msgstr "Le ID Questionnaire %s n'existe pas."
 
-msgid "Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
-msgstr "Erreur. Le code Questionnaire %s est incorrect. Vérifiez le formulaire d'enregistrement et envoyez votre SMS de nouveau."
+msgid "Error.Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
+msgstr "Erreur. Le code Questionnaire %s est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code. "
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
 msgstr "Cet entité pour laquelle vous avez envoyé un rapport n'existe pas sur notre système. Veuillez enregistrer cette entité ou appelez-nous au 033 20 426 89"
@@ -2299,8 +2298,8 @@ msgstr "pour ce projet."
 msgid "enabled"
 msgstr "activés"
 
-msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
-msgstr "Vous avez atteint la limite de 50 soumissions par SMS. Adoptez la version payante pour vos nouvelles soumissions par SMS."
+msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires."
+msgstr "Vous avez atteint la limite de 50 soumissions par SMS. Passez a la version payante pour continuer a envoyer des soumissions par SMS pour vos Questionnaires."
 
 msgid "Which subject are you reporting on?"
 msgstr "Votre rapport porte sur quel sujet?"
@@ -2433,8 +2432,8 @@ msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou v
 "Données n’ont pas accès à Internet. "
 "<br/>Si certains de vos Expéditeurs de Données ont (ou auront) accès à Internet, nous vous recommandons de laisser la case 'WEB' cochée."
 
-msgid "Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
-msgstr "Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez le SMS complet."
+msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
 msgid "Privacy Policy"
 msgstr "Politique de Confidentialité"
@@ -4247,7 +4246,7 @@ msgid "Select a user"
 msgstr "Selectionnez un utilisateur"
 
 msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erreur. Reponse incorrecte pour %s. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."
+msgstr "Erreur. Reponse incorrecte pour %s. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
 msgid "sms_glue"
 msgstr ", "
@@ -4267,8 +4266,8 @@ msgstr "la question"
 msgid "plural_question"
 msgstr "les questions"
 
-msgid "The Unique ID Number %s is already used for the %s %s. Register your %s with a different ID."
-msgstr "Le numero d’identification unique %s est deja utilise pour le/la %s %s. Veuillez enregistrer votre %s sous un autre numero."
+msgid "Error. %s already exists. Register your %s with a different Identification Number."
+msgstr "Erreur. %s existe déjà. Enregistrez votre %s sous un autre numero."
 
 msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
 msgstr "Erreur. Réponse incorrecte pour %s. Veuillez revoir le Formulaire d’enregistrement et renvoyez tout le SMS corrigé"
@@ -4347,8 +4346,8 @@ msgstr "Vous ne pouvez pas laisser ceci vide."
 msgid "Please use only letters (a-z), numbers, and spaces."
 msgstr "Utilisez uniquement des lettres (a-z), des chiffres et des espaces."
 
-msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
-msgstr "Vos 1000 soumissions gratuites ont été utilisées.Contactez votre Administrateur pour qu'il effectue un abonnement mensuel et vous pourriez soumettre vos données"
+msgid "You have reached your limit of 1000 free Submissions. Upgrade to a monthly subscription to continue sending in Submissions."
+msgstr "Vous avez atteint la limite de 1000 soumissions gratuites. Passez a la version payante pour continuer a envoyer des soumissions pour vos Questionnaires."
 
 msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your questionnaires."
 msgstr "Vous avez atteint la limite de 1000 soumissions gratuite. Adoptez la version payante pour continuer à soumettre des donnés pour vos questionnaires"

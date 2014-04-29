@@ -39,7 +39,7 @@ class TestExceptionHandler(TestCase):
     def test_should_handle_DataObjectNotFoundException(self):
         exception = DataObjectNotFound('test_entity','id','123')
         exception_message_dict = exception_messages[type(exception)]
-        expected_message = exception_message_dict.get(SMS) % ('test_entity','123','test_entity')
+        expected_message = exception_message_dict.get(SMS) % ('Test_entity','123')
         response = handle(exception, self.request)
         self.assertEqual(expected_message, response)
 

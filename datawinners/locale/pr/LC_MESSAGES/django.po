@@ -1,0 +1,18 @@
+msgid "Thank you %(datasender)s. We received your SMS"
+msgstr "Mesmo como hoje: Obrigado %(datasender)s. Recebemos a sua SMS"
+
+msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erro. Resposta incorrecta para a pergunta %s. Por favor reveja o questionário impresso e reenvie a SMS inteira."
+
+msgid "Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
+msgstr "Erro. Numero incorrecto da resposta. Por favor reenvie o questionario impresso e reenvie a SMS inteira."
+
+msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgstr "Nao esta autorizado para submeter dados para este questionario. Por favor contacte o seu supervisor. "
+
+msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires."
+msgstr "Ja atingiu o limite de submissao das suas 50 SMS. Por favor, faca uma subinscricao mensal para continuar a enviar "
+"submissoes de SMS para o seu questionario."
+
+msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Erro. %s %s nao esta registado. Verifique o Numero de Identificacao e reenvie a SMS inteira ou contacte o seu supervisor."

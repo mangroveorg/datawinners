@@ -13,7 +13,7 @@ SMART_PHONE=u"smartPhone"
 
 NOT_AUTHORIZED_DATASENDER_MSG = "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 SUBMISSION_LIMIT_REACHED_MSG = "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
-SMS_LIMIT_REACHED_MSG = "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+SMS_LIMIT_REACHED_MSG = "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires."
 
 DEFAULT_EXCEPTION_MESSAGE = u"An exception has occurred"
 
@@ -30,19 +30,19 @@ exception_messages = {
 
     ex.FormModelDoesNotExistsException: {
         DEFAULT: u"Questionnaire ID %s doesnt exist.",
-        WEB: u"Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS.",
+        WEB: u"Error.Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.",
         SMS: u"Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
     },
 
     ex.DataObjectNotFound: {
         DEFAULT: u"This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89",
         WEB: u"This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit.",
-        SMS: u"Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
+        SMS: u"Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.."
     },
 
     ex.NumberNotRegisteredException: {
         DEFAULT: u"This telephone number is not registered in our system.",
-        SMS: u"Your telephone number is not yet registered in our system. Please contact your supervisor."
+        SMS: u"You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
     },
 
     ex.QuestionCodeAlreadyExistsException: {

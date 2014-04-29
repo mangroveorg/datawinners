@@ -171,6 +171,7 @@ def check_quotas_for_trial(incoming_request):
     if organization.has_exceeded_submission_limit():
         raise ExceedSubmissionLimitException()
         #return get_translated_response_message(incoming_request, SUBMISSION_LIMIT_REACHED_MSG)
+        return get_translated_response_message(incoming_request,"You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires.")
 
     if organization.has_exceeded_message_limit():
         raise ExceedSMSLimitException()
@@ -245,8 +246,8 @@ def submit_to_player(incoming_request):
         message = SMSResponse(response).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
-        message = ugettext("The Unique ID Number %s is already used for the %s %s. Register your %s with a different ID.") % \
-                  (e.data[1], e.data[2], e.data[3], e.data[2])
+        message = ugettext("Error. %s already exists. Register your %s with a different Identification Number.") % \
+                  (e.data[1].capitalize(), e.data[2])
         if not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
 

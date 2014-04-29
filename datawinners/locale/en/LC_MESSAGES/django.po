@@ -1902,13 +1902,13 @@ msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
 msgstr ""
 
-msgid "Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
+msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
 msgstr ""
 
 msgid "This telephone number is not registered in our system."
 msgstr ""
 
-msgid "Your telephone number is not yet registered in our system. Please contact your supervisor."
+msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr ""
 
 msgid "All questions must be unique"
@@ -2186,7 +2186,7 @@ msgstr ""
 msgid"Questionnaire ID %s doesnt exist."
 msgstr ""
 
-msgid "Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
+msgid "Error.Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
 msgstr ""
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
@@ -2207,7 +2207,7 @@ msgstr ""
 msgid "enabled"
 msgstr ""
 
-msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires."
 msgstr ""
 
 msgid "Which subject are you reporting on?"
@@ -2346,7 +2346,7 @@ msgstr "Your Data Senders can submit data using SMS and the Internet."
 "<br/>SMS is an efficient data collection channel for questionnaires with less than 20 questions and where Data Senders have no Internet access. "
 "<br/>If any of your Data Senders have (or will have) access to the Internet, we recommened leaving the WEB box checked."
 
-msgid "Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
+msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
 msgstr ""
 
 msgid "Privacy Policy"
@@ -4176,7 +4176,7 @@ msgstr "question"
 msgid "plural_question"
 msgstr "question"
 
-msgid "The Unique ID Number %s is already used for the %s %s. Register your %s with a different ID."
+msgid "Error. %s already exists. Register your %s with a different Identification Number."
 msgstr ""
 
 msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
@@ -4251,7 +4251,7 @@ msgstr ""
 msgid "Please use only letters (a-z), numbers, and spaces."
 msgstr ""
 
-msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
+msgid "You have reached your limit of 1000 free Submissions. Upgrade to a monthly subscription to continue sending in Submissions."
 msgstr ""
 
 msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your questionnaires."
