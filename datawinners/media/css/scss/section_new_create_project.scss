@@ -473,7 +473,6 @@ fieldset {
   font-style: italic;
 }
 .uniqueIdTypeSection{
-  line-height: 1.5em;
   .unique_id_learn_more{
     margin: 0 0 20px 0;
   }
@@ -494,6 +493,7 @@ fieldset {
     height: 19px;
   }
   .uniqueIdTypeContents{
+    font-size: 11px;
     border: 1px solid gray;
     box-shadow: 10px 10px 5px #888888;
     width: 350px;
@@ -531,7 +531,7 @@ fieldset {
         text-transform: capitalize;
         cursor: pointer;
         overflow: none;
-        padding: 5px 0 5px 0;
+        padding: 3px;
         margin: 0px !important;
         &:hover{
           background-color: #0099ff;

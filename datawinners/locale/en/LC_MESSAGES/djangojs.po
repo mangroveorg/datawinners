@@ -1101,5 +1101,5 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-msgid "Adding.."
+msgid "Adding..."
 msgstr ""

@@ -1155,8 +1155,8 @@ msgstr "La réponse doit être le Numéro d’identification du %s sur lequel vo
 msgid "Add"
 msgstr "Ajouter"
 
-msgid "Adding.."
-msgstr "Ajout.."
+msgid "Adding..."
+msgstr "Ajout..."
 
 msgid "Answer must be the Identification Number."
 msgstr "La réponse doit être un Numéro d'Identification."

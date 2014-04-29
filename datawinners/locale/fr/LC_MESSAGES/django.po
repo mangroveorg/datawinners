@@ -4750,7 +4750,7 @@ msgstr "Utiliser un Type de Numéro d'identification existant"
 msgid "I want to use Identification Numbers for my"
 msgstr "Je veux utiliser des Numéros d'Identification pour mon (ma)"
 
-msgid "Add a unique id type"
+msgid "Add an Identification Number"
 msgstr "Ajouter un type de ID unique"
 
 msgid "Edit Name"

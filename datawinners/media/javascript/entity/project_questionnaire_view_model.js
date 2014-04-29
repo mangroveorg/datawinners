@@ -27,7 +27,7 @@ function ProjectQuestionnaireViewModel() {
 
     self.addNewUniqueIdType = function () {
         var newUniqueIdType = self.newUniqueIdType();
-        self.uniqueIdButtonText(gettext("Adding.."));
+        self.uniqueIdButtonText(gettext("Adding..."));
         $.post('/entity/type/create', {entity_type_regex: newUniqueIdType})
             .done(function (responseString) {
                 self.uniqueIdButtonText(gettext('Add'));
