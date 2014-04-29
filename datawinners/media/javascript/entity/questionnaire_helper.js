@@ -72,7 +72,7 @@ DW.question = function (question) {
         instruction: gettext("Answer must be a text"),
         newly_added_question: false,
         event_time_field_flag: false,
-        unique_id_type : null
+        unique_id_type: null
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
@@ -175,7 +175,7 @@ DW.question.prototype = {
             });
         };
 
-        var _validateChoice = function(choice){
+        var _validateChoice = function (choice) {
             if (choice.value.text())
                 choice.clearError();
             else
@@ -189,18 +189,18 @@ DW.question.prototype = {
                 var lastChoice = this.choices()[this.choices().length - 1];
                 selectedQuestionCode = DW.next_option_value(lastChoice.value.val());
             }
-            else{
+            else {
                 choiceText = gettext("default");
             }
             var choiceItemText = ko.observable(choiceText);
             var choiceItem = DW.ko.createValidatableObservableObject({
-                                                                        value: {
-                                                                                    text: choiceItemText,
-                                                                                    val: ko.observable(selectedQuestionCode)
-                                                                               }
-                                                                      });
+                value: {
+                    text: choiceItemText,
+                    val: ko.observable(selectedQuestionCode)
+                }
+            });
 
-            choiceItemText.subscribe(function(){
+            choiceItemText.subscribe(function () {
                 _validateChoice(this);
             }, choiceItem);
 
@@ -215,11 +215,11 @@ DW.question.prototype = {
             return false;
         };
 
-        self.showUniqueId = ko.computed(function(){
+        self.showUniqueId = ko.computed(function () {
             var isUniqueId = this.answerType() == "unique_id";
             if (isUniqueId)
             //Notifying parent view model when selected question is of type unique id.
-                ko.postbox.publish("uniqueIdTypeSelected","");
+                ko.postbox.publish("uniqueIdTypeSelected", "");
             return isUniqueId;
         }, self);
 
@@ -292,7 +292,7 @@ DW.question.prototype = {
                     return DW.instruction_template.multi_select;
                 }
                 if (this.type() == "unique_id") {
-                    if (this.uniqueIdType()){
+                    if (this.uniqueIdType()) {
                         return $.sprintf(DW.instruction_template.unique_id_type, this.uniqueIdType());
                     }
                     return DW.instruction_template.unique_id;
@@ -344,69 +344,69 @@ DW.question.prototype = {
         this._initializeObservers();
     },
 
-    _validateMinRangeIsLessThanMaxRange: function(){
+    _validateMinRangeIsLessThanMaxRange: function () {
         var min_range = parseInt(this.range_min());
         var max_range = parseInt(this.range_max());
 
-        if(_.isNaN(min_range) || _.isNaN(max_range))
+        if (_.isNaN(min_range) || _.isNaN(max_range))
             return;
 
-        if(min_range > max_range)
+        if (min_range > max_range)
             this.range_max.setError(gettext("Max should be greater than min."));
         else
             this.range_max.clearError();
     },
 
-    _initializeObservers: function(){
-        this.answerType.subscribe(function(newAnswerType){
-            if(newAnswerType == "choice" && this.choices().length == 0)
+    _initializeObservers: function () {
+        this.answerType.subscribe(function (newAnswerType) {
+            if (newAnswerType == "choice" && this.choices().length == 0)
                 this.addOptionToQuestion();
         }, this);
     },
 
-    _initializeObservableValidations: function(){
-       this.title.subscribe(function(){
-          DW.ko.mandatoryValidator(this.title);
-       }, this);
+    _initializeObservableValidations: function () {
+        this.title.subscribe(function () {
+            DW.ko.mandatoryValidator(this.title);
+        }, this);
 
-       this.max_length.subscribe(function(){
-          if(!this.showLengthLimiter())
-            return;
+        this.max_length.subscribe(function () {
+            if (!this.showLengthLimiter())
+                return;
 
-          DW.ko.mandatoryValidator(this.max_length);
-          this.max_length.valid() && DW.ko.postiveNumberValidator(this.max_length);
+            DW.ko.mandatoryValidator(this.max_length);
+            this.max_length.valid() && DW.ko.postiveNumberValidator(this.max_length);
 
-       }, this);
+        }, this);
 
-       this.answerType.subscribe(function(){
-          if(!this.isEntityQuestion()) DW.ko.mandatoryValidator(this.answerType);
-       }, this);
+        this.answerType.subscribe(function () {
+            if (!this.isEntityQuestion()) DW.ko.mandatoryValidator(this.answerType);
+        }, this);
 
-       this.range_min.subscribe(function(){
-          if (!this.showAddRange())
-            return;
+        this.range_min.subscribe(function () {
+            if (!this.showAddRange())
+                return;
 
-          DW.ko.numericValidator(this.range_min);
-          this._validateMinRangeIsLessThanMaxRange();
+            DW.ko.numericValidator(this.range_min);
+            this._validateMinRangeIsLessThanMaxRange();
 
-       }, this);
+        }, this);
 
-       this.range_max.subscribe(function(){
+        this.range_max.subscribe(function () {
 
-          if (!this.showAddRange())
-            return;
+            if (!this.showAddRange())
+                return;
 
-          DW.ko.numericValidator(this.range_max);
-          this._validateMinRangeIsLessThanMaxRange();
+            DW.ko.numericValidator(this.range_max);
+            this._validateMinRangeIsLessThanMaxRange();
 
-       }, this);
+        }, this);
 
-       this.uniqueIdType.subscribe(function(){
-           if(!this.showUniqueId())
-               return;
+        this.uniqueIdType.subscribe(function () {
+            if (!this.showUniqueId())
+                return;
 
-           DW.ko.mandatoryValidator(this.uniqueIdType);
-       }, this);
+            DW.ko.mandatoryValidator(this.uniqueIdType);
+        }, this);
 
     }
 };
@@ -597,14 +597,14 @@ $(document).ready(function () {
 
     DW.has_submission_delete_warning = (function () {
         var kwargs = {
-                    container: "#submission_exists",
-                    is_continue: false,
-                    title: gettext('Warning: Your Collected Data Will be Lost'),
-                    continue_handler: function(){
-                        questionnaireViewModel.removeMarkedQuestion();
-                    },
-                    height: 170
-                 };
+            container: "#submission_exists",
+            is_continue: false,
+            title: gettext('Warning: Your Collected Data Will be Lost'),
+            continue_handler: function () {
+                questionnaireViewModel.removeMarkedQuestion();
+            },
+            height: 170
+        };
         return new DW.warning_dialog(kwargs);
     }());
 
@@ -624,12 +624,12 @@ DW.addNewQuestion = function () {
     DW.close_the_tip_on_period_question();
 };
 
-DW.CancelQuestionnaireWarningDialog = function(options){
+DW.CancelQuestionnaireWarningDialog = function (options) {
     var self = this;
     var successCallBack = options.successCallBack;
     var isQuestionnaireModified = options.isQuestionnaireModified;
 
-    this.init = function(){
+    this.init = function () {
         self.cancelDialog = $("#cancel_questionnaire_warning_message");
         self.ignoreButton = self.cancelDialog.find(".no_button");
         self.saveButton = self.cancelDialog.find(".yes_button");
@@ -641,58 +641,77 @@ DW.CancelQuestionnaireWarningDialog = function(options){
         _initializeLinkBindings();
     };
 
-    var _initializeDialog = function(){
-         self.cancelDialog.dialog({
-            title:gettext("You Have Unsaved Changes"),
-            modal:true,
-            autoOpen:false,
-            width:550,
-            closeText:'hide'
+    var _initializeDialog = function () {
+        self.cancelDialog.dialog({
+            title: gettext("You Have Unsaved Changes"),
+            modal: true,
+            autoOpen: false,
+            width: 550,
+            closeText: 'hide'
         });
     };
 
-    var _initializeIgnoreButtonHandler = function() {
-        self.ignoreButton.bind('click', function(){
+    var _initializeIgnoreButtonHandler = function () {
+        self.ignoreButton.bind('click', function () {
             self.cancelDialog.dialog("close");
             return _redirect();
         });
     };
 
-    var _initializeCancelButtonHandler = function() {
-         self.cancelButton.bind('click', function(){
+    var _initializeCancelButtonHandler = function () {
+        self.cancelButton.bind('click', function () {
             self.cancelDialog.dialog("close");
             return false;
-         });
+        });
     };
 
-    var _initializeSaveButtonHandler = function(){
-        self.saveButton.bind('click', function(){
-            if(questionnaireViewModel.validateSelectedQuestion() && questionnaireViewModel.validateQuestionnaireDetails())
-            {
-                successCallBack(function(){
-                   return _redirect();
+    var _initializeSaveButtonHandler = function () {
+        self.saveButton.bind('click', function () {
+            if (questionnaireViewModel.validateSelectedQuestion() && questionnaireViewModel.validateQuestionnaireDetails()) {
+                successCallBack(function () {
+                    return _redirect();
                 });
             }
             self.cancelDialog.dialog("close");
         });
     };
 
-    var _redirect = function() {
+    var _redirect = function () {
         window.location.href = redirect_url;
         return true;
     };
 
-    var _initializeLinkBindings = function(){
-        $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(".add_link, .preview-navigation a, .sms_tester, .delete_project").bind('click', {self:this}, function (event) {
-                var that = event.data.self;
-                redirect_url = $(this).attr("href");
-                if (isQuestionnaireModified()){
-                    self.cancelDialog.dialog("open");
-                    return false;
-                }
-                else
-                    return _redirect();
+    var _initializeLinkBindings = function () {
+        $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(".add_link, .preview-navigation a, .sms_tester, .delete_project").bind('click', {self: this}, function (event) {
+            var that = event.data.self;
+            redirect_url = $(this).attr("href");
+            if (isQuestionnaireModified()) {
+                self.cancelDialog.dialog("open");
+                return false;
+            }
+            else
+                return _redirect();
         });
     };
 
 };
+
+
+$(document).ready(function () {
+    $(document).ajaxStop($.unblockUI);
+    $("#response_info").hide();
+
+    $(".unique_id_learn_more_form").dialog({
+        autoOpen: false,
+        width: 500,
+        modal: true,
+        title: gettext("Learn More About Identification Numbers"),
+        zIndex: 1100
+    });
+
+    $('#unique_id_learn_more_link').live('click', (function () {
+        $(".unique_id_learn_more_form").removeClass("none");
+        $(".unique_id_learn_more_form").dialog("open");
+        return false;
+    }));
+});

@@ -4,13 +4,8 @@
 
     <div class="unique_id_learn_more">
         <p class="questionnaire-instruction-text">{% trans "Identification numbers improve the accuracy of your data." %}</p>
-        <a data-bind="click: $root.toggleLearnMoreBlockVisibility, hidden: $root.learnMoreBlockVisible"
-           class="show_link">{% trans "Learn More" %}</a>
-
-        <div data-bind="visible: $root.learnMoreBlockVisible" class="unique_id_help">
-            <p>{% trans "unique_id_learn_more" %}</p>
-            <a data-bind="click: $root.toggleLearnMoreBlockVisibility" class="hide_link">{% trans "Hide help" %}</a>
-        </div>
+        <a  id= "unique_id_learn_more_link">{% trans "Learn More" %}</a>
+        {% include "project/unique_id_learn_more.html" %}
     </div>
     <span>{% trans 'I want to use Identification Numbers for my' %}</span>
 

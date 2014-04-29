@@ -61,8 +61,6 @@ function ProjectQuestionnaireViewModel() {
     self.learnMoreBlockVisible = ko.observable(false);
 
     self.toggleLearnMoreBlockVisibility = function(){
-        var isVisible = self.learnMoreBlockVisible();
-        self.learnMoreBlockVisible(!isVisible);
     }
 }
 
