@@ -586,7 +586,7 @@ msgid "r_tooltip_submission_date"
 msgstr "Cliquez sur la liste déroulante de la date de soumission et choisissez une date spécifique ou un intervalle de date."
 
 msgid "Search"
-msgstr "Recherche"
+msgstr "Rechercher"
 
 msgid "All Data Records"
 msgstr "Tous les enregistrements"
@@ -2769,7 +2769,7 @@ msgid "My %(entity_type)s List"
 msgstr "Ma liste de %(entity_type)s"
 
 msgid "My "
-msgstr "Mon "
+msgstr "Mes "
 
 msgid "My %(entity_type)s"
 msgstr "Mes %(entity_type)s"
