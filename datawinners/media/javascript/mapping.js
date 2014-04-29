@@ -49,7 +49,7 @@ function init_map() {
         add_layer(entity_type, image_url, geo_url + "/" + entity_type)
     }
 
-    add_layer(gettext('Datasenders'), '/media/images/pin_datasender.png', geo_url);
+    add_layer(gettext('Data Senders'), '/media/images/pin_datasender.png', geo_url);
 
     var legends = new OpenLayers.Control.LayerSwitcher({ascending: false});
     map.addControl(legends);

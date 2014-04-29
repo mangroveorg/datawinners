@@ -1161,5 +1161,5 @@ msgstr "Ajout.."
 msgid "Answer must be the Identification Number."
 msgstr "La réponse doit être un Numéro d'Identification."
 
-msgid "Datasenders"
+msgid "Data Senders"
 msgstr "Expéditeurs de Données"
