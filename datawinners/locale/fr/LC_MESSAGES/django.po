@@ -4748,7 +4748,7 @@ msgid "I want to use Identification Numbers for my"
 msgstr "Je veux utiliser des Numéros d'Identification pour mon (ma)"
 
 msgid "Add an Identification Number"
-msgstr "Ajouter un type de ID unique"
+msgstr "Ajouter un Numéro d'Identification"
 
 msgid "Edit Name"
 msgstr "Modifier le nom"
