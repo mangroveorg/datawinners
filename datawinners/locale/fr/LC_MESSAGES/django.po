@@ -1384,11 +1384,8 @@ msgid "Save"
 msgstr "Enregistrer"
 
 msgid "tooltip_question_sms"
-msgstr "Utilisez ce décompte automatique pour déterminer le nombre maximal de caractères qu'un Expéditeur de Données "
-"devra saisir pour répondre à toutes les questions dans votre questionnaire. Pour garder les coûts de communication au "
-"niveau le plus bas, essayez de garder le nombre de caractères requis inférieur ou égal à 160 --- la longueur d'un seul "
-"SMS. Ne vous inquiétez pas, vous pouvez aller au-delà de 160 caractères. Cependant, plus d'un SMS seront nécessaires "
-"pour répondre à toutes les questions."
+msgstr "Les Soumissions de plus de 160 caractères ne peuvent pas être reçues par DataWinners. Ce compteur affiche\
+ le nombre approximatif de caractères requis pour répondre à toutes les questions de votre Questionnaire."
 
 msgid "Print"
 msgstr "Imprimer"

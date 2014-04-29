@@ -1308,10 +1308,8 @@ msgid "Save"
 msgstr ""
 
 msgid "tooltip_question_sms"
-msgstr "Use this running count to determine the maximum number of characters a Data Sender will have to enter to "
-"respond to all questions in your questionnaire. To keep communication costs down, try to keep the number of characters "
-"required to 160 or less, the length of a single SMS. Don't worry, you can go beyond 160 characters. However, more than "
-"one SMS will be required to answer all the questions."
+msgstr "Submissions that go beyond 160 characters cannot be received by DataWinners. This running count shows an\
+ approximate number of characters needed to respond to all questions in your Questionnaire."
 
 msgid "Print"
 msgstr ""
