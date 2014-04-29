@@ -9,7 +9,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.datastore.entity import get_by_short_code, Entity, get_all_entities
+from mangrove.datastore.entity import get_by_short_code, Entity, get_all_entities, by_short_codes
 from mangrove.datastore.queries import get_entities_by_type
 from mangrove.form_model.form_model import FormModel
 
@@ -41,7 +41,7 @@ def _make_message(row):
         message = row.value["error_message"]
     return message
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @csrf_exempt
 @is_not_expired
@@ -123,17 +123,16 @@ def geo_json_for_project(request, project_id, entity_type=None):
 
     if entity_type:
         try:
-            unique_ids = get_all_entities(dbm, [entity_type])
+            unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
         except DataObjectNotFound:
             pass
         entity_list.extend(unique_ids)
     else:
-        for short_code in questionnaire.data_senders:
-            try:
-                entity = get_by_short_code(dbm, short_code, ["reporter"])
-            except DataObjectNotFound:
-                continue
-            entity_list.append(entity)
+        try:
+            datasenders = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
+            entity_list.extend(datasenders)
+        except DataObjectNotFound:
+            pass
 
     location_geojson = helper.create_location_geojson(entity_list)
     return HttpResponse(location_geojson)
