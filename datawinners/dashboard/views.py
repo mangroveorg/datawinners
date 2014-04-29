@@ -9,10 +9,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.datastore.entity import get_by_short_code, Entity, get_all_entities, by_short_codes
-from mangrove.datastore.queries import get_entities_by_type
-from mangrove.form_model.form_model import FormModel
-
+from mangrove.datastore.entity import Entity, get_all_entities, by_short_codes
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
