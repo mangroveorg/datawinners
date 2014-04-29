@@ -1053,7 +1053,7 @@ msgstr ""
 msgid "Max should be greater than min."
 msgstr ""
 
-msgid "Word or Phrase"
+msgid "Word"
 msgstr ""
 
 msgid "Number"

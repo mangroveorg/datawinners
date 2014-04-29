@@ -29,7 +29,7 @@ var SubjectQuestionnaireViewModel = function(){
 
     self.answerTypes = [
         {name: gettext('Select an Answer Type'), value: '', disable: true},
-        {name: gettext('Word or Phrase'), value: 'text'},
+        {name: gettext('Word'), value: 'text'},
         {name: gettext('Number'), value: 'integer'},
         {name: gettext('Date'), value: 'date'},
         {name: gettext('List of Choices'), value: 'choice'},

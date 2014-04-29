@@ -1198,8 +1198,8 @@ msgstr ""
 msgid "Select what kind of answer you want from your Data Senders."
 msgstr "Quel type de réponse attendez-vous de vos expéditeurs"
 
-msgid "Word or Phrase"
-msgstr "Mot et Phrase"
+msgid "Word"
+msgstr "Mot"
 
 msgid "Number"
 msgstr "Chiffre"

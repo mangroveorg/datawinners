@@ -964,7 +964,7 @@ msgstr "Type de réponse "
 msgid "Select what kind of answer you want from your Data Senders."
 msgstr "Quel type de réponse attendez-vous de vos envoyeurs"
 
-msgid "Word or Phrase"
+msgid "Word"
 msgstr "Mot"
 
 msgid "Number"

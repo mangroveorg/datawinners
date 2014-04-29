@@ -1120,7 +1120,7 @@ msgstr ""
 msgid "Select what kind of answer you want from your Data Senders."
 msgstr ""
 
-msgid "Word or Phrase"
+msgid "Word"
 msgstr ""
 
 msgid "Number"
