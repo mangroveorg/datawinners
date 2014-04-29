@@ -1961,7 +1961,7 @@ msgstr ""
 msgid "Set reminders"
 msgstr ""
 
-msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your questionnaire."
+msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your Questionnaire."
 msgstr ""
 
 msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."

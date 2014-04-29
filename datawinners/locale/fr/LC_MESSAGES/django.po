@@ -2035,8 +2035,8 @@ msgstr "Ajouter des Sujets"
 msgid "Set reminders"
 msgstr "Définir des Messages de Rappel"
 
-msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your questionnaire."
-msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre questionnaire."
+msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your Questionnaire."
+msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre Questionnaire."
 
 msgid "Register each %(entity_type)s you need to collect data about and want to see on a map."
 msgstr "Enregistrer chaque %(entity_type)s sur lequel vous souhaitez collecter des données et souhaitez voir sur une carte."
@@ -4102,8 +4102,8 @@ msgstr "Etes-vous sûr de vouloir continuer?"
 msgid "View and manage unsuccessful Submissions for this project."
 msgstr "Voir et gérer les soumissions non réussies pour ce projet. Voir aussi la page <a href=\"/allfailedsubmissions\">Soumissions Echouées</a>."
 
-msgid "Error Messages"
-msgstr "Messages d’Erreur"
+msgid "Error Message"
+msgstr "Message d'erreur"
 
 msgid "Answer must be 20 characters maximum"
 msgstr "La réponse doit être de 20 caractères au maximum"
@@ -4785,9 +4785,6 @@ msgstr "Mes"
 
 msgid "My Data Senders linked to this project"
 msgstr "Mes Expéditeurs de données liés à ce Projet"
-
-msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your project."
-msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre projet."
 
 msgid "Register each Identification Number you need to collect data about and want to track on a map."
 msgstr "Enregistrer chaque Numéro d'identification sur lequel vous souhaitez collecter des Données et voulez suivre sur une carte."
