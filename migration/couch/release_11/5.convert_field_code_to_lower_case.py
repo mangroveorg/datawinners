@@ -29,10 +29,9 @@ def convert_field_code_to_lower_case(db_name):
                     convert_dict_keys_to_lowercase(survey_response.values)
                     survey_response.save()
                     logger.info("Modified survey response id: %s" % survey_response.uuid)
-
-        mark_as_completed(db_name)
     except Exception as e:
         logger.exception(e.message)
+    mark_as_completed(db_name)
 
 
 migrate(all_db_names(), convert_field_code_to_lower_case, version=(11, 0, 5), threads=3)

@@ -42,7 +42,6 @@ def create_index(database_name):
             form_model_change_handler(form_model_doc, dbm)
             try:
                 create_submission_index(dbm, row)
-                mark_as_completed(database_name)
             except Exception as e:
                 logger.error("Index update failed for database %s and for formmodel %s" % (database_name, row.id))
                 logger.error(e)
@@ -50,5 +49,6 @@ def create_index(database_name):
         logger.error(
             "Mapping update failed for database %s for form model %s " % (database_name, form_model_doc.form_code))
         logger.error(e)
+    mark_as_completed(database_name)
 
 migrate(all_db_names(), create_index, version=(11, 0, 6), threads=2)

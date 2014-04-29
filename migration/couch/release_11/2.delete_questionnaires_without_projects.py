@@ -34,6 +34,11 @@ def delete_questionnaires_without_projects(db_name):
     for row in dbm.database.query(list_all_formmodels_of_projects, include_docs=True):
         try:
             form_model_doc = row.doc
+
+            if 'data_senders' in form_model_doc:
+                logger.warn("Skipping migration - multiple runs")
+                return
+
             projects = dbm.database.query(get_project_from_qid, include_docs=True, key=row.id)
             if not projects:
                 submissions = dbm.database.query(get_submissions_for_formmodel,include_docs=True, key=form_model_doc['form_code'])
@@ -42,10 +47,10 @@ def delete_questionnaires_without_projects(db_name):
                     dbm.database.delete(submission.doc)
                 logger.info("deleting form_model with id:%s and code:%s", row.id, form_model_doc['form_code'])
                 dbm.database.delete(form_model_doc)
-                mark_as_completed(db_name)
         except Exception as e:
             logger.error(
                 'something failed for for database : %s, project_doc with id: %s' % (dbm.database_name, row.id))
             logger.error(e)
+    mark_as_completed(db_name)
 
 migrate(all_db_names(), delete_questionnaires_without_projects, version=(11, 0, 2), threads=3)

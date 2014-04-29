@@ -107,9 +107,9 @@ def migrate_form_model_to_add_eid_fields(db_name):
         logger.info('Starting migration')
         dbm = get_db_manager(db_name)
         add_unique_id_and_short_code_field(dbm, logger)
-        mark_as_completed(db_name)
     except Exception as e:
         logger.exception(e.message)
+    mark_as_completed(db_name)
 
 
 migrate(all_db_names(), migrate_form_model_to_add_eid_fields, version=(11, 0, 3), threads=3)

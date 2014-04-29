@@ -69,9 +69,9 @@ def migrate_to_merge_form_model_and_project(db_name):
         logger.info('Starting migration')
         dbm = get_db_manager(db_name)
         merge_project_and_form_model_for(dbm, logger)
-        mark_as_completed(db_name)
     except Exception as e:
         logger.exception(e.message)
+    mark_as_completed(db_name)
 
 
 migrate(all_db_names(), migrate_to_merge_form_model_and_project, version=(11, 0, 4), threads=3)
