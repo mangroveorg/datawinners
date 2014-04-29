@@ -1,5 +1,5 @@
 import unittest
-from datawinners.project.wizard_view import update_associated_submissions, update_submissions_for_form_code_change, update_submissions_for_form_field_change
+from datawinners.project.wizard_view import update_associated_submissions, update_submissions_for_form_code_change, remove_deleted_questions_from_submissions
 from mangrove.datastore.database import DatabaseManager
 from mock import patch, Mock, MagicMock
 from mangrove.datastore.documents import SurveyResponseDocument
@@ -46,7 +46,7 @@ class TestUpdateAssociatedSubmission(unittest.TestCase):
             survey_responses_mock = [survey_response1,survey_response2]
             survey_responses_by_form_code.return_value = survey_responses_mock
 
-            update_submissions_for_form_field_change(dbm, form_code, deleted_question_codes)
+            remove_deleted_questions_from_submissions(dbm, form_code, deleted_question_codes)
 
             survey_response1.save.assert_called()
             survey_response2.save.assert_called()
@@ -64,7 +64,7 @@ class TestUpdateAssociatedSubmission(unittest.TestCase):
                                      (SurveyResponse.new_from_doc(dbm=None, doc=mock_document2))]
             survey_responses_by_form_code.return_value = survey_responses_mock
 
-            update_submissions_for_form_field_change(dbm, form_code, deleted_question_codes)
+            remove_deleted_questions_from_submissions(dbm, form_code, deleted_question_codes)
 
             self.assertEquals(mock_document1.values, {'field_code': 'answer1', 'another_code': 'answer2'})
             self.assertEquals(mock_document2.values, {'field_code': 'answer3', 'another_code': 'answer4'})

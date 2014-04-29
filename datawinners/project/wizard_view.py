@@ -375,7 +375,7 @@ def update_submissions_for_form_code_change(manager, new_form_code, old_form_cod
         manager._save_documents(documents)
 
 
-def update_submissions_for_form_field_change(manager, old_form_code, deleted_question_codes):
+def remove_deleted_questions_from_submissions(manager, old_form_code, deleted_question_codes):
     if deleted_question_codes:
         survey_responses = survey_responses_by_form_code(manager, old_form_code)
         for survey_response in survey_responses:
@@ -389,6 +389,6 @@ def update_associated_submissions(database_name, old_form_code, new_form_code, d
     try:
         manager = get_db_manager(database_name)
         update_submissions_for_form_code_change(manager, new_form_code, old_form_code)
-        update_submissions_for_form_field_change(manager, old_form_code, deleted_question_codes)
+        remove_deleted_questions_from_submissions(manager, new_form_code, deleted_question_codes)
     except Exception as e:
         current.retry(exc=e)
