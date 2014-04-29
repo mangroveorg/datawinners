@@ -36,6 +36,7 @@ function init_map() {
                 "default": {
                     externalGraphic: image,
                     graphicWidth: 48, graphicHeight: 43,
+                    graphicXOffset:-14, graphicYOffset:-37,  //tip of pin in icon is at 14,6 offset y is height - tipY
                     pointRadius: 8}
             })
         }));
