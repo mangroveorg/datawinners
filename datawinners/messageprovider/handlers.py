@@ -40,7 +40,7 @@ exception_handlers = {
 
 def data_object_not_found_formatter(data_object_not_found_exception, message):
     entity_type, param, value = data_object_not_found_exception.data
-    return message % (entity_type,value,entity_type)
+    return message % (entity_type.capitalize(),value)
 
 def create_failure_log(error_message, request):
     log = DatawinnerLog()
