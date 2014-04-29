@@ -50,7 +50,8 @@ div.margin_top_20 input{
 #questionnaire_title {
   text-transform: capitalize;
   width: 400px;
-  padding: 5px;
+  padding: 3px;
+  font-size: 15px;
 }
 #question-detail-panel .mobile {
   background: url("/media/images/mobile2.jpg") no-repeat left top;
@@ -264,6 +265,7 @@ div.margin_top_20 input{
 #questionnaire-code {
   float: none;
   width:4em;
+  padding:3px;
 }
 
 .questionnaire_code {
@@ -515,6 +517,8 @@ div.margin_top_20 input{
 #question_form{
   select#project_language {
     @extend .dropdown_style;
+    font-size: 14px !important;
+    font-family:sans-serif !important;
   }
 }
 #message-label{
