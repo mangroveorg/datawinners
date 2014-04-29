@@ -972,9 +972,6 @@ msgstr "Select all <b> %(total_number_of_records)s </b>%(concept)s(s)"
 msgid "Select all <b> %(total_number_of_records)s </b>datasenders"
 msgstr "Select all <b> %(total_number_of_records)s </b>datasenders"
 
-msgid "Enter any information you want to find"
-msgstr ""
-
 msgid "You have selected all %(total_number_of_records)s %(concept)s(s)."
 msgstr ""
 

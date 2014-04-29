@@ -585,8 +585,8 @@ msgstr "Le rapport périodique est souvent différent de la date de soummission 
 msgid "r_tooltip_submission_date"
 msgstr "Cliquez sur la liste déroulante de la date de soumission et choisissez une date spécifique ou un intervalle de date."
 
-msgid "Search for Keyword"
-msgstr "Recherche par Mot clé"
+msgid "Search"
+msgstr "Recherche"
 
 msgid "All Data Records"
 msgstr "Tous les enregistrements"

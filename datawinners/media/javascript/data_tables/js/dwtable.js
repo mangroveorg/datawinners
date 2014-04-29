@@ -10,7 +10,7 @@
                 "bResetDisplay": true,
                 "sAjaxDataProp": "data",
                 "sPaginationType": "dw_pagination",
-                "searchPlaceholderText": 'Enter any information you want to find',
+                "searchPlaceholderText": '',
                 'getFilter': function () {
                 },
                 "fnServerData": function (sSource, aoData, fnCallback, oSettings) {

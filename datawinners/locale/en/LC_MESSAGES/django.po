@@ -524,7 +524,7 @@ msgstr "The Submission Date is often different than the Reporting Period. Exampl
 msgid "r_tooltip_submission_date"
 msgstr "Click on the Submission Date dropdown and choose a specific a date or date range."
 
-msgid "Search for Keyword"
+msgid "Search"
 msgstr ""
 
 msgid "All Data Records"
