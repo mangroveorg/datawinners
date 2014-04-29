@@ -230,7 +230,7 @@ class AllDataSendersPage(Page):
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
 
     def search_with(self, search_text):
-        self.driver.find_text_box(by_css("div#datasender_table_filter > input")).enter_text(search_text)
+        self.driver.find_text_box(by_css("div#datasender_table_filter input")).enter_text(search_text)
         time.sleep(0.2) #auto search waits for 200ms after key press
         self._wait_for_table_data_to_load()
 

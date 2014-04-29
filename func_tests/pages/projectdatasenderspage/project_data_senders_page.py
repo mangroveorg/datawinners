@@ -120,7 +120,7 @@ class ProjectDataSendersPage(Page):
         return self.driver.find(CHECKALL_CB).is_enabled()
 
     def search_with(self, search_text):
-        self.driver.find_text_box(by_css("div#datasender_table_filter > input")).enter_text(search_text)
+        self.driver.find_text_box(by_css("div#datasender_table_filter input")).enter_text(search_text)
 
     def get_checkbox_selector_for_datasender_row(self, row_number):
         # first row is used to show all rows select message
