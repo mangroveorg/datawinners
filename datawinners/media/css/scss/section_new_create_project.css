@@ -901,19 +901,19 @@ fieldset {
 .uniqueIdTypeSection .unique_id_learn_more {
   margin: 0 0 20px 0; }
 .uniqueIdTypeSection .idTypeDropdown {
-  height: 22px; }
+  height: 24px; }
 .uniqueIdTypeSection .uniqueIdType {
   float: left;
   text-transform: capitalize;
   background: url("/media/images/arrow_dd.png") no-repeat scroll right -3px;
   cursor: pointer;
-  padding-left: 5px;
+  padding: 3px 2px 2px 5px;
   font-size: 11px;
   border: 2px solid;
   border-color: #646464 #EBEBEB #EBEBEB #646464;
   border-image: none;
-  width: 188px;
-  height: 19px; }
+  width: 190px;
+  height: 17px; }
 .uniqueIdTypeSection .uniqueIdTypeContents {
   font-size: 11px;
   border: 1px solid gray;
@@ -930,6 +930,7 @@ fieldset {
   .uniqueIdTypeSection .uniqueIdTypeContents .newUniqueIdBox {
     margin: 5px 0 5px 0; }
     .uniqueIdTypeSection .uniqueIdTypeContents .newUniqueIdBox .newUniqueIdName {
+      font-size: 11px;
       width: 210px;
       margin: 5px 10px 5px 0; }
   .uniqueIdTypeSection .uniqueIdTypeContents .section-example {

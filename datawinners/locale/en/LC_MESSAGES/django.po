@@ -1115,7 +1115,7 @@ msgstr ""
 "when answering the question. Answers can be numbers, text, multiple choice, "
 "or dates.<br/>When using the <strong>Multiple Choice option</strong>, Data "
 "Senders will type the letter (A, B, C etc.) that corresponds to the "
-"correct answer NOT the textin the answer field."
+"correct answer NOT the text in the answer field."
 
 msgid "Select what kind of answer you want from your Data Senders."
 msgstr ""

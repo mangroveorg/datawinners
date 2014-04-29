@@ -4,7 +4,7 @@
     -moz-appearance: none;  /*Removes default style Firefox*/
     text-indent: 0.01px;
     text-overflow: "";
-    width: 192px;
+    width: 190px;
     height: 23px;
     background: url('/media/images/arrow_dd.png') no-repeat scroll right -3px;
   //background-position: 167px -3px;
@@ -19,7 +19,6 @@
 
 .advanced_type{
   font-size: 10px;
-  font-style: italic;
   margin-top: 0px !important;
 }
 
@@ -478,7 +477,7 @@ div.margin_top_20 input{
 
 
 .questionnare_content #question-detail-panel .dropdown select{
-  @extend .dropdown_style
+  @extend .dropdown_style;
 }
 
 .select_question_message {
@@ -522,8 +521,6 @@ div.margin_top_20 input{
 #question_form{
   select#project_language {
     @extend .dropdown_style;
-    font-size: 14px !important;
-    font-family:sans-serif !important;
   }
 }
 #message-label{
