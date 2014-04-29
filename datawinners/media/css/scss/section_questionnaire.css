@@ -13,13 +13,15 @@
   margin-left: 0px;
   padding: 2px; }
   .dropdown_style option, .wizard_content .content_wrapper .questionnaire_code #select option, .questionnare_content #question-detail-panel .dropdown select option, #question_form select#project_language option {
-    outline: 0;
-    padding: 5px; }
+    margin: 3px; }
 
 .advanced_type {
   font-size: 10px;
   font-style: italic;
-  padding-top: 10px !important; }
+  margin-top: 0px !important; }
+
+.blank_space_answer_type {
+  margin: 0px !important; }
 
 #max_length {
   width: 40px;
