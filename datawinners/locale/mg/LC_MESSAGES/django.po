@@ -2904,6 +2904,3 @@ msgstr "Misaotra %(datasender)s. Voarainay ny SMS-nao"
 
 msgid "You have reached your limit of 1000 free Submissions. Upgrade to a monthly subscription to continue sending in Submissions."
 msgstr "Efa tratra ny fetran'ny fandefasanao maimaimpoana 1000. Azafady, misorata anarana amin'ny tolotra andoavam-bola mba hahafahanao manohy ny fandefasana."
-
-msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
-msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana."

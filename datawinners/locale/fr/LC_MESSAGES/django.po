@@ -4733,9 +4733,6 @@ msgstr "Type(s) de Numéro d'Identification supprimé(s) avec succès."
 msgid "Select an Identification Number Type"
 msgstr "Sélectionnez un Type de Numéro d'Identification"
 
-msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
-msgstr "Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
-
 msgid "The Data Sender %s (%s) is not linked to your Questionnaire."
 msgstr "L'expéditeur de données %s (%s) n'est pas relié à votre questionnaire."
 

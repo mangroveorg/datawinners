@@ -119,11 +119,8 @@ class PostSMSProcessorCheckDSIsRegistered(object):
 
     def process(self, form_code, submission_values):
         exception = self.request.get('exception')
-        if self.request.get('reporter_entity') and isinstance(exception, NumberNotRegisteredException):
-            response = Response(reporters=[], survey_response_id=None)
-            response.success = True
-            response.errors = get_datasender_not_linked_to_project_error_message()
-            return response
+        if exception and isinstance(exception, NumberNotRegisteredException):
+            raise exception
 
 class PostSMSProcessorCheckLimits(object):
 
