@@ -240,6 +240,7 @@ DW.FilterSection = function(){
     var self = this;
     var showFilter;
     var hideFilter;
+    var parentSection;
     var filterSection;
 
     function _destroyTooltip(element) {
@@ -264,6 +265,7 @@ DW.FilterSection = function(){
         showFilter = $("#show_filters");
         hideFilter = $("#hide_filters");
         filterSection = $("#questionnaire_field_filters");
+        parentSection = $("#filter_section");
         _initializeEventHandlers();
         _removeAllTooltips();
         _initializeTooltipForLongQuestionLabels();
@@ -271,15 +273,17 @@ DW.FilterSection = function(){
     };
 
     function _initializeEventHandlers(){
+
         showFilter.on("click", function () {
             $(this).addClass('none');
             filterSection.removeClass('none');
+            parentSection.removeClass("filter_section_padded");
         });
 
         hideFilter.on("click", function () {
             filterSection.addClass('none');
             showFilter.removeClass('none');
-
+            parentSection.addClass("filter_section_padded");
         });
     }
 };
