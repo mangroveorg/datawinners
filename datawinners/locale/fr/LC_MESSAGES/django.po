@@ -4783,8 +4783,8 @@ msgstr "Types de réponse avancés"
 msgid "My"
 msgstr "Mes"
 
-msgid "My Data Senders linked to this project"
-msgstr "Mes Expéditeurs de données liés à ce Projet"
+msgid "My Data Senders linked to this Questionnaire"
+msgstr "Mes Expéditeurs de données liés à ce Questionnaire"
 
 msgid "Register each Identification Number you need to collect data about and want to track on a map."
 msgstr "Enregistrer chaque Numéro d'identification sur lequel vous souhaitez collecter des Données et voulez suivre sur une carte."
@@ -4794,3 +4794,6 @@ msgstr "Ajouter de nouveaux Numéros d'identification"
 
 msgid "Enter the Unique Id of the %s"
 msgstr "Tapez le code unique du/de la %s"
+
+msgid "View and manage all Submissions for this project."
+msgstr "Voir et gérer toutes les Soumissions liées à ce projet."

@@ -229,9 +229,8 @@ msgstr "au"
 msgid "Import a Data Senders list"
 msgstr "Importer une liste d'expéditeurs"
 
-#: media/javascript/datasenders/index.js:48
-msgid "Select Projects"
-msgstr "Sélectionnez les projets"
+msgid "Select Questionnaires"
+msgstr "Sélectionnez les Questionnaire"
 
 #: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
@@ -1032,11 +1031,11 @@ msgstr "Exemple: %(day)s de la même semaine"
 msgid "Select a %(concept)s"
 msgstr "Sélectionnez un(e) %(concept)s"
 
-msgid "Remove from project"
-msgstr "Retirer d'un projet"
+msgid "Remove from Questionnaire"
+msgstr "Retirer d'un Questionnaire"
 
-msgid "Add to project"
-msgstr "Relier à un projet"
+msgid "Add to Questionnaire"
+msgstr "Relier à un Questionnaire"
 
 msgid " Record(s) Failed to Import"
 msgstr " Enregistrements n'ont pas pu être importés"

@@ -224,7 +224,7 @@ msgid "Import a Data Senders list"
 msgstr ""
 
 #: media/javascript/datasenders/index.js:48
-msgid "Select Projects"
+msgid "Select Questionnaires"
 msgstr ""
 
 #: media/javascript/datasenders/index.js:57

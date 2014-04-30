@@ -112,7 +112,7 @@ function init_add_remove_from_project() {
     var all_project_block = $("#all_project_block").dialog({
         autoOpen: false,
         modal: true,
-        title: gettext('Select Projects'),
+        title: gettext('Select Questionnaires'),
         zIndex: 1100,
         beforeClose: function () {
             $('#action').at;
