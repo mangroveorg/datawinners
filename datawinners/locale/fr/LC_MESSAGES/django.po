@@ -1970,13 +1970,13 @@ msgstr "Ce/cette %s n'est pas enregistré(e) dans notre système. Vérifiez le n
 "de nouveau le SMS"
 
 msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Erreur, le/la %s %s n'est pas enregistre(e) dans notre systeme. Veuillez enregistrer ce/cette %s ou contactez votre superviseur."
+msgstr "Erreur. %s %s n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez le SMS au complet ou contactez votre superviseur"
 
 msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
 
-msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
-msgstr "Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
+msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
 
 msgid "All questions must be unique"
 msgstr "Toutes les questions doivent être uniques. Veuillez supprimer les doublons"

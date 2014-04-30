@@ -73,24 +73,24 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(send_sms_with(UNAUTHORIZED_DATASENDER),
                          fetch_(ERROR_MSG, from_(UNAUTHORIZED_DATASENDER)))
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_check_with_right_order(self):
         test_data = MULTIPLE_WRONG_DATA.copy()
         self.assertEqual(send_sms_with(test_data),
-                         "You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")
+                         "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")
 
         test_data.update({SENDER: "2619876"})
         self.assertEqual(send_sms_with(test_data),
-                         "Error. Questionnaire Code wrcode is incorrect. Please review the Registration Form and resend entire SMS.")
+                         "Error. Questionnaire Code wrcode is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("wrcode", "cli002")})
         self.assertEqual(send_sms_with(test_data),
-                         "You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")
+                         "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")
 
         test_data.update({SENDER: "1234567890"})
         self.assertEqual(send_sms_with(test_data),
-                         "Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.")
+                         "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("extradata", "")})

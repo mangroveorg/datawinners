@@ -11,7 +11,7 @@ SUBMISSION = u"submission"
 REGISTRATION = u"registration"
 SMART_PHONE=u"smartPhone"
 
-NOT_AUTHORIZED_DATASENDER_MSG = "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+NOT_AUTHORIZED_DATASENDER_MSG = "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 SUBMISSION_LIMIT_REACHED_MSG = "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
 SMS_LIMIT_REACHED_MSG = "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires."
 
@@ -30,8 +30,8 @@ exception_messages = {
 
     ex.FormModelDoesNotExistsException: {
         DEFAULT: u"Questionnaire ID %s doesnt exist.",
-        WEB: u"Error.Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.",
-        SMS: u"Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
+        WEB: u"Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS.",
+        SMS: u"Error. Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
     },
 
     ex.DataObjectNotFound: {
@@ -42,7 +42,7 @@ exception_messages = {
 
     ex.NumberNotRegisteredException: {
         DEFAULT: u"This telephone number is not registered in our system.",
-        SMS: u"You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+        SMS: u"Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
     },
 
     ex.QuestionCodeAlreadyExistsException: {
@@ -107,7 +107,7 @@ def get_registration_success_message(response):
            {'datasender':datasender, 'subject_type':subject_type}
 
 def get_wrong_number_of_answer_error_message():
-    return _("Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.")
+    return _("Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
 
 
 def get_datasender_not_linked_to_project_error_message():

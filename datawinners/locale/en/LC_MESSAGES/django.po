@@ -1909,7 +1909,7 @@ msgstr ""
 msgid "This telephone number is not registered in our system."
 msgstr ""
 
-msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr ""
 
 msgid "All questions must be unique"
