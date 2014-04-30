@@ -42,7 +42,8 @@ var SubjectQuestionnaireViewModel = function(){
     };
 
     self.removeLocationTypeOption = function() {
-        var locationTypeIndex = self.answerTypes.indexOf(self.locationType);
+        var answerTypes = $.map(self.answerTypes, function(e){return e["name"];});
+        var locationTypeIndex = answerTypes.indexOf(self.locationType["name"]);
         if (locationTypeIndex != -1) {
             self.answerTypes.splice(locationTypeIndex, 1)
         }
