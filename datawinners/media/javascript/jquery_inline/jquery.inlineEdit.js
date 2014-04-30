@@ -38,6 +38,7 @@ $.inlineEdit = function(urls, options){
         save_label:"Save",
         cancel_label:"Cancel",
 		afterSave: function(){},
+        beforeSave: function(){},
 		afterRemove: function(){},
 		getId: getId,
 		filterElementValue: function($o){return $o.html();},
@@ -122,21 +123,29 @@ $.inlineEdit = function(urls, options){
 
 	function addSaveControllers(callback)
 	{
-		if ($('.editFieldWrapper:last').parent().hasClass('removable')) {
-			$('.editFieldWrapper:last').append('<div class="editFieldSaveControllers"><button>Save</button>' +
-				', <a href="javascript:;" class="editFieldRemove">Remove</a>' +
-				'<a href="javascript:;" class="editFieldCancel">Cancel</a></div>');
+        var editFieldSection;
+
+        if ($('.editFieldWrapper:last').parent().hasClass('removable')) {
+             editFieldSection = $('<div class="editFieldSaveControllers"><button>Save</button>' +
+                ', <a href="javascript:;" class="editFieldRemove">Remove</a>' +
+                '<a href="javascript:;" class="editFieldCancel">Cancel</a></div>');
+
+   			 $('.editFieldWrapper:last').append(editFieldSection);
 		} else {
-			$('.editFieldWrapper:last').append('<div class="editFieldSaveControllers"><span class="error"><span class="error_arrow_left"></span><span class="message"></span></span><button>' + options.save_label+  '</button>' +
+            editFieldSection = $('<div class="editFieldSaveControllers"><span class="error"><span class="error_arrow_left"></span><span class="message"></span></span><button>' + options.save_label+  '</button>' +
 				'<a href="javascript:;" class="editFieldCancel">' + options.cancel_label+ '</a></div>');
+			$('.editFieldWrapper:last').append(editFieldSection);
 		}
-		$('.editFieldSaveControllers > button').click(editSave);
+
+		$('.editFieldSaveControllers > button').click(function(){
+            editSave(editFieldSection);
+        });
 		$('.editFieldSaveControllers > a.editFieldCancel').click(editCancel);
 		$('.editFieldSaveControllers > a.editFieldRemove').click(editRemove);
 		$('input.editField').keydown(function(e){
 			if (e.keyCode == 13) {
 				// Enter
-				editSave();
+				editSave(editFieldSection);
 			} else if (e.keyCode == 27) {
 				// Escape
 				editCancel();
@@ -267,8 +276,9 @@ $.inlineEdit = function(urls, options){
 		return typeAndUrl;
 	}
 
-	function editSave()
+	function editSave(editFieldSection)
 	{
+        options.beforeSave(editFieldSection);
 		$('.editFieldSaveControllers > button, .editField').attr('disabled', 'disabled');
         $(".editFieldSaveControllers .error").hide();
 		$('.editField').each(function(){
@@ -296,7 +306,8 @@ $.inlineEdit = function(urls, options){
 						success: resp.status == "success",
 						type: typeAndUrl.type,
 						id: id,
-						value: value
+						value: value,
+                        editFieldSection: editFieldSection
 					});
 				},
 				error: function(){
