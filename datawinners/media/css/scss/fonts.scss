@@ -1,6 +1,11 @@
 @font-face {
-  font-family: 'ArchitectsDaughter';
-  src: url('/media/css/font/ArchitectsDaughter.ttf');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'ArchitectsDaughter';
+    src: url('/media/css/font/architectsdaughter-webfont.eot');
+    src: url('/media/css/font/architectsdaughter-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/media/css/font/architectsdaughter-webfont.woff') format('woff'),
+         url('/media/css/font/architectsdaughter-webfont.ttf') format('truetype'),
+         url('/media/css/font/architectsdaughter-webfont.svg#architects_daughterregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }

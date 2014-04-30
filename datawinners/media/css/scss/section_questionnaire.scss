@@ -483,15 +483,14 @@ div.margin_top_20 input{
 @import "fonts";
 
 .select_question_message {
-  padding: 76px 29px 200px 29px;
+  padding: 76px 29px 40px 29px;
   font-family: ArchitectsDaughter, Lucida Grande, Lucida Sans, Arial, sans-serif;
   font-weight: bold;
   font-size: 120%;
   width: 450px;
   text-align: center;
   color: black;
-  background: url(/media/images/dw_select_question_arrow.jpg) no-repeat left 54px;
-  background-size: 128px;
+  background: url(/media/images/dw_select_question_arrow.png) no-repeat bottom left;
 }
 
 .validationMessage{
