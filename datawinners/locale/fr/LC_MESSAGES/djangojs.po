@@ -1154,7 +1154,7 @@ msgstr "Ajouter"
 msgid "Adding..."
 msgstr "Ajout..."
 
-msgid "Answer must be the Identification Number."
+msgid "Answer must be an Identification Number."
 msgstr "La réponse doit être un Numéro d'Identification."
 
 msgid "Data Senders"

@@ -33,7 +33,7 @@ DW.instruction_template = {
     "range_number": gettext("Answer must be a number between %d-%d."),
     "text": gettext("Answer must be a word"),
     "unique_id_type": gettext("Answer must be the Identification Number of the %s you are reporting on."),
-    "unique_id": gettext("Answer must be the Identification Number."),
+    "unique_id": gettext("Answer must be an Identification Number."),
     "max_text": gettext("Answer must be a word %d characters maximum"),
     "date": gettext("Answer must be a date in the following format: %s. Example: %s"),
     "single_select": gettext("Choose 1 answer from the list. Example: a"),
