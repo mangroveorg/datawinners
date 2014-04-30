@@ -82,45 +82,6 @@ TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 XLS_TUPLE_FORMAT = "%s (%s)"
 
-
-#@login_required(login_url='/login')
-#@is_not_expired
-#def save_questionnaire(request):
-#    manager = get_database_manager(request.user)
-#    if request.method == 'POST':
-#        questionnaire_code = request.POST['questionnaire-code']
-#        json_string = request.POST['question-set']
-#        question_set = json.loads(json_string)
-#        pid = request.POST['pid']
-#        project = Project.load(manager.database, pid)
-#        dashboard_page = settings.HOME_PAGE + "?deleted=true"
-#        if project.is_deleted():
-#            return HttpResponseRedirect(dashboard_page)
-#        form_model = FormModel.get(manager, project.qid)
-#        old_fields = form_model.fields
-#        try:
-#            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
-#        except QuestionCodeAlreadyExistsException as e:
-#            return HttpResponseServerError(e)
-#        except QuestionAlreadyExistsException as e:
-#            return HttpResponseServerError(e)
-#        except EntityQuestionAlreadyExistsException as e:
-#            return HttpResponseServerError(e.message)
-#        else:
-#            try:
-#                form_model.form_code = questionnaire_code.lower()
-#            except DataObjectAlreadyExists as e:
-#                if e.message.find("Form") >= 0:
-#                    return HttpResponseServerError("Questionnaire with this code already exists")
-#                return HttpResponseServerError(e.message)
-#            form_model.name = project.name
-#            form_model.entity_id = project.entity_type
-#            detail = utils.get_changed_questions(old_fields, form_model.fields, subject=False)
-#            form_model.save()
-#            UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
-#            return HttpResponse(json.dumps({"response": "ok"}))
-
-
 @login_required
 @session_not_expired
 @is_new_user

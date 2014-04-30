@@ -12,7 +12,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext
 import elasticutils
 import jsonpickle
 from django.contrib import messages
@@ -589,7 +589,7 @@ def save_questionnaire(request):
             except DataObjectAlreadyExists as e:
                 if e.message.find("Form") >= 0:
                     return HttpResponse(json.dumps({'success': False,"code_has_error":True,
-                                                    'error_message': "Questionnaire with same code already exists"}))
+                                                    'error_message': ugettext("Questionnaire with same code already exists.")}))
                 return HttpResponseServerError(e.message)
 
         json_string = request.POST['question-set']

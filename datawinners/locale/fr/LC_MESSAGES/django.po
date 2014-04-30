@@ -1985,6 +1985,9 @@ msgstr "Toutes les questions doivent être uniques. Veuillez supprimer les doubl
 msgid "Question Code Already Exists"
 msgstr "Ce Code Question existe déja"
 
+msgid "Questionnaire with same code already exists."
+msgstr "Un Questionnaire avec le même code existe déjà"
+
 msgid "Question Code %s provided already exists"
 msgstr "Ce Code Question %s fourni existe déja"
 

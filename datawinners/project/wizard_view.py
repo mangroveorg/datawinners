@@ -182,8 +182,6 @@ def edit_project(request, project_id):
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
         detail = _get_changed_data(questionnaire , project_info)
-        is_project_name_changed = project_info.get('name') != questionnaire.name
-        #questionnaire.update(project_info)
         try:
             old_fields = questionnaire.fields
             old_form_code = questionnaire.form_code
@@ -207,7 +205,7 @@ def edit_project(request, project_id):
                 json.dumps({'success': False, 'error_in_project_section': False, 'error_message': _(ex.message)}))
         except DataObjectAlreadyExists:
             return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False, "code_has_error":True,
-                                            'error_message': 'Questionnaire with same code already exists.'}))
+                                            'error_message': ugettext('Questionnaire with same code already exists.')}))
         if request.POST['has_callback'] == 'false':
             messages.add_message(request,messages.INFO,"success")
         return HttpResponse(json.dumps({'success': True, 'project_id': project_id}))
