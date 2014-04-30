@@ -3593,9 +3593,6 @@ msgstr ""
 msgid "%dth"
 msgstr ""
 
-msgid "If you delete a %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for it on the Data pages. Are you sure you want to delete?"
-msgstr ""
-
 msgid "Yes, Delete"
 msgstr ""
 
@@ -4512,7 +4509,7 @@ msgstr ""
 msgid "The Data Sender %s (%s) is not linked to your Questionnaire."
 msgstr ""
 
-msgid "You haven't created any Questionnaires yet. Once you do, a list of your Questionnaires will appear here. You can then choose one as a template and edit it to fit your needs."
+msgid "You haven't created any Questionnaires yet."
 msgstr ""
 
 msgid "Edit Name"

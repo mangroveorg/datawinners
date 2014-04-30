@@ -4738,8 +4738,8 @@ msgstr "Erreur. Vous n'êtes pas autorisé à soumettre des données pour ce Que
 msgid "The Data Sender %s (%s) is not linked to your Questionnaire."
 msgstr "L'expéditeur de données %s (%s) n'est pas relié à votre questionnaire."
 
-msgid "You haven't created any Questionnaires yet. Once you do, a list of your Questionnaires will appear here. You can then choose one as a template and edit it to fit your needs."
-msgstr "Vous n'avez créé aucun Questionnaire pour l'instant. Une fois que vous en créez un, la liste de vos Questionnaires sera affichée ici. Vous pouvez par la suite choisir un comme modèle et le modifier selon vos besoins."
+msgid "You haven't created any Questionnaires yet."
+msgstr "Vous n'avez pas encore créé un Questionnaire."
 
 msgid "Use Existing"
 msgstr "Utiliser un Type de Numéro d'identification existant"

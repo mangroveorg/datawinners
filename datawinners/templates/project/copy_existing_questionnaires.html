@@ -6,7 +6,7 @@
         <img src="/media/images/ajax-loader-horizontal-bar.gif"/>
     </div>
     <div data-bind="visible: existingQuestionnaires() && existingQuestionnaires().length==0">
-        <p>{% trans "You haven't created any Questionnaires yet. Once you do, a list of your Questionnaires will appear here. You can then choose one as a template and edit it to fit your needs." %}</p>
+        <p>{% trans "You haven't created any Questionnaires yet." %}</p>
     </div>
     <div data-bind="fadeVisible: existingQuestionnaires() && existingQuestionnaires().length">
 
