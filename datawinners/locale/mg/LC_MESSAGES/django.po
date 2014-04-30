@@ -1791,13 +1791,13 @@ msgid "This %s is not yet registered in the system. Please check the %s's unique
 msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny kaody ID ho an'i %s ary avereno alefa ny SMS-nao"
 
 msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Diso. Ny %s %s dia mbola tsy ao anaty solosaina. Ampidiro ny %s na antsoy ny tompon’andraikitra."
+msgstr "Diso. Ny %s %s dia mbola tsy tafiditra. Amarino ny Numero d'Identification ary avereno alefa ny SMS iray manontolo na antsoy ny mpikarakara ny fanadihadiana"
 
 msgid "This telephone number is not registered in our system."
 msgstr "Tsy mbola tafiditra ao anatin'ny lisitra io nomerao telefaoninao io."
 
-msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
-msgstr "Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana"
+msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana"
 
 msgid "Question Code Already Exists"
 msgstr "Efa misy mampiasa io kaodin'ny fanontaniana io"

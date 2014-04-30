@@ -52,7 +52,7 @@ PLUS_IN_THE_BEGINNING = {SENDER: "1234567890",
 UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
                             RECEIVER: "919880734937",
                             SMS: "cli002 .EID CID005 . .NA Mr. Kessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM ac",
-                            ERROR_MSG: "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."}
+                            ERROR_MSG: "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."}
 
 REGISTER_DATA_SENDER = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
@@ -62,7 +62,7 @@ REGISTER_DATA_SENDER = {SENDER: "1234567890",
 REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
                                             RECEIVER: "919880734937",
                                             SMS: "REG .t Reporter .m 0123456789 .L   Jaipur .g 26.917 75.817 .N Mr. McDuck .s rep100000",
-                                            ERROR_MSG: "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."}
+                                            ERROR_MSG: "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."}
 
 REGISTER_NEW_SUBJECT = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
@@ -127,7 +127,7 @@ UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA = {SENDER: "1234567890",
 UNAUTHORIZED_DATASENDER = { SENDER: "2619876",
                             RECEIVER: "919880734937",
                             SMS: "cli002 cid005 Mr.Dessy 120 17.17.2011 b ade 27.178057,-78.007789 a",
-                            ERROR_MSG: "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."}
+                            ERROR_MSG: "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."}
 
 MULTIPLE_WRONG_DATA = {SENDER: "123445567",
                             RECEIVER: "919880734937",
