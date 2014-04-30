@@ -1031,8 +1031,8 @@ msgstr "Exemple: %(day)s de la même semaine"
 msgid "Select a %(concept)s"
 msgstr "Sélectionnez un(e) %(concept)s"
 
-msgid "Remove from Questionnaire"
-msgstr "Retirer d'un Questionnaire"
+msgid "Remove from questionnaire"
+msgstr "Retirer d'un questionnaire"
 
 msgid "Add to Questionnaire"
 msgstr "Relier à un Questionnaire"

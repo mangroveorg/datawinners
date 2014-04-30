@@ -712,8 +712,8 @@ msgstr "Donner un accès"
 msgid "Actions:"
 msgstr "Actions:"
 
-msgid "Remove from project"
-msgstr "Retirer d'un projet"
+msgid "Remove from questionnaire"
+msgstr "Retirer d'un questionnaire"
 
 msgid "Give Web Submission Access"
 msgstr "Donnez un accès Web et Smartphone"
