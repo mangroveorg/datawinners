@@ -11,10 +11,7 @@ from mangrove.transport.contract.request import Request
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.transport.player.player import SMSPlayer
 from django.utils import translation
-from mangrove.form_model.form_model import get_form_model_by_code
-from mangrove.transport.player.parser import SMSParserFactory
 from mangrove.transport.repository.reporters import find_reporter_entity
-from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
 
 from datawinners.accountmanagement.decorators import is_not_expired
@@ -23,7 +20,6 @@ from datawinners.smsapi.accounting import is_chargable
 from datawinners.submission.models import  SMSResponse
 from datawinners.utils import get_organization
 from datawinners.messageprovider.handlers import create_failure_log
-from datawinners.messageprovider.messages import NOT_AUTHORIZED_DATASENDER_MSG, SUBMISSION_LIMIT_REACHED_MSG, SMS_LIMIT_REACHED_MSG
 from datawinners.submission.organization_finder import OrganizationFinder
 from datawinners.submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor, get_vumi_parameters
 from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
@@ -138,7 +134,7 @@ def find_dbm_for_web_sms(request):
         incoming_request['outgoing_message'] = ''
         return incoming_request
 
-    incoming_request['next_state'] = submit_to_player
+    incoming_request['next_state'] = check_account_and_datasender
     import logging
 
     websubmission_logger = logging.getLogger("websubmission")
@@ -157,12 +153,12 @@ def check_account_and_datasender(incoming_request):
         reporter_entity = find_reporter_entity(incoming_request.get('dbm'), incoming_request.get('transport_info').source)
         incoming_request['reporter_entity'] = reporter_entity
         check_quotas_for_trial(incoming_request)
-    except NumberNotRegisteredException as e:
-        incoming_request['exception'] = e
     except Exception as e:
         incoming_request['exception'] = e
 
-    organization.increment_all_message_count()
+    if not incoming_request.get('test_sms_questionnaire'):
+        organization.increment_all_message_count()
+        
     incoming_request['next_state'] = submit_to_player
     return incoming_request
 
@@ -170,12 +166,9 @@ def check_quotas_for_trial(incoming_request):
     organization = incoming_request.get('organization')
     if organization.has_exceeded_submission_limit():
         raise ExceedSubmissionLimitException()
-        #return get_translated_response_message(incoming_request, SUBMISSION_LIMIT_REACHED_MSG)
-        return get_translated_response_message(incoming_request,"You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires.")
 
     if organization.has_exceeded_message_limit():
         raise ExceedSMSLimitException()
-        #return get_translated_response_message(incoming_request, SMS_LIMIT_REACHED_MSG)
 
 def check_quotas_and_update_users(organization, sms_channel=False):
     if organization.in_trial_mode and organization.get_total_submission_count() == NEAR_SUBMISSION_LIMIT_TRIGGER:
@@ -187,22 +180,6 @@ def check_quotas_and_update_users(organization, sms_channel=False):
 
     if organization.in_trial_mode and organization.get_total_submission_count() == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
         organization.send_mail_to_organization_creator(email_type='reached_submission_limit')
-
-def get_translated_response_message(incoming_request, original_message, log=False):
-    message = incoming_request.get('incoming_message')
-    dbm = incoming_request.get('dbm')
-    try:
-        parser = SMSParserFactory().getSMSParser(message, dbm)
-        parsing_result = parser.parse(message)
-        form_model = get_form_model_by_code(dbm, parsing_result[0])
-        language = form_model.activeLanguages[0]
-    except Exception:
-        language = incoming_request.get('organization').language
-
-    translation.activate(language)
-    incoming_request['outgoing_message'] = ugettext(original_message)
-    log_sms_and_increment_counters(incoming_request, log)
-    return incoming_request
 
 def log_sms_and_increment_counters(incoming_request, log):
     if log: create_failure_log(incoming_request.get('outgoing_message'), incoming_request)
