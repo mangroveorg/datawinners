@@ -352,6 +352,12 @@ div.margin_top_20 input {
 .project_name_div {
   padding-top: 10px; }
 
+@font-face {
+  font-family: 'ArchitectsDaughter';
+  src: url("/media/css/font/ArchitectsDaughter.ttf");
+  font-weight: normal;
+  font-style: normal; }
+
 .select_question_message {
   padding: 76px 29px 200px 29px;
   font-family: ArchitectsDaughter, Lucida Grande, Lucida Sans, Arial, sans-serif;

@@ -4,11 +4,7 @@
   src: url("/media/css/font/chalkdust-webfont.eot?#iefix") format("embedded-opentype"), url("/media/css/font/chalkdust-webfont.woff") format("woff"), url("/media/css/font/chalkdust-webfont.ttf") format("truetype"), url("/media/css/font/chalkdust-webfont.svg#ChalkDustRegular") format("svg");
   font-weight: normal;
   font-style: normal; }
-@font-face {
-  font-family: 'ArchitectsDaughter';
-  src: url("/media/css/font/ArchitectsDaughter.ttf");
-  font-weight: normal;
-  font-style: normal; }
+
 .preview_block {
   text-align: right; }
 
@@ -246,7 +242,7 @@ p.instructions {
   display: none; }
 
 div.sms_tester_form div.warning-message-box p {
-  background: url("/media/images/icons.png") no-repeat scroll left -70px transparent; }
+  background: url("/media/images/icons.png") no-repeat scroll left -70px rgba(0, 0, 0, 0); }
 div.sms_tester_form div.warning-message-box a {
   color: #0070ac; }
   div.sms_tester_form div.warning-message-box a.padding_top_10 {
