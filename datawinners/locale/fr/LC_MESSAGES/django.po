@@ -1083,9 +1083,6 @@ msgstr "Quand"
 msgid "Deadline"
 msgstr "Date limite "
 
-msgid "Register Data Senders to see them on this map"
-msgstr "Enregistrez les Expéditeurs de Données pour les voir sur cette carte"
-
 msgid "Register %s to see them on this map"
 msgstr "Enregistrez les %s pour les voir sur cette carte"
 

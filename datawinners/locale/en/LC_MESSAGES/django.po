@@ -1970,9 +1970,6 @@ msgstr ""
 msgid "Set up automatic SMS Reminders to be sent to your Data Senders (e.g. field staff) to ensure the timely collection of your data."
 msgstr ""
 
-msgid "Register Data Senders to see them on this map"
-msgstr ""
-
 msgid "Create your project in a few easy steps."
 msgstr ""
 
