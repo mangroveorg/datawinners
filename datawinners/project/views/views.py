@@ -420,6 +420,7 @@ def questionnaire(request, project_id):
         project_has_submissions = (success + error > 0)
         in_trial_mode = _in_trial_mode(request)
         is_success = False
+        active_language = request.LANGUAGE_CODE
         if "success" in [m.message for m in messages.get_messages(request)]:
             is_success = True
         return render_to_response('project/questionnaire.html',
@@ -431,6 +432,7 @@ def questionnaire(request, project_id):
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,
                                    'is_success':is_success,
+                                   'active_language':active_language,
                                    'post_url': reverse(edit_project, args=[project_id]),
                                    'unique_id_types': get_unique_id_types(manager),
                                    'preview_links': get_preview_and_instruction_links_for_questionnaire()},

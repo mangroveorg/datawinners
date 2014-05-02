@@ -3,3 +3,43 @@
 <div class="unique_id_learn_more_form none">
     Use Identification Numbers to improve the accuracy of your data (rather than names, since names can be misspelled).
 </div>
+{% block page_scss %}
+    <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    <script type="text/javascript" src="/media/javascript/entity/unique_id_help_view_model.js" ></script>
+{% endblock %}
+
+<div class="unique_id_learn_more_form none">
+    <div class="learn_more_text">
+        {% trans "Use Identification Numbers to improve the accuracy of your data (rather than names, since names can be misspelled)."%}
+    </div>
+    <hr class="border">
+    <ul class="learn_more_accordion">
+                <li>
+                    <div class="learn_more_header">{% trans "Step 1. Finish your Questionnaire,then register Identification Numbers" %}</div>
+                    <div id="learn_more_image">
+                        <img src="/media/images/Step_1_Webform_{{ active_language }}.jpg"/>
+                    </div>
+                    <hr class="border">
+                </li>
+                <li>
+                    <div class="learn_more_header">{% trans "Step 2. Ask your Data Senders to use the Identification Numbers" %}</div>
+                    <div id="learn_more_image">
+                        <img src="/media/images/Step_2_Questionnaire_{{ active_language }}.jpg"/>
+                    </div>
+                    <hr class="border">
+                </li>
+                <li>
+                    <div class="learn_more_header">{% trans "Step 3. See how accurate your data is with Identification Numbers" %}</div>
+                       <div class="analysis_image">
+                        <img src="/media/images/Step_3_Analysis_{{ active_language }}.jpg"/>
+                    </div>
+                    <hr class="border">
+                </li>
+    </ul>
+    <div class="gotitbutton">
+        <a class="button yes_button" id="ok">{% trans "OK, Got it" %}</a>
+    </div>
+</div>

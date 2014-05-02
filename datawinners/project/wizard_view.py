@@ -103,13 +103,14 @@ def get_template_details(request, template_id):
 def create_project(request):
     manager = get_database_manager(request.user)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
-
+    active_language = request.LANGUAGE_CODE
     if request.method == 'GET':
         cancel_link = reverse('dashboard') if request.GET.get('prev', None) == 'dash' else reverse('index')
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
+                                   'active_language':active_language,
                                    'post_url': reverse(create_project),
                                    'unique_id_types': [unique_id_type.capitalize() for unique_id_type in
                                                        get_unique_id_types(manager)],

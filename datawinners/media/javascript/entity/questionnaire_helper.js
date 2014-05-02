@@ -703,10 +703,14 @@ $(document).ready(function () {
 
     $(".unique_id_learn_more_form").dialog({
         autoOpen: false,
-        width: 500,
+        width: 940,
         modal: true,
+        position:[478,100],
         title: gettext("Learn More About Identification Numbers"),
-        zIndex: 1100
+        zIndex: 1100,
+        open: function(){
+            $(".learn_more_accordion").accordion({collapsible: true,active: false});
+        }
     });
 
     $('#unique_id_learn_more_link').live('click', (function () {

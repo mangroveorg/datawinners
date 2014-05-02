@@ -1162,3 +1162,6 @@ msgstr "Expéditeurs de Données"
 
 msgid "Saving..."
 msgstr "En cours..."
+
+msgid "Learn More About Identification Numbers"
+msgstr "En savoir plus sur les Numéros d'Identification"
