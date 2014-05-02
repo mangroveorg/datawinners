@@ -131,7 +131,7 @@ function QuestionnaireViewModel(){
 
         var isUnique = matchingQuestionsWithSameTitle.length == 1;
         if(!isUnique)
-            selectedQuestion.title.setError(gettext("This question is duplicate"));
+            selectedQuestion.title.setError(gettext("This question is a duplicate"));
         else
             selectedQuestion.title.clearError();
 
