@@ -33,7 +33,7 @@
         {% include 'subject_table.html' %}
     {% endwith %}
     <div id="delete_entity_block">
-        <p class="warning_message">{% blocktrans with entity_type|capfirst as entity_type %}If you delete this {{ entity_type }}, you can no longer collect data about it.{% endblocktrans %}</p>
+        <p class="warning_message">{% blocktrans with entity_type|capfirst as entity_type %}If you delete a {{ entity_type }}, you can no longer collect data about it. However, you can still view previously collected data for it on the Data pages. Are you sure you want to delete?{% endblocktrans %}</p>
         <a href="" class="button"
            id="ok_button" style="margin-top: 13px">{% trans "Yes, Delete" %}</a>
         <a href="#" class="cancel_link" style="margin-top: 20px">{% trans "Cancel" %}</a>
