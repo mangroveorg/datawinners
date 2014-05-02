@@ -62,7 +62,7 @@ class TestShowActivityLog(HeadlessRunnerTest):
         self.assert_there_is_no_entry(activity_log_page)
         activity_log_page.click_on_filter_button()
         self.assert_there_is_no_entry(activity_log_page)
-        self.assert_there_is_entries_for_tester150411_organization()
+        self.assert_there_is_entries_for_themain_organization()
 
 
     def navigate_to_activity_log_page(self):
@@ -81,7 +81,7 @@ class TestShowActivityLog(HeadlessRunnerTest):
         entries_number = activity_log_page.get_number_of_entries_found()
         self.assertEqual(0, entries_number)
 
-    def assert_there_is_entries_for_tester150411_organization(self):
+    def assert_there_is_entries_for_themain_organization(self):
         self.driver.go_to(LOGOUT)
         login(self.driver, VALID_CREDENTIALS)
         activity_log_page = self.navigate_to_activity_log_page()

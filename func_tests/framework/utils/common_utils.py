@@ -130,9 +130,7 @@ def generate_random_email_id():
 
 def skipUntil(dateUntil):
     def wrap(f):
-        def wrapper(*args, **kwargs):
-            if datetime.datetime.strptime(dateUntil, '%Y-%m-%d') < datetime.datetime.now():
-                return f(*args, **kwargs)
-            raise SkipTest("Skipped until %s"%dateUntil)
-        return wrapper
+        if datetime.datetime.strptime(dateUntil, '%Y-%m-%d') < datetime.datetime.now():
+            return f
+        raise SkipTest("Skipped until %s"%dateUntil)
     return wrap
