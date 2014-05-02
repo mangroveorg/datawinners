@@ -12,6 +12,8 @@ $(document).ready(function () {
                     isQuestionnaireModified: _isQuestionnaireChanged
                   };
     new DW.CancelQuestionnaireWarningDialog(options).init();
+    new DW.UniqueIdHelpSection().init();
+
     var index;
     DW.existing_question_codes = [];
     for (index in question_list) {

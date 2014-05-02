@@ -696,26 +696,42 @@ DW.CancelQuestionnaireWarningDialog = function (options) {
 
 };
 
+DW.UniqueIdHelpSection = function(){
+
+    function _initializeDialog(dialogSection){
+        dialogSection.dialog({
+                autoOpen: false,
+                width: 940,
+                modal: true,
+                position:"top",
+                title: gettext("Learn More About Identification Numbers"),
+                zIndex: 1100,
+                open: function(){
+                    $(".learn_more_accordion").accordion({collapsible: true,active: false});
+                },
+                close: function(){
+                    $(".learn_more_accordion").accordion( "destroy" );
+                }
+        });
+        $('#close_unique_id_learn_more_section').click(function(){
+            dialogSection.dialog('close');
+            dialogSection.dialog( "destroy" );
+        });
+    }
+
+    this.init = function(){
+        $('#unique_id_learn_more_link').live('click', (function(){
+            var dialogSection = $("#unique_id_learn_more_form");
+            _initializeDialog(dialogSection);
+            dialogSection.removeClass("none");
+            dialogSection.dialog("open");
+            dialogSection.parent(".ui-dialog")[0].scrollIntoView();
+        }));
+
+    }
+};
+
 
 $(document).ready(function () {
     $(document).ajaxStop($.unblockUI);
-    $("#response_info").hide();
-
-    $(".unique_id_learn_more_form").dialog({
-        autoOpen: false,
-        width: 940,
-        modal: true,
-        position:[478,100],
-        title: gettext("Learn More About Identification Numbers"),
-        zIndex: 1100,
-        open: function(){
-            $(".learn_more_accordion").accordion({collapsible: true,active: false});
-        }
-    });
-
-    $('#unique_id_learn_more_link').live('click', (function () {
-        $(".unique_id_learn_more_form").removeClass("none");
-        $(".unique_id_learn_more_form").dialog("open");
-        return false;
-    }));
 });

@@ -1,17 +1,6 @@
 {% load i18n %}
-{% load user_tags %}
-<div class="unique_id_learn_more_form none">
-    Use Identification Numbers to improve the accuracy of your data (rather than names, since names can be misspelled).
-</div>
-{% block page_scss %}
-    <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
-{% endblock %}
 
-{% block page_js %}
-    <script type="text/javascript" src="/media/javascript/entity/unique_id_help_view_model.js" ></script>
-{% endblock %}
-
-<div class="unique_id_learn_more_form none">
+<div id="unique_id_learn_more_form" class="none">
     <div class="learn_more_text">
         {% trans "Use Identification Numbers to improve the accuracy of your data (rather than names, since names can be misspelled)."%}
     </div>
@@ -40,6 +29,6 @@
                 </li>
     </ul>
     <div class="gotitbutton">
-        <a class="button yes_button" id="ok">{% trans "OK, Got it" %}</a>
+        <a class="button yes_button" id="close_unique_id_learn_more_section">{% trans "OK, Got it" %}</a>
     </div>
 </div>

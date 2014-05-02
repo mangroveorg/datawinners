@@ -131,6 +131,7 @@ function _save_questionnaire(callback) {
 $(document).ready(function () {
     _initializeViewModel();
     DW.option_warning_dialog.init();
+    new DW.UniqueIdHelpSection().init();
     DW.init_delete_periodicity_question_warning();
     DW.init_empty_questionnaire_warning();
     var options = {
