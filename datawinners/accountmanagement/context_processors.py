@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.utils.translation import get_language
+
 
 def add_feature_flags(context):
     return {'TRIAL_REGISTRATION_ENABLED' : settings.TRIAL_REGISTRATION_ENABLED,
@@ -9,4 +11,7 @@ def add_feature_flags(context):
             'EDIT_DATA_SENDERS_ENABLED'  : settings.EDIT_DATA_SENDERS_ENABLED,
             'refresh_rate': settings.REFRESH_RATE
             }
+
+def add_help_link(context):
+    return {'support_help_link': context.build_absolute_uri('/%s/support' % get_language())}
 

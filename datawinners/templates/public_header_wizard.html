@@ -6,10 +6,12 @@
             <a href="{% url datawinners.home.views.switch_language "en" %}" class="first">English</a>
             <a href="{% url datawinners.home.views.switch_language "fr" %}">Fran&ccedil;ais</a>
         </div>
-        <div class="grid_4 login text_align_center float_right">
+        {% if not user.is_authenticated %}
+            <div class="grid_4 login text_align_center float_right">
             <span><a href="{% url django.contrib.auth.views.login %}" class="first">{% trans "Sign In" %}</a></span>
             <span><a href="{% url registration.views.register %}">{% trans "Sign Up" %}</a></span>
         </div>
+        {% endif %}
         <div class="clear"></div>
     </div>
 </div>
