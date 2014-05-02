@@ -911,8 +911,10 @@ fieldset {
   margin-left: -17px !important;
   height: 505px; }
 
+#icon {
+  background: url(/media/images/accordion_arrows.png) no-repeat left -29px !important; }
+
 .learn_more_header {
-  background: url(/media/images/accordion_arrows.png) no-repeat left -29px !important;
   color: #4682b4 !important;
   font-size: 15px !important;
   cursor: pointer;
