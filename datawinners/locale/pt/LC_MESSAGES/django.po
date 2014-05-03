@@ -1,0 +1,4536 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-19 12:29+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Organization name"
+msgstr ""
+
+msgid "Organization Name"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Organization Sector"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "City"
+msgstr ""
+
+msgid "State / Province"
+msgstr ""
+
+msgid "Country"
+msgstr ""
+
+msgid "Postal / Zip Code"
+msgstr ""
+
+msgid "Office Phone Number"
+msgstr ""
+
+msgid "Please enter a valid phone number"
+msgstr ""
+
+msgid "Website Url"
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "Enter a valid email address. Example:name@organization.com"
+msgstr ""
+
+msgid "Phone Number"
+msgstr ""
+
+msgid ""
+"This email address is already in use. Please supply a different email address"
+msgstr ""
+
+msgid "Email address"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Password (again)"
+msgstr ""
+
+msgid "The two password fields didn't match."
+msgstr ""
+
+msgid "Please enter a valid Postal / Zip code"
+msgstr ""
+
+msgid "Please enter a correct email and password."
+msgstr ""
+
+msgid "This account is inactive."
+msgstr ""
+
+msgid "Projects"
+msgstr ""
+
+msgid "Data Senders"
+msgstr ""
+
+msgid "Subjects"
+msgstr ""
+
+msgid "Data Records"
+msgstr ""
+
+msgid ""
+"Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
+msgstr ""
+
+msgid "Mobile Number"
+msgstr ""
+
+msgid "Please enter a valid phone number."
+msgstr ""
+
+msgid "GPS: Enter Lat Long"
+msgstr "GPS Coordinates"
+
+msgid "Enter location"
+msgstr ""
+
+msgid "Enter Data Sender's name"
+msgstr ""
+
+msgid "Enter Data Sender's number"
+msgstr ""
+
+msgid "Enter region, district or commune"
+msgstr ""
+
+msgid "Enter lat and long eg: 19.3,42.37"
+msgstr ""
+
+msgid "Please fill out at least one location field correctly."
+msgstr ""
+
+msgid "Please add subject type and then add a subject"
+msgstr ""
+
+msgid "Unique identification number(ID) is:"
+msgstr ""
+
+msgid "We received : "
+msgstr ""
+
+msgid "Thank you. We received your message."
+msgstr ""
+
+msgid "Registration successful."
+msgstr ""
+
+msgid "Survey project: I want to collect data from the field"
+msgstr ""
+
+msgid "Public information: I want to send information"
+msgstr ""
+
+msgid "Work performed by the data sender (eg. monthly activity report)"
+msgstr ""
+
+msgid "Other Subject"
+msgstr ""
+
+msgid "Open Data Sender Group. Anyone can send in data without registering"
+msgstr ""
+
+msgid "Closed Data Sender Group. Only registered data sender will be able to send data"
+msgstr ""
+
+msgid "Whenever a data sender has data for us"
+msgstr ""
+
+msgid "Every"
+msgstr ""
+
+msgid "Name this Project"
+msgstr ""
+
+msgid "Project Description"
+msgstr ""
+
+msgid "Project Type"
+msgstr ""
+
+msgid "Open or Closed Group"
+msgstr ""
+
+msgid "What is this questionnaire about?"
+msgstr ""
+
+msgid "Other Subjects"
+msgstr ""
+
+msgid "Device"
+msgstr ""
+
+msgid "Choose your language for success and error messages to Data Senders"
+msgstr ""
+
+msgid "How often do you need the data?"
+msgstr ""
+
+msgid "Week"
+msgstr ""
+
+msgid "Month"
+msgstr ""
+
+msgid "Do you want to set a deadline?"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+
+msgid "Same month"
+msgstr ""
+
+msgid "Same week"
+msgstr ""
+
+msgid "Following month"
+msgstr ""
+
+msgid "Following week"
+msgstr ""
+msgid "Do you want to remind DataSenders to send in their data?"
+msgstr ""
+
+msgid "Enter a project name"
+msgstr ""
+
+msgid "Describe what your team hopes to achieve by collecting this data"
+msgstr ""
+
+msgid "This field is required"
+msgstr ""
+
+msgid "No deadline. Senders can submit data any time."
+msgstr ""
+
+msgid "days before deadline"
+msgstr ""
+
+msgid "The day of the deadline"
+msgstr ""
+
+msgid "Only send reminders to senders who have not already submitted data for the current deadline."
+msgstr ""
+msgid "Successfully submitted"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Questions"
+msgstr ""
+
+msgid "What is this?"
+msgstr ""
+
+msgid "q_tooltip_question_panel_subject"
+msgstr "Decide what information you want to use to identify and register each "
+"subject of your questionnaire.  For example, Clinic Name, Location, Phone "
+"Number."
+
+msgid "What do I need to do?"
+msgstr ""
+
+msgid "Use this"
+msgstr ""
+
+msgid "Import Template"
+msgstr ""
+
+msgid "r_tooltip_question_panel_subject"
+msgstr "Review the questions by clicking on each question in order."
+
+msgid "q_tooltip_question_panel_data_sender"
+msgstr "Decide what information you need to collect about each Data Sender."
+
+msgid "r_tooltip_question_panel_data_sender"
+msgstr "Review the questions by clicking on each"
+
+msgid "Question:"
+msgstr ""
+
+msgid "Code:"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid ""
+"You can view and edit your user profile and manage your organization's "
+"account (if you are authorized)."
+msgstr ""
+
+msgid "Welcome"
+msgstr ""
+
+msgid "Your Profile"
+msgstr ""
+
+msgid "wizard_account"
+msgstr "Account"
+
+msgid "Sign out"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Javascript is disabled in your browser, Please enable it."
+msgstr ""
+
+msgid "about_DW"
+msgstr ""
+"<h5>About DataWinners</h5><p>DataWinners is an online mobile data"
+"\tcollection service designed and\tbuilt for development professionals. </"
+"p><p>With DataWinners, you collect and analyze the data you need using the "
+"equipment you already have – a computer, the Internet and basic mobile "
+"phones. </p>"
+
+msgid "subscription_details"
+msgstr ""
+"<h5>Subscription Details</h5><p>Learn more about</p>"
+"<p><ul class=\"margin_left_10\"><li>Where DataWinners is available</li>"
+"<li>Key details of Monthly Subscription</li>"
+"<li>Our Consulting Service</li></ul></p>"
+"<p>See our <a href='/en/pricing/' target=\"_blank\">Pricing page</a></p>"
+
+msgid "Send in your data using:"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "All Data"
+msgstr ""
+
+msgid "Guide"
+msgstr ""
+
+msgid "Create a new project"
+msgstr ""
+
+msgid "Are you sure you want to cancel this project?"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Define Project"
+msgstr ""
+
+msgid "Questionnaire"
+msgstr ""
+
+msgid "Reminder"
+msgstr ""
+
+msgid "Review & Test"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Enter a subject name"
+msgstr ""
+
+msgid "Unique Identification Number (ID)"
+msgstr ""
+
+msgid "Let us generate an ID for you"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid "Location Name:"
+msgstr ""
+
+msgid "Enter a region, district or commune"
+msgstr ""
+
+msgid "or"
+msgstr ""
+
+msgid "Enter lat and long eg: 20.6 47.3"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Describe your subject in more details (optional)"
+msgstr ""
+
+msgid "Enter the subject's Number"
+msgstr ""
+
+msgid "Geocode"
+msgstr ""
+
+msgid "Phone No."
+msgstr ""
+
+msgid "Contact info"
+msgstr ""
+
+msgid "Account"
+msgstr ""
+
+msgid "All Users"
+msgstr ""
+
+msgid "Point of Contact"
+msgstr ""
+
+msgid "Account Administrator"
+msgstr ""
+
+msgid "Account Settings"
+msgstr ""
+
+msgid "Your Organization Account"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
+msgid "Save Changes"
+msgstr ""
+
+msgid "Add Users"
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+msgid "Last Name"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Devices"
+msgstr ""
+
+msgid "Contact Info"
+msgstr ""
+
+msgid "Datawinner site admin"
+msgstr ""
+
+msgid "Datawinner administration"
+msgstr ""
+
+msgid "Failed Submissions"
+msgstr ""
+
+msgid "View All Data"
+msgstr ""
+
+msgid "Questionnaire Code"
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+msgid "To"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "View all failed submissions"
+msgstr ""
+
+msgid "Created On"
+msgstr ""
+
+msgid "View Report"
+msgstr ""
+
+msgid "Summary"
+msgstr ""
+
+msgid "Analysis"
+msgstr ""
+
+msgid "no submission sub hint%(url)s"
+msgstr "Deleted submissions and submissions with errors will not be displayed as they should not be part of your analysis data.<br/> You can view and manage all submissions on the <a href=\"%(url)s\">Submission Log</a> page."
+
+msgid "to collect data via sms%(val)s"
+msgstr "<b>SMS</b>: Give your <a href=\"#\" class=\"sms_questionnaire sms-preview\"> %(val)s</a> to your Data Senders and have them send in data"
+
+msgid "Analyze your successful submissions"
+msgstr "Analyze your successful submissions."
+
+msgid "r_tooltip_report_period"
+msgstr ""
+"View your Submissions by one of these Reporting Periods. Click on the dropdown and choose a specific Reporting Period."
+
+msgid "q_tooltip_report_period_h"
+msgstr ""
+"In your Questionnaire you added \""
+
+msgid "q_tooltip_report_period_t"
+msgstr ""
+"\". This is your Reporting Period Question."
+"<br /><br />"
+"The Reporting Period is often different than the Submission Date. Example: Your Data Sender sends his report for May 2012 (Reporting Period) on 10 June 2012 (Submission Date)."
+
+msgid "q_tooltip_submission_date"
+msgstr ""
+"The Submission Date is the date you received the Submission from your Data Sender."
+
+msgid "q_tooltip_submission_date_next"
+msgstr "The Submission Date is often different than the Reporting Period. Example: Your Data Sender sends his report for May 2012 (Reporting Period) on 10 June 2012 (Submission Date)."
+
+msgid "r_tooltip_submission_date"
+msgstr "Click on the Submission Date dropdown and choose a specific a date or date range."
+
+msgid "Search for Keyword"
+msgstr ""
+
+msgid "All Data Records"
+msgstr ""
+
+msgid "Web Submissions"
+msgstr ""
+
+msgid "Back to Questionnaire List"
+msgstr ""
+
+msgid "Fill out the following Questionnaire and click on Submit."
+msgstr ""
+
+msgid "Fill out the following Registration Form and click on Register."
+msgstr ""
+
+msgid "All your entered data will be lost. Are you sure you want to cancel?"
+msgstr ""
+
+msgid "help_project_creation"
+msgstr "Each project = one questionnaire. Don’t worry, you can create as many different projects as you like."
+
+msgid "How to use Datawinners"
+msgstr ""
+
+msgid "Click on the triangle to the left of 'How to use DataWinners' to expand or collapse the box."
+msgstr ""
+
+msgid "help_how_to_use_dw"
+msgstr ""
+"DataWinners is the do-it-yourself Data Collection and Communication tool you "
+"need to make better decisions.<br />Click on the Create a New Project button "
+"to get started."
+
+msgid "Your projects"
+msgstr ""
+
+msgid "successful"
+msgstr ""
+
+msgid "Successful"
+msgstr ""
+
+msgid "error"
+msgstr ""
+
+msgid "go to this project"
+msgstr ""
+
+msgid "No submissions present for this project"
+msgstr ""
+
+msgid "This project is inactive"
+msgstr ""
+
+msgid "view all questionnaires"
+msgstr ""
+
+msgid ""
+" Once you have created questionnaires, a list of your %(text)s will appear here."
+msgstr ""
+
+msgid "To get started with DataWinners"
+msgstr ""
+
+msgid "order_to_create_project"
+msgstr "create a new questionnaire"
+
+msgid "Add a data sender"
+msgstr ""
+
+msgid "q_all_datasenders_add_manually"
+msgstr "Add Data Sender one-by-one using the online registration form"
+
+msgid "r_all_datasenders_add_manually"
+msgstr "Click the blue \"Add a Data Sender\" link and follow the step-by-step instructions"
+
+msgid "Please enable JavaScript to use file uploader."
+msgstr ""
+
+msgid "Upload a CSV or a XL file"
+msgstr ""
+
+msgid "q_all_datasenders_import"
+msgstr ""
+"Add a list of Data Senders all at once by importing an Excel (.xls) or a "
+"comma separated value (.csv) file"
+
+msgid "r_all_datasenders_import"
+msgstr ""
+"Follow these five easy steps to import a list of Data Senders<br />1) Open a "
+"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
+"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
+"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG.  In "
+"cell B2, type Data Sender.  In cell C2, type the name of your Data Sender"
+"(example:  John Smith).  In cell D2, type the mobile telephone number of the "
+"Data Sender.In cell E2, type a unique ID code for the Data Sender."
+"DataWinners will automatically generate a unique ID number if you leave this "
+"cell blank.In cell F2, type the location of the Data Sender.In cell G2 type "
+"the GPS coordinates of the Data Sender (Right click on cell G2, choose "
+"\"Format Cells\",Choose \"Text\", then click \"OK\".  Then enter the GPS "
+"coordinates in the following format: 16.8665 47.53150.Remember do not "
+"include a comma).  In cell F2 type a short description of the Data Sender."
+"<br />3. Repeat step #2 for each Data Sender starting in cell A3.  Every "
+"Data Sender thereafter will occupy anew row (A4, A5, A6 etc.)<br />4. Save "
+"the file as (.csv) or (.xls)<br />5. Click on \"Import List\" button and "
+"follow instructions"
+
+msgid "Row Number"
+msgstr ""
+
+msgid "Row"
+msgstr ""
+
+msgid "Give Access"
+msgstr ""
+
+msgid "Actions:"
+msgstr ""
+
+msgid "Remove from project"
+msgstr ""
+
+msgid "Give Web Submission Access"
+msgstr "Give Web & Smartphone Access"
+
+msgid "All Data Senders"
+msgstr ""
+
+msgid "Data Senders use their mobile phone to send in data via SMS."
+msgstr ""
+
+msgid "Data Senders use any Computer to send in data via Web."
+msgstr ""
+
+msgid "Data Senders use their Android Smartphone to send in data."
+msgstr ""
+
+msgid "Back to Data Sender List"
+msgstr ""
+
+msgid "Add subjects one-by-one using the online registration form"
+msgstr ""
+
+msgid ""
+"Click the blue \"Add a subject\" link and follow the step-by-step "
+"instructions"
+msgstr ""
+
+msgid "q_all_subjects"
+msgstr ""
+"Add a list of subjects all at once by importing an Excel (.xls) or a Comma "
+"Separated Value (.csv) file"
+
+msgid "r_all_subjects"
+msgstr ""
+"Follow these five easy steps to import a list of Subjects:<br />1) Open a "
+"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
+"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
+"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG. In cell "
+"B2, type the Subject type (example: Clinic). In cell C2, type the nameof "
+"your Subject (example:  Northern Clinic). In cell D2, type the mobile "
+"telephone number of the Subject.In cell E2, type a unique ID code for the "
+"Subject. DataWinners will automatically generate a unique ID number if you "
+"leave this cell blank.In cell F2, type the location of the Subject. In "
+"cellG2 type the GPS coordinates of the Subject (Right click on cell G2, "
+"choose \"Format Cells\", Choose \"Text\",then click \"OK\". Then enter the "
+"GPS coordinates in the following format: 16.8665 47.53150. Remember do "
+"notinclude a comma).  In cell F2 type a short description of the Subject."
+"<br />3. Repeat step #2 for each Subject starting in cell A3. Every Subject "
+"thereafter will occupy a new row (A4, A5, A6 etc.)<br />4. Save the file as "
+"(.csv) or (.xls)<br />5. Click on \"Upload a file\" button and follow "
+"instructions"
+
+msgid "All Subjects"
+msgstr ""
+
+msgid "Add a Data Sender"
+msgstr ""
+
+msgid "Add a Subject"
+msgstr ""
+
+msgid "Add a  Subject Type"
+msgstr ""
+
+msgid "New Subject(eg clinic, waterpoint etc)"
+msgstr ""
+
+msgid "Data Analysis"
+msgstr ""
+
+msgid "This Project is not yet active. Data displayed is test data."
+msgstr ""
+
+msgid "Click Here to Activate"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "print"
+msgstr ""
+
+msgid "e-mail"
+msgstr ""
+
+msgid "Show data for:"
+msgstr ""
+
+msgid "Reporting Period"
+msgstr ""
+
+msgid "Submission Date"
+msgstr ""
+
+msgid "Click to select a date range"
+msgstr ""
+
+msgid "All Periods"
+msgstr ""
+
+msgid "All Dates"
+msgstr ""
+
+msgid "Filter"
+msgstr ""
+
+msgid "Go"
+msgstr ""
+
+msgid "View Data By:"
+msgstr ""
+
+msgid "View:"
+msgstr ""
+
+msgid "View Style:"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "Chart"
+msgstr ""
+
+msgid "Map"
+msgstr ""
+
+msgid "Questionnaires - Data Senders"
+msgstr ""
+
+msgid "Preview Data sender's questionnaire"
+msgstr ""
+
+msgid "Generating the questionnaire preview."
+msgstr ""
+
+msgid "q_tooltip_datasenders_sender"
+msgstr ""
+"<strong>Data Senders</strong> are important because they are the people who "
+"send you answers to yourquestionnaire. They are usually based in the field."
+"<br /><br />You can <strong>register Data Senders</strong> by entering some "
+"basic information (name, location,telephone number) about each Data Sender."
+"DataWinners will use the Data Sender's telephone number as the "
+"<strong>Unique Identification Number</strong>.By registering your Data "
+"Senders now they won't have to send you this information (example: name) "
+"each timethey respond to your questionnaire. DataWinners will recognize each "
+"Data Sender by his or her registeredtelephone number.<br /><br />"
+
+msgid "r_tooltip_datasenders_sender"
+msgstr ""
+"Decide what information you want to collect for each Data Sender (first "
+"name, last name, location, mobilephone number, etc.) You then have three "
+"ways to register this information: 1) Manually enter the detailsusing the "
+"<strong>online form</strong>, 2) <strong>import a list</strong>; or, 3) "
+"Print out the DataSender Registration Questionnaire, give it to your Data "
+"Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
+"Don’t worry, you can always edit this information later."
+
+msgid ""
+"Register and manage approved Data Senders by editing the registration form "
+"below. You can also do this at a later time."
+msgstr ""
+
+msgid "Add Data Senders now"
+msgstr ""
+
+msgid "(Optional)"
+msgstr ""
+
+msgid "Add Data Senders Manually"
+msgstr ""
+
+msgid "Enter your Data Senders individually"
+msgstr ""
+
+msgid "Import a List of Data Senders"
+msgstr ""
+
+msgid "tooltip_datasenders_import"
+msgstr ""
+"Add a list of subjects by following these instructions:"
+"<br />1) Download the template by clicking on the \"Import Template\" link"
+"<br />2) Follow the template instructions to create a list of your Data Senders"
+"<br />3) Save the completed template on your computer"
+"<br />4) Click the \"Import List\" button"
+"<br />5) Click the \"Upload a File\" button"
+"<br />6) Select the completed template on your computer"
+"<br />7) Wait for the file to finish uploading"
+
+msgid "tooltip_datasenders_add_manually"
+msgstr "Click the blue \"Add Data Senders Manually\" button and register Data Senders individually by completing the web form."
+
+msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
+msgstr ""
+
+msgid ""
+"Congratulations! You have created your project. Review your project details "
+"and test if you can send in data."
+msgstr ""
+
+msgid "Review"
+msgstr ""
+
+msgid "Review and verify the summary of your project on this page."
+msgstr ""
+
+msgid "Verify the specifications of your project"
+msgstr ""
+
+msgid "Project Profile"
+msgstr ""
+
+msgid "Name:"
+msgstr ""
+
+msgid "Project Type:"
+msgstr ""
+
+msgid "Project Description:"
+msgstr ""
+
+msgid "Devices:"
+msgstr ""
+
+msgid "edit"
+msgstr ""
+
+msgid "Edit this project"
+msgstr ""
+
+msgid "Click \"edit\" to make any required changes."
+msgstr ""
+
+msgid "Type:"
+msgstr ""
+
+msgid "Number of subjects:"
+msgstr ""
+
+msgid "Questions:"
+msgstr ""
+
+msgid "Number of data senders :"
+msgstr ""
+
+msgid "Reminders"
+msgstr ""
+
+msgid "Reminders are <strong>%(is_reminder)s</strong> for this project"
+msgstr ""
+
+msgid "Test This Questionnaire"
+msgstr ""
+
+msgid "q_tooltip_finish_test"
+msgstr ""
+"The <strong>Test This Questionnaire</strong> feature allows you to simulate "
+"the collection of data to see how yourquestionnaire works. After the test, "
+"you can view the data collected by selecting the \"All Data\" tab in thetop "
+"right hand corner of this page. Test This Questionnaire can provide you "
+"helpful information to editquestions and answer types."
+
+msgid "r_tooltip_finish_test"
+msgstr ""
+"Choose either the Test Web Form or Test SMS and follow the on-screen "
+"instructions to complete the test."
+
+msgid "SMS Questionnaire"
+msgstr ""
+
+msgid "Test your Questionnaire by this SMS tester"
+msgstr ""
+
+msgid "Test your Questionnaire"
+msgstr ""
+
+msgid "Send a test message to %(org_number)s. Contact %(support_id)s if you do not receive a reply."
+msgstr ""
+
+msgid "Test your Web Questionnaire"
+msgstr ""
+
+msgid "Print your Questionnaire"
+msgstr ""
+
+msgid "Test your SMS Questionnaire"
+msgstr ""
+
+msgid "Web Questionnaire"
+msgstr ""
+
+msgid "SmartPhone"
+msgstr "Smartphone"
+
+msgid "Preview and print your questionnaire"
+msgstr ""
+
+msgid "Data Sender"
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Web"
+msgstr ""
+
+msgid "Go to Project Overview"
+msgstr ""
+
+msgid "Upload a CSV or a XLS file"
+msgstr ""
+
+msgid "All Projects"
+msgstr ""
+
+msgid "State"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Activate"
+msgstr ""
+
+msgid "Warning: Activating the project will remove all existing test data."
+msgstr ""
+
+msgid "Export all submissions prior to deleting your project."
+msgstr ""
+
+msgid "Delete Questionnaire Now"
+msgstr ""
+
+msgid "Date Received"
+msgstr ""
+
+msgid "Submission Status"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Deleted Record"
+msgstr ""
+
+msgid "Questionnaires - Overview"
+msgstr ""
+
+msgid ""
+"Review the basic information for your project. Click \"View\" to see the "
+"whole profile or \"Edit profile\" to make changes."
+msgstr ""
+
+msgid "Status: Complete"
+msgstr ""
+
+msgid "When"
+msgstr ""
+
+msgid "Deadline"
+msgstr ""
+
+msgid ""
+"Warning: Updating the associated type of the project questionnaire will "
+"remove all existing data."
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "Save & Create Questionnaire"
+msgstr ""
+
+msgid "Create Questionnaire"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Deadlines and Reminders"
+msgstr ""
+
+msgid "Deadline Example:"
+msgstr ""
+
+msgid "Always on"
+msgstr ""
+
+msgid "of-the-week"
+msgstr "of the"
+
+msgid "of-the-month"
+msgstr "of the"
+
+msgid "month"
+msgstr ""
+
+msgid "week"
+msgstr ""
+
+msgid "q_tooltip_profile_devices"
+msgstr ""
+"Devices are important because you can choose the <strong>communication "
+"channel</strong> people will use tosend you your data. Your choice depends "
+"on two questions: 1) How much data do you need to collectand 2) what devices "
+"do people already have. A good general rule is you can collect answers "
+"forabout 15 questions using SMS. For more extensive data collection needs in "
+"the field, we recommendusing a smart phone with the Android Operating "
+"system. If you have regional offices with goodinternet connectivity, you can "
+"also create your own online form."
+
+msgid "r_tooltip_profile_devices"
+msgstr ""
+"Choose one, two or all three channels by clicking on the boxes. Don't worry, "
+"you can alwayschange your mind later."
+
+msgid "q_tooltip_profile_subjects"
+msgstr ""
+"<strong>Subjects</strong> are very important. They are the topic of your "
+"data collectionquestionnaires. Subjects are often <strong>people</strong> "
+"(patients, farmers, children under five)or <strong>things</strong> (health "
+"clinics, retail shops, water points). Subjects can also be peoplewho send "
+"you their monthly activity reports.<br/><br/>"
+
+msgid "r_tooltip_profile_subjects"
+msgstr ""
+"Click one of the radio buttons to tell us the subject of your questionnaire. "
+"DataWinners willprovide you the step-by-step instructions for your choice. "
+"Don’t worry, you can always decideor change your mind later."
+
+msgid "Question"
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid "q_tooltip_question_detail_code"
+msgstr ""
+"Each question in a questionnaire is identified by its own "
+"unique<strong>Question Code</strong>. This Question Code tells DataWinners "
+"whatquestion is answered by the Data Sender.<br/><br/>"
+
+msgid "r_tooltip_question_detail_code"
+msgstr ""
+"Enter a 1 or 2 character code (letters, numbers or both). Your Data "
+"Senderstype the \"+\" code followed by the question code (example: +rpd) for "
+"each question.This will tell DataWinners what question the Data Sender is "
+"answering."
+
+msgid "Answer Type"
+msgstr ""
+
+msgid "q_tooltip_question_detail_type"
+msgstr ""
+"Questionnaires collect data in several formats: numbers, text, multiple "
+"choiceand dates. The <strong>Answer Type</strong> identifies which format "
+"the DataSender must use when answering the question."
+
+msgid "r_tooltip_question_detail_type"
+msgstr ""
+"Select the <strong>Answer Type</strong> that the Data Sender will use "
+"whenanswering the question. Answers can be numbers, text, multiple choice, "
+"or dates.<br/>When using the <strong>Multiple Choice option</strong>, Data "
+"Senders will typein the letter (A, B, C etc.) that corresponds to the "
+"correct answer NOT the textin the answer field."
+
+msgid "Select what kind of answer you want from your Data Senders."
+msgstr ""
+
+msgid "Word or Phrase"
+msgstr ""
+
+msgid "Number"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "List of Choices"
+msgstr ""
+
+msgid "Multiple Choice"
+msgstr ""
+
+
+msgid "GPS Coordinates"
+msgstr ""
+
+msgid "Select Date Format"
+msgstr ""
+
+msgid "month.year"
+msgstr ""
+
+msgid "day.month.year"
+msgstr ""
+
+msgid "month.day.year"
+msgstr ""
+
+msgid "Add Answer Choice"
+msgstr ""
+
+msgid "only one answer"
+msgstr ""
+
+msgid "multiple answers are permitted"
+msgstr ""
+
+msgid "Min:"
+msgstr ""
+
+msgid "Max:"
+msgstr ""
+
+msgid "No, answer has no character limit"
+msgstr ""
+
+msgid "Yes, maximum number of characters should be"
+msgstr ""
+
+msgid "Instructions"
+msgstr ""
+
+msgid "tooltip_question_detail_instruction"
+msgstr "These instructions explain the answer criteria you set for each question. They are meant to help the Data Sender. "
+"When you print the Questionnaire and give it to your Data Senders, these instructions will appear below each question."
+
+msgid "Question Number"
+msgstr ""
+
+msgid "View and edit your Questionnaire."
+msgstr ""
+
+msgid "Project - Questionnaire"
+msgstr ""
+
+msgid "Collect Data via SMS"
+msgstr ""
+
+msgid "Your Data Senders can use their own mobile phone to send in data."
+msgstr ""
+
+msgid "How it Works"
+msgstr ""
+
+msgid "sms instruction"
+msgstr "Print out the SMS Questionnaire and give it to your registered Data Senders. Then they ﬁll in the answer"
+"for each question on the paper Questionnaire. Then your Data Senders follow the “Example SMS"
+" Answer” format on the Questionnaire to type their SMS into the phone and send it in a single SMS."
+
+msgid "Answer the questions"
+msgstr ""
+
+msgid "Fill in your answers:"
+msgstr ""
+
+msgid "Prepare your SMS"
+msgstr ""
+
+msgid "Enter all your answers. Use a space to separate them."
+msgstr ""
+
+msgid "Send your answers using SMS"
+msgstr ""
+
+msgid "Send your SMS to the telephone number:"
+msgstr ""
+
+msgid "Wait for our reply SMS"
+msgstr ""
+
+msgid "You will receive an SMS confirmation or specific error message."
+msgstr ""
+
+msgid "Collect Data via Web"
+msgstr ""
+
+msgid "Your Data Senders can use any computer to send in data online."
+msgstr ""
+
+msgid "Give your Data Senders Web access when you register them on the "
+msgstr ""
+
+msgid "page. Then your Data Senders can log in to fill out the Questionnaire online."
+msgstr ""
+
+msgid "Why canʼt I submit?"
+msgstr ""
+
+msgid "This is only a preview. To send in data, Go to the \"Data\" tab, then to \"Web Submission\"."
+msgstr ""
+
+msgid "My Data Senders page"
+msgstr "My Data Senders"
+
+msgid "Collect Data via Smartphone"
+msgstr ""
+
+msgid "Your Data Senders can use any Android Smartphone to send in data."
+msgstr ""
+
+msgid "Give your Data Senders Smartphone access when you register them on the "
+msgstr ""
+
+msgid "page. Then your Data Senders can log in and fill out the Questionnaire using their Android Smartphone."
+msgstr ""
+
+msgid "Use your Android Smartphone to send in data. Follow the instructions or download our tutorial"
+msgstr ""
+
+msgid "/media/files/DataWinners_InstallDataWinnersOnYourSmartphone.en.pdf"
+msgstr ""
+
+msgid "Install DataWinners on your Smartphone"
+msgstr ""
+
+msgid "Tutorial"
+msgstr ""
+
+msgid "(PDF, 3 pages, 0.6 MB)"
+msgstr ""
+
+msgid "Close Window"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Review the question by clicking on each"
+msgstr ""
+
+msgid "Preview Questionnaire"
+msgstr ""
+
+msgid "Questionnaire Code :"
+msgstr ""
+
+msgid "q_tooltip_questionnaire_code"
+msgstr ""
+"All questionnaires have a Unique Questionnaire Code. DataWinners uses this "
+"unique code to correctly identify your questionnaire. Use the recommended "
+"code or change it if you like."
+
+msgid "r_tooltip_questionnaire_code"
+msgstr ""
+"Enter a 3 letter code (letters and numbers). This questionnaire code will "
+"appear on the printed versionof your questionnaire. Your Data Senders will "
+"type in this code first when sending in their data."
+
+msgid "Add a Question"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "tooltip_question_sms"
+msgstr "Use this running count to determine the maximum number of characters a Data Sender will have to enter to "
+"respond to all questions in your questionnaire. To keep communication costs down, try to keep the number of characters "
+"required to 160 or less, the length of a single SMS. Don't worry, you can go beyond 160 characters. However, more than "
+"one SMS will be required to answer all the questions."
+
+msgid "Print"
+msgstr ""
+
+msgid "SMS your answers to"
+msgstr ""
+
+msgid "Questionnaire Name:"
+msgstr ""
+
+msgid "Questionnarie Code:"
+msgstr ""
+
+msgid "Example:"
+msgstr ""
+
+msgid "Define the questions you want your Data Senders to answer."
+msgstr ""
+
+msgid "SMS Questionnaire Code:"
+msgstr ""
+
+msgid "tooltip_question_code"
+msgstr "Enter a combination of 3-6 letters and/or numbers (or both). Your Data Senders will enter this code first when "
+"sending in their data using SMS. DataWinners uses this unique code to correctly identify your questionnaire. "
+"By using Questionnaire Codes, your organization can collect multiple data sets simultaneously using a single telephone number. "
+"Your questionnaire code will appear on the printed version of your questionnaire."
+
+msgid "SMS Preview"
+msgstr ""
+
+msgid ""
+"Warning: Changing the questionnaire code will remove all existing test data."
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Dis-Associate"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Unique ID"
+msgstr ""
+
+msgid "Questionnaires - Subjects"
+msgstr ""
+
+msgid "Add Reminder"
+msgstr ""
+
+msgid "Save the reminders"
+msgstr ""
+
+msgid ""
+"Reminders are not enabled for this questionnaire Please proceed to the next "
+"<a>step</a>"
+msgstr ""
+
+msgid "day(s) <strong>before</strong> the deadline"
+msgstr ""
+
+msgid "On the deadline"
+msgstr ""
+
+msgid "day(s) <strong>after</strong> the deadline"
+msgstr ""
+
+msgid "To Whom"
+msgstr ""
+
+msgid "Anyone who hasn't sent data"
+msgstr "Anyone who has not sent data"
+
+msgid "The message count is"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Questionnaire - Reminders"
+msgstr ""
+
+msgid "Everyone"
+msgstr ""
+
+msgid "Reminders are not enabled for this project. Click on Settings tab to activate reminders for this project."
+msgstr ""
+
+msgid "Reminders are not enabled for this project."
+msgstr ""
+
+msgid "q_tooltip_reminders"
+msgstr ""
+"<strong>Reminders</strong> are important because they are the people who "
+"send you answers to yourquestionnaire. They are usually based in the field."
+"<br /><br />You can <strong>register Data Senders</strong> by entering some "
+"basic information (name, location,telephone number) about each Data Sender."
+"DataWinners will use the Data Sender's telephone number as the "
+"<strong>Unique Identification Number</strong>.By registering your Data "
+"Senders now they won't have to send you this information (example: name) "
+"each timethey respond to your questionnaire. DataWinners will recognize each "
+"Data Sender by his or her registeredtelephone number."
+
+msgid "r_tooltip_reminders"
+msgstr ""
+"Decide what information you want to collect for each Data Sender (first "
+"name, last name, location, mobilephone number, etc.) You then have three "
+"ways to register this information: 1) Manually enter the detailsusing the "
+"<strong>online form</strong>, 2) <strong>import a list</strong>; or, 3) "
+"Print out the DataSender Registration Questionnaire, give it to your Data "
+"Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
+"Don’t worry, you can always edit this information later."
+
+msgid "All Data records"
+msgstr ""
+
+msgid "This Project is not yet active. Data displayed is test data"
+msgstr ""
+
+msgid "Results"
+msgstr ""
+
+msgid "Send all your Answers in a single SMS"
+msgstr ""
+
+msgid "Verify you can send in test answers"
+msgstr ""
+
+msgid "Send in your test answers."
+msgstr ""
+
+msgid "Refer to the Web Questionnaire Preview for a sample SMS"
+msgstr ""
+
+msgid "Send SMS"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "See the data you received"
+msgstr ""
+
+msgid "See if DataWinners received your SMS. (Go to "
+msgstr ""
+
+msgid "All Data Records "
+msgstr ""
+
+msgid "page to view submission status)"
+msgstr ""
+
+msgid "View the SMS Questionnaire"
+msgstr ""
+
+msgid "Send your Answers"
+msgstr ""
+
+msgid "Use the phone below or your own mobile phone to send in your test answers."
+msgstr ""
+
+msgid "Review the questions by clicking on each"
+msgstr ""
+
+msgid "Preview Subject's questionnaire"
+msgstr ""
+
+msgid "q_tooltip_subject_wizard_subject"
+msgstr ""
+"Your Data Senders collect data about <strong>Subjects</strong>, which are "
+"often people (patients, farmers)or things (health clinics, retail shops). "
+"<strong>Subjects</strong> can also be staff who send you theirmonthly "
+"activity reports.<br /><br />DataWinners gives you the option to "
+"<strong>Register Subjects</strong> by entering basic data (name,location, "
+"subject type) about each subject. DataWinners will then give each subject a "
+"<strong>UniqueIdentification Number ('ID')</strong>. Data Senders will "
+"always identify <strong>Subjects by</strong> theirID. This saves time and "
+"space in the SMS because Data Senders will not have to type the name, "
+"location andother information about the subject each time they send data."
+
+msgid "r_tooltip_subject_wizard_subject"
+msgstr ""
+"Decide what information you want to use to identify and register each "
+"<strong>Subject</strong> ( For example:first name, last name, location, "
+"mobile phone number, etc.). You then have three ways to register "
+"thisinformation: 1) Manually enter the details using the <strong>online "
+"form</strong>, 2) <strong>import a list</strong>; or, 3) Print out the "
+"Subject Registration Questionnaire, give it to your Data Sendersand ask your "
+"<strong>Data</strong> <strong>Senders to register Subjects</strong> "
+"themselves. Don’t worry, youcan always edit this information later."
+
+msgid "Add Subjects now"
+msgstr ""
+
+msgid "Add Subjects Manually"
+msgstr ""
+
+msgid "tooltip_subject_wizard_add_manually"
+msgstr "Click the blue 'Add Subjects Manually' button and register subjects individually by completing the web form."
+
+msgid "Enter your Subjects individually"
+msgstr ""
+
+msgid "Import a List"
+msgstr ""
+
+msgid "tooltip_subject_import"
+msgstr ""
+"Add a list of subjects by following these instructions:"
+"<br />1) Download the template by clicking on the \"Import Template\" link"
+"<br />2) Follow the template instructions to create a list of your Subjects"
+"<br />3) Save the completed template on your computer"
+"<br />4) Click the \"Import List\" button"
+"<br />5) Click the \"Upload a File\" button"
+"<br />6) Select the completed template on your computer"
+"<br />7) Wait for the file to finish uploading"
+
+msgid "Upload an excel (.xls) or csv file (.csv) of your Subjects"
+msgstr ""
+
+msgid "Project status:"
+msgstr ""
+
+msgid ""
+"Your project status is Test. You need to click on 'Activate Project' to "
+"activate it."
+msgstr ""
+
+msgid "Activate Project"
+msgstr ""
+
+msgid "Test SMS Questionnaire"
+msgstr ""
+
+msgid ""
+"Your project is inactive. You need to complete the Profile to activate it."
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "Data"
+msgstr ""
+
+msgid "tooltip_tab_navigation"
+msgstr ""
+"View, analyze and export your collected Data. Create an alert to be aware "
+"when something importanthappens.<br/><br/>There are 2 main areas:<br/><br/><strong>1. Analysis</strong><br/>View "
+"your Data as a list, chart or map. Choose the sum, minimum or averageof a "
+"specific answer or see what which one was the most frequent.<br/><br/><strong>2. "
+"All Data Records</strong><br/>View the list of all Data Records you have "
+"received from your Data Senders. Filter and export your list toExcel."
+
+msgid "Web Submission"
+msgstr ""
+
+msgid "Registered Subjects"
+msgstr ""
+
+msgid "Registration Subjects"
+msgstr ""
+
+msgid "Registered Data Senders"
+msgstr ""
+
+msgid "Registration Questionnaire"
+msgstr ""
+
+msgid "Scheduled Reminders"
+msgstr ""
+
+msgid "Sent Reminders"
+msgstr ""
+
+msgid "Activation Confirmation"
+msgstr ""
+
+msgid "Account successfully activated"
+msgstr ""
+
+msgid "Account activation failed"
+msgstr ""
+
+msgid "Activation Complete"
+msgstr ""
+
+msgid "You have successfully activated your account"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Sign In to Your Account on DataWinners"
+msgstr ""
+
+msgid "Not registered?"
+msgstr ""
+
+msgid "Create an account"
+msgstr ""
+
+msgid "Reset Password"
+msgstr ""
+
+msgid "You have successfully signed out. Thanks for your visit."
+msgstr ""
+
+msgid "Sign in again"
+msgstr ""
+
+msgid "Password Reset"
+msgstr ""
+
+msgid "Password reset successfully"
+msgstr ""
+
+msgid "Password Reset Confirm"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Password Reset Done"
+msgstr ""
+
+msgid "Email with password reset instructions has been sent"
+msgstr ""
+
+msgid "Password reset"
+msgstr ""
+
+msgid "Forgot Your Password?"
+msgstr ""
+
+msgid ""
+"Type the full email address you use to sign in to your DataWinners Account."
+msgstr ""
+
+msgid "We will email you a code to this Email."
+msgstr ""
+
+msgid "Get Password"
+msgstr ""
+
+msgid "Registration Confirmation"
+msgstr ""
+
+msgid "You have successfully registered"
+msgstr ""
+
+msgid ""
+"An activation email has been sent to your email address. Please activate "
+"before login."
+msgstr ""
+
+msgid "Only letters and numbers are valid"
+msgstr ""
+
+msgid "Entity definition successful"
+msgstr ""
+
+msgid "%s already registered as a subject type. Please select %s from the drop down menu."
+msgstr ""
+
+msgid "%s already registered as a subject type."
+msgstr ""
+
+msgid "Entity with Unique Identification Number (ID) = %s already exists."
+msgstr ""
+
+msgid "answer"
+msgstr ""
+
+msgid "Answer for question %s is required."
+msgstr ""
+
+msgid "The answer %s must be between %s and %s"
+msgstr ""
+
+msgid "Patern should be ^[0-9]+$"
+msgstr ""
+
+msgid "Invalid Mobile Number."
+msgstr ""
+
+msgid "Mobile number is missing"
+msgstr ""
+
+msgid "Please fill out atleast one location field"
+msgstr ""
+
+msgid "The questionnaire does not exist."
+msgstr ""
+
+msgid "Profile has been updated successfully"
+msgstr ""
+
+msgid "Settings have been updated successfully"
+msgstr ""
+
+msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
+msgstr ""
+
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!"
+msgstr ""
+
+msgid "Register"
+msgstr ""
+
+msgid "Sign Up to Try DataWinners Free"
+msgstr ""
+
+msgid "Your Organization"
+msgstr ""
+
+msgid "Point of Contact / Your Account Administrator"
+msgstr ""
+
+msgid "Already registered?"
+msgstr ""
+
+msgid "Sign in here"
+msgstr ""
+
+msgid "Sign Up To Start Using DataWinners Now"
+msgstr ""
+
+msgid "Sign in"
+msgstr ""
+
+
+msgid "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?"
+msgstr ""
+
+msgid "Sign Up"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Test"
+msgstr ""
+
+msgid "Draft"
+msgstr ""
+
+msgid "Add a Reminder"
+msgstr ""
+
+msgid "The selected records have been deleted"
+msgstr ""
+
+msgid "Add your Data Senders' email addresses to give them access."
+msgstr ""
+
+msgid "Reporter ID"
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Your questionnaire has been deleted"
+msgstr ""
+
+msgid "Undo Delete"
+msgstr ""
+
+msgid "Inactive"
+msgstr ""
+
+msgid "survey"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Sum"
+msgstr ""
+
+msgid "Count"
+msgstr ""
+
+msgid "Average"
+msgstr ""
+
+msgid "True"
+msgstr ""
+
+msgid "False"
+msgstr ""
+
+msgid "dd.mm.yyyy"
+msgstr ""
+
+msgid "mm.dd.yyyy"
+msgstr ""
+
+msgid "mm.yyyy"
+msgstr ""
+
+msgid "Between"
+msgstr ""
+
+msgid "characters"
+msgstr ""
+
+msgid "Minimum"
+msgstr ""
+
+msgid "All fields are required unless marked optional."
+msgstr ""
+
+msgid "Optional"
+msgstr "optional"
+
+msgid "Answer %s for question %s is longer than allowed."
+msgstr ""
+
+msgid "Answer %s for question %s is %s than allowed."
+msgstr ""
+
+msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
+msgstr ""
+
+msgid "greater"
+msgstr ""
+
+msgid "smaller"
+msgstr ""
+
+msgid "Answer %s for question %s is invalid. Expected date in %s format"
+msgstr ""
+
+msgid "Monday"
+msgstr ""
+
+msgid "Tuesday"
+msgstr ""
+
+msgid "Wednesday"
+msgstr ""
+
+msgid "Thursday"
+msgstr ""
+
+msgid "Friday"
+msgstr ""
+
+msgid "Saturday"
+msgstr ""
+
+msgid "Sunday"
+msgstr ""
+
+msgid "Changing the <span id=\"changed\">subject type</span> will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?"
+msgstr ""
+
+msgid "Warning: Changing the Date Format will remove all your collected data. Are you sure you want to continue?"
+msgstr ""
+
+msgid "Access to Web Submission has been given to your DataSenders"
+msgstr ""
+
+
+msgid "User has been added successfully"
+msgstr ""
+
+msgid "agree-terms"
+msgstr "I agree to the DataWinners <a target=\"_blank\" href=\"/en/terms-and-conditions/\"  id=\"link-terms-and-conditions\">Terms and Conditions</a>"
+
+
+msgid "I Agree"
+msgstr ""
+
+msgid "To sign up for a DataWinners account, you need to agree to our Terms and Conditions"
+msgstr "To sign up for a DataWinners account, you need to agree to our <a class='terms_and_condition' href=\"/en/terms-and-conditions/\" target=\"_blank\">Terms and Conditions</a>"
+
+msgid "learn-about-partners-clients"
+msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp; "
+"<a href=\"/en/about-us/clients\">clients</a> &raquo;"
+
+msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
+msgstr ""
+
+msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Erro. %s %s nao esta registado. Verifique o Numero de Identificacao e reenvie a SMS inteira ou contacte o seu supervisor."
+
+msgid "This telephone number is not registered in our system."
+msgstr ""
+
+msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgstr "Erro. Nao esta autorizado para submeter dados para este questionario. Por favor contacte o seu supervisor."
+
+msgid "All questions must be unique"
+msgstr "All questions must be unique. Please delete duplicates"
+
+msgid "Question Code Already Exists"
+msgstr ""
+
+msgid "Question Code %s provided already exists"
+msgstr ""
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
+msgstr ""
+
+msgid "Error. Incorrect answer for t. Please resend entire message."
+msgstr ""
+
+msgid "Invalid message format."
+msgstr ""
+
+msgid "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."
+msgstr ""
+
+msgid "The system is experiencing a problem right now. Please try again in a few minutes"
+msgstr ""
+
+msgid "The system is unable to accept your SMS right now. Please wait one hour and resend the same message."
+msgstr ""
+
+msgid "Error: Invalid Submission. No valid question found. Check the Question Code on the printed questionnaire "
+"and resend SMS with the right Question code."
+msgstr ""
+
+msgid "Error. Internal error. Please call technical support"
+msgstr ""
+
+msgid "Terms and Conditions"
+msgstr ""
+
+msgid "Activate this Project"
+msgstr ""
+
+msgid "Delete this Project"
+msgstr ""
+
+msgid "Add data senders"
+msgstr ""
+
+msgid "Add subjects"
+msgstr ""
+
+msgid "Set reminders"
+msgstr ""
+
+msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your questionnaire."
+msgstr ""
+
+msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."
+msgstr ""
+
+msgid "Set up automatic SMS Reminders to be sent to your Data Senders (e.g. field staff) to ensure the timely collection of your data."
+msgstr ""
+
+msgid "Register Data Senders to see them on this map"
+msgstr ""
+
+msgid "Create your project in a few easy steps."
+msgstr ""
+
+msgid "Name your project and provide basic information about it."
+msgstr ""
+
+msgid "Write and edit your questions."
+msgstr ""
+
+msgid "Save and create your project."
+msgstr ""
+
+msgid "Send a Message"
+msgstr ""
+
+msgid "Text:"
+msgstr ""
+
+msgid "To:"
+msgstr ""
+
+msgid "Other People"
+msgstr ""
+
+msgid "Other People:"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Data Senders associated to my project"
+msgstr ""
+
+msgid "Enter your SMS text"
+msgstr ""
+
+msgid "Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers."
+msgstr ""
+
+msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."
+msgstr ""
+
+msgid "characters used"
+msgstr ""
+
+msgid "We have provided you with example questions below. You can use the provided question, edit them, delete them or write your own."
+msgstr ""
+
+msgid "Save as Draft"
+msgstr ""
+
+msgid "Time Period"
+msgstr ""
+
+msgid "tooltip_project_name"
+msgstr "Give your project a short, descriptive name so you can identify it among a list of all projects."
+
+msgid "tooltip_error_language"
+msgstr "Your Data Senders will receive automatic Confirmation and Error messages from DataWinners based on their submission. Choose the language of these messages."
+
+msgid "Your project"
+msgstr ""
+
+msgid "You successfully created your questionnaire!"
+msgstr ""
+
+msgid "Now you can..."
+msgstr ""
+
+msgid "...or just start collecting data."
+msgstr ""
+
+msgid "input data "
+msgstr ""
+
+msgid "Developed by"
+msgstr ""
+
+msgid "en"
+msgstr ""
+
+msgid "HNI provides partners with the opportunity to embrace, reshape and "
+"maximize the use of information and communication technology in "
+"productive and sustainable ways."
+msgstr ""
+
+msgid "Learn more about us"
+msgstr ""
+
+msgid "What is DataWinners"
+msgstr ""
+
+msgid "Success Stories"
+msgstr ""
+
+msgid "Pricing"
+msgstr ""
+
+msgid "Support"
+msgstr ""
+
+msgid "About us"
+msgstr "About Us"
+
+msgid "Our Partners &amp; Clients"
+msgstr ""
+
+msgid "partners"
+msgstr ""
+
+msgid "clients"
+msgstr ""
+
+msgid "That"
+msgstr ""
+
+msgid "What is the reporting period for the activity?"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "edit profile"
+msgstr ""
+
+msgid "Associate"
+msgstr ""
+
+msgid "What is associated subject type?"
+msgstr ""
+
+msgid "What is the subject's name?"
+msgstr ""
+
+msgid "What is the subject's Unique ID Number"
+msgstr ""
+
+msgid "What is the subject's location?"
+msgstr ""
+
+msgid "What is the subject's GPS co-ordinates?"
+msgstr ""
+
+msgid "Describe the subject"
+msgstr ""
+
+msgid "What is the mobile number associated with the subject?"
+msgstr ""
+
+msgid "What is the data sender's name?"
+msgstr ""
+
+msgid "What is the data sender's location?"
+msgstr ""
+
+msgid "What is the data sender's GPS co-ordinates?"
+msgstr ""
+
+msgid "What is the mobile number associated with the data sender?"
+msgstr ""
+
+msgid ""
+"Error with Questionnaire ID %s. Find the Questionnaire ID on the printed "
+"questionnaire and resend SMS"
+msgstr ""
+
+msgid ""
+"This telephone number is not registered in our system. Please register or "
+"contact us at 033 20 426 89."
+msgstr ""
+
+msgid ""
+"This entity %s reported on is not registered in our system. Please "
+"register entity or contact us at 033 20 426 89."
+msgstr ""
+
+msgid ""
+"Error: Invalid Submission. Locate the Questionnaire Code on the printed "
+"questionnaire and resend SMS starting with the Questionnaire Code"
+msgstr ""
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Multiple "
+"responses have been submitted for question code : %s"
+msgstr ""
+
+msgid ""
+"Error. Invalid Submission. Refer to printed Questionnaire. Resend the "
+"question ID and answer for %s"
+msgstr ""
+
+msgid "Choose your language for the questionnaire and automatic messages to Data Senders"
+msgstr ""
+
+msgid "An exception has occurred"
+msgstr ""
+
+msgid "Entity identified by %s is already defined"
+msgstr ""
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
+msgstr ""
+
+msgid "This field is required."
+msgstr ""
+
+msgid "Error. Incorrect answer for %s. Please resend entire message."
+msgstr ""
+
+msgid"Questionnaire ID %s doesnt exist."
+msgstr ""
+
+msgid "Error.Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
+msgstr ""
+
+msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
+msgstr ""
+
+msgid "Hello. We have not received your data for"
+msgstr ""
+
+msgid "Please send it to us today. Thank you."
+msgstr ""
+
+msgid "Reminders are"
+msgstr ""
+
+msgid "for this project"
+msgstr ""
+
+msgid "enabled"
+msgstr ""
+
+msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires."
+msgstr "Atingiu o limite das suas 50 sms. Por favor, faca uma subsescricao mensal para continuar a submeter sms no seu questionario."
+
+msgid "Which subject are you reporting on?"
+msgstr ""
+
+msgid "Basic Information"
+msgstr ""
+
+msgid "Example: Teacher attendance in Antananarivo"
+msgstr ""
+
+msgid "Example: Collect data from 100 primary school in Antananarivo in an effort to increase teacher attendance from 50% to 80%"
+msgstr ""
+
+msgid "Data Senders associated"
+msgstr ""
+
+msgid "records submitted"
+msgstr ""
+
+msgid "Reminders set for Data Senders"
+msgstr ""
+
+msgid "QUESTIONNAIRE"
+msgstr ""
+
+msgid "Input Data"
+msgstr ""
+
+msgid "Internet"
+msgstr ""
+
+msgid "DATA SENDERS"
+msgstr ""
+
+msgid "Add Senders"
+msgstr ""
+
+msgid "SMS sent to telephone company. Upon receipt of delivery confirmation, DataWinners will update the counter on the "
+msgstr ""
+
+msgid "Your message could not be sent."
+msgstr "You cannot send SMS because your DataWinners account hasn’t been configured to send SMS. Please contact our support team: support@datawinners.com"
+
+
+msgid "You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions. For more information contact support@datawinners.com: %(failed_numbers)s."
+msgstr "You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions: %(failed_numbers)s. \
+ We have successfully sent your message to all other numbers. For more information contact support@datawinners.com."
+
+
+msgid "Please Select..."
+msgstr ""
+
+msgid "Commercial Business"
+msgstr ""
+
+msgid "Education"
+msgstr ""
+
+msgid "Finance"
+msgstr ""
+
+msgid "Food Security"
+msgstr ""
+
+msgid "Health"
+msgstr ""
+
+msgid "Human Rights"
+msgstr ""
+
+msgid "Shelter"
+msgstr ""
+
+msgid "Water and Sanitation"
+msgstr ""
+
+msgid "Import List"
+msgstr ""
+
+msgid "Import A List"
+msgstr ""
+
+msgid "upgrade success message"
+msgstr "Congratulations for going pro! We will send you an email soon with the next steps. If you do not receive an email from us within the next 24 hours, please check your Spam folder."
+
+msgid "upgrade project note"
+msgstr "Note, your projects from the Basic Account will still be available"
+
+msgid "upgrade edit note"
+msgstr "Edit this information by clicking on the   'Your Profile' and 'Account' links at the top of this page."
+
+
+
+msgid "Create questionnaire"
+msgstr ""
+
+msgid "Register a Subject/Data Sender"
+msgstr ""
+
+msgid "Send data using SMS"
+msgstr ""
+
+msgid "Send data using  Internet"
+msgstr ""
+
+msgid "Analyze data"
+msgstr ""
+
+msgid "My account"
+msgstr "My Account"
+
+msgid "General feedback"
+msgstr "General Feedback"
+
+msgid "Subscription Inquiry"
+msgstr ""
+
+msgid "Consulting"
+msgstr ""
+
+msgid "Technical Support"
+msgstr ""
+
+msgid "Billing"
+msgstr ""
+
+msgid "Set Reminders"
+msgstr ""
+
+msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your questionnaire"
+msgstr ""
+
+msgid "tooltip_devices"
+msgstr "Your Data Senders can submit data using SMS and the Internet."
+"<br/>SMS is an efficient data collection channel for questionnaires with less than 20 questions and where Data Senders have no Internet access. "
+"<br/>If any of your Data Senders have (or will have) access to the Internet, we recommened leaving the WEB box checked."
+
+msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erro. Numero incorrecto da resposta. Por favor reenvie o questionario impresso e reenvie a SMS inteira."
+
+msgid "Privacy Policy"
+msgstr ""
+
+msgid "tooltip_questionnaire_about"
+msgstr "If you need the following question, “What subject are you reporting on?” in your questionnaire, choose the "
+"Individual Report option. For more information review the help bubble next to each choice."
+
+msgid "tooltip_summary_report"
+msgstr "Choose the Summary Report option if you want your Data Senders(in other words,people in the field) to answer a basic list of questions."
+"<br/>Examples:<br/>1) A community health worker sends in a monthly activity report"
+" (example question:  How many babies did you weigh last month?)"
+"<br/>2) A young woman answers polling questions"
+" (Example question:  Do you have access to clean water?)."
+
+msgid "tooltip_individual_report"
+msgstr "Individual Reports are about specific subjects."
+"<br/>Examples: <br/>1) A doctor examines a baby. In this case, the subject is the baby."
+"<br/>2) A supervisor measures the quality of care at a clinic. The subject is the clinic"
+"<br/>3) An engineer measures the flow rate of a water pump.  The subject is the water pump."
+"<br/>In each case, the Data Senders (in other words, people in the field) must first identify the specific “subject” (baby/clinic/water pump)."
+"<br/>For example, the Data Sender would first answer the question: “What baby are you reporting on?”"
+"<br/>All subsequent questions would be about the baby.  (Example:  “How much did the baby weigh?”)"
+
+msgid "tooltip_add_subject"
+msgstr "Subjects are People (Patient, Farmer, Employee); Places (Region, District, Commune); "
+"Things (Health center, Retail Shop, Water Pump) or Events (Training, Performance, Public gathering)"
+"<br/><br>You can choose an existing Subject Type already registered with your DataWinners account, or specify a new Subject Type"
+"<br/><br/>It's good idea to register your subjects using DataWinners and give each a unique identification number."
+" Click on this image <img src=\"/media/images/help_icon.png\"> to learn more"
+
+msgid "tooltip_add_subject_read_more"
+msgstr ""
+"To collect individual reports about specific subjects, you have two choices."
+"<br/><br/>"
+"1. Each time, you can ask your Data Senders to send in background information about the subject (Example:"
+" What is the baby's name? Where does the baby live?)"
+"<br/><br/>Or<br/><br/>"
+"2. Register the background information about the subject first, then going forward have your Data Senders identify "
+"each subject using a unique identification number (example: \"What is the unique identification number of the baby?\""
+"Answer: bab001)<br/><br/>"
+"There are three important advantages to using unique identification numbers:"
+"<ol style='margin-left: 20px;'><li>Improve the quality of your data. Data Senders frequently make spelling mistakes "
+"(Example: A Data Sender spells a baby's name \"Avery\" during the first visit, then \"Avary\" during segond. "
+"When spelling mistakes happen, you have to \"clean\" your data by determining if \"Avery\" and \"Avary\" are two"
+"different babies, or the same baby. Mistakes happen less frequently with unique identification numbers"
+"</li><li> Make data collection easier by reducing the number of questions. It's easier for your Data Senders to "
+"answer one question (what is the baby's identification number?) rather than, say, four background questions "
+"(1. What is the baby'sname? 2. Where does the baby live? 3. How old is the baby? 4. What is the mother's name?)"
+"</li><li>Once subjects are registered in DataWinners, you can collect a variety of data about them. You may want to "
+"collect several different individual reports for one subject (example: a report when the baby is seen at a nutritional "
+"center and a second report when the community agent visits the baby at home).<br/>"
+"After registering the baby with DataWinners, your DataSenders can use the baby's unique identification number for "
+"multiple questionnaires.</li></ol>"
+"<br/>If you want to register your subjects with DataWinners, the first step is to identify the subject type (Example: "
+"Patient, Clinic, Water Pump).<br/><br/>"
+"Once you choose a subject type (Example: Baby), you will see this question appear in your questionnaire builder: "
+"\"Which baby are you reporting on?\".<br/><br/>"
+"In a later step, you will:"
+"<ol style='margin-left: 20px;'><li>Create your baby registration form</li><li>Register a list of your babies with DataWinners so each is assigned"
+" a unique identification number.</li></ol>"
+
+msgid "Sign In"
+msgstr ""
+
+msgid "Latest news"
+msgstr ""
+
+msgid "required"
+msgstr ""
+
+msgid "%s with %s = %s already exists."
+msgstr ""
+
+msgid "Job title"
+msgstr ""
+
+msgid "broadcast_trial_warning_message"
+msgstr "You can send Broadcast SMS messages from here, however this feature is not available to Trial account users."
+" Sign up for a monthly subscription to send Broadcast SMS messages from your DataWinners account."
+
+msgid "reminder_trial_warning_message"
+msgstr "You can add Reminders here, however this feature is not available to Trial account users."
+" Sign up for a monthly subscription to send Reminders to your Data Senders."
+
+msgid "Enter Data Sender's number eg: +61 (123) 456-7890 "
+msgstr ""
+
+msgid "Subscribe Now"
+msgstr ""
+
+msgid "Learn More"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+msgid "Last Day"
+msgstr ""
+
+msgid "Reports are due in 2 days. Please submit soon."
+msgstr ""
+
+msgid "number of days after deadline"
+msgstr ""
+
+msgid "Reports are due today. Please submit soon."
+msgstr ""
+
+msgid "Reports are over due. Please submit immediately."
+msgstr ""
+
+msgid "Enter an id, or allow us to generate it"
+msgstr ""
+
+msgid "Payment Details"
+msgstr ""
+
+msgid "Invoice Period"
+msgstr ""
+
+msgid "<div class='radio_title'>Monthly: $ 399 per month</div><div class='subtitle_for_radio_button pay_monthly'></div>"
+msgstr ""
+
+msgid "<div class='radio_title'>6 months:$ 359 per month</div><div class='subtitle_for_radio_button pay_half_yearly'></div> "
+msgstr ""
+
+msgid "Preferred Payment"
+msgstr ""
+
+msgid "<div class='radio_title'>Wire transfer</div>"
+msgstr ""
+
+msgid "<div class='radio_title'>Credit card</div><div class='subtitle_for_radio_button credit_card'></div>"
+msgstr ""
+
+msgid "<div class='radio_title'>Pay via ACH</div><div class='subtitle_for_radio_button pay_via_ach'></div>"
+msgstr ""
+
+msgid "Reminder settings saved successfully."
+msgstr ""
+
+msgid "Answer must be a word or phrase %d characters maximum"
+msgstr "Answer must be a word %d characters maximum"
+
+msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"
+msgstr ""
+
+msgid "I am submitting this data on behalf of"
+msgstr ""
+
+msgid "What is associated Data sender type?"
+msgstr ""
+
+msgid "What is the Data sender's name?"
+msgstr ""
+
+msgid "What is the Data sender's location?"
+msgstr ""
+
+msgid "What is the Data sender's GPS co-ordinates?"
+msgstr ""
+
+msgid "What is the mobile number associated with the Data sender?"
+msgstr ""
+
+msgid "Enter the Data sender's number"
+msgstr ""
+
+msgid "Enter lat and long. Eg 20.6, 47.3"
+msgstr ""
+
+msgid "Enter a region, district, or commune"
+msgstr ""
+
+msgid "Enter a Data sender name"
+msgstr ""
+
+msgid "Enter a type for the Data sender"
+msgstr ""
+
+msgid "What kind of data do you want to collect?"
+msgstr ""
+
+msgid "I want Summary Reports."
+msgstr "I want Summary Reports"
+
+msgid "I want Individual Reports about a specific subject."
+msgstr "I want Individual Reports about a specific subject"
+
+msgid "Learn more about DataWinners on our"
+msgstr ""
+
+msgid "Your account is a Trial Account with some limitations. To upgrade click on the 'Subscribe Now' button."
+msgstr ""
+
+msgid "Enter a type for the subject"
+msgstr ""
+
+msgid "Enter a id, or allow us to generate it"
+msgstr ""
+
+msgid "Enter the subject's number"
+msgstr ""
+
+msgid "Upgrade"
+msgstr ""
+
+msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
+msgstr ""
+
+msgid "Specify when you want to send automatic Reminders to your Data Senders"
+msgstr ""
+
+msgid "Between %d -- %d characters"
+msgstr ""
+
+msgid "Account Activation"
+msgstr ""
+
+msgid "You have already activated your account. Please sign in"
+msgstr "You have already activated your account. Please <a href=\"/login\">sign in</a>"
+
+msgid "My Subjects"
+msgstr ""
+
+msgid "My Data Senders"
+msgstr ""
+
+msgid "Website"
+msgstr ""
+
+msgid "Example: www.organization.com"
+msgstr ""
+
+msgid "Example: Program Director"
+msgstr ""
+
+msgid "phone_number_example"
+msgstr "Enter the country code and telephone number. Example: 261333745269"
+
+msgid "Example: Minimum	of 6 characters in length"
+msgstr ""
+
+msgid "Just one more step..."
+msgstr ""
+
+msgid "Just two more steps..."
+msgstr ""
+
+msgid "Enhance your project..."
+msgstr ""
+
+msgid "Example: Monthly Activity Report"
+msgstr ""
+
+msgid "Example: a report per patient, clinic, water pump - choose below"
+msgstr ""
+
+msgid "tooltip_questionnaire_form_data_sender_entity_question"
+msgstr "<b>What is this?</b></br>"
+       "Instead of submitting data in your name, you can submit it for one of your registered Data Senders.</br>"
+       "On the Analysis and Submission Log pages, this Submission will then be displayed with the Data Sender's name."
+       "</br></br><b>What do I need to do?</b></br>"
+       "Your name appears by default. Select the Data Sender you want to submit data for from the drop-down list."
+
+msgid "tooltip_questionnaire_form_subject_entity_question"
+msgstr "Select your subject from the drop down list.If your subject is not on the list, click on the My Subjects tab to register the subject first."
+
+msgid "warning_msg_for_activity_report_question_delete"
+msgstr "If you delete this question, any previously collected data will be lost.<br/>Further, you will not be able to view your data by your chosen Reporting Period (Example: January 2012)."
+
+msgid "learn_more_delete_question"
+msgstr "<br/>View your received data by a particular Reporting Period (Example: All reports sent in for January) instead of when the reports were actually received (Example: All reports sent in between January 1 – 31).<br/>"
+       "This is very useful if you give your Data Senders until February 5<sup>th</sup> to submit their January report.<br/> DataWinners will correctly separate the reports into their correct reporting period. "
+       "You can translate or edit this question, but try to keep the same meaning (Example: “What month and year are you reporting on?”)"
+       "<br/><br/><a class='hide_link' href=\"javascript:void(0);\">Hide Help</a>"
+
+msgid "Upload an Excel file (.xls) with Your Submission list."
+msgstr ""
+
+msgid "Upload a file"
+msgstr ""
+
+msgid "Download the template:"
+msgstr ""
+
+msgid "The order of the columns in your Excel file needs to match the existing order of your questions."
+msgstr ""
+
+msgid "The 1<sup>st</sup> row of your Excel file will not be imported. You can use this header row for your questions (titles of the columns)."
+msgstr ""
+
+msgid "You cannot add new columns in your Excel file to create new question. <a href='javascript:void(0);' id='to-edit-%(form_code)s' class='edit-form-code-link' >Edit the %(entity_type)s Registration Form</a> to make these changes."
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Choose Data Sender from this list."
+msgstr "Choose Data Sender from the list."
+
+msgid "Choose Subject from this list."
+msgstr ""
+
+msgid "Define what information you want to collect about each %(entity_type)s."
+msgstr ""
+
+msgid "View and manage all of the people, places, things or events that you want to collect data about, such as patients, villages, clinics or trainings."
+msgstr ""
+
+msgid "Hide help"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "My %(entity_type)s List"
+msgstr ""
+
+msgid "My %(entity_type)s"
+msgstr ""
+
+msgid "%(entity_type)s Registration Form"
+msgstr ""
+
+msgid "Enter a %(entity_type)s last name"
+msgstr ""
+
+msgid "Enter a %(entity_type)s first name"
+msgstr ""
+
+msgid "What is the %(entity_type)s's first name?"
+msgstr ""
+
+msgid "What is the %(entity_type)s's last name?"
+msgstr ""
+
+msgid "What is the %(entity_type)s's location?"
+msgstr ""
+
+msgid "What is the %(entity_type)s's GPS co-ordinates?"
+msgstr ""
+
+msgid "What is the %(entity_type)s's mobile telephone number?"
+msgstr ""
+
+msgid "What is the %(entity_type)s's Unique ID Number?"
+msgstr ""
+
+msgid "Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269"
+msgstr "Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269"
+
+msgid "some default value"
+msgstr ""
+
+msgid "Add a new"
+msgstr ""
+
+msgid "Enter the Name of your specific Subject Type"
+msgstr ""
+
+msgid "Example: Person (Patient, Farmer), Place (Region, Village), Thing (Health center, School, Water pump, Retail shop), Event (Training, Public gathering)"
+msgstr ""
+
+msgid "Once you have registered a %(entity_type)s, it will appear here."
+msgstr ""
+
+msgid "To get started"
+msgstr ""
+
+msgid "register a"
+msgstr ""
+
+msgid "How to Import Submissions"
+msgstr ""
+
+msgid "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."
+msgstr ""
+
+msgid "Customize the {{ entity_type }} registration form"
+msgstr ""
+
+msgid "Import a list of %(entity_type)s"
+msgstr ""
+
+msgid "View each of your registered %(entity_type)s in detail."
+msgstr ""
+
+msgid "With this form you can register a new %(entity_type)s.  To change this form, click Edit."
+msgstr ""
+
+msgid "Your Data Senders can register a new {{ entity_type }} via SMS. Print out this form and give it to your Data Senders."
+msgstr ""
+
+msgid "All Data Senders who have access to this form can register a new %(entity_type)s online. You can give them web submission access on the <a href=\"%(url)s\">All Data Senders</a> page."
+msgstr ""
+
+msgid "Web %(entity_type)s Registration Form"
+msgstr ""
+
+msgid "%(entity_type)s Code"
+msgstr ""
+
+msgid "Data Senders Registration Form"
+msgstr ""
+
+msgid "Add a new Data Sender"
+msgstr ""
+
+msgid "Your Trial Account Phone Number"
+msgstr ""
+
+msgid "Successfully submitted. Unique identification number(ID) is:"
+msgstr ""
+
+msgid "Define what information you want to collect about each datasender."
+msgstr ""
+
+msgid "To import a list of %(entity_type)s follow these steps"
+msgstr ""
+
+msgid "Download the template %(entity_type)s.xls"
+msgstr ""
+
+msgid "Fill out the template with your %(entity_type)s' information"
+msgstr ""
+
+msgid "The last question is optional.  If you already have ID numbers for your %(entity_type)s, fill them in.  If not, DataWinners will generate them for you"
+msgstr ""
+
+msgid "Save the template on your computer"
+msgstr ""
+
+msgid "Click the gold Upload a file button and select the saved template"
+msgstr ""
+
+msgid "Edit Registration Form"
+msgstr ""
+
+msgid "You are sharing this %(entity_type)s Registration Form with other projects."
+msgstr ""
+
+msgid "Your changes will affect the Registration Form for these projects as well."
+msgstr ""
+
+msgid "Import list"
+msgstr ""
+
+msgid "You have already collected data for this question. If you delete the question, the corresponding data wille be lost."
+msgstr ""
+
+
+msgid "Note, if you don't want to lose your data you can <a href=\"javascript:void(0);\" class=\"export-entity-link\" id=\"export-%(entity_type)s\">export</a> it before you delete the question."
+msgstr ""
+
+msgid "Do you want to delete this question?"
+msgstr ""
+
+msgid "Upto %s characters"
+msgstr ""
+
+msgid "Minimum %s characters"
+msgstr ""
+
+msgid "Between %s -- %s characters"
+msgstr ""
+
+msgid "Minimum %s"
+msgstr ""
+
+msgid "Upto %s"
+msgstr ""
+
+msgid "%(entity_type)s registration form edition"
+msgstr ""
+
+msgid "To import a list of Data Senders follow these steps"
+msgstr ""
+
+msgid "Download the template"
+msgstr ""
+
+msgid "Fill out the template with your Data Senders information"
+msgstr ""
+
+msgid "Data Submission"
+msgstr ""
+
+msgid "Register a new "
+msgstr ""
+
+msgid "Project"
+msgstr ""
+
+msgid "You may be sharing this %(entity_type)s registration form with other questionnaire. If you make changes, the other questionnaire will have to use your new %(entity_type)s registration form as well."
+msgstr ""
+
+msgid "If you delete this question, any previously collected data will be lost."
+msgstr ""
+
+msgid "What is the Data Sender's name?"
+msgstr ""
+msgid "What is the Data Sender's Unique ID Number"
+msgstr ""
+
+msgid "What is the Data Sender's location?"
+msgstr ""
+
+msgid "What is the Data Sender's GPS co-ordinates?"
+msgstr ""
+
+msgid "Describe the Data Sender"
+msgstr ""
+
+msgid "What is the mobile number associated with the Data Sender?"
+msgstr ""
+
+msgid "subject_question"
+msgstr "What is a Subject?"
+
+msgid "subject_answer"
+msgstr "A Subject is what your Questionnaire is about; a speciﬁc person, place, thing or event on which Data Senders report."
+"<br>In many cases, the Data Sender interacts with a Subject, then sends in an individual report about the interaction:"
+"<ul class='bulleted'><li>A doctor examines a baby. In this case, the Subject is the baby.</li>"
+"<li>A supervisor measures the quality of care at a clinic. The Subject is the clinic.</li>"
+"<li>An engineer measures the ﬂow rate of a water pump. The Subject is the water pump.</li>"
+"<li>A sales person sells products to a retailer. The Subject is the retailer.</li></ul>"
+
+msgid "register_subject_for_projects_question"
+msgstr "Why should I register Subjects for my projects?"
+
+msgid "register_subject_for_projects_answer"
+msgstr "<ul class='bulleted'><li>Register your Subjects to see them displayed on a map on your Questionaire’s Overview tab.</li>"
+"<li>Register a unique identiﬁcation number for each Subject to:"
+"<ul class='bulleted'><li>Improve the quality of your data.</li>"
+"<li>Make data collection easier by reducing the number of questions.</li>"
+"<li>Collect a variety of data about each Subject.</li></ul></li></ul>"
+
+msgid "register_subject_question"
+msgstr "How do I register my Subjects?"
+
+msgid "register_subject_answer"
+msgstr "<ol><li><a id='add_new_subject_type' href='javascript:void(0);'>Add a  Subject Type</a></li>"
+"<li>Decide what information you want to collect about your Subjects: Click on your new Subject type "
+"(Example: Baby) and then on 'Edit registration form'.</li>"
+"<li>Register your Subjects: Add them one-by-one via “Add a Baby” or click on “Import a List” if you "
+"already have a list of subjects to upload.</li>"
+"<li>Use your new Subjects in your projects: Create a new project and choose “I want Individual"
+"Reports about a speciﬁc subject”.</li></ol>"
+
+msgid "register_subject_for_project_question"
+msgstr "Why should I register Subjects for my questionnaire?"
+
+msgid "Enter a valid integer"
+msgstr ""
+
+msgid "Decide what information you want to use to identify and register each Subject:"
+msgstr ""
+
+msgid "Customize your Registration Form"
+msgstr ""
+
+msgid "Register a Subject:"
+msgstr ""
+
+msgid "This phone number is already in use. Please supply a different phone number"
+msgstr ""
+
+msgid "Ensure this value has at least %(limit_value)d digits (it has %(show_value)d)."
+msgstr ""
+
+msgid "Only letters and numbers are valid and you must provide more than just whitespaces."
+msgstr ""
+
+msgid "WEB"
+msgstr ""
+
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgstr ""
+
+msgid "What is the Data Sender's mobile number?"
+msgstr ""
+
+msgid "Mobile Phone Number"
+msgstr ""
+
+msgid "Afghanistan"
+msgstr ""
+
+msgid "Albania"
+msgstr ""
+
+msgid "Algeria"
+msgstr ""
+
+msgid "Andorra"
+msgstr ""
+
+msgid "Angola"
+msgstr ""
+
+msgid "Anguilla"
+msgstr ""
+
+msgid "Antigua & Barbuda"
+msgstr ""
+
+msgid "Argentina"
+msgstr ""
+
+msgid "Armenia"
+msgstr ""
+
+msgid "Aruba"
+msgstr ""
+
+msgid "Australia"
+msgstr ""
+
+msgid "Austria"
+msgstr ""
+
+msgid "Azerbaijan"
+msgstr ""
+
+msgid "Bahamas, the"
+msgstr ""
+
+msgid "Bahrain"
+msgstr ""
+
+msgid "Bangladesh"
+msgstr ""
+
+msgid "Barbados"
+msgstr ""
+
+msgid "Barbuda"
+msgstr ""
+
+msgid "Belarus"
+msgstr ""
+
+msgid "Belgium"
+msgstr ""
+
+msgid "Belize"
+msgstr ""
+
+msgid "Benin"
+msgstr ""
+
+msgid "Bermuda"
+msgstr ""
+
+msgid "Bhutan"
+msgstr ""
+
+msgid "Bolivia"
+msgstr ""
+
+msgid "Bosnia-Herzegovina"
+msgstr ""
+
+msgid "Botswana"
+msgstr ""
+
+msgid "Brazil"
+msgstr ""
+
+msgid "British Virgin Islands"
+msgstr ""
+
+msgid "Brunei"
+msgstr ""
+
+msgid "Bulgaria"
+msgstr ""
+
+msgid "Burkina Faso"
+msgstr ""
+
+msgid "Burundi"
+msgstr ""
+
+msgid "Cambodia"
+msgstr ""
+
+msgid "Cameroon"
+msgstr ""
+
+msgid "Canada"
+msgstr ""
+
+msgid "Cape Verde"
+msgstr ""
+
+msgid "Cayman Islands"
+msgstr ""
+
+msgid "Central African Republic"
+msgstr ""
+
+msgid "Chad"
+msgstr ""
+
+msgid "Chile"
+msgstr ""
+
+msgid "China"
+msgstr ""
+
+msgid "Colombia"
+msgstr ""
+
+msgid "Comoros"
+msgstr ""
+
+msgid "Congo"
+msgstr ""
+
+msgid "Congo, Democratic Republic"
+msgstr ""
+
+msgid "Cook Islands"
+msgstr ""
+
+msgid "Costa Rica"
+msgstr ""
+
+msgid "Croatia"
+msgstr ""
+
+msgid "Cuba"
+msgstr ""
+
+msgid "Curacao"
+msgstr ""
+
+msgid "Cyprus"
+msgstr ""
+
+msgid "Czech Republic"
+msgstr ""
+
+msgid "Denmark"
+msgstr ""
+
+msgid "Djibouti"
+msgstr ""
+
+msgid "Dominica"
+msgstr ""
+
+msgid "Dominican Republic"
+msgstr ""
+
+msgid "East Timor"
+msgstr ""
+
+msgid "Ecuador"
+msgstr ""
+
+msgid "Egypt"
+msgstr ""
+
+msgid "El Salvador"
+msgstr ""
+
+msgid "Estonia"
+msgstr ""
+
+msgid "Ethiopia"
+msgstr ""
+
+msgid "Faroe Islands"
+msgstr ""
+
+msgid "Fiji"
+msgstr ""
+
+msgid "Finland"
+msgstr ""
+
+msgid "France"
+msgstr ""
+
+msgid "French Guyana"
+msgstr ""
+
+msgid "French Polynesia"
+msgstr ""
+
+msgid "French West Indies"
+msgstr ""
+
+msgid "Gabon"
+msgstr ""
+
+msgid "Gambia"
+msgstr ""
+
+msgid "Georgia"
+msgstr ""
+
+msgid "Germany"
+msgstr ""
+
+msgid "Ghana"
+msgstr ""
+
+msgid "Gibraltar"
+msgstr ""
+
+msgid "Greece"
+msgstr ""
+
+msgid "Greenland"
+msgstr ""
+
+msgid "Grenada"
+msgstr ""
+
+msgid "Guadeloupe"
+msgstr ""
+
+msgid "Guam"
+msgstr ""
+
+msgid "Guatemala"
+msgstr ""
+
+msgid "Guernsey"
+msgstr ""
+
+msgid "Guinea"
+msgstr ""
+
+msgid "Guyana"
+msgstr ""
+
+msgid "Haiti"
+msgstr ""
+
+msgid "Honduras"
+msgstr ""
+
+msgid "HongKong"
+msgstr ""
+
+msgid "Hungary"
+msgstr ""
+
+msgid "Iceland"
+msgstr ""
+
+msgid "India"
+msgstr ""
+
+msgid "Indonesia"
+msgstr ""
+
+msgid "Iran"
+msgstr ""
+
+msgid "Iraq"
+msgstr ""
+
+msgid "Ireland"
+msgstr ""
+
+msgid "Isle of Man"
+msgstr ""
+
+msgid "Israel"
+msgstr ""
+
+msgid "Italy"
+msgstr ""
+
+msgid "Ivory Coast"
+msgstr ""
+
+msgid "Jamaica"
+msgstr ""
+
+msgid "Japan"
+msgstr ""
+
+msgid "Jersey"
+msgstr ""
+
+msgid "Jordan"
+msgstr ""
+
+msgid "Kazakhstan"
+msgstr ""
+
+msgid "Kenya"
+msgstr ""
+
+msgid "Korea (South)"
+msgstr ""
+
+msgid "Kosovo"
+msgstr ""
+
+msgid "Kuwait"
+msgstr ""
+
+msgid "Kyrgyzstan"
+msgstr ""
+
+msgid "Lao"
+msgstr ""
+
+msgid "Latvia"
+msgstr ""
+
+msgid "Lebanon"
+msgstr ""
+
+msgid "Lesotho"
+msgstr ""
+
+msgid "Liberia"
+msgstr ""
+
+msgid "Libya"
+msgstr ""
+
+msgid "Liechtenstein"
+msgstr ""
+
+msgid "Lithuania"
+msgstr ""
+
+msgid "Luxembourg"
+msgstr ""
+
+msgid "Macau"
+msgstr ""
+
+msgid "Macedonia"
+msgstr ""
+
+msgid "Madagascar"
+msgstr ""
+
+msgid "Malawi"
+msgstr ""
+
+msgid "Malaysia"
+msgstr ""
+
+msgid "Maldives"
+msgstr ""
+
+msgid "Mali"
+msgstr ""
+
+msgid "Malta"
+msgstr ""
+
+msgid "Martinique"
+msgstr ""
+
+msgid "Mauritania"
+msgstr ""
+
+msgid "Mauritius"
+msgstr ""
+
+msgid "Mexico"
+msgstr ""
+
+msgid "Moldova"
+msgstr ""
+
+msgid "Monaco"
+msgstr ""
+
+msgid "Mongolia"
+msgstr ""
+
+msgid "Montenegro"
+msgstr ""
+
+msgid "Montserrat"
+msgstr ""
+
+msgid "Morocco"
+msgstr ""
+
+msgid "Mozambique"
+msgstr ""
+
+msgid "Namibia"
+msgstr ""
+
+msgid "Nepal"
+msgstr ""
+
+msgid "Netherlands"
+msgstr ""
+
+msgid "Netherlands Antilles"
+msgstr ""
+
+msgid "New Caledonia"
+msgstr ""
+
+msgid "New Zealand"
+msgstr ""
+
+msgid "Nicaragua"
+msgstr ""
+
+msgid "Niger"
+msgstr ""
+
+msgid "Nigeria"
+msgstr ""
+
+msgid "Norway"
+msgstr ""
+
+msgid "Oman"
+msgstr ""
+
+msgid "Pakistan"
+msgstr ""
+
+msgid "Palestine (+970)"
+msgstr ""
+
+msgid "Palestine (+9725)"
+msgstr ""
+
+msgid "Panama"
+msgstr ""
+
+msgid "Papua New Guinea"
+msgstr ""
+
+msgid "Paraguay"
+msgstr ""
+
+msgid "Peru"
+msgstr ""
+
+msgid "Philippines"
+msgstr ""
+
+msgid "Poland"
+msgstr ""
+
+msgid "Portugal"
+msgstr ""
+
+msgid "Puerto Rico"
+msgstr ""
+
+msgid "Qatar"
+msgstr ""
+
+msgid "Reunion"
+msgstr ""
+
+msgid "Romania"
+msgstr ""
+
+msgid "Russia"
+msgstr ""
+
+msgid "Rwanda"
+msgstr ""
+
+msgid "Samoa (American)"
+msgstr ""
+
+msgid "San Marino"
+msgstr ""
+
+msgid "Saudi Arabia"
+msgstr ""
+
+msgid "Senegal"
+msgstr ""
+
+msgid "Serbia"
+msgstr ""
+
+msgid "Seychelles"
+msgstr ""
+
+msgid "Sierra Leone"
+msgstr ""
+
+msgid "Singapore"
+msgstr ""
+
+msgid "Slovakia"
+msgstr ""
+
+msgid "Slovenia"
+msgstr ""
+
+msgid "Solomon Islands"
+msgstr ""
+
+msgid "South Africa"
+msgstr ""
+
+msgid "Spain"
+msgstr ""
+
+msgid "Sri Lanka"
+msgstr ""
+
+msgid "St. Kitts And Nevis"
+msgstr ""
+
+msgid "St. Lucia"
+msgstr ""
+
+msgid "St. Vincent"
+msgstr ""
+
+msgid "Sudan"
+msgstr ""
+
+msgid "Suriname"
+msgstr ""
+
+msgid "Swaziland"
+msgstr ""
+
+msgid "Sweden"
+msgstr ""
+
+msgid "Switzerland"
+msgstr ""
+
+msgid "Syria"
+msgstr ""
+
+msgid "Taiwan"
+msgstr ""
+
+msgid "Tajikistan"
+msgstr ""
+
+msgid "Tanzania"
+msgstr ""
+
+msgid "Thailand"
+msgstr ""
+
+msgid "Togo"
+msgstr ""
+
+msgid "Tonga Islands"
+msgstr ""
+
+msgid "Trinidad and Tobago"
+msgstr ""
+
+msgid "Tunisia"
+msgstr ""
+
+msgid "Turkey"
+msgstr ""
+
+msgid "Turkmenistan"
+msgstr ""
+
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+msgid "UK"
+msgstr ""
+
+msgid "US Virgin Islands"
+msgstr ""
+
+msgid "Uganda"
+msgstr ""
+
+msgid "Ukraine"
+msgstr ""
+
+msgid "United Arab Emirates"
+msgstr ""
+
+msgid "United States"
+msgstr ""
+
+msgid "Uruguay"
+msgstr ""
+
+msgid "Uzbekistan"
+msgstr ""
+
+msgid "Vanuatu"
+msgstr ""
+
+msgid "Venezuela"
+msgstr ""
+
+msgid "Vietnam"
+msgstr ""
+
+msgid "Yemen"
+msgstr ""
+
+msgid "Zambia"
+msgstr ""
+
+msgid "Zimbabwe"
+msgstr ""
+
+msgid "You have not registered a %(subject)s yet."
+msgstr ""
+
+msgid "Register a %(subject)s"
+msgstr ""
+
+msgid "Your Data Senders’ successful submissions will appear here."
+msgstr ""
+
+msgid "To collect data"
+msgstr ""
+
+msgid "SMS: Give your <a href=\"%(url)s\">Questionnaire</a> to your Data Senders and have them send in data"
+msgstr "<b>SMS</b>: Give your <a href=\"%(url)s\">Questionnaire</a> to your Data Senders and have them send in data"
+
+msgid "Web & Smartphone: Grant your Data Senders Web submission access on the <a href=\"%(url)s\">all Data Senders</a> page"
+msgstr "<b>Web</b> & <b>Smartphone</b>: Grant your Data Senders Web submission access on the <a href=\"%(url)s\">All Data Senders</a> page"
+
+msgid "<a href=\"%(url)s\">Submit Data</a> yourself"
+msgstr ""
+
+msgid "%dst"
+msgstr ""
+
+msgid "%dnd"
+msgstr ""
+
+msgid "%drd"
+msgstr ""
+
+msgid "%dth"
+msgstr ""
+
+msgid "entity delete error text"
+msgstr ""
+        "If you delete a Subject, you can no longer collect data about it.\n"
+        "However, you can still view previously collected data for this Subject on the Data pages.\n\n"
+        "Are you sure you want to delete?"
+
+msgid "Yes, Delete"
+msgstr ""
+
+msgid "Subject(s) successfully deleted."
+msgstr ""
+
+msgid "Data Sender(s) successfully deleted."
+msgstr ""
+
+msgid "data sender delete error text"
+msgstr "If you delete Data Senders, they can no longer send in data.<br/>"
+       "However, you can still view their previous Data Submissions on the Data pages."
+
+
+msgid "ID is:"
+msgstr ""
+
+msgid "Your Account Has Expired"
+msgstr ""
+
+msgid "Your Free Basic Account Has Expired"
+msgstr ""
+
+msgid "Thank you for test-driving DataWinners during the past year."
+msgstr ""
+
+msgid "Subscribe now to continue using your DataWinners Account and the<br/>data you have collected over the past year."
+msgstr ""
+
+msgid "Your organization's account Administrator %s cannot be deleted"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Register a Data Sender"
+msgstr ""
+
+msgid "Answer the questions in your SMS Questionnaire. Then, follow the Example SMS Answer Format to type the SMS into the phone. Note, you can also use your own mobile phone"
+msgstr ""
+
+msgid "Answer the Questions"
+msgstr ""
+
+msgid "Use Your Own Mobile Phone"
+msgstr ""
+
+msgid "Use our online phone"
+msgstr ""
+
+msgid "Type your answers here"
+msgstr ""
+
+msgid "Send your SMS to"
+msgstr ""
+
+msgid "Tips"
+msgstr ""
+
+msgid "Start your SMS with the Questionnaire Code"
+msgstr ""
+
+msgid "Leave a space between answers in your SMS"
+msgstr ""
+
+msgid "If you are reporting on a specific Subject, you must use the Subject’s Unique ID"
+msgstr ""
+
+msgid "DataWinners Automatic Reply SMS"
+msgstr ""
+
+msgid "Refer to the Example SMS Answer and re-type your SMS"
+msgstr ""
+
+msgid "Thank you"
+msgstr ""
+
+msgid "Congratulations ! Go to "
+msgstr ""
+
+msgid "to see the data you submitted"
+msgstr ""
+
+msgid "Way Bill Sent vs Received Report"
+msgstr "Waybill Sent VS Waybill Received"
+
+msgid "Way bill sent vs received description"
+msgstr "Compares quantities sent from CRS warehouse to quantities received by recipient"
+
+msgid "CSR"
+msgstr ""
+
+msgid "CSR description"
+msgstr "Commodity Status Report – National Level"
+
+msgid "LSR"
+msgstr ""
+
+msgid "LSR description"
+msgstr "Loss Status Report"
+
+msgid "MSL"
+msgstr ""
+
+msgid "MSL description"
+msgstr "Master Shipping Ledger"
+
+msgid "Recipient Status Report"
+msgstr "RSR"
+
+msgid "Recipient Status Report description"
+msgstr "Recipient Status Report"
+
+msgid "Return Report"
+msgstr ""
+
+msgid "Return Report description"
+msgstr "Compares quantities sent from CRS warehouses to quantities received by distribution sites, quantities distributed, quantities sent back by distribution sites to warehouse and quantities received at warehouse."
+
+msgid "Theoretical vs Physical Inventory Report"
+msgstr ""
+
+msgid "Theoretical vs Physical Inventory Report description"
+msgstr "Theoretical vs Physical Inventory"
+
+msgid "Bill Of Lading vs Way Bill Port"
+msgstr "Bill Of Lading vs Waybill Port"
+
+msgid "Bill Of Lading vs Way Bill Port description"
+msgstr "Compares quantities listed in Packing List to quantities received at CRS warehouses"
+
+msgid "CSR Warehouse"
+msgstr "CSR Warehouse"
+
+msgid "CSR Warehouse description"
+msgstr "Commodity Status Report – Warehouse Level"
+
+msgid "email_example"
+msgstr "Enter this person's Email address to give Web and Smartphone access"
+
+msgid "user_creation_info"
+msgstr "This person will receive an email with instructions"
+
+msgid "location_example"
+msgstr "Enter either a location name or the GPS coordinates."
+
+msgid "location_name_example"
+msgstr "Answer must be a location name. Example: Nairobi"
+
+msgid "location_coordinate_example"
+msgstr "Answer must be GPS coordinates in the following format(latitude,longitude): xx.xx,yy.yy. Example: -18.13,27.65"
+
+msgid "Reports"
+msgstr ""
+
+msgid "You are editing the Data Senderʼs Details"
+msgstr ""
+msgid "Your changes have been saved."
+msgstr ""
+msgid "Edit a"
+msgstr ""
+msgid "Edit a Data Sender"
+msgstr ""
+
+msgid "There should not be any space at the beginning and the end of the password."
+msgstr ""
+
+msgid "Some unexpected error happened. Please check the excel file or download the latest template and import again."
+msgstr ""
+
+msgid "The imported file is empty."
+msgstr ""
+msgid "Back to Subject List"
+msgstr ""
+
+msgid "change_event_time_field_message"
+msgstr "Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."
+
+msgid "Invalid email address."
+msgstr ""
+
+msgid "Activity Log"
+msgstr ""
+
+msgid "Created Project"
+msgstr ""
+
+msgid "Activated Project"
+msgstr ""
+
+msgid "Deleted Project"
+msgstr ""
+
+msgid "All Actions"
+msgstr ""
+
+msgid "Date Range"
+msgstr ""
+
+msgid "Account Administration"
+msgstr ""
+
+msgid "Added User"
+msgstr ""
+
+msgid "Changed Account Information"
+msgstr ""
+
+msgid "Added Subject Type"
+msgstr ""
+
+msgid "Edited Registration Form"
+msgstr ""
+
+msgid "Registered Subject"
+msgstr ""
+
+msgid "Imported Subject(s)"
+msgstr ""
+
+msgid "Deleted Subject(s)"
+msgstr ""
+
+msgid "Registered Data Sender"
+msgstr ""
+
+msgid "Imported Data Sender(s)"
+msgstr ""
+
+msgid "Edited Data Sender"
+msgstr ""
+
+msgid "Deleted Data Sender(s)"
+msgstr ""
+
+msgid "Added Data Sender(s) to Project(s)"
+msgstr ""
+
+msgid "Removed Data Sender from Project"
+msgstr ""
+
+msgid "Data Submissions"
+msgstr ""
+
+msgid "Deleted Data Submission(s)"
+msgstr ""
+
+msgid "Deleted Submissions"
+msgstr ""
+
+msgid "Edited Data Submission(s)"
+msgstr ""
+
+msgid "Submission Received on"
+msgstr ""
+
+msgid "Changed Answers:"
+msgstr ""
+
+msgid "Changed Status: \"Error\" to \"Success\""
+msgstr ""
+
+msgid "hint for success submission page%(url)s"
+msgstr "View and manage successfully sent in Submissions for this project. Go to the <a href=\"%(url)s\">Analysis Page</a> to analyze your successful submissions."
+
+
+msgid "View deleted Submissions for this project."
+msgstr ""
+
+msgid "Activated Reminders"
+msgstr ""
+
+msgid "De-Activated Reminders"
+msgstr ""
+
+msgid "Set Deadline"
+msgstr ""
+
+msgid "Subject Type"
+msgstr ""
+
+msgid "Deleted Questions"
+msgstr ""
+
+msgid "Added Questions"
+msgstr ""
+
+msgid "Answer type changed to %(answer_type)s for \"%(question_label)s\""
+msgstr ""
+
+msgid "Questions Labels Changed"
+msgstr ""
+
+msgid "Untitled Project"
+msgstr ""
+
+msgid "to"
+msgstr ""
+
+msgid "Data Sender with Unique Identification Number (ID) = %s already exists."
+msgstr ""
+
+msgid "What do you want to do?"
+msgstr ""
+
+msgid "Edited Project"
+msgstr ""
+
+msgid "No submission data under this subject during this period."
+msgstr ""
+
+msgid "From code [%s] does not existed."
+msgstr ""
+
+msgid "Entity type [%s] is not defined."
+msgstr ""
+
+msgid "Entity [%s] is not registered."
+msgstr ""
+
+msgid "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011"
+msgstr ""
+
+msgid "Start date must before end date."
+msgstr ""
+
+msgid "Your account is created on %s"
+msgstr ""
+
+msgid "Submission Log"
+msgstr ""
+
+msgid "View and manage all Submissions for this questionnaire."
+msgstr ""
+
+msgid "If you modify this questionnaire, any previously collected data will be lost."
+msgstr ""
+
+msgid "Do you want to modify this questionnaire?"
+msgstr ""
+
+msgid "Add a User"
+msgstr ""
+
+msgid "Please select at least 1 user"
+msgstr ""
+
+msgid "User(s) successfully deleted."
+msgstr ""
+
+msgid "Your User(s) will be permanently deleted. This action cannot be undone."
+msgstr ""
+
+msgid "Are you sure you want to delete?"
+msgstr ""
+
+msgid "Deleted User(s)"
+msgstr ""
+
+msgid "Note, the following Data Senders will not be deleted as they are DataWinners users:"
+msgstr ""
+
+msgid "You cannot delete the following Data Senders as they are DataWinners users:"
+msgstr ""
+
+msgid "Deleted User"
+msgstr ""
+
+msgid "Deleted Data Sender"
+msgstr ""
+
+msgid "You have not registered a reporter yet."
+msgstr ""
+
+msgid "View and manage the users of your DataWinners account."
+msgstr ""
+
+msgid "You have made changes to your Questionnaire."
+msgstr ""
+
+msgid "Please make sure your Data Senders have the latest version"
+msgstr ""
+
+msgid "Print and distribute the updated SMS Questionnaire"
+msgstr ""
+
+msgid "Currently, registering a new %(subject_type)s via Smartphone is not possible"
+msgstr ""
+
+msgid "Remind them to download the updated version of the Questionnaire"
+msgstr ""
+
+msgid "No action needed. We will display the updated version of the Registration Form automatically"
+msgstr ""
+
+msgid "OK, Got it"
+msgstr ""
+
+msgid "Your Submission(s) will be moved to Deleted Submissions.<br/>This action cannot be undone."
+msgstr ""
+
+msgid "Are you sure you want to continue?"
+msgstr ""
+
+msgid "View and manage unsuccessful Submissions for this project."
+msgstr "View and manage unsuccessful Submissions for this project. Also view the <a href=\"/allfailedsubmissions\">Failed Submissions</a> page."
+
+msgid "Error Messages"
+msgstr ""
+
+msgid "Answer must be 20 characters maximum"
+msgstr ""
+
+msgid "You are editing the Submission Details"
+msgstr ""
+
+msgid "You are editing the %(entity_type)s Details"
+msgstr ""
+
+msgid "Select a %(subject_type)s"
+msgstr ""
+
+msgid "not available for trial accounts"
+msgstr ""
+
+msgid "Select a Submission"
+msgstr ""
+
+msgid "Select a Data Sender"
+msgstr ""
+
+msgid "You have successfully signed up with DataWinners"
+msgstr ""
+
+msgid "Last Step: Activate your account"
+msgstr ""
+
+msgid "We've sent you an activation email. Please check your Spam folder if you haven't received it."
+msgstr ""
+
+msgid "Contact <a href=\"mailto:support@datawinners.com\">support@datawinners.com</a> if you need help."
+msgstr ""
+
+msgid "Assign a unique ID for each Subject."
+msgstr ""
+
+msgid "Leave this column blank if you want DataWinners to assign an ID for you."
+msgstr ""
+
+msgid "Enter a Word with a maximum %s of characters."
+msgstr ""
+
+msgid "Enter a number between %s-%s."
+msgstr ""
+
+msgid "Enter a number. The maximum is %s"
+msgstr ""
+
+msgid "Enter a number. The minimum is %s"
+msgstr ""
+
+msgid "Enter GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."
+msgstr ""
+
+msgid "Example: -18.1324,27.6547"
+msgstr ""
+
+msgid "Enter name of the location."
+msgstr ""
+
+msgid "Example: Nairobi"
+msgstr ""
+
+msgid "Choose 1 or more answers from the list."
+msgstr ""
+
+msgid "Enter 1 answer from the list."
+msgstr ""
+
+msgid "Example: a"
+msgstr ""
+
+msgid "Example: a or ab"
+msgstr ""
+
+msgid "Enter a telephone number along with the country code."
+msgstr ""
+
+msgid "Example: 261333745269"
+msgstr ""
+
+msgid "Enter the date in the following format: month.year"
+msgstr ""
+
+msgid "Example: 12.2011"
+msgstr ""
+
+msgid "Enter a word"
+msgstr ""
+
+msgid "Please check your answers below for errors."
+msgstr ""
+
+msgid "Don't Save"
+msgstr ""
+
+msgid "Cancel Editing"
+msgstr ""
+
+msgid "Do you want to save the changes before leaving this page?"
+msgstr ""
+
+msgid "Back to Submission Log"
+msgstr ""
+
+msgid "Your changes will be lost if you don't save them."
+msgstr ""
+
+msgid "Choose Data Sender from the list."
+msgstr ""
+
+msgid "disabled"
+msgstr ""
+
+msgid "My Data Senders linked to this questionnaire"
+msgstr ""
+
+msgid "All Data Senders of all questionnaires"
+msgstr ""
+
+msgid "Do you want to send this message to <span id=\"number_of_peoples\"></span> recipient(s)?"
+msgstr ""
+
+msgid "Don't Send"
+msgstr ""
+
+msgid "Choose 1 answer from the list."
+msgstr ""
+
+msgid "Find GPS coordinates"
+msgstr ""
+
+msgid "Select a user"
+msgstr ""
+
+msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erro. Resposta incorrecta para a pergunta %s. Por favor reveja o questionário impresso e reenvie a SMS inteira. "
+
+msgid "sms_glue"
+msgstr ", "
+
+msgid "question_prefix%s"
+msgstr "%s"
+
+msgid "and"
+msgstr "and"
+
+msgid "ending_and"
+msgstr "and"
+
+msgid "singular_question"
+msgstr "question"
+
+msgid "plural_question"
+msgstr "question"
+
+msgid "Error. %s already exists. Register your %s with a different Identification Number."
+msgstr ""
+
+msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
+msgstr ""
+
+msgid "Activate Your DataWinners Account"
+msgstr ""
+
+msgid "Enter a password and click on Activate to activate your DataWinners account."
+msgstr ""
+
+msgid "Confirm Password"
+msgstr ""
+
+msgid "How to Send Data"
+msgstr ""
+
+msgid "DataWinners allows you to send your data 3 different ways. Choose the channel most convenient for you."
+msgstr ""
+
+msgid "Use any computer connected to the Internet to send in data. Log in to your DataWinners account to fill out the Questionnaire online."
+msgstr ""
+
+msgid "Android Smartphone"
+msgstr ""
+
+msgid "Use any Android Smartphone to send data. Download the Questionnaires directly onto your phone. Log in to your DataWinners account for further instructions."
+msgstr ""
+
+msgid "Use any simple mobile phone to send data using a single SMS. Ask your project manager for the SMS Questionnaire."
+msgstr ""
+
+msgid "Need Help?"
+msgstr ""
+
+msgid "If you need help contact your project manager or send us an Email at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>. We're here to help!"
+msgstr ""
+
+msgid "Minimum of 6 characters in length"
+msgstr ""
+
+msgid "Thank you %(datasender)s. We received your SMS for %(subject_info)s"
+msgstr ""
+
+msgid "Thank you %(datasender)s, We registered your %(subject_type)s"
+msgstr ""
+
+msgid "Thank you %(datasender)s. We received your SMS"
+msgstr "Mesmo como hoje: Obrigado %(datasender)s. Recebemos a sua SMS"
+
+msgid "You have successfully activated your account. Happy data submission!"
+msgstr ""
+
+msgid "Your account has been deactivated. Please contact the datawinners support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a> for reactivation of the account."
+msgstr "Your account has been deactivated. Please contact the datawinners support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a> for reactivation of the account."
+
+msgid "Back to All Subjects List"
+msgstr "Back to All Subjects List"
+
+msgid "Example SMS:"
+msgstr ""
+
+msgid "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders."
+msgstr ""
+
+msgid "Back to Registration Form"
+msgstr ""
+
+msgid "You can't leave this empty."
+msgstr ""
+
+msgid "Please use only letters (a-z), numbers, and spaces."
+msgstr ""
+
+msgid "You have reached your limit of 1000 free Submissions. Upgrade to a monthly subscription to continue sending in Submissions."
+msgstr "Atingiu o seu limite 1000 submissoes grateis. Faca uma subsescricao mensal para continuar a enviar submissoes."
+
+msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your questionnaires."
+msgstr ""
+
+msgid "Your DataWinners account has been deactivated. "
+msgstr ""
+
+msgid "To reactivate it, subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
+msgstr ""
+
+msgid "Get the Most out of Datawinners!"
+msgstr ""
+
+msgid "Find Out What Datawinners Can Do For You!"
+msgstr ""
+
+msgid "Datawinners | We're here to Help!"
+msgstr ""
+
+msgid "Datawinners | Join our Online Community!"
+msgstr ""
+
+msgid "Datawinners | Send Us Your story!"
+msgstr ""
+
+msgid "Datawinners | Just checking in..."
+msgstr ""
+
+msgid "Datawinners | Why is Data Collection Important to You?"
+msgstr ""
+
+msgid "Datawinners | Share Your Experience!"
+msgstr ""
+
+msgid "Your Datawinners Subscription is About to End!"
+msgstr ""
+
+msgid "Your Free Subscription to Datawinners Ends Tomorrow - Download Your Data!"
+msgstr ""
+
+msgid "Datawinners | Your Account Has Expired!"
+msgstr ""
+
+msgid "We'd like to invite You to Back to Datawinners!"
+msgstr ""
+
+msgid "DataWinners | 50 SMS Submission Limit Almost Reached: Upgrade to Continue Collecting Data via SMS!"
+msgstr ""
+
+msgid "DataWinners | Submission Limit Reached: Upgrade to Continue Collecting Data!"
+msgstr ""
+
+msgid "Your DataWinners Submission Limit is Approaching!"
+msgstr ""
+
+msgid " of 160 characters used"
+msgstr ""
+
+msgid "Reminder text before deadline"
+msgstr ""
+
+msgid "Reminder text on deadline "
+msgstr ""
+
+msgid "Reminder text after deadline "
+msgstr ""
+
+msgid "Data Sender Id"
+msgstr ""
+
+msgid "Data Sender Name"
+msgstr ""
+
+msgid "The Data Sender(s) are removed from project(s) successfully"
+msgstr ""
+
+msgid "Note, the following Data Senders were not removed as they are DataWinners users: "
+msgstr ""
+
+msgid "The Data Sender(s) are added to project(s) successfully"
+msgstr ""
+
+msgid "Invalid GPS value."
+msgstr ""
+
+msgid "Your Most Recent Questionnaires"
+msgstr ""
+
+msgid "Submissions Received"
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "This Month"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Your SMS Usage This Month"
+msgstr ""
+
+msgid "Total SMS"
+msgstr ""
+
+msgid "sent & received"
+msgstr ""
+
+msgid "Total SMS Sent"
+msgstr ""
+
+msgid "Reply SMS"
+msgstr ""
+
+msgid "Send a message"
+msgstr ""
+
+msgid "You have reached your free Submission limit. Each Basic Account is limited to 1000 Submissions including 50 SMS Submissions."
+msgstr ""
+
+msgid "For unlimited Submissions upgrade to a monthly subscription."
+msgstr ""
+
+msgid "For unlimited data collection and advanced features, consider a Pro Account upgrade!"
+msgstr ""
+
+msgid "Go Pro"
+msgstr ""
+
+msgid "Note: You cannot add new columns in your Excel file to create new questions."
+msgstr ""
+
+msgid "Edit the Questionnaire to make these changes."
+msgstr ""
+
+msgid "Upgrade to a Pro Account"
+msgstr ""
+
+msgid "Account & Payment Details"
+msgstr ""
+
+msgid "pay_monthly_subtitle"
+msgstr "<div class='radio_title'>Monthly: $ <span id='pay_monthly_per_month'></span> per month</div>"
+"<div class='subtitle_for_radio_button pay_monthly'>Renews automatically each month. Cancel at any time without penalty.</div>"
+
+msgid "half_yearly_subtitle"
+msgstr "<div class='radio_title'>6 months:$ <span id='pay_half_yearly_per_month'></span> per month</div>"
+"<div class='subtitle_for_radio_button pay_half_yearly'>Save <span id='half_yearly_percentage'></span>% by paying 6 months in advance</div>"
+
+msgid "yearly_subtitle"
+msgstr "<div class='radio_title'>12 months:$ <span id='pay_yearly_per_month'></span> per month</div>"
+"<div class='subtitle_for_radio_button pay_yearly'>Save <span id='yearly_percentage'></span>% by paying 12 months in advance</div>"
+
+msgid "pro_subtitle"
+msgstr "<div class='radio_title'>Pro</div>"
+"<div class='subtitle_for_radio_button pro_account'>Collect unlimited data via 2 channels: Android (Smartphone, Tablet) & Web</div>"
+
+msgid "pro_sms_subtitle"
+msgstr "<div class='radio_title'>Pro SMS</div>"
+"<div class='subtitle_for_radio_button pro_sms_account'>Collect unlimited data via 3 channels: SMS, Android (Smartphone, Tablet) & Web</div>"
+
+msgid "Account Type"
+msgstr ""
+
+msgid "1 month"
+msgstr ""
+
+msgid "6 months"
+msgstr ""
+
+msgid "12 months"
+msgstr ""
+
+msgid "The questionnaire you are requesting for has been deleted from the system."
+msgstr ""
+
+msgid "Select a question to edit or add another question."
+msgstr ""
+
+msgid "Move Up"
+msgstr ""
+
+msgid "Move Down"
+msgstr ""
+
+msgid "Please add at least one question"
+msgstr ""
+
+msgid "You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your questionaires."
+msgstr ""
+
+msgid "You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your questionnaires."
+msgstr ""
+
+msgid "Our Partners"
+msgstr ""
+
+msgid "Our Networks"
+msgstr ""
+
+msgid "Like us on Facebook"
+msgstr ""
+
+msgid "Follow us on Twitter"
+msgstr ""
+
+msgid "Subscribe to our Blog"
+msgstr ""
+
+msgid "Join our Mailing List"
+msgstr ""
+
+msgid "Create a New Questionnaire"
+msgstr ""
+
+msgid "Choose How You Want To Start"
+msgstr ""
+
+msgid "Copy an Existing Questionnaire"
+msgstr ""
+
+msgid "Use a Template"
+msgstr ""
+
+msgid "Insert a name for this Questionnaire"
+msgstr ""
+
+msgid "Choose your language"
+msgstr ""
+
+msgid "Start with a blank Questionnaire and add your list of questions"
+msgstr ""
+
+msgid "Sorry, the telephone number %s has already been registered."
+msgstr ""
+
+msgid "Select an Answer Type"
+msgstr ""
+
+msgid "Choose a template and edit it to fit your needs."
+msgstr ""
+
+msgid "Identification Number"
+msgstr ""
+
+msgid "unique_id_example_text"
+msgstr "Example:<br/><strong>People</strong>: Patient, Farmer, Child,<br/><strong>Places</strong>: Region, District, Commune,<br/><strong>Things</strong>: Clinic, School, Retail Shop, Training, Meeting, Conference, Waybill, Receipt, Bill of Lading"
+
+msgid "unique_id_learn_more"
+msgstr "Select Identification Number if you plan to collect data about the same people (example: patients), places (districts) or things (schools) more than one time."
+
+msgid "Identification numbers improve the accuracy of your data."
+msgstr ""
+
+msgid "Are you sure you want to delete the Identification Number Type"
+msgstr ""
+
+msgid "You will lose all registered Identification Numbers."
+msgstr ""
+
+msgid "Identification Number Type(s) successfully deleted."
+msgstr ""
+
+msgid "Select an Identification Number Type"
+msgstr ""
+
+msgid "The Data Sender %s (%s) is not linked to your Questionnaire."
+msgstr ""
+
+msgid "You haven't created any Questionnaires yet. Once you do, a list of your Questionnaires will appear here. You can then choose one as a template and edit it to fit your needs."
+msgstr ""
+
+msgid "Edit Name"
+msgstr ""
+
+msgid "Questionnaire with same name already exists."
+msgstr ""
+
+msgid "My Identification Numbers"
+msgstr ""
