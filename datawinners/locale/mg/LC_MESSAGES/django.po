@@ -1781,7 +1781,7 @@ msgid "This field is required."
 msgstr "Faritra tsy maintsy fenoina."
 
 msgid "Error. Incorrect answer for %s. Please resend entire message."
-msgstr "Diso. Diso ny valiny hoan'i %s. Azafady avereno alefa manontolo ny SMS-nao"
+msgstr "Diso. Diso ny valiny hoan'i %s. Azafady avereno alefa manontolo ny SMS-nao."
 
 msgid"Questionnaire ID %s doesnt exist."
 msgstr "Tsy misy ny kaodin'ny lisitry ny fanontaniana %s"
@@ -1797,7 +1797,7 @@ msgid "This telephone number is not registered in our system."
 msgstr "Tsy mbola tafiditra ao anatin'ny lisitra io nomerao telefaoninao io."
 
 msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
-msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana"
+msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana."
 
 msgid "Question Code Already Exists"
 msgstr "Efa misy mampiasa io kaodin'ny fanontaniana io"
@@ -1810,7 +1810,7 @@ msgstr "Diso. Tsy tafiditra ny SMS-nao. Jereo ny lisitry ny fanontaniana. Averen
 "sy ny valiny hoan'ny: %s"
 
 msgid "Error. Incorrect answer for t. Please resend entire message."
-msgstr "Diso ny valin'ny fanontaniana t. Avereno alefa manontolo indray ny toromarika sy soratra marina azafady"
+msgstr "Diso ny valin'ny fanontaniana t. Avereno alefa manontolo indray ny toromarika sy soratra marina azafady."
 
 msgid "Invalid message format."
 msgstr "Tsy manara-penitra ny firafitry ny SMS-nao."
@@ -2879,7 +2879,7 @@ msgid "ending_and"
 msgstr "ary"
 
 msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
-msgstr "Diso. Valiny diso hoan'ny fanontaniana %s. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo"
+msgstr "Diso. Valiny diso hoan'ny fanontaniana %s. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."
 
 msgid "sms_glue"
 msgstr " sy "
