@@ -32,8 +32,10 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
             function (json_response) {
                 var response = $.parseJSON(json_response);
                 $.unblockUI();
-                if (response.success) {
-                    window.location.reload();
+                 if (response.success) {
+                    var table = $("#subjects_table").dataTable();
+                    table.fnSettings()._iDisplayStart = delete_entity_block.data("pageToGo");
+                    table.fnReloadAjax();
                 }
             }
         );
@@ -45,6 +47,7 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
         delete_entity_block.data("allIds", selected_ids);
         delete_entity_block.data("all_selected", all_selected);
         delete_entity_block.data("entity_type", entity_type);
+        delete_entity_block.data("pageToGo", get_updated_table_page_index($("#subjects_table").dataTable(), selected_ids, all_selected));
         delete_entity_block.dialog("open");
     }
 };

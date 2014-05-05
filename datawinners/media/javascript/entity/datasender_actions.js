@@ -30,22 +30,26 @@ function init_warnThenDeleteDialogBox() {
         var allIds = delete_dialog.data("allIds");
         var all_selected = delete_dialog.data("all_selected");
         var entity_type = delete_dialog.data("entity_type");
-        post_data = {'ids': allIds.join(';'), 'entity_type': entity_type, 'all_selected': all_selected, 'search_query': $(".dataTables_filter input").val()}
+        var post_data = {
+                            'ids': allIds.join(';'),
+                            'entity_type': entity_type,
+                            'all_selected': all_selected,
+                            'search_query': $(".dataTables_filter input").val()
+                        }
         if ($("#project_name").length)
             post_data["project_name"] = $("#project_name").val();
         if(all_selected)
             post_data["all_selected"] = true;
         DW.loading();
-        $.post("/entity/delete/", post_data,
-            function (json_response) {
-                var response = $.parseJSON(json_response);
-                flash_message(response.message, response.success);
-                if (response.success) {
-                    var table = $("#datasender_table").dataTable();
-                    table.fnSettings()._iDisplayStart = delete_dialog.data("pageToGo");
-                    table.fnReloadAjax();
+        $.post("/entity/delete/", post_data, function (json_response) {
+                    var response = $.parseJSON(json_response);
+                    flash_message(response.message, response.success);
+                    if (response.success) {
+                        var table = $("#datasender_table").dataTable();
+                        table.fnSettings()._iDisplayStart = delete_dialog.data("pageToGo");
+                        table.fnReloadAjax();
+                    }
                 }
-            }
         );
         return false;
     });
