@@ -48,18 +48,20 @@
     <div class="span-18 box">
         <!--Success Message div-->
         {% include 'project/success_message.html' %}
-        <div class="my_sub"><p><b>
-            {% if not has_multiple_unique_id  %}
-                {% if entity_type == "" %}
-                    <div> {% trans "Data Senders"%}</div>
-                {% else %}
-                <div> {% trans "My"%} {{ entity_type|capfirst }}  &amp; {% trans "Data Senders"%}</div>
-                {% endif %}
-            {% endif %}
-            {% if has_multiple_unique_id %}
-                <div>{% trans "My Identification Numbers"%} &amp; {% trans "Data Senders"%}</div>
-            {% endif %}
-        </b></p></div>
+        <div class="my_sub">
+            <p><b>
+                <div>
+                    <label>
+                        {{ unique_id_header_text }} {% trans "Data Senders"%} <img src="/media/images/help_icon.png" class="help_icon">
+                    </label>
+                    <div class="tooltip">
+                        <p>
+                            {% trans 'If you have registered your Data Senders and/or Identification Numbers with GPS Coordinates, they will be displayed on the map below.' %}
+                        </p>
+                    </div>
+                </div>
+            </b></p>
+        </div>
 
         <!--Map div-->
         {% if GOOGLE_MAPS_ENABLED %}

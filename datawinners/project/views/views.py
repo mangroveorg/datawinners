@@ -186,10 +186,14 @@ def project_overview(request, project_id=None):
     entity_type = ""
     has_multiple_unique_id = False
     in_trial_mode = _in_trial_mode(request)
+    unique_id_header_text = ""
     if len(questionnaire.entity_type) == 1:
         entity_type = questionnaire.entity_type[0]
+        unique_id_header_text = "%s %s &" % (ugettext("My"), entity_type.capitalize())
     if len(questionnaire.entity_type) > 1:
         has_multiple_unique_id = True
+        unique_id_header_text = "%s &" % ugettext("My Identification Numbers")
+
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': questionnaire,
         'project_links': project_links,
@@ -204,7 +208,8 @@ def project_overview(request, project_id=None):
         'in_trial_mode': in_trial_mode,
         'questionnaire_code': questionnaire_code,
         'has_multiple_unique_id':has_multiple_unique_id,
-        'entity_type':entity_type,
+        'entity_type': entity_type,
+        'unique_id_header_text': unique_id_header_text,
         'org_number': get_organization_telephone_number(request)
     }))
 
@@ -867,7 +872,7 @@ def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
