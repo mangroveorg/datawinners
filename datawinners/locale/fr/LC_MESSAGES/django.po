@@ -4808,3 +4808,6 @@ msgstr "Etape 3. Voyez à quel point vos données sont exactes avec les Numéros
 
 msgid "Use Identification Numbers to improve the accuracy of your data (rather than names, since names can be misspelled)."
 msgstr "Utilisez les Numéros d'Identification pour améliorer l'exactitude de vos données à la place des noms (les noms peuvent être mal orthographiés)."
+
+msgid "If you have registered your Data Senders and/or Identification Numbers with GPS Coordinates, they will be displayed on the map below."
+msgstr "Si vous avez enregistré des Expéditeurs de Données et/ou des Numéros d'Identification avec des coordonnées GPS, ils seront affichés sur la carte ci-dessous."
