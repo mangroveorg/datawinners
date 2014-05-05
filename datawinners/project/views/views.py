@@ -206,7 +206,7 @@ def project_overview(request, project_id=None):
         'links': links,
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
-        'questionnaire_code': questionnaire_code,
+        #'questionnaire_code': questionnaire_code,
         'has_multiple_unique_id':has_multiple_unique_id,
         'entity_type': entity_type,
         'unique_id_header_text': unique_id_header_text,
@@ -307,7 +307,7 @@ def broadcast_message(request, project_id):
                                          'is_quota_reached': is_quota_reached(request, organization=organization),
                                          "form": form, "ong_country": organization.country,
                                          "success": None,
-                                         'questionnaire_code': questionnaire.form_code
+                                         #'questionnaire_code': questionnaire.form_code
         },
                                   context_instance=RequestContext(request))
     if request.method == 'POST':

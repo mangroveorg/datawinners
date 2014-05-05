@@ -112,7 +112,7 @@ def registered_datasenders(request, project_id):
         return render_to_response('project/registered_datasenders.html',
                                   {'project': questionnaire,
                                    'project_links': project_links,
-                                   'questionnaire_code': questionnaire.form_code,
+                                   #'questionnaire_code': questionnaire.form_code,
                                    'current_language': translation.get_language(),
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,

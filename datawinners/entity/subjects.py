@@ -11,10 +11,9 @@ def load_subject_type_with_projects(manager):
         result.update({subject_type: []})
     rows = manager.view.projects_by_subject_type()
     for row in rows:
-        if row.key != 'reporter':
-            projects = result.get(row.key) or []
-            projects.append(row.value)
-            result.update({row.key: projects})
+        projects = result.get(row.key) or []
+        projects.append(row.value)
+        result.update({row.key: projects})
 
     for subject_type in subject_types:
         result[subject_type] = sorted(result[subject_type])
