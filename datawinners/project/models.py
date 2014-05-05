@@ -280,15 +280,8 @@ class Project(FormModel):
             if key in attribute_list:
                 setattr(self._doc, key, value_dict.get(key).lower()) if key == 'name' else setattr(self._doc, key,
                                                                                               value_dict.get(key))
-
-    # def delete(self, dbm):
-    #     if self.id is not None:
-    #         dbm.database.delete(self)
-
-    #The method name sucks but until we make Project DataObject we can't make the method name 'void'
     def set_void(self, void=True):
         self._doc.void = void
-        self.save(process_post_update=False)
 
     def delete_datasender(self, dbm, entity_id):
         from datawinners.search.datasender_index import update_datasender_index_by_id

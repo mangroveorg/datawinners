@@ -113,7 +113,7 @@ def _get_instruction_text(field):
 
 def delete_project(manager, questionnaire, void=True):
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=questionnaire.id))]
-    questionnaire.set_void(void)
+    questionnaire.void(void)
     [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
 
 def get_activity_report_questions(dbm):
