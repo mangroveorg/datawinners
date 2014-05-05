@@ -17,7 +17,7 @@ form ul li {
     width: 350px;
     height: 100px;
     border-color: #646464 #ebebeb #ebebeb #646464;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li label {
     font-size: 14px;
     display: block;
@@ -27,7 +27,7 @@ form ul li {
     font-weight: bold; }
   form ul li input {
     float: left;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li span[wmwrap=true] {
     float: left;
     top: 3px; }
@@ -74,7 +74,7 @@ div.error_arrow {
 span.error_arrow, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 3px;
   display: inline;
-  float: left!important; }
+  float: left !important; }
 
 span .error_arrow label, div.error_arrow label, label.error_arrow label {
   float: none;
@@ -297,7 +297,7 @@ input {
 
 .button_wizard_next {
   width: 214px;
-  height: 30px;
+  height: 29px;
   border: none !important;
   background: url("/media/images/button_wizard_next.png") no-repeat top left rgba(0, 0, 0, 0);
   color: #6F451D !important;
