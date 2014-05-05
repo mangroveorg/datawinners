@@ -2879,7 +2879,7 @@ msgid "ending_and"
 msgstr "ary"
 
 msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
-msgstr "Diso. Valiny diso hoan'ny fanontaniana %s. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."
+msgstr "Diso. Valiny diso hoan'ny %s. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."
 
 msgid "sms_glue"
 msgstr " sy "
