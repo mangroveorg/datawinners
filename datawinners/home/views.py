@@ -1,19 +1,15 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import time
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
-from django.views.generic.base import TemplateView
 from django.utils.translation import ugettext as _
 from django.core.mail import EmailMessage
 from django.conf import settings
 import feedparser
 from BeautifulSoup import BeautifulSoup
-import time
 
-# class FeatureAwareTemplateView(TemplateView):
-#     def get_context_data(self, **kwargs):
-#         context = super(FeatureAwareTemplateView, self).get_context_data(**kwargs)
-#         return RequestContext(self.request, context)
 
 def custom_home(request):
     if request.user.is_authenticated():
@@ -22,6 +18,9 @@ def custom_home(request):
         return index(request)
 
 def index(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+
     language = request.session.get("django_language", "en")
     return redirect("/%s/home/" % language)
 
