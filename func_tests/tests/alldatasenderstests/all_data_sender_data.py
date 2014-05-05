@@ -101,3 +101,23 @@ NEW_USER_DATA = {
     MOBILE_PHONE: random_number(9)
 }
 
+
+QUESTIONNAIRE_CODE = "questionnaire_code"
+GEN_RANDOM = "gen_random"
+DEFAULT_QUESTION = "default_question"
+QUESTION = "question"
+QUESTIONS = "questions"
+CODE = "code"
+TYPE = "type"
+DATE = "date"
+DD_MM_YYYY = "dd.mm.yyyy"
+DATE_FORMAT = "date_format"
+
+NEW_PROJECT = {PROJECT_NAME: "testing project", GEN_RANDOM: True}
+
+QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: True,
+                      QUESTIONS: [
+                                {QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
+                                   DATE_FORMAT: DD_MM_YYYY}]}
+
+

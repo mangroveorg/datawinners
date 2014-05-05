@@ -9,9 +9,10 @@ from framework.utils.data_fetcher import fetch_
 from pages.adddatasenderspage.add_data_senders_locator import FLASH_MESSAGE_LABEL
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alluserspage.all_users_page import AllUsersPage
+from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import login
 from pages.warningdialog.delete_dialog import UserDeleteDialog, DataSenderDeleteDialog
-from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE
+from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE, UNDELETE_PROJECT_URL
 from tests.alldatasenderstests.all_data_sender_data import *
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.projects.datasenderstests.registered_datasenders_data import IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR
@@ -262,3 +263,42 @@ class TestAllDataSenders(HeadlessRunnerTest):
         time.sleep(2)
         self.assertEqual(page.get_error_message(),
             u'Mobile Number Sorry, the telephone number 1234567890 has already been registered.')
+
+    @attr('functional_test')
+    def test_should_update_project_column_of_datasender_when_project_gets_deleted(self):
+        global_navigation = GlobalNavigationPage(self.driver)
+        dashboard_page = global_navigation.navigate_to_dashboard_page()
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+
+        create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page.create_questionnaire_with(NEW_PROJECT, QUESTIONNAIRE_DATA)
+
+        project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
+        project_name = project_overview_page.get_project_title()
+        project_id = project_overview_page.get_project_id()
+
+        all_datasender_page = global_navigation.navigate_to_all_data_sender_page()
+        all_datasender_page.search_with('rep10')
+        all_datasender_page.select_a_data_sender_by_id('rep10')
+        all_datasender_page.associate_datasender_to_projects('rep10',[project_name])
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
+
+        self.assertIn(project_name, all_datasender_page.get_project_names('rep10'))
+
+        all_projects_page = global_navigation.navigate_to_view_all_project_page()
+        all_projects_page.delete_project(project_name)
+
+        all_datasender_page = global_navigation.navigate_to_all_data_sender_page()
+        all_datasender_page.search_with('rep10')
+        all_datasender_page.select_a_data_sender_by_id('rep10')
+
+        self.assertNotIn(project_name, all_datasender_page.get_project_names('rep10'))
+
+        #undelete project
+        self.driver.go_to(UNDELETE_PROJECT_URL%project_id)
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+
+        all_datasender_page.search_with('rep10')
+        all_datasender_page.select_a_data_sender_by_id('rep10')
+
+        self.assertIn(project_name, all_datasender_page.get_project_names('rep10'))

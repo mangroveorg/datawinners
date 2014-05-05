@@ -70,3 +70,6 @@ class ProjectOverviewPage(Page):
     def navigate_to_web_questionnaire_page(self):
         self.driver.find(WEB_QUESTIONNAIRE_PAGE).click()
         return WebSubmissionPage(self.driver)
+
+    def get_project_id(self):
+        return self.url.split('/')[-2]
