@@ -3715,9 +3715,8 @@ msgstr "%d"
 
 msgid "%dth"
 msgstr "%d"
-
-msgid "If you delete this %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for it on the Data pages. Are you sure you want to delete?"
-msgstr "Si vous supprimez ce/cette %(entity_type)s, vous ne pouvez plus collecter des données le concernant. Cependant, vous pouvez toujours voir les données collectées précedemment sur les pages Données. \n\n Etes-vous sûr de vouloir supprimer? "
+msgid "If you delete a %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for it on the Data pages. Are you sure you want to delete?"
+msgstr "Si vous supprimez ce/cette %(entity_type)s, vous ne pouvez plus collecter des données le concernant. Cependant, vous pouvez toujours voir les données collectées précedemment sur les pages Données. Etes-vous sûr de vouloir supprimer?"
 
 msgid "Yes, Delete"
 msgstr "Oui, Supprimer"
