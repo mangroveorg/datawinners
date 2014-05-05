@@ -2,7 +2,7 @@
 <div id='all_project_block'>
     <ul class="margin_bottom_20" id="all_projects">
         {% for project in projects %}
-            <li><input value="{{ project.id }}" type="checkbox" />{{ project.value.name }}</li>
+            <li><input value="{{ project.id }}" type="checkbox" />{{ project.name }}</li>
         {% endfor %}
     </ul>
     <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>

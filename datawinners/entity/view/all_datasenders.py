@@ -18,7 +18,7 @@ from datawinners.entity.views import log_activity, get_success_message
 from datawinners.main.database import get_database_manager
 from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, \
     delete_datasender_for_trial_mode, rep_id_name_dict_of_users
-from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
+from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project, get_all_project_names
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports
 from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
@@ -36,13 +36,14 @@ class AllDataSendersView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        projects = get_all_projects(manager)
+        projects = get_all_project_names(manager)
         in_trial_mode = utils.get_organization(request).in_trial_mode
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
 
         return self.render_to_response({
             "user_dict": json.dumps(user_rep_id_name_dict),
             "projects": projects,
+            "project_count": len(projects),
             'current_language': translation.get_language(),
             'in_trial_mode': in_trial_mode
         })
@@ -64,6 +65,7 @@ class AllDataSendersView(TemplateView):
                                   detail=json.dumps(
                                       dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})))
 
+    #import of all data senders
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         error_message, failure_imports, success_message, successful_imports = import_module.import_data(
