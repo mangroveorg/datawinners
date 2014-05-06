@@ -42,7 +42,7 @@ exception_messages = {
 
     ex.NumberNotRegisteredException: {
         DEFAULT: u"This telephone number is not registered in our system.",
-        SMS: u"Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+        SMS: u"Error. You are not registered as a Data Sender. Please contact your supervisor."
     },
 
     ex.QuestionCodeAlreadyExistsException: {
@@ -69,7 +69,7 @@ exception_messages = {
     },
     ex.SMSParserWrongNumberOfAnswersException: {
         DEFAULT: u"Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.",
-        SMS: u"Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
+        SMS: u"Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
     },
     ex.SubmissionParseException: {
         DEFAULT: u"Invalid message format.",
@@ -104,7 +104,7 @@ def get_registration_success_message(response):
     datasender = response.reporters[0].get('name').split()[0].capitalize() if len(response.reporters) else ''
     subject_type = response.entity_type[0]
     return _("Thank you %(datasender)s, We registered your %(subject_type)s") % \
-           {'datasender':datasender, 'subject_type':subject_type}
+           {'datasender':datasender, 'subject_type':subject_type.capitalize()}
 
 def get_wrong_number_of_answer_error_message():
     return _("Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")

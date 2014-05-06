@@ -1791,7 +1791,7 @@ msgid "This %s is not yet registered in the system. Please check the %s's unique
 msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny kaody ID ho an'i %s ary avereno alefa ny SMS-nao"
 
 msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Diso. Ny %s %s dia mbola tsy tafiditra. Amarino ny Numero d'Identification ary avereno alefa ny SMS iray manontolo na antsoy ny mpikarakara ny fanadihadiana"
+msgstr "Diso. Ny %s %s dia mbola tsy tafiditra. Amarino ary avereno alefa ny SMS iray manontolo na antsoy ny mpikarakara ny fanadihadiana"
 
 msgid "This telephone number is not registered in our system."
 msgstr "Tsy mbola tafiditra ao anatin'ny lisitra io nomerao telefaoninao io."
@@ -2904,3 +2904,9 @@ msgstr "Misaotra %(datasender)s. Voarainay ny SMS-nao"
 
 msgid "You have reached your limit of 1000 free Submissions. Upgrade to a monthly subscription to continue sending in Submissions."
 msgstr "Efa tratra ny fetran'ny fandefasanao maimaimpoana 1000. Azafady, misorata anarana amin'ny tolotra andoavam-bola mba hahafahanao manohy ny fandefasana."
+
+msgid "more_wrong_question"
+msgstr "ny hafa"
+
+msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
+msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana."

@@ -4534,3 +4534,9 @@ msgstr ""
 
 msgid "My Identification Numbers"
 msgstr ""
+
+msgid "more_wrong_question"
+msgstr "etc"
+
+msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
+msgstr ""

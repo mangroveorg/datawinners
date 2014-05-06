@@ -16,3 +16,6 @@ msgstr "Ja atingiu o limite de submissao das suas 50 SMS. Por favor, faca uma su
 
 msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
 msgstr "Erro. %s %s nao esta registado. Verifique o Numero de Identificacao e reenvie a SMS inteira ou contacte o seu supervisor."
+
+msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
+msgstr "Erro. Nao esta autorizado para submeter dados para este questionario. Por favor contacte o seu supervisor."
