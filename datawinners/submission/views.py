@@ -224,7 +224,7 @@ def submit_to_player(incoming_request):
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
         message = ugettext("Error. %s already exists. Register your %s with a different Identification Number.") % \
-                  (e.data[1].capitalize(), e.data[2])
+                  (e.data[1], e.data[2].capitalize())
         if not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
 

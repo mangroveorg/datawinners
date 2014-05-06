@@ -1970,7 +1970,7 @@ msgstr "Ce/cette %s n'est pas enregistré(e) dans notre système. Vérifiez le n
 "de nouveau le SMS"
 
 msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Erreur. %s %s n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez le SMS au complet ou contactez votre superviseur"
+msgstr "Erreur. %s %s n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez le SMS en entier ou contactez votre superviseur."
 
 msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
@@ -4242,7 +4242,7 @@ msgid "Select a user"
 msgstr "Selectionnez un utilisateur"
 
 msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erreur. Reponse incorrecte pour %s. Veuillez revoir le Questionnaire imprime et renvoyez le SMS complet."
+msgstr "Erreur. Reponse incorrecte pour %s. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."
 
 msgid "sms_glue"
 msgstr ", "
@@ -4263,7 +4263,7 @@ msgid "plural_question"
 msgstr "les questions"
 
 msgid "Error. %s already exists. Register your %s with a different Identification Number."
-msgstr "Erreur. %s existe déjà. Enregistrez votre %s sous un autre numero."
+msgstr "Erreur. %s existe deja. Enregistrez votre %s sous un autre numero."
 
 msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
 msgstr "Erreur. Réponse incorrecte pour %s. Veuillez revoir le Formulaire d’enregistrement et renvoyez tout le SMS corrigé"
@@ -4313,7 +4313,7 @@ msgid "Thank you %(datasender)s, We registered your %(subject_type)s"
 msgstr "Merci %(datasender)s. Nous avons enregistre votre %(subject_type)s"
 
 msgid "Thank you %(datasender)s. We received your SMS"
-msgstr "Merci %(datasender)s. Nous avons reçu votre SMS"
+msgstr "Merci %(datasender)s. Nous avons recu votre SMS"
 
 msgid "You have successfully activated your account. Happy data submission!"
 msgstr "Vous avez activé votre compte avec succès. Bonne soumission de données!"
@@ -4816,3 +4816,12 @@ msgstr "Terminez votre Questionnaire, puis enregistrez chaque personne, lieu ou 
 
 msgid "Data Senders must use Identification Numbers that are already registered in Datawinners."
 msgstr "Les Expéditeurs de Données doivent utiliser les Numéros d'Identification qui sont déjà enregistrés dans DataWinners."
+
+msgid "Error. Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
+msgstr "Erreur. Le code Questionnaire %s est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code."
+
+msgid "more_wrong_question"
+msgstr "les autres"
+
+msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
+msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."

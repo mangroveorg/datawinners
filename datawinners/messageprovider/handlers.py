@@ -16,7 +16,7 @@ def default_exception_handler_with_logger(exception, request):
 
 def wrong_questionnaire_code_handler(exception, request):
     if request.get('exception'):
-        handler = exception_handlers.get(type(exception), default_exception_handler)
+        handler = exception_handlers.get(type(request.get('exception')), default_exception_handler)
         return handler(request.get('exception'), request)
     return default_exception_handler_with_logger(exception, request)
 
@@ -27,6 +27,11 @@ def sms_parser_wrong_number_of_answers_handler(exception, request):
     _activate_language(exception, request)
     return default_exception_handler_with_logger(exception, request)
 
+def exceed_limit_handler(exception, request):
+    request.get('organization').increment_message_count_for(sms_registration_count=1)
+    return default_exception_handler_with_logger(exception, request)
+    
+
 exception_handlers = {
 
     ex.DataObjectNotFound : data_object_not_found_handler,
@@ -36,6 +41,8 @@ exception_handlers = {
     ex.SMSParserInvalidFormatException : default_exception_handler_with_logger,
     ex.MultipleSubmissionsForSameCodeException : default_exception_handler_with_logger,
     ex.SMSParserWrongNumberOfAnswersException : sms_parser_wrong_number_of_answers_handler,
+    ex.ExceedSMSLimitException : exceed_limit_handler,
+    ex.ExceedSubmissionLimitException : exceed_limit_handler,
 }
 
 def data_object_not_found_formatter(data_object_not_found_exception, message):
