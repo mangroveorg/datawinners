@@ -11,14 +11,15 @@
 
     <div class="idTypeDropdown">
         <div class="uniqueIdType" data-bind="click: $root.toggleUniqueIdTypesVisibility">
-            <span class="grey" data-bind="hidden: uniqueIdType">{% trans 'Add an Identification Number' %} </span>
+            {# Text inside unique id selection box goes here. #}
+{#            <span class="grey" data-bind="hidden: uniqueIdType">{% trans 'Add an Identification Number' %} </span>#}
             <span data-bind="text: uniqueIdType"></span>
         </div>
         <div class="validationMessage" data-bind="ifnot: uniqueIdType.valid">
             <span id="unique_id_type_validation_message" class="validationText" data-bind="text: uniqueIdType.error"></span>
         </div>
     </div>
-
+    <p class="questionnaire-instruction-text" data-bind="hidden: $root.isUniqueIdTypeVisible">{% trans 'Example: Clinics' %} </p>
     <div class="uniqueIdTypeContents" data-bind="visible: $root.isUniqueIdTypeVisible">
         <div class="close-contents" data-bind="click: $root.toggleUniqueIdTypesVisibility"></div>
         <div class="newUniqueIdBox">

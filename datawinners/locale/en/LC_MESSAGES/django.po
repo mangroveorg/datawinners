@@ -1329,6 +1329,9 @@ msgstr ""
 msgid "Example:"
 msgstr ""
 
+msgid "Example: Clinics"
+msgstr ""
+
 msgid "Define the questions you want your Data Senders to answer."
 msgstr ""
 

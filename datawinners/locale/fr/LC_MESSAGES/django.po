@@ -1396,6 +1396,9 @@ msgstr "Code Questionnaire:"
 msgid "Example:"
 msgstr "Exemple:"
 
+msgid "Example: Clinics"
+msgstr "Exemple: Cliniques"
+
 msgid "Define the questions you want your Data Senders to answer."
 msgstr "Définissez les questions auxquelles vos expéditeurs doivent répondre."
 
