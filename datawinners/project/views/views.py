@@ -36,7 +36,7 @@ from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
 from datawinners.project.submission_form import SurveyResponseForm
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from datawinners.project.wizard_view import edit_project
+from datawinners.project.wizard_view import edit_project, get_preview_and_instruction_links
 from datawinners.scheduler.smsclient import NoSMSCException
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -401,10 +401,10 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
     return [questions[1], questions[2], questions[3], questions[4], questions[5]]
 
 
-def get_preview_and_instruction_links_for_questionnaire():
-    return {'sms_preview': reverse("questionnaire_sms_preview"),
-            'web_preview': reverse("questionnaire_web_preview"),
-            'smart_phone_preview': reverse("smart_phone_preview"), }
+#def get_preview_and_instruction_links_for_questionnaire():
+#    return {'sms_preview': reverse("questionnaire_sms_preview"),
+#            'web_preview': reverse("questionnaire_web_preview"),
+#            'smart_phone_preview': reverse("smart_phone_preview"), }
 
 
 @valid_web_user
@@ -437,7 +437,7 @@ def questionnaire(request, project_id):
                                    'active_language':active_language,
                                    'post_url': reverse(edit_project, args=[project_id]),
                                    'unique_id_types': get_unique_id_types(manager),
-                                   'preview_links': get_preview_and_instruction_links_for_questionnaire()},
+                                   'preview_links': get_preview_and_instruction_links()},
                                   context_instance=RequestContext(request))
 
 

@@ -3,6 +3,13 @@ function _isQuestionnaireChanged() {
     return DW.questionnaire_was_changed || questionnaireViewModel.has_newly_added_question() ||
            DW.isQuestionsReOrdered(question_list) || existing_questionnaire_code != questionnaireViewModel.questionnaireCode();
 }
+
+function basic_project_info() {
+    var name = questionnaireViewModel.projectName();
+    var language = questionnaireViewModel.language();
+    return JSON.stringify({'name':name, 'language':language});
+}
+
 $(document).ready(function () {
     window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
     DW.init_inform_datasender_about_changes();
@@ -45,12 +52,6 @@ $(document).ready(function () {
     function hide_message() {
         $('#message-label').delay(5000).fadeOut();
     }
-
-    function basic_project_info() {
-        var name = questionnaireViewModel.projectName();
-        var language = questionnaireViewModel.language();
-        return JSON.stringify({'name':name, 'language':language});
-    };
 
     function submit_questionnaire(callBack) {
         if(!DW.check_empty_questionnaire() || !questionnaireViewModel.validateForSubmission())
