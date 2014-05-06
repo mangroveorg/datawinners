@@ -46,19 +46,6 @@ def sms_preview(request):
 
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
 
-@valid_web_user
-def questionnaire_sms_preview(request):
-    manager = get_database_manager(request.user)
-    context = {'org_number': get_organization_telephone_number(request)}
-    project_info = FormModel.get(manager, request.POST['project_id'])
-    dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project_info.is_void():
-        return HttpResponseRedirect(dashboard_page)
-    if project_info:
-        context.update(get_sms_preview_context(manager, request.POST, project_info))
-
-    return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
-
 
 
 def get_web_preview_context_from_project_data(manager, post, project_info):
@@ -94,14 +81,3 @@ def smart_phone_preview(request):
 
 
 
-@valid_web_user
-def questionnaire_web_preview(request):
-    manager = get_database_manager(request.user)
-    project = Project.get(manager, request.POST["project_id"])
-    dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project.is_void():
-        return HttpResponseRedirect(dashboard_page)
-    context = get_web_preview_context_from_existing_project(project) if project else {}
-    return render_to_response("project/web_instruction_preview.html",
-                              context,
-                              context_instance=RequestContext(request))

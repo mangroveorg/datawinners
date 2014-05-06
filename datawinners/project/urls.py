@@ -5,7 +5,7 @@ from datawinners.project.views.datasenders import MyDataSendersAjaxView, registe
 from datawinners.project.views.import_submissions_views import ImportSubmissionView
 
 from datawinners.project.wizard_view import create_project, edit_project, reminder_settings, get_templates, get_template_details
-from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
+from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview
 from datawinners.project.views import submission_views
 from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \
     registered_subjects, broadcast_message, sent_reminders, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject, get_questionnaire_ajax, \
@@ -63,10 +63,6 @@ urlpatterns = patterns('',
                        url(r'^project/sms_preview$', sms_preview, name="sms_preview"),
                        url(r'^project/web_preview$', web_preview, name="web_preview"),
                        url(r'^project/smart_phone_preview$', smart_phone_preview, name="smart_phone_preview"),
-                       url(r'^project/questionnaire_sms_preview$', questionnaire_sms_preview,
-                           name="questionnaire_sms_preview"),
-                       url(r'^project/questionnaire_web_preview$', questionnaire_web_preview,
-                           name="questionnaire_web_preview"),
                        url(r'^project/has_submission/(?P<questionnaire_code>[^\\/]+?)/$', project_has_data),
                        url(r'^project/(?P<project_id>.+?)/results/(?P<questionnaire_code>.+?)/tab/(?P<tab>[^\\/]+?)/$',
                            submission_views.index),

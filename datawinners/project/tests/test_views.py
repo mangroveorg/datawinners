@@ -17,7 +17,7 @@ from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
 from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context_from_project_data
 from datawinners.project.utils import make_subject_links
-from datawinners.project.views.views import get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
+from datawinners.project.views.views import append_success_to_context, formatted_data
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 from datawinners.project.wizard_view import get_preview_and_instruction_links, _get_changed_data
 from datawinners.questionnaire.questionnaire_builder import get_max_code
@@ -133,9 +133,9 @@ class TestProjectViews(unittest.TestCase):
     def test_should_get_correct_instruction_and_preview_links_for_questionnaire(self):
         with patch("datawinners.project.views.views.reverse") as reverse:
             reverse.side_effect = lambda *args, **kw: "/project/%s" % args[0]
-            links = get_preview_and_instruction_links_for_questionnaire()
-            self.assertEqual(links["sms_preview"], "/project/questionnaire_sms_preview")
-            self.assertEqual(links["web_preview"], "/project/questionnaire_web_preview")
+            links = get_preview_and_instruction_links()
+            self.assertEqual(links["sms_preview"], "/project/sms_preview")
+            self.assertEqual(links["web_preview"], "/project/web_preview")
             self.assertEqual(links["smart_phone_preview"], "/project/smart_phone_preview")
 
 
