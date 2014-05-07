@@ -4814,3 +4814,9 @@ msgstr "Utilisez les Numéros d'Identification pour améliorer l'exactitude de v
 
 msgid "If you have registered your Data Senders and/or Identification Numbers with GPS Coordinates, they will be displayed on the map below."
 msgstr "Si vous avez enregistré des Expéditeurs de Données et/ou des Numéros d'Identification avec des coordonnées GPS, ils seront affichés sur la carte ci-dessous."
+
+msgid "Finish your questionnaire, then register each person, place or thing you want to collect data about with its own Identification Number (example: register your primary schools)."
+msgstr "Terminez votre Questionnaire, puis enregistrez chaque personne, lieu ou chose sur lequel vous voulez collecter des données, sous leur propre Numéro d'Identification (exemple: enregistrez vos écoles primaires)."
+
+msgid "Data Senders must use Identification Numbers that are already registered in Datawinners."
+msgstr "Les Expéditeurs de Données doivent utiliser les Numéros d'Identification qui sont déjà enregistrés dans DataWinners."
