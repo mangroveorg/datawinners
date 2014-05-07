@@ -1,0 +1,137 @@
+{% load i18n %}
+<script type="text/javascript">
+var sender_registration_link = "{{ registration_link }}";
+</script>
+    <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet" />
+
+  {% block messages %}
+      <div id="message-label" class="message-box none">
+      </div>
+  {% endblock %}
+<input id='post_url' type="hidden" value="{{ post_url }}"/>
+<div class="application_register">
+{#  {% if message %}#}
+{#       <div id="flash-message" class="{% if success %}success-message-box{% else %}message-box{% endif %}">#}
+{#           {{ message }}#}
+{#       </div>#}
+    <div id="flash-message"></div>
+
+{#       </div>#}
+{#  {% else %}#}
+{#       &nbsp;#}
+{#  {% endif %}#}
+
+</div>
+<div id="add_data_sender_form" class="">
+    <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
+    <br>
+    <form id="registration_form" onsubmit="return false;">
+      <fieldset>
+          {% csrf_token %}
+          <ul>
+              <li class="form-row-10px">
+                  <label>{% trans 'Name' %}</label>
+                  <input type="text" data-bind="value:name" maxlength="80" />
+                  <ul class="errorlist" data-bind="ifnot: name.valid">
+                        <li data-bind="text: name.error"></li>
+                  </ul>
+              </li>
+              <li class="horizontal_list">
+                  <ul>
+                      <li class="device_label">
+                          <label>{% trans 'Device' %}</label>
+                          <ul>
+                              <li>
+                                <label>
+                                  <input type="checkbox" checked value="sms" disabled="disabled">
+                                  <img src="/media/images/mini_mobile.png" />
+                                  <span>SMS</span>
+                                </label>
+                              </li>
+                              <li>
+                                <label>
+                                  <input type="checkbox" data-bind="checked: isWebEnabled"><img src="/media/images/mini_computer.png" /><span>Web</span>
+                                  + <img src="/media/images/smart_phone.png" /><span>Smartphone</span></input>
+                                </label>
+                              </li>
+                          </ul>
+                      </li>
+                      <li id="user_creation_info" class="italic_grey clear-left margin_left_180 instruction_text">
+                        <br/>{% trans "user_creation_info" %}
+                      </li>
+                  </ul>
+                  <br/>
+              </li>
+              <li data-bind="visible: isWebEnabled" class="form-row-10px" id="email_field">
+                  <label>{% trans 'Email address' %}</label>
+                  <input type="text" data-bind="value: email" maxlength="75" />
+                  <ul class="errorlist" data-bind="ifnot: email.valid">
+                        <li data-bind="text: email.error"></li>
+                  </ul>
+              </li>
+              <li data-bind="visible: isWebEnabled" class="margin_top_null margin_left_180 italic_grey clear-left instruction_text" id="email_field_help_text">
+                  {% trans "email_example" %}
+              </li>
+
+              <li class="form-row-10px">
+                  <label>{% trans 'Mobile Number' %}</label>
+                  <input type="text" data-bind="value: telephone_number" maxlength="15"/>
+                  <ul class="errorlist" data-bind="ifnot: telephone_number.valid">
+                        <li data-bind="text: telephone_number.error"></li>
+                  </ul>
+              </li>
+              <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text">
+                      {% trans "phone_number_example" %}
+              </li>
+              <li class="{{ form.location.css_classes }} form-row-10px">
+                  <label>{% trans "Location" %}</label>
+                  <ul class="location_section">
+                      <li class="italic_grey" style="margin-bottom: 5px">
+                          {% trans "location_example" %}
+                      </li>
+                      <li>
+                          <label>{% trans 'Name' %}</label>
+                          <input type="text" id="location" data-bind="value: location" maxlength="100" />
+                          <ul class="errorlist" data-bind="ifnot: location.valid">
+                                <li data-bind="text: location.error"></li>
+                          </ul>
+                      </li>
+                      <li class="italic_grey margin_bottom_5 instruction_text">
+                          {% trans "location_name_example" %}
+                      </li>
+                      <li class="form-row-10px">
+                          <div class="clearfix">
+                              <label for="id_location" style="float: left;">{% trans 'GPS Coordinates' %}</label>
+                              <a href="http://itouchmap.com/latlong.html" class="find_gps_{% trans "en" %}" target="_blank">{% trans "Find GPS coordinates" %}</a>
+                          </div>
+                          <input id="id_location" type="text" data-bind="value: geo_code" maxlength="30" />
+                          <ul class="errorlist" data-bind="ifnot: geo_code.valid">
+                                <li data-bind="text: geo_code.error"></li>
+                          </ul>
+                      </li>
+                      <li class="italic_grey margin_bottom_5 instruction_text">
+                          {% trans "location_coordinate_example" %}
+                      </li>
+                  </ul>
+              </li>
+              <li class="subject_field form-row-10px">
+                  <label>{% trans 'Unique ID' %}</label>
+                  <input type="text" data-bind="value: short_code, disable: shouldGenerateUniqueId" maxlength="12" />
+                  <ul class="errorlist" data-bind="ifnot: short_code.valid">
+                        <li data-bind="text: short_code.error"></li>
+                  </ul>
+                   <br class="clear"/>
+                   <label style="width: 165px;">&nbsp;</label>
+                   <span>
+                       <input type="checkbox" data-bind="checked: shouldGenerateUniqueId"/>{% trans "Let us generate an ID for you" %}
+                   </span>
+              </li>
+              <li class="button_block">
+                  <a id="cancel" class="cancel_link" >{% trans "Cancel" %}</a>
+                  <div style="display: none;"> {% include "warning_section.html" %} </div>
+                  <input type="button" data-bind="click: register" value="{% trans 'Register' %}" class="button margin_top_20" />
+              </li>
+          </ul>
+      </fieldset>
+    </form>
+</div>

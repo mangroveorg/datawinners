@@ -379,8 +379,13 @@ function handle_datasender_edit(table, selectedIds) {
         type: 'GET',
         url: '/entity/datasender/edit' + '/' + selectedIds[0].toLowerCase() + '/',
         success: function (response) {
-            $("#datasender-popup").html(response) ;
-            $("#datasender-popup").dialog('option','title',gettext('Edit Datasender')).dialog("open");
+            var dialog = $("#datasender-popup");
+            dialog.html(response) ;
+            dialog.dialog({
+                            'title':gettext('Edit Datasender'),
+                            'autoOpen': false
+                          });
+            dialog.dialog("open");
             new DW.InitializeEditDataSender().init();
         }
     });
@@ -392,11 +397,15 @@ function register_datasender(table) {
         url:  '/entity/datasender/register',
         data:{'project_id':project_id},
         success: function (response) {
-            $("#datasender-popup").html(response) ;
-            $("#datasender-popup").dialog('option','title',gettext('Register Datasender')).dialog("open");
-            device_actions();
-            reporter_id_generation_action();
-            new DW.InitializeEditDataSender().init();
+            var dialog = $("#datasender-popup");
+            dialog.html(response) ;
+            dialog.dialog({
+                            'title':gettext('Register Datasender'),
+                            'autoOpen': false
+                          });
+            $("#datasender_reg_popup_section").trigger("init-questionnaire");
+            dialog.dialog("open");
+//            new DW.InitializeEditDataSender().init();
         }
     });
 }

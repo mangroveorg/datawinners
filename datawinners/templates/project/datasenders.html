@@ -33,13 +33,14 @@
     {{ block.super }}
      <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="/media/javascript/common/location_auto_suggest_widget.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/datasender.js"></script>
     <script type="text/javascript">
         var sender_registration_form_preview_link = "{{ project_links.sender_registration_preview_link }}";
     </script>
+{#    Verify if still used#}
     <script type="text/javascript" src="/media/javascript/project/datasenders_registration_questionnaire_preview.js"></script>
+{#    end#}
 {% endblock %}
 {% block content %}
     <h2>{% trans "My Data Senders" %}</h2>
@@ -114,8 +115,8 @@
             {% endfor %}
         </ol>
     </div>
-    <div class="sender_registration_preview">
-        {% trans "Generating the questionnaire preview." %}
-    </div>
+{#    <div class="sender_registration_preview">#}
+{#        {% trans "Generating the questionnaire preview." %}#}
+{#    </div>#}
 
 {% endblock %}

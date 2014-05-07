@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, ugettext
 from datawinners.common.urlextension import append_query_strings_to_url
+from datawinners.entity.data_sender import DataSenderRegistrationValidator
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.datastore.queries import get_entity_count_for_type
@@ -823,6 +824,8 @@ def append_success_to_context(context, form):
 def create_data_sender_and_web_user(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
+    datasender_registration_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
+    form_fields = json.dumps(datasender_registration_form.fields, default=field_to_json)
     project_links = get_project_link(questionnaire)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
@@ -831,42 +834,43 @@ def create_data_sender_and_web_user(request, project_id):
     in_trial_mode = _in_trial_mode(request)
 
     if request.method == 'GET':
-        form = ReporterRegistrationForm(initial={'project_id': project_id})
         return render_to_response('project/register_datasender.html', {
             'project': questionnaire,
+            'form_fields': repr(form_fields),
             'project_links': project_links,
             'is_quota_reached': is_quota_reached(request),
-            'form': form,
             'in_trial_mode': in_trial_mode,
             'questionnaire_code': questionnaire.form_code,
-            'current_language': translation.get_language()
+            'current_language': translation.get_language(),
+            'register_datasender_url': reverse('create_data_sender_and_web_user', args=[questionnaire.id])
         }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
-        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
         reporter_id = None
+        errors, cleaned_data = DataSenderRegistrationValidator().validate(request.POST)
         try:
-            reporter_id, message = process_create_data_sender_form(manager, form, org_id)
+            reporter_id, message = process_create_data_sender_form(manager, org_id, cleaned_data, errors)
         except DataObjectAlreadyExists as e:
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
 
-        if not len(form.errors) and reporter_id:
+        if not len(errors) and reporter_id:
             project = questionnaire
             project.associate_data_sender_to_project(manager, reporter_id)
-            if form.requires_web_access():
+            if cleaned_data.get('devices', None) == 'web':
                 email_id = request.POST['email']
                 create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
                                        language_code=request.LANGUAGE_CODE)
+
             UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
                                   detail=json.dumps(dict({"Unique ID": reporter_id})), project=questionnaire.name)
-        if message is not None and reporter_id:
-            form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
-        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'success': reporter_id is not None}
-        return render_to_response('datasender_form.html',
-                                  context,
-                                  context_instance=RequestContext(request))
-
+        return HttpResponse(
+                    json.dumps(
+                        {
+                            "success": reporter_id is not None,
+                            "message": message,
+                            "errors": errors
+                        }), mimetype='application/json', content_type='application/json')
 
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode

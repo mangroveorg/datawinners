@@ -34,18 +34,19 @@
     <script type="text/javascript">
         var sender_registration_link = "{{ project_links.register_datasenders_link }}";
         var sender_registration_form_preview_link = "{{ project_links.sender_registration_preview_link }}";
-        var import_datasenders_link = "{% url registered_datasenders project.id %}"
+        var import_datasenders_link = "{% url registered_datasenders project.id %}";
+        var project_id = '{{ project.id }}';
+        var register_datasender_url = "{{ register_datasender_url }}";
     </script>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/common/location_auto_suggest_widget.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/datasender_import.js"></script>
-
-    <script type="text/javascript" src="/media/javascript/entity/definitions.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/datasender_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/datasender_modified_warning.js"></script>
     <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/datasenders_registration_questionnaire_preview.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/web_questionnaire.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/register_new_reporter_index.js"></script>
 {% endblock %}
 
 
@@ -77,13 +78,10 @@
 
     <div id="my_datasenders">
         <div id="add_data_sender_form">
-        {% include "datasender_form.html" %}
+        {% include "datasender_registration_form.html" %}
         </div>
     </div>
 
-    <div class="sender_registration_preview">
-        {% trans "Generating the questionnaire preview." %}
-    </div>
     <div id="popup-import" class="popup-import">
         {% include "import-datasenders.html" %}
     </div>

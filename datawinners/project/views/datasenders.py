@@ -4,6 +4,7 @@ from urllib import unquote
 import unicodedata
 
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -112,9 +113,9 @@ def registered_datasenders(request, project_id):
         return render_to_response('project/registered_datasenders.html',
                                   {'project': questionnaire,
                                    'project_links': project_links,
-                                   #'questionnaire_code': questionnaire.form_code,
                                    'current_language': translation.get_language(),
                                    'is_quota_reached': is_quota_reached(request),
+                                   'register_datasender_url': reverse('create_data_sender_and_web_user', args=[project_id]),
                                    'in_trial_mode': in_trial_mode,
                                    'user_dict': json.dumps(user_rep_id_name_dict)},
                                   context_instance=RequestContext(request))

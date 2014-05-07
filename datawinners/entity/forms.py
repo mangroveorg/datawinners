@@ -6,7 +6,7 @@ from django.forms import HiddenInput
 from django.forms.fields import RegexField, CharField, FileField, MultipleChoiceField, EmailField
 from django.forms.widgets import CheckboxSelectMultiple, TextInput
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext
 from django.forms.forms import Form
 
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
@@ -94,7 +94,7 @@ class ReporterRegistrationForm(Form):
                 self._errors['geo_code'] = self.error_class([msg])
 
     def _geo_code_validations(self, b):
-        msg = _(
+        msg = ugettext(
             "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315")
         geo_code_string = b.strip()
         geo_code_string = (' ').join(geo_code_string.split())

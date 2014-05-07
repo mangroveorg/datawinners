@@ -2,6 +2,7 @@ import json
 from sets import Set
 
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.utils import translation
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
@@ -44,6 +45,7 @@ class AllDataSendersView(TemplateView):
             "user_dict": json.dumps(user_rep_id_name_dict),
             "projects": projects,
             "project_count": len(projects),
+            "register_datasender_url": reverse("register_data_sender"),
             'current_language': translation.get_language(),
             'in_trial_mode': in_trial_mode
         })

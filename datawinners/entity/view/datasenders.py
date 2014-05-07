@@ -1,5 +1,6 @@
 import json
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils import translation
@@ -10,7 +11,7 @@ from datawinners.accountmanagement.decorators import valid_web_user
 from datawinners.accountmanagement.models import Organization
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SENDER, REGISTERED_DATA_SENDER
-from datawinners.entity.data_sender import get_datasender_user_detail
+from datawinners.entity.data_sender import get_datasender_user_detail, DataSenderRegistrationValidator
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.helper import _get_data, update_data_sender_from_trial_organization, process_create_data_sender_form
 from datawinners.entity.views import create_single_web_user
@@ -118,54 +119,52 @@ class EditDataSenderView(TemplateView):
         return super(EditDataSenderView, self).dispatch(*args, **kwargs)
 
 class RegisterDatasenderView(TemplateView):
-    template_name = "datasender_form.html"
+    template_name = "project/register_datasender_popup.html"
 
     def get(self, request,*args, **kwargs):
-        if request.GET.get('project_id'):
-            form = ReporterRegistrationForm(initial={'project_id': request.GET.get('project_id')})
-        else:
-            form = ReporterRegistrationForm()
+        #if request.GET.get('project_id'):
+
+            #form = ReporterRegistrationForm(initial={'project_id': request.GET.get('project_id')})
+        #else:
+        #    form = ReporterRegistrationForm()
         return self.render_to_response({
-                                           'form': form,
-                                           'current_language': translation.get_language(),
-                                           'registration_link':'/entity/datasender/register/',
+                                           'project_id': request.GET.get('project_id', ""),
+                                           'current_language': translation.get_language()
                                        })
 
     def post(self, request, *args, **kwargs):
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         dbm = get_database_manager(request.user)
         org_id = request.user.get_profile().org_id
-        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
+        #form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
+        errors, cleaned_data = DataSenderRegistrationValidator().validate(request.POST)
         try:
-            reporter_id, message = process_create_data_sender_form(dbm, form, org_id)
+            reporter_id, message = process_create_data_sender_form(dbm, org_id, cleaned_data, errors)
         except DataObjectAlreadyExists as e:
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
-        if len(form.errors) == 0 and form.requires_web_access() and reporter_id:
+        if len(errors) == 0 and cleaned_data.get('devices',None) == "web" and reporter_id:
             email_id = request.POST['email']
             create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
                                    language_code=request.LANGUAGE_CODE)
 
         if message is not None and reporter_id:
-            if form.cleaned_data['project_id'] != "":
-                questionnaire = Project.get(dbm, form.cleaned_data['project_id'])
+            if request.POST.get('project_id',None):
+                questionnaire = Project.get(dbm, request.POST['project_id'])
                 questionnaire.associate_data_sender_to_project(dbm, reporter_id)
                 questionnaire = questionnaire.name
             else:
                 questionnaire = ""
-            if not len(form.errors):
+            if not len(errors):
                 UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=questionnaire)
-            form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
-        return render_to_response('datasender_form.html',
-                                  {
-                                      'form': form,
-                                      'message': message,
-                                      'success': reporter_id is not None,
-                                      'project_inks': entity_links,
-                                      'current_language': translation.get_language(),
-                                     'registration_link':'/entity/datasender/register/',
-                                  },
-                                  context_instance=RequestContext(request))
+            #form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
+        return HttpResponse(
+                    json.dumps(
+                        {
+                            "success": reporter_id is not None,
+                            "message": message,
+                            "errors": errors
+                        }), mimetype='application/json', content_type='application/json')
 
 
     @method_decorator(valid_web_user)

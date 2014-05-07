@@ -135,7 +135,7 @@ def get_country_appended_location(location_hierarchy, country):
     else:
         return ','.join(location_hierarchy_split) + ',' + country
 
-def _get_data(form_data, country,reporter_id=None):
+def _get_data(form_data, country, reporter_id=None):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form model
     mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
               'location': LOCATION_TYPE_FIELD_CODE, 'short_code':SHORT_CODE_FIELD, "email": EMAIL_FIELD}
@@ -162,18 +162,18 @@ def update_data_sender_from_trial_organization(old_telephone_number,new_telephon
     data_sender.delete()
     _add_data_sender_to_trial_organization(new_telephone_number,org_id=org_id)
 
-def process_create_data_sender_form(dbm, form, org_id):
+def process_create_data_sender_form(dbm, org_id, cleaned_data, errors):
     message = None
     data_sender_id = None
 
-    if form.is_valid():
+    if len(errors) == 0:
         try:
             organization = Organization.objects.get(org_id=org_id)
             if organization.in_trial_mode:
-                _add_data_sender_to_trial_organization(form.cleaned_data["telephone_number"], org_id)
+                _add_data_sender_to_trial_organization(cleaned_data["telephone_number"], org_id)
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
-            reporter_id = form.cleaned_data["short_code"].lower() if form.cleaned_data != "" else None
-            request = Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
+            reporter_id = cleaned_data["short_code"].lower() if cleaned_data["short_code"] != "" else None
+            request = Request(message=_get_data(cleaned_data, organization.country_name(), reporter_id),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'))
 
             response = web_player.accept(request, logger=websubmission_logger)
@@ -181,7 +181,8 @@ def process_create_data_sender_form(dbm, form, org_id):
                 data_sender_id = response.short_code
                 message = get_success_msg_for_registration_using(response, "web")
             else:
-                form.update_errors(response.errors)
+                if 'm' in response.errors:
+                    errors['telephone_number'] = _(u'Sorry, the telephone number %s has already been registered.') % cleaned_data.get('telephone_number')
 
         except DataObjectAlreadyExists as e:
             message = _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1],)
