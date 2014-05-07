@@ -227,7 +227,6 @@ div.margin_top_20 input {
   position: absolute;
   margin-top: 37px;
   z-index: 1002;
-  top: 186px;
   left: 0px;
   box-shadow: 3px 3px 5px gray, -3px 3px 5px gray;
   background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f2f2f2));
@@ -286,7 +285,7 @@ div.margin_top_20 input {
       z-index: 1003;
       background-color: white;
       border: 1px solid #CCC;
-      box-shadow: 3px 0 5px -3px #cccccc;
+      box-shadow: 3px 0 5px -3px #CCC;
       border-bottom: none;
       height: 33px; }
       #container_content .questionnaire_form_header .preview-navigation .shadow-background a {
