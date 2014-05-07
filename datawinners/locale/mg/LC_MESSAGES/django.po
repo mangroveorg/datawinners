@@ -596,8 +596,8 @@ msgstr "Actions :"
 msgid "Add to project"
 msgstr "Relier à un projet"
 
-msgid "Remove from questionnaire"
-msgstr "Retirer d'un questionnaire"
+msgid "Remove from Questionnaire"
+msgstr "Retirer d'un Questionnaire"
 
 msgid "Give Web Submission Access"
 msgstr "Autoriser l'accès à l'envoi web"
