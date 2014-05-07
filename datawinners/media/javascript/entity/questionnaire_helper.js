@@ -136,7 +136,7 @@ DW.question.prototype = {
         }, this);
 
         this.answerType.subscribe(function (selected_answer_type) {
-            if (selected_answer_type === "") return;
+            if (selected_answer_type === "" || this.isEntityQuestion()) return;
             _clearErrors();
             DW.change_question_type_for_selected_question(selected_answer_type);
         }, this);
