@@ -904,36 +904,6 @@ fieldset {
   width: 840px !important;
   border: none !important; }
 
-#learn_more_image {
-  overflow: hidden;
-  border: none !important;
-  width: 840px !important;
-  margin-left: -17px !important;
-  height: 505px; }
-
-#icon {
-  background: url(/media/images/accordion_arrows.png) no-repeat left -29px !important; }
-
-.learn_more_header {
-  color: #4682b4 !important;
-  font-size: 15px !important;
-  cursor: pointer;
-  padding-left: 15px;
-  padding-top: 3px;
-  margin-top: 6px;
-  margin-bottom: 13px;
-  margin-left: 5px;
-  border: none !important; }
-
-.border {
-  margin-left: 5px;
-  margin-right: 5px;
-  padding: 5px; }
-
-.learn_more_text {
-  padding-top: 10px;
-  padding-bottom: 10px; }
-
 .uniqueIdTypeSection .unique_id_learn_more {
   margin: 0 0 20px 0; }
 .uniqueIdTypeSection .idTypeDropdown {

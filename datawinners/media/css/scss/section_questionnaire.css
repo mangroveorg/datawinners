@@ -393,3 +393,37 @@ div.margin_top_20 input {
 
 #message-label {
   width: 789px; }
+
+#unique_id_learn_more_form #learn_more_image {
+  overflow: hidden;
+  border: none !important;
+  width: 840px !important;
+  margin-left: -17px !important;
+  height: 505px; }
+#unique_id_learn_more_form .learn_more_accordion {
+  padding-bottom: 20px; }
+  #unique_id_learn_more_form .learn_more_accordion .learn_more_header_text {
+    color: #4682b4; }
+  #unique_id_learn_more_form .learn_more_accordion .learn_more_header {
+    border-bottom: 1px solid #CCCCCC !important;
+    padding: 10px;
+    margin-top: 0px; }
+    #unique_id_learn_more_form .learn_more_accordion .learn_more_header .learn_more_header_text {
+      font-weight: normal;
+      background: url(/media/images/accordion_arrows.png) no-repeat left -34px;
+      padding-left: 15px; }
+  #unique_id_learn_more_form .learn_more_accordion .learn_more_header.ui-state-active {
+    background: #525252 !important;
+    border: 0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;
+    background: -moz-linear-gradient(top, #525252, #262626) !important; }
+    #unique_id_learn_more_form .learn_more_accordion .learn_more_header.ui-state-active .learn_more_header_text {
+      color: #FFFFFF;
+      background: url(/media/images/accordion_arrows.png) no-repeat left 5px;
+      padding-left: 15px; }
+  #unique_id_learn_more_form .learn_more_accordion > .ui-accordion-content {
+    border: 0;
+    border-bottom: 1px solid #000000; }
+#unique_id_learn_more_form .learn_more_text {
+  padding-top: 10px;
+  padding-bottom: 10px; }

@@ -1,37 +1,68 @@
-.dropdown_style{
-    //border: 0px !important;  /* Removes border */
-    -webkit-appearance: none;  /*Removes default chrome and safari style*/
-    -moz-appearance: none;  /*Removes default style Firefox*/
-    text-indent: 0.01px;
-    text-overflow: "";
-    width: 190px;
-    height: 23px;
-    background: url('/media/images/arrow_dd.png') no-repeat scroll right -3px;
+.dropdown_style {
+  //border: 0px !important;  /* Removes border */
+  -webkit-appearance: none; /*Removes default chrome and safari style*/
+  -moz-appearance: none; /*Removes default style Firefox*/
+  text-indent: 0.01px;
+  text-overflow: "";
+  width: 190px;
+  height: 23px;
+  background: url('/media/images/arrow_dd.png') no-repeat scroll right -3px;
   //background-position: 167px -3px;
-    font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
-    font-size: 11px !important;
+  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
+  font-size: 11px !important;
   margin-left: 0px;
   padding: 2px;
-    option{
-      margin: 3px;
-    }
+  option {
+    margin: 3px;
+  }
 }
 
-.advanced_type{
+@mixin dw_accordion($header_div, $header_text) {
+// Common accordion style. Takes header class name and header text class name as params.
+  .#{$header_div} {
+    border-bottom: 1px solid #CCCCCC !important;
+    padding: 10px;
+    margin-top: 0px;
+    .#{$header_text} {
+      font-weight: normal;
+      background: url(/media/images/accordion_arrows.png) no-repeat left -34px;
+      padding-left: 15px;
+    }
+  }
+  .#{$header_div}.ui-state-active {
+    background: #525252 !important;
+    border: 0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important; //for webkit browsers
+    background: -moz-linear-gradient(top, #525252, #262626) !important; //for firefox 3.6+
+    .#{$header_text} {
+      color: #FFFFFF;
+      background: url(/media/images/accordion_arrows.png) no-repeat left 5px;
+      padding-left: 15px;
+    }
+  }
+  > .ui-accordion-content {
+    border: 0;
+    border-bottom: 1px solid #000000;
+  }
+}
+
+.advanced_type {
   font-size: 10px;
   margin-top: 0px !important;
 }
 
-.blank_space_answer_type{
+.blank_space_answer_type {
   margin: 0px !important;
 }
+
 #max_length {
   width: 40px;
   float: none;
   margin-left: 20px;
 }
-div.margin_top_20 input{
-  height:auto !important;
+
+div.margin_top_20 input {
+  height: auto !important;
 }
 
 #range_min {
@@ -57,6 +88,7 @@ div.margin_top_20 input{
   padding: 3px;
   font-size: 15px;
 }
+
 #question-detail-panel .mobile {
   background: url("/media/images/mobile2.jpg") no-repeat left top;
   height: 300px;
@@ -108,7 +140,7 @@ div.margin_top_20 input{
           width: 140px;
         }
       }
-      #select{
+      #select {
         @extend .dropdown_style
       }
     }
@@ -231,7 +263,7 @@ div.margin_top_20 input{
           background: #d8e4ec url("/media/images/question_hover_bg.gif") repeat-x bottom left;
           position: relative;
         }
-        &:hover .action_bar{
+        &:hover .action_bar {
           visibility: visible;
         }
         span.selected_question_arrow {
@@ -268,8 +300,8 @@ div.margin_top_20 input{
 
 #questionnaire-code {
   float: none;
-  width:4em;
-  padding:3px;
+  width: 4em;
+  padding: 3px;
 }
 
 .questionnaire_code {
@@ -432,8 +464,8 @@ div.margin_top_20 input{
   float: right;
 }
 
-.visible{
-   visibility: visible !important;
+.visible {
+  visibility: visible !important;
 
 }
 
@@ -444,39 +476,14 @@ div.margin_top_20 input{
 #questionnaire_types {
   padding-bottom: 20px;
   padding-top: 20px;
-  .questionnaire_type_header {
-    border-bottom: 1px solid #CCCCCC !important;
-    padding: 10px;
-    margin-top: 0px;
-    .header {
-      font-weight: normal;
-      background: url(/media/images/accordion_arrows.png) no-repeat left -34px;
-      padding-left: 15px;
-    }
-  }
-  .questionnaire_type_header.ui-state-active {
-    background: #525252 !important;
-    border: 0;
-    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important; //for webkit browsers
-    background: -moz-linear-gradient(top, #525252, #262626) !important; //for firefox 3.6+
-    .header {
-      color: #FFFFFF;
-      background: url(/media/images/accordion_arrows.png) no-repeat left 5px;
-      padding-left: 15px;
-    }
-  }
-  >.ui-accordion-content {
-    border: 0;
-    border-bottom: 1px solid #000000;
-  }
+  @include dw_accordion('questionnaire_type_header', 'header')
 }
 
 .project_name_div {
   padding-top: 10px;
 }
 
-
-.questionnare_content #question-detail-panel .dropdown select{
+.questionnare_content #question-detail-panel .dropdown select {
   @extend .dropdown_style;
 }
 
@@ -493,16 +500,16 @@ div.margin_top_20 input{
   background: url(/media/images/dw_select_question_arrow.png) no-repeat bottom left;
 }
 
-.validationMessage{
+.validationMessage {
   background: url(/media/images/arrow_error.png) no-repeat;
-  background-position:  left 3px;
+  background-position: left 3px;
   display: inline;
 }
 
-.choiceValidationMessage{
+.choiceValidationMessage {
   @extend .validationMessage;
   background-position: left 6px !important;
-  display:inline-block;
+  display: inline-block;
 }
 
 .validationText {
@@ -519,11 +526,36 @@ div.margin_top_20 input{
   font-weight: normal;
   max-width: 300px;
 }
-#question_form{
+
+#question_form {
   select#project_language {
     @extend .dropdown_style;
   }
 }
-#message-label{
-  width:789px;
+
+#message-label {
+  width: 789px;
+}
+
+#unique_id_learn_more_form {
+  #learn_more_image {
+    overflow: hidden;
+    border: none !important;
+    width: 840px !important;
+    margin-left: -17px !important;
+    height: 505px;
+  }
+  .learn_more_accordion {
+    padding-bottom: 20px;
+    .learn_more_header_text{
+        color: #4682b4;
+    }
+    @include dw_accordion('learn_more_header', 'learn_more_header_text')
+  }
+
+  .learn_more_text {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
 }

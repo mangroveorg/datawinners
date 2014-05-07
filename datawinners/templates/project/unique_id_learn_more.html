@@ -2,34 +2,37 @@
 
 <div id="unique_id_learn_more_form" class="none">
     <div class="learn_more_text">
-        {% trans "Use Identification Numbers to improve the accuracy of your data (rather than names, since names can be misspelled)."%}
+        {% trans "Use Identification Numbers to improve the accuracy of your data (rather than names, since names can be misspelled)." %}
     </div>
-    <hr class="border">
-    <ul class="learn_more_accordion">
-                <li>
-                    <div id="icon"  class="learn_more_header">{% trans "Step 1. Finish your Questionnaire,then register Identification Numbers" %}</div>
-                    <div id="learn_more_image">
-                        {% trans "Finish your questionnaire, then register each person, place or thing you want to collect data about with its own Identification Number (example: register your primary schools)." %}
-                        <img src="/media/images/Step_1_Webform_{{ active_language }}.jpg"/>
-                    </div>
-                    <hr class="border">
-                </li>
-                <li>
-                    <div id="icon"  class="learn_more_header">{% trans "Step 2. Ask your Data Senders to use the Identification Numbers" %}</div>
-                    <div id="learn_more_image">
-                        <img src="/media/images/Step_2_Questionnaire_{{ active_language }}.jpg"/>
-                    </div>
-                    <hr class="border">
-                </li>
-                <li>
-                    <div id="icon"  class="learn_more_header">{% trans "Step 3. See how accurate your data is with Identification Numbers" %}</div>
-                       <div class="analysis_image">
-                           {% trans "Data Senders must use Identification Numbers that are already registered in Datawinners." %}
-                           <img src="/media/images/Step_3_Analysis_{{ active_language }}.jpg"/>
-                    </div>
-                    <hr class="border">
-                </li>
-    </ul>
+    <hr>
+    <div class="learn_more_accordion">
+
+        <div class="learn_more_header">
+            <div class="learn_more_header_text">{% trans "Step 1. Finish your Questionnaire,then register Identification Numbers" %}</div>
+        </div>
+        <div id="learn_more_image">
+            {% trans "Finish your questionnaire, then register each person, place or thing you want to collect data about with its own Identification Number (example: register your primary schools)." %}
+            <img src="/media/images/Step_1_Webform_{{ active_language }}.jpg"/>
+        </div>
+
+
+        <div class="learn_more_header">
+            <div class="learn_more_header_text">{% trans "Step 2. Ask your Data Senders to use the Identification Numbers" %}</div>
+        </div>
+        <div id="learn_more_image">
+            <img src="/media/images/Step_2_Questionnaire_{{ active_language }}.jpg"/>
+        </div>
+
+
+        <div class="learn_more_header">
+            <div class="learn_more_header_text">{% trans "Step 3. See how accurate your data is with Identification Numbers" %}</div>
+        </div>
+        <div class="analysis_image">
+            {% trans "Data Senders must use Identification Numbers that are already registered in Datawinners." %}
+            <img src="/media/images/Step_3_Analysis_{{ active_language }}.jpg"/>
+        </div>
+
+    </div>
     <div class="gotitbutton">
         <a class="button yes_button" id="close_unique_id_learn_more_section">{% trans "OK, Got it" %}</a>
     </div>
