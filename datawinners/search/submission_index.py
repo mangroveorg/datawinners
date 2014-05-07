@@ -240,7 +240,7 @@ def lookup_entity_name(dbm, id, entity_type):
             return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
     except DataObjectNotFound:
         pass
-    return UNKNOWN
+    return " "
 
 #TODO:This is required only for the migration for creating submission indexes.To be removed following release10
 def _update_select_field_by_revision(field, form_model, submission_doc):
