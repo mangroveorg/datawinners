@@ -2783,10 +2783,10 @@ msgstr ""
 msgid "Zimbabwe"
 msgstr ""
 
-msgid "You have not registered a %(subject)s yet."
+msgid "You have not registered a %(entity_type)s yet."
 msgstr ""
 
-msgid "Register a %(subject)s"
+msgid "Register a %(entity_type)s"
 msgstr ""
 
 msgid "ID is:"

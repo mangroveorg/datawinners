@@ -3686,11 +3686,11 @@ msgstr "Zambie"
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-msgid "You have not registered a %(subject)s yet."
-msgstr "Vous n’avez pas encore enregistré un(e) %(subject)s."
+msgid "You have not registered a %(entity_type)s yet."
+msgstr "Vous n’avez pas encore enregistré un(e) %(entity_type)s."
 
-msgid "Register a %(subject)s"
-msgstr "Enregistrez un(e) %(subject)s"
+msgid "Register a %(entity_type)s"
+msgstr "Enregistrez un(e) %(entity_type)s"
 
 msgid "Your Data Senders’ successful submissions will appear here."
 msgstr "Les soumissions réussies de vos Expéditeurs de Données seront affichées ici."

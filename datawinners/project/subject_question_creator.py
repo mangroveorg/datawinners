@@ -43,6 +43,7 @@ class SubjectQuestionFieldCreator(object):
         # instruction_for_subject_field = translate(
         #     "Choose a %(entity_type)s from this list." % {'entity_type': unique_id_type}, func=ugettext,
         #     language=language) if all_subject_choices else ''
-        instruction_for_subject_field = _("Choose a %(entity_type)s from this list.") % {'entity_type':unique_id_type}
+        instruction_for_subject_field = _("Choose a %(entity_type)s from this list.") % {
+        'entity_type': unique_id_type} if all_subject_choices else ''
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
 
