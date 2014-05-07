@@ -32,17 +32,21 @@ $(document).ready(function() {
         $('#registration_form').submit();
     });
     
-    $("#content_of_terms_and_conditions").load($("#link-terms-and-conditions").attr("href")+" #container_main_content");
+    $("#content_of_terms_and_conditions div.content").load($("#link-terms-and-conditions").attr("href")+" #container_main_content");
 
      $("#content_of_terms_and_conditions").dialog({
         autoOpen: false,
         modal: true,
         title: gettext('Terms And Conditions'),
         zIndex:200,
-        width: 1000,
+        width: 990,
         beforeClose: function() {
             $('#web_user_error').hide();
         }
+    });
+
+    $("#terms_ok").click(function(){
+        $("#content_of_terms_and_conditions").dialog("close");
     });
 
     $("#link-terms-and-conditions").bind("click", function(){

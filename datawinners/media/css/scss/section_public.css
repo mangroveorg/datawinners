@@ -811,3 +811,13 @@ ol .lower_i {
           margin: 0; }
           .carousel_title .pagin ul li a:hover, .carousel_title .pagin ul li a.on {
             margin-top: -16px; }
+
+#content_of_terms_and_conditions div.content {
+  width: 975px;
+  height: 500px;
+  overflow-y: scroll;
+  border-bottom: 1px solid #696969; }
+  #content_of_terms_and_conditions div.content #main_content {
+    width: 860px;
+    float: none;
+    border: 0px none; }

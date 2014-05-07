@@ -1026,3 +1026,17 @@ ol{
         }
     }
 }
+
+#content_of_terms_and_conditions{
+  div.content{
+    width: 975px;
+    height: 500px;
+    overflow-y: scroll;
+    border-bottom: 1px solid #696969;
+    #main_content{
+      width: 860px;
+      float: none;
+      border: 0px none;
+    }
+  }
+}
