@@ -105,7 +105,7 @@ class SubmissionSearchStore():
         self.es.put_mapping(self.dbm.database_name, self.latest_form_model.id, self.get_mappings())
         from datawinners.search.submission_index_task import async_populate_submission_index
 
-        async_populate_submission_index(self.dbm.database_name, self.latest_form_model.form_code)
+        async_populate_submission_index.delay(self.dbm.database_name, self.latest_form_model.form_code)
 
     def _add_text_field_mapping_for_submission(self, mapping_fields, field_def):
         name = field_def["name"]
