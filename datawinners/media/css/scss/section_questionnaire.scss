@@ -390,9 +390,14 @@ div.margin_top_20 input {
         float: left;
         margin-right: 3px;
         border: 1px solid white;
-      }
-      div:hover {
+        height: 33px;
         cursor: pointer;
+        &:hover{
+          background-color: #F0F0F0;
+        }
+        &.shadow-background{
+          background-color: #ffffff;
+        }
       }
       a {
         text-decoration: none;
@@ -419,13 +424,8 @@ div.margin_top_20 input {
         height: 33px;
         a {
           color: black;
+          cursor: pointer;
         }
-        a:hover {
-          cursor: auto;
-        }
-      }
-      .shadow-background:hover {
-        cursor: auto;
       }
     }
 

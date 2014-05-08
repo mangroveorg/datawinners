@@ -6,7 +6,7 @@ DW.instruction_and_preview = function (preview_url, preview_navigation_item) {
 DW.instruction_and_preview.prototype = {
     bind_preview_navigation_item: function () {
         var that = this;
-        $(this.preview_navigation_item).live('click', function () {
+        $(this.preview_navigation_item).click(function () {
             DW.instruction_and_preview.remove_sms_questionnaire_print();
             if ($("#questionnaire_preview_instruction").css("display") == "none") {
                 if(!(questionnaireViewModel.validateQuestionnaireDetails() && questionnaireViewModel.validateSelectedQuestion()))
@@ -20,14 +20,16 @@ DW.instruction_and_preview.prototype = {
 
     load_preview_content: function () {
         var post_data = this.get_post_data();
-
         var that = this;
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
+        $(".shadow-background").removeClass("shadow-background");
+        $(that.preview_navigation_item).addClass("shadow-background");
+
         $.post(this.preview_url, post_data, function (response_data) {
             $("#questionnaire_content").html(response_data);
             $("#questionnaire_preview_instruction").show();
-            $(".shadow-background").removeClass("shadow-background");
-            $(that.preview_navigation_item).addClass("shadow-background");
             that.post_callback();
+            $.unblockUI();
         }, 'html');
     },
 
