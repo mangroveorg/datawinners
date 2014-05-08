@@ -1790,8 +1790,8 @@ msgstr "Tsy misy ny kaodin'ny lisitry ny fanontaniana %s"
 msgid "This %s is not yet registered in the system. Please check the %s's unique ID number and resubmit."
 msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny kaody ID ho an'i %s ary avereno alefa ny SMS-nao"
 
-msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Diso. Ny %s %s dia mbola tsy tafiditra. Amarino ary avereno alefa ny SMS iray manontolo na antsoy ny mpikarakara ny fanadihadiana"
+msgid "Error. %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Diso. Ny %s dia mbola tsy tafiditra. Amarino ny Numero d'Itentification ary avereno alefa ny SMS iray manontolo na antsoy ny mpikarakara ny fanadihadiana"
 
 msgid "This telephone number is not registered in our system."
 msgstr "Tsy mbola tafiditra ao anatin'ny lisitra io nomerao telefaoninao io."

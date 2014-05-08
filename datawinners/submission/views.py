@@ -152,7 +152,8 @@ def check_account_and_datasender(incoming_request):
     try:
         reporter_entity = find_reporter_entity(incoming_request.get('dbm'), incoming_request.get('transport_info').source)
         incoming_request['reporter_entity'] = reporter_entity
-        check_quotas_for_trial(incoming_request)
+        if organization.in_trial_mode:
+            check_quotas_for_trial(incoming_request)
     except Exception as e:
         incoming_request['exception'] = e
 
@@ -202,8 +203,8 @@ def submit_to_player(incoming_request):
         if organization.in_trial_mode:
             post_sms_parser_processors.append(PostSMSProcessorCheckLimits(dbm, incoming_request))
 
-        post_sms_parser_processors.extend([PostSMSProcessorCheckDSIsLinkedToProject(dbm, incoming_request),
-                                            PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request)])
+        post_sms_parser_processors.extend([PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request),
+                                           PostSMSProcessorCheckDSIsLinkedToProject(dbm, incoming_request)])
         
         sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy),
             post_sms_parser_processors=post_sms_parser_processors, feeds_dbm=incoming_request['feeds_dbm'])
@@ -211,8 +212,10 @@ def submit_to_player(incoming_request):
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
 
-        if response.is_registration and not sent_via_sms_test_questionnaire:
-            organization.increment_message_count_for(sms_registration_count=1)
+        if response.is_registration:
+            incoming_request['is_registration'] = True
+            if not sent_via_sms_test_questionnaire:
+                organization.increment_message_count_for(sms_registration_count=1)
 
         if not response.is_registration:
             if sent_via_sms_test_questionnaire:

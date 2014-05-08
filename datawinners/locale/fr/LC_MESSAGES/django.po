@@ -1969,8 +1969,8 @@ msgid "This %s is not yet registered in the system. Please check the %s’s uniq
 msgstr "Ce/cette %s n'est pas enregistré(e) dans notre système. Vérifiez le numéro ID unique de %s et envoyez "
 "de nouveau le SMS"
 
-msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Erreur. %s %s n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez le SMS en entier ou contactez votre superviseur."
+msgid "Error. %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Erreur. %s n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez le SMS en entier ou contactez votre superviseur."
 
 msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
@@ -2430,7 +2430,7 @@ msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou v
 "<br/>Si certains de vos Expéditeurs de Données ont (ou auront) accès à Internet, nous vous recommandons de laisser la case 'WEB' cochée."
 
 msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez le SMS complet."
+msgstr "Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
 msgid "Privacy Policy"
 msgstr "Politique de Confidentialité"

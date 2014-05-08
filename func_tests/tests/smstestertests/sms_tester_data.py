@@ -122,7 +122,7 @@ UNREGISTER_ENTITY_ID = {SENDER: "123445567",
 UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA = {SENDER: "1234567890",
                                               RECEIVER: "919880734937",
                                               SMS: "cli002 cid0090 Mr.Dessy 20 17.12.2011 b ade 27.178057,-78.007789 a",
-                                              ERROR_MSG: "Error. Clinic cid0090 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."}
+                                              ERROR_MSG: "Error. cid0090 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."}
 
 UNAUTHORIZED_DATASENDER = { SENDER: "2619876",
                             RECEIVER: "919880734937",

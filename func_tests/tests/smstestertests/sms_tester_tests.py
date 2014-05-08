@@ -73,11 +73,11 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(send_sms_with(UNAUTHORIZED_DATASENDER),
                          fetch_(ERROR_MSG, from_(UNAUTHORIZED_DATASENDER)))
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_check_with_right_order(self):
         test_data = MULTIPLE_WRONG_DATA.copy()
         self.assertEqual(send_sms_with(test_data),
-                         "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")
+                         "Error. You are not registered as a Data Sender. Please contact your supervisor.")
 
         test_data.update({SENDER: "2619876"})
         self.assertEqual(send_sms_with(test_data),
@@ -95,7 +95,7 @@ class TestSMSTester(HeadlessRunnerTest):
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("extradata", "")})
         self.assertEqual(send_sms_with(test_data),
-                         "Error. clinic cid00x5 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")
+                         "Error. cid00x5 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("CID00X5", "CID005")})

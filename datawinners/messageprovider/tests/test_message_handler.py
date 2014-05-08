@@ -65,17 +65,17 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         test_data_list = [{"expected_reply": [("en", u"Error. Incorrect answer for question 1. Please review printed Questionnaire and resend entire SMS."),
                                               ("fr", u"Erreur. Reponse incorrecte pour la question 1. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."),
                                               ("mg", u"Diso. Valiny diso hoan'ny fanontaniana faha-1. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."),
-                                              ("pt", u"Erro. Resposta incorrecta para a pergunta question 1. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
+                                              ("pt", u"Erro. Resposta incorrecta para a pergunta 1. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
                            "errors":{"N": "Some error"}},
                           {"expected_reply": [("en", u"Error. Incorrect answer for question 1 and 2. Please review printed Questionnaire and resend entire SMS."),
                                               ("fr", u"Erreur. Reponse incorrecte pour les questions 1 et 2. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."),
                                               ("mg", u"Diso. Valiny diso hoan'ny fanontaniana faha-1 sy faha-2. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."),
-                                              ("pt", u"Erro. Resposta incorrecta para a pergunta question 1 and 2. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
+                                              ("pt", u"Erro. Resposta incorrecta para a pergunta 1 e 2. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
                            "errors":{"FA": "Some error", "n": "Some other error"}},
                           {"expected_reply": [("en", u"Error. Incorrect answer for question 1, 2 and 3. Please review printed Questionnaire and resend entire SMS."),
                                               ("fr", u"Erreur. Reponse incorrecte pour les questions 1, 2 et 3. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."),
                                               ("mg", u"Diso. Valiny diso hoan'ny fanontaniana faha-1 sy faha-2 ary faha-3. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."),
-                                              ("pt", u"Erro. Resposta incorrecta para a pergunta question 1. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
+                                              ("pt", u"Erro. Resposta incorrecta para a pergunta 1, 2 e 3. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
                            "errors": {"Fa": "Some error", "n": "Some other error", "pl":"Sp"}}]
 
         response = Mock()

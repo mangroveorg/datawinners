@@ -1903,7 +1903,7 @@ msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
 msgstr ""
 
-msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgid "Error. %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
 msgstr ""
 
 msgid "This telephone number is not registered in our system."
@@ -4534,7 +4534,7 @@ msgid "Data Senders must use Identification Numbers that are already registered 
 msgstr ""
 
 msgid "more_wrong_question"
-msgstr "etc"
+msgstr "other questions"
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
 msgstr ""
