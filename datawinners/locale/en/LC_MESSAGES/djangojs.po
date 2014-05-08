@@ -120,6 +120,10 @@ msgstr ""
 msgid "Data Sender"
 msgstr ""
 
+msgctxt "datasender short"
+msgid "Data Senders"
+msgstr ""
+
 #: media/javascript/data_modified_warning.js:53
 msgid "You Have Unsaved Changes"
 msgstr ""

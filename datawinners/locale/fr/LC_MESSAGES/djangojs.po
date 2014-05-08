@@ -1160,6 +1160,10 @@ msgstr "La réponse doit être un Numéro d'Identification."
 msgid "Data Senders"
 msgstr "Expéditeurs de Données"
 
+msgctxt "datasender short"
+msgid "Data Senders"
+msgstr "Expéditeurs"
+
 msgid "Saving..."
 msgstr "En cours..."
 
