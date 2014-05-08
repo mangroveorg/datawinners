@@ -12,7 +12,7 @@ def form_model_change_handler(form_model_doc, dbm, old_form_model_doc=None):
     if form_model.form_code != 'delete':
         create_submission_mapping(dbm, form_model, old_form_model)
 
-def entity_form_model_change_handler(entity_form_model_doc,dbm):
+def entity_form_model_change_handler(entity_form_model_doc,dbm, old_form_model=None):
     entity_form_model = EntityFormModel.new_from_doc(dbm,entity_form_model_doc)
     if entity_form_model.form_code == REGISTRATION_FORM_CODE:
         create_ds_mapping(dbm, entity_form_model)
