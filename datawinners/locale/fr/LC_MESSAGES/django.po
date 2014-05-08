@@ -2421,8 +2421,8 @@ msgstr "Facturation"
 msgid "Set Reminders"
 msgstr "Définir des rappels"
 
-msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your questionnaire"
-msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les expéditeurs de données associés à votre questionnaire"
+msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your questionnaire"
+msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les Expéditeurs de Données associés à votre questionnaire"
 
 msgid "tooltip_devices"
 msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou via Internet. "

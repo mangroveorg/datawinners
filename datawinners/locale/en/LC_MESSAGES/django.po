@@ -2330,7 +2330,7 @@ msgstr ""
 msgid "Set Reminders"
 msgstr ""
 
-msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your questionnaire"
+msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your questionnaire"
 msgstr ""
 
 msgid "tooltip_devices"
