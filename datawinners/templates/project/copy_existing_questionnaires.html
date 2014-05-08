@@ -6,11 +6,11 @@
         <img src="/media/images/ajax-loader-horizontal-bar.gif"/>
     </div>
     <div data-bind="visible: existingQuestionnaires() && existingQuestionnaires().length==0">
-        <p>{% trans "You haven't created any Questionnaires yet." %}</p>
+        <p class="create_questionnaire_help">{% trans "You haven't created any Questionnaires yet." %}</p>
     </div>
     <div data-bind="fadeVisible: existingQuestionnaires() && existingQuestionnaires().length">
 
-        <h6 class="instruction-header">{% trans 'Choose an existing Questionnaire and edit it to fit your needs.' %}</h6>
+        <h6 class="instruction-header create_questionnaire_help">{% trans 'Choose an existing Questionnaire and edit it to fit your needs.' %}</h6>
 
         <div id="existing_questionnaires" class="questionnaire_selection">
             <!-- ko if: existingQuestionnaires -->  <!-- Making use of KO virtual element -->
