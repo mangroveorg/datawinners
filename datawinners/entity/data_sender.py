@@ -56,7 +56,17 @@ email_re = re.compile(
 
 class DataSenderRegistrationValidator(object):
 
-    def validate(self, values_dict):
+    def validateForDataSenderEdit(self, values_dict):
+        errors = {}
+        cleaned_data = {}
+
+        self._validate_name(cleaned_data, errors, values_dict)
+        self._validate_telephone_number(cleaned_data, errors, values_dict)
+        self._validate_location(cleaned_data, errors, values_dict)
+
+        return errors, cleaned_data
+
+    def validateForDataSenderRegister(self, values_dict):
         errors = {}
         cleaned_data = {}
 

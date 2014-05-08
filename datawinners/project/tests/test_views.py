@@ -12,7 +12,6 @@ from mangrove.transport import Response
 
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField, DateField, UniqueIdField
-from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
 from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context_from_project_data
@@ -137,22 +136,6 @@ class TestProjectViews(unittest.TestCase):
             self.assertEqual(links["sms_preview"], "/project/questionnaire_sms_preview")
             self.assertEqual(links["web_preview"], "/project/questionnaire_web_preview")
             self.assertEqual(links["smart_phone_preview"], "/project/smart_phone_preview")
-
-
-    def test_should_append_success_status_to_context_when_no_error(self):
-        context = {}
-        form = Mock(spec=ReporterRegistrationForm)
-        form.errors = []
-        new_context = append_success_to_context(context, form)
-        self.assertTrue(new_context['success'])
-
-
-    def test_should_append_failed_status_to_context_when_has_error(self):
-        context = {}
-        form = Mock(spec=ReporterRegistrationForm)
-        form.errors = ['']
-        new_context = append_success_to_context(context, form)
-        self.assertFalse(new_context['success'])
 
 
     def test_should_return_max_code_in_questionnaire(self):

@@ -9,6 +9,42 @@ DW.DataSenderQuestionnaire = function(){
     self.geo_code = DW.ko.createValidatableObservable();
     self.short_code = DW.ko.createValidatableObservable();
     self.shouldGenerateUniqueId = DW.ko.createValidatableObservable({value: true});
+    self.showCancelLink = ko.observable(false);
+
+    var _hasChanged = false;
+    var dialog;
+
+    var _closeDialog = function(){
+        $("#datasender-popup").dialog('close');
+    }
+
+    var _initializeCancelDialog = function () {
+        var dialogSection = $("#cancel_submission_warning_message");
+        dialog = dialogSection.dialog({
+            title:gettext("You Have Unsaved Changes"),
+            modal:true,
+            autoOpen:false,
+            width:550,
+            closeText:'hide'
+        });
+        dialogSection.find("a.no_button").on('click', function(){
+            dialogSection.dialog("close");
+        });
+        dialogSection.find("a.yes_button").on('click', function(){
+            dialogSection.dialog("close");
+            _closeDialog();
+        })
+    };
+
+    self.init = function(){
+        _initializeCancelDialog();
+        _.each([self.name, self.isWebEnabled, self.email, self.telephone_number, self.location, self.geo_code,
+                    self.short_code, self.shouldGenerateUniqueId], function(field){
+             field.subscribe(function(){
+                _hasChanged = true;
+             });
+        });
+    },
 
     self._clearFields = function(){
         self.name("");
@@ -47,6 +83,15 @@ DW.DataSenderQuestionnaire = function(){
     };
 
 
+    self.cancel = function(){
+        if(_hasChanged){
+            dialog.dialog("open");
+        }
+        else{
+            _closeDialog();
+        }
+    };
+
     self.register = function(){
         $.blockUI({
             message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
@@ -77,6 +122,7 @@ DW.DataSenderQuestionnaire = function(){
             if(response.success){
                 self._clearFields();
                 self._clearFieldErrors();
+                _hasChanged = false;
                 _showFlashSuccessMessage(response.message);
             }
             else{

@@ -1,3 +1,4 @@
+
 function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_element) {
     var delete_dialog = $("#delete_ds_block");
     delete_dialog.data("allIds", allIds);
@@ -385,8 +386,9 @@ function handle_datasender_edit(table, selectedIds) {
                             'title':gettext('Edit Datasender'),
                             'autoOpen': false
                           });
+            $("#edit_data_sender_form").trigger("init-edit-reporter-questionnaire");
             dialog.dialog("open");
-            new DW.InitializeEditDataSender().init();
+//            new DW.InitializeEditDataSender().init();
         }
     });
 }

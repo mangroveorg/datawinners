@@ -12,7 +12,6 @@ from datawinners.accountmanagement.models import Organization
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SENDER, REGISTERED_DATA_SENDER
 from datawinners.entity.data_sender import get_datasender_user_detail, DataSenderRegistrationValidator
-from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.helper import _get_data, update_data_sender_from_trial_organization, process_create_data_sender_form
 from datawinners.entity.views import create_single_web_user
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
@@ -31,43 +30,37 @@ class EditDataSenderView(TemplateView):
     template_name = 'edit_datasender_form.html'
 
     def get(self, request, reporter_id, *args, **kwargs):
-        create_data_sender = False
+        #create_data_sender = False
         manager = get_database_manager(request.user)
         reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
-        entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
+        #entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         datasender = {'short_code': reporter_id}
         get_datasender_user_detail(datasender, request.user)
-        email = datasender.get('email') if datasender.get('email') != '--' else False
-        name = reporter_entity.name
-        phone_number = reporter_entity.mobile_number
-        location = reporter_entity.location
-        geo_code = reporter_entity.geo_code
-        form = ReporterRegistrationForm(initial={
-                                                 'name': name,
-                                                 'telephone_number': phone_number,
-                                                 'location': location,
-                                                 'geo_code': geo_code
-                                                })
+        email = datasender.get('email') if datasender.get('email') != '--' else ""
+        reported_details = json.dumps({
+            'name': reporter_entity.name,
+            'phone_number': reporter_entity.mobile_number,
+            'location': reporter_entity.location,
+            'geo_code': reporter_entity.geo_code,
+            'short_code': reporter_id,
+            'email': email
+        })
         return self.render_to_response({
-                                           'reporter_id': reporter_id,
-                                           'form': form,
-                                           'project_links': entity_links,
-                                           'email': email,
-                                           'create_data_sender': create_data_sender
+                                           'reporter_details': repr(reported_details),
+                                           'edit_datasender_url': reverse("edit_data_sender", args=[reporter_id])
                                        })
 
     def post(self, request, reporter_id, *args, **kwargs):
         reporter_id = reporter_id.lower()
         manager = get_database_manager(request.user)
         reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
-        entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         datasender = {'short_code': reporter_id}
         get_datasender_user_detail(datasender, request.user)
-        email = datasender.get('email') if datasender.get('email') != '--' else False
         org_id = request.user.get_profile().org_id
-        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderEdit(request.POST)
         message = None
-        if form.is_valid():
+        success = False
+        if not len(errors):
             try:
                 org_id = request.user.get_profile().org_id
                 current_telephone_number = reporter_entity.mobile_number
@@ -76,13 +69,13 @@ class EditDataSenderView(TemplateView):
                                        LocationBridge(location_tree=get_location_tree(),
                                                       get_loc_hierarchy=get_location_hierarchy))
                 response = web_player.accept(
-                    Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
+                    Request(message=_get_data(cleaned_data, organization.country_name(), reporter_id),
                             transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
                             is_update=True))
                 if response.success:
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
-                                                                   form.cleaned_data["telephone_number"], org_id)
+                                                                   cleaned_data["telephone_number"], org_id)
 
                     message = _("Your changes have been saved.")
 
@@ -91,28 +84,29 @@ class EditDataSenderView(TemplateView):
                     activate("en")
                     field_mapping = dict(mobile_number="telephone_number")
                     for field in ["geo_code", "location", "mobile_number", "name"]:
-                        if getattr(reporter_entity, field) != form.cleaned_data.get(field_mapping.get(field, field)):
-                            label = u"%s" % form.fields[field_mapping.get(field, field)].label
-                            detail_dict.update({label: form.cleaned_data.get(field_mapping.get(field, field))})
+                        if getattr(reporter_entity, field) != cleaned_data.get(field_mapping.get(field, field)):
+                            detail_dict.update({field: cleaned_data.get(field_mapping.get(field, field))})
                     activate(current_lang)
                     if len(detail_dict) > 1:
                         detail_as_string = json.dumps(detail_dict)
                         UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string)
                 else:
-                    form.update_errors(response.errors)
+                    if 'm' in response.errors:
+                        errors['telephone_number'] = _(u'Sorry, the telephone number %s has already been registered.') % cleaned_data.get('telephone_number')
 
+                success = response.success
             except MangroveException as exception:
                 message = exception.message
+                success = False
 
-        return render_to_response('edit_datasender_form.html',
-                                  {
-                                      'form': form,
-                                      'message': message,
-                                      'reporter_id': reporter_id,
-                                      'email': email,
-                                      'project_links': entity_links
-                                  },
-                                  context_instance=RequestContext(request))
+        return HttpResponse(
+            json.dumps(
+                {
+                    "success": success,
+                    "message": message,
+                    "errors": errors
+                }), mimetype='application/json', content_type='application/json')
+
 
     @method_decorator(valid_web_user)
     def dispatch(self, *args, **kwargs):
@@ -122,22 +116,15 @@ class RegisterDatasenderView(TemplateView):
     template_name = "project/register_datasender_popup.html"
 
     def get(self, request,*args, **kwargs):
-        #if request.GET.get('project_id'):
-
-            #form = ReporterRegistrationForm(initial={'project_id': request.GET.get('project_id')})
-        #else:
-        #    form = ReporterRegistrationForm()
         return self.render_to_response({
                                            'project_id': request.GET.get('project_id', ""),
                                            'current_language': translation.get_language()
                                        })
 
     def post(self, request, *args, **kwargs):
-        entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         dbm = get_database_manager(request.user)
         org_id = request.user.get_profile().org_id
-        #form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(request.POST)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(request.POST)
         try:
             reporter_id, message = process_create_data_sender_form(dbm, org_id, cleaned_data, errors)
         except DataObjectAlreadyExists as e:
@@ -157,7 +144,6 @@ class RegisterDatasenderView(TemplateView):
             if not len(errors):
                 UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=questionnaire)
-            #form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return HttpResponse(
                     json.dumps(
                         {

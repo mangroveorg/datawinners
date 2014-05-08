@@ -1,99 +1,83 @@
 {% load i18n %}
-{% block messages %}
-    <div id="message-label" class="message-box none">
-    </div>
-{% endblock %}
 
 <script type="text/javascript">
-    var sender_registration_link = "/entity/datasender/edit/{{ reporter_id }}/";
+    var reporterDetails = $.parseJSON({{ reporter_details|safe }});
+    var edit_datasender_url = "{{ edit_datasender_url }}";
 </script>
 <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet"/>
 
-
-<input id='post_url' type="hidden" value="{{ post_url }}"/>
-<div id="add_data_sender_form" class="">
-
-<form id="registration_form" class="" action="" method="POST">
-    <div class="application_register">
-        {% if message %}
-            <div id="flash-message" class="success-message-box">
-                {{ message }}
-            </div>
-        {% endif %}
-    </div>
-
-    <fieldset>
-        {% csrf_token %}
-
-        <ul>
-            <li>
-                <h6>{% trans "You are editing the Data Senderʼs Details" %}</h6>
-            </li>
-            <li class="{{ form.name.css_classes }} form-row-10px">
-                {{ form.name.label_tag }}
-                {{ form.name }}
-                {{ form.name.errors }}
-            </li>
-            <li class="{{ form.name.css_classes }} form-row-10px">
-                <label>ID</label>
-                {{ reporter_id }}
-            </li>
-            <li class="{{ form.telephone_number.css_classes }} form-row-10px">
-                {{ form.telephone_number.label_tag }}
-                {{ form.telephone_number }}
-                {{ form.telephone_number.errors }}
-            </li>
-            <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text">
-                {% trans "phone_number_example" %}
-            </li>
-            {% if email %}
-            <li class="{{ form.name.css_classes }} form-row-10px" id="email-li">
-                <label>{% trans "Email address" %}</label>
-                {{ email }}
-            </li>
-            {% endif %}
-            <li class="{{ form.location.css_classes }} form-row-10px">
-                <label>{% trans "Location" %}</label>
-                <ul class="location_section">
-                    <li class="italic_grey" style="margin-bottom: 5px">
-                        {% trans "location_example" %}
-                    </li>
-                    <li>
-                        {{ form.location.label_tag }}
-                        {{ form.location }}
-                        {{ form.location.errors }}
-                    <li class="italic_grey margin_bottom_5 instruction_text">
-                        {% trans "location_name_example" %}
-                    </li>
-                    <li class="{{ form.geo_code.css_classes }} form-row-10px">
-                        <div class="clearfix">
-                            <label for="id_{{ form.geo_code.name }}" style="float: left;">{{ form.geo_code.label  }}</label>
-                            <a href="http://itouchmap.com/latlong.html" class="find_gps_{% trans "en" %}" target="_blank">{% trans "Find GPS coordinates" %}</a>
-                        </div>
-                        {{ form.geo_code }}
-                        {{ form.geo_code.errors }}
-
-                    </li>
-                    <li class="italic_grey margin_bottom_5 instruction_text">
-                        {% trans "location_coordinate_example" %}
-                    </li>
-
-                    <li>
-                        {{ form.project_id.as_hidden }}
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <div class="button_block">
-                    {% block cancel_block %}
-                        <a id="cancel">{% trans "Cancel Editing" %}</a>
-                        <div style="display: none;"> {% include "warning_section.html" %} </div>
-                    {% endblock %}
-                    <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}"
-                           class="button margin_top_20"/>
-                </div>
-            </li>
-        </ul>
-    </fieldset>
-</form>
+<div class="application_register">
+    <div id="flash-message"></div>
+</div>
+<div id="edit_data_sender_form">
+    <h6 class="section_description">{% trans "You are editing the Data Senderʼs Details" %}</h6>
+    <br>
+    <form id="registration_form" onsubmit="return false;">
+      <fieldset>
+          {% csrf_token %}
+          <ul>
+              <li class="form-row-10px">
+                  <label>{% trans 'Name' %}</label>
+                  <input type="text" data-bind="value:name" maxlength="80" />
+                  <ul class="errorlist" data-bind="ifnot: name.valid">
+                        <li data-bind="text: name.error"></li>
+                  </ul>
+              </li>
+              <li class="subject_field form-row-10px">
+                  <label>{% trans 'ID' %}</label>
+                  <span data-bind="text: short_code"></span>
+              </li>
+              <li data-bind="if: email" class="form-row-10px" id="email_field">
+                  <label>{% trans 'Email address' %}</label>
+                  <span data-bind="text: email"></span>
+              </li>
+              <li class="form-row-10px">
+                  <label>{% trans 'Mobile Number' %}</label>
+                  <input type="text" data-bind="value: telephone_number" maxlength="15"/>
+                  <ul class="errorlist" data-bind="ifnot: telephone_number.valid">
+                        <li data-bind="text: telephone_number.error"></li>
+                  </ul>
+              </li>
+              <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text">
+                      {% trans "phone_number_example" %}
+              </li>
+              <li class="form-row-10px">
+                  <label>{% trans "Location" %}</label>
+                  <ul class="location_section">
+                      <li class="italic_grey" style="margin-bottom: 5px">
+                          {% trans "location_example" %}
+                      </li>
+                      <li>
+                          <label>{% trans 'Name' %}</label>
+                          <input type="text" id="location" data-bind="value: location" maxlength="100" />
+                          <ul class="errorlist" data-bind="ifnot: location.valid">
+                                <li data-bind="text: location.error"></li>
+                          </ul>
+                      </li>
+                      <li class="italic_grey margin_bottom_5 instruction_text">
+                          {% trans "location_name_example" %}
+                      </li>
+                      <li class="form-row-10px">
+                          <div class="clearfix">
+                              <label for="id_location" style="float: left;">{% trans 'GPS Coordinates' %}</label>
+                              <a href="http://itouchmap.com/latlong.html" class="find_gps_{% trans "en" %}" target="_blank">{% trans "Find GPS coordinates" %}</a>
+                          </div>
+                          <input id="id_location" type="text" data-bind="value: geo_code" maxlength="30" />
+                          <ul class="errorlist" data-bind="ifnot: geo_code.valid">
+                                <li data-bind="text: geo_code.error"></li>
+                          </ul>
+                      </li>
+                      <li class="italic_grey margin_bottom_5 instruction_text">
+                          {% trans "location_coordinate_example" %}
+                      </li>
+                  </ul>
+              </li>
+              <li class="button_block">
+                  <a class="cancel_link" data-bind="click: cancel" >{% trans "Cancel Editing" %}</a>
+                  <div style="display: none;"> {% include "warning_section.html" %} </div>
+                  <input type="button" data-bind="click: update" value="{% trans 'Save Changes' %}" class="button margin_top_20" />
+              </li>
+          </ul>
+      </fieldset>
+    </form>
 </div>

@@ -135,7 +135,7 @@ def get_country_appended_location(location_hierarchy, country):
     else:
         return ','.join(location_hierarchy_split) + ',' + country
 
-def _get_data(form_data, country, reporter_id=None):
+def _get_data(form_data, country, reporter_id):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form model
     mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
               'location': LOCATION_TYPE_FIELD_CODE, 'short_code':SHORT_CODE_FIELD, "email": EMAIL_FIELD}

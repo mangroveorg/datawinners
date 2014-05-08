@@ -53,7 +53,6 @@ from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
-from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, viewable_questionnaire, initialize_values, get_example_sms_message, get_example_sms
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -848,7 +847,7 @@ def create_data_sender_and_web_user(request, project_id):
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
         reporter_id = None
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(request.POST)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(request.POST)
         try:
             reporter_id, message = process_create_data_sender_form(manager, org_id, cleaned_data, errors)
         except DataObjectAlreadyExists as e:

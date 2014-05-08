@@ -28,7 +28,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             objects_filter_mock = Mock()
             UserMock.objects = objects_filter_mock
             objects_filter_mock.filter.return_value = None
-            errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+            errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
         self.assertDictEqual(errors, {})
         self.assertDictEqual(cleaned_data, values)
@@ -43,7 +43,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             'short_code': '',
         }
 
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
 
         expected_errors = {
@@ -64,7 +64,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             'short_code': '',
         }
 
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
 
         self.assertDictEqual(errors, {})
@@ -79,7 +79,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             'short_code': '',
         }
 
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
         self.assertDictEqual(errors, {})
 
     def test_should_return_geo_code_error_when_geo_code_format_is_incorrect(self):
@@ -92,7 +92,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             'short_code': '',
         }
 
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
         self.assertDictEqual(errors, {
                                 'geo_code': 'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315'
                             })
@@ -107,7 +107,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             'short_code': '',
         }
 
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
         self.assertDictEqual(errors, {
                                 'name': "Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
@@ -124,7 +124,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             'short_code': '',
         }
 
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
         self.assertDictEqual(errors, {
                                 'email': "Enter a valid email address. Example:name@organization.com"
@@ -144,7 +144,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             objects_filter_mock = Mock()
             UserMock.objects = objects_filter_mock
             objects_filter_mock.filter.return_value = User()
-            errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+            errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
         self.assertDictEqual(errors, {
                                 'email': "This email address is already in use. Please supply a different email address."
@@ -164,7 +164,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             objects_filter_mock = Mock()
             UserMock.objects = objects_filter_mock
             objects_filter_mock.filter.return_value = None
-            errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+            errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
         self.assertDictEqual(errors, {})
 
@@ -184,7 +184,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             objects_filter_mock = Mock()
             UserMock.objects = objects_filter_mock
             objects_filter_mock.filter.return_value = None
-            errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+            errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
         self.assertDictEqual(errors, {'email': 'This field is required.'})
 
@@ -205,7 +205,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             objects_filter_mock = Mock()
             UserMock.objects = objects_filter_mock
             objects_filter_mock.filter.return_value = None
-            errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+            errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
         self.assertDictEqual(errors, {})
 
@@ -219,7 +219,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             'short_code': '',
         }
 
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
 
         self.assertDictEqual(errors, {
                           'telephone_number': 'Ensure this value has at least 5 digits (it has 4).'
@@ -235,7 +235,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             'short_code': '',
         }
 
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
         self.assertDictEqual(errors, {
                           'telephone_number': 'Please enter a valid phone number.'
                         })
@@ -250,7 +250,7 @@ class TestDataSenderRegistrationValidator(TestCase):
             'short_code': '^asdas**',
         }
 
-        errors, cleaned_data = DataSenderRegistrationValidator().validate(values)
+        errors, cleaned_data = DataSenderRegistrationValidator().validateForDataSenderRegister(values)
         self.assertDictEqual(errors, {
                           'short_code': 'Only letters and numbers are valid'
                         })

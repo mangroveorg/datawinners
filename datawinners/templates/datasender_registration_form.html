@@ -1,14 +1,14 @@
 {% load i18n %}
-<script type="text/javascript">
-var sender_registration_link = "{{ registration_link }}";
-</script>
+{#<script type="text/javascript">#}
+{#var sender_registration_link = "{{ registration_link }}";#}
+{#</script>#}
     <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet" />
 
-  {% block messages %}
-      <div id="message-label" class="message-box none">
-      </div>
-  {% endblock %}
-<input id='post_url' type="hidden" value="{{ post_url }}"/>
+{#  {% block messages %}#}
+{#      <div id="message-label" class="message-box none">#}
+{#      </div>#}
+{#  {% endblock %}#}
+{#<input id='post_url' type="hidden" value="{{ post_url }}"/>#}
 <div class="application_register">
 {#  {% if message %}#}
 {#       <div id="flash-message" class="{% if success %}success-message-box{% else %}message-box{% endif %}">#}
@@ -127,7 +127,7 @@ var sender_registration_link = "{{ registration_link }}";
                    </span>
               </li>
               <li class="button_block">
-                  <a id="cancel" class="cancel_link" >{% trans "Cancel" %}</a>
+                  <a data-bind="visible: showCancelLink, click: cancel" class="cancel_link" >{% trans "Cancel" %}</a>
                   <div style="display: none;"> {% include "warning_section.html" %} </div>
                   <input type="button" data-bind="click: register" value="{% trans 'Register' %}" class="button margin_top_20" />
               </li>
