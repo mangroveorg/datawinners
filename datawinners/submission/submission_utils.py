@@ -3,6 +3,7 @@ from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
 from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
+from mangrove.errors.MangroveException import DatasenderIsNotLinkedException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
 from mangrove.transport.contract.response import Response
 from mangrove.transport.repository.reporters import find_reporter_entity
@@ -24,6 +25,8 @@ class PostSMSProcessorLanguageActivator(object):
         form_model = get_form_model_by_code(self.dbm, form_code)
         if not isinstance(form_model, EntityFormModel):
             translation.activate(form_model.activeLanguages[0])
+        else:
+            self.request['is_registration'] = True
 
 
 class PostSMSProcessorNumberOfAnswersValidators(object):
@@ -37,7 +40,7 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
         processor_func = self._get_handlers(form_model)
         response = processor_func(form_model, submission_values)
         if len(extra_data) or (response and not response.success):
-            raise SMSParserWrongNumberOfAnswersException(form_code)
+            self.request['exception'] = SMSParserWrongNumberOfAnswersException(form_code)
 
 
 
@@ -103,12 +106,22 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
     def process(self, form_code, submission_values):
         form_model = get_form_model_by_code(self.dbm, form_code)
         reporter_entity = self.request.get('reporter_entity')
+
         if reporter_entity.short_code == "test" or \
-           isinstance(form_model, EntityFormModel) or \
-           reporter_entity.short_code in Project.from_form_model(form_model).data_senders:
+            isinstance(form_model, EntityFormModel) or \
+            reporter_entity.short_code in Project.from_form_model(form_model).data_senders:
+            self.check_answers_numbers()
             return None
+        
+        self.check_answers_numbers(linked_datasender=False)
         return self._get_response()
 
+    def check_answers_numbers(self, linked_datasender=True):
+        exception = self.request.get('exception', False)
+        if exception and isinstance(exception, SMSParserWrongNumberOfAnswersException):
+            if linked_datasender:
+                raise exception
+            raise DatasenderIsNotLinkedException()
 
 class PostSMSProcessorCheckDSIsRegistered(object):
 

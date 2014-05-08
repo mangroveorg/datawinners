@@ -1902,8 +1902,8 @@ msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
 msgstr ""
 
-msgid "Error. %s %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Erro. %s %s nao esta registado. Verifique o Numero de Identificacao e reenvie a SMS inteira ou contacte o seu supervisor."
+msgid "Error. %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Erro. %s nao esta registado. Verifique o Numero de Identificacao e reenvie a SMS inteira ou contacte o seu supervisor."
 
 msgid "This telephone number is not registered in our system."
 msgstr ""
@@ -4156,7 +4156,7 @@ msgid "Select a user"
 msgstr ""
 
 msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erro. Resposta incorrecta para a pergunta %s. Por favor reveja o questionario impresso e reenvie a SMS inteira."
+msgstr "Erro. Resposta incorrecta para a %s. Por favor reveja o questionario impresso e reenvie a SMS inteira."
 
 msgid "sms_glue"
 msgstr ", "
@@ -4165,16 +4165,16 @@ msgid "question_prefix%s"
 msgstr "%s"
 
 msgid "and"
-msgstr "and"
+msgstr "e"
 
 msgid "ending_and"
-msgstr "and"
+msgstr "e"
 
 msgid "singular_question"
-msgstr "question"
+msgstr "pergunta"
 
 msgid "plural_question"
-msgstr "question"
+msgstr "pergunta"
 
 msgid "Error. %s already exists. Register your %s with a different Identification Number."
 msgstr ""
@@ -4534,3 +4534,9 @@ msgstr ""
 
 msgid "My Identification Numbers"
 msgstr ""
+
+msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
+msgstr "Erro. Nao esta autorizado para submeter dados para este questionario. Por favor contacte o seu supervisor."
+
+msgid "more_wrong_question"
+msgstr "outras"
