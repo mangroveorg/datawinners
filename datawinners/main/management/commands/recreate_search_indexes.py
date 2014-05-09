@@ -5,17 +5,22 @@ from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.search.manage_index import create_all_mappings, create_all_indices
 from datawinners.main.couchdb.utils import all_db_names
 
+logging.basicConfig(filename='/var/log/datawinners/recreate_search_index.log', level=logging.DEBUG,
+                        format="%(asctime)s | %(thread)d | %(levelname)s | %(name)s | %(message)s")
 
-def recreate_index_for_db(database_name, es):
+def recreate_index_for_db(database_name, es, logger):
     try:
         es.delete_index(database_name)
     except Exception as e:
         logging.info("Could not delete index " + str(e.message))
     response = es.create_index(database_name, settings={"number_of_shards": 1, "number_of_replicas": 0})
-    logging.info('%s search index created : %s' % (database_name, response.get('ok')))
+    logger.info('%s search index created : %s' % (database_name, response.get('ok')))
     dbm = get_db_manager(database_name)
-    create_all_mappings(dbm)
-    create_all_indices(dbm)
+    try:
+        create_all_mappings(dbm)
+        create_all_indices(dbm)
+    except Exception as e:
+        logger.error("recreate index failed for database %s for" %dbm.database_name)
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -25,7 +30,8 @@ class Command(BaseCommand):
         else:
             databases_to_index = all_db_names()
         for database_name in databases_to_index:
-            recreate_index_for_db(database_name, es)
-            print 'Done' + database_name
+            logger = logging.getLogger(database_name)
+            recreate_index_for_db(database_name, es, logger)
+            logger.info('Done')
 
         print 'Completed!'
