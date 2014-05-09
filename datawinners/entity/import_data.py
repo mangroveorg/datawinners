@@ -142,7 +142,7 @@ class FilePlayer(Player):
     def _import_submission(self, organization, values, form_model=None):
         self._append_country_for_location_field(form_model, values, organization)
         try:
-            if filter(lambda x: len(x) and x != u"reporter", values.values()).__len__() == 0:
+            if filter(lambda x: len(x), values.values()).__len__() == 0:
                 raise EmptyRowException()
             values = self._process(form_model, values)
             log_entry = "message: " + str(values) + "|source: web|"
