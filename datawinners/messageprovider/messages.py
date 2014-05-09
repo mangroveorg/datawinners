@@ -91,10 +91,7 @@ exception_messages = {
 }
 
 def get_validation_failure_error_message(response):
-    if response.is_registration:
-        return _("Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS.")
-    else:
-        return _("Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS.")
+    return _("Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS.")
 
 def get_submission_success_message(response):
     datasender = response.reporters[0].get('name').split()[0].capitalize()

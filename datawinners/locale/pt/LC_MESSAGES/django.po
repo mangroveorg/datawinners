@@ -4180,7 +4180,7 @@ msgid "Error. %s already exists. Register your %s with a different Identificatio
 msgstr ""
 
 msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
-msgstr ""
+msgstr "Erro. Resposta incorrecta para a %s. Por favor reveja o questionario impresso e reenvie a SMS inteira. "
 
 msgid "Activate Your DataWinners Account"
 msgstr ""
