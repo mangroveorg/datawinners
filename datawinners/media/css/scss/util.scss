@@ -165,7 +165,9 @@ input.error {
   border: 1px solid #FF0000 !important;
   color: #000000;
 }
-
+input[disabled='disabled'] {
+    color: #888888;
+}
 /*Table Styles Temp*/
 table {
   margin-bottom: 10px;
