@@ -10,7 +10,7 @@ username = settings.COUCHDBMAIN_USERNAME
 password = settings.COUCHDBMAIN_PASSWORD
 
 
-def init_migrations(completed_dbs_csv):
+def configure_csv(completed_dbs_csv):
     global completed_dbs_csv_file_name
     global completed_dbs_csv_file
     global skip_dbs
@@ -62,7 +62,7 @@ class DWThreadPool(ThreadPool):
 
 
 def migrate(all_db_names, callback_function, version, threads=7):
-    init_migrations('/var/log/datawinners/dbs_migrated_release_' + migration_tag(version) + '.csv')
+    configure_csv('/var/log/datawinners/dbs_migrated_release_' + migration_tag(version) + '.csv')
     configure_logging(version)
 
     pool = DWThreadPool(threads, threads)

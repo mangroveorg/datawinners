@@ -4,7 +4,7 @@ from datawinners.main.couchdb.utils import all_db_names
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0,".")
 
-from migration.couch.utils import should_not_skip, mark_as_completed, init_migrations
+from migration.couch.utils import should_not_skip, mark_as_completed, configure_csv
 from datetime import datetime
 import traceback
 from mangrove.datastore.database import get_db_manager
@@ -12,7 +12,7 @@ from mangrove.transport.contract.survey_response import SurveyResponse
 
 SERVER = 'http://localhost:5984'
 log_file = open('/var/log/datawinners/migration_release_6_1_2.log', 'a')
-init_migrations('/var/log/datawinners/dbs_migrated_release_6_1_2.csv')
+configure_csv('/var/log/datawinners/dbs_migrated_release_6_1_2.csv')
 
 map_invalid_survey_responses = """
 function(doc){
