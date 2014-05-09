@@ -10,14 +10,14 @@ from datetime import datetime
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
-from migration.couch.utils import init_migrations, should_not_skip, mark_as_completed
+from migration.couch.utils import configure_csv, should_not_skip, mark_as_completed
 from datawinners import  settings
 
 SERVER = 'http://localhost:5984'
 credentials = settings.COUCHDBMAIN_CREDENTIALS
 
 log_file = open('/var/log/datawinners/migration_release_6_1_1.log', 'a')
-init_migrations('/var/log/datawinners/dbs_migrated_release_6_1_1.csv')
+configure_csv('/var/log/datawinners/dbs_migrated_release_6_1_1.csv')
 
 db_names = all_db_names(SERVER)
 

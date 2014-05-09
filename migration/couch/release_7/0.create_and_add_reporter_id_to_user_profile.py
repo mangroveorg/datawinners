@@ -12,10 +12,10 @@ from mangrove.datastore.queries import get_entity_count_for_type
 from mangrove.errors.MangroveException import EntityTypeDoesNotExistsException
 from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
-from migration.couch.utils import init_migrations, configure_logging
+from migration.couch.utils import configure_csv, configure_logging
 
 
-init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_0.csv')
+configure_csv('/var/log/datawinners/dbs_migrated_release_7_0_0.csv')
 configure_logging((7, 0, 0))
 
 

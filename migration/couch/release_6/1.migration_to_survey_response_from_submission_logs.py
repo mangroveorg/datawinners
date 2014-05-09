@@ -8,13 +8,13 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport import TransportInfo
 from mangrove.transport.contract.survey_response import SurveyResponse
-from migration.couch.utils import init_migrations, mark_as_completed, should_not_skip
+from migration.couch.utils import configure_csv, mark_as_completed, should_not_skip
 
 MAX_NUMBER_DOCS = 50
 log_file = open('migration_release_6_1.log', 'a')
 SERVER = 'http://localhost:5984'
 
-init_migrations('dbs_migrated_release_6_1.csv')
+configure_csv('dbs_migrated_release_6_1.csv')
 
 def log_statement(statement):
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))

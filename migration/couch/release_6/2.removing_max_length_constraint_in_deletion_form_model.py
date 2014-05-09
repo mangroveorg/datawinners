@@ -4,13 +4,13 @@ from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.database import get_db_manager
 from mangrove.form_model.form_model import get_form_model_by_code
 from datetime import datetime
-from migration.couch.utils import init_migrations, mark_as_completed, should_not_skip
+from migration.couch.utils import configure_csv, mark_as_completed, should_not_skip
 
 log_file = open('migration_release_6_2.log', 'a')
 
 SERVER = 'http://localhost:5984'
 
-init_migrations('dbs_migrated_release_6_2.csv')
+configure_csv('dbs_migrated_release_6_2.csv')
 
 def all_db_names(server):
     all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
