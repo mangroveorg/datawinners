@@ -821,7 +821,6 @@ fieldset {
 
 .instruction-header {
   font-style: italic;
-  font-weight: bold;
   padding-bottom: 10px; }
 
 .questionnaire_selection {
@@ -899,7 +898,8 @@ fieldset {
 
 .create_questionnaire_help {
   color: #888888;
-  font-style: italic; }
+  font-style: italic;
+  font-weight: bold; }
 
 .analysis_image {
   overflow: auto;
