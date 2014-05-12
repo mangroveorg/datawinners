@@ -3,6 +3,7 @@ from collections import OrderedDict
 import re
 import logging
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
@@ -183,6 +184,8 @@ def process_create_data_sender_form(dbm, form, org_id):
             else:
                 form.update_errors(response.errors)
 
+        except IntegrityError as e:
+            form.update_errors(_(u'Sorry, the telephone number %s has already been registered.') % form.cleaned_data["telephone_number"])
         except DataObjectAlreadyExists as e:
             message = _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1],)
         except MangroveException as exception:
