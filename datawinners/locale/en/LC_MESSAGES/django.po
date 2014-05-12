@@ -4535,3 +4535,6 @@ msgstr ""
 
 msgid "Data Senders must use Identification Numbers that are already registered in Datawinners."
 msgstr ""
+
+msgid "Sorry, this number has already been used for a different DataWinners Basic account."
+msgstr ""
