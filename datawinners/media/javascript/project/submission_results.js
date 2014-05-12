@@ -13,7 +13,7 @@ DW.SubmissionTabs = function () {
 
     self.initialize_tabs = function() {
         var index_of_tab_li = active_tab_index+1;
-        $('#tabs ul>li:nth-child('+index_of_tab_li+')').addClass('ui-tabs-selected ui-state-active');
+        $('#tabs ul>li:nth-child('+index_of_tab_li+')').first().addClass('ui-tabs-selected ui-state-active');
     };
 
 
