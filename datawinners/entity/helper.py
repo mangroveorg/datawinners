@@ -2,14 +2,14 @@
 from collections import OrderedDict
 import re
 import logging
-from django.contrib.auth.models import User
-from django.db import IntegrityError
+from datawinners import utils
 
+from django.contrib.auth.models import User
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
-from datawinners import utils
-from datawinners.utils import get_organization_from_manager
+from mangrove.transport import Request, TransportInfo
 
+from datawinners.utils import get_organization_from_manager
 from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors.MangroveException import MangroveException
@@ -20,7 +20,7 @@ from mangrove.form_model.form_model import NAME_FIELD,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
     ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, EMAIL_FIELD, get_form_model_by_code, EntityFormModel, get_form_model_by_entity_type
 from mangrove.form_model.validation import TextLengthConstraint,\
-    RegexConstraint, ShortCodeRegexConstraint
+    RegexConstraint
 from mangrove.transport.player.player import WebPlayer
 from mangrove.utils.types import  is_sequence, is_not_empty
 from mangrove.errors.MangroveException import NumberNotRegisteredException, \
@@ -29,12 +29,12 @@ from mangrove.transport.repository.reporters import find_reporter_entity
 from datawinners.accountmanagement.models import Organization,\
     DataSenderOnTrialAccount, NGOUserProfile
 from datawinners.location.LocationTree import get_location_tree
-from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.submission.location import LocationBridge
 from mangrove.form_model.field import ShortCodeField
+
 
 websubmission_logger = logging.getLogger("websubmission")
 FIRSTNAME_FIELD = "firstname"
@@ -184,8 +184,6 @@ def process_create_data_sender_form(dbm, form, org_id):
             else:
                 form.update_errors(response.errors)
 
-        except IntegrityError as e:
-            form.update_errors(_(u'Sorry, the telephone number %s has already been registered.') % form.cleaned_data["telephone_number"])
         except DataObjectAlreadyExists as e:
             message = _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1],)
         except MangroveException as exception:

@@ -136,11 +136,16 @@ class ReporterRegistrationForm(Form):
         """
 
         organization = Organization.objects.get(org_id=self.org_id)
+        mobile_number = self.cleaned_data.get('telephone_number')
         if organization.in_trial_mode:
-            if DataSenderOnTrialAccount.objects.filter(mobile_number=(self.cleaned_data.get('telephone_number'))).exclude(organization=organization).exists():
+            datasender_filter = DataSenderOnTrialAccount.objects.filter(mobile_number=(mobile_number))
+            if datasender_filter.exclude(organization=organization).exists():
                 self._errors['telephone_number'] = self.error_class(
-                    [(u"Sorry, this number has already been used for a different DataWinners trial account.")])
-        return self.cleaned_data.get('telephone_number')
+                    [_(u"Sorry, this number has already been used for a different DataWinners basic account.")])
+            if datasender_filter.exists():
+                self._errors['telephone_number'] = self.error_class(
+                [_(u'Sorry, the telephone number %s has already been registered.') %mobile_number])
+        return mobile_number
 
 
     def clean_email(self):
