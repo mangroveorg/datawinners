@@ -7,7 +7,7 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
             title: gettext("Warning !!"),
             modal: true,
             autoOpen: false,
-            width: 500,
+            width: 520,
             closeText: 'hide'
         }
     );
