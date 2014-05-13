@@ -6,10 +6,12 @@ from mangrove.datastore.documents import DocumentBase
 class CustomizedMessages(DocumentBase):
     _id = TextField()
     messages = DictField()
+    language_name = TextField()
 
-    def __init__(self, lang, messages):
+    def __init__(self, lang_code,language, messages):
         DocumentBase.__init__(self, document_type='CustomizedMessage')
-        self._id = lang
+        self._id = lang_code
+        self.language_name = language
         self.messages = messages
 
 
@@ -25,11 +27,11 @@ def get_message(dbm, lang, code, context={}):
     return render_text(template, context)
 
 
-def save_messages(dbm, lang, value_dict):
-    message = dbm.database.get(lang)
+def save_messages(dbm, lang_code, language ,value_dict):
+    message = dbm.database.get(lang_code)
     if message:
         message["messages"] = value_dict
         dbm.database.update([message])
     else:
-        message = CustomizedMessages(lang, value_dict)
+        message = CustomizedMessages(lang_code,language, value_dict)
         dbm._save_document(message)
