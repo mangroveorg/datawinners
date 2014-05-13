@@ -5,9 +5,8 @@ from mangrove.datastore.documents import DocumentBase
 
 class CustomizedMessages(DocumentBase):
     _id = TextField()
-    messages = DictField(Mapping.build(
-        err1 = TextField()
-    ))
+    messages = DictField()
+
     def __init__(self, lang, messages):
         DocumentBase.__init__(self, document_type='CustomizedMessage')
         self._id = lang
@@ -24,6 +23,7 @@ def get_message(dbm, lang, code, context={}):
     except Exception as e:
         template = ugettext(code)
     return render_text(template, context)
+
 
 def save_messages(dbm, lang, value_dict):
     message = dbm.database.get(lang)
