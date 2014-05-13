@@ -77,7 +77,7 @@ REGISTER_EXISTING_SUBJECT_SHORT_CODE = {SENDER: "1234567890",
 REGISTER_INVALID_GEO_CODE = {SENDER: "1234567890",
                              RECEIVER: "919880734937",
                              SMS: "REG .T Clinic .m   123456 .l Agra .G 127.178057 -78.007789 .n Clinic Agra .S CLIAGRA",
-                             ERROR_MSG: "Error. Incorrect answer for question 5. Please review the Registration Form and resend entire SMS."}
+                             ERROR_MSG: "Error. Incorrect answer for question 5. Please review printed Questionnaire and resend entire SMS."}
 
 WITH_INVALID_GEO_CODE_FORMAT = {SENDER: "1234567890",
                                 RECEIVER: "919880734937",
