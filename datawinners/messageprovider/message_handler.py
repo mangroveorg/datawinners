@@ -15,13 +15,15 @@ def default_formatter(exception, message):
         return formatted_message if len(formatted_message) <= 160 else message.replace('%s', "")
     return message
 
+def data_object_not_found_formatter(exception, message):
+    return message % (exception.data[1])
 
 def get_exception_message_for(exception, channel=None, formatter=default_formatter):
     ex_type = type(exception)
     if channel is not None:
         message_dict = exception_messages.get(ex_type)
         if message_dict is None:
-            return exception.message
+            return _(exception.message)
         message = message_dict.get(channel)
         if is_empty(message):
             message = exception_messages[ex_type].get(DEFAULT)
@@ -57,7 +59,7 @@ def get_submission_error_message_for(response, form_model):
         if is_unique_id_error_present:
             return get_exception_message_for(
                 DataObjectNotFound(unique_id_type, invalid_unique_id_code, unique_id_type),
-                channel='sms')
+                channel='sms', formatter=data_object_not_found_formatter)
 
 
         keys = [_("question_prefix%s") % index_of_question(form_model, question_code) for question_code in errors.keys()]
@@ -66,7 +68,10 @@ def get_submission_error_message_for(response, form_model):
             error_message = _get_error_message(keys, response)
         else:
             and_msg = "ending_and" if len(keys) >= 3 else "and"
-            errors_text = "%s %s %s %s" % (_("plural_question"), _("sms_glue").join(keys[:-1]),  _(and_msg), keys[-1])
+            if len(keys) <= 3:
+                errors_text = "%s %s %s %s" % (_("plural_question"), _("sms_glue").join(keys[:-1]),  _(and_msg), keys[-1])
+            else:
+                errors_text = "%s %s %s %s" % (_("plural_question"), _("sms_glue").join(keys[:3]),  _(and_msg), _("more_wrong_question"))
             error_message = get_validation_failure_error_message(response) % errors_text.strip()
     else:
         error_message = errors
@@ -84,7 +89,7 @@ def get_success_msg_for_submission_using(response, form_model):
 def get_success_msg_for_registration_using(response, source, form_model=None):
     thanks = get_registration_success_message(response)
     if source == "sms":
-        message_with_response_text = thanks + ": " + ResponseBuilder(form_model=form_model, processed_data=response.processed_data).get_expanded_response()
+        message_with_response_text = thanks + " " + ResponseBuilder(form_model=form_model, processed_data=response.processed_data).get_expanded_response()
         return message_with_response_text if len(message_with_response_text) <= 160 else thanks + " " + get_subject_info(response, form_model)
     return _("Registration successful.") + " %s %s" %  (_("ID is:"), response.short_code)
 

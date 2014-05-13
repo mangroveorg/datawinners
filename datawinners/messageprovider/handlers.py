@@ -14,27 +14,43 @@ def default_exception_handler_with_logger(exception, request):
     create_failure_log(exception_message, request)
     return exception_message
 
+def wrong_questionnaire_code_handler(exception, request):
+    if request.get('exception'):
+        handler = exception_handlers.get(type(request.get('exception')), default_exception_handler)
+        return handler(request.get('exception'), request)
+    return default_exception_handler_with_logger(exception, request)
+
 def data_object_not_found_handler(exception, request):
     return get_exception_message_for(exception=exception, channel=SMS, formatter=data_object_not_found_formatter)
 
 def sms_parser_wrong_number_of_answers_handler(exception, request):
-    _activate_language(exception, request)
     return default_exception_handler_with_logger(exception, request)
+
+def exceed_limit_handler(exception, request):
+    request.get('organization').increment_message_count_for(sms_registration_count=1)
+    return default_exception_handler(exception, request)
+    
+def number_not_registered_exception_handler(exception, request):
+    handler = default_exception_handler if request.get('is_registration') else default_exception_handler_with_logger
+    return handler(exception, request)
 
 exception_handlers = {
 
     ex.DataObjectNotFound : data_object_not_found_handler,
-    ex.FormModelDoesNotExistsException : default_exception_handler_with_logger,
-    ex.NumberNotRegisteredException : default_exception_handler_with_logger,
+    ex.FormModelDoesNotExistsException : wrong_questionnaire_code_handler,
+    ex.NumberNotRegisteredException : number_not_registered_exception_handler,
     ex.SubmissionParseException : default_exception_handler_with_logger,
     ex.SMSParserInvalidFormatException : default_exception_handler_with_logger,
     ex.MultipleSubmissionsForSameCodeException : default_exception_handler_with_logger,
     ex.SMSParserWrongNumberOfAnswersException : sms_parser_wrong_number_of_answers_handler,
+    ex.ExceedSMSLimitException : exceed_limit_handler,
+    ex.ExceedSubmissionLimitException : exceed_limit_handler,
+    ex.DatasenderIsNotLinkedException : default_exception_handler_with_logger,
 }
 
 def data_object_not_found_formatter(data_object_not_found_exception, message):
     entity_type, param, value = data_object_not_found_exception.data
-    return message % (entity_type,value,entity_type)
+    return message % value
 
 def create_failure_log(error_message, request):
     log = DatawinnerLog()
@@ -45,8 +61,3 @@ def create_failure_log(error_message, request):
     log.to_number = request['transport_info'].destination
     log.organization = request.get('organization')
     log.save()
-
-def _activate_language(exception, request):
-    form_model = get_form_model_by_code(request['dbm'], exception.data[0])
-    translation.activate(form_model.activeLanguages[0])
-

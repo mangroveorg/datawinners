@@ -341,6 +341,9 @@ msgstr ""
 msgid "Guide"
 msgstr ""
 
+msgid "Create a new project"
+msgstr ""
+
 msgid "Are you sure you want to cancel this project?"
 msgstr ""
 
@@ -524,7 +527,7 @@ msgstr "The Submission Date is often different than the Reporting Period. Exampl
 msgid "r_tooltip_submission_date"
 msgstr "Click on the Submission Date dropdown and choose a specific a date or date range."
 
-msgid "Search"
+msgid "Search for Keyword"
 msgstr ""
 
 msgid "All Data Records"
@@ -592,7 +595,7 @@ msgid "To get started with DataWinners"
 msgstr ""
 
 msgid "order_to_create_project"
-msgstr "create a new Questionnaire"
+msgstr "create a new questionnaire"
 
 msgid "Add a data sender"
 msgstr ""
@@ -646,7 +649,7 @@ msgstr ""
 msgid "Actions:"
 msgstr ""
 
-msgid "Remove from Questionnaire"
+msgid "Remove from project"
 msgstr ""
 
 msgid "Give Web Submission Access"
@@ -1106,21 +1109,21 @@ msgstr ""
 msgid "q_tooltip_question_detail_type"
 msgstr ""
 "Questionnaires collect data in several formats: numbers, text, multiple "
-"choice and dates. The <strong>Answer Type</strong> identifies which format "
-"the Data Sender must use when answering the question."
+"choiceand dates. The <strong>Answer Type</strong> identifies which format "
+"the DataSender must use when answering the question."
 
 msgid "r_tooltip_question_detail_type"
 msgstr ""
 "Select the <strong>Answer Type</strong> that the Data Sender will use "
-"when answering the question. Answers can be numbers, text, multiple choice, "
+"whenanswering the question. Answers can be numbers, text, multiple choice, "
 "or dates.<br/>When using the <strong>Multiple Choice option</strong>, Data "
-"Senders will type the letter (A, B, C etc.) that corresponds to the "
-"correct answer NOT the text in the answer field."
+"Senders will typein the letter (A, B, C etc.) that corresponds to the "
+"correct answer NOT the textin the answer field."
 
 msgid "Select what kind of answer you want from your Data Senders."
 msgstr ""
 
-msgid "Word"
+msgid "Word or Phrase"
 msgstr ""
 
 msgid "Number"
@@ -1152,9 +1155,6 @@ msgid "month.day.year"
 msgstr ""
 
 msgid "Add Answer Choice"
-msgstr ""
-
-msgid "Add an Identification Number"
 msgstr ""
 
 msgid "only one answer"
@@ -1311,8 +1311,10 @@ msgid "Save"
 msgstr ""
 
 msgid "tooltip_question_sms"
-msgstr "Submissions that go beyond 160 characters cannot be received by DataWinners. This running count shows an\
- approximate number of characters needed to respond to all questions in your Questionnaire."
+msgstr "Use this running count to determine the maximum number of characters a Data Sender will have to enter to "
+"respond to all questions in your questionnaire. To keep communication costs down, try to keep the number of characters "
+"required to 160 or less, the length of a single SMS. Don't worry, you can go beyond 160 characters. However, more than "
+"one SMS will be required to answer all the questions."
 
 msgid "Print"
 msgstr ""
@@ -1320,16 +1322,13 @@ msgstr ""
 msgid "SMS your answers to"
 msgstr ""
 
-msgid "Questionnaire Name"
+msgid "Questionnaire Name:"
 msgstr ""
 
 msgid "Questionnarie Code:"
 msgstr ""
 
 msgid "Example:"
-msgstr ""
-
-msgid "Example: Clinics"
 msgstr ""
 
 msgid "Define the questions you want your Data Senders to answer."
@@ -1904,13 +1903,13 @@ msgid "This %s is not yet registered in the system. Please check the %s’s uniq
 msgstr ""
 
 msgid "Error. %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr ""
+msgstr "Erro. %s nao esta registado. Verifique o Numero de Identificacao e reenvie a SMS inteira ou contacte o seu supervisor."
 
 msgid "This telephone number is not registered in our system."
 msgstr ""
 
 msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
-msgstr ""
+msgstr "Erro. Nao esta autorizado para submeter dados para este questionario. Por favor contacte o seu supervisor."
 
 msgid "All questions must be unique"
 msgstr "All questions must be unique. Please delete duplicates"
@@ -1964,7 +1963,7 @@ msgstr ""
 msgid "Set reminders"
 msgstr ""
 
-msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your Questionnaire."
+msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your questionnaire."
 msgstr ""
 
 msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."
@@ -1973,13 +1972,16 @@ msgstr ""
 msgid "Set up automatic SMS Reminders to be sent to your Data Senders (e.g. field staff) to ensure the timely collection of your data."
 msgstr ""
 
+msgid "Register Data Senders to see them on this map"
+msgstr ""
+
 msgid "Create your project in a few easy steps."
 msgstr ""
 
 msgid "Name your project and provide basic information about it."
 msgstr ""
 
-msgid "Write and edit your questions"
+msgid "Write and edit your questions."
 msgstr ""
 
 msgid "Save and create your project."
@@ -2026,6 +2028,9 @@ msgstr ""
 
 msgid "Time Period"
 msgstr ""
+
+msgid "tooltip_project_name"
+msgstr "Give your project a short, descriptive name so you can identify it among a list of all projects."
 
 msgid "tooltip_error_language"
 msgstr "Your Data Senders will receive automatic Confirmation and Error messages from DataWinners based on their submission. Choose the language of these messages."
@@ -2203,12 +2208,15 @@ msgid "enabled"
 msgstr ""
 
 msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires."
-msgstr ""
+msgstr "Atingiu o limite das suas 50 sms. Por favor, faca uma subsescricao mensal para continuar a submeter sms no seu questionario."
 
 msgid "Which subject are you reporting on?"
 msgstr ""
 
 msgid "Basic Information"
+msgstr ""
+
+msgid "Example: Teacher attendance in Antananarivo"
 msgstr ""
 
 msgid "Example: Collect data from 100 primary school in Antananarivo in an effort to increase teacher attendance from 50% to 80%"
@@ -2330,7 +2338,7 @@ msgstr ""
 msgid "Set Reminders"
 msgstr ""
 
-msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your questionnaire"
+msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your questionnaire"
 msgstr ""
 
 msgid "tooltip_devices"
@@ -2339,7 +2347,7 @@ msgstr "Your Data Senders can submit data using SMS and the Internet."
 "<br/>If any of your Data Senders have (or will have) access to the Internet, we recommened leaving the WEB box checked."
 
 msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
-msgstr ""
+msgstr "Erro. Numero incorrecto da resposta. Por favor reenvie o questionario impresso e reenvie a SMS inteira."
 
 msgid "Privacy Policy"
 msgstr ""
@@ -2868,6 +2876,9 @@ msgstr "A Subject is what your Questionnaire is about; a speciﬁc person, place
 "<li>A supervisor measures the quality of care at a clinic. The Subject is the clinic.</li>"
 "<li>An engineer measures the ﬂow rate of a water pump. The Subject is the water pump.</li>"
 "<li>A sales person sells products to a retailer. The Subject is the retailer.</li></ul>"
+
+msgid "register_subject_for_projects_question"
+msgstr "Why should I register Subjects for my projects?"
 
 msgid "register_subject_for_projects_answer"
 msgstr "<ul class='bulleted'><li>Register your Subjects to see them displayed on a map on your Questionaire’s Overview tab.</li>"
@@ -3560,10 +3571,10 @@ msgstr ""
 msgid "Zimbabwe"
 msgstr ""
 
-msgid "You have not registered a %(entity_type)s yet."
+msgid "You have not registered a %(subject)s yet."
 msgstr ""
 
-msgid "Register a %(entity_type)s"
+msgid "Register a %(subject)s"
 msgstr ""
 
 msgid "Your Data Senders’ successful submissions will appear here."
@@ -3592,6 +3603,12 @@ msgstr ""
 
 msgid "%dth"
 msgstr ""
+
+msgid "entity delete error text"
+msgstr ""
+        "If you delete a Subject, you can no longer collect data about it.\n"
+        "However, you can still view previously collected data for this Subject on the Data pages.\n\n"
+        "Are you sure you want to delete?"
 
 msgid "Yes, Delete"
 msgstr ""
@@ -4139,7 +4156,7 @@ msgid "Select a user"
 msgstr ""
 
 msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
-msgstr ""
+msgstr "Erro. Resposta incorrecta para a %s. Por favor reveja o questionario impresso e reenvie a SMS inteira."
 
 msgid "sms_glue"
 msgstr ", "
@@ -4148,22 +4165,22 @@ msgid "question_prefix%s"
 msgstr "%s"
 
 msgid "and"
-msgstr "and"
+msgstr "e"
 
 msgid "ending_and"
-msgstr "and"
+msgstr "e"
 
 msgid "singular_question"
-msgstr "question"
+msgstr "pergunta"
 
 msgid "plural_question"
-msgstr "question"
+msgstr "pergunta"
 
 msgid "Error. %s already exists. Register your %s with a different Identification Number."
 msgstr ""
 
 msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
-msgstr ""
+msgstr "Erro. Resposta incorrecta para a %s. Por favor reveja o questionario impresso e reenvie a SMS inteira. "
 
 msgid "Activate Your DataWinners Account"
 msgstr ""
@@ -4208,7 +4225,7 @@ msgid "Thank you %(datasender)s, We registered your %(subject_type)s"
 msgstr ""
 
 msgid "Thank you %(datasender)s. We received your SMS"
-msgstr ""
+msgstr "Mesmo como hoje: Obrigado %(datasender)s. Recebemos a sua SMS"
 
 msgid "You have successfully activated your account. Happy data submission!"
 msgstr ""
@@ -4235,7 +4252,7 @@ msgid "Please use only letters (a-z), numbers, and spaces."
 msgstr ""
 
 msgid "You have reached your limit of 1000 free Submissions. Upgrade to a monthly subscription to continue sending in Submissions."
-msgstr ""
+msgstr "Atingiu o seu limite 1000 submissoes grateis. Faca uma subsescricao mensal para continuar a enviar submissoes."
 
 msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your questionnaires."
 msgstr ""
@@ -4413,7 +4430,7 @@ msgstr ""
 msgid "The questionnaire you are requesting for has been deleted from the system."
 msgstr ""
 
-msgid "Add or edit a question"
+msgid "Select a question to edit or add another question."
 msgstr ""
 
 msgid "Move Up"
@@ -4506,7 +4523,7 @@ msgstr ""
 msgid "The Data Sender %s (%s) is not linked to your Questionnaire."
 msgstr ""
 
-msgid "You haven't created any Questionnaires yet."
+msgid "You haven't created any Questionnaires yet. Once you do, a list of your Questionnaires will appear here. You can then choose one as a template and edit it to fit your needs."
 msgstr ""
 
 msgid "Edit Name"
@@ -4518,27 +4535,8 @@ msgstr ""
 msgid "My Identification Numbers"
 msgstr ""
 
-msgid "%s with Identification Number %s successfully registered."
-msgstr ""
-
-msgid "Advanced Answer Types"
-msgstr ""
-
-msgid "Instructions for Data Senders"
-msgstr ""
-
-msgid "Finish your questionnaire, then register each person, place or thing you want to collect data about with its own Identification Number (example: register your primary schools)."
-msgstr ""
-
-msgid "Data Senders must use Identification Numbers that are already registered in Datawinners."
-msgstr ""
-
-msgid "Sorry, this number has already been used for a different DataWinners Basic account."
-msgstr ""
+msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
+msgstr "Erro. Nao esta autorizado para submeter dados para este questionario. Por favor contacte o seu supervisor."
 
 msgid "more_wrong_question"
-msgstr "other questions"
-
-msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
-msgstr ""
-
+msgstr "outras"

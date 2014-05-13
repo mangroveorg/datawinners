@@ -11,6 +11,10 @@ SUBMISSION = u"submission"
 REGISTRATION = u"registration"
 SMART_PHONE=u"smartPhone"
 
+NOT_AUTHORIZED_DATASENDER_MSG = "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+SUBMISSION_LIMIT_REACHED_MSG = "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
+SMS_LIMIT_REACHED_MSG = "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires."
+
 DEFAULT_EXCEPTION_MESSAGE = u"An exception has occurred"
 
 exception_messages = {
@@ -27,18 +31,18 @@ exception_messages = {
     ex.FormModelDoesNotExistsException: {
         DEFAULT: u"Questionnaire ID %s doesnt exist.",
         WEB: u"Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS.",
-        SMS: u"Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
+        SMS: u"Error. Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
     },
 
     ex.DataObjectNotFound: {
         DEFAULT: u"This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89",
         WEB: u"This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit.",
-        SMS: u"Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
+        SMS: u"Error. %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
     },
 
     ex.NumberNotRegisteredException: {
         DEFAULT: u"This telephone number is not registered in our system.",
-        SMS: u"Your telephone number is not yet registered in our system. Please contact your supervisor."
+        SMS: u"Error. You are not registered as a Data Sender. Please contact your supervisor."
     },
 
     ex.QuestionCodeAlreadyExistsException: {
@@ -65,7 +69,7 @@ exception_messages = {
     },
     ex.SMSParserWrongNumberOfAnswersException: {
         DEFAULT: u"Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.",
-        SMS: u"Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
+        SMS: u"Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
     },
     ex.SubmissionParseException: {
         DEFAULT: u"Invalid message format.",
@@ -87,10 +91,7 @@ exception_messages = {
 }
 
 def get_validation_failure_error_message(response):
-    if response.is_registration:
-        return _("Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS.")
-    else:
-        return _("Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS.")
+    return _("Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS.")
 
 def get_submission_success_message(response):
     datasender = response.reporters[0].get('name').split()[0].capitalize()
@@ -100,14 +101,14 @@ def get_registration_success_message(response):
     datasender = response.reporters[0].get('name').split()[0].capitalize() if len(response.reporters) else ''
     subject_type = response.entity_type[0]
     return _("Thank you %(datasender)s, We registered your %(subject_type)s") % \
-           {'datasender':datasender, 'subject_type':subject_type}
+           {'datasender':datasender, 'subject_type':subject_type.capitalize()}
 
 def get_wrong_number_of_answer_error_message():
-    return _("Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.")
+    return _("Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
 
 
 def get_datasender_not_linked_to_project_error_message():
-    return _("Error. You are not authorized to submit data to this Questionnaire. Please contact your project manager.")
+    return _(NOT_AUTHORIZED_DATASENDER_MSG)
 
 def get_subject_info(response, form_model):
     subject_name = ''

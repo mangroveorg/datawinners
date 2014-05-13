@@ -21,5 +21,5 @@ VALID_DATA2 = {SMS: "cli005 .EID cid004 .NA Mr. O'man .FA 58 .RD 17.05.2011 .BG 
 
 VALID_ORDERED_SMS_DATA = {SMS: "cli005 cid004 O'man 58 17.05.2011 b ade 27.178057,-78.007789",
                           RESPONSE_MESSAGE: (
-                                                THANKS % "Test") + ": (clinic)cid004; O'man; 58; 17.05.2011; O-; Rapid weight loss,Memory loss,Neurological disorders ; 27.178057, -78.007789"}
+                                                THANKS % "Test") + ": Clinic(cid004); O'man; 58; 17.05.2011; O-; Rapid weight loss,Memory loss,Neurological disorders ; 27.178057, -78.007789"}
 SUBJECT_REGISTRATION_VIA_SMS = {SMS: "cli mariestopes madagascar avaradoha -1,-3 261498394"}

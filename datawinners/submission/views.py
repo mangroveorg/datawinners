@@ -11,8 +11,8 @@ from mangrove.transport.contract.request import Request
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.transport.player.player import SMSPlayer
 from django.utils import translation
-from mangrove.form_model.form_model import get_form_model_by_code
-from mangrove.transport.player.parser import SMSParserFactory
+from mangrove.transport.repository.reporters import find_reporter_entity
+from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
 
 from datawinners.accountmanagement.decorators import is_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -24,6 +24,7 @@ from datawinners.submission.organization_finder import OrganizationFinder
 from datawinners.submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor, get_vumi_parameters
 from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsLinkedToProject
+from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsRegistered, PostSMSProcessorCheckLimits
 from datawinners.utils import  get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.feeds.database import get_feeds_db_for_org
@@ -70,9 +71,10 @@ def receipt(request):
 @require_http_methods(['POST'])
 def sms(request):
     message = Responder().respond(request)
+    if not message:
+        return HttpResponse(status=403)
     response = HttpResponse(message)
-    if message:
-        response['X-Vumi-HTTPRelay-Reply'] = 'true'
+    response['X-Vumi-HTTPRelay-Reply'] = 'true'
     response['Content-Length'] = len(response.content)
     return response
 
@@ -103,8 +105,9 @@ def find_dbm(request):
     incoming_request['feeds_dbm'] = get_feeds_db_for_org(organization)
     incoming_request['organization'] = organization
     incoming_request['message_id'] = request.POST.get('message_id')
+    translation.activate(organization.language)
 
-    incoming_request['next_state'] = process_sms_counter
+    incoming_request['next_state'] = check_account_and_datasender
     return incoming_request
 
 
@@ -126,12 +129,12 @@ def find_dbm_for_web_sms(request):
     MangroveWebSMSRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
     incoming_request['organization'] = get_organization(request)
     incoming_request['test_sms_questionnaire'] = True
-    
+
     if is_quota_reached(request, organization=incoming_request.get('organization')):
         incoming_request['outgoing_message'] = ''
         return incoming_request
-    
-    incoming_request['next_state'] = submit_to_player
+
+    incoming_request['next_state'] = check_account_and_datasender
     import logging
 
     websubmission_logger = logging.getLogger("websubmission")
@@ -139,32 +142,34 @@ def find_dbm_for_web_sms(request):
     return incoming_request
 
 
-def process_sms_counter(incoming_request):
+def check_account_and_datasender(incoming_request):
     organization = incoming_request['organization']
 
     if organization.status == 'Deactivated' or organization.is_expired():
         incoming_request['outgoing_message'] = ''
         return incoming_request
 
-    if organization.in_trial_mode:
-        return check_quotas_for_trial(incoming_request)
+    try:
+        reporter_entity = find_reporter_entity(incoming_request.get('dbm'), incoming_request.get('transport_info').source)
+        incoming_request['reporter_entity'] = reporter_entity
+        if organization.in_trial_mode:
+            check_quotas_for_trial(incoming_request)
+    except Exception as e:
+        incoming_request['exception'] = e
 
-    organization.increment_all_message_count()
+    if not incoming_request.get('test_sms_questionnaire'):
+        organization.increment_all_message_count()
+        
     incoming_request['next_state'] = submit_to_player
     return incoming_request
 
 def check_quotas_for_trial(incoming_request):
     organization = incoming_request.get('organization')
-    if organization.has_exceeded_message_limit():
-        organization.increment_message_count_for(outgoing_sms_count=1)
-        return get_translated_response_message(incoming_request,"You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects.")
-
     if organization.has_exceeded_submission_limit():
-        return get_translated_response_message(incoming_request,"You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data.")
+        raise ExceedSubmissionLimitException()
 
-    organization.increment_all_message_count()
-    incoming_request['next_state'] = submit_to_player
-    return incoming_request
+    if organization.has_exceeded_message_limit():
+        raise ExceedSMSLimitException()
 
 def check_quotas_and_update_users(organization, sms_channel=False):
     if organization.in_trial_mode and organization.get_total_submission_count() == NEAR_SUBMISSION_LIMIT_TRIGGER:
@@ -177,15 +182,10 @@ def check_quotas_and_update_users(organization, sms_channel=False):
     if organization.in_trial_mode and organization.get_total_submission_count() == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
         organization.send_mail_to_organization_creator(email_type='reached_submission_limit')
 
-def get_translated_response_message(incoming_request, original_message):
-    message = incoming_request.get('incoming_message')
-    dbm = incoming_request.get('dbm')
-    parser = SMSParserFactory().getSMSParser(message, dbm)
-    parsing_result = parser.parse(message)
-    form_model = get_form_model_by_code(dbm, parsing_result[0])
-    translation.activate(form_model.activeLanguages[0])
-    incoming_request['outgoing_message'] = ugettext(original_message)
-    return incoming_request
+def log_sms_and_increment_counters(incoming_request, log):
+    if log: create_failure_log(incoming_request.get('outgoing_message'), incoming_request)
+    organization = incoming_request.get('organization')
+    organization.increment_message_count_for(outgoing_sms_count=1, incoming_sms_count=1, sms_registration_count=1)
 
 def send_message(incoming_request, response):
     ReportRouter().route(incoming_request['organization'].org_id, response)
@@ -199,16 +199,23 @@ def submit_to_player(incoming_request):
     try:
         dbm = incoming_request['dbm']
         post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request),
-                                      PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request),
-                                      PostSMSProcessorCheckDSIsLinkedToProject(dbm, incoming_request)]
+                                      PostSMSProcessorCheckDSIsRegistered(dbm, incoming_request)]
+        if organization.in_trial_mode:
+            post_sms_parser_processors.append(PostSMSProcessorCheckLimits(dbm, incoming_request))
+
+        post_sms_parser_processors.extend([PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request),
+                                           PostSMSProcessorCheckDSIsLinkedToProject(dbm, incoming_request)])
+        
         sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy),
             post_sms_parser_processors=post_sms_parser_processors, feeds_dbm=incoming_request['feeds_dbm'])
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
 
-        if response.is_registration and not sent_via_sms_test_questionnaire:
-            organization.increment_message_count_for(sms_registration_count=1)
+        if response.is_registration:
+            incoming_request['is_registration'] = True
+            if not sent_via_sms_test_questionnaire:
+                organization.increment_message_count_for(sms_registration_count=1)
 
         if not response.is_registration:
             if sent_via_sms_test_questionnaire:
@@ -219,8 +226,8 @@ def submit_to_player(incoming_request):
         message = SMSResponse(response).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
-        message = ugettext("The Unique ID Number %s is already used for the %s %s. Register your %s with a different ID.") % \
-                  (e.data[1], e.data[2], e.data[3], e.data[2])
+        message = ugettext("Error. %s already exists. Register your %s with a different Identification Number.") % \
+                  (e.data[1], e.data[2].capitalize())
         if not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
 
@@ -247,6 +254,7 @@ def submit_to_player(incoming_request):
             organization.increment_message_count_for(incoming_web_count=1)
         message = handle(exception, incoming_request)
 
+    message = incoming_request.get('error_message', message)
     incoming_request['outgoing_message'] = message
 
     if not sent_via_sms_test_questionnaire:

@@ -20,7 +20,8 @@ class TestOrganizationFinder(TestCase):
     def test_should_return_error_when_datasender_is_not_registered_for_trial_account(self):
         organization,error = OrganizationFinder().find("123", self.trial_number)
         # this organization is created in test data
-        self.assertEqual(u"Sorry, this number 123 is not registered with us.",error)
+        expected = u"Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+        self.assertEqual(expected, error)
 
     def test_should_return_the_same_trial_organization_if_sms_sent_to_any_trial_account_number(self):
         trial_organization1,error1 = OrganizationFinder().find(TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, self.trial_number)

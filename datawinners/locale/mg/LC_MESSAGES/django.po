@@ -1781,7 +1781,7 @@ msgid "This field is required."
 msgstr "Faritra tsy maintsy fenoina."
 
 msgid "Error. Incorrect answer for %s. Please resend entire message."
-msgstr "Diso. Diso ny valiny hoan'i %s. Azafady avereno alefa manontolo ny SMS-nao"
+msgstr "Diso. Diso ny valiny hoan'i %s. Azafady avereno alefa manontolo ny SMS-nao."
 
 msgid"Questionnaire ID %s doesnt exist."
 msgstr "Tsy misy ny kaodin'ny lisitry ny fanontaniana %s"
@@ -1790,15 +1790,14 @@ msgstr "Tsy misy ny kaodin'ny lisitry ny fanontaniana %s"
 msgid "This %s is not yet registered in the system. Please check the %s's unique ID number and resubmit."
 msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny kaody ID ho an'i %s ary avereno alefa ny SMS-nao"
 
-msgid "Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
-msgstr "Diso. Ny %s %s dia mbola tsy ao anaty solosaina. Ampidiro ny %s na antsoy ny tompon’andraikitra."
+msgid "Error. %s is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Diso. Ny %s dia mbola tsy tafiditra. Amarino ny Numero d'Itentification ary avereno alefa ny SMS iray manontolo na antsoy ny mpikarakara ny fanadihadiana"
 
 msgid "This telephone number is not registered in our system."
 msgstr "Tsy mbola tafiditra ao anatin'ny lisitra io nomerao telefaoninao io."
 
-msgid "Your telephone number is not yet registered in our system. Please contact your supervisor."
-msgstr "Tsy mbola tafiditra ao anatin'ny lisitra io nomerao telefaoninao io. Antsoy ny tompon'andraikitra "
-"momba izany azafady."
+msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana."
 
 msgid "Question Code Already Exists"
 msgstr "Efa misy mampiasa io kaodin'ny fanontaniana io"
@@ -1811,7 +1810,7 @@ msgstr "Diso. Tsy tafiditra ny SMS-nao. Jereo ny lisitry ny fanontaniana. Averen
 "sy ny valiny hoan'ny: %s"
 
 msgid "Error. Incorrect answer for t. Please resend entire message."
-msgstr "Diso ny valin'ny fanontaniana t. Avereno alefa manontolo indray ny toromarika sy soratra marina azafady"
+msgstr "Diso ny valin'ny fanontaniana t. Avereno alefa manontolo indray ny toromarika sy soratra marina azafady."
 
 msgid "Invalid message format."
 msgstr "Tsy manara-penitra ny firafitry ny SMS-nao."
@@ -1837,14 +1836,14 @@ msgstr "Diso. Misy olana ara teknika. Azafady antsoy fangalana torohevitra"
 msgid "Terms and Conditions"
 msgstr ""
 
-msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your Questionnaires."
 msgstr "Efa tratra ny fetran'ny SMS-nao, 50 farafahabetsany. Azafady, misorata anarana amin'ny tolotra andoavam-bola mba hahafahanao manohy ny fandefasana SMS."
 
 msgid "Which subject are you reporting on?"
 msgstr ""
 
-msgid "Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
-msgstr "Diso. Tsy ampy na mihoatra ny isan’ny valiny nalefanao. Jereo ilay lisitry ny fanontaniana azafady dia avereno alefa ny SMS manontolo."
+msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
+msgstr "Diso. Isan'ny valin'ny fanontaniana. Amarino ny Lisitry ny fanontaniana an-taratasy ary avereno alefa ny SMS iray manontolo."
 
 msgid "Privacy Policy"
 msgstr ""
@@ -2880,7 +2879,7 @@ msgid "ending_and"
 msgstr "ary"
 
 msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
-msgstr "Diso ny valin’ny %s. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina."
+msgstr "Diso. Valiny diso hoan'ny %s. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."
 
 msgid "sms_glue"
 msgstr " sy "
@@ -2894,7 +2893,7 @@ msgstr "fanontaniana"
 msgid "plural_question"
 msgstr "fanontaniana"
 
-msgid "Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
+msgid "Error.Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
 msgstr "Diso. Diso ny kaodin'ny lisitry ny fanontaniana %s. Avereno vakiana ny taratasy fanoratana anarana dia avereno alefa ny SMS-nao."
 
 msgid "Thank you %(datasender)s. We received your SMS for %(subject_info)s"
@@ -2903,8 +2902,11 @@ msgstr "Misaotra %(datasender)s. Voarainay ny SMS-nao momba ny %(subject_info)s"
 msgid "Thank you %(datasender)s. We received your SMS"
 msgstr "Misaotra %(datasender)s. Voarainay ny SMS-nao"
 
-msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
-msgstr "Nahatratra 1000 ny tatitra maimaimpoana nalefanao.Antsoy ny tompon’andraikitra hisoratra anarana amin’ny tolotra andoavambola hahafahanao manohy mandefa tatitra"
+msgid "You have reached your limit of 1000 free Submissions. Upgrade to a monthly subscription to continue sending in Submissions."
+msgstr "Efa tratra ny fetran'ny fandefasanao maimaimpoana 1000. Azafady, misorata anarana amin'ny tolotra andoavam-bola mba hahafahanao manohy ny fandefasana."
 
-msgid "Error. You are not authorized to submit data to this Questionnaire. Please contact your project manager."
-msgstr "Diso. Tsy afaka mandefa valin'io lisitra fanontaniana io ianao. Azafady ampilazao ny mpitantana tetikasa."
+msgid "more_wrong_question"
+msgstr "ny hafa"
+
+msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
+msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana."

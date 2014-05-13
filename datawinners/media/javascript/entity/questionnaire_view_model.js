@@ -10,7 +10,8 @@ function QuestionnaireViewModel(){
     self.availableLanguages = [
         {name: 'English', code: 'en'},
         {name: 'French', code: 'fr'},
-        {name: 'Malagasy', code: 'mg'}
+        {name: 'Malagasy', code: 'mg'},
+        {name: 'Portuguese', code: 'pt'}
     ];
 
     self.language = ko.observable();

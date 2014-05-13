@@ -19,7 +19,7 @@ THANKS = "Thank you %s. We received your SMS"
 class TestGetExceptionMessageHandler(unittest.TestCase):
     def test_should_return_message_for_exception_for_channel(self):
         message = get_exception_message_for(exception=FormModelDoesNotExistsException("QC1"), channel="sms")
-        expected_message = "Error. Questionnaire Code QC1 is incorrect. Please review the Registration Form and resend entire SMS."
+        expected_message = "Error. Questionnaire Code QC1 is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
         self.assertEqual(expected_message, message)
 
 
@@ -52,7 +52,7 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
 
     def test_should_return_exception_message_for_incorrect_number_of_sms_answers(self):
         message = get_exception_message_for(exception=SMSParserWrongNumberOfAnswersException("form_code"), channel="sms")
-        expected_message = u'Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.'
+        expected_message = u'Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.'
         self.assertEqual(expected_message, message)
 
 
@@ -63,16 +63,19 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
 
     def test_should_format_error_message(self):
         test_data_list = [{"expected_reply": [("en", u"Error. Incorrect answer for question 1. Please review printed Questionnaire and resend entire SMS."),
-                                              ("fr", u"Erreur. Reponse incorrecte pour la question 1. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."),
-                                              ("mg", u"Diso ny valin’ny fanontaniana faha-1. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina.")],
+                                              ("fr", u"Erreur. Reponse incorrecte pour la question 1. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."),
+                                              ("mg", u"Diso. Valiny diso hoan'ny fanontaniana faha-1. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."),
+                                              ("pt", u"Erro. Resposta incorrecta para a pergunta 1. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
                            "errors":{"N": "Some error"}},
                           {"expected_reply": [("en", u"Error. Incorrect answer for question 1 and 2. Please review printed Questionnaire and resend entire SMS."),
-                                              ("fr", u"Erreur. Reponse incorrecte pour les questions 1 et 2. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."),
-                                              ("mg", u"Diso ny valin’ny fanontaniana faha-1 sy faha-2. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina.")],
+                                              ("fr", u"Erreur. Reponse incorrecte pour les questions 1 et 2. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."),
+                                              ("mg", u"Diso. Valiny diso hoan'ny fanontaniana faha-1 sy faha-2. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."),
+                                              ("pt", u"Erro. Resposta incorrecta para a pergunta 1 e 2. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
                            "errors":{"FA": "Some error", "n": "Some other error"}},
                           {"expected_reply": [("en", u"Error. Incorrect answer for question 1, 2 and 3. Please review printed Questionnaire and resend entire SMS."),
-                                              ("fr", u"Erreur. Reponse incorrecte pour les questions 1, 2 et 3. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."),
-                                              ("mg", u"Diso ny valin’ny fanontaniana faha-1 sy faha-2 ary faha-3. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina.")],
+                                              ("fr", u"Erreur. Reponse incorrecte pour les questions 1, 2 et 3. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."),
+                                              ("mg", u"Diso. Valiny diso hoan'ny fanontaniana faha-1 sy faha-2 ary faha-3. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."),
+                                              ("pt", u"Erro. Resposta incorrecta para a pergunta 1, 2 e 3. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
                            "errors": {"Fa": "Some error", "n": "Some other error", "pl":"Sp"}}]
 
         response = Mock()

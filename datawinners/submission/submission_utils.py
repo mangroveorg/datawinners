@@ -1,6 +1,9 @@
 from django.utils import translation
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
+from mangrove.errors.MangroveException import NumberNotRegisteredException
+from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
+from mangrove.errors.MangroveException import DatasenderIsNotLinkedException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
 from mangrove.transport.contract.response import Response
 from mangrove.transport.repository.reporters import find_reporter_entity
@@ -8,6 +11,7 @@ from mangrove.form_model.form_model import EntityFormModel
 
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
 from datawinners.messageprovider.messages import get_datasender_not_linked_to_project_error_message
+from datawinners.messageprovider.handlers import create_failure_log
 from datawinners.project.models import Project
 
 
@@ -19,7 +23,10 @@ class PostSMSProcessorLanguageActivator(object):
     def process(self, form_code, submission_values):
         self.request[FORM_CODE] = form_code
         form_model = get_form_model_by_code(self.dbm, form_code)
-        translation.activate(form_model.activeLanguages[0])
+        if not isinstance(form_model, EntityFormModel):
+            translation.activate(form_model.activeLanguages[0])
+        else:
+            self.request['is_registration'] = True
 
 
 class PostSMSProcessorNumberOfAnswersValidators(object):
@@ -28,15 +35,12 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
         self.request = request
 
     def process(self, form_code, submission_values, extra_data=[]):
-        if len(extra_data):
-            return self._get_wrong_number_of_question_response()
         form_model = get_form_model_by_code(self.dbm, form_code)
 
         processor_func = self._get_handlers(form_model)
         response = processor_func(form_model, submission_values)
-        if response and not response.success:
-            raise SMSParserWrongNumberOfAnswersException(form_code)
-        return response
+        if len(extra_data) or (response and not response.success):
+            self.request['exception'] = SMSParserWrongNumberOfAnswersException(form_code)
 
 
 
@@ -101,9 +105,45 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
 
     def process(self, form_code, submission_values):
         form_model = get_form_model_by_code(self.dbm, form_code)
-        reporter_entity = find_reporter_entity(self.dbm, self.request.get('transport_info').source)
+        reporter_entity = self.request.get('reporter_entity')
+
         if reporter_entity.short_code == "test" or \
-           isinstance(form_model, EntityFormModel) or \
-           reporter_entity.short_code in Project.from_form_model(form_model).data_senders:
+            isinstance(form_model, EntityFormModel) or \
+            reporter_entity.short_code in Project.from_form_model(form_model).data_senders:
+            self.check_answers_numbers()
             return None
+        
+        self.check_answers_numbers(linked_datasender=False)
         return self._get_response()
+
+    def check_answers_numbers(self, linked_datasender=True):
+        exception = self.request.get('exception', False)
+        if exception and isinstance(exception, SMSParserWrongNumberOfAnswersException):
+            if linked_datasender:
+                raise exception
+            raise DatasenderIsNotLinkedException()
+
+class PostSMSProcessorCheckDSIsRegistered(object):
+
+    def __init__(self, dbm, request):
+        self.dbm = dbm
+        self.request = request
+
+    def process(self, form_code, submission_values):
+        exception = self.request.get('exception')
+        if exception and isinstance(exception, NumberNotRegisteredException):
+            raise exception
+
+class PostSMSProcessorCheckLimits(object):
+
+    def __init__(self, dbm, request):
+        self.dbm = dbm
+        self.request = request
+
+    def process(self, form_code, submission_values):
+        exception = self.request.get('exception')
+        form_model = get_form_model_by_code(self.dbm, form_code)
+        if exception and (isinstance(exception, ExceedSubmissionLimitException) or isinstance(exception, ExceedSMSLimitException)):
+            if not self.request.get('organization').has_exceeded_message_limit() and isinstance(form_model, EntityFormModel):
+                return
+            raise exception
