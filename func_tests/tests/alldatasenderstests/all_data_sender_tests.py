@@ -278,27 +278,27 @@ class TestAllDataSenders(HeadlessRunnerTest):
         project_id = project_overview_page.get_project_id()
 
         all_datasender_page = global_navigation.navigate_to_all_data_sender_page()
-        all_datasender_page.search_with('rep10')
-        all_datasender_page.select_a_data_sender_by_id('rep10')
-        all_datasender_page.associate_datasender_to_projects('rep10',[project_name])
+        all_datasender_page.search_with(self.datasender_id_with_web_access)
+        all_datasender_page.select_a_data_sender_by_id(self.datasender_id_with_web_access)
+        all_datasender_page.associate_datasender_to_projects(self.datasender_id_with_web_access,[project_name])
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
 
-        self.assertIn(project_name, all_datasender_page.get_project_names('rep10'))
+        self.assertIn(project_name, all_datasender_page.get_project_names(self.datasender_id_with_web_access))
 
         all_projects_page = global_navigation.navigate_to_view_all_project_page()
         all_projects_page.delete_project(project_name)
 
         all_datasender_page = global_navigation.navigate_to_all_data_sender_page()
-        all_datasender_page.search_with('rep10')
-        all_datasender_page.select_a_data_sender_by_id('rep10')
+        all_datasender_page.search_with(self.datasender_id_with_web_access)
+        all_datasender_page.select_a_data_sender_by_id(self.datasender_id_with_web_access)
 
-        self.assertNotIn(project_name, all_datasender_page.get_project_names('rep10'))
+        self.assertNotIn(project_name, all_datasender_page.get_project_names(self.datasender_id_with_web_access))
 
         #undelete project
         self.driver.go_to(UNDELETE_PROJECT_URL%project_id)
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
 
-        all_datasender_page.search_with('rep10')
-        all_datasender_page.select_a_data_sender_by_id('rep10')
+        all_datasender_page.search_with(self.datasender_id_with_web_access)
+        all_datasender_page.select_a_data_sender_by_id(self.datasender_id_with_web_access)
 
-        self.assertIn(project_name, all_datasender_page.get_project_names('rep10'))
+        self.assertIn(project_name, all_datasender_page.get_project_names(self.datasender_id_with_web_access))
