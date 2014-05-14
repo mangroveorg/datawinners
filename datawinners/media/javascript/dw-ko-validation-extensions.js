@@ -53,7 +53,7 @@ DW.ko = {
         },
         alphaNumericValidator: function(observable, trimBeforeCheck){
             var str = trimBeforeCheck ? (observable() + "").trim() : observable() + "";
-            if(str.match(/[0-9a-z]+/i))
+            if(str.match(/^[0-9a-zA-Z]+$/))
                 observable.clearError();
              else
                 observable.setError(gettext("Only letters and digits are valid"));

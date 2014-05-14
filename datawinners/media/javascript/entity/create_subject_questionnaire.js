@@ -22,6 +22,7 @@ DW.post_subject_data = function(){
 
             questionnaireViewModel.set_all_questions_as_old_questions();
             questionnaireViewModel.selectedQuestion.valueHasMutated();
+
             questionnaireViewModel.questions.valueHasMutated();
             flash_message[0].focus();
             flash_message[0].scrollIntoView();
