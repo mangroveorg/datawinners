@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
 import os
+from string import lower
 import unittest
 import time
 
