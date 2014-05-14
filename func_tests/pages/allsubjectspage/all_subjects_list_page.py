@@ -41,7 +41,9 @@ class AllSubjectsListPage(Page):
         return AddSubjectPage(self.driver)
 
     def select_subject_by_id(self, subject_id):
-        self.driver.find(by_css("input[value=%s]" % subject_id)).click()
+        selector = by_css("input[value=%s]" % subject_id)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, selector, True)
+        self.driver.find(selector).click()
 
     def _select_subject_action(self):
         action_buttons = self.driver.find_elements_(by_css(".action"))
