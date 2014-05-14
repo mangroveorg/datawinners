@@ -92,9 +92,7 @@ fieldset {
   }
   .project_title {
     font-size: 30px;
-    &:first-letter {
-      text-transform: uppercase;
-    }
+    text-transform: capitalize;
   }
 }
 
