@@ -54,6 +54,7 @@
       .editFieldWrapper {
         .editFieldSaveControllers {
           display: inline;
+          text-transform: none;
           button {
             @extend .button;
             height: auto;
