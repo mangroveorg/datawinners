@@ -51,7 +51,7 @@ class ProjectsPage(Page):
     def delete_project(self, project_name):
         project_rows = self.driver.find_elements_(by_css(".all_projects tbody tr"))
         for row in project_rows:
-            if project_name == lower(row.find_element_by_class_name('project-id-class').text):
+            if project_name == row.find_element_by_class_name('project-id-class').text:
                 row.find_element_by_class_name('delete_project').click()
                 self.driver.find(by_css('a#confirm_delete')).click()
                 return
