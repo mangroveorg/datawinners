@@ -406,6 +406,7 @@ DW.question.prototype = {
                 return;
 
             DW.ko.mandatoryValidator(this.uniqueIdType);
+            DW.set_questionnaire_was_change();
         }, this);
 
     }
@@ -589,7 +590,7 @@ DW.set_questionnaire_was_change = function () {
 
 $(document).ready(function () {
     //TODO: Move to KO viewModel
-    var change_selector = "#range_min, #range_max, #max_length, [name='text_length'], [name='date_format'], #question_title";
+    var change_selector = "#range_min, #range_max, #max_length, [name='text_length'], [name='date_format'], #qustion_title";
     change_selector += ", [name='answer_type'], [name='project_language'], #questionnaire_title, #questionnaire-code";
 
     $(document).on('change', change_selector, DW.set_questionnaire_was_change);
