@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from string import lower
 from pages.createprojectpage.questionnaire_creation_options_page import QuestionnaireCreationOptionsPage
 from pages.lightbox.light_box_page import LightBox
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
@@ -44,13 +45,13 @@ class ProjectsPage(Page):
 
     def is_project_present(self, project_name):
         all_project_elements = self.driver.find_elements_(by_css(".all_projects tbody tr td a"))
-        all_project_names = [element.text for element in all_project_elements]
+        all_project_names = [lower(element.text) for element in all_project_elements]
         return project_name in all_project_names
 
     def delete_project(self, project_name):
         project_rows = self.driver.find_elements_(by_css(".all_projects tbody tr"))
         for row in project_rows:
-            if project_name == row.find_element_by_class_name('project-id-class').text:
+            if project_name == lower(row.find_element_by_class_name('project-id-class').text):
                 row.find_element_by_class_name('delete_project').click()
                 self.driver.find(by_css('a#confirm_delete')).click()
                 return
