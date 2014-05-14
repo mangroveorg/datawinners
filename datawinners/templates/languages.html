@@ -14,7 +14,16 @@
     {{ block.super }}
     <script type="text/javascript">
     var languages = {{ available_languages|safe }};
-    var current_language = "{{ current_language }}"
+    var current_language = "{{ current_language }}";
+    $(function(){
+        $.getJSON("/languages/custom_messages").success(function(data){
+           languageViewModel.customizedMessages(data)
+        });
+        $(".save").click(function(){
+            DW.loading();
+            $.post('/languages/custom_messages', {'data':JSON.stringify(ko.toJS(languageViewModel))});
+        });
+    });
     </script>
     <script type="text/javascript" src="/media/javascript/common/lang/language_view_model.js"></script>
 {% endblock %}
@@ -36,5 +45,14 @@
                 class="dropdown_style"></select>
 
     </div>
-
+    <div class="clear"></div>
+    <br/>
+    <div>
+        <ol data-bind="foreach: languageViewModel.customizedMessages">
+            <strong><li data-bind="text: $data.title"></li></strong>
+            <textarea rows="3" cols="80" data-bind="value:$data.message" style="width: auto"></textarea>
+        </ol>
+    </div>
+    <br/>
+    <div><a class="button save">{% trans "Save" %}</a></div>
 {% endblock %}
