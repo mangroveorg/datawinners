@@ -1320,7 +1320,8 @@ span.tooltip {
   font-size: 14px;
   line-height: 18px;
   font-style: italic;
-  color: #888888; }
+  color: #888888;
+  text-align: justify; }
   .help_accordion h2, .dataTables_empty h2 {
     margin: 10px 0 0 0;
     font-size: 14px; }
