@@ -4823,3 +4823,6 @@ msgstr "Les Expéditeurs de Données doivent utiliser les Numéros d'Identificat
 
 msgid "Sorry, this number has already been used for a different DataWinners Basic account."
 msgstr "Désolé. Ce numéro est déjà utilisé dans un autre compte Basique DataWinners."
+
+msgid "Answer must be the Identification Number of the %s you are reporting on."
+msgstr "La réponse doit être le Numéro d’identification du %s sur lequel votre rapport porte."

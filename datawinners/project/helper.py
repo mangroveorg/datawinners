@@ -106,9 +106,6 @@ def get_preview_for_field(field):
     return preview
 
 def _get_instruction_text(field):
-    if field.type == 'unique_id':
-        instruction_prefix = field.instruction.split(" %s" % field.unique_id_type)[0]
-        return ugettext(instruction_prefix + " %s") % field.unique_id_type
     return field.instruction
 
 def delete_project(manager, questionnaire, void=True):
