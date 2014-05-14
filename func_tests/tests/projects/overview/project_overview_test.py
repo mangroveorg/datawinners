@@ -45,7 +45,7 @@ class TestProjectOverview(HeadlessRunnerTest):
         self.driver.find(by_css(".project_title .editFieldSaveControllers button")).click()
         WebDriverWait(self.driver._driver, UI_TEST_TIMEOUT).until_not(lambda driver: driver.find_elements_by_css_selector('.editFieldSaveControllers button'))
         self.driver.go_to(url("/project/registered_datasenders/%s/" % project_id))
-        self.assertTrue(self.driver.find(by_css(".project_title")).text.startswith("renamed"), self.driver.find(by_css(".project_title")).text)
+        self.assertTrue(self.driver.find(by_css(".project_title")).text.startswith("Renamed"), self.driver.find(by_css(".project_title")).text)
 
     def enter_project_name_and_validate_error_msg(self, project_name_text, message):
         self.driver.find_text_box(by_css(".project_title input.editField")).enter_text(project_name_text)

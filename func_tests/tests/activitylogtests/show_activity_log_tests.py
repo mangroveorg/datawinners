@@ -48,7 +48,7 @@ class TestShowActivityLog(HeadlessRunnerTest):
         activity_log_page.select_filter("Project", "Created Project")
         time.sleep(3)
         for i in range(1, 10):
-            if activity_log_page.get_data_on_cell(i, 3).lower() == self.project_title:
+            if activity_log_page.get_data_on_cell(i, 3).lower() == self.project_title.lower():
                 row_index = i
                 break;
         self.assertTrue(row_index >= 0, "Project title not found in activity log")
