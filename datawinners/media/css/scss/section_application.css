@@ -589,7 +589,8 @@ form div.action-section {
       width: 500px;
       text-transform: capitalize; }
       #container_content #page_title span.project_title .editFieldWrapper .editFieldSaveControllers, #container_wizard #page_title span.project_title .editFieldWrapper .editFieldSaveControllers {
-        display: inline; }
+        display: inline;
+        text-transform: none; }
         #container_content #page_title span.project_title .editFieldWrapper .editFieldSaveControllers button, #container_wizard #page_title span.project_title .editFieldWrapper .editFieldSaveControllers button {
           height: auto;
           padding: 0px 8px;

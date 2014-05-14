@@ -210,7 +210,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
 
         edit_datasender_page.navigate_to_datasender_page()
         all_data_sender_page = AllDataSendersPage(self.driver)
-        all_data_sender_page.associate_datasender_to_projects(rep_id, [self.project_name])
+        all_data_sender_page.associate_datasender_to_projects(rep_id, [lower(self.project_name)])
         return email
 
     def verify_admin_present_in_my_datasenders_page(self):

@@ -30,7 +30,7 @@ class ProjectsPage(Page):
 
         Return project overview page
          """
-        project_link = by_xpath(PROJECT_LINK_XPATH % project_name.lower())
+        project_link = by_xpath(PROJECT_LINK_XPATH % lower(project_name))
         self.driver.wait_for_element(UI_TEST_TIMEOUT, project_link, True)
         self.driver.find(project_link).click()
         return ProjectOverviewPage(self.driver)
@@ -45,7 +45,7 @@ class ProjectsPage(Page):
 
     def is_project_present(self, project_name):
         all_project_elements = self.driver.find_elements_(by_css(".all_projects tbody tr td a"))
-        all_project_names = [lower(element.text) for element in all_project_elements]
+        all_project_names = [element.text for element in all_project_elements]
         return project_name in all_project_names
 
     def delete_project(self, project_name):
