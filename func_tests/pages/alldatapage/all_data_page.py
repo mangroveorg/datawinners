@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from string import lower
 from framework.utils.common_utils import by_xpath, by_css
 import pages
 from pages.alldatapage.all_data_locator import *
@@ -28,7 +29,7 @@ class AllDataPage(Page):
 
         Return Data Analysis page
          """
-        self.driver.find(by_xpath(ANALYSIS_LINK_XPATH % project_name)).click()
+        self.driver.find(by_xpath(ANALYSIS_LINK_XPATH % lower(project_name))).click()
         return DataAnalysisPage(self.driver)
 
     def navigate_to_web_submission_page(self, project_name):
