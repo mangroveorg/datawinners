@@ -23,6 +23,7 @@ function ProjectQuestionnaireViewModel() {
     };
 
     self.newUniqueIdType = DW.ko.createValidatableObservable();
+    self.newUniqueIdType.subscribe(DW.set_questionnaire_was_change);
     self.uniqueIdButtonText = ko.observable(gettext("Add"));
 
     self.addNewUniqueIdType = function () {
