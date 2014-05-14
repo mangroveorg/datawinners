@@ -55,8 +55,7 @@ def create_questionnaire(post, manager, name, language, reporter_id):
     return questionnaire
 
 
-def update_questionnaire(questionnaire, post, name, manager, language):
-    questionnaire.name = name
+def update_questionnaire(questionnaire, post, manager, language):
     questionnaire.activeLanguages = [language]
     questionnaire.form_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
@@ -183,11 +182,13 @@ def edit_project(request, project_id):
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
         detail = _get_changed_data(questionnaire , project_info)
+        if detail.get("Name"):
+            detail.pop("Name")
         try:
             old_fields = questionnaire.fields
             old_form_code = questionnaire.form_code
             old_field_codes = questionnaire.field_codes()
-            questionnaire = update_questionnaire(questionnaire, request.POST, project_info.get('name'), manager,
+            questionnaire = update_questionnaire(questionnaire, request.POST, manager,
                                                  project_info.get('language'))
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
