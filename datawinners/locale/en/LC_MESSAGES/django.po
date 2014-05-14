@@ -4538,3 +4538,9 @@ msgstr "other questions"
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
 msgstr ""
+
+msgid "Sorry, this number has already been used for a different DataWinners Basic account."
+msgstr ""
+
+msgid "Answer must be the Identification Number of the %s you are reporting on."
+msgstr ""

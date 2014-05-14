@@ -4825,3 +4825,9 @@ msgstr "les autres"
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
 msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
+
+msgid "Sorry, this number has already been used for a different DataWinners Basic account."
+msgstr "Désolé. Ce numéro est déjà utilisé dans un autre compte Basique DataWinners."
+
+msgid "Answer must be the Identification Number of the %s you are reporting on."
+msgstr "La réponse doit être le Numéro d’identification du %s sur lequel votre rapport porte."
