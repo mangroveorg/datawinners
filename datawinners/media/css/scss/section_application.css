@@ -586,9 +586,8 @@ form div.action-section {
     font-weight: bold; }
     #container_content #page_title span.project_title, #container_wizard #page_title span.project_title {
       font-size: 22px;
-      width: 500px; }
-      #container_content #page_title span.project_title:first-letter, #container_wizard #page_title span.project_title:first-letter {
-        text-transform: uppercase; }
+      width: 500px;
+      text-transform: capitalize; }
       #container_content #page_title span.project_title .editFieldWrapper .editFieldSaveControllers, #container_wizard #page_title span.project_title .editFieldWrapper .editFieldSaveControllers {
         display: inline; }
         #container_content #page_title span.project_title .editFieldWrapper .editFieldSaveControllers button, #container_wizard #page_title span.project_title .editFieldWrapper .editFieldSaveControllers button {
@@ -675,3 +674,6 @@ table.error_table td {
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
     border-right: 6px solid #C20303; }
+
+.project-id-class {
+  text-transform: capitalize; }
