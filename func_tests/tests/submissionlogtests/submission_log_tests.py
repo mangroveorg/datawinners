@@ -161,7 +161,6 @@ class TestSubmissionLog(HeadlessRunnerTest):
 
         self.driver.go_to(url("/entity/subjects/clinic/"))
         subject_list_page = AllSubjectsListPage(self.driver)
-        self.driver.create_screenshot("subject_info_edit.png")
         subject_list_page.select_subject_by_id(subject_short_code)
         edit_subject_page = subject_list_page.click_edit_action_button()
         edit_subject_page.add_subject_with(VALID_DATA_FOR_EDIT)
@@ -187,6 +186,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
         send_valid_sms_with(SMS_WEB_SUBMISSION)
 
         submission_log_page = self.go_to_submission_log_page()
+        submission_log_page.wait_for_table_data_to_load()
 
         datasender_name = 'Tester'
         submission_log_page.filter_by_datasender(datasender_name)
