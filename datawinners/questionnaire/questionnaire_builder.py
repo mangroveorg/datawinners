@@ -156,8 +156,7 @@ class QuestionBuilder(object):
         return UniqueIdField(unique_id_type=self._get_unique_id_type(post_dict), name=self._get_name(post_dict),
                              code=code,
                              label=post_dict["title"],
-                             instruction=ugettext(
-                                 "Enter the Unique Id of the %s" % self._get_unique_id_type(post_dict)))
+                             instruction=ugettext("Answer must be the Identification Number of the %s you are reporting on.") % self._get_unique_id_type(post_dict))
 
     def _create_short_code_field(self, post_dict, code):
         return ShortCodeField(name=self._get_name(post_dict), code=code,
