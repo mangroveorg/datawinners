@@ -20,7 +20,7 @@ class AllDataPage(Page):
 
         Return All Data Records page
          """
-        self.driver.find(by_xpath(All_DATA_RECORDS_LINK_XPATH % project_name)).click()
+        self.driver.find(by_xpath(All_DATA_RECORDS_LINK_XPATH % lower(project_name))).click()
         return SubmissionLogPage(self.driver)
 
     def navigate_to_data_analysis_page(self, project_name):

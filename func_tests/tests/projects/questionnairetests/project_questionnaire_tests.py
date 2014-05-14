@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from string import lower
 import unittest
 from django.utils.unittest.case import SkipTest
 
@@ -65,7 +66,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self.assertEqual(questionnaire_tab_page.get_select_or_edit_question_message(),
                          "Add or edit a question",
                          "No question should be selected by default")
-        self.assertIn(EDIT_PROJECT_DATA[PROJECT_NAME], questionnaire_tab_page.get_questionnaire_title())
+        self.assertIn(EDIT_PROJECT_DATA[PROJECT_NAME], lower(questionnaire_tab_page.get_questionnaire_title()))
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(),
                          len(EDIT_PROJECT_QUESTIONNAIRE_DATA[QUESTIONS]), "Question count does not match")
         expected_existing_questions = [question[QUESTION] for question in EDIT_PROJECT_QUESTIONNAIRE_DATA[QUESTIONS]]
