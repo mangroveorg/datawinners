@@ -55,7 +55,7 @@ class TestAllUsers(HeadlessRunnerTest):
         self.send_submission(questionnaire_code)
         self.delete_user(NEW_USER_DATA[USERNAME])
         self.check_sent_submission(project_name)
-        self.check_deleted_user_name_on_activity_log_page(project_name)
+        self.check_deleted_user_name_on_activity_log_page(project_name.lower())
 
     def send_submission(self, questionnaire_code):
         self.driver.execute_script("window.open('%s')" % DATA_WINNER_SMS_TESTER_PAGE)
