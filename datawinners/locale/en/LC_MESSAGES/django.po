@@ -4544,3 +4544,6 @@ msgstr ""
 
 msgid "Answer must be the Identification Number of the %s you are reporting on."
 msgstr ""
+
+msgid "The unique ID %s of the %s does not match with any existing Identification number. Please correct and import again."
+msgstr ""

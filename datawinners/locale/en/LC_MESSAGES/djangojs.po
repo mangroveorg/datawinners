@@ -1104,3 +1104,6 @@ msgstr ""
 
 msgid "Adding..."
 msgstr ""
+
+msgid "Row Number"
+msgstr ""

@@ -4831,3 +4831,6 @@ msgstr "Désolé. Ce numéro est déjà utilisé dans un autre compte Basique Da
 
 msgid "Answer must be the Identification Number of the %s you are reporting on."
 msgstr "La réponse doit être le Numéro d’identification du %s sur lequel votre rapport porte."
+
+msgid "The unique ID %s of the %s does not match with any existing Identification number. Please correct and import again."
+msgstr "L'ID unique %s du/de la %s ne correspond à aucun Numéro d'Identification existant. Veuillez corriger et importer une nouvelle fois."

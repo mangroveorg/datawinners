@@ -158,7 +158,7 @@ DW.SubmissionFileUploader = function(options){
     };
 
     var _createErrorHeader = function() {
-        return '<thead><tr><th>Row Number</th><th>Details</th></tr></thead>';
+        return '<thead><tr><th>'+gettext("Row Number")+'</th><th>Details</th></tr></thead>';
     }
 
     function _updateMessages(responseJSON) {
