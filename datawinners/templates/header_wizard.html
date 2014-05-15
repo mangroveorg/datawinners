@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load field_tags %}
 <div id="container_header_wizard" >
     <div class="container_24" id="header_wizard">
         <div id="header" class="grid_24">
@@ -10,8 +11,8 @@
                         <span><a href="{% url accountmanagement.views.settings %}" class="{{ disable_link_class }} account">{% trans "wizard_account" %}</a></span>
                     {% endif %}
                     <span>  <a href="{{ support_help_link }}" target="_blank">{% trans 'Help' %}</a> </span>
-                    <span>  <a href="{% url datawinners.home.views.switch_language "fr" %}">Fran&ccedil;ais</a> </span>
-                    <span>  <a href="{% url datawinners.home.views.switch_language "en" %}">English</a> </span>
+                    <span>  <a href="{% url datawinners.home.views.switch_language "fr" %}" >{{ "Fran&ccedil;ais"|active_language }}</a> </span>
+                    <span>  <a href="{% url datawinners.home.views.switch_language "en" %}">{{ "English"|active_language }}</a> </span>
                     <span>  <a href="{% url django.contrib.auth.views.logout %}">{% trans "Sign out" %}</a> </span>
                 </div>
             {% else %}
