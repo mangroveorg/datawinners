@@ -8,7 +8,7 @@ class CustomizedMessages(DocumentBase):
     messages = DictField()
     language_name = TextField()
 
-    def __init__(self, lang_code,language, messages):
+    def __init__(self, lang_code, language, messages):
         DocumentBase.__init__(self, document_type='CustomizedMessage')
         self._id = lang_code
         self.language_name = language
@@ -27,11 +27,11 @@ def get_message(dbm, lang, code, context={}):
     return render_text(template, context)
 
 
-def save_messages(dbm, lang_code, language ,value_dict):
+def save_messages(dbm, lang_code, value_dict, language=None):
     message = dbm.database.get(lang_code)
     if message:
         message["messages"] = value_dict
         dbm.database.update([message])
     else:
-        message = CustomizedMessages(lang_code,language, value_dict)
+        message = CustomizedMessages(lang_code, language, value_dict)
         dbm._save_document(message)

@@ -14,11 +14,8 @@
     {{ block.super }}
     <script type="text/javascript">
     var languages = {{ available_languages|safe }};
-    var current_language = "{{ current_language }}";
+    var current_language = "{{ current_language|safe }}";
     $(function(){
-        $.getJSON("/languages/custom_messages").success(function(data){
-           languageViewModel.customizedMessages(data)
-        });
         $(".save").click(function(){
             DW.loading();
             $.post('/languages/custom_messages', {'data':JSON.stringify(ko.toJS(languageViewModel))});
@@ -41,7 +38,7 @@
     <div style="padding-top: 12px">
         <strong>{% trans "Languages for SMS Reply Messages" %}</strong>
         <select id="language" name="language_option" style="display: block"
-                data-bind="options: languageViewModel.availableLanguages,value: language"
+                data-bind="options: languageViewModel.availableLanguages,optionsText:'name',optionsValue:'code', value:language"
                 class="dropdown_style"></select>
 
     </div>

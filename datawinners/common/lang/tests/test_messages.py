@@ -14,7 +14,7 @@ class TestCustomizedMessages(unittest.TestCase):
         cls.dbm._delete_document(cls.dbm.database.get('en'))
 
     def test_message_save(self):
-        save_messages(self.dbm, "en", "English",{"err1":"Invalid submission","err2":"Invalid submission2"})
+        save_messages(self.dbm, "en", {"err1":"Invalid submission","err2":"Invalid submission2"},"English")
         msg = get_message(self.dbm, "en", "err1")
         self.assertEqual("Invalid submission", msg)
         self.check_update_message()
@@ -25,6 +25,6 @@ class TestCustomizedMessages(unittest.TestCase):
         self.assertEqual("Error", get_message(self.dbm, "en", "Error"))
 
     def check_update_message(self):
-        save_messages(self.dbm, "en", "English",{"err1": "New Error Message."})
+        save_messages(self.dbm, "en", {"err1": "New Error Message."},"English")
         msg = get_message(self.dbm, "en", "err1")
         self.assertEqual("New Error Message.", msg)
