@@ -1169,3 +1169,6 @@ msgstr "En cours..."
 
 msgid "Learn More About Identification Numbers"
 msgstr "En savoir plus sur les Numéros d'Identification"
+
+msgid "Row Number"
+msgstr "Numéro de ligne"
