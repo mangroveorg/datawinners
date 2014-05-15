@@ -142,9 +142,6 @@ class ReporterRegistrationForm(Form):
             if datasender_filter.exclude(organization=organization).exists():
                 self._errors['telephone_number'] = self.error_class(
                     [_(u"Sorry, this number has already been used for a different DataWinners basic account.")])
-            if datasender_filter.exists():
-                self._errors['telephone_number'] = self.error_class(
-                [_(u'Sorry, the telephone number %s has already been registered.') %mobile_number])
         return mobile_number
 
 
