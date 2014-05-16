@@ -388,7 +388,7 @@ span .error_arrow label, div.error_arrow label, label.error_arrow label {
   width: 170px; }
 
 /*Form elements without form tag*/
-input[type=text], textarea {
+input[type=text] {
   width: 350px;
   height: 25px;
   border-color: #646464 #ebebeb #ebebeb #646464; }
@@ -415,7 +415,8 @@ a:hover {
 textarea {
   width: 350px;
   height: 100px;
-  border-color: #646464 #ebebeb #ebebeb #646464; }
+  border-color: #646464 #ebebeb #ebebeb #646464;
+  border-style: solid; }
 
 label {
   font-size: 14px;

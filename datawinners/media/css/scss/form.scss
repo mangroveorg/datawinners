@@ -219,7 +219,7 @@ span .error_arrow,div.error_arrow, label.error_arrow{
 }
 
 /*Form elements without form tag*/
-input[type=text], textarea{
+input[type=text]{
     width:$text_box_width;
     height:25px;
     border-color:$border_color;
@@ -252,6 +252,7 @@ textarea{
     width:$text_box_width;
     height:100px;
     border-color:$border_color;
+    border-style: solid;
 }
 label{
     font-size:14px;
