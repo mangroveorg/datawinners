@@ -1,4 +1,5 @@
 from unittest import TestCase
+from mangrove.datastore.documents import EntityDocument
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.bootstrap import initializer
 from mangrove.datastore.database import _delete_db_and_remove_db_manager, get_db_manager
@@ -11,10 +12,12 @@ from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.tests.test_data_utils import register
 from mangrove.utils.test_utils.database_utils import uniq
 from mangrove.datastore.cache_manager import get_cache_manager
+import datawinners.search.datasender_index as unused
 
 class TestDataSenderHelper(TestCase):
     @classmethod
     def setUpClass(cls):
+        EntityDocument.registered_functions=[]
         database_name = uniq('mangrove-test')
         cls.manager = get_db_manager('http://localhost:5984/', database_name)
         _delete_db_and_remove_db_manager(cls.manager)
