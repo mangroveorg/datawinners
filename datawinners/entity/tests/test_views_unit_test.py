@@ -288,7 +288,7 @@ class TestView(TestCase):
                         u'fac7': OrderedDict([('q2', u'Patrick'), ('q7', datetime.datetime(2002, 3, 25, 0, 0)), ('q6', u'fac7')])}
         
         formated_data = _format_imported_subjects_datetime_field_to_str(form_model, subjects_data)
-        expected_data = [[u'Safidy', '10-10-2010', u'fac8'], [u'Emission', '26-06-1947', u'fac9'], [u'Patrick', '25-03-2002', u'fac7']]
+        expected_data = [[u'Safidy', '10-10-2010', u'fac8'], [u'Emission', '26-6-1947', u'fac9'], [u'Patrick', '25-3-2002', u'fac7']]
         self.assertEqual(expected_data, formated_data)
         
 
