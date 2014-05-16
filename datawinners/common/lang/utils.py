@@ -1,5 +1,7 @@
 from collections import OrderedDict
+from django.utils import translation
 from django.utils.translation import ugettext as _
+from datawinners.common.lang.messages import CustomizedMessages
 
 
 TITLE_REPLY_MESSAGE_CODE_MAP = OrderedDict([("reply_success_submission", "Successful Submission"),
@@ -9,6 +11,10 @@ TITLE_REPLY_MESSAGE_CODE_MAP = OrderedDict([("reply_success_submission", "Succes
                                              "Identification Number not Registered"),
                                             ("reply_ds_not_authorized",
                                              "Data Sender not Authorized to Submit Data to this Questionnaire")])
+
+languages = {"en": "English", "fr": "French"}
+error_message_codes = ["reply_success_submission", "reply_incorrect_answers", "reply_incorrect_number_of_responses",
+                       "reply_identification_number_not_registered", "reply_ds_not_authorized"]
 
 
 def customized_message_details(dbm, language):
@@ -22,3 +28,18 @@ def customized_message_details(dbm, language):
         reply_list.append(details_dict)
     return reply_list
 
+
+def create_custom_message_templates(dbm):
+    for code, lang in languages.iteritems():
+        translation.activate(code)
+        messages = OrderedDict()
+        messages.update({error_message_codes[0]: _("Thank you {Name of Data Sender}. We received your SMS: {List of Answers}")})
+        messages.update({error_message_codes[1]:
+                             _("Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.")})
+        messages.update({error_message_codes[2]: _("Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")})
+        messages.update({error_message_codes[3]: _("Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")})
+        messages.update(
+            {error_message_codes[4]: _("You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")})
+
+        customized_message = CustomizedMessages(code, lang, messages)
+        dbm._save_document(customized_message)
