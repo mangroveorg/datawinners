@@ -344,10 +344,10 @@ def _format_imported_subjects_datetime_field_to_str(form_model, short_code_subje
     for subject_detail_dict in short_code_subject_details_dict.values():
         value = subject_detail_dict.values()
         for index in datetime_fields:
-            value[index] = value[index].strftime("%d-%m-%Y")
+            value[index] = "%s-%s-%s" %(value[index].day,value[index].month,value[index].year) #strftime doesn't work for year<1900
         subject_details.append(value)
     return subject_details
-    
+
 
 def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, form_code, org_number,
                        form_model_fields, is_update=False, back_link=None, web_view=False):
