@@ -15,7 +15,7 @@ from mangrove.transport.repository.survey_responses import get_survey_responses
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.request import Request
 
-from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.scheduler.smsclient import SMSClient
 from datawinners.sms.models import MSG_TYPE_USER_MSG
 import models
@@ -137,7 +137,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
     for data_sender in data_senders:
         phone_number = data_sender.get(
             'mobile_number') #This should not be a dictionary but the API in import_data should be fixed to return entity
-        if phone_number is not None:
+        if phone_number is not None and phone_number != TEST_REPORTER_MOBILE_NUMBER:
             logger.info(("Sending broadcast message to %s from %s") % (phone_number, organization_tel_number))
             sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message, MSG_TYPE_USER_MSG)
         if sms_sent:
