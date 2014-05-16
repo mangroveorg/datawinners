@@ -6,9 +6,16 @@ $(document).ready(function () {
         self.customizedMessages = ko.observableArray();
         self.language.subscribe(function () {
             $.getJSON("/languages/custom_messages", {'language': languageViewModel.language()}).success(function (data) {
-                languageViewModel.customizedMessages(data)
+                for (var i in data) {
+                    var messageItem = DW.ko.createValidatableObservable({value:data[i].message});
+                    var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem };
+                    messageItem.subscribe(function () {
+                        DW.ko.mandatoryValidator(this.message,gettext("Enter reply SMS text."));
+                    }, customized_message_item);
+                    languageViewModel.customizedMessages.push(customized_message_item);
+                }
             });
-        }, self, 'change')
+        }, self, 'change');
     }
 
     window.languageViewModel = new LanguageViewModel();

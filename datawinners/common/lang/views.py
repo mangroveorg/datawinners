@@ -3,6 +3,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.generic.base import TemplateView, View
 from datawinners import utils
@@ -58,7 +59,7 @@ class LanguagesAjaxView(View):
         for customized_message in data.get('customizedMessages'):
             customized_message_dict.update({customized_message.get("code"): customized_message.get("message")})
         save_messages(dbm, data.get('language'), customized_message_dict)
-        return HttpResponse("ok")
+        return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfuly.")}))
 
     @method_decorator(csrf_view_exempt)
     @method_decorator(csrf_response_exempt)

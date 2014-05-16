@@ -18,10 +18,21 @@
     $(function(){
         $(".save").click(function(){
             DW.loading();
-            $.post('/languages/custom_messages', {'data':JSON.stringify(ko.toJS(languageViewModel))});
+            $(this).text(gettext('Saving…'));
+            $.post('/languages/custom_messages', {
+                        'data':JSON.stringify(ko.toJS(languageViewModel))},
+                        function(data){
+                            data = JSON.parse(data);
+                            $(".save").text(gettext('Save'));
+                            $('.success-message-box').text(data["message"]);
+                            $('.success-message-box').show();
+                        }
+                );
+
         });
     });
     </script>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/common/lang/language_view_model.js"></script>
 {% endblock %}
 
@@ -30,7 +41,7 @@
     <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
-
+    <div class="success-message-box" style="display: none;"></div>
     <div class="help_accordion" style="text-align: justify">
         {% trans "Datawinners analyzes each of the SMS Submission and automatically sends back an SMS reply. For each Questionnaire you can choose the language of these automatic reply SMS. Click on the dropdown and choose a language to view and edit the suggested automatic reply SMS text. You can also add new languages to meet your needs." %}
     </div>
@@ -48,6 +59,9 @@
         <ol data-bind="foreach: languageViewModel.customizedMessages">
             <strong><li data-bind="text: $data.title"></li></strong>
             <textarea rows="3" cols="80" data-bind="value:$data.message" style="width: auto;resize: none"></textarea>
+            <div class="validationMessage" data-bind="ifnot: $data.message.valid">
+                <span id="question_title_validation_message" class="validationText" data-bind="text: $data.message.error"></span>
+            </div>
         </ol>
     </div>
     <br/>
