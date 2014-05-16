@@ -1339,10 +1339,7 @@ msgid "SMS Questionnaire Code:"
 msgstr ""
 
 msgid "tooltip_question_code"
-msgstr "Enter a combination of 3-6 letters and/or numbers (or both). Your Data Senders will enter this code first when "
-"sending in their data using SMS. DataWinners uses this unique code to correctly identify your questionnaire. "
-"By using Questionnaire Codes, your organization can collect multiple data sets simultaneously using a single telephone number. "
-"Your questionnaire code will appear on the printed version of your questionnaire."
+msgstr "All Questionnaires have a unique Questionnaire Code. DataWinners uses this code to link SMS submissions to the correct Questionnaire. Use a code that is short and easy for your Data Senders to understand."
 
 msgid "SMS Preview"
 msgstr ""

@@ -1406,11 +1406,7 @@ msgid "SMS Questionnaire Code"
 msgstr "Code SMS Questionnaire"
 
 msgid "tooltip_question_code"
-msgstr "Entrez une combinaison de 3-6 lettres et/ou de chiffres (ou les deux). Vos Expéditeurs de Données entreront en "
-"premier lieu ce code lors de l'envoi de leurs données via SMS. DataWinners utilise ce code unique pour identifier "
-"correctement votre questionnaire. L’utilisation des Codes Questionnaire permet à votre organisation de collecter "
-"simultanément desensembles de données multiples via un seul numéro de téléphone. Votre code questionnaire apparaîtra "
-"sur la version imprimée de votre questionnaire."
+msgstr "Tous les Questionnaires ont un Code Questionnaire unique. DataWinners utilise ce code pour lier les Soumissions SMS au bon Questionnaire. Utilisez un Code court et facile à comprendre pour vos Expéditeurs de Données."
 
 msgid "SMS Preview"
 msgstr "Aperçu du SMS"
