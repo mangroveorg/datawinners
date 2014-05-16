@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import date
 import unittest
+from mangrove.datastore.documents import FormModelDocument
 
 from mock import Mock, patch
 
@@ -22,6 +23,7 @@ project2_name = uniq('Test2')
 class TestProjectModel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        FormModelDocument.registered_functions=[]
         cls.db_name = uniq('mangrove-test')
         cls.manager = get_db_manager('http://localhost:5984/', cls.db_name)
         initializer._create_views(cls.manager)

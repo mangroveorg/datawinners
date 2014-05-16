@@ -2,6 +2,7 @@ import unittest
 from django.contrib.auth.models import User
 from mangrove.bootstrap import initializer
 from mangrove.datastore.database import get_db_manager
+from mangrove.datastore.documents import EntityDocument, FormModelDocument, EntityFormModelDocument
 from mangrove.utils.test_utils.database_utils import delete_and_create_form_model, uniq
 from mock import Mock
 
@@ -11,12 +12,15 @@ from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.utils.types import is_empty
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.entity.helper import delete_datasender_users_if_any, put_email_information_to_entity
+from datawinners.search import datasender_index as unused
 
 
 class TestEntityHelper(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        EntityFormModelDocument.registered_functions = []
+        EntityDocument.registered_functions = []
         cls.manager = get_db_manager('http://localhost:5984/',uniq('mangrove-test'))
         initializer._create_views(cls.manager)
         cls.username = 'a@a.com'
