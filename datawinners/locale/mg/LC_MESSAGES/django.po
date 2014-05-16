@@ -2910,3 +2910,15 @@ msgstr "ny hafa"
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
 msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana."
+
+msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
+msgstr "Misaotra {Nom de l'Expéditeur}. Voarainay ny SMS-nao: {Liste des réponses}"
+
+msgid "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS."
+msgstr "Diso. Valiny diso hoan'ny fanontaniana {Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)}. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."
+
+msgid "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Diso.Ny {Submitted Identification Number} dia mbola tsy tafiditra. Amarino ny Numero d'Identification ary avereno alefa ny SMS iray manontolo na antsoy ny mpikarakara ny fanadihadiana."
+
+msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgstr "Diso. Tsy afaka mandefa valiny amin'io vondrom-panontaniana io ianao. Azafady ampilazao ny mpikarakara ny fanadihadiana."

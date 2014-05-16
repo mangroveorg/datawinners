@@ -12,7 +12,8 @@ TITLE_REPLY_MESSAGE_CODE_MAP = OrderedDict([("reply_success_submission", "Succes
                                             ("reply_ds_not_authorized",
                                              "Data Sender not Authorized to Submit Data to this Questionnaire")])
 
-languages = {"en": "English", "fr": "French"}
+languages = {"en": "English", "fr": "French","mg":"Malagasy","pt":"Portuguese"}
+
 error_message_codes = ["reply_success_submission", "reply_incorrect_answers", "reply_incorrect_number_of_responses",
                        "reply_identification_number_not_registered", "reply_ds_not_authorized"]
 

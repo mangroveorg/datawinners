@@ -47,7 +47,7 @@
     <div>
         <ol data-bind="foreach: languageViewModel.customizedMessages">
             <strong><li data-bind="text: $data.title"></li></strong>
-            <textarea rows="3" cols="80" data-bind="value:$data.message" style="width: auto"></textarea>
+            <textarea rows="3" cols="80" data-bind="value:$data.message" style="width: auto;resize: none"></textarea>
         </ol>
     </div>
     <br/>
