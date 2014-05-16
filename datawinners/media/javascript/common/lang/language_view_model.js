@@ -19,25 +19,30 @@ $(document).ready(function () {
                 languageViewModel.customizedMessages(customized_messages);
             });
         }, self, 'change');
+        self.isValid=ko.computed(function(){
+            var valid_fields = $.map(self.customizedMessages(), function(e){return e.message.valid()});
+            return valid_fields.indexOf(false) == -1;
+        }, self.customizedMessages);
+        self.save = function () {
+            if (!self.isValid()) return;
+            DW.loading();
+            languageViewModel.saveButtonText(gettext("Saving..."));
+            $.post('/languages/custom_messages', {
+                    'data': JSON.stringify(ko.toJS(languageViewModel))},
+                function (data) {
+                    data = JSON.parse(data);
+                    $(".save").text(gettext('Save'));
+                    $('.success-message-box').text(data["message"]);
+                    $('.success-message-box').show();
+                }
+            );
+
+        };
     }
 
     window.languageViewModel = new LanguageViewModel();
     ko.applyBindings(languageViewModel);
     languageViewModel.language(current_language);
 
-    $(".save").click(function () {
-        DW.loading();
-        languageViewModel.saveButtonText(gettext("Saving..."));
-        $.post('/languages/custom_messages', {
-                'data': JSON.stringify(ko.toJS(languageViewModel))},
-            function (data) {
-                data = JSON.parse(data);
-                $(".save").text(gettext('Save'));
-                $('.success-message-box').text(data["message"]);
-                $('.success-message-box').show();
-            }
-        );
-
-    });
 });
 

@@ -52,5 +52,5 @@
         </ol>
     </div>
     <br/>
-    <div><a class="button save" data-bind="text:$root.saveButtonText"></a></div>
+    <div><a class="button save" data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
 {% endblock %}
