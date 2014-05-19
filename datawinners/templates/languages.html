@@ -20,12 +20,14 @@
     });
     </script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/common/lang/language_view_model.js"></script>
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
+
+    <link href="/media/css/scss/languages.css" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
     <div class="success-message-box" style="display: none;"></div>
@@ -52,5 +54,17 @@
         </ol>
     </div>
     <br/>
-    <div><a class="button save" data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
+    <div><a class="button save" id="language_save" data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
+
+    <div id="cancel_language_changes_warning">
+        {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+        <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
+
+        <div class="text_align_right padding_top_20">
+            <a id="cancel_dialog" href="javascript:void(0);">{% trans "Cancel" %}</a>
+            <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
+            <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
+        </div>
+    </div>
+
 {% endblock %}

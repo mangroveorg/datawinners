@@ -139,9 +139,12 @@ $(document).ready(function () {
                     isQuestionnaireModified: function(){
                                                 return questionnaireViewModel.showQuestionnaireForm() &&
                                                     (DW.questionnaire_was_changed || questionnaireViewModel.questions().length > 0);
-                                            }
+                                            },
+                    validate:function(){
+                       return questionnaireViewModel.validateSelectedQuestion() && questionnaireViewModel.validateQuestionnaireDetails()
+                    }
                   };
-    new DW.CancelQuestionnaireWarningDialog(options).init();
+    new DW.CancelWarningDialog(options).init();
 
     $("#save_and_create").bind("click", function () {
             _save_questionnaire(function (response) {

@@ -5,7 +5,15 @@ $(document).ready(function () {
         self.language = ko.observable();
         self.customizedMessages = ko.observableArray();
         self.saveButtonText = ko.observable(gettext("Save"));
+        self.initialState = ko.observable();
+        self.isModified = ko.computed(function(){
+            return self.initialState() != ko.toJSON(self.customizedMessages());
+        },self);
+
         self.language.subscribe(function () {
+            if(self.initialState() && self.isModified()){
+
+            }
             $.getJSON("/languages/custom_messages", {'language': languageViewModel.language()}).success(function (data) {
                 var customized_messages = [];
                 for (var i in data) {
@@ -17,6 +25,8 @@ $(document).ready(function () {
                     customized_messages.push(customized_message_item);
                 }
                 languageViewModel.customizedMessages(customized_messages);
+                languageViewModel.initialState(ko.toJSON(languageViewModel.customizedMessages()))
+
             });
         }, self, 'change');
         self.isValid=ko.computed(function(){
@@ -43,6 +53,18 @@ $(document).ready(function () {
     window.languageViewModel = new LanguageViewModel();
     ko.applyBindings(languageViewModel);
     languageViewModel.language(current_language);
-
+    var options = {
+        successCallBack:function(callback){
+            languageViewModel.save();
+            callback();
+        },
+        isQuestionnaireModified : function(){return languageViewModel.isModified();},
+        cancelDialogDiv : "#cancel_language_changes_warning",
+        validate: function(){
+            return languageViewModel.isValid();
+        },
+        triggerLinks:"#language"
+    };
+    new DW.CancelWarningDialog(options).init();
 });
 

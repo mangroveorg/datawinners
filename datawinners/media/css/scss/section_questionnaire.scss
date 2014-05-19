@@ -18,7 +18,7 @@
 }
 
 @mixin dw_accordion($header_div, $header_text) {
-// Common accordion style. Takes header class name and header text class name as params.
+  // Common accordion style. Takes header class name and header text class name as params.
   .#{$header_div} {
     border-bottom: 1px solid #CCCCCC !important;
     padding: 10px;
@@ -392,10 +392,10 @@ div.margin_top_20 input {
         border: 1px solid white;
         height: 33px;
         cursor: pointer;
-        &:hover{
+        &:hover {
           background-color: #F0F0F0;
         }
-        &.shadow-background{
+        &.shadow-background {
           background-color: #ffffff;
         }
       }
@@ -488,6 +488,7 @@ div.margin_top_20 input {
 }
 
 @import "fonts";
+@import "validation";
 
 .select_question_message {
   padding: 76px 29px 40px 29px;
@@ -498,33 +499,6 @@ div.margin_top_20 input {
   text-align: center;
   color: black;
   background: url(/media/images/dw_select_question_arrow.png) no-repeat bottom left;
-}
-
-.validationMessage {
-  background: url(/media/images/arrow_error.png) no-repeat;
-  background-position: left 3px;
-  display: inline;
-}
-
-.choiceValidationMessage {
-  @extend .validationMessage;
-  background-position: left 6px !important;
-  display: inline-block;
-}
-
-.validationText {
-  color: #FFFFFF;
-  background: #c20303;
-  padding: 5px 10px;
-  border: 1px solid black;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  width: auto;
-  margin-left: 10px !important;
-  font-size: 12px;
-  font-weight: normal;
-  max-width: 300px;
 }
 
 #question_form {
@@ -547,8 +521,8 @@ div.margin_top_20 input {
   }
   .learn_more_accordion {
     padding-bottom: 20px;
-    .learn_more_header_text{
-        color: #4682b4;
+    .learn_more_header_text {
+      color: #4682b4;
     }
     @include dw_accordion('learn_more_header', 'learn_more_header_text')
   }

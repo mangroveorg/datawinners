@@ -1,0 +1,9 @@
+ .ui-state-disabled{
+  &:hover {
+    box-shadow: none;
+    outline: none !important;
+    text-decoration: none;
+ }
+}
+
+@import "validation";

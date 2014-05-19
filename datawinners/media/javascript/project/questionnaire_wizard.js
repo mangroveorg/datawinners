@@ -16,9 +16,13 @@ $(document).ready(function () {
     DW.init_empty_questionnaire_warning();
     var options = {
                     successCallBack: submit_questionnaire,
-                    isQuestionnaireModified: _isQuestionnaireChanged
+                    isQuestionnaireModified: _isQuestionnaireChanged,
+                    validate:function(){
+                       return questionnaireViewModel.validateSelectedQuestion() && questionnaireViewModel.validateQuestionnaireDetails()
+                    }
+
                   };
-    new DW.CancelQuestionnaireWarningDialog(options).init();
+    new DW.CancelWarningDialog(options).init();
     new DW.UniqueIdHelpSection().init();
 
     var index;
