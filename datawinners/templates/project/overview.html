@@ -20,14 +20,16 @@
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
     <link href="/media/css/scss/section_application.css" rel="stylesheet"/>
     {% if GOOGLE_MAPS_ENABLED %}
-    <link rel="stylesheet" href="/media/javascript/OpenLayers-2.13.1/theme/default/style.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map.css" media="screen">
+        <link rel="stylesheet" href="/media/javascript/OpenLayers-2.13.1/theme/default/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map.css" media="screen">
     {% endif %}
 {% endblock %}
 
 {% block page_js %}
-    {{ block.super }}
+  {{ block.super }}
   {% if GOOGLE_MAPS_ENABLED %}
+    <script type="text/javascript" src="/media/javascript/OpenLayers-2.13.1/OpenLayers.js"></script>
+    <script type="text/javascript" src="/media/javascript/mapping.js"></script>
     <script type="text/javascript">
         var entity_types = {{ project.entity_type|safe }};
         $(document).ready(function() {
@@ -35,15 +37,11 @@
             init_map();
         });
     </script>
-   {% endif %}
+  {% endif %}
 {% endblock %}
 
 
 {% block content %}
-    {% if GOOGLE_MAPS_ENABLED %}
-    <script type="text/javascript" src="/media/javascript/OpenLayers-2.13.1/OpenLayers.js"></script>
-    <script type="text/javascript" src="/media/javascript/mapping.js"></script>
-    {% endif %}
     <span id="project_id" style="display: none;">{{ project.id }}</span>
     <div class="span-18 box">
         <!--Success Message div-->
