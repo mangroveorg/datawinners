@@ -2825,7 +2825,7 @@ msgid "To get started"
 msgstr "Pour commencer"
 
 msgid "Register a"
-msgstr "Enregistrez un(e)"
+msgstr "Enregistrer un(e)"
 
 msgid "Customize the %(entity_type)s registration form"
 msgstr "Personnalisez le fomulaire d'enregistrement de %(entity_type)s"

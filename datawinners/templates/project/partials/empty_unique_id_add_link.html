@@ -7,7 +7,7 @@
         {% if project.id %}
             <a href={% url subject_questionnaire project.id,entity_type %}?web_view=True>{% blocktrans %}Register a {{ entity_type }}{% endblocktrans %}</a>
         {% else %}
-            <a class = "inactive_link ui-state-disabled">Register a {{ entity_type }}</a>
+            <a class = "inactive_link ui-state-disabled">{% blocktrans %}Register a {{ entity_type }}{% endblocktrans %}</a>
         {% endif %}
     </div>
 {% endwith %}

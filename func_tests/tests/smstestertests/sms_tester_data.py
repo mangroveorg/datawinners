@@ -87,7 +87,7 @@ WITH_INVALID_GEO_CODE_FORMAT = {SENDER: "1234567890",
 ONLY_QUESTIONNAIRE_CODE = {SENDER: "1234567890",
                            RECEIVER: "919880734937",
                            SMS: "cli009",
-                           ERROR_MSG: "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."}
+                           ERROR_MSG: "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."}
 
 WRONG_NUMBER_OF_ARGS = {SENDER: "1234567891",
                         RECEIVER: "919880734937",

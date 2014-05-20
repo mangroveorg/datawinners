@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.utils import translation
-from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
+from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE, EntityFormModel
 import mangrove.errors.MangroveException as ex
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import SMS
@@ -34,13 +34,21 @@ def number_not_registered_exception_handler(exception, request):
     handler = default_exception_handler if request.get('is_registration') else default_exception_handler_with_logger
     return handler(exception, request)
 
+def sms_parser_invalid_format_handler(exception, request):
+    if len(request.get('incoming_message').strip().split()) != 1:
+        return default_exception_handler_with_logger(exception, request)
+    
+    _activate_language(exception, request)
+    new_exception = ex.SMSParserWrongNumberOfAnswersException(exception.data[0][0])
+    return default_exception_handler_with_logger(new_exception, request)
+
 exception_handlers = {
 
     ex.DataObjectNotFound : data_object_not_found_handler,
     ex.FormModelDoesNotExistsException : wrong_questionnaire_code_handler,
     ex.NumberNotRegisteredException : number_not_registered_exception_handler,
     ex.SubmissionParseException : default_exception_handler_with_logger,
-    ex.SMSParserInvalidFormatException : default_exception_handler_with_logger,
+    ex.SMSParserInvalidFormatException : sms_parser_invalid_format_handler,
     ex.MultipleSubmissionsForSameCodeException : default_exception_handler_with_logger,
     ex.SMSParserWrongNumberOfAnswersException : sms_parser_wrong_number_of_answers_handler,
     ex.ExceedSMSLimitException : exceed_limit_handler,
@@ -61,3 +69,8 @@ def create_failure_log(error_message, request):
     log.to_number = request['transport_info'].destination
     log.organization = request.get('organization')
     log.save()
+
+def _activate_language(exception, request):
+    form_model = get_form_model_by_code(request['dbm'], exception.data[0][0])
+    language = request.get('organization').language if isinstance(form_model, EntityFormModel) else form_model.activeLanguages[0]
+    translation.activate(language)
