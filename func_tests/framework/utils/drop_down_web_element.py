@@ -24,6 +24,14 @@ class DropDown(WebElement):
                 return option.get_attribute("value")
         return None
 
+    def get_selected_option_text(self):
+        """ Gets the currently selected item text in the drop down
+        """
+        for option in self.selectOptions:
+            if option.is_selected():
+                return option.get_attribute("text")
+        return None
+
     def is_selected(self, itemText):
         """ Gets the currently selected item from the drop down
         """

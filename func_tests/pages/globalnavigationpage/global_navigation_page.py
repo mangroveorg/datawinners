@@ -4,6 +4,7 @@ from pages.alldatapage.all_data_page import AllDataPage
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.globalnavigationpage.global_navigation_locator import *
+from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.page import Page
 from pages.projectspage.projects_page import ProjectsPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
@@ -75,5 +76,10 @@ class GlobalNavigationPage(Page):
         Function to sign out from any account
         """
         self.driver.find(SIGN_OUT_LINK).click()
+
+    def navigate_to_languages_page(self):
+        self.driver.find(LANGUAGES_LINK).click()
+        return CustomizedLanguagePage(self.driver)
+
 
 

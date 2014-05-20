@@ -21,6 +21,7 @@ from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
+from pages.languagespage.customized_language_locator import SUCCESS_SUBMISSION_MESSAGE_LOCATOR
 from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
@@ -307,6 +308,20 @@ class TestApplicationEndToEnd(unittest.TestCase):
             os.mkdir("screenshots")
         self.driver.save_screenshot("screenshots/%s" % filename)
 
+    def verify_setting_customized_error_messages_for_languages(self):
+        global_navigation = GlobalNavigationPage(self.driver)
+        languages_page = global_navigation.navigate_to_languages_page()
+        self.assertEquals("English",languages_page.get_selected_language())
+        new_success_message = "This is a new message"
+        languages_page.set_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR , new_success_message)
+        self.assertEquals("Changes saved successfuly.",languages_page.get_success_message())
+        #Reload english to check if changes saved
+        languages_page.select_language("French")
+        languages_page.select_language("English")
+        time.sleep(1)
+        self.assertEquals(new_success_message,languages_page.get_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR))
+
+
     @attr('smoke')
     def test_end_to_end(self):
         self.email = None
@@ -325,6 +340,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.verify_admin_present_in_my_datasenders_page()
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_submission_via_web(ds_email)
+        self.verify_setting_customized_error_messages_for_languages()
         #self.admin_edit_delete_submissions()
         time.sleep(2)
         self.delete_project()
