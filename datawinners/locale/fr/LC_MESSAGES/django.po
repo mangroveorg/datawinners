@@ -4831,6 +4831,15 @@ msgstr "La réponse doit être le Numéro d’identification du %s sur lequel vo
 msgid "The unique ID %s of the %s does not match with any existing Identification number. Please correct and import again."
 msgstr "L'ID unique %s du/de la %s ne correspond à aucun Numéro d'Identification existant. Veuillez corriger et importer une nouvelle fois."
 
+msgid "Languages"
+msgstr "Langues"
+
+msgid "Languages for Automatic Reply SMS"
+msgstr "Langues pour les Réponses SMS automatiques"
+
+msgid "language help text"
+msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une réponse SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces réponses SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les réponses SMS automatiques. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
+
 msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
 msgstr "{Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
 
@@ -4857,3 +4866,4 @@ msgstr "Numéro d'Identification non enregistré"
 
 msgid "Data Sender not Authorized to Submit Data to this Questionnaire"
 msgstr "Expéditeur de Données non autorisé à soumettre des  Données pour ce Questionnaire"
+

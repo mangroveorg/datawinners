@@ -4544,3 +4544,6 @@ msgstr ""
 
 msgid "The unique ID %s of the %s does not match with any existing Identification number. Please correct and import again."
 msgstr ""
+
+msgid "language help text"
+msgstr "Datawinners analyzes each of the SMS Submission and automatically sends back an SMS reply. For each Questionnaire you can choose the language of these automatic reply SMS. Click on the dropdown and choose a language to view and edit the suggested automatic reply SMS text. You can also add new languages to meet your needs."

@@ -1172,3 +1172,6 @@ msgstr "En savoir plus sur les Numéros d'Identification"
 
 msgid "Row Number"
 msgstr "Numéro de ligne"
+
+msgid "Enter reply SMS text."
+msgstr "Tapez le texte de réponse SMS."
