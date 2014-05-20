@@ -84,6 +84,7 @@ class SubmissionImporter():
                     row.update({'dsid': user_profile.reporter_id})
             else:
                 row.update({"dsid": user_profile.reporter_id})
+            row.update({'user_dsid': user_profile.reporter_id})
 
 
 class SubmissionImportResponse():

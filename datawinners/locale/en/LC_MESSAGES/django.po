@@ -4547,3 +4547,9 @@ msgstr ""
 
 msgid "The unique ID %s of the %s does not match with any existing Identification number. Please correct and import again."
 msgstr ""
+
+msgid "You are not authorized to submit to this Questionnaire. Add yourself as a Data Sender to the Questionnaire."
+msgstr ""
+
+msgid "The Data Sender you are submitting on behalf of cannot submit to this Questionnaire. Add the Data Sender to the Questionnaire."
+msgstr ""

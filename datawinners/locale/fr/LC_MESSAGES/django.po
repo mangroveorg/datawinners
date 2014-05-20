@@ -4834,3 +4834,9 @@ msgstr "La réponse doit être le Numéro d’identification du %s sur lequel vo
 
 msgid "The unique ID %s of the %s does not match with any existing Identification number. Please correct and import again."
 msgstr "L'ID unique %s du/de la %s ne correspond à aucun Numéro d'Identification existant. Veuillez corriger et importer une nouvelle fois."
+
+msgid "You are not authorized to submit to this Questionnaire. Add yourself as a Data Sender to the Questionnaire."
+msgstr "Vous n'êtes pas autorisé à soumettre des données pour ce Questionnaire. Enregistrez-vous comme Expéditeurs de Données pour ce Questionnaire."
+
+msgid "The Data Sender you are submitting on behalf of cannot submit to this Questionnaire. Add the Data Sender to the Questionnaire."
+msgstr "L'Expéditeur de Données pour le compte duquel vous soumettez des Données n'est pas autorisé à soumettre des Données pour ce Questionnaire. Ajoutez l'Expéditeur de Données à ce Questionnaire."
