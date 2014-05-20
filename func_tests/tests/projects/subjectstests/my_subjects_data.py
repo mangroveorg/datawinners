@@ -19,7 +19,7 @@ NEW_UNIQUE_ID_TYPE = "new_unique_id_type"
 EXISTING_UNIQUE_ID_TYPE = "existing_unique_id_type"
 UNIQUE_ID = "unique_id"
 
-CLINIC_PROJECT1_NAME = "clinic test project"
+CLINIC_PROJECT1_NAME = "clinic test project1"
 PROJECT_DETAILS = {PROJECT_NAME: "Waterpoint morondava", GEN_RANDOM: True,
                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
                           SUBJECT: "waterpoint",

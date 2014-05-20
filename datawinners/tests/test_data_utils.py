@@ -37,7 +37,7 @@ def define_entity_instance(manager, entity_type, location, short_code, geometry,
     .add_data([(FIRST_NAME_FIELD, firstname)])\
     .add_data([(MOBILE_NUMBER_FIELD, mobile_number)])\
     .add_data([(DESCRIPTION_FIELD, description)]).build()
-
+    entity.save()
     return entity
 
 def register(manager, entity_type, data, location, short_code, geometry=None):

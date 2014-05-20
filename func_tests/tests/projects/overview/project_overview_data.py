@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-PROJECT_NAME = u"clinic test project"
+PROJECT_NAME = u"clinic test project1"
 
 PREVIEW_TITLE = "SMS Questionnaire"
 

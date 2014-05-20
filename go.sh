@@ -97,7 +97,7 @@ function function_test {
 	#ps -ef|grep Xvfb |grep -v grep || Xvfb :99 -ac >>/dev/null 2>&1 &
     #export DISPLAY=":99"
     #export PYTHONPATH=$WORKSPACE
-    pip install -r requirements.pip
+#    pip install -r requirements.pip
     cp datawinners/config/local_settings_ft.py datawinners/local_settings.py
     cp datawinners/config/local_settings_ft.py func_tests/resources/local_settings.py
 

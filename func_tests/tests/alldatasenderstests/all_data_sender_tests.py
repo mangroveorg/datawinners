@@ -60,18 +60,18 @@ class TestAllDataSenders(HeadlessRunnerTest):
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.assertEqual("", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
         self.all_datasenders_page.associate_datasender_to_projects(self.datasender_id_without_web_access,
-                                                                   ["clinic test project1", "clinic test project"])
+                                                                   ["clinic test project1", "clinic2 test project"])
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
 
-        self.assertEqual("clinic test project, clinic test project1",
+        self.assertEqual("clinic test project1, clinic2 test project",
                          self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
         self.all_datasenders_page.dissociate_datasender_from_project(self.datasender_id_without_web_access,
                                                                      "clinic test project1")
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
-        self.assertEqual("clinic test project",
+        self.assertEqual("clinic2 test project",
                          self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
         self.all_datasenders_page.dissociate_datasender_from_project(self.datasender_id_without_web_access,
-                                                                     "clinic test project")
+                                                                     "clinic2 test project")
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
         self.assertEqual("", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
 

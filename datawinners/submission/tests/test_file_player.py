@@ -72,4 +72,4 @@ class FilePlayerTest(unittest.TestCase):
         except DataObjectAlreadyExists:
             pass
 
-        [EntityBuilder(self.manager, entity_type, 'cl00%d' % i).build() for i in range(1, 6)]
+        [EntityBuilder(self.manager, entity_type, 'cl00%d' % i).build().save() for i in range(1, 6)]
