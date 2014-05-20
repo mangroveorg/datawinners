@@ -5,9 +5,10 @@
 {% load dw_tabs %}
 
 {% block navigation %}
-    {% activetab "tab_nav" "reminders" %}
+    {% activetab "tab_nav" "messages_and_reminders" %}
     {{ block.super }}
 {% endblock %}
+
 
 {% block body %}
     {% activetab "main_nav" "questionnaires" %}
@@ -27,9 +28,10 @@
 {% endblock %}
 
 {% block content %}
-    {% block secondary_navigation_reminders %}
-        {% activetab "secondary_tab_nav" "set_reminders" %}
-        {{ block.super }}
+
+    {% block secondary_navigation_data %}
+        {% activetab "secondary_tab_nav" "reminders" %}
+        {% include 'project/messages_and_reminders_tabs.html' %}
     {% endblock %}
     <div>
     <span class="italic_grey bold">{% trans "Specify when you want to send automatic Reminders to your Data Senders" %}</span>

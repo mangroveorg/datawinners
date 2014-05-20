@@ -4867,3 +4867,8 @@ msgstr "Numéro d'Identification non enregistré"
 msgid "Data Sender not Authorized to Submit Data to this Questionnaire"
 msgstr "Expéditeur de Données non autorisé à soumettre des  Données pour ce Questionnaire"
 
+msgid "Messages & Reminders"
+msgstr "Messages & Rappels"
+
+msgid "Automatic Reply SMS"
+msgstr "Réponse SMS automatique"

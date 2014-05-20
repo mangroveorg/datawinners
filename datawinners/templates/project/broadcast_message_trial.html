@@ -5,7 +5,7 @@
 {% load dw_tabs %}
 
 {% block navigation %}
-    {% activetab "tab_nav" "send_a_message" %}
+    {% activetab "tab_nav" "messages_and_reminders" %}
     {{ block.super }}
 {% endblock %}
 
@@ -24,6 +24,13 @@
 
 
 {% block content %}
+
+    {% block secondary_navigation_data %}
+        {% activetab "secondary_tab_nav" "send_a_message" %}
+        {% include 'project/messages_and_reminders_tabs.html' %}
+    {% endblock %}
+
+
     <div class="warning-message-box">
         <p>{% trans 'broadcast_trial_warning_message' %}</p>
         {% if user.groups.all.0.name == 'NGO Admins' %}

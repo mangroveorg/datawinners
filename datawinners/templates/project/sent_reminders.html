@@ -5,7 +5,7 @@
 {% load dw_tabs %}
 
 {% block navigation %}
-    {% activetab "tab_nav" "reminders" %}
+    {% activetab "tab_nav" "messages_and_reminders" %}
     {{ block.super }}
 {% endblock %}
 
@@ -22,9 +22,9 @@
 {% endblock %}
 
 {% block content %}
-    {% block secondary_navigation_reminders %}
-        {% activetab "secondary_tab_nav" "sent" %}
-        {{ block.super }}
+    {% block secondary_navigation_data %}
+        {% activetab "secondary_tab_nav" "sent_reminders" %}
+        {% include 'project/messages_and_reminders_tabs.html' %}
     {% endblock %}
         <table class="styled_table">
             <thead>

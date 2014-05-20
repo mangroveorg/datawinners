@@ -6,7 +6,7 @@ from pages.projectdatasenderspage.project_data_senders_page import ProjectDataSe
 from pages.projectoverviewpage.project_overview_locator import *
 from pages.page import Page
 from pages.projectsubjectspage.project_subjects_page import ProjectSubjectsPage
-from pages.reminderpage.all_reminder_page import AllReminderPage
+from pages.reminderpage.reminder_settings_page import ReminderSettingsPage
 from pages.smstesterlightbox.sms_tester_light_box_page import SMSTesterLightBoxPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 
@@ -32,7 +32,9 @@ class ProjectOverviewPage(Page):
 
     def navigate_to_reminder_page(self):
         self.driver.find(MESSAGES_AND_REMINDERS_TAB).click()
-        return AllReminderPage(self.driver)
+        self.driver.wait_for_page_load()
+        self.driver.find(REMINDERS_TAB).click()
+        return ReminderSettingsPage(self.driver)
 
     def navigate_to_edit_project_page(self):
         self.driver.find(PROJECT_EDIT_LINK).click()
@@ -47,7 +49,7 @@ class ProjectOverviewPage(Page):
         return SMSTesterLightBoxPage(self.driver)
 
     def navigate_send_message_tab(self):
-        self.driver.find(SEND_MESSAGE_TAB).click()
+        self.driver.find(MESSAGES_AND_REMINDERS_TAB).click()
         return BroadcastSmsPage(self.driver)
 
     def open_sms_questionnaire_preview(self):

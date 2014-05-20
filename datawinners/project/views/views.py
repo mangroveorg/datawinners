@@ -259,7 +259,7 @@ def sent_reminders(request, project_id):
         return HttpResponseRedirect(dashboard_page)
     organization = Organization.objects.get(org_id=request.user.get_profile().org_id)
     is_trial_account = organization.in_trial_mode
-    html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/sent_reminders.html'
+    html = 'project/sent_reminders_trial.html' if organization.in_trial_mode else 'project/sent_reminders.html'
     return render_to_response(html,
                               {
                                   'project': questionnaire,

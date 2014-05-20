@@ -1,5 +1,6 @@
 from framework.utils.data_fetcher import from_, fetch_
 from pages.page import Page
+from pages.reminderpage.all_reminder_locator import WARNING_MESSAGE_LABEL, SENT_REMINDERS_LINK
 from pages.reminderpage.reminder_settings_locator import *
 from datawinners.project.models import Reminder
 from tests.remindertests.reminder_data import *
@@ -157,3 +158,14 @@ class ReminderSettingsPage(Page):
 
     def get_sms_text_length_for_a_reminder_type(self, reminder_type):
         return int(self.driver.find(by_id(SMS_TEXT_COUNTER % reminder_type)).text)
+
+    def set_deadline_by_week(self, deadline):
+        self.set_frequency(fetch_(FREQUENCY, from_(deadline)))
+        self.set_week_day(fetch_(DAY, from_(deadline)))
+        self.set_deadline_type_for_week(fetch_(TYPE, from_(deadline)))
+
+    def get_warning_message(self):
+        return self.driver.find(WARNING_MESSAGE_LABEL).text
+
+    def click_sent_reminder_tab(self):
+        self.driver.find(SENT_REMINDERS_LINK).click()

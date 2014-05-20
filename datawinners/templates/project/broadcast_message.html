@@ -5,7 +5,7 @@
 {% load dw_tabs %}
 
 {% block navigation %}
-    {% activetab "tab_nav" "send_a_message" %}
+    {% activetab "tab_nav" "messages_and_reminders" %}
     {{ block.super }}
 {% endblock %}
 
@@ -43,6 +43,11 @@
 {% endblock %}
 
 {% block content %}
+    {% block secondary_navigation_data %}
+        {% activetab "secondary_tab_nav" "send_a_message" %}
+        {% include 'project/messages_and_reminders_tabs.html' %}
+    {% endblock %}
+
     <div>
         {%if success %}
                 <div class="success-message-box">{% trans "SMS sent to telephone company. Upon receipt of delivery confirmation, DataWinners will update the counter on the "%} <a href={% url dashboard %}>{%  trans 'Dashboard'%}</a>.</div>

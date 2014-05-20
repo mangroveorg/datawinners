@@ -84,14 +84,17 @@
             </li>
         {% endif %}
         {% endwith %}
-        <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="reminders_tab" href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
-        </li>
+{#        <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">#}
+{#            <a id="reminders_tab" href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>#}
+{#        </li>#}
         <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
             <a id="data_tab" href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Data" %}</a>
         </li>
-        <li class="{% ifactivetab 'tab_nav' 'send_a_message' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="send_message_tab" href="{{ project_links.broadcast_message_link }}" class="{{ disable_link_class }}">{% trans "Send a Message" %}</a>
+{#        <li class="{% ifactivetab 'tab_nav' 'send_a_message' %}active{% else %}inactive{% endifactivetab %}">#}
+{#            <a id="send_message_tab" href="{{ project_links.broadcast_message_link }}" class="{{ disable_link_class }}">{% trans "Send a Message" %}</a>#}
+{#        </li>#}
+        <li class="{% ifactivetab 'tab_nav' 'messages_and_reminders' %}active{% else %}inactive{% endifactivetab %}">
+            <a id="messages_and_reminders_tab" href="{{ project_links.broadcast_message_link }}" class="{{ disable_link_class }}">{% trans "Messages & Reminders" %}</a>
         </li>
     </ul>
 </div>

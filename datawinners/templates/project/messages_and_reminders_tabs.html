@@ -1,0 +1,17 @@
+
+{% load i18n %}
+{% load dw_tabs %}
+<ul class="secondary_tab">
+            <li class="{% ifactivetab 'secondary_tab_nav' 'send_a_message'  %}active{% else %}inactive{% endifactivetab %}">
+                <a id="send_message_tab"  href="{{ project_links.broadcast_message_link }}" class="{{ disable_link_class }}">{% trans "Send a Message" %}</a>
+            </li>
+            <li class="{% ifactivetab 'secondary_tab_nav' 'reminders'  %}active{% else %}inactive{% endifactivetab %}">
+                <a id="reminders_tab"  href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
+            </li>
+            <li class="{% ifactivetab 'secondary_tab_nav' 'sent_reminders'  %}active{% else %}inactive{% endifactivetab %}">
+                <a id = "sent_reminders_tab" href="{{ project_links.sent_reminders_link }}" class="{{ disable_link_class }}">{% trans "Sent Reminders" %}</a>
+            </li>
+            <li class="{% ifactivetab 'secondary_tab_nav' 'automatic_reply_sms'  %}active{% else %}inactive{% endifactivetab %}">
+                <a href="" class="{{ disable_link_class }}">{% trans "Automatic Reply SMS" %}</a>
+            </li>
+</ul>
