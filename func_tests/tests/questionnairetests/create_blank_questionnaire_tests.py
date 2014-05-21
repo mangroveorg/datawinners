@@ -1,9 +1,9 @@
 from nose.plugins.attrib import attr
 from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.data_fetcher import fetch_, from_
-from pages.createquestionnairepage.create_questionnaire_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.loginpage.login_page import login
 from pages.projectspage.projects_page import ProjectsPage
+from pages.questionnairetabpage.questionnaire_tab_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
 from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS, DIALOG_PROJECT_DATA, NEW_UNIQUE_ID_TYPE
 
