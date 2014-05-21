@@ -35,3 +35,6 @@ def index(request):
 
     return render_to_response('smstester/index.html',
             {'form': form, 'message': message}, context_instance=RequestContext(request))
+
+def tags(request):
+    return render_to_response('smstester/texttag.html')

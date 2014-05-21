@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<meta charset='utf-8'>
+<html>
+<head>
+    <title>Custom tags</title>
+    <script type="text/javascript" src="/media/javascript/jquery.js"></script>
+    <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+
+    <script type="text/javascript" src="/media/javascript/underscore-min-1.4.3.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-textntags/jquery-textntags.js"></script>
+
+    <link href="/media/javascript/jquery-textntags/jquery-textntags.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/media/javascript/splitter.js"></script>
+    <script type="text/javascript" src="/media/javascript/polyfiller.js"></script>
+
+    <script type="text/javascript">
+        webshims.polyfill();
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (!('indexOf' in Array.prototype)) {
+                Array.prototype.indexOf = function (find, i /*opt*/) {
+                    if (i === undefined) i = 0;
+                    if (i < 0) i += this.length;
+                    if (i < 0) i = 0;
+                    for (var n = this.length; i < n; i++)
+                        if (i in this && this[i] === find)
+                            return i;
+                    return -1;
+                };
+            }
+            {#            $.ajax({#}
+            {#                url: '/texttags/ajax',#}
+            {#                method: 'GET',#}
+            {#                success: function(response){#}
+            {#                    $('textarea.tagged_text').val();#}
+            {#                    $('textarea.tagged_text').textntags();#}
+            {#                }#}
+            {#            })#}
+            {#            $('textarea.tagged_text').val('hello datasender @[[2:var:Datasender éléphone Name]] test @[[2:var:Identification]] one.');#}
+            $('textarea.tagged_text').val('hello datasender @{1:var:Datasender Name} test @{2:var:Identification} one.');
+            $('textarea.tagged_text').textntags();
+        });
+    </script>
+
+</head>
+
+<body>
+<div id="myTextTags"></div>
+<textarea class='tagged_text' ondrop="return false;" ondrag="return false;" ondragstart="return false"
+          draggable="false"></textarea>
+<input value="éléphone"/>
+</body>
+</html>
