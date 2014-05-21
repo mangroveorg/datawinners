@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _, get_language, activate
 from django.views.generic.base import TemplateView
 from datawinners.accountmanagement.decorators import valid_web_user
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SENDER, REGISTERED_DATA_SENDER
 from datawinners.entity.data_sender import get_datasender_user_detail
@@ -79,6 +79,7 @@ class EditDataSenderView(TemplateView):
                             transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
                             is_update=True))
                 if response.success:
+                    self._update_name_in_postgres_if_user(reporter_id, form.cleaned_data['name'])
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
                                                                    form.cleaned_data["telephone_number"], org_id)
@@ -116,6 +117,12 @@ class EditDataSenderView(TemplateView):
     @method_decorator(valid_web_user)
     def dispatch(self, *args, **kwargs):
         return super(EditDataSenderView, self).dispatch(*args, **kwargs)
+
+    def _update_name_in_postgres_if_user(self, reporter_id, name):
+        user = NGOUserProfile.objects.get(reporter_id=reporter_id).user
+        user.first_name = name
+        user.save()
+
 
 class RegisterDatasenderView(TemplateView):
     template_name = "datasender_form.html"
