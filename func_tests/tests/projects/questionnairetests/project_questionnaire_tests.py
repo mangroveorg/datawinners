@@ -1,24 +1,22 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from string import lower
-import unittest
-from django.utils.unittest.case import SkipTest
-
-from nose.plugins.attrib import attr
 import time
 
-from framework.base_test import teardown_driver, HeadlessRunnerTest
+from django.utils.unittest.case import SkipTest
+from nose.plugins.attrib import attr
+
+from framework.base_test import HeadlessRunnerTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.questionnairetabpage.questionnaire_tab_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
-from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.projectspage.projects_page import ProjectsPage
 from pages.questionnairetabpage.questionnaire_tab_page import SUCCESS_PROJECT_SAVE_MESSAGE, DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
+from pages.warningdialog.redistribute_questionnaire_dialog import RedistributeQuestionnaireDialog
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url, DATA_WINNER_ALL_PROJECTS_PAGE
-from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_PROJECT, QUESTIONNAIRE_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
@@ -123,9 +121,9 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.click_add_question_link()
         questionnaire_tab_page.set_question_title("some question")
         questionnaire_tab_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
-        questionnaire_tab_page.submit_questionnaire()
+        self.assertTrue(modified_warning_dialog.is_hidden())
         self.global_navigation.navigate_to_dashboard_page()
-        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
         modified_warning_dialog.cancel()
         self.assertEqual(questionnaire_tab_page.get_questionnaire_title(), self.project_name,
                          "Should continue to stay on questionnaire page")
@@ -142,12 +140,10 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page = self.questionnaire_tab_page
         questionnaire_tab_page.click_add_question_link()
         questionnaire_tab_page.set_question_title("some question")
-        questionnaire_tab_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
+        questionnaire_tab_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][4])
         all_projects_page = self.global_navigation.navigate_to_view_all_project_page()
         self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
-        self.driver.create_screenshot("saving_changes.png")
         modified_warning_dialog.save_changes()
-        self.driver.create_screenshot("dialog_screenshot.png")
         self._expect_redistribute_dialog_to_be_shown()
         all_projects_page.wait_for_page_to_load()
         all_projects_page.navigate_to_project_overview_page(self.project_name).navigate_to_questionnaire_tab()
@@ -411,7 +407,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         warning_dialog.confirm()
 
     def _expect_redistribute_dialog_to_be_shown(self):
-        warning_dialog = WarningDialog(self.driver)
+        warning_dialog = RedistributeQuestionnaireDialog(self.driver)
         message = warning_dialog.get_message()
         self.assertEqual(message, REDISTRIBUTE_QUESTIONNAIRE_MSG)
         warning_dialog.confirm()

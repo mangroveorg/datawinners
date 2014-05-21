@@ -295,7 +295,6 @@ class TestSubmissionLog(HeadlessRunnerTest):
 
     def verify_sort_data_by_date(self, submission_log_page, column, sort_predicate,
                                  date_format=SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG):
-        TestSubmissionLog._create_screenshot("sort_dates_before")
         date_strings = submission_log_page.get_all_data_on_nth_column(column)
         self.assertTrue(len(date_strings) >= 3)
         dates = []
@@ -304,13 +303,6 @@ class TestSubmissionLog(HeadlessRunnerTest):
 
         self.assertTrue(sort_predicate(dates[0], dates[1]), msg="Dates:" + str(dates))
         self.assertTrue(sort_predicate(dates[1], dates[2]), msg="Dates:" + str(dates))
-
-    @classmethod
-    def _create_screenshot(cls, file_name):
-        if not os.path.exists("screenshots"):
-            os.mkdir("screenshots")
-        cls.driver.save_screenshot("screenshots/%s.png" % file_name)
-
 
     @attr('functional_test')
     def test_sorting_on_date_columns(self):

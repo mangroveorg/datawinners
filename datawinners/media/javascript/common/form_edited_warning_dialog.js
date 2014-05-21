@@ -10,7 +10,8 @@ DW.CancelWarningDialog = function (options) {
 
     this.init = function () {
         var canceDialogDiv = options.cancelDialogDiv || "#cancel_questionnaire_warning_message";
-        self.cancelDialog = $('<div>').html($(canceDialogDiv).html());
+        var dialogId = canceDialogDiv.substring(1) + "_dialog_section";
+        self.cancelDialog = $('<div id='+ dialogId +'>').html($(canceDialogDiv).html());
         self.ignoreButton = self.cancelDialog.find(".no_button");
         self.saveButton = self.cancelDialog.find(".yes_button");
         self.cancelButton = self.cancelDialog.find("#cancel_dialog");
