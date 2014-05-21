@@ -155,6 +155,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         delete_datasender_id = TestAllDataSenders.register_datasender(DATA_SENDER_TO_DELETE)
         #self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         self.all_datasenders_page.load()
+        self.driver.create_screenshot("ds_before_search.png")
         self.all_datasenders_page.search_with(fetch_(FIRST_NAME, NEW_USER_DATA))
         self.all_datasenders_page.click_checkall_checkbox()
         self.driver.create_screenshot("ds_to_delete.png")

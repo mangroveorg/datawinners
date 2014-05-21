@@ -145,6 +145,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
         all_projects_page = self.global_navigation.navigate_to_view_all_project_page()
         self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
+        self.driver.create_screenshot("saving_changes.png")
         modified_warning_dialog.save_changes()
         self.driver.create_screenshot("dialog_screenshot.png")
         self._expect_redistribute_dialog_to_be_shown()
