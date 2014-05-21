@@ -4872,3 +4872,9 @@ msgstr "Messages & Rappels"
 
 msgid "Automatic Reply SMS"
 msgstr "Réponse SMS automatique"
+
+msgid "You are not authorized to submit to this Questionnaire. Add yourself as a Data Sender to the Questionnaire."
+msgstr "Vous n'êtes pas autorisé à soumettre des données pour ce Questionnaire. Enregistrez-vous comme Expéditeurs de Données pour ce Questionnaire."
+
+msgid "The Data Sender you are submitting on behalf of cannot submit to this Questionnaire. Add the Data Sender to the Questionnaire."
+msgstr "L'Expéditeur de Données pour le compte duquel vous soumettez des Données n'est pas autorisé à soumettre des Données pour ce Questionnaire. Ajoutez l'Expéditeur de Données à ce Questionnaire."

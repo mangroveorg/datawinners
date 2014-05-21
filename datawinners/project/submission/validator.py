@@ -12,8 +12,13 @@ class SubmissionWorkbookRowValidator():
 
     def _validate_datasender(self, row):
         datasender = row.get('dsid', '')
+        user_dsid = row.get('user_dsid', '')
         if datasender and datasender not in self.form_model.data_senders:
-            return {"datasender":"The unique ID of the Data Sender does not match any existing Data Sender ID. Please correct and import again."}
+            if user_dsid == datasender:
+                message = "You are not authorized to submit to this Questionnaire. Add yourself as a Data Sender to the Questionnaire."
+            else:
+                message = "The Data Sender you are submitting on behalf of cannot submit to this Questionnaire. Add the Data Sender to the Questionnaire."
+            return {"datasender": message}
         return {}
 
     def validate_rows(self, parsed_rows):
