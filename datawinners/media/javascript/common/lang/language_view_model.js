@@ -50,6 +50,7 @@ $(document).ready(function () {
                     $(".save").text(gettext('Save'));
                     $('.success-message-box').text(data["message"]);
                     $('.success-message-box').show();
+                    self.initialState(ko.toJSON(self.customizedMessages()));
                 }
             );
 
