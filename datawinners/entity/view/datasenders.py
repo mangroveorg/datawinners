@@ -79,7 +79,9 @@ class EditDataSenderView(TemplateView):
                             transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
                             is_update=True))
                 if response.success:
-                    self._update_name_in_postgres_if_user(reporter_id, form.cleaned_data['name'])
+                    if datasender['email'] is not None:
+                        self._update_name_in_postgres(reporter_id, form.cleaned_data['name'])
+
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
                                                                    form.cleaned_data["telephone_number"], org_id)
@@ -118,7 +120,7 @@ class EditDataSenderView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(EditDataSenderView, self).dispatch(*args, **kwargs)
 
-    def _update_name_in_postgres_if_user(self, reporter_id, name):
+    def _update_name_in_postgres(self, reporter_id, name):
         user = NGOUserProfile.objects.get(reporter_id=reporter_id).user
         user.first_name = name
         user.save()
