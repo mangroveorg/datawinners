@@ -29,9 +29,9 @@ ERROR_MESSAGE = "error_message"
 
 warning = "You can add Reminders here, however this feature is not available to Trial account users. Sign up for a monthly subscription to send Reminders to your Data Senders."
 
-DISABLED_REMINDER = {PROJECT_NAME: "clinic test project", WARNING_MESSAGE: warning}
+DISABLED_REMINDER = {PROJECT_NAME: "clinic test project1", WARNING_MESSAGE: warning}
 
-DEADLINE_FIRST_DAY_OF_SAME_WEEK = {PROJECT_NAME: "clinic test project",
+DEADLINE_FIRST_DAY_OF_SAME_WEEK = {PROJECT_NAME: "clinic test project1",
                                    DEADLINE: {FREQUENCY: WEEK, DAY: WEEK_DAY[1], TYPE: SAME_WEEK,
                                               EXAMPLE_TEXT: "Example: Monday of the reporting week"}}
 DEADLINE_LAST_DAY_OF_SAME_WEEK = {DEADLINE: {FREQUENCY: WEEK, DAY: WEEK_DAY[7], TYPE: SAME_WEEK,
@@ -42,7 +42,7 @@ DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK = {DEADLINE: {FREQUENCY: WEEK, DAY: WEEK_D
 DEADLINE_FIFTH_DAY_OF_FOLLOWING_WEEK = {DEADLINE: {FREQUENCY: WEEK, DAY: WEEK_DAY[5], TYPE: FOLLOWING_WEEK,
                                                    EXAMPLE_TEXT: "Example: Friday of the week following the reporting week"}}
 
-DEADLINE_FIRST_DAY_OF_SAME_MONTH = {PROJECT_NAME: "clinic test project",
+DEADLINE_FIRST_DAY_OF_SAME_MONTH = {PROJECT_NAME: "clinic test project1",
                                     DEADLINE: {FREQUENCY: MONTH, DAY: MONTH_DAY[1], TYPE: SAME_MONTH,
                                                EXAMPLE_TEXT: "Example: 1st of October for October report"}}
 DEADLINE_LAST_DAY_OF_SAME_MONTH = {DEADLINE: {FREQUENCY: MONTH, DAY: MONTH_DAY[31], TYPE: SAME_MONTH,

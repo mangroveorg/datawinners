@@ -153,10 +153,11 @@ class TestAllDataSenders(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_warn_and_delete_only_DS_if_selected_are_users_and_DS(self):
         delete_datasender_id = TestAllDataSenders.register_datasender(DATA_SENDER_TO_DELETE)
-        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        #self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         self.all_datasenders_page.load()
         self.all_datasenders_page.search_with(fetch_(FIRST_NAME, NEW_USER_DATA))
         self.all_datasenders_page.click_checkall_checkbox()
+        self.driver.create_screenshot("ds_to_delete.png")
         self.all_datasenders_page.perform_datasender_action(DELETE)
         DataSenderDeleteDialog(self.driver).ok()
         self.assertEqual(self.all_datasenders_page.get_delete_success_message(), DELETE_SUCCESS_TEXT)

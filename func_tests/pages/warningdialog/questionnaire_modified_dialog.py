@@ -1,6 +1,7 @@
 from framework.exception import CouldNotLocateElementException
 from framework.utils.common_utils import by_css, by_id
 from pages.page import Page
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class QuestionnaireModifiedDialog(Page):
@@ -18,6 +19,8 @@ class QuestionnaireModifiedDialog(Page):
 
     def is_visible(self):
         try:
-            return self.driver.find(by_id("ui-dialog-title-cancel_questionnaire_warning_message")).is_displayed()
+            id = by_id("ui-dialog-title-cancel_questionnaire_warning_message")
+            self.driver.wait_for_element(UI_TEST_TIMEOUT, id, True)
+            return self.driver.find(id).is_displayed()
         except CouldNotLocateElementException:
             return False
