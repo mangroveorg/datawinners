@@ -35,7 +35,7 @@ class TestProjectOverview(HeadlessRunnerTest):
         self.client = Client()
         self.client.login(username='tester150411@gmail.com', password='tester150411')
         project_id = create_multi_choice_project(self.client)
-        self.driver.go_to(url('/project/overview/%s' %project_id))
+        self.driver.go_to(url('/project/overview/%s' % project_id))
         project_name = self.driver.find(by_css(".project_title")).text
         self.driver.find(by_css(".project_title")).click()
         self.enter_project_name_and_validate_error_msg("Clinic Test Project1", "Questionnaire with same name already exists.")
