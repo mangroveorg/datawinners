@@ -13,7 +13,7 @@ function (doc) {
     function success_values(values) {
         var result = {};
         for (key in values) {
-            if (values[key].isEntityQuestion) {
+            if (values[key].is_entity_question) {
                 result[key] = values[key].answer.id
             } else if (values[key].type == 'select1' || values[key].type == 'select') {
                 var choices = []

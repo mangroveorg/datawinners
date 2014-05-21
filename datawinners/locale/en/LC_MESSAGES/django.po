@@ -4530,6 +4530,7 @@ msgstr ""
 msgid "Data Senders must use Identification Numbers that are already registered in Datawinners."
 msgstr ""
 
+<<<<<<< HEAD
 msgid "more_wrong_question"
 msgstr "other questions"
 
