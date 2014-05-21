@@ -2,10 +2,15 @@ DW.CancelWarningDialog = function (options) {
     var self = this;
     var successCallBack = options.successCallBack;
     var isQuestionnaireModified = options.isQuestionnaireModified;
+    var cancelCallback = options["cancelCallback"]|| function(){};
+    var _redirect = options["actionCallback"] || function () {
+        window.location.href = redirect_url;
+        return true;
+    };
 
     this.init = function () {
         var canceDialogDiv = options.cancelDialogDiv || "#cancel_questionnaire_warning_message";
-        self.cancelDialog = $(canceDialogDiv);
+        self.cancelDialog = $($(canceDialogDiv).parent().html());
         self.ignoreButton = self.cancelDialog.find(".no_button");
         self.saveButton = self.cancelDialog.find(".yes_button");
         self.cancelButton = self.cancelDialog.find("#cancel_dialog");
@@ -15,6 +20,10 @@ DW.CancelWarningDialog = function (options) {
         _initializeSaveButtonHandler();
         _initializeLinkBindings();
     };
+
+    this.show = function(){
+        self.cancelDialog.dialog("open");
+    }
 
     var _initializeDialog = function () {
         self.cancelDialog.dialog({
@@ -35,6 +44,7 @@ DW.CancelWarningDialog = function (options) {
 
     var _initializeCancelButtonHandler = function () {
         self.cancelButton.bind('click', function () {
+            cancelCallback();
             self.cancelDialog.dialog("close");
             return false;
         });
@@ -44,16 +54,12 @@ DW.CancelWarningDialog = function (options) {
         self.saveButton.bind('click', function () {
             if(options.validate()) {
                 successCallBack(function () {
+                    self.cancelDialog.dialog("close");
                     return _redirect();
                 });
             }
             self.cancelDialog.dialog("close");
         });
-    };
-
-    var _redirect = function () {
-        window.location.href = redirect_url;
-        return true;
     };
 
     var _initializeLinkBindings = function () {

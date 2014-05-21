@@ -3,6 +3,9 @@ $(document).ready(function () {
         var self = this;
         self.availableLanguages = languages;
         self.language = ko.observable();
+        self.language_display = ko.computed(function(){
+            return self.language();
+        });
         self.customizedMessages = ko.observableArray();
         self.saveButtonText = ko.observable(gettext("Save"));
         self.initialState = ko.observable();
@@ -11,12 +14,9 @@ $(document).ready(function () {
         },self);
 
         self.language.subscribe(function () {
-            if(self.initialState() && self.isModified()){
-
-            }
             $.getJSON("/languages/custom_messages", {'language': languageViewModel.language()}).success(function (data) {
                 var customized_messages = [];
-                for (var i in data) {
+                for (var i=0; i<data.length; i++) {
                     var messageItem = DW.ko.createValidatableObservable({value: data[i].message});
                     var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem };
                     messageItem.subscribe(function () {
@@ -29,6 +29,12 @@ $(document).ready(function () {
 
             });
         }, self, 'change');
+        self.language.subscribe(function(language_code){
+            if(language_code && self.isModified()) {
+                self.language(language_code);
+                return false;
+            }
+        }, self, 'beforeChange');
         self.isValid=ko.computed(function(){
             var valid_fields = $.map(self.customizedMessages(), function(e){return e.message.valid()});
             return valid_fields.indexOf(false) == -1;
@@ -50,6 +56,8 @@ $(document).ready(function () {
         };
     }
 
+
+
     window.languageViewModel = new LanguageViewModel();
     ko.applyBindings(languageViewModel);
     languageViewModel.language(current_language);
@@ -62,9 +70,28 @@ $(document).ready(function () {
         cancelDialogDiv : "#cancel_language_changes_warning",
         validate: function(){
             return languageViewModel.isValid();
-        },
-        triggerLinks:"#language"
+        }
     };
     new DW.CancelWarningDialog(options).init();
+
+     $("#language").change(function(e){
+        if(languageViewModel.isModified()) {
+            e.preventDefault();
+
+            var warning_dialog = new DW.CancelWarningDialog({
+                cancelDialogDiv : "#cancel_language_changes_warning",
+                cancelCallback:function(){$("#language option[value=" + languageViewModel.language() +"]").attr("selected","selected") ;},
+                successCallBack:function(callback){   languageViewModel.save();   callback(); },
+                actionCallback:function(){ languageViewModel.language($( "#language option:selected" ).val()); },
+                validate: function(){ return languageViewModel.isValid(); }
+        });
+            warning_dialog.init();
+            warning_dialog.show();
+
+            return false;
+        };
+
+        languageViewModel.language($( "#language option:selected" ).val());
+    });
 });
 

@@ -38,7 +38,7 @@
     <div style="padding-top: 12px">
         <strong>{% trans "Languages for SMS Reply Messages" %}</strong>
         <select id="language" name="language_option" style="display: block"
-                data-bind="options: languageViewModel.availableLanguages,optionsText:'name',optionsValue:'code', value:language"
+                data-bind="options: languageViewModel.availableLanguages,optionsText:'name',optionsValue:'code', value:language_display"
                 class="dropdown_style"></select>
 
     </div>
@@ -56,7 +56,7 @@
     <br/>
     <div><a class="button save" id="language_save" data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
 
-    <div id="cancel_language_changes_warning">
+    <div id="cancel_language_changes_warning" style="display: none;">
         {% trans "Do you want to save the changes before leaving this page?" %}<br/>
         <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
 
