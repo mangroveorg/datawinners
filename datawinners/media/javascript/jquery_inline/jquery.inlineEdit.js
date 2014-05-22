@@ -72,7 +72,7 @@ $.inlineEdit = function(urls, options){
 
 			if ($('.editFieldFirst').length == 0) {
 				editableFields = $(this).siblings('.editableSingle, .editableMulti').length + 1;
-				$(this).html('<div class="editFieldWrapper"><input type="text" value="' + value + '" class="editField editFieldFirst" /></div>');
+				$(this).html('<div class="editFieldWrapper"><input type="text" value=""  class="editField editFieldFirst" /></div>');
 
 				if (!simpleMode) {
 				   $(this).siblings('.editableSingle, .editableMulti').click();
@@ -84,8 +84,10 @@ $.inlineEdit = function(urls, options){
 					$('.editFieldFirst').focus();
 				});
 			} else {
-				$(this).html('<div class="editFieldWrapper"><input type="text" value="' + value + '" class="editField" /></div>');
+				$(this).html('<div class="editFieldWrapper"><input type="text" value="" class="editField" /></div>');
 			}
+//          The value for the editbox is set separately to handle strings enclosed in quotes e.g "Some Text"
+            $(this).find(".editFieldWrapper input").val(value);
 		}
 	});
 
@@ -102,7 +104,7 @@ $.inlineEdit = function(urls, options){
 
 			if ($('.editFieldFirst').length == 0) {
 				editableFields = $(this).siblings('.editableSingle, .editableMulti').length + 1;
-				$(this).html('<div class="editFieldWrapper"><textarea class="editField editFieldFirst">' + value + '</textarea></div>');
+				$(this).html('<div class="editFieldWrapper"><textarea class="editField editFieldFirst"></textarea></div>');
 
 				if (!simpleMode) {
 				   $(this).siblings('.editableSingle, .editableMulti').click();
@@ -112,8 +114,10 @@ $.inlineEdit = function(urls, options){
 					$('.editFieldFirst').focus();
 				});
 			} else {
-				$(this).html('<div class="editFieldWrapper"><textarea class="editField">' + value + '</textarea></div>');
+				$(this).html('<div class="editFieldWrapper"><textarea class="editField"></textarea></div>');
 			}
+            //          The value for the editbox is set separately to handle strings enclosed in quotes e.g "Some Text"
+            $(this).find(".editFieldWrapper textarea").val(value);
 		}
 	});
 
