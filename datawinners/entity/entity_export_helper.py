@@ -1,8 +1,8 @@
-from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.translation import ugettext_lazy as _, ugettext, gettext
 import xlwt
 from mangrove.form_model.field import UniqueIdField,ShortCodeField,field_attributes
 
-BEHALF_OF = "I am submitting this data on behalf of"
+BEHALF_OF = gettext("I am submitting this data on behalf of")
 
 
 def get_styles():
@@ -31,7 +31,7 @@ def get_submission_headers(fields, form_model, is_org_user=False):
     headers = []
 
     if is_org_user:
-        add_to_header(headers, BEHALF_OF,
+        add_to_header(headers, BEHALF_OF.decode('utf-8'),
                       _("If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."), \
                   _("Example: rep42"))
 
