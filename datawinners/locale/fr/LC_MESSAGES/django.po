@@ -2102,8 +2102,8 @@ msgstr " Vos Expéditeurs recevront des messages de confirmation et d'erreur aut
 msgid "Your project"
 msgstr "Vos projet"
 
-msgid "You successfully created your questionnaire!"
-msgstr "Vous avez créé votre questionnaire avec succès!"
+msgid "You successfully created your Questionnaire!"
+msgstr "Vous avez créé votre Questionnaire avec succès!"
 
 msgid "Now you can..."
 msgstr "Maintenant vous pouvez..."
@@ -2597,7 +2597,7 @@ msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the to
 msgstr "Entrez le numéro d'identification de l'Expéditeur de données. Cliquez sur 'Expéditeurs de données' en haut de cette page pour trouver ces numéros d'identification. Exemple: rep10"
 
 msgid "I am submitting this data on behalf of"
-msgstr "Je soumets cette donnée pour le compte de"
+msgstr "Je soumets ces données pour le compte de"
 
 msgid "What is associated Data sender type?"
 msgstr "Quel est le type de sujet associé ?"
