@@ -2033,7 +2033,7 @@ msgstr "Your Data Senders will receive automatic Confirmation and Error messages
 msgid "Your project"
 msgstr ""
 
-msgid "You successfully created your questionnaire!"
+msgid "You successfully created your Questionnaire!"
 msgstr ""
 
 msgid "Now you can..."
