@@ -89,7 +89,6 @@ class TestShowActivityLog(HeadlessRunnerTest):
         self.assertTrue(entries_number != 0)
 
     @attr('functional_test')
-    @skipUntil('2014-03-30') #edit submission fails due to error in django forms. Might get fixed with the default reporter question
     def test_edit_submissions_are_logged(self):
         project_overview = self.global_navigation_page.navigate_to_view_all_project_page().navigate_to_project_overview_page(
             self.project_title)

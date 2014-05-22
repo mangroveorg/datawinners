@@ -1,7 +1,6 @@
-import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
-from framework.utils.common_utils import by_css
+from framework.base_test import teardown_driver, HeadlessRunnerTest
+from framework.utils.common_utils import by_css, skipUntil
 from framework.utils.data_fetcher import fetch_, from_
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.loginpage.login_page import LoginPage
@@ -16,6 +15,7 @@ from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA, PROJE
 
 
 class DataSenderTest(HeadlessRunnerTest):
+
     @classmethod
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
@@ -75,6 +75,7 @@ class DataSenderTest(HeadlessRunnerTest):
         self.assertIsNotNone(data_sender_page.get_project_list())
 
     @attr("functional_test")
+    @skipUntil('2014-05-26')
     def test_navigation_via_navigate_bar(self):
         web_submission_page = self.data_sender_page.send_in_data()
         self.driver.wait_for_page_with_title(5, web_submission_page.get_title())
