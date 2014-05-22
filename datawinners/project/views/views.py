@@ -126,7 +126,7 @@ def delete_project(request, project_id):
 def rename_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-    new_project_name = request.POST.get('data', '').strip()
+    new_project_name = request.POST.get('data', '').strip().lower()
     if len(new_project_name) == 0:
         return HttpResponse(json.dumps({"status": "error", "message": ugettext("This field is required.")}),
                             content_type='application/json')
