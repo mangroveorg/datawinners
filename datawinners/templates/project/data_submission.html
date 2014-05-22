@@ -3,9 +3,8 @@
 {% load field_tags %}
 {% load dw_tabs %}
 
+{# DataSender should not see device navigation section, hence overriding section to empty content #}
 {% block device_navigation %}
-    {% activetab "device_tab_nav" "web" %}
-    {{ block.super }}
 {% endblock %}
 
 {% block questionnaire %}
