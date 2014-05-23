@@ -11,20 +11,20 @@ class TestCustomizedMessages(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.dbm._delete_document(cls.dbm.database.get('en'))
+        cls.dbm._delete_document(cls.dbm.database.get('en_test'))
 
     def test_message_save(self):
-        save_messages(self.dbm, "en", {"err1":"Invalid submission","err2":"Invalid submission2"},"English")
-        msg = get_message(self.dbm, "en", "err1")
+        save_messages(self.dbm, "en_test", {"err1":"Invalid submission","err2":"Invalid submission2"},"English")
+        msg = get_message(self.dbm, "en_test", "err1")
         self.assertEqual("Invalid submission", msg)
         self.check_update_message()
 
         self.check_fallback_error_message()
 
     def check_fallback_error_message(self):
-        self.assertEqual("Error", get_message(self.dbm, "en", "Error"))
+        self.assertEqual("Error", get_message(self.dbm, "en_test", "Error"))
 
     def check_update_message(self):
-        save_messages(self.dbm, "en", {"err1": "New Error Message."},"English")
-        msg = get_message(self.dbm, "en", "err1")
+        save_messages(self.dbm, "en_test", {"err1": "New Error Message."},"English")
+        msg = get_message(self.dbm, "en_test", "err1")
         self.assertEqual("New Error Message.", msg)
