@@ -88,10 +88,9 @@ $(document).ready(function () {
         });
             warning_dialog.init();
             warning_dialog.show();
-
             return false;
         };
-
+        DW.loading();
         languageViewModel.language($( "#language option:selected" ).val());
     });
 });
