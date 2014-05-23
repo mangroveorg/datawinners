@@ -119,3 +119,5 @@ LIMIT_TRIAL_ORG_MESSAGE_COUNT = 10
 NEAR_SUBMISSION_LIMIT_TRIGGER = 20
 NEAR_SMS_LIMIT_TRIGGER = 5
 VUMI_API_URL = "http://localhost:2020"
+
+DEBUG_BROWSER="firefox" # firefox | chrome | phantom | ie | htmlunit

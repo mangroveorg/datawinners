@@ -2,6 +2,7 @@
 
 import unittest
 import sys
+from datawinners import settings
 
 from framework.drivers.driver_wrapper import DriverWrapper
 from tests.testsettings import CLOSE_BROWSER_AFTER_TEST
@@ -28,10 +29,17 @@ class BaseTest(unittest.TestCase):
         teardown_driver(self.driver)
 
 
+def is_running_in_pycharm():
+    return 'pycharm' in sys.argv[0]
+
+
 class HeadlessRunnerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver(browser="phantom")
+        browser="phantom"
+        if is_running_in_pycharm():
+            browser = settings.DEBUG_BROWSER or "firefox"
+        cls.driver = setup_driver(browser)
 
     @classmethod
     def tearDownClass(cls):
