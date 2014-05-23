@@ -8,16 +8,21 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import *
 
 
-def login(driver, credential=VALID_CREDENTIALS):
-    LoginPage(driver).load().login_with(credential)
+def login(driver, credential=VALID_CREDENTIALS, landing_page=None):
+
+    LoginPage(driver).load(landing_page).login_with(credential)
     return GlobalNavigationPage(driver)
 
 class LoginPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 
-    def load(self):
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+    def load(self, landing_page=None):
+        url = DATA_WINNER_LOGIN_PAGE
+        if landing_page:
+            landing_page="/"+landing_page if landing_page[0:1] != "/" else landing_page
+            url += "?next=%s"%landing_page
+        self.driver.go_to(url)
         return self
 
     def do_successful_login_with(self, login_credential):

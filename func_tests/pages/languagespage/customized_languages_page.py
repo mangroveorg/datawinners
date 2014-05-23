@@ -27,8 +27,19 @@ class CustomizedLanguagePage(Page):
         success_message = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".success-message-box"),want_visible=True)
         return self.driver.execute_script("return arguments[0].innerHTML", success_message)
 
-    def select_language(self,language_text):
+    def select_language(self,language_text, wait_for_load = False):
         self.language_drop_down.set_selected_by_text(language_text)
+        if wait_for_load:
+            self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockUI"))
+
 
     def get_custom_message_for(self,msg_locator):
         return self.driver.find(msg_locator).get_attribute("value")
+
+    def get_all_messages(self):
+        return [r.get_attribute('value') for r in self.driver.find_elements_(by_css("textarea"))]
+
+    def set_message_boxes(self, default_en_messages):
+        for (index, e) in enumerate(self.driver.find_elements_(by_css("textarea"))):
+            e.clear()
+            e.send_keys(default_en_messages[index])
