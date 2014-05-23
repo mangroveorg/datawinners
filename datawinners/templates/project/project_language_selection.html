@@ -1,0 +1,52 @@
+{% extends 'project/tab_navigation.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Questionnaire - Messages" %} {% endblock %}
+
+{% load dw_tabs %}
+
+{% block navigation %}
+    {% activetab "tab_nav" "messages_and_reminders" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "questionnaires" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_project_overview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_broadcast_sms.css" rel="stylesheet"/>
+    <link href="/media/css/scss/jquery.highlighttextarea.css" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/jquery.highlighttextarea.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#id_others").highlightTextarea({
+                color: "#FCA0A0",
+                caseSensitive: false
+            });
+        });
+        DW.ong_country = "{{ ong_country }}";
+        var failed_numbers = "{{ failed_numbers }}";
+    </script>
+    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/broadcast_message.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% block secondary_navigation_data %}
+        {% activetab "secondary_tab_nav" "project_language" %}
+        {% include 'project/messages_and_reminders_tabs.html' %}
+    {% endblock %}
+
+
+{% endblock %}

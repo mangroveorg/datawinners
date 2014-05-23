@@ -9,7 +9,7 @@ from datawinners.project.preview_views import sms_preview, web_preview, smart_ph
 from datawinners.project.views import submission_views
 from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \
     registered_subjects, broadcast_message, sent_reminders, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject, get_questionnaire_ajax, \
-    rename_project
+    rename_project, project_language
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -39,6 +39,7 @@ urlpatterns = patterns('',
                        url(r'^project/templates/$', get_templates, name="project_templates"),
                        url(r'^project/wizard/edit/(?P<project_id>\w+?)/$', edit_project, name="edit_project"),
                        url(r'^project/overview/(?P<project_id>\w+?)/$', project_overview, name="project-overview"),
+                       url(r'^project/language/(?P<project_id>\w+?)/$', project_language, name="project-language"),
                        url(r'^project/registered_subjects/(?P<project_id>\w+?)/$', registered_subjects,
                            name="registered_subjects_default"),
                        url(r'^project/registered_subjects/(?P<project_id>\w+?)/entity/(?P<entity_type>.+?)/$', registered_subjects,

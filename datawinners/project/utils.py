@@ -36,6 +36,7 @@ def make_project_links(project, entity_type=None):
                      'current_language': translation.get_language(),
                      'data_analysis_link': reverse("submission_analysis", args=[project_id, project.form_code]),
                      'submission_log_link': reverse("submissions", args=[project_id, project.form_code]),
+                     'questionnaire_language_selection_link': reverse("project-language", args=[project_id]),
                      'reminders_link': reverse('reminder_settings', args=[project_id])}
 
     project_links.update(make_subject_links(project_id, entity_type))
