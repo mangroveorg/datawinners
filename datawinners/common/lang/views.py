@@ -9,21 +9,19 @@ from django.views.generic.base import TemplateView, View
 from datawinners import utils
 from datawinners.accountmanagement.decorators import session_not_expired, is_datasender, is_not_expired
 from datawinners.common.lang.messages import save_messages
-from datawinners.common.lang.utils import customized_message_details
+from datawinners.common.lang.utils import customized_message_details, get_available_project_languages
 from datawinners.main.database import get_database_manager
 
 
 class LanguagesView(TemplateView):
     template_name = 'languages.html'
 
+
     def get(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)
         organization = utils.get_organization(request)
         current_language_code = organization.language
-        lang_dict = {}
-        for row in dbm.load_all_rows_in_view("all_languages", include_docs=False):
-            lang_dict.update({row.key: row.value})
-        languages_list = _get_languages_sorted_by_name(lang_dict)
+        languages_list = get_available_project_languages(dbm)
         return self.render_to_response({
             "available_languages": languages_list,
             "current_language": current_language_code
@@ -37,14 +35,6 @@ class LanguagesView(TemplateView):
     @method_decorator(is_not_expired)
     def dispatch(self, *args, **kwargs):
         return super(LanguagesView, self).dispatch(*args, **kwargs)
-
-
-def _get_languages_sorted_by_name(lang_dict):
-    languages_list = []
-    sorted_language_dict = OrderedDict(sorted(lang_dict.items(), key=lambda x: x[1]))
-    for code, language_name in sorted_language_dict.iteritems():
-        languages_list.append({'code': code, 'name': language_name})
-    return languages_list
 
 class LanguagesAjaxView(View):
     def get(self, request, *args, **kwargs):

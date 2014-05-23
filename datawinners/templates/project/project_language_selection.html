@@ -1,6 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Questionnaire - Messages" %} {% endblock %}
+{% block page_title %}{% trans "Questionnaire - Language" %} {% endblock %}
 
 {% load dw_tabs %}
 
@@ -16,30 +16,23 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_project_overview.css" rel="stylesheet"/>
-    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
-    <link href="/media/css/scss/section_broadcast_sms.css" rel="stylesheet"/>
-    <link href="/media/css/scss/jquery.highlighttextarea.css" rel="stylesheet"/>
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
     <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/jquery.highlighttextarea.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#id_others").highlightTextarea({
-                color: "#FCA0A0",
-                caseSensitive: false
-            });
-        });
-        DW.ong_country = "{{ ong_country }}";
-        var failed_numbers = "{{ failed_numbers }}";
+    <script>
+        var languages_list = {{ languages_list|safe }};
+        var current_project_language = '{{ current_project_language|safe }}';
+        var post_url = '{{ post_url }}';
     </script>
-    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/flash_message.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/broadcast_message.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/project_language.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -48,5 +41,57 @@
         {% include 'project/messages_and_reminders_tabs.html' %}
     {% endblock %}
 
+    <div>
+        <h3>{% trans 'Automatic Reply SMS' %}</h3>
+        {% trans 'DataWinners analyzes each SMS Submission and automatically sends back a reply SMS.' %}
+    </div>
+
+    <div id="flash-message-section">
+    </div>
+
+    <div id="project_language_section">
+         <div>
+            {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
+            <input type="checkbox" data-bind="checked: enable_sms_replies" />
+        </div>
+        <div>
+             <ul>
+                <li>
+                    <div>
+                        <strong>{% trans "Language" %}</strong>
+                        <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+                        <div class="tooltip">
+                           <p> {% trans "tooltip_error_language" %} </p>
+                        </div>
+                    </div>
+                <select name="project_language" class="dropdown_style"
+                        data-bind="options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
+
+                </li>
+                <li>
+
+                </li>
+
+             </ul>
+             {% csrf_token %}
+
+        </div>
+        <div class="grid_15 float_right">
+            <div class="right_aligned_button">
+                <input type="button" data-bind="click: save" class="button" value="{% trans "Save" %}"/>
+            </div>
+        </div>
+    </div>
+
+    <div id="cancel_language_changes_warning" style="display: none;">
+        {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+        <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
+
+        <div class="text_align_right padding_top_20">
+            <a id="cancel_dialog" href="javascript:void(0);">{% trans "Cancel" %}</a>
+            <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
+            <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
+        </div>
+    </div>
 
 {% endblock %}

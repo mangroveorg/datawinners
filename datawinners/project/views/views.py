@@ -284,19 +284,6 @@ def _get_data_senders(dbm, form, project):
 @session_not_expired
 @is_datasender
 @is_not_expired
-def project_language(request, project_id):
-    dbm = get_database_manager(request.user)
-    questionnaire = Project.get(dbm, project_id)
-    return render_to_response('project/project_language_selection.html', {'project': questionnaire,
-                                 "project_links": make_project_links(questionnaire),
-                            },
-                          context_instance=RequestContext(request))
-
-
-@login_required
-@session_not_expired
-@is_datasender
-@is_not_expired
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)

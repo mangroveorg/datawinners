@@ -200,6 +200,14 @@ class Project(FormModel):
         return self.activeLanguages[0]
 
     @property
+    def enable_sms_replies(self):
+        return self._doc.enable_sms_replies
+
+    @enable_sms_replies.setter
+    def enable_sms_replies(self, enable_replies):
+        self._doc.enable_sms_replies = enable_replies
+
+    @property
     def reminder_and_deadline(self):
         return self._doc.reminder_and_deadline
 
