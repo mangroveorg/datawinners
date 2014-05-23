@@ -39,7 +39,7 @@ $(document).ready(function () {
             var valid_fields = $.map(self.customizedMessages(), function(e){return e.message.valid()});
             return valid_fields.indexOf(false) == -1;
         }, self.customizedMessages);
-        self.save = function () {
+        self.save = function (callback) {
             if (!self.isValid()) return;
             DW.loading();
             languageViewModel.saveButtonText(gettext("Saving..."));
@@ -51,6 +51,7 @@ $(document).ready(function () {
                     $('.success-message-box').text(data["message"]);
                     $('.success-message-box').show();
                     self.initialState(ko.toJSON(self.customizedMessages()));
+                    if(typeof callback == "function") callback();
                 }
             );
 
@@ -64,8 +65,7 @@ $(document).ready(function () {
     languageViewModel.language(current_language);
     var options = {
         successCallBack:function(callback){
-            languageViewModel.save();
-            callback();
+            languageViewModel.save(callback);
         },
         isQuestionnaireModified : function(){return languageViewModel.isModified();},
         cancelDialogDiv : "#cancel_language_changes_warning",
@@ -82,7 +82,7 @@ $(document).ready(function () {
             var warning_dialog = new DW.CancelWarningDialog({
                 cancelDialogDiv : "#cancel_language_changes_warning",
                 cancelCallback:function(){$("#language option[value=" + languageViewModel.language() +"]").attr("selected","selected") ;},
-                successCallBack:function(callback){   languageViewModel.save();   callback(); },
+                successCallBack:function(callback){   languageViewModel.save(callback);},
                 actionCallback:function(){ languageViewModel.language($( "#language option:selected" ).val()); },
                 validate: function(){ return languageViewModel.isValid(); }
         });
