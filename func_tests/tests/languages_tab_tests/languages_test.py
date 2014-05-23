@@ -3,6 +3,7 @@ from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css
 from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
+from tests.testsettings import UI_TEST_TIMEOUT
 
 default_en_messages = [u'Thank you {Name of Data Sender}. We received your SMS: {List of Answers}',
                         u'Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.',
@@ -60,4 +61,33 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.language_page.set_message_boxes(default_en_messages)
 
         self.language_page.save_changes()
+
+    def test_unsaved_warning_dialog(self):
+        [r.send_keys(' new') for r in self.driver.find_elements_(by_css("textarea"))]
+        self.driver.find(by_css("#global_subjects_link")).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"), True)
+        self.driver.find(by_css("#cancel_language_changes_warning_dialog_section #cancel_dialog")).click()
+        self.assertListEqual([msg + " new" for msg in default_en_messages],  self.language_page.get_all_messages())
+
+        self.driver.find(by_css("#global_subjects_link")).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"), True)
+        self.driver.find(by_css("#cancel_language_changes_warning_dialog_section #ignore_changes")).click()
+
+        self.driver.find(by_css("#global_languages_link")).click()
+        self.check_for_default_en_messages()
+
+        [r.send_keys(' new') for r in self.driver.find_elements_(by_css("textarea"))]
+        self.driver.find(by_css("#global_subjects_link")).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"), True)
+        self.driver.find(by_css("#cancel_language_changes_warning_dialog_section #save_changes")).click()
+
+        self.driver.find(by_css("#global_languages_link")).click()
+        self.assertListEqual([msg + " new" for msg in default_en_messages],  self.language_page.get_all_messages())
+
+        self.language_page.set_message_boxes(default_en_messages)
+        self.language_page.save_changes()
+
+
+
+
 
