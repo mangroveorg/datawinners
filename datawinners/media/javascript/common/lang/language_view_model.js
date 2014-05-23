@@ -73,21 +73,19 @@ $(document).ready(function () {
             return languageViewModel.isValid();
         }
     };
-    new DW.CancelWarningDialog(options).init();
+    new DW.CancelWarningDialog(options).init().initializeLinkBindings();
+    var language_change_warning_dialog_options = $.extend(options, {
+                cancelCallback:function(){$("#language option[value=" + languageViewModel.language() +"]").attr("selected","selected") ;},
+                actionCallback:function(){ languageViewModel.language($( "#language option:selected" ).val()); }
+            });
+    var language_change_warning_dialog = new DW.CancelWarningDialog(language_change_warning_dialog_options);
+    language_change_warning_dialog.init();
 
      $("#language").change(function(e){
         if(languageViewModel.isModified()) {
             e.preventDefault();
 
-            var warning_dialog = new DW.CancelWarningDialog({
-                cancelDialogDiv : "#cancel_language_changes_warning",
-                cancelCallback:function(){$("#language option[value=" + languageViewModel.language() +"]").attr("selected","selected") ;},
-                successCallBack:function(callback){   languageViewModel.save(callback);},
-                actionCallback:function(){ languageViewModel.language($( "#language option:selected" ).val()); },
-                validate: function(){ return languageViewModel.isValid(); }
-        });
-            warning_dialog.init();
-            warning_dialog.show();
+            language_change_warning_dialog.show();
             return false;
         };
         DW.loading();

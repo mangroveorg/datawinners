@@ -179,7 +179,7 @@ class DriverWrapper(object):
         Return list of webelement
         """
         elements = self._driver.find_elements(by=locator_dict[BY], value=locator_dict[LOCATOR])
-        return [element for element in elements if element.is_displayed]
+        return [element for element in elements if element.is_displayed()]
 
     def go_to(self, url):
         """Open URL using get command of webdriver api"""

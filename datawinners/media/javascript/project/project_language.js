@@ -55,6 +55,6 @@ $(function(){
             return true;
         }
     };
-    new DW.CancelWarningDialog(options).init();
+    new DW.CancelWarningDialog(options).init().initializeLinkBindings();
     ko.applyBindings(viewModel, $("#project_language_section")[0]);
 });

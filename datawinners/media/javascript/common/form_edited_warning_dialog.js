@@ -19,7 +19,7 @@ DW.CancelWarningDialog = function (options) {
         _initializeIgnoreButtonHandler();
         _initializeCancelButtonHandler();
         _initializeSaveButtonHandler();
-        _initializeLinkBindings();
+        return this;
     };
 
     this.show = function(){
@@ -63,7 +63,7 @@ DW.CancelWarningDialog = function (options) {
         });
     };
 
-    var _initializeLinkBindings = function () {
+    this.initializeLinkBindings = function () {
         $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(".add_link, .preview-navigation a, .sms_tester, .delete_project, #dw_help_link").bind('click', {self: this}, function (event) {
             var that = event.data.self;
             redirect_url = $(this).attr("href");

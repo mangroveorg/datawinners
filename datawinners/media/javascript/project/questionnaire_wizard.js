@@ -22,7 +22,7 @@ $(document).ready(function () {
                     }
 
                   };
-    new DW.CancelWarningDialog(options).init();
+    new DW.CancelWarningDialog(options).init().initializeLinkBindings();
     new DW.UniqueIdHelpSection().init();
 
     var index;

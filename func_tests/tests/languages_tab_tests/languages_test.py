@@ -16,7 +16,9 @@ class TestLanguageTab(HeadlessRunnerTest):
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
         login(cls.driver, landing_page="languages/")
-        cls.language_page = CustomizedLanguagePage(cls.driver)
+
+    def setUp(self):
+        self.language_page = CustomizedLanguagePage(self.driver)
 
     def test_languages_tab(self):
 
@@ -31,6 +33,7 @@ class TestLanguageTab(HeadlessRunnerTest):
                                 u"Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."]
         french_messages = [r.get_attribute('value') for r in self.driver.find_elements_(by_css("textarea"))]
         self.assertListEqual(expected_fr_messages, french_messages)
+        self.language_page.select_language("English")
 
     def clear_all_errormessages(self):
         [r.clear() for r in self.driver.find_elements_(by_css("textarea"))]
@@ -53,7 +56,7 @@ class TestLanguageTab(HeadlessRunnerTest):
 
     def test_modify_and_save(self):
 
-        [r.send_keys(' new') for r in self.driver.find_elements_(by_css("textarea"))]
+        self.change_reply_messages()
         self.language_page.save_changes()
         self.language_page.refresh()
         self.assertListEqual([msg + " new" for msg in default_en_messages],  self.language_page.get_all_messages())
@@ -62,30 +65,51 @@ class TestLanguageTab(HeadlessRunnerTest):
 
         self.language_page.save_changes()
 
-    def test_unsaved_warning_dialog(self):
+    def change_reply_messages(self):
         [r.send_keys(' new') for r in self.driver.find_elements_(by_css("textarea"))]
-        self.driver.find(by_css("#global_subjects_link")).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"), True)
-        self.driver.find(by_css("#cancel_language_changes_warning_dialog_section #cancel_dialog")).click()
+
+    def verify_warning_dialog_present(self):
+        self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
+
+
+    def test_unsaved_warning_dialog(self):
+        def click_identification_number_page():
+            self.driver.find(by_css("#global_subjects_link")).click()
+        self.verify_unsaved_warning_dialog(click_identification_number_page)
+
+    def verify_unsaved_warning_dialog(self, navigate_away_action):
+        self.change_reply_messages()
+        navigate_away_action()
+        self.verify_warning_dialog_present()
+        self.driver.find_visible_element(by_css(".cancel_button")).click()
         self.assertListEqual([msg + " new" for msg in default_en_messages],  self.language_page.get_all_messages())
 
-        self.driver.find(by_css("#global_subjects_link")).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"), True)
-        self.driver.find(by_css("#cancel_language_changes_warning_dialog_section #ignore_changes")).click()
+        navigate_away_action()
+        self.verify_warning_dialog_present()
+        self.driver.find_visible_element(by_css(".no_button")).click()
 
         self.driver.find(by_css("#global_languages_link")).click()
+        self.language_page = CustomizedLanguagePage(self.driver)
         self.check_for_default_en_messages()
 
-        [r.send_keys(' new') for r in self.driver.find_elements_(by_css("textarea"))]
-        self.driver.find(by_css("#global_subjects_link")).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"), True)
-        self.driver.find(by_css("#cancel_language_changes_warning_dialog_section #save_changes")).click()
+        self.change_reply_messages()
+        navigate_away_action()
+        self.verify_warning_dialog_present()
+        self.driver.find_visible_element(by_css(".yes_button")).click()
 
         self.driver.find(by_css("#global_languages_link")).click()
+        self.language_page = CustomizedLanguagePage(self.driver)
         self.assertListEqual([msg + " new" for msg in default_en_messages],  self.language_page.get_all_messages())
 
         self.language_page.set_message_boxes(default_en_messages)
         self.language_page.save_changes()
+
+    def test_unsaved_warning_on_language_change(self):
+        def click_identification_number_page():
+            self.language_page.select_language("French")
+        self.verify_unsaved_warning_dialog(click_identification_number_page)
+
+        
 
 
 

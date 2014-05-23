@@ -144,7 +144,7 @@ $(document).ready(function () {
                        return questionnaireViewModel.validateSelectedQuestion() && questionnaireViewModel.validateQuestionnaireDetails()
                     }
                   };
-    new DW.CancelWarningDialog(options).init();
+    new DW.CancelWarningDialog(options).init().initializeLinkBindings();
 
     $("#save_and_create").bind("click", function () {
             _save_questionnaire(function (response) {
