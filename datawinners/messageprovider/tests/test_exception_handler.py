@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from django.test import TestCase
+from datawinners.messageprovider.handlers import create_failure_log
 from mangrove.datastore.database import DatabaseManager
 from django.utils.translation import get_language
 from mangrove.form_model.form_model import FormModel, FORM_CODE
@@ -9,7 +10,6 @@ from mock import Mock, patch
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.models import Organization
 from datawinners.messageprovider.exception_handler import handle
-from datawinners.messageprovider.handlers import create_failure_log
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import SMS, exception_messages
 from datawinners.submission.models import DatawinnerLog

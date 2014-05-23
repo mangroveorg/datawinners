@@ -49,7 +49,7 @@ class LanguagesAjaxView(View):
         for customized_message in data.get('customizedMessages'):
             customized_message_dict.update({customized_message.get("code"): customized_message.get("message")})
         save_messages(dbm, data.get('language'), customized_message_dict)
-        return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfuly.")}))
+        return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))
 
     @method_decorator(csrf_view_exempt)
     @method_decorator(csrf_response_exempt)

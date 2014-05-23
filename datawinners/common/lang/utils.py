@@ -33,24 +33,22 @@ def customized_message_details(dbm, language_code):
 def save_reply_message_template(code, dbm, lang):
     messages = OrderedDict()
     messages.update(
-        {error_message_codes[0]: _("Thank you {Name of Data Sender}. We received your SMS: {List of Answers}")})
+        {error_message_codes[0]: "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"})
     messages.update({error_message_codes[1]:
-                         _(
-                             "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.")})
-    messages.update({error_message_codes[2]: _(
-        "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")})
-    messages.update({error_message_codes[3]: _(
-        "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")})
+                         "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS."})
+    messages.update({error_message_codes[2]:
+        "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."})
+    messages.update({error_message_codes[3]:
+        "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."})
     messages.update(
-        {error_message_codes[4]: _(
-            "You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")})
+        {error_message_codes[4]:
+            "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."})
     customized_message = CustomizedMessages(code, lang, messages)
     return dbm._save_document(customized_message)
 
 
 def create_custom_message_templates(dbm):
     for code, lang in languages.iteritems():
-        translation.activate(code)
         save_reply_message_template(code, dbm, lang)
 
 

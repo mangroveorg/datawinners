@@ -1971,8 +1971,6 @@ msgstr "Erreur. %s n'est pas enregistre. Verifiez le Numero d'Identification et 
 msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
 
-msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
-msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
 
 msgid "All questions must be unique"
 msgstr "Toutes les questions doivent être uniques. Veuillez supprimer les doublons"
@@ -2425,8 +2423,6 @@ msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou v
 "Données n’ont pas accès à Internet. "
 "<br/>Si certains de vos Expéditeurs de Données ont (ou auront) accès à Internet, nous vous recommandons de laisser la case 'WEB' cochée."
 
-msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
 msgid "Privacy Policy"
 msgstr "Politique de Confidentialité"
@@ -4839,15 +4835,6 @@ msgstr "Langues pour les Réponses SMS automatiques"
 
 msgid "language help text"
 msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une réponse SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces réponses SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les réponses SMS automatiques. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
-
-msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
-msgstr "{Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
-
-msgid "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erreur. Reponse incorrecte pour la question {Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
-
-msgid "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Erreur. {Numéro d'Identification Soumis} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur."
 
 msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr "Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
