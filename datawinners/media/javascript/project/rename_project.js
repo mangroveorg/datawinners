@@ -11,6 +11,9 @@ $(function(){
             afterSave: function(result){
                 var editFieldSection = result.editFieldSection;
                 editFieldSection.find('button').text(gettext("Save"));
+                if(result.success){
+                    $('.editableSingle').text(_.str.capitalize(result.value.toLowerCase()));
+                }
             },
             cancel_label:gettext("Cancel")
         });
