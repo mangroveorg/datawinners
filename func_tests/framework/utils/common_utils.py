@@ -1,8 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import functools
 import random
 import string
 import time
-from unittest import SkipTest
+from unittest import SkipTest, skipUnless
 from framework.exception import CouldNotLocateElementException
 
 from pages.page import Page
@@ -128,9 +129,19 @@ def generate_random_email_id():
 
 
 
+#def skipUntil(dateUntil):
+#    def wrap(f):
+#        if datetime.datetime.strptime(dateUntil, '%Y-%m-%d') < datetime.datetime.now():
+#            return f
+#        raise SkipTest("Skipped until %s"%dateUntil)
+#    return wrap
+
+
 def skipUntil(dateUntil):
-    def wrap(f):
-        if datetime.datetime.strptime(dateUntil, '%Y-%m-%d') < datetime.datetime.now():
-            return f
-        raise SkipTest("Skipped until %s"%dateUntil)
-    return wrap
+    def skipd(f):
+        @skipUnless( datetime.datetime.strptime(dateUntil, '%Y-%m-%d') < datetime.datetime.now(), "Skipped until %s"% dateUntil)
+        @functools.wraps(f)
+        def wrap(f):
+             return f
+        return wrap
+    return skipd
