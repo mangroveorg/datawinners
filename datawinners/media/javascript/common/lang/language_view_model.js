@@ -47,7 +47,7 @@ $(document).ready(function () {
                     'data': JSON.stringify(ko.toJS(languageViewModel))},
                 function (data) {
                     data = JSON.parse(data);
-                    $(".save").text(gettext('Save'));
+                    languageViewModel.saveButtonText(gettext("Save..."));
                     $('.success-message-box').text(data["message"]);
                     $('.success-message-box').show();
                     self.initialState(ko.toJSON(self.customizedMessages()));
