@@ -160,7 +160,7 @@ class AllDataSendersPage(Page):
         self.driver.find(ACTION_DROP_DOWN).click()
 
     def is_none_selected_shown(self):
-        return self.driver.find_visible_element(NONE_SELECTED_LOCATOR).is_displayed()
+        return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()
 
     def get_none_selected_text(self):
         return self.driver.find_visible_element(NONE_SELECTED_LOCATOR).text
