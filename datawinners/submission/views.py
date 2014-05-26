@@ -35,6 +35,7 @@ from datawinners.settings import NEAR_SUBMISSION_LIMIT_TRIGGER, NEAR_SMS_LIMIT_T
 from datawinners.project.utils import is_quota_reached
 from datawinners.sms.models import SMS, MSG_TYPE_SUBMISSION_REPLY, MSG_TYPE_USER_MSG, MSG_TYPE_REMINDER, MSG_TYPE_API
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
+from datawinners.messageprovider.errors_translation_processor import TranslationProcessor
 
 logger = logging.getLogger("django")
 
@@ -210,7 +211,8 @@ def submit_to_player(incoming_request):
             post_sms_parser_processors=post_sms_parser_processors, feeds_dbm=incoming_request['feeds_dbm'])
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
-        response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
+        response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"),
+                                     translation_processor=TranslationProcessor)
 
         if response.is_registration:
             incoming_request['is_registration'] = True

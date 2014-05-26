@@ -4573,7 +4573,7 @@ msgid "Click on the Upload a file button and select the saved template."
 msgstr "Cliquez sur le bouton \"Télécharger un fichier\" et sélectionnez le modèle sauvegardé."
 
 msgid "Answer %s for question %s is of the wrong type."
-msgstr "Le type de la réponse s pour la question \"%s\" est erroné."
+msgstr "Le type de la réponse %s pour la question \"%s\" est erroné."
 
 msgid "Answer %s for question %s is smaller than allowed."
 msgstr "La réponse %s pour la question \"%s\" est inférieure à ce q ui est permise."
@@ -4840,3 +4840,12 @@ msgstr "Vous n'êtes pas autorisé à soumettre des données pour ce Questionnai
 
 msgid "The Data Sender you are submitting on behalf of cannot submit to this Questionnaire. Add the Data Sender to the Questionnaire."
 msgstr "L'Expéditeur de Données pour le compte duquel vous soumettez des Données n'est pas autorisé à soumettre des Données pour ce Questionnaire. Ajoutez l'Expéditeur de Données à ce Questionnaire."
+
+msgid "%s with %s = %s not found."
+msgstr "%s avec %s = %s non trouvé"
+
+msgid "Answer %s for question %s is longer than allowed."
+msgstr ""
+
+msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
+msgstr ""

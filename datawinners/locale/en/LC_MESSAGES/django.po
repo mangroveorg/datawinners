@@ -4553,3 +4553,21 @@ msgstr ""
 
 msgid "The Data Sender you are submitting on behalf of cannot submit to this Questionnaire. Add the Data Sender to the Questionnaire."
 msgstr ""
+
+msgid "%s with %s = %s not found."
+msgstr ""
+
+msgid "Answer %s for question %s is of the wrong type."
+msgstr ""
+
+msgid "Answer %s for question %s is smaller than allowed."
+msgstr ""
+
+msgid "Answer %s for question %s is greater than allowed."
+msgstr ""
+
+msgid "Answer %s for question %s is shorter than allowed."
+msgstr ""
+
+msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
+msgstr ""
