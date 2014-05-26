@@ -9,7 +9,7 @@ from django.views.generic.base import TemplateView, View
 from datawinners import utils
 from datawinners.accountmanagement.decorators import session_not_expired, is_datasender, is_not_expired
 from datawinners.common.lang.messages import save_messages
-from datawinners.common.lang.utils import customized_message_details, get_available_project_languages
+from datawinners.common.lang.utils import customized_message_details, get_available_project_languages, create_new_reply_message_template, DuplicateLanguageException
 from datawinners.main.database import get_database_manager
 
 
@@ -59,3 +59,21 @@ class LanguagesAjaxView(View):
     @method_decorator(is_not_expired)
     def dispatch(self, *args, **kwargs):
         return super(LanguagesAjaxView, self).dispatch(*args, **kwargs)
+
+class LanguageCreateView(View):
+    def post(self,request,*args,**kwargs):
+        language_name = request.POST.get('language_name')
+        try:
+            language_code = create_new_reply_message_template(get_database_manager(request.user), language_name)
+            return HttpResponse(json.dumps({"language_code":language_code, "language_name":language_name}))
+        except DuplicateLanguageException as e:
+            return HttpResponse(json.dumps({"language_code":None, "message":ugettext(e.message)}))
+
+    @method_decorator(csrf_view_exempt)
+    @method_decorator(csrf_response_exempt)
+    @method_decorator(login_required)
+    @method_decorator(session_not_expired)
+    @method_decorator(is_datasender)
+    @method_decorator(is_not_expired)
+    def dispatch(self, *args, **kwargs):
+            return super(LanguageCreateView, self).dispatch(*args, **kwargs)

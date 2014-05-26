@@ -18,9 +18,9 @@ error_message_codes = ["reply_success_submission", "reply_incorrect_answers", "r
                        "reply_identification_number_not_registered", "reply_ds_not_authorized"]
 
 
-def customized_message_details(dbm, language):
+def customized_message_details(dbm, language_code):
     reply_list = []
-    customized_message_row = dbm.load_all_rows_in_view('all_languages', startkey=language, endkey=language, include_docs=True)[0]
+    customized_message_row = dbm.load_all_rows_in_view('all_languages', startkey=language_code, endkey=language_code, include_docs=True)[0]
     reply_messages_dict = customized_message_row["doc"]["messages"]
     for code, reply_message_title in TITLE_REPLY_MESSAGE_CODE_MAP.iteritems():
         details_dict = {"title": _(reply_message_title)}
@@ -30,33 +30,49 @@ def customized_message_details(dbm, language):
     return reply_list
 
 
+def save_reply_message_template(code, dbm, lang):
+    messages = OrderedDict()
+    messages.update(
+        {error_message_codes[0]: _("Thank you {Name of Data Sender}. We received your SMS: {List of Answers}")})
+    messages.update({error_message_codes[1]:
+                         _(
+                             "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.")})
+    messages.update({error_message_codes[2]: _(
+        "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")})
+    messages.update({error_message_codes[3]: _(
+        "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")})
+    messages.update(
+        {error_message_codes[4]: _(
+            "You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")})
+    customized_message = CustomizedMessages(code, lang, messages)
+    return dbm._save_document(customized_message)
+
+
 def create_custom_message_templates(dbm):
     for code, lang in languages.iteritems():
         translation.activate(code)
-        messages = OrderedDict()
-        messages.update({error_message_codes[0]: _("Thank you {Name of Data Sender}. We received your SMS: {List of Answers}")})
-        messages.update({error_message_codes[1]:
-                             _("Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.")})
-        messages.update({error_message_codes[2]: _("Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")})
-        messages.update({error_message_codes[3]: _("Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")})
-        messages.update(
-            {error_message_codes[4]: _("You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")})
-
-        customized_message = CustomizedMessages(code, lang, messages)
-        dbm._save_document(customized_message)
-
-
-def _get_languages_sorted_by_name(lang_dict):
-    languages_list = []
-    sorted_language_dict = OrderedDict(sorted(lang_dict.items(), key=lambda x: x[1]))
-    for code, language_name in sorted_language_dict.iteritems():
-        languages_list.append({'code': code, 'name': language_name})
-    return languages_list
+        save_reply_message_template(code, dbm, lang)
 
 
 def get_available_project_languages(dbm):
-    lang_dict = {}
+    lang_dict = []
     for row in dbm.load_all_rows_in_view("all_languages", include_docs=False):
-        lang_dict.update({row.key: row.value})
-    languages_list = _get_languages_sorted_by_name(lang_dict)
-    return languages_list
+        lang_dict.append({'code':row.key,'name': row.value})
+    return lang_dict
+
+
+class DuplicateLanguageException(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return self.message
+
+
+
+def create_new_reply_message_template(dbm, language_name):
+    rows = dbm.load_all_rows_in_view("by_language_name", key=language_name)
+    if len(rows)>0:
+        raise DuplicateLanguageException("This language already exists.")
+    return save_reply_message_template(None, dbm, language_name)
+

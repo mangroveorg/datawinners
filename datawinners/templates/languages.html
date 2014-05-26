@@ -13,11 +13,11 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
-    var languages = {{ available_languages|safe }};
-    var current_language = "{{ current_language|safe }}";
-    $(function(){
+        var languages = {{ available_languages|safe }};
+        var current_language = "{{ current_language|safe }}";
+        $(function () {
 
-    });
+        });
     </script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
@@ -32,38 +32,63 @@
 {% block content %}
     <div class="success-message-box" style="display: none;"></div>
     <div class="help_accordion" style="text-align: justify">
-    {% trans "language help text" %}
+        {% trans "language help text" %}
     </div>
 
     <div style="padding-top: 12px">
         <strong>{% trans "Languages for SMS Reply Messages" %}</strong>
         <select id="language" name="language_option" style="display: block"
                 data-bind="options: languageViewModel.availableLanguages,optionsText:'name',optionsValue:'code', value:language_display"
-                class="dropdown_style"></select>
+                class="dropdown_style">
+        </select>
 
     </div>
     <div class="clear"></div>
     <br/>
     <div>
         <ol data-bind="foreach: languageViewModel.customizedMessages">
-            <strong><li data-bind="text: $data.title"></li></strong>
-            <textarea rows="3" cols="80" data-bind="value:$data.message,attr: {id: 'custom_message' + $index() }" style="width: auto;resize: none"></textarea>
+            <strong>
+                <li data-bind="text: $data.title"></li>
+            </strong>
+            <textarea rows="3" cols="80" data-bind="value:$data.message,attr: {id: 'custom_message' + $index() }"
+                      style="width: auto;resize: none"></textarea>
+
             <div class="validationMessage" data-bind="ifnot: $data.message.valid">
-                <span id="question_title_validation_message" class="validationText" data-bind="text: $data.message.error"></span>
+                <span id="question_title_validation_message" class="validationText"
+                      data-bind="text: $data.message.error"></span>
             </div>
         </ol>
     </div>
     <br/>
-    <div><a class="button save" id="language_save" data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
+    <div><a class="button save" id="language_save"
+            data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
 
     <div id="cancel_language_changes_warning" style="display: none;">
         {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+
         <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
 
         <div class="text_align_right padding_top_20">
             <a id="cancel_dialog" class="cancel_button" href="javascript:void(0);">{% trans "Cancel" %}</a>
             <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
             <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
+        </div>
+    </div>
+
+    <div id="add_new_language_pop" style="display: none;">
+        {% trans "Language Name" %}<br/>
+        <input type="text" placeholder="Enter a name of your language" data-bind="value:newLanguageName"/>
+
+        <div data-bind="ifnot: $data.newLanguageName.valid" class="validationMessage">
+            <span data-bind="text: $data.newLanguageName.error" class="validationText"
+                  id="language_validation_message">{% trans "Enter language name."%}</span>
+        </div>
+        <p class="help_accordion">{% trans "Example:Swahili, Spanish" %}</p>
+
+        <div class="text_align_right padding_top_20">
+            <a id="cancel_dialog" class="cancel_button" href="javascript:void(0);"
+               data-bind="click:cancelAddLanguage">{% trans "Cancel" %}</a>
+            <a class="button yes_button" data-bind="click:$root.addLanguage">{% trans "Add Language" %}</a>
         </div>
     </div>
 
