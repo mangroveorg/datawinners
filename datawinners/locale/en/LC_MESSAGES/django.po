@@ -2025,7 +2025,7 @@ msgid "Time Period"
 msgstr ""
 
 msgid "tooltip_error_language"
-msgstr "Your Data Senders will receive automatic Confirmation and Error messages from DataWinners based on their submission. Choose the language of these messages."
+msgstr "Data Senders receive an automatic reply SMS from DataWinners after every Submission.  There are two types of automatic reply SMS: Questionnaire-level (Example: “Thank you David. We received your SMS”) Account-level (Example: “Error. You are not registered as a Data Sender. Please contact your supervisor.”). Select your language preference for the Questionnaire-level reply SMS here. You can set your language preference for the Account-level reply SMS on the Languages page."
 
 msgid "Your project"
 msgstr ""

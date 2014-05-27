@@ -2095,7 +2095,11 @@ msgid "Time Period"
 msgstr "Période"
 
 msgid "tooltip_error_language"
-msgstr " Vos Expéditeurs recevront des messages de confirmation et d'erreur automatiques provenant de DataWinners selon leur Soumission. Choisissez la langue de ces messages."
+msgstr "Les Expéditeurs de Données reçoivent une réponse SMS automatique de DataWinners après chaque Soumission.\
+ Il y a deux types de réponse SMS : Par rapport au Questionnaire (Exemple : «Merci David. Nous avons reçu votre SMS») \
+ Par rapport au compte (Exemple : «Erreur. Vous n'êtes pas enregistré comme Expéditeurs de Données. \
+ Veuillez contacter votre superviseur»).Sélectionnez la langue de votre choix pour les réponses SMS relatives au Questionnaire ici.\
+  Vous pouvez choisir la langue pour les réponses SMS sur la page Langues."
 
 msgid "Your project"
 msgstr "Vos projet"
@@ -4870,4 +4874,4 @@ msgid "DataWinners analyzes"
 msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une réponse SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces réponses SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les réponses SMS automatiques. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
 
 msgid "Send Automatic SMS Replies for My Questionnaire"
-msgstr ""
+msgstr "Envoyer des retours SMS automatiques pour mon Questionnaire"
