@@ -50,7 +50,7 @@
             <strong>
                 <li data-bind="text: $data.title"></li>
             </strong>
-            <textarea rows="3" cols="80" data-bind="value:gettext($data.message),attr: {id: 'custom_message' + $index() }"
+            <textarea rows="3" cols="80" data-bind="value:$data.message,attr: {id: 'custom_message' + $index() }"
                       style="width: auto;resize: none"></textarea>
             <div class="validationMessage" data-bind="ifnot: $data.message.valid">
                 <span id="question_title_validation_message" class="validationText"
