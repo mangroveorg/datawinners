@@ -4553,3 +4553,6 @@ msgstr ""
 
 msgid "The Data Sender you are submitting on behalf of cannot submit to this Questionnaire. Add the Data Sender to the Questionnaire."
 msgstr ""
+
+msgid "DataWinners analyzes"
+msgstr "DataWinners analyzes each SMS Submission and automatically sends back an SMS reply. For each Questionnaire you can choose the language of these automatic reply SMS.  Click on the drop down and choose a language to view and edit the suggested automatic reply SMS text. You can also add new languages to meet your needs."
