@@ -27,6 +27,7 @@
         var languages_list = {{ languages_list|safe }};
         var current_project_language = '{{ current_project_language|safe }}';
         var post_url = '{{ post_url }}';
+        var language_page_link = '{{ languages_link }}';
 
     </script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
@@ -72,9 +73,9 @@
                            <p> {% trans "tooltip_error_language" %} </p>
                         </div>
                     </div>
-                <select name="project_language" class="dropdown_style"
+                <select id="project_language" name="project_language" class="dropdown_style"
                         data-bind="options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
-                    <span id="add_language">{% trans "Add a new language on the " %}<a href={{ languages_link }}>{% trans 'Languages' %}</a>{% trans ' page' %}</span>
+{#                    <span id="add_language">{% trans "Add a new language on the " %}<a href={{ languages_link }}>{% trans 'Languages' %}</a>{% trans ' page' %}</span>#}
                 </li>
 
 

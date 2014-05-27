@@ -41,8 +41,8 @@ function ProjectLanguageViewModel(){
 
 $(function(){
     var viewModel = new ProjectLanguageViewModel();
-    window.viewModel = viewModel; //for debugging
     viewModel.available_languages = languages_list;
+    viewModel.available_languages.push({name: gettext('Add a new language on the Languages page'), code: 'new_lang'});
     viewModel.selected_language(current_project_language);
     var options = {
         successCallBack:function(callback){
@@ -57,4 +57,11 @@ $(function(){
     };
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
     ko.applyBindings(viewModel, $("#project_language_section")[0]);
+
+    $("#project_language option:last-child").attr('id', '#language_page_link');
+    $("#project_language").on('change', function(){
+            if($(this).find("option:selected").is($("#project_language option:last-child"))){
+                window.location.href = language_page_link;
+            }
+    });
 });
