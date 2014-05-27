@@ -50,7 +50,7 @@ class TestSuccessfulSubmissionReplyMessage(TestCase):
 
                 actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', answer_list)
 
-        self.assertEqual(actual_message, "Thank you DS Name. We received your SMS")
+        self.assertEqual(actual_message, "Thank you DS Name. We received your SMS.")
 
 
     @patch.object(Project, 'from_form_model')

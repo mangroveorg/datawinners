@@ -130,11 +130,12 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         form_model = MagicMock()
         form_model.form_code = 'form_code'
         dbm = MagicMock(spec=DatabaseManager)
+        request = {}
         response = MagicMock(errors=errors)
 
         with patch(
                 "datawinners.messageprovider.handlers.get_customized_message_for_questionnaire") as get_customized_message_for_questionnaire_mock:
-            get_submission_error_message_for(response, form_model, dbm)
+            get_submission_error_message_for(response, form_model, dbm, request)
 
             get_customized_message_for_questionnaire_mock.assert_called_with(dbm, None,
                                                                              'reply_identification_number_not_registered',
@@ -154,10 +155,12 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         dbm = MagicMock(spec=DatabaseManager)
         form_model.form_code = 'form_code'
         response = MagicMock(errors=errors)
+        request = {}
+
         with patch(
                 "datawinners.messageprovider.handlers.get_customized_message_for_questionnaire") as get_customized_message_for_questionnaire_mock:
 
-            get_submission_error_message_for(response, form_model, dbm)
+            get_submission_error_message_for(response, form_model, dbm, request)
 
 
             get_customized_message_for_questionnaire_mock.assert_called_with(dbm, None,

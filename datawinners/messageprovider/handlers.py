@@ -49,8 +49,8 @@ def unique_id_not_registered_handler(dbm, form_code, invalid_unique_id_code):
                                                             {'Submitted Identification Number': invalid_unique_id_code})
 
 
-def invalid_answer_handler(dbm, form_code, invalid_answers):
-    return get_customized_message_for_questionnaire(dbm, None, "reply_incorrect_answers",
+def invalid_answer_handler(dbm, request, form_code, invalid_answers):
+    return get_customized_message_for_questionnaire(dbm, request, "reply_incorrect_answers",
                                                             form_code, placeholder_dict=
                                                             {'Question Numbers for Wrong Answer(s)': invalid_answers})
 
@@ -92,7 +92,7 @@ def success_questionnaire_submission_handler(dbm, form_code, datasender_name, li
                                                             'Name of Data Sender': datasender_name,
                                                             'List of Answers': ''
                                                             })
-        message = message.rstrip(': ')
+        message = message.rstrip(': ') + "."
 
     if len(message) > 160:
         message = message[:160]

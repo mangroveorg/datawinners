@@ -54,7 +54,7 @@ def _get_error_message(keys, response):
     return get_validation_failure_error_message(response) % error_text.strip()
 
 
-def get_submission_error_message_for(response, form_model, dbm):
+def get_submission_error_message_for(response, form_model, dbm, request):
     from datawinners.messageprovider.handlers import unique_id_not_registered_handler, invalid_answer_handler
 
     errors = response.errors
@@ -77,7 +77,7 @@ def get_submission_error_message_for(response, form_model, dbm):
             else:
                 error_text = "%s %s %s" % (
                     _("sms_glue").join(keys[:3]), _(and_msg), _("more_wrong_question"))
-        error_message = invalid_answer_handler(dbm, form_model.form_code, error_text)
+        error_message = invalid_answer_handler(dbm, request, form_model.form_code, error_text)
     else:
         error_message = errors
     return error_message
@@ -107,12 +107,12 @@ def get_success_msg_for_registration_using(response, source, form_model=None):
     return _("Registration successful.") + " %s %s" % (_("ID is:"), response.short_code)
 
 
-def _get_response_message(response, dbm):
+def _get_response_message(response, dbm, request):
     form_model = get_form_model_by_code(dbm, response.form_code) if response.form_code else None
     if response.success:
         message = _get_success_message(response, form_model, dbm)
     else:
-        message = get_submission_error_message_for(response, form_model, dbm)
+        message = get_submission_error_message_for(response, form_model, dbm, request)
     return message
 
 

@@ -52,7 +52,7 @@ class TestSMSResponse(unittest.TestCase):
         form_model_mock.get_entity_name_question_code.return_value = 'name'
         with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_mock:
             get_form_model_mock.return_value = form_model_mock
-            response_text = SMSResponse(response).text(dbm_mock)
+            response_text = SMSResponse(response, None).text(dbm_mock)
             self.assertEqual("Thank you Mr., We registered your Clinic Clinic X (cli001)", response_text)
 
     def test_should_return_expected_error_response(self):
@@ -69,4 +69,4 @@ class TestSMSResponse(unittest.TestCase):
             self.form_submission_mock.form_model.form_code)
         with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_by_code:
             get_form_model_by_code.return_value = None
-            self.assertEqual(error_response, SMSResponse(response).text(Mock(spec=DatabaseManager)))
+            self.assertEqual(error_response, SMSResponse(response, None).text(Mock(spec=DatabaseManager)))

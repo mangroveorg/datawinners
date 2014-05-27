@@ -223,7 +223,7 @@ def submit_to_player(incoming_request):
             check_quotas_and_update_users(organization, sms_channel=True)
 
         mail_feed_errors(response, dbm.database_name)
-        message = SMSResponse(response).text(dbm)
+        message = SMSResponse(response, incoming_request).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
         message = ugettext("Error. %s already exists. Register your %s with a different Identification Number.") % \
