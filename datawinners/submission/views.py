@@ -7,7 +7,7 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 import iso8601
-from datawinners.messageprovider.handlers import create_failure_log
+from datawinners.messageprovider.handlers import create_failure_log, incorrect_number_of_answers
 from mangrove.transport.contract.request import Request
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.transport.player.player import SMSPlayer
@@ -247,7 +247,7 @@ def submit_to_player(incoming_request):
             organization.increment_message_count_for(incoming_web_count=1) if sent_via_sms_test_questionnaire else organization.increment_message_count_for(incoming_sms_count=1)
         elif not sent_via_sms_test_questionnaire:
                 organization.increment_message_count_for(sms_registration_count=1)
-        message = handle(exception, incoming_request)
+        message = incorrect_number_of_answers(dbm, form_model.form_code, incoming_request)
 
     except Exception as exception:
         if sent_via_sms_test_questionnaire:

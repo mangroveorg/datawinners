@@ -48,6 +48,11 @@ def unique_id_not_registered_handler(dbm, form_code, invalid_unique_id_code):
                                                             form_code, placeholder_dict=
                                                             {'Submitted Identification Number': invalid_unique_id_code})
 
+def incorrect_number_of_answers(dbm, form_code, request):
+    message = get_customized_message_for_questionnaire(dbm, request, "reply_incorrect_number_of_responses",
+                                                             form_code)
+    create_failure_log(message, request)
+    return message
 
 def invalid_answer_handler(dbm, request, form_code, invalid_answers):
     return get_customized_message_for_questionnaire(dbm, request, "reply_incorrect_answers",
@@ -94,9 +99,6 @@ def success_questionnaire_submission_handler(dbm, form_code, datasender_name, li
                                                             })
         message = message.rstrip(': ') + "."
 
-    if len(message) > 160:
-        message = message[:160]
-
     return message
 
 exception_handlers = {
@@ -107,7 +109,7 @@ exception_handlers = {
     ex.SubmissionParseException: default_exception_handler_with_logger,
     ex.SMSParserInvalidFormatException: sms_parser_invalid_format_handler,
     ex.MultipleSubmissionsForSameCodeException: default_exception_handler_with_logger,
-    ex.SMSParserWrongNumberOfAnswersException: sms_parser_wrong_number_of_answers_handler,
+    ex.SMSParserWrongNumberOfAnswersException: default_exception_handler_with_logger,
     ex.ExceedSMSLimitException: exceed_limit_handler,
     ex.ExceedSubmissionLimitException: exceed_limit_handler,
     ex.DatasenderIsNotLinkedException: default_exception_handler_with_logger,

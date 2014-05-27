@@ -48,12 +48,6 @@ def _is_unique_id_not_present_error(errors):
     return False, None, None
 
 
-def _get_error_message(keys, response):
-    error = response.errors.values()[0]
-    error_text = "%s %s" % (_("singular_question"), keys[0])
-    return get_validation_failure_error_message(response) % error_text.strip()
-
-
 def get_submission_error_message_for(response, form_model, dbm, request):
     from datawinners.messageprovider.handlers import unique_id_not_registered_handler, invalid_answer_handler
 
@@ -86,15 +80,11 @@ def get_submission_error_message_for(response, form_model, dbm, request):
 def get_success_msg_for_submission_using(response, form_model, dbm):
     from datawinners.messageprovider.handlers import success_questionnaire_submission_handler
     datasender_name = response.reporters[0].get('name').split()[0].capitalize()
-    #message = get_submission_success_message(response)
     answers_response_text = ResponseBuilder(form_model=form_model,
                                     processed_data=response.processed_data).get_expanded_response()
     message = success_questionnaire_submission_handler(dbm, form_model.form_code, datasender_name, answers_response_text)
 
     return message
-    #message_with_response_text = message + ": " + response_text
-    #
-    #return message_with_response_text if len(message_with_response_text) <= 160 else message + "."
 
 
 def get_success_msg_for_registration_using(response, source, form_model=None):
@@ -107,7 +97,7 @@ def get_success_msg_for_registration_using(response, source, form_model=None):
     return _("Registration successful.") + " %s %s" % (_("ID is:"), response.short_code)
 
 
-def _get_response_message(response, dbm, request):
+def get_response_message(response, dbm, request):
     form_model = get_form_model_by_code(dbm, response.form_code) if response.form_code else None
     if response.success:
         message = _get_success_message(response, form_model, dbm)
