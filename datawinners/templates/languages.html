@@ -50,11 +50,13 @@
             <strong>
                 <li data-bind="text: $data.title"></li>
             </strong>
-            <textarea rows="3" cols="80" data-bind="value:$data.message,attr: {id: 'custom_message' + $index() }"
-                      style="width: auto;resize: none"></textarea>
+            <textarea rows="3" cols="80" data-bind="value:first160chars($data.message),attr: {id: 'custom_message' + $index() },valueUpdate: 'afterkeydown'"
+                      style="width: auto;resize: none" maxlength="160"></textarea>
+            <span id="char_count" data-bind="text:$data.count"></span> of 160
             <div class="validationMessage" data-bind="ifnot: $data.message.valid">
                 <span id="question_title_validation_message" class="validationText"
                       data-bind="text: $data.message.error"></span>
+
             </div>
         </ol>
     </div>
@@ -79,8 +81,8 @@
         <input type="text" placeholder="Enter a name of your language" data-bind="value:newLanguageName"/>
 
         <div data-bind="ifnot: $data.newLanguageName.valid" class="validationMessage">
-            <span data-bind="text: $data.newLanguageName.error" class="validationText"
-                  id="language_validation_message">{% trans "Enter language name."%}</span>
+            <span data-bind="text: $data.newLanguageName.error" class="validationText" style="display: inline-block"
+                  id="language_validation_message"></span>
         </div>
         <p class="help_accordion">{% trans "Example:Swahili, Spanish" %}</p>
 

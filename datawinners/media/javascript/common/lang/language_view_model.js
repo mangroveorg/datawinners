@@ -1,3 +1,10 @@
+var first160chars = function(str){
+    var val = str();
+    if (val.length>160)
+        str(val.substring(0,160));
+    return str;
+}
+
 $(document).ready(function () {
     function LanguageViewModel() {
         var self = this;
@@ -14,18 +21,24 @@ $(document).ready(function () {
         }, self);
         self.newLanguageName = DW.ko.createValidatableObservable({value: ""});
         self.newLanguageName.subscribe(function () {
-                DW.ko.mandatoryValidator(self.newLanguageName, gettext("Enter valid language name."));
+                DW.ko.mandatoryValidator(self.newLanguageName, gettext("Please enter a name for your language."));
             }
         );
+
 
         self.language.subscribe(function () {
             $.getJSON("/languages/custom_messages", {'language': languageViewModel.language()}).success(function (data) {
                 var customized_messages = [];
                 for (var i = 0; i < data.length; i++) {
                     var messageItem = DW.ko.createValidatableObservable({value: data[i].message});
-                    var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem };
+                    var count = ko.computed(function(){
+                        return this().length;
+                    }, messageItem)
+                    var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem, "count":count };
                     messageItem.subscribe(function () {
-                        DW.ko.mandatoryValidator(this.message, gettext("Enter reply SMS text."));
+                        DW.ko.mandatoryValidator(this.message, gettext("Enter reply SMS text.")) &&
+                        DW.ko.customValidator(this.message, "Text should be less than 160 chars", function(val){return (val+"").length<160;})
+
                     }, customized_message_item);
                     customized_messages.push(customized_message_item);
                 }
@@ -144,7 +157,7 @@ $(document).ready(function () {
 function initializeNewLanguageDialog() {
     $("#add_new_language_pop").dialog({
         autoOpen: false,
-        width: 600,
+        width: 450,
         modal: true,
         title: gettext('Add Language')
     });
@@ -159,3 +172,5 @@ function appendAddNewLanguageOption(){
         var add_language_option = {code: "add_new", name: "Add a new language"};
         languageViewModel.availableLanguages.push(add_language_option);
 }
+
+
