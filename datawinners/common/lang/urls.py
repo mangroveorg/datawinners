@@ -6,6 +6,6 @@ from datawinners.common.lang.views import LanguagesView, LanguagesAjaxView, Lang
 urlpatterns = patterns('',
     (r'^languages/custom_messages', LanguagesAjaxView.as_view()),
     (r'^languages/create', LanguageCreateView.as_view()),
-    (r'^languages/$', LanguagesView.as_view()),
+    url(r'^languages/$', LanguagesView.as_view(), name="languages"),
 
 )
