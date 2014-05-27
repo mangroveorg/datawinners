@@ -2,8 +2,6 @@ $(document).ready(function () {
     function LanguageViewModel() {
         var self = this;
         self.availableLanguages = ko.observableArray(languages);
-        var add_language_option = {code: "add_new", name: "Add a new language"};
-        self.availableLanguages.push(add_language_option);
         self.language = ko.observable();
         self.language_display = ko.computed(function () {
             return self.language();
@@ -19,11 +17,7 @@ $(document).ready(function () {
                 DW.ko.mandatoryValidator(self.newLanguageName, gettext("Enter valid language name."));
             }
         );
-        self.sortLanguages = function () {
-                    self.availableLanguages.sort(function(left, right) {
-                        return left.name == right.name ? 0 : (left.name < right.name ? -1 : 1)
-                    });
-                };
+
         self.language.subscribe(function () {
             $.getJSON("/languages/custom_messages", {'language': languageViewModel.language()}).success(function (data) {
                 var customized_messages = [];
@@ -46,6 +40,13 @@ $(document).ready(function () {
             });
             return valid_fields.indexOf(false) == -1;
         }, self.customizedMessages);
+
+        self.sortLanguages = function () {
+            self.availableLanguages.sort(function(left, right) {
+                return left.name.toLowerCase() == right.name.toLowerCase() ? 0 : (left.name.toLowerCase() < right.name.toLowerCase() ? -1 : 1)
+            });
+        };
+
         self.save = function (callback) {
             if (!self.isValid()) return;
             DW.loading();
@@ -58,9 +59,6 @@ $(document).ready(function () {
                     $('.success-message-box').text(data["message"]);
                     $('.success-message-box').show();
                     self.initialState(ko.toJSON(self.customizedMessages()));
-                    self.availableLanguages.remove(add_language_option);
-                    self.sortLanguages();
-                    self.availableLanguages.push(add_language_option);
                     if (typeof callback == "function") callback();
                 }
             );
@@ -72,10 +70,10 @@ $(document).ready(function () {
                     var response = $.parseJSON(responseString);
                     if (response.language_code) {
                         $('#add_new_language_pop').dialog('close');
+                        self.availableLanguages.pop();
                         self.availableLanguages.push({code: response.language_code, name: response.language_name});
-                        self.availableLanguages.remove(add_language_option);
                         self.sortLanguages();
-                        self.availableLanguages.push(add_language_option);
+                        appendAddNewLanguageOption();
                         self.language(response.language_code);
                     }else{
                       self.newLanguageName.setError(response.message);
@@ -93,6 +91,9 @@ $(document).ready(function () {
     window.languageViewModel = new LanguageViewModel();
     ko.applyBindings(languageViewModel);
     languageViewModel.language(current_language);
+    languageViewModel.sortLanguages();
+    appendAddNewLanguageOption();
+
     var options = {
         successCallBack: function (callback) {
             languageViewModel.save(callback);
@@ -137,6 +138,7 @@ $(document).ready(function () {
     });
 
     initializeNewLanguageDialog();
+
 });
 
 function initializeNewLanguageDialog() {
@@ -153,3 +155,7 @@ function resetPreviousLanguage(){
     $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
 }
 
+function appendAddNewLanguageOption(){
+        var add_language_option = {code: "add_new", name: "Add a new language"};
+        languageViewModel.availableLanguages.push(add_language_option);
+}
