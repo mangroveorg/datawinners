@@ -4,7 +4,8 @@
   text-decoration: none; }
 
 .addNewLanguage {
-  background-color: lightblue; }
+  background-color: lightblue;
+  text: blue; }
 
 .validationText {
   color: #FFFFFF;

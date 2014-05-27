@@ -83,7 +83,6 @@ $(document).ready(function () {
 
         self.cancelAddLanguage = function () {
             $('#add_new_language_pop').dialog('close');
-            resetPreviousLanguage();
         }
     }
 
@@ -109,7 +108,7 @@ $(document).ready(function () {
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
     var language_change_warning_dialog_options = $.extend(options, {
         cancelCallback: function () {
-            $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
+            resetPreviousLanguage();
         },
         actionCallback: function () {
             languageViewModel.language($("#language option:selected").val());
@@ -127,6 +126,7 @@ $(document).ready(function () {
         }
         ;
         if ($("#language").val() === "add_new") {
+            $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
             e.preventDefault();
             $('#add_new_language_pop').dialog('open');
             languageViewModel.newLanguageName("");
