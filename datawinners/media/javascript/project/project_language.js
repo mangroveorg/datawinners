@@ -58,10 +58,11 @@ $(function(){
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
     ko.applyBindings(viewModel, $("#project_language_section")[0]);
 
-    $("#project_language option:last-child").attr('id', '#language_page_link');
+    var add_language_option = $("#project_language option:last-child");
+    add_language_option.attr('id', 'language_page_link');
     $("#project_language").on('change', function(){
-            if($(this).find("option:selected").is($("#project_language option:last-child"))){
-                window.location.href = language_page_link;
-            }
+        if($(this).find("option:selected").is(add_language_option)){
+            window.location.href = language_page_link;
+        }
     });
 });
