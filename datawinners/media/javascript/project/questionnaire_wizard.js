@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     var index;
     DW.existing_question_codes = [];
-    for (index in question_list) {
+    for (index=0; index < question_list.length; index++) {
         DW.existing_question_codes.push(question_list[index].code);
         var questions = new DW.question(question_list[index]);
         questionnaireViewModel.loadQuestion(questions);
