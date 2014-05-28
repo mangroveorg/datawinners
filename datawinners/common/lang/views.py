@@ -67,7 +67,7 @@ class LanguageCreateView(View):
             language_code = create_new_reply_message_template(get_database_manager(request.user), language_name)
             return HttpResponse(json.dumps({"language_code":language_code, "language_name":language_name}))
         except DuplicateLanguageException as e:
-            return HttpResponse(json.dumps({"language_code":None, "message":ugettext(e.message)}))
+            return HttpResponse(json.dumps({"language_code":None, "message":e.message}))
 
     @method_decorator(csrf_view_exempt)
     @method_decorator(csrf_response_exempt)

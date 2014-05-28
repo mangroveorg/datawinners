@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css
+from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR
 from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -42,20 +43,22 @@ class TestLanguageTab(HeadlessRunnerTest):
         english_messages = [r.get_attribute('value') for r in self.driver.find_elements_(by_css("textarea"))]
         self.assertListEqual(default_en_messages, english_messages)
 
+    def verify_160_character_length_limit(self):
+        self.clear_all_errormessages()
+        [r.send_keys("a" * 170) for r in self.driver.find_elements_(by_css("textarea"))]
+        self.assertListEqual(["a" * 160] * 5, self.language_page.get_all_messages())
+
     def test_validations(self):
         self.clear_all_errormessages()
         self.language_page.save_changes()
 
         self.assertListEqual([u'Enter reply SMS text.']*5, [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
-
-        self.assertTrue("ui-state-disabled" in self.driver.find(by_css("#language_save")).get_attribute('class'))
+        self.assertTrue("ui-state-disabled" in self.driver.find(LANGUAGE_SAVE_BUTTON_LOCATOR).get_attribute('class'))
 
         self.language_page.refresh()
-
         self.check_for_default_en_messages()
 
-        [r.send_keys("a"*170) for r in self.driver.find_elements_(by_css("textarea"))]
-        self.assertListEqual([u'Text should be less than 160 chars']*5, [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
+        self.verify_160_character_length_limit()
 
 
     def test_modify_and_save(self):

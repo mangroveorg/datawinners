@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from django.utils import translation
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext
 from datawinners.common.lang.messages import CustomizedMessages
 
 
@@ -72,6 +72,6 @@ class DuplicateLanguageException(Exception):
 def create_new_reply_message_template(dbm, language_name):
     rows = dbm.load_all_rows_in_view("by_language_name", key=language_name.lower())
     if len(rows)>0:
-        raise DuplicateLanguageException("%s already exists." % language_name)
+        raise DuplicateLanguageException(ugettext("%s already exists.") % language_name)
     return save_reply_message_template(None, dbm, language_name)
 

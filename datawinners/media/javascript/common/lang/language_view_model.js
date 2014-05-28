@@ -1,7 +1,7 @@
-var first160chars = function(str){
+var first160chars = function (str) {
     var val = str();
-    if (val.length>160)
-        str(val.substring(0,160));
+    if (val.length > 160)
+        str(val.substring(0, 160));
     return str;
 }
 
@@ -20,8 +20,9 @@ $(document).ready(function () {
             return self.initialState() != ko.toJSON(self.customizedMessages());
         }, self);
         self.newLanguageName = DW.ko.createValidatableObservable({value: ""});
+        var languageNameEmptyMessage = gettext("Please enter a name for your language.");
         self.newLanguageName.subscribe(function () {
-                DW.ko.mandatoryValidator(self.newLanguageName, gettext("Please enter a name for your language."));
+                DW.ko.mandatoryValidator(self.newLanguageName, languageNameEmptyMessage);
             }
         );
 
@@ -34,11 +35,9 @@ $(document).ready(function () {
                     var count = ko.computed(function(){
                         return this().length;
                     }, messageItem)
-                    var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem, "count":count };
+                    var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem, "count": count };
                     messageItem.subscribe(function () {
-                        DW.ko.mandatoryValidator(this.message, gettext("Enter reply SMS text.")) &&
-                        DW.ko.customValidator(this.message, "Text should be less than 160 chars", function(val){return (val+"").length<160;})
-
+                        DW.ko.mandatoryValidator(this.message, gettext("Enter reply SMS text."));
                     }, customized_message_item);
                     customized_messages.push(customized_message_item);
                 }
@@ -77,27 +76,32 @@ $(document).ready(function () {
             );
 
         };
-        self.addLanguage = function () {
-            $.post('/languages/create', {"language_name": self.newLanguageName()})
-                .done(function (responseString) {
-                    var response = $.parseJSON(responseString);
-                    if (response.language_code) {
-                        $('#add_new_language_pop').dialog('close');
-                        self.availableLanguages.pop();
-                        self.availableLanguages.push({code: response.language_code, name: response.language_name});
-                        self.sortLanguages();
-                        appendAddNewLanguageOption();
-                        self.language(response.language_code);
-                        $('.success-message-box').text(gettext("Language Added succesfully"));
-                        $('.success-message-box').show();
+        self.addLanguage = function() {
+            if (self.newLanguageName() && self.newLanguageName.valid()) {
+                $.post('/languages/create', {"language_name": self.newLanguageName()})
+                    .done(function (responseString) {
+                        var response = $.parseJSON(responseString);
+                        if (response.language_code) {
+                            $('#add_new_language_pop').dialog('close');
+                            self.availableLanguages.pop();
+                            self.availableLanguages.push({code: response.language_code, name: response.language_name});
+                            self.sortLanguages();
+                            appendAddNewLanguageOption();
+                            self.language(response.language_code);
+                            $('.success-message-box').text(gettext("Language Added succesfully"));
+                            $('.success-message-box').show();
 
-                    }else{
-                      self.newLanguageName.setError(response.message);
-                    }
-                })
+                        } else {
+                            self.newLanguageName.setError(response.message);
+                        }
+                    })
+            } else {
+                if (!self.newLanguageName())
+                    self.newLanguageName.setError(languageNameEmptyMessage);
+            }
         };
 
-        self.cancelAddLanguage = function () {
+        self.cancelAddLanguage = function() {
             $('#add_new_language_pop').dialog('close');
         }
     }
@@ -163,18 +167,18 @@ function initializeNewLanguageDialog() {
         width: 450,
         modal: true,
         title: gettext('Add Language'),
-        resizable:false
+        resizable: false
     });
 
 }
 
-function resetPreviousLanguage(){
+function resetPreviousLanguage() {
     $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
 }
 
-function appendAddNewLanguageOption(){
-        var add_language_option = {code: "add_new", name: gettext("Add Language")};
-        languageViewModel.availableLanguages.push(add_language_option);
+function appendAddNewLanguageOption() {
+    var add_language_option = {code: "add_new", name: gettext("Add Language")};
+    languageViewModel.availableLanguages.push(add_language_option);
 }
 
 

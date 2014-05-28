@@ -4917,3 +4917,6 @@ msgstr "Nom de la langue"
 
 msgid "Example: Swahili, Spanish"
 msgstr "Exemple : Swahili, Espagnol"
+
+msgid "%s already exists."
+msgstr "%s existe déjà."

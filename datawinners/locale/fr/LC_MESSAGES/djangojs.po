@@ -1192,7 +1192,10 @@ msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
 msgstr "{Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
 
 msgid "Language Added succesfully"
-msgstr "Your language has been added successfully. Please translate the suggested automatic reply SMS text."
+msgstr "Votre langue a été ajoutée avec succès. Veuillez traduire le texte de retour SMS automatique suggéré."
 
 msgid "Add Language"
 msgstr "Ajouter une langue"
+
+msgid "Please enter a name for your language."
+msgstr "Veuillez taper un nom pour votre langue."
