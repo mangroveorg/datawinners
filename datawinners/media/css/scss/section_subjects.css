@@ -431,7 +431,7 @@ select {
   border: 2px solid;
   border-color: #646464 #EBEBEB #EBEBEB #646464; }
 
-input {
+input [type=text] {
   width: auto;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
