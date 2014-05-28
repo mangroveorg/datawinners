@@ -88,6 +88,9 @@ $(document).ready(function () {
                         self.sortLanguages();
                         appendAddNewLanguageOption();
                         self.language(response.language_code);
+                        $('.success-message-box').text(gettext("Language Added succesfully"));
+                        $('.success-message-box').show();
+
                     }else{
                       self.newLanguageName.setError(response.message);
                     }
@@ -159,7 +162,8 @@ function initializeNewLanguageDialog() {
         autoOpen: false,
         width: 450,
         modal: true,
-        title: gettext('Add Language')
+        title: gettext('Add Language'),
+        resizable:false
     });
 
 }
@@ -169,7 +173,7 @@ function resetPreviousLanguage(){
 }
 
 function appendAddNewLanguageOption(){
-        var add_language_option = {code: "add_new", name: "Add a new language"};
+        var add_language_option = {code: "add_new", name: gettext("Add Language")};
         languageViewModel.availableLanguages.push(add_language_option);
 }
 

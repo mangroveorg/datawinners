@@ -4902,3 +4902,18 @@ msgstr "Nom de l'Expéditeur de Données"
 
 msgid "List of Answers"
 msgstr "Liste des Réponses"
+
+msgid "of 160 characters used"
+msgstr "de 160 caractères utilisés"
+
+msgid "Add Language"
+msgstr "Ajouter une langue"
+
+msgid "Enter a name of your language"
+msgstr "Tapez le nom de la langue"
+
+msgid "Language Name"
+msgstr "Nom de la langue"
+
+msgid "Example: Swahili, Spanish"
+msgstr "Exemple : Swahili, Espagnol"

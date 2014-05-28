@@ -1190,3 +1190,9 @@ msgstr "Erreur. Reponse incorrecte pour la question {Numéro(s) de la(des) Quest
 
 msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
 msgstr "{Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
+
+msgid "Language Added succesfully"
+msgstr "Your language has been added successfully. Please translate the suggested automatic reply SMS text."
+
+msgid "Add Language"
+msgstr "Ajouter une langue"

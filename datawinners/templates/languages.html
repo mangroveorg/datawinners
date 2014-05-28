@@ -38,9 +38,10 @@
     <div style="padding-top: 12px">
         <strong>{% trans "Languages for SMS Reply Messages" %}</strong>
 
-    <select id="language" name="language_option" style="display:block" data-bind="value:language_display, foreach: availableLanguages">
-        <option data-bind="text: name, value:code,css: { addNewLanguage: code == 'add_new' }">
-    </select>
+        <select id="language" class="dropdown_style" name="language_option" style="display:block"
+                data-bind="value:language_display, foreach: availableLanguages">
+            <option data-bind="text: name, value:code,css: { addNewLanguage: code == 'add_new' }">
+        </select>
 
     </div>
     <div class="clear"></div>
@@ -50,14 +51,19 @@
             <strong>
                 <li data-bind="text: $data.title"></li>
             </strong>
-            <textarea rows="3" cols="80" data-bind="value:first160chars($data.message),attr: {id: 'custom_message' + $index() },valueUpdate: 'afterkeydown'"
+            <textarea rows="3" cols="80"
+                      data-bind="value:first160chars($data.message),attr: {id: 'custom_message' + $index() },valueUpdate: 'afterkeydown'"
                       style="width: auto;resize: none" maxlength="160"></textarea>
-            <span id="char_count" data-bind="text:$data.count"></span> of 160
+
             <div class="validationMessage" data-bind="ifnot: $data.message.valid">
                 <span id="question_title_validation_message" class="validationText"
                       data-bind="text: $data.message.error"></span>
 
             </div>
+            <div class="help_accordion charCount" style="display: block">
+                <span  data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
+            </div>
+
         </ol>
     </div>
     <br/>
@@ -78,13 +84,13 @@
 
     <div id="add_new_language_pop" style="display: none;">
         {% trans "Language Name" %}<br/>
-        <input type="text" placeholder="Enter a name of your language" data-bind="value:newLanguageName"/>
+        <input type="text" placeholder='{% trans "Enter a name of your language" %}' data-bind="value:newLanguageName"/>
 
         <div data-bind="ifnot: $data.newLanguageName.valid" class="validationMessage">
             <span data-bind="text: $data.newLanguageName.error" class="validationText" style="display: inline-block"
                   id="language_validation_message"></span>
         </div>
-        <p class="help_accordion">{% trans "Example:Swahili, Spanish" %}</p>
+        <p class="help_accordion">{% trans "Example: Swahili, Spanish" %}</p>
 
         <div class="text_align_right padding_top_20">
             <a id="cancel_dialog" class="cancel_button" href="javascript:void(0);"
