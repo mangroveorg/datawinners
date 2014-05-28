@@ -371,6 +371,7 @@ function init_dialog_box_for_datasender() {
 }
 
 function handle_datasender_edit(table, selectedIds) {
+    $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     $.ajax({
         type: 'GET',
         url: '/entity/datasender/edit' + '/' + selectedIds[0].toLowerCase() + '/',
@@ -378,6 +379,8 @@ function handle_datasender_edit(table, selectedIds) {
             $("#datasender-popup").html(response) ;
             $("#datasender-popup").dialog('option','title',gettext('Edit Datasender')).dialog("open");
             new DW.InitializeEditDataSender().init();
+            $.unblockUI();
+
         }
     });
 }
