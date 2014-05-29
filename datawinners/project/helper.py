@@ -110,8 +110,8 @@ def _get_instruction_text(field):
 
 def delete_project(manager, questionnaire, void=True):
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=questionnaire.id))]
-    questionnaire.void(void)
     [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
+    questionnaire.void(void)
 
 def get_activity_report_questions(dbm):
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q1',
