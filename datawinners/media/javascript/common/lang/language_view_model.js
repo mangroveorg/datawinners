@@ -110,7 +110,6 @@ $(document).ready(function () {
     window.languageViewModel = new LanguageViewModel();
     ko.applyBindings(languageViewModel);
     languageViewModel.language(current_language);
-    languageViewModel.sortLanguages();
     appendAddNewLanguageOption();
 
     var options = {

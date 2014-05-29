@@ -52,13 +52,19 @@ def create_custom_message_templates(dbm):
         translation.activate(code)
         save_reply_message_template(code, dbm, lang)
 
-
 def get_available_project_languages(dbm):
-    lang_dict = []
+    lang_dict = {}
     for row in dbm.load_all_rows_in_view("all_languages", include_docs=False):
-        lang_dict.append({'code':row.key,'name': row.value})
-    return lang_dict
+        lang_dict.update({row.key: row.value})
+    languages_list = _get_languages_sorted_by_name(lang_dict)
+    return languages_list
 
+def _get_languages_sorted_by_name(lang_dict):
+    languages_list = []
+    sorted_language_dict = OrderedDict(sorted(lang_dict.items(), key=lambda x: x[1].lower()))
+    for code, language_name in sorted_language_dict.iteritems():
+        languages_list.append({'code': code, 'name': language_name})
+    return languages_list
 
 class DuplicateLanguageException(Exception):
     def __init__(self, message):
