@@ -19,7 +19,7 @@ class TestSuccessfulSubmissionReplyMessage(TestCase):
             project_mock.language = "en"
 
             with patch(
-                    'datawinners.messageprovider.customized_message.customized_message_details') as customized_message_details_mock:
+                    'datawinners.messageprovider.customized_message.questionnaire_customized_message_details') as customized_message_details_mock:
                 customized_message_details_mock.return_value = [
                     {'message': "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}",
                      'code': 'reply_success_submission'}]
@@ -43,7 +43,7 @@ class TestSuccessfulSubmissionReplyMessage(TestCase):
             project_mock.language = "en"
 
             with patch(
-                    'datawinners.messageprovider.customized_message.customized_message_details') as customized_message_details_mock:
+                    'datawinners.messageprovider.customized_message.questionnaire_customized_message_details') as customized_message_details_mock:
                 customized_message_details_mock.return_value = [
                     {'message': "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}",
                      'code': 'reply_success_submission'}]

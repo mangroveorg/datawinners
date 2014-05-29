@@ -1,4 +1,4 @@
-from datawinners.common.lang.utils import customized_message_details
+from datawinners.common.lang.utils import questionnaire_customized_message_details
 from datawinners.project.models import Project
 from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel
 
@@ -22,7 +22,7 @@ def get_customized_message_for_questionnaire(dbm, request, message_code, form_co
 
 
 def _get_customized_message_for_language(dbm, language, message_code):
-    reply_message_list = customized_message_details(dbm, language)
+    reply_message_list = questionnaire_customized_message_details(dbm, language)
     return [reply_message['message'] for reply_message in reply_message_list if
                    reply_message['code'] == message_code][0]
 

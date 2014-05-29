@@ -37,10 +37,10 @@ class CustomizedLanguagePage(Page):
         return self.driver.find(msg_locator).get_attribute("value")
 
     def get_all_messages(self):
-        return [r.get_attribute('value') for r in self.driver.find_elements_(by_css("textarea"))]
+        return [r.get_attribute('value') for r in self.driver.find_elements_(by_css("#language_customized_messages textarea"))]
 
     def set_message_boxes(self, default_en_messages):
-        for (index, e) in enumerate(self.driver.find_elements_(by_css("textarea"))):
+        for (index, e) in enumerate(self.driver.find_elements_(by_css("#language_customized_messages textarea"))):
             e.clear()
             e.send_keys(default_en_messages[index])
 

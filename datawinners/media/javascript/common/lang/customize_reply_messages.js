@@ -7,12 +7,13 @@ $(document).ready(function () {
     initializeWarningDialogs();
 
     $("#language").change(function (e) {
-        if (languageViewModel.isModified()) {
+        if (languageViewModel.isCustomizedMessageModified()) {
             e.preventDefault();
 
             language_change_warning_dialog.show();
             return false;
-        } ;
+        }
+        ;
 
         if ($("#language").val() === "add_new") {
             $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
@@ -26,6 +27,7 @@ $(document).ready(function () {
         languageViewModel.language($("#language option:selected").val());
     });
 
+    setAccountWideMessages();
 
 });
 
@@ -35,7 +37,7 @@ function initializeWarningDialogs() {
             languageViewModel.save(callback);
         },
         isQuestionnaireModified: function () {
-            return languageViewModel.isModified();
+            return languageViewModel.isCustomizedMessageModified() || languageViewModel.isAccountMessageModified();
         },
         cancelDialogDiv: "#cancel_language_changes_warning",
         validate: function () {
@@ -79,3 +81,7 @@ var first160chars = function (str) {
         str(val.substring(0, 160));
     return str;
 };
+
+function setAccountWideMessages() {
+    createObservableMessageItemsFor(account_messages, languageViewModel.accountMessages, languageViewModel.accountMessagesInitialState)
+}

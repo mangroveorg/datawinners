@@ -4577,3 +4577,6 @@ msgstr ""
 
 msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
 msgstr ""
+
+msgid "account wide sms help text"
+msgstr "These are general Automatic Reply SMS for your organization’s DataWinners account. Edit/translate these messages to fit your needs. Note: Any changes you make will apply for all Data Senders."

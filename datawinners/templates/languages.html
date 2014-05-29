@@ -15,9 +15,7 @@
     <script type="text/javascript">
         var languages = {{ available_languages|safe }};
         var current_language = "{{ current_language|safe }}";
-        $(function () {
-
-        });
+        var account_messages = {{ account_messages|safe }};
     </script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
@@ -36,6 +34,7 @@
         {% trans "language help text" %}
     </div>
 
+    <div id = "language_customized_messages">
     <div style="padding-top: 12px">
         <strong>{% trans "Languages for SMS Reply Messages" %}</strong>
 
@@ -68,6 +67,9 @@
         </ol>
     </div>
     <br/>
+    </div>
+    {% include "account_wide_sms_messages.html" %}
+
     <div><a class="button save" id="language_save"
             data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
 
@@ -99,5 +101,4 @@
             <a class="button yes_button" data-bind="click:$root.addLanguage">{% trans "Add Language" %}</a>
         </div>
     </div>
-
 {% endblock %}

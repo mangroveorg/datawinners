@@ -31,20 +31,20 @@ class TestLanguageTab(HeadlessRunnerTest):
                                 u'Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS.',
                                 u"Erreur. {Submitted Identification Number} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur.",
                                 u"Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."]
-        french_messages = [r.get_attribute('value') for r in self.driver.find_elements_(by_css("textarea"))]
+        french_messages = [r.get_attribute('value') for r in self.driver.find_elements_(by_css("#language_customized_messages textarea"))]
         self.assertListEqual(expected_fr_messages, french_messages)
         self.language_page.select_language("English")
 
     def clear_all_errormessages(self):
-        [r.clear() for r in self.driver.find_elements_(by_css("textarea"))]
+        [r.clear() for r in self.driver.find_elements_(by_css("#language_customized_messages textarea"))]
 
     def check_for_default_en_messages(self):
-        english_messages = [r.get_attribute('value') for r in self.driver.find_elements_(by_css("textarea"))]
+        english_messages = [r.get_attribute('value') for r in self.driver.find_elements_(by_css("#language_customized_messages textarea"))]
         self.assertListEqual(default_en_messages, english_messages)
 
     def verify_160_character_length_limit(self):
         self.clear_all_errormessages()
-        [r.send_keys("a" * 170) for r in self.driver.find_elements_(by_css("textarea"))]
+        [r.send_keys("a" * 170) for r in self.driver.find_elements_(by_css("#language_customized_messages textarea"))]
         self.assertListEqual(["a" * 160] * 5, self.language_page.get_all_messages())
 
     def test_validations(self):
@@ -72,7 +72,7 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.language_page.save_changes()
 
     def change_reply_messages(self):
-        [r.send_keys(' new') for r in self.driver.find_elements_(by_css("textarea"))]
+        [r.send_keys(' new') for r in self.driver.find_elements_(by_css("#language_customized_messages textarea"))]
 
     def verify_warning_dialog_present(self):
         self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))

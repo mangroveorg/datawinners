@@ -6,11 +6,20 @@ function LanguageViewModel() {
         return self.language();
     });
     self.customizedMessages = ko.observableArray();
-    self.saveButtonText = ko.observable(gettext("Save"));
-    self.initialState = ko.observable();
-    self.isModified = ko.computed(function () {
-        return self.initialState() != ko.toJSON(self.customizedMessages());
+    self.customizedMessagesInitialState = ko.observable();
+    self.isCustomizedMessageModified = ko.computed(function () {
+        return self.customizedMessagesInitialState() != ko.toJSON(self.customizedMessages());
     }, self);
+
+
+    self.accountMessages = ko.observableArray();
+    self.accountMessagesInitialState = ko.observable();
+    self.isAccountMessageModified = ko.computed(function () {
+        return self.accountMessagesInitialState() != ko.toJSON(self.accountMessages());
+    }, self);
+
+    self.saveButtonText = ko.observable(gettext("Save"));
+
     self.newLanguageName = DW.ko.createValidatableObservable({value: ""});
     var languageNameEmptyMessage = gettext("Please enter a name for your language.");
     self.newLanguageName.subscribe(function () {
@@ -21,21 +30,8 @@ function LanguageViewModel() {
 
     self.language.subscribe(function () {
         $.getJSON("/languages/custom_messages", {'language': languageViewModel.language()}).success(function (data) {
-            var customized_messages = [];
-            for (var i = 0; i < data.length; i++) {
-                var messageItem = DW.ko.createValidatableObservable({value: data[i].message});
-                var count = ko.computed(function () {
-                    return this().length;
-                }, messageItem);
-                var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem, "count": count };
-                messageItem.subscribe(function () {
-                    DW.ko.mandatoryValidator(this.message, gettext("Enter reply SMS text."));
-                }, customized_message_item);
-                customized_messages.push(customized_message_item);
-            }
-            languageViewModel.customizedMessages(customized_messages);
-            languageViewModel.initialState(ko.toJSON(languageViewModel.customizedMessages()))
-
+            createObservableMessageItemsFor(data, languageViewModel.customizedMessages,
+                languageViewModel.customizedMessagesInitialState);
         });
     }, self, 'change');
     self.isValid = ko.computed(function () {
@@ -62,7 +58,8 @@ function LanguageViewModel() {
                 languageViewModel.saveButtonText(gettext("Save"));
                 $('.success-message-box').text(data["message"]);
                 $('.success-message-box').show();
-                self.initialState(ko.toJSON(self.customizedMessages()));
+                self.customizedMessagesInitialState(ko.toJSON(self.customizedMessages()));
+                self.accountMessagesInitialState(ko.toJSON(self.accountMessages()));
                 if (typeof callback == "function") callback();
             }
         );
@@ -96,6 +93,23 @@ function LanguageViewModel() {
     self.cancelAddLanguage = function () {
         $('#add_new_language_pop').dialog('close');
     }
+}
+
+function createObservableMessageItemsFor(data, messageObservable, initialStateObservable) {
+    var messages = [];
+    for (var i = 0; i < data.length; i++) {
+        var messageItem = DW.ko.createValidatableObservable({value: data[i].message});
+        var count = ko.computed(function () {
+            return this().length;
+        }, messageItem);
+        var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem, "count": count };
+        messageItem.subscribe(function () {
+            DW.ko.mandatoryValidator(this.message, gettext("Enter reply SMS text."));
+        }, customized_message_item);
+        messages.push(customized_message_item);
+    }
+    messageObservable(messages);
+    initialStateObservable(ko.toJSON(messageObservable()))
 }
 
 
