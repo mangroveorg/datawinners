@@ -1,10 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import unittest
 from datetime import datetime
 
 from nose.plugins.attrib import attr
 
 from framework.utils.data_fetcher import fetch_, from_
+from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
+from pages.languagespage.customized_language_locator import SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, SUBMISSION_WITH_ERROR_MESSAGE_LOCATOR
+from pages.loginpage.login_page import login
 from tests.smstestertests.sms_tester_data import *
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID
 from datawinners.accountmanagement.models import Organization
@@ -13,6 +15,17 @@ from framework.base_test import HeadlessRunnerTest
 
 #class TestSMSTester(unittest.TestCase):
 class TestSMSTester(HeadlessRunnerTest):
+    @classmethod
+    def setUpClass(cls):
+        HeadlessRunnerTest.setUpClass()
+        languages_page = login(cls.driver).navigate_to_languages_page()
+        languages_page.select_language('English')
+        languages_page.set_custom_message_for(SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR,
+          'Error. Wrong number of answers. Please review printed Questionnaire and resend entire SMS.')
+        languages_page.set_custom_message_for(SUBMISSION_WITH_ERROR_MESSAGE_LOCATOR,
+          'Error. Wrong answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.')
+        languages_page.save_changes()
+        assert languages_page.get_success_message() == 'Changes saved successfully.'
 
     @attr('functional_test')
     def test_sms_player_for_exceeding_word_length(self):
@@ -56,12 +69,12 @@ class TestSMSTester(HeadlessRunnerTest):
                          fetch_(ERROR_MSG, from_(REGISTER_INVALID_GEO_CODE)))
 
     @attr('functional_test')
-    def test_sms_player_for_only_questionnaire_code(self):
-        self.assertEqual(send_sms_with(ONLY_QUESTIONNAIRE_CODE), fetch_(ERROR_MSG, from_(ONLY_QUESTIONNAIRE_CODE)))
+    def test_sms_player_for_registration_with_incorrect_number_of_answers(self):
+        self.assertEqual(fetch_(ERROR_MSG, from_(REGISTER_WITH_WRONG_NUMBER_OF_ANSWERS)),send_sms_with(REGISTER_WITH_WRONG_NUMBER_OF_ANSWERS))
 
     @attr('functional_test')
-    def test_sms_player_for_wrong_number_of_arg(self):
-        self.assertEqual(send_sms_with(WRONG_NUMBER_OF_ARGS), fetch_(ERROR_MSG, from_(WRONG_NUMBER_OF_ARGS)))
+    def test_sms_player_for_only_questionnaire_code(self):
+        self.assertEqual(send_sms_with(ONLY_QUESTIONNAIRE_CODE), fetch_(ERROR_MSG, from_(ONLY_QUESTIONNAIRE_CODE)))
 
     @attr('functional_test')
     def test_sms_player_for_unregistered_subject_and_invalid_geo_code(self):
@@ -90,7 +103,7 @@ class TestSMSTester(HeadlessRunnerTest):
 
         test_data.update({SENDER: "1234567890"})
         self.assertEqual(send_sms_with(test_data),
-                         "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
+                         "Error. Wrong number of answers. Please review printed Questionnaire and resend entire SMS.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("extradata", "")})
@@ -100,7 +113,7 @@ class TestSMSTester(HeadlessRunnerTest):
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("CID00X5", "CID005")})
         self.assertEqual(send_sms_with(test_data),
-                         "Error. Incorrect answer for question 3. Please review printed Questionnaire and resend entire SMS.")
+                         "Error. Wrong answer for question 3. Please review printed Questionnaire and resend entire SMS.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("age", "56")})
