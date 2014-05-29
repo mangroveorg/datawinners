@@ -84,7 +84,7 @@
 
     <div id="add_new_language_pop" style="display: none;">
         {% trans "Language Name" %}<br/>
-        <input type="text" placeholder='{% trans "Enter a name of your language" %}' data-bind="value:newLanguageName"/>
+        <input type="text" placeholder='{% trans "Enter a name of your language" %}' data-bind="value:newLanguageName,valueUpdate: 'afterkeydown','keyup'"/>
 
         <div data-bind="ifnot: $data.newLanguageName.valid" class="validationMessage">
             <span data-bind="text: $data.newLanguageName.error" class="validationText" style="display: inline-block"

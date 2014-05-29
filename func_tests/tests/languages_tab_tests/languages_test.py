@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css
-from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR
+from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON
 from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -115,4 +115,15 @@ class TestLanguageTab(HeadlessRunnerTest):
         def click_identification_number_page():
             self.language_page.select_language("French")
         self.verify_unsaved_warning_dialog(click_identification_number_page)
+
+    def test_should_validate_add_new_language(self):
+        self.language_page.add_new_language("")
+        self.assertIn("Please enter a name for your language.", [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
+
+        self.driver.find_text_box(NEW_LANGUAGE_INPUT_BOX).enter_text("english")
+        self.driver.find(ADD_NEW_LANG_CONFIRM_BUTTON).click()
+        self.assertIn("english already exists.", [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
+
+
+
 
