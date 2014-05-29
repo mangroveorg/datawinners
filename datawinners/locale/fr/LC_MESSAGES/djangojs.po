@@ -230,7 +230,7 @@ msgid "Import a Data Senders list"
 msgstr "Importer une liste d'expéditeurs"
 
 msgid "Select Questionnaires"
-msgstr "Sélectionnez les Questionnaire"
+msgstr "Sélectionnez les Questionnaires"
 
 #: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
