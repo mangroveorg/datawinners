@@ -1289,7 +1289,7 @@ msgstr ""
 msgid "Preview Questionnaire"
 msgstr ""
 
-msgid "Questionnaire Code :"
+msgid "Questionnaire Code:"
 msgstr ""
 
 msgid "q_tooltip_questionnaire_code"

@@ -1359,8 +1359,8 @@ msgstr "Modifier les questions en cliquant sur chacune d'entre elles"
 msgid "Preview Questionnaire"
 msgstr "Aperçu du questionnaire"
 
-msgid "Questionnaire Code :"
-msgstr "Code Questionnaire :"
+msgid "Questionnaire Code:"
+msgstr "Code Questionnaire:"
 
 msgid "q_tooltip_questionnaire_code"
 msgstr ""
