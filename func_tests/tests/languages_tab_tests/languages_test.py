@@ -1,10 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css
-from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON
+from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, ADD_NEW_LANG_CANCEL_BUTTON
 from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
-from tests.testsettings import UI_TEST_TIMEOUT
 
 default_en_messages = [u'Thank you {Name of Data Sender}. We received your SMS: {List of Answers}',
                         u'Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.',
@@ -16,7 +15,7 @@ class TestLanguageTab(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
-        login(cls.driver, landing_page="languages/")
+        login(cls.driver, landing_page="customizemessages/")
 
     def setUp(self):
         self.language_page = CustomizedLanguagePage(self.driver)
@@ -123,6 +122,8 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.driver.find_text_box(NEW_LANGUAGE_INPUT_BOX).enter_text("english")
         self.driver.find(ADD_NEW_LANG_CONFIRM_BUTTON).click()
         self.assertIn("english already exists.", [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
+
+        self.driver.find(ADD_NEW_LANG_CANCEL_BUTTON).click()
 
 
 
