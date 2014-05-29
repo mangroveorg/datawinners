@@ -314,6 +314,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.assertEquals("English",languages_page.get_selected_language())
         new_success_message = "This is a new message"
         languages_page.set_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR , new_success_message)
+        languages_page.save_changes()
         self.assertEquals("Changes saved successfully.",languages_page.get_success_message())
         #Reload english to check if changes saved
         languages_page.select_language("French")

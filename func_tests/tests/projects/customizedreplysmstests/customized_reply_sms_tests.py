@@ -1,12 +1,14 @@
 from nose.plugins.attrib import attr
+import time
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import random_string
+from framework.utils.common_utils import random_string, by_css
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.languagespage.customized_language_locator import SUCCESS_SUBMISSION_MESSAGE_LOCATOR, SUBMISSION_WITH_ERROR_MESSAGE_LOCATOR, SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, RESPONSE_ERROR_MESSAGE_FROM_UNAUTHORIZED_SOURCE_LOCATOR, SUBMISSION_WITH_INCORRECT_UNIQUE_ID
 from pages.loginpage.login_page import login
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE
 from tests.projects.customizedreplysmstests.customized_reply_sms_data import PROJECT_DATA, PROJECT_QUESTIONNAIRE_DATA, get_success_sms_data_with_questionnaire_code, get_error_message_from_unauthorized_source, get_error_sms_data_with_incorrect_number_of_answers, get_error_sms_data_with_questionnaire_code, get_error_sms_data_with_incorrect_unique_id
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class TestCustomizedReplySms(HeadlessRunnerTest):
@@ -46,9 +48,11 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         new_language = 'kannada' + random_string(4)
         languages_page.add_new_language(new_language)
         self.assertEqual(languages_page.get_success_message(), 'Your language has been added successfully. Please translate the suggested automatic reply SMS text.')
+        languages_page.wait_till_success_message_box_disappears()
 
         languages_page.set_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR,
                                               'Dhanyawaadagalu {Name of Data Sender}. We received your SMS: {List of Answers}')
+
         languages_page.set_custom_message_for(SUBMISSION_WITH_ERROR_MESSAGE_LOCATOR,
                                               'Error. Tappu uttara {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.')
         languages_page.set_custom_message_for(SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR,

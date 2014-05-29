@@ -18,14 +18,17 @@ class CustomizedLanguagePage(Page):
     def set_custom_message_for(self, msg_locator, message):
         custom_message_text_box = TextBox(self.driver.find(msg_locator))
         custom_message_text_box.enter_text(message)
-        self.save_changes()
 
     def save_changes(self):
         self.driver.find(LANGUAGE_SAVE_BUTTON_LOCATOR).click()
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockUI"))
 
     def get_success_message(self):
         success_message = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".success-message-box"),want_visible=True)
         return self.driver.execute_script("return arguments[0].innerHTML", success_message)
+
+    def wait_till_success_message_box_disappears(self):
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".success-message-box"))
 
     def select_language(self,language_text, wait_for_load = False):
         self.language_drop_down.set_selected_by_text(language_text)

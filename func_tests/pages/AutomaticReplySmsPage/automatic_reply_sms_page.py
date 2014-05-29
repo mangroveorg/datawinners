@@ -13,12 +13,8 @@ class AutomaticReplySmsPage(Page):
 
 
     def choose_automatic_reply_language(self, language):
-        #self.language_drop_down.click()
         if language == 'new':
-            #time.sleep(3)
-            #self.driver.find(NEW_LANGUAGE_OPTION_SELECTOR).click()
             self.language_drop_down.set_selected('new_lang')
-            self.driver.create_screenshot('automatic_sms_reply_error.png')
             self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, 'Languages')
             return CustomizedLanguagePage(self.driver)
         self.language_drop_down.set_selected_by_text(language)
