@@ -73,11 +73,10 @@
             </div>
         </li>
         <li data-bind="visible: showAddChoice()">
-            {% include 'project/choice_template.html' %}
-
             <div class="margin_top_20">
                 <ol class="alpha_list que_list" id="options_list"
-                    data-bind="template: { name : 'choice-template',foreach : choices }">
+                    data-bind="foreach : choices">
+                    {% include 'project/choice_template.html' %}
 
                 </ol>
                 <a href="javascript:void(0);" class="add_link"
