@@ -4510,9 +4510,6 @@ msgstr "Veuillez SVP introduire la (date de rapportage) suivant le format requis
 msgid "Please enter the (reporting date) in the expected format mm.dd.yyyy"
 msgstr "Veuillez SVP introduire la (date de rapportage) suivant le format requis suivant : mm.dd.yyyy."
 
-msgid "Answer %s for question %s is longer than allowed"
-msgstr "La réponse %s à la question %s est plus longue que la limite autorisée"
-
 msgid "Please enter a valid value for %s"
 msgstr "Veuillez SVP introduire une valeur valide pour %s"
 
@@ -4848,7 +4845,7 @@ msgid "%s with %s = %s not found."
 msgstr "%s avec %s = %s non trouvé"
 
 msgid "Answer %s for question %s is longer than allowed."
-msgstr ""
+msgstr "La réponse %s à la question %s est plus longue que la limite autorisée."
 
 msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
 msgstr ""
