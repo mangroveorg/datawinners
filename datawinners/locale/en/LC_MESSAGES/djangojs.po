@@ -1108,5 +1108,5 @@ msgstr ""
 msgid "Row Number"
 msgstr ""
 
-msgid "Language Added succesfully"
+msgid "Language Added successfully"
 msgstr "Your language has been added successfully. Please translate the suggested automatic reply SMS text."

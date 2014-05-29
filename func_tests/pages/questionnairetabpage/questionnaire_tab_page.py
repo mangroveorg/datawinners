@@ -251,8 +251,8 @@ class QuestionnaireTabPage(Page):
 
     def configure_unique_id_type_question(self, question_data):
         self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(UNIQUE_ID_OPTION)
-        existing_unique_id_type = fetch_(EXISTING_UNIQUE_ID_TYPE, from_(question_data))
-        new_unique_id_type = fetch_(NEW_UNIQUE_ID_TYPE, from_(question_data))
+        existing_unique_id_type = question_data.get(EXISTING_UNIQUE_ID_TYPE)
+        new_unique_id_type = question_data.get(NEW_UNIQUE_ID_TYPE)
 
         if existing_unique_id_type:
             self.select_unique_id_type_from_list(existing_unique_id_type)

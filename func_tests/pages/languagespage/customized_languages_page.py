@@ -15,7 +15,7 @@ class CustomizedLanguagePage(Page):
     def get_selected_language(self):
         return self.language_drop_down.get_selected_option_text()
 
-    def set_custom_message_for(self,msg_locator,message):
+    def set_custom_message_for(self, msg_locator, message):
         custom_message_text_box = TextBox(self.driver.find(msg_locator))
         custom_message_text_box.enter_text(message)
         self.save_changes()
