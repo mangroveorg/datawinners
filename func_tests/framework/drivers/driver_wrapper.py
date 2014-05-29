@@ -49,6 +49,8 @@ def get_driver_for_browser(browser):
         driver = webdriver.Remote()
     elif browser == "phantom":
         driver = webdriver.PhantomJS()
+    elif browser == "remoteie":
+        driver = webdriver.Remote(command_executor="http://localhost:5555/", desired_capabilities=DesiredCapabilities.INTERNETEXPLORER)
     else:
         raise NotImplemented("Unknown browser " + browser)
     driver.maximize_window()

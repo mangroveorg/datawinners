@@ -1,9 +1,9 @@
 from framework.utils.common_utils import random_number, random_string
-from testdata.test_data import get_test_port
+from testdata.test_data import get_test_port, get_target_test_host, get_target_test_scheme
 
 
 def url(path):
-    full_path = "http://localhost:" + get_test_port() + path
+    full_path = get_target_test_scheme() + "://" + get_target_test_host() + ":" + get_test_port() + path
     if not full_path.endswith("/"):
         full_path += "/"
     return full_path

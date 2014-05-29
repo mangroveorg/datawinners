@@ -5,12 +5,18 @@ ACTIVATE = "activate"
 CANCEL = "cancel"
 
 
+def get_target_test_scheme():
+    return str(settings.TEST_SERVER_SCHEME) if hasattr(settings, 'TEST_SERVER_SCHEME') else "http"
+
+def get_target_test_host():
+    return str(settings.TEST_SERVER_HOST) if hasattr(settings, 'TEST_SERVER_HOST') else "localhost"
+
 def get_test_port():
     return str(settings.TEST_SERVER_PORT) if hasattr(settings, 'TEST_SERVER_PORT') else "8000"
 
 
 def url(path):
-    full_path = "http://localhost:"+ get_test_port() + path
+    full_path = get_target_test_scheme() + "://" + get_target_test_host() + ":"+ get_test_port() + path
     if not full_path.endswith("/"):
         full_path += "/"
     return full_path

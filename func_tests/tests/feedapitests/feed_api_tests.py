@@ -17,7 +17,8 @@ from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON, DELETE_BUTTON
 from pages.warningdialog.warning_dialog import WarningDialog
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, get_test_port
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, get_test_port, get_target_test_host, \
+    get_target_test_scheme
 from tests.projects.questionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, WATERPOINT_PROJECT_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import MESSAGE
@@ -79,7 +80,7 @@ class TestFeeds(HeadlessRunnerTest):
         return date
 
     def get_feed_response(self, questionnaire_code, start_date, end_date):
-        url = "http://localhost:" + get_test_port() + "/feeds/" + questionnaire_code + "?start_date=" + start_date + "&end_date=" + end_date
+        url = get_target_test_scheme() + "://" + get_target_test_host() +":" + get_test_port() + "/feeds/" + questionnaire_code + "?start_date=" + start_date + "&end_date=" + end_date
         actual_data = requests.get(url, auth=('tester150411@gmail.com', 'tester150411' ))
         response_list = jsonpickle.decode(actual_data.content)
         return response_list

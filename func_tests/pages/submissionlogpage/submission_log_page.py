@@ -34,13 +34,14 @@ class SubmissionLogPage(Page):
         Return submission log
         """
         unique_value = fetch_(UNIQUE_VALUE, from_(sms_data))
-
-        columns = self.driver.find_elements_by_xpath(SUBMISSION_LOG_TR_XPATH % unique_value)
-        logs = []
-        for column in columns:
-            logs.append(column.text)
-        submission_log = ' '.join(logs)
-        return submission_log.strip()
+        self.driver.find_text_box(by_css("#search_text")).enter_text(unique_value)
+        return self.driver.find_elements_(by_css("table.submission_table tr"))[2].text
+        # columns = self.driver.find_elements_by_xpath(SUBMISSION_LOG_TR_XPATH % unique_value)
+        # logs = []
+        # for column in columns:
+        #     logs.append(column.text)
+        # submission_log = ' '.join(logs)
+        # return submission_log.strip()
 
     def get_failure_message(self, sms_data):
         """
