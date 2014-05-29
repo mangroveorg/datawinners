@@ -104,6 +104,7 @@ class TestSMSTester(HeadlessRunnerTest):
         test_data.update({SENDER: "1234567890"})
         self.assertEqual(send_sms_with(test_data),
                          "Error. Wrong number of answers. Please review printed Questionnaire and resend entire SMS.")
+                         # "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("extradata", "")})

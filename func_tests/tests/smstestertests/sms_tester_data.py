@@ -83,6 +83,8 @@ REGISTER_WITH_WRONG_NUMBER_OF_ANSWERS = {SENDER: "1234567890",
                              RECEIVER: "919880734937",
                              SMS: "cli Clinic blr Agra 27.178057,-78.007789 9900099000 wat another",
                              ERROR_MSG: "Error. Wrong number of answers. Please review printed Questionnaire and resend entire SMS."}
+                             # SMS: "REG .T Clinic .m   123456 .l Agra .G 127.178057 -78.007789 .n Clinic Agra .S CLIAGRA",
+                             # ERROR_MSG: "Error. Incorrect answer for question 5. Please review printed Questionnaire and resend entire SMS."}
 
 WITH_INVALID_GEO_CODE_FORMAT = {SENDER: "1234567890",
                                 RECEIVER: "919880734937",
@@ -93,6 +95,7 @@ ONLY_QUESTIONNAIRE_CODE = {SENDER: "1234567890",
                            RECEIVER: "919880734937",
                            SMS: "cli009",
                            ERROR_MSG: "Error. Wrong number of answers. Please review printed Questionnaire and resend entire SMS."}
+                           # ERROR_MSG: "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."}
 
 WRONG_NUMBER_OF_ARGS = {SENDER: "1234567891",
                         RECEIVER: "919880734937",

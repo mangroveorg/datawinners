@@ -15,6 +15,8 @@ def default_formatter(exception, message):
         return formatted_message if len(formatted_message) <= 160 else message.replace('%s', "")
     return message
 
+def data_object_not_found_formatter(exception, message):
+    return message % (exception.data[1])
 
 def data_object_not_found_formatter(exception, message):
     return message % (exception.data[1])
@@ -57,6 +59,9 @@ def get_submission_error_message_for(response, form_model, dbm, request):
         is_unique_id_error_present, unique_id_type, invalid_unique_id_code = _is_unique_id_not_present_error(errors)
         if is_unique_id_error_present:
             return unique_id_not_registered_handler(dbm, form_model.form_code, invalid_unique_id_code)
+            # return get_exception_message_for(
+            #     DataObjectNotFound(unique_id_type, invalid_unique_id_code, unique_id_type),
+            #     channel='sms', formatter=data_object_not_found_formatter)
 
         keys = [_("question_prefix%s") % index_of_question(form_model, question_code) for question_code in
                 errors.keys()]
@@ -72,6 +77,12 @@ def get_submission_error_message_for(response, form_model, dbm, request):
                 error_text = "%s %s %s" % (
                     _("sms_glue").join(keys[:3]), _(and_msg), _("more_wrong_question"))
         error_message = invalid_answer_handler(dbm, request, form_model.form_code, error_text)
+# =======
+#                 errors_text = "%s %s %s %s" % (_("plural_question"), _("sms_glue").join(keys[:-1]),  _(and_msg), keys[-1])
+#             else:
+#                 errors_text = "%s %s %s %s" % (_("plural_question"), _("sms_glue").join(keys[:3]),  _(and_msg), _("more_wrong_question"))
+#             error_message = get_validation_failure_error_message(response) % errors_text.strip()
+# >>>>>>> 11_1_release
     else:
         error_message = errors
     return error_message
@@ -95,6 +106,12 @@ def get_success_msg_for_registration_using(response, source, form_model=None):
         return message_with_response_text if len(
             message_with_response_text) <= 160 else thanks + " " + get_subject_info(response, form_model)
     return _("Registration successful.") + " %s %s" % (_("ID is:"), response.short_code)
+# =======
+#         message_with_response_text = thanks + " " + ResponseBuilder(form_model=form_model, processed_data=response.processed_data).get_expanded_response()
+#         return message_with_response_text if len(message_with_response_text) <= 160 else thanks + " " + get_subject_info(response, form_model)
+#     return _("Registration successful.") + " %s %s" %  (_("ID is:"), response.short_code)
+#
+# >>>>>>> 11_1_release
 
 
 def get_response_message(response, dbm, request):

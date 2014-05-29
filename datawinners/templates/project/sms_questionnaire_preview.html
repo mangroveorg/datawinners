@@ -19,14 +19,14 @@
                                 {% if question.type == "select1" %}
                                     <ol class="multiple_select">
                                         {% for option in question.constraints %}
-                                            <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
+                                            <li><span>{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
                                         {% endfor %}
                                     </ol>
                                 {% endif %}
                                 {% if question.type == "select" %}
                                     <ol class="multiple_select">
                                         {% for option in question.constraints %}
-                                            <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
+                                            <li><span>{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
                                         {% endfor %}
                                     </ol>
                                 {% endif %}

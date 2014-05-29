@@ -1,9 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.utils import translation
+from mangrove.form_model.form_model import FORM_CODE
+import mangrove.errors.MangroveException as ex
+
 from datawinners.messageprovider.customized_message import get_customized_message_for_questionnaire
 from datawinners.submission.models import DatawinnerLog
-from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel, FORM_CODE
-import mangrove.errors.MangroveException as ex
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import SMS
 
@@ -17,13 +17,11 @@ def default_exception_handler_with_logger(exception, request):
     create_failure_log(exception_message, request)
     return exception_message
 
-
 def wrong_questionnaire_code_handler(exception, request):
     if request.get('exception'):
         handler = exception_handlers.get(type(request.get('exception')), default_exception_handler)
         return handler(request.get('exception'), request)
     return default_exception_handler_with_logger(exception, request)
-
 
 def data_object_not_found_handler(exception, request):
     return get_exception_message_for(exception=exception, channel=SMS, formatter=data_object_not_found_formatter)
@@ -32,11 +30,9 @@ def data_object_not_found_handler(exception, request):
 def sms_parser_wrong_number_of_answers_handler(exception, request):
     return default_exception_handler_with_logger(exception, request)
 
-
 def exceed_limit_handler(exception, request):
     request.get('organization').increment_message_count_for(sms_registration_count=1)
     return default_exception_handler(exception, request)
-
 
 def number_not_registered_exception_handler(exception, request):
     handler = default_exception_handler if request.get('is_registration') else default_exception_handler_with_logger
@@ -69,8 +65,14 @@ def sms_parser_invalid_format_handler(exception, request):
                                                              message_code='reply_incorrect_number_of_responses',
                                                              form_code=exception.data[0][0])
     create_failure_log(message, request)
-
     return message
+# def sms_parser_invalid_format_handler(exception, request):
+#     if len(request.get('incoming_message').strip().split()) != 1:
+#         return default_exception_handler_with_logger(exception, request)
+#
+#     _activate_language(exception, request)
+#     new_exception = ex.SMSParserWrongNumberOfAnswersException(exception.data[0][0])
+#     return default_exception_handler_with_logger(new_exception, request)
 
 
 def data_sender_not_linked_handler(dbm, request, form_code):
@@ -113,20 +115,15 @@ exception_handlers = {
     ex.ExceedSMSLimitException: exceed_limit_handler,
     ex.ExceedSubmissionLimitException: exceed_limit_handler,
     ex.DatasenderIsNotLinkedException: default_exception_handler_with_logger,
-}
+
+    }
+
+
 
 
 def data_object_not_found_formatter(data_object_not_found_exception, message):
     entity_type, param, value = data_object_not_found_exception.data
     return message % value
-
-
-def _activate_language(exception, request):
-    form_model = get_form_model_by_code(request['dbm'], exception.data[0][0])
-    language = request.get('organization').language if isinstance(form_model, EntityFormModel) else \
-        form_model.activeLanguages[0]
-    translation.activate(language)
-
 
 def create_failure_log(error_message, request):
     log = DatawinnerLog()

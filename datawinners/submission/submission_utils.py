@@ -11,6 +11,7 @@ from mangrove.form_model.form_model import EntityFormModel
 
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
 from datawinners.messageprovider.messages import get_datasender_not_linked_to_project_error_message
+from datawinners.messageprovider.handlers import create_failure_log
 from datawinners.project.models import Project
 
 
@@ -130,7 +131,6 @@ class PostSMSProcessorCheckDSIsRegistered(object):
         if exception and isinstance(exception, NumberNotRegisteredException):
             raise exception
 
-
 class PostSMSProcessorCheckLimits(object):
     def __init__(self, dbm, request):
         self.dbm = dbm
@@ -141,7 +141,6 @@ class PostSMSProcessorCheckLimits(object):
         form_model = get_form_model_by_code(self.dbm, form_code)
         if exception and (
                 isinstance(exception, ExceedSubmissionLimitException) or isinstance(exception, ExceedSMSLimitException)):
-            if not self.request.get('organization').has_exceeded_message_limit() and isinstance(form_model,
-                                                                                                EntityFormModel):
+            if not self.request.get('organization').has_exceeded_message_limit() and isinstance(form_model, EntityFormModel):
                 return
             raise exception

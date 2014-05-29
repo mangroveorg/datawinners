@@ -66,7 +66,7 @@ function QuestionnaireViewModel(){
     };
 
     self.set_all_questions_as_old_questions= function () {
-        for (var question_index in self.questions()) {
+        for (var question_index=0; question_index < self.questions().length; question_index++) {
             self.questions()[question_index].newly_added_question(false)
         }
     };

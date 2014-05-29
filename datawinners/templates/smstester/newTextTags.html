@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Custom tags</title>
+    <script type="text/javascript" src="/media/javascript/jquery.js"></script>
+    <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-textntags/texttag.js"></script>
+
+    <link href="/media/javascript/jquery-textntags/texttag.css" rel="stylesheet"/>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#myTextTags').myTextNTags({
+                    plainText: 'Error. The {Identification Number Type} {Identification Number Code} is not registered in our system. Please register this {Identification Number Type} or contact your supervisor.'
+//                    contentChangedHandler: function () {
+//                        alert('content has been changed')
+//                    }
+}
+            );
+                $('.myButton').click(function(){
+                    $('#myTextTags').myTextNTags('reset');
+                })
+            });
+        </script>
+
+    </head>
+
+    <body>
+        <div id="myTextTags"></div>
+        <button class="myButton">Reset</button>
+        <h5 class="someText"></h5>
+    </body>
+</html>

@@ -581,7 +581,7 @@ msgstr ""
 msgid "This project is inactive"
 msgstr ""
 
-msgid "view all questionnaires"
+msgid "view all Questionnaires"
 msgstr ""
 
 msgid ""
@@ -1289,7 +1289,7 @@ msgstr ""
 msgid "Preview Questionnaire"
 msgstr ""
 
-msgid "Questionnaire Code :"
+msgid "Questionnaire Code:"
 msgstr ""
 
 msgid "q_tooltip_questionnaire_code"
@@ -1724,6 +1724,9 @@ msgstr ""
 
 msgid "Register"
 msgstr ""
+
+msgid "Register Changes"
+msgstr "Register"
 
 msgid "Sign Up to Try DataWinners Free"
 msgstr ""
@@ -4312,7 +4315,7 @@ msgstr ""
 msgid "Note, the following Data Senders were not removed as they are DataWinners users: "
 msgstr ""
 
-msgid "The Data Sender(s) are added to project(s) successfully"
+msgid "The Data Sender(s) are added to Questionnaire(s) successfully"
 msgstr ""
 
 msgid "Invalid GPS value."
@@ -4556,3 +4559,21 @@ msgstr ""
 
 msgid "DataWinners analyzes"
 msgstr "DataWinners analyzes each SMS Submission and automatically sends back an SMS reply. For each Questionnaire you can choose the language of these automatic reply SMS.  Click on the drop down and choose a language to view and edit the suggested automatic reply SMS text. You can also add new languages to meet your needs."
+
+msgid "%s with %s = %s not found."
+msgstr ""
+
+msgid "Answer %s for question %s is of the wrong type."
+msgstr ""
+
+msgid "Answer %s for question %s is smaller than allowed."
+msgstr ""
+
+msgid "Answer %s for question %s is greater than allowed."
+msgstr ""
+
+msgid "Answer %s for question %s is shorter than allowed."
+msgstr ""
+
+msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
+msgstr ""
