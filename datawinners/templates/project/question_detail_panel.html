@@ -99,7 +99,7 @@
             <div class="margin_top_20">
                 <div class="question_option">
                     {% trans "Min:" %}
-                    <input name="range_min" type="text" id="range_min" data-bind="value:range_min"/>
+                    <input name="range_min" type="text" id="range_min" data-bind="valueUpdate:'keyup', value:range_min"/>
                     <div class="validationMessage" data-bind="ifnot: range_min.valid">
                         <span id="min_range_validation_message" class="validationText" data-bind="text: range_min.error"></span>
                     </div>
@@ -107,7 +107,7 @@
 
                 <div class="question_option">
                     {% trans "Max:" %}
-                    <input name="range_max" type="text" id="range_max" data-bind="value:range_max"/>
+                    <input name="range_max" type="text" id="range_max" data-bind="valueUpdate:'keyup', value:range_max"/>
                     <div class="validationMessage" data-bind="ifnot: range_max.valid">
                         <span id="max_range_validation_message" class="validationText" data-bind="text: range_max.error"></span>
                     </div>
