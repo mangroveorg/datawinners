@@ -33,7 +33,7 @@ $(document).ready(function () {
                     $(this).find(".subject_type_entry:checked").each(function(){
                         if($(line).find(".questionnaires").text()){
                             has_questionnaires = true;
-                            message = gettext("The following Questionnaire(s) are collecting data about <b>") + $(line).find(".header").html()+"<b><ul class='bulleted'>";
+                            message = gettext("The following Questionnaire(s) are collecting data about <b>") + $(line).find(".header").html()+"</b><ul class='bulleted'>";
                             $(line).find(".questionnaires span").each(function(){
                                 message = message + "<li style='margin-left:15px;'>"+$(this).html()+"</li>";
 
