@@ -6,11 +6,18 @@ function ProjectLanguageViewModel(){
   self.selected_language = ko.observable();
   self.is_modified = false;
 
-    self.selected_language.subscribe(function(){
+  var _is_add_new_language_option_selected = function(language_option){
+      return language_option == self.available_languages[self.available_languages.length-1].code;
+  };
+
+  self.selected_language.subscribe(function(language_option){
+      if(_is_add_new_language_option_selected(language_option)){
+          window.location.href = language_page_link;
+      }
       self.is_modified = true;
   });
 
-    self.enable_sms_replies.subscribe(function(){
+  self.enable_sms_replies.subscribe(function(){
       self.is_modified = true;
   });
 
@@ -60,9 +67,9 @@ $(function(){
 
     var add_language_option = $("#project_language option:last-child");
     add_language_option.attr('id', 'language_page_link');
-    $("#project_language").on('change', function(){
-        if($(this).find("option:selected").is(add_language_option)){
-            window.location.href = language_page_link;
-        }
-    });
+//    $("#project_language").change(function(){
+//        if($(this).val() == add_language_option.val()){
+//            window.location.href = language_page_link;
+//        }
+//    });
 });

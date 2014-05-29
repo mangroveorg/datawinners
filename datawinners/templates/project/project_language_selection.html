@@ -74,7 +74,7 @@
                         </div>
                     </div>
                 <select id="project_language" name="project_language" class="dropdown_style"
-                        data-bind="options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
+                        data-bind="enable:enable_sms_replies, options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
 {#                    <span id="add_language">{% trans "Add a new language on the " %}<a href={{ languages_link }}>{% trans 'Languages' %}</a>{% trans ' page' %}</span>#}
                 </li>
 
