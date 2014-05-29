@@ -51,6 +51,8 @@ $(function(){
     viewModel.available_languages = languages_list;
     viewModel.available_languages.push({name: gettext('Add a new language on the Languages page'), code: 'new_lang'});
     viewModel.selected_language(current_project_language);
+    viewModel.is_modified = false;
+
     var options = {
         successCallBack:function(callback){
             viewModel.save();
@@ -67,9 +69,4 @@ $(function(){
 
     var add_language_option = $("#project_language option:last-child");
     add_language_option.attr('id', 'language_page_link');
-//    $("#project_language").change(function(){
-//        if($(this).val() == add_language_option.val()){
-//            window.location.href = language_page_link;
-//        }
-//    });
 });
