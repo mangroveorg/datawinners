@@ -80,7 +80,7 @@ function LanguageViewModel() {
                         self.sortLanguages();
                         appendAddNewLanguageOption();
                         self.language(response.language_code);
-                        $('.success-message-box').text(gettext("Language Added succesfully"));
+                        $('.success-message-box').text(gettext("Language Added successfully"));
                         $('.success-message-box').show();
 
                     } else {
