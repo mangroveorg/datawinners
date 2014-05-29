@@ -35,6 +35,7 @@ class SubmissionLogPage(Page):
         """
         unique_value = fetch_(UNIQUE_VALUE, from_(sms_data))
         self.driver.find_text_box(by_css("#search_text")).enter_text(unique_value)
+        self.wait_for_table_data_to_load()
         return self.driver.find_elements_(by_css("table.submission_table tr"))[2].text
         # columns = self.driver.find_elements_by_xpath(SUBMISSION_LOG_TR_XPATH % unique_value)
         # logs = []
