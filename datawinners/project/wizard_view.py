@@ -120,7 +120,7 @@ def create_project(request):
 
         try:
             questionnaire = create_questionnaire(post=request.POST, manager=manager, name=project_info.get('name'),
-                                                 language=active_language,
+                                                 language=project_info.get('language', active_language),
                                                  reporter_id=ngo_admin.reporter_id)
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
