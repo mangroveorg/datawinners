@@ -119,7 +119,6 @@
 {% block secodary_navigation_subject_types %}
     <div class="entity_types">
         <ul class="secondary_tab chosen_entity_type">
-            <li></li>{# Dummy li for space in the beginning. #}
             {% for entity_type in project.entity_type %}
                 <li><a>{{ entity_type|capfirst }}</a></li>
             {% endfor %}
