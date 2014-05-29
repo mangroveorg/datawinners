@@ -581,7 +581,7 @@ msgstr ""
 msgid "This project is inactive"
 msgstr ""
 
-msgid "view all questionnaires"
+msgid "view all Questionnaires"
 msgstr ""
 
 msgid ""
@@ -1727,6 +1727,9 @@ msgstr ""
 
 msgid "Register"
 msgstr ""
+
+msgid "Register Changes"
+msgstr "Register"
 
 msgid "Sign Up to Try DataWinners Free"
 msgstr ""
@@ -4315,7 +4318,7 @@ msgstr ""
 msgid "Note, the following Data Senders were not removed as they are DataWinners users: "
 msgstr ""
 
-msgid "The Data Sender(s) are added to project(s) successfully"
+msgid "The Data Sender(s) are added to Questionnaire(s) successfully"
 msgstr ""
 
 msgid "Invalid GPS value."

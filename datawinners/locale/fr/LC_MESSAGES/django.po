@@ -278,7 +278,7 @@ msgid "Cancel"
 msgstr "Annuler"
 
 msgid "Cancel Editing"
-msgstr "Annuler les Modfications"
+msgstr "Annuler les Modifications"
 
 msgid "Add"
 msgstr "Ajouter"
@@ -638,8 +638,8 @@ msgstr "Erreur"
 msgid "Errors"
 msgstr "Erreurs"
 
-msgid "go to this questionnaire"
-msgstr "Aller à ce questionnaire"
+msgid "go to this Questionnaire"
+msgstr "Aller à ce Questionnaire"
 
 msgid "No submissions present for this project"
 msgstr "Aucune donnée pour ce projet"
@@ -647,8 +647,8 @@ msgstr "Aucune donnée pour ce projet"
 msgid "This project is inactive"
 msgstr "Ce projet n'est pas activé"
 
-msgid "view all questionnaires"
-msgstr "Voir tous les questionnaires"
+msgid "view all Questionnaires"
+msgstr "Voir tous les Questionnaires"
 
 msgid ""
 " Once you have created Questionnaires, a list of your %(text)s will appear here."
@@ -1786,6 +1786,9 @@ msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de do
 
 msgid "Register"
 msgstr "S'enregistrer"
+
+msgid "Register Changes"
+msgstr "Enregistrer"
 
 msgid "Sign Up to Try DataWinners Free"
 msgstr "Inscrivez vous pour essayer gratuitement DataWinners"
@@ -4417,14 +4420,14 @@ msgstr "Id de l'expéditeur"
 msgid "Data Sender Name"
 msgstr "Nom de l'expéditeur"
 
-msgid "The Data Sender(s) are removed from project(s) successfully"
-msgstr "Le(s) Expéditeur(s) de Données a (ont) été retiré(s) du projet avec succès"
+msgid "The Data Sender(s) are removed from Questionnaire(s) successfully"
+msgstr "Le(s) Expéditeur(s) de Données a (ont) été retiré(s) du Questionnaire avec succès"
 
 msgid "Note, the following Data Senders were not removed as they are DataWinners users: "
 msgstr "Les Expéditeurs de Données suivants ont été retirés car ils sont des utilisateurs de DataWinners: "
 
-msgid "The Data Sender(s) are added to project(s) successfully"
-msgstr "L(es) Expéditeur(s) de Données a (ont) été ajouté(s) au(x) projet(s) avec succès"
+msgid "The Data Sender(s) are added to Questionnaire(s) successfully"
+msgstr "L(es) Expéditeur(s) de Données a (ont) été ajouté(s) au(x) Questionnaire(s) avec succès"
 
 msgid "- Please use the latest "
 msgstr "- Veuillez s'il vous plaît utiliser le dernier "
@@ -4701,8 +4704,8 @@ msgstr "Supprimer ce Questionnaire"
 msgid "Your Most Recent Questionnaires"
 msgstr "Vos questionnaires les plus récents"
 
-msgid "Questionnaire Name"
-msgstr "Questionnaire Nom"
+msgid "Questionnaire Name:"
+msgstr "Nom du Questionnaire:"
 
 msgid "Choose an existing Questionnaire and edit it to fit your needs."
 msgstr "Choisissez un Questionnaire existant et modifiez-le selon vos besoins."
@@ -4849,3 +4852,4 @@ msgstr ""
 
 msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
 msgstr ""
+
