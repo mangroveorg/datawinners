@@ -14,7 +14,7 @@ class DropDown(WebElement):
     def get_options(self):
         """Gets the list of options in the drop down
         """
-        return [option.get_text() for option in self.selectOptions]
+        return [option.text for option in self.selectOptions]
 
     def get_selected(self):
         """ Gets the currently selected item in the drop down
