@@ -27,7 +27,6 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         broadcast_message_page = overview_page.navigate_send_message_tab()
         return broadcast_message_page.navigate_to_automatic_reply_sms_page()
 
-    @attr('functional_test')
     def test_project_reply_sms_language(self):
         languages_page = self.automatic_reply_sms_page.choose_automatic_reply_language('new')
         new_language = 'language' + random_string(4)
