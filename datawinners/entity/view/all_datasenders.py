@@ -183,7 +183,7 @@ class AssociateDataSendersView(DataSenderActionView):
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
         return HttpResponse(
-            json.dumps({"success": True, "message": _("The Data Sender(s) are added to project(s) successfully")}))
+            json.dumps({"success": True, "message": _("The Data Sender(s) are added to Questionnaire(s) successfully")}))
 
 
 class DisassociateDataSendersView(DataSenderActionView):
@@ -210,7 +210,7 @@ class DisassociateDataSendersView(DataSenderActionView):
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
         return HttpResponse(
-            json.dumps({"success": True, "message": _("The Data Sender(s) are removed from project(s) successfully")}))
+            json.dumps({"success": True, "message": _("The Data Sender(s) are removed from Questionnaire(s) successfully")}))
 
 
 @csrf_view_exempt
