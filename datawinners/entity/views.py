@@ -77,8 +77,8 @@ def create_type(request):
         entity_name = [entity_name.strip().lower()]
         try:
             manager = get_database_manager(request.user)
-            define_type(manager, entity_name)
             create_registration_form(manager, entity_name)
+            define_type(manager, entity_name)
             message = _("Entity definition successful")
             success = True
             UserActivityLog().log(request, action=ADDED_SUBJECT_TYPE, detail=entity_name[0].capitalize())
