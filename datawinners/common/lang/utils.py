@@ -3,6 +3,7 @@ from django.utils import translation
 from django.utils.translation import ugettext as _, ugettext
 from datawinners.common.lang.custom_message_static_codes import TITLE_QUESTIONNAIRE_REPLY_MESSAGE_CODE_MAP, QUESTIONNAIRE_CUSTOM_MESSAGE_CODES, ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES, DEFAULT_LANGUAGES, TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP
 from datawinners.common.lang.messages import QuestionnaireCustomizedMessages, AccountWideSMSMessage, ACCOUNT_MESSAGE_DOC_ID
+from datawinners.utils import get_organization_language
 
 
 def questionnaire_customized_message_details(dbm, language_code):
@@ -45,22 +46,24 @@ def save_questionnaire_reply_message_template(code, dbm, lang):
 def save_account_wide_reply_message_template(dbm):
     messages = OrderedDict()
     messages.update(
-        {ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[0]: "Error. You are not registered as a Data Sender. Please contact your supervisor."})
+        {ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[0]: _("Error. You are not registered as a Data Sender. Please contact your supervisor.")})
     messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[1]:
-                         "Error.Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."})
+                         _("Error.Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.")})
     messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[2]:
-                         "Thank you {Name of Data Sender}.We registered {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}"})
+                         _("Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}.")})
     messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[3]:
-                         "Error.{Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number"})
+                        _("Error.{Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number.")})
     account_message = AccountWideSMSMessage(messages)
     return dbm._save_document(account_message)
 
 
 def create_custom_message_templates(dbm):
+    account_language = get_organization_language(dbm)
     for code, lang in DEFAULT_LANGUAGES.iteritems():
         translation.activate(code)
         save_questionnaire_reply_message_template(code, dbm, lang)
-    save_account_wide_reply_message_template(dbm)
+        if code == account_language:
+            save_account_wide_reply_message_template(dbm)
 
 
 def get_available_project_languages(dbm):

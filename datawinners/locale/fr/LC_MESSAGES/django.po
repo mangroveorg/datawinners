@@ -4899,6 +4899,15 @@ msgstr "Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) I
 msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
 msgstr "{Name of Data Sender}. Nous avons recu votre SMS: {List of Answers}"
 
+msgid "Error.Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
+msgstr "Erreur. Le code Questionnaire {Code Questionnaire Soumis} est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code."
+
+msgid "Error.{Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number."
+msgstr "Erreur. {Numéro d'Identification Soumis} existe deja. Enregistrez votre {Type de Numéro d'Identification} sous un autre numero."
+
+msgid "Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}."
+msgstr "Merci {Nom de l'Expéditeur de Données}. Nous avons enregistre votre {Type de Numéro d'identification} {Nom du Numéro d'Identification Soumis} ({Numéro d'Identification Soumis})."
+
 msgid "Name of Data Sender"
 msgstr "Nom de l'Expéditeur de Données"
 
@@ -4931,3 +4940,19 @@ msgstr ""
 
 msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
 msgstr ""
+
+msgid "Questionnaire Code is Wrong"
+msgstr "Code Questionnaire erroné"
+
+msgid "Successful Identification Number Registration"
+msgstr "Enregistrement de Numéro d'Identification réussi"
+
+msgid "Identification Number ID Already Exists"
+msgstr "ID de Numéro d'Identification déjà existant"
+
+msgid "Data Sender not Registered"
+msgstr "Expéditeur de Données non enregistré"
+
+
+
+
