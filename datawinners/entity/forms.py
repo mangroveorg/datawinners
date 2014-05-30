@@ -54,7 +54,7 @@ class ReporterRegistrationForm(Form):
     telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS Coordinates"))
 
-    location = CharField(max_length=100, required=False, label=_("Name"))
+    location = CharField(max_length=500, required=False, label=_("Name"))
     project_id = CharField(required=False, widget=HiddenInput())
 
     DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span>' + smartphone_icon())))
