@@ -38,3 +38,6 @@ def index(request):
 
 def tags(request):
     return render_to_response('smstester/newTextTags.html')
+
+def tags_opt2(request):
+    return render_to_response('smstester/textTagsOption2.html')
