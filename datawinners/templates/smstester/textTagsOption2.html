@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<meta charset='utf-8'>
+<html>
+<head>
+    <title>Custom tags</title>
+    <script type="text/javascript" src="/media/javascript/jquery.js"></script>
+    <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+
+    <script type="text/javascript" src="/media/javascript/underscore-min-1.4.3.js"></script>
+    <script type="text/javascript" src="/media/javascript/textchange-ie8.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-textntags/jquery-textntags.js"></script>
+
+    <link href="/media/javascript/jquery-textntags/jquery-textntags.css" rel="stylesheet"/>
+    {#    for fixing split#}
+    <script type="text/javascript" src="/media/javascript/splitter.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (!('indexOf' in Array.prototype)) {
+                Array.prototype.indexOf = function (find, i /*opt*/) {
+                    if (i === undefined) i = 0;
+                    if (i < 0) i += this.length;
+                    if (i < 0) i = 0;
+                    for (var n = this.length; i < n; i++)
+                        if (i in this && this[i] === find)
+                            return i;
+                    return -1;
+                };
+            }
+            var responseText = 'Error. The {Identification Number Type} {Identification Number Code} is not registered in our system. Please register this {Identification Number Type} or contact your supervisor.';
+            $('textarea.tagged_text').val(responseText.replace(/[{]/gi, '@{1:var:'));
+            $('textarea.tagged_text').textntags();
+            $('#myInput').on('paste', function (e) {
+                alert(e.type)
+            });
+            $('#myInput').on('input', function (e) {
+                alert(e.type)
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+<textarea class='tagged_text' ondrop="return false;" ondrag="return false;" ondragstart="return false"
+          draggable="false"></textarea>
+</body>
+</html>
