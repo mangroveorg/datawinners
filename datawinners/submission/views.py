@@ -7,7 +7,7 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 import iso8601
-from datawinners.messageprovider.handlers import create_failure_log, incorrect_number_of_answers
+from datawinners.messageprovider.handlers import create_failure_log, incorrect_number_of_answers, incorrect_questionnaire_code, identification_number_already_exists
 from mangrove.transport.contract.request import Request
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.transport.player.player import SMSPlayer
@@ -228,8 +228,9 @@ def submit_to_player(incoming_request):
         message = SMSResponse(response, incoming_request).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
-        message = ugettext("Error. %s already exists. Register your %s with a different Identification Number.") % \
-                  (e.data[1], e.data[2].capitalize())
+        message = identification_number_already_exists(dbm,e.data[1],e.data[2])
+            #ugettext("Error. %s already exists. Register your %s with a different Identification Number.") % \
+            #      (e.data[1], e.data[2].capitalize())
         if not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
 
@@ -241,7 +242,7 @@ def submit_to_player(incoming_request):
     except FormModelDoesNotExistsException as exception:
         if sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(incoming_web_count=1)
-        message = handle(exception, incoming_request)
+        message = incorrect_questionnaire_code(dbm,exception.data[0])
 
     except SMSParserWrongNumberOfAnswersException as exception:
         form_model = sms_player.get_form_model(mangrove_request)

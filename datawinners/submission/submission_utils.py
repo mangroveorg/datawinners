@@ -1,5 +1,5 @@
 from django.utils import translation
-from datawinners.messageprovider.handlers import data_sender_not_linked_handler
+from datawinners.messageprovider.handlers import data_sender_not_linked_handler, data_sender_not_registered_handler
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
 from mangrove.errors.MangroveException import NumberNotRegisteredException
@@ -86,6 +86,21 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
     def _process_data_submission_request(self, form_model, submission_values):
         return self._process_registration_when_entity_question_is_present(form_model, submission_values)
 
+class PostSMSProcessorCheckDSIsRegistered(object):
+    def __init__(self, dbm, request):
+        self.dbm = dbm
+        self.request = request
+
+    def _get_response(self):
+        response = Response(reporters=[], survey_response_id=None)
+        response.errors = data_sender_not_registered_handler(self.dbm)
+        return response
+
+
+    def process(self, form_code, submission_values):
+        exception = self.request.get('exception')
+        if exception and isinstance(exception, NumberNotRegisteredException):
+            return self._get_response()
 
 class PostSMSProcessorCheckDSIsLinkedToProject(object):
     def __init__(self, dbm, request):
@@ -121,15 +136,6 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
             raise DatasenderIsNotLinkedException()
 
 
-class PostSMSProcessorCheckDSIsRegistered(object):
-    def __init__(self, dbm, request):
-        self.dbm = dbm
-        self.request = request
-
-    def process(self, form_code, submission_values):
-        exception = self.request.get('exception')
-        if exception and isinstance(exception, NumberNotRegisteredException):
-            raise exception
 
 class PostSMSProcessorCheckLimits(object):
     def __init__(self, dbm, request):

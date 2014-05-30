@@ -12,7 +12,7 @@ from mangrove.errors.MangroveException import FormModelDoesNotExistsException, N
 from mangrove.transport.contract.response import create_response_from_form_submission
 
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, \
-    get_success_msg_for_registration_using, _is_unique_id_not_present_error
+    get_success_msg_for_ds_registration_using, _is_unique_id_not_present_error
 
 
 THANKS = "Thank you %s. We received your SMS"
@@ -154,7 +154,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         form_submission_mock.entity_type = ["subject"]
         response = create_response_from_form_submission(reporters=[{'name': 'mino rakoto'}],
                                                         form_submission=form_submission_mock)
-        message = get_success_msg_for_registration_using(response, "web")
+        message = get_success_msg_for_ds_registration_using(response, "web")
         self.assertEqual(expected_message, message)
 
     def test_should_return_unique_id_field_errors_separately_when_multiple_answer_type_errors_present(self):

@@ -33,10 +33,16 @@ class TestSMSResponse(unittest.TestCase):
         short_code_field.code = 'q2'
         form_model_mock.entity_questions = [short_code_field]
         form_model_mock.get_entity_name_question_code.return_value = 'name'
+        form_model_mock.entity_type = ["clinic"]
         with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_mock:
-            get_form_model_mock.return_value = form_model_mock
-            response_text = SMSResponse(response, None).text(dbm_mock)
-            self.assertEqual("Thank you Mr., We registered your Clinic Clinic X (cli001)", response_text)
+            with patch("datawinners.messageprovider.customized_message.account_wide_customized_message_details") as account_message:
+                get_form_model_mock.return_value = form_model_mock
+                account_message.return_value = [{"code":"reply_success_identification_number_registration",
+                                                "message":"Thanks {Name of Data Sender}.registered {Identification Number Type} "
+                                                          "{Name of Identification Number} {Submitted Identification Number}",
+                                                "title": "Succesful register"}]
+                response_text = SMSResponse(response, None).text(dbm_mock)
+                self.assertEqual("Thanks Mr..registered clinic Clinic X cli001", response_text)
 
     def test_should_return_expected_error_response(self):
         self.form_submission_mock.saved = False

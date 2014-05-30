@@ -2,7 +2,7 @@
 from mangrove.form_model.form_model import FORM_CODE
 import mangrove.errors.MangroveException as ex
 
-from datawinners.messageprovider.customized_message import get_customized_message_for_questionnaire
+from datawinners.messageprovider.customized_message import get_customized_message_for_questionnaire, get_account_wide_sms_reply
 from datawinners.submission.models import DatawinnerLog
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import SMS
@@ -55,6 +55,16 @@ def invalid_answer_handler(dbm, request, form_code, invalid_answers):
                                                             form_code, placeholder_dict=
                                                             {'Question Numbers for Wrong Answer(s)': invalid_answers})
 
+def incorrect_questionnaire_code(dbm, invalid_form_code):
+    return get_account_wide_sms_reply(dbm, "reply_incorrect_questionnaire_code",
+                                                            placeholder_dict=
+                                                            {'Submitted Questionnaire Code': invalid_form_code})
+
+def identification_number_already_exists(dbm, submitted_id,identification_number_type):
+    return get_account_wide_sms_reply(dbm, "reply_identification_number_already_exists",
+                                                            placeholder_dict=
+                                                            {'Submitted Identification Number': submitted_id,
+                                                             'Identification Number Type':identification_number_type})
 
 def sms_parser_invalid_format_handler(exception, request):
     if len(request.get('incoming_message').strip().split()) != 1:
@@ -83,6 +93,10 @@ def data_sender_not_linked_handler(dbm, request, form_code):
 
     return message
 
+def data_sender_not_registered_handler(dbm):
+    message = get_account_wide_sms_reply(dbm, message_code='reply_ds_not_registered')
+    return message
+
 
 def success_questionnaire_submission_handler(dbm, form_code, datasender_name, list_of_answers):
 
@@ -101,6 +115,13 @@ def success_questionnaire_submission_handler(dbm, form_code, datasender_name, li
                                                             })
         message = message.rstrip(': ') + "."
 
+    return message
+
+def success_subject_registration_handler(dbm, datasender_name, list_of_answers):
+
+    message = get_account_wide_sms_reply(dbm,  message_code='reply_success_identification_number_registration',
+                                         placeholder_dict= { 'Name of Data Sender': datasender_name, 'Identification Number Type': list_of_answers[0],
+                                                             'Name of Identification Number':list_of_answers[1],'Submitted Identification Number':list_of_answers[2]})
     return message
 
 exception_handlers = {

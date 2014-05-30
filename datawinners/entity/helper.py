@@ -31,7 +31,7 @@ from datawinners.accountmanagement.models import Organization,\
     DataSenderOnTrialAccount, NGOUserProfile
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.messageprovider.message_handler import\
-    get_success_msg_for_registration_using
+    get_success_msg_for_ds_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.submission.location import LocationBridge
 from mangrove.form_model.field import ShortCodeField
@@ -181,7 +181,7 @@ def process_create_data_sender_form(dbm, form, org_id):
             response = web_player.accept(request, logger=websubmission_logger)
             if response.success:
                 data_sender_id = response.short_code
-                message = get_success_msg_for_registration_using(response, "web")
+                message = get_success_msg_for_ds_registration_using(response, "web")
             else:
                 form.update_errors(response.errors)
         except IntegrityError as e:

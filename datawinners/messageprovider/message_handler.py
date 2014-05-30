@@ -4,6 +4,7 @@ from string import lower
 from django.utils.translation import ugettext as _
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.utils.types import is_empty
 from datawinners.messageprovider.messages import exception_messages, DEFAULT, get_submission_success_message, get_registration_success_message, get_validation_failure_error_message, get_subject_info
 from datawinners.messageprovider.message_builder import ResponseBuilder
@@ -98,7 +99,7 @@ def get_success_msg_for_submission_using(response, form_model, dbm):
     return message
 
 
-def get_success_msg_for_registration_using(response, source, form_model=None):
+def get_success_msg_for_ds_registration_using(response, source, form_model=None):
     thanks = get_registration_success_message(response)
     if source == "sms":
         message_with_response_text = thanks + " " + ResponseBuilder(form_model=form_model,
@@ -106,12 +107,21 @@ def get_success_msg_for_registration_using(response, source, form_model=None):
         return message_with_response_text if len(
             message_with_response_text) <= 160 else thanks + " " + get_subject_info(response, form_model)
     return _("Registration successful.") + " %s %s" % (_("ID is:"), response.short_code)
-# =======
+## =======
 #         message_with_response_text = thanks + " " + ResponseBuilder(form_model=form_model, processed_data=response.processed_data).get_expanded_response()
 #         return message_with_response_text if len(message_with_response_text) <= 160 else thanks + " " + get_subject_info(response, form_model)
 #     return _("Registration successful.") + " %s %s" %  (_("ID is:"), response.short_code)
 #
 # >>>>>>> 11_1_release
+
+def get_success_msg_for_subject_registration_using(dbm,response,form_model=None):
+    from datawinners.messageprovider.handlers import success_subject_registration_handler
+    datasender_name = response.reporters[0].get('name').split()[0].capitalize()
+    answers_response_text = ResponseBuilder(form_model=form_model,
+                                    processed_data=response.processed_data).get_response_for_sms_subject_registration()
+    message = success_subject_registration_handler(dbm, datasender_name, answers_response_text)
+
+    return message
 
 
 def get_response_message(response, dbm, request):
@@ -125,6 +135,9 @@ def get_response_message(response, dbm, request):
 
 def _get_success_message(response, form_model, dbm):
     if response.is_registration:
-        return get_success_msg_for_registration_using(response, "sms", form_model)
+        if response.entity_type == REPORTER_ENTITY_TYPE:
+            return get_success_msg_for_ds_registration_using(response,'sms', form_model)
+        else:
+            return get_success_msg_for_subject_registration_using(dbm,response,form_model)
     else:
         return get_success_msg_for_submission_using(response, form_model, dbm)
