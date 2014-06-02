@@ -27,7 +27,16 @@ function LanguageViewModel() {
         }
     );
 
-
+    self.helptextscenario = function (text) {
+        return gettext('scenario ' + text);
+    };
+    self.helptextexample = function (text) {
+        return gettext('example ' + text);
+    };
+    self.displayExample = function (text) {
+        var example_text = gettext('example ' + text);
+        return ( example_text != " ")
+    };
     self.language.subscribe(function () {
         $.getJSON("/languages/custom_messages", {'language': languageViewModel.language()}).success(function (data) {
             createObservableMessageItemsFor(data, languageViewModel.customizedMessages,

@@ -18,6 +18,7 @@
         var account_messages = {{ account_messages|safe }};
     </script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/common/lang/language_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/common/lang/customize_reply_messages.js"></script>
@@ -34,39 +35,50 @@
         {% trans "language help text" %}
     </div>
 
-    <div id = "language_customized_messages">
-    <div style="padding-top: 12px">
-        <strong>{% trans "Languages for SMS Reply Messages" %}</strong>
+    <div id="language_customized_messages">
+        <div style="padding-top: 12px">
+            <strong>{% trans "Languages for SMS Reply Messages" %}</strong>
 
-        <select id="language" class="dropdown_style" name="language_option" style="display:block"
-                data-bind="value:language_display, foreach: availableLanguages">
-            <option data-bind="text: name, value:code,css: { addNewLanguage: code == 'add_new' }">
-        </select>
+            <select id="language" class="dropdown_style" name="language_option" style="display:block"
+                    data-bind="value:language_display, foreach: availableLanguages">
+                <option data-bind="text: name, value:code,css: { addNewLanguage: code == 'add_new' }">
+            </select>
 
-    </div>
-    <div class="clear"></div>
-    <br/>
-    <div>
-        <ol data-bind="foreach: languageViewModel.customizedMessages">
-            <strong>
-                <li data-bind="text: $data.title"></li>
-            </strong>
-            <textarea rows="3" cols="80"
-                      data-bind="value:first160chars($data.message),attr: {id: 'custom_message' + $index() },valueUpdate: 'afterkeydown'"
-                      style="width: auto;resize: none" maxlength="160"></textarea>
+        </div>
+        <div class="clear"></div>
+        <br/>
 
-            <div class="validationMessage" data-bind="ifnot: $data.message.valid">
+        <div>
+            <ol data-bind="foreach: languageViewModel.customizedMessages">
+                <div>
+                    <strong>
+
+                        <li>
+                            <label data-bind="text: $data.title" style="display: inline;"></label>
+                            <img src="/media/images/help_icon.png" class="help_icon"
+                                 style="display: inline;padding-bottom: 5px"
+                                 data-bind="initializeTooltip:true">
+                            {% include "customized_message_tooltip.html" %}
+                        </li>
+                    </strong>
+                </div>
+
+                <textarea rows="3" cols="80"
+                          data-bind="value:first160chars($data.message),attr: {id: 'custom_message' + $index() },valueUpdate: 'afterkeydown'"
+                          style="width: auto;resize: none" maxlength="160"></textarea>
+
+                <div class="validationMessage" data-bind="ifnot: $data.message.valid">
                 <span id="question_title_validation_message" class="validationText"
                       data-bind="text: $data.message.error"></span>
 
-            </div>
-            <div class="help_accordion charCount" style="display: block">
-                <span  data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
-            </div>
+                </div>
+                <div class="help_accordion charCount" style="display: block">
+                    <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
+                </div>
 
-        </ol>
-    </div>
-    <br/>
+            </ol>
+        </div>
+        <br/>
     </div>
     {% include "account_wide_sms_messages.html" %}
 
@@ -87,7 +99,8 @@
 
     <div id="add_new_language_pop" style="display: none;">
         {% trans "Language Name" %}<br/>
-        <input type="text" placeholder='{% trans "Enter a name of your language" %}' data-bind="value:newLanguageName,valueUpdate: 'afterkeydown','keyup'"/>
+        <input type="text" placeholder='{% trans "Enter a name of your language" %}'
+               data-bind="value:newLanguageName,valueUpdate: 'afterkeydown','keyup'"/>
 
         <div data-bind="ifnot: $data.newLanguageName.valid" class="validationMessage">
             <span data-bind="text: $data.newLanguageName.error" class="validationText" style="display: inline-block"

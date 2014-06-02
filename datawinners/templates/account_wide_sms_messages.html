@@ -8,9 +8,18 @@
     </div>
 
     <ol id="sms_messages" start="6" data-bind="foreach: languageViewModel.accountMessages">
-        <strong>
-            <li data-bind="text: $data.title"></li>
-        </strong>
+        <div>
+            <strong>
+                <li>
+                    <label data-bind="text: $data.title" style="display: inline;"></label>
+                    <img src="/media/images/help_icon.png" class="help_icon"
+                         style="display: inline;padding-bottom: 5px"
+                         data-bind="initializeTooltip:true">
+                    {% include "customized_message_tooltip.html" %}
+
+                </li>
+            </strong>
+        </div>
 
         <textarea rows="3" cols="80"
                   data-bind="value:first160chars($data.message),attr: {id: 'account_message' + $index() },valueUpdate: 'afterkeydown'"

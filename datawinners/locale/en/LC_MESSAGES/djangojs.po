@@ -1110,3 +1110,58 @@ msgstr ""
 
 msgid "Language Added successfully"
 msgstr "Your language has been added successfully. Please translate the suggested automatic reply SMS text."
+
+msgid "scenario Successful Submission"
+msgstr "The message your Data Senders receive when their answers meet all criteria."
+
+msgid "example Successful Submission"
+msgstr "Thank you David.  We received your SMS:  cli1, 75, b, 300, 26.04.2014."
+
+msgid "scenario Submission with an Error"
+msgstr "The message your Data Senders receive when their answers do not meet the specified criteria."
+
+msgid "example Submission with an Error"
+msgstr "Error. Incorrect answer for question 3 and 5. Please review printed Questionnaire and resend entire SMS."
+
+msgid "scenario Incorrect Number of Responses"
+msgstr "The message your Data Senders receive when they submit an incorrect number of answers"
+
+msgid "example Incorrect Number of Responses"
+msgstr " "
+
+msgid "scenario Identification Number not Registered"
+msgstr "The message your Data Senders receive when they submit an Identification Number that has not been registered in your organization’s DataWinners account."
+
+msgid "example Identification Number not Registered"
+msgstr "Error. Cli205 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+
+msgid "scenario Data Sender not Authorized to Submit Data to this Questionnaire"
+msgstr "The message your Data Senders receive when the Data Sender is registered in your organization’s DataWinners account, but you have not yet authorized him/her to submit data for this Questionnaire."
+
+msgid "example Data Sender not Authorized to Submit Data to this Questionnaire"
+msgstr " "
+
+msgid "scenario Data Sender not registered"
+msgstr "The message your Data Senders receive when they are not yet registered in your organization’s DataWinners account."
+
+msgid "example Data Sender not registered"
+msgstr " "
+
+msgid "scenario Questionnaire Code is wrong"
+msgstr "The message your Data Senders receive when they submit a Questionnaire Code that has not been registered in your organization’s DataWinners account."
+
+msgid "example Questionnaire Code is wrong"
+msgstr "Error. Questionnaire Code stock is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
+
+msgid "scenario Successful Identification Number Registration"
+msgstr "The message your Data Senders receive when they successfully register a new Identification Number."
+
+msgid "example Successful Identification Number Registration"
+msgstr "Thank you David. We registered your Clinic Mahajunga Cli206."
+
+msgid "scenario Identification Number ID already exists"
+msgstr "The message your Data Senders receive when they attempt to register a new Identification Number using an existing Identification Number in your organization’s DataWinners account"
+
+msgid "example Identification Number ID already exists"
+msgstr "Error. Cli206 already exists. Register your Clinic with a different Identification Number."
+

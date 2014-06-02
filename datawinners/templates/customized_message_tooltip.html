@@ -1,0 +1,12 @@
+{% load i18n %}
+<div class="tooltip">
+    <p>
+        <strong>{% trans "Scenario" %}</strong><br/>
+        <span data-bind="text:$root.helptextscenario($data.title)"></span>
+        <br/>
+        <span id="example_text" data-bind="visible:$root.displayExample($data.title)">
+                <strong>{% trans "Example" %}</strong><br/>
+                <span data-bind="text:$root.helptextexample($data.title)"></span>
+        </span>
+    </p>
+</div>
