@@ -93,12 +93,6 @@ class DataSenderTest(HeadlessRunnerTest):
         smart_phone_instruction_page = web_submission_page.navigate_to_smart_phone_instruction()
         self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())
 
-        smart_phone_instruction_page.navigate_to_project_list()
-        data_sender_page = DataSenderPage(self.driver)
-        add_subject_page = data_sender_page.register_subject()
-        smart_phone_instruction_page = add_subject_page.navigate_to_smart_phone_instruction()
-        self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())
-
     @attr("functional_test")
     def test_go_back_to_project_list_directly_when_user_cancel_submission_without_fill_out_form(self):
         web_submission_page = self.data_sender_page.send_in_data()
