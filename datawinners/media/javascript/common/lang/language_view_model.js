@@ -26,7 +26,20 @@ function LanguageViewModel() {
             DW.ko.mandatoryValidator(self.newLanguageName, languageNameEmptyMessage);
         }
     );
-
+    self.isAccountMessageItemChanged = function (messageCode, messageText) {
+        if (self.accountMessagesInitialState()) {
+            var initialAccountMessages = JSON.parse(self.accountMessagesInitialState());
+            for (var i = 0; i < initialAccountMessages.length; i++) {
+                if (initialAccountMessages[i].code == messageCode) {
+                    return initialAccountMessages[i].message != messageText;
+                }
+            }
+        }
+        return false;
+    };
+    self.checkWarningMsgDisplay = function (messageItem) {
+        messageItem.displayWarning(self.isAccountMessageItemChanged(messageItem.code, messageItem.message()));
+    };
     self.helptextscenario = function (text) {
         return gettext('scenario ' + text);
     };
@@ -69,6 +82,7 @@ function LanguageViewModel() {
                 $('.success-message-box').show();
                 self.customizedMessagesInitialState(ko.toJSON(self.customizedMessages()));
                 self.accountMessagesInitialState(ko.toJSON(self.accountMessages()));
+                resetAccountMsgWarningDisplay();
                 if (typeof callback == "function") callback();
             }
         );
@@ -104,7 +118,7 @@ function LanguageViewModel() {
     }
 }
 
-function createObservableMessageItemsFor(data, messageObservable, initialStateObservable) {
+function createObservableMessageItemsFor(data, messageObservable, initialStateObservable, msgChangeWarning) {
     var messages = [];
     for (var i = 0; i < data.length; i++) {
         var messageItem = DW.ko.createValidatableObservable({value: data[i].message});
@@ -115,10 +129,18 @@ function createObservableMessageItemsFor(data, messageObservable, initialStateOb
         messageItem.subscribe(function () {
             DW.ko.mandatoryValidator(this.message, gettext("Enter reply SMS text."));
         }, customized_message_item);
+        if (msgChangeWarning) {
+            customized_message_item.displayWarning = ko.observable(false);
+        }
         messages.push(customized_message_item);
     }
     messageObservable(messages);
     initialStateObservable(ko.toJSON(messageObservable()))
 }
 
-
+function resetAccountMsgWarningDisplay(){
+    var messages = languageViewModel.accountMessages();
+    for(var i=0;i<messages.length;i++){
+        messages[i].displayWarning(false);
+    }
+}

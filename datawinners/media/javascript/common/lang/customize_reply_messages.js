@@ -83,5 +83,5 @@ var first160chars = function (str) {
 };
 
 function setAccountWideMessages() {
-    createObservableMessageItemsFor(account_messages, languageViewModel.accountMessages, languageViewModel.accountMessagesInitialState)
+    createObservableMessageItemsFor(account_messages, languageViewModel.accountMessages, languageViewModel.accountMessagesInitialState,true)
 }
