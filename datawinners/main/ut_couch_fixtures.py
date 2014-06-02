@@ -173,7 +173,7 @@ def create_questions(unique_id_type):
 
 
 def create_project1(manager, questions, weekly_reminder_and_deadline):
-    questionnaire1 = Project(manager, name="Clinic Test Project1",
+    questionnaire1 = Project(manager, name="clinic test project1",
                                form_code="cli001",
                                fields=questions, devices=["sms", "web", "smartPhone"], sender_group="close",
                                goals="This project is for automation"
@@ -186,16 +186,16 @@ def create_project1(manager, questions, weekly_reminder_and_deadline):
         qid = questionnaire1.save()
     reminder = Reminder(project_id=questionnaire1.id, day=2, reminder_mode=ReminderMode.BEFORE_DEADLINE,
                         organization_id='SLX364903',
-                        message="2 day(s) are remainning to deadline. Please send your data for Clinic Test Project1.")
+                        message="2 day(s) are remainning to deadline. Please send your data for clinic test project1.")
     reminder.save()
     # Create reminders for project1
     reminder = Reminder(project_id=questionnaire1.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
                         organization_id='SLX364903',
-                        message="Today is the deadline. Please send your data for Clinic Test Project1.")
+                        message="Today is the deadline. Please send your data for clinic test project1.")
     reminder.save()
     reminder = Reminder(project_id=questionnaire1.id, day=2, reminder_mode=ReminderMode.AFTER_DEADLINE,
                         organization_id='SLX364903',
-                        message="2 days are overdue the deadline. Please send your data for Clinic Test Project1.")
+                        message="2 days are overdue the deadline. Please send your data for clinic test project1.")
     reminder.save()
     # Associate datasenders/reporters with project 1
     questionnaire1.data_senders.extend(["rep5", "rep6", "rep1", "rep8", "rep9", "rep3"])
@@ -203,7 +203,7 @@ def create_project1(manager, questions, weekly_reminder_and_deadline):
 
 
 def create_project2(manager, questions):
-    questionnaire2 = Project(manager, name="Clinic2 Test Project",
+    questionnaire2 = Project(manager, name="clinic2 test project",
                                form_code="cli002",
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
@@ -221,7 +221,7 @@ def create_project2(manager, questions):
 
 
 def create_project3(manager, questions):
-    questionnaire3 = Project(manager, name="Clinic3 Test Project",
+    questionnaire3 = Project(manager, name="clinic3 test project",
                                form_code="cli003",
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
@@ -247,7 +247,7 @@ def create_project4(manager, questions):
 
 
 def create_project5(manager, questions):
-    questionnaire5 = Project(manager, name="Clinic5 Test Project",
+    questionnaire5 = Project(manager, name="clinic5 test project",
                                form_code="cli005",
                                fields=questions, goals="This project is for automation",
                                devices=["sms", "web", "smartPhone"], sender_group="close"
@@ -638,7 +638,7 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
                           date_format="mm.yyyy",
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
 
-    questionnaire = Project(manager, name="Clinic Test Project With Monthly Reporting Period",
+    questionnaire = Project(manager, name="clinic test project With Monthly Reporting Period",
                               form_code=clinic_code,
                               fields=[question1, question2], goals="This project is for automation",
                               devices=["sms", "web", "smartPhone"], sender_group="close"
@@ -1278,7 +1278,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
                             single_select_flag=False,
                             instruction="Choose 1 or more answers from the list.", required=False)
-    questionnaire = Project(manager, name="Clinic Test Project",
+    questionnaire = Project(manager, name="clinic test project",
                            form_code="cli051",
                            fields=[question1, question2, question3, question4, question5, question6, question7,
                                    question8], goals="This project is for automation",

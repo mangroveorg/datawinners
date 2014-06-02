@@ -43,7 +43,7 @@ class MyDataSendersAjaxView(View):
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
         user = request.user
-        project_name_unquoted = unquote(project_name)
+        project_name_unquoted = lower(unquote(project_name))
         query_count, search_count, datasenders = MyDataSenderQuery(search_parameters).filtered_query(user,
                                                                                                      self.strip_accents(
                                                                                                          project_name_unquoted),

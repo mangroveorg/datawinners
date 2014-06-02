@@ -30,7 +30,7 @@ class ProjectsPage(Page):
 
         Return project overview page
          """
-        project_link = by_xpath(PROJECT_LINK_XPATH % lower(project_name))
+        project_link = by_xpath(PROJECT_LINK_XPATH % project_name)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, project_link, True)
         self.driver.find(project_link).click()
         return ProjectOverviewPage(self.driver)

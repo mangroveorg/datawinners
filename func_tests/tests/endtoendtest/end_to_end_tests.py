@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
 import os
-from string import lower
 import unittest
 import time
 
@@ -67,7 +66,7 @@ def do_login(driver, email, password):
 
 class TestApplicationEndToEnd(unittest.TestCase):
     def setUp(self):
-        self.driver = setup_driver(browser='phantom')
+        self.driver = setup_driver()
 
     def tearDown(self):
         import sys
@@ -212,7 +211,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
 
         edit_datasender_page.navigate_to_datasender_page()
         all_data_sender_page = AllDataSendersPage(self.driver)
-        all_data_sender_page.associate_datasender_to_projects(rep_id, [lower(self.project_name)])
+        all_data_sender_page.associate_datasender_to_projects(rep_id, [self.project_name])
         return email
 
     def verify_admin_present_in_my_datasenders_page(self):
