@@ -51,6 +51,7 @@ $(document).ready(function () {
         flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
         html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
         flash_message[0].scrollIntoView();
+        window.scrollTo(0, 0);
         hide_message();
     }
     function hide_message() {
