@@ -38,8 +38,7 @@ p {
     #projects .project_header .header {
       font-weight: normal;
       background: url(/media/images/accordion_arrows.png) no-repeat left -34px;
-      padding-left: 15px;
-      text-transform: capitalize; }
+      padding-left: 15px; }
     #projects .project_header .success_error {
       font-size: 12px;
       font-weight: normal;

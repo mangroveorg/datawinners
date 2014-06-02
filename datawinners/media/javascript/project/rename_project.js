@@ -12,7 +12,7 @@ $(function(){
                 var editFieldSection = result.editFieldSection;
                 editFieldSection.find('button').text(gettext("Save"));
                 if(result.success){
-                    $('.editableSingle').text(_.str.capitalize(result.value.toLowerCase()));
+                    $('.editableSingle').text(result.value);
                 }
             },
             cancel_label:gettext("Cancel")

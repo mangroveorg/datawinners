@@ -45,7 +45,6 @@ div.margin_top_20 input {
   overflow-x: hidden; }
 
 #questionnaire_title {
-  text-transform: capitalize;
   width: 400px;
   padding: 3px;
   font-size: 15px; }
@@ -292,7 +291,7 @@ div.margin_top_20 input {
       z-index: 1003;
       background-color: white;
       border: 1px solid #CCC;
-      box-shadow: 3px 0 5px -3px #CCC;
+      box-shadow: 3px 0 5px -3px #cccccc;
       border-bottom: none;
       height: 33px; }
       #container_content .questionnaire_form_header .preview-navigation .shadow-background a {
