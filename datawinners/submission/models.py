@@ -19,5 +19,4 @@ class SMSResponse(object):
         self.request = incoming_request
 
     def text(self, dbm):
-        message = get_response_message(self.response, dbm, self.request)
-        return message[:160] if message else message
+        return get_response_message(self.response, dbm, self.request)

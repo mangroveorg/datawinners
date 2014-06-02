@@ -74,7 +74,7 @@ def sms(request):
     message = Responder().respond(request)
     if not message:
         return HttpResponse(status=403)
-    response = HttpResponse(message)
+    response = HttpResponse(message[:160])
     response['X-Vumi-HTTPRelay-Reply'] = 'true'
     response['Content-Length'] = len(response.content)
     return response
