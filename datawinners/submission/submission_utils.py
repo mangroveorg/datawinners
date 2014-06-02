@@ -97,7 +97,7 @@ class PostSMSProcessorCheckDSIsRegistered(object):
         return response
 
 
-    def process(self, form_code, submission_values):
+    def process(self):
         exception = self.request.get('exception')
         if exception and isinstance(exception, NumberNotRegisteredException):
             return self._get_response()

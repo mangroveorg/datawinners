@@ -93,8 +93,9 @@ class TestSMSTester(HeadlessRunnerTest):
                          "Error. You are not registered as a Data Sender. Please contact your supervisor.")
 
         test_data.update({SENDER: "2619876"})
-        self.assertEqual(send_sms_with(test_data),
-                         "Error. Questionnaire Code wrcode is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.")
+        msg = send_sms_with(test_data)
+        self.assertEqual(msg,
+                         "Error.Questionnaire Code wrcode is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("wrcode", "cli002")})
