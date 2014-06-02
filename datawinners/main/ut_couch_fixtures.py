@@ -1264,7 +1264,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     question4 = DateField(label="Report date", code="RD", name="What is réporting date?",
                           date_format="dd.mm.yyyy",
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
-    question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
+    question5 = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
                             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
                             instruction="Choose 1 answer from the list.")
     question6 = SelectField(label="Symptoms", code="SY", name="What aré symptoms?",

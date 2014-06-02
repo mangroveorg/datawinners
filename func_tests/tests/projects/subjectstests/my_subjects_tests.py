@@ -91,7 +91,7 @@ class TestMySubjects(HeadlessRunnerTest):
         active_subject_type = identification_number_page.get_active_subject_type()
         self.assertEqual('Gaming', active_subject_type.split(' ')[0])
 
-        identification_number_page.navigate_to_nth_entity_type(2)
+        identification_number_page.navigate_to_nth_entity_type(1)
 
         active_subject_type = identification_number_page.get_active_subject_type()
         self.assertEqual('School', active_subject_type.split(' ')[0])
