@@ -61,12 +61,3 @@ class TestSMSResponse(unittest.TestCase):
             self.assertEqual(error_response, SMSResponse(response, None).text(Mock(spec=DatabaseManager)))
 
 
-    def test_should_trim_response_to_max_of_160_characters(self):
-        dbm = Mock(spec=DatabaseManager)
-
-        with patch('datawinners.submission.models.get_response_message') as get_response_message_mock:
-            get_response_message_mock.return_value = "A" * 180
-
-            actual_message = SMSResponse(None, None).text(dbm)
-
-        self.assertEqual(actual_message, "A" * 160)
