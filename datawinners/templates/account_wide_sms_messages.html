@@ -4,6 +4,7 @@
     <div class="help_accordion" style="text-align: justify">
         {% trans "account wide sms help text" %}
     </div>
+    <br/>
 
     <ol id="sms_messages" start="6" data-bind="foreach: languageViewModel.accountMessages">
         <div>
@@ -21,7 +22,7 @@
 
         <textarea rows="3" cols="80"
                   data-bind="value:first160chars($data.message),attr: {id: 'account_message' + $index() },valueUpdate: 'afterkeydown',event:{keyup:$root.checkWarningMsgDisplay($data)}"
-                  style="width: auto;resize: none" maxlength="160"></textarea>
+                  class="message_box" maxlength="160"></textarea>
         <div class="validationMessage" data-bind="ifnot: $data.message.valid">
                 <span id="question_title_validation_message" class="validationText"
                       data-bind="text: $data.message.error"></span>
@@ -30,8 +31,10 @@
         <div style="width: 575px">
         <div class="account_message_warning_message" style="" data-bind="visible:$data.displayWarning()">{% trans "Any changes you make to this text will apply for all Data Senders" %}</div>
 
-        <div class="help_accordion account_message_char_count">
+        <div class="account_message_char_count">
             <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
         </div></div>
+        <br/>
+        <br/>
     </ol>
 </div>

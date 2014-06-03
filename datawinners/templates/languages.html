@@ -36,8 +36,8 @@
     </div>
 
     <div id="language_customized_messages">
-        <div style="padding-top: 12px">
-            <strong>{% trans "Languages for SMS Reply Messages" %}</strong>
+        <div style="padding-top: 12px;font-size:14px ">
+            <strong>{% trans "Language" %}</strong>
 
             <select id="language" class="dropdown_style" name="language_option" style="display:block"
                     data-bind="value:language_display, foreach: availableLanguages">
@@ -63,19 +63,19 @@
                     </strong>
                 </div>
 
-                <textarea rows="3" cols="80"
+                <textarea rows="3" cols="80" class="message_box"
                           data-bind="value:first160chars($data.message),attr: {id: 'custom_message' + $index() },valueUpdate: 'afterkeydown'"
-                          style="width: auto;resize: none" maxlength="160"></textarea>
+                          maxlength="160"></textarea>
 
                 <div class="validationMessage" data-bind="ifnot: $data.message.valid">
                 <span id="question_title_validation_message" class="validationText"
                       data-bind="text: $data.message.error"></span>
 
                 </div>
-                <div class="help_accordion charCount" style="display: block">
+                <div class="charCount" style="display: block">
                     <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
                 </div>
-
+                <br/>
             </ol>
         </div>
         <br/>

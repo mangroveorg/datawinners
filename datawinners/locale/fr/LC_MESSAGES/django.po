@@ -4836,6 +4836,9 @@ msgstr "L'ID unique %s du/de la %s ne correspond à aucun Numéro d'Identificati
 msgid "Languages"
 msgstr "Langues"
 
+msgid "Language"
+msgstr "Langue"
+
 msgid "Languages for Automatic Reply SMS"
 msgstr "Langues pour les Réponses SMS automatiques"
 
