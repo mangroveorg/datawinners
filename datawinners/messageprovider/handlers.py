@@ -70,20 +70,11 @@ def sms_parser_invalid_format_handler(exception, request):
     if len(request.get('incoming_message').strip().split()) != 1:
         return default_exception_handler_with_logger(exception, request)
 
-    #_activate_language(exception, request)
     message = get_customized_message_for_questionnaire(request['dbm'], request,
                                                              message_code='reply_incorrect_number_of_responses',
                                                              form_code=exception.data[0][0])
     create_failure_log(message, request)
     return message
-# def sms_parser_invalid_format_handler(exception, request):
-#     if len(request.get('incoming_message').strip().split()) != 1:
-#         return default_exception_handler_with_logger(exception, request)
-#
-#     _activate_language(exception, request)
-#     new_exception = ex.SMSParserWrongNumberOfAnswersException(exception.data[0][0])
-#     return default_exception_handler_with_logger(new_exception, request)
-
 
 def data_sender_not_linked_handler(dbm, request, form_code):
     message = get_customized_message_for_questionnaire(dbm, request,
