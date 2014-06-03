@@ -50,15 +50,21 @@
 select option {
   margin: 3px; }
 
-.charCount {
+.charCount, .account_message_char_count {
   display: block;
   text-align: right;
   width: 575px; }
 
+.account_message_char_count {
+  float: right;
+  width: auto !important;
+  display: inline !important; }
+
 .account_message_warning_message {
   color: #066B06 !important;
   font-style: italic;
-  margin-top: -6px; }
+  margin-top: -6px;
+  display: inline; }
 
 .account_wide_sms_title {
   color: orange;

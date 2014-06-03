@@ -4965,5 +4965,7 @@ msgstr "Ce sont les réponses SMS automatiques pour le compte DataWinners de vot
 msgid "Account-Wide SMS"
 msgstr "SMS relatifs au compte en général"
 
+msgid "Any changes you make to this text will apply for all Data Senders."
+msgstr "Tous les changements que vous effectuez sur ce texte s'appliqueront à tous ls Expéditeurs de Données."
 
 

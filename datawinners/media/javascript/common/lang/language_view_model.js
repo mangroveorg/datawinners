@@ -1,3 +1,8 @@
+function displaySuccessMessage(data) {
+    $('.success-message-box').text(data["message"]);
+    $('.success-message-box').show();
+    $('.success-message-box')[0].scrollIntoView();
+}
 function LanguageViewModel() {
     var self = this;
     self.availableLanguages = ko.observableArray(languages);
@@ -60,8 +65,11 @@ function LanguageViewModel() {
         var valid_fields = $.map(self.customizedMessages(), function (e) {
             return e.message.valid()
         });
+        valid_fields = valid_fields.concat($.map(self.accountMessages(), function (e) {
+            return e.message.valid()
+        }));
         return valid_fields.indexOf(false) == -1;
-    }, self.customizedMessages);
+    }, self);
 
     self.sortLanguages = function () {
         self.availableLanguages.sort(function (left, right) {
@@ -78,8 +86,7 @@ function LanguageViewModel() {
             function (data) {
                 data = JSON.parse(data);
                 languageViewModel.saveButtonText(gettext("Save"));
-                $('.success-message-box').text(data["message"]);
-                $('.success-message-box').show();
+                displaySuccessMessage(data);
                 self.customizedMessagesInitialState(ko.toJSON(self.customizedMessages()));
                 self.accountMessagesInitialState(ko.toJSON(self.accountMessages()));
                 resetAccountMsgWarningDisplay();

@@ -1204,7 +1204,7 @@ msgid "scenario reply_success_submission"
 msgstr "Le message que vos Expéditeurs de Données reçoivent lorsque leurs réponses respecte tous les critères."
 
 msgid "example reply_success_submission"
-msgstr "Merci David. Nous avons reçu votre SMS : cli1, 75, b, 300, 26.04.2014"
+msgstr "Merci David. Nous avons reçu votre SMS : cli1, 75, b, 300, 26.04.2014.<br/>Remarque : Si le SMS de retour automatique dépasse les 160 caractères, DataWinners n'enverra pas la liste des réponses mais enverra uniquement 'Merci David. Nous avons reçu votre SMS.'"
 
 msgid "scenario reply_incorrect_answers"
 msgstr "Le message que vos Expéditeurs de Données reçoivent quand leurs réponses ne répondent pas aux critères spécifiés."
