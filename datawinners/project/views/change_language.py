@@ -36,7 +36,7 @@ class QuestionnaireLanguageView(TemplateView):
         questionnaire = Project.get(dbm, project_id)
         try:
             questionnaire.activeLanguages = [request.POST['selected_language']]
-            questionnaire.enable_sms_replies = request.POST['enable_sms_replies'] == 'true'
+            questionnaire.is_outgoing_sms_replies_enabled = request.POST['enable_sms_replies'] == 'true'
             questionnaire.save()
             is_success = True
         except:

@@ -16,6 +16,7 @@ def get_customized_message_for_questionnaire(dbm, request, message_code, form_co
     else: # For questionnaire submission
         project = Project.from_form_model(form_model)
         message = _get_customized_message_for_language(dbm, project.language, message_code)
+        request['is_outgoing_reply_sms_enabled'] = project.is_outgoing_sms_replies_enabled
     if placeholder_dict:
         message = _replace_placeholders_in_message(message, placeholder_dict)
     return message
@@ -26,7 +27,7 @@ def _get_customized_message_for_language(dbm, language, message_code):
     return [reply_message['message'] for reply_message in reply_message_list if
                    reply_message['code'] == message_code][0]
 
-def get_account_wide_sms_reply(dbm,message_code,placeholder_dict=None):
+def get_account_wide_sms_reply(dbm, message_code, placeholder_dict=None):
     reply_message_list = account_wide_customized_message_details(dbm)
     message = [reply_message['message'] for reply_message in reply_message_list if
                    reply_message['code'] == message_code][0]

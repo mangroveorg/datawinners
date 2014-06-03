@@ -170,7 +170,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
                 "datawinners.messageprovider.handlers.get_customized_message_for_questionnaire") as get_customized_message_for_questionnaire_mock:
             get_submission_error_message_for(response, form_model, dbm, request)
 
-            get_customized_message_for_questionnaire_mock.assert_called_with(dbm, None,
+            get_customized_message_for_questionnaire_mock.assert_called_with(dbm, {},
                                                                              'reply_identification_number_not_registered',
                                                                              'form_code', placeholder_dict={
                     'Submitted Identification Number': 'cli001'})
@@ -196,7 +196,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
             get_submission_error_message_for(response, form_model, dbm, request)
 
 
-            get_customized_message_for_questionnaire_mock.assert_called_with(dbm, None,
+            get_customized_message_for_questionnaire_mock.assert_called_with(dbm, {},
                                                                              'reply_identification_number_not_registered',
                                                                              'form_code', placeholder_dict={
                     'Submitted Identification Number': 'cli001'})

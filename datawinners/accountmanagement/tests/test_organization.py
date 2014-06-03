@@ -23,20 +23,18 @@ class TestOrganization(TestCase):
         self.assertEquals(4, message_tracker.sms_api_usage_count)
 
     def test_should_increment_message_count(self):
-        self.organization.increment_all_message_count()
+        self.organization.increment_incoming_message_count()
         message_tracker = self._get_current_message_tracker_of_organization()
         self.assertEquals(14, message_tracker.incoming_sms_count)
-        self.assertEquals(41, message_tracker.outgoing_sms_count)
 
         message_tracker = self._get_current_message_tracker_of_organization()
         message_tracker.incoming_sms_count = 3
         message_tracker.outgoing_sms_count = 3
         message_tracker.save()
 
-        self.organization.increment_all_message_count()
+        self.organization.increment_incoming_message_count()
         message_tracker = self._get_current_message_tracker_of_organization()
         self.assertEquals(4, message_tracker.incoming_sms_count)
-        self.assertEquals(4, message_tracker.outgoing_sms_count)
 
     def test_should_check_trial_org_message_count(self):
         self.assertFalse(self.organization.has_exceeded_message_limit())

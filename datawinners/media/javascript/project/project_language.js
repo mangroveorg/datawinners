@@ -51,6 +51,7 @@ $(function(){
     viewModel.available_languages = languages_list;
     viewModel.available_languages.push({name: gettext('Add a new language on the Languages page'), code: 'new_lang'});
     viewModel.selected_language(current_project_language);
+    viewModel.enable_sms_replies(is_outgoing_reply_messages_enabled == 'True');
     viewModel.is_modified = false;
 
     var options = {

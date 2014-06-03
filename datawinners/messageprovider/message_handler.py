@@ -59,7 +59,7 @@ def get_submission_error_message_for(response, form_model, dbm, request):
 
         is_unique_id_error_present, unique_id_type, invalid_unique_id_code = _is_unique_id_not_present_error(errors)
         if is_unique_id_error_present:
-            return unique_id_not_registered_handler(dbm, form_model.form_code, invalid_unique_id_code)
+            return unique_id_not_registered_handler(dbm, form_model.form_code, invalid_unique_id_code, request)
             # return get_exception_message_for(
             #     DataObjectNotFound(unique_id_type, invalid_unique_id_code, unique_id_type),
             #     channel='sms', formatter=data_object_not_found_formatter)
@@ -89,12 +89,12 @@ def get_submission_error_message_for(response, form_model, dbm, request):
     return error_message
 
 
-def get_success_msg_for_submission_using(response, form_model, dbm):
+def get_success_msg_for_submission_using(response, form_model, dbm, request):
     from datawinners.messageprovider.handlers import success_questionnaire_submission_handler
     datasender_name = response.reporters[0].get('name').split()[0].capitalize()
     answers_response_text = ResponseBuilder(form_model=form_model,
                                     processed_data=response.processed_data).get_expanded_response()
-    message = success_questionnaire_submission_handler(dbm, form_model.form_code, datasender_name, answers_response_text)
+    message = success_questionnaire_submission_handler(dbm, form_model.form_code, datasender_name, answers_response_text, request)
 
     return message
 
@@ -107,12 +107,6 @@ def get_success_msg_for_ds_registration_using(response, source, form_model=None)
         return message_with_response_text if len(
             message_with_response_text) <= 160 else thanks + " " + get_subject_info(response, form_model)
     return _("Registration successful.") + " %s %s" % (_("ID is:"), response.short_code)
-## =======
-#         message_with_response_text = thanks + " " + ResponseBuilder(form_model=form_model, processed_data=response.processed_data).get_expanded_response()
-#         return message_with_response_text if len(message_with_response_text) <= 160 else thanks + " " + get_subject_info(response, form_model)
-#     return _("Registration successful.") + " %s %s" %  (_("ID is:"), response.short_code)
-#
-# >>>>>>> 11_1_release
 
 def get_success_msg_for_subject_registration_using(dbm,response,form_model=None):
     from datawinners.messageprovider.handlers import success_subject_registration_handler
@@ -127,17 +121,17 @@ def get_success_msg_for_subject_registration_using(dbm,response,form_model=None)
 def get_response_message(response, dbm, request):
     form_model = get_form_model_by_code(dbm, response.form_code) if response.form_code else None
     if response.success:
-        message = _get_success_message(response, form_model, dbm)
+        message = _get_success_message(response, form_model, dbm, request)
     else:
         message = get_submission_error_message_for(response, form_model, dbm, request)
     return message
 
 
-def _get_success_message(response, form_model, dbm):
+def _get_success_message(response, form_model, dbm, request):
     if response.is_registration:
         if response.entity_type == REPORTER_ENTITY_TYPE:
             return get_success_msg_for_ds_registration_using(response,'sms', form_model)
         else:
             return get_success_msg_for_subject_registration_using(dbm,response,form_model)
     else:
-        return get_success_msg_for_submission_using(response, form_model, dbm)
+        return get_success_msg_for_submission_using(response, form_model, dbm, request)

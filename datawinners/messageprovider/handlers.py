@@ -39,8 +39,8 @@ def number_not_registered_exception_handler(exception, request):
     return handler(exception, request)
 
 
-def unique_id_not_registered_handler(dbm, form_code, invalid_unique_id_code):
-    return get_customized_message_for_questionnaire(dbm, None, "reply_identification_number_not_registered",
+def unique_id_not_registered_handler(dbm, form_code, invalid_unique_id_code, request):
+    return get_customized_message_for_questionnaire(dbm, request, "reply_identification_number_not_registered",
                                                             form_code, placeholder_dict=
                                                             {'Submitted Identification Number': invalid_unique_id_code})
 
@@ -98,16 +98,16 @@ def data_sender_not_registered_handler(dbm):
     return message
 
 
-def success_questionnaire_submission_handler(dbm, form_code, datasender_name, list_of_answers):
+def success_questionnaire_submission_handler(dbm, form_code, datasender_name, list_of_answers, request):
 
-    message = get_customized_message_for_questionnaire(dbm, None,
+    message = get_customized_message_for_questionnaire(dbm, request,
                                                              message_code='reply_success_submission',
                                                              form_code=form_code, placeholder_dict= {
                                                             'Name of Data Sender': datasender_name,
                                                             'List of Answers': list_of_answers
                                                             })
     if len(message) > 160:
-        message = get_customized_message_for_questionnaire(dbm, None,
+        message = get_customized_message_for_questionnaire(dbm, request,
                                                             message_code="reply_success_submission",
                                                             form_code=form_code, placeholder_dict= {
                                                             'Name of Data Sender': datasender_name,
@@ -136,10 +136,7 @@ exception_handlers = {
     ex.ExceedSMSLimitException: exceed_limit_handler,
     ex.ExceedSubmissionLimitException: exceed_limit_handler,
     ex.DatasenderIsNotLinkedException: default_exception_handler_with_logger,
-
     }
-
-
 
 
 def data_object_not_found_formatter(data_object_not_found_exception, message):

@@ -24,7 +24,7 @@ class TestSuccessfulSubmissionReplyMessage(TestCase):
                     {'message': "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}",
                      'code': 'reply_success_submission'}]
 
-                actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', "a1; a2")
+                actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', "a1; a2", {})
 
         self.assertEqual(actual_message, "Thank you DS Name. We received your SMS: a1; a2")
 
@@ -48,7 +48,7 @@ class TestSuccessfulSubmissionReplyMessage(TestCase):
                     {'message': "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}",
                      'code': 'reply_success_submission'}]
 
-                actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', answer_list)
+                actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', answer_list, {})
 
         self.assertEqual(actual_message, "Thank you DS Name. We received your SMS.")
 
