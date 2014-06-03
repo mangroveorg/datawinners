@@ -100,4 +100,4 @@ class UserActivityLog(models.Model):
         else:
             name = ugettext("Deleted User")
         return [name, self.translated_action(),
-                self.project.capitalize(), self.translated_detail(), datetime.strftime(self.log_date,  "%d.%m.%Y %R")]
+                self.project, self.translated_detail(), datetime.strftime(self.log_date,  "%d.%m.%Y %R")]
