@@ -1200,56 +1200,56 @@ msgstr "Ajouter une langue"
 msgid "Please enter a name for your language."
 msgstr "Veuillez taper un nom pour votre langue."
 
-msgid "scenario Soumissions réussie"
+msgid "scenario reply_success_submission"
 msgstr "Le message que vos Expéditeurs de Données reçoivent lorsque leurs réponses respecte tous les critères."
 
-msgid "example Soumissions réussie"
+msgid "example reply_success_submission"
 msgstr "Merci David. Nous avons reçu votre SMS : cli1, 75, b, 300, 26.04.2014"
 
-msgid "scenario Soumissions avec erreur"
+msgid "scenario reply_incorrect_answers"
 msgstr "Le message que vos Expéditeurs de Données reçoivent quand leurs réponses ne répondent pas aux critères spécifiés."
 
-msgid "example Soumissions avec erreur"
+msgid "example reply_incorrect_answers"
 msgstr "Erreur. Réponse incorrecte pour les questions 3 et 5. Veuillez revoir le Questionnaire imprimé et renvoyez tout le contenu du SMS"
 
-msgid "scenario Nombre de réponses incorrect"
+msgid "scenario reply_incorrect_number_of_responses"
 msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils soumettent un nombre incorrect de réponses."
 
-msgid "example Nombre de réponses incorrect"
+msgid "example reply_incorrect_number_of_responses"
 msgstr " "
 
-msgid "scenario Numéro d'Identification non enregistré"
+msgid "scenario reply_identification_number_not_registered"
 msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils soumettent un Numéro d'Identification qui a déjà été enregistré dans le compte DataWinners de votre organisation."
 
-msgid "example Numéro d'Identification non enregistré"
+msgid "example reply_identification_number_not_registered"
 msgstr "Erreur. Cli205 n'est pas enregistré. Vérifiez le Numéro d'Identification et renvoyez tout le contenu du SMS"
 
-msgid "scenario Expéditeur de Données non autorisé à soumettre des Données pour ce Questionnaire"
+msgid "scenario reply_ds_not_authorized"
 msgstr "Le message que vos Expéditeurs de Données reçoivent quand l'Expéditeur de Données est enregistré dans le compte DataWinners de votre organisation mais que vous ne l'avez pas autorisé à soumettre des données pour ce Questionnaire."
 
-msgid "example Expéditeur de Données non autorisé à soumettre des Données pour ce Questionnaire"
+msgid "example reply_ds_not_authorized"
 msgstr " "
 
-msgid "scenario Data Sender not registered"
+msgid "scenario reply_ds_not_registered"
 msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils ne sont pas encore enregistrés dans le compte DataWinners de votre organisation."
 
-msgid "example Data Sender not registered"
+msgid "example reply_ds_not_registered"
 msgstr " "
 
-msgid "scenario Questionnaire Code is wrong"
+msgid "scenario reply_incorrect_questionnaire_code"
 msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils soumettent un Code Questionnaire qui n'a pas été enregistré dans le compte DataWinners de votre organisation."
 
-msgid "example Questionnaire Code is wrong"
+msgid "example reply_incorrect_questionnaire_code"
 msgstr "Erreur. Le code Questionnaire stock est incorrect. Trouvez le Code en haut du Questionnaire imprimé et renvoyez le SMS en commençant par ce Code."
 
-msgid "scenario Successful Identification Number Registration"
+msgid "scenario reply_success_identification_number_registration"
 msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils ont enregistré un nouveau Numéro d'Identification avec succès."
 
-msgid "example Successful Identification Number Registration"
+msgid "example reply_success_identification_number_registration"
 msgstr "Merci David. Nous avons enregistré votre clinique Mahajunga Cli206."
 
-msgid "scenario Identification Number ID already exists"
+msgid "scenario reply_identification_number_already_exists"
 msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils tentent d'enregistrer un Numéro d'Identification en utilisant un Numéro d'Identification existant dans le compte de DataWinners de votre organisation."
 
-msgid "example Identification Number ID already exists"
+msgid "example reply_identification_number_already_exists"
 msgstr "Erreur. Cli206 existe déjà. Enregistrez votre clinique sous un autre  Numéro d'Identification."

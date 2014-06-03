@@ -2,11 +2,11 @@
 <div class="tooltip">
     <p>
         <strong>{% trans "Scenario" %}</strong><br/>
-        <span data-bind="text:$root.helptextscenario($data.title)"></span>
+        <span data-bind="text:$root.helptextscenario($data.code)"></span>
         <br/>
-        <span id="example_text" data-bind="visible:$root.displayExample($data.title)">
+        <span id="example_text" data-bind="visible:$root.displayExample($data.code)">
                 <strong>{% trans "Example" %}</strong><br/>
-                <span data-bind="text:$root.helptextexample($data.title)"></span>
+                <span data-bind="text:$root.helptextexample($data.code)"></span>
         </span>
     </p>
 </div>

@@ -59,3 +59,8 @@ select option {
   color: #066B06 !important;
   font-style: italic;
   margin-top: -6px; }
+
+.account_wide_sms_title {
+  color: orange;
+  font-weight: bold;
+  border-bottom: 1px solid #d3d3d3; }

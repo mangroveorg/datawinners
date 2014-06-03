@@ -12,8 +12,7 @@ $(document).ready(function () {
 
             language_change_warning_dialog.show();
             return false;
-        }
-        ;
+        } ;
 
         if ($("#language").val() === "add_new") {
             $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
@@ -53,7 +52,7 @@ function initializeWarningDialogs() {
             languageViewModel.language($("#language option:selected").val());
         }
     });
-    var language_change_warning_dialog = new DW.CancelWarningDialog(language_change_warning_dialog_options);
+    language_change_warning_dialog = new DW.CancelWarningDialog(language_change_warning_dialog_options);
     language_change_warning_dialog.init();
 
     $("#add_new_language_pop").dialog({

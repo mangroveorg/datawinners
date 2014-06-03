@@ -95,7 +95,7 @@ class TestSMSTester(HeadlessRunnerTest):
         test_data.update({SENDER: "2619876"})
         msg = send_sms_with(test_data)
         self.assertEqual(msg,
-                         "Error.Questionnaire Code wrcode is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.")
+                         "Error. Questionnaire Code wrcode is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("wrcode", "cli002")})

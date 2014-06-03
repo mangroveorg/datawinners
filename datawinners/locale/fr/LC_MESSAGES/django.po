@@ -4953,6 +4953,17 @@ msgstr "ID de Numéro d'Identification déjà existant"
 msgid "Data Sender not Registered"
 msgstr "Expéditeur de Données non enregistré"
 
+msgid "Scenario"
+msgstr "Scénario"
+
+msgid "Example"
+msgstr "Exemple"
+
+msgid "account wide sms help text"
+msgstr "Ce sont les réponses SMS automatiques pour le compte DataWinners de votre organisation. Modifiez/traduisez ces messages pour répondre à vos besoins. Veuillez noter que tous les changements que vous effectuez seront applicables pour tous les Expéditeurs de Données."
+
+msgid "Account-Wide SMS"
+msgstr "SMS relatifs au compte en général"
 
 
 

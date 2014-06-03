@@ -14,12 +14,12 @@ QUESTIONNAIRE_CUSTOM_MESSAGE_CODES = ["reply_success_submission", "reply_incorre
                        "reply_identification_number_not_registered", "reply_ds_not_authorized"]
 
 
-TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP = OrderedDict([("reply_ds_not_registered", "Data Sender not registered"),
-                                                          ("reply_incorrect_questionnaire_code", "Questionnaire Code is wrong"),
+TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP = OrderedDict([("reply_ds_not_registered", "Data Sender not Registered"),
+                                                          ("reply_incorrect_questionnaire_code", "Questionnaire Code is Wrong"),
                                                           ("reply_success_identification_number_registration",
                                                            "Successful Identification Number Registration"),
                                                           ("reply_identification_number_already_exists",
-                                                           "Identification Number ID already exists"),
+                                                           "Identification Number ID Already Exists"),
                                                           ])
 ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES = ["reply_ds_not_registered", "reply_incorrect_questionnaire_code",
                                       "reply_success_identification_number_registration", "reply_identification_number_already_exists"]
