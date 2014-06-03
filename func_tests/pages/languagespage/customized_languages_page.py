@@ -1,7 +1,7 @@
 from framework.utils.common_utils import by_id, by_css
 from framework.utils.drop_down_web_element import DropDown
 from framework.utils.text_box_web_element import TextBox
-from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON
+from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
 
@@ -39,11 +39,14 @@ class CustomizedLanguagePage(Page):
     def get_custom_message_for(self,msg_locator):
         return self.driver.find(msg_locator).get_attribute("value")
 
-    def get_all_messages(self):
-        return [r.get_attribute('value') for r in self.driver.find_elements_(by_css("#language_customized_messages textarea"))]
+    def get_all_customized_reply_messages(self):
+        return [r.get_attribute('value') for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]
 
-    def set_message_boxes(self, default_en_messages):
-        for (index, e) in enumerate(self.driver.find_elements_(by_css("#language_customized_messages textarea"))):
+    def get_all_account_wide_messages(self):
+        return [r.get_attribute('value') for r in self.driver.find_elements_(ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR)]
+
+    def set_message_boxes(self, default_en_messages,locator=CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR):
+        for (index, e) in enumerate(self.driver.find_elements_(locator)):
             e.clear()
             e.send_keys(default_en_messages[index])
 

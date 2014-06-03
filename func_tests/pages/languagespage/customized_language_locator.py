@@ -10,3 +10,5 @@ RESPONSE_ERROR_MESSAGE_FROM_UNAUTHORIZED_SOURCE_LOCATOR = by_id("custom_message4
 NEW_LANGUAGE_INPUT_BOX = by_css('#add_new_language_pop input')
 ADD_NEW_LANG_CONFIRM_BUTTON = by_css('#add_new_language_pop .yes_button')
 ADD_NEW_LANG_CANCEL_BUTTON = by_css('#add_new_language_pop .cancel_button')
+CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR = by_css("#language_customized_messages textarea")
+ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR = by_css("#account_wide_sms textarea")
