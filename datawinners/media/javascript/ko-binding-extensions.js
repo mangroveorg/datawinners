@@ -141,3 +141,24 @@ ko.bindingHandlers.watermark = {
             $(element).prev("label").show();
     }
 };
+
+ko.bindingHandlers.onoff = {
+
+    init:function(element, valueAccessor) {
+        ko.bindingHandlers.checked.init(element, valueAccessor);
+        var isOn = ko.unwrap(valueAccessor());
+        if (isOn){
+            $(element).parent().addClass('onoffswitch-checked');
+        }
+    },
+
+    update: function(element, valueAccessor, allBindingsAccessor, context) {
+        var isOn = ko.unwrap(valueAccessor());
+        if(!isOn){
+            $(element).parent().removeClass('onoffswitch-checked');
+        }
+        else{
+            $(element).parent().addClass('onoffswitch-checked');
+        }
+    }
+};

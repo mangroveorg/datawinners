@@ -2103,6 +2103,9 @@ msgstr "Les Expéditeurs de Données reçoivent une réponse SMS automatique de 
  Veuillez contacter votre superviseur»).Sélectionnez la langue de votre choix pour les réponses SMS relatives au Questionnaire ici.\
   Vous pouvez choisir la langue pour les réponses SMS sur la page Langues."
 
+msgid "tooltip_language_checkbox"
+msgstr "Positionnez ce bouton vers \"ARRET\" et cliquez sur le bouton \"Enregistrer\" pour désactiver l'envoi de  messages de retour automatiques pour ce Questionnaire, par DataWinners. Positionnez ce bouton sur \"MARCHE\" et cliquez sur le bouton \"Enregistrer\" pour réactiver."
+
 msgid "Your project"
 msgstr "Vos projet"
 

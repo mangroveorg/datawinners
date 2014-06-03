@@ -2030,6 +2030,9 @@ msgstr ""
 msgid "tooltip_error_language"
 msgstr "Data Senders receive an automatic reply SMS from DataWinners after every Submission.  There are two types of automatic reply SMS: Questionnaire-level (Example: “Thank you David. We received your SMS”) Account-level (Example: “Error. You are not registered as a Data Sender. Please contact your supervisor.”). Select your language preference for the Questionnaire-level reply SMS here. You can set your language preference for the Account-level reply SMS on the Languages page."
 
+msgid "tooltip_language_checkbox"
+msgstr "Drag this switch to “OFF” and click the Save button to stop DataWinners from sending out automatic reply messages for this questionnaire.  Drag this switch to “ON” and click the Save button to reactivate."
+
 msgid "Your project"
 msgstr ""
 

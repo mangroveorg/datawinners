@@ -20,6 +20,7 @@
     <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
     <link href="/media/css/scss/automatic_reply_sms.css" media="screen" rel="stylesheet" />
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/on-off.css" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
@@ -56,16 +57,23 @@
 
     <div id="project_language_section">
          <div>
-            <h6>
+            <h6 class="title_set_SMS">
                 {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
                 <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
                 <div class="tooltip">
-                   <p> {% trans "tooltip_error_language" %} </p>
+                   <p> {% trans "tooltip_language_checkbox" %} </p>
                 </div>
             </h6>
-            <input type="checkbox" data-bind="checked: enable_sms_replies" />
+{#            <input type="checkbox" data-bind="checked: enable_sms_replies" />#}
+            <div class="onoffswitch">
+                <input type="checkbox" data-bind="onoff: enable_sms_replies" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
         </div>
-        <div>
+        <div class="languages_selection">
              <ul>
                 <li>
                     <div>
