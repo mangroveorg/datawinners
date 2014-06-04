@@ -33,8 +33,8 @@ function ProjectLanguageViewModel(){
           data: data,
           success: function(response){
               if(response.success){
-                self.is_modified = false;
-                flash_message("#flash-message-section", "Changes saved successfully", true);
+                  self.is_modified = false;
+                  window.location.reload();
               }
               else{
                 flash_message("#flash-message-section", "Save Failed!", false);

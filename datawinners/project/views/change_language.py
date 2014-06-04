@@ -5,7 +5,9 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext
 from django.views.generic.base import TemplateView
+from django.contrib import messages
 from datawinners.accountmanagement.decorators import session_not_expired, is_datasender, is_not_expired
 from datawinners.common.lang.utils import get_available_project_languages
 from datawinners.main.database import get_database_manager
@@ -39,6 +41,7 @@ class QuestionnaireLanguageView(TemplateView):
             questionnaire.is_outgoing_sms_replies_enabled = request.POST['enable_sms_replies'] == 'true'
             questionnaire.save()
             is_success = True
+            messages.info(request,ugettext('Your changes have been saved.'),extra_tags='success')
         except:
             is_success = False
 

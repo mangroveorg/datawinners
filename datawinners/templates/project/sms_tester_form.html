@@ -69,6 +69,15 @@
                                     - {% trans 'If you are reporting on a specific Subject, you must use the Subject’s Unique ID' %}
                                 </li>
                             </ul>
+                            {% if not project.is_outgoing_sms_replies_enabled %}
+                                <div id="outgoing_sms_disabled_help_text">
+                                    <h5>{% trans 'DataWinners Automatic Reply SMS' %}</h5>
+                                    <div>{% trans 'Automatic reply messages turned off for this questionnaire.' %}</div>
+                                    <div>{% trans 'To reactivate them go to '%}
+                                        <a href="{{ project_links.questionnaire_language_selection_link }}">{% trans 'Automatic Reply SMS.' %}</a>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                         <div id="response_info">
                             <h5>{% trans 'DataWinners Automatic Reply SMS' %}</h5>
