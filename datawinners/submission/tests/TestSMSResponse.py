@@ -53,7 +53,7 @@ class TestSMSResponse(unittest.TestCase):
         with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_mock:
             get_form_model_mock.return_value = form_model_mock
             response_text = SMSResponse(response).text(dbm_mock)
-            self.assertEqual("Thank you Mr., We registered your Clinic Clinic X (cli001)", response_text)
+            self.assertEqual("Thank you Mr.. We registered your Clinic Clinic X (cli001).", response_text)
 
     def test_should_return_expected_error_response(self):
         self.form_submission_mock.saved = False
