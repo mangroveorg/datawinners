@@ -29,6 +29,9 @@
   {{ block.super }}
   {% if GOOGLE_MAPS_ENABLED %}
     <script type="text/javascript" src="/media/javascript/OpenLayers-2.13.1/OpenLayers.js"></script>
+    <script>
+        OpenLayers.ImgPath = '/media/javascript/OpenLayers-2.13.1/img/';
+    </script>
     <script type="text/javascript" src="/media/javascript/mapping.js"></script>
     <script type="text/javascript">
         var entity_types = {{ project.entity_type|safe }};
