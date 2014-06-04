@@ -36,6 +36,7 @@ rednose
 django-debug-toolbar-django13
 requests==1.2.3
 elasticutils
+pyelasticsearch
 uWSGI==1.4.9
 djangorestframework
 django-urlmiddleware
