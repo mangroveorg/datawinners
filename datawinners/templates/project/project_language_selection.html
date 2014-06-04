@@ -64,9 +64,7 @@
                    <p> {% trans "tooltip_language_checkbox" %} </p>
                 </div>
             </h6>
-{#            <input type="checkbox" data-bind="checked: enable_sms_replies" />#}
-            <div class="onoffswitch">
-                <input type="checkbox" data-bind="onoff: enable_sms_replies" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+            <div class="onoffswitch" data-bind="onoff: enable_sms_replies" id="myonoffswitch">
                 <label class="onoffswitch-label" for="myonoffswitch">
                     <span class="onoffswitch-inner"></span>
                     <span class="onoffswitch-switch"></span>
@@ -85,7 +83,6 @@
                     </div>
                 <select id="project_language" name="project_language" class="dropdown_style"
                         data-bind="enable:enable_sms_replies, options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
-{#                    <span id="add_language">{% trans "Add a new language on the " %}<a href={{ languages_link }}>{% trans 'Languages' %}</a>{% trans ' page' %}</span>#}
                 </li>
 
 

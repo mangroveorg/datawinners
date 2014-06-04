@@ -145,20 +145,25 @@ ko.bindingHandlers.watermark = {
 ko.bindingHandlers.onoff = {
 
     init:function(element, valueAccessor) {
-        ko.bindingHandlers.checked.init(element, valueAccessor);
         var isOn = ko.unwrap(valueAccessor());
+        var ele = $(element);
         if (isOn){
-            $(element).parent().addClass('onoffswitch-checked');
+            ele.addClass('onoffswitch-checked');
         }
+        ele.on('click', function(e){
+            var boolVal = ko.unwrap(valueAccessor());
+            valueAccessor()(!boolVal);
+            e.preventDefault();
+        });
     },
 
     update: function(element, valueAccessor, allBindingsAccessor, context) {
         var isOn = ko.unwrap(valueAccessor());
         if(!isOn){
-            $(element).parent().removeClass('onoffswitch-checked');
+            $(element).removeClass('onoffswitch-checked');
         }
         else{
-            $(element).parent().addClass('onoffswitch-checked');
+            $(element).addClass('onoffswitch-checked');
         }
     }
 };
