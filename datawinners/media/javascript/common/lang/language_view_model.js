@@ -87,9 +87,9 @@ function LanguageViewModel() {
                 data = JSON.parse(data);
                 languageViewModel.saveButtonText(gettext("Save"));
                 displaySuccessMessage(data);
+                resetAccountMsgWarningDisplay();
                 self.customizedMessagesInitialState(ko.toJSON(self.customizedMessages()));
                 self.accountMessagesInitialState(ko.toJSON(self.accountMessages()));
-                resetAccountMsgWarningDisplay();
                 if (typeof callback == "function") callback();
             }
         );

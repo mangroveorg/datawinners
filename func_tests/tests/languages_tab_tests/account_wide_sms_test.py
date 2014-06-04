@@ -64,7 +64,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
     def test_warning_and_error_conditions(self):
         self.change_account_messages()
         self.assertEquals(4,self.driver.find_visible_elements_(by_css(".account_message_warning_message")).__len__())
-        self.assertListEqual([u'Any changes you make to this text will apply for all Data Senders']*4, [e.text for e in self.driver.find_visible_elements_(by_css(".account_message_warning_message"))])
+        self.assertListEqual([u'Any changes you make to this text will apply for all Data Senders.']*4, [e.text for e in self.driver.find_visible_elements_(by_css(".account_message_warning_message"))])
         self.clear_all_messages()
         self.assertListEqual([u'Enter reply SMS text.']*4, [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
         [r.send_keys("a" * 170) for r in self.driver.find_elements_(ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR)]

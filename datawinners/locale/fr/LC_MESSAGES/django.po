@@ -4905,10 +4905,10 @@ msgstr "Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) I
 msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
 msgstr "{Name of Data Sender}. Nous avons recu votre SMS: {List of Answers}"
 
-msgid "Error.Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
+msgid "Error. Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
 msgstr "Erreur. Le code Questionnaire {Submitted Questionnaire Code} est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code."
 
-msgid "Error.{Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number."
+msgid "Error. {Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number."
 msgstr "Erreur. {Submitted Identification Number} existe deja. Enregistrez votre {Identification Number Type} sous un autre numero."
 
 msgid "Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}."

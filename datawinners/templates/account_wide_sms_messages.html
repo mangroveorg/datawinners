@@ -20,7 +20,7 @@
             </strong>
         </div>
 
-        <textarea rows="3" cols="80"
+        <textarea rows="3" cols="85"
                   data-bind="value:first160chars($data.message),attr: {id: 'account_message' + $index() },valueUpdate: 'afterkeydown',event:{keyup:$root.checkWarningMsgDisplay($data)}"
                   class="message_box" maxlength="160"></textarea>
         <div class="validationMessage" data-bind="ifnot: $data.message.valid">
@@ -28,8 +28,8 @@
                       data-bind="text: $data.message.error"></span>
 
         </div>
-        <div style="width: 575px">
-        <div class="account_message_warning_message" style="" data-bind="visible:$data.displayWarning()">{% trans "Any changes you make to this text will apply for all Data Senders" %}</div>
+        <div style="width: 616px">
+        <div class="account_message_warning_message" style="" data-bind="visible:$data.displayWarning()">{% trans "Any changes you make to this text will apply for all Data Senders." %}</div>
 
         <div class="account_message_char_count">
             <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
