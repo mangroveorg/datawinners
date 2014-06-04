@@ -370,6 +370,10 @@ def get_option_value_for_field(diff_value, question_field):
 @is_datasender
 @is_not_expired
 def export(request):
+
+    if request.method == 'GET': #To handle django error #3480
+        return
+
     project_name = request.POST.get(u"project_name")
     submission_type = request.GET.get(u'type')
     search_filters = json.loads(request.POST.get('search_filters'))
