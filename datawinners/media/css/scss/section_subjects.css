@@ -1026,7 +1026,7 @@ input.error {
   border: 1px solid #FF0000 !important;
   color: #000000; }
 
-input[disabled='disabled'] {
+input[disabled='disabled'][type=text] {
   background-color: #ebebeb; }
 
 /*Table Styles Temp*/
@@ -1482,7 +1482,8 @@ div.border_top_bottom {
   padding-left: 21px; }
 
 .chosen_entity_type {
-  height: 43px; }
+  height: 43px;
+  padding-left: 40px; }
   .chosen_entity_type li {
     cursor: pointer; }
   .chosen_entity_type li.active {

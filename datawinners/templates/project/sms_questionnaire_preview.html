@@ -17,18 +17,18 @@
                             <span>{{ question.description }}</span>
                             <div class="answer">
                                 {% if question.type == "select1" %}
-                                    <ol class="multiple_select">
+                                    <ul class="multiple_select">
                                         {% for option in question.constraints %}
-                                            <li><span>{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
+                                            <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
                                         {% endfor %}
-                                    </ol>
+                                    </ul>
                                 {% endif %}
                                 {% if question.type == "select" %}
-                                    <ol class="multiple_select">
+                                    <ul class="multiple_select">
                                         {% for option in question.constraints %}
-                                            <li><span>{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
+                                            <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
                                         {% endfor %}
-                                    </ol>
+                                    </ul>
                                 {% endif %}
                             </div>
                             {% if  question.instruction %}

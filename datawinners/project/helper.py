@@ -99,7 +99,7 @@ def remove_reporter(entity_type_list):
 
 
 def get_preview_for_field(field):
-    preview = {"description": field.name, "code": field.code, "type": field.type, "instruction": _get_instruction_text(field)}
+    preview = {"description": field.label, "code": field.code, "type": field.type, "instruction": _get_instruction_text(field)}
     constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else\
     [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
@@ -110,8 +110,8 @@ def _get_instruction_text(field):
 
 def delete_project(manager, questionnaire, void=True):
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=questionnaire.id))]
-    questionnaire.void(void)
     [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
+    questionnaire.void(void)
 
 def get_activity_report_questions(dbm):
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q1',

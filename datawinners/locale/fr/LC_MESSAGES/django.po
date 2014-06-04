@@ -2037,7 +2037,7 @@ msgid "Register each Data Sender (e.g. field staff) to enable them to send data 
 msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre Questionnaire."
 
 msgid "Register each %(entity_type)s you need to collect data about and want to see on a map."
-msgstr "Enregistrer chaque %(entity_type)s sur lequel vous souhaitez collecter des données et souhaitez voir sur une carte."
+msgstr "Enregistrez chaque %(entity_type)s sur lequel vous souhaitez collecter des données et souhaitez voir sur une carte."
 
 msgid "Set up automatic SMS Reminders to be sent to your Data Senders (e.g. field staff) to ensure the timely collection of your data."
 msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Expéditeurs de Données (exemple: vers le personnel de terrain) pour assurer une collecte en temps opportun de vos données."
@@ -4508,9 +4508,6 @@ msgstr "Veuillez SVP introduire la (date de rapportage) suivant le format requis
 msgid "Please enter the (reporting date) in the expected format mm.dd.yyyy"
 msgstr "Veuillez SVP introduire la (date de rapportage) suivant le format requis suivant : mm.dd.yyyy."
 
-msgid "Answer %s for question %s is longer than allowed"
-msgstr "La réponse %s à la question %s est plus longue que la limite autorisée"
-
 msgid "Please enter a valid value for %s"
 msgstr "Veuillez SVP introduire une valeur valide pour %s"
 
@@ -4942,7 +4939,7 @@ msgid "%s with %s = %s not found."
 msgstr "%s avec %s = %s non trouvé"
 
 msgid "Answer %s for question %s is longer than allowed."
-msgstr ""
+msgstr "La réponse %s à la question %s est plus longue que la limite autorisée."
 
 msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
 msgstr ""

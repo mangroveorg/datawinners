@@ -107,9 +107,8 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         self.dbm = dbm
         self.request = request
 
-
-    def _get_response(self, form_code):
-        response = Response(reporters=[], survey_response_id=None)
+    def _get_response(self):
+        response = Response(reporters=[], survey_response_id=None, exception=self._get_exception())
         response.success = True
         response.errors = get_datasender_not_linked_to_project_error_message()
         response.errors = data_sender_not_linked_handler(self.dbm, self.request, form_code=form_code)
@@ -133,7 +132,11 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         if exception and isinstance(exception, SMSParserWrongNumberOfAnswersException):
             if linked_datasender:
                 raise exception
-            raise DatasenderIsNotLinkedException()
+            raise self._get_exception()
+
+    def _get_exception(self):
+        datasender = self.request.get('reporter_entity')
+        return DatasenderIsNotLinkedException(datasender.value('name'), datasender.short_code)
 
 
 

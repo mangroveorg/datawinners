@@ -243,7 +243,7 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
                 'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315'))
 
         elif 'longer' in value:
-            errors.append(_("Answer %s for question %s is longer than allowed") % (answer, question_label))
+            errors.append(_("Answer %s for question %s is longer than allowed.") % (answer, question_label))
 
         elif re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", value):
             re_match = re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", value)

@@ -175,7 +175,7 @@ class TestHelper(unittest.TestCase):
 
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):
-        field = TextField(name="What's in a name?", code="nam", label="naam",
+        field = TextField(name="naam", code="nam", label="What's in a name?",
                           instruction="please write more tests")
         preview = helper.get_preview_for_field(field)
         self.assertEquals("What's in a name?", preview["description"])
