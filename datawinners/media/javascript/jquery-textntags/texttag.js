@@ -1,8 +1,4 @@
-/**
- * Created by ashwin on 16/5/14.
- */
-
-$.widget("dw.myTextNTags", {
+$.widget("dw.TextNTags", {
     options: {
         plainText: '',
         contentChangedHandler: function () {
@@ -10,25 +6,14 @@ $.widget("dw.myTextNTags", {
     },
 
     tags: [],
-    initialStateHtml : '',
+    initialStateHtml: '',
 
     _create: function () {
         var self = this;
         self.setText(self.options.plainText);
         var el = self.element;
         el.attr('contenteditable', 'true');
-        var before;
-
-        el.on('focus',function () {
-            before = el.html();
-        }).on('blur keyup paste', function () {
-                self.handleAdjacentTags();
-                if ($(el).find('span.tags').text() != self.tags.join("").replace(/{/g, '').replace(/}/g, '')) {
-                    el.html(before);
-                }
-
-                else before = el.html();
-            });
+        self.deleteTagHandler();
         $('.tags').attr('contenteditable', 'false');
         self.initialStateHtml = el.html();
     },
@@ -37,7 +22,7 @@ $.widget("dw.myTextNTags", {
         var self = this;
         self.tags = plainText.match(/\{(.*?)\}/gi);
         var el = self.element;
-        var styledText = '<span class="nonTags">' + plainText.replace(/{/g, '</span><span class="tags">').replace(/}/g, '</span><span class="nonTags">');
+        var styledText = '<div class="nonTags">' + plainText.replace(/{/g, '</div><span class="tags">').replace(/}/g, '</span><div class="nonTags">');
         el.html(styledText);
         self.handleAdjacentTags();
         var originalContents = self.getText();
@@ -48,55 +33,73 @@ $.widget("dw.myTextNTags", {
         });
     },
 
+    deleteTagHandler: function () {
+        var self = this;
+        var el = self.element;
+        var before;
+        el.on('focus',function () {
+            before = el.html();
+        }).on('blur keyup keydown paste', function (e) {
+                if(e.keyCode==13) {e.preventDefault(); return false;}
+                if ($(el).find('span.tags').text() != self.tags.join("").replace(/{/g, '').replace(/}/g, '')) {
+                    
+                    var after = $(el).html().replace("<br>","");
+                    for(start=0; start<before.length && start< after.length; start++) if(before[start]!=after[start]) break;
+                    for(end=0; end<before.length && end< after.length; end++) if(before[before.length - 1 - end]!=after[after.length - 1 - end]) break;
+                    var diff = before.substring(start, before.length-end);
+                    console.log( "Diff is "+diff);
+                    diff = diff.replace(/<div[^>]*[>][^<]*[<][\/]div[>]/g, "")
+                        .replace(/[^<]*[<][\/]div[>]/, "</div>")
+                        .replace(/[<]div[^>]*[>].*/, "<div class=\"nonTags\">");
+                    var modified_html = before.substring(0, start) + diff + before.substring(before.length-end);
+                    el.html(modified_html);
+                }
+                before = el.html();
+                self.handleAdjacentTags();
+            });
+    },
+
     handleAdjacentTags: function () {
-        var firstSpan = $(this.element).find('span')[0];
-        var lastSpan = $(this.element).find('span')[$(this.element).find('span').length - 1];
+        var firstSpan = $(this.element).find('span,div')[0];
+        var lastSpan = $(this.element).find('span,div')[$(this.element).find('span,div').length - 1];
 
         //Insert empty span at the beginning
-        if(!$(firstSpan).hasClass('nonTags')){
-            $('<span class="nonTags">&nbsp;</span>').insertBefore(firstSpan)
+        if (!$(firstSpan).hasClass('nonTags')) {
+            $('<div class="nonTags">&nbsp;</div>').insertBefore(firstSpan)
         }
         //Insert empty Span at the end
-        if(!$(lastSpan).hasClass('nonTags')){
-            $('<span class="nonTags">&nbsp;</span>').insertAfter(lastSpan)
+        if (!$(lastSpan).hasClass('nonTags')) {
+            $('<div class="nonTags">&nbsp;</div>').insertAfter(lastSpan)
         }
 
         //Insert Empty span in between tags.
-        $(this.element).find('span').each(function (i, e) {
-            if (e.className == 'nonTags' && $(e).text() == '') {
-               $(e).html('&nbsp;');
+        $(this.element).find('div.nonTags').each(function (i, e) {
+            if ($(e).text() == '') {
+                $(e).html('&nbsp;');
             }
-            if(e.className == 'tags' && $(e).next().hasClass('tags')){
-                $('<span class="nonTags">&nbsp;</span>').insertAfter(e)
+        });
+        $(this.element).find('span.tags').each(function (i, e) {
+            if ($(e).next().hasClass('tags')) {
+                $('<div class="nonTags">&nbsp;</div>').insertAfter(e)
             }
         })
+        $(this.element).remove('br');
     },
 
-    reset: function(){
+    reset: function () {
         $(this.element).html(this.initialStateHtml);
     },
 
     getText: function () {
         var el = this.element;
         var returnText = '';
-        $(el).find('span').each(function(i, eachSpan){
-            if(eachSpan.className == 'nonTags')
-                returnText+= ' '+$(eachSpan).text().replace( /^\s+|\s+$/g, "" );
-            else if(eachSpan.className == 'tags'){
+        $(el).find('span').each(function (i, eachSpan) {
+            if (eachSpan.className == 'nonTags')
+                returnText += ' ' + $(eachSpan).text().replace(/^\s+|\s+$/g, "");
+            else if (eachSpan.className == 'tags') {
                 returnText += ' {' + $(eachSpan).text() + '}';
             }
         });
         return returnText
     },
-
-    _isTagTextPresentIn: function (selectedText, tags) {
-        var arr = selectedText.split(' ');
-        for (var i = 0; i < arr.length; i++) {
-            if (tags.indexOf(arr[i]) != -1) return true;
-        }
-        return false;
-    }
-
-})
-;
-
+});

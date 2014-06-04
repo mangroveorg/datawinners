@@ -9,7 +9,7 @@
     <link href="/media/javascript/jquery-textntags/texttag.css" rel="stylesheet"/>
         <script type="text/javascript">
             $(document).ready(function () {
-                $('#myTextTags').myTextNTags({
+                $('#myTextTags').TextNTags({
                     plainText: 'Error. The {Identification Number Type} {Identification Number Code} is not registered in our system. Please register this {Identification Number Type} or contact your supervisor.'
 //                    contentChangedHandler: function () {
 //                        alert('content has been changed')
@@ -17,7 +17,7 @@
 }
             );
                 $('.myButton').click(function(){
-                    $('#myTextTags').myTextNTags('reset');
+                    $('#myTextTags').TextNTags('reset');
                 })
             });
         </script>
