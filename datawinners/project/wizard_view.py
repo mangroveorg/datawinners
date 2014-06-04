@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from celery.task import current
+from datawinners.accountmanagement.helper import get_all_user_repids_for_org
 
 from mangrove.datastore.entity_type import get_unique_id_types
 from datawinners import settings
@@ -26,7 +27,7 @@ from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.utils import get_changed_questions
+from datawinners.utils import get_changed_questions, get_organization_from_manager
 from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
     SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
@@ -95,6 +96,12 @@ def get_template_details(request, template_id):
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 
 
+def _associate_account_users_to_project(manager,questionnaire):
+    user_ids = get_all_user_repids_for_org(get_organization_from_manager(manager).org_id)
+    for id in user_ids:
+        questionnaire.associate_data_sender_to_project(manager, id)
+
+
 @login_required
 @session_not_expired
 @csrf_exempt
@@ -136,6 +143,7 @@ def create_project(request):
             name_has_errors = True
             error_message["name"] = _("Questionnaire with same name already exists.")
         if not code_has_errors and not name_has_errors:
+            _associate_account_users_to_project(manager, questionnaire)
             questionnaire.update_doc_and_save()
             UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
                                   detail=questionnaire.name)

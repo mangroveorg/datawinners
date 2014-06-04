@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.http import Http404
 from django.contrib.auth import login as sign_in, logout
 from django.utils.http import base36_to_int
+from datawinners.accountmanagement.helper import get_all_users_for_organization
 from mangrove.transport import TransportInfo
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
@@ -166,9 +167,7 @@ def new_user(request):
 def users(request):
     if request.method == 'GET':
         org_id = request.user.get_profile().org_id
-        viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users']).values_list('id',
-                                                                                                              flat=True)
-        users = NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
+        users = get_all_users_for_organization(org_id)
         return render_to_response("accountmanagement/account/users_list.html", {'users': users},
                                   context_instance=RequestContext(request))
 

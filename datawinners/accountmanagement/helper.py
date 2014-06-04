@@ -5,6 +5,7 @@ from mangrove.transport.repository.reporters import find_reporters_by_from_numbe
 from datawinners.accountmanagement.models import Organization, NGOUserProfile,\
     get_data_senders_on_trial_account_with_mobile_number, DataSenderOnTrialAccount
 from datawinners.utils import get_database_manager_for_org
+from django.contrib.auth.models import User
 
 def get_trial_account_user_phone_numbers():
     trial_orgs = Organization.objects.filter(account_type='Basic')
@@ -37,3 +38,12 @@ def get_all_registered_phone_numbers_on_trial_account():
 
 def is_org_user(user):
     return user.groups.filter(name__in=["NGO Admins", "Project Managers"]).count() > 0
+
+def get_all_users_for_organization(org_id):
+    viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users']).values_list('id',
+                                                                                                          flat=True)
+    return NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
+
+def get_all_user_repids_for_org(org_id):
+    users = get_all_users_for_organization(org_id)
+    return [user.reporter_id for user in users]

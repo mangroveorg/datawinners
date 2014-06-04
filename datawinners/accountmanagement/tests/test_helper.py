@@ -1,12 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.test import TestCase
+from django.test import TestCase, Client
 from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.datastore.database import DatabaseManager
-from mock import Mock, patch
+from mock import Mock, patch, PropertyMock
 
-from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers, is_mobile_number_unique_for_paid_account, get_unique_mobile_number_validator, is_mobile_number_unique_for_trial_account
+from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers, is_mobile_number_unique_for_paid_account, get_unique_mobile_number_validator, is_mobile_number_unique_for_trial_account, get_all_users_for_organization
 from datawinners.accountmanagement.models import Organization
-from datawinners.tests.data import TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS, TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, DEFAULT_TEST_ORG_TEL_NO
+from datawinners.tests.data import TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS, TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, DEFAULT_TEST_ORG_TEL_NO, DEFAULT_TEST_USER, DEFAULT_TEST_PASSWORD
 
 
 class TestHelper(TestCase):
@@ -60,3 +60,11 @@ class TestHelper(TestCase):
         self.find_reporters_by_from_number_mock.side_effect = NumberNotRegisteredException('1234')
         validator = get_unique_mobile_number_validator(org)
         self.assertTrue(validator(org,'1234'))
+
+    def test_SMS_API_Users_not_shown_on_user_list_page(self):
+        with patch('datawinners.accountmanagement.helper.User') as user_class:
+            objects = Mock()
+            type(user_class).objects = PropertyMock(return_value=objects)
+            get_all_users_for_organization("SLX364903")
+            objects.exclude.assert_called_once_with(groups__name__in=['Data Senders', 'SMS API Users'])
+
