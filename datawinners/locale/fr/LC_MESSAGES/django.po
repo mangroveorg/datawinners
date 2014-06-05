@@ -3778,7 +3778,7 @@ msgid "If you are reporting on a specific Subject, you must use the Subject’s 
 msgstr "Si vous faites un rapport sur un Sujet spécifique, vous devez utiliser l’Identification Unique du Sujet"
 
 msgid "DataWinners Automatic Reply SMS"
-msgstr "Réponse SMS Automatique de DataWinners"
+msgstr "Retour SMS Automatique de DataWinners"
 
 msgid "Refer to the Example SMS Answer and re-type your SMS"
 msgstr "Référez-vous à l’Exemple de Réponse SMS et retapez votre SMS"
@@ -4840,10 +4840,10 @@ msgid "Language"
 msgstr "Langue"
 
 msgid "Languages for Automatic Reply SMS"
-msgstr "Langues pour les Réponses SMS automatiques"
+msgstr "Langues pour les Retour SMS Automatique"
 
 msgid "language help text"
-msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une réponse SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces réponses SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les réponses SMS automatiques. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
+msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une retour SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces retour SMS automatique. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les retour SMS automatique. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
 
 msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr "Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
@@ -4867,7 +4867,7 @@ msgid "Messages & Reminders"
 msgstr "Messages & Rappels"
 
 msgid "Automatic Reply SMS"
-msgstr "Réponse SMS automatique"
+msgstr "Retour SMS Automatique"
 
 msgid "You are not authorized to submit to this Questionnaire. Add yourself as a Data Sender to the Questionnaire."
 msgstr "Vous n'êtes pas autorisé à soumettre des données pour ce Questionnaire. Enregistrez-vous comme Expéditeurs de Données pour ce Questionnaire."
@@ -4876,7 +4876,7 @@ msgid "The Data Sender you are submitting on behalf of cannot submit to this Que
 msgstr "L'Expéditeur de Données pour le compte duquel vous soumettez des Données n'est pas autorisé à soumettre des Données pour ce Questionnaire. Ajoutez l'Expéditeur de Données à ce Questionnaire."
 
 msgid "DataWinners analyzes"
-msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une réponse SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces réponses SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les réponses SMS automatiques. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
+msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une retour SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces retour SMS automatique. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les réponses SMS automatiques. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
 
 msgid "Send Automatic SMS Replies for My Questionnaire"
 msgstr "Envoyer des retours SMS automatiques pour mon Questionnaire"
@@ -4963,7 +4963,7 @@ msgid "Example"
 msgstr "Exemple"
 
 msgid "account wide sms help text"
-msgstr "Ce sont les réponses SMS automatiques pour le compte DataWinners de votre organisation. Modifiez/traduisez ces messages pour répondre à vos besoins. Veuillez noter que tous les changements que vous effectuez seront applicables pour tous les Expéditeurs de Données."
+msgstr "Ce sont les retour SMS automatique pour le compte DataWinners de votre organisation. Modifiez/traduisez ces messages pour répondre à vos besoins. Veuillez noter que tous les changements que vous effectuez seront applicables pour tous les Expéditeurs de Données."
 
 msgid "Account-Wide SMS"
 msgstr "SMS relatifs au compte en général"
