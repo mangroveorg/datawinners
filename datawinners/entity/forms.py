@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
-from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE
+from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE, GEO_CODE, GEO_CODE_FIELD_NAME
 from mangrove.utils.types import is_empty
 from datawinners.entity.fields import PhoneNumberField
 
@@ -174,9 +174,10 @@ class ReporterRegistrationForm(Form):
         return devices.__contains__('web')
 
     def update_errors(self, validation_errors):
-        mapper = {MOBILE_NUMBER_FIELD_CODE: 'telephone_number'}
-        error = _(u'Sorry, the telephone number %s has already been registered.') % self.cleaned_data.get('telephone_number')
-        self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]]= self.error_class([error])
+        mapper = {MOBILE_NUMBER_FIELD_CODE:'telephone_number',
+                  GEO_CODE:GEO_CODE_FIELD_NAME}
+        for field_code, error in validation_errors.iteritems():
+            self._errors[mapper.get(field_code)] = self.error_class([error])
 
 
 
