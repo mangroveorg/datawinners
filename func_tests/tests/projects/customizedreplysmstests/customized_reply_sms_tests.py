@@ -40,7 +40,7 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         automatic_reply_sms_page = broadcast_message_page.navigate_to_automatic_reply_sms_page()
         automatic_reply_sms_page.choose_automatic_reply_language(new_language)
         automatic_reply_sms_page.save_changes()
-        self.assertEqual(automatic_reply_sms_page.get_success_message(), 'Changes saved successfully.')
+        self.assertEqual(automatic_reply_sms_page.get_success_message(), 'Your changes have been saved.')
 
     @attr('functional_test')
     def test_project_reply_sms_language(self):
