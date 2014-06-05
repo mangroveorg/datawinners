@@ -107,7 +107,7 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         self.dbm = dbm
         self.request = request
 
-    def _get_response(self):
+    def _get_response(self, form_code):
         response = Response(reporters=[], survey_response_id=None, exception=self._get_exception())
         response.success = True
         response.errors = get_datasender_not_linked_to_project_error_message()
