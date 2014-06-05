@@ -35,11 +35,7 @@ def number_not_registered_exception_handler(exception, request):
     return handler(exception, request)
 
 def sms_parser_invalid_format_handler(exception, request):
-    if len(request.get('incoming_message').strip().split()) != 1:
-        return default_exception_handler_with_logger(exception, request)
-    
-    _activate_language(exception, request)
-    new_exception = ex.SMSParserWrongNumberOfAnswersException(exception.data[0][0])
+    new_exception = _activate_language_and_update_exception(exception, request)
     return default_exception_handler_with_logger(new_exception, request)
 
 exception_handlers = {
@@ -70,7 +66,14 @@ def create_failure_log(error_message, request):
     log.organization = request.get('organization')
     log.save()
 
-def _activate_language(exception, request):
-    form_model = get_form_model_by_code(request['dbm'], exception.data[0][0])
-    language = request.get('organization').language if isinstance(form_model, EntityFormModel) else form_model.activeLanguages[0]
+def _activate_language_and_update_exception(exception, request):
+    try:
+        form_model = get_form_model_by_code(request['dbm'], exception.data[0][0])
+        language = request.get('organization').language if isinstance(form_model, EntityFormModel) else form_model.activeLanguages[0]
+        new_exception = ex.SMSParserWrongNumberOfAnswersException(exception.data[0][0])
+    except ex.FormModelDoesNotExistsException as exception:
+        language = request.get('organization').language
+        new_exception = exception
+
     translation.activate(language)
+    return new_exception
