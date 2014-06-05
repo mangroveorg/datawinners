@@ -33,6 +33,7 @@ function ProjectLanguageViewModel(){
         'selected_language': self.selected_language(),
         'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
       };
+      DW.loading();
       $.ajax({
           type: "POST",
           url: post_url + params,
