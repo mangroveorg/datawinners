@@ -4225,7 +4225,7 @@ msgid "Thank you %(datasender)s, We registered your %(subject_type)s"
 msgstr ""
 
 msgid "Thank you %(datasender)s. We received your SMS"
-msgstr "Mesmo como hoje: Obrigado %(datasender)s. Recebemos a sua SMS"
+msgstr "Obrigado %(datasender)s. Recebemos a sua SMS"
 
 msgid "You have successfully activated your account. Happy data submission!"
 msgstr ""
