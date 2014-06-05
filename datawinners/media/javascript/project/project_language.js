@@ -27,18 +27,15 @@ function ProjectLanguageViewModel(){
   };
 
   self.save = function(callback){
-      var has_callback = false;
-      if(callback)
-        has_callback = true;
+      var params = _.isUndefined(callback) ? "?resp_message=1" : "";
       var data = {
         'enable_sms_replies': self.enable_sms_replies(),
         'selected_language': self.selected_language(),
-        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
-        'has_callback':has_callback
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
       };
       $.ajax({
           type: "POST",
-          url: post_url,
+          url: post_url + params,
           data: data,
           success: function(response){
               if(response.success){
