@@ -21,11 +21,20 @@ function ProjectLanguageViewModel(){
       self.is_modified = true;
   });
 
-  self.save = function(){
+//  introducing to prevent default event handler coming in place of callback
+  self.save_and_reload = function(){
+      self.save();
+  };
+
+  self.save = function(callback){
+      var has_callback = false;
+      if(callback)
+        has_callback = true;
       var data = {
         'enable_sms_replies': self.enable_sms_replies(),
         'selected_language': self.selected_language(),
-        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+        'has_callback':has_callback
       };
       $.ajax({
           type: "POST",
@@ -34,7 +43,10 @@ function ProjectLanguageViewModel(){
           success: function(response){
               if(response.success){
                   self.is_modified = false;
-                  window.location.reload();
+                  if(callback)
+                    callback();
+                  else
+                    window.location.reload();
               }
               else{
                 flash_message("#flash-message-section", "Save Failed!", false);
@@ -56,8 +68,7 @@ $(function(){
 
     var options = {
         successCallBack:function(callback){
-            viewModel.save();
-            callback();
+            viewModel.save(callback);
         },
         isQuestionnaireModified : function(){return viewModel.is_modified;},
         cancelDialogDiv : "#cancel_language_changes_warning",

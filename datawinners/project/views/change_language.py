@@ -41,7 +41,8 @@ class QuestionnaireLanguageView(TemplateView):
             questionnaire.is_outgoing_sms_replies_enabled = request.POST['enable_sms_replies'] == 'true'
             questionnaire.save()
             is_success = True
-            messages.info(request,ugettext('Your changes have been saved.'),extra_tags='success')
+            if request.POST['has_callback'] == 'false':
+                messages.info(request,ugettext('Your changes have been saved.'),extra_tags='success')
         except:
             is_success = False
 
