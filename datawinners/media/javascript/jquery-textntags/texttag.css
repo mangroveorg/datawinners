@@ -10,11 +10,12 @@
 }
 
 .tags {
+    display: inline-block;
     background-color: #d6d6d6;
     /*border: 1px solid #d6d6d6;*/
     border-radius: 2px;
-    /*margin: 3px;*/
-    padding: 2px;
+    margin: 3px;
+    padding: 0px;
     ui-selectable: none;
 }
 .nonTags{
