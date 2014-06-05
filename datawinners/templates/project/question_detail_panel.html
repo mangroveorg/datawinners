@@ -126,7 +126,7 @@
                 <div>{% trans "Yes, maximum number of characters should be" %}</div>
                 <div>
                     <input name="max_length" type="text" id="max_length"
-                           data-bind="value:max_length, visible: showLengthLimiter()"/>
+                           data-bind="value:max_length, visible: showLengthLimiter(), valueUpdate: 'keyup'"/>
                     <div class="validationMessage" data-bind="ifnot: max_length.valid">
                         <span id="max_length_validation_message" class="validationText" data-bind="text: max_length.error"></span>
                     </div>
