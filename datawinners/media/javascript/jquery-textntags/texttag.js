@@ -15,6 +15,7 @@ $.widget("dw.TextNTags", {
         el.attr('contenteditable', 'true');
         self.deleteTagHandler();
         $('.tags').attr('contenteditable', 'false');
+        $('.tags').attr('unselectable',"on");
         self.initialStateHtml = el.html();
     },
 
@@ -131,5 +132,5 @@ $.widget("dw.TextNTags", {
             }
         });
         return returnText
-    },
+    }
 });
