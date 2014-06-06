@@ -22,6 +22,7 @@ class AllSubjectsListPage(Page):
         self.wait_for_processing()
 
     def search(self, search_text):
+        self.driver.create_screenshot(filename="subject_filter.png")
         search_box = self.driver.find_text_box(by_css("#subjects_table_filter>span>input"))
         search_box.enter_text(search_text)
         self.wait_for_processing()
