@@ -4850,3 +4850,5 @@ msgstr "La réponse %s à la question %s est plus longue que la limite autorisé
 msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
 msgstr ""
 
+msgid "Answer %s for question %s in not present in the allowed options."
+msgstr "La réponse %s à la question %s ne figure pas dans les options permises."

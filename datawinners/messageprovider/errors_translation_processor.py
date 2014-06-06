@@ -32,7 +32,8 @@ messages_and_formatters = {
   ex.LongitudeNotFloat: (u'Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547', default_formatter),
   ex.LatitudeNotInRange: (u'Invalid GPS value.', default_formatter),
   ex.AnswerHasTooManyValuesException: (u"Answer %s for question %s contains more than one value.", invalid_answer_formatter),
-  ex.DatasenderIsNotLinkedException: (u"The Data Sender %s (%s) is not linked to your Questionnaire.", datasender_not_linked_formatter)
+  ex.DatasenderIsNotLinkedException: (u"The Data Sender %s (%s) is not linked to your Questionnaire.", datasender_not_linked_formatter),
+  ex.AnswerNotInListException: (u"Answer %s for question %s in not present in the allowed options.", invalid_answer_formatter)
 }
 
 class TranslationProcessor(object):
@@ -52,7 +53,9 @@ class TranslationProcessor(object):
             activate(language)
             for index, e in enumerate(self.validation_exception):
                 message, formatter = messages_and_formatters.get(type(e), (None, None))
-                if message is None: continue
+                if message is None:
+                    error_msg_dict.update({'%s%s' % (language, index +1): e.message})
+                    continue
                 translated_message = _(message)
                 formatted_message = formatter(e, translated_message)
                 if index == len(self.validation_exception) -1 and \
