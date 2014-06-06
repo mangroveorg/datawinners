@@ -42,6 +42,7 @@ class AllSubjectsListPage(Page):
         return AddSubjectPage(self.driver)
 
     def select_subject_by_id(self, subject_id):
+        self.wait_for_processing()
         self.search(subject_id)
         selector = by_css("input[value=%s]" % subject_id)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, selector, True)
