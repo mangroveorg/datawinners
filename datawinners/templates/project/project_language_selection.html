@@ -75,13 +75,13 @@
         <div class="languages_selection">
              <ul>
                 <li>
-                    <div>
-                        <strong>{% trans "Languages" %}</strong>
+                    <h6>
+                        {% trans "Languages" %}
                         <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
                         <div class="tooltip">
                            <p> {% trans "tooltip_error_language" %} </p>
                         </div>
-                    </div>
+                    </h6>
                 <select id="project_language" name="project_language" class="dropdown_style"
                         data-bind="enable:enable_sms_replies, options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
                 </li>
