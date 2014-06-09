@@ -14,6 +14,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
+from django.views.decorators.http import require_http_methods
 from elasticutils import F
 import jsonpickle
 from mangrove.datastore.entity import Entity
@@ -414,6 +415,7 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 
 @csrf_view_exempt
 @valid_web_user
+@require_http_methods(['POST'])
 def get_submissions(request, form_code):
     dbm = get_database_manager(request.user)
     form_model = get_form_model_by_code(dbm, form_code)
