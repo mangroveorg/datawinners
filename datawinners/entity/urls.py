@@ -14,7 +14,7 @@ from datawinners.entity.views import export_subject
 from datawinners.entity.views import delete_subject_types
 
 urlpatterns = patterns('',
-                       url(r'datasender/register',RegisterDatasenderView.as_view(),name="register_data_sender"),
+                       url(r'datasender/register', RegisterDatasenderView.as_view(), name="register_data_sender"),
                        (r'datasender/edit/(?P<reporter_id>.+?)/$', EditDataSenderView.as_view()),
                        (r'webuser/create', create_multiple_web_users),
                        url(r'subject/create/(?P<entity_type>.+?)/$', create_subject, name='create_subject'),
