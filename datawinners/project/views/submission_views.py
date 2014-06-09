@@ -39,7 +39,7 @@ from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project import helper
 from datawinners.project.data_sender_helper import get_data_sender
-from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
+from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
 from datawinners.project.models import Project
 
 from datawinners.project.utils import project_info, is_quota_reached
@@ -113,6 +113,7 @@ def _get_filterable_fields(questionnaire):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@is_project_exist
 def index(request, project_id=None, questionnaire_code=None, tab=0):
     manager = get_database_manager(request.user)
     org_id = helper.get_org_id_by_user(request.user)
@@ -142,6 +143,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@is_project_exist
 def analysis_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
 
@@ -180,6 +182,7 @@ def get_survey_response_ids_from_request(dbm, request, form_model):
     return json.loads(request.POST.get('id_list'))
 
 
+@is_project_exist
 def delete(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
@@ -247,6 +250,7 @@ def construct_request_dict(survey_response, questionnaire_form_model, short_code
 
 
 @valid_web_user
+@is_project_exist
 def edit(request, project_id, survey_response_id, tab=0):
     manager = get_database_manager(request.user)
     questionnaire_form_model = Project.get(manager, project_id)

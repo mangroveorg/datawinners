@@ -217,6 +217,7 @@ def edit_project(request, project_id):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@is_project_exist
 def reminder_settings(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
