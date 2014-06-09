@@ -2,7 +2,7 @@ SITE_ID = 6
 DEBUG=False
 
 
-ADMINS = (('QA1', 'sairama@thoughtworks.com'), ('BA', 'harikat@thoughtworks.com'), ('QA2', 'wamikas@thoughtworks.com'))
+ADMINS = (('DWBLR', 'datawinnersblr@thoughtworks.com'),)
 
 DATABASES = {
     'default': {
