@@ -75,6 +75,7 @@ class AllSubjectsListPage(Page):
         return self.driver.find(by_css(message_element_selector)).text
 
     def is_subject_present(self, subject_id):
+        self.wait_for_processing()
         return self.driver.is_element_present(by_css("input[value=%s]" % subject_id))
 
     def empty_table_text_visible(self):

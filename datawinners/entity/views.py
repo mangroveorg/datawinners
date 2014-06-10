@@ -111,6 +111,7 @@ def all_subject_types(request):
                               },
                               context_instance=RequestContext(request))
 
+
 def delete_subject_types(request):
     manager = get_database_manager(request.user)
     subject_types = request.POST.get("all_ids")
@@ -124,6 +125,7 @@ def delete_subject_types(request):
             entities.delete()
     messages.success(request, _("Identification Number Type(s) successfully deleted."))
     return HttpResponse(json.dumps({'success': True}))
+
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -226,8 +228,8 @@ def delete_subjects(request):
     transport_info = TransportInfo("web", request.user.username, "")
     delete_entity_instance(manager, all_ids, entity_type, transport_info)
     log_activity(request, DELETED_SUBJECTS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
-    messages.success(request, get_success_message(entity_type))
-    return HttpResponse(json.dumps({'success': True}))
+    message = get_success_message(entity_type)
+    return HttpResponse(json.dumps({'success': True, 'message': message}))
 
 
 def subject_short_codes_to_delete(request, manager, entity_type):
@@ -338,13 +340,15 @@ def import_subjects_from_project_wizard(request, form_code):
          'successful_imports': subject_details,
         }))
 
+
 def _format_imported_subjects_datetime_field_to_str(form_model, short_code_subject_details_dict):
     datetime_fields = [index for index, field in enumerate(form_model.fields) if type(field) == DateField]
     subject_details = []
     for subject_detail_dict in short_code_subject_details_dict.values():
         value = subject_detail_dict.values()
         for index in datetime_fields:
-            value[index] = "%s-%s-%s" %(value[index].day,value[index].month,value[index].year) #strftime doesn't work for year<1900
+            value[index] = "%s-%s-%s" % (
+            value[index].day, value[index].month, value[index].year) #strftime doesn't work for year<1900
         subject_details.append(value)
     return subject_details
 
@@ -496,7 +500,8 @@ def create_subject(request, entity_type=None):
                 create_request(questionnaire_form, request.user.username), logger=websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
-                success_message = _("%s with Identification Number %s successfully registered.") % (entity_type.capitalize(),response.short_code)
+                success_message = _("%s with Identification Number %s successfully registered.") % (
+                entity_type.capitalize(), response.short_code)
 
                 detail_dict = dict({"Subject Type": entity_type.capitalize(), "Unique ID": response.short_code})
                 UserActivityLog().log(request, action=REGISTERED_SUBJECT, detail=json.dumps(detail_dict))
@@ -545,6 +550,7 @@ def get_questionnaire_details_ajax(request, entity_type):
          'questionnaire_code': form_model.form_code},
         unpicklable=False), content_type='application/json')
 
+
 @valid_web_user
 @login_required
 @session_not_expired
@@ -588,8 +594,9 @@ def save_questionnaire(request):
                 detail_dict.update({"form_code": new_short_code})
             except DataObjectAlreadyExists as e:
                 if e.message.find("Form") >= 0:
-                    return HttpResponse(json.dumps({'success': False,"code_has_error":True,
-                                                    'error_message': ugettext("Questionnaire with same code already exists.")}))
+                    return HttpResponse(json.dumps({'success': False, "code_has_error": True,
+                                                    'error_message': ugettext(
+                                                        "Questionnaire with same code already exists.")}))
                 return HttpResponseServerError(e.message)
 
         json_string = request.POST['question-set']

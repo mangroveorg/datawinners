@@ -1,5 +1,12 @@
 DW = DW || {};
 
+function flash_message(msg, status) {
+    $('.flash-message').remove();
+
+    $(".dataTables_wrapper").prepend('<div class="clear-left flash-message">' + gettext(msg) + (msg.match("[.]$") ? '' : '.') + '</div>');
+    $('.flash-message').addClass((status === false) ? "message-box" : "success-message-box");
+}
+
 DW.DeleteAction = function (delete_block_selector, delete_end_point) {
     var delete_entity_block = $(delete_block_selector);
 
@@ -32,8 +39,11 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
             function (json_response) {
                 var response = $.parseJSON(json_response);
                 $.unblockUI();
+                flash_message(response.message, response.success);
                 if (response.success) {
-                    window.location.reload();
+                    var table = $("#subjects_table").dataTable();
+                    table.fnSettings()._iDisplayStart = delete_entity_block.data("pageToGo");
+                    table.fnReloadAjax();
                 }
             }
         );
@@ -45,6 +55,7 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
         delete_entity_block.data("allIds", selected_ids);
         delete_entity_block.data("all_selected", all_selected);
         delete_entity_block.data("entity_type", entity_type);
+        delete_entity_block.data("pageToGo", get_updated_table_page_index($("#subjects_table").dataTable(), selected_ids, all_selected));
         delete_entity_block.dialog("open");
     }
 };

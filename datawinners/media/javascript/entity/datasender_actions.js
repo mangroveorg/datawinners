@@ -99,13 +99,8 @@ DW.DataSenderActionHandler = function () {
 function flash_message(msg, status) {
     $('.flash-message').remove();
 
-    $(".dataTables_wrapper").prepend('<div class="clear-left flash-message">' + gettext(msg) + (msg.match("[.]$") ? '' : '.') + '</div>')
+    $(".dataTables_wrapper").prepend('<div class="clear-left flash-message">' + gettext(msg) + (msg.match("[.]$") ? '' : '.') + '</div>');
     $('.flash-message').addClass((status === false) ? "message-box" : "success-message-box");
-
-    $('#success_message').delay(4000).fadeOut(1000, function () {
-        alert('timeout');
-        $('.flash-message').remove();
-    });
 }
 
 function init_add_remove_from_project() {
