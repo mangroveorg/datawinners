@@ -25,7 +25,7 @@ class LogFilterForm(forms.Form):
 
         all_users = [("",_("All Users"))]
 
-        all_users.extend([(user.user.id, "%s %s" % (user.user.first_name.capitalize(),user.user.last_name.capitalize()))
+        all_users.extend([(user.user.id, "%s" % (user.user.first_name))
             for user in users_rs])
 
         self.fields["user"].choices = all_users

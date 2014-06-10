@@ -28,6 +28,6 @@ class TestActivateAccount(HeadlessRunnerTest):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
         dashboard_page = login_page.do_successful_login_with({USERNAME: self.email.upper(), PASSWORD: u"ngo001"})
-        self.assertEqual(dashboard_page.welcome_message(), u"Welcome Mickey!")
+        self.assertEqual(dashboard_page.welcome_message(), u"Welcome Mickey Gö!")
 
 

@@ -132,8 +132,7 @@ def new_user(request):
             username = form.cleaned_data.get('username')
             if not form.errors:
                 user = User.objects.create_user(username, username, 'test123')
-                user.first_name = form.cleaned_data['first_name']
-                user.last_name = form.cleaned_data['last_name']
+                user.first_name = form.cleaned_data['full_name']
                 group = Group.objects.filter(name="Project Managers")
                 user.groups.add(group[0])
                 user.save()
@@ -150,11 +149,10 @@ def new_user(request):
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user",organization=org)
-                    first_name = form.cleaned_data.get("first_name")
-                    last_name = form.cleaned_data.get("last_name")
+                    name = form.cleaned_data.get("full_name")
                     form = UserProfileForm()
                     add_user_success = True
-                    detail_dict = dict({"First name": first_name, "Last name": last_name})
+                    detail_dict = dict({"Name": name})
                     UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
 
         return render_to_response("accountmanagement/account/add_user.html",
@@ -178,8 +176,7 @@ def edit_user(request):
         profile = request.user.get_profile()
         if profile.mobile_phone == 'Not Assigned':
             profile.mobile_phone = ''
-        form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
-                                             last_name=profile.user.last_name,
+        form = EditUserProfileForm(data=dict(title=profile.title, full_name=profile.user.first_name,
                                              username=profile.user.username,
                                              mobile_phone=profile.mobile_phone))
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form},
@@ -207,8 +204,7 @@ def upgrade(request, token=None):
     if request.method == 'GET':
         form = UpgradeForm()
         organization_form = OrganizationForm(instance=organization)
-        profile_form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
-                                             last_name=profile.user.last_name,
+        profile_form = EditUserProfileForm(data=dict(title=profile.title, full_name=profile.user.first_name,
                                              username=profile.user.username,
                                              mobile_phone=profile.mobile_phone))
         return render_to_response("registration/upgrade.html", {'organization': organization_form, 'profile': profile_form,
@@ -312,8 +308,7 @@ def custom_password_reset_confirm(request, uidb36=None, token=None, set_password
 
 def _update_user_and_profile(request, form):
     user = User.objects.get(username=request.user.username)
-    user.first_name = form.cleaned_data['first_name']
-    user.last_name = form.cleaned_data['last_name']
+    user.first_name = form.cleaned_data['full_name']
     user.save()
     ngo_user_profile = NGOUserProfile.objects.get(user=user)
     ngo_user_profile.title = form.cleaned_data['title']

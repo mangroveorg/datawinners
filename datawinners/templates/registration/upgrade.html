@@ -40,8 +40,7 @@
                             <h3 class="highlighted_title">{% trans "Point of Contact / Account Administrator" %}<br/></h3>
                         </li>
                         <li>{{ profile.title|field_label }}{{ profile.title }}</li>
-                        <li><label>{% trans "First Name" %}</label>{{ profile.first_name }}{{ profile.first_name.errors }}</li>
-                        <li><label>{% trans "Last Name" %}</label>{{ profile.last_name }}{{ profile.last_name.errors }}</li>
+                        <li><label>{% trans "Name" %}</label>{{ profile.full_name }}{{ profile.full_name.errors }}</li>
                         <li><label>{% trans "Email address" %}</label>{{ user.username }}{{ profile.username.as_hidden }}</li>
                         <li><label>{% trans "Mobile Phone" %}</label>{{ profile.mobile_phone }}{{ profile.mobile_phone.errors }}</li>
                     </ul>

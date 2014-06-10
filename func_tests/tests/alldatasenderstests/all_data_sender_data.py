@@ -88,15 +88,13 @@ NOTIFICATION_WHILE_DELETING_USER = "Note, the following Data Senders will not be
 
 ALL_USERS_URL = url("/account/users/")
 TITLE = "title"
-FIRST_NAME = "first_name"
-LAST_NAME = "last_name"
+FIRST_NAME = "full_name"
 USERNAME = "username"
 MOBILE_PHONE = "mobile_phone"
 
 NEW_USER_DATA = {
     TITLE: "Developer",
-    FIRST_NAME: "AllDSDelete",
-    LAST_NAME: "user",
+    FIRST_NAME: "AllDSDelete user",
     USERNAME: random_string(4) + "@mailinator.com",
     MOBILE_PHONE: random_number(9)
 }

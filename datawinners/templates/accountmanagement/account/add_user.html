@@ -37,17 +37,11 @@
             {{ profile_form.title.errors }}
             <p class="black_italic optional">{% trans "Example: Program Director" %}</p>
           </li>
-          <li class="{{ form.first_name.css_classes  }} form-row-10px">
-            {{ profile_form.first_name|field_label }}
-            {{ profile_form.first_name }}
+          <li class="{{ form.full_name.css_classes  }} form-row-10px">
+            {{ profile_form.full_name|field_label }}
+            {{ profile_form.full_name }}
             
-            {{ profile_form.first_name.errors }}
-          </li>
-          <li class="{{ form.last_name.css_classes  }} form-row-10px">
-            {{ profile_form.last_name|field_label }}
-            {{ profile_form.last_name }}
-            
-            {{ profile_form.last_name.errors }}
+            {{ profile_form.full_name.errors }}
           </li>
           <li class="{{ form.email.css_classes  }} form-row-10px">
             {{ profile_form.username|field_label }}

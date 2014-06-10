@@ -1,12 +1,9 @@
-import unittest
-
 from nose.plugins.attrib import attr
 
 from framework.utils.data_fetcher import fetch_
-from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
+from framework.base_test import HeadlessRunnerTest
 from pages.loginpage.login_page import login
 from tests.logintests.login_data import VALID_CREDENTIALS, PASSWORD
-from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.addusertests.add_user_data import *
 from tests.alluserstests.all_users_data import ALL_USERS_URL

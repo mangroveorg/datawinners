@@ -48,10 +48,7 @@
             <thead>
             <th><input type="checkbox" id="check_all_users"/></th>
             <th>
-                {% trans "First Name" %}
-            </th>
-            <th>
-                {% trans "Last Name" %}
+                {% trans "Name" %}
             </th>
             <th>
                 {% trans "Email" %}
@@ -66,9 +63,6 @@
                     <td><input type="checkbox" value="{{ user.user.id }}" name="user_ids" class="user_entry"/></td>
                     <td>
                         {{ user.user.first_name }}
-                    </td>
-                    <td>
-                        {{ user.user.last_name }}
                     </td>
                     <td class="email">
                         {{ user.user.email }}

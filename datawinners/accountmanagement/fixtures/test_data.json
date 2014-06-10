@@ -2,9 +2,8 @@
         "pk": 1,
         "model": "auth.user",
         "fields": {
-                "username": "tester150411@gmail.com",
-            "first_name": "Tester",
-            "last_name": "Pune",
+            "username": "tester150411@gmail.com",
+            "first_name": "Tester Pune",
             "is_active": true,
             "is_superuser": true,
             "is_staff": false,
@@ -490,8 +489,7 @@
         "model": "auth.user",
         "fields": {
             "username": "tester@gmail.com",
-            "first_name": "Tester",
-            "last_name": "14-APR-11",
+            "first_name": "Tester 14-APR-11",
             "is_active": false,
             "is_superuser": false,
             "is_staff": false,
@@ -512,8 +510,7 @@
         "model": "auth.user",
         "fields": {
             "username": "datawinner",
-            "first_name": "datawinner",
-            "last_name": "HNI",
+            "first_name": "datawinner HNI",
             "is_active": true,
             "is_superuser": true,
             "is_staff": true,
@@ -534,8 +531,7 @@
         "model": "auth.user",
         "fields": {
             "username": "rasitefa@mailinator.com",
-            "first_name": "stefan",
-            "last_name": "rasamoel",
+            "first_name": "stefan rasamoel",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -554,8 +550,7 @@
         "model": "auth.user",
         "fields": {
             "username": "mamytest@mailinator.com",
-            "first_name": "mamy",
-            "last_name": "rasamoel",
+            "first_name": "mamy rasamoel",
             "is_active": true,
             "is_superuser": true,
             "is_staff": true,
@@ -575,7 +570,6 @@
         "fields": {
             "username": "dstest@mailinator.com",
             "first_name": "datasender test",
-            "last_name": "",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -594,8 +588,7 @@
         "model": "auth.user",
         "fields": {
             "username": "samuel@mailinator.com",
-            "first_name": "Rasefo",
-            "last_name": "dragnaly",
+            "first_name": "Rasefo dragnaly",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -614,8 +607,7 @@
         "model": "auth.user",
         "fields": {
             "username": "deactivated@mailinator.com",
-            "first_name": "deactivated",
-            "last_name": "ra",
+            "first_name": "deactivated ra",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -634,8 +626,7 @@
         "model": "auth.user",
         "fields": {
             "username": "gerard@mailinator.com",
-            "first_name": "Richard",
-            "last_name": "Gerard",
+            "first_name": "Richard Gerard",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -655,7 +646,6 @@
         "fields": {
             "username": "datasender@hni.com",
             "first_name": "DataSender",
-            "last_name": "",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -674,8 +664,7 @@
         "model": "auth.user",
         "fields": {
             "username": "chinatwu@gmail.com",
-            "first_name": "Trial",
-            "last_name": "User",
+            "first_name": "Trial User",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -695,8 +684,7 @@
         "model": "auth.user",
         "fields": {
             "username": "chinatwu2@gmail.com",
-            "first_name": "Trial",
-            "last_name": "User",
+            "first_name": "Trial User",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -716,8 +704,7 @@
         "model": "auth.user",
         "fields": {
             "username": "chinatwu3@gmail.com",
-            "first_name": "Trial",
-            "last_name": "User",
+            "first_name": "Trial User",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -738,8 +725,7 @@
         "model": "auth.user",
         "fields": {
             "username": "chinatwu4@gmail.com",
-            "first_name": "Trial",
-            "last_name": "User",
+            "first_name": "Trial User",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -761,7 +747,6 @@
         "fields": {
             "username": "datasender@test.com",
             "first_name": "DataSender",
-            "last_name": "",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -780,8 +765,7 @@
         "model": "auth.user",
         "fields": {
             "username": "quotareached@mailinator.com",
-            "first_name": "Quota",
-            "last_name": "Reached",
+            "first_name": "Quota Reached",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -800,8 +784,7 @@
         "model": "auth.user",
         "fields": {
             "username": "dsquotareached@mailinator.com",
-            "first_name": "Datasender Quota",
-            "last_name": "Reached",
+            "first_name": "Datasender Quota Reached",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,

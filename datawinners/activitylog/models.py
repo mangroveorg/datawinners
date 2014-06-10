@@ -96,7 +96,7 @@ class UserActivityLog(models.Model):
 
     def to_render(self):
         if self.user:
-            name = "%s %s" % (self.user.first_name.capitalize() , self.user.last_name.capitalize())
+            name = "%s" % (self.user.first_name)
         else:
             name = ugettext("Deleted User")
         return [name, self.translated_action(),

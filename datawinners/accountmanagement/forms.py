@@ -69,8 +69,7 @@ class UserProfileForm(forms.Form):
     required_css_class = 'required'
 
     title = forms.CharField(max_length=30, required=False, label=_("Job title"))
-    first_name = forms.CharField(max_length=40, required=True, label=_('First name'))
-    last_name = forms.CharField(max_length=40, required=True, label=_('Last name'))
+    full_name = forms.CharField(max_length=40, required=True, label=_('Name'))
     username = forms.EmailField(max_length=75, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
     mobile_phone = PhoneNumberField(required=True, label=_("Phone Number"))
@@ -118,8 +117,7 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     password2 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
         label=_("Password (again)"))
 
-    first_name = forms.CharField(max_length=30, required=True, label=_('First name'))
-    last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
+    full_name = forms.CharField(max_length=30, required=True, label=_('Name'))
     mobile_phone = PhoneNumberField(required=True, label=_("Mobile Phone Number"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
     organization_sector = forms.CharField(required=False, widget=(
@@ -150,7 +148,7 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
                 self._errors[field_name] = self.error_class([self.fields[field_name].error_messages['required']])
 
     def clean(self):
-        for field_name in ['first_name', 'last_name', 'organization_name', 'organization_city']:
+        for field_name in ['full_name', 'organization_name', 'organization_city']:
             self.strip_and_validate(field_name)
             
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
