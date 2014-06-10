@@ -7,7 +7,7 @@ function installPhantomjs(){
     cd ~/phantom
     wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
     tar xjf phantomjs-1.9.7-linux-x86_64.tar.bz2
-    ln -s ~/phantom/bin/phantomjs ~/bin/phantomjs
+    ln -s ~/phantom/phantomjs-1.9.7-linux-x86_64/bin/phantomjs ~/bin/phantomjs
 
     echo "Done installing phantom"
 }
