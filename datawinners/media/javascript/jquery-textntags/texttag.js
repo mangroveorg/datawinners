@@ -1,6 +1,8 @@
 $.widget("dw.TextNTags", {
     options: {
         plainText: '',
+        openingTag: ' @{<@',
+        closingTag: '@>}@',
         contentChangedHandler: function () {
         }
     },
@@ -21,9 +23,10 @@ $.widget("dw.TextNTags", {
 
     setText: function (plainText) {
         var self = this;
-        self.tags = plainText.match(/\{(.*?)\}/gi);
+        var regexPattern = new RegExp("\\"+ self.options.openingTag +"(.*?)\\" + self.options.closingTag, 'gi');
+        self.tags = plainText.match(regexPattern);
         var el = self.element;
-        var styledText = '' + plainText.replace(/{/g, '<span class="tags">').replace(/}/g, '</span>');
+        var styledText = '' + plainText.replace(new RegExp(self.options.openingTag, 'g'), '<span class="tags">').replace(new RegExp(self.options.closingTag, 'g'), '</span>');
         el.html(styledText);
         self.handleAdjacentTags();
         var originalContents = self.getText();
@@ -46,7 +49,7 @@ $.widget("dw.TextNTags", {
             before = el.html();
         }).on('blur keyup paste', function (e) {
                 if (e.keyCode == 0) return;
-                if ($(el).find('span.tags').text() != self.tags.join("").replace(/{/g, '').replace(/}/g, '')) {
+                if ($(el).find('span.tags').text() != self.tags.join("").replace(new RegExp(self.options.openingTag, 'g'), '').replace(new RegExp(self.options.closingTag, 'g'), '')) {
                     
                     var after = $(el).html();
                     for(start=0; start<before.length && start< after.length; start++) if(before[start]!=after[start]) break;
@@ -79,15 +82,10 @@ $.widget("dw.TextNTags", {
     },
 
     getText: function () {
-        var el = this.element;
+        var self = this;
+        var el = self.element;
         var returnText = '';
-        $(el).find('span').each(function (i, eachSpan) {
-            if (eachSpan.className == 'nonTags')
-                returnText += ' ' + $(eachSpan).text().replace(/^\s+|\s+$/g, "");
-            else if (eachSpan.className == 'tags') {
-                returnText += ' {' + $(eachSpan).text() + '}';
-            }
-        });
-        return returnText
+        return el.html().replace(new RegExp('<span class="tags" contenteditable="false" unselectable="on">', 'g'), self.options.openingTag).
+              replace(new RegExp('</span>', 'g'), self.options.closingTag).replace(/\s+/g, ' ');
     }
 });
