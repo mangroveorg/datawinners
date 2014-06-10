@@ -28,9 +28,10 @@ messages_and_formatters = {
   ex.AnswerTooSmallException: (u"Answer %s for question %s is smaller than allowed.", invalid_answer_formatter),
   ex.AnswerTooBigException: (u"Answer %s for question %s is greater than allowed.", invalid_answer_formatter),
   ex.AnswerTooShortException: (u"Answer %s for question %s is shorter than allowed.", invalid_answer_formatter),
-  ex.LatitudeNotFloat: (u'Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547', default_formatter),
-  ex.LongitudeNotFloat: (u'Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547', default_formatter),
+  ex.LatitudeNotFloat: (u"Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315", default_formatter),
+  ex.LongitudeNotFloat: (u"Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315", default_formatter),
   ex.LatitudeNotInRange: (u'Invalid GPS value.', default_formatter),
+  ex.LongitudeNotInRange: (u'Invalid GPS value.', default_formatter),
   ex.AnswerHasTooManyValuesException: (u"Answer %s for question %s contains more than one value.", invalid_answer_formatter),
   ex.DatasenderIsNotLinkedException: (u"The Data Sender %s (%s) is not linked to your Questionnaire.", datasender_not_linked_formatter),
   ex.AnswerNotInListException: (u"Answer %s for question %s in not present in the allowed options.", invalid_answer_formatter)
