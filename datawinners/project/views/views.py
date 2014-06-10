@@ -592,6 +592,7 @@ class SurveyWebQuestionnaireRequest():
         form_context.update({
             'is_quota_reached': is_quota_reached(self.request),
             'questionnaire_code': self.questionnaire.form_code,
+            'is_datasender': self.is_data_sender,
         })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 

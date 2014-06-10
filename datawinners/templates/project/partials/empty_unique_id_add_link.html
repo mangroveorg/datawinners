@@ -5,7 +5,11 @@
             {% blocktrans %}You have not registered a {{ entity_type }} yet.{% endblocktrans %}
         </p>
         {% if project.id %}
-            <a href={% url subject_questionnaire project.id,entity_type %}?web_view=True>{% blocktrans %}Register a {{ entity_type }}{% endblocktrans %}</a>
+            {% if is_datasender %}
+                <a href={% url create_subject entity_type %}?web_view=True>{% blocktrans %}Register a {{ entity_type }}{% endblocktrans %}</a>
+            {% else %}
+                <a href={% url subject_questionnaire project.id,entity_type %}?web_view=True>{% blocktrans %}Register a {{ entity_type }}{% endblocktrans %}</a>
+            {% endif %}
         {% else %}
             <a class = "inactive_link ui-state-disabled">{% blocktrans %}Register a {{ entity_type }}{% endblocktrans %}</a>
         {% endif %}
