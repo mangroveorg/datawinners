@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _, get_language, activate
 from django.views.generic.base import TemplateView
 from datawinners.accountmanagement.decorators import valid_web_user
+from datawinners.accountmanagement.helper import update_user_name_if_exists
 from datawinners.accountmanagement.models import Organization
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SENDER, REGISTERED_DATA_SENDER
@@ -70,6 +71,7 @@ class EditDataSenderView(TemplateView):
             try:
                 org_id = request.user.get_profile().org_id
                 current_telephone_number = reporter_entity.mobile_number
+                current_name = reporter_entity.name
                 organization = Organization.objects.get(org_id=org_id)
                 web_player = WebPlayer(manager,
                                        LocationBridge(location_tree=get_location_tree(),
@@ -82,7 +84,8 @@ class EditDataSenderView(TemplateView):
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
                                                                    form.cleaned_data["telephone_number"], org_id)
-
+                    if current_name != form.cleaned_data["name"]:
+                        update_user_name_if_exists(current_name,form.cleaned_data["name"])
                     message = _("Your changes have been saved.")
 
                     detail_dict = {"Unique ID": reporter_id}

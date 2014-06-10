@@ -413,6 +413,12 @@ class DWUserChangeForm(UserChangeForm):
             raise ValidationError('Organization with id : %s does not exist.Please enter a valid id' % org_id)
 
 
+def _remove_default_name_fields():
+    user_display_fields =  list(UserAdmin.list_display)
+    user_display_fields.remove('first_name')
+    user_display_fields.remove('last_name')
+    return tuple(user_display_fields)
+
 class DWUserAdmin(UserAdmin):
     list_filter = ('groups__name',)
     UserAdmin.fieldsets = (
@@ -423,8 +429,11 @@ class DWUserAdmin(UserAdmin):
         (_('Membership'), {'fields': ('groups', 'organization_id')}),
     )
     readonly_fields = ('last_login', 'date_joined')
-    list_display = UserAdmin.list_display + ('organization_name', 'organization_id')
+    list_display = _remove_default_name_fields() + ('name','organization_name', 'organization_id')
     form = DWUserChangeForm
+
+    def name(self,obj):
+        return obj.first_name
 
     def organization_name(self, obj):
         org_id = NGOUserProfile.objects.get(user=obj).org_id

@@ -47,3 +47,11 @@ def get_all_users_for_organization(org_id):
 def get_all_user_repids_for_org(org_id):
     users = get_all_users_for_organization(org_id)
     return [user.reporter_id for user in users]
+
+def update_user_name_if_exists(current_name,new_name):
+    try:
+        user = User.objects.get(first_name=current_name)
+        user.first_name = new_name
+        user.save()
+    except User.DoesNotExist as e:
+        pass
