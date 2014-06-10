@@ -83,17 +83,17 @@ def dashboard(request):
     language = request.session.get("django_language", "en")
     has_reached_sms_limit = organization.has_exceeded_message_limit()
     has_reached_submission_limit = organization.has_exceeded_submission_limit()
+    questionnaire_does_not_exist = "NoExist" in request.GET.keys()
 
     if "deleted" in request.GET.keys():
         messages.info(request, ugettext('The questionnaire you are requesting for has been deleted from the system.'), extra_tags='error')
-    if "NoExist" in request.GET.keys():
-        messages.info(request, ugettext('questionnaire id does not exist.'), extra_tags='error')
 
     return render_to_response('dashboard/home.html',
                               {"projects": questionnaire_list, 'trial_account': organization.in_trial_mode,
-                               'has_reached_sms_limit':has_reached_sms_limit,
-                               'has_reached_submission_limit':has_reached_submission_limit,
-                               'language':language, 'counters':organization.get_counters()}, context_instance=RequestContext(request))
+                               'has_reached_sms_limit': has_reached_sms_limit,
+                               'questionnaireDoesNotExist': questionnaire_does_not_exist,
+                               'has_reached_submission_limit': has_reached_submission_limit,
+                               'language':language, 'counters': organization.get_counters()}, context_instance=RequestContext(request))
 
 
 @valid_web_user

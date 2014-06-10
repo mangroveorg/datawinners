@@ -4852,3 +4852,12 @@ msgstr ""
 
 msgid "Answer %s for question %s in not present in the allowed options."
 msgstr "La réponse %s à la question %s ne figure pas dans les options permises."
+
+msgid "We made our Questionnaire Building process simpler and easier for you. "
+msgstr "Nous avons rendu notre processus de création de Questionnaire plus facile et plus simple pour vous. "
+
+msgid "Read more »"
+msgstr "En savoir plus »"
+
+msgid "With this update we changed the webpage address you are trying to access. Sorry for the inconvenience."
+msgstr "Avec cette mise à jour, nous avons changé l'adresse de la page Web à laquelle vous tentez d'accéder. Nous nous excusons pour tout inconvénient."

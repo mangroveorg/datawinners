@@ -33,6 +33,16 @@
     {% for message in messages %}
             <div class="{{ message.tags }}-message-box message-box clear-left">{{ message }}</div>
     {% endfor %}
+    {% if questionnaireDoesNotExist %}
+        <div class="warning-message-box clear-left">
+            <p>
+                {% trans 'We made our Questionnaire Building process simpler and easier for you. '%} <a target="_blank" href="http://datawinners.wordpress.com/2014/05/15/data-collection-just-got-easier/">{% trans 'Read more »'%}</a>
+                <br/>
+                {%trans 'With this update we changed the webpage address you are trying to access. Sorry for the inconvenience.' %}
+            </p>
+        </div>
+    {% endif %}
+
     <div id="how_to" class="none">
         <h3><span class="title">{% trans "How to use Datawinners" %}</span><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
             <div class="tooltip"><p>{% trans "Click on the triangle to the left of 'How to use DataWinners' to expand or collapse the box." %}</p></div>
