@@ -63,6 +63,7 @@ function QuestionnaireViewModel(){
 
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
+        DW.show_completly_selected_question();
     };
 
     self.set_all_questions_as_old_questions= function () {

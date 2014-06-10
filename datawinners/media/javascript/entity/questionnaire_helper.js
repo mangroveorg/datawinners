@@ -531,6 +531,22 @@ DW.close_the_tip_on_period_question = function () {
     }
 }
 
+DW.show_completly_selected_question = function () {
+    var div_top = $('div.questions').position().top;
+    var height = parseInt($('div.questions ol li.question_selected').css("height"), 10);
+    var question_top = $('div.questions ol li.question_selected').position().top;
+
+    if (div_top + 399 < question_top + height) {
+        var scrolltop = question_top + height - div_top - 392 + $("div.questions").scrollTop();
+        $("div.questions").scrollTop(scrolltop);
+    }
+
+    if (question_top < div_top + 15) {
+        var scrolltop = $("div.questions").scrollTop() - (div_top + 15 - question_top);
+        $("div.questions").scrollTop(scrolltop);
+    }
+}
+
 DW.questionnaire_has_submission = function () {
     var subject_questionnaire = (typeof(is_edit) == "undefined");
     if (subject_questionnaire) {
