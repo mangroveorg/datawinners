@@ -13,8 +13,8 @@ function installPhantomjs(){
 }
 
 # sanity check to make sure phantomjs exists in the PATH
-hash /usr/bin/env phantomjs &> /dev/null
-if [ $? -eq 1 ]; then
+which phantomjs &> /dev/null
+if [ $? -ne 0 ]; then
     (installPhantomjs)
 fi
 
