@@ -18,11 +18,11 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.http import Http404
 from django.contrib.auth import login as sign_in, logout
 from django.utils.http import base36_to_int
-from datawinners.accountmanagement.helper import get_all_users_for_organization
-from mangrove.transport import TransportInfo
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
 
+from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
+from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_trial, valid_web_user, is_sms_api_user
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
@@ -40,7 +40,6 @@ from datawinners.entity.helper import delete_datasender_for_trial_mode, \
     delete_datasender_users_if_any, delete_entity_instance
 from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
-
 
 def registration_complete(request):
     return render_to_response('registration/registration_complete.html')
@@ -305,12 +304,15 @@ def custom_password_reset_confirm(request, uidb36=None, token=None, set_password
         return HttpResponseRedirect(redirect_url)
     return response
 
+
 def _update_user_and_profile(request, form):
     user = User.objects.get(username=request.user.username)
     user.first_name = form.cleaned_data['full_name']
     user.save()
     ngo_user_profile = NGOUserProfile.objects.get(user=user)
     ngo_user_profile.title = form.cleaned_data['title']
+    old_phone_number = ngo_user_profile.mobile_phone
     ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
 
     ngo_user_profile.save()
+    update_corresponding_datasender_details(user,ngo_user_profile,old_phone_number)

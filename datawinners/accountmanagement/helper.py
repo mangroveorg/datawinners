@@ -1,4 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datawinners.entity.helper import update_data_sender_from_trial_organization
+from datawinners.main.database import get_database_manager
+from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.utils.types import is_empty
 from mangrove.transport.repository.reporters import find_reporters_by_from_number
@@ -6,6 +9,7 @@ from datawinners.accountmanagement.models import Organization, NGOUserProfile,\
     get_data_senders_on_trial_account_with_mobile_number, DataSenderOnTrialAccount
 from datawinners.utils import get_database_manager_for_org
 from django.contrib.auth.models import User
+from mangrove.form_model.form_model import REPORTER
 
 def get_trial_account_user_phone_numbers():
     trial_orgs = Organization.objects.filter(account_type='Basic')
@@ -55,3 +59,14 @@ def update_user_name_if_exists(current_name,new_name):
         user.save()
     except User.DoesNotExist as e:
         pass
+
+def update_corresponding_datasender_details(user,ngo_user_profile,old_phone_number):
+    manager = get_database_manager(user)
+    reporter_entity = get_by_short_code(manager, ngo_user_profile.reporter_id, [REPORTER])
+    current_phone_number = ngo_user_profile.mobile_phone
+    reporter_entity.update_latest_data([('name',user.first_name),("mobile_number", current_phone_number)])
+
+    organization = Organization.objects.get(org_id=ngo_user_profile.org_id)
+    if organization.in_trial_mode:
+        update_data_sender_from_trial_organization(old_phone_number,
+                                                   current_phone_number, organization.org_id)
