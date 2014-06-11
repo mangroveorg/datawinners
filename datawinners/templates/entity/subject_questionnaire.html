@@ -93,8 +93,14 @@
     </ol>
     <div class="action-section">
         {% block cancel_block %}
-        {% if is_update %}
-            <a id="cancel" href="{{ back_link }}">{% trans "Cancel Editing" %}</a>
+        {% if is_update or cancel_text%}
+            <a id="cancel" href="{{ back_link }}">
+            {% if cancel_text %}
+                {% trans cancel_text %}
+            {% else %}
+                {% trans "Cancel Editing" %}
+            {% endif %}
+            </a>
             {% include "warning_section.html" %}
 
         {% endif %}

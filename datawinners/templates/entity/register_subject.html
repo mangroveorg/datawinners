@@ -23,11 +23,6 @@
         <p class="instructions italic">{% trans "Fill out the following Registration Form and click on Register." %} </p>
     </div>
 
-    {% include 'entity/subject_questionnaire.html' %}
-
-    {% block cancel_block %}
-        <a id="cancel" href="{{ back_to_project_link }}">{% trans "Cancel" %}</a>
-        {% include "warning_section.html" %}
-    {% endblock %}
+    {% include 'entity/subject_questionnaire.html' with back_link=back_to_project_link cancel_text="Cancel"%}
 
 {% endblock %}
