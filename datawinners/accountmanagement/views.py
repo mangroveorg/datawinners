@@ -272,9 +272,8 @@ def delete_users(request):
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
 
     if ngo_admin_user_profile.reporter_id in all_ids:
-        admin_full_name = ngo_admin_user_profile.user.first_name + ' ' + ngo_admin_user_profile.user.last_name
         messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
-                                (admin_full_name), "error_message")
+                                (ngo_admin_user_profile.user.first_name), "error_message")
     else:
         detail = user_activity_log_details(User.objects.filter(id__in=django_ids))
         delete_entity_instance(manager, all_ids, REPORTER, transport_info)

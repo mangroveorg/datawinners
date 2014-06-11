@@ -56,8 +56,8 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
             Organization.objects.get(name='test_org_for_expired_organization_of_one_year').delete()
         except :
             pass
-        self.user1 = User(username='expired1@mail.com', email= 'expired1@mail.com', password='expired',first_name='first_name1',last_name='last_name1')
-        self.user2 = User(username='expired2@mail.com', email= 'expired2@mail.com', password='expired',first_name='first_name2',last_name='last_name2')
+        self.user1 = User(username='expired1@mail.com', email= 'expired1@mail.com', password='expired',first_name='first_name1 last_name1')
+        self.user2 = User(username='expired2@mail.com', email= 'expired2@mail.com', password='expired',first_name='first_name2 last_name2')
         self.user1.set_password('expired')
         self.user2.set_password('expired')
         self.user1.save()
@@ -111,8 +111,8 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
     def test_create_email_should_get_email_contain_right_user_name(self):
         msg1 = create_email(self.user1)
         msg2 = create_email(self.user2)
-        self.assertIn(self.user1.first_name+' '+self.user1.last_name ,msg1.body)
-        self.assertIn(self.user2.first_name+' '+self.user2.last_name ,msg2.body)
+        self.assertIn(self.user1.first_name ,msg1.body)
+        self.assertIn(self.user2.first_name,msg2.body)
 
     def test_create_email_should_get_right_recipient(self):
         msg1 = create_email(self.user1)

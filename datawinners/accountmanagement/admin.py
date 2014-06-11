@@ -290,14 +290,11 @@ class OrganizationAdmin(DatawinnerAdmin):
 
     def admin_name(self, obj):
         admin_user = self._get_ngo_admin(obj)
-        return self._get_full_name(admin_user)
+        return admin_user.first_name
 
     def complete_address(self, obj):
         complete_address = [obj.address, obj.addressline2, obj.city, obj.zipcode, obj.state, obj.country_name()]
         return ", ".join([element for element in complete_address if is_not_empty(element)])
-
-    def _get_full_name(self, user):
-        return user.first_name + ' ' + user.last_name
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -311,7 +308,6 @@ class NullAdmin:
         self.mobile_phone = ''
         self.office_phone = ''
         self.first_name = ''
-        self.last_name = ''
 
     def get_profile(self):
         return self
@@ -365,7 +361,7 @@ class NgoUserAdmin(DatawinnerAdmin):
         return obj.get_profile().org_id
 
     def admin_name(self, obj):
-        return obj.first_name + ' ' + obj.last_name
+        return obj.first_name
 
     def admin_email(self, obj):
         return obj.email
@@ -390,6 +386,7 @@ class DWUserChangeForm(UserChangeForm):
         if self.instance:
             self.organization_id_field()
             self.fields['password'].widget.attrs['readonly'] = 'readonly'
+            self.fields['first_name'].label = "Name"
 
     class Meta:
         model = User
@@ -423,7 +420,7 @@ class DWUserAdmin(UserAdmin):
     list_filter = ('groups__name',)
     UserAdmin.fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Personal info'), {'fields': ('first_name', 'email')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
         (_('Membership'), {'fields': ('groups', 'organization_id')}),

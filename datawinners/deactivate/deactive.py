@@ -39,7 +39,7 @@ def get_expired_trial_organizations_without_deactivate_email_sent():
 def create_email(user):
     msg = ''
     if user:
-        c=Context({ 'username': user.first_name +' '+ user.last_name})
+        c=Context({ 'username': user.first_name})
         email_content = loader.get_template('deactivate/deactivate_email.html')
         email_subject = 'Account Expired'
 

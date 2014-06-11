@@ -212,10 +212,6 @@ def get_success_message(entity_type):
     return _("Subject(s) successfully deleted.")
 
 
-def _get_full_name(user):
-    return user.first_name + ' ' + user.last_name
-
-
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')

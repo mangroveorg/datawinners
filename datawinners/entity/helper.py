@@ -309,7 +309,7 @@ def rep_id_name_dict_of_users(manager):
     users = User.objects.filter(groups__name__in=['Project Managers', 'NGO Admins'], id__in=rep_id_map.keys()).values()
 
     for user in users:
-        user_id_name_map[rep_id_map[user["id"]]] = user["first_name"] + " " + user["last_name"]
+        user_id_name_map[rep_id_map[user["id"]]] = user["first_name"]
 
     return user_id_name_map
 
