@@ -29,12 +29,6 @@ $.widget("dw.TextNTags", {
         var styledText = '' + plainText.replace(new RegExp(self.options.openingTag, 'g'), '<span class="tags">').replace(new RegExp(self.options.closingTag, 'g'), '</span>');
         el.html(styledText);
         self.handleAdjacentTags();
-        var originalContents = self.getText();
-        el.on('blur keyup', function() {
-            if (originalContents != self.getText()) {
-                self._trigger('contentChangedHandler')
-            }
-        });
     },
 
     deleteTagHandler: function () {
@@ -47,8 +41,15 @@ $.widget("dw.TextNTags", {
         el.on('dragstart', function(){return false;});
         el.on('focus',function () {
             before = el.html();
-        }).on('blur keyup paste', function (e) {
+        }).on('keydown', function(e){
+            if(self.characterCount() >= 160 && isCharacterKeyPress(e)){
+                e.preventDefault();
+            }
+        })
+        .on('blur keyup paste', function (e) {
                 if (e.keyCode == 0) return;
+                var originalContents = self.getText();
+
                 if ($(el).find('span.tags').text() != self.tags.join("").replace(new RegExp(self.options.openingTag, 'g'), '').replace(new RegExp(self.options.closingTag, 'g'), '')) {
                     
                     var after = $(el).html();
@@ -66,6 +67,7 @@ $.widget("dw.TextNTags", {
                 }
 
                 self.handleAdjacentTags();
+                self._trigger('contentChangedHandler');
                 before = el.html();
             });
     },
@@ -77,15 +79,43 @@ $.widget("dw.TextNTags", {
         $(this.element).find('br').remove();
     },
 
-    reset: function () {
+    reset: function() {
         $(this.element).html(this.initialStateHtml);
     },
 
-    getText: function () {
+    getText: function() {
         var self = this;
         var el = self.element;
         var returnText = '';
         return el.html().replace(new RegExp('<span class="tags" contenteditable="false" unselectable="on">', 'g'), self.options.openingTag).
               replace(new RegExp('</span>', 'g'), self.options.closingTag).replace(/\s+/g, ' ');
+    },
+
+    characterCount: function(){
+        var self = this;
+        var el = self.element;
+        var textCount = 0;
+        var tagsCount = self.tags ? self.tags.length: 0;
+        el.contents().filter(function() {
+            return this.nodeType == 3;
+        }).each(function(i, t) {
+            textCount += t.length;
+        });
+
+        return textCount + tagsCount * 15;
     }
 });
+
+function isCharacterKeyPress(evt) {
+    if (typeof evt.which == "undefined") {
+        // This is IE, which only fires keypress events for printable keys
+        return true;
+    } else if (typeof evt.which == "number" && evt.which > 0) {
+        // In other browsers except old versions of WebKit, evt.which is
+        // only greater than zero if the keypress is a printable key.
+        // We need to filter out backspace and ctrl/alt/meta key combinations
+        // 37-40 (left, top , right, down)
+        return !evt.ctrlKey && !evt.metaKey && !evt.altKey && evt.which != 8 && evt.which != 46 && !(evt.which >= 37 && evt.which <=40);
+    }
+    return false;
+}

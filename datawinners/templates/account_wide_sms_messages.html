@@ -20,7 +20,7 @@
             </strong>
         </div>
         <div style="position: relative">
-        <div class="TextTags" data-bind="messageEditor: $data.message, attr: {id: 'account_message' + $index() }"></div>
+        <div class="TextTags" data-bind="messageEditor: {message: $data.message, count: $data.count}, attr: {id: 'account_message' + $index() }"></div>
 {#        <textarea rows="3" cols="85"#}
 {#                  data-bind="value:first160chars($data.message),attr: {id: 'account_message' + $index() },valueUpdate: 'afterkeydown',event:{keyup:$root.checkWarningMsgDisplay($data)}"#}
 {#                  class="message_box" maxlength="160"></textarea>#}
