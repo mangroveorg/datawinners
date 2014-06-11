@@ -20,9 +20,10 @@
             </strong>
         </div>
         <div style="position: relative">
-        <textarea rows="3" cols="85"
-                  data-bind="value:first160chars($data.message),attr: {id: 'account_message' + $index() },valueUpdate: 'afterkeydown',event:{keyup:$root.checkWarningMsgDisplay($data)}"
-                  class="message_box" maxlength="160"></textarea>
+        <div class="TextTags" data-bind="messageEditor: $data.message, attr: {id: 'account_message' + $index() }"></div>
+{#        <textarea rows="3" cols="85"#}
+{#                  data-bind="value:first160chars($data.message),attr: {id: 'account_message' + $index() },valueUpdate: 'afterkeydown',event:{keyup:$root.checkWarningMsgDisplay($data)}"#}
+{#                  class="message_box" maxlength="160"></textarea>#}
         <div class="validationMessage" data-bind="ifnot: $data.message.valid">
                 <span id="question_title_validation_message" class="validationText"
                       data-bind="text: $data.message.error"></span>

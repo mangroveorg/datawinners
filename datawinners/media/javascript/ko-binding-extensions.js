@@ -167,3 +167,18 @@ ko.bindingHandlers.onoff = {
         }
     }
 };
+
+ko.bindingHandlers.messageEditor = {
+
+    init: function(element, valueAccessor){
+        var text = valueAccessor();
+        $(element).TextNTags({
+            plainText: text(),
+            contentChangedHandler: function(){
+                text($(element).TextNTags('getText'));
+            }
+        });
+
+    }
+
+};

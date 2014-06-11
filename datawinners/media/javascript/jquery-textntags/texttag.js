@@ -1,8 +1,8 @@
 $.widget("dw.TextNTags", {
     options: {
         plainText: '',
-        openingTag: ' @{<@',
-        closingTag: '@>}@',
+        openingTag: '{',
+        closingTag: '}',
         contentChangedHandler: function () {
         }
     },
@@ -30,7 +30,7 @@ $.widget("dw.TextNTags", {
         el.html(styledText);
         self.handleAdjacentTags();
         var originalContents = self.getText();
-        el.blur(function () {
+        el.on('blur keyup', function() {
             if (originalContents != self.getText()) {
                 self._trigger('contentChangedHandler')
             }

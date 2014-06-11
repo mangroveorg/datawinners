@@ -18,6 +18,7 @@
         var account_messages = {{ account_messages|safe }};
     </script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-textntags/texttag.js"></script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/common/lang/language_view_model.js"></script>
@@ -28,7 +29,9 @@
     {{ block.super }}
 
     <link href="/media/css/scss/languages.css" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-textntags/texttag.css" rel="stylesheet"/>
 {% endblock %}
+
 {% block content %}
     <div class="success-message-box" style="display: none;"></div>
     <div class="help_accordion" style="text-align: justify">
@@ -63,9 +66,10 @@
                     </strong>
                 </div>
             <div style="position: relative">
-                <textarea rows="3" cols="85" class="message_box"
-                          data-bind="value:first160chars($data.message),attr: {id: 'custom_message' + $index() },valueUpdate: 'afterkeydown'"
-                          maxlength="160"></textarea>
+{#                <textarea rows="3" cols="85" class="message_box"#}
+{#                          data-bind="value:first160chars($data.message),attr: {id: 'custom_message' + $index() },valueUpdate: 'afterkeydown'"#}
+{#                          maxlength="160"></textarea>#}
+                <div class="TextTags" data-bind="messageEditor: $data.message, attr: {id: 'custom_message' + $index() }"></div>
 
                 <div class="validationMessage" data-bind="ifnot: $data.message.valid">
                 <span id="question_title_validation_message" class="validationText"
