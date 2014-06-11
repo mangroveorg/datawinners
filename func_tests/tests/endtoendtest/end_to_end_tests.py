@@ -1,4 +1,4 @@
-# vim: ai ts=4 sts=4 et sw=4utf-8
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
 import unittest
 import time
@@ -108,7 +108,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
 
     def do_login(self):
         global_navigation = do_login(self.driver, self.email, REGISTRATION_PASSWORD)
-        self.assertEqual(global_navigation.welcome_message(), "Welcome Mickey!")
+        self.assertEqual(global_navigation.welcome_message(), u"Welcome Mickey Gö!")
         return global_navigation
 
     def add_subject_type(self, create_project_page, entity_type):
