@@ -87,9 +87,9 @@ class UserProfileForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if User.objects.filter(username=username).count() > 0:
+        if User.objects.filter(username__iexact=username).count() > 0:
             raise ValidationError(_("This email address is already in use. Please supply a different email address"))
-        return self.cleaned_data.get('username')
+        return self.cleaned_data.get('username').lower()
 
 
 class EditUserProfileForm(UserProfileForm):
