@@ -20,23 +20,19 @@
             </strong>
         </div>
         <div style="position: relative">
-        <div class="TextTags" data-bind="messageEditor: {message: $data.message, count: $data.count}, attr: {id: 'account_message' + $index() }"></div>
-{#        <textarea rows="3" cols="85"#}
-{#                  data-bind="value:first160chars($data.message),attr: {id: 'account_message' + $index() },valueUpdate: 'afterkeydown',event:{keyup:$root.checkWarningMsgDisplay($data)}"#}
-{#                  class="message_box" maxlength="160"></textarea>#}
-        <div class="validationMessage" data-bind="ifnot: $data.message.valid">
-                <span id="question_title_validation_message" class="validationText"
-                      data-bind="text: $data.message.error"></span>
+            <div class="TextTags" data-bind="messageEditor: {message: $data.message, count: $data.count}, attr: {id: 'account_message' + $index() }"></div>
+            <div class="validationMessage" data-bind="ifnot: $data.message.valid">
+                    <span id="question_title_validation_message" class="validationText"
+                          data-bind="text: $data.message.error"></span>
 
-        </div>
-        <div style="width: 616px;position: absolute">
-        <div class="account_message_warning_message" style="" data-bind="visible:$data.displayWarning()">{% trans "Any changes you make to this text will apply for all Data Senders." %}</div>
-
-        <div class="account_message_char_count">
-            <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
-        </div></div>
             </div>
-        <br/>
-        <br/>
+            <div>
+                <div class="account_message_warning_message" style="" data-bind="visible:$data.displayWarning()">{% trans "Any changes you make to this text will apply for all Data Senders." %}</div>
+
+                <div class="char_count">
+                    <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
+                </div>
+            </div>
+        </div>
     </ol>
 </div>

@@ -2,7 +2,7 @@
     border: 1px solid rgba(57, 75, 96, 0.50);
     padding: 4px;
     height: auto;
-    width: 600px;
+    width: 900px;
     line-height: 25px;
     letter-spacing: 1px;
     box-shadow: 2px 2px 5px #d6d6d6;
@@ -12,7 +12,6 @@
 .tags {
     display: inline-block;
     background-color: #d6d6d6;
-    /*border: 1px solid #d6d6d6;*/
     border-radius: 2px;
     margin: 3px;
     padding: 0px;
@@ -22,6 +21,3 @@
     border: none;
     display: inline;
 }
-/*body {*/
-    /*margin-top: 50px;*/
-/*}*/

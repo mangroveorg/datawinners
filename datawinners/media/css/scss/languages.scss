@@ -24,10 +24,10 @@ select option{
   height: 50%
 }
 
-.charCount{
+.char_count{
   display: block;
   text-align: right;
-  width: 616px;
+  width: 910px;
   color:#666666 !important;
   font-size: 100%;
   span{
@@ -35,12 +35,6 @@ select option{
   }
 }
 
-.account_message_char_count{
-  @extend .charCount;
-  float: right;
-  width: auto !important ;
-  display: inline !important;
-}
 .account_message_warning_message{
   color: #066B06 !important;
   font-style: italic;

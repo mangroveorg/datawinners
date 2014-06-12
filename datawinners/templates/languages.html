@@ -66,9 +66,6 @@
                     </strong>
                 </div>
             <div style="position: relative">
-{#                <textarea rows="3" cols="85" class="message_box"#}
-{#                          data-bind="value:first160chars($data.message),attr: {id: 'custom_message' + $index() },valueUpdate: 'afterkeydown'"#}
-{#                          maxlength="160"></textarea>#}
                 <div class="TextTags" data-bind="messageEditor: {message: $data.message, count: $data.count}, attr: {id: 'custom_message' + $index() }"></div>
 
                 <div class="validationMessage" data-bind="ifnot: $data.message.valid">
@@ -76,7 +73,7 @@
                       data-bind="text: $data.message.error"></span>
 
                 </div>
-                <div class="charCount" style="position: absolute">
+                <div class="char_count" style="position: absolute">
                     <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
                 </div>
                 </div>
