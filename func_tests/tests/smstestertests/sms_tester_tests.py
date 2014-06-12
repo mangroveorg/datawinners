@@ -22,8 +22,6 @@ class TestSMSTester(HeadlessRunnerTest):
         languages_page.select_language('English')
         languages_page.set_custom_message_for(SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR,
           'Error. Wrong number of answers. Please review printed Questionnaire and resend entire SMS.')
-        languages_page.set_custom_message_for(SUBMISSION_WITH_ERROR_MESSAGE_LOCATOR,
-          'Error. Wrong answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.')
         languages_page.save_changes()
         assert languages_page.get_success_message() == 'Changes saved successfully.'
 
@@ -115,7 +113,7 @@ class TestSMSTester(HeadlessRunnerTest):
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("CID00X5", "CID005")})
         self.assertEqual(send_sms_with(test_data),
-                         "Error. Wrong answer for question 3. Please review printed Questionnaire and resend entire SMS.")
+                         "Error. Incorrect answer for question 3. Please review printed Questionnaire and resend entire SMS.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("age", "56")})
