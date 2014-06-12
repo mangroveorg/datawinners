@@ -1,10 +1,12 @@
 from nose.plugins.attrib import attr
+from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
+from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.testsettings import UI_TEST_TIMEOUT
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_xpath, by_css
 
 from pages.loginpage.login_page import login
-from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT
+from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT, DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS, PASSWORD
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.alluserstests.all_users_data import *
@@ -56,6 +58,25 @@ class TestAllUsers(HeadlessRunnerTest):
         self.delete_user(NEW_USER_DATA[USERNAME])
         self.check_sent_submission(project_name)
         self.check_deleted_user_name_on_activity_log_page(project_name)
+
+    @attr('functional_test')
+    def test_should_update_user_name_when_edited_from_datasender_page(self):
+        add_user_page = self.all_users_page.navigate_to_add_user()
+        add_user_page.add_user_with(EDIT_USER_DATA)
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        all_datasenders_page = AllDataSendersPage(self.driver)
+        all_datasenders_page.search_with(EDIT_USER_DATA.get('username'))
+        self.driver.find(all_datasenders_page.get_checkbox_selector_for_datasender_row(1)).click()
+        all_datasenders_page.select_edit_action()
+        EDIT_DETAILS = {"name": "New testUser",
+                        "mobile_number": EDIT_USER_DATA.get("mobile_phone"),
+                        "commune": "Madagascar",
+                        "gps": "-21.7622088847 48.0690991394"}
+        AddDataSenderPage(self.driver).enter_data_sender_details_from(EDIT_DETAILS).navigate_to_datasender_page()
+        self.driver.go_to(ALL_USERS_URL)
+        self.all_users_page = AllUsersPage(self.driver)
+        element = self.driver.find(by_xpath(NAME_COLUMN % EDIT_USER_DATA.get("username")))
+        self.assertEquals(EDIT_DETAILS.get("name"),element.text)
 
     def send_submission(self, questionnaire_code):
         self.driver.execute_script("window.open('%s')" % DATA_WINNER_SMS_TESTER_PAGE)
