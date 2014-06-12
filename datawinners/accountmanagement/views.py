@@ -288,9 +288,10 @@ def delete_users(request):
     return HttpResponse(json.dumps({'success': True}))
 
 
-def custom_password_reset_confirm(request, uidb36=None, token=None, set_password_form=SetPasswordForm):
+def custom_password_reset_confirm(request, uidb36=None, token=None, set_password_form=SetPasswordForm,
+                                  template_name='registration/datasender_activate.html'):
     response = password_reset_confirm(request, uidb36=uidb36, token=token, set_password_form=set_password_form,
-                                      template_name='registration/datasender_activate.html')
+                                      template_name=template_name)
     if request.method == 'POST' and type(response) == HttpResponseRedirect:
         try:
             uid_int = base36_to_int(uidb36)
@@ -300,7 +301,7 @@ def custom_password_reset_confirm(request, uidb36=None, token=None, set_password
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         sign_in(request, user)
         redirect_url = django_settings.DATASENDER_DASHBOARD + '?activation=1' \
-            if user.get_profile().reporter else django_settings.DASHBOARD
+            if user.get_profile().reporter else django_settings.HOME_PAGE
         return HttpResponseRedirect(redirect_url)
     return response
 
