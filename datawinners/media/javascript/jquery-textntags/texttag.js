@@ -62,7 +62,10 @@ $.widget("dw.TextNTags", {
                 e.preventDefault();
             }
         })
-        .on('blur keyup paste', function (e) {
+        .on('paste', function(e){
+            e.preventDefault();
+        })
+        .on('blur keyup', function (e) {
 
                 el.find('br').remove();
                 if ($(el).find('span.tags').text() != self.tags.join("").replace(new RegExp(self.options.openingTag, 'g'), '').replace(new RegExp(self.options.closingTag, 'g'), '')) {
