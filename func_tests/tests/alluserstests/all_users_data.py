@@ -26,3 +26,13 @@ NEW_USER_DATA = {
     USERNAME: random_string(4)+"@mailinator.com",
     MOBILE_PHONE: random_number()
 }
+
+EDIT_USER_DATA = {
+    TITLE: "Developer",
+    NAME: "testUser",
+    USERNAME: random_string(4)+"@mailinator.com",
+    MOBILE_PHONE: random_number()
+}
+
+NAME_COLUMN = "//div[@id='users_list']/table/tbody/tr/td[3][contains(text(),'%s')]//parent::tr/td[2]"
+

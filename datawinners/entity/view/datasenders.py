@@ -84,8 +84,8 @@ class EditDataSenderView(TemplateView):
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
                                                                    form.cleaned_data["telephone_number"], org_id)
-                    if current_name != form.cleaned_data["name"]:
-                        update_user_name_if_exists(current_name,form.cleaned_data["name"])
+                    if email and current_name != form.cleaned_data["name"]:
+                        update_user_name_if_exists(email,form.cleaned_data["name"])
                     message = _("Your changes have been saved.")
 
                     detail_dict = {"Unique ID": reporter_id}
