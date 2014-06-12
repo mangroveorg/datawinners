@@ -47,7 +47,7 @@ EXTRA_PLUS_IN_BTW = {SENDER: "1234567890",
 PLUS_IN_THE_BEGINNING = {SENDER: "1234567890",
                          RECEIVER: "919880734937",
                          SMS: ". .cli002 .EID CID005 .NA Mr. Fessy .FA 58 .RD 17.05.2011 .BG b .SY ade .RM ac",
-                         ERROR_MSG: "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."}
+                         ERROR_MSG: "Error. Questionnaire Code  is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."}
 
 UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
                             RECEIVER: "919880734937",
@@ -57,7 +57,7 @@ UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
 REGISTER_DATA_SENDER = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
                         SMS: "REG .t Reporter .m %s .L  Jaipur .g 26.917 75.817 .N Donald Duck" % random_number(9),
-                        ERROR_MSG: u"Thank you Shweta, We registered your Reporter "}
+                        ERROR_MSG: u"Thank you Shweta. We registered your Reporter "}
 
 REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
                                             RECEIVER: "919880734937",

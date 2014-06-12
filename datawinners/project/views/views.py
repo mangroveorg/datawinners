@@ -107,6 +107,7 @@ def index(request):
 @is_new_user
 @is_datasender
 @is_not_expired
+@is_project_exist
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -156,7 +157,7 @@ def undelete_project(request, project_id):
 @is_datasender
 @is_not_expired
 @is_project_exist
-def project_overview(request, project_id=None):
+def project_overview(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
 
@@ -251,6 +252,7 @@ def _format_reminders(reminders, project_id):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@is_project_exist
 def sent_reminders(request, project_id):
     dbm = get_database_manager(request.user)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
@@ -284,6 +286,7 @@ def _get_data_senders(dbm, form, project):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@is_project_exist
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
@@ -363,6 +366,7 @@ def get_project_link(project, entity_type=None):
 
 
 @valid_web_user
+@is_project_exist
 def registered_subjects(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -726,6 +730,7 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
 
 
 @valid_web_user
+@is_project_exist
 def subject_registration_form_preview(request, project_id=None, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -778,6 +783,7 @@ def _get_subject_form_model(manager, entity_type):
 
 
 @valid_web_user
+@is_project_exist
 def edit_my_subject_questionnaire(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -820,6 +826,7 @@ def append_success_to_context(context, form):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
+@is_project_exist
 def create_data_sender_and_web_user(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -883,6 +890,7 @@ def project_has_data(request, questionnaire_code=None):
     return HttpResponse(encode_json({'has_data': (success + error > 0)}))
 
 
+@is_project_exist
 def edit_my_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
     subject = get_by_short_code(manager, entity_id, [entity_type.lower()])

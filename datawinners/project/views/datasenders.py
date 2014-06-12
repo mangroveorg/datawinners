@@ -20,6 +20,7 @@ from datawinners.common.constant import IMPORTED_DATA_SENDERS
 from datawinners.entity import import_data as import_module
 from datawinners.entity.helper import rep_id_name_dict_of_users
 from datawinners.main.database import get_database_manager
+from datawinners.project.helper import is_project_exist
 from datawinners.project.models import Project
 from datawinners.project.views.views import get_project_link, _in_trial_mode
 from datawinners.search.datasender_index import update_datasender_index_by_id
@@ -99,6 +100,7 @@ def _add_imported_datasenders_to_project(imported_datasenders_id, manager, proje
 @login_required
 @csrf_exempt
 @is_not_expired
+@is_project_exist
 def registered_datasenders(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)

@@ -84,7 +84,7 @@ table.no-border {
   table.no-border.line_height_14 {
     line-height: 14px; }
   table.no-border td, table.no-border th {
-    border: none!important;
+    border: none !important;
     text-align: right;
     padding-left: 0; }
     table.no-border td.small, table.no-border th.small {
@@ -97,7 +97,7 @@ table.no-border {
 
 #blue_message_box {
   width: 230px;
-  margin-top: 0!important; }
+  margin-top: 0 !important; }
   #blue_message_box .button_fr {
     width: 103px;
     padding-right: 12px !important;

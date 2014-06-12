@@ -348,7 +348,7 @@ DW.question.prototype = {
         var min_range = parseInt(this.range_min());
         var max_range = parseInt(this.range_max());
 
-        if (_.isNaN(min_range) || _.isNaN(max_range))
+        if (!this.range_min().match(/^-?\d+$/) || !this.range_max().match(/^-?\d+$/))
             return;
 
         if (min_range > max_range)

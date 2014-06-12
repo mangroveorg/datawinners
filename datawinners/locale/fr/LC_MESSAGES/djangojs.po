@@ -234,7 +234,7 @@ msgstr "Sélectionnez les Questionnaires"
 
 #: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
-msgstr "Donnez un accès Web et Smartphone"
+msgstr "Donner un accès Web et Smartphone"
 
 #: media/javascript/datasenders/index.js:83
 msgid "Please select atleast 1 Project"

@@ -157,11 +157,6 @@ class TestHelper(unittest.TestCase):
         fields = [eid_field, na_field, fa_field, rd_field, bg_field, sy_field, gps_field, rm_field]
         return fields
 
-    def test_should_raise_Http404_if_project_can_not_be_found(self):
-        wrapped_func = is_project_exist(lambda: None.qid)
-        with self.assertRaises(Http404):
-            wrapped_func()
-
     def test_should_add_country_code_when_broadcasting_sms_to_other_people(self):
         message_tracker = Mock()
         ONG_TEL_NUMBER = "12354"

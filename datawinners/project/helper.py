@@ -4,9 +4,11 @@ import re
 from datetime import datetime
 
 from babel.dates import format_date
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
+from datawinners import settings
+from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
@@ -201,10 +203,9 @@ def is_project_exist(f):
     def wrapper(*args, **kw):
         try:
             ret = f(*args, **kw)
-        except AttributeError, e:
-            if e[0] == "'NoneType' object has no attribute 'qid'":
-                raise Http404
-            raise e
+        except DataObjectNotFound:
+            dashboard_page = settings.HOME_PAGE + "?NoExist=true"
+            return HttpResponseRedirect(dashboard_page)
         return ret
 
     return wrapper

@@ -40,7 +40,7 @@ DW.ko = {
             return true;
         },
         numericValidator: function(observable){
-             if(!observable() || (observable()+"").match(/[0-9]+/)) {
+             if(!observable() || (observable()+"").match(/^-?\d+$/)){
                 observable.clearError();
                 return true;
              } else {

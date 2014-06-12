@@ -10,7 +10,7 @@ class ResponseBuilder(object):
         if isinstance(self.form_model, EntityFormModel):
             name_code = self.form_model.get_entity_name_question_code()
             short_code_code = self.form_model.entity_questions[0].code
-            return "%s (%s)" % (self.processed_data.get(name_code), self.processed_data.get(short_code_code))
+            return "%s (%s)." % (self.processed_data.get(name_code), self.processed_data.get(short_code_code))
 
         return "; ".join([each for each in new_dict.values()])
 

@@ -2347,7 +2347,7 @@ msgstr "Your Data Senders can submit data using SMS and the Internet."
 "<br/>If any of your Data Senders have (or will have) access to the Internet, we recommened leaving the WEB box checked."
 
 msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erro. Numero incorrecto da resposta. Por favor reenvie o questionario impresso e reenvie a SMS inteira."
+msgstr "Erro. Numero incorrecto de respostas. Por favor, rever o Questionario impresso e reenvie a SMS inteira."
 
 msgid "Privacy Policy"
 msgstr ""
@@ -4225,7 +4225,7 @@ msgid "Thank you %(datasender)s, We registered your %(subject_type)s"
 msgstr ""
 
 msgid "Thank you %(datasender)s. We received your SMS"
-msgstr "Mesmo como hoje: Obrigado %(datasender)s. Recebemos a sua SMS"
+msgstr "Obrigado %(datasender)s. Recebemos a sua SMS"
 
 msgid "You have successfully activated your account. Happy data submission!"
 msgstr ""

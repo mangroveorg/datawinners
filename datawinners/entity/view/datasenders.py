@@ -144,7 +144,7 @@ class RegisterDatasenderView(TemplateView):
         except DataObjectAlreadyExists as e:
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
         if len(form.errors) == 0 and form.requires_web_access() and reporter_id:
-            email_id = request.POST['email']
+            email_id = form.cleaned_data['email']
             create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
                                    language_code=request.LANGUAGE_CODE)
 

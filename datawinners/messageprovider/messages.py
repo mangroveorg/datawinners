@@ -100,7 +100,7 @@ def get_submission_success_message(response):
 def get_registration_success_message(response):
     datasender = response.reporters[0].get('name').split()[0].capitalize() if len(response.reporters) else ''
     subject_type = response.entity_type[0]
-    return _("Thank you %(datasender)s, We registered your %(subject_type)s") % \
+    return _("Thank you %(datasender)s. We registered your %(subject_type)s") % \
            {'datasender':datasender, 'subject_type':subject_type.capitalize()}
 
 def get_wrong_number_of_answer_error_message():

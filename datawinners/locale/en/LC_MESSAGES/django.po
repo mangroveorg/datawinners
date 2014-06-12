@@ -4584,11 +4584,3 @@ msgstr ""
 msgid "account wide sms help text"
 msgstr "These are general Automatic Reply SMS for your organization’s DataWinners account. Edit/translate these messages to fit your needs. Note: Any changes you make will apply for all Data Senders."
 
-msgid "Automatic reply messages turned off for this questionnaire."
-msgstr ""
-
-msgid "To reactivate them go to "
-msgstr ""
-
-msgid "Automatic Reply SMS."
-msgstr ""

@@ -22,7 +22,8 @@ class AllSubjectsListPage(Page):
         self.wait_for_processing()
 
     def search(self, search_text):
-        search_box = self.driver.find_text_box(by_css("#subjects_table_filter>input"))
+        self.driver.create_screenshot(filename="subject_filter.png")
+        search_box = self.driver.find_text_box(by_css("#subjects_table_filter>span>input"))
         search_box.enter_text(search_text)
         self.wait_for_processing()
 
@@ -41,6 +42,8 @@ class AllSubjectsListPage(Page):
         return AddSubjectPage(self.driver)
 
     def select_subject_by_id(self, subject_id):
+        self.wait_for_processing()
+        self.search(subject_id)
         selector = by_css("input[value=%s]" % subject_id)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, selector, True)
         self.driver.find(selector).click()
