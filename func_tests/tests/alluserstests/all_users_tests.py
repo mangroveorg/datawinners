@@ -68,6 +68,7 @@ class TestAllUsers(HeadlessRunnerTest):
                      SMS: "%s 10.10.2010" % questionnaire_code}
         sms_tester_page.send_sms_with(valid_sms)
         response = sms_tester_page.get_response_message()
+        self.driver.create_screenshot("sms_error.png")
         self.assertIn("Thank you", response)
         # self.assertRegexpMatches(response, THANKS % "Mamy")
         self.driver.close()
