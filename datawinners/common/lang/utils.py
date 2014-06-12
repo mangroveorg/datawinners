@@ -1,20 +1,37 @@
 from collections import OrderedDict
 from django.utils import translation
 from django.utils.translation import ugettext as _, ugettext
+from datastore.cache_manager import get_cache_manager
 from datawinners.common.lang.custom_message_static_codes import TITLE_QUESTIONNAIRE_REPLY_MESSAGE_CODE_MAP, QUESTIONNAIRE_CUSTOM_MESSAGE_CODES, ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES, DEFAULT_LANGUAGES, TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP
-from datawinners.common.lang.messages import QuestionnaireCustomizedMessages, AccountWideSMSMessage, ACCOUNT_MESSAGE_DOC_ID
+from datawinners.common.lang.messages import QuestionnaireCustomizedMessages, AccountWideSMSMessage, ACCOUNT_MESSAGE_DOC_ID, \
+    get_language_cache_key, LANGUAGE_EXPIRY_TIME_IN_SEC
 from datawinners.utils import get_organization_language
 
 
 def questionnaire_customized_message_details(dbm, language_code):
-    customized_message_row = dbm.load_all_rows_in_view('all_languages', startkey=language_code, endkey=language_code, include_docs=True)[0]
-    reply_messages_dict = customized_message_row["doc"]["messages"]
-    return _build_message_details(reply_messages_dict, TITLE_QUESTIONNAIRE_REPLY_MESSAGE_CODE_MAP)
+    cache_manger = get_cache_manager()
+    key_as_str = get_language_cache_key(dbm, language_code)
+    messages_dict = cache_manger.get(key_as_str)
 
+    if messages_dict is None:
+        customized_message_row = dbm.load_all_rows_in_view('all_languages', startkey=language_code, endkey=language_code, include_docs=True)[0]
+        reply_messages_dict = customized_message_row["doc"]["messages"]
+        messages_dict = _build_message_details(reply_messages_dict, TITLE_QUESTIONNAIRE_REPLY_MESSAGE_CODE_MAP)
+        cache_manger.set(key_as_str, messages_dict, time=LANGUAGE_EXPIRY_TIME_IN_SEC)
+
+    return messages_dict
 
 def account_wide_customized_message_details(dbm):
-    account_wide_message = dbm.database.get(ACCOUNT_MESSAGE_DOC_ID)
-    return _build_message_details(account_wide_message["messages"],TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP)
+    cache_manger = get_cache_manager()
+    key_as_str = get_language_cache_key(dbm, ACCOUNT_MESSAGE_DOC_ID)
+    messages_dict = cache_manger.get(key_as_str)
+
+    if messages_dict is None:
+        account_wide_message = dbm.database.get(ACCOUNT_MESSAGE_DOC_ID)
+        messages_dict = _build_message_details(account_wide_message["messages"], TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP)
+        cache_manger.set(key_as_str, messages_dict, time=LANGUAGE_EXPIRY_TIME_IN_SEC)
+
+    return messages_dict
 
 
 def _build_message_details(reply_messages_dict, reply_message_code_map):
