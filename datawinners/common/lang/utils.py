@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from django.utils import translation
 from django.utils.translation import ugettext as _, ugettext
-from datastore.cache_manager import get_cache_manager
+from mangrove.datastore.cache_manager import get_cache_manager
 from datawinners.common.lang.custom_message_static_codes import TITLE_QUESTIONNAIRE_REPLY_MESSAGE_CODE_MAP, QUESTIONNAIRE_CUSTOM_MESSAGE_CODES, ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES, DEFAULT_LANGUAGES, TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP
 from datawinners.common.lang.messages import QuestionnaireCustomizedMessages, AccountWideSMSMessage, ACCOUNT_MESSAGE_DOC_ID, \
     get_language_cache_key, LANGUAGE_EXPIRY_TIME_IN_SEC

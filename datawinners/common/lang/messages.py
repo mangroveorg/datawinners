@@ -1,5 +1,5 @@
 from couchdb.mapping import TextField, DictField
-from datastore.cache_manager import get_cache_manager
+from mangrove.datastore.cache_manager import get_cache_manager
 from mangrove.datastore.documents import DocumentBase
 
 ACCOUNT_MESSAGE_DOC_ID = "account_message"
