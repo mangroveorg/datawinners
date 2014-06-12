@@ -19,6 +19,11 @@ class CustomizedLanguagePage(Page):
         custom_message_text_box = TextBox(self.driver.find(msg_locator))
         custom_message_text_box.enter_text(message)
 
+    def append_custom_message_for(self, msg_locator, message):
+        message_box = self.driver.wait_for_element(UI_TEST_TIMEOUT, msg_locator, want_visible=True)
+        self.driver.execute_script("$(arguments[0]).html($(arguments[0]).html() + arguments[1]);", message_box, message)
+        self.driver.execute_script("$(arguments[0]).trigger( 'blur' );", message_box)
+
     def save_changes(self):
         self.driver.find(LANGUAGE_SAVE_BUTTON_LOCATOR).click()
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockUI"))
@@ -36,8 +41,9 @@ class CustomizedLanguagePage(Page):
             self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockUI"))
 
 
-    def get_custom_message_for(self,msg_locator):
-        return self.driver.find(msg_locator).get_attribute("value")
+    def get_custom_message_for(self, msg_locator):
+        msg_box = self.driver.find(msg_locator)
+        return self.driver.execute_script("return $(arguments[0]).html()", msg_box)
 
     def get_all_customized_reply_messages(self):
         return [r.get_attribute('value') for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]

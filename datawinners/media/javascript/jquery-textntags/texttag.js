@@ -24,9 +24,21 @@ $.widget("dw.TextNTags", {
     setText: function (plainText) {
         var self = this;
         var regexPattern = new RegExp("\\"+ self.options.openingTag +"(.*?)\\" + self.options.closingTag, 'gi');
-        self.tags = plainText.match(regexPattern);
+
+        self.tags = plainText.match(regexPattern) || [];
+        var styledText = plainText;
+        if(self.tags){
+            $.each(self.tags, function(i, tag){
+                var tagValue = _.str.ltrim(tag, self.options.openingTag);
+                var tagValue = _.str.rtrim(tagValue, self.options.closingTag);
+                var translated_tag = gettext(tagValue);
+                styledText = styledText.replace(tag, ' <span class="tags" data-tag="'+ tagValue +'" >' + translated_tag + '</span> ');
+                self.tags[i] = translated_tag;
+            });
+        }
         var el = self.element;
-        var styledText = '' + plainText.replace(new RegExp(self.options.openingTag, 'g'), '<span class="tags">').replace(new RegExp(self.options.closingTag, 'g'), '</span>');
+//        var styledText = '' + plainText.replace(new RegExp(self.options.openingTag, 'g'), '<span class="tags">').replace(new RegExp(self.options.closingTag, 'g'), '</span>');
+
         el.html(styledText);
         self.handleAdjacentTags();
     },
@@ -36,30 +48,44 @@ $.widget("dw.TextNTags", {
         var el = self.element;
         var before;
         el.on('keydown', function(e){
-            if(e.keyCode==13) {e.preventDefault(); return false;}
+            if(e.which == 13) {
+                e.preventDefault();
+                return false;
+            }
         });
         el.on('dragstart', function(){return false;});
         el.on('focus',function () {
             before = el.html();
         }).on('keydown', function(e){
+
             if(self.characterCount() >= 160 && isCharacterKeyPress(e)){
                 e.preventDefault();
             }
         })
         .on('blur keyup paste', function (e) {
-                if (e.keyCode == 0) return;
-                var originalContents = self.getText();
 
+                el.find('br').remove();
                 if ($(el).find('span.tags').text() != self.tags.join("").replace(new RegExp(self.options.openingTag, 'g'), '').replace(new RegExp(self.options.closingTag, 'g'), '')) {
-                    
                     var after = $(el).html();
-                    for(start=0; start<before.length && start< after.length; start++) if(before[start]!=after[start]) break;
-                    if (start > 0 && before[start-1] == '<') start--;
-                    for(end=0; end<before.length && end< after.length; end++) if(before[before.length - 1 - end]!=after[after.length - 1 - end]) break;
+                    var start, end;
+                    for(start=0; start<before.length && start< after.length; start++){
+                        if(before[start]!=after[start]){
+                            break;
+                        }
+                    }
+                    if (start > 0 && before[start-1] == '<'){
+                        start--;
+                    }
+                    for(end=0; end<before.length && end< after.length; end++){
+                        if(before[before.length - 1 - end]!=after[after.length - 1 - end]){
+                            break;
+                        }
+                    }
                     var diff = before.substring(start, before.length-end);
                     if (/([^<]*<span[^>]*>[^<]*<\/span>[^<]*)*/gi.exec(diff)[0] != diff) {
                         el.html(before);
-                    }else {
+                    }
+                    else {
                         diff = diff.replace(/[^<]*(<span[^>]*>[^<]*<\/span>)?[^<]*/gi, "$1");
                         var modified_html = before.substring(0, start) + diff + before.substring(before.length-end);
                         el.html(modified_html);
@@ -74,9 +100,8 @@ $.widget("dw.TextNTags", {
 
     handleAdjacentTags: function () {
         if(/></.test($(this.element).html())) {
-            $(this.element).html($(this.element).html().replace(/></ , "> <"));
+            $(this.element).html($(this.element).html().replace(/></g , "> <"));
         }
-        $(this.element).find('br').remove();
     },
 
     reset: function() {
@@ -87,8 +112,15 @@ $.widget("dw.TextNTags", {
         var self = this;
         var el = self.element;
         var returnText = '';
-        return el.html().replace(new RegExp('<span class="tags" contenteditable="false" unselectable="on">', 'g'), self.options.openingTag).
-              replace(new RegExp('</span>', 'g'), self.options.closingTag).replace(/\s+/g, ' ');
+        $.each(el.contents(), function(i, e){
+            if(e.nodeType == 3){
+                returnText += e.textContent;
+            }
+            else{
+                returnText += self.options.openingTag + $(e).data('tag') + self.options.closingTag;
+            }
+        });
+        return returnText;
     },
 
     characterCount: function(){

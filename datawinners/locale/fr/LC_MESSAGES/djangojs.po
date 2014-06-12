@@ -1191,8 +1191,29 @@ msgstr "Erreur. Reponse incorrecte pour la question {Numéro(s) de la(des) Quest
 msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
 msgstr "{Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
 
+msgid "Name of Data Sender"
+msgstr "Nom de l'Expéditeur de Données"
+
+msgid "Submitted Identification Number"
+msgstr "Numéro d'Identification Soumis"
+
+msgid "Question Numbers for Wrong Answer(s)"
+msgstr "Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)"
+
+msgid "List of Answers"
+msgstr "Liste des Réponses"
+
 msgid "Language Added successfully"
 msgstr "Votre langue a été ajoutée avec succès. Veuillez traduire le texte de retour SMS automatique suggéré."
+
+msgid "Identification Number Type"
+msgstr "Type de Numéro d'Identification"
+
+msgid "Name of Identification Number"
+msgstr "Nom du Numéro d'Identification"
+
+msgid "Submitted Questionnaire Code"
+msgstr "Code Questionnaire Soumis"
 
 msgid "Add Language"
 msgstr "Ajouter une langue"

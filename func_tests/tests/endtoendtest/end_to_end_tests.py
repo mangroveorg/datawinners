@@ -66,7 +66,7 @@ def do_login(driver, email, password):
 
 class TestApplicationEndToEnd(unittest.TestCase):
     def setUp(self):
-        self.driver = setup_driver(browser="phantom")
+        self.driver = setup_driver(browser="firefox")
 
     def tearDown(self):
         import sys
@@ -302,24 +302,19 @@ class TestApplicationEndToEnd(unittest.TestCase):
         project_page.delete_project(self.project_name)
         self.assertFalse(project_page.is_project_present(self.project_name))
 
-    def create_screenshot(self, filename="error_screen_shot.png"):
-        if not os.path.exists("screenshots"):
-            os.mkdir("screenshots")
-        self.driver.save_screenshot("screenshots/%s" % filename)
 
     def verify_setting_customized_error_messages_for_languages(self):
         global_navigation = GlobalNavigationPage(self.driver)
         languages_page = global_navigation.navigate_to_languages_page()
         self.assertEquals("English",languages_page.get_selected_language())
-        new_success_message = "This is a new message"
-        languages_page.set_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR , new_success_message)
+        appended_message = "ok!"
+        languages_page.append_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR , appended_message)
         languages_page.save_changes()
-        self.assertEquals("Changes saved successfully.",languages_page.get_success_message())
+        self.assertEquals("Changes saved successfully.", languages_page.get_success_message())
         #Reload english to check if changes saved
-        languages_page.select_language("French")
-        languages_page.select_language("English")
-        time.sleep(1)
-        self.assertEquals(new_success_message,languages_page.get_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR))
+        languages_page.select_language("French", wait_for_load=True)
+        languages_page.select_language("English", wait_for_load=True)
+        self.assertIn(appended_message, languages_page.get_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR))
 
 
     @attr('smoke')
@@ -333,7 +328,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.register_new_subject_of_type('School', VALID_DATA_FOR_SUBJECT_SCHOOL)
 
         self.add_subject('Hospital', VALID_DATA_FOR_SUBJECT_REG)
-        self.create_screenshot()
         self.add_edit_delete_subject()
 
         ds_email = self.add_edit_datasender()
