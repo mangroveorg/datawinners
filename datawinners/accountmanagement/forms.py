@@ -69,7 +69,7 @@ class UserProfileForm(forms.Form):
     required_css_class = 'required'
 
     title = forms.CharField(max_length=30, required=False, label=_("Job title"))
-    full_name = forms.CharField(max_length=40, required=True, label=_('Name'))
+    full_name = forms.CharField(max_length=80, required=True, label=_('Name'))
     username = forms.EmailField(max_length=75, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
     mobile_phone = PhoneNumberField(required=True, label=_("Phone Number"))
