@@ -8,6 +8,7 @@
     box-shadow: 2px 2px 5px #d6d6d6;
     margin-bottom: 10px;
     word-wrap: break-word;
+    min-height: 30px;
 }
 
 .tags {

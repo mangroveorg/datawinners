@@ -1,9 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from nose.plugins.attrib import attr
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css
-from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, ADD_NEW_LANG_CANCEL_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR
+from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, ADD_NEW_LANG_CANCEL_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, \
+    SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, SUCCESS_SUBMISSION_MESSAGE_LOCATOR
 from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
+from tests.testsettings import UI_TEST_TIMEOUT
 
 default_en_messages = [u'Thank you {Name of Data Sender}. We received your SMS: {List of Answers}',
                         u'Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.',
@@ -19,7 +22,16 @@ class TestLanguageTab(HeadlessRunnerTest):
 
     def setUp(self):
         self.language_page = CustomizedLanguagePage(self.driver)
+        self.language_page.refresh()
+        self.language_page = CustomizedLanguagePage(self.driver)
 
+
+    def tearDown(self):
+        self.language_page.select_language("English", wait_for_load=True)
+        self.language_page.revert_customized_messages_to_default()
+        self.language_page.save_changes()
+
+    @attr('functional_test')
     def test_languages_tab(self):
 
         self.check_for_default_en_messages()
@@ -31,15 +43,15 @@ class TestLanguageTab(HeadlessRunnerTest):
                                 u'Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS.',
                                 u"Erreur. {Submitted Identification Number} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur.",
                                 u"Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."]
-        french_messages = [r.get_attribute('value') for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]
+        french_messages = self.language_page.get_all_customized_reply_messages()
         self.assertListEqual(expected_fr_messages, french_messages)
-        self.language_page.select_language("English")
 
     def clear_all_errormessages(self):
         [r.clear() for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]
 
     def check_for_default_en_messages(self):
-        english_messages = [r.get_attribute('value') for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_SUBMISSION_MESSAGE_LOCATOR, True)
+        english_messages = self.language_page.get_all_customized_reply_messages()
         self.assertListEqual(default_en_messages, english_messages)
 
     def verify_160_character_length_limit(self):
@@ -47,37 +59,34 @@ class TestLanguageTab(HeadlessRunnerTest):
         [r.send_keys("a" * 170) for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]
         self.assertListEqual(["a" * 160] * 5, self.language_page.get_all_customized_reply_messages())
 
+    @attr('functional_test')
     def test_validations(self):
-        self.clear_all_errormessages()
-        self.language_page.save_changes()
-
-        self.assertListEqual([u'Enter reply SMS text.']*5, [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
+        self.language_page.clear_custom_message(SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR)
+        self.assertListEqual(['Enter reply SMS text.'], [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
         self.assertTrue("ui-state-disabled" in self.driver.find(LANGUAGE_SAVE_BUTTON_LOCATOR).get_attribute('class'))
 
         self.language_page.refresh()
+        self.language_page = CustomizedLanguagePage(self.driver)
         self.check_for_default_en_messages()
 
-        self.verify_160_character_length_limit()
+        # self.verify_160_character_length_limit()
 
-
+    @attr('functional_test')
     def test_modify_and_save(self):
-
         self.change_reply_messages()
         self.language_page.save_changes()
         self.language_page.refresh()
-        self.assertListEqual([msg + " new" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
-
-        self.language_page.set_message_boxes(default_en_messages)
-
-        self.language_page.save_changes()
+        self.language_page = CustomizedLanguagePage(self.driver)
+        self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
 
     def change_reply_messages(self):
-        [r.send_keys(' new') for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]
+        for element in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR):
+            self.language_page.update_custom_message("new message",element)
 
     def verify_warning_dialog_present(self):
         self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
 
-
+    @attr('functional_test')
     def test_unsaved_warning_dialog(self):
         def click_identification_number_page():
             self.driver.find(by_css("#global_subjects_link")).click()
@@ -88,10 +97,12 @@ class TestLanguageTab(HeadlessRunnerTest):
         navigate_away_action()
         self.verify_warning_dialog_present()
         self.driver.find_visible_element(by_css(".cancel_button")).click()
-        self.assertListEqual([msg + " new" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
+        self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
 
         navigate_away_action()
         self.verify_warning_dialog_present()
+        # time.sleep(2)
+        # self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".no_button"), True)
         self.driver.find_visible_element(by_css(".no_button")).click()
 
         self.driver.find(by_css("#global_languages_link")).click()
@@ -103,18 +114,17 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.verify_warning_dialog_present()
         self.driver.find_visible_element(by_css(".yes_button")).click()
 
+        # self.language_page.select_language("English",True)
         self.driver.find(by_css("#global_languages_link")).click()
         self.language_page = CustomizedLanguagePage(self.driver)
-        self.assertListEqual([msg + " new" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
-
-        self.language_page.set_message_boxes(default_en_messages)
-        self.language_page.save_changes()
+        self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
 
     def test_unsaved_warning_on_language_change(self):
         def click_identification_number_page():
             self.language_page.select_language("French")
         self.verify_unsaved_warning_dialog(click_identification_number_page)
 
+    @attr('functional_test')
     def test_should_validate_add_new_language(self):
         self.language_page.add_new_language("")
         self.assertIn("Please enter a name for your language.", [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
