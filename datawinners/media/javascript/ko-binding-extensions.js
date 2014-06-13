@@ -170,13 +170,14 @@ ko.bindingHandlers.onoff = {
 
 ko.bindingHandlers.messageEditor = {
 
-    init: function(element, valueAccessor){
+    init: function(element, valueAccessor, allBindings, viewModel, bindingContext){
         var obj = valueAccessor();
         $(element).TextNTags({
             plainText: obj.message(),
             contentChangedHandler: function(){
                 obj.message($(element).TextNTags('getText'));
                 obj.count($(element).TextNTags('characterCount'));
+                obj.postChangeHandler && obj.postChangeHandler(viewModel);
             }
         });
         obj.count($(element).TextNTags('characterCount'));

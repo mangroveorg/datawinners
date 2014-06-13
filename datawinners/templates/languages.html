@@ -48,36 +48,36 @@
             </select>
 
         </div>
-        <div class="clear"></div>
+{#        <div class="clear"></div>#}
         <br/>
 
         <div>
-            <ol data-bind="foreach: languageViewModel.customizedMessages">
-                <div>
-                    <strong>
+            <ol class="sms_messages" data-bind="foreach: languageViewModel.customizedMessages">
+                <li>
+                    <div>
+                        <strong>
+                                <label data-bind="text: $data.title" style="display: inline;"></label>
+                                <img src="/media/images/help_icon.png" class="help_icon"
+                                     style="display: inline;padding-bottom: 5px"
+                                     data-bind="initializeTooltip:true">
+                                {% include "customized_message_tooltip.html" %}
+                        </strong>
+                    </div>
+                    <div>
+                        <div class="TextTags" data-bind="messageEditor: {message: $data.message, count: $data.count}, attr: {id: 'custom_message' + $index() }"></div>
 
-                        <li>
-                            <label data-bind="text: $data.title" style="display: inline;"></label>
-                            <img src="/media/images/help_icon.png" class="help_icon"
-                                 style="display: inline;padding-bottom: 5px"
-                                 data-bind="initializeTooltip:true">
-                            {% include "customized_message_tooltip.html" %}
-                        </li>
-                    </strong>
-                </div>
-            <div style="position: relative">
-                <div class="TextTags" data-bind="messageEditor: {message: $data.message, count: $data.count}, attr: {id: 'custom_message' + $index() }"></div>
+                        <div class="validationMessage" data-bind="ifnot: $data.message.valid">
+                        <span id="question_title_validation_message" class="validationText"
+                              data-bind="text: $data.message.error"></span>
 
-                <div class="validationMessage" data-bind="ifnot: $data.message.valid">
-                <span id="question_title_validation_message" class="validationText"
-                      data-bind="text: $data.message.error"></span>
-
-                </div>
-                <div class="char_count" style="position: absolute">
-                    <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
-                </div>
-                </div>
-                <br/>
+                        </div>
+                        <div>
+                            <span class="char_count">
+                                <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
+                            </span>
+                        </div>
+                    </div>
+                </li>
             </ol>
         </div>
         <br/>

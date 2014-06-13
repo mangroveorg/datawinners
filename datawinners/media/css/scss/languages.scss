@@ -25,9 +25,8 @@ select option{
 }
 
 .char_count{
-  display: block;
+  float: right;
   text-align: right;
-  width: 910px;
   color:#666666 !important;
   font-size: 100%;
   span{
@@ -48,3 +47,8 @@ select option{
    border-bottom: 1px solid #CCCCCC;
    font-size: 20px;
  }
+
+.sms_messages li{
+  clear: both;
+  padding-bottom: 10px;
+}
