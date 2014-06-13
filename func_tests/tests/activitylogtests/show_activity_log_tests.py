@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import time
+import datetime
 
 from nose.plugins.attrib import attr
 
@@ -65,6 +66,17 @@ class TestShowActivityLog(HeadlessRunnerTest):
         self.assert_there_is_entries_for_themain_organization()
 
 
+    #issue 3483
+    @attr('functional_test')
+    def test_filter_for_one_day(self):
+        activity_log_page = self.navigate_to_activity_log_page()
+        today = datetime.datetime.today()
+        self.driver.find_text_box(by_css("#dateRangePicker")).enter_text(today.strftime("%d-%m-%Y"))
+        activity_log_page.click_on_filter_button()
+        entries_number = activity_log_page.get_number_of_entries_found()
+        self.assertGreater(entries_number, 0, "No entries found in Activity log")
+
+
     def navigate_to_activity_log_page(self):
         self.driver.go_to(DATA_WINNER_USER_ACTIVITY_LOG_PAGE)
         return ShowActivityLogPage(self.driver)
@@ -89,7 +101,6 @@ class TestShowActivityLog(HeadlessRunnerTest):
         self.assertTrue(entries_number != 0)
 
     @attr('functional_test')
-    @skipUntil('2014-03-30') #edit submission fails due to error in django forms. Might get fixed with the default reporter question
     def test_edit_submissions_are_logged(self):
         project_overview = self.global_navigation_page.navigate_to_view_all_project_page().navigate_to_project_overview_page(
             self.project_title)
