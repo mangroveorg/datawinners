@@ -32,12 +32,11 @@ $.widget("dw.TextNTags", {
                 var tagValue = _.str.ltrim(tag, self.options.openingTag);
                 var tagValue = _.str.rtrim(tagValue, self.options.closingTag);
                 var translated_tag = gettext(tagValue);
-                styledText = styledText.replace(tag, ' <span class="tags" data-tag="'+ tagValue +'" >' + translated_tag + '</span> ');
+                styledText = styledText.replace(tag, '<span class="tags" data-tag="'+ tagValue +'" >' + translated_tag + '</span>');
                 self.tags[i] = translated_tag;
             });
         }
         var el = self.element;
-//        var styledText = '' + plainText.replace(new RegExp(self.options.openingTag, 'g'), '<span class="tags">').replace(new RegExp(self.options.closingTag, 'g'), '</span>');
 
         el.html(styledText);
         self.handleAdjacentTags();
@@ -67,7 +66,7 @@ $.widget("dw.TextNTags", {
         })
         .on('blur keyup', function (e) {
 
-                el.find('br').remove();
+//                el.find('br').remove();
                 if ($(el).find('span.tags').text() != self.tags.join("").replace(new RegExp(self.options.openingTag, 'g'), '').replace(new RegExp(self.options.closingTag, 'g'), '')) {
                     var after = $(el).html();
                     var start, end;
@@ -116,8 +115,12 @@ $.widget("dw.TextNTags", {
         var el = self.element;
         var returnText = '';
         $.each(el.contents(), function(i, e){
+            //text nodes
             if(e.nodeType == 3){
                 returnText += e.textContent;
+            }
+            else if(e.nodeType == 1 &&  e.tagName.toLowerCase() === "br"){
+                // ignore
             }
             else{
                 returnText += self.options.openingTag + $(e).data('tag') + self.options.closingTag;
