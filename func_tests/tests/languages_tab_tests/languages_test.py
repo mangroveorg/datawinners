@@ -8,6 +8,7 @@ from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
 from tests.testsettings import UI_TEST_TIMEOUT
 
+
 default_en_messages = [u'Thank you {Name of Data Sender}. We received your SMS: {List of Answers}',
                         u'Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.',
                         u'Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.',
@@ -86,6 +87,9 @@ class TestLanguageTab(HeadlessRunnerTest):
     def verify_warning_dialog_present(self):
         self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
 
+    def verify_warning_dialog_present(self):
+        self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
+
     @attr('functional_test')
     def test_unsaved_warning_dialog(self):
         def click_identification_number_page():
@@ -101,24 +105,26 @@ class TestLanguageTab(HeadlessRunnerTest):
 
         navigate_away_action()
         self.verify_warning_dialog_present()
-        # time.sleep(2)
-        # self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".no_button"), True)
-        self.driver.find_visible_element(by_css(".no_button")).click()
+        self.language_page.click_revert_changes_button()
 
         self.driver.find(by_css("#global_languages_link")).click()
         self.language_page = CustomizedLanguagePage(self.driver)
+        self.language_page.wait_for_messages_to_load()
         self.check_for_default_en_messages()
 
         self.change_reply_messages()
         navigate_away_action()
         self.verify_warning_dialog_present()
-        self.driver.find_visible_element(by_css(".yes_button")).click()
+        self.language_page.click_save_changes_button
 
-        # self.language_page.select_language("English",True)
         self.driver.find(by_css("#global_languages_link")).click()
+        self.driver.wait_for_page_load()
         self.language_page = CustomizedLanguagePage(self.driver)
+        self.language_page.wait_for_messages_to_load()
+        self.driver.create_screenshot("msg.png")
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
 
+    @attr('functional_test')
     def test_unsaved_warning_on_language_change(self):
         def click_identification_number_page():
             self.language_page.select_language("French")

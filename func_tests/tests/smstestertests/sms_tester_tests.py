@@ -13,7 +13,6 @@ from datawinners.accountmanagement.models import Organization
 from tests.submissionlogtests.submission_log_tests import send_sms_with
 from framework.base_test import HeadlessRunnerTest
 
-#class TestSMSTester(unittest.TestCase):
 class TestSMSTester(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):

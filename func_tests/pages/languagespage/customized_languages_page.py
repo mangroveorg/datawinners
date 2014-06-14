@@ -1,6 +1,7 @@
-from framework.utils.common_utils import by_id, by_css
+from selenium.webdriver.support.wait import WebDriverWait
+
+from framework.utils.common_utils import by_css
 from framework.utils.drop_down_web_element import DropDown
-from framework.utils.text_box_web_element import TextBox
 from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -25,6 +26,14 @@ class CustomizedLanguagePage(Page):
         self.driver.execute_script("$(arguments[0]).html($(arguments[0]).html() + arguments[1]);", message_box, message)
         # hack to update ko viewmodel
         self.driver.execute_script("$(arguments[0]).trigger( 'blur' );", message_box)
+
+    def click_revert_changes_button(self):
+        self.driver.find_visible_element(by_css(".no_button")).click()
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"))
+
+    def click_save_changes_button(self):
+        self.driver.find_visible_element(by_css(".yes_button")).click()
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"))
 
     def clear_custom_message(self, message_box_locator):
         message_box = self.driver.find(message_box_locator)
@@ -51,6 +60,11 @@ class CustomizedLanguagePage(Page):
         self.language_drop_down.set_selected_by_text(language_text)
         if wait_for_load:
             self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockUI"))
+        self.wait_for_messages_to_load()
+
+    def wait_for_messages_to_load(self):
+        #waiting for the last custom message to be populated
+        WebDriverWait(self.driver, UI_TEST_TIMEOUT).until(lambda driver:  driver.execute_script("return $('#account_message3').text().length > 0"))
 
 
     def get_custom_message_for(self, msg_locator):
