@@ -118,8 +118,8 @@ def create_project(request):
                                    'is_edit': 'false',
                                    'active_language':active_language,
                                    'post_url': reverse(create_project),
-                                   'unique_id_types': [unique_id_type.capitalize() for unique_id_type in
-                                                       get_unique_id_types(manager)],
+                                   'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in
+                                                       get_unique_id_types(manager)]),
                                    'cancel_link': cancel_link}, context_instance=RequestContext(request))
 
     if request.method == 'POST':

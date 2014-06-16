@@ -209,7 +209,7 @@ def project_overview(request, project_id):
         'in_trial_mode': in_trial_mode,
         'questionnaire_code': questionnaire_code,
         'has_multiple_unique_id':has_multiple_unique_id,
-        'entity_type': entity_type,
+        'entity_type': json.dumps(entity_type),
         'unique_id_header_text': unique_id_header_text,
         'org_number': get_organization_telephone_number(request)
     }))
