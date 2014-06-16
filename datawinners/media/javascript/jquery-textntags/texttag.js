@@ -70,7 +70,7 @@ $.widget("dw.TextNTags", {
                 if ($(el).find('span.tags').text() != self.tags.join("").replace(new RegExp(self.options.openingTag, 'g'), '').replace(new RegExp(self.options.closingTag, 'g'), '')) {
                     var after = $(el).html();
                     var start, end;
-                    for(start=0; start<before.length && start< after.length; start++){
+                    for(start = 0; start < before.length && start < after.length; start++){
                         if(before[start]!=after[start]){
                             break;
                         }
@@ -78,8 +78,8 @@ $.widget("dw.TextNTags", {
                     if (start > 0 && before[start-1] == '<'){
                         start--;
                     }
-                    for(end=0; end<before.length && end< after.length; end++){
-                        if(before[before.length - 1 - end]!=after[after.length - 1 - end]){
+                    for(end = 0; end < before.length && end < after.length; end++){
+                        if(before[before.length - 1 - end] != after[after.length - 1 - end]){
                             break;
                         }
                     }
@@ -123,12 +123,13 @@ $.widget("dw.TextNTags", {
             //if tag present at the end, then append a space for cursor to remain within widget - chrome hack
             if(contents[contentLength-1].nodeType && self._isTagNode(contents[contentLength-1])){
                 this.endsWithTag = true;
-                el.html(el.html() + ' ');
+                $(" <br>").insertAfter(contents[contentLength-1]);
+                el[0].normalize();
                 contents = el.contents();
             }
             else if(contentLength > 1 && self._isTagNode(contents[contentLength-2])){
-                if(self._isTagNode(contents[contentLength-1])){
-                    this.endsWithTag = true;
+                if(self._isTextNode(contents[contentLength-1])){
+                   this.endsWithTag = true;
                 }
             }
             else{
@@ -139,6 +140,8 @@ $.widget("dw.TextNTags", {
             if(contents[0].nodeType && self._isTagNode(contents[0])){
                 this.beginsWithTag = true;
                 el.html(' ' + el.html());
+                el[0].normalize();
+
             }
             else if(contentLength > 1 && self._isTextNode(contents[0])){
                 if(contents[1].nodeType && self._isTagNode(contents[1])){
