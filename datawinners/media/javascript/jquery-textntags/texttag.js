@@ -105,7 +105,7 @@ $.widget("dw.TextNTags", {
     },
 
     _isTagNode: function(el){
-        return el.nodeType == 1 && el.tagName == 'SPAN'
+        return el.nodeType == 1 && el.tagName == 'SPAN';
     },
 
     handleTags: function () {
