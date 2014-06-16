@@ -124,6 +124,7 @@ $.widget("dw.TextNTags", {
             if(contents[contentLength-1].nodeType && self._isTagNode(contents[contentLength-1])){
                 this.endsWithTag = true;
                 el.html(el.html() + ' ');
+                contents = el.contents();
             }
             else if(contentLength > 1 && self._isTagNode(contents[contentLength-2])){
                 if(self._isTagNode(contents[contentLength-1])){
