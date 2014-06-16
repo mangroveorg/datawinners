@@ -5,7 +5,7 @@ function installPhantomjs(){
     mkdir -p ~/phantom
     mkdir -p ~/bin
     cd ~/phantom
-    wget http://phantomjs.googlecode.com/files/phantomjs-1.9.7-linux-x86_64.tar.bz2
+    wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
     tar xjf phantomjs-1.9.7-linux-x86_64.tar.bz2
     ln -s ~/phantom/phantomjs-1.9.7-linux-x86_64/bin/phantomjs ~/bin/phantomjs
 
@@ -39,7 +39,7 @@ done
 
 # fire up the phantomjs environment and run the test
 cd $SCRIPTDIR
-/usr/bin/env phantomjs ./js_libs/jasmine_reporters/phantomjs-testrunner.js $TESTFILE
+phantomjs ./js_libs/jasmine_reporters/phantomjs-testrunner.js $TESTFILE
 if [ $? -eq 0 ]
 then
     echo -e "\e[0;32;47mAll DW JS test passed\e[0m"
