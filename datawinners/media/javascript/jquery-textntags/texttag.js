@@ -6,7 +6,8 @@ $.widget("dw.TextNTags", {
         contentChangedHandler: function () {
         }
     },
-
+    beginsWithTag: false,
+    endsWithTag: false,
     tags: [],
     initialStateHtml: '',
 
@@ -39,7 +40,7 @@ $.widget("dw.TextNTags", {
         var el = self.element;
 
         el.html(styledText);
-        self.handleAdjacentTags();
+        self.handleTags();
     },
 
     deleteTagHandler: function () {
@@ -66,7 +67,6 @@ $.widget("dw.TextNTags", {
         })
         .on('blur keyup', function (e) {
 
-//                el.find('br').remove();
                 if ($(el).find('span.tags').text() != self.tags.join("").replace(new RegExp(self.options.openingTag, 'g'), '').replace(new RegExp(self.options.closingTag, 'g'), '')) {
                     var after = $(el).html();
                     var start, end;
@@ -94,15 +94,59 @@ $.widget("dw.TextNTags", {
                     }
                 }
 
-                self.handleAdjacentTags();
+                self.handleTags();
                 self._trigger('contentChangedHandler');
                 before = el.html();
             });
     },
 
-    handleAdjacentTags: function () {
-        if(/></.test($(this.element).html())) {
-            $(this.element).html($(this.element).html().replace(/></g , "> <"));
+    _isTextNode: function(el){
+        return el.nodeType == 3 && el.textContent == ' ';
+    },
+
+    _isTagNode: function(el){
+        return el.nodeType == 1 && el.tagName == 'SPAN'
+    },
+
+    handleTags: function () {
+        var el = $(this.element);
+        var self = this;
+
+        if(/></.test(el.html())) {
+            el.html(el.html().replace(/></g , "> <"));
+        }
+
+        var contents = el.contents();
+        var contentLength = contents.length;
+        if(contents && contentLength > 0){
+
+            //if tag present at the end, then append a space for cursor to remain within widget - chrome hack
+            if(contents[contentLength-1].nodeType && self._isTagNode(contents[contentLength-1])){
+                this.endsWithTag = true;
+                el.html(el.html() + ' ');
+            }
+            else if(contentLength > 1 && self._isTagNode(contents[contentLength-2])){
+                if(self._isTagNode(contents[contentLength-1])){
+                    this.endsWithTag = true;
+                }
+            }
+            else{
+                this.endsWithTag = false;
+            }
+
+            //if tag present at the start, then prepend a space for user to be able to add text at the beginning - ff hack
+            if(contents[0].nodeType && self._isTagNode(contents[0])){
+                this.beginsWithTag = true;
+                el.html(' ' + el.html());
+            }
+            else if(contentLength > 1 && self._isTextNode(contents[0])){
+                if(contents[1].nodeType && self._isTagNode(contents[1])){
+                    this.beginsWithTag = true;
+                }
+            }
+            else{
+                this.beginsWithTag = false;
+            }
         }
     },
 
@@ -126,6 +170,16 @@ $.widget("dw.TextNTags", {
                 returnText += self.options.openingTag + $(e).data('tag') + self.options.closingTag;
             }
         });
+
+        if(self.beginsWithTag){
+            //ignore starting space
+            returnText = returnText.substring(1);
+        }
+        if(self.endsWithTag){
+            //ignore ending space
+            returnText = returnText.substring(0, returnText.length-1);
+        }
+
         return returnText;
     },
 
@@ -139,6 +193,16 @@ $.widget("dw.TextNTags", {
         }).each(function(i, t) {
             textCount += t.length;
         });
+
+        if(self.beginsWithTag){
+            //ignore starting space
+            textCount -= 1;
+        }
+
+        if(self.endsWithTag){
+            //ignore ending space
+            textCount -= 1;
+        }
 
         return textCount + tagsCount * 15;
     }
