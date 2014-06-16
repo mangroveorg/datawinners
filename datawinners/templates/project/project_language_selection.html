@@ -49,7 +49,7 @@
 
     <div id="automatic_reply_section">
         <h3>{% trans 'Automatic Reply SMS' %}</h3>
-        <div  class="help_accordion">{% trans 'DataWinners analyzes' %}</div>
+        <div  class="help_accordion">{% trans 'DataWinners analyzes' %} </div>
     </div>
 
     <div id="flash-message-section">
@@ -76,8 +76,9 @@
              <ul>
                 <li>
                     <h6>
-                        {% trans "Languages" %}
+                        {% trans "Language" %}
                         <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+                        <div  class="help_accordion">{% trans "reply_sms_help_text"%}</div>
                         <div class="tooltip">
                            <p> {% trans "tooltip_error_language" %} </p>
                         </div>

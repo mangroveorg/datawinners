@@ -1274,3 +1274,6 @@ msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils tentent
 
 msgid "example reply_identification_number_already_exists"
 msgstr "Erreur. Cli206 existe déjà. Enregistrez votre clinique sous un autre  Numéro d'Identification."
+
+msgid "Add a new language on the Languages page"
+msgstr "Ajoutez une nouvelle langue sur la page Langues"

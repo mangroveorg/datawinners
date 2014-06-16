@@ -4561,7 +4561,7 @@ msgid "The Data Sender you are submitting on behalf of cannot submit to this Que
 msgstr ""
 
 msgid "DataWinners analyzes"
-msgstr "DataWinners analyzes each SMS Submission and automatically sends back an SMS reply. For each Questionnaire you can choose the language of these automatic reply SMS.  Click on the drop down and choose a language to view and edit the suggested automatic reply SMS text. You can also add new languages to meet your needs."
+msgstr "DataWinners analyzes each SMS Submission and automatically sends back an SMS reply."
 
 msgid "%s with %s = %s not found."
 msgstr ""
@@ -4584,3 +4584,20 @@ msgstr ""
 msgid "account wide sms help text"
 msgstr "These are general Automatic Reply SMS for your organization’s DataWinners account. Edit/translate these messages to fit your needs. Note: Any changes you make will apply for all Data Senders."
 
+msgid "Automatic reply messages turned off for this questionnaire."
+msgstr ""
+
+msgid "To reactivate them go to "
+msgstr ""
+
+msgid "Automatic Reply SMS."
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "reply_sms_help_text"
+msgstr "Choose the language of your reply SMS. View and add new languages on the Languages page."
+
+msgid "Changes saved successfully."
+msgstr ""

@@ -4876,7 +4876,7 @@ msgid "The Data Sender you are submitting on behalf of cannot submit to this Que
 msgstr "L'Expéditeur de Données pour le compte duquel vous soumettez des Données n'est pas autorisé à soumettre des Données pour ce Questionnaire. Ajoutez l'Expéditeur de Données à ce Questionnaire."
 
 msgid "DataWinners analyzes"
-msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une retour SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces retour SMS automatique. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les réponses SMS automatiques. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
+msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une retour SMS."
 
 msgid "Send Automatic SMS Replies for My Questionnaire"
 msgstr "Envoyer des retours SMS automatiques pour mon Questionnaire"
@@ -4991,4 +4991,10 @@ msgstr "En savoir plus »"
 
 msgid "With this update we changed the webpage address you are trying to access. Sorry for the inconvenience."
 msgstr "Avec cette mise à jour, nous avons changé l'adresse de la page Web à laquelle vous tentez d'accéder. Nous nous excusons pour tout inconvénient."
+
+msgid "reply_sms_help_text"
+msgstr "Choisissez la langue pour votre réponse SMS. Voyez et ajoutez de nouvelles langues sur la page Langues."
+
+msgid "Changes saved successfully."
+msgstr "Modifications sauvegardées avec succès"
 
