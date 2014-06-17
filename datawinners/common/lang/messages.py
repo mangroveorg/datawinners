@@ -36,22 +36,21 @@ def save_questionnaire_custom_messages(dbm, lang_code, messages, language=None):
 
 
 def save_account_wide_sms_messages(dbm, account_messages):
-    return save_custom_messages(dbm, ACCOUNT_MESSAGE_DOC_ID, account_messages)
+    save_custom_messages(dbm, ACCOUNT_MESSAGE_DOC_ID, account_messages)
 
 
 def save_custom_messages(dbm, message_id, messages, language=None):
     message = dbm.database.get(message_id)
     if message:
-        return _update_reply_message(dbm, message, messages, message_id)
+        _update_reply_message(dbm, message, messages, message_id)
     else:
-        return _create_reply_message_template(dbm, message_id, messages, language)
+        _create_reply_message_template(dbm, message_id, messages, language)
 
 
 def _update_reply_message(dbm, message, messages, message_id):
     message["messages"] = messages
     dbm.database.update([message])
     _delete_language_from_cache(dbm, message_id)
-    return message_id
 
 def _delete_language_from_cache(dbm, language_code):
     cache_manger = get_cache_manager()
@@ -62,6 +61,6 @@ def _create_reply_message_template(dbm, message_id, messages, language=None):
     if message_id == ACCOUNT_MESSAGE_DOC_ID:
         raise Exception
     message = QuestionnaireCustomizedMessages(message_id, language, messages)
-    return dbm._save_document(message)
+    dbm._save_document(message)
 
 
