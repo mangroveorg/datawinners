@@ -2946,7 +2946,7 @@ msgid "Data Submission"
 msgstr "Présentation des données"
 
 msgid "Register a new "
-msgstr "Enregistrez un(e) "
+msgstr "Enregistrer un(e) "
 
 msgid "Project"
 msgstr "Projet"
