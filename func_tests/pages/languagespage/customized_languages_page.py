@@ -21,6 +21,11 @@ class CustomizedLanguagePage(Page):
         custom_message_text_box = self.driver.find(msg_locator)
         self.update_custom_message(message, custom_message_text_box)
 
+    def remove_appended_message_for_selector(self, locator, message):
+        custom_message_text_box = self.driver.find(locator)
+        self.driver.execute_script("$(arguments[0]).html(_.str.rtrim($(arguments[0]).html(), arguments[1])); $(arguments[0]).trigger( 'blur' );", custom_message_text_box, message)
+        self.save_changes()
+
     def update_custom_message(self, message, message_box):
         self.driver.execute_script("$(arguments[0]).html($(arguments[0]).html() + arguments[1]);", message_box, message)
         # hack to update ko viewmodel

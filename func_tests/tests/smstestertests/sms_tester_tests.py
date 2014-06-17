@@ -4,9 +4,10 @@ from datetime import datetime
 from nose.plugins.attrib import attr
 
 from framework.utils.data_fetcher import fetch_, from_
-from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
-from pages.languagespage.customized_language_locator import SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, SUBMISSION_WITH_ERROR_MESSAGE_LOCATOR
+from pages.languagespage.customized_language_locator import SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR
+from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
+from testdata.test_data import CUSTOMIZE_MESSAGES_URL
 from tests.smstestertests.sms_tester_data import *
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID
 from datawinners.accountmanagement.models import Organization
@@ -23,6 +24,13 @@ class TestSMSTester(HeadlessRunnerTest):
           'Updated')
         languages_page.save_changes()
         assert languages_page.get_success_message() == 'Changes saved successfully.'
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.go_to(CUSTOMIZE_MESSAGES_URL)
+        CustomizedLanguagePage(cls.driver).remove_appended_message_for_selector(SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, 'Updated')
+
+        HeadlessRunnerTest.tearDownClass()
 
     @attr('functional_test')
     def test_sms_player_for_exceeding_word_length(self):
@@ -101,8 +109,7 @@ class TestSMSTester(HeadlessRunnerTest):
 
         test_data.update({SENDER: "1234567890"})
         self.assertEqual(send_sms_with(test_data),
-                         "Error. Wrong number of answers. Please review printed Questionnaire and resend entire SMS.Updated")
-                         # "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
+                         "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.Updated")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("extradata", "")})
@@ -118,4 +125,5 @@ class TestSMSTester(HeadlessRunnerTest):
         test_data.update({SMS: message.replace("age", "56")})
         self.assertEqual(send_sms_with(test_data),
                          "Thank you Shweta. We received your SMS.")
-        
+
+
