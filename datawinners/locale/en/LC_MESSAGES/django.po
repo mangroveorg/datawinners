@@ -978,7 +978,7 @@ msgstr ""
 msgid "Warning: Activating the project will remove all existing test data."
 msgstr ""
 
-msgid "Export all submissions prior to deleting your project."
+msgid "Export all Submissions prior to deleting your Questionnaire."
 msgstr ""
 
 msgid "Delete Questionnaire Now"
@@ -1780,7 +1780,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-msgid "Your questionnaire has been deleted"
+msgid "Your Questionnaire has been deleted"
 msgstr ""
 
 msgid "Undo Delete"
@@ -3898,7 +3898,7 @@ msgstr ""
 msgid "Data Sender with Unique Identification Number (ID) = %s already exists."
 msgstr ""
 
-msgid "What do you want to do?"
+msgid "What Do You Want to Do?"
 msgstr ""
 
 msgid "Edited Project"
@@ -4593,6 +4593,14 @@ msgstr ""
 msgid "Automatic Reply SMS."
 msgstr ""
 
+msgid "Delete Questionnaire"
+msgstr ""
+
+msgid "Analyze Data"
+msgstr ""
+
+msgid "View Submissions"
+msgstr ""
 msgid "Language"
 msgstr ""
 

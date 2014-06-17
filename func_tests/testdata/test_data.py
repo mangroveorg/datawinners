@@ -23,7 +23,7 @@ def url(path):
 
 DATA_WINNER_HOME_PAGE = "/home"
 DATA_WINNER_LOGIN_PAGE = url("/login")
-ALL_DATA_PAGE = url("/alldata")
+ALL_DATA_PAGE = url("/questionnaire")
 LOGOUT = url('/logout')
 DATA_WINNER_DASHBOARD_PAGE = url("/dashboard")
 DATA_WINNER_ALL_PROJECTS_PAGE = url("/project")

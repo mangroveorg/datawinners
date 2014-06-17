@@ -5,12 +5,12 @@ from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.utils.http import urlquote
-from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user
+from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user, is_datasender
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
 from datawinners.settings import CRS_ORG_ID
-from datawinners.project.models import Project
+from datawinners.project.models import Project, get_all_projects
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_all_entities
 from django.utils.translation import ugettext as _
@@ -22,6 +22,12 @@ from datawinners.project.utils import is_quota_reached
 from datawinners.entity.views import create_subject
 from django.http import Http404
 from operator import itemgetter
+from datawinners import settings
+from datawinners.project import helper
+from django.contrib import messages
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.common.constant import DELETED_PROJECT
+from django.http import HttpResponseRedirect
 
 REPORTER_ENTITY_TYPE = u'reporter'
 
@@ -99,15 +105,35 @@ def is_crs_user(request):
 @is_not_expired
 def index(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
-    project_list = get_project_list(request)
+    rows = get_project_list(request)
+    project_list = []
     project_list.sort(key=itemgetter('name'))
     smart_phone_instruction_link = reverse("smart_phone_instruction")
+    for project in rows:
+        project_id = project['project_id']
+        delete_links = reverse('delete_projects', args=[project_id])
+        project = dict(delete_links=delete_links,
+                       name=project['name'],
+                       created=project['created'],
+                       qid=project['qid'],
+                       link=project['link'],
+                       web_submission_link_disabled=project['web_submission_link_disabled'],
+                       web_submission_link=project['web_submission_link'],
+                       analysis=project['analysis'],
+                       disabled=project['disabled'],
+                       log=project['log'],
+                       create_subjects_link=project['create_subjects_link'],
+                       entity_type=project['entity_type'],
+                       encoded_name=project['encoded_name'],
+                       import_template_file_name=project['import_template_file_name']
+        )
 
+        project_list.append(project)
     activation_success = request.GET.get('activation', False)
 
-    messages = []
+    error_messages = []
     if "associate" in request.GET.keys():
-        messages = [_('You may have been dissociated from the project. Please contact your administrator for more details.')]
+        error_messages = [_('You may have been dissociated from the project. Please contact your administrator for more details.')]
     if is_crs_admin(request):
         return render_to_response('alldata/index.html',
                                   {'projects': project_list, 'page_heading': page_heading,
@@ -115,7 +141,7 @@ def index(request):
                                    'hide_link_class': hide_link_class, 'is_crs_admin': True,
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached':is_quota_reached(request),
-                                   'messages': messages,
+                                   'error_messages': error_messages,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
     else:
@@ -126,7 +152,7 @@ def index(request):
                                    "smart_phone_instruction_link": smart_phone_instruction_link,
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached':is_quota_reached(request),
-                                   'messages': messages,
+                                   'error_messages': error_messages,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
 
@@ -153,7 +179,7 @@ def reports(request):
         raise Http404
 
     response = render_to_response('alldata/reports_page.html',
-                                  {'reports': report_list, 'page_heading': "All Data",
+                                  {'reports': report_list, 'page_heading': "Questionnaires",
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached':is_quota_reached(request),
                                    'is_crs_admin': True},
@@ -187,3 +213,27 @@ def get_entity_list_by_type(request, entity_type):
     manager = get_database_manager(request.user)
     entities = get_all_entities(manager, entity_type_list)
     return convert_to_json_response([entity.short_code for entity in entities])
+
+@login_required
+@session_not_expired
+@is_new_user
+@is_datasender
+@is_not_expired
+def delete_projects(request, project_id):
+    manager = get_database_manager(request.user)
+    questionnaire = Project.get(manager, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if questionnaire.is_void():
+        return HttpResponseRedirect(dashboard_page)
+    helper.delete_project(manager, questionnaire)
+    undelete_link = reverse(undelete_projects, args=[project_id])
+    if len(get_all_projects(manager)) > 0:
+        messages.info(request, undelete_link)
+        UserActivityLog().log(request, action=DELETED_PROJECT, project=questionnaire.name)
+    return HttpResponseRedirect(reverse(index))
+
+def undelete_projects(request, project_id):
+    manager = get_database_manager(request.user)
+    questionnaire = Project.get(manager, project_id)
+    helper.delete_project(manager, questionnaire, void=False)
+    return HttpResponseRedirect(reverse(index))

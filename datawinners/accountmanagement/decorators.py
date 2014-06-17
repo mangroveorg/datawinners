@@ -94,7 +94,7 @@ def is_not_expired(f):
     return wrapper
 
 
-def is_allowed_to_view_reports(f, redirect_to='/alldata'):
+def is_allowed_to_view_reports(f, redirect_to='/questionnaire'):
     def wrapper(*args, **kw):
         request = args[0]
         user = request.user

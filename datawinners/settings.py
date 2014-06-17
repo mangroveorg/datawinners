@@ -150,7 +150,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 INDEX_PAGE = '/home'
 HOME_PAGE = '/dashboard'
-DATASENDER_DASHBOARD = '/alldata/'
+DATASENDER_DASHBOARD = '/questionnaire/'
 LOGIN_REDIRECT_URL = (HOME_PAGE)
 LOGIN_URL = '/login'
 TRIAL_EXPIRED_URL = '/trial/expired/'

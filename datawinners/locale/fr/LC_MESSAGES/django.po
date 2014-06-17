@@ -1046,8 +1046,8 @@ msgstr "Activer"
 msgid "Warning: Activating the project will remove all existing test data."
 msgstr "Attention : L'activation du projet va supprimer toutes ses données enregistrées"
 
-msgid "Export all submissions prior to deleting your questionnaire."
-msgstr "Veuillez exporter toutes les données avant de supprimer votre questionnaire."
+msgid "Export all Submissions prior to deleting your Questionnaire."
+msgstr "Veuillez exporter toutes les données avant de supprimer votre Questionnaire."
 
 msgid "Delete Questionnaire Now"
 msgstr "Supprimez le questionnaire maintenant"
@@ -1837,8 +1837,8 @@ msgstr "ID "
 msgid "Contact"
 msgstr "Contact"
 
-msgid "Your questionnaire has been deleted"
-msgstr "Votre questionnaire a été supprimé"
+msgid "Your Questionnaire has been deleted"
+msgstr "Votre Questionnaire a été supprimé"
 
 msgid "Undo Delete"
 msgstr "Annuler Supprimer"
@@ -4014,7 +4014,7 @@ msgstr "à"
 msgid "Data Sender with Unique Identification Number (ID) = %s already exists."
 msgstr "Un expéditeur avec le numéro d'identification unique (ID) =% s existe déjà."
 
-msgid "What do you want to do?"
+msgid "What Do You Want to Do?"
 msgstr "Qu'est ce que vous voulez faire?"
 
 msgid "Edited Project"
@@ -4976,6 +4976,15 @@ msgstr "Les messages de retour automatiques ont été désactivés pour ce Quest
 
 msgid "To reactivate them go to "
 msgstr "Pour les réactiver, cliquez sur "
+
+msgid "Delete Questionnaire"
+msgstr "Supprimer le Questionnaire"
+
+msgid "Analyze Data"
+msgstr "Analyser les données"
+
+msgid "View Submissions"
+msgstr "Voir les Soumisssions"
 
 msgid "Automatic Reply SMS."
 msgstr "Retour SMS Automatique."

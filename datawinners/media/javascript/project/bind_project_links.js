@@ -10,7 +10,7 @@ DW.bind_project_links = function () {
                 $("#delete_project_block").dialog("open");
                 var project_id = $(this).attr('href').split('/')[3];
                 $('#confirm_delete').attr('href', $(this).attr('href'));
-                $('#undo_delete_project').attr('href', '/project/undelete/' + project_id + "/");
+                $('#undo_delete_project').attr('href', '/questionnaire/undelete/' + project_id + "/");
                 $('#undelete_project_section').show().hide(50000);
                 return false;
             });

@@ -101,4 +101,4 @@ class TestAddSubject(HeadlessRunnerTest):
 
         self.driver.go_to(self.add_subjects_url)
 
-        self.assertRegexpMatches((AddSubjectPage(self.driver)).get_cancel_url(), "/alldata/")
+        self.assertRegexpMatches((AddSubjectPage(self.driver)).get_cancel_url(), "/questionnaire/")
