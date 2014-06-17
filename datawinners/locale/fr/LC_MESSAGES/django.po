@@ -5007,3 +5007,6 @@ msgstr "Choisissez la langue pour votre réponse SMS. Voyez et ajoutez de nouvel
 msgid "Changes saved successfully."
 msgstr "Modifications sauvegardées avec succès"
 
+msgid "Register each with an Identification Number and any other background information you need. "
+msgstr "Enregistrez chacun sous un Numéro d'Identification et toute autre information de base dont vous avez besoin."
+

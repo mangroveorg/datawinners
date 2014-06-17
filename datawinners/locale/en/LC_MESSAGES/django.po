@@ -4601,6 +4601,7 @@ msgstr ""
 
 msgid "View Submissions"
 msgstr ""
+
 msgid "Language"
 msgstr ""
 
@@ -4608,4 +4609,7 @@ msgid "reply_sms_help_text"
 msgstr "Choose the language of your reply SMS. View and add new languages on the <a href='/customizemessages'>Languages</a> page."
 
 msgid "Changes saved successfully."
+msgstr ""
+
+msgid "Register each with an Identification Number and any other background information you need."
 msgstr ""

@@ -42,18 +42,13 @@
     </table>
     <div id="no_registered_subject_message" style="display: none">
         <div class="no_registered_subjects">
-            <p>{% blocktrans with entity_type|capfirst as entity_type %}Once you have registered a {{ entity_type }}, it will appear here.{% endblocktrans %} </p>
-
-            <p>{% trans "To get started" %}</p>
-            <ul>
-                <li>{% trans "Register a" %} {{ entity_type }}: <a
-                        href="{{ create_subject_link }}">{% trans "Add a new" %} {{ entity_type }}</a> {% trans "or" %}
-                    <a href="javascript:void(0);" class="import-subject">
-                        {% blocktrans with entity_type|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a></li>
-                <li><a href="{% url edit_subject_questionnaire entity_type %}">
-                    {% blocktrans with entity_type|capfirst as entity_type %}Customize the {{ entity_type }} registration form{% endblocktrans %} </a>
-                </li>
-            </ul>
+            <p>
+                <a href="{{ create_subject_link }}">{% trans "Add a new" %} {{ entity_type }}</a> {% trans "or" %}
+                <a href="javascript:void(0);" class="import-subject">
+                    {% blocktrans with entity_type|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a>
+                <a href="{% url edit_subject_questionnaire entity_type %}">
+                {% blocktrans with entity_type|capfirst as entity_type %}Customize the {{ entity_type }} registration form{% endblocktrans %} </a>
+            </p>
         </div>
     </div>
 </div>

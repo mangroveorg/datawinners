@@ -1,7 +1,7 @@
 {% load i18n %}
 <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
 <div class="help_accordion">
-    {% blocktrans with entity_type|capfirst as entity_type %}Register each {{ entity_type }} you need to collect data about and want to see on a map.{% endblocktrans %}
+    {% trans "Register each with an Identification Number and any other background information you need." %}
 </div>
 <div style="display: none">
 {% include "entity/import_subject_popup.html" %}
