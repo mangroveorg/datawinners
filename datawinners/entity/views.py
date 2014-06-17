@@ -301,6 +301,7 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
 @login_required
 @csrf_view_exempt
 @is_not_expired
+@is_datasender
 def create_multiple_web_users(request):
     """Create multiple web users from All Data Senders page"""
     org_id = request.user.get_profile().org_id
@@ -559,6 +560,7 @@ def get_questionnaire_details_ajax(request, entity_type):
 @login_required
 @session_not_expired
 @is_not_expired
+@is_datasender
 def edit_subject_questionnaire(request, entity_type=None):
     # edit subject type questionnaire view
     manager = get_database_manager(request.user)

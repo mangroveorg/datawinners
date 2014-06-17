@@ -23,7 +23,7 @@ from django.contrib.sites.models import Site
 
 from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
 from mangrove.transport import TransportInfo
-from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_trial, valid_web_user, is_sms_api_user
+from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_trial, valid_web_user, is_sms_api_user, is_datasender
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.main.database import get_database_manager
@@ -170,6 +170,7 @@ def users(request):
 
 
 @valid_web_user
+@is_datasender
 def edit_user(request):
     if request.method == 'GET':
         profile = request.user.get_profile()

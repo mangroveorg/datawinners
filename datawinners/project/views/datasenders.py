@@ -14,7 +14,7 @@ from django.views.generic.base import View
 import jsonpickle
 
 from datawinners import settings
-from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired
+from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired, is_datasender
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS
 from datawinners.entity import import_data as import_module
@@ -101,6 +101,7 @@ def _add_imported_datasenders_to_project(imported_datasenders_id, manager, proje
 @csrf_exempt
 @is_not_expired
 @is_project_exist
+@is_datasender
 def registered_datasenders(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)

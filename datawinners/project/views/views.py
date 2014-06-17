@@ -107,6 +107,7 @@ def delete_project(request, project_id):
 
 @csrf_view_exempt
 @valid_web_user
+@is_datasender
 def rename_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -127,7 +128,7 @@ def rename_project(request, project_id):
                 content_type='application/json')
     return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
 
-
+@is_datasender
 def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -350,6 +351,7 @@ def get_project_link(project, entity_type=None):
 
 @valid_web_user
 @is_project_exist
+@is_datasender
 def registered_subjects(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -395,6 +397,7 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
 
 @valid_web_user
 @is_project_exist
+@is_datasender
 def questionnaire(request, project_id):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
@@ -670,6 +673,7 @@ def subject_web_questionnaire(request, project_id=None, entity_type=None):
 
 @valid_web_user
 @is_project_exist
+@is_datasender
 # TODO : TW_BLR : what happens in case of POST?
 def questionnaire_preview(request, project_id=None, sms_preview=False):
     manager = get_database_manager(request.user)
@@ -767,6 +771,7 @@ def _get_subject_form_model(manager, entity_type):
 
 @valid_web_user
 @is_project_exist
+@is_datasender
 def edit_my_subject_questionnaire(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -810,6 +815,7 @@ def append_success_to_context(context, form):
 @project_has_web_device
 @is_not_expired
 @is_project_exist
+@is_datasender
 def create_data_sender_and_web_user(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)

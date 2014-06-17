@@ -145,6 +145,7 @@ class DataSenderActionView(View):
     @method_decorator(session_not_expired)
     @method_decorator(is_not_expired)
     @method_decorator(is_new_user)
+    @method_decorator(is_datasender)
     def dispatch(self, *args, **kwargs):
         return super(DataSenderActionView, self).dispatch(*args, **kwargs)
 

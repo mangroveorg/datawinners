@@ -6,7 +6,7 @@ from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _, get_language, activate
 from django.views.generic.base import TemplateView
-from datawinners.accountmanagement.decorators import valid_web_user
+from datawinners.accountmanagement.decorators import valid_web_user, is_datasender
 from datawinners.accountmanagement.helper import update_user_name_if_exists
 from datawinners.accountmanagement.models import Organization
 from datawinners.activitylog.models import UserActivityLog
@@ -117,6 +117,7 @@ class EditDataSenderView(TemplateView):
                                   context_instance=RequestContext(request))
 
     @method_decorator(valid_web_user)
+    @method_decorator(is_datasender)
     def dispatch(self, *args, **kwargs):
         return super(EditDataSenderView, self).dispatch(*args, **kwargs)
 
@@ -172,5 +173,6 @@ class RegisterDatasenderView(TemplateView):
 
 
     @method_decorator(valid_web_user)
+    @method_decorator(is_datasender)
     def dispatch(self, *args, **kwargs):
         return super(RegisterDatasenderView, self).dispatch(*args, **kwargs)
