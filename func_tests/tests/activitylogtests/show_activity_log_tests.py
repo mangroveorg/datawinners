@@ -120,7 +120,7 @@ class TestShowActivityLog(HeadlessRunnerTest):
         activity_log_page.select_filter('Data Submissions', 'Edited Data Submission(s)')
         time.sleep(3)
         self.assertEqual("Edited Data Submission(s)", activity_log_page.get_data_on_cell(row=1, column=2))
-        self.assertTrue(activity_log_page.get_data_on_cell(row=1, column=3).startswith("Reporter activities"))
+        self.assertTrue(activity_log_page.get_data_on_cell(row=1, column=3).startswith("Reporter Activities"))
         details_data = activity_log_page.get_data_on_cell(row=1, column=4)
         self.assertTrue("Submission Received on" in details_data)
         self.assertTrue("Changed Answers" in details_data)
