@@ -115,7 +115,7 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.change_reply_messages()
         navigate_away_action()
         self.verify_warning_dialog_present()
-        self.language_page.click_save_changes_button
+        self.language_page.click_save_changes_button()
 
         self.driver.find(by_css("#global_languages_link")).click()
         self.driver.wait_for_page_load()

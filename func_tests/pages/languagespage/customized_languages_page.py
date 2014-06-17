@@ -2,6 +2,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from framework.utils.common_utils import by_css
 from framework.utils.drop_down_web_element import DropDown
+from framework.utils.text_box_web_element import TextBox
 from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -16,11 +17,9 @@ class CustomizedLanguagePage(Page):
     def get_selected_language(self):
         return self.language_drop_down.get_selected_option_text()
 
-    def set_custom_message_for(self, msg_locator, message):
+    def update_message_for_selector(self, msg_locator, message):
         custom_message_text_box = self.driver.find(msg_locator)
-        custom_message_text_box.send_keys(message)
-        # hack to update ko viewmodel
-        self.driver.execute_script("$(arguments[0]).trigger('keydown');$(arguments[0]).trigger('blur');", custom_message_text_box)
+        self.update_custom_message(message, custom_message_text_box)
 
     def update_custom_message(self, message, message_box):
         self.driver.execute_script("$(arguments[0]).html($(arguments[0]).html() + arguments[1]);", message_box, message)

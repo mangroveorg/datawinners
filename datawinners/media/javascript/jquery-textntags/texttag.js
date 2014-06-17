@@ -31,7 +31,7 @@ $.widget("dw.TextNTags", {
                 var tagValue = _.str.ltrim(tag, self.options.openingTag);
                 var tagValue = _.str.rtrim(tagValue, self.options.closingTag);
                 var translated_tag = gettext(tagValue);
-                styledText = styledText.replace(tag, '<span class="tags" data-tag="'+ tagValue +'" >' + translated_tag + '</span>');
+                styledText = styledText.replace(tag, '<span class="tags" data-tag="'+ tagValue +'">' + translated_tag + '</span>');
                 self.tags[i] = translated_tag;
             });
         }
