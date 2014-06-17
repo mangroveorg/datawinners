@@ -39,6 +39,7 @@ def _make_message(row):
         message = row.value["error_message"]
     return message
 
+
 @login_required
 @session_not_expired
 @csrf_exempt
@@ -49,6 +50,7 @@ def get_submission_breakup(request, project_id):
     submission_success, submission_errors = submission_stats(dbm, questionnaire.form_code)
     response = json.dumps([submission_success, submission_errors])
     return HttpResponse(response)
+
 
 @valid_web_user
 def get_submissions_about_project(request, project_id):
@@ -117,9 +119,34 @@ def start(request):
 
 
 def _get_first_geocode_field_for_entity_type(dbm, entity_type):
-    geocode_fields = [f for f in dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"] if
+    geocode_fields = [f for f in
+                      dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"][
+                          "json_fields"] if
                       f["type"] == "geocode"]
-    return geocode_fields[0] if len(geocode_fields)>0 else None
+    return geocode_fields[0] if len(geocode_fields) > 0 else None
+
+
+def to_json_point(value):
+    point_json = {"type": "Feature", "geometry":
+        {
+            "type": "Point",
+            "coordinates": [
+                value[1],
+                value[0]
+            ]
+        }
+    }
+    return point_json
+
+
+def get_location_list_for_entities(first_geocode_field, unique_ids):
+    location_list = []
+    for entity in unique_ids:
+        value_dict = entity.data.get(first_geocode_field["name"])
+        if value_dict and value_dict.has_key('value'):
+            value = value_dict["value"]
+            location_list.append(to_json_point(value))
+    return location_list
 
 
 @valid_web_user
@@ -128,43 +155,33 @@ def geo_json_for_project(request, project_id, entity_type=None):
     location_list = []
 
     try:
-        first_geocode_field = _get_first_geocode_field_for_entity_type(dbm, entity_type or "registration")
-        if first_geocode_field:
-            if entity_type:
+        if entity_type:
+            first_geocode_field = _get_first_geocode_field_for_entity_type(dbm, entity_type)
+            if first_geocode_field:
                 unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
-            else:
-                questionnaire = Project.get(dbm, project_id)
-                unique_ids = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
+                location_list.extend(get_location_list_for_entities(first_geocode_field, unique_ids))
+        else:
+            questionnaire = Project.get(dbm, project_id)
+            unique_ids = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
+            location_list.extend(get_location_list_for_datasenders(unique_ids))
 
-            for entity in unique_ids:
-                value_dict = entity.data.get(first_geocode_field["name"])
-                if value_dict and value_dict.has_key('value'):
-                    point_json = {"type": "Feature", "geometry":
-                        {
-                            "type": "Point",
-                            "coordinates": [
-                                value_dict["value"][0],
-                                value_dict["value"][1]
-                            ]
-                        }
-                    }
-                    location_list.append(point_json)
     except DataObjectNotFound:
         pass
 
     location_geojson = {"type": "FeatureCollection", "features": location_list}
     return HttpResponse(json.dumps(location_geojson))
-    # entity_list.extend(unique_ids)
-    # else:
-    #     try:
-    #         datasenders = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
-    #         entity_list.extend(datasenders)
-    #     except DataObjectNotFound:
-    #         pass
-    #
-    # location_geojson = helper.create_location_geojson(entity_list)
-    # return HttpResponse(location_geojson)
+
 
 def render_map(request):
     map_api_key = get_map_key(request.META['HTTP_HOST'])
     return render_to_response('maps/entity_map.html', {'map_api_key': map_api_key},context_instance=RequestContext(request))
+
+
+def get_location_list_for_datasenders(datasenders):
+    location_list = []
+    for entity in datasenders:
+        geocode = entity.geometry
+        if geocode:
+            value = (geocode["coordinates"][0], geocode["coordinates"][1])
+            location_list.append(to_json_point(value))
+    return location_list

@@ -34,7 +34,7 @@
     </script>
     <script type="text/javascript" src="/media/javascript/mapping.js"></script>
     <script type="text/javascript">
-        var entity_types = {{ entity_type|safe }};
+        var entity_types = {{ project.entity_type|safe }};
         $(document).ready(function() {
             $( "#how_to" ).accordion({ collapsible: true, active: 0 });
             init_map();
