@@ -4,7 +4,7 @@ from django.utils.translation import ugettext as _, ugettext
 from mangrove.datastore.cache_manager import get_cache_manager
 from datawinners.common.lang.custom_message_static_codes import TITLE_QUESTIONNAIRE_REPLY_MESSAGE_CODE_MAP, QUESTIONNAIRE_CUSTOM_MESSAGE_CODES, ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES, DEFAULT_LANGUAGES, TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP
 from datawinners.common.lang.messages import QuestionnaireCustomizedMessages, AccountWideSMSMessage, ACCOUNT_MESSAGE_DOC_ID, \
-    get_language_cache_key, LANGUAGE_EXPIRY_TIME_IN_SEC
+    get_language_cache_key, LANGUAGE_EXPIRY_TIME_IN_SEC, save_custom_messages, save_account_wide_sms_messages
 from datawinners.utils import get_organization_language
 
 
@@ -56,8 +56,7 @@ def save_questionnaire_reply_message_template(code, dbm, lang):
                          _("Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")})
     messages.update({QUESTIONNAIRE_CUSTOM_MESSAGE_CODES[4]:
              _("Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")})
-    customized_message = QuestionnaireCustomizedMessages(code, lang, messages)
-    return dbm._save_document(customized_message)
+    return save_custom_messages(dbm,code,messages,lang)
 
 
 def save_account_wide_reply_message_template(dbm):
@@ -70,8 +69,12 @@ def save_account_wide_reply_message_template(dbm):
                          _("Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}.")})
     messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[3]:
                         _("Error. {Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number.")})
-    account_message = AccountWideSMSMessage(messages)
-    return dbm._save_document(account_message)
+    account_message = dbm.database.get(ACCOUNT_MESSAGE_DOC_ID)
+    if account_message:
+        account_message["messages"]= messages
+        dbm.database.update([account_message])
+    else:
+        dbm._save_document(AccountWideSMSMessage(messages))
 
 
 def create_custom_message_templates(dbm):

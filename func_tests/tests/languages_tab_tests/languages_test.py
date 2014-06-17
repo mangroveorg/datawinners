@@ -15,7 +15,7 @@ default_en_messages = [u'Thank you {Name of Data Sender}. We received your SMS: 
                         u'Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.',
                         u'Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.']
 
-class TestLanguageTab(HeadlessRunnerTest):
+class  TestLanguageTab(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
@@ -83,9 +83,6 @@ class TestLanguageTab(HeadlessRunnerTest):
     def change_reply_messages(self):
         for element in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR):
             self.language_page.update_custom_message("new message",element)
-
-    def verify_warning_dialog_present(self):
-        self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
 
     def verify_warning_dialog_present(self):
         self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
