@@ -33,12 +33,17 @@ PROJECT_QUESTIONNAIRE_DATA = {
                       ],
                       PAGE_TITLE: "Data Senders"
                      }
+
+
 SENDER = "from"
 RECEIVER = "to"
 SMS = "sms"
 ERROR_MSG = "message"
 SUCCESS_MESSAGE = "message"
 MESSAGE = "message"
+
+VALID_ORDERED_SMS_DATA = {SMS: "%s name 58 cid001" ,
+                          MESSAGE: ""}
 
 def get_success_sms_data_with_questionnaire_code(questionnaire_code):
     return {SENDER: "1234123413",
