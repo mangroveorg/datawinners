@@ -32,8 +32,9 @@ class CustomizedLanguagePage(Page):
         self.driver.execute_script("$(arguments[0]).trigger( 'blur' );", message_box)
 
     def click_revert_changes_button(self):
-        self.driver.find_visible_element(by_css(".no_button")).click()
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"))
+        dont_save_button = self.driver.find_visible_element(by_css(".no_button"))
+        dont_save_button.click()
+        self.driver.wait_until_web_element_is_not_present(UI_TEST_TIMEOUT, dont_save_button)
 
     def click_save_changes_button(self):
         self.driver.find_visible_element(by_css(".yes_button")).click()
@@ -63,20 +64,19 @@ class CustomizedLanguagePage(Page):
     def select_language(self,language_text, wait_for_load=False):
         self.language_drop_down.set_selected_by_text(language_text)
         if wait_for_load:
-            self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockUI"))
+            self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockPage"))
         self.wait_for_messages_to_load()
 
     def wait_for_messages_to_load(self):
         #waiting for the last custom message to be populated
         WebDriverWait(self.driver, UI_TEST_TIMEOUT).until(lambda driver:  driver.execute_script("return $('#account_message3').text().length > 0"))
 
-
     def get_custom_message_for(self, msg_locator):
         msg_box = self.driver.find(msg_locator)
         return self.driver.execute_script("return $(arguments[0]).html()", msg_box)
 
     def get_all_customized_reply_messages(self):
-        return [self.driver.execute_script("return $(arguments[0]).TextNTags('getText')",r) for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]
+        return [self.driver.execute_script("return $(arguments[0]).TextNTags('getText')", r) for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]
 
     def get_all_account_wide_messages(self):
         return [self.driver.execute_script("return $(arguments[0]).TextNTags('getText')",r) for r in self.driver.find_elements_(ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR)]

@@ -1,5 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from nose.plugins.attrib import attr
+from selenium.common.exceptions import NoSuchElementException
+import time
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css
 from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, ADD_NEW_LANG_CANCEL_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, \
@@ -38,7 +40,7 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.check_for_default_en_messages()
 
         self.language_page.select_language("French", wait_for_load=True)
-        self.language_page = CustomizedLanguagePage(self.driver)
+        # self.language_page = CustomizedLanguagePage(self.driver)
         expected_fr_messages = [u"{Name of Data Sender}. Nous avons recu votre SMS: {List of Answers}",
                                 u'Erreur. Reponse incorrecte pour la question {Question Numbers for Wrong Answer(s)}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS.',
                                 u'Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS.',
@@ -87,33 +89,37 @@ class TestLanguageTab(HeadlessRunnerTest):
     def verify_warning_dialog_present(self):
         self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
 
-    def verify_warning_dialog_present(self):
-        self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
+    def is_warning_dialog_present(self):
+        try:
+            self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
+            return True
+        except IndexError:
+            return False
 
     @attr('functional_test')
     def test_unsaved_warning_dialog(self):
         def click_identification_number_page():
             self.driver.find(by_css("#global_subjects_link")).click()
-        self.verify_unsaved_warning_dialog(click_identification_number_page)
 
-    def verify_unsaved_warning_dialog(self, navigate_away_action):
         self.change_reply_messages()
-        navigate_away_action()
+        click_identification_number_page()
         self.verify_warning_dialog_present()
         self.driver.find_visible_element(by_css(".cancel_button")).click()
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
 
-        navigate_away_action()
+        click_identification_number_page()
         self.verify_warning_dialog_present()
         self.language_page.click_revert_changes_button()
 
+        self.assertFalse(self.is_warning_dialog_present())
         self.driver.find(by_css("#global_languages_link")).click()
         self.language_page = CustomizedLanguagePage(self.driver)
+        self.assertFalse(self.is_warning_dialog_present())
         self.language_page.wait_for_messages_to_load()
         self.check_for_default_en_messages()
 
         self.change_reply_messages()
-        navigate_away_action()
+        click_identification_number_page()
         self.verify_warning_dialog_present()
         self.language_page.click_save_changes_button()
 
@@ -121,14 +127,42 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.driver.wait_for_page_load()
         self.language_page = CustomizedLanguagePage(self.driver)
         self.language_page.wait_for_messages_to_load()
-        self.driver.create_screenshot("msg.png")
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
+
 
     @attr('functional_test')
     def test_unsaved_warning_on_language_change(self):
-        def click_identification_number_page():
+        def change_language():
             self.language_page.select_language("French")
-        self.verify_unsaved_warning_dialog(click_identification_number_page)
+        self.change_reply_messages()
+        change_language()
+        self.verify_warning_dialog_present()
+        self.driver.find_visible_element(by_css(".cancel_button")).click()
+        self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
+
+        change_language()
+        self.verify_warning_dialog_present()
+        self.language_page.click_revert_changes_button()
+
+        self.assertFalse(self.is_warning_dialog_present())
+        self.language_page.refresh()
+        self.language_page = CustomizedLanguagePage(self.driver)
+        self.assertFalse(self.is_warning_dialog_present())
+        self.language_page.wait_for_messages_to_load()
+        self.check_for_default_en_messages()
+
+        self.change_reply_messages()
+        change_language()
+        self.verify_warning_dialog_present()
+        self.language_page.click_save_changes_button()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".success-message-box"), True)
+
+        self.language_page.refresh()
+        self.driver.wait_for_page_load()
+        self.language_page = CustomizedLanguagePage(self.driver)
+        self.language_page.wait_for_messages_to_load()
+        self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
+
 
     @attr('functional_test')
     def test_should_validate_add_new_language(self):

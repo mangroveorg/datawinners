@@ -264,3 +264,20 @@ class DriverWrapper(object):
                 return
 
 
+    def wait_until_web_element_is_not_present(self, time_out_in_seconds, element):
+        current_time = datetime.datetime.now()
+        end_time = current_time + datetime.timedelta(0, time_out_in_seconds)
+
+        while True:
+            try:
+                if element and not element.is_displayed():
+                    return True
+                else:
+                    current_time = datetime.datetime.now()
+                    if current_time >= end_time:
+                        raise ElementStillPresentException("Timer expired and element is still present" )
+            except CouldNotLocateElementException:
+                return
+            except StaleElementReferenceException:
+                return
+
