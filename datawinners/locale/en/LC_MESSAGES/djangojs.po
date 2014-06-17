@@ -1166,4 +1166,4 @@ msgid "example reply_identification_number_already_exists"
 msgstr "Error. Cli206 already exists. Register your Clinic with a different Identification Number."
 
 msgid "Add a new language on the Languages page"
-msgstr ""
+msgstr "Add a new language on the Languages page"

@@ -78,11 +78,11 @@
                     <h6>
                         {% trans "Language" %}
                         <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
-                        <div  class="help_accordion">{% trans "reply_sms_help_text"%}</div>
                         <div class="tooltip">
                            <p> {% trans "tooltip_error_language" %} </p>
                         </div>
                     </h6>
+                    <div style="margin-bottom: 2px" class="help_accordion">{% trans "reply_sms_help_text"%}</div>
                 <select id="project_language" name="project_language" class="dropdown_style"
                         data-bind="enable:enable_sms_replies, options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
                 </li>

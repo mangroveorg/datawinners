@@ -4993,7 +4993,7 @@ msgid "With this update we changed the webpage address you are trying to access.
 msgstr "Avec cette mise à jour, nous avons changé l'adresse de la page Web à laquelle vous tentez d'accéder. Nous nous excusons pour tout inconvénient."
 
 msgid "reply_sms_help_text"
-msgstr "Choisissez la langue pour votre réponse SMS. Voyez et ajoutez de nouvelles langues sur la page Langues."
+msgstr "Choisissez la langue pour votre réponse SMS. Voyez et ajoutez de nouvelles langues sur la page <a href='/customizemessages'>Langues</a>."
 
 msgid "Changes saved successfully."
 msgstr "Modifications sauvegardées avec succès"
