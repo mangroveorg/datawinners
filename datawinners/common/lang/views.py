@@ -23,9 +23,9 @@ class LanguagesView(TemplateView):
         current_language_code = organization.language
         languages_list = get_available_project_languages(dbm)
         return self.render_to_response({
-            "available_languages": languages_list,
+            "available_languages": json.dumps(languages_list),
             "current_language": current_language_code,
-            "account_messages":json.dumps(account_wide_customized_message_details(dbm))
+            "account_messages": json.dumps(account_wide_customized_message_details(dbm))
         })
 
     @method_decorator(csrf_view_exempt)
