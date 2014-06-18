@@ -1167,3 +1167,6 @@ msgstr "Error. Cli206 already exists. Register your Clinic with a different Iden
 
 msgid "Add a new language on the Languages page"
 msgstr "Add a new language on the Languages page"
+
+msgid "Edit Datasender"
+msgstr ""

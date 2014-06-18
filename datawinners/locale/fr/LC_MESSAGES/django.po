@@ -2500,7 +2500,7 @@ msgstr ""
 "bébés dans DataWinners alors à chacun est assingé un numéro d'identification unique.</li></ol>"
 
 msgid "%s of %s records uploaded"
-msgstr "%s sur %s dossiers téléchargées"
+msgstr "%s sur %s dossiers téléchargés"
 
 msgid "Sign In"
 msgstr "S'identifier"
@@ -3876,6 +3876,7 @@ msgstr "Il ne doit pas y avoir d'espace au début et à la fin du mot de passe."
 
 msgid "Edit a"
 msgstr "Modifier un(e)"
+
 msgid "Edit a Data Sender"
 msgstr "Modifier un Expéditeur de Données"
 

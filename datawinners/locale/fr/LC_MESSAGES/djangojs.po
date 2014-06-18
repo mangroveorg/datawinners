@@ -1277,3 +1277,6 @@ msgstr "Erreur. Cli206 existe déjà. Enregistrez votre clinique sous un autre  
 
 msgid "Add a new language on the Languages page"
 msgstr "Ajoutez une nouvelle langue sur la page Langues"
+
+msgid "Edit Datasender"
+msgstr "Modifier l'Expéditeur de Données"
