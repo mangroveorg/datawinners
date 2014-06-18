@@ -65,6 +65,7 @@ from datetime import datetime
 
 
 websubmission_logger = logging.getLogger("websubmission")
+datawinners_logger = logging.getLogger("datawinners")
 
 
 @login_required
@@ -179,18 +180,18 @@ def _get_order_field(post_dict, user, subject_type):
 @is_datasender
 @is_not_expired
 def all_subjects_ajax(request, subject_type):
-    user = request.user
-    search_parameters = {}
-    search_text = request.POST.get('sSearch', '').strip()
-    search_parameters.update({"search_text": search_text})
-    search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
-    search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
-    search_parameters.update({"sort_field": _get_order_field(request.POST, user, subject_type)})
-    search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
+    try:
+        user = request.user
+        search_parameters = {}
+        search_text = request.POST.get('sSearch', '').strip()
+        search_parameters.update({"search_text": search_text})
+        search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
+        search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
+        search_parameters.update({"sort_field": _get_order_field(request.POST, user, subject_type)})
+        search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
-    query_count, search_count, subjects = SubjectQuery(search_parameters).paginated_query(user, subject_type)
-
-    return HttpResponse(
+        query_count, search_count, subjects = SubjectQuery(search_parameters).paginated_query(user, subject_type)
+        return HttpResponse(
         jsonpickle.encode(
             {
                 'data': subjects,
@@ -199,6 +200,13 @@ def all_subjects_ajax(request, subject_type):
                 "iTotalRecords": search_count,
                 'iDisplayLength': int(request.POST.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')
+
+    except Exception as e:
+        datawinners_logger.error("All Subjects Ajax failed")
+        datawinners_logger.error(request.POST)
+        datawinners_logger.exception(e)
+        raise
+
 
 
 @register.filter
