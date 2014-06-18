@@ -95,7 +95,7 @@ def _get_languages_sorted_by_name(lang_dict):
     languages_list = []
     sorted_language_dict = OrderedDict(sorted(lang_dict.items(), key=lambda x: x[1].lower()))
     for code, language_name in sorted_language_dict.iteritems():
-        languages_list.append({'code': code, 'name': language_name})
+        languages_list.append({'code': code, 'name': _(language_name)})
     return languages_list
 
 

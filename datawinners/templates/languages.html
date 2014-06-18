@@ -53,16 +53,17 @@
 
         <div>
             <ol class="sms_messages" data-bind="foreach: languageViewModel.customizedMessages">
-                <li>
-                    <div>
-                        <strong>
-                                <label data-bind="text: $data.title" style="display: inline;"></label>
-                                <img src="/media/images/help_icon.png" class="help_icon"
-                                     style="display: inline;padding-bottom: 5px"
-                                     data-bind="initializeTooltip:true">
-                                {% include "customized_message_tooltip.html" %}
-                        </strong>
-                    </div>
+                    <li class="messages">
+                        <div>
+                            <strong>
+                                    <label data-bind="text: $data.title" style="display: inline;"></label>
+                                    <img src="/media/images/help_icon.png" class="help_icon"
+                                         style="display: inline;padding-bottom: 5px"
+                                         data-bind="initializeTooltip:true">
+                                    {% include "customized_message_tooltip.html" %}
+                            </strong>
+                        </div>
+                    </li>
                     <div>
                         <div class="TextTags" data-bind="messageEditor: {message: $data.message, count: $data.count}, attr: {id: 'custom_message' + $index() }"></div>
 
@@ -71,20 +72,19 @@
                               data-bind="text: $data.message.error"></span>
 
                         </div>
-                        <div>
+                        <div style="width: 900px">
                             <span class="char_count">
                                 <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
                             </span>
                         </div>
                     </div>
-                </li>
             </ol>
         </div>
         <br/>
     </div>
     {% include "account_wide_sms_messages.html" %}
 
-    <div><a class="button save" id="language_save"
+    <div class="save_button"><a class="button save" id="language_save"
             data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
 
     <div id="cancel_language_changes_warning" style="display: none;">
@@ -100,7 +100,7 @@
     </div>
 
     <div id="add_new_language_pop" style="display: none;">
-        {% trans "Language Name" %}<br/>
+        <span class="bold">{% trans "Language Name" %}</span><br/>
         <input type="text" placeholder='{% trans "Enter a name of your language" %}'
                data-bind="value:newLanguageName,valueUpdate: 'afterkeydown','keyup'"/>
 
@@ -113,7 +113,7 @@
         <div class="text_align_right padding_top_20">
             <a id="cancel_dialog" class="cancel_button" href="javascript:void(0);"
                data-bind="click:cancelAddLanguage">{% trans "Cancel" %}</a>
-            <a class="button yes_button" data-bind="click:$root.addLanguage">{% trans "Add Language" %}</a>
+            <a class="button yes_button" data-bind="click:$root.addLanguage,text:$root.addLanguageText"></a>
         </div>
     </div>
 {% endblock %}

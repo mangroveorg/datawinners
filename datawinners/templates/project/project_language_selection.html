@@ -1,6 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Questionnaire - Language" %} {% endblock %}
+{% block page_title %}{% trans "Questionnaire" %} - {%trans "Automatic Reply SMS" %} {% endblock %}
 
 {% load dw_tabs %}
 
@@ -60,9 +60,9 @@
          <div>
             <h6 class="title_set_SMS">
                 {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
-                <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+                <img src="/media/images/help_icon.png" class="help_icon">
                 <div class="tooltip">
-                   <p> {% trans "tooltip_language_checkbox" %} </p>
+                   <p style="text-align: justify !important;" > {% trans "tooltip_language_checkbox" %} </p>
                 </div>
             </h6>
             <div class="onoffswitch" data-bind="onoff: enable_sms_replies" id="myonoffswitch">
@@ -77,9 +77,9 @@
                 <li>
                     <h6>
                         {% trans "Language" %}
-                        <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+                        <img src="/media/images/help_icon.png" class="help_icon">
                         <div class="tooltip">
-                           <p> {% trans "tooltip_error_language" %} </p>
+                           <p style="text-align: justify !important;"> {% trans "tooltip_error_language" %} </p>
                         </div>
                     </h6>
                     <div style="margin-bottom: 2px" class="help_accordion">{% trans "reply_sms_help_text"%}</div>

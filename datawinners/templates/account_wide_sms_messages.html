@@ -7,16 +7,17 @@
     <br/>
 
     <ol class="sms_messages" start="6" data-bind="foreach: languageViewModel.accountMessages">
-        <li>
-            <div>
-                <strong>
-                        <label data-bind="text: $data.title" style="display: inline;"></label>
-                        <img src="/media/images/help_icon.png" class="help_icon"
-                             style="display: inline;padding-bottom: 5px"
-                             data-bind="initializeTooltip:true">
-                        {% include "customized_message_tooltip.html" %}
-                </strong>
-            </div>
+            <li class="messages">
+                <div>
+                    <strong>
+                            <label data-bind="text: $data.title" style="display: inline;"></label>
+                            <img src="/media/images/help_icon.png" class="help_icon"
+                                 style="display: inline;padding-bottom: 5px"
+                                 data-bind="initializeTooltip:true">
+                            {% include "customized_message_tooltip.html" %}
+                    </strong>
+                </div>
+            </li>
             <div>
                 <div class="TextTags" data-bind="messageEditor: {message: $data.message, count: $data.count, postChangeHandler: $parent.checkWarningMsgDisplay}, attr: {id: 'account_message' + $index() }">
                 </div>
@@ -26,7 +27,7 @@
                         </span>
 
                 </div>
-                <div>
+                <div style="width: 900px">
                     <span class="account_message_warning_message" data-bind="visible:$data.displayWarning">{% trans "Any changes you make to this text will apply for all Data Senders." %}
                     </span>
                     <span class="char_count">

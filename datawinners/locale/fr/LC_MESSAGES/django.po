@@ -2104,7 +2104,7 @@ msgstr "Les Expéditeurs de Données reçoivent une réponse SMS automatique de 
   Vous pouvez choisir la langue pour les réponses SMS sur la page Langues."
 
 msgid "tooltip_language_checkbox"
-msgstr "Positionnez ce bouton vers \"ARRET\" et cliquez sur le bouton \"Enregistrer\" pour désactiver l'envoi de  messages de retour automatiques pour ce Questionnaire, par DataWinners. Positionnez ce bouton sur \"MARCHE\" et cliquez sur le bouton \"Enregistrer\" pour réactiver."
+msgstr "Positionnez ce bouton vers \"ARRET\" et cliquez sur le bouton \"Enregistrer\" pour désactiver l'envoi de  messages de retour automatiques pour ce Questionnaire, par DataWinners. <br /> Positionnez ce bouton sur \"MARCHE\" et cliquez sur le bouton \"Enregistrer\" pour réactiver."
 
 msgid "Your project"
 msgstr "Vos projet"
@@ -5009,4 +5009,16 @@ msgstr "Modifications sauvegardées avec succès"
 
 msgid "Register each with an Identification Number and any other background information you need. "
 msgstr "Enregistrez chacun sous un Numéro d'Identification et toute autre information de base dont vous avez besoin."
+
+msgid "English"
+msgstr "Anglais"
+
+msgid "French"
+msgstr "Français"
+
+msgid "Malagasy"
+msgstr "Malgache"
+
+msgid "Portuguese"
+msgstr "Portugais"
 

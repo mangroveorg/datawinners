@@ -11,6 +11,7 @@ from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, CUSTOMIZE_MESSAGES_URL
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 default_messages = [u'Error. You are not registered as a Data Sender. Please contact your supervisor.',
@@ -28,6 +29,8 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.language_page = CustomizedLanguagePage(self.driver)
 
     def tearDown(self):
+        self.driver.go_to(CUSTOMIZE_MESSAGES_URL)
+        self.language_page = CustomizedLanguagePage(self.driver)
         self.language_page.revert_account_messages_to_default()
         self.language_page.save_changes()
 
@@ -68,6 +71,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.verify_warning_dialog_present()
         self.driver.find_visible_element(by_css(".yes_button")).click()
 
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockPage"))
         self.driver.find(by_css("#global_languages_link")).click()
         self.language_page = CustomizedLanguagePage(self.driver)
         self.assertListEqual(changed_messages,  self.language_page.get_all_account_wide_messages())

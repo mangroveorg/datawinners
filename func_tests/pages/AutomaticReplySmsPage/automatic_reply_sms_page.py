@@ -2,7 +2,7 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 from framework.utils.common_utils import by_css, by_id
 from framework.utils.drop_down_web_element import DropDown
-from pages.AutomaticReplySmsPage.automatic_reply_sms_page_locators import AVAILABLE_LANGUAGES_DROPDOWN_ID, NEW_LANGUAGE_OPTION_SELECTOR, PROJECT_LANGUAGE_PAGE_SAVE_BUTTON, PROJECT_LANGUAGE_PAGE_SUCCESS_MESSAGE_BOX
+from pages.AutomaticReplySmsPage.automatic_reply_sms_page_locators import AVAILABLE_LANGUAGES_DROPDOWN_ID, PROJECT_LANGUAGE_PAGE_SAVE_BUTTON, PROJECT_LANGUAGE_PAGE_SUCCESS_MESSAGE_BOX, NEW_LANGUAGE_CREATE_SELECTOR
 from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.page import Page
 from pages.projectoverviewpage.project_overview_locator import TEST_QUESTIONNAIRE_LINK
@@ -18,7 +18,7 @@ class AutomaticReplySmsPage(Page):
 
     def choose_automatic_reply_language(self, language):
         if language == 'new':
-            self.language_drop_down.set_selected('new_lang')
+            self.driver.find(NEW_LANGUAGE_CREATE_SELECTOR).click()
             self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, 'Languages')
             return CustomizedLanguagePage(self.driver)
         self.language_drop_down.set_selected_by_text(language)
@@ -48,6 +48,7 @@ class AutomaticReplySmsPage(Page):
         return self.driver.find(AVAILABLE_LANGUAGES_DROPDOWN_ID).is_enabled()
 
     def open_sms_tester_light_box(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT,TEST_QUESTIONNAIRE_LINK,True)
         self.driver.find(TEST_QUESTIONNAIRE_LINK).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('.mobile'), True)
         return SMSTesterLightBoxPage(self.driver)

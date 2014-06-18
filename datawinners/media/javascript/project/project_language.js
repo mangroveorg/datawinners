@@ -6,14 +6,7 @@ function ProjectLanguageViewModel(){
   self.selected_language = ko.observable();
   self.is_modified = false;
 
-  var _is_add_new_language_option_selected = function(language_option){
-      return language_option == self.available_languages[self.available_languages.length-1].code;
-  };
-
   self.selected_language.subscribe(function(language_option){
-      if(_is_add_new_language_option_selected(language_option)){
-          window.location.href = language_page_link;
-      }
       self.is_modified = true;
   });
 
@@ -59,7 +52,6 @@ function ProjectLanguageViewModel(){
 $(function(){
     var viewModel = new ProjectLanguageViewModel();
     viewModel.available_languages = languages_list;
-    viewModel.available_languages.push({name: gettext('Add a new language on the Languages page'), code: 'new_lang'});
     viewModel.selected_language(current_project_language);
     viewModel.enable_sms_replies(is_outgoing_reply_messages_enabled == 'True');
     viewModel.is_modified = false;
@@ -76,7 +68,4 @@ $(function(){
     };
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
     ko.applyBindings(viewModel, $("#project_language_section")[0]);
-
-    var add_language_option = $("#project_language option:last-child");
-    add_language_option.attr('id', 'language_page_link');
 });

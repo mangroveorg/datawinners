@@ -24,6 +24,7 @@ function LanguageViewModel() {
     }, self);
 
     self.saveButtonText = ko.observable(gettext("Save"));
+    self.addLanguageText = ko.observable(gettext("Add Language"));
 
     self.newLanguageName = DW.ko.createValidatableObservable({value: ""});
     var languageNameEmptyMessage = gettext("Please enter a name for your language.");
@@ -97,10 +98,14 @@ function LanguageViewModel() {
     };
     self.addLanguage = function () {
         if (self.newLanguageName() && self.newLanguageName.valid()) {
+            self.addLanguageText(gettext("Adding..."));
+            $('#add_new_language_pop .yes_button').addClass('ui-state-disabled');
             $.post('/languages/create', {"language_name": self.newLanguageName()})
                 .done(function (responseString) {
                     var response = $.parseJSON(responseString);
                     if (response.language_code) {
+                        self.addLanguageText(gettext("Add Language"));
+                        $('#add_new_language_pop .yes_button').removeClass('ui-state-disabled');
                         $('#add_new_language_pop').dialog('close');
                         self.availableLanguages.pop();
                         self.availableLanguages.push({code: response.language_code, name: response.language_name});

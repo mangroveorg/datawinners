@@ -26,7 +26,7 @@ class QuestionnaireLanguageView(TemplateView):
         return self.render_to_response({
                                 'project': questionnaire,
                                 'project_links': make_project_links(questionnaire),
-                                'languages_list': languages_list,
+                                'languages_list':  json.dumps(languages_list),
                                 'languages_link': reverse('languages'),
                                 'current_project_language': current_project_language,
                                 'post_url': reverse("project-language", args=[project_id])
