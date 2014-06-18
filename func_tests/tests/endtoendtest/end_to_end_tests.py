@@ -335,6 +335,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_submission_via_web(ds_email)
         self.verify_setting_customized_error_messages_for_languages()
-        #self.admin_edit_delete_submissions()
-        time.sleep(2)
+        # self.admin_edit_delete_submissions()
+        # time.sleep(2)
         self.delete_project()

@@ -8,7 +8,7 @@ from framework.utils.common_utils import by_css
 from framework.utils.data_fetcher import fetch_, from_
 from pages.loginpage.login_page import login
 from pages.projectspage.projects_page import ProjectsPage
-from testdata.test_data import url
+from testdata.test_data import url, DATA_WINNER_ALL_PROJECTS_PAGE
 from tests.smstesterlightboxtests.sms_tester_light_box_data import EXCEED_NAME_LENGTH, RESPONSE_MESSAGE, \
     VALID_ORDERED_SMS_DATA, SUBJECT_REGISTRATION_VIA_SMS
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -68,7 +68,7 @@ class TestSMSTesterLightBox(HeadlessRunnerTest):
         self.assertEqual(message_tracker_before.sms_registration_count, message_tracker_after.sms_registration_count)
 
     def open_clinic5_project_and_send_msg_via_sms_questionnaire(self, message):
-        self.driver.go_to(url("/project/"))
+        self.driver.go_to(DATA_WINNER_ALL_PROJECTS_PAGE)
         all_project_page = ProjectsPage(self.driver)
         project_overview_page = all_project_page.navigate_to_project_overview_page("clinic5 test project")
         sms_tester_page = project_overview_page.open_sms_tester_light_box()

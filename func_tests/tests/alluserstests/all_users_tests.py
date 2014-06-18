@@ -6,7 +6,8 @@ from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_xpath, by_css
 
 from pages.loginpage.login_page import login
-from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT, DATA_WINNER_ALL_DATA_SENDERS_PAGE
+from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT, DATA_WINNER_ALL_DATA_SENDERS_PAGE, \
+    DATA_WINNER_ALL_PROJECTS_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS, PASSWORD
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.alluserstests.all_users_data import *
@@ -52,7 +53,7 @@ class TestAllUsers(HeadlessRunnerTest):
         self.driver.go_to(LOGOUT)
         new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
         login(self.driver, new_user_credential)
-        self.driver.go_to(url("/project/"))
+        self.driver.go_to(DATA_WINNER_ALL_PROJECTS_PAGE)
         project_name, questionnaire_code = self.create_project()
         self.send_submission(questionnaire_code)
         self.delete_user(NEW_USER_DATA[USERNAME])

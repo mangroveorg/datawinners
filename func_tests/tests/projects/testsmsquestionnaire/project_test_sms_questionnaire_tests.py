@@ -41,7 +41,7 @@ class TestProjectTestSMSPreview(HeadlessRunnerTest):
 
     def navigate_to_clinic3_overview_page(self):
         # going on all project page
-        self.driver.go_to(url("/project/"))
+        self.driver.go_to(DATA_WINNER_ALL_PROJECTS_PAGE)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ALL_PROJECTS_TABLE_LINK, True)
         all_project_page = ProjectsPage(self.driver)
         return all_project_page.navigate_to_project_overview_page(PROJECT_NAME)
