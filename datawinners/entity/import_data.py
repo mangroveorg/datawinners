@@ -4,6 +4,7 @@ import logging
 import re
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 from django.contrib.auth.models import User, Group
@@ -112,6 +113,10 @@ class FilePlayer(Player):
                 data_sender.save(force_insert=True)
         except IntegrityError:
             raise MultipleReportersForANumberException(mobile_number)
+
+        if len(",".join(values["l"])) > 500:
+            raise MangroveException("Ensure location has atmost 500 characters.")
+
         email = case_insensitive_lookup(values, "email")
         if email:
             if not email_re.match(email):
@@ -167,7 +172,7 @@ class FilePlayer(Player):
                                                 values=values)
         except EmptyRowException as e:
             return self._appendFailedResponse(e.message)
-        except (InvalidEmailException, MangroveException, NameNotFoundException) as e:
+        except (InvalidEmailException, MangroveException, NameNotFoundException, ValidationError) as e:
             return self._appendFailedResponse(e.message, values=values)
 
     def _get_registered_emails(self):

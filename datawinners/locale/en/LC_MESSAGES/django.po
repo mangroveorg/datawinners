@@ -4613,3 +4613,6 @@ msgstr ""
 
 msgid "Register each with an Identification Number and any other background information you need."
 msgstr ""
+
+msgid "Ensure location has atmost 500 characters."
+msgstr ""
