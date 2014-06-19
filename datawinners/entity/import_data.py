@@ -115,7 +115,7 @@ class FilePlayer(Player):
             raise MultipleReportersForANumberException(mobile_number)
 
         if len(",".join(values["l"])) > 500:
-            raise MangroveException("Ensure location has atmost 500 characters.")
+            raise MangroveException("Location Name cannot exceed 500 characters.")
 
         email = case_insensitive_lookup(values, "email")
         if email:
