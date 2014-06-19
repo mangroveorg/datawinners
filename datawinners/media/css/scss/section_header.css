@@ -72,3 +72,21 @@
         /* for firefox 3.6+ */ }
     #container_header_application #main_tab ul li.last {
       padding-right: 0; }
+
+#ie8-warning {
+  position: absolute;
+  top: 63px;
+  left: 348px;
+  z-index: 1000;
+  padding-left: 27px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  background: url("/media/images/icons.png") no-repeat left -82px;
+  background-color: lightblue;
+  font-size: 15px;
+  margin: 3px;
+  border: 1px solid #55acee; }
+
+.ie8-warning-fr {
+  left: 175px !important; }

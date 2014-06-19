@@ -5023,3 +5023,14 @@ msgstr "Malgache"
 msgid "Portuguese"
 msgstr "Portugais"
 
+msgid " OK got it"
+msgstr " OK, compris"
+
+msgid "Update your browser "
+msgstr " Mettez à jour votre navigateur "
+
+msgid "now."
+msgstr "maintenant."
+
+msgid "You are using an unsupported browser version. Some features may not work correctly."
+msgstr "Vous utilisez une version du navigateur qui n'est pas prise en charge. Certaines fonctionnalités peuvent ne pas fonctionner correctement."
