@@ -134,9 +134,6 @@ function createObservableMessageItemsFor(data, messageObservable, initialStateOb
     var messages = [];
     for (var i = 0; i < data.length; i++) {
         var messageItem = DW.ko.createValidatableObservable({value: data[i].message});
-//        var count = ko.computed(function () {
-//            return this().length;
-//        }, messageItem);
         var count = ko.observable(0);
         var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem, "count": count };
         messageItem.subscribe(function () {

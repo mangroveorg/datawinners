@@ -92,3 +92,6 @@ select option {
 .save_button {
   width: 900px;
   margin-top: 35px; }
+
+.cancel_button {
+  color: #0070AC !important; }

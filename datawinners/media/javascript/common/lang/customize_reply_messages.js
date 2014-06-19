@@ -1,3 +1,11 @@
+function open_add_language_popup(e) {
+    $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
+    e.preventDefault();
+    $('#add_new_language_pop').dialog('open');
+    languageViewModel.newLanguageName("");
+    languageViewModel.newLanguageName.clearError();
+    return false;
+}
 $(document).ready(function () {
     window.languageViewModel = new LanguageViewModel();
     ko.applyBindings(languageViewModel);
@@ -12,15 +20,10 @@ $(document).ready(function () {
 
             language_change_warning_dialog.show();
             return false;
-        } ;
+        }
 
         if ($("#language").val() === "add_new") {
-            $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
-            e.preventDefault();
-            $('#add_new_language_pop').dialog('open');
-            languageViewModel.newLanguageName("");
-            languageViewModel.newLanguageName.clearError();
-            return false;
+            return open_add_language_popup(e);
         }
         DW.loading();
         languageViewModel.language($("#language option:selected").val());
@@ -48,8 +51,12 @@ function initializeWarningDialogs() {
         cancelCallback: function () {
             resetPreviousLanguage();
         },
-        actionCallback: function () {
-            languageViewModel.language($("#language option:selected").val());
+        actionCallback: function (e) {
+            var selected_language = $("#language option:selected").val();
+            if(selected_language=="add_new"){
+                open_add_language_popup(e);
+            }else{
+            languageViewModel.language(selected_language);}
         }
     });
     language_change_warning_dialog = new DW.CancelWarningDialog(language_change_warning_dialog_options);

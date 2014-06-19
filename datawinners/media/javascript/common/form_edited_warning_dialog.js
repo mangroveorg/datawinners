@@ -37,9 +37,9 @@ DW.CancelWarningDialog = function (options) {
     };
 
     var _initializeIgnoreButtonHandler = function () {
-        self.ignoreButton.bind('click', function () {
+        self.ignoreButton.bind('click', function (event) {
             self.cancelDialog.dialog("close");
-            return _redirect();
+            return _redirect(event);
         });
     };
 
@@ -52,11 +52,11 @@ DW.CancelWarningDialog = function (options) {
     };
 
     var _initializeSaveButtonHandler = function () {
-        self.saveButton.bind('click', function () {
+        self.saveButton.bind('click', function (event) {
             if(options.validate()) {
                 successCallBack(function () {
                     self.cancelDialog.dialog("close");
-                    return _redirect();
+                    return _redirect(event);
                 });
             }
             self.cancelDialog.dialog("close");
