@@ -72,7 +72,7 @@
             </div>
         {% endfor %}
         </div>
-        <a class="grid_4  omega alpha view_all_projects" href="{% url index %}">{% trans "view all Questionnaires"%} »</a>
+        <a class="grid_4  omega alpha view_all_projects" href="{% url alldata_index %}">{% trans "view all Questionnaires"%} »</a>
     </div>
     <div class="grid_5 alpha omega dashboard_right">
     {% if trial_account and user.groups.all.0.name == 'NGO Admins' %}

@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
-from django.contrib import messages
 
+from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -11,13 +11,12 @@ from django.utils.translation import ugettext as _, ugettext
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.datastore.entity import Entity, get_all_entities, by_short_codes
+
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
-from datawinners.dashboard import helper
 from datawinners.project.models import Project
-
 from datawinners.utils import get_map_key
 
 

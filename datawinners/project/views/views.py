@@ -3,6 +3,7 @@ import json
 import datetime
 import logging
 from operator import itemgetter
+import datawinners
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -13,6 +14,7 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, ugettext
+from datawinners.alldata import views
 from datawinners.common.urlextension import append_query_strings_to_url
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
@@ -82,25 +84,6 @@ TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 XLS_TUPLE_FORMAT = "%s (%s)"
 
-@login_required
-@session_not_expired
-@is_new_user
-@is_datasender
-@is_not_expired
-def index(request):
-    project_list = []
-    rows = models.get_all_projects(dbm=get_database_manager(request.user))
-    for row in rows:
-        project_id = row['value']['_id']
-        link = reverse('project-overview', args=[project_id])
-        delete_link = reverse('delete_project', args=[project_id])
-        project = dict(delete_link=delete_link, name=row['value']['name'], created=row['value']['created'],
-                       link=link)
-        project_list.append(project)
-    project_list.sort(key=itemgetter('name'))
-    return render_to_response('project/index.html', {'projects': project_list},
-                              context_instance=RequestContext(request))
-
 
 @login_required
 @session_not_expired
@@ -116,10 +99,10 @@ def delete_project(request, project_id):
         return HttpResponseRedirect(dashboard_page)
     helper.delete_project(manager, questionnaire)
     undelete_link = reverse(undelete_project, args=[project_id])
-    if len(get_all_projects(manager)) > 0:
-        messages.info(request, undelete_link)
+    # if len(get_all_projects(manager)) > 0:
+    messages.info(request, undelete_link)
     UserActivityLog().log(request, action=DELETED_PROJECT, project=questionnaire.name)
-    return HttpResponseRedirect(reverse(index))
+    return HttpResponseRedirect(reverse(views.index))
 
 
 @csrf_view_exempt
@@ -149,7 +132,7 @@ def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
     helper.delete_project(manager, questionnaire, void=False)
-    return HttpResponseRedirect(reverse(index))
+    return HttpResponseRedirect(reverse(views.index))
 
 
 @login_required

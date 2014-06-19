@@ -13,7 +13,21 @@
     <link href="/media/css/scss/section_dashboard.css" rel="stylesheet" />
 {% endblock %}
 
+
+
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <!--<div class="{{ message.tags }} message-box clear-left">{{ message }}</div>-->
+            <div id="undelete_project_section" class="text_align_left success-message-box">
+                <span>
+                    {% trans "Your Questionnaire has been deleted" %}.
+                </span>
+                    <a id="undo_delete_project" href="{{ message }}">{% trans "Undo Delete" %}</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% blocktrans %} Once you have created Questionnaires, a list of your {{ text }} will appear here.{% endblocktrans %}
 
     {% trans "To get started with DataWinners" %}, <a id="create_project_link" href="{% url create_project %}?prev=dash"> {% trans  "order_to_create_project" %} </a>

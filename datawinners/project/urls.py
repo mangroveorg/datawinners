@@ -9,7 +9,7 @@ from datawinners.project.wizard_view import create_project, edit_project, remind
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview
 from datawinners.project.views import submission_views
 from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \
-    registered_subjects, broadcast_message, sent_reminders, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject, get_questionnaire_ajax, \
+    registered_subjects, broadcast_message, sent_reminders, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject, get_questionnaire_ajax, \
     rename_project
 
 js_info_dict = {
@@ -18,7 +18,6 @@ js_info_dict = {
 }
 urlpatterns = patterns('',
                        (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-                       url(r'^project/$', index, name="index"),
                        (r'^project/disassociate/$', DisassociateDataSendersView.as_view()),
                        url(r'^project/questionnaire/(?P<project_id>\w+?)/$', questionnaire, name='questionnaire'),
                        url(r'^project/questionnaire/ajax/(?P<project_id>\w+?)/$', get_questionnaire_ajax, name='questionnaire_ajax'),
