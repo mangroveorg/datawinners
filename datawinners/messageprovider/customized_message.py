@@ -10,8 +10,13 @@ def _replace_placeholders_in_message(message, placeholder_dict):
 
 
 def get_customized_message_for_questionnaire(dbm, request, message_code, form_code, placeholder_dict=None):
-    form_model = get_form_model_by_code(dbm, form_code)
-    if isinstance(form_model, EntityFormModel): #For UniqueId registration
+    form_model = None
+    try:
+        form_model = get_form_model_by_code(dbm, form_code)
+    except:
+        pass
+
+    if form_model is None or isinstance(form_model, EntityFormModel): #For UniqueId registration
         message = _get_customized_message_for_language(dbm, request.get('organization').language, message_code)
     else: # For questionnaire submission
         project = Project.from_form_model(form_model)
