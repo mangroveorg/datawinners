@@ -3,7 +3,7 @@ from nose.plugins.attrib import attr
 from selenium.common.exceptions import NoSuchElementException
 import time
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import by_css
+from framework.utils.common_utils import by_css, by_id, random_string
 from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, ADD_NEW_LANG_CANCEL_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, \
     SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, SUCCESS_SUBMISSION_MESSAGE_LOCATOR
 from pages.languagespage.customized_languages_page import CustomizedLanguagePage
@@ -175,4 +175,34 @@ class TestLanguageTab(HeadlessRunnerTest):
 
         self.driver.find(ADD_NEW_LANG_CANCEL_BUTTON).click()
 
+    @attr('functional_test')
+    def test_dirty_dialog_behavior_for_add_new_language(self):
+        self.change_reply_messages()
+        self.language_page.select_add_new_language_option()
+        self.assertTrue(self.is_warning_dialog_present())
 
+        self.language_page.click_revert_changes_button()
+
+        self.driver.wait_for_element(UI_TEST_TIMEOUT,by_id("add_new_language_pop"))
+        self.language_page.save_new_language("new_lang"+random_string(4))
+        self.assertEquals("Your language has been added successfully. Please translate the suggested automatic reply SMS text.",
+                          self.language_page.get_success_message())
+
+        self.language_page.select_language("English",True)
+        self.check_for_default_en_messages()
+
+        self.language_page = CustomizedLanguagePage(self.driver)
+        self.change_reply_messages()
+        self.language_page.select_add_new_language_option()
+        self.assertTrue(self.is_warning_dialog_present())
+
+        self.language_page.click_save_changes_button()
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT,by_css(".success-message-box"))
+
+        self.driver.wait_for_element(UI_TEST_TIMEOUT,by_id("add_new_language_pop"))
+        self.language_page.save_new_language("new_lang"+random_string(4))
+        self.assertEquals("Your language has been added successfully. Please translate the suggested automatic reply SMS text.",
+                          self.language_page.get_success_message())
+
+        self.language_page.select_language("English",True)
+        self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())

@@ -92,8 +92,14 @@ class CustomizedLanguagePage(Page):
     def revert_customized_messages_to_default(self):
         return [self.driver.execute_script("$(arguments[0]).html(_.str.rtrim($(arguments[0]).html(),'new message')); $(arguments[0]).trigger( 'blur' );", r) for r in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR)]
 
-    def add_new_language(self, language_name):
-        self.language_drop_down.set_selected_by_text(self.language_drop_down.get_options()[-1])
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('.ui-dialog'))
+    def save_new_language(self, language_name):
         self.driver.find_text_box(NEW_LANGUAGE_INPUT_BOX).enter_text(language_name)
         self.driver.find(ADD_NEW_LANG_CONFIRM_BUTTON).click()
+
+    def add_new_language(self, language_name):
+        self.select_add_new_language_option()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('.ui-dialog'))
+        self.save_new_language(language_name)
+
+    def select_add_new_language_option(self):
+        self.language_drop_down.set_selected_by_text(self.language_drop_down.get_options()[-1])
