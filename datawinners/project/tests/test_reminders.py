@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import date, datetime
 import unittest
-from mock import Mock
+from mock import Mock, MagicMock
 from nose.plugins.skip import Skip, SkipTest
 from datawinners.project.models import Reminder, ReminderMode, Project, RemindTo, ReminderLog
 from datawinners.scheduler.deadline import Deadline, Week
@@ -81,7 +81,7 @@ class TestReminders(unittest.TestCase):
         deadline = Deadline(frequency=Week(5),mode="That")
         self.assertFalse(reminder.should_be_send_on(deadline, today))
 
-    @SkipTest
+
     def test_should_return_all_data_senders_as_sender_list_if_remind_to_mode_is_all_datasenders(self):
         data_senders = [{'name': 'reporter1', 'mobile_number': 'tel1'},
                 {'name': 'reporter2', 'mobile_number': 'tel2'},
@@ -89,8 +89,9 @@ class TestReminders(unittest.TestCase):
                 {'name': 'reporter4', 'mobile_number': 'tel4'}
         ]
         today = date(2011, 2, 10)
-        project = Mock(spec=Project)
+        project = MagicMock(spec=Project)
         project.get_data_senders.return_value = data_senders
+        project.reminder_and_deadline.return_value = dict(should_send_reminder_to_all_ds=True)
         reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE)
         self.assertEqual(data_senders, reminder.get_sender_list(project, today,None))
 
@@ -102,10 +103,10 @@ class TestReminders(unittest.TestCase):
                 {'name': 'reporter4', 'mobile_number': 'tel4'}
         ]
         today = date(2011, 2, 10)
-        project = Mock(spec=Project)
+        project = MagicMock(spec=Project)
         expected_sender_list = [data_senders[0], data_senders[2]]
         project.get_data_senders_without_submissions_for.return_value = expected_sender_list
-
+        project.reminder_and_deadline.return_value = dict(should_send_reminder_to_all_ds=False)
         reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE)
         self.assertEqual(expected_sender_list, reminder.get_sender_list(project, today,None))
 

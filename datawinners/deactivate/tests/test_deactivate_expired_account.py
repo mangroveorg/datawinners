@@ -120,8 +120,7 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
         self.assertIn(self.user1.email,msg1.to)
         self.assertIn(self.user2.email,msg2.to)
 
-    #not covered in the current story 2520
-    @SkipTest
+
     def test_deactivate_email_sent(self):
         settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
         settings.EMAIL_FILE_PATH = 'email'

@@ -33,10 +33,6 @@ class TestLocationTree(TestCase):
         actual_location_groups = get_location_groups_for_country(country="India", start_with="amb")
         self.assertEqual(defaultdict(list), actual_location_groups)
 
-    @SkipTest
-    def test_should_get_centroid_for_location_based_on_level_given(self):
-        self.assertEqual((46.8558925459, -18.762105675278256), self.tree.get_centroid(location='Ambatomanjaka',
-                                                                                      level='3'))
     def test_should_return_none_for_location_unknown(self):
         self.assertEqual(None, self.tree.get_centroid(location='pune', level='3'))
 
