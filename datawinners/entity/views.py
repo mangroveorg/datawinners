@@ -36,7 +36,7 @@ from datawinners.entity.helper import create_registration_form, delete_entity_in
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from mangrove.datastore.entity_type import define_type, delete_type
+from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
@@ -77,6 +77,10 @@ def create_type(request):
         entity_name = [entity_name.strip().lower()]
         try:
             manager = get_database_manager(request.user)
+
+            if entity_type_already_defined(manager, entity_name):
+                raise EntityTypeAlreadyDefined(u"Type: %s is already defined" % u'.'.join(entity_name))
+
             create_registration_form(manager, entity_name)
             define_type(manager, entity_name)
             message = _("Entity definition successful")
