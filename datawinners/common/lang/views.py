@@ -14,7 +14,7 @@ from datawinners.main.database import get_database_manager
 
 
 class LanguagesView(TemplateView):
-    template_name = 'languages.html'
+    template_name = 'questionnaire_reply_sms.html'
 
 
     def get(self, request, *args, **kwargs):
@@ -25,7 +25,6 @@ class LanguagesView(TemplateView):
         return self.render_to_response({
             "available_languages": json.dumps(languages_list),
             "current_language": current_language_code,
-            "account_messages": json.dumps(account_wide_customized_message_details(dbm))
         })
 
     @method_decorator(csrf_view_exempt)
@@ -49,15 +48,8 @@ class LanguagesAjaxView(View):
         if data.get('isCustomizedMessageModified'):
             questionnaire_customized_message_dict = get_reply_message_dictionary(data.get("customizedMessages"))
             save_questionnaire_custom_messages(dbm, data.get('language'), questionnaire_customized_message_dict)
-
-        if data.get('isAccountMessageModified'):
-            account_message_dict = get_reply_message_dictionary(data.get("accountMessages"))
-            save_account_wide_sms_messages(dbm,account_message_dict)
-
         return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))
 
-    @method_decorator(csrf_view_exempt)
-    @method_decorator(csrf_response_exempt)
     @method_decorator(login_required)
     @method_decorator(session_not_expired)
     @method_decorator(is_datasender)
@@ -89,3 +81,30 @@ def get_reply_message_dictionary(message_list):
     for customized_message in message_list:
         customized_message_dict.update({customized_message.get("code"): customized_message.get("message")})
     return customized_message_dict
+
+
+class AccountMessagesView(TemplateView):
+    template_name = 'account_wide_sms.html'
+
+    def get(self, request, *args, **kwargs):
+        dbm = get_database_manager(request.user)
+        return self.render_to_response({
+            "account_messages": json.dumps(account_wide_customized_message_details(dbm))
+        })
+
+    @method_decorator(login_required)
+    @method_decorator(session_not_expired)
+    @method_decorator(is_datasender)
+    @method_decorator(is_not_expired)
+    def dispatch(self, *args, **kwargs):
+        return super(AccountMessagesView, self).dispatch(*args, **kwargs)
+
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.POST.get("data", {}))
+        dbm = get_database_manager(request.user)
+        if data.get('isAccountMessageModified'):
+            account_message_dict = get_reply_message_dictionary(data.get("accountMessages"))
+            save_account_wide_sms_messages(dbm,account_message_dict)
+
+        return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))

@@ -4552,7 +4552,7 @@ msgid "The unique ID %s of the %s does not match with any existing Identificatio
 msgstr ""
 
 msgid "language help text"
-msgstr "Datawinners analyzes each of the SMS Submission and automatically sends back an SMS reply. For each Questionnaire you can choose the language of these automatic reply SMS. Click on the dropdown and choose a language to view and edit the suggested automatic reply SMS text. You can also add new languages to meet your needs."
+msgstr "For each Questionnaire you can choose the language of the automatic reply SMS. Click on the dropdown and choose a language to view and edit the suggested automatic reply SMS text. You can also add new languages to meet your needs. / Pour chaque Questionnaire, vous pouvez choisir une langue pour les retours SMS automatiques."
 
 msgid "You are not authorized to submit to this Questionnaire. Add yourself as a Data Sender to the Questionnaire."
 msgstr ""
@@ -4582,7 +4582,7 @@ msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324
 msgstr ""
 
 msgid "account wide sms help text"
-msgstr "These are general Automatic Reply SMS for your organization’s DataWinners account. Edit/translate these messages to fit your needs. Note: Any changes you make will apply for all Data Senders."
+msgstr "These are general Automatic Reply SMS for your organization’s DataWinners account that are not Questionnaire-specific. Edit/translate these messages to fit your needs. Note: Any changes you make will apply for all Data Senders and all the Questionnaires."
 
 msgid "Automatic reply messages turned off for this questionnaire."
 msgstr ""

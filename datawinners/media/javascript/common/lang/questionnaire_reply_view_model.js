@@ -17,12 +17,6 @@ function LanguageViewModel() {
     }, self);
 
 
-    self.accountMessages = ko.observableArray();
-    self.accountMessagesInitialState = ko.observable();
-    self.isAccountMessageModified = ko.computed(function () {
-        return self.accountMessagesInitialState() != ko.toJSON(self.accountMessages());
-    }, self);
-
     self.saveButtonText = ko.observable(gettext("Save"));
     self.addLanguageText = ko.observable(gettext("Add Language"));
 
@@ -32,20 +26,6 @@ function LanguageViewModel() {
             DW.ko.mandatoryValidator(self.newLanguageName, languageNameEmptyMessage);
         }
     );
-    self.isAccountMessageItemChanged = function (messageCode, messageText) {
-        if (self.accountMessagesInitialState()) {
-            var initialAccountMessages = JSON.parse(self.accountMessagesInitialState());
-            for (var i = 0; i < initialAccountMessages.length; i++) {
-                if (initialAccountMessages[i].code == messageCode) {
-                    return initialAccountMessages[i].message != messageText;
-                }
-            }
-        }
-        return false;
-    };
-    self.checkWarningMsgDisplay = function (messageItem) {
-        messageItem.displayWarning(self.isAccountMessageItemChanged(messageItem.code, messageItem.message()));
-    };
     self.helptextscenario = function (text) {
         return gettext('scenario ' + text);
     };
@@ -66,9 +46,6 @@ function LanguageViewModel() {
         var valid_fields = $.map(self.customizedMessages(), function (e) {
             return e.message.valid()
         });
-        valid_fields = valid_fields.concat($.map(self.accountMessages(), function (e) {
-            return e.message.valid()
-        }));
         return valid_fields.indexOf(false) == -1;
     }, self);
 
@@ -82,15 +59,15 @@ function LanguageViewModel() {
         if (!self.isValid()) return;
         DW.loading();
         languageViewModel.saveButtonText(gettext("Saving..."));
-        $.post('/languages/custom_messages', {
-                'data': JSON.stringify(ko.toJS(languageViewModel))},
+        $.post(post_url, {
+                'data': JSON.stringify(ko.toJS(languageViewModel)),
+                'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
+            },
             function (data) {
                 data = JSON.parse(data);
                 languageViewModel.saveButtonText(gettext("Save"));
                 displaySuccessMessage(data);
-                resetAccountMsgWarningDisplay();
                 self.customizedMessagesInitialState(ko.toJSON(self.customizedMessages()));
-                self.accountMessagesInitialState(ko.toJSON(self.accountMessages()));
                 if (typeof callback == "function") callback();
             }
         );
@@ -148,11 +125,4 @@ function createObservableMessageItemsFor(data, messageObservable, initialStateOb
     }
     messageObservable(messages);
     initialStateObservable(ko.toJSON(messageObservable()))
-}
-
-function resetAccountMsgWarningDisplay(){
-    var messages = languageViewModel.accountMessages();
-    for(var i=0;i<messages.length;i++){
-        messages[i].displayWarning(false);
-    }
 }

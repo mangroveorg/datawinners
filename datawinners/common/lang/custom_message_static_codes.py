@@ -18,11 +18,15 @@ TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP = OrderedDict([("reply_ds_not_register
                                                           ("reply_incorrect_questionnaire_code", "Questionnaire Code is Wrong"),
                                                           ("reply_success_identification_number_registration",
                                                            "Successful Identification Number Registration"),
+                                                          ("reply_incorrect_answers",
+                                                           "Identification Number Registration with an Error"),
+                                                          ("reply_incorrect_number_of_responses",
+                                                           " Identification Number Registration with Incorrect number of Responses"),
                                                           ("reply_identification_number_already_exists",
                                                            "Identification Number ID Already Exists"),
                                                           ])
 ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES = ["reply_ds_not_registered", "reply_incorrect_questionnaire_code",
-                                      "reply_success_identification_number_registration", "reply_identification_number_already_exists"]
+                                      "reply_success_identification_number_registration", "reply_incorrect_answers","reply_incorrect_number_of_responses","reply_identification_number_already_exists"]
 
 DEFAULT_LANGUAGES = {"en": "English", "fr": "French", "mg": "Malagasy", "pt": "Portuguese"}
 

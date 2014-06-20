@@ -4844,7 +4844,7 @@ msgid "Languages for Automatic Reply SMS"
 msgstr "Langues pour les Retour SMS Automatique"
 
 msgid "language help text"
-msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une retour SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces retour SMS automatique. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les retour SMS automatique. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
+msgstr "Pour chaque Questionnaire, vous pouvez choisir une langue pour les retours SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes de retour SMS automatiques suggérés. Vous pouvez également ajouter de nouvelles langues correspondant à vos besoins."
 
 msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr "Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
@@ -4964,7 +4964,7 @@ msgid "Example"
 msgstr "Exemple"
 
 msgid "account wide sms help text"
-msgstr "Ce sont les retour SMS automatique pour le compte DataWinners de votre organisation. Modifiez/traduisez ces messages pour répondre à vos besoins. Veuillez noter que tous les changements que vous effectuez seront applicables pour tous les Expéditeurs de Données."
+msgstr "Ce sont les retours SMS généraux pour le compte DataWinners de votre organisation qui ne sont pas spécifiques à un Questionnaire. Modifiez/traduisez ces messages pour répondre à vos besoins. Remarque : Tout changement que vous effectuez sera appliqué à tous vos Expéditeurs de Données et à tous les Questionnaires."
 
 msgid "Account-Wide SMS"
 msgstr "SMS relatifs au compte en général"

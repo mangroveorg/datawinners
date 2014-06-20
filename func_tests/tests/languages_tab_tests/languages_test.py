@@ -115,7 +115,7 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.driver.find(by_css("#global_languages_link")).click()
         self.language_page = CustomizedLanguagePage(self.driver)
         self.assertFalse(self.is_warning_dialog_present())
-        self.language_page.wait_for_messages_to_load()
+        self.language_page.wait_for_reply_messages_to_load()
         self.check_for_default_en_messages()
 
         self.change_reply_messages()
@@ -126,7 +126,7 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.driver.find(by_css("#global_languages_link")).click()
         self.driver.wait_for_page_load()
         self.language_page = CustomizedLanguagePage(self.driver)
-        self.language_page.wait_for_messages_to_load()
+        self.language_page.wait_for_reply_messages_to_load()
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
 
 
@@ -148,7 +148,7 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.language_page.refresh()
         self.language_page = CustomizedLanguagePage(self.driver)
         self.assertFalse(self.is_warning_dialog_present())
-        self.language_page.wait_for_messages_to_load()
+        self.language_page.wait_for_reply_messages_to_load()
         self.check_for_default_en_messages()
 
         self.change_reply_messages()
@@ -160,7 +160,7 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.language_page.refresh()
         self.driver.wait_for_page_load()
         self.language_page = CustomizedLanguagePage(self.driver)
-        self.language_page.wait_for_messages_to_load()
+        self.language_page.wait_for_reply_messages_to_load()
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
 
 
@@ -183,15 +183,17 @@ class TestLanguageTab(HeadlessRunnerTest):
 
         self.language_page.click_revert_changes_button()
 
-        self.driver.wait_for_element(UI_TEST_TIMEOUT,by_id("add_new_language_pop"))
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("add_new_language_pop"))
         self.language_page.save_new_language("new_lang"+random_string(4))
         self.assertEquals("Your language has been added successfully. Please translate the suggested automatic reply SMS text.",
                           self.language_page.get_success_message())
 
-        self.language_page.select_language("English",True)
-        self.driver.create_screenshot("language_selected.png")
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".success-message-box"))
         self.assertFalse(self.is_warning_dialog_present())
 
+        self.language_page.select_language("English", True)
+
+        self.assertFalse(self.is_warning_dialog_present())
         self.check_for_default_en_messages()
 
         self.language_page = CustomizedLanguagePage(self.driver)
@@ -200,12 +202,10 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.assertTrue(self.is_warning_dialog_present())
 
         self.language_page.click_save_changes_button()
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT,by_css(".success-message-box"))
-
-        self.driver.wait_for_element(UI_TEST_TIMEOUT,by_id("add_new_language_pop"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".success-message-box"))
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("add_new_language_pop"))
         self.language_page.save_new_language("new_lang"+random_string(4))
         self.assertEquals("Your language has been added successfully. Please translate the suggested automatic reply SMS text.",
                           self.language_page.get_success_message())
-
-        self.language_page.select_language("English",True)
+        self.language_page.select_language("English", True)
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())

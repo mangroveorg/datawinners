@@ -29,8 +29,6 @@ $(document).ready(function () {
         languageViewModel.language($("#language option:selected").val());
     });
 
-    setAccountWideMessages();
-
 });
 
 function initializeWarningDialogs() {
@@ -39,7 +37,7 @@ function initializeWarningDialogs() {
             languageViewModel.save(callback);
         },
         isQuestionnaireModified: function () {
-            return languageViewModel.isCustomizedMessageModified() || languageViewModel.isAccountMessageModified();
+            return languageViewModel.isCustomizedMessageModified();
         },
         cancelDialogDiv: "#cancel_language_changes_warning",
         validate: function () {
@@ -87,7 +85,3 @@ var first160chars = function (str) {
         str(val.substring(0, 160));
     return str;
 };
-
-function setAccountWideMessages() {
-    createObservableMessageItemsFor(account_messages, languageViewModel.accountMessages, languageViewModel.accountMessagesInitialState,true)
-}

@@ -52,7 +52,7 @@ def _is_unique_id_not_present_error(errors):
 
 
 def get_submission_error_message_for(response, form_model, dbm, request):
-    from datawinners.messageprovider.handlers import unique_id_not_registered_handler, invalid_answer_handler
+    from datawinners.messageprovider.handlers import unique_id_not_registered_handler, invalid_answer_for_submissions_handler,invalid_answer_for_uid_registration_handler
 
     errors = response.errors
     if isinstance(errors, dict) and form_model:
@@ -74,7 +74,10 @@ def get_submission_error_message_for(response, form_model, dbm, request):
             else:
                 error_text = "%s %s %s" % (
                     _("sms_glue").join(keys[:3]), _(and_msg), _("more_wrong_question"))
-        error_message = invalid_answer_handler(dbm, request, form_model.form_code, error_text)
+        if form_model.is_entity_registration_form():
+            error_message = invalid_answer_for_uid_registration_handler(dbm, error_text)
+        else:
+            error_message = invalid_answer_for_submissions_handler(dbm, request, form_model.form_code, error_text)
     else:
         error_message = errors
     return error_message

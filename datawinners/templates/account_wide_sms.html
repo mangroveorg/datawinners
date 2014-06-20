@@ -1,0 +1,104 @@
+{% extends 'layout_application.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Languages" %}{% endblock %}
+{% block section_title %}{% trans "Languages for Automatic Reply SMS" %}
+{% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+    {% activetab "main_nav" "languages" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        var account_messages = {{ account_messages|safe }};
+        var post_url = "{% url account_messages %}";
+    </script>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-textntags/texttag.js"></script>
+    <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/lang/account_sms_view_model.js"></script>
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+
+    <link href="/media/css/scss/languages.css" rel="stylesheet"/>
+    <link href="/media/css/scss/tab_navigation.css" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-textntags/texttag.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    {% csrf_token %}
+    {% activetab "messages_tab" "account_wide_sms" %}
+    <div class="help_accordion">{% trans "Datawinners analyzes each of the SMS Submission and automatically sends back an SMS reply." %}</div>
+
+    <ul class="messages_tab">
+        <li  class="{% ifactivetab 'messages_tab' 'questionnaire_reply_sms' %}active{% else %}inactive{% endifactivetab %}">
+            <a id='questionnaire_reply_sms_link' href={% url languages %}>{% trans "Reply SMS for Questionnaires" %}</a>
+        </li>
+        <li class="{% ifactivetab 'messages_tab' 'account_wide_sms' %}active{% else %}inactive{% endifactivetab %}">
+            <a id='account_wide_sms_link' href={% url account_messages %}>{% trans "Account-Wide Reply SMS" %}</a>
+        </li>
+    </ul>
+
+    <div class="success-message-box" style="display: none;"></div>
+    <div id="account_wide_sms">
+{#        <div class="account_wide_sms_title">{% trans "Account-Wide SMS" %}</div>#}
+        <div class="help_accordion" style="text-align: justify">
+            {% trans "account wide sms help text" %}
+        </div>
+        <br/>
+
+        <ol class="sms_messages" data-bind="foreach: accountMessages">
+            <li class="messages">
+                <div>
+                    <strong>
+                        <label data-bind="text: $data.title" style="display: inline;"></label>
+                        <img src="/media/images/help_icon.png" class="help_icon"
+                             style="display: inline;padding-bottom: 5px"
+                             data-bind="initializeTooltip:true">
+                        {% include "customized_message_tooltip.html" %}
+                    </strong>
+                </div>
+            </li>
+            <div>
+                <div class="TextTags"
+                     data-bind="messageEditor: {message: $data.message, count: $data.count, postChangeHandler: $parent.checkWarningMsgDisplay}, attr: {id: 'account_message' + $index() }">
+                </div>
+                <div class="validationMessage" data-bind="ifnot: $data.message.valid">
+                        <span id="question_title_validation_message" class="validationText"
+                              data-bind="text: $data.message.error">
+                        </span>
+
+                </div>
+                <div style="width: 900px">
+                    <span class="account_message_warning_message"
+                          data-bind="visible:$data.displayWarning">{% trans "Any changes you make to this text will apply for all Data Senders." %}
+                    </span>
+                    <span class="char_count">
+                        <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
+                    </span>
+                </div>
+            </div>
+            </li>
+        </ol>
+    </div>
+    <div class="save_button"><a class="button save" id="language_save"
+            data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
+
+    <div id="cancel_language_changes_warning" style="display: none;">
+        {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+
+        <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
+
+        <div class="text_align_right padding_top_20">
+            <a id="cancel_dialog" class="cancel_button" href="javascript:void(0);">{% trans "Cancel" %}</a>
+            <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
+            <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
+        </div>
+    </div>
+{% endblock %}

@@ -8,8 +8,9 @@ from django.views.decorators.http import require_http_methods
 import iso8601
 from django.utils import translation
 
-from datawinners.messageprovider.handlers import create_failure_log, incorrect_number_of_answers, \
-    incorrect_questionnaire_code, identification_number_already_exists
+from datawinners.messageprovider.handlers import create_failure_log, incorrect_number_of_answers_for_submission_handler, \
+    incorrect_questionnaire_code_handler, identification_number_already_exists_handler, \
+    incorrect_number_of_answers_for_uid_registration_handler
 from mangrove.transport.contract.request import Request
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, \
     FormModelDoesNotExistsException
@@ -239,7 +240,7 @@ def submit_to_player(incoming_request):
         message = SMSResponse(response, incoming_request).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
-        message = identification_number_already_exists(dbm, e.data[1], e.data[2])
+        message = identification_number_already_exists_handler(dbm, e.data[1], e.data[2])
         if not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
 
@@ -251,7 +252,7 @@ def submit_to_player(incoming_request):
     except FormModelDoesNotExistsException as exception:
         if sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(incoming_web_count=1)
-        message = incorrect_questionnaire_code(dbm, exception.data[0])
+        message = incorrect_questionnaire_code_handler(dbm, exception.data[0])
 
     except SMSParserWrongNumberOfAnswersException as exception:
         form_model = sms_player.get_form_model(mangrove_request)
@@ -259,9 +260,11 @@ def submit_to_player(incoming_request):
             organization.increment_message_count_for(
                 incoming_web_count=1) if sent_via_sms_test_questionnaire else organization.increment_message_count_for(
                 incoming_sms_count=1)
+            message = incorrect_number_of_answers_for_submission_handler(dbm, form_model.form_code, incoming_request)
+        elif form_model.is_entity_registration_form():
+            message = incorrect_number_of_answers_for_uid_registration_handler(dbm, form_model.form_code, incoming_request)
         elif not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
-        message = incorrect_number_of_answers(dbm, form_model.form_code, incoming_request)
 
     except Exception as exception:
         if sent_via_sms_test_questionnaire:

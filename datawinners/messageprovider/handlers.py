@@ -44,23 +44,30 @@ def unique_id_not_registered_handler(dbm, form_code, invalid_unique_id_code, req
                                                             form_code, placeholder_dict=
                                                             {'Submitted Identification Number': invalid_unique_id_code})
 
-def incorrect_number_of_answers(dbm, form_code, request):
+def incorrect_number_of_answers_for_submission_handler(dbm, form_code, request):
     message = get_customized_message_for_questionnaire(dbm, request, "reply_incorrect_number_of_responses",
                                                              form_code)
     create_failure_log(message, request)
     return message
 
-def invalid_answer_handler(dbm, request, form_code, invalid_answers):
+def incorrect_number_of_answers_for_uid_registration_handler(dbm,form_code,request):
+    return get_account_wide_sms_reply(dbm, "reply_incorrect_number_of_responses",
+                                                            placeholder_dict= {})
+
+def invalid_answer_for_submissions_handler(dbm, request, form_code, invalid_answers):
     return get_customized_message_for_questionnaire(dbm, request, "reply_incorrect_answers",
                                                             form_code, placeholder_dict=
                                                             {'Question Numbers for Wrong Answer(s)': invalid_answers})
 
-def incorrect_questionnaire_code(dbm, invalid_form_code):
+def invalid_answer_for_uid_registration_handler(dbm, invalid_answers):
+    return get_account_wide_sms_reply(dbm, "reply_incorrect_answers", placeholder_dict= {'Question Numbers for Wrong Answer(s)': invalid_answers})
+
+def incorrect_questionnaire_code_handler(dbm, invalid_form_code):
     return get_account_wide_sms_reply(dbm, "reply_incorrect_questionnaire_code",
                                                             placeholder_dict=
                                                             {'Submitted Questionnaire Code': invalid_form_code})
 
-def identification_number_already_exists(dbm, submitted_id,identification_number_type):
+def identification_number_already_exists_handler(dbm, submitted_id,identification_number_type):
     return get_account_wide_sms_reply(dbm, "reply_identification_number_already_exists",
                                                             placeholder_dict=
                                                             {'Submitted Identification Number': submitted_id,

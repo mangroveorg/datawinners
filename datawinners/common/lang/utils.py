@@ -69,6 +69,10 @@ def save_account_wide_reply_message_template(dbm):
     messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[2]:
                          _("Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}.")})
     messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[3]:
+                         _("Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.")})
+    messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[4]:
+                         _("Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")})
+    messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[5]:
                         _("Error. {Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number.")})
     account_message = AccountWideSMSMessage(messages)
     return dbm._save_document(account_message)
