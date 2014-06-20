@@ -189,6 +189,9 @@ class TestLanguageTab(HeadlessRunnerTest):
                           self.language_page.get_success_message())
 
         self.language_page.select_language("English",True)
+        self.driver.create_screenshot("language_selected.png")
+        self.assertFalse(self.is_warning_dialog_present())
+
         self.check_for_default_en_messages()
 
         self.language_page = CustomizedLanguagePage(self.driver)
