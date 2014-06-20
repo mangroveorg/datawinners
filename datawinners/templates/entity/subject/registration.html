@@ -32,6 +32,8 @@
                 </ul>
                 <div class="clear-right"></div>
             </div>
+        {% else %}
+           <a href="{{ edit_subject_questionnaire_link }}"class=" none edit-form-link">{% trans "Edit" %}</a>
         {% endif %}
         {#    form heading start   #}
         <div id="web_form_heading">
