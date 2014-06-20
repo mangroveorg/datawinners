@@ -190,13 +190,16 @@ def reports(request):
 
 
 @valid_web_user
-def smart_phone_instruction(request):
+def smart_phone_instruction(request, project_id=None):
     language_code = request.LANGUAGE_CODE
     instruction_template = "alldata/smart_phone_instruction_" + language_code + ".html"
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
-
+    project_links={}
+    if project_id:
+        project_links['test_questionnaire_link'] = reverse("web_questionnaire", args=[project_id])
     context = {'back_to_project_link': reverse("alldata_index"),
+               'project_links': project_links,
                "instruction_template": instruction_template,
                "disable_link_class": disable_link_class,
                "hide_link_class": hide_link_class}
