@@ -117,6 +117,8 @@ function LanguageViewModel() {
 
                     } else {
                         self.newLanguageName.setError(response.message);
+                        self.addLanguageText(gettext("Add Language"))
+                        $('#add_new_language_pop .yes_button').removeClass('ui-state-disabled');
                     }
                 })
         } else {
