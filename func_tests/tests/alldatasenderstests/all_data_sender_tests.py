@@ -299,7 +299,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
 
         #undelete project
         self.driver.go_to(UNDELETE_PROJECT_URL%project_id)
-        self.assertIn(project_name.lower(), self.driver.find(by_css(".all_projects")).text)
+        self.assertIn(project_name.lower(), [elem.text for elem in self.driver.find_elements_(by_css(".project-id-class"))])
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
 
         all_datasender_page.search_with(self.datasender_id_with_web_access)
