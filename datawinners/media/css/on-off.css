@@ -21,10 +21,6 @@
     display: block;
     width: 200%;
     margin-left: -100%;
-    -moz-transition: margin 0.3s ease-in 0s;
-    -webkit-transition: margin 0.3s ease-in 0s;
-    -o-transition: margin 0.3s ease-in 0s;
-    transition: margin 0.3s ease-in 0s;
 }
 
 .onoffswitch-inner:before, .onoffswitch-inner:after {
@@ -73,10 +69,6 @@
     height: 23px;
     bottom: 0;
     background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0)), linear-gradient(90deg, #ffffff 100%, transparent 50%) repeat scroll 100% 0;
-    -moz-transition: all 0.3s ease-in 0s;
-    -webkit-transition: all 0.3s ease-in 0s;
-    -o-transition: all 0.3s ease-in 0s;
-    transition: all 0.3s ease-in 0s;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#D8DAD9',GradientType=0 );
 }
 
