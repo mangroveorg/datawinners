@@ -47,7 +47,6 @@
 
     <div class="success-message-box" style="display: none;"></div>
     <div id="account_wide_sms">
-{#        <div class="account_wide_sms_title">{% trans "Account-Wide SMS" %}</div>#}
         <div class="help_accordion" style="text-align: justify">
             {% trans "account wide sms help text" %}
         </div>
@@ -88,7 +87,11 @@
         </ol>
     </div>
     <div class="save_button"><a class="button save" id="language_save"
-            data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a></div>
+            data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a>
+    </div>
+     <div>
+        <a id="cancel_changes" class="cancel_button" data-bind="click:resetChanges" href="javascript:void(0);">{% trans "Cancel Changes" %}</a>
+    </div>
 
     <div id="cancel_language_changes_warning" style="display: none;">
         {% trans "Do you want to save the changes before leaving this page?" %}<br/>

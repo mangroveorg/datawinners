@@ -180,7 +180,6 @@ ko.bindingHandlers.messageEditor = {
                 obj.postChangeHandler && obj.postChangeHandler(viewModel);
             }
         });
-        obj.count($(element).TextNTags('characterCount'));
     }
 
 };

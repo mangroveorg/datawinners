@@ -42,7 +42,8 @@ function initializeWarningDialogs() {
         cancelDialogDiv: "#cancel_language_changes_warning",
         validate: function () {
             return languageViewModel.isValid();
-        }
+        },
+        ignore_links: "#cancel_changes"
     };
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
     var language_change_warning_dialog_options = $.extend(options, {
@@ -78,11 +79,3 @@ function appendAddNewLanguageOption() {
     var add_language_option = {code: "add_new", name: gettext("Add Language")};
     languageViewModel.availableLanguages.push(add_language_option);
 }
-
-//This method is being used for restricting number of characters to 160 in message box
-var first160chars = function (str) {
-    var val = str();
-    if (val.length > 160)
-        str(val.substring(0, 160));
-    return str;
-};

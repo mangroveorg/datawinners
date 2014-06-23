@@ -95,3 +95,8 @@ select option {
 
 .cancel_button {
   color: #0070AC !important; }
+
+#cancel_changes {
+  float: right;
+  margin-right: 12px;
+  margin-top: 7px; }

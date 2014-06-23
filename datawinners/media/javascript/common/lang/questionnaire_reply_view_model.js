@@ -16,6 +16,18 @@ function LanguageViewModel() {
         return self.customizedMessagesInitialState() != ko.toJSON(self.customizedMessages());
     }, self);
 
+    self.resetChanges = function(){
+        var initialState = $.parseJSON(self.customizedMessagesInitialState());
+        $.each(self.customizedMessages(),function(index,element){
+            element.message.clearError();
+            var msg = initialState[index].message;
+            element.message(msg);
+        });
+        $(".TextTags").each(function(i, tag){
+            var message = self.customizedMessages()[i].message();
+            $(tag).TextNTags("create", message);
+        });
+    };
 
     self.saveButtonText = ko.observable(gettext("Save"));
     self.addLanguageText = ko.observable(gettext("Add Language"));
@@ -95,7 +107,7 @@ function LanguageViewModel() {
 
                     } else {
                         self.newLanguageName.setError(response.message);
-                        self.addLanguageText(gettext("Add Language"))
+                        self.addLanguageText(gettext("Add Language"));
                         $('#add_new_language_pop .yes_button').removeClass('ui-state-disabled');
                     }
                 })

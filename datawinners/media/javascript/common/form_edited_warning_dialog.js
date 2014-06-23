@@ -64,7 +64,10 @@ DW.CancelWarningDialog = function (options) {
     };
 
     this.initializeLinkBindings = function () {
-        $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(".add_link, .preview-navigation a, .sms_tester, .delete_project, #dw_help_link").bind('click', {self: this}, function (event) {
+        var default_ignore_links = ".add_link, .preview-navigation a, .sms_tester, .delete_project, #dw_help_link";
+        var ignore_links = options.ignore_links ? default_ignore_links + "," + options.ignore_links : default_ignore_links;
+
+        $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(ignore_links).bind('click', {self: this}, function (event) {
             var that = event.data.self;
             redirect_url = $(this).attr("href");
             if (isQuestionnaireModified()) {

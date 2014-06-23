@@ -23,6 +23,18 @@ function AccountWideSmsViewModel() {
         }
         return false;
     };
+
+    self.resetChanges = function(){
+        var initialState = $.parseJSON(self.accountMessagesInitialState());
+        $.each(self.accountMessages(),function(index,element){
+            element.message.clearError();
+            element.message(initialState[index].message);
+        });
+        $(".TextTags").each(function(i, tag){
+            $(tag).TextNTags("create", self.accountMessages()[i].message());
+        });
+    };
+
     self.checkWarningMsgDisplay = function (messageItem) {
         messageItem.displayWarning(self.isAccountMessageItemChanged(messageItem.code, messageItem.message()));
     };
@@ -109,7 +121,8 @@ function initializeWarningDialog() {
         cancelDialogDiv: "#cancel_language_changes_warning",
         validate: function () {
             return accountWideSmsViewModel.isValid();
-        }
+        },
+        ignore_links: "#cancel_changes"
     };
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
 }

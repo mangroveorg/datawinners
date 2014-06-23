@@ -17,7 +17,7 @@ default_en_messages = [u'Thank you {Name of Data Sender}. We received your SMS: 
                         u'Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.',
                         u'Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.']
 
-class TestLanguageTab(HeadlessRunnerTest):
+class  TestLanguageTab(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()

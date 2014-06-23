@@ -11,16 +11,22 @@ $.widget("dw.TextNTags", {
 
     _create: function () {
         var self = this;
-        self.setText(self.options.plainText);
+        self.create(self.options.plainText);
+    },
+
+    create: function(text){
+        var self = this;
+        self.setText(text);
         var el = self.element;
         el.attr('contenteditable', 'true');
         self.deleteTagHandler();
         $('.tags').attr('contenteditable', 'false');
         $('.tags').attr('unselectable',"on");
         self.initialStateHtml = el.html();
+        self._trigger('contentChangedHandler');
     },
 
-    setText: function (plainText) {
+    setText: function (plainText){
         var self = this;
         var regexPattern = new RegExp("\\"+ self.options.openingTag +"(.*?)\\" + self.options.closingTag, 'gi');
 
