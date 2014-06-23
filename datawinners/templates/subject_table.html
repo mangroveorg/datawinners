@@ -17,6 +17,7 @@
                 "sAjaxSource": "/entity/subjects/" + subject_type.toLowerCase() + "/ajax/",
                 "sAjaxDataIdColIndex" : $("#subjects_table thead th.short_code").index(("#subjects_table thead th")),
                 "bServerSide": true,
+                "fnInitComplete": function(){if(!$("#subjects_table tbody tr.odd td.dataTables_empty").length){$("#no_registered_subject_help").css("display","")}},
                 "oLanguage": {
                     "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
                 },
@@ -25,9 +26,14 @@
                                   {"label":"Edit", "handler":action_handler["edit"], "allow_selection": "single"}
                 ]
           });
+
         });
     </script>
 {% endcompress %}
+<div id="no_registered_subject_help" class="help_accordion" style="display:none">
+        {# Make sure that this block translation stays in a single line as otherwise django will not be able to find out that message id#}
+        {% blocktrans%}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}
+    </div>
 <div id="wrapper_div_for_table">
     <table id="subjects_table" >
         <thead>
@@ -45,7 +51,7 @@
             <p>
                 <a href="{{ create_subject_link }}">{% trans "Add a new" %} {{ entity_type }}</a> {% trans "or" %}
                 <a href="javascript:void(0);" class="import-subject">
-                    {% blocktrans with entity_type|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a>
+                    {% blocktrans with entity_type|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a> {% trans "or" %}
                 <a href="{% url edit_subject_questionnaire entity_type %}">
                 {% blocktrans with entity_type|capfirst as entity_type %}Customize the {{ entity_type }} registration form{% endblocktrans %} </a>
             </p>
