@@ -76,6 +76,7 @@ function LanguageViewModel() {
     self.addLanguage = function () {
         if (self.newLanguageName() && self.newLanguageName.valid()) {
             self.addLanguageText(gettext("Adding..."));
+            DW.loading();
             $('#add_new_language_pop .yes_button').addClass('ui-state-disabled');
             $.post('/languages/create', {"language_name": self.newLanguageName()})
                 .done(function (responseString) {

@@ -62,6 +62,7 @@ function initializeWarningDialogs() {
 
     $("#add_new_language_pop").dialog({
         autoOpen: false,
+        zIndex: 200,
         width: 450,
         modal: true,
         title: gettext('Add Language'),
