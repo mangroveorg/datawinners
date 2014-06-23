@@ -4,10 +4,12 @@ from datetime import datetime
 from nose.plugins.attrib import attr
 
 from framework.utils.data_fetcher import fetch_, from_
-from pages.languagespage.customized_language_locator import SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR
+from pages.languagespage.account_wide_reply_sms_page import AccountWideSmsReplyPage
+from pages.languagespage.customized_language_locator import SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, \
+    SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR
 from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
-from testdata.test_data import CUSTOMIZE_MESSAGES_URL
+from testdata.test_data import CUSTOMIZE_MESSAGES_URL, ACCOUNT_MESSAGES_URL
 from tests.smstestertests.sms_tester_data import *
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID
 from datawinners.accountmanagement.models import Organization
@@ -19,16 +21,16 @@ class TestSMSTester(HeadlessRunnerTest):
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
         languages_page = login(cls.driver).navigate_to_languages_page()
-        languages_page.select_language('English')
-        languages_page.update_message_for_selector(SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR,
+        account_wide_sms_reply_page = languages_page.navigate_to_account_message_Tab()
+        account_wide_sms_reply_page.update_message_for_selector(SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR,
           'Updated')
-        languages_page.save_changes()
-        assert languages_page.get_success_message() == 'Changes saved successfully.'
+        account_wide_sms_reply_page.save_changes()
+        assert account_wide_sms_reply_page.get_success_message() == 'Changes saved successfully.'
 
     @classmethod
     def tearDownClass(cls):
-        cls.driver.go_to(CUSTOMIZE_MESSAGES_URL)
-        CustomizedLanguagePage(cls.driver).remove_appended_message_for_selector(SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, 'Updated')
+        cls.driver.go_to(ACCOUNT_MESSAGES_URL)
+        AccountWideSmsReplyPage(cls.driver).remove_appended_message_for_selector(SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, 'Updated')
 
         HeadlessRunnerTest.tearDownClass()
 
@@ -78,10 +80,6 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(fetch_(ERROR_MSG, from_(REGISTER_WITH_WRONG_NUMBER_OF_ANSWERS)),send_sms_with(REGISTER_WITH_WRONG_NUMBER_OF_ANSWERS))
 
     @attr('functional_test')
-    def test_sms_player_for_only_questionnaire_code(self):
-        self.assertEqual(send_sms_with(ONLY_QUESTIONNAIRE_CODE), fetch_(ERROR_MSG, from_(ONLY_QUESTIONNAIRE_CODE)))
-
-    @attr('functional_test')
     def test_sms_player_for_unregistered_subject_and_invalid_geo_code(self):
         self.assertEqual(send_sms_with(UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA),
                          fetch_(ERROR_MSG, from_(UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA)))
@@ -109,7 +107,7 @@ class TestSMSTester(HeadlessRunnerTest):
 
         test_data.update({SENDER: "1234567890"})
         self.assertEqual(send_sms_with(test_data),
-                         "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.Updated")
+                         "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("extradata", "")})

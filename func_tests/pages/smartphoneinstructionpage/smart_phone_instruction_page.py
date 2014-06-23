@@ -1,7 +1,7 @@
 from pages.page import Page
 from pages.smartphoneinstructionpage.smart_phone_instruction_locator import SMART_PHONE_INSTRUCTION
 from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_locator import CLOSE_PREVIEW
-from pages.websubmissionpage.web_submission_locator import WEB_NAVIGATION
+from pages.websubmissionpage.web_submission_locator import WEB_NAVIGATION, BACK_TO_PROJECT_LINK
 
 
 class SmartPhoneInstructionPage(Page):
@@ -13,6 +13,7 @@ class SmartPhoneInstructionPage(Page):
 
     def navigate_to_project_list(self):
         self.driver.find(WEB_NAVIGATION).click()
+        self.driver.find(BACK_TO_PROJECT_LINK).click()
 
     def close_preview(self):
         return self.driver.find(CLOSE_PREVIEW).click()

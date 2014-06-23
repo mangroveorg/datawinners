@@ -66,7 +66,7 @@ class WebSubmissionPage(Page):
         return WarningDialog(self.driver)
 
     def navigate_to_project_list(self):
-        self.driver.find(WEB_NAVIGATION).click()
+        self.driver.find(BACK_TO_PROJECT_LINK).click()
 
     def navigate_to_smart_phone_instruction(self):
         self.driver.find(SMARTPHONE_NAV).click()
