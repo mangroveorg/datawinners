@@ -38,7 +38,7 @@ DW.instruction_template = {
     "date": gettext("Answer must be a date in the following format: %s. Example: %s"),
     "single_select": gettext("Choose 1 answer from the list. Example: a"),
     "multi_select": gettext("Choose 1 or more answers from the list. Example: a or ab "),
-    "gps": gettext("Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "),
+    "gps": gettext("Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"),
     "dd.mm.yyyy": "25.12.2011",
     "mm.dd.yyyy": "12.25.2011",
     "mm.yyyy": "12.2011",

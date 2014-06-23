@@ -3037,11 +3037,11 @@ msgstr "Seuls les lettres et les chiffres sont valides et vous ne pouvez saisir 
 msgid "WEB"
 msgstr "Internet"
 
-msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547"
-msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy.yyyy Exemple: -18.1324,27.6547"
+msgid "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
 
-msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."
-msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy.yyyy."
+msgid "Answer must be GPS coordinates in the following format (latitude,longitude)."
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude)."
 
 
 msgid "What is the Data Sender's mobile number?"
@@ -3859,7 +3859,7 @@ msgid "location_example"
 msgstr "Entrez un nom de lieu ou les coordonnées GPS."
 
 msgid "location_coordinate_example"
-msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude): xx.xx, yy.yy. Exemple: -18.13,27.65"
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
 
 msgid "Reports"
 msgstr "Rapports"

@@ -82,7 +82,7 @@ class GeoCodeFieldInstruction:
 
     @staticmethod
     def get_instruction(context):
-        return _("Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."), _(
+        return _("Answer must be GPS coordinates in the following format (latitude,longitude)."), _(
             "Example: -18.1324,27.6547")
 
 

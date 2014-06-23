@@ -32,6 +32,6 @@ class TestSubmissionImport(unittest.TestCase):
                 u'Report date\n\nAnswer must be a date in the following format: day.month.year\n\nExample: 25.12.2011',
                 u'What is your blood group?\n\nEnter 1 answer from the list.\n\nExample: a',
                 u'Symptoms\n\nEnter 1 or more answers from the list.\n\nExample: a or ab',
-                u'What is the GPS code for clinic?\n\nAnswer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy.\n\nExample: -18.1324,27.6547',
+                u'What is the GPS code for clinic?\n\nAnswer must be GPS coordinates in the following format (latitude,longitude).\n\nExample: -18.1324,27.6547',
                 u'Required Medicines\n\nEnter 1 or more answers from the list.\n\nExample: a or ab'
               ], sheet.row_values(0, 0, 9))

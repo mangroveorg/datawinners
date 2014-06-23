@@ -2918,7 +2918,7 @@ msgstr ""
 msgid "WEB"
 msgstr ""
 
-msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgid "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
 msgstr ""
 
 msgid "What is the Data Sender's mobile number?"
@@ -3746,7 +3746,7 @@ msgid "location_name_example"
 msgstr "Answer must be a location name. Example: Nairobi"
 
 msgid "location_coordinate_example"
-msgstr "Answer must be GPS coordinates in the following format(latitude,longitude): xx.xx,yy.yy. Example: -18.13,27.65"
+msgstr "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
 
 msgid "Reports"
 msgstr ""
