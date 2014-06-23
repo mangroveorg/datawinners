@@ -28,7 +28,7 @@ from datawinners.questionnaire.library import QuestionnaireLibrary
 from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions, get_organization_from_manager
-from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
+from datawinners.common.constant import CREATED_QUESTIONNAIRE, EDITED_QUESTIONNAIRE, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
     SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.helper import is_project_exist
@@ -145,7 +145,7 @@ def create_project(request):
         if not code_has_errors and not name_has_errors:
             _associate_account_users_to_project(manager, questionnaire)
             questionnaire.update_doc_and_save()
-            UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
+            UserActivityLog().log(request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
                                   detail=questionnaire.name)
             return HttpResponse(json.dumps({'success': True, 'project_id': questionnaire.id}))
 
@@ -208,7 +208,7 @@ def edit_project(request, project_id):
             update_associated_submissions.delay(manager.database_name, old_form_code,
                                                 questionnaire.form_code,
                                                 deleted_question_codes)
-            UserActivityLog().log(request, project=questionnaire.name, action=EDITED_PROJECT, detail=json.dumps(detail))
+            UserActivityLog().log(request, project=questionnaire.name, action=EDITED_QUESTIONNAIRE, detail=json.dumps(detail))
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
             return HttpResponse(

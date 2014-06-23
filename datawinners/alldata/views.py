@@ -26,7 +26,7 @@ from datawinners import settings
 from datawinners.project import helper
 from django.contrib import messages
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DELETED_PROJECT
+from datawinners.common.constant import DELETED_QUESTIONNAIRE
 from django.http import HttpResponseRedirect
 
 REPORTER_ENTITY_TYPE = u'reporter'
@@ -232,7 +232,7 @@ def delete_projects(request, project_id):
     undelete_link = reverse(undelete_projects, args=[project_id])
     if len(get_all_projects(manager)) > 0:
         messages.info(request, undelete_link)
-        UserActivityLog().log(request, action=DELETED_PROJECT, project=questionnaire.name)
+        UserActivityLog().log(request, action=DELETED_QUESTIONNAIRE, project=questionnaire.name)
     return HttpResponseRedirect(reverse(index))
 
 def undelete_projects(request, project_id):

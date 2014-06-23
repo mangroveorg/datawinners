@@ -960,7 +960,7 @@ msgstr ""
 msgid "Upload a CSV or a XLS file"
 msgstr ""
 
-msgid "All Projects"
+msgid "All Questionnaires"
 msgstr ""
 
 msgid "State"

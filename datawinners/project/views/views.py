@@ -62,7 +62,7 @@ from datawinners.project import helper
 from datawinners.project.utils import make_project_links
 from datawinners.project.helper import is_project_exist, get_feed_dictionary
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DELETED_PROJECT, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, RENAMED_PROJECT
+from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE
 from datawinners.project.views.utils import get_form_context
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
@@ -101,8 +101,9 @@ def delete_project(request, project_id):
     undelete_link = reverse(undelete_project, args=[project_id])
     # if len(get_all_projects(manager)) > 0:
     messages.info(request, undelete_link)
-    UserActivityLog().log(request, action=DELETED_PROJECT, project=questionnaire.name)
+    UserActivityLog().log(request, action=DELETED_QUESTIONNAIRE, project=questionnaire.name)
     return HttpResponseRedirect(reverse(views.index))
+
 
 
 @csrf_view_exempt
@@ -120,7 +121,7 @@ def rename_project(request, project_id):
         questionnaire.name = new_project_name
         try:
             questionnaire.save(process_post_update=True)
-            UserActivityLog().log(request, action=RENAMED_PROJECT, project=questionnaire.name)
+            UserActivityLog().log(request, action=RENAMED_QUESTIONNAIRE, project=questionnaire.name)
             return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
         except DataObjectAlreadyExists as e:
             return HttpResponse(
@@ -479,7 +480,7 @@ class SubjectWebQuestionnaireRequest():
         entity_type = self.questionnaire.entity_type[0].capitalize()
         detail_dict = dict(
             {"Subject Type": entity_type, "Unique ID": response_short_code})
-        UserActivityLog().log(self.request, action=REGISTERED_SUBJECT, project=self.questionnaire.name,
+        UserActivityLog().log(self.request, action=REGISTERED_IDENTIFICATION_NUMBER, project=self.questionnaire.name,
                               detail=json.dumps(detail_dict))
         return (_("%s with Identification Number %s successfully registered.")) % (entity_type,response_short_code)
 

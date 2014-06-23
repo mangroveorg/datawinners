@@ -46,7 +46,7 @@ class TestShowActivityLog(HeadlessRunnerTest):
 
         activity_log_page = self.navigate_to_activity_log_page()
         self.assertEqual(ACTIVITY_LOG_PAGE_TITLE, self.driver.get_title())
-        activity_log_page.select_filter("Project", "Created Project")
+        activity_log_page.select_filter("Questionnaire", "Created Questionnaire")
         time.sleep(3)
         for i in range(1, 10):
             if activity_log_page.get_data_on_cell(i, 3).lower() == self.project_title.lower():

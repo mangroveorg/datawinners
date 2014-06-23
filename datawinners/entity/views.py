@@ -56,8 +56,8 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, REGISTERED_SUBJECT, \
-    EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
+from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, DELETED_IDENTIFICATION_NUMBER, REGISTERED_IDENTIFICATION_NUMBER, \
+    EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
@@ -86,7 +86,7 @@ def create_type(request):
             define_type(manager, entity_name)
             message = _("Entity definition successful")
             success = True
-            UserActivityLog().log(request, action=ADDED_SUBJECT_TYPE, detail=entity_name[0].capitalize())
+            UserActivityLog().log(request, action=ADDED_IDENTIFICATION_NUMBER_TYPE, detail=entity_name[0].capitalize())
         except EntityTypeAlreadyDefined:
             message = _("%s already registered as a subject type.") % (entity_name[0],)
     else:
@@ -235,7 +235,7 @@ def delete_subjects(request):
 
     transport_info = TransportInfo("web", request.user.username, "")
     delete_entity_instance(manager, all_ids, entity_type, transport_info)
-    log_activity(request, DELETED_SUBJECTS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
+    log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
     message = get_success_message(entity_type)
     return HttpResponse(json.dumps({'success': True, 'message': message}))
 
@@ -339,7 +339,7 @@ def import_subjects_from_project_wizard(request, form_code):
 
         subject_details = _format_imported_subjects_datetime_field_to_str(form_model, short_code_subject_details_dict)
         detail_dict.update({entity_type: "[%s]" % ", ".join(short_codes)})
-        UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
+        UserActivityLog().log(request, action=IMPORTED_IDENTIFICATION_NUMBER, detail=json.dumps(detail_dict))
 
     return HttpResponse(json.dumps(
         {'success': error_message is None and is_empty(failure_imports),
@@ -513,7 +513,7 @@ def create_subject(request, entity_type=None):
                 entity_type.capitalize(), response.short_code)
 
                 detail_dict = dict({"Subject Type": entity_type.capitalize(), "Unique ID": response.short_code})
-                UserActivityLog().log(request, action=REGISTERED_SUBJECT, detail=json.dumps(detail_dict))
+                UserActivityLog().log(request, action=REGISTERED_IDENTIFICATION_NUMBER, detail=json.dumps(detail_dict))
                 questionnaire_form = SubjectRegistrationForm(form_model)
             else:
                 from datawinners.project.helper import errors_to_list

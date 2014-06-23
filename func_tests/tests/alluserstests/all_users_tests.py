@@ -128,4 +128,4 @@ class TestAllUsers(HeadlessRunnerTest):
         username = self.driver.find(by_xpath("//td[contains(.,'%s')]/../td[1]" % project_name)).text
         action = self.driver.find(by_xpath("//td[contains(.,'%s')]/../td[2]" % project_name)).text
         self.assertEqual("Deleted User", username)
-        self.assertEqual("Created Project", action)
+        self.assertEqual("Created Questionnaire", action)

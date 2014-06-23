@@ -1025,8 +1025,8 @@ msgstr "Allez vers l'aperçu du projet"
 msgid "Upload a CSV or a XLS file"
 msgstr "Télécharger un fichier CSV ou XLS"
 
-msgid "All Projects"
-msgstr "Tous les projets"
+msgid "All Questionnaires"
+msgstr "Tous les Questionnaires"
 
 msgid "State"
 msgstr "Etat"
@@ -3898,14 +3898,14 @@ msgstr "Adresse email invalide."
 msgid "Activity Log"
 msgstr "Journal des activités"
 
-msgid "Created Project"
-msgstr "A créé un projet"
+msgid "Created Questionnaire"
+msgstr "A créé un questionnaire"
 
-msgid "Activated Project"
-msgstr "A activé un projet"
+msgid "Activated Questionnaire"
+msgstr "A activé un questionnaire"
 
-msgid "Deleted Project"
-msgstr "A supprimé un projet"
+msgid "Deleted Questionnaire"
+msgstr "A supprimé un questionnaire"
 
 msgid "All Actions"
 msgstr "Toute les actions"
@@ -3922,20 +3922,20 @@ msgstr "A ajouté un utilisateur"
 msgid "Changed Account Information"
 msgstr "A changé les informations du compte"
 
-msgid "Added Subject Type"
-msgstr "A ajouté un type de sujet"
+msgid "Added Identification Number Type"
+msgstr "A ajouté un Type de Numéro d'Identification"
 
 msgid "Edited Registration Form"
 msgstr "A edité le formulaire d'enregistrement"
 
-msgid "Registered Subject"
-msgstr "A enregistré un sujet"
+msgid "Registered Identification Number"
+msgstr "A enregistré un Numéro d'Identification"
 
-msgid "Imported Subject(s)"
-msgstr "A importé un/des sujet(s)"
+msgid "Imported Identification Number(s)"
+msgstr "A importé un/des Numéro(s) d'Identification"
 
-msgid "Deleted Subject(s)"
-msgstr "A supprimé un/des sujet(s)"
+msgid "Deleted Identification Number(s)"
+msgstr "A supprimé un/des Numéro(s) d'Identification"
 
 msgid "Registered Data Sender"
 msgstr "A enregistré un expéditeur"
@@ -4018,8 +4018,8 @@ msgstr "Un expéditeur avec le numéro d'identification unique (ID) =% s existe 
 msgid "What Do You Want to Do?"
 msgstr "Qu'est ce que vous voulez faire?"
 
-msgid "Edited Project"
-msgstr "A edité un projet"
+msgid "Edited Questionnaire"
+msgstr "A edité un questionnaire"
 
 msgid "Your account is created on %s"
 msgstr "Votre compte est créé sur  %s"
@@ -4710,7 +4710,7 @@ msgid "Languages for SMS Reply Messages"
 msgstr "Langue pour les messages de retour SMS"
 
 msgid "Identification Number"
-msgstr "Numéro d'identification"
+msgstr "Numéro d'Identification"
 
 msgid "unique_id_example_text"
 msgstr "Exemple :<br/><strong>Personne</strong>: Patient, Fermier, Enfant<br/><strong>Lieux</strong>: Région, District, Commune<br/><strong>Choses</strong>: Clinique, Ecole, Détaillant, Formation, Réunion, Conférence, Lettre de transport, Reçu, Connaissement"
