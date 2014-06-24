@@ -664,6 +664,7 @@ def survey_web_questionnaire(request, project_id):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
+@is_datasender
 def subject_web_questionnaire(request, project_id=None, entity_type=None):
     subject_request = SubjectWebQuestionnaireRequest(request, project_id, entity_type)
     if request.method == 'GET':
