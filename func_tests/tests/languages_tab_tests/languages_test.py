@@ -17,7 +17,7 @@ default_en_messages = [u'Thank you {Name of Data Sender}. We received your SMS: 
                         u'Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.',
                         u'Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.']
 
-class  TestLanguageTab(HeadlessRunnerTest):
+class TestLanguageTab(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
@@ -29,7 +29,7 @@ class  TestLanguageTab(HeadlessRunnerTest):
         self.language_page = CustomizedLanguagePage(self.driver)
 
 
-    def tearDown(self):
+    def reset_messages(self):
         self.language_page.select_language("English", wait_for_load=True)
         self.language_page.revert_customized_messages_to_default()
         self.language_page.save_changes()
@@ -81,6 +81,7 @@ class  TestLanguageTab(HeadlessRunnerTest):
         self.language_page.refresh()
         self.language_page = CustomizedLanguagePage(self.driver)
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
+        self.reset_messages()
 
     def change_reply_messages(self):
         for element in self.driver.find_elements_(CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR):
@@ -128,6 +129,7 @@ class  TestLanguageTab(HeadlessRunnerTest):
         self.language_page = CustomizedLanguagePage(self.driver)
         self.language_page.wait_for_reply_messages_to_load()
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
+        self.reset_messages()
 
 
     @attr('functional_test')
@@ -162,6 +164,7 @@ class  TestLanguageTab(HeadlessRunnerTest):
         self.language_page = CustomizedLanguagePage(self.driver)
         self.language_page.wait_for_reply_messages_to_load()
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
+        self.reset_messages()
 
 
     @attr('functional_test')
@@ -209,3 +212,4 @@ class  TestLanguageTab(HeadlessRunnerTest):
                           self.language_page.get_success_message())
         self.language_page.select_language("English", True)
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
+        self.reset_messages()

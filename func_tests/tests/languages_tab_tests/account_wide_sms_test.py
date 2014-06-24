@@ -8,7 +8,7 @@ from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css, by_id
 from pages.languagespage.account_wide_reply_sms_page import AccountWideSmsReplyPage
 from pages.languagespage.customized_language_locator import ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR, \
-    DATA_SENDER_NOT_REGISTERED_LOCATOR
+    DATA_SENDER_NOT_REGISTERED_LOCATOR, CANCEL_CHANGES_LOCATOR
 from pages.loginpage.login_page import login
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, ACCOUNT_MESSAGES_URL
@@ -31,11 +31,10 @@ class TestAccountWideSMS(HeadlessRunnerTest):
     def setUp(self):
         self.account_sms_page = AccountWideSmsReplyPage(self.driver)
 
-    def tearDown(self):
+    def reset_account_messages(self):
         self.driver.go_to(ACCOUNT_MESSAGES_URL)
         self.account_sms_page = AccountWideSmsReplyPage(self.driver)
         self.account_sms_page.revert_account_messages_to_default()
-        self.account_sms_page.save_changes()
 
     def check_default_account_messages(self):
         messages = self.account_sms_page.get_all_account_wide_messages()
@@ -79,10 +78,12 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         # self.driver.wait_for_page_load()
         self.assertListEqual(changed_messages,  self.account_sms_page.get_all_account_wide_messages())
 
+        self.reset_account_messages()
+
     @attr('functional_test')
     def test_warning_and_error_conditions(self):
         self.change_account_messages()
-        self.assertEquals(6,self.driver.find_visible_elements_(by_css(".account_message_warning_message")).__len__())
+        self.assertEquals(6, self.driver.find_visible_elements_(by_css(".account_message_warning_message")).__len__())
         self.assertListEqual([u'Any changes you make to this text will apply for all Data Senders.']*6, [e.text for e in self.driver.find_visible_elements_(by_css(".account_message_warning_message"))])
         self.account_sms_page.clear_custom_message(DATA_SENDER_NOT_REGISTERED_LOCATOR)
         self.assertListEqual(['Enter reply SMS text.'], [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
@@ -98,6 +99,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.account_sms_page.save_changes()
         self.account_sms_page.refresh()
         self.assertListEqual(changed_messages,  self.account_sms_page.get_all_account_wide_messages())
+        self.reset_account_messages()
 
     @attr('functional_test')
     def test_should_use_modified_account_wide_sms_messages_to_send_reply(self):
@@ -135,8 +137,13 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         message = sms_tester_page.get_response_message()
         self.assertIn('new message',message)
 
-        self.driver.go_to(ACCOUNT_MESSAGES_URL)
-        self.account_sms_page = AccountWideSmsReplyPage(self.driver)
+        self.reset_account_messages()
+
+    def test_should_cancel_changes_when_changes_cancelled(self):
+        self.change_account_messages()
+        self.driver.find(CANCEL_CHANGES_LOCATOR).click()
+        self.assertListEqual(default_messages,  self.account_sms_page.get_all_account_wide_messages())
+
 
     def clear_all_messages(self):
         [r.clear() for r in self.driver.find_elements_(ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR)]

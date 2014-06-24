@@ -43,6 +43,7 @@ function ReplyMessageViewModel(){
     };
 
     self.resetChanges = function(){
+        if(!self.isMessageModified())return;
         var initialState = $.parseJSON(self.messagesInitialState());
         $.each(self.messages(),function(index,element){
             element.message.clearError();

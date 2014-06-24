@@ -13,7 +13,7 @@ function AccountWideSmsViewModel() {
 
 
     self.save = function (callback) {
-        if (!self.isValid()) return;
+        if (!self.isValid() || !self.isMessageModified()) return;
         DW.loading();
         self.saveButtonText(gettext("Saving..."));
         $.post(post_url, {

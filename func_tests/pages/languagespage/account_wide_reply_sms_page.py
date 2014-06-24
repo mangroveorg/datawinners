@@ -74,4 +74,6 @@ class AccountWideSmsReplyPage(Page):
             e.send_keys(default_en_messages[index])
 
     def revert_account_messages_to_default(self):
-        return [self.driver.execute_script("$(arguments[0]).html(_.str.rtrim($(arguments[0]).html(),'new message')); $(arguments[0]).trigger( 'blur' );", r) for r in self.driver.find_elements_(ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR)]
+        [self.driver.execute_script("$(arguments[0]).html(_.str.rtrim($(arguments[0]).html(),'new message')); $(arguments[0]).trigger( 'blur' );", r) for r in self.driver.find_elements_(ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR)]
+        self.save_changes()
+
