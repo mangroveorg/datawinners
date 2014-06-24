@@ -62,8 +62,9 @@ def get_project_info(manager, project):
 
     create_subjects_links = {}
     for entity_type in questionnaire.entity_type:
-        create_subjects_links.update({entity_type: append_query_strings_to_url(reverse("create_subject", args=[entity_type]),
-                                                           web_view=True)})
+        create_subjects_links.update(
+            {entity_type: append_query_strings_to_url(reverse("subject_questionnaire", args=[project_id, entity_type]),
+                                                      web_view=True)})
 
     project_info = dict(project_id=project_id,
                         name=project['value']['name'],
@@ -92,8 +93,10 @@ def projects_index(request):
 
     return disable_link_class, hide_link_class, page_heading
 
+
 def is_crs_admin(request):
     return get_organization(request).org_id == CRS_ORG_ID and not request.user.get_profile().reporter
+
 
 def is_crs_user(request):
     return get_organization(request).org_id == CRS_ORG_ID
@@ -133,14 +136,15 @@ def index(request):
 
     error_messages = []
     if "associate" in request.GET.keys():
-        error_messages = [_('You may have been dissociated from the project. Please contact your administrator for more details.')]
+        error_messages = [
+            _('You may have been dissociated from the project. Please contact your administrator for more details.')]
     if is_crs_admin(request):
         return render_to_response('alldata/index.html',
                                   {'projects': project_list, 'page_heading': page_heading,
                                    'disable_link_class': disable_link_class,
                                    'hide_link_class': hide_link_class, 'is_crs_admin': True,
                                    'project_links': get_alldata_project_links(),
-                                   'is_quota_reached':is_quota_reached(request),
+                                   'is_quota_reached': is_quota_reached(request),
                                    'error_messages': error_messages,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
@@ -151,7 +155,7 @@ def index(request):
                                    'hide_link_class': hide_link_class, 'is_crs_admin': False,
                                    "smart_phone_instruction_link": smart_phone_instruction_link,
                                    'project_links': get_alldata_project_links(),
-                                   'is_quota_reached':is_quota_reached(request),
+                                   'is_quota_reached': is_quota_reached(request),
                                    'error_messages': error_messages,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
@@ -167,7 +171,7 @@ def failed_submissions(request):
                                'disable_link_class': disable_link_class,
                                'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
                                'project_links': get_alldata_project_links(),
-                               'is_quota_reached':is_quota_reached(request, organization=organization)},
+                               'is_quota_reached': is_quota_reached(request, organization=organization)},
                               context_instance=RequestContext(request))
 
 
@@ -181,7 +185,7 @@ def reports(request):
     response = render_to_response('alldata/reports_page.html',
                                   {'reports': report_list, 'page_heading': "Questionnaires",
                                    'project_links': get_alldata_project_links(),
-                                   'is_quota_reached':is_quota_reached(request),
+                                   'is_quota_reached': is_quota_reached(request),
                                    'is_crs_admin': True},
                                   context_instance=RequestContext(request))
     response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
@@ -195,7 +199,7 @@ def smart_phone_instruction(request, project_id=None):
     instruction_template = "alldata/smart_phone_instruction_" + language_code + ".html"
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
-    project_links={}
+    project_links = {}
     if project_id:
         project_links['test_questionnaire_link'] = reverse("web_questionnaire", args=[project_id])
     context = {'back_to_project_link': reverse("alldata_index"),

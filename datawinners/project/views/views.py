@@ -468,7 +468,7 @@ class SubjectWebQuestionnaireRequest():
 
     @property
     def template(self):
-        return 'entity/subject/registration.html'
+        return 'entity/register_subject.html' if self.is_data_sender else 'entity/subject/registration.html'
 
 
     def player_response(self, created_request):
@@ -664,7 +664,7 @@ def survey_web_questionnaire(request, project_id):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
-@is_datasender
+#@is_datasender
 def subject_web_questionnaire(request, project_id=None, entity_type=None):
     subject_request = SubjectWebQuestionnaireRequest(request, project_id, entity_type)
     if request.method == 'GET':
