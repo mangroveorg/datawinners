@@ -1,6 +1,5 @@
 function open_add_language_popup(e){
     $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
-    e.preventDefault();
     $('#add_new_language_pop').dialog('open');
     languageViewModel.newLanguageName("");
     languageViewModel.newLanguageName.clearError();
@@ -10,7 +9,6 @@ function open_add_language_popup(e){
 $(document).ready(function () {
     window.languageViewModel = new QuestionnaireReplyViewModel();
     languageViewModel.language(current_language);
-    appendAddNewLanguageOption();
     ko.applyBindings(languageViewModel);
     initializeWarningDialogs();
 
@@ -21,13 +19,18 @@ $(document).ready(function () {
             language_change_warning_dialog.show();
             return false;
         }
-
-        if ($("#language").val() === "add_new") {
-            return open_add_language_popup(e);
-        }
         DW.loading();
         languageViewModel.language($("#language option:selected").val());
     });
+    $("#add_language_link").click(function(e){
+        if (languageViewModel.isMessageModified()) {
+            e.preventDefault();
+            add_lang_called = true;
+            language_change_warning_dialog.show();
+            return false;
+        }else
+            open_add_language_popup(e);
+    })
 
 });
 
@@ -52,10 +55,11 @@ function initializeWarningDialogs() {
         },
         actionCallback: function (e) {
             var selected_language = $("#language option:selected").val();
-            if(selected_language=="add_new"){
+            languageViewModel.language(selected_language);
+            if(add_lang_called){
+                add_lang_called = false;
                 open_add_language_popup(e);
-            }else{
-            languageViewModel.language(selected_language);}
+            }
         }
     });
     language_change_warning_dialog = new DW.CancelWarningDialog(language_change_warning_dialog_options);
@@ -73,9 +77,4 @@ function initializeWarningDialogs() {
 
 function resetPreviousLanguage() {
     $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
-}
-
-function appendAddNewLanguageOption() {
-    var add_language_option = {code: "add_new", name: gettext("Add Language")};
-    languageViewModel.availableLanguages.push(add_language_option);
 }

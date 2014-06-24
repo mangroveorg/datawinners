@@ -66,7 +66,6 @@ function QuestionnaireReplyViewModel() {
                         self.availableLanguages.pop();
                         self.availableLanguages.push({code: response.language_code, name: response.language_name});
                         self.sortLanguages();
-                        appendAddNewLanguageOption();
                         self.language(response.language_code);
                         $('.success-message-box').text(gettext("Language Added successfully"));
                         $('.success-message-box').show();

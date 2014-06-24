@@ -32,7 +32,7 @@
 
     <link href="/media/css/scss/languages.css" rel="stylesheet"/>
     <link href="/media/css/scss/tab_navigation.css" rel="stylesheet"/>
-
+    <link href="/media/css/scss/automatic_reply_sms.css" media="screen" rel="stylesheet" />
     <link href="/media/javascript/jquery-textntags/texttag.css" rel="stylesheet"/>
 {% endblock %}
 
@@ -59,9 +59,10 @@
         <div style="padding-top: 12px;font-size:14px ">
             <strong>{% trans "Language" %}</strong>
 
-            <select id="language" class="dropdown_style" name="language_option" style="display:block"
+            <select id="language" class="dropdown_style" name="language_option" style=""
                     data-bind="value:language_display, options: availableLanguages, optionsText: 'name', optionsValue: 'code'">
             </select>
+            <a id="add_language_link" >{% trans "Add Language"%}</a>
 
         </div>
         <br/>

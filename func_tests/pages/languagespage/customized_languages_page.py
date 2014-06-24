@@ -97,7 +97,7 @@ class CustomizedLanguagePage(Page):
         self.save_new_language(language_name)
 
     def select_add_new_language_option(self):
-        self.language_drop_down.set_selected_by_text(self.language_drop_down.get_options()[-1])
+        self.driver.find(by_css('#add_language_link')).click()
 
     def navigate_to_account_message_Tab(self):
         self.driver.find(by_id('account_wide_sms_link')).click()
