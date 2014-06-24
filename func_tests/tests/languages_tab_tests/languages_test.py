@@ -70,6 +70,7 @@ class TestLanguageTab(HeadlessRunnerTest):
 
         self.language_page.refresh()
         self.language_page = CustomizedLanguagePage(self.driver)
+        self.language_page.wait_for_reply_messages_to_load()
         self.check_for_default_en_messages()
 
         # self.verify_160_character_length_limit()
