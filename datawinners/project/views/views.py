@@ -485,6 +485,8 @@ class SubjectWebQuestionnaireRequest():
         return (_("%s with Identification Number %s successfully registered.")) % (entity_type,response_short_code)
 
     def response_for_get_request(self, initial_data=None, is_update=False):
+        if self.entity_type not in self.questionnaire.entity_type:
+            return HttpResponse(status=404)
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, entity_type=self.entity_type, is_update=is_update)
