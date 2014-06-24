@@ -45,8 +45,8 @@ class LanguagesAjaxView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.POST.get("data", {}))
         dbm = get_database_manager(request.user)
-        if data.get('isCustomizedMessageModified'):
-            questionnaire_customized_message_dict = get_reply_message_dictionary(data.get("customizedMessages"))
+        if data.get('isMessageModified'):
+            questionnaire_customized_message_dict = get_reply_message_dictionary(data.get("messages"))
             save_questionnaire_custom_messages(dbm, data.get('language'), questionnaire_customized_message_dict)
         return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))
 
@@ -103,8 +103,8 @@ class AccountMessagesView(TemplateView):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.POST.get("data", {}))
         dbm = get_database_manager(request.user)
-        if data.get('isAccountMessageModified'):
-            account_message_dict = get_reply_message_dictionary(data.get("accountMessages"))
+        if data.get('isMessageModified'):
+            account_message_dict = get_reply_message_dictionary(data.get("messages"))
             save_account_wide_sms_messages(dbm,account_message_dict)
 
         return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))

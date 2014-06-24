@@ -69,12 +69,14 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.driver.find(by_css("#global_subjects_link")).click()
         self.verify_warning_dialog_present()
         self.driver.find_visible_element(by_css(".yes_button")).click()
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".ui-dialog-titlebar"))
 
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockPage"))
         self.driver.find(by_css("#global_languages_link")).click()
         self.driver.find(by_id("account_wide_sms_link")).click()
         self.account_sms_page = AccountWideSmsReplyPage(self.driver)
-        self.driver.wait_for_page_load()
+        self.account_sms_page.wait_for_reply_messages_to_load()
+        # self.driver.wait_for_page_load()
         self.assertListEqual(changed_messages,  self.account_sms_page.get_all_account_wide_messages())
 
     @attr('functional_test')

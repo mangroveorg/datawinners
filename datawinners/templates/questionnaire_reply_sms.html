@@ -22,6 +22,7 @@
     <script type="text/javascript" src="/media/javascript/jquery-textntags/texttag.js"></script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/lang/reply_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/common/lang/questionnaire_reply_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/common/lang/customize_reply_messages.js"></script>
 {% endblock %}
@@ -66,7 +67,7 @@
         <br/>
 
         <div>
-            <ol class="sms_messages" data-bind="foreach: customizedMessages">
+            <ol class="sms_messages" data-bind="foreach: messages">
                     <li class="messages">
                         <div>
                             <strong>
@@ -98,7 +99,7 @@
     </div>
 
     <div class="save_button"><a class="button save" id="language_save"
-            data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isValid() != true}"></a>
+            data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isSaveDisabled}"></a>
     </div>
     <div>
         <a id="cancel_changes" class="cancel_button" data-bind="click:resetChanges" href="javascript:void(0);">{% trans "Cancel Changes" %}</a>

@@ -8,14 +8,14 @@ function open_add_language_popup(e){
 }
 
 $(document).ready(function () {
-    window.languageViewModel = new LanguageViewModel();
+    window.languageViewModel = new QuestionnaireReplyViewModel();
     languageViewModel.language(current_language);
     appendAddNewLanguageOption();
     ko.applyBindings(languageViewModel);
     initializeWarningDialogs();
 
     $("#language").change(function (e) {
-        if (languageViewModel.isCustomizedMessageModified()) {
+        if (languageViewModel.isMessageModified()) {
             e.preventDefault();
 
             language_change_warning_dialog.show();
@@ -37,7 +37,7 @@ function initializeWarningDialogs() {
             languageViewModel.save(callback);
         },
         isQuestionnaireModified: function () {
-            return languageViewModel.isCustomizedMessageModified();
+            return languageViewModel.isMessageModified();
         },
         cancelDialogDiv: "#cancel_language_changes_warning",
         validate: function () {

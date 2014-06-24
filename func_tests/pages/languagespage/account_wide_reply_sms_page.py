@@ -57,9 +57,9 @@ class AccountWideSmsReplyPage(Page):
     def wait_till_success_message_box_disappears(self):
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".success-message-box"))
 
-    # def wait_for_reply_messages_to_load(self):
-    #     #waiting for the last custom message to be populated
-    #     WebDriverWait(self.driver, UI_TEST_TIMEOUT).until(lambda driver:  driver.execute_script("return $('#custom_message4').text().length > 0"))
+    def wait_for_reply_messages_to_load(self):
+        #waiting for the last custom message to be populated
+        WebDriverWait(self.driver, UI_TEST_TIMEOUT).until(lambda driver:  driver.execute_script("return $('#account_message5').text().length > 0"))
 
     def get_custom_message_for(self, msg_locator):
         msg_box = self.driver.find(msg_locator)
