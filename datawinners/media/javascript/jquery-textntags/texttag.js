@@ -132,7 +132,7 @@ $.widget("dw.TextNTags", {
         $.each(el.contents(), function(i, e){
             //text nodes
             if(e.nodeType == 3){
-                returnText += e.textContent;
+                returnText += $(e).text();
             }
             else if(e.nodeType == 1 &&  e.tagName.toLowerCase() === "br"){
                 // ignore

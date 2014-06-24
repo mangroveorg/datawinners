@@ -59,8 +59,7 @@
             <strong>{% trans "Language" %}</strong>
 
             <select id="language" class="dropdown_style" name="language_option" style="display:block"
-                    data-bind="value:language_display, foreach: availableLanguages">
-                <option data-bind="text: name, value:code,css: { addNewLanguage: code == 'add_new' }">
+                    data-bind="value:language_display, options: availableLanguages, optionsText: 'name', optionsValue: 'code'">
             </select>
 
         </div>

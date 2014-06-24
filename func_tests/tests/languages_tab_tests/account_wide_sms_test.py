@@ -2,6 +2,7 @@
 import re
 
 from nose.plugins.attrib import attr
+import time
 
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css, by_id
@@ -51,7 +52,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.change_account_messages()
         self.driver.find(by_css("#global_subjects_link")).click()
         self.verify_warning_dialog_present()
-        self.driver.find_visible_element(by_css(".cancel_button")).click()
+        self.driver.find_visible_element(by_id("cancel_dialog")).click()
         self.assertListEqual(changed_messages ,  self.account_sms_page.get_all_account_wide_messages())
 
         self.driver.find(by_css("#global_subjects_link")).click()
@@ -73,6 +74,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.driver.find(by_css("#global_languages_link")).click()
         self.driver.find(by_id("account_wide_sms_link")).click()
         self.account_sms_page = AccountWideSmsReplyPage(self.driver)
+        self.driver.wait_for_page_load()
         self.assertListEqual(changed_messages,  self.account_sms_page.get_all_account_wide_messages())
 
     @attr('functional_test')

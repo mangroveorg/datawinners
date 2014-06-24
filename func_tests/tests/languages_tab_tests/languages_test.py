@@ -104,7 +104,7 @@ class  TestLanguageTab(HeadlessRunnerTest):
         self.change_reply_messages()
         click_identification_number_page()
         self.verify_warning_dialog_present()
-        self.driver.find_visible_element(by_css(".cancel_button")).click()
+        self.driver.find_visible_element(by_id("cancel_dialog")).click()
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
 
         click_identification_number_page()
@@ -137,7 +137,7 @@ class  TestLanguageTab(HeadlessRunnerTest):
         self.change_reply_messages()
         change_language()
         self.verify_warning_dialog_present()
-        self.driver.find_visible_element(by_css(".cancel_button")).click()
+        self.driver.find_visible_element(by_id("cancel_dialog")).click()
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
 
         change_language()

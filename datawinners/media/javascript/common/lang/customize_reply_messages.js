@@ -1,4 +1,4 @@
-function open_add_language_popup(e) {
+function open_add_language_popup(e){
     $("#language option[value=" + languageViewModel.language() + "]").attr("selected", "selected");
     e.preventDefault();
     $('#add_new_language_pop').dialog('open');
@@ -6,12 +6,12 @@ function open_add_language_popup(e) {
     languageViewModel.newLanguageName.clearError();
     return false;
 }
+
 $(document).ready(function () {
     window.languageViewModel = new LanguageViewModel();
-    ko.applyBindings(languageViewModel);
     languageViewModel.language(current_language);
     appendAddNewLanguageOption();
-
+    ko.applyBindings(languageViewModel);
     initializeWarningDialogs();
 
     $("#language").change(function (e) {

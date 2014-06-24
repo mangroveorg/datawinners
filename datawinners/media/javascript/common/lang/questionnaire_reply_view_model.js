@@ -7,7 +7,7 @@ function LanguageViewModel() {
     var self = this;
     self.availableLanguages = ko.observableArray(languages);
     self.language = ko.observable();
-    self.language_display = ko.computed(function () {
+    self.language_display = ko.computed(function() {
         return self.language();
     });
     self.customizedMessages = ko.observableArray();
@@ -48,12 +48,14 @@ function LanguageViewModel() {
         var example_text = gettext('example ' + text);
         return ( example_text != " ")
     };
+
     self.language.subscribe(function () {
         $.getJSON("/languages/custom_messages", {'language': languageViewModel.language()}).success(function (data) {
             createObservableMessageItemsFor(data, languageViewModel.customizedMessages,
                 languageViewModel.customizedMessagesInitialState);
         });
     }, self, 'change');
+
     self.isValid = ko.computed(function () {
         var valid_fields = $.map(self.customizedMessages(), function (e) {
             return e.message.valid()
