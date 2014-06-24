@@ -97,7 +97,7 @@ def delete_project(request, project_id):
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    helper.delete_project(manager, questionnaire)
+    helper.delete_project(questionnaire)
     undelete_link = reverse(undelete_project, args=[project_id])
     # if len(get_all_projects(manager)) > 0:
     messages.info(request, undelete_link)
@@ -133,7 +133,7 @@ def rename_project(request, project_id):
 def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-    helper.delete_project(manager, questionnaire, void=False)
+    helper.delete_project(questionnaire, void=False)
     return HttpResponseRedirect(reverse(views.index))
 
 

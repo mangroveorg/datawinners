@@ -115,14 +115,9 @@ def _update_survey_responses(manager, questionnaire, void):
     [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
 
 
-def delete_project(manager, questionnaire, void=True):
+def delete_project(questionnaire, void=True):
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=questionnaire.id))]
-    if void: #order of deletion depends on questionnaire void status.
-        _update_survey_responses(manager, questionnaire, void)
-        questionnaire.void(void)
-    else:
-        questionnaire.void(void)
-        _update_survey_responses(manager, questionnaire, void)
+    questionnaire.void(void)
 
 def get_activity_report_questions(dbm):
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q1',

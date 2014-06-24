@@ -111,7 +111,7 @@ def index(request):
     smart_phone_instruction_link = reverse("smart_phone_instruction")
     for project in rows:
         project_id = project['project_id']
-        delete_links = reverse('delete_projects', args=[project_id])
+        delete_links = reverse('delete_project', args=[project_id])
         project = dict(delete_links=delete_links,
                        name=project['name'],
                        created=project['created'],
@@ -216,27 +216,3 @@ def get_entity_list_by_type(request, entity_type):
     manager = get_database_manager(request.user)
     entities = get_all_entities(manager, entity_type_list)
     return convert_to_json_response([entity.short_code for entity in entities])
-
-@login_required
-@session_not_expired
-@is_new_user
-@is_datasender
-@is_not_expired
-def delete_projects(request, project_id):
-    manager = get_database_manager(request.user)
-    questionnaire = Project.get(manager, project_id)
-    dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if questionnaire.is_void():
-        return HttpResponseRedirect(dashboard_page)
-    helper.delete_project(manager, questionnaire)
-    undelete_link = reverse(undelete_projects, args=[project_id])
-    if len(get_all_projects(manager)) > 0:
-        messages.info(request, undelete_link)
-        UserActivityLog().log(request, action=DELETED_QUESTIONNAIRE, project=questionnaire.name)
-    return HttpResponseRedirect(reverse(index))
-
-def undelete_projects(request, project_id):
-    manager = get_database_manager(request.user)
-    questionnaire = Project.get(manager, project_id)
-    helper.delete_project(manager, questionnaire, void=False)
-    return HttpResponseRedirect(reverse(index))
