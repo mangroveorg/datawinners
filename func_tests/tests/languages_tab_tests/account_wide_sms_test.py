@@ -8,7 +8,7 @@ from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css, by_id
 from pages.languagespage.account_wide_reply_sms_page import AccountWideSmsReplyPage
 from pages.languagespage.customized_language_locator import ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR, \
-    DATA_SENDER_NOT_REGISTERED_LOCATOR, CANCEL_CHANGES_LOCATOR
+    DATA_SENDER_NOT_REGISTERED_LOCATOR, CANCEL_CHANGES_LOCATOR, LAST_WARNING_MESSAGE_LOCATOR
 from pages.loginpage.login_page import login
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, ACCOUNT_MESSAGES_URL
@@ -143,6 +143,15 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.change_account_messages()
         self.driver.find(CANCEL_CHANGES_LOCATOR).click()
         self.assertListEqual(default_messages,  self.account_sms_page.get_all_account_wide_messages())
+
+    def test_should_revert_to_original_text_when_reset(self):
+        self.change_account_messages()
+        self.account_sms_page.save_changes()
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".success-message-box"))
+        self.account_sms_page.revert_to_original()
+        self.check_default_account_messages()
+        self.assertListEqual([u'Any changes you make to this text will apply for all Data Senders.']*6, [e.text for e in self.driver.find_visible_elements_(by_css(".account_message_warning_message"))])
+        self.reset_account_messages()
 
 
     def clear_all_messages(self):

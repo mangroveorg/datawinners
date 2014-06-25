@@ -15,3 +15,7 @@ ADD_NEW_LANG_CANCEL_BUTTON = by_css('#add_new_language_pop .cancel_button')
 CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR = by_css("#language_customized_messages .TextTags")
 ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR = by_css("#account_wide_sms .TextTags")
 CANCEL_CHANGES_LOCATOR=by_id("cancel_changes")
+REVERT_TO_ORIGINAL_LINK= by_css(".reset-link")
+FRENCH_SYSTEM_LANGUAGE_LOCATOR=by_id("french")
+ENGLISH_SYSTEM_LANGUAGE_LOCATOR=by_id("english")
+LAST_WARNING_MESSAGE_LOCATOR="(//span[@class='account_message_warning_message'])[%s]"

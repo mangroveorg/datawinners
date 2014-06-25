@@ -1,9 +1,10 @@
 from selenium.webdriver.support.wait import WebDriverWait
 
-from framework.utils.common_utils import by_css
+from framework.utils.common_utils import by_css, by_xpath
 from framework.utils.drop_down_web_element import DropDown
 from framework.utils.text_box_web_element import TextBox
-from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR
+from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR, \
+    REVERT_TO_ORIGINAL_LINK, LAST_WARNING_MESSAGE_LOCATOR
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
 
@@ -77,3 +78,9 @@ class AccountWideSmsReplyPage(Page):
         [self.driver.execute_script("$(arguments[0]).html(_.str.rtrim($(arguments[0]).html(),'new message')); $(arguments[0]).trigger( 'blur' );", r) for r in self.driver.find_elements_(ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR)]
         self.save_changes()
 
+    def revert_to_original(self):
+        elements_ = self.driver.find_elements_(REVERT_TO_ORIGINAL_LINK)
+        print(elements_.__len__())
+        for i,r in enumerate(elements_):
+            r.click()
+            self.driver.wait_for_element(UI_TEST_TIMEOUT,by_xpath(LAST_WARNING_MESSAGE_LOCATOR % (i+1)),True)

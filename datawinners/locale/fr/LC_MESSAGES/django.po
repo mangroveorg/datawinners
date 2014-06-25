@@ -5065,3 +5065,5 @@ msgstr "Enregistrement de Numéro d'Identification avec un nombre de réponses i
 msgid "Cancel Changes"
 msgstr "Annuler les modifications"
 
+msgid "Reset to Original Text"
+msgstr "Réinitialiser"

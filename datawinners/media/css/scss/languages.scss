@@ -87,3 +87,13 @@ select option{
   margin-right: 12px;
   margin-top: 7px;
 }
+
+.reset-link{
+  @extend  .cancel_button;
+  font-weight: normal;
+  margin-top: 0px;
+}
+
+.message-header{
+  padding-top: 15px;
+}

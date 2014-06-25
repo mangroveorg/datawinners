@@ -101,7 +101,14 @@ select option {
   text-decoration: none;
   cursor: default; }
 
-.cancel_button {
+.cancel_button, .reset-link {
   float: right;
   margin-right: 12px;
   margin-top: 7px; }
+
+.reset-link {
+  font-weight: normal;
+  margin-top: 0px; }
+
+.message-header {
+  padding-top: 15px; }

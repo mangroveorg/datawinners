@@ -4,7 +4,8 @@ from framework.utils.common_utils import by_css, by_id
 from framework.utils.drop_down_web_element import DropDown
 from framework.utils.text_box_web_element import TextBox
 from pages.languagespage.account_wide_reply_sms_page import AccountWideSmsReplyPage
-from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR
+from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR, \
+    REVERT_TO_ORIGINAL_LINK
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
 
@@ -102,3 +103,6 @@ class CustomizedLanguagePage(Page):
     def navigate_to_account_message_Tab(self):
         self.driver.find(by_id('account_wide_sms_link')).click()
         return AccountWideSmsReplyPage(self.driver)
+
+    def revert_to_original(self):
+        [r.click() for r in self.driver.find_elements_(REVERT_TO_ORIGINAL_LINK)]

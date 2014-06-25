@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
-from datawinners.common.lang.views import LanguagesView, LanguagesAjaxView, LanguageCreateView, AccountMessagesView
+from datawinners.common.lang.views import LanguagesView, LanguagesAjaxView, LanguageCreateView, AccountMessagesView, \
+    get_default_messages
 
 
 urlpatterns = patterns('',
@@ -8,5 +9,6 @@ urlpatterns = patterns('',
     (r'^languages/create', LanguageCreateView.as_view()),
     url(r'^customizemessages/$', LanguagesView.as_view(), name="languages"),
     url(r'^accountmessages/$', AccountMessagesView.as_view(), name="account_messages"),
+    url(r'^defaultmessages/$', get_default_messages, name="reset_messages"),
 
 )

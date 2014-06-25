@@ -9,8 +9,10 @@ from django.views.generic.base import TemplateView, View
 from datawinners import utils
 from datawinners.accountmanagement.decorators import session_not_expired, is_datasender, is_not_expired
 from datawinners.common.lang.messages import save_questionnaire_custom_messages, save_custom_messages, save_account_wide_sms_messages
-from datawinners.common.lang.utils import questionnaire_customized_message_details, get_available_project_languages, create_new_questionnaire_reply_message_template, DuplicateLanguageException, account_wide_customized_message_details
+from datawinners.common.lang.utils import questionnaire_customized_message_details, get_available_project_languages, create_new_questionnaire_reply_message_template, DuplicateLanguageException, account_wide_customized_message_details, \
+    questionnaire_reply_default_messages, account_wide_sms_default_messages
 from datawinners.main.database import get_database_manager
+from datawinners.utils import get_organization_language
 
 
 class LanguagesView(TemplateView):
@@ -108,3 +110,16 @@ class AccountMessagesView(TemplateView):
             save_account_wide_sms_messages(dbm,account_message_dict)
 
         return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))
+
+@csrf_view_exempt
+@csrf_response_exempt
+def get_default_messages(request):
+    language_code = request.POST.get('code')
+    message_code = request.POST.get("message_code")
+    if language_code:
+        return HttpResponse(questionnaire_reply_default_messages(language_code).get(message_code))
+    else:
+        dbm = get_database_manager(request.user)
+        account_language = get_organization_language(dbm)
+        return HttpResponse(account_wide_sms_default_messages(account_language).get(message_code))
+

@@ -55,7 +55,7 @@
 
         <ol class="sms_messages" data-bind="foreach: messages">
             <li class="messages">
-                <div>
+                <div class="message-header">
                     <strong>
                         <label data-bind="text: $data.title" style="display: inline;"></label>
                         <img src="/media/images/help_icon.png" class="help_icon"
@@ -63,6 +63,7 @@
                              data-bind="initializeTooltip:true">
                         {% include "customized_message_tooltip.html" %}
                     </strong>
+                    <a class="reset-link" data-bind="click: function(data,element){ $root.resetMessage(element,data); }">{% trans "Reset to Original Text" %}</a>
                 </div>
             </li>
             <div>

@@ -31,6 +31,14 @@ function AccountWideSmsViewModel() {
         );
 
     };
+
+    self.resetMessage = function(e,messageItem){
+        $.post("/defaultmessages/",{'message_code':messageItem.code}).done(function(response){
+            messageItem.message.clearError();
+            $($(e.target).parents("li").next().children(".TextTags")).TextNTags("create", response);
+        });
+    }
+
 }
 
 
