@@ -407,12 +407,11 @@ msgstr ""
 "Choisissez 1 ou plusieurs réponses dans la liste suivante. Exemple : a ou ab"
 
 #: media/javascript/entity/questionnaire_helper.js:27
-msgid ""
-"Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy "
-"Example: -18.1324,27.6547 "
-msgstr ""
-"La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy."
-"yyyy Exemple: -18.1324,27.6547"
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
+
+msgid "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
 
 #: media/javascript/entity/questionnaire_helper.js:31
 msgid "Answer must be 20 characters maximum"
