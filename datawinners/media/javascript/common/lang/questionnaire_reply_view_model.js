@@ -63,7 +63,6 @@ function QuestionnaireReplyViewModel() {
                         self.addLanguageText(gettext("Add Language"));
                         $('#add_new_language_pop .yes_button').removeClass('ui-state-disabled');
                         $('#add_new_language_pop').dialog('close');
-                        self.availableLanguages.pop();
                         self.availableLanguages.push({code: response.language_code, name: response.language_name});
                         self.sortLanguages();
                         self.language(response.language_code);
