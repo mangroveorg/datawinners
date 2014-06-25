@@ -20,12 +20,6 @@ function ReplyMessageViewModel(){
 
     self.messagesInitialState = ko.observable();
 
-    self.isMessageModified = ko.computed(function () {
-        return self.messagesInitialState() != ko.toJSON(self.messages());
-    }, self);
-
-    self.messagesInitialState = ko.observable();
-
     self.isMessageModified = ko.computed(function() {
         return self.messagesInitialState() != ko.toJSON(self.messages());
     }, self);

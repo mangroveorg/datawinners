@@ -71,11 +71,12 @@ select option{
   margin-top: 35px;
 }
 
-.cancel_button{
-  color: #0070AC !important;}
+.link-disabled{
+  color: #808080;
+}
 
- #cancel_changes {
-   float: right;
-   margin-right: 12px;
-   margin-top: 7px;
- }
+.cancel_button{
+  float: right;
+  margin-right: 12px;
+  margin-top: 7px;
+}

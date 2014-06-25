@@ -93,10 +93,10 @@ select option {
   width: 900px;
   margin-top: 35px; }
 
-.cancel_button {
-  color: #0070AC !important; }
+.link-disabled {
+  color: #808080; }
 
-#cancel_changes {
+.cancel_button {
   float: right;
   margin-right: 12px;
   margin-top: 7px; }
