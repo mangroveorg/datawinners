@@ -1188,7 +1188,7 @@ msgid "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s
 msgstr "Erreur. Reponse incorrecte pour la question {Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
 msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
-msgstr "{Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
+msgstr "Merci. {Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
 
 msgid "Name of Data Sender"
 msgstr "Nom de l'Expéditeur de Données"
