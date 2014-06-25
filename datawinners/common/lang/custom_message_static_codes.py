@@ -21,7 +21,7 @@ TITLE_ACCOUNT_WIDE_REPLY_MESSAGE_CODE_MAP = OrderedDict([("reply_ds_not_register
                                                           ("reply_incorrect_answers",
                                                            "Identification Number Registration with an Error"),
                                                           ("reply_incorrect_number_of_responses",
-                                                           " Identification Number Registration with Incorrect number of Responses"),
+                                                           "Identification Number Registration with Incorrect number of Responses"),
                                                           ("reply_identification_number_already_exists",
                                                            "Identification Number ID Already Exists"),
                                                           ])

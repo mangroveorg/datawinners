@@ -5,7 +5,7 @@ import time
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css, by_id, random_string
 from pages.languagespage.customized_language_locator import LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, ADD_NEW_LANG_CANCEL_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, \
-    SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, SUCCESS_SUBMISSION_MESSAGE_LOCATOR
+    SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, SUCCESS_SUBMISSION_MESSAGE_LOCATOR, CANCEL_CHANGES_LOCATOR
 from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.loginpage.login_page import login
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -214,3 +214,9 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.language_page.select_language("English", True)
         self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
         self.reset_messages()
+
+    def test_should_cancel_changes_when_changes_cancelled(self):
+        self.change_reply_messages()
+        self.driver.find(CANCEL_CHANGES_LOCATOR).click()
+        self.assertListEqual(default_en_messages,  self.language_page.get_all_customized_reply_messages())
+

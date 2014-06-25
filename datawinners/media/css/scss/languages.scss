@@ -75,6 +75,13 @@ select option{
   color: #808080;
 }
 
+.link-disabled:hover{
+  color: #808080;
+  text-decoration: none;
+  cursor: default;
+}
+
+
 .cancel_button{
   float: right;
   margin-right: 12px;

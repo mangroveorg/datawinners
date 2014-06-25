@@ -5041,3 +5041,21 @@ msgstr "Vous utilisez une version du navigateur qui n'est pas prise en charge. C
 msgid "Location Name cannot exceed 500 characters."
 msgstr "Le nom de la localisation ne peut pas excéder les 500 caractères."
 
+msgid "Account-Wide Reply SMS"
+msgstr "Retours SMS relatifs au compte"
+
+msgid "Reply SMS for Questionnaires"
+msgstr "Retours SMS relatifs aux Questionnaires"
+
+msgid "Datawinners analyzes each of the SMS Submission and automatically sends back an SMS reply."
+msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement un retour SMS."
+
+msgid "Identification Number Registration with an Error"
+msgstr "Enregistrement de Numéro d'Identification comportant une erreur"
+
+msgid "Identification Number Registration with Incorrect number of Responses"
+msgstr "Enregistrement de Numéro d'Identification avec un nombre de réponses incorrect"
+
+msgid "Cancel Changes"
+msgstr "Annuler les modifications"
+
