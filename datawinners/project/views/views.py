@@ -6,7 +6,7 @@ from operator import itemgetter
 import datawinners
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt
@@ -486,7 +486,7 @@ class SubjectWebQuestionnaireRequest():
 
     def response_for_get_request(self, initial_data=None, is_update=False):
         if self.entity_type not in self.questionnaire.entity_type:
-            return HttpResponse(status=404)
+            raise Http404
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, entity_type=self.entity_type, is_update=is_update)
