@@ -6,6 +6,8 @@ function open_add_language_popup(e){
     return false;
 }
 
+var add_lang_called = false;
+
 $(document).ready(function () {
     window.languageViewModel = new QuestionnaireReplyViewModel();
     languageViewModel.language(current_language);
@@ -22,6 +24,7 @@ $(document).ready(function () {
         DW.loading();
         languageViewModel.language($("#language option:selected").val());
     });
+
     $("#add_language_link").click(function(e){
         if (languageViewModel.isMessageModified()) {
             e.preventDefault();
