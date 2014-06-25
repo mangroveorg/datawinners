@@ -4798,14 +4798,20 @@ msgstr "Tapez le code unique du/de la %s"
 msgid "View and manage all Submissions for this project."
 msgstr "Voir et gérer toutes les Soumissions liées à ce projet."
 
-msgid "Step 1. Finish your Questionnaire,then register Identification Numbers"
-msgstr "Etape 1. Terminez votre Questionnaire, puis enregistrez des Numéros d'Identification"
+msgid "Step 1. Write your Identification Number Question"
+msgstr "Etape 1. Tapez votre Question sur le Numéro d'Identification"
 
-msgid "Step 2. Ask your Data Senders to use the Identification Numbers"
-msgstr "Etape 2. Demandez à vos Expéditeurs de Données d'utiliser les Numéros d'Identification"
+msgid "Step 2. Finish your Questionnaire"
+msgstr "Etape 2. Terminez votre Questionnaire"
 
-msgid "Step 3. See how accurate your data is with Identification Numbers"
-msgstr "Etape 3. Voyez à quel point vos données sont exactes avec les Numéros d'Identification"
+msgid "Step 3. Register your Identification Numbers"
+msgstr "Etape 3. Enregistrez vos Numéros d'Identification"
+
+msgid "Step 4. Ask your Data Senders to use the Identification Numbers"
+msgstr "Etape 4. Demandez à vos Expéditeurs de Données d'utiliser les Numéros d'Identification"
+
+msgid "Step 5. See how accurate your data is with Identification Numbers"
+msgstr "Etape 5. Voyez à quel point vos données sont exactes avec les Numéros d'Identification"
 
 msgid "Use Identification Numbers to improve the accuracy of your data (rather than names, since names can be misspelled)."
 msgstr "Utilisez les Numéros d'Identification pour améliorer l'exactitude de vos données à la place des noms (les noms peuvent être mal orthographiés)."
