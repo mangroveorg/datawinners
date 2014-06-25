@@ -16,8 +16,11 @@ $(function(){
     if (ver == 8){
         var messageBox = $("#ie8-warning");
         messageBox.removeClass("none");
+        clearTimeout(timeout);
+        var timeout = setTimeout(function(){messageBox.addClass('none')}, 120000);
         $("#close-ie-msg").on('click', function(){
             messageBox.remove();
+            clearTimeout(timeout);
         });
     }
 });
