@@ -4619,3 +4619,6 @@ msgstr ""
 
 msgid "Location Name cannot exceed 500 characters."
 msgstr ""
+
+msgid "Oops, something went wrong. You deleted a personalized response (gray box). Please edit the text without deleting the personalized response and save again."
+msgstr ""

@@ -7,7 +7,7 @@ function QuestionnaireReplyViewModel() {
     var self = this;
     self.availableLanguages = ko.observableArray(languages);
     self.language = ko.observable();
-    self.language_display = ko.computed(function() {
+    self.language_display = ko.computed(function () {
         return self.language();
     });
 
@@ -39,16 +39,26 @@ function QuestionnaireReplyViewModel() {
         languageViewModel.saveButtonText(gettext("Saving..."));
         $.post(post_url, {
                 'data': JSON.stringify(ko.toJS(languageViewModel)),
-                'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
-            },
-            function (data) {
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+            }
+        ).done(function (data) {
                 data = JSON.parse(data);
                 languageViewModel.saveButtonText(gettext("Save"));
-                displaySuccessMessage(data);
-                self.messagesInitialState(ko.toJSON(self.messages()));
-                if (typeof callback == "function") callback();
-            }
-        );
+                if (data.success) {
+                    displaySuccessMessage(data);
+                    self.messagesInitialState(ko.toJSON(self.messages()));
+                    if (typeof callback == "function") callback();
+                } else {
+                    var initialState = data.messages;
+                    $.each(self.messages(), function (index, element) {
+                        element.message(initialState[index].message);
+                        initialState[index].valid == false ? element.message.setError(initialState[index].error) : element.message.clearError();
+                    });
+                    $(".TextTags").each(function (i, tag) {
+                        $(tag).TextNTags("create", self.messages()[i].message());
+                    });
+                }
+            });
 
     };
     self.addLanguage = function () {

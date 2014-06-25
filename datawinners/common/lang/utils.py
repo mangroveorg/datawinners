@@ -7,6 +7,7 @@ from datawinners.common.lang.messages import QuestionnaireCustomizedMessages, Ac
     get_language_cache_key, LANGUAGE_EXPIRY_TIME_IN_SEC
 from datawinners.utils import get_organization_language
 
+ERROR_MSG_MISMATCHED_SYS_VARIABLE = _('Oops, something went wrong. You deleted a personalized response (gray box). Please edit the text without deleting the personalized response and save again.')
 
 def questionnaire_customized_message_details(dbm, language_code):
     cache_manger = get_cache_manager()

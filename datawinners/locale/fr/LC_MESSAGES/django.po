@@ -5067,3 +5067,6 @@ msgstr "Annuler les modifications"
 
 msgid "Reset to Original Text"
 msgstr "Réinitialiser"
+
+msgid "Oops, something went wrong. You deleted a personalized response (gray box). Please edit the text without deleting the personalized response and save again."
+msgstr ""
