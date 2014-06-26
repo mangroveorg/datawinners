@@ -44,10 +44,11 @@ function AccountWideSmsViewModel() {
 
     };
 
-    self.resetMessage = function(e,messageItem){
+    self.resetMessage = function(event, messageItem){
         $.post("/defaultmessages/",{'message_code':messageItem.code}).done(function(response){
             messageItem.message.clearError();
-            $($(e.target).parents("li").next().children(".TextTags")).TextNTags("create", response);
+            var messageBox = $(event.target).parents("li").next().children(".TextTags");
+            $(messageBox).TextNTags("create", response);
         });
     }
 
@@ -66,6 +67,10 @@ $(function(){
     ko.applyBindings(accountWideSmsViewModel);
     createObservableMessageItemsFor(account_messages, accountWideSmsViewModel.messages, accountWideSmsViewModel.messagesInitialState, true);
     initializeWarningDialog();
+
+    $("#account_wide_sms").on('click', ".reset-link", function(event){
+        accountWideSmsViewModel.resetMessage(event, ko.dataFor(this));
+    });
 });
 
 

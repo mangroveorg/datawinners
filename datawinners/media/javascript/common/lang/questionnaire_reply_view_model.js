@@ -95,10 +95,11 @@ function QuestionnaireReplyViewModel() {
         $('#add_new_language_pop').dialog('close');
     };
 
-    self.resetMessage = function(e,messageItem){
+    self.resetMessage = function(event, messageItem){
         $.post("/defaultmessages/",{'code':self.language(),'message_code':messageItem.code}).done(function(response){
             messageItem.message.clearError();
-            $($(e.target).parents("li").next().children(".TextTags")).TextNTags("create", response);
+            var messageBox = $(event.target).parents("li").next().children(".TextTags");
+            $(messageBox).TextNTags("create", response);
         });
     }
 

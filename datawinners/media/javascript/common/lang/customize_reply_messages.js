@@ -33,7 +33,11 @@ $(document).ready(function () {
             return false;
         }else
             open_add_language_popup(e);
-    })
+    });
+
+    $("#language_customized_messages").on('click', ".reset-link", function(event){
+        languageViewModel.resetMessage(event, ko.dataFor(this));
+    });
 
 });
 
