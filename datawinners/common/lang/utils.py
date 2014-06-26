@@ -38,7 +38,7 @@ def account_wide_customized_message_details(dbm):
 def _build_message_details(reply_messages_dict, reply_message_code_map):
     reply_list = []
     for code, reply_message_title in reply_message_code_map.iteritems():
-        details_dict = {"title": _(reply_message_title)}
+        details_dict = {"title": reply_message_title}
         details_dict.update({"message": reply_messages_dict.get(code)})
         details_dict.update({"code": code})
         reply_list.append(details_dict)

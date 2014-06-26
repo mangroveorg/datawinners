@@ -65,7 +65,7 @@ function createObservableMessageItemsFor(data, messageObservable, initialStateOb
     for (var i = 0; i < data.length; i++) {
         var messageItem = DW.ko.createValidatableObservable({value: data[i].message});
         var count = ko.observable(0);
-        var customized_message_item = { "code": data[i].code, "title": data[i].title, "message": messageItem, "count": count };
+        var customized_message_item = { "code": data[i].code, "title": gettext(data[i].title), "message": messageItem, "count": count };
         messageItem.subscribe(function () {
             DW.ko.mandatoryValidator(this.message, gettext("Enter reply SMS text."));
         }, customized_message_item);
