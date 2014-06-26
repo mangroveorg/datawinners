@@ -490,7 +490,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_page.add_new_unique_id_type(new_type_name)
         is_visible, message = create_questionnaire_page.get_new_unique_id_error_msg()
         self.assertTrue(is_visible)
-        self.assertEqual(message, '%s already registered as a subject type.' % new_type_name)
+        self.assertEqual(message, '%s already exists.' % new_type_name.capitalize())
 
     def _verify_users_added_to_project(self):
         self.driver.find(by_xpath("//a[text()='My Data Senders']")).click()
