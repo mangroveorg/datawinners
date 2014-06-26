@@ -67,13 +67,15 @@ def verify_inconsistency_in_system_variables(dbm, incoming_message_dict, languag
         if not modified_system_variable_list == existing_system_variable_list:
             inconsistent_message_codes.append(code)
 
-    errorred_message_list = []
+    corrected_message_list = []
+    errored_msg_list = []
     if inconsistent_message_codes:
-        errorred_message_list = existing_message_list
-        for msg_details in errorred_message_list:
+        corrected_message_list = existing_message_list
+        for msg_details in corrected_message_list:
             if msg_details.get('code') in inconsistent_message_codes:
+                errored_msg_list.append(incoming_message_dict[msg_details.get('code')])
                 msg_details.update({'error': ERROR_MSG_MISMATCHED_SYS_VARIABLE, 'valid': False})
-    return errorred_message_list
+    return corrected_message_list, errored_msg_list
 
 
 def _send_error_email(error_message_dict, request):
@@ -103,12 +105,12 @@ class LanguagesAjaxView(View):
             language = data.get('language')
             questionnaire_customized_message_dict = get_reply_message_dictionary(modified_messages)
 
-            error_message_dict = verify_inconsistency_in_system_variables(dbm,
+            corrected_message_list, errored_message_list = verify_inconsistency_in_system_variables(dbm,
                                                                           questionnaire_customized_message_dict,
                                                                           language)
-            if error_message_dict:
-                _send_error_email(modified_messages, request)
-                return HttpResponse(json.dumps({"success": False, "messages": error_message_dict}))
+            if corrected_message_list:
+                _send_error_email(errored_message_list, request)
+                return HttpResponse(json.dumps({"success": False, "messages": corrected_message_list}))
 
             save_questionnaire_custom_messages(dbm, language, questionnaire_customized_message_dict)
         return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))
@@ -172,11 +174,11 @@ class AccountMessagesView(TemplateView):
         if data.get('isMessageModified'):
             modified_messages = data.get("messages")
             incoming_message_dict = get_reply_message_dictionary(data.get("messages"))
-            error_message_dict = verify_inconsistency_in_system_variables(dbm, incoming_message_dict,
+            corrected_message_dict, errored_message_list = verify_inconsistency_in_system_variables(dbm, incoming_message_dict,
                                                                           is_account_wid_sms=True)
-            if error_message_dict:
-                _send_error_email(modified_messages, request)
-                return HttpResponse(json.dumps({"success": False, "messages": error_message_dict}))
+            if corrected_message_dict:
+                _send_error_email(errored_message_list, request)
+                return HttpResponse(json.dumps({"success": False, "messages": corrected_message_dict}))
 
             save_account_wide_sms_messages(dbm, incoming_message_dict)
 
