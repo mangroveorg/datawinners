@@ -1,6 +1,7 @@
 from collections import OrderedDict
 import json
 import re
+from django.template.context import RequestContext
 from django.utils import translation
 from datawinners import utils
 
@@ -32,11 +33,10 @@ class LanguagesView(TemplateView):
         organization = utils.get_organization(request)
         current_language_code = organization.language
         languages_list = get_available_project_languages(dbm)
-        return self.render_to_response({
+        return self.render_to_response(RequestContext(request, {
             "available_languages": json.dumps(languages_list),
             "current_language": current_language_code,
-            'active_language': translation.get_language()
-        })
+        }))
 
     @method_decorator(csrf_view_exempt)
     @method_decorator(csrf_response_exempt)
@@ -155,10 +155,9 @@ class AccountMessagesView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)
-        return self.render_to_response({
-            "account_messages": json.dumps(account_wide_customized_message_details(dbm)),
-            'active_language': translation.get_language()
-        })
+        return self.render_to_response(RequestContext(request, {
+            "account_messages": json.dumps(account_wide_customized_message_details(dbm))
+        }))
 
     @method_decorator(login_required)
     @method_decorator(session_not_expired)

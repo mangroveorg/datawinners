@@ -11,7 +11,7 @@ from mangrove.utils.json_codecs import encode_json
 from django.utils.translation import ugettext
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @csrf_exempt
 @is_not_expired

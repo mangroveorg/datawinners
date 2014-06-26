@@ -13,6 +13,6 @@ urlpatterns = patterns('',
     (r'^allfailedsubmissions$', failed_submissions),
     #url(r'^questionnaire/delete/(?P<project_id>.+?)/$', delete_projects, name="delete_projects"),
     #(r'^questionnaire/undelete/(?P<project_id>.+?)/$', undelete_projects),
-    url(r'^smartphoneinstruction$', smart_phone_instruction, name = "smart_phone_instruction"),
-    url(r'^smartphoneinstruction/(?P<project_id>.+?)/$', smart_phone_instruction, name = "smart_phone_instruction"),
+    url(r'^smartphoneinstruction$', smart_phone_instruction, name="smart_phone_instruction"),
+    url(r'^smartphoneinstruction/(?P<project_id>.+?)/$', smart_phone_instruction, name="smart_phone_instruction"),
 )

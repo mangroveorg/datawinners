@@ -48,13 +48,13 @@ class EditDataSenderView(TemplateView):
                                                  'location': location,
                                                  'geo_code': geo_code
                                                 })
-        return self.render_to_response({
+        return self.render_to_response(RequestContext(request, {
                                            'reporter_id': reporter_id,
                                            'form': form,
                                            'project_links': entity_links,
                                            'email': email,
                                            'create_data_sender': create_data_sender
-                                       })
+                                       }))
 
     def post(self, request, reporter_id, *args, **kwargs):
         reporter_id = reporter_id.lower()
@@ -129,11 +129,11 @@ class RegisterDatasenderView(TemplateView):
             form = ReporterRegistrationForm(initial={'project_id': request.GET.get('project_id')})
         else:
             form = ReporterRegistrationForm()
-        return self.render_to_response({
+        return self.render_to_response(RequestContext(request, {
                                            'form': form,
                                            'current_language': translation.get_language(),
-                                           'registration_link':'/entity/datasender/register/',
-                                       })
+                                           'registration_link':'/entity/datasender/register/'
+                                       }))
 
     def post(self, request, *args, **kwargs):
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}

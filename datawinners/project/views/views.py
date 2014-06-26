@@ -390,12 +390,6 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
     return [questions[1], questions[2], questions[3], questions[4], questions[5]]
 
 
-#def get_preview_and_instruction_links_for_questionnaire():
-#    return {'sms_preview': reverse("questionnaire_sms_preview"),
-#            'web_preview': reverse("questionnaire_web_preview"),
-#            'smart_phone_preview': reverse("smart_phone_preview"), }
-
-
 @valid_web_user
 @is_project_exist
 @is_datasender

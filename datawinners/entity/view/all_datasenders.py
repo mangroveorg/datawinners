@@ -2,6 +2,7 @@ import json
 from sets import Set
 
 from django.contrib.auth.decorators import login_required
+from django.template.context import RequestContext
 from django.utils import translation
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
@@ -40,12 +41,12 @@ class AllDataSendersView(TemplateView):
         in_trial_mode = utils.get_organization(request).in_trial_mode
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
 
-        return self.render_to_response({
+        return self.render_to_response(RequestContext(request, {
             "user_dict": json.dumps(user_rep_id_name_dict),
             "projects": projects,
             'current_language': translation.get_language(),
-            'in_trial_mode': in_trial_mode
-        })
+            'in_trial_mode': in_trial_mode,
+        }))
 
     def get_imported_data_senders(self, successful_imports):
         imported_data_senders = successful_imports.values()
@@ -216,7 +217,7 @@ class DisassociateDataSendersView(DataSenderActionView):
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required
 @is_datasender
 def delete_data_senders(request):
     manager = get_database_manager(request.user)

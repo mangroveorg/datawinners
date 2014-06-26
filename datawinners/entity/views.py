@@ -226,7 +226,7 @@ def get_success_message(entity_type):
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required
 @is_datasender
 def delete_subjects(request):
     manager = get_database_manager(request.user)
