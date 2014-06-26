@@ -54,7 +54,7 @@
             </h2>
 
             <div class="instruction margin_bottom_20">
-                {% trans "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders." %}
+                {% blocktrans with entity_type as entity_type %}Your Data Senders can register a new {{ entity_type }} via SMS. Print out this form and give it to your Data Senders.{% endblocktrans %}
             </div>
             {#    form heading end #}
         </div>

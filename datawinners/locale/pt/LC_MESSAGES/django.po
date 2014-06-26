@@ -4239,7 +4239,7 @@ msgstr "Back to All Subjects List"
 msgid "Example SMS:"
 msgstr ""
 
-msgid "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders."
+msgid "Your Data Senders can register a new %(entity_type)s via SMS. Print out this form and give it to your Data Senders."
 msgstr ""
 
 msgid "Back to Registration Form"
