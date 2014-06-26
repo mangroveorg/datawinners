@@ -88,6 +88,12 @@ select option{
   margin-top: 7px;
 }
 
+.dialog_cancel_button{
+  color: #0070ac !important;
+  margin-top: 8px;
+  padding-right: 8px;
+}
+
 .reset-link{
   @extend  .cancel_button;
   font-weight: normal;
