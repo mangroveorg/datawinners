@@ -146,6 +146,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'datawinners.accountmanagement.context_processors.add_feature_flags',
     'datawinners.accountmanagement.context_processors.add_help_link',
     'django.contrib.messages.context_processors.messages',
+    'datawinners.accountmanagement.context_processors.current_active_language'
 )
 
 INDEX_PAGE = '/home'

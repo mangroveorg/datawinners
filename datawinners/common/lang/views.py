@@ -1,6 +1,7 @@
 from collections import OrderedDict
 import json
 import re
+from django.utils import translation
 from datawinners import utils
 
 from django.contrib.auth.decorators import login_required
@@ -34,6 +35,7 @@ class LanguagesView(TemplateView):
         return self.render_to_response({
             "available_languages": json.dumps(languages_list),
             "current_language": current_language_code,
+            'active_language': translation.get_language()
         })
 
     @method_decorator(csrf_view_exempt)
@@ -144,7 +146,8 @@ class AccountMessagesView(TemplateView):
     def get(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)
         return self.render_to_response({
-            "account_messages": json.dumps(account_wide_customized_message_details(dbm))
+            "account_messages": json.dumps(account_wide_customized_message_details(dbm)),
+            'active_language': translation.get_language()
         })
 
     @method_decorator(login_required)
