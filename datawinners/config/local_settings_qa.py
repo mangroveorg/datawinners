@@ -23,7 +23,7 @@ GOOGLE_ANALYTICS_ENABLED = False
 
 TRIAL_REGISTRATION_ENABLED = True
 
-HNI_SUPPORT_EMAIL_ID = 'dummy@dummy.com'
+HNI_SUPPORT_EMAIL_ID = 'datawinnersblr@thoughtworks.com'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
