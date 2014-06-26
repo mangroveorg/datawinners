@@ -38,3 +38,8 @@ __Rabit MQ__
 
 All time-consuming batch tasks are handled via message queues. Python binding
 mq binding is easy to use and integrates well with celery.
+
+__supervisord__
+supervisor is process management utility, helps in deamonizing processes and restarting if it dies. Datawinners reminder script triggered via supervisor. In vumi all workers and transport consumers are started by supervisor.
+
+
