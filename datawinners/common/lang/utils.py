@@ -45,7 +45,7 @@ def _build_message_details(reply_messages_dict, reply_message_code_map):
     return reply_list
 
 def questionnaire_reply_default_messages(lang_code=None):
-    if lang_code and lang_code in ["en","fr","pt","mg"]:
+    if lang_code and lang_code in ["en", "fr", "pt", "mg"]:
         translation.activate(lang_code)
     default_messages = OrderedDict()
     default_messages.update(
