@@ -76,8 +76,7 @@ select option {
   font-size: 20px; }
 
 .sms_messages li {
-  clear: both;
-  padding-bottom: 10px; }
+  clear: both; }
 
 .bold {
   font-weight: bold; }
