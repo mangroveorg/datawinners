@@ -35,7 +35,7 @@ babel
 rednose
 django-debug-toolbar-django13
 requests==1.2.3
-elasticutils
+elasticutils==0.8
 pyelasticsearch
 uWSGI==1.4.9
 djangorestframework
