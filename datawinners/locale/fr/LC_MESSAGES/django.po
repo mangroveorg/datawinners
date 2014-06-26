@@ -1738,8 +1738,8 @@ msgstr "Entité ajoutée avec succès"
 msgid "%s already registered as a subject type. Please select %s from the drop down menu."
 msgstr "Le type de sujet %s existe déja. Veuillez choisir %s dans la liste déroulante."
 
-msgid "%s already registered as a subject type."
-msgstr "Le type de sujet %s existe déja."
+msgid "%s already exists."
+msgstr "%s existe déja."
 
 msgid "Entity with Unique Identification Number (ID) = %s already exists."
 msgstr "Une entité avec le numéro d'identification unique (ID) =% s existe déjà."
@@ -4941,9 +4941,6 @@ msgstr "Nom de la langue"
 
 msgid "Example: Swahili, Spanish"
 msgstr "Exemple : Swahili, Espagnol"
-
-msgid "%s already exists."
-msgstr "%s existe déjà."
 
 msgid "%s with %s = %s not found."
 msgstr "%s avec %s = %s non trouvé"

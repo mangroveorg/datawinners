@@ -88,7 +88,7 @@ def create_type(request):
             success = True
             UserActivityLog().log(request, action=ADDED_IDENTIFICATION_NUMBER_TYPE, detail=entity_name[0].capitalize())
         except EntityTypeAlreadyDefined:
-            message = _("%s already registered as a subject type.") % (entity_name[0],)
+            message = _("%s already exists.") % (entity_name[0].capitalize(),)
     else:
         message = form.errors['entity_type_regex']
     return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
