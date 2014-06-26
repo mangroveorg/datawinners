@@ -56,7 +56,7 @@ function ReplyMessageViewModel(){
     }, self);
 
     self.isSaveDisabled = ko.computed(function(){
-        return !self.isValid() || !self.isMessageModified();
+        return !self.isMessageModified();
     })
 }
 
@@ -66,9 +66,27 @@ function createObservableMessageItemsFor(data, messageObservable, initialStateOb
         var messageItem = DW.ko.createValidatableObservable({value: data[i].message});
         var count = ko.observable(0);
         var customized_message_item = { "code": data[i].code, "title": gettext(data[i].title), "message": messageItem, "count": count };
+
+        messageItem.sys_variable_modified = ko.observable(false);
+        messageItem.clearError = function () {
+            this.sys_variable_modified(false);
+            this.valid(true);
+            this.error("");
+        };
+
+        messageItem.is_errored = ko.computed(function () {
+            return !this.valid() || this.sys_variable_modified()
+        }, messageItem);
+
+        messageItem.setSysVariableError = function (error_message) {
+            this.sys_variable_modified(true);
+            this.error(error_message);
+        };
+
         messageItem.subscribe(function () {
             DW.ko.mandatoryValidator(this.message, gettext("Enter reply SMS text."));
         }, customized_message_item);
+
         if (msgChangeWarning) {
             customized_message_item.displayWarning = ko.observable(false);
         }

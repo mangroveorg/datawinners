@@ -24,6 +24,10 @@ function AccountWideSmsViewModel() {
                 self.saveButtonText(gettext("Save"));
                 if(data.success) {
                     displaySuccessMessage(data);
+                    $.each(self.messages(), function (index, element) {
+                        element.message.clearError();
+                    });
+
                     resetAccountMsgWarningDisplay();
                     self.messagesInitialState(ko.toJSON(self.messages()));
                     if (typeof callback == "function") callback();
@@ -33,7 +37,7 @@ function AccountWideSmsViewModel() {
                     $.each(self.messages(), function (index, element) {
                         element.message(initialState[index].message);
                         resetAccountMsgWarningDisplay();
-                        initialState[index].valid == false ? element.message.setError(initialState[index].error) : element.message.clearError();
+                        initialState[index].valid == false ? element.message.setSysVariableError(initialState[index].error) : element.message.clearError();
                     });
                     $(".TextTags").each(function (i, tag) {
                         $(tag).TextNTags("create", self.messages()[i].message());

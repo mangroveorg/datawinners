@@ -84,7 +84,7 @@
                     <div>
                         <div class="TextTags" data-bind="messageEditor: {message: $data.message, count: $data.count}, attr: {id: 'custom_message' + $index() }"></div>
 
-                        <div class="validationMessage" data-bind="ifnot: $data.message.valid">
+                        <div class="validationMessage" data-bind="if: $data.message.is_errored">
                         <span id="question_title_validation_message" class="validationText"
                               data-bind="text: $data.message.error"></span>
 

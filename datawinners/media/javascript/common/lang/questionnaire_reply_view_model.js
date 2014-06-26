@@ -45,6 +45,10 @@ function QuestionnaireReplyViewModel() {
                 data = JSON.parse(data);
                 languageViewModel.saveButtonText(gettext("Save"));
                 if (data.success) {
+                    $.each(self.messages(), function (index, element) {
+                       element.message.clearError();
+                    });
+
                     displaySuccessMessage(data);
                     self.messagesInitialState(ko.toJSON(self.messages()));
                     if (typeof callback == "function") callback();
@@ -52,7 +56,7 @@ function QuestionnaireReplyViewModel() {
                     var initialState = data.messages;
                     $.each(self.messages(), function (index, element) {
                         element.message(initialState[index].message);
-                        initialState[index].valid == false ? element.message.setError(initialState[index].error) : element.message.clearError();
+                        initialState[index].valid == false ? element.message.setSysVariableError(initialState[index].error) : element.message.clearError();
                     });
                     $(".TextTags").each(function (i, tag) {
                         $(tag).TextNTags("create", self.messages()[i].message());
