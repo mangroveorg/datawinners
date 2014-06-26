@@ -18,7 +18,8 @@ class TestLanguageViews(unittest.TestCase):
                 {'message': 'Error {var1}. incorrect error {var2}. {var3}', 'code': 'reply_incorrect_answers',
                  'title': u'Submission with an Error'}]
 
-            return_value = verify_inconsistency_in_system_variables(dbm, language, incoming_message)
+            return_value = verify_inconsistency_in_system_variables(dbm, incoming_message,
+                                                                                          language)
             self.assertEqual([], return_value)
 
     def test_should_return_corresponding_msg_code_if_there_is_mismatch_in_system_variables(self):
@@ -39,5 +40,14 @@ class TestLanguageViews(unittest.TestCase):
                 {'message': 'Error {var1}. incorrect error {var2}. {var3}', 'code': 'reply_incorrect_answers',
                  'title': u'Submission with an Error'}]
 
-            return_value = verify_inconsistency_in_system_variables(dbm, language, incoming_message)
+            return_value = verify_inconsistency_in_system_variables(dbm, incoming_message,
+                                                                                          language)
             self.assertListEqual(expected, return_value)
+
+    def test_should_get_account_wide_message_list_if_account_wide_sms_flag_is_set(self):
+        dbm = Mock(spec=DatabaseManager)
+        with patch('datawinners.common.lang.views.account_wide_customized_message_details') as account_wide_customized_message_details:
+            verify_inconsistency_in_system_variables(dbm, {},is_account_wid_sms=True)
+            account_wide_customized_message_details.assert_called_once_with(dbm)
+
+

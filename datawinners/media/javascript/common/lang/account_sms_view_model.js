@@ -19,14 +19,26 @@ function AccountWideSmsViewModel() {
         $.post(post_url, {
                 'data': JSON.stringify(ko.toJS(self)),
                 'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
-            },
-            function (data) {
+        }).done(function (data) {
                 data = JSON.parse(data);
                 self.saveButtonText(gettext("Save"));
-                displaySuccessMessage(data);
-                resetAccountMsgWarningDisplay();
-                self.messagesInitialState(ko.toJSON(self.messages()));
-                if (typeof callback == "function") callback();
+                if(data.success) {
+                    displaySuccessMessage(data);
+                    resetAccountMsgWarningDisplay();
+                    self.messagesInitialState(ko.toJSON(self.messages()));
+                    if (typeof callback == "function") callback();
+                }
+                else {
+                    var initialState = data.messages;
+                    $.each(self.messages(), function (index, element) {
+                        element.message(initialState[index].message);
+                        resetAccountMsgWarningDisplay();
+                        initialState[index].valid == false ? element.message.setError(initialState[index].error) : element.message.clearError();
+                    });
+                    $(".TextTags").each(function (i, tag) {
+                        $(tag).TextNTags("create", self.messages()[i].message());
+                    });
+                }
             }
         );
 

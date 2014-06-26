@@ -48,8 +48,13 @@ class LanguagesView(TemplateView):
         return super(LanguagesView, self).dispatch(*args, **kwargs)
 
 
-def verify_inconsistency_in_system_variables(dbm, language, incoming_message_dict):
-    existing_message_list = questionnaire_customized_message_details(dbm, language)
+def verify_inconsistency_in_system_variables(dbm, incoming_message_dict, language=None,
+                                             is_account_wid_sms=False):
+    if is_account_wid_sms:
+        existing_message_list = account_wide_customized_message_details(dbm)
+    else:
+        existing_message_list = questionnaire_customized_message_details(dbm, language)
+
     existing_msg_dict = {}
     for msg_details in existing_message_list:
         existing_msg_dict.update({msg_details.get('code'): msg_details.get('message')})
@@ -64,11 +69,12 @@ def verify_inconsistency_in_system_variables(dbm, language, incoming_message_dic
 
     errorred_message_list = []
     if inconsistent_message_codes:
-        errorred_message_list = questionnaire_customized_message_details(dbm, language)
+        errorred_message_list = existing_message_list
         for msg_details in errorred_message_list:
             if msg_details.get('code') in inconsistent_message_codes:
                 msg_details.update({'error': ERROR_MSG_MISMATCHED_SYS_VARIABLE, 'valid': False})
     return errorred_message_list
+
 
 def _send_error_email(error_message_dict, request):
     email_message = ''
@@ -81,6 +87,7 @@ def _send_error_email(error_message_dict, request):
     email = EmailMessage(subject="[ERROR] Modified system variable", body=repr(email_message),
                          from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
     email.send()
+
 
 class LanguagesAjaxView(View):
     def get(self, request, *args, **kwargs):
@@ -96,8 +103,9 @@ class LanguagesAjaxView(View):
             language = data.get('language')
             questionnaire_customized_message_dict = get_reply_message_dictionary(modified_messages)
 
-            error_message_dict = verify_inconsistency_in_system_variables(dbm, language,
-                                                                    questionnaire_customized_message_dict)
+            error_message_dict = verify_inconsistency_in_system_variables(dbm,
+                                                                          questionnaire_customized_message_dict,
+                                                                          language)
             if error_message_dict:
                 _send_error_email(modified_messages, request)
                 return HttpResponse(json.dumps({"success": False, "messages": error_message_dict}))
@@ -162,10 +170,18 @@ class AccountMessagesView(TemplateView):
         data = json.loads(request.POST.get("data", {}))
         dbm = get_database_manager(request.user)
         if data.get('isMessageModified'):
-            account_message_dict = get_reply_message_dictionary(data.get("messages"))
-            save_account_wide_sms_messages(dbm, account_message_dict)
+            modified_messages = data.get("messages")
+            incoming_message_dict = get_reply_message_dictionary(data.get("messages"))
+            error_message_dict = verify_inconsistency_in_system_variables(dbm, incoming_message_dict,
+                                                                          is_account_wid_sms=True)
+            if error_message_dict:
+                _send_error_email(modified_messages, request)
+                return HttpResponse(json.dumps({"success": False, "messages": error_message_dict}))
+
+            save_account_wide_sms_messages(dbm, incoming_message_dict)
 
         return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))
+
 
 @csrf_view_exempt
 @csrf_response_exempt
