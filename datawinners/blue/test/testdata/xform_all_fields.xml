@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:ns2="http://openrosa.org/javarosa">
+    <html:head>
+        <html:title>Project</html:title>
+        <model>
+            <instance>
+                <Project id="Project">
+                    <name/>
+                    <education ns2:template="">
+                        <degree/>
+                        <completed_on/>
+                    </education>
+                    <age/>
+                    <fav_color/>
+                    <pizza_fan/>
+                    <other/>
+                    <pizza_type/>
+                    <location/>
+                    <meta>
+                        <instanceID/>
+                    </meta>
+                    <form_code>023</form_code>
+                </Project>
+            </instance>
+            <bind nodeset="/Project/name" required="true()" type="string"/>
+            <bind nodeset="/Project/education/degree" required="true()" type="string"/>
+            <bind nodeset="/Project/education/completed_on" required="true()" type="date"/>
+            <bind nodeset="/Project/age" type="int"/>
+            <bind nodeset="/Project/fav_color" required="true()" type="select"/>
+            <bind nodeset="/Project/pizza_fan" required="true()" type="select1"/>
+            <bind nodeset="/Project/other" relevant=" /Project/pizza_fan  = 'b'" required="false()" type="string"/>
+            <bind nodeset="/Project/pizza_type" relevant=" /Project/pizza_fan  = 'a'" required="false()" type="string"/>
+            <bind nodeset="/Project/location" type="geopoint"/>
+            <bind calculate="concat('uuid:', uuid())" nodeset="/Project/meta/instanceID" readonly="true()"
+                  type="string"/>
+            <bind nodeset="/Project/form_code" type="string"/>
+        </model>
+    </html:head>
+    <html:body>
+        <input ref="/Project/name">
+            <label>What is your name?</label>
+        </input>
+        <group ref="/Project/education">
+            <label>Education</label>
+            <repeat nodeset="/Project/education">
+                <input ref="/Project/education/degree">
+                    <label>Degree name</label>
+                </input>
+                <input ref="/Project/education/completed_on">
+                    <label>Degree completion year</label>
+                </input>
+            </repeat>
+        </group>
+        <input ref="/Project/age">
+            <label>What is your age?</label>
+        </input>
+        <select ref="/Project/fav_color">
+            <label>Which colors you like?</label>
+            <item>
+                <label>Red</label>
+                <value>a</value>
+            </item>
+            <item>
+                <label>Blue</label>
+                <value>b</value>
+            </item>
+            <item>
+                <label>Green</label>
+                <value>c</value>
+            </item>
+        </select>
+        <select1 ref="/Project/pizza_fan">
+            <label>Do you like pizza?</label>
+            <item>
+                <label>Yes</label>
+                <value>a</value>
+            </item>
+            <item>
+                <label>No</label>
+                <value>b</value>
+            </item>
+        </select1>
+        <input ref="/Project/other">
+            <label>What else you like?</label>
+        </input>
+        <input ref="/Project/pizza_type">
+            <label>Which pizza type you like?</label>
+        </input>
+        <input ref="/Project/location">
+            <label>Your location?</label>
+            <hint>GPS coordinates can only be collected when outside.</hint>
+        </input>
+    </html:body>
+</html:html>

@@ -27,7 +27,7 @@
     <script type="text/javascript">
         var questionnaire_preview_link ="{{ project_links.questionnaire_preview_link }}";
         var sms_questionnaire_preview_link = "{{ project_links.sms_questionnaire_preview_link }}";
-
+        var is_advance_questionnaire = '{{ is_advance_questionnaire }}';
     </script>
     {% endcompress %}
 {% endblock %}
@@ -111,9 +111,14 @@
         <a href="{{ project_links.submission_log_link }}"
            class="{{ disable_link_class }}">{% trans "Submission Log" %}</a>
     </li>
-    {% if project_links.test_questionnaire_link != "" %}
+    {% if project_links.test_questionnaire_link != "" and not is_advance_questionnaire %}
     <li class="{% ifactivetab 'secondary_tab_nav' 'web_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
         <a href="{{ project_links.test_questionnaire_link }}">{% trans "Web Submission" %}</a>
+    </li>
+    {% endif %}
+    {% if is_advance_questionnaire %}
+    <li class="{% ifactivetab 'secondary_tab_nav' 'xform_web_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="{{ project_links.xform_link }}">{% trans "Submission" %}</a>
     </li>
     {% endif %}
 </ul>

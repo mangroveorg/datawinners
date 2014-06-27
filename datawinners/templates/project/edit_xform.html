@@ -1,0 +1,64 @@
+{% extends 'project/tab_navigation.html' %}
+{% load i18n %}
+
+{% block page_title %}{% trans "Project - Questionnaire" %} {% endblock %}
+
+{% load dw_tabs %}
+
+{% block navigation %}
+    {% activetab "tab_nav" "questionnaire" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
+    <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+
+        <script type="text/javascript">
+            var project_id = "{{ project_id }}"
+        </script>
+        <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+        <script type="text/javascript" src="/media/javascript/project/update_project.js"></script>
+        <script type="text/javascript" src="/media/javascript/project/project_download.js"></script>
+
+
+{% endblock %}
+
+{% block content %}
+    <div>
+        {% if show_xls_download_link %}
+        <div class="heading_block alpha data_ana border_none">
+            <span class="links float_right">
+                <a href="javascript:void(0);" class="download_link">{% trans "Download Project" %}</a>
+            </span>
+        </div>
+        {% endif %}
+        <form id="download_form" method="POST">
+        {% csrf_token %}
+        <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+        <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
+        </form>
+        <div>
+            <noscript>
+                <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+            </noscript>
+            <div id="file_uploader" class="button" style="width:200px;"></div>
+        </div>
+        <div id="survey" style="height: 200px;"></div>
+        <div id="choices" style="height: 200px;"></div>
+        <div id="cascades" style="height: 200px;"></div>
+        <div id="other" style="height: 200px;"></div>
+    </div>
+{% endblock %}

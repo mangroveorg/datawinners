@@ -24,6 +24,15 @@
         <div>
             {% include 'project/questionnaire_template.html' %}
         </div>
+        <div class="questionnaire_type_header">
+            <span class="header">{% trans "Upload a XLXForm" %}</span>
+        </div>
+        <div>
+            <noscript>
+                <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+            </noscript>
+            <div id="file_uploader" class="button" style="width:200px;"></div>
+        </div>
     </div>
     <div class="right_aligned_button create_project">
         <a href="{{ cancel_link }}" class="cancel_project">{% trans "Cancel" %} </a>

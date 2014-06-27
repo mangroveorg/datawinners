@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from _codecs import encode
 import json
 import datetime
 import logging
@@ -30,6 +31,7 @@ from mangrove.transport.repository.survey_responses import survey_response_count
 
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, is_not_expired, is_new_user, project_has_web_device, valid_web_user
+from datawinners.blue.xform_bridge import XlsProjectParser
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -424,6 +426,27 @@ def questionnaire(request, project_id):
         active_language = request.LANGUAGE_CODE
         if "success" in [m.message for m in messages.get_messages(request)]:
             is_success = True
+        if questionnaire.xform:
+                try: # find a better way to check attachement exisits
+                    questionnaire.get_attachments('questionnaire.xls')
+                    show_xls_download_link = True
+                except LookupError:
+                    show_xls_download_link = False
+
+                return render_to_response('project/edit_xform.html',
+                                  {"existing_questions": repr(existing_questions),
+                                   'questionnaire_code': questionnaire.form_code,
+                                   'project': questionnaire,
+                                   'project_id': project_id,
+                                   'project_has_submissions': project_has_submissions,
+                                   'project_links': project_links,
+                                   'is_quota_reached': is_quota_reached(request),
+                                   'in_trial_mode': in_trial_mode,
+                                   'show_xls_download_link': show_xls_download_link,
+                                   'post_url': reverse(edit_project, args=[project_id]),
+                                   # 'xls_form': repr(json.dumps(XlsProjectParser().parse(questionnaire.get_attachments(attachment_name='questionnaire.xls')))),
+                                   'preview_links': get_preview_and_instruction_links()},
+                                  context_instance=RequestContext(request))
         return render_to_response('project/questionnaire.html',
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,

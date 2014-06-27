@@ -37,7 +37,9 @@ def make_project_links(project, entity_type=None):
                      'data_analysis_link': reverse("submission_analysis", args=[project_id, project.form_code]),
                      'submission_log_link': reverse("submissions", args=[project_id, project.form_code]),
                      'questionnaire_language_selection_link': reverse("project-language", args=[project_id]),
-                     'reminders_link': reverse('reminder_settings', args=[project_id])}
+                     'reminders_link': reverse('reminder_settings', args=[project_id]),
+                     'xform_link': reverse("xform_web_questionnaire", args=[project_id])
+    }
 
     project_links.update(make_subject_links(project_id, entity_type))
     project_links.update(make_data_sender_links(project_id))
@@ -66,6 +68,7 @@ def project_info(request, form_model, questionnaire_code): #revisit:export
             'encoded_project_name': (urlquote(form_model.name)),
             'import_template_file_name': slugify(form_model.name),
             'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
+            'is_advance_questionnaire': True if form_model.xform else False
             }
 
 def is_quota_reached(request, organization=None, org_id=None):

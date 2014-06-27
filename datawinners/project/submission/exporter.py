@@ -12,6 +12,10 @@ class SubmissionExporter:
         self.db_name = get_database_name(user)
         self.user = user
 
+    def _create_response(self, columns, submission_list, submission_type):
+        header_list, formatted_values = SubmissionFormatter(columns).format_tabular_data(submission_list)
+        return create_excel_response(header_list, formatted_values, export_filename(submission_type, self.project_name))
+
     def create_excel_response(self, submission_type, query_params):
         columns = SubmissionExcelHeader(self.form_model, submission_type).get_columns()
 
@@ -22,5 +26,4 @@ class SubmissionExporter:
                                                                                 self.user)
         submission_list = query_with_criteria.values_dict(tuple(entity_headers))
 
-        header_list, formatted_values = SubmissionFormatter(columns).format_tabular_data(submission_list)
-        return create_excel_response(header_list, formatted_values, export_filename(submission_type, self.project_name))
+        return self._create_response(columns, submission_list, submission_type)

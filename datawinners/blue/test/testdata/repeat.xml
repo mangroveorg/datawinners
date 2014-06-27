@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>tutorial-2</h:title>
+    <model>
+      <instance>
+        <tutorial-2 id="tutorial-2">
+          <formhub>
+            <uuid/>
+          </formhub>
+          <hh_people_nb/>
+          <hh_adult_nb/>
+          <household_member jr:template="">
+            <hh_member_age/>
+            <hh_member_gender/>
+          </household_member>
+          <start_time/>
+          <end_time/>
+          <today/>
+          <imei/>
+          <phonenumber/>
+          <meta>
+            <instanceID/>
+          </meta>
+        </tutorial-2>
+      </instance>
+      <bind nodeset="/tutorial-2/hh_people_nb" type="int"/>
+      <bind nodeset="/tutorial-2/hh_adult_nb" type="int"/>
+      <bind nodeset="/tutorial-2/household_member/hh_member_age" type="int"/>
+      <bind nodeset="/tutorial-2/household_member/hh_member_gender" type="select1"/>
+      <bind jr:preload="timestamp" jr:preloadParams="start" nodeset="/tutorial-2/start_time" type="dateTime"/>
+      <bind jr:preload="timestamp" jr:preloadParams="end" nodeset="/tutorial-2/end_time" type="dateTime"/>
+      <bind jr:preload="date" jr:preloadParams="today" nodeset="/tutorial-2/today" type="date"/>
+      <bind jr:preload="property" jr:preloadParams="deviceid" nodeset="/tutorial-2/imei" type="string"/>
+      <bind jr:preload="property" jr:preloadParams="phonenumber" nodeset="/tutorial-2/phonenumber" type="string"/>
+      <bind calculate="concat('uuid:', uuid())" nodeset="/tutorial-2/meta/instanceID" readonly="true()" type="string"/>
+      <bind calculate="'1dc25382973a49bbb0b90c6e296f8ebd'" nodeset="/tutorial-2/formhub/uuid" type="string"/>
+    </model>
+  </h:head>
+  <h:body>
+    <input ref="/tutorial-2/hh_people_nb">
+      <label>A.1.8 How many people live?</label>
+    </input>
+    <input ref="/tutorial-2/hh_adult_nb">
+      <label>A.1.9 How may adults?</label>
+    </input>
+    <group ref="/tutorial-2/household_member">
+      <label>A.1.10 Household Member</label>
+      <repeat nodeset="/tutorial-2/household_member">
+        <input ref="/tutorial-2/household_member/hh_member_age">
+          <label>A.1.10.1 Enter age</label>
+        </input>
+        <select1 ref="/tutorial-2/household_member/hh_member_gender">
+          <label>A.1.20.2 Enter gender</label>
+          <item>
+            <label>Male</label>
+            <value>male</value>
+          </item>
+          <item>
+            <label>Female</label>
+            <value>female</value>
+          </item>
+        </select1>
+      </repeat>
+    </group>
+  </h:body>
+</h:html>

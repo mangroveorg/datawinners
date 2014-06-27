@@ -30,5 +30,7 @@ urlpatterns = patterns('',
                        (r'', include('datawinners.dataextraction.urls')),
                        (r'', include('datawinners.feeds.urls')),
                        (r'', include('datawinners.smsapi.urls')),
+                       (r'', include('datawinners.blue.urls')),
+                       (r'', include('datawinners.dcs_app.urls')),
                        url(r'^admin/', include(admin.site.urls)),
 )

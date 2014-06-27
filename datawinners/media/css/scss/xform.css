@@ -1,0 +1,30 @@
+body{
+    background: none repeat scroll 0 0 #E8EFF6;
+    display: block;
+}
+
+.tab_navigation ul {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+* {
+    -moz-box-sizing: inherit;
+}
+
+.main {
+    padding: 0 0;
+}
+
+.main .paper .form-header {
+    display: none;
+}
+
+div .main {
+    -moz-box-sizing: border-box;
+}
+
+.btn-large {
+    align-self: center;
+    width: 150px;
+}

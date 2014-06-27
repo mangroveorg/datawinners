@@ -34,14 +34,17 @@ from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
 
 
-def create_questionnaire(post, manager, name, language, reporter_id):
+def create_questionnaire(post, manager, name, language, reporter_id, question_set_json=None,
+                         xform=None):
     questionnaire_code = post['questionnaire-code'].lower()
     datasenders = json.loads(post.get('datasenders', "[]"))
-    json_string = post['question-set']
-    question_set = json.loads(json_string)
+    question_set = question_set_json if question_set_json else json.loads(post['question-set'])
     questionnaire = Project(manager, name=name,
                            fields=[], form_code=questionnaire_code, language=language,
                            devices=[u'sms', u'web', u'smartPhone'])
+    if not xform:
+        questionnaire.xform = xform
+
     if reporter_id is not None:
         questionnaire.data_senders.append(reporter_id)
 

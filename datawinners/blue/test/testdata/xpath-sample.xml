@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>summary-project</h:title>
+    <model>
+      <instance>
+        <summary-project id="summary-project">
+          <formhub>
+            <uuid/>
+          </formhub>
+          <name/>
+          <age/>
+          <date/>
+          <meta>
+            <instanceID/>
+          </meta>
+        </summary-project>
+      </instance>
+      <bind nodeset="/summary-project/name" type="string"/>
+      <bind nodeset="/summary-project/age" type="int"/>
+      <bind nodeset="/summary-project/date" type="date"/>
+      <bind calculate="concat('uuid:', uuid())" nodeset="/summary-project/meta/instanceID" readonly="true()" type="string"/>
+      <bind calculate="'d785fea02a764a9bafa6d855ed5c8ff2'" nodeset="/summary-project/formhub/uuid" type="string"/>
+    </model>
+  </h:head>
+  <h:body>
+    <input ref="/summary-project/name">
+      <label>What's your name?</label>
+    </input>
+    <input ref="/summary-project/age">
+      <label>How old are you?</label>
+    </input>
+    <input ref="/summary-project/date">
+      <label>Enter a date</label>
+    </input>
+  </h:body>
+</h:html>

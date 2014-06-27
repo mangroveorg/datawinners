@@ -1,0 +1,31 @@
+<root xmlns:xf="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa"><model><instance>
+        <Project id="Project">
+          <familyname/>
+          <family template="">
+            <name/>
+            <age/>
+          </family>
+          <city/>
+          <house template="">
+            <name/>
+            <room/>
+            <numberofrooms/>
+          </house>
+          <meta>
+            <instanceID/>
+          </meta>
+        </Project>
+      </instance></model><form autocomplete="off" novalidate="novalidate" class="or clearfix" id="Project">
+<!--This form was created by transforming a OpenRosa-flavored (X)Form using an XSLT sheet created by Enketo LLC.--><section class="form-logo"> </section><h3 id="form-title">Project</h3>
+  
+  
+    <label class="question non-select "><span lang="" class="question-label active">What is the family name?</span><input autocomplete="off" type="text" name="/Project/familyname" data-type-xml="string"/></label>
+    <section class="or-group " name="/Project/family"><h4><span lang="" class="question-label active">Family</span></h4><section class="or-repeat " name="/Project/family"><label class="question non-select "><span lang="" class="question-label active">What is the member name?</span><input autocomplete="off" type="text" name="/Project/family/name" data-type-xml="string"/></label><label class="question non-select "><span lang="" class="question-label active">Enter age</span><input autocomplete="off" type="number" name="/Project/family/age" data-type-xml="int"/></label>
+            </section><!--end of repeat fieldset with name /Project/family-->
+            </section><!--end of group -->
+    <label class="question non-select "><span lang="" class="question-label active">City name?</span><input autocomplete="off" type="text" name="/Project/city" data-type-xml="string"/></label>
+    <section class="or-group " name="/Project/house"><h4><span lang="" class="question-label active">House</span></h4><section class="or-repeat " name="/Project/house"><label class="question non-select "><span lang="" class="question-label active">What is the member name?</span><input autocomplete="off" type="text" name="/Project/house/name" data-type-xml="string"/></label><label class="question non-select "><span lang="" class="question-label active">what is the room type?</span><input autocomplete="off" type="text" name="/Project/house/room" data-type-xml="string"/></label><label class="question non-select "><span lang="" class="question-label active">How many rooms are there?</span><input autocomplete="off" type="number" name="/Project/house/numberofrooms" data-type-xml="int"/></label>
+            </section><!--end of repeat fieldset with name /Project/house-->
+            </section><!--end of group -->
+  
+<fieldset id="or-calculated-items" style="display:none;"><label class="calculation non-select "><input autocomplete="off" type="hidden" name="/Project/meta/instanceID" data-calculate="concat('uuid:', uuid())" data-type-xml="string"/></label></fieldset></form></root>

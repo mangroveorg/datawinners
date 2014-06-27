@@ -1,3 +1,4 @@
+import json
 import logging
 from collections import OrderedDict
 from string import lower
@@ -7,7 +8,7 @@ from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundErro
 from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, convert_choice_options_to_options_text
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
-from mangrove.form_model.field import DateField, UniqueIdField, SelectField
+from mangrove.form_model.field import DateField, UniqueIdField, SelectField, FieldSet
 from datawinners.project.models import get_all_projects, Project
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
@@ -89,16 +90,23 @@ class SubmissionSearchStore():
     def get_mappings(self):
         fields_definition = []
         fields_definition.extend(get_submission_meta_fields())
-        for field in self.latest_form_model.fields:
+        self._get_submission_fields(fields_definition, self.latest_form_model.fields)
+        mapping = self.get_fields_mapping_by_field_def(doc_type=self.latest_form_model.id,
+                                                       fields_definition=fields_definition)
+        return mapping
+
+    def _get_submission_fields(self, fields_definition, fields):
+        for field in fields:
             if isinstance(field, UniqueIdField):
                 unique_id_field_name = es_field_name(field.code, self.latest_form_model.id)
                 fields_definition.append(
                     get_field_definition(field, field_name=es_unique_id_code_field_name(unique_id_field_name)))
+
+            if isinstance(field, FieldSet) and field.is_group():
+                self._get_submission_fields(fields_definition, field.fields)
+                continue
             fields_definition.append(
                 get_field_definition(field, field_name=es_field_name(field.code, self.latest_form_model.id)))
-        mapping = self.get_fields_mapping_by_field_def(doc_type=self.latest_form_model.id,
-                                                       fields_definition=fields_definition)
-        return mapping
 
     def recreate_elastic_store(self):
         self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
@@ -262,13 +270,11 @@ def _get_select_field_answer_from_snapshot(entry, field_for_revision):
         value_list.append(options[answer_value])
     return ",".join(value_list)
 
+def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values):
 
-def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
-    #Submission value may have capitalized keys in some cases. This conversion is to do
-    #case insensitive lookup.
-    submission_values = OrderedDict((k.lower(), v) for k, v in submission_doc.values.iteritems())
-    for field in form_model.fields:
-        entry = submission_values.get(lower(field.code))
+    for field in fields:
+        field_code = field.code.lower()
+        entry = submission_values.get(field_code)
         if field.is_entity_field:
             if entry:
                 original_field = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
@@ -312,9 +318,22 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
             except Exception as ignore_conversion_errors:
                 pass
         if entry:
-            search_dict.update({es_field_name(lower(field.code), form_model.id): entry})
+            if isinstance(field, FieldSet):
+                if field.is_group():
+                    for value in submission_values[field_code]:
+                        _update_search_dict(dbm,form_model, field.fields, search_dict, submission_doc, value)
+                        continue
+                search_dict.update({es_field_name(lower(field_code), form_model.id): json.dumps(entry)})
+            else:
+                search_dict.update({es_field_name(lower(field.code), form_model.id): entry})
 
     search_dict.update({'void': submission_doc.void})
+
+def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
+    #Submission value may have capitalized keys in some cases. This conversion is to do
+    #case insensitive lookup.
+    submission_values = OrderedDict((k.lower(), v) for k, v in submission_doc.values.iteritems())
+    _update_search_dict(dbm, form_model, form_model.fields, search_dict, submission_doc, submission_values)
     return search_dict
 
 
