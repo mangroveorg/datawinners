@@ -374,12 +374,13 @@ div.margin_top_20 input {
   margin-left: 10px !important;
   font-size: 12px;
   font-weight: normal;
-  max-width: 300px; }
+  display: inline-block; }
 
 .validationMessage, .choiceValidationMessage {
   background: url(/media/images/arrow_error.png) no-repeat;
   background-position: left 3px;
-  display: inline; }
+  display: inline-block;
+  padding-left: 2px; }
 
 .choiceValidationMessage {
   background-position: left 6px !important;
