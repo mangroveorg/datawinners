@@ -46,6 +46,9 @@ function initializeWarningDialogs() {
         successCallBack: function (callback) {
             languageViewModel.save(callback);
         },
+        ignoreCallback: function(){
+            languageViewModel.resetModifiedFlagForAllMessages();
+        },
         isQuestionnaireModified: function () {
             return languageViewModel.isMessageModified();
         },
@@ -63,6 +66,7 @@ function initializeWarningDialogs() {
         actionCallback: function (e) {
             var selected_language = $("#language option:selected").val();
             languageViewModel.language(selected_language);
+            languageViewModel.resetModifiedFlagForAllMessages();
             if(add_lang_called){
                 add_lang_called = false;
                 open_add_language_popup(e);

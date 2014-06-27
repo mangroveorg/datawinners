@@ -22,8 +22,7 @@ function QuestionnaireReplyViewModel() {
 
     self.language.subscribe(function () {
         $.getJSON("/languages/custom_messages", {'language': languageViewModel.language()}).success(function (data) {
-            createObservableMessageItemsFor(data, languageViewModel.messages,
-                languageViewModel.messagesInitialState);
+            createObservableMessageItemsFor(data, languageViewModel);
         });
     }, self, 'change');
 
@@ -36,14 +35,14 @@ function QuestionnaireReplyViewModel() {
     self.save = function (callback) {
         if (!self.isValid() || !self.isMessageModified()) return;
         DW.loading();
-        languageViewModel.saveButtonText(gettext("Saving..."));
+        self.saveButtonText(gettext("Saving..."));
         $.post(post_url, {
                 'data': JSON.stringify(ko.toJS(languageViewModel)),
                 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
             }
         ).done(function (data) {
                 data = JSON.parse(data);
-                languageViewModel.saveButtonText(gettext("Save"));
+                self.saveButtonText(gettext("Save"));
                 if (data.success) {
                     $.each(self.messages(), function (index, element) {
                        element.message.clearError();
@@ -51,6 +50,8 @@ function QuestionnaireReplyViewModel() {
 
                     displaySuccessMessage(data);
                     self.messagesInitialState(ko.toJSON(self.messages()));
+                    self.resetModifiedFlag();
+                    self.isMessageModified(false);
                     if (typeof callback == "function") callback();
                 } else {
                     var initialState = data.messages;

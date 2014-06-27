@@ -8,7 +8,7 @@ function AccountWideSmsViewModel() {
     var self = this;
 
     self.checkWarningMsgDisplay = function (messageItem) {
-        messageItem.displayWarning(self.isMessageItemChanged(messageItem.code, messageItem.message()));
+        messageItem.displayWarning(messageItem.isModified());
     };
 
 
@@ -29,7 +29,9 @@ function AccountWideSmsViewModel() {
                     });
 
                     resetAccountMsgWarningDisplay();
+                    self.resetModifiedFlag();
                     self.messagesInitialState(ko.toJSON(self.messages()));
+                    self.isMessageModified(false);
                     if (typeof callback == "function") callback();
                 }
                 else {
@@ -69,7 +71,7 @@ function resetAccountMsgWarningDisplay(){
 $(function(){
     window.accountWideSmsViewModel= new AccountWideSmsViewModel();
     ko.applyBindings(accountWideSmsViewModel);
-    createObservableMessageItemsFor(account_messages, accountWideSmsViewModel.messages, accountWideSmsViewModel.messagesInitialState, true);
+    createObservableMessageItemsFor(account_messages, accountWideSmsViewModel, true);
     initializeWarningDialog();
 
     $("#account_wide_sms").on('click', ".reset-link", function(event){
