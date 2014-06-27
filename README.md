@@ -19,8 +19,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ##Developer Guide
-  ###[Getting started](./doc/getting_started.md)
-  ###[Overview](doc/overview.md)
+  * [Getting started](./doc/getting_started.md)
+  * [Overview](doc/overview.md)
 
 ##Installation steps
 
