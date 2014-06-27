@@ -23,7 +23,7 @@
 
 .validationMessage, .choiceValidationMessage {
   background: url(/media/images/arrow_error.png) no-repeat;
-  background-position: left 3px;
+  background-position: left 8px;
   display: inline-block;
   padding-left: 2px; }
 
