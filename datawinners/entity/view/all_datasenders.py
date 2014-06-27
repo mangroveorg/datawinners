@@ -28,8 +28,8 @@ from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_PROJECTS, \
-    REMOVED_DATA_SENDER_TO_PROJECTS, DELETED_DATA_SENDERS
+from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_QUESTIONNAIRES, \
+    REMOVED_DATA_SENDER_TO_QUESTIONNAIRES, DELETED_DATA_SENDERS
 
 
 class AllDataSendersView(TemplateView):
@@ -180,7 +180,7 @@ class AssociateDataSendersView(DataSenderActionView):
             projects_name.add(questionnaire.name.capitalize())
         ids = request.POST["ids"].split(';')
         if len(ids):
-            UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
+            UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_QUESTIONNAIRES,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
@@ -207,7 +207,7 @@ class DisassociateDataSendersView(DataSenderActionView):
                     removed_rep_ids.add(rep_id)
 
         if len(removed_rep_ids):
-            UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
+            UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_QUESTIONNAIRES,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(removed_rep_ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 

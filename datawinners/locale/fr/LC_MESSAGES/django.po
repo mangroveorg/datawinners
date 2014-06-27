@@ -3952,11 +3952,11 @@ msgstr "A edité un expéditeur"
 msgid "Deleted Data Sender(s)"
 msgstr "A supprimé un/des expéditeur(s)"
 
-msgid "Added Data Sender(s) to Project(s)"
-msgstr "A ajouté un/des expéditeur(s) à un/des projet(s)"
+msgid "Added Data Sender(s) to Questionnaire(s)"
+msgstr "A ajouté un/des expéditeur(s) à un/des Questionnaire(s)"
 
-msgid "Removed Data Sender from Project"
-msgstr "A enlevé un expéditeur à un projet"
+msgid "Removed Data Sender from Questionnaire"
+msgstr "A enlevé un expéditeur à un Questionnaire"
 
 msgid "Data Submissions"
 msgstr "Soumissions de données"

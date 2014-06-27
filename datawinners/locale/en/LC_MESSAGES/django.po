@@ -3834,10 +3834,10 @@ msgstr ""
 msgid "Deleted Data Sender(s)"
 msgstr ""
 
-msgid "Added Data Sender(s) to Project(s)"
+msgid "Added Data Sender(s) to Questionnaire(s)"
 msgstr ""
 
-msgid "Removed Data Sender from Project"
+msgid "Removed Data Sender from Questionnaire"
 msgstr ""
 
 msgid "Data Submissions"
