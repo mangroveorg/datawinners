@@ -31,6 +31,7 @@ div.valueLabel {
   list-style: disc;
   min-height: 274px; }
   .chartOl .chartDiv {
+    margin-top: 50px;
     display: inline-block;
     width: 100%; }
     .chartOl .chartDiv .pieDiv {
@@ -85,7 +86,6 @@ div.valueLabel {
         font-style: italic;
         font-size: 11px; }
   .chartOl li {
-    margin-bottom: 50px;
     list-style-type: none; }
     .chartOl li ul {
       margin-bottom: 10px; }
