@@ -13,6 +13,7 @@ from django_digest.models import PartialDigest
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.contrib.admin.views.main import ChangeList
+from datawinners.project.submission.export import create_excel_response
 
 from datawinners.search.index_utils import get_elasticsearch_handle
 from forms import forms
@@ -86,7 +87,7 @@ class MessageTrackerAdmin(DatawinnerAdmin):
                     "total_incoming_per_month", "total_messages", "total_outgoing_messages", "outgoing_sms_count","outgoing_sms_charged_count",
                     "sent_reminders_count","sent_reminders_charged_count", "send_message_count","send_message_charged_count",  "sms_api_usage_count","sms_api_usage_charged_count", "sms_submission", "incoming_sp_count",
                     "incoming_web_count", "sms_registration_count")
-    
+
     search_fields = ['organization__name', 'organization__org_id', 'month']
     ordering = ('-month',)
 
@@ -137,7 +138,7 @@ class OrganizationChangeList(ChangeList):
     def get_query_set(self):
         if not self.params.get("q", ""):
             return super(OrganizationChangeList, self).get_query_set()
-            
+
         from django.db import connection
         cursor = connection.cursor()
         query = """Select array_agg(DISTINCT o.org_id) from accountmanagement_organization o
@@ -145,7 +146,7 @@ class OrganizationChangeList(ChangeList):
             inner join auth_user u on u.id = p.user_id inner join auth_user_groups ug on ug.user_id = u.id
             inner join auth_group g on ug.group_id = g.id and g.name = %s  """
         params = ["NGO Admins"]
-        
+
         for index, keyword in enumerate(self.params.get("q").split()):
             from django_countries.countries import COUNTRIES
             codes = ["'" + code + "'" for code, name in COUNTRIES if unicode(name).lower().find(keyword.lower()) != -1 ]
@@ -173,7 +174,7 @@ class OrganizationChangeList(ChangeList):
     def get_query_set(self):
         if not self.params.get("q", ""):
             return super(OrganizationChangeList, self).get_query_set()
-            
+
         from django.db import connection
         cursor = connection.cursor()
         query = """Select array_agg(DISTINCT o.org_id) from accountmanagement_organization o
@@ -181,7 +182,7 @@ class OrganizationChangeList(ChangeList):
             inner join auth_user u on u.id = p.user_id inner join auth_user_groups ug on ug.user_id = u.id
             inner join auth_group g on ug.group_id = g.id and g.name = %s  """
         params = ["NGO Admins"]
-        
+
         for index, keyword in enumerate(self.params.get("q").split()):
             from django_countries.countries import COUNTRIES
             codes = ["'" + code + "'" for code, name in COUNTRIES if unicode(name).lower().find(keyword.lower()) != -1 ]
@@ -416,6 +417,24 @@ def _remove_default_name_fields():
     user_display_fields.remove('last_name')
     return tuple(user_display_fields)
 
+def export_user_list_to_excel(a,b,c):
+    #Custom Method to export user details.
+    list = []
+    for ngo_user in NGOUserProfile.objects.all():
+        user = User.objects.get(id=ngo_user.user_id)
+        if not ngo_user.reporter and not user.is_superuser:
+            details = []
+            details.append(user.first_name + ' ' + user.last_name)
+            details.append(user.username)
+            org_id = ngo_user.org_id
+            organization = Organization.objects.get(org_id = org_id)
+            details.append(organization.name)
+            details.append(organization.language)
+            list.append(details)
+    headers = ['Name', 'email', 'Organization Name', 'Account language']
+    response = create_excel_response(headers,list,'user_list')
+    return response
+
 class DWUserAdmin(UserAdmin):
     list_filter = ('groups__name',)
     UserAdmin.fieldsets = (
@@ -428,6 +447,7 @@ class DWUserAdmin(UserAdmin):
     readonly_fields = ('last_login', 'date_joined')
     list_display = _remove_default_name_fields() + ('name','organization_name', 'organization_id')
     form = DWUserChangeForm
+    actions = [export_user_list_to_excel]
 
     def name(self,obj):
         return obj.first_name
