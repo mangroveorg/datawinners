@@ -418,10 +418,18 @@ def _remove_default_name_fields():
     return tuple(user_display_fields)
 
 def export_user_list_to_excel(a,b,c):
+    #Custom Method to export user details.
     def is_reporter(user):
         return True if user.groups.filter(name="Data Senders").count() else False
 
-    #Custom Method to export user details.
+    def user_role(user):
+        if user.groups.filter(name='NGO Admins').count():
+            return 'Admin'
+        elif user.groups.filter(name='Project Managers').count():
+            return 'User'
+        else:
+            return 'Other'
+
     list = []
     for ngo_user in NGOUserProfile.objects.all():
         try:
@@ -434,10 +442,11 @@ def export_user_list_to_excel(a,b,c):
                 organization = Organization.objects.get(org_id = org_id)
                 details.append(organization.name)
                 details.append(organization.language)
+                details.append(user_role(user))
                 list.append(details)
         except Exception:
             continue
-    headers = ['Name', 'email', 'Organization Name', 'Account language']
+    headers = ['Name', 'email', 'Organization Name', 'Account language','User Role']
     response = create_excel_response(headers,list,'user_list')
     return response
 
