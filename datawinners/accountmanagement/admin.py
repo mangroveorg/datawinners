@@ -418,19 +418,25 @@ def _remove_default_name_fields():
     return tuple(user_display_fields)
 
 def export_user_list_to_excel(a,b,c):
+    def is_reporter(user):
+        return True if user.groups.filter(name="Data Senders").count() else False
+
     #Custom Method to export user details.
     list = []
     for ngo_user in NGOUserProfile.objects.all():
-        user = User.objects.get(id=ngo_user.user_id)
-        if not ngo_user.reporter and not user.is_superuser:
-            details = []
-            details.append(user.first_name + ' ' + user.last_name)
-            details.append(user.username)
-            org_id = ngo_user.org_id
-            organization = Organization.objects.get(org_id = org_id)
-            details.append(organization.name)
-            details.append(organization.language)
-            list.append(details)
+        try:
+            user = User.objects.get(id=ngo_user.user_id)
+            if not is_reporter(user) and not user.is_superuser:
+                details = []
+                details.append(user.first_name + ' ' + user.last_name)
+                details.append(user.username)
+                org_id = ngo_user.org_id
+                organization = Organization.objects.get(org_id = org_id)
+                details.append(organization.name)
+                details.append(organization.language)
+                list.append(details)
+        except Exception:
+            continue
     headers = ['Name', 'email', 'Organization Name', 'Account language']
     response = create_excel_response(headers,list,'user_list')
     return response
