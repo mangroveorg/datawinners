@@ -17,7 +17,6 @@
                 "sAjaxSource": "/entity/subjects/" + subject_type.toLowerCase() + "/ajax/",
                 "sAjaxDataIdColIndex" : $("#subjects_table thead th.short_code").index(("#subjects_table thead th")),
                 "bServerSide": true,
-                "fnInitComplete": function(){if(!$("#subjects_table tbody tr.odd td.dataTables_empty").length){$("#no_registered_subject_help").css("display","")}},
                 "oLanguage": {
                     "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
                 },
@@ -30,11 +29,6 @@
         });
     </script>
 {% endcompress %}
-<div id="no_registered_subject_help" class="help_accordion" style="display:none">
-        {# Make sure that this block translation stays in a single line as otherwise django will not be able to find out that message id#}
-        {% blocktrans%}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}
-    </div>
-<div id="wrapper_div_for_table">
     <table id="subjects_table" >
         <thead>
         <tr>
