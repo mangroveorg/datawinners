@@ -1,10 +1,10 @@
 from selenium.webdriver.support.wait import WebDriverWait
 
-from framework.utils.common_utils import by_css, by_xpath
+from framework.utils.common_utils import by_css, by_xpath, by_id
 from framework.utils.drop_down_web_element import DropDown
 from framework.utils.text_box_web_element import TextBox
 from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR, \
-    REVERT_TO_ORIGINAL_LINK, LAST_WARNING_MESSAGE_LOCATOR
+    REVERT_TO_ORIGINAL_LINK, LAST_WARNING_MESSAGE_LOCATOR, CANCEL_CHANGES_LOCATOR
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
 
@@ -84,3 +84,13 @@ class AccountWideSmsReplyPage(Page):
         for i,r in enumerate(elements_):
             r.click()
             self.driver.wait_for_element(UI_TEST_TIMEOUT,by_xpath(LAST_WARNING_MESSAGE_LOCATOR % (i+1)),True)
+
+
+    def cancel_changes(self):
+        self.driver.find(CANCEL_CHANGES_LOCATOR).click()
+
+    def keep_changes(self):
+        self.driver.find_visible_element(by_id("keep_changes")).click()
+
+    def revert_changes(self):
+        self.driver.find_visible_element(by_id("revert_changes")).click()

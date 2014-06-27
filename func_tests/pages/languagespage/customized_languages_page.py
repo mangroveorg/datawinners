@@ -5,7 +5,7 @@ from framework.utils.drop_down_web_element import DropDown
 from framework.utils.text_box_web_element import TextBox
 from pages.languagespage.account_wide_reply_sms_page import AccountWideSmsReplyPage
 from pages.languagespage.customized_language_locator import LANGUAGE_DROP_DOWN_LOCATOR, LANGUAGE_SAVE_BUTTON_LOCATOR, NEW_LANGUAGE_INPUT_BOX, ADD_NEW_LANG_CONFIRM_BUTTON, CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR, ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR, \
-    REVERT_TO_ORIGINAL_LINK
+    REVERT_TO_ORIGINAL_LINK, CANCEL_CHANGES_LOCATOR
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
 
@@ -106,3 +106,12 @@ class CustomizedLanguagePage(Page):
 
     def revert_to_original(self):
         [r.click() for r in self.driver.find_elements_(REVERT_TO_ORIGINAL_LINK)]
+
+    def cancel_changes(self):
+        self.driver.find(CANCEL_CHANGES_LOCATOR).click()
+
+    def keep_changes(self):
+        self.driver.find_visible_element(by_id("keep_changes")).click()
+
+    def revert_changes(self):
+        self.driver.find_visible_element(by_id("revert_changes")).click()

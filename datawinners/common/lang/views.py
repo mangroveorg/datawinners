@@ -25,7 +25,7 @@ from datawinners.utils import get_organization_language
 
 
 class LanguagesView(TemplateView):
-    template_name = 'questionnaire_reply_sms.html'
+    template_name = 'replymessages/questionnaire_reply_sms.html'
 
 
     def get(self, request, *args, **kwargs):
@@ -151,7 +151,7 @@ def get_reply_message_dictionary(message_list):
 
 
 class AccountMessagesView(TemplateView):
-    template_name = 'account_wide_sms.html'
+    template_name = 'replymessages/account_wide_sms.html'
 
     def get(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)

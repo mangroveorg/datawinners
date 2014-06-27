@@ -7,11 +7,6 @@ function displaySuccessMessage(data) {
 function AccountWideSmsViewModel() {
     var self = this;
 
-    self.checkWarningMsgDisplay = function (messageItem) {
-        messageItem.displayWarning(messageItem.isModified());
-    };
-
-
     self.save = function (callback) {
         if (!self.isValid() || !self.isMessageModified()) return;
         DW.loading();
@@ -95,6 +90,18 @@ function initializeWarningDialog() {
         ignore_links: "#cancel_changes"
     };
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
+
+    var cancelPopupOptions = {
+        ignoreCallback: function (callback) {
+            accountWideSmsViewModel.resetChanges();
+        },
+        title: "Cancel Changes",
+        link_selector: "#cancel_changes",
+        dialogDiv: "#revert_changes_warning",
+        cancelLinkSelector :"#keep_changes",
+        openPredicate: function(){return accountWideSmsViewModel.isMessageModified();}
+    };
+    new DW.Dialog(cancelPopupOptions).init().initializeLinkBindings();
 }
 
 AccountWideSmsViewModel.prototype = new ReplyMessageViewModel();

@@ -177,7 +177,6 @@ ko.bindingHandlers.messageEditor = {
             contentChangedHandler: function(){
                 obj.message($(element).TextNTags('getText'));
                 obj.count($(element).TextNTags('characterCount'));
-                obj.postChangeHandler && obj.postChangeHandler(viewModel);
             }
         });
     }

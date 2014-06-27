@@ -20,6 +20,7 @@
     <script type="text/javascript" src="/media/javascript/jquery-textntags/texttag.js"></script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/common/lang/reply_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/common/lang/account_sms_view_model.js"></script>
 {% endblock %}
@@ -68,7 +69,7 @@
             </li>
             <div>
                 <div class="TextTags"
-                     data-bind="messageEditor: {message: $data.message, count: $data.count, postChangeHandler: $parent.checkWarningMsgDisplay}, attr: {id: 'account_message' + $index() }">
+                     data-bind="messageEditor: {message: $data.message, count: $data.count}, attr: {id: 'account_message' + $index() }">
                 </div>
                 <div class="validationMessage" data-bind="if: $data.message.is_errored">
                         <span id="question_title_validation_message" class="validationText"
@@ -78,7 +79,7 @@
                 </div>
                 <div style="width: 900px">
                     <span class="account_message_warning_message"
-                          data-bind="visible:$data.displayWarning">{% trans "Any changes you make to this text will apply for all Data Senders." %}
+                          data-bind="visible:$data.isModified">{% trans "Any changes you make to this text will apply for all Data Senders." %}
                     </span>
                     <span class="char_count">
                         <span data-bind="text:$data.count"></span> {% trans "of 160 characters used" %}
@@ -92,18 +93,7 @@
             data-bind="text:$root.saveButtonText,click:save,css:{'ui-state-disabled': isSaveDisabled}"></a>
     </div>
      <div>
-        <a id="cancel_changes" class="cancel_button" data-bind="click:resetChanges, css:{'link-disabled': !isMessageModified()}" href="javascript:void(0);">{% trans "Cancel Changes" %}</a>
+        <a id="cancel_changes" class="cancel_button" data-bind="css:{'link-disabled': !isMessageModified()}" href="javascript:void(0);">{% trans "Cancel Changes" %}</a>
     </div>
-
-    <div id="cancel_language_changes_warning" style="display: none;">
-        {% trans "Do you want to save the changes before leaving this page?" %}<br/>
-
-        <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
-
-        <div class="text_align_right padding_top_20">
-            <a id="cancel_dialog" class="dialog_cancel_button" href="javascript:void(0);">{% trans "Cancel" %}</a>
-            <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
-            <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
-        </div>
-    </div>
+    {% include "replymessages/_reply_message_warning_dialog.html" %}
 {% endblock %}

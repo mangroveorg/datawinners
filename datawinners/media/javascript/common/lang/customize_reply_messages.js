@@ -76,6 +76,18 @@ function initializeWarningDialogs() {
     language_change_warning_dialog = new DW.CancelWarningDialog(language_change_warning_dialog_options);
     language_change_warning_dialog.init();
 
+    var cancelPopupOptions = {
+        ignoreCallback: function (callback) {
+            languageViewModel.resetChanges();
+        },
+        title: "Cancel Changes",
+        link_selector: "#cancel_changes",
+        dialogDiv: "#revert_changes_warning",
+        cancelLinkSelector :"#keep_changes",
+        openPredicate: function(){return languageViewModel.isMessageModified();}
+    };
+    new DW.Dialog(cancelPopupOptions).init().initializeLinkBindings();
+
     $("#add_new_language_pop").dialog({
         autoOpen: false,
         zIndex: 200,

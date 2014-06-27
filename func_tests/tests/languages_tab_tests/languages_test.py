@@ -219,9 +219,13 @@ class TestLanguageTab(HeadlessRunnerTest):
         self.reset_messages()
 
     @attr('functional_test')
-    def test_should_cancel_changes_when_changes_cancelled(self):
+    def test_cancel_changes(self):
         self.change_reply_messages()
-        self.driver.find(CANCEL_CHANGES_LOCATOR).click()
+        self.language_page.cancel_changes()
+        self.language_page.keep_changes()
+        self.assertListEqual([msg + "new message" for msg in default_en_messages],  self.language_page.get_all_customized_reply_messages())
+        self.language_page.cancel_changes()
+        self.language_page.revert_changes()
         self.assertListEqual(default_en_messages,  self.language_page.get_all_customized_reply_messages())
 
     @attr('functional_test')

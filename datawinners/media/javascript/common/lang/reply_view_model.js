@@ -34,7 +34,10 @@ function ReplyMessageViewModel(){
     }
 
     self.resetChanges = function(){
-        if(!self.isMessageModified())return;
+        if(!self.isMessageModified()){
+            return;
+        }
+
         var initialState = $.parseJSON(self.messagesInitialState());
         $.each(self.messages(),function(index,element){
             element.message.clearError();
@@ -43,6 +46,8 @@ function ReplyMessageViewModel(){
         $(".TextTags").each(function(i, tag){
             $(tag).TextNTags("create", self.messages()[i].message());
         });
+
+        self.resetModifiedFlagForAllMessages();
     };
 
     self.isValid = ko.computed(function () {

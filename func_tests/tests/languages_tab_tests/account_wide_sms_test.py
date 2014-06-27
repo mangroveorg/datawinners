@@ -139,10 +139,17 @@ class TestAccountWideSMS(HeadlessRunnerTest):
 
         self.reset_account_messages()
 
-    def test_should_cancel_changes_when_changes_cancelled(self):
+    @attr('functional_test')
+    def test_cancel_changes(self):
         self.change_account_messages()
-        self.driver.find(CANCEL_CHANGES_LOCATOR).click()
+        self.account_sms_page.cancel_changes()
+        self.account_sms_page.keep_changes()
+        self.assertListEqual([msg + "new message" for msg in default_messages],  self.account_sms_page.get_all_account_wide_messages())
+        self.assertListEqual([u'Any changes you make to this text will apply for all Data Senders.']*6, [e.text for e in self.driver.find_visible_elements_(by_css(".account_message_warning_message"))])
+        self.account_sms_page.cancel_changes()
+        self.account_sms_page.revert_changes()
         self.assertListEqual(default_messages,  self.account_sms_page.get_all_account_wide_messages())
+        self.assertListEqual([], [e.text for e in self.driver.find_visible_elements_(by_css(".account_message_warning_message"))])
 
     def test_should_revert_to_original_text_when_reset(self):
         self.change_account_messages()

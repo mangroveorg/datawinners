@@ -1,0 +1,22 @@
+{% load i18n %}
+<div id="cancel_language_changes_warning" style="display: none;">
+    {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+
+    <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
+
+    <div class="text_align_right padding_top_20">
+        <a id="cancel_dialog" class="dialog_cancel_button" href="javascript:void(0);">{% trans "Cancel" %}</a>
+        <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
+        <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
+    </div>
+</div>
+
+<div id="revert_changes_warning" style="display: none;">
+    {% trans "Are you sure you want to cancel the changes? This cannot be undone." %}<br/>
+
+    <div class="text_align_right padding_top_20">
+        <a id="keep_changes" class="button_blue" href="javascript:void(0);">{% trans "No, Keep Changes" %}</a>
+        <a id="revert_changes" class="button_blue no_button"
+           href="javascript:void(0);">{% trans "Yes, Cancel Changes" %}</a>
+    </div>
+</div>
