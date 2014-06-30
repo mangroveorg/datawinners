@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.utils.translation import ugettext as _, ugettext
+from django.utils.translation import ugettext as _, ugettext, get_language
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.datastore.entity import Entity, get_all_entities, by_short_codes
@@ -36,6 +36,8 @@ def _make_message(row):
         message = " ".join(["%s: %s" % (k, v) for k, v in row.value["values"].items()])
     else:
         message = row.value["error_message"]
+        if message.find('| |') != -1:
+            message = message.split('| |,')[['en', 'fr'].index(get_language())]
     return message
 
 
