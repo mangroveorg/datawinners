@@ -74,7 +74,7 @@ def verify_inconsistency_in_system_variables(dbm, incoming_message_dict, languag
         for msg_details in corrected_message_list:
             if msg_details.get('code') in inconsistent_message_codes:
                 errored_msg_list.append(incoming_message_dict[msg_details.get('code')])
-                msg_details.update({'error': ERROR_MSG_MISMATCHED_SYS_VARIABLE, 'valid': False})
+                msg_details.update({'error': ugettext(ERROR_MSG_MISMATCHED_SYS_VARIABLE), 'valid': False})
     return corrected_message_list, errored_msg_list
 
 
