@@ -149,6 +149,9 @@ def get_organization_from_manager(manager):
     organization = Organization.objects.get(org_id=setting.organization_id)
     return organization
 
+def get_organization_language(manager):
+    organization = get_organization_from_manager(manager)
+    return organization.language
 
 def send_reset_password_email(user, language_code):
     reset_form = PasswordResetForm({"email": user.email})

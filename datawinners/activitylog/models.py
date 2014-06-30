@@ -15,19 +15,19 @@ action_list = (
         (DELETED_USERS, _(DELETED_USERS)),
     )),
 
-    (_('Project'),(
-        (CREATED_PROJECT, _(CREATED_PROJECT)),
-        (ACTIVATED_PROJECT, _(ACTIVATED_PROJECT)),
-        (EDITED_PROJECT, _(EDITED_PROJECT)),
-        (DELETED_PROJECT, _(DELETED_PROJECT))
+    (_('Questionnaire'),(
+        (CREATED_QUESTIONNAIRE, _(CREATED_QUESTIONNAIRE)),
+        (ACTIVATED_QUESTIONNAIRE, _(ACTIVATED_QUESTIONNAIRE)),
+        (EDITED_QUESTIONNAIRE, _(EDITED_QUESTIONNAIRE)),
+        (DELETED_QUESTIONNAIRE, _(DELETED_QUESTIONNAIRE))
     )),
 
-    (_("Subjects"),(
-        (ADDED_SUBJECT_TYPE, _(ADDED_SUBJECT_TYPE)),
+    (_("Identification Number"),(
+        (ADDED_IDENTIFICATION_NUMBER_TYPE, _(ADDED_IDENTIFICATION_NUMBER_TYPE)),
         (EDITED_REGISTRATION_FORM, _(EDITED_REGISTRATION_FORM)),
-        (REGISTERED_SUBJECT, _(REGISTERED_SUBJECT)),
-        (IMPORTED_SUBJECTS, _(IMPORTED_SUBJECTS)),
-        (DELETED_SUBJECTS, _(DELETED_SUBJECTS)),
+        (REGISTERED_IDENTIFICATION_NUMBER, _(REGISTERED_IDENTIFICATION_NUMBER)),
+        (IMPORTED_IDENTIFICATION_NUMBER, _(IMPORTED_IDENTIFICATION_NUMBER)),
+        (DELETED_IDENTIFICATION_NUMBER, _(DELETED_IDENTIFICATION_NUMBER)),
     )),
 
     (_("Data Senders"),(
@@ -35,8 +35,8 @@ action_list = (
         (IMPORTED_DATA_SENDERS, _(IMPORTED_DATA_SENDERS)),
         (EDITED_DATA_SENDER, _(EDITED_DATA_SENDER)),
         (DELETED_DATA_SENDERS, _(DELETED_DATA_SENDERS)),
-        (ADDED_DATA_SENDERS_TO_PROJECTS, _(ADDED_DATA_SENDERS_TO_PROJECTS)),
-        (REMOVED_DATA_SENDER_TO_PROJECTS, _(REMOVED_DATA_SENDER_TO_PROJECTS)),
+        (ADDED_DATA_SENDERS_TO_QUESTIONNAIRES, _(ADDED_DATA_SENDERS_TO_QUESTIONNAIRES)),
+        (REMOVED_DATA_SENDER_TO_QUESTIONNAIRES, _(REMOVED_DATA_SENDER_TO_QUESTIONNAIRES)),
     )),
 
     (_("Data Submissions"),(
@@ -52,7 +52,7 @@ action_list = (
 )
 
 _mapping_dict = {EDITED_REGISTRATION_FORM: EditedRegistrationFormView,
-                EDITED_PROJECT: EditedProjectView,
+                EDITED_QUESTIONNAIRE: EditedProjectView,
                 EDITED_DATA_SUBMISSION: EditedDataSubmissionView}
 
 
@@ -96,8 +96,8 @@ class UserActivityLog(models.Model):
 
     def to_render(self):
         if self.user:
-            name = "%s %s" % (self.user.first_name.capitalize() , self.user.last_name.capitalize())
+            name = "%s" % (self.user.first_name)
         else:
             name = ugettext("Deleted User")
         return [name, self.translated_action(),
-                self.project.capitalize(), self.translated_detail(), datetime.strftime(self.log_date,  "%d.%m.%Y %R")]
+                self.project, self.translated_detail(), datetime.strftime(self.log_date,  "%d.%m.%Y %R")]

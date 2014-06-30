@@ -41,7 +41,7 @@ $.inlineEdit = function(urls, options){
         beforeSave: function(){},
 		afterRemove: function(){},
 		getId: getId,
-		filterElementValue: function($o){return $o.html();},
+		filterElementValue: function($o){return $o.text();},
 		animate: true,
 		colors: {
 			success: 'green',
@@ -225,7 +225,7 @@ $.inlineEdit = function(urls, options){
 	function removeEditField($td, value, animateColor, fromColor)
 	{
 		var f = function(){
-			$td.html(value).removeClass('isEditing');
+			$td.text(value).removeClass('isEditing');
 			if (animateColor) {
 				$td.css('color', fromColor)/*.animate({color: options.colors.standard},5000)*/;
 				setTimeout(function(){
@@ -247,7 +247,7 @@ $.inlineEdit = function(urls, options){
 	function saveInitialValue($td)
 	{
 		var index = options.getId($td) + getTypeAndUrl($td).type;
-		initialValues[index] = $td.html();
+		initialValues[index] = $td.text();
 	}
 
 	function getInitialValue($td)
@@ -301,7 +301,7 @@ $.inlineEdit = function(urls, options){
 					if (resp.status == "success") {
 						removeEditField($td, value, true, options.colors.success);
 					} else {
-                        $(".editFieldSaveControllers .error .message").html(resp.message);
+                        $(".editFieldSaveControllers .error .message").text(resp.message);
                         $(".editFieldSaveControllers .error").show()
                         $('.editFieldSaveControllers > button, .editField').removeAttr('disabled');
 					}

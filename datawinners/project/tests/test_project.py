@@ -7,7 +7,7 @@ class TestProject(TestCase):
         self.client = Client()
 
     def test_should_render_project_view_if_not_logged_in(self):
-        response = self.client.post('/project/')
+        response = self.client.post('/questionnaire/')
         self.assertEquals(response.status_code, 302)
 
     def test_should_render_project_wizard_view_if_not_logged_in(self):

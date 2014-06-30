@@ -230,11 +230,11 @@ msgid "Import a Data Senders list"
 msgstr "Importer une liste d'expéditeurs"
 
 msgid "Select Questionnaires"
-msgstr "Sélectionnez les Questionnaire"
+msgstr "Sélectionnez les Questionnaires"
 
 #: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
-msgstr "Donnez un accès Web et Smartphone"
+msgstr "Donner un accès Web et Smartphone"
 
 #: media/javascript/datasenders/index.js:83
 msgid "Please select atleast 1 Project"
@@ -407,12 +407,11 @@ msgstr ""
 "Choisissez 1 ou plusieurs réponses dans la liste suivante. Exemple : a ou ab"
 
 #: media/javascript/entity/questionnaire_helper.js:27
-msgid ""
-"Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy "
-"Example: -18.1324,27.6547 "
-msgstr ""
-"La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy."
-"yyyy Exemple: -18.1324,27.6547"
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
+
+msgid "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
 
 #: media/javascript/entity/questionnaire_helper.js:31
 msgid "Answer must be 20 characters maximum"
@@ -1189,4 +1188,127 @@ msgid "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s
 msgstr "Erreur. Reponse incorrecte pour la question {Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
 msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
-msgstr "{Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
+msgstr "Merci. {Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
+
+msgid "Name of Data Sender"
+msgstr "Nom de l'Expéditeur de Données"
+
+msgid "Submitted Identification Number"
+msgstr "Numéro d'Identification Soumis"
+
+msgid "Question Numbers for Wrong Answer(s)"
+msgstr "Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)"
+
+msgid "List of Answers"
+msgstr "Liste des Réponses"
+
+msgid "Language Added successfully"
+msgstr "Votre langue a été ajoutée avec succès. Veuillez traduire le texte de retour SMS automatique suggéré."
+
+msgid "Identification Number Type"
+msgstr "Type de Numéro d'Identification"
+
+msgid "Name of Identification Number"
+msgstr "Nom du Numéro d'Identification"
+
+msgid "Submitted Questionnaire Code"
+msgstr "Code Questionnaire Soumis"
+
+msgid "Add Language"
+msgstr "Ajouter une langue"
+
+msgid "Please enter a name for your language."
+msgstr "Veuillez taper un nom pour votre langue."
+
+msgid "scenario reply_success_submission"
+msgstr "Le message que vos Expéditeurs de Données reçoivent lorsque leurs réponses respecte tous les critères."
+
+msgid "example reply_success_submission"
+msgstr "Merci David. Nous avons reçu votre SMS : cli1, 75, b, 300, 26.04.2014.<br/>Remarque : Si le SMS de retour automatique dépasse les 160 caractères, DataWinners n'enverra pas la liste des réponses mais enverra uniquement 'Merci David. Nous avons reçu votre SMS.'"
+
+msgid "scenario reply_incorrect_answers"
+msgstr "Le message que vos Expéditeurs de Données reçoivent quand leurs réponses ne répondent pas aux critères spécifiés."
+
+msgid "example reply_incorrect_answers"
+msgstr "Erreur. Réponse incorrecte pour les questions 3 et 5. Veuillez revoir le Questionnaire imprimé et renvoyez tout le contenu du SMS"
+
+msgid "scenario reply_incorrect_number_of_responses"
+msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils soumettent un nombre incorrect de réponses."
+
+msgid "example reply_incorrect_number_of_responses"
+msgstr " "
+
+msgid "scenario reply_identification_number_not_registered"
+msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils soumettent un Numéro d'Identification qui a déjà été enregistré dans le compte DataWinners de votre organisation."
+
+msgid "example reply_identification_number_not_registered"
+msgstr "Erreur. Cli205 n'est pas enregistré. Vérifiez le Numéro d'Identification et renvoyez tout le contenu du SMS"
+
+msgid "scenario reply_ds_not_authorized"
+msgstr "Le message que vos Expéditeurs de Données reçoivent quand l'Expéditeur de Données est enregistré dans le compte DataWinners de votre organisation mais que vous ne l'avez pas autorisé à soumettre des données pour ce Questionnaire."
+
+msgid "example reply_ds_not_authorized"
+msgstr " "
+
+msgid "scenario reply_ds_not_registered"
+msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils ne sont pas encore enregistrés dans le compte DataWinners de votre organisation."
+
+msgid "example reply_ds_not_registered"
+msgstr " "
+
+msgid "scenario reply_incorrect_questionnaire_code"
+msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils soumettent un Code Questionnaire qui n'a pas été enregistré dans le compte DataWinners de votre organisation."
+
+msgid "example reply_incorrect_questionnaire_code"
+msgstr "Erreur. Le code Questionnaire stock est incorrect. Trouvez le Code en haut du Questionnaire imprimé et renvoyez le SMS en commençant par ce Code."
+
+msgid "scenario reply_success_identification_number_registration"
+msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils ont enregistré un nouveau Numéro d'Identification avec succès."
+
+msgid "example reply_success_identification_number_registration"
+msgstr "Merci David. Nous avons enregistré votre clinique Mahajunga Cli206."
+
+msgid "scenario reply_identification_number_already_exists"
+msgstr "Le message que vos Expéditeurs de Données reçoivent quand ils tentent d'enregistrer un Numéro d'Identification en utilisant un Numéro d'Identification existant dans le compte de DataWinners de votre organisation."
+
+msgid "example reply_identification_number_already_exists"
+msgstr "Erreur. Cli206 existe déjà. Enregistrez votre clinique sous un autre  Numéro d'Identification."
+
+msgid "Add a new language on the Languages page"
+msgstr "Ajoutez une nouvelle langue sur la page Langues"
+
+msgid "Edit Datasender"
+msgstr "Modifier l'Expéditeur de Données"
+
+msgid "Successful Submission"
+msgstr "Soumissions réussie"
+
+msgid "Submission with an Error"
+msgstr "Soumissions avec erreur"
+
+msgid "Incorrect Number of Responses"
+msgstr "Nombre de réponses incorrect"
+
+msgid "Identification Number not Registered"
+msgstr "Numéro d'Identification non enregistré"
+
+msgid "Data Sender not Authorized to Submit Data to this Questionnaire"
+msgstr "Expéditeur de Données non autorisé à soumettre des  Données pour ce Questionnaire"
+
+msgid "Questionnaire Code is Wrong"
+msgstr "Code Questionnaire erroné"
+
+msgid "Data Sender not Registered"
+msgstr "Expéditeur de Données non enregistré"
+
+msgid "Successful Identification Number Registration"
+msgstr "Enregistrement de Numéro d'Identification réussi"
+
+msgid "Identification Number Registration with an Error"
+msgstr "Enregistrement de Numéro d'Identification comportant une erreur"
+
+msgid "Identification Number Registration with Incorrect number of Responses"
+msgstr "Enregistrement de Numéro d'Identification avec un nombre de réponses incorrect"
+
+msgid "Identification Number ID Already Exists"
+msgstr "ID de Numéro d'Identification déjà existant"

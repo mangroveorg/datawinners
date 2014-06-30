@@ -5,12 +5,12 @@ from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.utils.http import urlquote
-from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user
+from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user, is_datasender
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
 from datawinners.settings import CRS_ORG_ID
-from datawinners.project.models import Project
+from datawinners.project.models import Project, get_all_projects
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_all_entities
 from django.utils.translation import ugettext as _
@@ -22,6 +22,12 @@ from datawinners.project.utils import is_quota_reached
 from datawinners.entity.views import create_subject
 from django.http import Http404
 from operator import itemgetter
+from datawinners import settings
+from datawinners.project import helper
+from django.contrib import messages
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.common.constant import DELETED_QUESTIONNAIRE
+from django.http import HttpResponseRedirect
 
 REPORTER_ENTITY_TYPE = u'reporter'
 
@@ -56,8 +62,9 @@ def get_project_info(manager, project):
 
     create_subjects_links = {}
     for entity_type in questionnaire.entity_type:
-        create_subjects_links.update({entity_type: append_query_strings_to_url(reverse("create_subject", args=[entity_type]),
-                                                           web_view=True)})
+        create_subjects_links.update(
+            {entity_type: append_query_strings_to_url(reverse("subject_questionnaire", args=[project_id, entity_type]),
+                                                      web_view=True)})
 
     project_info = dict(project_id=project_id,
                         name=project['value']['name'],
@@ -86,8 +93,10 @@ def projects_index(request):
 
     return disable_link_class, hide_link_class, page_heading
 
+
 def is_crs_admin(request):
     return get_organization(request).org_id == CRS_ORG_ID and not request.user.get_profile().reporter
+
 
 def is_crs_user(request):
     return get_organization(request).org_id == CRS_ORG_ID
@@ -99,23 +108,44 @@ def is_crs_user(request):
 @is_not_expired
 def index(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
-    project_list = get_project_list(request)
+    rows = get_project_list(request)
+    project_list = []
     project_list.sort(key=itemgetter('name'))
     smart_phone_instruction_link = reverse("smart_phone_instruction")
+    for project in rows:
+        project_id = project['project_id']
+        delete_links = reverse('delete_project', args=[project_id])
+        project = dict(delete_links=delete_links,
+                       name=project['name'],
+                       created=project['created'],
+                       qid=project['qid'],
+                       link=project['link'],
+                       web_submission_link_disabled=project['web_submission_link_disabled'],
+                       web_submission_link=project['web_submission_link'],
+                       analysis=project['analysis'],
+                       disabled=project['disabled'],
+                       log=project['log'],
+                       create_subjects_link=project['create_subjects_link'],
+                       entity_type=project['entity_type'],
+                       encoded_name=project['encoded_name'],
+                       import_template_file_name=project['import_template_file_name']
+        )
 
+        project_list.append(project)
     activation_success = request.GET.get('activation', False)
 
-    messages = []
+    error_messages = []
     if "associate" in request.GET.keys():
-        messages = [_('You may have been dissociated from the project. Please contact your administrator for more details.')]
+        error_messages = [
+            _('You may have been dissociated from the project. Please contact your administrator for more details.')]
     if is_crs_admin(request):
         return render_to_response('alldata/index.html',
                                   {'projects': project_list, 'page_heading': page_heading,
                                    'disable_link_class': disable_link_class,
                                    'hide_link_class': hide_link_class, 'is_crs_admin': True,
                                    'project_links': get_alldata_project_links(),
-                                   'is_quota_reached':is_quota_reached(request),
-                                   'messages': messages,
+                                   'is_quota_reached': is_quota_reached(request),
+                                   'error_messages': error_messages,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
     else:
@@ -125,8 +155,8 @@ def index(request):
                                    'hide_link_class': hide_link_class, 'is_crs_admin': False,
                                    "smart_phone_instruction_link": smart_phone_instruction_link,
                                    'project_links': get_alldata_project_links(),
-                                   'is_quota_reached':is_quota_reached(request),
-                                   'messages': messages,
+                                   'is_quota_reached': is_quota_reached(request),
+                                   'error_messages': error_messages,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
 
@@ -141,7 +171,7 @@ def failed_submissions(request):
                                'disable_link_class': disable_link_class,
                                'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
                                'project_links': get_alldata_project_links(),
-                               'is_quota_reached':is_quota_reached(request, organization=organization)},
+                               'is_quota_reached': is_quota_reached(request, organization=organization)},
                               context_instance=RequestContext(request))
 
 
@@ -153,9 +183,9 @@ def reports(request):
         raise Http404
 
     response = render_to_response('alldata/reports_page.html',
-                                  {'reports': report_list, 'page_heading': "All Data",
+                                  {'reports': report_list, 'page_heading': "Questionnaires",
                                    'project_links': get_alldata_project_links(),
-                                   'is_quota_reached':is_quota_reached(request),
+                                   'is_quota_reached': is_quota_reached(request),
                                    'is_crs_admin': True},
                                   context_instance=RequestContext(request))
     response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
@@ -164,13 +194,16 @@ def reports(request):
 
 
 @valid_web_user
-def smart_phone_instruction(request):
+def smart_phone_instruction(request, project_id=None):
     language_code = request.LANGUAGE_CODE
     instruction_template = "alldata/smart_phone_instruction_" + language_code + ".html"
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
-
+    project_links = {}
+    if project_id:
+        project_links['test_questionnaire_link'] = reverse("web_questionnaire", args=[project_id])
     context = {'back_to_project_link': reverse("alldata_index"),
+               'project_links': project_links,
                "instruction_template": instruction_template,
                "disable_link_class": disable_link_class,
                "hide_link_class": hide_link_class}

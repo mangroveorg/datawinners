@@ -4,6 +4,7 @@ from pages.smstesterlightbox.sms_tester_light_box_locator import *
 import time
 from framework.utils.data_fetcher import *
 from tests.smstesterlightboxtests.sms_tester_light_box_data import *
+from selenium.common.exceptions import NoSuchElementException
 
 
 class SMSTesterLightBoxPage(LightBox):
@@ -38,3 +39,10 @@ class SMSTesterLightBoxPage(LightBox):
 
     def hit_clear_message_link(self):
         self.driver.find(CLEAR_BTN_BY_ID).click()
+
+    def reply_turned_off_text_present(self):
+        try:
+            self.driver.find_element(value = 'outgoing_sms_disabled_help_text')
+            return True
+        except NoSuchElementException:
+            return False

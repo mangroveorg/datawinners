@@ -143,8 +143,7 @@ class RegistrationBackend(object):
     def _create_user(self, site, kwargs):
         email, password = kwargs['email'], kwargs['password1']
         new_user = RegistrationProfile.objects.create_inactive_user(email, email, password, site, send_email=False)
-        new_user.first_name = kwargs['first_name']
-        new_user.last_name = kwargs['last_name']
+        new_user.first_name = kwargs['full_name']
         group = Group.objects.filter(name="NGO Admins")
         new_user.groups.add(group[0])
         return new_user

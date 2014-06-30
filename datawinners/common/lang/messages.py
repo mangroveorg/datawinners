@@ -1,37 +1,66 @@
-from couchdb.mapping import TextField, DictField, Mapping
-from django.utils.translation import ugettext
+from couchdb.mapping import TextField, DictField
+from mangrove.datastore.cache_manager import get_cache_manager
 from mangrove.datastore.documents import DocumentBase
 
+ACCOUNT_MESSAGE_DOC_ID = "account_message"
 
-class CustomizedMessages(DocumentBase):
-    _id = TextField()
+LANGUAGE_EXPIRY_TIME_IN_SEC = 2 * 60 * 60
+
+
+def get_language_cache_key(dbm, language_code):
+    return str("%s_%s" % (dbm.database.name, language_code))
+
+class CustomizedMessage(DocumentBase):
     messages = DictField()
-    language_name = TextField()
 
-    def __init__(self, lang_code, language, messages):
-        DocumentBase.__init__(self, document_type='CustomizedMessage')
-        self._id = lang_code
-        self.language_name = language
+    def __init__(self, document_type, id, messages):
+        DocumentBase.__init__(self, id=id, document_type=document_type)
         self.messages = messages
 
 
-def render_text(template, context):
-    return template
+class QuestionnaireCustomizedMessages(CustomizedMessage):
+    language_name = TextField()
+
+    def __init__(self, lang_code, language, messages):
+        super(QuestionnaireCustomizedMessages, self).__init__('CustomizedMessage', lang_code, messages)
+        self.language_name = language
 
 
-def get_message(dbm, lang, code, context={}):
-    try:
-        template = dbm.database.get(lang)["messages"][code]
-    except Exception as e:
-        template = ugettext(code)
-    return render_text(template, context)
+class AccountWideSMSMessage(CustomizedMessage):
+    def __init__(self, messages):
+        super(AccountWideSMSMessage, self).__init__('AccountWideMessage', ACCOUNT_MESSAGE_DOC_ID, messages)
 
 
-def save_messages(dbm, lang_code, value_dict, language=None):
-    message = dbm.database.get(lang_code)
+def save_questionnaire_custom_messages(dbm, lang_code, messages, language=None):
+    save_custom_messages(dbm, lang_code, messages, language)
+
+
+def save_account_wide_sms_messages(dbm, account_messages):
+    save_custom_messages(dbm, ACCOUNT_MESSAGE_DOC_ID, account_messages)
+
+
+def save_custom_messages(dbm, message_id, messages, language=None):
+    message = dbm.database.get(message_id)
     if message:
-        message["messages"] = value_dict
-        dbm.database.update([message])
+        _update_reply_message(dbm, message, messages, message_id)
     else:
-        message = CustomizedMessages(lang_code, language, value_dict)
-        dbm._save_document(message)
+        _create_reply_message_template(dbm, message_id, messages, language)
+
+
+def _update_reply_message(dbm, message, messages, message_id):
+    message["messages"] = messages
+    dbm.database.update([message])
+    _delete_language_from_cache(dbm, message_id)
+
+def _delete_language_from_cache(dbm, language_code):
+    cache_manger = get_cache_manager()
+    cache_key = get_language_cache_key(dbm, language_code)
+    cache_manger.delete(cache_key)
+
+def _create_reply_message_template(dbm, message_id, messages, language=None):
+    if message_id == ACCOUNT_MESSAGE_DOC_ID:
+        raise Exception
+    message = QuestionnaireCustomizedMessages(message_id, language, messages)
+    dbm._save_document(message)
+
+

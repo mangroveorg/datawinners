@@ -5,10 +5,10 @@
   padding-left: 0; }
 
 .padding_top_null {
-  padding-top: 0!important; }
+  padding-top: 0 !important; }
 
 .padding_bottom_null {
-  padding-bottom: 0!important; }
+  padding-bottom: 0 !important; }
 
 .padding_20 {
   padding: 20px; }
@@ -72,7 +72,7 @@
   margin-left: 20px; }
 
 .margin_left_180 {
-  margin-left: 180px!important; }
+  margin-left: 180px !important; }
 
 .margin_right_20 {
   margin-right: 20px; }
@@ -127,7 +127,7 @@ input.error {
   border: 1px solid #FF0000 !important;
   color: #000000; }
 
-input[disabled='disabled'] {
+input[disabled='disabled'][type=text] {
   background-color: #ebebeb; }
 
 /*Table Styles Temp*/
@@ -176,7 +176,7 @@ table.no_border td, table.no_border th {
   padding-left: 25px; }
 
 .cancel_link {
-  color: #0070AC !important;
+  color: #0070ac !important;
   margin-right: 10px;
   margin-top: 6px; }
 
@@ -455,7 +455,7 @@ ul.bulleted li {
     width: 40%;
     float: left; }
   .mobile_container .info {
-    width: 60%;
+    width: 58%;
     float: right;
     padding-top: 20px; }
 
@@ -498,21 +498,21 @@ div.border_top_bottom {
   border: 1px solid #D5B071 !important;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
-  background: #F8EDB8!important;
+  background: #f8edb8 !important;
   background: -webkit-gradient(linear, left top, left bottom, from(#f8edb8), to(#fde8a0)) !important;
   background: -moz-linear-gradient(top, #f8edb8, #fde8a0) !important;
   color: #C29870 !important;
-  font-family: "Arial"!important;
-  font-weight: bold!important;
-  padding: 6px 23px 5px 22px!important;
-  cursor: default!important;
-  cursor: hand!important; }
+  font-family: "Arial" !important;
+  font-weight: bold !important;
+  padding: 6px 23px 5px 22px !important;
+  cursor: default !important;
+  cursor: hand !important; }
 
 .can-not-submit-link-quest {
-  color: #066B06!important;
+  color: #066b06 !important;
   text-decoration: none;
   font-size: 12px;
-  cursor: default!important; }
+  cursor: default !important; }
   .can-not-submit-link-quest:hover {
     text-decoration: none; }
 
@@ -555,12 +555,13 @@ div.border_top_bottom {
   margin-left: 10px !important;
   font-size: 12px;
   font-weight: normal;
-  max-width: 300px; }
+  display: inline-block; }
 
 .validationMessage, .choiceValidationMessage {
   background: url(/media/images/arrow_error.png) no-repeat;
-  background-position: left 3px;
-  display: inline; }
+  background-position: left 8px;
+  display: inline-block;
+  padding-left: 2px; }
 
 .choiceValidationMessage {
   background-position: left 6px !important;
@@ -636,8 +637,7 @@ fieldset {
     text-decoration: none !important;
     margin: 0 0px; }
   #page_title .project_title {
-    font-size: 30px;
-    text-transform: capitalize; }
+    font-size: 30px; }
 
 #continue_project {
   margin-left: 10px; }
@@ -804,7 +804,6 @@ fieldset {
   overflow-x: hidden; }
 
 .question_action {
-  padding-right: 0px !important;
   padding-left: 0px !important;
   margin-left: 15px; }
 

@@ -49,6 +49,8 @@ def get_driver_for_browser(browser):
         driver = webdriver.Remote()
     elif browser == "phantom":
         driver = webdriver.PhantomJS()
+    elif browser == "remoteie":
+        driver = webdriver.Remote(command_executor="http://localhost:5555/", desired_capabilities=DesiredCapabilities.INTERNETEXPLORER)
     else:
         raise NotImplemented("Unknown browser " + browser)
     driver.maximize_window()
@@ -261,4 +263,21 @@ class DriverWrapper(object):
             except StaleElementReferenceException:
                 return
 
+
+    def wait_until_web_element_is_not_present(self, time_out_in_seconds, element):
+        current_time = datetime.datetime.now()
+        end_time = current_time + datetime.timedelta(0, time_out_in_seconds)
+
+        while True:
+            try:
+                if element and not element.is_displayed():
+                    return True
+                else:
+                    current_time = datetime.datetime.now()
+                    if current_time >= end_time:
+                        raise ElementStillPresentException("Timer expired and element is still present" )
+            except CouldNotLocateElementException:
+                return
+            except StaleElementReferenceException:
+                return
 

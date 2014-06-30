@@ -1,5 +1,5 @@
 from django.utils import translation
-from datawinners.messageprovider.handlers import data_sender_not_linked_handler
+from datawinners.messageprovider.handlers import data_sender_not_linked_handler, data_sender_not_registered_handler
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
 from mangrove.errors.MangroveException import NumberNotRegisteredException
@@ -11,6 +11,7 @@ from mangrove.form_model.form_model import EntityFormModel
 
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
 from datawinners.messageprovider.messages import get_datasender_not_linked_to_project_error_message
+from datawinners.messageprovider.handlers import create_failure_log
 from datawinners.project.models import Project
 
 
@@ -85,15 +86,29 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
     def _process_data_submission_request(self, form_model, submission_values):
         return self._process_registration_when_entity_question_is_present(form_model, submission_values)
 
+class PostSMSProcessorCheckDSIsRegistered(object):
+    def __init__(self, dbm, request):
+        self.dbm = dbm
+        self.request = request
+
+    def _get_response(self):
+        response = Response(reporters=[], survey_response_id=None)
+        response.errors = data_sender_not_registered_handler(self.dbm)
+        return response
+
+
+    def process(self):
+        exception = self.request.get('exception')
+        if exception and isinstance(exception, NumberNotRegisteredException):
+            return self._get_response()
 
 class PostSMSProcessorCheckDSIsLinkedToProject(object):
     def __init__(self, dbm, request):
         self.dbm = dbm
         self.request = request
 
-
     def _get_response(self, form_code):
-        response = Response(reporters=[], survey_response_id=None)
+        response = Response(reporters=[], survey_response_id=None, exception=self._get_exception())
         response.success = True
         response.errors = get_datasender_not_linked_to_project_error_message()
         response.errors = data_sender_not_linked_handler(self.dbm, self.request, form_code=form_code)
@@ -117,18 +132,12 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         if exception and isinstance(exception, SMSParserWrongNumberOfAnswersException):
             if linked_datasender:
                 raise exception
-            raise DatasenderIsNotLinkedException()
+            raise self._get_exception()
 
+    def _get_exception(self):
+        datasender = self.request.get('reporter_entity')
+        return DatasenderIsNotLinkedException(datasender.value('name'), datasender.short_code)
 
-class PostSMSProcessorCheckDSIsRegistered(object):
-    def __init__(self, dbm, request):
-        self.dbm = dbm
-        self.request = request
-
-    def process(self, form_code, submission_values):
-        exception = self.request.get('exception')
-        if exception and isinstance(exception, NumberNotRegisteredException):
-            raise exception
 
 
 class PostSMSProcessorCheckLimits(object):
@@ -141,7 +150,6 @@ class PostSMSProcessorCheckLimits(object):
         form_model = get_form_model_by_code(self.dbm, form_code)
         if exception and (
                 isinstance(exception, ExceedSubmissionLimitException) or isinstance(exception, ExceedSMSLimitException)):
-            if not self.request.get('organization').has_exceeded_message_limit() and isinstance(form_model,
-                                                                                                EntityFormModel):
+            if not self.request.get('organization').has_exceeded_message_limit() and isinstance(form_model, EntityFormModel):
                 return
             raise exception

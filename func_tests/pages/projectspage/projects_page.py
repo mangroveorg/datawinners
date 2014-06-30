@@ -30,30 +30,22 @@ class ProjectsPage(Page):
 
         Return project overview page
          """
-        project_link = by_xpath(PROJECT_LINK_XPATH % lower(project_name))
+        project_link = by_xpath(PROJECT_LINK_XPATH % project_name)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, project_link, True)
         self.driver.find(project_link).click()
         return ProjectOverviewPage(self.driver)
 
-    def get_status_of_the_project(self, project_name):
-        """
-        Function to get the current status of the project
-
-        Return status
-         """
-        return self.driver.find(by_xpath(PROJECT_STATUS_LABEL_XPATH % project_name.lower())).text
-
     def is_project_present(self, project_name):
-        all_project_elements = self.driver.find_elements_(by_css(".all_projects tbody tr td a"))
+        all_project_elements = self.driver.find_elements_(by_css(".styled_table tbody tr td a"))
         all_project_names = [element.text for element in all_project_elements]
         return project_name in all_project_names
 
     def delete_project(self, project_name):
-        project_rows = self.driver.find_elements_(by_css(".all_projects tbody tr"))
+        project_rows = self.driver.find_elements_(by_css(".styled_table tbody tr"))
         for row in project_rows:
-            if project_name == row.find_element_by_class_name('project-id-class').text:
+            if project_name == row.find_element_by_class_name('project-id-class ').text:
                 row.find_element_by_class_name('delete_project').click()
                 self.driver.find(by_css('a#confirm_delete')).click()
                 return
-        raise CouldNotLocateElementException(['.all_projects tbody tr', 'project-id-class', 'delete_project'], 'by_css')
+        raise CouldNotLocateElementException(['.styled_table tbody tr', 'project-id-class', 'delete_project'], 'by_css')
 

@@ -2,7 +2,7 @@
 {% load questionnaire_preview_tags %}
 
 <div class="sms-questionnaire questionnaire-preview">
-    <h3 class="project-name padding_bottom_10">{{ project_name }}</h3>
+    <h3 class="project-name padding_bottom_10">{{ project_name|safe }}</h3>
     <span class="italic">
         {% trans "Questionnaire Code:" %} <span id="questionnaire_code">{{ questionnaire_code }}</span>
     </span>
@@ -17,18 +17,18 @@
                             <span>{{ question.description }}</span>
                             <div class="answer">
                                 {% if question.type == "select1" %}
-                                    <ol class="multiple_select">
+                                    <ul class="multiple_select">
                                         {% for option in question.constraints %}
                                             <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
                                         {% endfor %}
-                                    </ol>
+                                    </ul>
                                 {% endif %}
                                 {% if question.type == "select" %}
-                                    <ol class="multiple_select">
+                                    <ul class="multiple_select">
                                         {% for option in question.constraints %}
                                             <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
                                         {% endfor %}
-                                    </ol>
+                                    </ul>
                                 {% endif %}
                             </div>
                             {% if  question.instruction %}

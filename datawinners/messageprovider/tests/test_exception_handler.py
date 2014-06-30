@@ -47,9 +47,6 @@ class TestExceptionHandler(TestCase):
         exception = SMSParserWrongNumberOfAnswersException('test_code')
 
         form_model_mock = Mock(spec=FormModel)
-        patcher = patch('datawinners.messageprovider.handlers.get_form_model_by_code')
-        get_form_model_mock = patcher.start()
-        get_form_model_mock.return_value = form_model_mock
         form_model_mock.activeLanguages = ['en']
         self.request['dbm'] = Mock(spec=DatabaseManager)
         expected_message = get_exception_message_for(exception, channel=SMS)
@@ -57,7 +54,6 @@ class TestExceptionHandler(TestCase):
         response = handle(exception, self.request)
 
         self.assertEqual(expected_message, response)
-        patcher.stop()
 
     def test_should_create_failure_log(self):
         self.request[FORM_CODE]='code'

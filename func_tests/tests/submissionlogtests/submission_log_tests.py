@@ -161,6 +161,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
 
         self.driver.go_to(url("/entity/subjects/clinic/"))
         subject_list_page = AllSubjectsListPage(self.driver)
+        self.driver.wait_for_page_load()
         subject_list_page.select_subject_by_id(subject_short_code)
         edit_subject_page = subject_list_page.click_edit_action_button()
         edit_subject_page.add_subject_with(VALID_DATA_FOR_EDIT)

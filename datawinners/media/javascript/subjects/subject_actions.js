@@ -1,5 +1,12 @@
 DW = DW || {};
 
+function flash_message(msg, status) {
+    $('.flash-message').remove();
+
+    $(".dataTables_wrapper").prepend('<div class="clear-left flash-message">' + gettext(msg) + (msg.match("[.]$") ? '' : '.') + '</div>');
+    $('.flash-message').addClass((status === false) ? "message-box" : "success-message-box");
+}
+
 DW.DeleteAction = function (delete_block_selector, delete_end_point) {
     var delete_entity_block = $(delete_block_selector);
 
@@ -17,7 +24,6 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
         return false;
     });
 
-
     $("#ok_button", delete_block_selector).click(function () {
         delete_entity_block.dialog("close");
         var allIds = delete_entity_block.data("allIds");
@@ -32,8 +38,11 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
             function (json_response) {
                 var response = $.parseJSON(json_response);
                 $.unblockUI();
+                flash_message(response.message, response.success);
                 if (response.success) {
-                    window.location.reload();
+                    var table = $("#subjects_table").dataTable();
+                    table.fnSettings()._iDisplayStart = delete_entity_block.data("pageToGo");
+                    table.fnReloadAjax();
                 }
             }
         );
@@ -45,17 +54,20 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
         delete_entity_block.data("allIds", selected_ids);
         delete_entity_block.data("all_selected", all_selected);
         delete_entity_block.data("entity_type", entity_type);
+        delete_entity_block.data("pageToGo", get_updated_table_page_index($("#subjects_table").dataTable(), selected_ids, all_selected));
         delete_entity_block.dialog("open");
     }
 };
 
 DW.AllSubjectActions = function () {
-    this["delete"] = function(table, selected_ids, all_selected){
-        var delete_action = new DW.DeleteAction("#delete_entity_block", "/entity/subjects/delete/");
-        delete_action.open(subject_type.toLowerCase(), selected_ids, all_selected);
-    }
+    var delete_action = new DW.DeleteAction("#delete_entity_block", "/entity/subjects/delete/");
+    this["delete"] = (function (action) {
+        return function (table, selected_ids, all_selected) {
+            action.open(subject_type.toLowerCase(), selected_ids, all_selected);
+        };
+    })(delete_action);
 
-    this["edit"] = function(table, selected_ids){
+    this["edit"] = function (table, selected_ids) {
         window.location.href = edit_url_template.replace("entity_id_placeholder", selected_ids[0]);
     }
 };

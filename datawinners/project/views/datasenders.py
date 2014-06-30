@@ -14,12 +14,13 @@ from django.views.generic.base import View
 import jsonpickle
 
 from datawinners import settings
-from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired
+from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired, is_datasender
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS
 from datawinners.entity import import_data as import_module
 from datawinners.entity.helper import rep_id_name_dict_of_users
 from datawinners.main.database import get_database_manager
+from datawinners.project.helper import is_project_exist
 from datawinners.project.models import Project
 from datawinners.project.views.views import get_project_link, _in_trial_mode
 from datawinners.search.datasender_index import update_datasender_index_by_id
@@ -43,7 +44,7 @@ class MyDataSendersAjaxView(View):
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
         user = request.user
-        project_name_unquoted = unquote(project_name)
+        project_name_unquoted = lower(unquote(project_name))
         query_count, search_count, datasenders = MyDataSenderQuery(search_parameters).filtered_query(user,
                                                                                                      self.strip_accents(
                                                                                                          project_name_unquoted),
@@ -99,6 +100,8 @@ def _add_imported_datasenders_to_project(imported_datasenders_id, manager, proje
 @login_required
 @csrf_exempt
 @is_not_expired
+@is_project_exist
+@is_datasender
 def registered_datasenders(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)

@@ -15,6 +15,7 @@
 
 {% block page_scss %}
     {{ block.super }}
+    <link href="/media/css/scss/sms_tester_form.css" rel="stylesheet" />
     {% if project_links.current_language == 'fr' %}
         <link href="/media/css/scss/french.css" rel="stylesheet" />
     {% endif %}
@@ -28,6 +29,8 @@
         var questionnaire_preview_link ="{{ project_links.questionnaire_preview_link }}";
         var sms_questionnaire_preview_link = "{{ project_links.sms_questionnaire_preview_link }}";
         var is_advance_questionnaire = '{{ is_advance_questionnaire }}';
+        var is_outgoing_sms_replies_enabled = "{{ project.is_outgoing_sms_replies_enabled }}";
+
     </script>
     {% endcompress %}
 {% endblock %}
@@ -127,7 +130,6 @@
 {% block secodary_navigation_subject_types %}
     <div class="entity_types">
         <ul class="secondary_tab chosen_entity_type">
-            <li></li>{# Dummy li for space in the beginning. #}
             {% for entity_type in project.entity_type %}
                 <li><a>{{ entity_type|capfirst }}</a></li>
             {% endfor %}

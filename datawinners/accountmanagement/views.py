@@ -18,11 +18,12 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.http import Http404
 from django.contrib.auth import login as sign_in, logout
 from django.utils.http import base36_to_int
-from mangrove.transport import TransportInfo
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
 
-from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_trial, valid_web_user, is_sms_api_user
+from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
+from mangrove.transport import TransportInfo
+from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_trial, valid_web_user, is_sms_api_user, is_datasender
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.main.database import get_database_manager
@@ -39,7 +40,6 @@ from datawinners.entity.helper import delete_datasender_for_trial_mode, \
     delete_datasender_users_if_any, delete_entity_instance
 from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
-
 
 def registration_complete(request):
     return render_to_response('registration/registration_complete.html')
@@ -109,8 +109,7 @@ def associate_user_with_existing_project(manager, reporter_id):
     for row in rows:
         project_id = row['value']['_id']
         questionnaire = Project.get(manager, project_id)
-        questionnaire.data_senders.append(reporter_id)
-        questionnaire.save(process_post_update=True)
+        questionnaire.associate_data_sender_to_project(manager, reporter_id)
 
 @login_required
 @session_not_expired
@@ -132,8 +131,7 @@ def new_user(request):
             username = form.cleaned_data.get('username')
             if not form.errors:
                 user = User.objects.create_user(username, username, 'test123')
-                user.first_name = form.cleaned_data['first_name']
-                user.last_name = form.cleaned_data['last_name']
+                user.first_name = form.cleaned_data['full_name']
                 group = Group.objects.filter(name="Project Managers")
                 user.groups.add(group[0])
                 user.save()
@@ -150,11 +148,10 @@ def new_user(request):
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user",organization=org)
-                    first_name = form.cleaned_data.get("first_name")
-                    last_name = form.cleaned_data.get("last_name")
+                    name = form.cleaned_data.get("full_name")
                     form = UserProfileForm()
                     add_user_success = True
-                    detail_dict = dict({"First name": first_name, "Last name": last_name})
+                    detail_dict = dict({"Name": name})
                     UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
 
         return render_to_response("accountmanagement/account/add_user.html",
@@ -167,21 +164,19 @@ def new_user(request):
 def users(request):
     if request.method == 'GET':
         org_id = request.user.get_profile().org_id
-        viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users']).values_list('id',
-                                                                                                              flat=True)
-        users = NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
+        users = get_all_users_for_organization(org_id)
         return render_to_response("accountmanagement/account/users_list.html", {'users': users},
                                   context_instance=RequestContext(request))
 
 
 @valid_web_user
+@is_datasender
 def edit_user(request):
     if request.method == 'GET':
         profile = request.user.get_profile()
         if profile.mobile_phone == 'Not Assigned':
             profile.mobile_phone = ''
-        form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
-                                             last_name=profile.user.last_name,
+        form = EditUserProfileForm(data=dict(title=profile.title, full_name=profile.user.first_name,
                                              username=profile.user.username,
                                              mobile_phone=profile.mobile_phone))
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form},
@@ -209,8 +204,7 @@ def upgrade(request, token=None):
     if request.method == 'GET':
         form = UpgradeForm()
         organization_form = OrganizationForm(instance=organization)
-        profile_form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
-                                             last_name=profile.user.last_name,
+        profile_form = EditUserProfileForm(data=dict(title=profile.title, full_name=profile.user.first_name,
                                              username=profile.user.username,
                                              mobile_phone=profile.mobile_phone))
         return render_to_response("registration/upgrade.html", {'organization': organization_form, 'profile': profile_form,
@@ -278,9 +272,8 @@ def delete_users(request):
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
 
     if ngo_admin_user_profile.reporter_id in all_ids:
-        admin_full_name = ngo_admin_user_profile.user.first_name + ' ' + ngo_admin_user_profile.user.last_name
         messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
-                                (admin_full_name), "error_message")
+                                (ngo_admin_user_profile.user.first_name), "error_message")
     else:
         detail = user_activity_log_details(User.objects.filter(id__in=django_ids))
         delete_entity_instance(manager, all_ids, REPORTER, transport_info)
@@ -296,9 +289,10 @@ def delete_users(request):
     return HttpResponse(json.dumps({'success': True}))
 
 
-def custom_password_reset_confirm(request, uidb36=None, token=None, set_password_form=SetPasswordForm):
+def custom_password_reset_confirm(request, uidb36=None, token=None, set_password_form=SetPasswordForm,
+                                  template_name='registration/datasender_activate.html'):
     response = password_reset_confirm(request, uidb36=uidb36, token=token, set_password_form=set_password_form,
-                                      template_name='registration/datasender_activate.html')
+                                      template_name=template_name)
     if request.method == 'POST' and type(response) == HttpResponseRedirect:
         try:
             uid_int = base36_to_int(uidb36)
@@ -308,17 +302,19 @@ def custom_password_reset_confirm(request, uidb36=None, token=None, set_password
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         sign_in(request, user)
         redirect_url = django_settings.DATASENDER_DASHBOARD + '?activation=1' \
-            if user.get_profile().reporter else django_settings.DASHBOARD
+            if user.get_profile().reporter else django_settings.HOME_PAGE
         return HttpResponseRedirect(redirect_url)
     return response
 
+
 def _update_user_and_profile(request, form):
     user = User.objects.get(username=request.user.username)
-    user.first_name = form.cleaned_data['first_name']
-    user.last_name = form.cleaned_data['last_name']
+    user.first_name = form.cleaned_data['full_name']
     user.save()
     ngo_user_profile = NGOUserProfile.objects.get(user=user)
     ngo_user_profile.title = form.cleaned_data['title']
+    old_phone_number = ngo_user_profile.mobile_phone
     ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
 
     ngo_user_profile.save()
+    update_corresponding_datasender_details(user,ngo_user_profile,old_phone_number)

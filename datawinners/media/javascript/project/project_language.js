@@ -6,28 +6,38 @@ function ProjectLanguageViewModel(){
   self.selected_language = ko.observable();
   self.is_modified = false;
 
-    self.selected_language.subscribe(function(){
+  self.selected_language.subscribe(function(language_option){
       self.is_modified = true;
   });
 
-    self.enable_sms_replies.subscribe(function(){
+  self.enable_sms_replies.subscribe(function(){
       self.is_modified = true;
   });
 
-  self.save = function(){
+//  introducing to prevent default event handler coming in place of callback
+  self.save_and_reload = function(){
+      self.save();
+  };
+
+  self.save = function(callback){
+      var params = _.isUndefined(callback) ? "?resp_message=1" : "";
       var data = {
         'enable_sms_replies': self.enable_sms_replies(),
         'selected_language': self.selected_language(),
         'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
       };
+      DW.loading();
       $.ajax({
           type: "POST",
-          url: post_url,
+          url: post_url + params,
           data: data,
           success: function(response){
               if(response.success){
-                self.is_modified = false;
-                flash_message("#flash-message-section", "Changes saved successfully", true);
+                  self.is_modified = false;
+                  if(callback)
+                    callback();
+                  else
+                    window.location.reload();
               }
               else{
                 flash_message("#flash-message-section", "Save Failed!", false);
@@ -41,13 +51,14 @@ function ProjectLanguageViewModel(){
 
 $(function(){
     var viewModel = new ProjectLanguageViewModel();
-    window.viewModel = viewModel; //for debugging
     viewModel.available_languages = languages_list;
     viewModel.selected_language(current_project_language);
+    viewModel.enable_sms_replies(is_outgoing_reply_messages_enabled == 'True');
+    viewModel.is_modified = false;
+
     var options = {
         successCallBack:function(callback){
-            viewModel.save();
-            callback();
+            viewModel.save(callback);
         },
         isQuestionnaireModified : function(){return viewModel.is_modified;},
         cancelDialogDiv : "#cancel_language_changes_warning",

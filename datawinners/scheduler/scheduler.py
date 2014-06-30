@@ -58,7 +58,7 @@ def send_reminders_for_an_organization(org, on_date, sms_client, from_number, db
     logger.info("Projects with reminders:- %d" % len(reminders_grouped_by_proj))
     for project_id, reminders in reminders_grouped_by_proj.items():
         try:
-            project = dbm._load_document(project_id, Project)
+            project = Project.get(dbm, project_id)
             if not project.has_deadline():
                 continue
             #send reminders to next projects in the queue if their is any error while sending reminders to previous project

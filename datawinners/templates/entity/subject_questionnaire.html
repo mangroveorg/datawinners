@@ -93,13 +93,19 @@
     </ol>
     <div class="action-section">
         {% block cancel_block %}
-        {% if is_update %}
-            <a id="cancel" href="{{ back_link }}">{% trans "Cancel Editing" %}</a>
+        {% if is_update or cancel_text%}
+            <a id="cancel" href="{{ back_link }}">
+            {% if cancel_text %}
+                {% trans cancel_text %}
+            {% else %}
+                {% trans "Cancel Editing" %}
+            {% endif %}
+            </a>
             {% include "warning_section.html" %}
 
         {% endif %}
         {% endblock %}
 
-        <input id="submit" type="submit" class="button" value="{% if is_update %} {% trans "Save Changes" %} {% else %} {% trans "Register" %} {% endif %}"/>
+        <input id="submit" type="submit" class="button" value="{% if is_update %} {% trans "Save Changes" %} {% else %} {% trans "Register Changes" %} {% endif %}"/>
     </div>
 </form>

@@ -73,11 +73,10 @@
             </div>
         </li>
         <li data-bind="visible: showAddChoice()">
-            {% include 'project/choice_template.html' %}
-
             <div class="margin_top_20">
                 <ol class="alpha_list que_list" id="options_list"
-                    data-bind="template: { name : 'choice-template',foreach : choices }">
+                    data-bind="foreach : choices">
+                    {% include 'project/choice_template.html' %}
 
                 </ol>
                 <a href="javascript:void(0);" class="add_link"
@@ -98,7 +97,7 @@
                 <div class="question_option">
                     {% trans "Min:" %}
                     <input name="range_min" type="text" id="range_min"
-                           data-bind="value:range_min, enable: newly_added_question"/>
+                           data-bind="value:range_min, enable: newly_added_question" maxlength="15"/>
 
                     <div class="validationMessage" data-bind="ifnot: range_min.valid">
                         <span class="validationText" data-bind="text: range_min.error"></span>
@@ -108,7 +107,7 @@
                 <div class="question_option">
                     {% trans "Max:" %}
                     <input name="range_max" type="text" id="range_max"
-                           data-bind="value:range_max, enable: newly_added_question"/>
+                           data-bind="value:range_max, enable: newly_added_question" maxlength="15"/>
 
                     <div class="validationMessage" data-bind="ifnot: range_max.valid">
                         <span class="validationText" data-bind="text: range_max.error"></span>

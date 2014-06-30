@@ -3,7 +3,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 COMPRESS_ENABLED = True
 
-ADMINS = (('QA1', 'sairama@thoughtworks.com'), ('BA', 'harikat@thoughtworks.com'), ('QA2', 'wamikas@thoughtworks.com'))
+ADMINS = (('DWBLR', 'datawinnersblr@thoughtworks.com'),)
 
 COMPRESS = False
 
@@ -21,6 +21,8 @@ DATABASES = {
 API_KEYS = {
     '184.72.223.168': 'AIzaSyCr4DDqoKgR5MzPci7GHWaXms8bYNprY-g'
 }
+
+GOOGLE_ANALYTICS_ENABLED = False
 
 HNI_SUPPORT_EMAIL_ID = 'yadavr@thoughtworks.com'
 
@@ -41,3 +43,5 @@ CRS_ORG_ID = 'JHW14178'
 
 FEEDS_ENABLED=True
 MAX_FEED_ENTRIES=10000
+
+VUMI_API_URL = "http://localhost:2020"

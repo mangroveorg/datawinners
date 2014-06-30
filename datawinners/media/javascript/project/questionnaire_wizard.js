@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     var index;
     DW.existing_question_codes = [];
-    for (index in question_list) {
+    for (index=0; index < question_list.length; index++) {
         DW.existing_question_codes.push(question_list[index].code);
         var questions = new DW.question(question_list[index]);
         questionnaireViewModel.loadQuestion(questions);
@@ -50,7 +50,7 @@ $(document).ready(function () {
         var flash_message = $("#message-label");
         flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
         html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
-        flash_message[0].scrollIntoView();
+//        flash_message[0].scrollIntoView();
         hide_message();
     }
     function hide_message() {
@@ -130,4 +130,12 @@ $(document).ready(function () {
         history.go(-1);
     });
 
+});
+
+$(window).load(function () {
+    setTimeout(function () {
+        var flash_message = $("#message-label");
+        flash_message[0].scrollIntoView();
+//        $('html, body').animate({ scrollTop: 0 });
+    }, 100);
 });

@@ -1,14 +1,16 @@
 from collections import OrderedDict
 import unittest
-from mock import Mock, patch
+from mock import patch, MagicMock
 from mangrove.datastore.database import DatabaseManager
-from datawinners.common.lang.utils import customized_message_details
-from datawinners.main.database import get_db_manager
+from datawinners.common.lang.utils import questionnaire_customized_message_details
 
 
 class TestUtils(unittest.TestCase):
     def setUp(self):
-        self.dbm = Mock(spec=DatabaseManager)
+        self.dbm = MagicMock(spec=DatabaseManager)
+        db_mock = MagicMock()
+        db_mock.name = 'db_name'
+        self.dbm.database = db_mock
 
     def test_should_create_customized_message_dictionary(self):
         custom_messages = OrderedDict()
@@ -23,7 +25,9 @@ class TestUtils(unittest.TestCase):
 
         with patch.object(self.dbm, "load_all_rows_in_view") as load_all_rows_in_view:
             load_all_rows_in_view.return_value = DATA_FROM_DB
-            details_list = customized_message_details(self.dbm, "English")
+
+            details_list = questionnaire_customized_message_details(self.dbm, "English")
+
             self.assertEquals(details_list.__len__(),5)
             self.assertEquals(details_list[0],{"title":"Successful Submission","message":"Thank you for submission","code":"reply_success_submission"})
 

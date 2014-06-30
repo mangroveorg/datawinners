@@ -2,6 +2,7 @@ import json
 from sets import Set
 
 from django.contrib.auth.decorators import login_required
+from django.template.context import RequestContext
 from django.utils import translation
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
@@ -27,8 +28,8 @@ from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_PROJECTS, \
-    REMOVED_DATA_SENDER_TO_PROJECTS, DELETED_DATA_SENDERS
+from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_QUESTIONNAIRES, \
+    REMOVED_DATA_SENDER_TO_QUESTIONNAIRES, DELETED_DATA_SENDERS
 
 
 class AllDataSendersView(TemplateView):
@@ -40,12 +41,12 @@ class AllDataSendersView(TemplateView):
         in_trial_mode = utils.get_organization(request).in_trial_mode
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
 
-        return self.render_to_response({
+        return self.render_to_response(RequestContext(request, {
             "user_dict": json.dumps(user_rep_id_name_dict),
             "projects": projects,
             'current_language': translation.get_language(),
-            'in_trial_mode': in_trial_mode
-        })
+            'in_trial_mode': in_trial_mode,
+        }))
 
     def get_imported_data_senders(self, successful_imports):
         imported_data_senders = successful_imports.values()
@@ -145,6 +146,7 @@ class DataSenderActionView(View):
     @method_decorator(session_not_expired)
     @method_decorator(is_not_expired)
     @method_decorator(is_new_user)
+    @method_decorator(is_datasender)
     def dispatch(self, *args, **kwargs):
         return super(DataSenderActionView, self).dispatch(*args, **kwargs)
 
@@ -178,12 +180,12 @@ class AssociateDataSendersView(DataSenderActionView):
             projects_name.add(questionnaire.name.capitalize())
         ids = request.POST["ids"].split(';')
         if len(ids):
-            UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
+            UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_QUESTIONNAIRES,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
         return HttpResponse(
-            json.dumps({"success": True, "message": _("The Data Sender(s) are added to project(s) successfully")}))
+            json.dumps({"success": True, "message": _("The Data Sender(s) are added to Questionnaire(s) successfully")}))
 
 
 class DisassociateDataSendersView(DataSenderActionView):
@@ -205,17 +207,17 @@ class DisassociateDataSendersView(DataSenderActionView):
                     removed_rep_ids.add(rep_id)
 
         if len(removed_rep_ids):
-            UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
+            UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_QUESTIONNAIRES,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(removed_rep_ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
         return HttpResponse(
-            json.dumps({"success": True, "message": _("The Data Sender(s) are removed from project(s) successfully")}))
+            json.dumps({"success": True, "message": _("The Data Sender(s) are removed from Questionnaire(s) successfully")}))
 
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required
 @is_datasender
 def delete_data_senders(request):
     manager = get_database_manager(request.user)

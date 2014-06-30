@@ -12,6 +12,6 @@
                 <a id = "sent_reminders_tab" href="{{ project_links.sent_reminders_link }}" class="{{ disable_link_class }}">{% trans "Sent Reminders" %}</a>
             </li>
             <li class="{% ifactivetab 'secondary_tab_nav' 'project_language'  %}active{% else %}inactive{% endifactivetab %}">
-                <a href="{{ project_links.questionnaire_language_selection_link }}" class="{{ disable_link_class }}">{% trans "Automatic Reply SMS" %}</a>
+                <a id="reply_sms_tab" href="{{ project_links.questionnaire_language_selection_link }}" class="{{ disable_link_class }}">{% trans "Automatic Reply SMS" %}</a>
             </li>
 </ul>

@@ -24,7 +24,7 @@ class TrialAccountRegistrationProcessor(object):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=user).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
-                    'username': user.first_name + ' ' + user.last_name}
+                    'username': user.first_name}
         subject = render_to_string('registration/activation_email_subject_for_trial_account_in_'+language+'.txt')
         subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
         message = render_to_string('registration/activation_email_for_trial_account_in_'+language+'.html',

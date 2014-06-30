@@ -1,5 +1,6 @@
 DW = DW || {};
 
 $(document).ready(function () {
-    new DW.SubjectRegistrationForm();
+    var registration_form = new DW.SubjectRegistrationForm();
+    registration_form.enable();
 });

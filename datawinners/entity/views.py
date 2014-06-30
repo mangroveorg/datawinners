@@ -36,7 +36,7 @@ from datawinners.entity.helper import create_registration_form, delete_entity_in
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from mangrove.datastore.entity_type import define_type, delete_type
+from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
@@ -56,8 +56,8 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, REGISTERED_SUBJECT, \
-    EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
+from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, DELETED_IDENTIFICATION_NUMBER, REGISTERED_IDENTIFICATION_NUMBER, \
+    EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
@@ -65,6 +65,7 @@ from datetime import datetime
 
 
 websubmission_logger = logging.getLogger("websubmission")
+datawinners_logger = logging.getLogger("datawinners")
 
 
 @login_required
@@ -77,13 +78,17 @@ def create_type(request):
         entity_name = [entity_name.strip().lower()]
         try:
             manager = get_database_manager(request.user)
-            define_type(manager, entity_name)
+
+            if entity_type_already_defined(manager, entity_name):
+                raise EntityTypeAlreadyDefined(u"Type: %s is already defined" % u'.'.join(entity_name))
+
             create_registration_form(manager, entity_name)
+            define_type(manager, entity_name)
             message = _("Entity definition successful")
             success = True
-            UserActivityLog().log(request, action=ADDED_SUBJECT_TYPE, detail=entity_name[0].capitalize())
+            UserActivityLog().log(request, action=ADDED_IDENTIFICATION_NUMBER_TYPE, detail=entity_name[0].capitalize())
         except EntityTypeAlreadyDefined:
-            message = _("%s already registered as a subject type.") % (entity_name[0],)
+            message = _("%s already exists.") % (entity_name[0].capitalize(),)
     else:
         message = form.errors['entity_type_regex']
     return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
@@ -111,6 +116,7 @@ def all_subject_types(request):
                               },
                               context_instance=RequestContext(request))
 
+
 def delete_subject_types(request):
     manager = get_database_manager(request.user)
     subject_types = request.POST.get("all_ids")
@@ -124,6 +130,7 @@ def delete_subject_types(request):
             entities.delete()
     messages.success(request, _("Identification Number Type(s) successfully deleted."))
     return HttpResponse(json.dumps({'success': True}))
+
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -177,18 +184,18 @@ def _get_order_field(post_dict, user, subject_type):
 @is_datasender
 @is_not_expired
 def all_subjects_ajax(request, subject_type):
-    user = request.user
-    search_parameters = {}
-    search_text = request.POST.get('sSearch', '').strip()
-    search_parameters.update({"search_text": search_text})
-    search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
-    search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
-    search_parameters.update({"sort_field": _get_order_field(request.POST, user, subject_type)})
-    search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
+    try:
+        user = request.user
+        search_parameters = {}
+        search_text = request.POST.get('sSearch', '').strip()
+        search_parameters.update({"search_text": search_text})
+        search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
+        search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
+        search_parameters.update({"sort_field": _get_order_field(request.POST, user, subject_type)})
+        search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
-    query_count, search_count, subjects = SubjectQuery(search_parameters).paginated_query(user, subject_type)
-
-    return HttpResponse(
+        query_count, search_count, subjects = SubjectQuery(search_parameters).paginated_query(user, subject_type)
+        return HttpResponse(
         jsonpickle.encode(
             {
                 'data': subjects,
@@ -197,6 +204,13 @@ def all_subjects_ajax(request, subject_type):
                 "iTotalRecords": search_count,
                 'iDisplayLength': int(request.POST.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')
+
+    except Exception as e:
+        datawinners_logger.error("All Subjects Ajax failed")
+        datawinners_logger.error(request.POST)
+        datawinners_logger.exception(e)
+        raise
+
 
 
 @register.filter
@@ -210,13 +224,9 @@ def get_success_message(entity_type):
     return _("Subject(s) successfully deleted.")
 
 
-def _get_full_name(user):
-    return user.first_name + ' ' + user.last_name
-
-
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required
 @is_datasender
 def delete_subjects(request):
     manager = get_database_manager(request.user)
@@ -225,9 +235,9 @@ def delete_subjects(request):
 
     transport_info = TransportInfo("web", request.user.username, "")
     delete_entity_instance(manager, all_ids, entity_type, transport_info)
-    log_activity(request, DELETED_SUBJECTS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
-    messages.success(request, get_success_message(entity_type))
-    return HttpResponse(json.dumps({'success': True}))
+    log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
+    message = get_success_message(entity_type)
+    return HttpResponse(json.dumps({'success': True, 'message': message}))
 
 
 def subject_short_codes_to_delete(request, manager, entity_type):
@@ -295,6 +305,7 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
 @login_required
 @csrf_view_exempt
 @is_not_expired
+@is_datasender
 def create_multiple_web_users(request):
     """Create multiple web users from All Data Senders page"""
     org_id = request.user.get_profile().org_id
@@ -328,7 +339,7 @@ def import_subjects_from_project_wizard(request, form_code):
 
         subject_details = _format_imported_subjects_datetime_field_to_str(form_model, short_code_subject_details_dict)
         detail_dict.update({entity_type: "[%s]" % ", ".join(short_codes)})
-        UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
+        UserActivityLog().log(request, action=IMPORTED_IDENTIFICATION_NUMBER, detail=json.dumps(detail_dict))
 
     return HttpResponse(json.dumps(
         {'success': error_message is None and is_empty(failure_imports),
@@ -338,13 +349,15 @@ def import_subjects_from_project_wizard(request, form_code):
          'successful_imports': subject_details,
         }))
 
+
 def _format_imported_subjects_datetime_field_to_str(form_model, short_code_subject_details_dict):
     datetime_fields = [index for index, field in enumerate(form_model.fields) if type(field) == DateField]
     subject_details = []
     for subject_detail_dict in short_code_subject_details_dict.values():
         value = subject_detail_dict.values()
         for index in datetime_fields:
-            value[index] = "%s-%s-%s" %(value[index].day,value[index].month,value[index].year) #strftime doesn't work for year<1900
+            value[index] = "%s-%s-%s" % (
+            value[index].day, value[index].month, value[index].year) #strftime doesn't work for year<1900
         subject_details.append(value)
     return subject_details
 
@@ -496,10 +509,11 @@ def create_subject(request, entity_type=None):
                 create_request(questionnaire_form, request.user.username), logger=websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
-                success_message = _("%s with Identification Number %s successfully registered.") % (entity_type.capitalize(),response.short_code)
+                success_message = _("%s with Identification Number %s successfully registered.") % (
+                entity_type.capitalize(), response.short_code)
 
                 detail_dict = dict({"Subject Type": entity_type.capitalize(), "Unique ID": response.short_code})
-                UserActivityLog().log(request, action=REGISTERED_SUBJECT, detail=json.dumps(detail_dict))
+                UserActivityLog().log(request, action=REGISTERED_IDENTIFICATION_NUMBER, detail=json.dumps(detail_dict))
                 questionnaire_form = SubjectRegistrationForm(form_model)
             else:
                 from datawinners.project.helper import errors_to_list
@@ -545,10 +559,12 @@ def get_questionnaire_details_ajax(request, entity_type):
          'questionnaire_code': form_model.form_code},
         unpicklable=False), content_type='application/json')
 
+
 @valid_web_user
 @login_required
 @session_not_expired
 @is_not_expired
+@is_datasender
 def edit_subject_questionnaire(request, entity_type=None):
     # edit subject type questionnaire view
     manager = get_database_manager(request.user)
@@ -588,8 +604,9 @@ def save_questionnaire(request):
                 detail_dict.update({"form_code": new_short_code})
             except DataObjectAlreadyExists as e:
                 if e.message.find("Form") >= 0:
-                    return HttpResponse(json.dumps({'success': False,"code_has_error":True,
-                                                    'error_message': ugettext("Questionnaire with same code already exists.")}))
+                    return HttpResponse(json.dumps({'success': False, "code_has_error": True,
+                                                    'error_message': ugettext(
+                                                        "Questionnaire with same code already exists.")}))
                 return HttpResponseServerError(e.message)
 
         json_string = request.POST['question-set']

@@ -1,15 +1,12 @@
 {% load i18n %}
+<li>
+    <span data-bind="text: $data.value.val()+'.'" class="bullet"></span>
+    <input name="choice_text" class="required" type="text"
+           data-bind="attr: {id: 'choice_text' + $index() }, value: $data.value.text, uniqueName: true, valueUpdate: 'keyup'"/>
+    <a href="javascript:void(0);" class='delete delete_link'
+       data-bind="attr: {id: 'delete_choice' + $index() }, visible: $parent.choiceCanBeDeleted, click:$parent.removeOptionFromQuestion">{% trans "Delete"%}</a>
+    <div class="validationMessage choiceValidationMessage" data-bind="ifnot:  $data.valid">
+           <span class="validationText" data-bind="text: $data.error, attr: {id: 'choice_validation_message' + $index() }"></span>
+    </div>
 
-<script type="text/html" id="choice-template">
-    <li>
-        <span data-bind="text: $data.value.val()+'.'" class="bullet"></span>
-        <input name="choice_text" class="required" type="text"
-               data-bind="attr: {id: 'choice_text' + $index() }, value: $data.value.text, uniqueName: true, valueUpdate: 'keyup'"/>
-        <a href="javascript:void(0);" class='delete delete_link'
-           data-bind="attr: {id: 'delete_choice' + $index() }, visible: $parent.choiceCanBeDeleted, click:$parent.removeOptionFromQuestion">{% trans "Delete"%}</a>
-        <div class="validationMessage choiceValidationMessage" data-bind="ifnot:  $data.valid">
-               <span class="validationText" data-bind="text: $data.error, attr: {id: 'choice_validation_message' + $index() }"></span>
-        </div>
-
-    </li>
-</script>
+</li>

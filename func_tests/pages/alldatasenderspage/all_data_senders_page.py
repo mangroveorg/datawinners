@@ -70,7 +70,7 @@ class AllDataSendersPage(Page):
         option.click()
 
     def get_success_message(self):
-        locator = self.driver.wait_for_element(20, SUCCESS_MESSAGE_LABEL, want_visible=True)
+        locator = self.driver.wait_for_element(20, SUCCESS_MESSAGE_LABEL)
         return locator.text
 
     def get_delete_success_message(self):

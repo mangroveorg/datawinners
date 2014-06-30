@@ -10,7 +10,7 @@ from datawinners.main.database import get_database_manager
 class LogFilterForm(forms.Form):
     user = ChoiceField(label=_('User'), choices=[], required=False)
     action = ChoiceField(label=_('Action'), choices=action_list, required=False)
-    project = ChoiceField(label=_('Project'), choices=[])
+    project = ChoiceField(label=_('Questionnaires'), choices=[])
     daterange = CharField(label=_("Date Range"), widget=forms.TextInput(attrs={'style':'width: 130px;', 'id':'dateRangePicker'}))
 
     def __init__(self, *args, **kwargs):
@@ -25,11 +25,11 @@ class LogFilterForm(forms.Form):
 
         all_users = [("",_("All Users"))]
 
-        all_users.extend([(user.user.id, "%s %s" % (user.user.first_name.capitalize(),user.user.last_name.capitalize()))
+        all_users.extend([(user.user.id, "%s" % (user.user.first_name))
             for user in users_rs])
 
         self.fields["user"].choices = all_users
-        project_choices = [("", _("All Projects"))]
+        project_choices = [("", _("All Questionnaires"))]
         projects = get_all_projects(get_database_manager(request.user))
         project_choices.extend(sorted([(prj["value"]["name"], prj["value"]["name"].capitalize()) for prj in projects],
                                     key=itemgetter(1,0)))

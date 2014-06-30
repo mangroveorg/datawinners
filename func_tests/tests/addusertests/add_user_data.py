@@ -1,14 +1,12 @@
 from framework.utils.common_utils import random_number, random_string
 
 TITLE = "title"
-FIRST_NAME = "first_name"
-LAST_NAME = "last_name"
+NAME = "full_name"
 USERNAME = "username"
 MOBILE_PHONE = "mobile_phone"
 ADD_USER_DATA = {
     TITLE: "Developer",
-    FIRST_NAME: "Mino",
-    LAST_NAME: "Rakoto",
+    NAME: "Mino Rakoto",
     USERNAME: random_string(7)+"@mailinator.com",
     MOBILE_PHONE: random_number(9)
 }

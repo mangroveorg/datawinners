@@ -4,9 +4,10 @@ import json
 import datetime
 import logging
 from operator import itemgetter
+import datawinners
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt
@@ -14,6 +15,7 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, ugettext
+from datawinners.alldata import views
 from datawinners.common.urlextension import append_query_strings_to_url
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
@@ -62,7 +64,7 @@ from datawinners.project import helper
 from datawinners.project.utils import make_project_links
 from datawinners.project.helper import is_project_exist, get_feed_dictionary
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DELETED_PROJECT, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, RENAMED_PROJECT
+from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE
 from datawinners.project.views.utils import get_form_context
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
@@ -84,51 +86,35 @@ TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 XLS_TUPLE_FORMAT = "%s (%s)"
 
-@login_required
-@session_not_expired
-@is_new_user
-@is_datasender
-@is_not_expired
-def index(request):
-    project_list = []
-    rows = models.get_all_projects(dbm=get_database_manager(request.user))
-    for row in rows:
-        project_id = row['value']['_id']
-        link = reverse('project-overview', args=[project_id])
-        delete_link = reverse('delete_project', args=[project_id])
-        project = dict(delete_link=delete_link, name=row['value']['name'], created=row['value']['created'],
-                       link=link)
-        project_list.append(project)
-    project_list.sort(key=itemgetter('name'))
-    return render_to_response('project/index.html', {'projects': project_list},
-                              context_instance=RequestContext(request))
-
 
 @login_required
 @session_not_expired
 @is_new_user
 @is_datasender
 @is_not_expired
+@is_project_exist
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    helper.delete_project(manager, questionnaire)
+    helper.delete_project(questionnaire)
     undelete_link = reverse(undelete_project, args=[project_id])
-    if len(get_all_projects(manager)) > 0:
-        messages.info(request, undelete_link)
-    UserActivityLog().log(request, action=DELETED_PROJECT, project=questionnaire.name)
-    return HttpResponseRedirect(reverse(index))
+    # if len(get_all_projects(manager)) > 0:
+    messages.info(request, undelete_link)
+    UserActivityLog().log(request, action=DELETED_QUESTIONNAIRE, project=questionnaire.name)
+    return HttpResponseRedirect(reverse(views.index))
+
 
 
 @csrf_view_exempt
 @valid_web_user
+@is_datasender
 def rename_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-    new_project_name = request.POST.get('data', '').strip().lower()
+    new_project_name = request.POST.get('data', '').strip()
     if len(new_project_name) == 0:
         return HttpResponse(json.dumps({"status": "error", "message": ugettext("This field is required.")}),
                             content_type='application/json')
@@ -137,7 +123,7 @@ def rename_project(request, project_id):
         questionnaire.name = new_project_name
         try:
             questionnaire.save(process_post_update=True)
-            UserActivityLog().log(request, action=RENAMED_PROJECT, project=questionnaire.name)
+            UserActivityLog().log(request, action=RENAMED_QUESTIONNAIRE, project=questionnaire.name)
             return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
         except DataObjectAlreadyExists as e:
             return HttpResponse(
@@ -145,12 +131,12 @@ def rename_project(request, project_id):
                 content_type='application/json')
     return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
 
-
+@is_datasender
 def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-    helper.delete_project(manager, questionnaire, void=False)
-    return HttpResponseRedirect(reverse(index))
+    helper.delete_project(questionnaire, void=False)
+    return HttpResponseRedirect(reverse(views.index))
 
 
 @login_required
@@ -158,7 +144,7 @@ def undelete_project(request, project_id):
 @is_datasender
 @is_not_expired
 @is_project_exist
-def project_overview(request, project_id=None):
+def project_overview(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
 
@@ -210,7 +196,7 @@ def project_overview(request, project_id=None):
         'in_trial_mode': in_trial_mode,
         'questionnaire_code': questionnaire_code,
         'has_multiple_unique_id':has_multiple_unique_id,
-        'entity_type': entity_type,
+        'entity_type': json.dumps(entity_type),
         'unique_id_header_text': unique_id_header_text,
         'org_number': get_organization_telephone_number(request)
     }))
@@ -253,6 +239,7 @@ def _format_reminders(reminders, project_id):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@is_project_exist
 def sent_reminders(request, project_id):
     dbm = get_database_manager(request.user)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
@@ -286,6 +273,7 @@ def _get_data_senders(dbm, form, project):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@is_project_exist
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
@@ -365,6 +353,8 @@ def get_project_link(project, entity_type=None):
 
 
 @valid_web_user
+@is_project_exist
+@is_datasender
 def registered_subjects(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -402,14 +392,9 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
     return [questions[1], questions[2], questions[3], questions[4], questions[5]]
 
 
-#def get_preview_and_instruction_links_for_questionnaire():
-#    return {'sms_preview': reverse("questionnaire_sms_preview"),
-#            'web_preview': reverse("questionnaire_web_preview"),
-#            'smart_phone_preview': reverse("smart_phone_preview"), }
-
-
 @valid_web_user
 @is_project_exist
+@is_datasender
 def questionnaire(request, project_id):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
@@ -500,7 +485,7 @@ class SubjectWebQuestionnaireRequest():
 
     @property
     def template(self):
-        return 'entity/subject/registration.html'
+        return 'entity/register_subject.html' if self.is_data_sender else 'entity/subject/registration.html'
 
 
     def player_response(self, created_request):
@@ -512,11 +497,13 @@ class SubjectWebQuestionnaireRequest():
         entity_type = self.questionnaire.entity_type[0].capitalize()
         detail_dict = dict(
             {"Subject Type": entity_type, "Unique ID": response_short_code})
-        UserActivityLog().log(self.request, action=REGISTERED_SUBJECT, project=self.questionnaire.name,
+        UserActivityLog().log(self.request, action=REGISTERED_IDENTIFICATION_NUMBER, project=self.questionnaire.name,
                               detail=json.dumps(detail_dict))
         return (_("%s with Identification Number %s successfully registered.")) % (entity_type,response_short_code)
 
     def response_for_get_request(self, initial_data=None, is_update=False):
+        if self.entity_type not in self.questionnaire.entity_type:
+            raise Http404
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, entity_type=self.entity_type, is_update=is_update)
@@ -615,6 +602,7 @@ class SurveyWebQuestionnaireRequest():
         form_context.update({
             'is_quota_reached': is_quota_reached(self.request),
             'questionnaire_code': self.questionnaire.form_code,
+            'is_datasender': self.is_data_sender,
         })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
@@ -695,6 +683,7 @@ def survey_web_questionnaire(request, project_id):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
+#@is_datasender
 def subject_web_questionnaire(request, project_id=None, entity_type=None):
     subject_request = SubjectWebQuestionnaireRequest(request, project_id, entity_type)
     if request.method == 'GET':
@@ -705,6 +694,7 @@ def subject_web_questionnaire(request, project_id=None, entity_type=None):
 
 @valid_web_user
 @is_project_exist
+@is_datasender
 # TODO : TW_BLR : what happens in case of POST?
 def questionnaire_preview(request, project_id=None, sms_preview=False):
     manager = get_database_manager(request.user)
@@ -748,6 +738,7 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
 
 
 @valid_web_user
+@is_project_exist
 def subject_registration_form_preview(request, project_id=None, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -800,6 +791,8 @@ def _get_subject_form_model(manager, entity_type):
 
 
 @valid_web_user
+@is_project_exist
+@is_datasender
 def edit_my_subject_questionnaire(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -842,6 +835,8 @@ def append_success_to_context(context, form):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
+@is_project_exist
+@is_datasender
 def create_data_sender_and_web_user(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -905,6 +900,7 @@ def project_has_data(request, questionnaire_code=None):
     return HttpResponse(encode_json({'has_data': (success + error > 0)}))
 
 
+@is_project_exist
 def edit_my_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
     subject = get_by_short_code(manager, entity_id, [entity_type.lower()])

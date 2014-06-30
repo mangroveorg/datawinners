@@ -4,6 +4,7 @@ from string import lower
 from django.utils.translation import ugettext as _
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.utils.types import is_empty
 from datawinners.messageprovider.messages import exception_messages, DEFAULT, get_submission_success_message, get_registration_success_message, get_validation_failure_error_message, get_subject_info
 from datawinners.messageprovider.message_builder import ResponseBuilder
@@ -15,6 +16,8 @@ def default_formatter(exception, message):
         return formatted_message if len(formatted_message) <= 160 else message.replace('%s', "")
     return message
 
+def data_object_not_found_formatter(exception, message):
+    return message % (exception.data[1])
 
 def data_object_not_found_formatter(exception, message):
     return message % (exception.data[1])
@@ -48,21 +51,15 @@ def _is_unique_id_not_present_error(errors):
     return False, None, None
 
 
-def _get_error_message(keys, response):
-    error = response.errors.values()[0]
-    error_text = "%s %s" % (_("singular_question"), keys[0])
-    return get_validation_failure_error_message(response) % error_text.strip()
-
-
 def get_submission_error_message_for(response, form_model, dbm, request):
-    from datawinners.messageprovider.handlers import unique_id_not_registered_handler, invalid_answer_handler
+    from datawinners.messageprovider.handlers import unique_id_not_registered_handler, invalid_answer_for_submissions_handler,invalid_answer_for_uid_registration_handler
 
     errors = response.errors
     if isinstance(errors, dict) and form_model:
 
         is_unique_id_error_present, unique_id_type, invalid_unique_id_code = _is_unique_id_not_present_error(errors)
         if is_unique_id_error_present:
-            return unique_id_not_registered_handler(dbm, form_model.form_code, invalid_unique_id_code)
+            return unique_id_not_registered_handler(dbm, form_model.form_code, invalid_unique_id_code, request)
 
         keys = [_("question_prefix%s") % index_of_question(form_model, question_code) for question_code in
                 errors.keys()]
@@ -77,27 +74,26 @@ def get_submission_error_message_for(response, form_model, dbm, request):
             else:
                 error_text = "%s %s %s" % (
                     _("sms_glue").join(keys[:3]), _(and_msg), _("more_wrong_question"))
-        error_message = invalid_answer_handler(dbm, request, form_model.form_code, error_text)
+        if form_model.is_entity_registration_form():
+            error_message = invalid_answer_for_uid_registration_handler(dbm, error_text)
+        else:
+            error_message = invalid_answer_for_submissions_handler(dbm, request, form_model.form_code, error_text)
     else:
         error_message = errors
     return error_message
 
 
-def get_success_msg_for_submission_using(response, form_model, dbm):
+def get_success_msg_for_submission_using(response, form_model, dbm, request):
     from datawinners.messageprovider.handlers import success_questionnaire_submission_handler
     datasender_name = response.reporters[0].get('name').split()[0].capitalize()
-    #message = get_submission_success_message(response)
     answers_response_text = ResponseBuilder(form_model=form_model,
                                     processed_data=response.processed_data).get_expanded_response()
-    message = success_questionnaire_submission_handler(dbm, form_model.form_code, datasender_name, answers_response_text)
+    message = success_questionnaire_submission_handler(dbm, form_model.form_code, datasender_name, answers_response_text, request)
 
     return message
-    #message_with_response_text = message + ": " + response_text
-    #
-    #return message_with_response_text if len(message_with_response_text) <= 160 else message + "."
 
 
-def get_success_msg_for_registration_using(response, source, form_model=None):
+def get_success_msg_for_ds_registration_using(response, source, form_model=None):
     thanks = get_registration_success_message(response)
     if source == "sms":
         message_with_response_text = thanks + " " + ResponseBuilder(form_model=form_model,
@@ -106,18 +102,30 @@ def get_success_msg_for_registration_using(response, source, form_model=None):
             message_with_response_text) <= 160 else thanks + " " + get_subject_info(response, form_model)
     return _("Registration successful.") + " %s %s" % (_("ID is:"), response.short_code)
 
+def get_success_msg_for_subject_registration_using(dbm,response,form_model=None):
+    from datawinners.messageprovider.handlers import success_subject_registration_handler
+    datasender_name = response.reporters[0].get('name').split()[0].capitalize()
+    answers_response_text = ResponseBuilder(form_model=form_model,
+                                    processed_data=response.processed_data).get_response_for_sms_subject_registration()
+    message = success_subject_registration_handler(dbm, datasender_name, answers_response_text)
 
-def _get_response_message(response, dbm, request):
+    return message
+
+
+def get_response_message(response, dbm, request):
     form_model = get_form_model_by_code(dbm, response.form_code) if response.form_code else None
     if response.success:
-        message = _get_success_message(response, form_model, dbm)
+        message = _get_success_message(response, form_model, dbm, request)
     else:
         message = get_submission_error_message_for(response, form_model, dbm, request)
     return message
 
 
-def _get_success_message(response, form_model, dbm):
+def _get_success_message(response, form_model, dbm, request):
     if response.is_registration:
-        return get_success_msg_for_registration_using(response, "sms", form_model)
+        if response.entity_type == REPORTER_ENTITY_TYPE:
+            return get_success_msg_for_ds_registration_using(response,'sms', form_model)
+        else:
+            return get_success_msg_for_subject_registration_using(dbm,response,form_model)
     else:
-        return get_success_msg_for_submission_using(response, form_model, dbm)
+        return get_success_msg_for_submission_using(response, form_model, dbm, request)

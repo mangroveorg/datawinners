@@ -6,4 +6,99 @@
  }
 }
 
+.addNewLanguage{
+   background-color: lightblue ;
+  color:blue;
+}
+
 @import "validation";
+@import "dropdown_style";
+
+select option{
+  margin : 3px;
+}
+
+.message_box{
+  width: auto;
+  resize: none;
+  height: 50%
+}
+
+.char_count{
+  float: right;
+  text-align: right;
+  color:#666666 !important;
+  font-size: 100%;
+  span{
+    font-weight: bold;
+  }
+}
+
+.account_message_warning_message{
+  color: #066B06 !important;
+  font-style: italic;
+  margin-top: -6px;
+  display: inline;
+}
+
+ .account_wide_sms_title {
+   color: #C35C00;
+   font-weight: bold;
+   border-bottom: 1px solid #CCCCCC;
+   font-size: 20px;
+ }
+
+.sms_messages li{
+  clear: both;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.messages{
+  font-weight: bold;
+  margin-left: 18px;
+}
+
+#language_save{
+  float: right;
+}
+
+.save_button{
+  width: 900px;
+  margin-top: 35px;
+}
+
+.link-disabled{
+  color: #808080;
+}
+
+.link-disabled:hover{
+  color: #808080;
+  text-decoration: none;
+  cursor: default;
+}
+
+
+.cancel_button{
+  float: right;
+  margin-right: 12px;
+  margin-top: 7px;
+}
+
+.dialog_cancel_button{
+  color: #0070ac !important;
+  margin-top: 8px;
+  padding-right: 8px;
+}
+
+.reset-link{
+  @extend  .cancel_button;
+  font-weight: normal;
+  margin-top: 0px;
+}
+
+.message-header{
+  padding-top: 15px;
+}

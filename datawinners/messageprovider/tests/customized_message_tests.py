@@ -19,12 +19,12 @@ class TestSuccessfulSubmissionReplyMessage(TestCase):
             project_mock.language = "en"
 
             with patch(
-                    'datawinners.messageprovider.customized_message.customized_message_details') as customized_message_details_mock:
+                    'datawinners.messageprovider.customized_message.questionnaire_customized_message_details') as customized_message_details_mock:
                 customized_message_details_mock.return_value = [
                     {'message': "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}",
                      'code': 'reply_success_submission'}]
 
-                actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', "a1; a2")
+                actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', "a1; a2", {})
 
         self.assertEqual(actual_message, "Thank you DS Name. We received your SMS: a1; a2")
 
@@ -43,36 +43,13 @@ class TestSuccessfulSubmissionReplyMessage(TestCase):
             project_mock.language = "en"
 
             with patch(
-                    'datawinners.messageprovider.customized_message.customized_message_details') as customized_message_details_mock:
+                    'datawinners.messageprovider.customized_message.questionnaire_customized_message_details') as customized_message_details_mock:
                 customized_message_details_mock.return_value = [
                     {'message': "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}",
                      'code': 'reply_success_submission'}]
 
-                actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', answer_list)
+                actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', answer_list, {})
 
         self.assertEqual(actual_message, "Thank you DS Name. We received your SMS.")
 
 
-    @patch.object(Project, 'from_form_model')
-    def test_should_return_first_160_chars_of_customized_message_when_customized_message_with_ds_name_is_greater_than_160_chars(
-            self, ProjectMock):
-        dbm = Mock()
-        answer_list = "a1;a2" * 100
-        ds_name = "A" * 150
-        with patch(
-                'datawinners.messageprovider.customized_message.get_form_model_by_code') as get_form_model_by_code_mock:
-            get_form_model_by_code_mock.return_value = MagicMock(spec=FormModel)
-
-            project_mock = MagicMock(spec=Project)
-            ProjectMock.from_form_model.return_value = project_mock
-            project_mock.language = "en"
-
-            with patch(
-                    'datawinners.messageprovider.customized_message.customized_message_details') as customized_message_details_mock:
-                customized_message_details_mock.return_value = [
-                    {'message': "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}",
-                     'code': 'reply_success_submission'}]
-
-                actual_message = success_questionnaire_submission_handler(dbm, 123, ds_name, answer_list)
-
-        self.assertEqual(actual_message, "Thank you " + ds_name)

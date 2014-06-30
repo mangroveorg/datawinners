@@ -50,7 +50,6 @@
     span.project_title {
       font-size: 22px;
       width: 500px;
-      text-transform: capitalize;
       .editFieldWrapper {
         .editFieldSaveControllers {
           display: inline;
@@ -169,8 +168,4 @@ table.error_table {
 
 	border-right:6px solid #C20303;
   }
-}
-
-.project-id-class{
-  text-transform : capitalize;
 }

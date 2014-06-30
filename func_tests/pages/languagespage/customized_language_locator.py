@@ -1,5 +1,21 @@
-from framework.utils.common_utils import by_id
+from framework.utils.common_utils import by_id, by_css
 
 LANGUAGE_SAVE_BUTTON_LOCATOR = by_id("language_save")
 LANGUAGE_DROP_DOWN_LOCATOR = by_id("language")
 SUCCESS_SUBMISSION_MESSAGE_LOCATOR = by_id("custom_message0")
+SUBMISSION_WITH_ERROR_MESSAGE_LOCATOR = by_id("custom_message1")
+SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR = by_id("custom_message2")
+SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR = by_id("account_message4")
+SUBMISSION_WITH_INCORRECT_UNIQUE_ID = by_id("custom_message3")
+RESPONSE_ERROR_MESSAGE_FROM_UNAUTHORIZED_SOURCE_LOCATOR = by_id("custom_message4")
+DATA_SENDER_NOT_REGISTERED_LOCATOR = by_id("account_message0")
+NEW_LANGUAGE_INPUT_BOX = by_css('#add_new_language_pop input')
+ADD_NEW_LANG_CONFIRM_BUTTON = by_css('#add_new_language_pop .yes_button')
+ADD_NEW_LANG_CANCEL_BUTTON = by_css('#add_new_language_pop .dialog_cancel_button')
+CUSTOMIZED_MESSAGE_TEXTBOXES_LOCATOR = by_css("#language_customized_messages .TextTags")
+ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR = by_css("#account_wide_sms .TextTags")
+CANCEL_CHANGES_LOCATOR=by_id("cancel_changes")
+REVERT_TO_ORIGINAL_LINK= by_css(".reset-link")
+FRENCH_SYSTEM_LANGUAGE_LOCATOR=by_id("french")
+ENGLISH_SYSTEM_LANGUAGE_LOCATOR=by_id("english")
+LAST_WARNING_MESSAGE_LOCATOR="(//span[@class='account_message_warning_message'])[%s]"

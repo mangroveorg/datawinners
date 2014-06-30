@@ -24,16 +24,16 @@ $(document).ready(function () {
                 warning_title = [];
                 has_questionnaires = false;
                 content = gettext("If you want to delete the Identification Number Type <b>");
-                subject_list = []
+                subject_list = [];
                 $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").html("");
                 content = gettext("If you want to delete the Identification Number Type <b>");
                 $('.list_header').each(function() {
                     line = this;
                     message = "";
                     $(this).find(".subject_type_entry:checked").each(function(){
-                        if($(line).find(".questionnaires").html() != "<span></span>"){
+                        if($(line).find(".questionnaires").text()){
                             has_questionnaires = true;
-                            message = gettext("The following Questionnaire(s) are collecting data about <b>") + $(line).find(".header").html()+"<b><ul class='bulleted'>";
+                            message = gettext("The following Questionnaire(s) are collecting data about <b>") + $(line).find(".header").html()+"</b><ul class='bulleted'>";
                             $(line).find(".questionnaires span").each(function(){
                                 message = message + "<li style='margin-left:15px;'>"+$(this).html()+"</li>";
 

@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext, get_language
 import elasticutils
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
 from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
@@ -88,6 +88,7 @@ class SubmissionQueryResponseCreator():
         meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
 
         submissions = []
+        language = get_language()
         for res in query.values_dict(tuple(required_field_names)):
             submission = [res._id]
             for key in required_field_names:
@@ -100,6 +101,12 @@ class SubmissionQueryResponseCreator():
                                                  res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY), submission)
                     elif key == 'status':
                         submission.append(ugettext(res.get(key)))
+
+                    elif key == 'error_msg':
+                        error_msg = res.get(key)
+                        if error_msg.find('| |') != -1:
+                            error_msg = error_msg.split('| |,')[['en', 'fr'].index(language)]
+                        submission.append(error_msg)
                     else:
                         submission.append(self.append_if_attachments_are_present(res, key))
             submissions.append(submission)

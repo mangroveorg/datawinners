@@ -1,6 +1,5 @@
-# vim: ai ts=4 sts=4 et sw=4utf-8
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
-from string import lower
 import unittest
 import time
 
@@ -67,7 +66,7 @@ def do_login(driver, email, password):
 
 class TestApplicationEndToEnd(unittest.TestCase):
     def setUp(self):
-        self.driver = setup_driver(browser='phantom')
+        self.driver = setup_driver(browser="phantom")
 
     def tearDown(self):
         import sys
@@ -109,7 +108,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
 
     def do_login(self):
         global_navigation = do_login(self.driver, self.email, REGISTRATION_PASSWORD)
-        self.assertEqual(global_navigation.welcome_message(), "Welcome Mickey!")
+        self.assertEqual(global_navigation.welcome_message(), u"Welcome Mickey Gö!")
         return global_navigation
 
     def add_subject_type(self, create_project_page, entity_type):
@@ -212,7 +211,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
 
         edit_datasender_page.navigate_to_datasender_page()
         all_data_sender_page = AllDataSendersPage(self.driver)
-        all_data_sender_page.associate_datasender_to_projects(rep_id, [lower(self.project_name)])
+        all_data_sender_page.associate_datasender_to_projects(rep_id, [self.project_name])
         return email
 
     def verify_admin_present_in_my_datasenders_page(self):
@@ -303,23 +302,19 @@ class TestApplicationEndToEnd(unittest.TestCase):
         project_page.delete_project(self.project_name)
         self.assertFalse(project_page.is_project_present(self.project_name))
 
-    def create_screenshot(self, filename="error_screen_shot.png"):
-        if not os.path.exists("screenshots"):
-            os.mkdir("screenshots")
-        self.driver.save_screenshot("screenshots/%s" % filename)
 
     def verify_setting_customized_error_messages_for_languages(self):
         global_navigation = GlobalNavigationPage(self.driver)
         languages_page = global_navigation.navigate_to_languages_page()
         self.assertEquals("English",languages_page.get_selected_language())
-        new_success_message = "This is a new message"
-        languages_page.set_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR , new_success_message)
-        self.assertEquals("Changes saved successfully.",languages_page.get_success_message())
+        appended_message = "ok!"
+        languages_page.append_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR , appended_message)
+        languages_page.save_changes()
+        self.assertEquals("Changes saved successfully.", languages_page.get_success_message())
         #Reload english to check if changes saved
-        languages_page.select_language("French")
-        languages_page.select_language("English")
-        time.sleep(1)
-        self.assertEquals(new_success_message,languages_page.get_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR))
+        languages_page.select_language("French", wait_for_load=True)
+        languages_page.select_language("English", wait_for_load=True)
+        self.assertIn(appended_message, languages_page.get_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR))
 
 
     @attr('smoke')
@@ -333,7 +328,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.register_new_subject_of_type('School', VALID_DATA_FOR_SUBJECT_SCHOOL)
 
         self.add_subject('Hospital', VALID_DATA_FOR_SUBJECT_REG)
-        self.create_screenshot()
         self.add_edit_delete_subject()
 
         ds_email = self.add_edit_datasender()
@@ -341,6 +335,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_submission_via_web(ds_email)
         self.verify_setting_customized_error_messages_for_languages()
-        #self.admin_edit_delete_submissions()
-        time.sleep(2)
+        # self.admin_edit_delete_submissions()
+        # time.sleep(2)
         self.delete_project()

@@ -41,11 +41,9 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.user1 = RegistrationProfile.objects.create_inactive_user(username='paid_account@mail.com', email='paid_account@mail.com', password='hi', site=Site(), send_email=False)
         self.user2 = RegistrationProfile.objects.create_inactive_user(username='trial_account@mail.com', email='trial_account@mail.com', password='hi', site=Site(), send_email=False)
 
-        self.user1.first_name = 'first_name1'
-        self.user1.last_name = 'last_name1'
+        self.user1.first_name = 'first_name1 last_name1'
 
-        self.user2.first_name = 'first_name2'
-        self.user2.last_name = 'last_name2'
+        self.user2.first_name = 'first_name2 last_name2'
 
         self.user1.save()
         self.user2.save()
@@ -124,7 +122,7 @@ class TestRegistrationProcessor(unittest.TestCase):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user2).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
-                    'username': self.user2.first_name + ' ' + self.user2.last_name}
+                    'username': self.user2.first_name}
         self.assertEqual(render_to_string('registration/activation_email_subject_for_trial_account_in_en.txt'), sent_email.subject)
         self.assertEqual(render_to_string('registration/activation_email_for_trial_account_in_en.html', ctx_dict), sent_email.body)
 
@@ -182,6 +180,6 @@ class TestRegistrationProcessor(unittest.TestCase):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user2).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
-                    'username': self.user2.first_name + ' ' + self.user2.last_name}
+                    'username': self.user2.first_name}
         self.assertEqual(render_to_string('registration/activation_email_subject_for_trial_account_in_fr.txt'), sent_email.subject)
         self.assertEqual(render_to_string('registration/activation_email_for_trial_account_in_fr.html', ctx_dict), sent_email.body)

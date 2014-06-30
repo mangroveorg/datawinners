@@ -3,8 +3,7 @@ ORGANIZATION_SECTOR = 'organization_sector'
 ORGANIZATION_CITY = 'organization_city'
 ORGANIZATION_COUNTRY = 'organization_country'
 TITLE = 'title'
-FIRST_NAME = 'first_name'
-LAST_NAME = 'last_name'
+FIRST_NAME = 'full_name'
 EMAIL = 'email'
 ADMIN_OFFICE_NUMBER = "office_phone"
 ADMIN_MOBILE_NUMBER = "mobile_phone"
@@ -16,8 +15,7 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION = {ORGANIZATION_NAME: "Autom
                                                  ORGANIZATION_CITY: "Xi'an",
                                                  ORGANIZATION_COUNTRY: "CN",
                                                  TITLE: "Mr.",
-                                                 FIRST_NAME: "Mickey",
-                                                 LAST_NAME: "Jackson",
+                                                 FIRST_NAME: "Mickey Jackson",
                                                  EMAIL: "ngo",
                                                  ADMIN_MOBILE_NUMBER: "23-45-678-567",
                                                  REGISTRATION_PASSWORD: REGISTRATION_PASSWORD,

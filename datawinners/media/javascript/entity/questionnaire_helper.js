@@ -38,7 +38,7 @@ DW.instruction_template = {
     "date": gettext("Answer must be a date in the following format: %s. Example: %s"),
     "single_select": gettext("Choose 1 answer from the list. Example: a"),
     "multi_select": gettext("Choose 1 or more answers from the list. Example: a or ab "),
-    "gps": gettext("Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "),
+    "gps": gettext("Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"),
     "dd.mm.yyyy": "25.12.2011",
     "mm.dd.yyyy": "12.25.2011",
     "mm.yyyy": "12.2011",
@@ -348,7 +348,7 @@ DW.question.prototype = {
         var min_range = parseInt(this.range_min());
         var max_range = parseInt(this.range_max());
 
-        if (_.isNaN(min_range) || _.isNaN(max_range))
+        if (!this.range_min().match(/^-?\d+$/) || !this.range_max().match(/^-?\d+$/))
             return;
 
         if (min_range > max_range)
@@ -531,6 +531,22 @@ DW.close_the_tip_on_period_question = function () {
     }
 }
 
+DW.show_completly_selected_question = function () {
+    var div_top = $('div.questions').position().top;
+    var height = parseInt($('div.questions ol li.question_selected').css("height"), 10);
+    var question_top = $('div.questions ol li.question_selected').position().top;
+
+    if (div_top + 399 < question_top + height) {
+        var scrolltop = question_top + height - div_top - 392 + $("div.questions").scrollTop();
+        $("div.questions").scrollTop(scrolltop);
+    }
+
+    if (question_top < div_top + 15) {
+        var scrolltop = $("div.questions").scrollTop() - (div_top + 15 - question_top);
+        $("div.questions").scrollTop(scrolltop);
+    }
+}
+
 DW.questionnaire_has_submission = function () {
     var subject_questionnaire = (typeof(is_edit) == "undefined");
     if (subject_questionnaire) {
@@ -623,6 +639,78 @@ DW.addNewQuestion = function () {
         return;
     questionnaireViewModel.addQuestion();
     DW.close_the_tip_on_period_question();
+};
+
+DW.CancelQuestionnaireWarningDialog = function (options) {
+    var self = this;
+    var successCallBack = options.successCallBack;
+    var isQuestionnaireModified = options.isQuestionnaireModified;
+
+    this.init = function () {
+        self.cancelDialog = $("#cancel_questionnaire_warning_message");
+        self.ignoreButton = self.cancelDialog.find(".no_button");
+        self.saveButton = self.cancelDialog.find(".yes_button");
+        self.cancelButton = self.cancelDialog.find("#cancel_dialog");
+        _initializeDialog();
+        _initializeIgnoreButtonHandler();
+        _initializeCancelButtonHandler();
+        _initializeSaveButtonHandler();
+        _initializeLinkBindings();
+    };
+
+    var _initializeDialog = function () {
+        self.cancelDialog.dialog({
+            title: gettext("You Have Unsaved Changes"),
+            modal: true,
+            autoOpen: false,
+            width: 550,
+            closeText: 'hide'
+        });
+    };
+
+    var _initializeIgnoreButtonHandler = function () {
+        self.ignoreButton.bind('click', function () {
+            self.cancelDialog.dialog("close");
+            return _redirect();
+        });
+    };
+
+    var _initializeCancelButtonHandler = function () {
+        self.cancelButton.bind('click', function () {
+            self.cancelDialog.dialog("close");
+            return false;
+        });
+    };
+
+    var _initializeSaveButtonHandler = function () {
+        self.saveButton.bind('click', function () {
+            if (questionnaireViewModel.validateSelectedQuestion() && questionnaireViewModel.validateQuestionnaireDetails()) {
+                successCallBack(function () {
+                    return _redirect();
+                });
+            }
+            self.cancelDialog.dialog("close");
+        });
+    };
+
+    var _redirect = function () {
+        window.location.href = redirect_url;
+        return true;
+    };
+
+    var _initializeLinkBindings = function () {
+        $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(".add_link, .preview-navigation a, .sms_tester, .delete_project, #dw_help_link").bind('click', {self: this}, function (event) {
+            var that = event.data.self;
+            redirect_url = $(this).attr("href");
+            if (isQuestionnaireModified()) {
+                self.cancelDialog.dialog("open");
+                return false;
+            }
+            else
+                return _redirect();
+        });
+    };
+
 };
 
 DW.UniqueIdHelpSection = function(){

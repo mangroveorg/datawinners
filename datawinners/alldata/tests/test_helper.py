@@ -58,7 +58,7 @@ class TestHelper(unittest.TestCase):
 
     def test_should_return_AllData_for_other(self):
         user = self._get_normal_user()
-        assert helper.get_page_heading(user) == 'All Data'
+        assert helper.get_page_heading(user) == 'Questionnaires'
 
     def tearDown(self):
         helper.models.get_all_projects = self.all_projects

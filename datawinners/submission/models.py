@@ -1,6 +1,6 @@
 from django.db import models
 from datawinners.accountmanagement.models import Organization
-from datawinners.messageprovider.message_handler import _get_response_message
+from datawinners.messageprovider.message_handler import get_response_message
 
 class DatawinnerLog(models.Model):
     message = models.TextField()
@@ -13,11 +13,10 @@ class DatawinnerLog(models.Model):
     organization = models.ForeignKey(Organization, null=True)
 
 
-#TODO: Move all message templating for responses here.
 class SMSResponse(object):
     def __init__(self, response, incoming_request):
         self.response = response
         self.request = incoming_request
 
     def text(self, dbm):
-        return _get_response_message(self.response, dbm, self.request)
+        return get_response_message(self.response, dbm, self.request)

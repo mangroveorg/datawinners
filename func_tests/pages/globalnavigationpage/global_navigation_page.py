@@ -68,7 +68,7 @@ class GlobalNavigationPage(Page):
 
         Return add data sender page
          """
-        self.driver.find(ALL_DATA_LINK).click()
+        self.driver.find(PROJECT_LINK).click()
         return AllDataPage(self.driver)
 
     def sign_out(self):

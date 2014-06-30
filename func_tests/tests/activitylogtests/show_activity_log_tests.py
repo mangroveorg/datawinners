@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import time
+import datetime
 
 from nose.plugins.attrib import attr
 
@@ -45,7 +46,7 @@ class TestShowActivityLog(HeadlessRunnerTest):
 
         activity_log_page = self.navigate_to_activity_log_page()
         self.assertEqual(ACTIVITY_LOG_PAGE_TITLE, self.driver.get_title())
-        activity_log_page.select_filter("Project", "Created Project")
+        activity_log_page.select_filter("Questionnaire", "Created Questionnaire")
         time.sleep(3)
         for i in range(1, 10):
             if activity_log_page.get_data_on_cell(i, 3).lower() == self.project_title.lower():
@@ -63,6 +64,17 @@ class TestShowActivityLog(HeadlessRunnerTest):
         activity_log_page.click_on_filter_button()
         self.assert_there_is_no_entry(activity_log_page)
         self.assert_there_is_entries_for_themain_organization()
+
+
+    #issue 3483
+    @attr('functional_test')
+    def test_filter_for_one_day(self):
+        activity_log_page = self.navigate_to_activity_log_page()
+        today = datetime.datetime.today()
+        self.driver.find_text_box(by_css("#dateRangePicker")).enter_text(today.strftime("%d-%m-%Y"))
+        activity_log_page.click_on_filter_button()
+        entries_number = activity_log_page.get_number_of_entries_found()
+        self.assertGreater(entries_number, 0, "No entries found in Activity log")
 
 
     def navigate_to_activity_log_page(self):
@@ -89,7 +101,6 @@ class TestShowActivityLog(HeadlessRunnerTest):
         self.assertTrue(entries_number != 0)
 
     @attr('functional_test')
-    @skipUntil('2014-03-30') #edit submission fails due to error in django forms. Might get fixed with the default reporter question
     def test_edit_submissions_are_logged(self):
         project_overview = self.global_navigation_page.navigate_to_view_all_project_page().navigate_to_project_overview_page(
             self.project_title)
@@ -109,7 +120,7 @@ class TestShowActivityLog(HeadlessRunnerTest):
         activity_log_page.select_filter('Data Submissions', 'Edited Data Submission(s)')
         time.sleep(3)
         self.assertEqual("Edited Data Submission(s)", activity_log_page.get_data_on_cell(row=1, column=2))
-        self.assertTrue(activity_log_page.get_data_on_cell(row=1, column=3).startswith("Reporter activities"))
+        self.assertTrue(activity_log_page.get_data_on_cell(row=1, column=3).startswith("Reporter Activities"))
         details_data = activity_log_page.get_data_on_cell(row=1, column=4)
         self.assertTrue("Submission Received on" in details_data)
         self.assertTrue("Changed Answers" in details_data)

@@ -6,7 +6,8 @@ $(document).ready(function () {
     $('.chosen_entity_type li').each(function(index, elem){
         $(elem).removeClass('inactive');
         $(elem).removeClass('active');
-        if(elem.textContent.toLowerCase() == subject_type.toLowerCase())
+        element_text= elem.textContent || elem.innerText
+        if(element_text.toLowerCase() == subject_type.toLowerCase())
             $(elem).addClass('active');
         else
             $(elem).addClass('inactive');

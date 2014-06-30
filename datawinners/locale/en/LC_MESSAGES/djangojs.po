@@ -405,9 +405,10 @@ msgid "Choose 1 or more answers from the list. Example: a or ab "
 msgstr ""
 
 #: media/javascript/entity/questionnaire_helper.js:27
-msgid ""
-"Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy "
-"Example: -18.1324,27.6547 "
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgstr "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
+
+msgid "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
 msgstr ""
 
 #: media/javascript/entity/questionnaire_helper.js:31
@@ -1106,4 +1107,67 @@ msgid "Adding..."
 msgstr ""
 
 msgid "Row Number"
+msgstr ""
+
+msgid "Language Added successfully"
+msgstr "Your language has been added successfully. Please translate the suggested automatic reply SMS text."
+
+msgid "scenario reply_success_submission"
+msgstr "The message your Data Senders receive when their answers meet all criteria."
+
+msgid "example reply_success_submission"
+msgstr "Thank you David.  We received your SMS:  cli1, 75, b, 300, 26.04.2014.<br/> Note: If the Automatic Reply SMS exceeds 160 characters, DataWinners will remove the list of answers and only send 'Thank you David.  We received your SMS'"
+
+msgid "scenario reply_incorrect_answers"
+msgstr "The message your Data Senders receive when their answers do not meet the specified criteria."
+
+msgid "example reply_incorrect_answers"
+msgstr "Error. Incorrect answer for question 3 and 5. Please review printed Questionnaire and resend entire SMS."
+
+msgid "scenario reply_incorrect_number_of_responses"
+msgstr "The message your Data Senders receive when they submit an incorrect number of answers"
+
+msgid "example reply_incorrect_number_of_responses"
+msgstr " "
+
+msgid "scenario reply_identification_number_not_registered"
+msgstr "The message your Data Senders receive when they submit an Identification Number that has not been registered in your organization’s DataWinners account."
+
+msgid "example reply_identification_number_not_registered"
+msgstr "Error. Cli205 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+
+msgid "scenario reply_ds_not_authorized"
+msgstr "The message your Data Senders receive when the Data Sender is registered in your organization’s DataWinners account, but you have not yet authorized him/her to submit data for this Questionnaire."
+
+msgid "example reply_ds_not_authorized"
+msgstr " "
+
+msgid "scenario reply_ds_not_registered"
+msgstr "The message your Data Senders receive when they are not yet registered in your organization’s DataWinners account."
+
+msgid "example reply_ds_not_registered"
+msgstr " "
+
+msgid "scenario reply_incorrect_questionnaire_code"
+msgstr "The message your Data Senders receive when they submit a Questionnaire Code that has not been registered in your organization’s DataWinners account."
+
+msgid "example reply_incorrect_questionnaire_code"
+msgstr "Error. Questionnaire Code stock is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
+
+msgid "scenario reply_success_identification_number_registration"
+msgstr "The message your Data Senders receive when they successfully register a new Identification Number."
+
+msgid "example reply_success_identification_number_registration"
+msgstr "Thank you David. We registered your Clinic Mahajunga Cli206."
+
+msgid "scenario reply_identification_number_already_exists"
+msgstr "The message your Data Senders receive when they attempt to register a new Identification Number using an existing Identification Number in your organization’s DataWinners account"
+
+msgid "example reply_identification_number_already_exists"
+msgstr "Error. Cli206 already exists. Register your Clinic with a different Identification Number."
+
+msgid "Add a new language on the Languages page"
+msgstr "Add a new language on the Languages page"
+
+msgid "Edit Datasender"
 msgstr ""

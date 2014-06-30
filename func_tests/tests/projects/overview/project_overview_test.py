@@ -41,7 +41,7 @@ class TestProjectOverview(HeadlessRunnerTest):
         self.enter_project_name_and_validate_error_msg("Clinic Test Project1", "Questionnaire with same name already exists.")
         self.enter_project_name_and_validate_error_msg("", "This field is required.")
 
-        self.driver.find_text_box(by_css(".project_title input.editField")).enter_text("renamed_%s" %project_name)
+        self.driver.find_text_box(by_css(".project_title input.editField")).enter_text("Renamed_%s" %project_name)
         self.driver.find(by_css(".project_title .editFieldSaveControllers button")).click()
         WebDriverWait(self.driver._driver, UI_TEST_TIMEOUT).until_not(lambda driver: driver.find_elements_by_css_selector('.editFieldSaveControllers button'))
         self.driver.go_to(url("/project/registered_datasenders/%s/" % project_id))

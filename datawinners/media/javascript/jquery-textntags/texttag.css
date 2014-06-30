@@ -1,0 +1,25 @@
+.TextTags {
+    border: 1px solid rgba(57, 75, 96, 0.50);
+    padding: 4px 0px;
+    height: auto;
+    width: 900px;
+    line-height: 25px;
+    letter-spacing: 1px;
+    box-shadow: 2px 2px 5px #d6d6d6;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+    min-height: 30px;
+}
+
+.tags {
+    display: inline-block;
+    background-color: #d6d6d6;
+    border-radius: 2px;
+    margin: 3px;
+    padding: 0px;
+    ui-selectable: none;
+}
+.nonTags{
+    border: none;
+    display: inline;
+}

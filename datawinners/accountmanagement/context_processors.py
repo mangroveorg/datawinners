@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils import translation
 from django.utils.translation import get_language
 
 
@@ -14,4 +15,7 @@ def add_feature_flags(context):
 
 def add_help_link(context):
     return {'support_help_link': context.build_absolute_uri('/%s/support' % get_language())}
+
+def current_active_language(context):
+    return {'active_language': translation.get_language()}
 

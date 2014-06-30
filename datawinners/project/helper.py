@@ -4,9 +4,11 @@ import re
 from datetime import datetime
 
 from babel.dates import format_date
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
+from datawinners import settings
+from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
@@ -99,7 +101,7 @@ def remove_reporter(entity_type_list):
 
 
 def get_preview_for_field(field):
-    preview = {"description": field.name, "code": field.code, "type": field.type, "instruction": _get_instruction_text(field)}
+    preview = {"description": field.label, "code": field.code, "type": field.type, "instruction": _get_instruction_text(field)}
     constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else\
     [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
@@ -108,10 +110,14 @@ def get_preview_for_field(field):
 def _get_instruction_text(field):
     return field.instruction
 
-def delete_project(manager, questionnaire, void=True):
+
+def _update_survey_responses(manager, questionnaire, void):
+    [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
+
+
+def delete_project(questionnaire, void=True):
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=questionnaire.id))]
     questionnaire.void(void)
-    [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
 
 def get_activity_report_questions(dbm):
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q1',
@@ -201,10 +207,9 @@ def is_project_exist(f):
     def wrapper(*args, **kw):
         try:
             ret = f(*args, **kw)
-        except AttributeError, e:
-            if e[0] == "'NoneType' object has no attribute 'qid'":
-                raise Http404
-            raise e
+        except DataObjectNotFound:
+            dashboard_page = settings.HOME_PAGE + "?NoExist=true"
+            return HttpResponseRedirect(dashboard_page)
         return ret
 
     return wrapper

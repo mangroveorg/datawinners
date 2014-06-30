@@ -116,17 +116,10 @@ class Organization(models.Model):
         message_tracker = self._get_message_tracker(current_month)
         message_tracker.increment_sms_api_usage_count()
 
-    def increment_all_message_count(self):
+    def increment_incoming_message_count(self):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = self._get_message_tracker(current_month)
         message_tracker.increment_incoming_message_count_by(1)
-        message_tracker.increment_outgoing_message_count_by(1)
-
-    def increment_all_message_count_by(self, incoming_count, outgoing_count):
-        current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
-        message_tracker = self._get_message_tracker(current_month)
-        message_tracker.increment_incoming_message_count_by(incoming_count)
-        message_tracker.increment_outgoing_message_count_by(outgoing_count)
 
     def increment_message_count_for(self, **kwargs):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)

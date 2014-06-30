@@ -1,6 +1,6 @@
 import logging
 from celery.task import current
-import urllib3
+from requests.packages import urllib3
 from datawinners.main.database import get_db_manager
 from datawinners.settings import ELASTIC_SEARCH_URL
 from datawinners.tasks import app

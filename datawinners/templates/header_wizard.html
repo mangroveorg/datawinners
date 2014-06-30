@@ -11,16 +11,16 @@
                         <span><a href="{% url accountmanagement.views.settings %}" class="{{ disable_link_class }} account">{% trans "wizard_account" %}</a></span>
                     {% endif %}
                     <span>  <a id="dw_help_link" href="{{ support_help_link }}" target="_blank">{% trans 'Help' %}</a> </span>
-                    <span>  <a href="{% url datawinners.home.views.switch_language "fr" %}" >{{ "Fran&ccedil;ais"|active_language }}</a> </span>
-                    <span>  <a href="{% url datawinners.home.views.switch_language "en" %}">{{ "English"|active_language }}</a> </span>
+                    <span>  <a  id="french" href="{% url datawinners.home.views.switch_language "fr" %}" >{{ "Fran&ccedil;ais"|active_language }}</a> </span>
+                    <span>  <a id="english" href="{% url datawinners.home.views.switch_language "en" %}">{{ "English"|active_language }}</a> </span>
                     <span>  <a href="{% url django.contrib.auth.views.logout %}">{% trans "Sign out" %}</a> </span>
                 </div>
             {% else %}
                 <div class="grid_24 omega login text_align_right">
                     <div class="grid_11 alpha logo">
                     </div>
-                    <span>  <a href="{% url datawinners.home.views.switch_language "fr" %}">Fran&ccedil;ais</a> </span>
-                    <span>  <a href="{% url datawinners.home.views.switch_language "en" %}">English</a> </span>
+                    <span>  <a  id="french" href="{% url datawinners.home.views.switch_language "fr" %}">Fran&ccedil;ais</a> </span>
+                    <span>  <a id="english" href="{% url datawinners.home.views.switch_language "en" %}">English</a> </span>
                     <span>  <a href="{% url django.contrib.auth.views.login %}">{% trans "Sign In" %}</a> </span>
                     <span>  <a href="{% url registration.views.register %}"
                         {% ifequal messages.request.path "/register/" %}

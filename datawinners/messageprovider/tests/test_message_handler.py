@@ -6,13 +6,13 @@ from mock import Mock, patch, MagicMock
 from django.utils.translation import get_language, activate
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField
-
 from mangrove.form_model.form_model import FormModel
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException, \
     MangroveException, EntityQuestionCodeNotSubmitted, SMSParserWrongNumberOfAnswersException
-from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using, _is_unique_id_not_present_error
 from mangrove.transport.contract.response import create_response_from_form_submission
-from datawinners.messageprovider.message_builder import ResponseBuilder
+
+from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, \
+    get_success_msg_for_ds_registration_using, _is_unique_id_not_present_error
 
 
 THANKS = "Thank you %s. We received your SMS"
@@ -53,15 +53,48 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
         self.assertEqual(expected_message, message)
 
     def test_should_return_exception_message_for_incorrect_number_of_sms_answers(self):
-        message = get_exception_message_for(exception=SMSParserWrongNumberOfAnswersException("form_code"),
-                                            channel="sms")
+        message = get_exception_message_for(exception=SMSParserWrongNumberOfAnswersException("form_code"), channel="sms")
         expected_message = u'Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.'
         self.assertEqual(expected_message, message)
 
 
 class TestShouldTemplatizeMessage(unittest.TestCase):
-    def setUp(self):
-        activate('en')
+
+
+    # def test_should_format_error_message(self):
+    #     test_data_list = [{"expected_reply": [("en", u"Error. Incorrect answer for question 1. Please review printed Questionnaire and resend entire SMS."),
+    #                                           ("fr", u"Erreur. Reponse incorrecte pour la question 1. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."),
+    #                                           ("mg", u"Diso. Valiny diso hoan'ny fanontaniana faha-1. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."),
+    #                                           ("pt", u"Erro. Resposta incorrecta para a pergunta 1. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
+    #                        "errors":{"N": "Some error"}},
+    #                       {"expected_reply": [("en", u"Error. Incorrect answer for question 1 and 2. Please review printed Questionnaire and resend entire SMS."),
+    #                                           ("fr", u"Erreur. Reponse incorrecte pour les questions 1 et 2. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."),
+    #                                           ("mg", u"Diso. Valiny diso hoan'ny fanontaniana faha-1 sy faha-2. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."),
+    #                                           ("pt", u"Erro. Resposta incorrecta para a pergunta 1 e 2. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
+    #                        "errors":{"FA": "Some error", "n": "Some other error"}},
+    #                       {"expected_reply": [("en", u"Error. Incorrect answer for question 1, 2 and 3. Please review printed Questionnaire and resend entire SMS."),
+    #                                           ("fr", u"Erreur. Reponse incorrecte pour les questions 1, 2 et 3. Veuillez revoir le Questionnaire imprime et renvoyez le SMS en entier."),
+    #                                           ("mg", u"Diso. Valiny diso hoan'ny fanontaniana faha-1 sy faha-2 ary faha-3. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."),
+    #                                           ("pt", u"Erro. Resposta incorrecta para a pergunta 1, 2 e 3. Por favor reveja o questionario impresso e reenvie a SMS inteira.")],
+    #                        "errors": {"Fa": "Some error", "n": "Some other error", "pl":"Sp"}}]
+    #
+    #     response = Mock()
+    #     response.is_registration = False
+    #     current_lg = get_language()
+    #     form_model_mock = Mock(spec=FormModel,_dbm=Mock(), fields=[TextField("name", "n","Father's name"), TextField("age", "fa","Father's age"),TextField("place", "pl","Father's Place")])
+    #     with patch(
+    #             "datawinners.messageprovider.customized_message.get_form_model_by_code") as get_form_model_by_code_mock:
+    #         with patch("datawinners.messageprovider.customized_message.Project") as project_mock:
+    #             project_mock.from_form_model = Mock(return_value=Mock(language="en"))
+    #             get_form_model_by_code_mock.return_value=form_model_mock
+    #             for test_data in test_data_list:
+    #                 response.errors = test_data.get("errors")
+    #                 for (lg,expected_message) in test_data.get("expected_reply"):
+    #                     activate(lg)
+    #                     message = get_submission_error_message_for(response, form_model=form_model_mock, dbm=MagicMock(spec= DatabaseManager, database=Mock(name="a")), request=None)
+    #                     self.assertEqual(expected_message, message)
+    #             activate(current_lg)
+    #             self.assertEqual(current_lg, get_language())
 
     def create_form_submission_mock(self):
         form_submission_mock = Mock()
@@ -121,7 +154,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         form_submission_mock.entity_type = ["subject"]
         response = create_response_from_form_submission(reporters=[{'name': 'mino rakoto'}],
                                                         form_submission=form_submission_mock)
-        message = get_success_msg_for_registration_using(response, "web")
+        message = get_success_msg_for_ds_registration_using(response, "web")
         self.assertEqual(expected_message, message)
 
     def test_should_return_unique_id_field_errors_separately_when_multiple_answer_type_errors_present(self):
@@ -137,7 +170,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
                 "datawinners.messageprovider.handlers.get_customized_message_for_questionnaire") as get_customized_message_for_questionnaire_mock:
             get_submission_error_message_for(response, form_model, dbm, request)
 
-            get_customized_message_for_questionnaire_mock.assert_called_with(dbm, None,
+            get_customized_message_for_questionnaire_mock.assert_called_with(dbm, {},
                                                                              'reply_identification_number_not_registered',
                                                                              'form_code', placeholder_dict={
                     'Submitted Identification Number': 'cli001'})
@@ -163,7 +196,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
             get_submission_error_message_for(response, form_model, dbm, request)
 
 
-            get_customized_message_for_questionnaire_mock.assert_called_with(dbm, None,
+            get_customized_message_for_questionnaire_mock.assert_called_with(dbm, {},
                                                                              'reply_identification_number_not_registered',
                                                                              'form_code', placeholder_dict={
                     'Submitted Identification Number': 'cli001'})

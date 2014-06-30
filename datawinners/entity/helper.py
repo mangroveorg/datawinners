@@ -31,7 +31,7 @@ from datawinners.accountmanagement.models import Organization,\
     DataSenderOnTrialAccount, NGOUserProfile
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.messageprovider.message_handler import\
-    get_success_msg_for_registration_using
+    get_success_msg_for_ds_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.submission.location import LocationBridge
 from mangrove.form_model.field import ShortCodeField
@@ -86,7 +86,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
         label=_("What is the %(entity_type)s's location?") % {'entity_type': entity_name}, instruction=unicode(_("Enter a region, district, or commune")))
     question4 = GeoCodeField(name=GEO_CODE_FIELD_NAME, code=code_generator.next(),
         label=_("What is the %(entity_type)s's GPS co-ordinates?") % {'entity_type': entity_name},
-        instruction=unicode(_("Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 ")))
+        instruction=unicode(_("Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547")))
     question5 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's mobile telephone number?") % {'entity_type': entity_name},
         defaultValue="some default value",
@@ -181,7 +181,7 @@ def process_create_data_sender_form(dbm, form, org_id):
             response = web_player.accept(request, logger=websubmission_logger)
             if response.success:
                 data_sender_id = response.short_code
-                message = get_success_msg_for_registration_using(response, "web")
+                message = get_success_msg_for_ds_registration_using(response, "web")
             else:
                 form.update_errors(response.errors)
         except IntegrityError as e:
@@ -309,7 +309,7 @@ def rep_id_name_dict_of_users(manager):
     users = User.objects.filter(groups__name__in=['Project Managers', 'NGO Admins'], id__in=rep_id_map.keys()).values()
 
     for user in users:
-        user_id_name_map[rep_id_map[user["id"]]] = user["first_name"] + " " + user["last_name"]
+        user_id_name_map[rep_id_map[user["id"]]] = user["first_name"]
 
     return user_id_name_map
 

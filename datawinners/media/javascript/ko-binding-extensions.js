@@ -141,3 +141,44 @@ ko.bindingHandlers.watermark = {
             $(element).prev("label").show();
     }
 };
+
+ko.bindingHandlers.onoff = {
+
+    init:function(element, valueAccessor) {
+        var isOn = ko.unwrap(valueAccessor());
+        var ele = $(element);
+        if (isOn){
+            ele.addClass('onoffswitch-checked');
+        }
+        ele.on('click', function(e){
+            var boolVal = ko.unwrap(valueAccessor());
+            valueAccessor()(!boolVal);
+            e.preventDefault();
+        });
+    },
+
+    update: function(element, valueAccessor, allBindingsAccessor, context) {
+        var isOn = ko.unwrap(valueAccessor());
+        if(!isOn){
+            $(element).removeClass('onoffswitch-checked');
+        }
+        else{
+            $(element).addClass('onoffswitch-checked');
+        }
+    }
+};
+
+ko.bindingHandlers.messageEditor = {
+
+    init: function(element, valueAccessor, allBindings, viewModel, bindingContext){
+        var obj = valueAccessor();
+        $(element).TextNTags({
+            plainText: obj.message(),
+            contentChangedHandler: function(){
+                obj.message($(element).TextNTags('getText'));
+                obj.count($(element).TextNTags('characterCount'));
+            }
+        });
+    }
+
+};

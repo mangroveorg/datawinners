@@ -278,7 +278,7 @@ msgid "Cancel"
 msgstr "Annuler"
 
 msgid "Cancel Editing"
-msgstr "Annuler les Modfications"
+msgstr "Annuler les Modifications"
 
 msgid "Add"
 msgstr "Ajouter"
@@ -638,8 +638,8 @@ msgstr "Erreur"
 msgid "Errors"
 msgstr "Erreurs"
 
-msgid "go to this questionnaire"
-msgstr "Aller à ce questionnaire"
+msgid "go to this Questionnaire"
+msgstr "Aller à ce Questionnaire"
 
 msgid "No submissions present for this project"
 msgstr "Aucune donnée pour ce projet"
@@ -647,8 +647,8 @@ msgstr "Aucune donnée pour ce projet"
 msgid "This project is inactive"
 msgstr "Ce projet n'est pas activé"
 
-msgid "view all questionnaires"
-msgstr "Voir tous les questionnaires"
+msgid "view all Questionnaires"
+msgstr "Voir tous les Questionnaires"
 
 msgid ""
 " Once you have created Questionnaires, a list of your %(text)s will appear here."
@@ -1025,8 +1025,8 @@ msgstr "Allez vers l'aperçu du projet"
 msgid "Upload a CSV or a XLS file"
 msgstr "Télécharger un fichier CSV ou XLS"
 
-msgid "All Projects"
-msgstr "Tous les projets"
+msgid "All Questionnaires"
+msgstr "Tous les Questionnaires"
 
 msgid "State"
 msgstr "Etat"
@@ -1046,8 +1046,8 @@ msgstr "Activer"
 msgid "Warning: Activating the project will remove all existing test data."
 msgstr "Attention : L'activation du projet va supprimer toutes ses données enregistrées"
 
-msgid "Export all submissions prior to deleting your questionnaire."
-msgstr "Veuillez exporter toutes les données avant de supprimer votre questionnaire."
+msgid "Export all Submissions prior to deleting your Questionnaire."
+msgstr "Veuillez exporter toutes les données avant de supprimer votre Questionnaire."
 
 msgid "Delete Questionnaire Now"
 msgstr "Supprimez le questionnaire maintenant"
@@ -1359,8 +1359,8 @@ msgstr "Modifier les questions en cliquant sur chacune d'entre elles"
 msgid "Preview Questionnaire"
 msgstr "Aperçu du questionnaire"
 
-msgid "Questionnaire Code :"
-msgstr "Code Questionnaire :"
+msgid "Questionnaire Code:"
+msgstr "Code Questionnaire:"
 
 msgid "q_tooltip_questionnaire_code"
 msgstr ""
@@ -1738,8 +1738,8 @@ msgstr "Entité ajoutée avec succès"
 msgid "%s already registered as a subject type. Please select %s from the drop down menu."
 msgstr "Le type de sujet %s existe déja. Veuillez choisir %s dans la liste déroulante."
 
-msgid "%s already registered as a subject type."
-msgstr "Le type de sujet %s existe déja."
+msgid "%s already exists."
+msgstr "%s existe déja."
 
 msgid "Entity with Unique Identification Number (ID) = %s already exists."
 msgstr "Une entité avec le numéro d'identification unique (ID) =% s existe déjà."
@@ -1782,6 +1782,9 @@ msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de do
 
 msgid "Register"
 msgstr "S'enregistrer"
+
+msgid "Register Changes"
+msgstr "Enregistrer"
 
 msgid "Sign Up to Try DataWinners Free"
 msgstr "Inscrivez vous pour essayer gratuitement DataWinners"
@@ -1834,8 +1837,8 @@ msgstr "ID "
 msgid "Contact"
 msgstr "Contact"
 
-msgid "Your questionnaire has been deleted"
-msgstr "Votre questionnaire a été supprimé"
+msgid "Your Questionnaire has been deleted"
+msgstr "Votre Questionnaire a été supprimé"
 
 msgid "Undo Delete"
 msgstr "Annuler Supprimer"
@@ -1971,7 +1974,6 @@ msgstr "Erreur. %s n'est pas enregistre. Verifiez le Numero d'Identification et 
 msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
 
-
 msgid "All questions must be unique"
 msgstr "Toutes les questions doivent être uniques. Veuillez supprimer les doublons"
 
@@ -2035,7 +2037,7 @@ msgid "Register each Data Sender (e.g. field staff) to enable them to send data 
 msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre Questionnaire."
 
 msgid "Register each %(entity_type)s you need to collect data about and want to see on a map."
-msgstr "Enregistrer chaque %(entity_type)s sur lequel vous souhaitez collecter des données et souhaitez voir sur une carte."
+msgstr "Enregistrez chaque %(entity_type)s sur lequel vous souhaitez collecter des données et souhaitez voir sur une carte."
 
 msgid "Set up automatic SMS Reminders to be sent to your Data Senders (e.g. field staff) to ensure the timely collection of your data."
 msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Expéditeurs de Données (exemple: vers le personnel de terrain) pour assurer une collecte en temps opportun de vos données."
@@ -2095,7 +2097,14 @@ msgid "Time Period"
 msgstr "Période"
 
 msgid "tooltip_error_language"
-msgstr " Vos Expéditeurs recevront des messages de confirmation et d'erreur automatiques provenant de DataWinners selon leur Soumission. Choisissez la langue de ces messages."
+msgstr "Les Expéditeurs de Données reçoivent une réponse SMS automatique de DataWinners après chaque Soumission.\
+ Il y a deux types de réponse SMS : Par rapport au Questionnaire (Exemple : «Merci David. Nous avons reçu votre SMS») \
+ Par rapport au compte (Exemple : «Erreur. Vous n'êtes pas enregistré comme Expéditeurs de Données. \
+ Veuillez contacter votre superviseur»).Sélectionnez la langue de votre choix pour les réponses SMS relatives au Questionnaire ici.\
+  Vous pouvez choisir la langue pour les réponses SMS sur la page Langues."
+
+msgid "tooltip_language_checkbox"
+msgstr "Positionnez ce bouton vers \"ARRET\" et cliquez sur le bouton \"Enregistrer\" pour désactiver l'envoi de  messages de retour automatiques pour ce Questionnaire, par DataWinners. <br /> Positionnez ce bouton sur \"MARCHE\" et cliquez sur le bouton \"Enregistrer\" pour réactiver."
 
 msgid "Your project"
 msgstr "Vos projet"
@@ -2491,7 +2500,7 @@ msgstr ""
 "bébés dans DataWinners alors à chacun est assingé un numéro d'identification unique.</li></ol>"
 
 msgid "%s of %s records uploaded"
-msgstr "%s sur %s dossiers téléchargées"
+msgstr "%s sur %s dossiers téléchargés"
 
 msgid "Sign In"
 msgstr "S'identifier"
@@ -2937,7 +2946,7 @@ msgid "Data Submission"
 msgstr "Présentation des données"
 
 msgid "Register a new "
-msgstr "Enregistrez un(e) "
+msgstr "Enregistrer un(e) "
 
 msgid "Project"
 msgstr "Projet"
@@ -3028,11 +3037,14 @@ msgstr "Seuls les lettres et les chiffres sont valides et vous ne pouvez saisir 
 msgid "WEB"
 msgstr "Internet"
 
-msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547"
-msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy.yyyy Exemple: -18.1324,27.6547"
+msgid "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
 
-msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."
-msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy.yyyy."
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
+
+msgid "Answer must be GPS coordinates in the following format (latitude,longitude)."
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude)."
 
 
 msgid "What is the Data Sender's mobile number?"
@@ -3769,7 +3781,7 @@ msgid "If you are reporting on a specific Subject, you must use the Subject’s 
 msgstr "Si vous faites un rapport sur un Sujet spécifique, vous devez utiliser l’Identification Unique du Sujet"
 
 msgid "DataWinners Automatic Reply SMS"
-msgstr "Réponse SMS Automatique de DataWinners"
+msgstr "Retour SMS Automatique de DataWinners"
 
 msgid "Refer to the Example SMS Answer and re-type your SMS"
 msgstr "Référez-vous à l’Exemple de Réponse SMS et retapez votre SMS"
@@ -3850,7 +3862,7 @@ msgid "location_example"
 msgstr "Entrez un nom de lieu ou les coordonnées GPS."
 
 msgid "location_coordinate_example"
-msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude): xx.xx, yy.yy. Exemple: -18.13,27.65"
+msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
 
 msgid "Reports"
 msgstr "Rapports"
@@ -3867,6 +3879,7 @@ msgstr "Il ne doit pas y avoir d'espace au début et à la fin du mot de passe."
 
 msgid "Edit a"
 msgstr "Modifier un(e)"
+
 msgid "Edit a Data Sender"
 msgstr "Modifier un Expéditeur de Données"
 
@@ -3888,14 +3901,14 @@ msgstr "Adresse email invalide."
 msgid "Activity Log"
 msgstr "Journal des activités"
 
-msgid "Created Project"
-msgstr "A créé un projet"
+msgid "Created Questionnaire"
+msgstr "A créé un questionnaire"
 
-msgid "Activated Project"
-msgstr "A activé un projet"
+msgid "Activated Questionnaire"
+msgstr "A activé un questionnaire"
 
-msgid "Deleted Project"
-msgstr "A supprimé un projet"
+msgid "Deleted Questionnaire"
+msgstr "A supprimé un questionnaire"
 
 msgid "All Actions"
 msgstr "Toute les actions"
@@ -3912,20 +3925,20 @@ msgstr "A ajouté un utilisateur"
 msgid "Changed Account Information"
 msgstr "A changé les informations du compte"
 
-msgid "Added Subject Type"
-msgstr "A ajouté un type de sujet"
+msgid "Added Identification Number Type"
+msgstr "A ajouté un Type de Numéro d'Identification"
 
 msgid "Edited Registration Form"
 msgstr "A edité le formulaire d'enregistrement"
 
-msgid "Registered Subject"
-msgstr "A enregistré un sujet"
+msgid "Registered Identification Number"
+msgstr "A enregistré un Numéro d'Identification"
 
-msgid "Imported Subject(s)"
-msgstr "A importé un/des sujet(s)"
+msgid "Imported Identification Number(s)"
+msgstr "A importé un/des Numéro(s) d'Identification"
 
-msgid "Deleted Subject(s)"
-msgstr "A supprimé un/des sujet(s)"
+msgid "Deleted Identification Number(s)"
+msgstr "A supprimé un/des Numéro(s) d'Identification"
 
 msgid "Registered Data Sender"
 msgstr "A enregistré un expéditeur"
@@ -3939,11 +3952,11 @@ msgstr "A edité un expéditeur"
 msgid "Deleted Data Sender(s)"
 msgstr "A supprimé un/des expéditeur(s)"
 
-msgid "Added Data Sender(s) to Project(s)"
-msgstr "A ajouté un/des expéditeur(s) à un/des projet(s)"
+msgid "Added Data Sender(s) to Questionnaire(s)"
+msgstr "A ajouté un/des expéditeur(s) à un/des Questionnaire(s)"
 
-msgid "Removed Data Sender from Project"
-msgstr "A enlevé un expéditeur à un projet"
+msgid "Removed Data Sender from Questionnaire"
+msgstr "A enlevé un expéditeur à un Questionnaire"
 
 msgid "Data Submissions"
 msgstr "Soumissions de données"
@@ -4005,11 +4018,11 @@ msgstr "à"
 msgid "Data Sender with Unique Identification Number (ID) = %s already exists."
 msgstr "Un expéditeur avec le numéro d'identification unique (ID) =% s existe déjà."
 
-msgid "What do you want to do?"
+msgid "What Do You Want to Do?"
 msgstr "Qu'est ce que vous voulez faire?"
 
-msgid "Edited Project"
-msgstr "A edité un projet"
+msgid "Edited Questionnaire"
+msgstr "A edité un questionnaire"
 
 msgid "Your account is created on %s"
 msgstr "Votre compte est créé sur  %s"
@@ -4319,9 +4332,6 @@ msgstr "Retour à la liste de Numéros d'Identification"
 msgid "Example SMS:"
 msgstr "Exemple de SMS:"
 
-msgid "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders."
-msgstr "Vos expéditeurs peuvent enregistrer un(e) clinic via SMS. Imprimez ce formulaire et donnez le à vos expéditeurs."
-
 msgid "View your registered %(entity_type)s(s) in detail."
 msgstr "Voir vos %(entity_type)s(s) enregistré(e)s en détail"
 
@@ -4409,14 +4419,14 @@ msgstr "Id de l'expéditeur"
 msgid "Data Sender Name"
 msgstr "Nom de l'expéditeur"
 
-msgid "The Data Sender(s) are removed from project(s) successfully"
-msgstr "Le(s) Expéditeur(s) de Données a (ont) été retiré(s) du projet avec succès"
+msgid "The Data Sender(s) are removed from Questionnaire(s) successfully"
+msgstr "Le(s) Expéditeur(s) de Données a (ont) été retiré(s) du Questionnaire avec succès"
 
 msgid "Note, the following Data Senders were not removed as they are DataWinners users: "
 msgstr "Les Expéditeurs de Données suivants ont été retirés car ils sont des utilisateurs de DataWinners: "
 
-msgid "The Data Sender(s) are added to project(s) successfully"
-msgstr "L(es) Expéditeur(s) de Données a (ont) été ajouté(s) au(x) projet(s) avec succès"
+msgid "The Data Sender(s) are added to Questionnaire(s) successfully"
+msgstr "L(es) Expéditeur(s) de Données a (ont) été ajouté(s) au(x) Questionnaire(s) avec succès"
 
 msgid "- Please use the latest "
 msgstr "- Veuillez s'il vous plaît utiliser le dernier "
@@ -4499,9 +4509,6 @@ msgstr "Veuillez SVP introduire la (date de rapportage) suivant le format requis
 msgid "Please enter the (reporting date) in the expected format mm.dd.yyyy"
 msgstr "Veuillez SVP introduire la (date de rapportage) suivant le format requis suivant : mm.dd.yyyy."
 
-msgid "Answer %s for question %s is longer than allowed"
-msgstr "La réponse %s à la question %s est plus longue que la limite autorisée"
-
 msgid "Please enter a valid value for %s"
 msgstr "Veuillez SVP introduire une valeur valide pour %s"
 
@@ -4565,7 +4572,7 @@ msgid "Click on the Upload a file button and select the saved template."
 msgstr "Cliquez sur le bouton \"Télécharger un fichier\" et sélectionnez le modèle sauvegardé."
 
 msgid "Answer %s for question %s is of the wrong type."
-msgstr "Le type de la réponse s pour la question \"%s\" est erroné."
+msgstr "Le type de la réponse %s pour la question \"%s\" est erroné."
 
 msgid "Answer %s for question %s is smaller than allowed."
 msgstr "La réponse %s pour la question \"%s\" est inférieure à ce q ui est permise."
@@ -4693,8 +4700,8 @@ msgstr "Supprimer ce Questionnaire"
 msgid "Your Most Recent Questionnaires"
 msgstr "Vos questionnaires les plus récents"
 
-msgid "Questionnaire Name"
-msgstr "Questionnaire Nom"
+msgid "Questionnaire Name:"
+msgstr "Nom du Questionnaire:"
 
 msgid "Choose an existing Questionnaire and edit it to fit your needs."
 msgstr "Choisissez un Questionnaire existant et modifiez-le selon vos besoins."
@@ -4703,7 +4710,7 @@ msgid "Languages for SMS Reply Messages"
 msgstr "Langue pour les messages de retour SMS"
 
 msgid "Identification Number"
-msgstr "Numéro d'identification"
+msgstr "Numéro d'Identification"
 
 msgid "unique_id_example_text"
 msgstr "Exemple :<br/><strong>Personne</strong>: Patient, Fermier, Enfant<br/><strong>Lieux</strong>: Région, District, Commune<br/><strong>Choses</strong>: Clinique, Ecole, Détaillant, Formation, Réunion, Conférence, Lettre de transport, Reçu, Connaissement"
@@ -4788,14 +4795,20 @@ msgstr "Tapez le code unique du/de la %s"
 msgid "View and manage all Submissions for this project."
 msgstr "Voir et gérer toutes les Soumissions liées à ce projet."
 
-msgid "Step 1. Finish your Questionnaire,then register Identification Numbers"
-msgstr "Etape 1. Terminez votre Questionnaire, puis enregistrez des Numéros d'Identification"
+msgid "Step 1. Write your Identification Number Question"
+msgstr "Etape 1. Tapez votre Question sur le Numéro d'Identification"
 
-msgid "Step 2. Ask your Data Senders to use the Identification Numbers"
-msgstr "Etape 2. Demandez à vos Expéditeurs de Données d'utiliser les Numéros d'Identification"
+msgid "Step 2. Finish your Questionnaire"
+msgstr "Etape 2. Terminez votre Questionnaire"
 
-msgid "Step 3. See how accurate your data is with Identification Numbers"
-msgstr "Etape 3. Voyez à quel point vos données sont exactes avec les Numéros d'Identification"
+msgid "Step 3. Register your Identification Numbers"
+msgstr "Etape 3. Enregistrez vos Numéros d'Identification"
+
+msgid "Step 4. Ask your Data Senders to use the Identification Numbers"
+msgstr "Etape 4. Demandez à vos Expéditeurs de Données d'utiliser les Numéros d'Identification"
+
+msgid "Step 5. See how accurate your data is with Identification Numbers"
+msgstr "Etape 5. Voyez à quel point vos données sont exactes avec les Numéros d'Identification"
 
 msgid "Use Identification Numbers to improve the accuracy of your data (rather than names, since names can be misspelled)."
 msgstr "Utilisez les Numéros d'Identification pour améliorer l'exactitude de vos données à la place des noms (les noms peuvent être mal orthographiés)."
@@ -4809,6 +4822,9 @@ msgstr "Terminez votre Questionnaire, puis enregistrez chaque personne, lieu ou 
 msgid "Data Senders must use Identification Numbers that are already registered in Datawinners."
 msgstr "Les Expéditeurs de Données doivent utiliser les Numéros d'Identification qui sont déjà enregistrés dans DataWinners."
 
+msgid "Sorry, this number has already been used for a different DataWinners Basic account."
+msgstr "Désolé. Ce numéro est déjà utilisé dans un autre compte Basique DataWinners."
+
 msgid "Error. Questionnaire Code %s is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
 msgstr "Erreur. Le code Questionnaire %s est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code."
 
@@ -4817,9 +4833,6 @@ msgstr "les autres"
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
 msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
-
-msgid "Sorry, this number has already been used for a different DataWinners Basic account."
-msgstr "Désolé. Ce numéro est déjà utilisé dans un autre compte Basique DataWinners."
 
 msgid "Answer must be the Identification Number of the %s you are reporting on."
 msgstr "La réponse doit être le Numéro d’identification du %s sur lequel votre rapport porte."
@@ -4830,11 +4843,14 @@ msgstr "L'ID unique %s du/de la %s ne correspond à aucun Numéro d'Identificati
 msgid "Languages"
 msgstr "Langues"
 
+msgid "Language"
+msgstr "Langue"
+
 msgid "Languages for Automatic Reply SMS"
-msgstr "Langues pour les Réponses SMS automatiques"
+msgstr "Langues pour les Retour SMS Automatique"
 
 msgid "language help text"
-msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une réponse SMS. Pour chaque Questionnaire, vous pouvez choisir une langue pour ces réponses SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes suggérés pour les réponses SMS automatiques. Vous pouvez aussi ajouter de nouvelles langues si nécessaire."
+msgstr "Pour chaque Questionnaire, vous pouvez choisir une langue pour les retours SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes de retour SMS automatiques suggérés. Vous pouvez également ajouter de nouvelles langues correspondant à vos besoins."
 
 msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr "Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
@@ -4858,10 +4874,193 @@ msgid "Messages & Reminders"
 msgstr "Messages & Rappels"
 
 msgid "Automatic Reply SMS"
-msgstr "Réponse SMS automatique"
+msgstr "Retour SMS Automatique"
 
 msgid "You are not authorized to submit to this Questionnaire. Add yourself as a Data Sender to the Questionnaire."
 msgstr "Vous n'êtes pas autorisé à soumettre des données pour ce Questionnaire. Enregistrez-vous comme Expéditeurs de Données pour ce Questionnaire."
 
 msgid "The Data Sender you are submitting on behalf of cannot submit to this Questionnaire. Add the Data Sender to the Questionnaire."
 msgstr "L'Expéditeur de Données pour le compte duquel vous soumettez des Données n'est pas autorisé à soumettre des Données pour ce Questionnaire. Ajoutez l'Expéditeur de Données à ce Questionnaire."
+
+msgid "DataWinners analyzes"
+msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une retour SMS."
+
+msgid "Send Automatic SMS Replies for My Questionnaire"
+msgstr "Envoyer des retours SMS automatiques pour mon Questionnaire"
+
+msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
+msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
+
+msgid "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Erreur. {Submitted Identification Number} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur."
+
+msgid "Submitted Identification Number"
+msgstr "Numéro d'Identification Soumis"
+
+msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
+
+msgid "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erreur. Reponse incorrecte pour la question {Question Numbers for Wrong Answer(s)}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
+
+msgid "Question Numbers for Wrong Answer(s)"
+msgstr "Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)"
+
+msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
+msgstr "Merci. {Name of Data Sender}. Nous avons recu votre SMS: {List of Answers}"
+
+msgid "Error. Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
+msgstr "Erreur. Le code Questionnaire {Submitted Questionnaire Code} est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code."
+
+msgid "Error. {Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number."
+msgstr "Erreur. {Submitted Identification Number} existe deja. Enregistrez votre {Identification Number Type} sous un autre numero."
+
+msgid "Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}."
+msgstr "Merci {Name of Data Sender}. Nous avons enregistre votre {Identification Number Type} {Name of Identification Number} ({Submitted Identification Number})."
+
+msgid "Name of Data Sender"
+msgstr "Nom de l'Expéditeur de Données"
+
+msgid "List of Answers"
+msgstr "Liste des Réponses"
+
+msgid "of 160 characters used"
+msgstr "de 160 caractères utilisés"
+
+msgid "Add Language"
+msgstr "Ajouter une langue"
+
+msgid "Enter a name of your language"
+msgstr "Tapez le nom de la langue"
+
+msgid "Language Name"
+msgstr "Nom de la langue"
+
+msgid "Example: Swahili, Spanish"
+msgstr "Exemple : Swahili, Espagnol"
+
+msgid "%s with %s = %s not found."
+msgstr "%s avec %s = %s non trouvé"
+
+msgid "Answer %s for question %s is longer than allowed."
+msgstr "La réponse %s à la question %s est plus longue que la limite autorisée."
+
+msgid "Answer must be in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547"
+msgstr ""
+
+msgid "Questionnaire Code is Wrong"
+msgstr "Code Questionnaire erroné"
+
+msgid "Successful Identification Number Registration"
+msgstr "Enregistrement de Numéro d'Identification réussi"
+
+msgid "Identification Number ID Already Exists"
+msgstr "ID de Numéro d'Identification déjà existant"
+
+msgid "Data Sender not Registered"
+msgstr "Expéditeur de Données non enregistré"
+
+msgid "Scenario"
+msgstr "Scénario"
+
+msgid "Example"
+msgstr "Exemple"
+
+msgid "account wide sms help text"
+msgstr "Ce sont les retours SMS généraux pour le compte DataWinners de votre organisation qui ne sont pas spécifiques à un Questionnaire. Modifiez/traduisez ces messages pour répondre à vos besoins. Remarque : Tout changement que vous effectuez sera appliqué à tous vos Expéditeurs de Données et à tous les Questionnaires."
+
+msgid "Account-Wide SMS"
+msgstr "SMS relatifs au compte en général"
+
+msgid "Any changes you make to this text will apply for all Data Senders."
+msgstr "Tous les changements que vous effectuez sur ce texte s'appliqueront à tous ls Expéditeurs de Données."
+
+msgid "Automatic reply messages turned off for this questionnaire."
+msgstr "Les messages de retour automatiques ont été désactivés pour ce Questionnaire."
+
+msgid "To reactivate them go to "
+msgstr "Pour les réactiver, cliquez sur "
+
+msgid "Delete Questionnaire"
+msgstr "Supprimer le Questionnaire"
+
+msgid "Analyze Data"
+msgstr "Analyser les données"
+
+msgid "View Submissions"
+msgstr "Voir les Soumisssions"
+
+msgid "Automatic Reply SMS."
+msgstr "Retour SMS Automatique."
+
+msgid "Answer %s for question %s in not present in the allowed options."
+msgstr "La réponse %s à la question %s ne figure pas dans les options permises."
+
+msgid "We made our Questionnaire Building process simpler and easier for you. "
+msgstr "Nous avons rendu notre processus de création de Questionnaire plus facile et plus simple pour vous. "
+
+msgid "Read more »"
+msgstr "En savoir plus »"
+
+msgid "With this update we changed the webpage address you are trying to access. Sorry for the inconvenience."
+msgstr "Avec cette mise à jour, nous avons changé l'adresse de la page Web à laquelle vous tentez d'accéder. Nous nous excusons pour tout inconvénient."
+
+msgid "reply_sms_help_text"
+msgstr "Choisissez la langue pour votre réponse SMS. Voyez et ajoutez de nouvelles langues sur la page <a href='/customizemessages'>Langues</a>."
+
+msgid "Changes saved successfully."
+msgstr "Modifications sauvegardées avec succès"
+
+msgid "Register each with an Identification Number and any other background information you need. "
+msgstr "Enregistrez chacun sous un Numéro d'Identification et toute autre information de base dont vous avez besoin."
+
+msgid "English"
+msgstr "Anglais"
+
+msgid "French"
+msgstr "Français"
+
+msgid "Malagasy"
+msgstr "Malgache"
+
+msgid "Portuguese"
+msgstr "Portugais"
+
+msgid " OK got it"
+msgstr " OK, compris"
+
+msgid "Update your browser "
+msgstr " Mettez à jour votre navigateur "
+
+msgid "now."
+msgstr "maintenant."
+
+msgid "You are using an unsupported browser version. Some features may not work correctly."
+msgstr "Vous utilisez une version du navigateur qui n'est pas prise en charge. Certaines fonctionnalités peuvent ne pas fonctionner correctement."
+
+msgid "Location Name cannot exceed 500 characters."
+msgstr "Le nom de la localisation ne peut pas excéder les 500 caractères."
+
+msgid "Account-Wide Reply SMS"
+msgstr "Retours SMS relatifs au compte"
+
+msgid "Reply SMS for Questionnaires"
+msgstr "Retours SMS relatifs aux Questionnaires"
+
+msgid "Datawinners analyzes each of the SMS Submission and automatically sends back an SMS reply."
+msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement un retour SMS."
+
+msgid "Identification Number Registration with an Error"
+msgstr "Enregistrement de Numéro d'Identification comportant une erreur"
+
+msgid "Identification Number Registration with Incorrect number of Responses"
+msgstr "Enregistrement de Numéro d'Identification avec un nombre de réponses incorrect"
+
+msgid "Cancel Changes"
+msgstr "Annuler les modifications"
+
+msgid "Reset to Original Text"
+msgstr "Réinitialiser"
+
+msgid "Oops, something went wrong. You deleted a personalized response (gray box). Please edit the text without deleting the personalized response and save again."
+msgstr "Oups, une erreur est survenue. Vous avez supprimé une réponse personnalisée (zone grisée). Veuillez modifier le texte sans supprimer la réponse personnalisée et enregistrez de nouveau."

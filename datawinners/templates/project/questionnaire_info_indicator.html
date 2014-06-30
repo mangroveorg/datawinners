@@ -1,28 +1,28 @@
 {% load i18n %}
 <div>
-    <div class="form-row-10px" data-bind="hidden: isEditMode">
+    <div class="form-row-10px" id="questionnaire_name_section" data-bind="hidden: isEditMode">
         <label>{% trans 'Questionnaire Name' %}</label>
         <input id= 'questionnaire_title' data-bind="inputValue: projectName, value: projectName, hasFocus: enableQuestionnaireTitleFocus" />
         <div class="validationMessage" data-bind="ifnot: projectName.valid">
                <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error, scrollToElement: projectName.error"></span>
         </div>
     </div>
-    <ul>
-        <li>
-            <div>
-                <strong>{% trans "Languages for SMS Reply Messages" %}</strong>
-                <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
-                <div class="tooltip">
-                   <p> {% trans "tooltip_error_language" %} </p>
-                </div>
-            </div>
-        <select id="project_language" name="project_language" data-bind="options: availableLanguages, value: language, optionsText: 'name', optionsValue: 'code'"
-                    class="dropdown_style"></select>
-
-        </li>
-        <li>
-
-        </li>
-
-    </ul>
+{#    <ul>#}
+{#        <li>#}
+{#            <div>#}
+{#                <strong>{% trans "Languages for SMS Reply Messages" %}</strong>#}
+{#                <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">#}
+{#                <div class="tooltip">#}
+{#                   <p> {% trans "tooltip_error_language" %} </p>#}
+{#                </div>#}
+{#            </div>#}
+{#        <select id="project_language" name="project_language" data-bind="options: availableLanguages, value: language, optionsText: 'name', optionsValue: 'code'"#}
+{#                    class="dropdown_style"></select>#}
+{##}
+{#        </li>#}
+{#        <li>#}
+{##}
+{#        </li>#}
+{##}
+{#    </ul>#}
 </div>

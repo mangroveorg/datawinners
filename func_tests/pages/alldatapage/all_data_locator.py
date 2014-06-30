@@ -15,7 +15,7 @@
 LOCATOR = "locator"
 BY = "by"
 
-All_DATA_RECORDS_LINK_XPATH = "//a[@class='project-id-class ' and text()='%s']/../../td[3]/span/span/a[text()='Submission Log']"
-ANALYSIS_LINK_XPATH = "//a[@class='project-id-class ' and text()='%s']/../../td[3]/span/span/a[text()='Analysis']"
+All_DATA_RECORDS_LINK_XPATH = "//a[@class='project-id-class ' and text()='%s']/../../td[3]/span/span/a[text()='View Submissions']"
+ANALYSIS_LINK_XPATH = "//a[@class='project-id-class ' and text()='%s']/../../td[3]/span/span/a[text()='Analyze Data']"
 WEB_SUBMISSION_LINK_XPATH = "//a[@class='project-id-class ' and text()='%s']/../../td[3]/span/a[text()='Make a Submission']"
 ALL_FAILED_SUBMISSION_LINK = "#failed_submissions_tab"

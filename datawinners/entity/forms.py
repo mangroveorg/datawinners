@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
-from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE
+from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE, GEO_CODE, GEO_CODE_FIELD_NAME
 from mangrove.utils.types import is_empty
 from datawinners.entity.fields import PhoneNumberField
 
@@ -54,7 +54,7 @@ class ReporterRegistrationForm(Form):
     telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS Coordinates"))
 
-    location = CharField(max_length=100, required=False, label=_("Name"))
+    location = CharField(max_length=500, required=False, label=_("Name"))
     project_id = CharField(required=False, widget=HiddenInput())
 
     DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span>' + smartphone_icon())))
@@ -96,10 +96,12 @@ class ReporterRegistrationForm(Form):
     def _geo_code_validations(self, b):
         msg = _(
             "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315")
+
         geo_code_string = b.strip()
-        geo_code_string = (' ').join(geo_code_string.split())
+        geo_code_string = geo_code_string.replace(",", " ")
+        geo_code_string = re.sub(' +', ' ', geo_code_string)
         if not is_empty(geo_code_string):
-            lat_long = filter(None, re.split("[ ,]", geo_code_string))
+            lat_long = geo_code_string.split(" ")
             self._geo_code_format_validations(lat_long, msg)
             self.cleaned_data['geo_code'] = geo_code_string
 
@@ -174,9 +176,10 @@ class ReporterRegistrationForm(Form):
         return devices.__contains__('web')
 
     def update_errors(self, validation_errors):
-        mapper = {MOBILE_NUMBER_FIELD_CODE: 'telephone_number'}
-        error = _(u'Sorry, the telephone number %s has already been registered.') % self.cleaned_data.get('telephone_number')
-        self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]]= self.error_class([error])
+        mapper = {MOBILE_NUMBER_FIELD_CODE:'telephone_number',
+                  GEO_CODE:GEO_CODE_FIELD_NAME}
+        for field_code, error in validation_errors.iteritems():
+            self._errors[mapper.get(field_code)] = self.error_class([error])
 
 
 

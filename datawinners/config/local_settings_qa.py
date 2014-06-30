@@ -2,7 +2,7 @@ SITE_ID = 6
 DEBUG=False
 
 
-ADMINS = (('QA1', 'sairama@thoughtworks.com'), ('BA', 'harikat@thoughtworks.com'), ('QA2', 'wamikas@thoughtworks.com'))
+ADMINS = (('DWBLR', 'datawinnersblr@thoughtworks.com'),)
 
 DATABASES = {
     'default': {
@@ -19,9 +19,11 @@ API_KEYS = {
     '172.18.9.6': 'AIzaSyDE7V6tcY34e5uAB7eYS7AcSStty87vulQ'
 }
 
+GOOGLE_ANALYTICS_ENABLED = False
+
 TRIAL_REGISTRATION_ENABLED = True
 
-HNI_SUPPORT_EMAIL_ID = 'dummy@dummy.com'
+HNI_SUPPORT_EMAIL_ID = 'datawinnersblr@thoughtworks.com'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

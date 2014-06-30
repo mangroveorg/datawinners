@@ -169,3 +169,4 @@ class ReminderSettingsPage(Page):
 
     def click_sent_reminder_tab(self):
         self.driver.find(SENT_REMINDERS_LINK).click()
+

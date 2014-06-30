@@ -1,3 +1,4 @@
+from pages.AutomaticReplySmsPage.automatic_reply_sms_page import AutomaticReplySmsPage
 from pages.broadcastSMSpage.broadcast_sms_locator import *
 from pages.page import Page
 
@@ -28,3 +29,7 @@ class BroadcastSmsPage(Page):
 
     def is_warning_shown(self):
         return self.driver.find(by_id("more_people_warning")).is_displayed()
+
+    def navigate_to_automatic_reply_sms_page(self):
+        self.driver.find(REPLY_SMS_LINK).click()
+        return AutomaticReplySmsPage(self.driver)

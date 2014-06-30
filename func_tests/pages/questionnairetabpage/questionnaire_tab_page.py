@@ -162,7 +162,7 @@ class QuestionnaireTabPage(Page):
         limit = fetch_(LIMIT, from_(question_data))
         if limit == LIMITED:
             self.driver.find_radio_button(CHARACTER_LIMIT_RB).click()
-            self.driver.find_text_box(WORD_OR_PHRASE_MAX_LENGTH_TB).enter_text(fetch_(MAX, from_(question_data)))
+            self.driver.find_text_box(by_css("#max_length")).enter_text(fetch_(MAX, from_(question_data)))
         elif limit == NO_LIMIT:
             self.driver.find_radio_button(NO_CHARACTER_LIMIT_RB).click()
         return self
@@ -251,8 +251,8 @@ class QuestionnaireTabPage(Page):
 
     def configure_unique_id_type_question(self, question_data):
         self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(UNIQUE_ID_OPTION)
-        existing_unique_id_type = fetch_(EXISTING_UNIQUE_ID_TYPE, from_(question_data))
-        new_unique_id_type = fetch_(NEW_UNIQUE_ID_TYPE, from_(question_data))
+        existing_unique_id_type = question_data.get(EXISTING_UNIQUE_ID_TYPE)
+        new_unique_id_type = question_data.get(NEW_UNIQUE_ID_TYPE)
 
         if existing_unique_id_type:
             self.select_unique_id_type_from_list(existing_unique_id_type)
@@ -315,9 +315,8 @@ class QuestionnaireTabPage(Page):
 
         Return link text
         """
-        question_locator = QUESTION_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
-            question_number) + ")" + QUESTION_LINK_CSS_LOCATOR_PART2
-        return self.driver.find(by_css(question_locator)).text
+        question_locator = by_xpath("//ol/li[%s]/a"%(question_number))
+        return self.driver.find(question_locator).text
 
     def get_last_question_link_text(self):
         return self.driver.find(LAST_QUESTION_LINK_LOCATOR).text

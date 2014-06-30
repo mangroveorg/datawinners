@@ -16,7 +16,7 @@ from pages.projectspage.projects_page import ProjectsPage
 from pages.questionnairetabpage.questionnaire_tab_page import SUCCESS_PROJECT_SAVE_MESSAGE, DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
 from pages.warningdialog.redistribute_questionnaire_dialog import RedistributeQuestionnaireDialog
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url, DATA_WINNER_ALL_PROJECTS_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url, DATA_WINNER_ALL_PROJECTS_PAGE, ACCOUNT_USERS
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
@@ -108,6 +108,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._expect_redistribute_dialog_to_be_shown()
         self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of questionnaire failed")
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 8, "Question count of updated questionnaire does not match")
+        self._verify_users_added_to_project()
 
     @attr('functional_test')
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
@@ -489,4 +490,12 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_page.add_new_unique_id_type(new_type_name)
         is_visible, message = create_questionnaire_page.get_new_unique_id_error_msg()
         self.assertTrue(is_visible)
-        self.assertEqual(message, '%s already registered as a subject type.' % new_type_name)
+        self.assertEqual(message, '%s already exists.' % new_type_name.capitalize())
+
+    def _verify_users_added_to_project(self):
+        self.driver.find(by_xpath("//a[text()='My Data Senders']")).click()
+        registered_ds_names = [element.text for element in self.driver.find_elements_(by_xpath("//*[@id='datasender_table']/tbody/tr/td[2]"))]
+        self.driver.go_to(ACCOUNT_USERS)
+        user_names = [element.text for element in self.driver.find_elements_(by_xpath("//*[@id='users_list']/table/tbody/tr/td[2]"))]
+        self.assertEquals(user_names.__len__(),registered_ds_names.__len__())
+

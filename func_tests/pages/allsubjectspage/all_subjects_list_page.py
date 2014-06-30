@@ -22,13 +22,14 @@ class AllSubjectsListPage(Page):
         self.wait_for_processing()
 
     def search(self, search_text):
-        search_box = self.driver.find_text_box(by_css("#subjects_table_filter>input"))
+        self.driver.create_screenshot(filename="subject_filter.png")
+        search_box = self.driver.find_text_box(by_css("#subjects_table_filter>span>input"))
         search_box.enter_text(search_text)
         self.wait_for_processing()
 
     def wait_for_processing(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".search-loader"))
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".search-loader"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT*2, by_css(".search-loader"))
 
     def get_row_text(self, row_index):
         return self.driver.find_elements_(by_css("#subjects_table tbody tr"))[row_index].text
@@ -41,6 +42,8 @@ class AllSubjectsListPage(Page):
         return AddSubjectPage(self.driver)
 
     def select_subject_by_id(self, subject_id):
+        self.wait_for_processing()
+        self.search(subject_id)
         selector = by_css("input[value=%s]" % subject_id)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, selector, True)
         self.driver.find(selector).click()
@@ -75,6 +78,7 @@ class AllSubjectsListPage(Page):
         return self.driver.find(by_css(message_element_selector)).text
 
     def is_subject_present(self, subject_id):
+        self.wait_for_processing()
         return self.driver.is_element_present(by_css("input[value=%s]" % subject_id))
 
     def empty_table_text_visible(self):

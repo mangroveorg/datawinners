@@ -11,7 +11,7 @@ from mangrove.utils.json_codecs import encode_json
 from django.utils.translation import ugettext
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @csrf_exempt
 @is_not_expired
@@ -31,10 +31,21 @@ def show_log(request):
                     dates = value.split(" %s " % ugettext("to"))
                     args["log_date__gte"] = convert_dmy_to_ymd(dates[0])
                     try:
-                        args["log_date__lte"] = "%s 23:59:59" % convert_dmy_to_ymd(dates[1])
+                        end_date = date.today()
+                        if len(dates) > 1:
+                            end_date = convert_dmy_to_ymd(dates[1])
+                        else:
+                            end_date = convert_dmy_to_ymd(dates[0])
                     except KeyError:
-                        args["log_date__lte"] = "%s 23:59:59" % date.today()
+                        pass
+                    args["log_date__lte"] = "%s 23:59:59" % end_date
                     continue
                 args[key] = value
     log_data = UserActivityLog.objects.select_related().filter(**args).order_by("-log_date")
-    return render_to_response("activitylog/activitylog.html", {'form': form, 'log_data': repr(encode_json([log.to_render() for log in log_data]))}, context_instance=RequestContext(request))
+
+    return render_to_response("activitylog/activitylog.html",
+                              {
+                                'form': form,
+                                'log_data': repr(encode_json([log.to_render() for log in log_data]))
+                              },
+                              context_instance=RequestContext(request))

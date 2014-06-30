@@ -99,13 +99,8 @@ DW.DataSenderActionHandler = function () {
 function flash_message(msg, status) {
     $('.flash-message').remove();
 
-    $(".dataTables_wrapper").prepend('<div class="clear-left flash-message">' + gettext(msg) + (msg.match("[.]$") ? '' : '.') + '</div>')
+    $(".dataTables_wrapper").prepend('<div class="clear-left flash-message">' + gettext(msg) + (msg.match("[.]$") ? '' : '.') + '</div>');
     $('.flash-message').addClass((status === false) ? "message-box" : "success-message-box");
-
-    $('#success_message').delay(4000).fadeOut(1000, function () {
-        alert('timeout');
-        $('.flash-message').remove();
-    });
 }
 
 function init_add_remove_from_project() {
@@ -371,6 +366,7 @@ function init_dialog_box_for_datasender() {
 }
 
 function handle_datasender_edit(table, selectedIds) {
+    $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     $.ajax({
         type: 'GET',
         url: '/entity/datasender/edit' + '/' + selectedIds[0].toLowerCase() + '/',
@@ -378,6 +374,8 @@ function handle_datasender_edit(table, selectedIds) {
             $("#datasender-popup").html(response) ;
             $("#datasender-popup").dialog('option','title',gettext('Edit Datasender')).dialog("open");
             new DW.InitializeEditDataSender().init();
+            $.unblockUI();
+
         }
     });
 }

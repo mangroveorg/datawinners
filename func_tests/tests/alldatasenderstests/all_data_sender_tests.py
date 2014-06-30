@@ -4,7 +4,7 @@ import time
 from nose.plugins.attrib import attr
 
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import by_id
+from framework.utils.common_utils import by_id, by_css
 from framework.utils.data_fetcher import fetch_
 from pages.adddatasenderspage.add_data_senders_locator import FLASH_MESSAGE_LABEL
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
@@ -299,6 +299,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
 
         #undelete project
         self.driver.go_to(UNDELETE_PROJECT_URL%project_id)
+        self.assertIn(project_name.lower(), [elem.text for elem in self.driver.find_elements_(by_css(".project-id-class"))])
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
 
         all_datasender_page.search_with(self.datasender_id_with_web_access)

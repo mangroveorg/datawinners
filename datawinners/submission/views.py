@@ -3,29 +3,33 @@ import logging
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 import iso8601
-from datawinners.messageprovider.handlers import create_failure_log
-from mangrove.transport.contract.request import Request
-from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, FormModelDoesNotExistsException
-from mangrove.transport.player.player import SMSPlayer
 from django.utils import translation
+
+from datawinners.messageprovider.handlers import create_failure_log, incorrect_number_of_answers_for_submission_handler, \
+    incorrect_questionnaire_code_handler, identification_number_already_exists_handler, \
+    incorrect_number_of_answers_for_uid_registration_handler
+from mangrove.transport.contract.request import Request
+from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, \
+    FormModelDoesNotExistsException
+from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport.repository.reporters import find_reporter_entity
 from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
-
 from datawinners.accountmanagement.decorators import is_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.smsapi.accounting import is_chargable
-from datawinners.submission.models import  SMSResponse
+from datawinners.submission.models import SMSResponse
 from datawinners.utils import get_organization
 from datawinners.submission.organization_finder import OrganizationFinder
-from datawinners.submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor, get_vumi_parameters
-from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
+from datawinners.submission.request_processor import MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, \
+    SMSTransportInfoRequestProcessor, get_vumi_parameters
+from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, \
+    PostSMSProcessorNumberOfAnswersValidators
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsLinkedToProject
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsRegistered, PostSMSProcessorCheckLimits
-from datawinners.utils import  get_database_manager_for_org
+from datawinners.utils import get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.feeds.database import get_feeds_db_for_org
 from datawinners.feeds.mail_client import mail_feed_errors
@@ -35,15 +39,17 @@ from datawinners.settings import NEAR_SUBMISSION_LIMIT_TRIGGER, NEAR_SMS_LIMIT_T
 from datawinners.project.utils import is_quota_reached
 from datawinners.sms.models import SMS, MSG_TYPE_SUBMISSION_REPLY, MSG_TYPE_USER_MSG, MSG_TYPE_REMINDER, MSG_TYPE_API
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
+from datawinners.messageprovider.errors_translation_processor import TranslationProcessor
 
 logger = logging.getLogger("django")
 
-couter_map={
-    MSG_TYPE_USER_MSG:'send_message_charged_count',
-    MSG_TYPE_REMINDER:'sent_reminders_charged_count',
-    MSG_TYPE_SUBMISSION_REPLY:'outgoing_sms_charged_count',
-    MSG_TYPE_API:'sms_api_usage_charged_count'
+couter_map = {
+    MSG_TYPE_USER_MSG: 'send_message_charged_count',
+    MSG_TYPE_REMINDER: 'sent_reminders_charged_count',
+    MSG_TYPE_SUBMISSION_REPLY: 'outgoing_sms_charged_count',
+    MSG_TYPE_API: 'sms_api_usage_charged_count'
 }
+
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -60,11 +66,12 @@ def receipt(request):
             if is_chargable(sms.status, sms.smsc):
                 counter = couter_map.get(sms.msg_type, '')
                 if counter:
-                    sms.organization.increment_message_count_for(**{counter:1})
+                    sms.organization.increment_message_count_for(**{counter: 1})
         except Exception as e:
             message = e.message
         return HttpResponse(message)
     return HttpResponse("NA")
+
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -73,7 +80,7 @@ def sms(request):
     message = Responder().respond(request)
     if not message:
         return HttpResponse(status=403)
-    response = HttpResponse(message)
+    response = HttpResponse(message[:160])
     response['X-Vumi-HTTPRelay-Reply'] = 'true'
     response['Content-Length'] = len(response.content)
     return response
@@ -91,7 +98,7 @@ def web_sms(request):
 
 def find_dbm(request):
     incoming_request = {}
-    #This is the http post request. After this state, the request being sent is a python dictionary
+    # This is the http post request. After this state, the request being sent is a python dictionary
     SMSMessageRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
     SMSTransportInfoRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
     organization, error = _get_organization(request)
@@ -150,7 +157,8 @@ def check_account_and_datasender(incoming_request):
         return incoming_request
 
     try:
-        reporter_entity = find_reporter_entity(incoming_request.get('dbm'), incoming_request.get('transport_info').source)
+        reporter_entity = find_reporter_entity(incoming_request.get('dbm'),
+                                               incoming_request.get('transport_info').source)
         incoming_request['reporter_entity'] = reporter_entity
         if organization.in_trial_mode:
             check_quotas_for_trial(incoming_request)
@@ -158,10 +166,11 @@ def check_account_and_datasender(incoming_request):
         incoming_request['exception'] = e
 
     if not incoming_request.get('test_sms_questionnaire'):
-        organization.increment_all_message_count()
-        
+        organization.increment_incoming_message_count()
+
     incoming_request['next_state'] = submit_to_player
     return incoming_request
+
 
 def check_quotas_for_trial(incoming_request):
     organization = incoming_request.get('organization')
@@ -171,24 +180,25 @@ def check_quotas_for_trial(incoming_request):
     if organization.has_exceeded_message_limit():
         raise ExceedSMSLimitException()
 
+
 def check_quotas_and_update_users(organization, sms_channel=False):
     if organization.in_trial_mode and organization.get_total_submission_count() == NEAR_SUBMISSION_LIMIT_TRIGGER:
         organization.send_mail_to_organization_creator(email_type='about_to_reach_submission_limit')
 
     if organization.in_trial_mode and sms_channel and \
-        organization.get_total_incoming_message_count() == NEAR_SMS_LIMIT_TRIGGER:
+                    organization.get_total_incoming_message_count() == NEAR_SMS_LIMIT_TRIGGER:
         organization.send_mail_to_organization_creator(email_type='about_to_reach_sms_limit')
 
     if organization.in_trial_mode and organization.get_total_submission_count() == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
         organization.send_mail_to_organization_creator(email_type='reached_submission_limit')
 
-def log_sms_and_increment_counters(incoming_request, log):
-    if log: create_failure_log(incoming_request.get('outgoing_message'), incoming_request)
-    organization = incoming_request.get('organization')
-    organization.increment_message_count_for(outgoing_sms_count=1, incoming_sms_count=1, sms_registration_count=1)
 
 def send_message(incoming_request, response):
     ReportRouter().route(incoming_request['organization'].org_id, response)
+
+
+def _is_datasender_registered(dbm, request):
+    return PostSMSProcessorCheckDSIsRegistered(dbm, request).process()
 
 
 def submit_to_player(incoming_request):
@@ -198,36 +208,43 @@ def submit_to_player(incoming_request):
 
     try:
         dbm = incoming_request['dbm']
-        post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request),
-                                      PostSMSProcessorCheckDSIsRegistered(dbm, incoming_request)]
-        if organization.in_trial_mode:
-            post_sms_parser_processors.append(PostSMSProcessorCheckLimits(dbm, incoming_request))
-
-        post_sms_parser_processors.extend([PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request),
-                                           PostSMSProcessorCheckDSIsLinkedToProject(dbm, incoming_request)])
-        
-        sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy),
-            post_sms_parser_processors=post_sms_parser_processors, feeds_dbm=incoming_request['feeds_dbm'])
         mangrove_request = Request(message=incoming_request['incoming_message'],
-            transportInfo=incoming_request['transport_info'])
-        response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
+                                   transportInfo=incoming_request['transport_info'])
+        response = _is_datasender_registered(dbm, incoming_request)
+        if not response:
+            post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request)]
+            if organization.in_trial_mode:
+                post_sms_parser_processors.append(PostSMSProcessorCheckLimits(dbm, incoming_request))
 
-        if response.is_registration:
-            incoming_request['is_registration'] = True
-            if not sent_via_sms_test_questionnaire:
-                organization.increment_message_count_for(sms_registration_count=1)
+            post_sms_parser_processors.extend([PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request),
+                                               PostSMSProcessorCheckDSIsLinkedToProject(dbm, incoming_request)])
 
-        if not response.is_registration:
-            if sent_via_sms_test_questionnaire:
-                organization.increment_message_count_for(incoming_web_count=1)
-            check_quotas_and_update_users(organization, sms_channel=True)
+            sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy),
+                                   post_sms_parser_processors=post_sms_parser_processors,
+                                   feeds_dbm=incoming_request['feeds_dbm'])
+
+            response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"),
+                                         translation_processor=TranslationProcessor)
+
+            if response.is_registration:
+                incoming_request['is_registration'] = True
+                if not sent_via_sms_test_questionnaire:
+                    organization.increment_message_count_for(sms_registration_count=1)
+
+            if not response.is_registration:
+                if sent_via_sms_test_questionnaire:
+                    organization.increment_message_count_for(incoming_web_count=1)
+                check_quotas_and_update_users(organization, sms_channel=True)
 
         mail_feed_errors(response, dbm.database_name)
         message = SMSResponse(response, incoming_request).text(dbm)
+
+        if response is not None:
+            create_failure_log(message, incoming_request)
+            
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
-        message = ugettext("Error. %s already exists. Register your %s with a different Identification Number.") % \
-                  (e.data[1], e.data[2].capitalize())
+        message = identification_number_already_exists_handler(dbm, e.data[1], e.data[2])
         if not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
 
@@ -239,15 +256,19 @@ def submit_to_player(incoming_request):
     except FormModelDoesNotExistsException as exception:
         if sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(incoming_web_count=1)
-        message = handle(exception, incoming_request)
+        message = incorrect_questionnaire_code_handler(dbm, exception.data[0])
 
     except SMSParserWrongNumberOfAnswersException as exception:
         form_model = sms_player.get_form_model(mangrove_request)
         if not form_model.is_entity_registration_form():
-            organization.increment_message_count_for(incoming_web_count=1) if sent_via_sms_test_questionnaire else organization.increment_message_count_for(incoming_sms_count=1)
+            organization.increment_message_count_for(
+                incoming_web_count=1) if sent_via_sms_test_questionnaire else organization.increment_message_count_for(
+                incoming_sms_count=1)
+            message = incorrect_number_of_answers_for_submission_handler(dbm, form_model.form_code, incoming_request)
+        elif form_model.is_entity_registration_form():
+            message = incorrect_number_of_answers_for_uid_registration_handler(dbm, form_model.form_code, incoming_request)
         elif not sent_via_sms_test_questionnaire:
-                organization.increment_message_count_for(sms_registration_count=1)
-        message = handle(exception, incoming_request)
+            organization.increment_message_count_for(sms_registration_count=1)
 
     except Exception as exception:
         if sent_via_sms_test_questionnaire:
@@ -255,14 +276,19 @@ def submit_to_player(incoming_request):
         message = handle(exception, incoming_request)
 
     message = incoming_request.get('error_message', message)
-    incoming_request['outgoing_message'] = message
+    incoming_request['outgoing_message'] = message if incoming_request.get('is_outgoing_reply_sms_enabled',
+                                                                           True) else ""
 
     if not sent_via_sms_test_questionnaire:
-        SMS(message= message,
+
+        if incoming_request.get('is_outgoing_reply_sms_enabled', True):
+            organization.increment_message_count_for(outgoing_sms_count=1)
+
+        SMS(message=message,
             message_id=incoming_request['message_id'],
             organization=incoming_request['organization'],
-            msg_from = mangrove_request.transport.source,
-            msg_to= mangrove_request.transport.destination,
+            msg_from=mangrove_request.transport.source,
+            msg_to=mangrove_request.transport.destination,
             msg_type=MSG_TYPE_SUBMISSION_REPLY,
             status="Submitted").save()
 

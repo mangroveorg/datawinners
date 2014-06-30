@@ -77,10 +77,10 @@
             </div>
         </li>
         <li data-bind="visible: showAddChoice()">
-            {% include 'project/choice_template.html' %}
             <div class="margin_top_20">
                 <ol class="alpha_list que_list" id="options_list"
-                    data-bind="template: { name : 'choice-template',foreach : choices }">
+                    data-bind="foreach : choices">
+                    {% include 'project/choice_template.html' %}
                 </ol>
                 <a id="add_choice" href="javascript:void(0);" class="add_link"
                    data-bind="click: function() { addOptionToQuestion(); }">
@@ -99,7 +99,7 @@
             <div class="margin_top_20">
                 <div class="question_option">
                     {% trans "Min:" %}
-                    <input name="range_min" type="text" id="range_min" data-bind="value:range_min"/>
+                    <input name="range_min" type="text" id="range_min" data-bind="valueUpdate:'keyup', value:range_min" maxlength="15"/>
                     <div class="validationMessage" data-bind="ifnot: range_min.valid">
                         <span id="min_range_validation_message" class="validationText" data-bind="text: range_min.error"></span>
                     </div>
@@ -107,7 +107,7 @@
 
                 <div class="question_option">
                     {% trans "Max:" %}
-                    <input name="range_max" type="text" id="range_max" data-bind="value:range_max"/>
+                    <input name="range_max" type="text" id="range_max" data-bind="valueUpdate:'keyup', value:range_max" maxlength="15"/>
                     <div class="validationMessage" data-bind="ifnot: range_max.valid">
                         <span id="max_range_validation_message" class="validationText" data-bind="text: range_max.error"></span>
                     </div>
@@ -126,7 +126,7 @@
                 <div>{% trans "Yes, maximum number of characters should be" %}</div>
                 <div>
                     <input name="max_length" type="text" id="max_length"
-                           data-bind="value:max_length, visible: showLengthLimiter()"/>
+                           data-bind="value:max_length, visible: showLengthLimiter(), valueUpdate: 'keyup'"/>
                     <div class="validationMessage" data-bind="ifnot: max_length.valid">
                         <span id="max_length_validation_message" class="validationText" data-bind="text: max_length.error"></span>
                     </div>

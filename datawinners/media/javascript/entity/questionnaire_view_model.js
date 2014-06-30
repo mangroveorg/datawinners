@@ -63,10 +63,11 @@ function QuestionnaireViewModel(){
 
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
+        DW.show_completly_selected_question();
     };
 
     self.set_all_questions_as_old_questions= function () {
-        for (var question_index in self.questions()) {
+        for (var question_index=0; question_index < self.questions().length; question_index++) {
             self.questions()[question_index].newly_added_question(false)
         }
     };

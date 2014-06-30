@@ -33,30 +33,51 @@ DW.ko = {
         mandatoryValidator: function(observable,error_message){
             if(observable() == undefined || (observable()+ "").trim() === "" ){
                 observable.setError(error_message|| gettext("This field is required."))
+                return false;
             }
             else
                 observable.clearError();
+            return true;
         },
         numericValidator: function(observable){
-             if(!observable() || (observable()+"").match(/[0-9]+/))
+             if(!observable() || (observable()+"").match(/^-?\d+$/)){
                 observable.clearError();
-             else
-                observable.setError(gettext("Please insert a valid number."));
+                return true;
+             } else {
+                 observable.setError(gettext("Please insert a valid number."));
+                return false;
+            }
         },
         postiveNumberValidator: function(observable){
             this.numericValidator(observable);
             if(observable.valid()){
-                if(parseInt(observable()) <= 0)
+                if(parseInt(observable()) <= 0) {
                     observable.setError(gettext("Please insert a valid number."));
-                else
+                    return false;
+                } else {
                     observable.clearError();
+                    return true;
+                }
             }
         },
         alphaNumericValidator: function(observable, trimBeforeCheck){
             var str = trimBeforeCheck ? (observable() + "").trim() : observable() + "";
-            if(str.match(/^[0-9a-zA-Z]+$/))
+            if(str.match(/^[0-9a-zA-Z]+$/)) {
                 observable.clearError();
-             else
+                return true;
+            } else {
                 observable.setError(gettext("Only letters and digits are valid"));
+                return false;
+            }
+        },customValidator: function(observable,error_message, validator){
+            var val = observable();
+            if(!validator(val)){
+                observable.setError(gettext(error_message)|| gettext("This field is required."))
+                return false;
+            }
+            else {
+                observable.clearError();
+                return true;
+            }
         }
 };

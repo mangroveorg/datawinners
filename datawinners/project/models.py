@@ -155,7 +155,7 @@ class Project(FormModel):
 
     def _set_doc(self, form_code, is_registration_model, label, language, name):
         doc = ProjectDocument()
-        doc.name = name.lower() if name else None
+        doc.name = name
         doc.set_label(label)
         doc.form_code = form_code
         doc.active_languages = [language]
@@ -165,16 +165,17 @@ class Project(FormModel):
     def __init__(self, dbm, form_code=None, name=None, goals="", devices=None, sender_group=None,
                  language='en', fields=[]):
         FormModel.__init__(self, dbm=dbm, form_code=form_code, is_registration_model=False,
-                           label="", language=language, name=name,  fields=fields)
+                           label="", language=language, name=name, fields=fields)
         if self._doc:
             self._doc.goals = goals
             self._doc.devices = devices
             self._doc.sender_group = sender_group
             self._doc.reminder_and_deadline = {"deadline_type": "Following",
-                                          "should_send_reminder_to_all_ds": False,
-                                          "has_deadline": True,
-                                          "deadline_month": "5",
-                                          "frequency_period": "month"}
+                                               "should_send_reminder_to_all_ds": False,
+                                               "has_deadline": True,
+                                               "deadline_month": "5",
+                                               "frequency_period": "month"}
+
     @classmethod
     def from_form_model(cls, form_model):
         return super(Project, cls).new_from_doc(form_model._dbm, ProjectDocument.wrap(form_model._doc._data))
@@ -188,7 +189,7 @@ class Project(FormModel):
         return self._doc.goals
 
     @data_senders.setter
-    def data_senders(self,value):
+    def data_senders(self, value):
         self._doc.data_senders = value
 
     @property
@@ -200,19 +201,20 @@ class Project(FormModel):
         return self.activeLanguages[0]
 
     @property
-    def enable_sms_replies(self):
-        return self._doc.enable_sms_replies
+    def is_outgoing_sms_replies_enabled(self):
+        is_enabled = self._doc.is_outgoing_sms_replies_enabled
+        return True if is_enabled is None else is_enabled
 
-    @enable_sms_replies.setter
-    def enable_sms_replies(self, enable_replies):
-        self._doc.enable_sms_replies = enable_replies
+    @is_outgoing_sms_replies_enabled.setter
+    def is_outgoing_sms_replies_enabled(self, enable_replies):
+        self._doc.is_outgoing_sms_replies_enabled = enable_replies
 
     @property
     def reminder_and_deadline(self):
         return self._doc.reminder_and_deadline
 
     @reminder_and_deadline.setter
-    def reminder_and_deadline(self,value):
+    def reminder_and_deadline(self, value):
         self._doc.reminder_and_deadline = value
 
     def get_data_senders(self, dbm):
@@ -268,8 +270,8 @@ class Project(FormModel):
         return False
 
     def is_project_name_unique(self):
-        rows = self._dbm.load_all_rows_in_view('project_names', key=self.name)
-        if len(rows) and rows[0]['value'] != self.id:
+        rows = self._dbm.load_all_rows_in_view('project_names', key=self.name.lower())
+        if len(rows) and rows[0]['value']["id"] != self.id:
             return False
         return True
 
@@ -286,16 +288,20 @@ class Project(FormModel):
         attribute_list = [item[0] for item in (self._doc.items())]
         for key in value_dict:
             if key in attribute_list:
-                setattr(self._doc, key, value_dict.get(key).lower()) if key == 'name' else setattr(self._doc, key,
-                                                                                              value_dict.get(key))
+                # if key == 'name':
+                #     setattr(self._doc, key, value_dict.get(key))
+                # else:
+                    setattr(self._doc, key, value_dict.get(key))
+
     def set_void(self, void=True):
         self._doc.void = void
 
     def delete_datasender(self, dbm, entity_id):
         from datawinners.search.datasender_index import update_datasender_index_by_id
+
         self.data_senders.remove(entity_id)
         self.save(process_post_update=False)
-        update_datasender_index_by_id(entity_id,dbm)
+        update_datasender_index_by_id(entity_id, dbm)
 
     def associate_data_sender_to_project(self, dbm, data_sender_code):
         if data_sender_code in self.data_senders: return
@@ -305,14 +311,14 @@ class Project(FormModel):
         if data_sender_code:
             self.data_senders.append(data_sender_code)
             self.save(process_post_update=False)
-            update_datasender_index_by_id(data_sender_code,dbm)
+            update_datasender_index_by_id(data_sender_code, dbm)
 
 
 def get_all_projects(dbm, data_sender_id=None):
     if data_sender_id:
         rows = dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id, include_docs=True)
         for row in rows:
-            row.update({'value':row["doc"]})
+            row.update({'value': row["doc"]})
         return rows
     return dbm.load_all_rows_in_view('all_projects')
 
@@ -323,7 +329,7 @@ def get_all_projects_for_datasender(dbm, data_sender_id):
 
 
 def get_all_project_names(dbm):
-    return [{'name': result['key'], 'id': result['value']} for result in dbm.load_all_rows_in_view("project_names")]
+    return [{'name': result['value']["name"], 'id': result['value']["id"]} for result in dbm.load_all_rows_in_view("project_names")]
 
 
 def count_projects(dbm, include_voided_projects=True):

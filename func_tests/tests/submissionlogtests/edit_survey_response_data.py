@@ -36,6 +36,7 @@ def get_sms_data_with_questionnaire_code(questionnaire_code):
             'message': (THANKS % "Ashwini") + u" for Waterpoint Ahmedabad Waterpoint (wp01): wp01; 25.12.2010; 5; 24.12.2010; LIGHT RED; admin; Chlorobia; 12.0, 12.0"}
 
 
+
 def get_errorred_sms_data_with_questionnaire_code(questionnaire_code):
     return {SENDER: "1234123413",
             RECEIVER: '919880734937',

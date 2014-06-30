@@ -2347,7 +2347,7 @@ msgstr "Your Data Senders can submit data using SMS and the Internet."
 "<br/>If any of your Data Senders have (or will have) access to the Internet, we recommened leaving the WEB box checked."
 
 msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erro. Numero incorrecto da resposta. Por favor reenvie o questionario impresso e reenvie a SMS inteira."
+msgstr "Erro. Numero incorrecto de respostas. Por favor, rever o Questionario impresso e reenvie a SMS inteira."
 
 msgid "Privacy Policy"
 msgstr ""
@@ -2926,7 +2926,7 @@ msgstr ""
 msgid "WEB"
 msgstr ""
 
-msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgid "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
 msgstr ""
 
 msgid "What is the Data Sender's mobile number?"
@@ -3760,7 +3760,7 @@ msgid "location_name_example"
 msgstr "Answer must be a location name. Example: Nairobi"
 
 msgid "location_coordinate_example"
-msgstr "Answer must be GPS coordinates in the following format(latitude,longitude): xx.xx,yy.yy. Example: -18.13,27.65"
+msgstr "Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547"
 
 msgid "Reports"
 msgstr ""
@@ -4225,7 +4225,7 @@ msgid "Thank you %(datasender)s, We registered your %(subject_type)s"
 msgstr ""
 
 msgid "Thank you %(datasender)s. We received your SMS"
-msgstr "Mesmo como hoje: Obrigado %(datasender)s. Recebemos a sua SMS"
+msgstr "Obrigado %(datasender)s. Recebemos a sua SMS"
 
 msgid "You have successfully activated your account. Happy data submission!"
 msgstr ""
@@ -4239,7 +4239,7 @@ msgstr "Back to All Subjects List"
 msgid "Example SMS:"
 msgstr ""
 
-msgid "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders."
+msgid "Your Data Senders can register a new %(entity_type)s via SMS. Print out this form and give it to your Data Senders."
 msgstr ""
 
 msgid "Back to Registration Form"
@@ -4542,10 +4542,22 @@ msgid "more_wrong_question"
 msgstr "outras"
 
 msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
-msgstr "Mesmo como hoje: Obrigado {Name of Data Sender}. Recebemos a sua SMS: {List of Answers}"
+msgstr "Obrigado {Name of Data Sender}. Recebemos a sua SMS: {List of Answers}"
+
+msgid "List of Answers"
+msgstr "List of Answers"
+
+msgid "Name of Data Sender"
+msgstr "Name of Data Sender"
+
+msgid "Question Numbers for Wrong Answer(s)"
+msgstr "Question Numbers for Wrong Answer(s)"
+
+msgid "Submitted Identification Number"
+msgstr "Submitted Identification Number"
 
 msgid "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erro. Resposta incorrecta para a pergunta {Question Numbers for Wrong Answer(s}. Por favor reveja o questionário impresso e reenvie a SMS inteira."
+msgstr "Erro. Resposta incorrecta para a pergunta {Question Numbers for Wrong Answer(s)}. Por favor reveja o questionário impresso e reenvie a SMS inteira."
 
 msgid "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
 msgstr "Erro. {Submitted Identification Number} nao esta registado. Verifique o Numero de Identificacao e reenvie a SMS inteira ou contacte o seu supervisor."

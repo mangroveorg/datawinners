@@ -29,7 +29,7 @@ class AllDataPage(Page):
 
         Return Data Analysis page
          """
-        self.driver.find(by_xpath(ANALYSIS_LINK_XPATH % lower(project_name))).click()
+        self.driver.find(by_xpath(ANALYSIS_LINK_XPATH % project_name)).click()
         return DataAnalysisPage(self.driver)
 
     def navigate_to_web_submission_page(self, project_name):

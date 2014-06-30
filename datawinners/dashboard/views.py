@@ -1,22 +1,22 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
 
+from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.datastore.entity import Entity, get_all_entities, by_short_codes
+
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
-from datawinners.dashboard import helper
 from datawinners.project.models import Project
-
 from datawinners.utils import get_map_key
 
 
@@ -38,6 +38,7 @@ def _make_message(row):
         message = row.value["error_message"]
     return message
 
+
 @login_required
 @session_not_expired
 @csrf_exempt
@@ -48,6 +49,7 @@ def get_submission_breakup(request, project_id):
     submission_success, submission_errors = submission_stats(dbm, questionnaire.form_code)
     response = json.dumps([submission_success, submission_errors])
     return HttpResponse(response)
+
 
 @valid_web_user
 def get_submissions_about_project(request, project_id):
@@ -82,26 +84,28 @@ def dashboard(request):
     language = request.session.get("django_language", "en")
     has_reached_sms_limit = organization.has_exceeded_message_limit()
     has_reached_submission_limit = organization.has_exceeded_submission_limit()
-    message_box_deleted = []
+    questionnaire_does_not_exist = "NoExist" in request.GET.keys()
 
     if "deleted" in request.GET.keys():
-        message_box_deleted = [_('The questionnaire you are requesting for has been deleted from the system.')]
+        messages.info(request, ugettext('The questionnaire you are requesting for has been deleted from the system.'), extra_tags='error')
+
     return render_to_response('dashboard/home.html',
                               {"projects": questionnaire_list, 'trial_account': organization.in_trial_mode,
-                               'has_reached_sms_limit':has_reached_sms_limit, 'message_box_deleted':message_box_deleted,
-                               'has_reached_submission_limit':has_reached_submission_limit,
-                               'language':language, 'counters':organization.get_counters()}, context_instance=RequestContext(request))
+                               'has_reached_sms_limit': has_reached_sms_limit,
+                               'questionnaireDoesNotExist': questionnaire_does_not_exist,
+                               'has_reached_submission_limit': has_reached_submission_limit,
+                               'language':language, 'counters': organization.get_counters()}, context_instance=RequestContext(request))
 
 
 @valid_web_user
 def start(request):
-    text_dict = {'project': _('Questionnaires'), 'datasenders': _('Data Senders'),
+    text_dict = {'questionnaire': _('Questionnaires'), 'datasenders': _('Data Senders'),
                  'subjects': _('Identification Numbers'), 'alldata': _('Submissions')}
 
-    title_dict = {'project': _('Questionnaires'), 'datasenders': _('Data Senders'),
+    title_dict = {'questionnaire': _('Questionnaires'), 'datasenders': _('Data Senders'),
                  'subjects': _('Identification Numbers'), 'alldata': _('All Data')}
 
-    tabs_dict = {'project': 'questionnaires', 'datasenders': 'data_senders',
+    tabs_dict = {'questionnaire': 'questionnaires', 'datasenders': 'data_senders',
                  'subjects': 'subjects', 'alldata': 'all_data'}
     page = request.GET['page']
     page = page.split('/')
@@ -112,28 +116,71 @@ def start(request):
             {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]]},
                               context_instance=RequestContext(request))
 
+
+def _get_first_geocode_field_for_entity_type(dbm, entity_type):
+    geocode_fields = [f for f in
+                      dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"][
+                          "json_fields"] if
+                      f["type"] == "geocode"]
+    return geocode_fields[0] if len(geocode_fields) > 0 else None
+
+
+def to_json_point(value):
+    point_json = {"type": "Feature", "geometry":
+        {
+            "type": "Point",
+            "coordinates": [
+                value[1],
+                value[0]
+            ]
+        }
+    }
+    return point_json
+
+
+def get_location_list_for_entities(first_geocode_field, unique_ids):
+    location_list = []
+    for entity in unique_ids:
+        value_dict = entity.data.get(first_geocode_field["name"])
+        if value_dict and value_dict.has_key('value'):
+            value = value_dict["value"]
+            location_list.append(to_json_point(value))
+    return location_list
+
+
 @valid_web_user
 def geo_json_for_project(request, project_id, entity_type=None):
     dbm = get_database_manager(request.user)
-    questionnaire = Project.get(dbm, project_id)
-    entity_list = []
+    location_list = []
 
-    if entity_type:
-        try:
-            unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
-        except DataObjectNotFound:
-            pass
-        entity_list.extend(unique_ids)
-    else:
-        try:
-            datasenders = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
-            entity_list.extend(datasenders)
-        except DataObjectNotFound:
-            pass
+    try:
+        if entity_type:
+            first_geocode_field = _get_first_geocode_field_for_entity_type(dbm, entity_type)
+            if first_geocode_field:
+                unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
+                location_list.extend(get_location_list_for_entities(first_geocode_field, unique_ids))
+        else:
+            questionnaire = Project.get(dbm, project_id)
+            unique_ids = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
+            location_list.extend(get_location_list_for_datasenders(unique_ids))
 
-    location_geojson = helper.create_location_geojson(entity_list)
-    return HttpResponse(location_geojson)
+    except DataObjectNotFound:
+        pass
+
+    location_geojson = {"type": "FeatureCollection", "features": location_list}
+    return HttpResponse(json.dumps(location_geojson))
+
 
 def render_map(request):
     map_api_key = get_map_key(request.META['HTTP_HOST'])
     return render_to_response('maps/entity_map.html', {'map_api_key': map_api_key},context_instance=RequestContext(request))
+
+
+def get_location_list_for_datasenders(datasenders):
+    location_list = []
+    for entity in datasenders:
+        geocode = entity.geometry
+        if geocode:
+            value = (geocode["coordinates"][0], geocode["coordinates"][1])
+            location_list.append(to_json_point(value))
+    return location_list

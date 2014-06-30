@@ -1,21 +1,4 @@
-.dropdown_style {
-  //border: 0px !important;  /* Removes border */
-  -webkit-appearance: none; /*Removes default chrome and safari style*/
-  -moz-appearance: none; /*Removes default style Firefox*/
-  text-indent: 0.01px;
-  text-overflow: "";
-  width: 190px;
-  height: 23px;
-  background: url('/media/images/arrow_dd.png') no-repeat scroll right -3px;
-  //background-position: 167px -3px;
-  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
-  font-size: 11px !important;
-  margin-left: 0px;
-  padding: 2px;
-  option {
-    margin: 3px;
-  }
-}
+@import "dropdown_style";
 
 @mixin dw_accordion($header_div, $header_text) {
   // Common accordion style. Takes header class name and header text class name as params.
@@ -83,7 +66,6 @@ div.margin_top_20 input {
 }
 
 #questionnaire_title {
-  text-transform: capitalize;
   width: 400px;
   padding: 3px;
   font-size: 15px;
@@ -228,6 +210,7 @@ div.margin_top_20 input {
   }
   a {
     color: #0070ac;
+    word-wrap: break-word;
   }
   .add_question {
     font-size: 14px;
@@ -302,6 +285,10 @@ div.margin_top_20 input {
   float: none;
   width: 4em;
   padding: 3px;
+}
+
+#questionnaire_name_section{
+  margin-bottom: 10px;
 }
 
 .questionnaire_code {
@@ -512,12 +499,12 @@ div.margin_top_20 input {
 }
 
 #unique_id_learn_more_form {
-  #learn_more_image {
+  .learn_more_image {
     overflow: hidden;
     border: none !important;
     width: 840px !important;
     margin-left: -17px !important;
-    height: 505px;
+    height: 650px;
   }
   .learn_more_accordion {
     padding-bottom: 20px;

@@ -1,10 +1,11 @@
 DW.CancelWarningDialog = function (options) {
     var self = this;
-    var successCallBack = options.successCallBack;
+    var _successCallBack = options.successCallBack;
     var isQuestionnaireModified = options.isQuestionnaireModified;
-    var cancelCallback = options["cancelCallback"]|| function(){};
+    var _cancelCallback = options["cancelCallback"]|| function(){};
+    var _ignoreCallback = options["ignoreCallback"]|| function(){};
     var _redirect = options["actionCallback"] || function () {
-        window.location.href = redirect_url;
+        window.location.href = self.redirect_url;
         return true;
     };
 
@@ -37,26 +38,27 @@ DW.CancelWarningDialog = function (options) {
     };
 
     var _initializeIgnoreButtonHandler = function () {
-        self.ignoreButton.bind('click', function () {
+        self.ignoreButton.bind('click', function (event) {
+            _ignoreCallback();
             self.cancelDialog.dialog("close");
-            return _redirect();
+            return _redirect(event);
         });
     };
 
     var _initializeCancelButtonHandler = function () {
         self.cancelButton.bind('click', function () {
-            cancelCallback();
+            _cancelCallback();
             self.cancelDialog.dialog("close");
             return false;
         });
     };
 
     var _initializeSaveButtonHandler = function () {
-        self.saveButton.bind('click', function () {
+        self.saveButton.bind('click', function (event) {
             if(options.validate()) {
-                successCallBack(function () {
+                _successCallBack(function () {
                     self.cancelDialog.dialog("close");
-                    return _redirect();
+                    return _redirect(event);
                 });
             }
             self.cancelDialog.dialog("close");
@@ -64,9 +66,12 @@ DW.CancelWarningDialog = function (options) {
     };
 
     this.initializeLinkBindings = function () {
-        $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(".add_link, .preview-navigation a, .sms_tester, .delete_project, #dw_help_link").bind('click', {self: this}, function (event) {
+        var default_ignore_links = ".add_link, .preview-navigation a, .sms_tester, .delete_project, #dw_help_link";
+        var ignore_links = options.ignore_links ? default_ignore_links + "," + options.ignore_links : default_ignore_links;
+
+        $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(ignore_links).bind('click', {self: this}, function (event) {
             var that = event.data.self;
-            redirect_url = $(this).attr("href");
+            self.redirect_url = $(this).attr("href");
             if (isQuestionnaireModified()) {
                 self.cancelDialog.dialog("open");
                 return false;

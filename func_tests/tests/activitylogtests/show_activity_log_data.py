@@ -4,7 +4,7 @@
 ##Variables
 ACTIVITY_LOG_PAGE_TITLE = "Activity Log"
 TESTER_NAME = "Tester Pune"
-CREATED_PROJECT_ACTION = "Created Project"
+CREATED_PROJECT_ACTION = "Created Questionnaire"
 
 PROJECT_NAME = "project_name"
 PAGE_TITLE = "page_title"

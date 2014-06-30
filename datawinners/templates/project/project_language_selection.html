@@ -1,6 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Questionnaire - Language" %} {% endblock %}
+{% block page_title %}{% trans "Questionnaire" %} - {%trans "Automatic Reply SMS" %} {% endblock %}
 
 {% load dw_tabs %}
 
@@ -18,6 +18,9 @@
     {{ block.super }}
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
     <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/automatic_reply_sms.css" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/on-off.css" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
@@ -26,6 +29,9 @@
         var languages_list = {{ languages_list|safe }};
         var current_project_language = '{{ current_project_language|safe }}';
         var post_url = '{{ post_url }}';
+        var language_page_link = '{{ languages_link }}';
+        var is_outgoing_reply_messages_enabled = '{{ project.is_outgoing_sms_replies_enabled }}';
+
     </script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/flash_message.js"></script>
@@ -41,36 +47,46 @@
         {% include 'project/messages_and_reminders_tabs.html' %}
     {% endblock %}
 
-    <div>
+    <div id="automatic_reply_section">
         <h3>{% trans 'Automatic Reply SMS' %}</h3>
-        {% trans 'DataWinners analyzes each SMS Submission and automatically sends back a reply SMS.' %}
+        <div  class="help_accordion">{% trans 'DataWinners analyzes' %} </div>
     </div>
 
     <div id="flash-message-section">
+        {% include "flash_message.html" %}
     </div>
 
     <div id="project_language_section">
          <div>
-            {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
-            <input type="checkbox" data-bind="checked: enable_sms_replies" />
+            <h6 class="title_set_SMS">
+                {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
+                <img src="/media/images/help_icon.png" class="help_icon">
+                <div class="tooltip">
+                   <p style="text-align: justify !important;" > {% trans "tooltip_language_checkbox" %} </p>
+                </div>
+            </h6>
+            <div class="onoffswitch" data-bind="onoff: enable_sms_replies" id="myonoffswitch">
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
         </div>
-        <div>
+        <div class="languages_selection">
              <ul>
                 <li>
-                    <div>
-                        <strong>{% trans "Language" %}</strong>
-                        <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+                    <h6>
+                        {% trans "Language" %}
+                        <img src="/media/images/help_icon.png" class="help_icon">
                         <div class="tooltip">
-                           <p> {% trans "tooltip_error_language" %} </p>
+                           <p style="text-align: justify !important;"> {% trans "tooltip_error_language" %} </p>
                         </div>
-                    </div>
-                <select name="project_language" class="dropdown_style"
-                        data-bind="options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
-
+                    </h6>
+                    <div style="margin-bottom: 2px" class="help_accordion">{% trans "reply_sms_help_text"%}</div>
+                <select id="project_language" name="project_language" class="dropdown_style"
+                        data-bind="enable:enable_sms_replies, options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
                 </li>
-                <li>
 
-                </li>
 
              </ul>
              {% csrf_token %}
@@ -78,7 +94,7 @@
         </div>
         <div class="grid_15 float_right">
             <div class="right_aligned_button">
-                <input type="button" data-bind="click: save" class="button" value="{% trans "Save" %}"/>
+                <input type="button" data-bind="click: save_and_reload" class="button" value="{% trans "Save" %}"/>
             </div>
         </div>
     </div>

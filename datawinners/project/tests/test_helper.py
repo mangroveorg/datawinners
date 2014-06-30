@@ -157,11 +157,6 @@ class TestHelper(unittest.TestCase):
         fields = [eid_field, na_field, fa_field, rd_field, bg_field, sy_field, gps_field, rm_field]
         return fields
 
-    def test_should_raise_Http404_if_project_can_not_be_found(self):
-        wrapped_func = is_project_exist(lambda: None.qid)
-        with self.assertRaises(Http404):
-            wrapped_func()
-
     def test_should_add_country_code_when_broadcasting_sms_to_other_people(self):
         message_tracker = Mock()
         ONG_TEL_NUMBER = "12354"
@@ -175,7 +170,7 @@ class TestHelper(unittest.TestCase):
 
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):
-        field = TextField(name="What's in a name?", code="nam", label="naam",
+        field = TextField(name="naam", code="nam", label="What's in a name?",
                           instruction="please write more tests")
         preview = helper.get_preview_for_field(field)
         self.assertEquals("What's in a name?", preview["description"])

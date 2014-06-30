@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from celery.task import current
+from datawinners.accountmanagement.helper import get_all_user_repids_for_org
 
 from mangrove.datastore.entity_type import get_unique_id_types
 from datawinners import settings
@@ -26,8 +27,8 @@ from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.utils import get_changed_questions
-from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
+from datawinners.utils import get_changed_questions, get_organization_from_manager
+from datawinners.common.constant import CREATED_QUESTIONNAIRE, EDITED_QUESTIONNAIRE, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
     SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.helper import is_project_exist
@@ -98,6 +99,12 @@ def get_template_details(request, template_id):
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 
 
+def _associate_account_users_to_project(manager,questionnaire):
+    user_ids = get_all_user_repids_for_org(get_organization_from_manager(manager).org_id)
+    for id in user_ids:
+        questionnaire.associate_data_sender_to_project(manager, id)
+
+
 @login_required
 @session_not_expired
 @csrf_exempt
@@ -114,8 +121,8 @@ def create_project(request):
                                    'is_edit': 'false',
                                    'active_language':active_language,
                                    'post_url': reverse(create_project),
-                                   'unique_id_types': [unique_id_type.capitalize() for unique_id_type in
-                                                       get_unique_id_types(manager)],
+                                   'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in
+                                                       get_unique_id_types(manager)]),
                                    'cancel_link': cancel_link}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -123,7 +130,7 @@ def create_project(request):
 
         try:
             questionnaire = create_questionnaire(post=request.POST, manager=manager, name=project_info.get('name'),
-                                                 language=project_info.get('language'),
+                                                 language=project_info.get('language', active_language),
                                                  reporter_id=ngo_admin.reporter_id)
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
@@ -139,8 +146,9 @@ def create_project(request):
             name_has_errors = True
             error_message["name"] = _("Questionnaire with same name already exists.")
         if not code_has_errors and not name_has_errors:
+            _associate_account_users_to_project(manager, questionnaire)
             questionnaire.update_doc_and_save()
-            UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
+            UserActivityLog().log(request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
                                   detail=questionnaire.name)
             return HttpResponse(json.dumps({'success': True, 'project_id': questionnaire.id}))
 
@@ -192,7 +200,7 @@ def edit_project(request, project_id):
             old_form_code = questionnaire.form_code
             old_field_codes = questionnaire.field_codes()
             questionnaire = update_questionnaire(questionnaire, request.POST, manager,
-                                                 project_info.get('language'))
+                                                 request.LANGUAGE_CODE)
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
             questionnaire.save()
@@ -203,7 +211,7 @@ def edit_project(request, project_id):
             update_associated_submissions.delay(manager.database_name, old_form_code,
                                                 questionnaire.form_code,
                                                 deleted_question_codes)
-            UserActivityLog().log(request, project=questionnaire.name, action=EDITED_PROJECT, detail=json.dumps(detail))
+            UserActivityLog().log(request, project=questionnaire.name, action=EDITED_QUESTIONNAIRE, detail=json.dumps(detail))
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
             return HttpResponse(
@@ -220,6 +228,7 @@ def edit_project(request, project_id):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@is_project_exist
 def reminder_settings(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)

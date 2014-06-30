@@ -4,6 +4,7 @@ import logging
 import re
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 from django.contrib.auth.models import User, Group
@@ -112,6 +113,10 @@ class FilePlayer(Player):
                 data_sender.save(force_insert=True)
         except IntegrityError:
             raise MultipleReportersForANumberException(mobile_number)
+
+        if len(",".join(values["l"])) > 500:
+            raise MangroveException("Location Name cannot exceed 500 characters.")
+
         email = case_insensitive_lookup(values, "email")
         if email:
             if not email_re.match(email):
@@ -167,7 +172,7 @@ class FilePlayer(Player):
                                                 values=values)
         except EmptyRowException as e:
             return self._appendFailedResponse(e.message)
-        except (InvalidEmailException, MangroveException, NameNotFoundException) as e:
+        except (InvalidEmailException, MangroveException, NameNotFoundException, ValidationError) as e:
             return self._appendFailedResponse(e.message, values=values)
 
     def _get_registered_emails(self):
@@ -243,7 +248,7 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
                 'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315'))
 
         elif 'longer' in value:
-            errors.append(_("Answer %s for question %s is longer than allowed") % (answer, question_label))
+            errors.append(_("Answer %s for question %s is longer than allowed.") % (answer, question_label))
 
         elif re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", value):
             re_match = re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", value)

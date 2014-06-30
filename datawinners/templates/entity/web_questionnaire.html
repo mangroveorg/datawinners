@@ -27,11 +27,8 @@
             <div class="clear-right"></div>
         </div>
         <div id="subject_form_heading">
-            <h2 class="font_size_14">{% blocktrans with entity_type|capfirst as entity_type %}Web {{ entity_type }} Registration Form{% endblocktrans %}</h2>
+            <h2 class="font_size_14">{% blocktrans with entity_type|capfirst as entity_type %}{{ entity_type }} Registration Form{% endblocktrans %}</h2>
 
-            <div class="instruction">
-                {% blocktrans with entity_type as entity_type and '/entity/alldatasenders/' as url %}All Data Senders who have access to this form can register a new {{ entity_type }} online. You can give them web submission access on the <a href="{{ url }}">All Data Senders</a> page.{% endblocktrans %}
-            </div>
 
         </div>
         {% include 'entity/subject_questionnaire.html' %}
@@ -39,11 +36,6 @@
         <div class="subject_registration_preview">
             {% trans "Generating the questionnaire preview." %}
         </div>
-    </div>
-{% endblock %}
-{% block help_accordian %}
-    <div class="instruction">
-        {% blocktrans with project.entity_type.0 as entity_type %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
     </div>
 {% endblock %}
 {% block secondary_navigation %}

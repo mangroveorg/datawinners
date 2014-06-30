@@ -213,7 +213,7 @@ select {
   border: 2px solid;
   border-color: #646464 #EBEBEB #EBEBEB #646464; }
 
-input {
+input [type=text] {
   width: auto;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
@@ -587,8 +587,7 @@ form div.action-section {
     font-weight: bold; }
     #container_content #page_title span.project_title, #container_wizard #page_title span.project_title {
       font-size: 22px;
-      width: 500px;
-      text-transform: capitalize; }
+      width: 500px; }
       #container_content #page_title span.project_title .editFieldWrapper .editFieldSaveControllers, #container_wizard #page_title span.project_title .editFieldWrapper .editFieldSaveControllers {
         display: inline;
         text-transform: none; }
@@ -676,6 +675,3 @@ table.error_table td {
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
     border-right: 6px solid #C20303; }
-
-.project-id-class {
-  text-transform: capitalize; }
