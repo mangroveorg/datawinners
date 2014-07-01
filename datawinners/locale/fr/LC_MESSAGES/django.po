@@ -5089,5 +5089,10 @@ msgstr "Si vous utilisez des scripts comme le chinois, l'Hindi, le Khmer, etc., 
 msgid "Hint"
 msgstr "Astuce"
 
+msgid "Are you sure you want to cancel the changes? This cannot be undone."
+msgstr "Etes-vous sûr de vouloir annuler ces modifications ? Ceci ne peut pas être annulé."
+
+msgid "Yes, Cancel Changes"
+msgstr "Oui, annuler les modifications"
 
 
