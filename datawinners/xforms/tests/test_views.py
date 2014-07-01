@@ -11,42 +11,6 @@ class TestXFormsViews(TestCase):
         self.request = Mock(spec=HttpRequest)
         self.request.user = Mock()
 
-            #### All The Skipped Tests Cannot be tested because of decorators need to find a way
-    @SkipTest
-    def test_should_authenticate_with_digest_authentication(self):
-        with patch.object(HttpDigestAuthenticator, 'authenticate') as mock_authenticate:
-            with patch("datawinners.xforms.views.get_all_project_for_user") as mock_get_all_projects:
-                mock_get_all_projects.return_value = []
-                with patch("datawinners.xforms.views.list_all_forms"):
-                    formList(self.request)
-                    self.assertEquals(mock_authenticate.call_count, 1)
-
-    @SkipTest
-    def test_should_retrieve_list_of_all_forms(self):
-        request = Mock()
-        uri = "absolute_uri"
-        request.build_absolute_uri.return_value = uri
-        project = {'value': {'name': 'name_of_project', 'qid': 'questionnaire_id'}}
-        projects = [project]
-        form_tuples = [('name_of_project', 'questionnaire_id')]
-        with patch("datawinners.xforms.views.get_all_project_for_user") as mock_get_all_projects:
-            mock_get_all_projects.return_value = projects
-            with patch("datawinners.xforms.views.list_all_forms") as mock_list_all_forms:
-                with patch.object('HttpDigestAuthenticator', 'authenticate') as mock_authenticate:
-                    formList(request)
-                    mock_list_all_forms.assert_called_once_with(form_tuples, uri)
-
-    @SkipTest
-    def test_should_retrieve_specific_xform_by_questionnaire_code(self):
-        request = Mock()
-        questionnaire_code = "someCode"
-        dbm = "dbm"
-        with patch("datawinners.xforms.views.get_database_manager") as mock_get_dbm:
-            mock_get_dbm.return_value = dbm
-            with patch("datawinners.xforms.views.xform_for") as mock_xform_for:
-                xform(request, questionnaire_code)
-                mock_xform_for.assert_called_once_with(mock_get_dbm(), questionnaire_code)
-
     def test_should_allow_request_from_country_other_than_of_organization(self):
         request = Mock(spec=HttpRequest)
         request.user = Mock()
