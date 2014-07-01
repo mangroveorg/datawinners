@@ -21,7 +21,7 @@ class TestSuccessfulSubmissionReplyMessage(TestCase):
             with patch(
                     'datawinners.messageprovider.customized_message.questionnaire_customized_message_details') as customized_message_details_mock:
                 customized_message_details_mock.return_value = [
-                    {'message': "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}",
+                    {'message': "Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}",
                      'code': 'reply_success_submission'}]
 
                 actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', "a1; a2", {})
@@ -45,7 +45,7 @@ class TestSuccessfulSubmissionReplyMessage(TestCase):
             with patch(
                     'datawinners.messageprovider.customized_message.questionnaire_customized_message_details') as customized_message_details_mock:
                 customized_message_details_mock.return_value = [
-                    {'message': "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}",
+                    {'message': "Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}",
                      'code': 'reply_success_submission'}]
 
                 actual_message = success_questionnaire_submission_handler(dbm, 123, 'DS Name', answer_list, {})
