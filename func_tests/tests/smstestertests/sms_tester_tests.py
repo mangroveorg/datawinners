@@ -39,10 +39,6 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(send_sms_with(EXCEED_NAME_LENGTH), fetch_(ERROR_MSG, from_(EXCEED_NAME_LENGTH)))
 
     @attr('functional_test')
-    def test_sms_player_for_plus_in_the_beginning(self):
-        self.assertEqual(send_sms_with(PLUS_IN_THE_BEGINNING), fetch_(ERROR_MSG, from_(PLUS_IN_THE_BEGINNING)))
-
-    @attr('functional_test')
     def test_sms_player_for_addition_of_data_sender(self):
         """
         Function to test the registration of the reporter using sms submission with registered number
