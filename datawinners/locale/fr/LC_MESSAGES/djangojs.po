@@ -1312,3 +1312,9 @@ msgstr "Enregistrement de Numéro d'Identification avec un nombre de réponses i
 
 msgid "Identification Number ID Already Exists"
 msgstr "ID de Numéro d'Identification déjà existant"
+
+msgid "Learn How to Edit Languages"
+msgstr "Apprenez comment modifier les langues"
+
+msgid "Learn How to Add and Edit Languages"
+msgstr "Apprenez comment ajouter et modifier les langues"

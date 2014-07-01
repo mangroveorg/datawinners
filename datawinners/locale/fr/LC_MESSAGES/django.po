@@ -5071,9 +5071,6 @@ msgstr "Pour certains retours, DataWinners crée des réponses personnalisées. 
 msgid "questionnaire reply learn more text part2"
 msgstr "). Pour chaque retour, DataWinners personnalisera l'information figurant dans les rectangles."
 
-msgid "Learn How to Add and Edit Languages"
-msgstr "Apprenez comment ajouter et modifier les langues"
-
 msgid "Decide what language your Data Senders understand best"
 msgstr "Décidez quelle langue vos Expéditeurs de Données comprennent le mieux"
 
@@ -5088,4 +5085,9 @@ msgstr "Evitez les caractères spéciaux (exemple : é, ä) car ils peuvent êtr
 
 msgid "If you use scripts such as Chinese, Hindi, Khmer, etc. limit your SMS to 70 characters"
 msgstr "Si vous utilisez des scripts comme le chinois, l'Hindi, le Khmer, etc., limitez votre SMS à 70 caractères"
+
+msgid "Hint"
+msgstr "Astuce"
+
+
 
