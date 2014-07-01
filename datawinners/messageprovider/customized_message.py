@@ -5,7 +5,7 @@ from mangrove.form_model.form_model import get_form_model_by_code, EntityFormMod
 
 def _replace_placeholders_in_message(message, placeholder_dict):
     for key, value in placeholder_dict.iteritems():
-        message = message.replace('{%s}' % key, value)
+        message = message.replace('{<{%s}>}' % key, value)
     return message
 
 

@@ -49,13 +49,13 @@ def questionnaire_reply_default_messages(lang_code=None):
         translation.activate(lang_code)
     default_messages = OrderedDict()
     default_messages.update(
-        {QUESTIONNAIRE_CUSTOM_MESSAGE_CODES[0]: _("Thank you {Name of Data Sender}. We received your SMS: {List of Answers}")})
+        {QUESTIONNAIRE_CUSTOM_MESSAGE_CODES[0]: _("Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}")})
     default_messages.update({QUESTIONNAIRE_CUSTOM_MESSAGE_CODES[1]:
-                         _("Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.")})
+                         _("Error. Incorrect answer for question {<{Question Numbers for Wrong Answer(s)}>}. Please review printed Questionnaire and resend entire SMS.")})
     default_messages.update({QUESTIONNAIRE_CUSTOM_MESSAGE_CODES[2]:
                          _("Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")})
     default_messages.update({QUESTIONNAIRE_CUSTOM_MESSAGE_CODES[3]:
-                         _("Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")})
+                         _("Error. {<{Submitted Identification Number}>} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")})
     default_messages.update({QUESTIONNAIRE_CUSTOM_MESSAGE_CODES[4]:
              _("Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")})
     return default_messages
@@ -67,15 +67,15 @@ def account_wide_sms_default_messages(account_language=None):
     default_messages.update(
         {ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[0]: _("Error. You are not registered as a Data Sender. Please contact your supervisor.")})
     default_messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[1]:
-                         _("Error. Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.")})
+                         _("Error. Questionnaire Code {<{Submitted Questionnaire Code}>} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.")})
     default_messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[2]:
-                         _("Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}.")})
+                         _("Thank you {<{Name of Data Sender}>}.We registered your {<{Identification Number Type}>} {<{Name of Identification Number}>} {<{Submitted Identification Number}>}.")})
     default_messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[3]:
-                         _("Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.")})
+                         _("Error. Incorrect answer for question {<{Question Numbers for Wrong Answer(s)}>}. Please review printed Questionnaire and resend entire SMS.")})
     default_messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[4]:
                          _("Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")})
     default_messages.update({ACCOUNT_WIDE_CUSTOM_MESSAGE_CODES[5]:
-                        _("Error. {Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number.")})
+                        _("Error. {<{Submitted Identification Number}>} already exists. Register your {<{Identification Number Type}>} with a different Identification Number.")})
     return default_messages
 
 def save_questionnaire_reply_message_template(code, dbm, lang):
