@@ -5095,4 +5095,7 @@ msgstr "Etes-vous s√ªr de vouloir annuler ces modifications ? Ceci ne peut pas √
 msgid "Yes, Cancel Changes"
 msgstr "Oui, annuler les modifications"
 
+msgid "No, Don't Cancel Changes"
+msgstr "Non, ne pas annuler les modifications"
+
 
