@@ -4832,7 +4832,7 @@ msgid "more_wrong_question"
 msgstr "les autres"
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
-msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
+msgstr "Erreur. Vous n'êtes pas enregistré en tant qu'Expéditeur de Données. Veuillez contacter votre superviseur."
 
 msgid "Answer must be the Identification Number of the %s you are reporting on."
 msgstr "La réponse doit être le Numéro d’identification du %s sur lequel votre rapport porte."
