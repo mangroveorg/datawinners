@@ -9,13 +9,13 @@ class TestLanguageViews(unittest.TestCase):
     def test_should_return_empty_dict_if_there_is_no_mismatch_in_system_variables(self):
         dbm = Mock(spec=DatabaseManager)
         language = 'en'
-        incoming_message = {'reply_success_submission': 'Thank you {var1}.{var2}.',
-                            'reply_incorrect_answers': 'Error {var1}. incorrect error {var2}. {var3}'}
+        incoming_message = {'reply_success_submission': 'Thank you {<{var1}>}.{<{var2}>}.',
+                            'reply_incorrect_answers': 'Error {<{var1}>}. incorrect error {<{var2}>}. {<{var3}>}'}
         with patch('datawinners.common.lang.views.questionnaire_customized_message_details') as existing_message_dict:
             existing_message_dict.return_value = [
-                {'message': 'Thank you {var1}. datasender {var2}.', 'code': 'reply_success_submission',
+                {'message': 'Thank you {<{var1}>}. datasender {<{var2}>}.', 'code': 'reply_success_submission',
                  'title': u'Successful Submission'},
-                {'message': 'Error {var1}. incorrect error {var2}. {var3}', 'code': 'reply_incorrect_answers',
+                {'message': 'Error {<{var1}>}. incorrect error {<{var2}>}. {<{var3}>}', 'code': 'reply_incorrect_answers',
                  'title': u'Submission with an Error'}]
 
             corrected_list, errored_message_list = verify_inconsistency_in_system_variables(dbm, incoming_message,
@@ -26,18 +26,18 @@ class TestLanguageViews(unittest.TestCase):
         dbm = Mock(spec=DatabaseManager)
         language = 'en'
         incoming_message = {'reply_success_submission': 'Thank you ',
-                            'reply_incorrect_answers': 'Error {var1}. incorrect error {var2}. {var3}'}
+                            'reply_incorrect_answers': 'Error {<{var1}>}. incorrect error {<{var2}>}. {<{var3}>}'}
         with patch('datawinners.common.lang.views.questionnaire_customized_message_details') as existing_message_dict:
             existing_message_dict.return_value = [
-                {'message': 'Thank you {var1}. datasender {var2}.', 'code': 'reply_success_submission',
+                {'message': 'Thank you {<{var1}>}. datasender {<{var2}>}.', 'code': 'reply_success_submission',
                  'title': u'Successful Submission'},
-                {'message': 'Error {var1}. incorrect error {var2}. {var3}', 'code': 'reply_incorrect_answers',
+                {'message': 'Error {<{var1}>}. incorrect error {<{var2}>}. {<{var3}>}', 'code': 'reply_incorrect_answers',
                  'title': u'Submission with an Error'}]
 
             expected = [
-                {'message': 'Thank you {var1}. datasender {var2}.', 'code': 'reply_success_submission',
+                {'message': 'Thank you {<{var1}>}. datasender {<{var2}>}.', 'code': 'reply_success_submission',
                  'title': u'Successful Submission', 'valid': False, 'error': ERROR_MSG_MISMATCHED_SYS_VARIABLE},
-                {'message': 'Error {var1}. incorrect error {var2}. {var3}', 'code': 'reply_incorrect_answers',
+                {'message': 'Error {<{var1}>}. incorrect error {<{var2}>}. {<{var3}>}', 'code': 'reply_incorrect_answers',
                  'title': u'Submission with an Error'}]
 
             corrected_list, errored_message_list = verify_inconsistency_in_system_variables(dbm, incoming_message,
