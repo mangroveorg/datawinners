@@ -4891,8 +4891,8 @@ msgstr "Envoyer des retours SMS automatiques pour mon Questionnaire"
 msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
 
-msgid "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Erreur. {Submitted Identification Number} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur."
+msgid "Error. {<{Submitted Identification Number}>} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Erreur. {<{Submitted Identification Number}>} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur."
 
 msgid "Submitted Identification Number"
 msgstr "Numéro d'Identification Soumis"
@@ -4900,23 +4900,23 @@ msgstr "Numéro d'Identification Soumis"
 msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
 msgstr "Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
-msgid "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erreur. Reponse incorrecte pour la question {Question Numbers for Wrong Answer(s)}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
+msgid "Error. Incorrect answer for question {<{Question Numbers for Wrong Answer(s)}>}. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erreur. Reponse incorrecte pour la question {<{Question Numbers for Wrong Answer(s)}>}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
 msgid "Question Numbers for Wrong Answer(s)"
 msgstr "Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)"
 
-msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
-msgstr "Merci. {Name of Data Sender}. Nous avons recu votre SMS: {List of Answers}"
+msgid "Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}"
+msgstr "Merci. {<{Name of Data Sender}>}. Nous avons recu votre SMS: {<{List of Answers}>}"
 
-msgid "Error. Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
-msgstr "Erreur. Le code Questionnaire {Submitted Questionnaire Code} est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code."
+msgid "Error. Questionnaire Code {<{Submitted Questionnaire Code}>} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
+msgstr "Erreur. Le code Questionnaire {<{Submitted Questionnaire Code}>} est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code."
 
-msgid "Error. {Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number."
-msgstr "Erreur. {Submitted Identification Number} existe deja. Enregistrez votre {Identification Number Type} sous un autre numero."
+msgid "Error. {<{Submitted Identification Number}>} already exists. Register your {<{Identification Number Type}>} with a different Identification Number."
+msgstr "Erreur. {<{Submitted Identification Number}>} existe deja. Enregistrez votre {<{Identification Number Type}>} sous un autre numero."
 
-msgid "Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}."
-msgstr "Merci {Name of Data Sender}. Nous avons enregistre votre {Identification Number Type} {Name of Identification Number} ({Submitted Identification Number})."
+msgid "Thank you {<{Name of Data Sender}>}.We registered your {<{Identification Number Type}>} {<{Name of Identification Number}>} {<{Submitted Identification Number}>}."
+msgstr "Merci {<{Name of Data Sender}>}. Nous avons enregistre votre {<{Identification Number Type}>} {<{Name of Identification Number}>} ({<{Submitted Identification Number}>})."
 
 msgid "Name of Data Sender"
 msgstr "Nom de l'Expéditeur de Données"

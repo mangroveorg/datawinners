@@ -1178,17 +1178,17 @@ msgstr "Tapez le texte de réponse SMS."
 msgid "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
 
-msgid "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Erreur. {Numéro d'Identification Soumis} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur."
+msgid "Error. {<{Submitted Identification Number}>} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Erreur. {<{Numéro d'Identification Soumis}>} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur."
 
 msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
 msgstr "Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
-msgid "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erreur. Reponse incorrecte pour la question {Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
+msgid "Error. Incorrect answer for question {<{Question Numbers for Wrong Answer(s)}>}. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erreur. Reponse incorrecte pour la question {<{Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)}>}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
 
-msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
-msgstr "Merci. {Nom de l'Expéditeur de Données}. Nous avons recu votre SMS: {Liste des Réponses}"
+msgid "Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}"
+msgstr "Merci. {<{Nom de l'Expéditeur de Données}>}. Nous avons recu votre SMS: {<{Liste des Réponses}>}"
 
 msgid "Name of Data Sender"
 msgstr "Nom de l'Expéditeur de Données"

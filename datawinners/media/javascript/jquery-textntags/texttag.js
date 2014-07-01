@@ -1,8 +1,8 @@
 $.widget("dw.TextNTags", {
     options: {
         plainText: '',
-        openingTag: '{',
-        closingTag: '}',
+        openingTag: '{<{',
+        closingTag: '}>}',
         contentChangedHandler: function () {
         }
     },
