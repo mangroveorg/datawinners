@@ -4536,7 +4536,7 @@ msgid "My Identification Numbers"
 msgstr ""
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
-msgstr "Erro. Nao esta autorizado para submeter dados para este questionario. Por favor contacte o seu supervisor."
+msgstr "Erro. Não esta registado como emissor de dados. Por favor contacte o seu supervisor."
 
 msgid "more_wrong_question"
 msgstr "outras"
