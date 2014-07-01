@@ -67,6 +67,7 @@ $(function(){
     window.accountWideSmsViewModel= new AccountWideSmsViewModel();
     ko.applyBindings(accountWideSmsViewModel);
     createObservableMessageItemsFor(account_messages, accountWideSmsViewModel, true);
+    _initializeLearnMoreDialog();
     initializeWarningDialog();
 
     $("#account_wide_sms").on('click', ".reset-link", function(event){
@@ -74,6 +75,15 @@ $(function(){
     });
 });
 
+function _initializeLearnMoreDialog(){
+    var learnMoreOptions = {
+        link_selector: "#learn_more_link",
+        title: "Learn How to Edit Languages",
+        dialogDiv: "#account_wide_sms_learn_more",
+        width:900
+    };
+    new DW.Dialog(learnMoreOptions).init().initializeLinkBindings();
+}
 
 function initializeWarningDialog() {
     var options = {

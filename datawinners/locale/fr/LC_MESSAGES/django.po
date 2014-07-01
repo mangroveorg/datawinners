@@ -5064,3 +5064,28 @@ msgstr "Réinitialiser"
 
 msgid "Oops, something went wrong. You deleted a personalized response (gray box). Please edit the text without deleting the personalized response and save again."
 msgstr "Oups, une erreur est survenue. Vous avez supprimé une réponse personnalisée (zone grisée). Veuillez modifier le texte sans supprimer la réponse personnalisée et enregistrez de nouveau."
+
+msgid "questionnaire reply learn more text part1"
+msgstr "Pour certains retours, DataWinners crée des réponses personnalisées. Ces messages personnalisés contiennent des textes affichés dans les rectangles gris (exemple :"
+
+msgid "questionnaire reply learn more text part2"
+msgstr "). Pour chaque retour, DataWinners personnalisera l'information figurant dans les rectangles."
+
+msgid "Learn How to Add and Edit Languages"
+msgstr "Apprenez comment ajouter et modifier les langues"
+
+msgid "Decide what language your Data Senders understand best"
+msgstr "Décidez quelle langue vos Expéditeurs de Données comprennent le mieux"
+
+msgid "Translate the text outside the gray boxes"
+msgstr "Traduisez le texte ne figurant pas dans les rectangles gris"
+
+msgid "Place the gray boxes in the sentence where they belong"
+msgstr "Placez les rectangles gris dans la phrase à laquelle ils appartiennent"
+
+msgid "Avoid special characters (example: é, ä) as they might be displayed incorrectly on your Data Sender’s phone"
+msgstr "Evitez les caractères spéciaux (exemple : é, ä) car ils peuvent être affichés incorrectement dans le téléphone de votre Expéditeur de Données"
+
+msgid "If you use scripts such as Chinese, Hindi, Khmer, etc. limit your SMS to 70 characters"
+msgstr "Si vous utilisez des scripts comme le chinois, l'Hindi, le Khmer, etc., limitez votre SMS à 70 caractères"
+

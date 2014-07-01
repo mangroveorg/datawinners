@@ -4622,3 +4622,9 @@ msgstr ""
 
 msgid "Oops, something went wrong. You deleted a personalized response (gray box). Please edit the text without deleting the personalized response and save again."
 msgstr ""
+
+msgid "questionnaire reply learn more text part1"
+msgstr "Click the drop down to choose an existing language or add a new one to meet your needs. Translate each automatic reply SMS. For some replies, DataWinners creates a personalized response. These personalized messages have text inside a gray box (example:"
+
+msgid "questionnaire reply learn more text part2"
+msgstr "). For each reply, DataWinners will personalize the information found in the rectangle."

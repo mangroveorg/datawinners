@@ -39,7 +39,19 @@ $(document).ready(function () {
         languageViewModel.resetMessage(event, ko.dataFor(this));
     });
 
+    _initializeLearnMoreDialog();
+
 });
+
+function _initializeLearnMoreDialog(){
+    var learnMoreOptions = {
+        link_selector: "#learn_more_link",
+        title: "Learn How to Add and Edit Languages",
+        dialogDiv: "#questionnaire_reply_sms_learn_more",
+        width:900
+    };
+    new DW.Dialog(learnMoreOptions).init().initializeLinkBindings();
+}
 
 function initializeWarningDialogs() {
     var options = {
