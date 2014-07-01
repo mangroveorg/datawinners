@@ -1,0 +1,26 @@
+{% load i18n %}
+
+<div id="account_wide_sms_learn_more" class="none">
+    <div class="learn_more_text">
+        {% trans "questionnaire reply learn more text part1" %}
+        <span class="tags">
+            {% trans "Data Sender's name" %}
+        </span>
+        {% trans "questionnaire reply learn more text part2" %}
+    </div>
+    <div>
+        <img src="/media/images/SMSreply_{{ active_language }}-Accountwide.png"/>
+    </div>
+    <div>Hint: </div>
+    <ol class="hint_text">
+
+        <li>{% trans "Decide what language your Data Senders understand best"%}</li>
+        <li>{% trans "Translate the text outside the gray boxes"%}</li>
+        <li>{% trans "Place the gray boxes in the sentence where they belong"%}</li>
+        <li>{% trans "Avoid special characters (example: é, ä) as they might be displayed incorrectly on your Data Sender’s phone"%}</li>
+        <li>{% trans "If you use scripts such as Chinese, Hindi, Khmer, etc. limit your SMS to 70 characters"%}</li>
+    </ol>
+    <div class="gotitbutton">
+        <a class="button yes_button" id="close_unique_id_learn_more_section">{% trans "OK, Got it" %}</a>
+    </div>
+</div>

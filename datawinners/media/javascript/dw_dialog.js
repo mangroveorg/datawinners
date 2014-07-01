@@ -1,6 +1,6 @@
 DW.Dialog = function (options) {
     var self = this;
-    var _successCallBack = options.successCallBack;
+    var _successCallBack = options["successCallBack"] || function(){};
     var _cancelCallback = options["cancelCallback"]|| function(){};
     var _ignoreCallback = options["ignoreCallback"]|| function(){};
 
@@ -29,7 +29,7 @@ DW.Dialog = function (options) {
             title: gettext(options.title),
             modal: true,
             autoOpen: false,
-            width: 550,
+            width: options.width || 550,
             closeText: 'hide'
         });
     };

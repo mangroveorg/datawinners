@@ -120,3 +120,12 @@ select option {
 
 #keep_changes {
   color: #0070AC !important; }
+
+.hint_text{
+    margin-left: 32px;
+    margin-bottom: 5px;
+}
+
+.gotitbutton{
+    float:right;
+}

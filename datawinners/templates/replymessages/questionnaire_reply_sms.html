@@ -63,8 +63,8 @@
             <select id="language" class="dropdown_style" name="language_option" style=""
                     data-bind="value:language_display, options: availableLanguages, optionsText: 'name', optionsValue: 'code'">
             </select>
-            <a id="add_language_link" >{% trans "Add Language"%}</a>
-
+            <a id="add_language_link" >{% trans "Add Language"%}</a> |
+            <a id="learn_more_link" >{% trans "Learn More"%}</a>
         </div>
         <br/>
 
@@ -125,5 +125,6 @@
         </div>
     </div>
     {% include "replymessages/_reply_message_warning_dialog.html" %}
+    {% include "replymessages/_questionnaire_reply_learn_more_sms.html" %}
 
 {% endblock %}

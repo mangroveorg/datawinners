@@ -51,6 +51,8 @@
     <div id="account_wide_sms">
         <div class="help_accordion" style="text-align: justify">
             {% trans "account wide sms help text" %}
+            <a id="learn_more_link" >{% trans "Learn More"%}</a>
+
         </div>
         <br/>
 
@@ -96,4 +98,5 @@
         <a id="cancel_changes" class="cancel_button" data-bind="css:{'link-disabled': !isMessageModified()}" href="javascript:void(0);">{% trans "Cancel Changes" %}</a>
     </div>
     {% include "replymessages/_reply_message_warning_dialog.html" %}
+    {% include "replymessages/_account_wide_sms_learn_more.html" %}
 {% endblock %}
