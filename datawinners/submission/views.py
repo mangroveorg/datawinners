@@ -210,8 +210,8 @@ def submit_to_player(incoming_request):
         dbm = incoming_request['dbm']
         mangrove_request = Request(message=incoming_request['incoming_message'],
                                    transportInfo=incoming_request['transport_info'])
-        response = _is_datasender_registered(dbm, incoming_request)
-        if not response:
+        is_ds_registered = _is_datasender_registered(dbm, incoming_request)
+        if not is_ds_registered:
             post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request)]
             if organization.in_trial_mode:
                 post_sms_parser_processors.append(PostSMSProcessorCheckLimits(dbm, incoming_request))
@@ -238,6 +238,10 @@ def submit_to_player(incoming_request):
 
         mail_feed_errors(response, dbm.database_name)
         message = SMSResponse(response, incoming_request).text(dbm)
+
+        if is_ds_registered is not None:
+            create_failure_log(message, incoming_request)
+            
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
         message = identification_number_already_exists_handler(dbm, e.data[1], e.data[2])
