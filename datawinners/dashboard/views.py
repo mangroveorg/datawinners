@@ -18,6 +18,7 @@ from datawinners.project.submission.util import submission_stats
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.project.models import Project
 from datawinners.utils import get_map_key
+from django.utils.translation import get_language
 
 
 def _find_reporter_name(dbm, row):
@@ -59,10 +60,14 @@ def get_submissions_about_project(request, project_id):
     questionnaire = Project.get(dbm, project_id)
     rows = dbm.load_all_rows_in_view('undeleted_survey_response', reduce=False, descending=True, startkey=[questionnaire.form_code, {}],
                                      endkey=[questionnaire.form_code], limit=7)
+    language = get_language()
     submission_list = []
     for row in rows:
         reporter = _find_reporter_name(dbm, row)
         message = _make_message(row)
+        if not row.value['status'] and message.find('| |') != -1:
+            message = message.split('| |,')[['en', 'fr'].index(language)]
+            
         submission = dict(message=message, created=row.value["submitted_on"].strftime("%B %d %y %H:%M"), reporter=reporter,
                           status=row.value["status"])
         submission_list.append(submission)
