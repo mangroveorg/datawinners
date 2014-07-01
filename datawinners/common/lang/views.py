@@ -59,7 +59,7 @@ def verify_inconsistency_in_system_variables(dbm, incoming_message_dict, languag
     for msg_details in existing_message_list:
         existing_msg_dict.update({msg_details.get('code'): msg_details.get('message')})
 
-    regex = re.compile("\{.*?\}")
+    regex = re.compile("\{\<\{.*?\}\>\}")
     inconsistent_message_codes = []
     for code, message in incoming_message_dict.iteritems():
         modified_system_variable_list = regex.findall(message)

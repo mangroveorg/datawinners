@@ -4541,8 +4541,8 @@ msgstr "Erro. Nao esta autorizado para submeter dados para este questionario. Po
 msgid "more_wrong_question"
 msgstr "outras"
 
-msgid "Thank you {Name of Data Sender}. We received your SMS: {List of Answers}"
-msgstr "Obrigado {Name of Data Sender}. Recebemos a sua SMS: {List of Answers}"
+msgid "Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}"
+msgstr "Obrigado {<{Name of Data Sender}>}. Recebemos a sua SMS: {<{List of Answers}>}"
 
 msgid "List of Answers"
 msgstr "List of Answers"
@@ -4556,11 +4556,11 @@ msgstr "Question Numbers for Wrong Answer(s)"
 msgid "Submitted Identification Number"
 msgstr "Submitted Identification Number"
 
-msgid "Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS."
-msgstr "Erro. Resposta incorrecta para a pergunta {Question Numbers for Wrong Answer(s)}. Por favor reveja o questionário impresso e reenvie a SMS inteira."
+msgid "Error. Incorrect answer for question {<{Question Numbers for Wrong Answer(s)}>}. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erro. Resposta incorrecta para a pergunta {<{Question Numbers for Wrong Answer(s)}>}. Por favor reveja o questionário impresso e reenvie a SMS inteira."
 
-msgid "Error. {Submitted Identification Number} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Erro. {Submitted Identification Number} nao esta registado. Verifique o Numero de Identificacao e reenvie a SMS inteira ou contacte o seu supervisor."
+msgid "Error. {<{Submitted Identification Number}>} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
+msgstr "Erro. {<{Submitted Identification Number}>} nao esta registado. Verifique o Numero de Identificacao e reenvie a SMS inteira ou contacte o seu supervisor."
 
 msgid "You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
 msgstr "Nao esta autorizado para submeter dados para este questionario. Por favor contacte o seu supervisor."

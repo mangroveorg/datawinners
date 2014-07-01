@@ -74,8 +74,8 @@ def identification_number_already_exists_handler(dbm, submitted_id,identificatio
                                                              'Identification Number Type':identification_number_type})
 
 def sms_parser_invalid_format_handler(exception, request):
-    if len(request.get('incoming_message').strip().split()) != 1:
-        return default_exception_handler_with_logger(exception, request)
+    #if len(request.get('incoming_message').strip().split()) != 1:
+    #    return default_exception_handler_with_logger(exception, request)
     try:
         form_model = get_form_model_by_code(request.get('dbm'), exception.data[0][0])
         message_code = 'reply_incorrect_number_of_responses'
