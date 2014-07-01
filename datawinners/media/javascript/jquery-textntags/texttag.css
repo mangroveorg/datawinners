@@ -1,6 +1,6 @@
 .TextTags {
     border: 1px solid #9097A0;
-    padding: 4px 0px;
+    padding: 4px 0 4px 4px;
     height: auto;
     width: 900px;
     line-height: 25px;
@@ -15,8 +15,8 @@
     display: inline-block;
     background-color: #d6d6d6;
     border-radius: 2px;
-    margin: 3px;
-    padding: 0px;
+    margin: 3px 0;
+    padding: 0;
     ui-selectable: none;
 }
 .nonTags{
