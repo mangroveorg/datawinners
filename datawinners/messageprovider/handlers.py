@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from mangrove.form_model.form_model import FORM_CODE
+from mangrove.form_model.form_model import FORM_CODE, get_form_model_by_code
 import mangrove.errors.MangroveException as ex
 
 from datawinners.messageprovider.customized_message import get_customized_message_for_questionnaire, get_account_wide_sms_reply
@@ -76,10 +76,17 @@ def identification_number_already_exists_handler(dbm, submitted_id,identificatio
 def sms_parser_invalid_format_handler(exception, request):
     if len(request.get('incoming_message').strip().split()) != 1:
         return default_exception_handler_with_logger(exception, request)
+    try:
+        form_model = get_form_model_by_code(request.get('dbm'), exception.data[0][0])
+        message_code = 'reply_incorrect_number_of_responses'
+        message = get_customized_message_for_questionnaire(request['dbm'], request,
+                                                             message_code=message_code,
+                                                             form_code=exception.data[0][0], form_model=form_model)
+    except:
+        message_code = 'reply_incorrect_questionnaire_code'
+        message = get_account_wide_sms_reply(request.get('dbm'), message_code, placeholder_dict=
+                                                                {'Submitted Questionnaire Code': exception.data[0][0]})
 
-    message = get_customized_message_for_questionnaire(request['dbm'], request,
-                                                             message_code='reply_incorrect_number_of_responses',
-                                                             form_code=exception.data[0][0])
     create_failure_log(message, request)
     return message
 
