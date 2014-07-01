@@ -38,8 +38,8 @@ class TestSMSResponse(unittest.TestCase):
             with patch("datawinners.messageprovider.customized_message.account_wide_customized_message_details") as account_message:
                 get_form_model_mock.return_value = form_model_mock
                 account_message.return_value = [{"code":"reply_success_identification_number_registration",
-                                                "message":"Thanks {Name of Data Sender}.registered {Identification Number Type} "
-                                                          "{Name of Identification Number} {Submitted Identification Number}",
+                                                "message":"Thanks {<{Name of Data Sender}>}.registered {<{Identification Number Type}>} "
+                                                          "{<{Name of Identification Number}>} {<{Submitted Identification Number}>}",
                                                 "title": "Succesful register"}]
                 response_text = SMSResponse(response, None).text(dbm_mock)
                 self.assertEqual("Thanks Mr..registered clinic Clinic X cli001", response_text)
