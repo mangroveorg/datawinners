@@ -238,10 +238,6 @@ def submit_to_player(incoming_request):
 
         mail_feed_errors(response, dbm.database_name)
         message = SMSResponse(response, incoming_request).text(dbm)
-
-        if response is not None:
-            create_failure_log(message, incoming_request)
-            
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
         message = identification_number_already_exists_handler(dbm, e.data[1], e.data[2])
