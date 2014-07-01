@@ -35,16 +35,9 @@ class TestWebSubmission(HeadlessRunnerTest):
         self.assertEqual(web_submission_page.get_errors(),[])
         self.assertEqual(web_submission_page.get_text_value('NA'), u'')
 
-    @SkipTest
     @attr('functional_test')
     def test_paid_account_can_do_submission_after_submission_limit(self):
-        web_submission_page = self.submit_web_submission(11, VALID_CREDENTIALS)
-        self.assertEqual(web_submission_page.get_errors(),[])
-
-    @SkipTest
-    @attr('functional_test')
-    def test_trial_account_submission_without_limit(self):
-        web_submission_page = self.submit_web_submission(11, TRIAL_CREDENTIALS_VALIDATES)
+        web_submission_page = self.submit_web_submission(VALID_CREDENTIALS)
         self.assertEqual(web_submission_page.get_errors(),[])
 
     @attr('functional_test')

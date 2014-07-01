@@ -95,8 +95,14 @@ class TestReminders(unittest.TestCase):
         reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE)
         self.assertEqual(data_senders, reminder.get_sender_list(project, today,None))
 
-    @SkipTest
+
     def test_should_return_data_senders_as_sender_list_if_remind_to_mode_is_datasenders_without_submissions(self):
+
+        reminder_and_deadline_dict = {'should_send_reminder_to_all_ds': False}
+
+        def getitem(name):
+            return reminder_and_deadline_dict[name]
+
         data_senders = [{'name': 'reporter1', 'mobile_number': 'tel1'},
                 {'name': 'reporter2', 'mobile_number': 'tel2'},
                 {'name': 'reporter3', 'mobile_number': 'tel3'},
@@ -106,49 +112,57 @@ class TestReminders(unittest.TestCase):
         project = MagicMock(spec=Project)
         expected_sender_list = [data_senders[0], data_senders[2]]
         project.get_data_senders_without_submissions_for.return_value = expected_sender_list
-        project.reminder_and_deadline.return_value = dict(should_send_reminder_to_all_ds=False)
+        project.reminder_and_deadline.__getitem__.side_effect = getitem
         reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE)
         self.assertEqual(expected_sender_list, reminder.get_sender_list(project, today,None))
 
-    @SkipTest
+
     def test_should_calculate_frequency_period_for_next_deadline_if_reminder_on_deadline(self):
         today = date(2011, 2, 10)
-        project = Mock(spec=Project)
-        mock_deadline = Mock(spec=Deadline)
+        project = MagicMock(spec=Project)
+        mock_deadline = MagicMock(spec=Deadline)
         project.deadline.return_value = mock_deadline
+        reminder_and_deadline_dict = {'should_send_reminder_to_all_ds': False}
 
-        reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE, remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS)
+        def getitem(name):
+            return reminder_and_deadline_dict[name]
+        reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE)
+        project.reminder_and_deadline.__getitem__.side_effect = getitem
         reminder.get_sender_list(project, today,None)
         mock_deadline.current_deadline.assert_called_once_with(today)
 
-    @SkipTest
     def test_should_calculate_frequency_period_for_next_deadline_if_reminder_before_deadline(self):
-        today = date(2011, 2, 10)
-        project = Mock(spec=Project)
-        mock_deadline = Mock(spec=Deadline)
-        project.deadline.return_value = mock_deadline
-
+        reminder_and_deadline_dict = {'should_send_reminder_to_all_ds': False}
+        def getitem(name):
+            return reminder_and_deadline_dict[name]
         reminder = Reminder(reminder_mode=ReminderMode.BEFORE_DEADLINE)
+        today = date(2011, 2, 10)
+        project = MagicMock(spec=Project)
+        mock_deadline = MagicMock(spec=Deadline)
+        project.deadline.return_value = mock_deadline
+        project.reminder_and_deadline.__getitem__.side_effect = getitem
         reminder.get_sender_list(project, today,None)
         mock_deadline.next_deadline.assert_called_once_with(today)
 
-    @SkipTest
-    def test_should_calculate_frequency_period_for_current_deadline_if_reminder_after_deadline(self):
-        today = date(2011, 2, 10)
-        project = Mock(spec=Project)
-        mock_deadline = Mock(spec=Deadline)
-        project.deadline.return_value = mock_deadline
-        project.reminder_and_deadline.return_value = {'should_send_reminder_to_all_ds': True, 'has_deadline': True}
 
+    def test_should_calculate_frequency_period_for_current_deadline_if_reminder_after_deadline(self):
+        reminder_and_deadline_dict = {'should_send_reminder_to_all_ds': False, 'has_deadline': True}
+        def getitem(name):
+            return reminder_and_deadline_dict[name]
+        today = date(2011, 2, 10)
+        project = MagicMock(spec=Project)
+        mock_deadline = MagicMock(spec=Deadline)
+        project.deadline.return_value = mock_deadline
+        project.reminder_and_deadline.__getitem__.side_effect = getitem
         reminder = Reminder(reminder_mode=ReminderMode.AFTER_DEADLINE)
-        reminder.get_sender_list(project, today,None)
+        reminder.get_sender_list(project, today, None)
         mock_deadline.current_deadline.assert_called_once_with(today)
 
-    @SkipTest
+
     def test_should_create_reminder_log(self):
         reminder = Reminder(reminder_mode=ReminderMode.AFTER_DEADLINE, day=2)
         dbm_mock = Mock(spec=DatabaseManager)
-        log = reminder.log(dbm_mock, 'test_project', datetime.now(), number_of_sms=10)
+        log = reminder.log(dbm_mock, 'test_project', datetime.now(),to_number = 'ads', number_of_sms=10)
         self.assertTrue(isinstance(log, ReminderLog))
         dbm_mock._save_document.assert_called_once()
 
