@@ -4555,7 +4555,7 @@ msgid "The unique ID %s of the %s does not match with any existing Identificatio
 msgstr ""
 
 msgid "language help text"
-msgstr "For each Questionnaire you can choose the language of the automatic reply SMS. Click on the dropdown and choose a language to view and edit the suggested automatic reply SMS text. You can also add new languages to meet your needs. / Pour chaque Questionnaire, vous pouvez choisir une langue pour les retours SMS automatiques."
+msgstr "For each Questionnaire you can choose the language of the automatic reply SMS. Click on the dropdown and choose a language to view and edit the suggested automatic reply SMS text. You can also add new languages to meet your needs."
 
 msgid "You are not authorized to submit to this Questionnaire. Add yourself as a Data Sender to the Questionnaire."
 msgstr ""
