@@ -16,11 +16,11 @@ from tests.testsettings import UI_TEST_TIMEOUT
 
 
 default_messages = [u'Error. You are not registered as a Data Sender. Please contact your supervisor.',
-                        u'Error. Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.',
-                        u'Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}.',
-                        u'Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.',
+                        u'Error. Questionnaire Code {<{Submitted Questionnaire Code}>} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.',
+                        u'Thank you {<{Name of Data Sender}>}.We registered your {<{Identification Number Type}>} {<{Name of Identification Number}>} {<{Submitted Identification Number}>}.',
+                        u'Error. Incorrect answer for question {<{Question Numbers for Wrong Answer(s)}>}. Please review printed Questionnaire and resend entire SMS.',
                         u'Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.',
-                        u'Error. {Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number.']
+                        u'Error. {<{Submitted Identification Number}>} already exists. Register your {<{Identification Number Type}>} with a different Identification Number.']
 
 class TestAccountWideSMS(HeadlessRunnerTest):
     @classmethod
@@ -105,11 +105,11 @@ class TestAccountWideSMS(HeadlessRunnerTest):
     def test_should_use_modified_account_wide_sms_messages_to_send_reply(self):
 
         new_custom_messages = [u'Error. You are not registered as a Data Sender. Please contact your supervisor.new message',
-                        u'Error. Questionnaire Code {Submitted Questionnaire Code} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.new message',
-                        u'Thank you {Name of Data Sender}.We registered your {Identification Number Type} {Name of Identification Number} {Submitted Identification Number}.new message',
-                        u'Error. Incorrect answer for question {Question Numbers for Wrong Answer(s)}. Please review printed Questionnaire and resend entire SMS.new message',
+                        u'Error. Questionnaire Code {<{Submitted Questionnaire Code}>} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.new message',
+                        u'Thank you {<{Name of Data Sender}>}.We registered your {<{Identification Number Type}>} {<{Name of Identification Number}>} {<{Submitted Identification Number}>}.new message',
+                        u'Error. Incorrect answer for question {<{Question Numbers for Wrong Answer(s)}>}. Please review printed Questionnaire and resend entire SMS.new message',
                         u'Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.new message',
-                        u'Error. {Submitted Identification Number} already exists. Register your {Identification Number Type} with a different Identification Number.new message']
+                        u'Error. {<{Submitted Identification Number}>} already exists. Register your {<{Identification Number Type}>} with a different Identification Number.new message']
         self.change_account_messages()
         self.account_sms_page.save_changes()
 
