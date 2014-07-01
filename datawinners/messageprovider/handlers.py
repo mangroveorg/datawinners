@@ -77,16 +77,18 @@ def sms_parser_invalid_format_handler(exception, request):
     #if len(request.get('incoming_message').strip().split()) != 1:
     #    return default_exception_handler_with_logger(exception, request)
     try:
-        form_model = get_form_model_by_code(request.get('dbm'), exception.data[0][0])
+        form_code = exception.data[0][0]
+
+        form_model = get_form_model_by_code(request.get('dbm'), form_code)
         message_code = 'reply_incorrect_number_of_responses'
         message = get_customized_message_for_questionnaire(request['dbm'], request,
                                                              message_code=message_code,
-                                                             form_code=exception.data[0][0], form_model=form_model)
+                                                             form_code=form_code, form_model=form_model)
+        request['form_code'] = form_code
     except:
         message_code = 'reply_incorrect_questionnaire_code'
         message = get_account_wide_sms_reply(request.get('dbm'), message_code, placeholder_dict=
-                                                                {'Submitted Questionnaire Code': exception.data[0][0]})
-
+                                                                {'Submitted Questionnaire Code': form_code})
     create_failure_log(message, request)
     return message
 
@@ -98,8 +100,10 @@ def data_sender_not_linked_handler(dbm, request, form_code):
 
     return message
 
-def data_sender_not_registered_handler(dbm):
+def data_sender_not_registered_handler(dbm, request):
     message = get_account_wide_sms_reply(dbm, message_code='reply_ds_not_registered')
+    create_failure_log(message, request)
+
     return message
 
 

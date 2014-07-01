@@ -93,7 +93,7 @@ class PostSMSProcessorCheckDSIsRegistered(object):
 
     def _get_response(self):
         response = Response(reporters=[], survey_response_id=None)
-        response.errors = data_sender_not_registered_handler(self.dbm)
+        response.errors = data_sender_not_registered_handler(self.dbm, self.request)
         return response
 
 
