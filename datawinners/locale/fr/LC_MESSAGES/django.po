@@ -5005,8 +5005,12 @@ msgstr "En savoir plus »"
 msgid "With this update we changed the webpage address you are trying to access. Sorry for the inconvenience."
 msgstr "Avec cette mise à jour, nous avons changé l'adresse de la page Web à laquelle vous tentez d'accéder. Nous nous excusons pour tout inconvénient."
 
-msgid "reply_sms_help_text"
-msgstr "Choisissez la langue pour votre réponse SMS. Voyez et ajoutez de nouvelles langues sur la page <a href='/customizemessages'>Langues</a>."
+msgid "Choose the language of your reply SMS. View and add new languages on the "
+msgstr "Choisissez la langue pour votre réponse SMS. Voyez et ajoutez de nouvelles langues sur la page "
+
+msgid "language page link"
+msgstr "Langues"
+
 
 msgid "Changes saved successfully."
 msgstr "Modifications sauvegardées avec succès"
