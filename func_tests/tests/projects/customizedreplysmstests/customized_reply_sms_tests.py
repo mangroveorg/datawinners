@@ -2,12 +2,14 @@ from nose.plugins.attrib import attr
 
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import random_string
+from pages.failedsubmissionspage.failed_submissions_page import FailedSubmissionsPage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.languagespage.customized_language_locator import SUCCESS_SUBMISSION_MESSAGE_LOCATOR, SUBMISSION_WITH_ERROR_MESSAGE_LOCATOR, SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, RESPONSE_ERROR_MESSAGE_FROM_UNAUTHORIZED_SOURCE_LOCATOR, SUBMISSION_WITH_INCORRECT_UNIQUE_ID
 from pages.loginpage.login_page import login
 from pages.projectspage.projects_page import ProjectsPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_ALL_PROJECTS_PAGE
+from testdata.constants import SMS
+from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_ALL_PROJECTS_PAGE, FAILED_SUBMISSIONS_PAGE
 from tests.projects.customizedreplysmstests.customized_reply_sms_data import PROJECT_DATA, PROJECT_QUESTIONNAIRE_DATA, get_success_sms_data_with_questionnaire_code, get_error_message_from_unauthorized_source, get_error_sms_data_with_incorrect_number_of_answers, get_error_sms_data_with_questionnaire_code, get_error_sms_data_with_incorrect_unique_id
 
 
@@ -62,6 +64,9 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
 
         self.change_project_language(new_language, self.project_name)
 
+        self.driver.go_to(FAILED_SUBMISSIONS_PAGE)
+        failed_submission_entry_count = FailedSubmissionsPage(self.driver).get_total_number_of_entries()
+
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
 
@@ -74,17 +79,26 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         sms_tester_page.send_sms_with(sms_data)
         self.assertIn('Tappu uttara', sms_tester_page.get_response_message())
 
-        sms_data = get_error_sms_data_with_incorrect_number_of_answers(self.questionnaire_code)
-        sms_tester_page.send_sms_with(sms_data)
-        self.assertIn('Tappada sankhyeya uttaragalu' , sms_tester_page.get_response_message())
+        sms_with_incorrect_number_of_answers = get_error_sms_data_with_incorrect_number_of_answers(self.questionnaire_code)
+        sms_tester_page.send_sms_with(sms_with_incorrect_number_of_answers)
+        self.assertIn('Tappada sankhyeya uttaragalu', sms_tester_page.get_response_message())
 
         sms_data = get_error_sms_data_with_incorrect_unique_id(self.questionnaire_code)
         sms_tester_page.send_sms_with(sms_data)
         self.assertIn('daakhaleyalli illa', sms_tester_page.get_response_message())
 
-        sms_data = get_error_message_from_unauthorized_source(self.questionnaire_code)
-        sms_tester_page.send_sms_with(sms_data)
+        sms_with_unauthorized_data_sender = get_error_message_from_unauthorized_source(self.questionnaire_code)
+        sms_tester_page.send_sms_with(sms_with_unauthorized_data_sender)
         self.assertIn('Nimage anumathi illa', sms_tester_page.get_response_message())
+
+        self.driver.go_to(FAILED_SUBMISSIONS_PAGE)
+        failed_submissions_page = FailedSubmissionsPage(self.driver)
+        current_failed_submission_entry_count = failed_submissions_page.get_total_number_of_entries()
+        self.assertEqual(current_failed_submission_entry_count, failed_submission_entry_count+2)
+        self.assertEqual(sms_with_incorrect_number_of_answers[SMS],
+                         failed_submissions_page.get_entry_for_row_number(failed_submission_entry_count + 1)['message'])
+        self.assertEqual(sms_with_unauthorized_data_sender[SMS],
+                         failed_submissions_page.get_entry_for_row_number(failed_submission_entry_count + 2)['message'])
 
     @attr('functional_test')
     def test_reply_messages_in_light_box_when_outgoing_reply_turned_off(self):

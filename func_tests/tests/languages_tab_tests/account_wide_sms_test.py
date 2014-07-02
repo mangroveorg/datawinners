@@ -6,12 +6,14 @@ import time
 
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css, by_id
+from pages.failedsubmissionspage.failed_submissions_page import FailedSubmissionsPage
 from pages.languagespage.account_wide_reply_sms_page import AccountWideSmsReplyPage
 from pages.languagespage.customized_language_locator import ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR, \
     DATA_SENDER_NOT_REGISTERED_LOCATOR, CANCEL_CHANGES_LOCATOR, LAST_WARNING_MESSAGE_LOCATOR
 from pages.loginpage.login_page import login
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, ACCOUNT_MESSAGES_URL
+from testdata.constants import SMS
+from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, ACCOUNT_MESSAGES_URL, FAILED_SUBMISSIONS_PAGE
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -75,7 +77,6 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.driver.find(by_id("account_wide_sms_link")).click()
         self.account_sms_page = AccountWideSmsReplyPage(self.driver)
         self.account_sms_page.wait_for_reply_messages_to_load()
-        # self.driver.wait_for_page_load()
         self.assertListEqual(changed_messages,  self.account_sms_page.get_all_account_wide_messages())
 
         self.reset_account_messages()
@@ -113,29 +114,39 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.change_account_messages()
         self.account_sms_page.save_changes()
 
+        self.driver.go_to(FAILED_SUBMISSIONS_PAGE)
+        total_failed_submission_count = FailedSubmissionsPage(self.driver).get_total_number_of_entries()
+
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
 
-        incorrect_ds_number_data =  {"from": "4444444", "to": '919880734937', "sms": "qcode sender_name 45 cid001" }
+        incorrect_ds_number_data = {"from": "4444444", "to": '919880734937', "sms": "qcode sender_name 45 cid001" }
         sms_tester_page.send_sms_with(incorrect_ds_number_data)
         message = sms_tester_page.get_response_message()
-        self.assertEquals(new_custom_messages[0],message)
+        self.assertEquals(new_custom_messages[0], message)
 
-        incorrect_qcode_data =  {"from": "1234123413", "to": '919880734937', "sms": "wrcode sender_name 45 cid001" }
+        incorrect_qcode_data = {"from": "1234123413", "to": '919880734937', "sms": "wrcode sender_name 45 cid001" }
         sms_tester_page.send_sms_with(incorrect_qcode_data)
         message = sms_tester_page.get_response_message()
         self.assertEquals('Error. Questionnaire Code wrcode is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.new message',message)
 
-        success_subject_registration_data =  {"from": "1234123413", "to": '919880734937', "sms": "peo fname lname location 4,4 898989898" }
+        success_subject_registration_data = {"from": "1234123413", "to": '919880734937', "sms": "peo fname lname location 4,4 898989898" }
         sms_tester_page.send_sms_with(success_subject_registration_data)
         success_message = sms_tester_page.get_response_message()
         registered_short_code = re.match('.*(peo\d+).*', success_message).groups()[0]
-        self.assertEquals('Thank you Tester.We registered your people lname '+registered_short_code+ '.new message',success_message)
+        self.assertEquals('Thank you Tester.We registered your people lname ' + registered_short_code + '.new message',success_message)
 
         error_subject_registration = {"from": "1234123413", "to": '919880734937', "sms": "peo fname lname location 4,4 898989898 "+ registered_short_code }
         sms_tester_page.send_sms_with(error_subject_registration)
         message = sms_tester_page.get_response_message()
-        self.assertIn('new message',message)
+        self.assertIn('new message', message)
+
+        self.driver.go_to(FAILED_SUBMISSIONS_PAGE)
+        failed_submissions_page = FailedSubmissionsPage(self.driver)
+        current_failed_submission_count = failed_submissions_page.get_total_number_of_entries()
+        self.assertEqual(current_failed_submission_count, total_failed_submission_count + 2)
+        self.assertEqual(incorrect_ds_number_data[SMS], failed_submissions_page.get_entry_for_row_number(total_failed_submission_count + 1)['message'])
+        self.assertEqual(incorrect_qcode_data[SMS], failed_submissions_page.get_entry_for_row_number(total_failed_submission_count + 2)['message'])
 
         self.reset_account_messages()
 
@@ -165,7 +176,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         [r.clear() for r in self.driver.find_elements_(ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR)]
 
 
-    def change_account_messages(self,messages=None):
+    def change_account_messages(self):
         for element in self.driver.find_elements_(ACCOUNT_WIDE_MESSAGE_TEXTBOXES_LOCATOR):
             self.account_sms_page.update_custom_message("new message",element)
 
