@@ -100,8 +100,8 @@ def data_sender_not_linked_handler(dbm, request, form_code):
 
     return message
 
-def data_sender_not_registered_handler(dbm, request):
-    message = get_account_wide_sms_reply(dbm, message_code='reply_ds_not_registered')
+def data_sender_not_registered_handler(exception, request):
+    message = get_account_wide_sms_reply(request['dbm'], message_code='reply_ds_not_registered')
     create_failure_log(message, request)
 
     return message
@@ -137,7 +137,7 @@ exception_handlers = {
 
     ex.DataObjectNotFound: data_object_not_found_handler,
     ex.FormModelDoesNotExistsException: wrong_questionnaire_code_handler,
-    ex.NumberNotRegisteredException: number_not_registered_exception_handler,
+    ex.NumberNotRegisteredException: data_sender_not_registered_handler,
     ex.SubmissionParseException: default_exception_handler_with_logger,
     ex.SMSParserInvalidFormatException: sms_parser_invalid_format_handler,
     ex.MultipleSubmissionsForSameCodeException: default_exception_handler_with_logger,
