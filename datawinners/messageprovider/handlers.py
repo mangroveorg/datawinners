@@ -18,10 +18,11 @@ def default_exception_handler_with_logger(exception, request):
     return exception_message
 
 def wrong_questionnaire_code_handler(exception, request):
-    if request.get('exception'):
-        handler = exception_handlers.get(type(request.get('exception')), default_exception_handler)
-        return handler(request.get('exception'), request)
-    return default_exception_handler_with_logger(exception, request)
+    return incorrect_questionnaire_code_handler(request['dbm'], exception.data[0], request)
+    # if request.get('exception'):
+    #     handler = exception_handlers.get(type(request.get('exception')), default_exception_handler)
+    #     return handler(request.get('exception'), request)
+    # return default_exception_handler_with_logger(exception, request)
 
 def data_object_not_found_handler(exception, request):
     return get_exception_message_for(exception=exception, channel=SMS, formatter=data_object_not_found_formatter)
@@ -62,10 +63,12 @@ def invalid_answer_for_submissions_handler(dbm, request, form_code, invalid_answ
 def invalid_answer_for_uid_registration_handler(dbm, invalid_answers):
     return get_account_wide_sms_reply(dbm, "reply_incorrect_answers", placeholder_dict= {'Question Numbers for Wrong Answer(s)': invalid_answers})
 
-def incorrect_questionnaire_code_handler(dbm, invalid_form_code):
-    return get_account_wide_sms_reply(dbm, "reply_incorrect_questionnaire_code",
-                                                            placeholder_dict=
-                                                            {'Submitted Questionnaire Code': invalid_form_code})
+def incorrect_questionnaire_code_handler(dbm, invalid_form_code, request):
+    message = get_account_wide_sms_reply(dbm, "reply_incorrect_questionnaire_code",
+                                       placeholder_dict={'Submitted Questionnaire Code': invalid_form_code})
+    create_failure_log(message, request)
+
+    return message
 
 def identification_number_already_exists_handler(dbm, submitted_id,identification_number_type):
     return get_account_wide_sms_reply(dbm, "reply_identification_number_already_exists",
