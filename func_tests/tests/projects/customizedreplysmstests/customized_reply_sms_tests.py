@@ -68,11 +68,11 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         sms_data = get_success_sms_data_with_questionnaire_code(self.questionnaire_code)
         sms_tester_page.send_sms_with(sms_data)
         message = sms_tester_page.get_response_message()
-        self.assertIn('Dhanyawaadagalu' , message)
+        self.assertIn('Dhanyawaadagalu', message)
 
         sms_data = get_error_sms_data_with_questionnaire_code(self.questionnaire_code)
         sms_tester_page.send_sms_with(sms_data)
-        self.assertIn('Tappu uttara' , sms_tester_page.get_response_message())
+        self.assertIn('Tappu uttara', sms_tester_page.get_response_message())
 
         sms_data = get_error_sms_data_with_incorrect_number_of_answers(self.questionnaire_code)
         sms_tester_page.send_sms_with(sms_data)
@@ -80,11 +80,11 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
 
         sms_data = get_error_sms_data_with_incorrect_unique_id(self.questionnaire_code)
         sms_tester_page.send_sms_with(sms_data)
-        self.assertIn('daakhaleyalli illa' , sms_tester_page.get_response_message())
+        self.assertIn('daakhaleyalli illa', sms_tester_page.get_response_message())
 
         sms_data = get_error_message_from_unauthorized_source(self.questionnaire_code)
         sms_tester_page.send_sms_with(sms_data)
-        self.assertIn('Nimage anumathi illa' , sms_tester_page.get_response_message())
+        self.assertIn('Nimage anumathi illa', sms_tester_page.get_response_message())
 
     @attr('functional_test')
     def test_reply_messages_in_light_box_when_outgoing_reply_turned_off(self):
