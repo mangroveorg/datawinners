@@ -5,6 +5,7 @@ import time
 from framework.utils.data_fetcher import *
 from tests.smstesterlightboxtests.sms_tester_light_box_data import *
 from selenium.common.exceptions import NoSuchElementException
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class SMSTesterLightBoxPage(LightBox):
@@ -33,6 +34,11 @@ class SMSTesterLightBoxPage(LightBox):
         Return success/error message
         """
         return self.driver.find_text_box(SMS_TA).get_attribute("value")
+
+    def close(self):
+        close_button = self.driver.find_visible_element(by_css('.ui-icon-closethick'))
+        close_button.click()
+        self.driver.wait_until_web_element_is_not_present(UI_TEST_TIMEOUT, close_button)
 
     def get_upgrade_instruction_present(self):
         return self.driver.is_element_present(UPGRADE_INSTRUCTION_BY_CSS)
