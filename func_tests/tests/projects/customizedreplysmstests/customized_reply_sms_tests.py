@@ -102,8 +102,12 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_reply_messages_in_light_box_when_outgoing_reply_turned_off(self):
+        self.driver.go_to(FAILED_SUBMISSIONS_PAGE)
+        initial_failed_submission_count = FailedSubmissionsPage(self.driver).get_total_number_of_entries()
+
         self.driver.go_to(DATA_WINNER_ALL_PROJECTS_PAGE)
-        automatic_reply_msg_page = ProjectsPage(self.driver).navigate_to_project_overview_page(self.project_name).navigate_send_message_tab().navigate_to_automatic_reply_sms_page()
+        automatic_reply_msg_page = ProjectsPage(self.driver).navigate_to_project_overview_page(self.project_name)\
+                                            .navigate_send_message_tab().navigate_to_automatic_reply_sms_page()
         automatic_reply_msg_page.turn_off_reply_messages()
         self.assertFalse(automatic_reply_msg_page.is_language_selection_enabled())
         self.assertEqual(automatic_reply_msg_page.get_success_message(), 'Your changes have been saved.')
@@ -140,6 +144,11 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         sms_tester_light_box.send_sms_with(success_subject_registration_data_with_existing_code)
         self.assertNotEqual("", sms_tester_light_box.get_response_message())
 
+        sms_tester_light_box.close()
+
+        self.driver.go_to(FAILED_SUBMISSIONS_PAGE)
+        current_failed_submission_count = FailedSubmissionsPage(self.driver).get_total_number_of_entries()
+        self.assertEqual(current_failed_submission_count, initial_failed_submission_count + 2)
 
     @attr('functional_test')
     def test_reply_messages_in_light_box_when_outgoing_reply_turned_on(self):
