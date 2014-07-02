@@ -1442,6 +1442,9 @@ div.border_top_bottom {
 .bold-text {
   font-weight: bold; }
 
+.disabled-text {
+  color: #888888; }
+
 #wrapper_div_for_table .action_button {
   display: inline;
   float: left;

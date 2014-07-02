@@ -127,6 +127,9 @@ input.error {
   border: 1px solid #FF0000 !important;
   color: #000000; }
 
+input[disabled='disabled'][type=text] {
+  background-color: #ebebeb; }
+
 /*Table Styles Temp*/
 table {
   margin-bottom: 10px;
@@ -539,3 +542,6 @@ div.border_top_bottom {
 
 .bold-text {
   font-weight: bold; }
+
+.disabled-text {
+  color: #888888; }

@@ -543,6 +543,9 @@ div.border_top_bottom {
 .bold-text {
   font-weight: bold; }
 
+.disabled-text {
+  color: #888888; }
+
 .validationText {
   color: #FFFFFF;
   background: #c20303;
