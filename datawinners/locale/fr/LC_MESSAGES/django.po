@@ -5068,8 +5068,11 @@ msgstr "Oups, une erreur est survenue. Vous avez supprimé une réponse personna
 msgid "questionnaire reply learn more text part1"
 msgstr "Pour certains retours, DataWinners crée des réponses personnalisées. Ces messages personnalisés contiennent des textes affichés dans les rectangles gris (exemple :"
 
-msgid "questionnaire reply learn more text part2"
+msgid "customized reply learn more text part2"
 msgstr "). Pour chaque retour, DataWinners personnalisera l'information figurant dans les rectangles."
+
+msgid "account wide sms learn more text part1"
+msgstr "Traduisez chaque retour SMS automatique. Pour certains retours, DataWinners crée des réponses personnalisées. Ces messages personnalisés contiennent des textes affichés dans des rectangles gris (exemple:"
 
 msgid "Decide what language your Data Senders understand best"
 msgstr "Décidez quelle langue vos Expéditeurs de Données comprennent le mieux"
