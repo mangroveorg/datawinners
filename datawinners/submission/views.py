@@ -28,7 +28,7 @@ from datawinners.submission.request_processor import MangroveWebSMSRequestProces
 from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, \
     PostSMSProcessorNumberOfAnswersValidators
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsLinkedToProject
-from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsRegistered, PostSMSProcessorCheckLimits
+from datawinners.submission.submission_utils import PostSMSProcessorCheckLimits
 from datawinners.utils import get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.feeds.database import get_feeds_db_for_org
@@ -197,51 +197,46 @@ def send_message(incoming_request, response):
     ReportRouter().route(incoming_request['organization'].org_id, response)
 
 
-def _is_datasender_registered(dbm, request):
-    return PostSMSProcessorCheckDSIsRegistered(dbm, request).process()
-
-
 def submit_to_player(incoming_request):
     sent_via_sms_test_questionnaire = incoming_request.get('test_sms_questionnaire', False)
     organization = incoming_request.get('organization')
     organization = organization
 
     try:
+
         dbm = incoming_request['dbm']
         mangrove_request = Request(message=incoming_request['incoming_message'],
                                    transportInfo=incoming_request['transport_info'])
-        is_ds_registered = _is_datasender_registered(dbm, incoming_request)
-        if not is_ds_registered:
-            post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request)]
-            if organization.in_trial_mode:
-                post_sms_parser_processors.append(PostSMSProcessorCheckLimits(dbm, incoming_request))
 
-            post_sms_parser_processors.extend([PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request),
-                                               PostSMSProcessorCheckDSIsLinkedToProject(dbm, incoming_request)])
+        if incoming_request.get('exception', None):
+            raise incoming_request['exception']
 
-            sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy),
-                                   post_sms_parser_processors=post_sms_parser_processors,
-                                   feeds_dbm=incoming_request['feeds_dbm'])
+        post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request)]
+        if organization.in_trial_mode:
+            post_sms_parser_processors.append(PostSMSProcessorCheckLimits(dbm, incoming_request))
 
-            response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"),
-                                         translation_processor=TranslationProcessor)
+        post_sms_parser_processors.extend([PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request),
+                                           PostSMSProcessorCheckDSIsLinkedToProject(dbm, incoming_request)])
 
-            if response.is_registration:
-                incoming_request['is_registration'] = True
-                if not sent_via_sms_test_questionnaire:
-                    organization.increment_message_count_for(sms_registration_count=1)
+        sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy),
+                               post_sms_parser_processors=post_sms_parser_processors,
+                               feeds_dbm=incoming_request['feeds_dbm'])
 
-            if not response.is_registration:
-                if sent_via_sms_test_questionnaire:
-                    organization.increment_message_count_for(incoming_web_count=1)
-                check_quotas_and_update_users(organization, sms_channel=True)
+        response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"),
+                                     translation_processor=TranslationProcessor)
+
+        if response.is_registration:
+            incoming_request['is_registration'] = True
+            if not sent_via_sms_test_questionnaire:
+                organization.increment_message_count_for(sms_registration_count=1)
+
+        if not response.is_registration:
+            if sent_via_sms_test_questionnaire:
+                organization.increment_message_count_for(incoming_web_count=1)
+            check_quotas_and_update_users(organization, sms_channel=True)
 
         mail_feed_errors(response, dbm.database_name)
         message = SMSResponse(response, incoming_request).text(dbm)
-
-        if is_ds_registered is not None:
-            create_failure_log(message, incoming_request)
-            
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
         message = identification_number_already_exists_handler(dbm, e.data[1], e.data[2])

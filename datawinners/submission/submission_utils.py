@@ -86,22 +86,6 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
     def _process_data_submission_request(self, form_model, submission_values):
         return self._process_registration_when_entity_question_is_present(form_model, submission_values)
 
-class PostSMSProcessorCheckDSIsRegistered(object):
-    def __init__(self, dbm, request):
-        self.dbm = dbm
-        self.request = request
-
-    def _get_response(self):
-        response = Response(reporters=[], survey_response_id=None)
-        response.errors = data_sender_not_registered_handler(self.dbm, self.request)
-        return response
-
-
-    def process(self):
-        exception = self.request.get('exception')
-        if exception and isinstance(exception, NumberNotRegisteredException):
-            return self._get_response()
-
 class PostSMSProcessorCheckDSIsLinkedToProject(object):
     def __init__(self, dbm, request):
         self.dbm = dbm
