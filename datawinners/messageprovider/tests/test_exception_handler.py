@@ -6,7 +6,7 @@ from mangrove.datastore.database import DatabaseManager
 from django.utils.translation import get_language
 from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.errors.MangroveException import NumberNotRegisteredException, DataObjectNotFound, SMSParserWrongNumberOfAnswersException
-from mock import Mock, patch
+from mock import Mock, patch, MagicMock
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.models import Organization
 from datawinners.messageprovider.exception_handler import handle
@@ -20,7 +20,7 @@ class TestExceptionHandler(TestCase):
     fixtures = ['test_data.json']
 
     def setUp(self):
-        self.request = dict(incoming_message='message',
+        self.request = dict(incoming_message='message', dbm=MagicMock(),
             transport_info=TransportInfo(transport='SMS',source='123',destination='456'))
 
     def test_should_handle_NumberNotRegisteredException(self):
@@ -29,12 +29,16 @@ class TestExceptionHandler(TestCase):
 
         exception = NumberNotRegisteredException('1234312')
 
-        expected_message = get_exception_message_for(exception, SMS)
-        response = handle(exception, self.request)
+        expected_message = "error msg"
+
+        with patch("datawinners.messageprovider.handlers.get_account_wide_sms_reply") as get_account_wide_sms_reply_mock:
+            get_account_wide_sms_reply_mock.return_value = "error msg"
+            response = handle(exception, self.request)
+
         patcher.stop()
 
         self.assertEqual(expected_message, response)
-        create_failure_log_mock.assert_called_with(expected_message,self.request)
+        create_failure_log_mock.assert_called_with(expected_message, self.request)
 
     def test_should_handle_DataObjectNotFoundException(self):
         exception = DataObjectNotFound('test_entity','id','123')
