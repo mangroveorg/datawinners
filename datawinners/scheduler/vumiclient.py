@@ -182,7 +182,7 @@ class Connection(object):
             print '\turl_data', url_data
             print
 
-        response = ApiResponse(urllib2.urlopen(request))
+        response = ApiResponse(urllib2.urlopen(request, timeout=120))
 
         if self.debug:
             print 'RESPONSE'
