@@ -18,7 +18,7 @@ default_en_messages = [u'Thank you {<{Name of Data Sender}>}. We received your S
                         u'Error. {<{Submitted Identification Number}>} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.',
                         u'Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.']
 
-default_fr_messages = [u"Merci. {<{Name of Data Sender}>}. Nous avons recu votre SMS: {<{List of Answers}>}",
+default_fr_messages = [u"Merci {<{Name of Data Sender}>}. Nous avons recu votre SMS: {<{List of Answers}>}",
                                 u'Erreur. Reponse incorrecte pour la question {<{Question Numbers for Wrong Answer(s)}>}. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS.',
                                 u'Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS.',
                                 u"Erreur. {<{Submitted Identification Number}>} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur.",
