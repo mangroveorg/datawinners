@@ -100,19 +100,18 @@ class LanguagesAjaxView(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.POST.get("data", {}))
         dbm = get_database_manager(request.user)
-        if data.get('isMessageModified'):
-            modified_messages = data.get("messages")
-            language = data.get('language')
-            questionnaire_customized_message_dict = get_reply_message_dictionary(modified_messages)
+        modified_messages = data.get("messages")
+        language = data.get('language')
+        questionnaire_customized_message_dict = get_reply_message_dictionary(modified_messages)
 
-            corrected_message_list, errored_message_list = verify_inconsistency_in_system_variables(dbm,
-                                                                          questionnaire_customized_message_dict,
-                                                                          language)
-            if corrected_message_list:
-                _send_error_email(errored_message_list, request)
-                return HttpResponse(json.dumps({"success": False, "messages": corrected_message_list}))
+        corrected_message_list, errored_message_list = verify_inconsistency_in_system_variables(dbm,
+                                                                      questionnaire_customized_message_dict,
+                                                                      language)
+        if corrected_message_list:
+            _send_error_email(errored_message_list, request)
+            return HttpResponse(json.dumps({"success": False, "messages": corrected_message_list}))
 
-            save_questionnaire_custom_messages(dbm, language, questionnaire_customized_message_dict)
+        save_questionnaire_custom_messages(dbm, language, questionnaire_customized_message_dict)
         return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))
 
     @method_decorator(login_required)
@@ -170,16 +169,14 @@ class AccountMessagesView(TemplateView):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.POST.get("data", {}))
         dbm = get_database_manager(request.user)
-        if data.get('isMessageModified'):
-            modified_messages = data.get("messages")
-            incoming_message_dict = get_reply_message_dictionary(data.get("messages"))
-            corrected_message_dict, errored_message_list = verify_inconsistency_in_system_variables(dbm, incoming_message_dict,
-                                                                          is_account_wid_sms=True)
-            if corrected_message_dict:
-                _send_error_email(errored_message_list, request)
-                return HttpResponse(json.dumps({"success": False, "messages": corrected_message_dict}))
+        incoming_message_dict = get_reply_message_dictionary(data.get("messages"))
+        corrected_message_dict, errored_message_list = verify_inconsistency_in_system_variables(dbm, incoming_message_dict,
+                                                                      is_account_wid_sms=True)
+        if corrected_message_dict:
+            _send_error_email(errored_message_list, request)
+            return HttpResponse(json.dumps({"success": False, "messages": corrected_message_dict}))
 
-            save_account_wide_sms_messages(dbm, incoming_message_dict)
+        save_account_wide_sms_messages(dbm, incoming_message_dict)
 
         return HttpResponse(json.dumps({"success": True, "message": ugettext("Changes saved successfully.")}))
 
