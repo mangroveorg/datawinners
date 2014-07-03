@@ -19,7 +19,7 @@ DIR = os.path.dirname(__file__)
 class TestXFormBridge(unittest.TestCase):
 
     def setUp(self):
-        self.test_data = os.path.join(DIR, 'testdata')
+        self.test_data = os.path.join(DIR, '../../../datawinners/blue/test/testdata')
         self.UNSUPPORTED_FIELDS = os.path.join(self.test_data,'unsupported_field.xls')
         self.INVALID_FIELDS = os.path.join(self.test_data,'invalid_field.xls')
         self.CASCADE = os.path.join(self.test_data,'cascade.xls')
@@ -33,17 +33,17 @@ class TestXFormBridge(unittest.TestCase):
         self.NAME_SPACE = os.path.join(self.test_data,'xpath-sample.xml')
         self.user = User.objects.get(username="tester150411@gmail.com")
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_throw_error_for_unsupported_valid_field_type(self):
         with self.assertRaises(TypeNotSupportedException):
             XlsFormParser(self.UNSUPPORTED_FIELDS).parse()
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_throw_error_for_invalid_field_type(self):
         with self.assertRaises(Exception):
             XlsFormParser(self.INVALID_FIELDS).parse()
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_convert_cascaded_select_field(self):
         xform, json_xform_data = XlsFormParser(self.CASCADE).parse()
         expected_json = [{'code': 'name', 'name': 'What is your name?', 'title': 'What is your name?', 'required': False,
@@ -59,7 +59,7 @@ class TestXFormBridge(unittest.TestCase):
 
         self.assertEqual(expected_json, json_xform_data)
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_create_project_using_xlsform_file(self):
         xform, json_xform_data = XlsFormParser(self.ALL_FIELDS).parse()
 
@@ -69,7 +69,7 @@ class TestXFormBridge(unittest.TestCase):
         self.assertIsNotNone(id)
         self.assertIsNotNone(name)
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_convert_skip_logic_question(self):
         xform_as_string, json_xform_data = XlsFormParser(self.SKIP).parse()
         mangroveService = MangroveService(self.user, xform_as_string, json_xform_data)
@@ -78,7 +78,7 @@ class TestXFormBridge(unittest.TestCase):
         self.assertIsNotNone(id)
         self.assertIsNotNone(name)
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_convert_multi_select_question(self):
         xform_as_string, json_xform_data = XlsFormParser(self.MULTI_SELECT).parse()
         mangroveService = MangroveService(self.user, xform_as_string, json_xform_data)
@@ -92,7 +92,7 @@ class TestXFormBridge(unittest.TestCase):
         pass
 
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_all_fields_types_in_xlsform_is_converted_to_json(self):
 
         xform, json_xform_data = XlsFormParser(self.ALL_FIELDS).parse()
@@ -133,7 +133,7 @@ class TestXFormBridge(unittest.TestCase):
         self.assertEqual(expected_json, json_xform_data)
         self.assertIsNotNone(xform)
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_sequence_of_the_fields_in_form_model_should_be_same_as_in_xlsform(self):
 
         xform_as_string, json_xform_data = XlsFormParser(self.MANY_FIELD).parse()
@@ -151,7 +151,7 @@ class TestXFormBridge(unittest.TestCase):
         r.append(children_code)
         return r
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_sequence_of_the_mixed_type_fields_in_from_model_should_be_same_as_xlsform(self):
         parser = XlsFormParser(self.REPEAT)
 
@@ -164,7 +164,7 @@ class TestXFormBridge(unittest.TestCase):
                           ['house',['name','room','numberofrooms']]]
         self.assertEqual(names, expected_names)
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_xform_is_the_default_namespace(self):
         # while parsing submission we assume that xform element without namespace since being default.
         xform_as_string = open(self.NAME_SPACE, 'r').read()
@@ -186,7 +186,7 @@ class TestXFormBridge(unittest.TestCase):
         element_text = root.findall(element_path)[0].text
         return element_text
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_add_form_code_and_bind_element_to_xform(self):
         xform_as_string = open(self.NAME_SPACE, 'r').read()
         expected_form_code = '022-somthing-making-it-unique-in-xml'
@@ -197,7 +197,7 @@ class TestXFormBridge(unittest.TestCase):
         form_code = self._find_in_instance(updated_xform, 'form_code')
         self.assertEqual(form_code, expected_form_code)
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_verify_xform_is_stored_when_project_created(self):
 
         manager = get_database_manager(self.user)
@@ -214,7 +214,7 @@ class TestXFormBridge(unittest.TestCase):
         from_model = get_form_model_by_code(mgr, questionnaire_code)
         self.assertIsNotNone(from_model.xform)
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_verify_repeat_field_added_to_questionnaire(self):
         xform_as_string, json_xform_data = XlsFormParser(self.REPEAT).parse()
         mangroveService = MangroveService(self.user, xform_as_string, json_xform_data)
@@ -244,7 +244,7 @@ class TestXFormBridge(unittest.TestCase):
     # def test_form_model_has_fields_list_for_repeat_question(self):
     #     pass
 
-    @attr('dcs')
+    @attr('dcs', 'functional_test')
     def test_should_verify_field_is_not_mandatory_when_required_is_not_specified(self):
         xform, json_xform_data = XlsFormParser(self.REQUIRED).parse()
         root = ET.fromstring(xform)
