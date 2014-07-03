@@ -3,6 +3,11 @@
 // which could pollute the global namespace and make path for conflicting between the variable/function/method names, which would make debugging tough.
 var DW = {};
 
+$.ajaxSetup ({
+    // Disable caching of AJAX responses
+    cache: false
+});
+
 $(document).ready(function() {
 
     DW.flash_message = function() {
