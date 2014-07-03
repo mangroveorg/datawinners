@@ -11,6 +11,7 @@ function AccountWideSmsViewModel() {
         if (!self.isValid() || !self.isMessageModified()) return;
         DW.loading();
         self.saveButtonText(gettext("Saving..."));
+        self.resetModifiedFlagForAllMessages();
         $.post(post_url, {
                 'data': JSON.stringify(ko.toJS(self)),
                 'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
@@ -24,9 +25,7 @@ function AccountWideSmsViewModel() {
                     });
 
                     resetAccountMsgWarningDisplay();
-                    self.resetModifiedFlag();
                     self.messagesInitialState(ko.toJSON(self.messages()));
-                    self.isMessageModified(false);
                     if (typeof callback == "function") callback();
                 }
                 else {
