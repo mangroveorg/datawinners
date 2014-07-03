@@ -2908,9 +2908,6 @@ msgstr "Efa tratra ny fetran'ny fandefasanao maimaimpoana 1000. Azafady, misorat
 msgid "more_wrong_question"
 msgstr "ny hafa"
 
-msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
-msgstr "Diso. Tsy mbola voasoratra ho mpandefa antotanisa ianao. Azafady anontanio ny mpikarakara fanadihadiana."
-
 msgid "Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}"
 msgstr "Misaotra {<{Name of Data Sender}>}. Voarainay ny SMS-nao: {<{List of Answers}>}"
 
