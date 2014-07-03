@@ -4907,7 +4907,7 @@ msgid "Question Numbers for Wrong Answer(s)"
 msgstr "Numéro(s) de la(des) Question(s) correspondant à la(aux) Réponse(s) Incorrecte(s)"
 
 msgid "Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}"
-msgstr "Merci. {<{Name of Data Sender}>}. Nous avons recu votre SMS: {<{List of Answers}>}"
+msgstr "Merci {<{Name of Data Sender}>}. Nous avons recu votre SMS: {<{List of Answers}>}"
 
 msgid "Error. Questionnaire Code {<{Submitted Questionnaire Code}>} is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code."
 msgstr "Erreur. Le code Questionnaire {<{Submitted Questionnaire Code}>} est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code."
