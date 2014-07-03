@@ -31,7 +31,7 @@ def log_sms(to_tel, from_tel, message, organization, message_id, transport_name,
 
 class SMSClient(object):
 
-    def send_sms(self,from_tel,to_tel, message, message_type="Unknown"):
+    def send_sms(self,from_tel, to_tel, message, message_type="Unknown"):
         message = strip_accents(message)
         if is_not_empty(from_tel):
             organization_setting = OrganizationFinder().find_organization_setting(from_tel)
@@ -53,8 +53,7 @@ class SMSClient(object):
             else:
                 try:
                     client = VumiClient(None, None, connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
-                    client.debug = True
-                    resp = client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))
+                    resp = client.send_sms(to_msisdn=to_tel, from_msisdn=from_tel, message=message.encode('utf-8'))
                     response_object = json.loads(resp.content)
                     if (response_object):
                         log_sms(to_tel, from_tel, message, organization_setting.organization,
