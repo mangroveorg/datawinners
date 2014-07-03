@@ -43,6 +43,6 @@ django-urlmiddleware
 celery
 flower
 urllib3
--e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@merged-dcs#egg=mangrove
 pyxform
 xmltodict==0.8.6
