@@ -44,7 +44,8 @@ def get_driver_for_browser(browser):
         capabilities = dict(DesiredCapabilities.CHROME, **{
             'chrome.switches': ["--incognito"]
         })
-        driver = webdriver.Chrome(desired_capabilities=capabilities)
+        driver = webdriver.Chrome(executable_path='/home/ashwin/Downloads/chromedriver',
+                                  desired_capabilities=capabilities)
     elif browser == "htmlunit":
         driver = webdriver.Remote()
     elif browser == "phantom":
