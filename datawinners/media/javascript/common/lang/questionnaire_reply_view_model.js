@@ -34,8 +34,9 @@ function QuestionnaireReplyViewModel() {
 
     self.save = function (callback) {
         if (!self.isValid() || !self.isMessageModified()) return;
-        DW.loading();
         self.saveButtonText(gettext("Saving..."));
+        self.resetModifiedFlagForAllMessages();
+        DW.loading();
         $.post(post_url, {
                 'data': JSON.stringify(ko.toJS(languageViewModel)),
                 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
@@ -50,8 +51,6 @@ function QuestionnaireReplyViewModel() {
 
                     displaySuccessMessage(data);
                     self.messagesInitialState(ko.toJSON(self.messages()));
-                    self.resetModifiedFlag();
-                    self.isMessageModified(false);
                     if (typeof callback == "function") callback();
                 } else {
                     var initialState = data.messages;
@@ -62,6 +61,7 @@ function QuestionnaireReplyViewModel() {
                     $(".TextTags").each(function (i, tag) {
                         $(tag).TextNTags("create", self.messages()[i].message());
                     });
+
                 }
             });
 

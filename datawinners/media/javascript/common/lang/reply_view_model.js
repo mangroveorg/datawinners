@@ -31,7 +31,7 @@ function ReplyMessageViewModel(){
     self.resetModifiedFlagForAllMessages = function(){
         self.resetModifiedFlag();
         self.isMessageModified(false);
-    }
+    };
 
     self.resetChanges = function(){
         if(!self.isMessageModified()){

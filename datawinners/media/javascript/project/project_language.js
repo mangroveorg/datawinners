@@ -3,6 +3,7 @@ function ProjectLanguageViewModel(){
 
   self.available_languages = [];
   self.enable_sms_replies = ko.observable(true);
+  self.isSaveDisabled = ko.observable(false);
 
   self.is_outgoing_sms_disabled = ko.computed(function(){
       return !self.enable_sms_replies();
@@ -33,6 +34,7 @@ function ProjectLanguageViewModel(){
         'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
       };
       self.save_text(gettext('Saving...'));
+      self.isSaveDisabled(true);
       DW.loading();
       $.ajax({
           type: "POST",
@@ -49,6 +51,7 @@ function ProjectLanguageViewModel(){
               }
               else{
                 flash_message("#flash-message-section", "Save Failed!", false);
+                self.isSaveDisabled(false);
               }
           },
           dataType: 'json'
