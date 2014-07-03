@@ -43,7 +43,7 @@ class SMSClient(object):
             if smsc is None:
                 logger.error("No SMSC configured for %s" % organization_setting.organization.org_id)
                 raise NoSMSCException()
-            socket.setdefaulttimeout(10)
+            socket.setdefaulttimeout(120)
             logger.debug("Posting sms to %s" % settings.VUMI_API_URL)
             if settings.USE_NEW_VUMI:
                 client = VumiApiClient(connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
@@ -61,6 +61,9 @@ class SMSClient(object):
                     return True
                 except (URLError, VumiInvalidDestinationNumberException) as err:
                     logger.exception('Unable to send sms. %s' %err)
+                    return False
+                except socket.timeout:
+                    logger.exception('Request timed-out. Organization: %s, From: %s, To: %s.' % (organization_setting, from_tel, to_tel))
                     return False
         return False
 
