@@ -329,6 +329,7 @@ def broadcast_message(request, project_id):
                                        'is_quota_reached': is_quota_reached(request, organization=organization),
                                        "form": form, "account_type": account_type,
                                        "ong_country": organization.country, "no_smsc": no_smsc,
+                                       'questionnaire_code': questionnaire.form_code,
                                        'failed_numbers': ",".join(failed_numbers), "success": success},
                                       context_instance=RequestContext(request))
 
@@ -336,6 +337,7 @@ def broadcast_message(request, project_id):
                                   {'project': questionnaire,
                                    "project_links": make_project_links(questionnaire), "form": form,
                                    'is_quota_reached': is_quota_reached(request, organization=organization),
+                                   'questionnaire_code': questionnaire.form_code,
                                    'success': None, "ong_country": organization.country},
                                   context_instance=RequestContext(request))
 
