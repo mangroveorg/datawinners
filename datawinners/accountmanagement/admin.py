@@ -420,15 +420,13 @@ def _remove_default_name_fields():
 def export_user_list_to_excel(a,b,c):
     #Custom Method to export user details.
     def is_required(user):
-        return False if user.groups.filter(name="Data Senders").count() or user.groups.filter(name="SMS API Users").count() else True
+        return True if user.groups.filter(name="NGO Admins").count() or user.groups.filter(name="Project Managers").count() else False
 
     def user_role(user):
         if user.groups.filter(name='NGO Admins').count():
             return 'Admin'
         elif user.groups.filter(name='Project Managers').count():
             return 'User'
-        else:
-            return 'Other'
 
     list = []
     for ngo_user in NGOUserProfile.objects.all():
