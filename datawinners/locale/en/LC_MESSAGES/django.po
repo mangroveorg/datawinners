@@ -4533,8 +4533,6 @@ msgstr ""
 msgid "Instructions for Data Senders"
 msgstr ""
 
-msgid "Finish your questionnaire, then register each person, place or thing you want to collect data about with its own Identification Number (example: register your primary schools)."
-msgstr ""
 
 msgid "Data Senders must use Identification Numbers that are already registered in Datawinners."
 msgstr ""
