@@ -11,6 +11,7 @@ from django.contrib import messages
 from datawinners.accountmanagement.decorators import session_not_expired, is_datasender, is_not_expired
 from datawinners.common.lang.utils import get_available_project_languages
 from datawinners.main.database import get_database_manager
+from datawinners.project.helper import is_project_exist
 from datawinners.project.models import Project
 from datawinners.project.utils import make_project_links
 
@@ -53,5 +54,6 @@ class QuestionnaireLanguageView(TemplateView):
     @method_decorator(session_not_expired)
     @method_decorator(is_datasender)
     @method_decorator(is_not_expired)
+    @method_decorator(is_project_exist)
     def dispatch(self, *args, **kwargs):
         return super(QuestionnaireLanguageView, self).dispatch(*args, **kwargs)
