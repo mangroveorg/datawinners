@@ -56,8 +56,7 @@ def create_questionnaire(post, manager, name, language, reporter_id):
     return questionnaire
 
 
-def update_questionnaire(questionnaire, post, manager, language):
-    questionnaire.activeLanguages = [language]
+def update_questionnaire(questionnaire, post, manager):
     questionnaire.form_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
@@ -196,8 +195,7 @@ def edit_project(request, project_id):
             old_fields = questionnaire.fields
             old_form_code = questionnaire.form_code
             old_field_codes = questionnaire.field_codes()
-            questionnaire = update_questionnaire(questionnaire, request.POST, manager,
-                                                 request.LANGUAGE_CODE)
+            questionnaire = update_questionnaire(questionnaire, request.POST, manager)
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
             questionnaire.save()
