@@ -867,6 +867,12 @@ msgstr "Ajouter des Expéditeurs maintenant"
 msgid "(Optional)"
 msgstr "(Optionnel)"
 
+msgid "optional"
+msgstr "optionnel"
+
+msgid "Choose the language of your "
+msgstr "Choisissez la langue pour votre "
+
 msgid "Add Data Senders Manually"
 msgstr "Ajouter des Expéditeurs de Données Manuellement"
 
