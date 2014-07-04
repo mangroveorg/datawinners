@@ -85,7 +85,7 @@
                     </h6>
                     <div style="margin-bottom: 2px" class="help_accordion">
                         {% trans "Choose the language of your reply SMS. View and add new languages on the "%}
-                        <a href='/customizemessages' data-bind="css: {'disable_link': is_outgoing_sms_disabled }">{% trans "language page link" %}.</a>
+                        <a href='/customizemessages' data-bind="css: {'disable_link': is_outgoing_sms_disabled }, disable: is_outgoing_sms_disabled">{% trans "language page link" %}.</a>
                     </div>
                 <select id="project_language" name="project_language" class="dropdown_style"
                         data-bind="enable:enable_sms_replies, options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
