@@ -2,7 +2,9 @@ $.widget("dw.TextNTags", {
     options: {
         plainText: '',
         openingTag: '{<{',
+        openingTagEncoded: '{&lt;{',
         closingTag: '}>}',
+        closingTagEncoded: '}&gt;}',
         contentChangedHandler: function () {
         }
     },
@@ -28,14 +30,15 @@ $.widget("dw.TextNTags", {
 
     setText: function (plainText){
         var self = this;
-        var regexPattern = new RegExp("\\"+ self.options.openingTag +"(.*?)\\" + self.options.closingTag, 'gi');
+        var regexPattern = new RegExp("\\"+ self.options.openingTagEncoded +"(.*?)\\" + self.options.closingTagEncoded, 'gi');
+        var encodedText = safe_tags_replace(plainText);
 
-        self.tags = plainText.match(regexPattern) || [];
-        var styledText = plainText;
+        self.tags = encodedText.match(regexPattern) || [];
+        var styledText = encodedText;
         if(self.tags){
             $.each(self.tags, function(i, tag){
-                var tagValue = _.str.ltrim(tag, self.options.openingTag);
-                var tagValue = _.str.rtrim(tagValue, self.options.closingTag);
+                var tagValue = _.str.ltrim(tag, self.options.openingTagEncoded);
+                var tagValue = _.str.rtrim(tagValue, self.options.closingTagEncoded);
                 var translated_tag = gettext(tagValue);
                 styledText = styledText.replace(tag, '<span class="tags" data-tag="'+ tagValue +'">' + translated_tag + '</span>');
                 self.tags[i] = translated_tag;
@@ -159,6 +162,20 @@ $.widget("dw.TextNTags", {
         return textCount + tagsCount * 15;
     }
 });
+
+var tagsToReplace = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;'
+};
+
+function replaceTag(tag) {
+    return tagsToReplace[tag] || tag;
+}
+
+function safe_tags_replace(str) {
+    return str.replace(/[&<>]/g, replaceTag);
+}
 
 function isCharacterKeyPress(evt) {
     if (typeof evt.which == "undefined") {
