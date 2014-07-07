@@ -186,7 +186,7 @@ function isCharacterKeyPress(evt) {
         // only greater than zero if the keypress is a printable key.
         // We need to filter out backspace and ctrl/alt/meta key combinations
         // 37-40 (left, top , right, down)
-        return !evt.ctrlKey && !evt.metaKey && !evt.altKey && evt.which != 8 && evt.which != 46 && !(evt.which >= 37 && evt.which <=40);
+        return !evt.ctrlKey && !evt.metaKey && evt.which != 8 && evt.which != 46 && !(evt.which >= 37 && evt.which <=40);
     }
     return false;
 }
