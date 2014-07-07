@@ -108,6 +108,7 @@ function initializeWarningDialog() {
         link_selector: "#cancel_changes",
         dialogDiv: "#revert_changes_warning",
         cancelLinkSelector :"#keep_changes",
+        width: 580,
         openPredicate: function(){return accountWideSmsViewModel.isMessageModified();}
     };
     new DW.Dialog(cancelPopupOptions).init().initializeLinkBindings();
