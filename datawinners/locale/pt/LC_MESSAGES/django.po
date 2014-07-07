@@ -1685,7 +1685,7 @@ msgstr ""
 msgid "%s already registered as a subject type."
 msgstr ""
 
-msgid "Entity with Unique Identification Number (ID) = %s already exists."
+msgid "Unique Identification Number (ID) = %s already exists."
 msgstr ""
 
 msgid "answer"

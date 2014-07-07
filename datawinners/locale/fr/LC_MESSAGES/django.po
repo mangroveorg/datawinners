@@ -1747,8 +1747,8 @@ msgstr "Le type de sujet %s existe déja. Veuillez choisir %s dans la liste dér
 msgid "%s already exists."
 msgstr "%s existe déja."
 
-msgid "Entity with Unique Identification Number (ID) = %s already exists."
-msgstr "Une entité avec le numéro d'identification unique (ID) =% s existe déjà."
+msgid "Unique Identification Number (ID) = %s already exists."
+msgstr "Ny lohahevitra manana ny kaody (ID) = %s dia efa misy."
 
 msgid "answer"
 msgstr "réponse"

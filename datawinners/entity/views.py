@@ -530,7 +530,7 @@ def create_subject(request, entity_type=None):
             message = exception_messages.get(DataObjectNotFound).get(WEB)
             error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
         except DataObjectAlreadyExists as exception:
-            error_message = _("Entity with Unique Identification Number (ID) = %s already exists.") % exception.data[1]
+            error_message = _("Unique Identification Number (ID) = %s already exists.") % exception.data[1]
         except Exception as exception:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 

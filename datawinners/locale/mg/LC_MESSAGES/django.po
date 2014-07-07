@@ -1529,7 +1529,7 @@ msgstr ""
 "Diso: Misy diso ny zavatra nalefanao. Jereo ny taratasim-panontaniana. "
 "Avereno averina ny kaody ID ny fanontaniana sy ny valiny hoan'i %s"
 
-msgid "Entity with Unique Identification Number (ID) = %s already exists."
+msgid "Unique Identification Number (ID) = %s already exists."
 msgstr "Ny lohahevitra manana ny kaody (ID) =%s dia efa misy."
 
 msgid "answer"
