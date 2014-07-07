@@ -1,19 +1,20 @@
 from collections import OrderedDict
 import mangrove.errors.MangroveException as ex
-from django.utils.translation import get_language, gettext as _, activate
+from django.utils.translation import get_language, gettext as activate, ugettext
+
 
 def data_object_not_found_formatter(exception, message):
-    return message % (exception.data[0].capitalize(), _(exception.data[1]), str(exception.data[2]))
+    return message % (exception.data[0].capitalize(), ugettext(exception.data[1]), exception.data[2])
 
 
 def default_formatter(exception, message):
     return message
 
 def incorrect_date_formatter(exception, message):
-    return message % (str(exception.data[1]), exception.data[0], exception.data[2])
+    return message % (exception.data[1], exception.data[0], exception.data[2])
 
 def invalid_answer_formatter(exception, message):
-    return message % (str(exception.data[1]), exception.data[0])
+    return message % (exception.data[1], exception.data[0])
 
 def datasender_not_linked_formatter(exception, message):
     return message.decode('utf-8') % (exception.data[0].capitalize(), exception.data[1])
@@ -57,7 +58,7 @@ class TranslationProcessor(object):
                 if message is None:
                     error_msg_dict.update({'%s%s' % (language, index +1): e.message})
                     continue
-                translated_message = _(message)
+                translated_message = ugettext(message)
                 formatted_message = formatter(e, translated_message)
                 if index == len(self.validation_exception) -1 and \
                     existing_language.index(language) != len(existing_language)-1:

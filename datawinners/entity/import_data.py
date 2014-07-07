@@ -56,7 +56,6 @@ class FilePlayer(Player):
         self.parser = parser
         self.channel_name = channel_name
         self.form_code = None
-        self.logger = logging.getLogger("websubmission")
 
     @classmethod
     def build(cls, manager, extension, default_parser=None, form_code=None):
@@ -150,7 +149,6 @@ class FilePlayer(Player):
             if filter(lambda x: len(x), values.values()).__len__() == 0:
                 raise EmptyRowException()
             values = self._process(form_model, values)
-            log_entry = "message: " + str(values) + "|source: web|"
             if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
                 response = self._import_data_sender(form_model, organization, values)
             else:
@@ -159,15 +157,9 @@ class FilePlayer(Player):
 
             if not response.success:
                 response.errors = dict(error=response.errors, row=values)
-                log_entry += "Status: False"
-            else:
-                log_entry += "Status: True"
-            self.logger.info(log_entry)
+
             return response
         except DataObjectAlreadyExists as e:
-            if self.logger is not None:
-                log_entry += "Status: False"
-                self.logger.info(log_entry)
             return self._appendFailedResponse(_("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1]),
                                                 values=values)
         except EmptyRowException as e:
