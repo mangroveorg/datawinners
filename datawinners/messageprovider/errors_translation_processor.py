@@ -1,6 +1,6 @@
 from collections import OrderedDict
 import mangrove.errors.MangroveException as ex
-from django.utils.translation import get_language, gettext as activate, ugettext
+from django.utils.translation import get_language, ugettext, activate
 
 
 def data_object_not_found_formatter(exception, message):
