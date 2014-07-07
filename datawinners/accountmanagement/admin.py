@@ -439,12 +439,13 @@ def export_user_list_to_excel(a,b,c):
                 org_id = ngo_user.org_id
                 organization = Organization.objects.get(org_id = org_id)
                 details.append(organization.name)
+                details.append(organization.status)
                 details.append(organization.language)
                 details.append(user_role(user))
                 list.append(details)
         except Exception:
             continue
-    headers = ['Name', 'email', 'Organization Name', 'Account language','User Role']
+    headers = ['Name', 'email', 'Organization Name', 'Status', 'Account language','User Role']
     response = create_excel_response(headers,list,'user_list')
     return response
 
