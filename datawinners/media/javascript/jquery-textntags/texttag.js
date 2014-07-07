@@ -75,7 +75,7 @@ $.widget("dw.TextNTags", {
         .on('blur keyup', function (e) {
 
                 if ($(el).find('span.tags').text() != self.tags.join("").replace(new RegExp(self.options.openingTag, 'g'), '').replace(new RegExp(self.options.closingTag, 'g'), '')) {
-                    var after = $(el).html();
+                    var after = $(el).html().replace("<br>", "");
                     var start, end;
                     for(start = 0; start < before.length && start < after.length; start++){
                         if(before[start]!=after[start]){
