@@ -56,7 +56,7 @@ class XFormWebSubmissionHandler():
 
         self.organization.increment_message_count_for(incoming_sp_count=1)
         content = json.dumps({'submission_uuid':response.survey_response_id,
-                              'version':'sv1',
+                              'version': response.version,
                               'created':py_datetime_to_js_datestring(response.created)})
         success_response = HttpResponse(content, status=201)
         success_response['submission_id'] = response.survey_response_id
