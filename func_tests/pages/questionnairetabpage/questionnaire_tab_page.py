@@ -59,7 +59,7 @@ class QuestionnaireTabPage(Page):
 
 
     def get_questionnaire_title(self):
-        return self.driver.find_text_box(by_css(".project_title")).text
+        return self.driver.find_text_box(by_id("questionnaire_title")).text
 
 
     def get_existing_question_list(self):
@@ -354,6 +354,10 @@ class QuestionnaireTabPage(Page):
 
         return self.driver.find_element_by_css_selector(".select_question_message").text
 
+    def get_select_or_edit_question_message_visibility(self):
+
+        return self.driver.find_element_by_css_selector(".select_question_message")
+
 
     def navigate_to_previous_step(self):
         """
@@ -629,8 +633,12 @@ class QuestionnaireTabPage(Page):
         return self._get_validation_message_for("choice_validation_message%d" % (index-1))
 
     def get_duplicate_questionnaire_code_error_message(self):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#project-message-label .error_message"))
-        return self.driver.find_element_by_css_selector("#project-message-label .error_message").text
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#questionnaire_code_validation_message"))
+        return self.driver.find_element_by_css_selector("#questionnaire_code_validation_message").text
+
+    def get_duplicate_questionnaire_title_error_message(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#questionnaire_title_validation_message"))
+        return self.driver.find_element_by_css_selector("#questionnaire_title_validation_message").text
 
     def get_unique_id_error_msg(self):
         return self._get_validation_message_for("unique_id_type_validation_message")

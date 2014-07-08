@@ -1,4 +1,5 @@
 from framework.utils.data_fetcher import from_, fetch_
+from pages.AutomaticReplySmsPage.automatic_reply_sms_page import AutomaticReplySmsPage
 from pages.page import Page
 from pages.reminderpage.all_reminder_locator import WARNING_MESSAGE_LABEL, SENT_REMINDERS_LINK
 from pages.reminderpage.reminder_settings_locator import *
@@ -6,6 +7,7 @@ from datawinners.project.models import Reminder
 from tests.remindertests.reminder_data import *
 from tests.testsettings import UI_TEST_TIMEOUT
 
+REPLY_SMS_LINK = by_css('#reply_sms_tab')
 
 class ReminderSettingsPage(Page):
     def __init__(self, driver):
@@ -122,6 +124,10 @@ class ReminderSettingsPage(Page):
 
     def save_reminders(self):
         self.driver.find(SAVE_BUTTON).click()
+
+    def navigate_to_automatic_reply_sms_page(self):
+        self.driver.find(REPLY_SMS_LINK).click()
+        return AutomaticReplySmsPage(self.driver)
 
     def get_success_message(self):
         return self.driver.find(SUCCESS_MESSAGE_LABEL).text
