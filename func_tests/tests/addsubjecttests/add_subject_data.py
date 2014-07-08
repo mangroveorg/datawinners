@@ -51,7 +51,7 @@ EXISTING_SHORT_CODE = {ENTITY_TYPE: "clinic",
                        GEO_CODE: "-19.316667 46.633333",
                        MOBILE_NUMBER: "34567890",
                        SUB_UNIQUE_ID: "CID001",
-                       ERROR_MSG: "Entity with Unique Identification Number (ID) = cid001 already exists."}
+                       ERROR_MSG: "Unique Identification Number (ID) = cid001 already exists."}
 
 WITHOUT_LOCATION_NAME = {ENTITY_TYPE: "clinic",
                          SUB_FIRST_NAME: "Clinic Without Location",
