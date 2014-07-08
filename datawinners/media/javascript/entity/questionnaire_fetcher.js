@@ -92,7 +92,6 @@ DW.QuestionnaireFetcher = function(){
 
    this._getQuestionnaire = function(questionnaireId, mapFunction){
         var defd = $.Deferred();
-        //if (typeof mapFunction != "function" ) mapFunction = function(data){return data};
 
         if(!questionnaireDataCache[questionnaireId])
         {

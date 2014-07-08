@@ -51,7 +51,8 @@ def create_questionnaire(post, manager, name, language, reporter_id):
 
     QuestionnaireBuilder(questionnaire, manager)\
         .update_questionnaire_with_questions(question_set)\
-        .update_reminder(json.loads(post.get('reminder_and_deadline', '{}')))
+        .update_reminder(json.loads(post.get('reminder_and_deadline', '{}')))\
+        .update_outgoing_sms_enabled_flag(post.get('is_outgoing_sms_enabled', 'true'))
 
     return questionnaire
 

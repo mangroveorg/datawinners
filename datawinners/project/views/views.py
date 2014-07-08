@@ -437,6 +437,7 @@ def get_questionnaire_ajax(request, project_id):
                                        'name': project.name,
                                        'language': project.language,
                                        'questions': existing_questions,
+                                       'is_outgoing_sms_enabled': project.is_outgoing_sms_replies_enabled,
                                        'datasenders': project.data_senders,
                                        'reminder_and_deadline': project.reminder_and_deadline
                                    }, default=field_to_json), content_type='application/json')

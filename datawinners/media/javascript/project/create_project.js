@@ -29,6 +29,7 @@ DW.post_project_data = function (callback) {
         if (typeof original_questionnaire != "undefined"){
             post_data["datasenders"] = JSON.stringify(original_questionnaire.datasenders);
             post_data["reminder_and_deadline"] = JSON.stringify(original_questionnaire.reminder_and_deadline);
+            post_data["is_outgoing_sms_enabled"] = original_questionnaire.is_outgoing_sms_enabled;
         }
 
         $.post(post_url , post_data).done(function(response){
