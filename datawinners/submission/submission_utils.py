@@ -1,17 +1,14 @@
 from django.utils import translation
-from datawinners.messageprovider.handlers import data_sender_not_linked_handler, data_sender_not_registered_handler
+
+from datawinners.messageprovider.handlers import data_sender_not_linked_handler
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
-from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
 from mangrove.errors.MangroveException import DatasenderIsNotLinkedException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
 from mangrove.transport.contract.response import Response
 from mangrove.form_model.form_model import EntityFormModel
-
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
-from datawinners.messageprovider.messages import get_datasender_not_linked_to_project_error_message
-from datawinners.messageprovider.handlers import create_failure_log
 from datawinners.project.models import Project
 
 
@@ -94,7 +91,6 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
     def _get_response(self, form_code):
         response = Response(reporters=[], survey_response_id=None, exception=self._get_exception())
         response.success = True
-        response.errors = get_datasender_not_linked_to_project_error_message()
         response.errors = data_sender_not_linked_handler(self.dbm, self.request, form_code=form_code)
         return response
 

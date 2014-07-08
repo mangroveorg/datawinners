@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from datawinners.accountmanagement.models import OrganizationSetting, DataSenderOnTrialAccount
-from datawinners.messageprovider.messages import NOT_AUTHORIZED_DATASENDER_MSG
+from datawinners.messageprovider.messages import NOT_REGISTERED_DATASENDER_MSG
 
 
 class OrganizationFinder(object):
@@ -20,7 +20,7 @@ class OrganizationFinder(object):
             record = DataSenderOnTrialAccount.objects.get(mobile_number=from_number)
             organization_settings = OrganizationSetting.objects.get(organization=record.organization)
         except ObjectDoesNotExist:
-            return None, NOT_AUTHORIZED_DATASENDER_MSG
+            return None, NOT_REGISTERED_DATASENDER_MSG
         return organization_settings.organization, None
 
 
