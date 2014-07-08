@@ -153,10 +153,12 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
     def __init__(self, request, project_id=None, submissionProcessor=None):
         SurveyWebQuestionnaireRequest.__init__(self, request, project_id)
         self.submissionProcessor = submissionProcessor
+        self.is_data_sender = request.user.get_profile().reporter
 
     @property
     def template(self):
-        return 'project/xform_web_questionnaire.html'
+        return 'project/xform_web_questionnaire_datasender.html' if self.is_data_sender \
+            else 'project/xform_web_questionnaire.html'
 
     def response_for_get_request(self, initial_data=None, is_update=False):
         dashboard_page = settings.HOME_PAGE + "?deleted=true"

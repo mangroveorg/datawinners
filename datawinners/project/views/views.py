@@ -598,6 +598,8 @@ class SurveyWebQuestionnaireRequest():
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
         if self.questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
+        if self.questionnaire.xform:
+            return HttpResponseRedirect(reverse('xform_web_questionnaire', args=[self.questionnaire.id]))
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, is_update)
@@ -605,6 +607,7 @@ class SurveyWebQuestionnaireRequest():
             'is_quota_reached': is_quota_reached(self.request),
             'questionnaire_code': self.questionnaire.form_code,
             'is_datasender': self.is_data_sender,
+            'is_advance_questionnaire': False,
         })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
