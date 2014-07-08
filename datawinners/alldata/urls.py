@@ -7,6 +7,7 @@ from datawinners.alldata.views import failed_submissions
 
 urlpatterns = patterns('',
     url(r'^alldata/$', index, name="alldata_index"),
+    url(r'^project/$', index),
     (r'^questionnaire/entities/(?P<entity_type>.+?)/$', get_entity_list_by_type),
     (r'^alldata/reports/$', reports),
     (r'^allfailedsubmissions/$', failed_submissions),
