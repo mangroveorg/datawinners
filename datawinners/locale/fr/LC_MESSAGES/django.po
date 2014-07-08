@@ -2104,13 +2104,13 @@ msgstr "Période"
 
 msgid "tooltip_error_language"
 msgstr "Les Expéditeurs de Données reçoivent une réponse SMS automatique de DataWinners après chaque Soumission.\
- Il y a deux types de réponse SMS : Par rapport au Questionnaire (Exemple : «Merci David. Nous avons reçu votre SMS») \
- Par rapport au compte (Exemple : «Erreur. Vous n'êtes pas enregistré comme Expéditeurs de Données. \
+ Il y a deux types de réponse SMS : 1) Par rapport au Questionnaire (Exemple : «Merci David. Nous avons reçu votre SMS») et; \
+ 2) Par rapport au compte (Exemple : «Erreur. Vous n'êtes pas enregistré comme Expéditeurs de Données. \
  Veuillez contacter votre superviseur»).Sélectionnez la langue de votre choix pour les réponses SMS relatives au Questionnaire ici.\
   Vous pouvez choisir la langue pour les réponses SMS sur la page Langues."
 
 msgid "tooltip_language_checkbox"
-msgstr "Positionnez ce bouton vers \"ARRET\" et cliquez sur le bouton \"Enregistrer\" pour désactiver l'envoi de  messages de retour automatiques pour ce Questionnaire, par DataWinners. <br /> Positionnez ce bouton sur \"MARCHE\" et cliquez sur le bouton \"Enregistrer\" pour réactiver."
+msgstr "Cliquez sur le fond bleu pour positionner ce bouton sur \"OFF\" (arret) et cliquez sur le bouton \"Enregistrer\" pour désactiver l'envoi de messages de retour automatiques pour ce Questionnaire. <br /> Cliquez sur le fond gris pour positionner ce bouton sur \"ON\" (marche) et cliquez sur \"Enregistrer\" pour réactiver."
 
 msgid "Your project"
 msgstr "Vos projet"
