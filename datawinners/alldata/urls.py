@@ -6,9 +6,9 @@ from datawinners.alldata.views import index, reports
 from datawinners.alldata.views import failed_submissions
 
 urlpatterns = patterns('',
-    url(r'^questionnaire/$', index, name="alldata_index"),
+    url(r'^alldata/$', index, name="alldata_index"),
     (r'^questionnaire/entities/(?P<entity_type>.+?)/$', get_entity_list_by_type),
-    (r'^questionnaire/reports/$', reports),
+    (r'^alldata/reports/$', reports),
     (r'^allfailedsubmissions/$', failed_submissions),
     url(r'^smartphoneinstruction$', smart_phone_instruction, name="smart_phone_instruction"),
     url(r'^smartphoneinstruction/(?P<project_id>.+?)/$', smart_phone_instruction, name="smart_phone_instruction"),
