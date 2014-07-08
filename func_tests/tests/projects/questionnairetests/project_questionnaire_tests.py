@@ -64,7 +64,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self.assertEqual(questionnaire_tab_page.get_select_or_edit_question_message(),
                          "Add or edit a question",
                          "No question should be selected by default")
-        self.assertIn(EDIT_PROJECT_DATA[PROJECT_NAME], lower(questionnaire_tab_page.get_questionnaire_title()))
+        self.assertIn(EDIT_PROJECT_DATA[PROJECT_NAME], questionnaire_tab_page.get_questionnaire_heading())
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(),
                          len(EDIT_PROJECT_QUESTIONNAIRE_DATA[QUESTIONS]), "Question count does not match")
         expected_existing_questions = [question[QUESTION] for question in EDIT_PROJECT_QUESTIONNAIRE_DATA[QUESTIONS]]
@@ -126,8 +126,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self.global_navigation.navigate_to_dashboard_page()
         self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
         modified_warning_dialog.cancel()
-        self.assertEqual(questionnaire_tab_page.get_questionnaire_title(), self.project_name,
-                         "Should continue to stay on questionnaire page")
+        self.assertEqual(questionnaire_tab_page.get_questionnaire_heading(), self.project_name)
 
     def _verify_edit_dialog_ignore_changes(self, modified_warning_dialog):
         questionnaire_tab_page = self.questionnaire_tab_page
