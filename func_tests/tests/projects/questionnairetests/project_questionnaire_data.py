@@ -176,7 +176,7 @@ QUESTIONS_WITH_INVALID_ANSWER_DETAILS =[
                                          {QUESTION: u"Unique Id question", CODE: u"q8", TYPE: UNIQUE_ID,
                                           NEW_UNIQUE_ID_TYPE: '', EXISTING_UNIQUE_ID_TYPE: ''},
                                          {QUESTION: u"Unique Id question", CODE: u"q8", TYPE: UNIQUE_ID,
-                                          NEW_UNIQUE_ID_TYPE: 'new type'+random_number(3), EXISTING_UNIQUE_ID_TYPE: ''},
+                                          NEW_UNIQUE_ID_TYPE: None, EXISTING_UNIQUE_ID_TYPE: 'Clinic'},
                                      ]
 
 EDIT_PROJECT_DATA = {

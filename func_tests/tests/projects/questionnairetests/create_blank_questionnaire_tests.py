@@ -7,7 +7,7 @@ from pages.projectspage.projects_page import ProjectsPage
 from pages.questionnairetabpage.questionnaire_tab_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
 from tests.projects.questionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, \
-    QUESTIONS_WITH_INVALID_ANSWER_DETAILS, QUESTIONS, DIALOG_PROJECT_DATA, NEW_UNIQUE_ID_TYPE
+    QUESTIONS_WITH_INVALID_ANSWER_DETAILS, QUESTIONS, DIALOG_PROJECT_DATA, NEW_UNIQUE_ID_TYPE, EXISTING_UNIQUE_ID_TYPE
 
 
 class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
@@ -273,7 +273,7 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         self.assertEqual(message, MANDATORY_FIELD_ERROR_MESSAGE, "Error message is incorrect for choice1")
 
     def _validate_duplicate_unique_id(self, create_questionnaire_page):
-        new_type_name = fetch_(NEW_UNIQUE_ID_TYPE, from_(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7]))
+        new_type_name = fetch_(EXISTING_UNIQUE_ID_TYPE, from_(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7]))
 
         create_questionnaire_page.add_new_unique_id_type(new_type_name)
         is_visible, message = create_questionnaire_page.get_new_unique_id_error_msg()

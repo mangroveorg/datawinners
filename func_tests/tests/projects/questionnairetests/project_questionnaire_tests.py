@@ -484,7 +484,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self.assertEqual(message, MANDATORY_FIELD_ERROR_MESSAGE, "Error message is incorrect for choice1")
 
     def _validate_duplicate_unique_id(self, create_questionnaire_page):
-        new_type_name = fetch_(NEW_UNIQUE_ID_TYPE, from_(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7]))
+        new_type_name = fetch_(EXISTING_UNIQUE_ID_TYPE, from_(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7]))
 
         create_questionnaire_page.add_new_unique_id_type(new_type_name)
         is_visible, message = create_questionnaire_page.get_new_unique_id_error_msg()
