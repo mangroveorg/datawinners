@@ -103,13 +103,13 @@ def dashboard(request):
 @valid_web_user
 def start(request):
     text_dict = {'project': _('Questionnaires'), 'datasenders': _('Data Senders'),
-                 'subjects': _('Identification Numbers'), 'alldata': _('Submissions')}
+                 'subjects': _('Identification Numbers'), 'alldata': _('Questionnaires')}
 
     title_dict = {'project': _('Questionnaires'), 'datasenders': _('Data Senders'),
-                 'subjects': _('Identification Numbers'), 'alldata': _('All Data')}
+                 'subjects': _('Identification Numbers'), 'alldata': _('Questionnaires')}
 
     tabs_dict = {'project': 'questionnaires', 'datasenders': 'data_senders',
-                 'subjects': 'subjects', 'alldata': 'all_data'}
+                 'subjects': 'subjects', 'alldata': 'questionnaires'}
     page = request.GET['page']
     page = page.split('/')
     url_tokens = [each for each in page if each != '']
