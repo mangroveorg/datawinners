@@ -105,7 +105,7 @@
                         $(document.body).append('<div id="' + dropdown_id + '" class="dropdown"> <ul class="dropdown-menu"><li class="none-selected disabled"><label>' + select_link_text + '</label><li></ul> </div>');
 
                         $(".checkall-checkbox").parents("th").addClass("checkbox_col");
-
+                        $(".repeat_ans").parents("td").addClass('repeat_ans_style');
                         for (var item = 0; item < actionItems.length; item++) {
                             var item_handler = function (handler) {
                                 return  function (e) {

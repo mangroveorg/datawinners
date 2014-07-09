@@ -109,6 +109,9 @@ ul.dropdown-menu>li.disabled label{
     border: 1px solid #CCCCCC;
     padding: 6px;
 }
+.dataTables_wrapper table td.repeat_ans_style{
+    white-space: nowrap;
+}
 .select_all_message {
     clear: both;
     height: 2em;

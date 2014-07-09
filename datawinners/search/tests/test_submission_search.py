@@ -1,11 +1,14 @@
+from collections import OrderedDict
+import json
 import unittest
 from elasticutils import S, DictSearchResults
 
 from mock import Mock, patch, PropertyMock, MagicMock
 from datawinners.search.index_utils import es_field_name
 
-from datawinners.search.submission_query import SubmissionQuery, SubmissionQueryResponseCreator
-from mangrove.form_model.field import Field, UniqueIdField
+from datawinners.search.submission_query import SubmissionQuery, SubmissionQueryResponseCreator, \
+    _format_fieldset_values_for_representation
+from mangrove.form_model.field import Field, UniqueIdField, TextField, IntegerField, SelectField, FieldSet
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
@@ -44,3 +47,17 @@ class TestSubmissionResponseCreator(unittest.TestCase):
 
         expected = [['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer']]
         self.assertEqual(submissions, expected)
+
+    def test_should_format_multi_field_values_for_repeat(self):
+        field1 = TextField(name='name', code='name', label='wat is ur name')
+        field2 = IntegerField(name='age', code='age', label='wat is ur age')
+        field3 = SelectField(name='languages', code='lang', label='wat languages do you kno',
+                             options=[("English US", "eng"), ("French", "fre"), ("German", "ger"), ("Spanish", "spa")])
+        multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
+                               field_set=[field1, field2, field3])
+        entry = u'[{"name": "messi", "age": "24", "lang": null}, {"name": "ronaldo", "age": "28", "lang": "eng fre spa"}, {"name": "mueller", "age": "22", "lang": "ger"}]'
+        formatted_values = _format_fieldset_values_for_representation(entry, multi_field)
+        result = '"wat is ur name: messi", "wat is ur age: 24", "wat languages do you kno: ";<br>' \
+                 '"wat is ur name: ronaldo", "wat is ur age: 28", "wat languages do you kno: (English US, French, Spanish)";<br>' \
+                 '"wat is ur name: mueller", "wat is ur age: 22", "wat languages do you kno: German";<br>'
+        self.assertEqual(formatted_values, result)
