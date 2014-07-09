@@ -175,7 +175,7 @@ def _format_fieldset_values_for_representation(entry, field_set):
                 else:
                     value = ''
             else:
-                value = value_dict.get(field.code)
+                value = value_dict.get(field.code) or ''
             formatted_value += '"' + '<span class="repeat_qtn_label">'+field.label +'</span>'+ ': ' + value + '"'
             formatted_value += ';' if i == len(field_set.fields)-1 else ', '
         formatted_value += '<br><br>'
