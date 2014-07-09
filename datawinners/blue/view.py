@@ -136,7 +136,7 @@ def upload_project(request):
 
     return render_to_response('project/xform_project.html')
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_project_exist
 @is_datasender_allowed
