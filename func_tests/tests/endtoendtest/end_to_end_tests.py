@@ -300,6 +300,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.assertTrue(project_page.is_project_present(self.project_name))
 
         project_page.delete_project(self.project_name)
+        project_page.wait_for_page_to_load()
         self.assertFalse(project_page.is_project_present(self.project_name))
 
 
