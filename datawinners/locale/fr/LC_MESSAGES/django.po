@@ -2520,6 +2520,12 @@ msgstr "obligatoire"
 msgid "%s with %s = %s already exists."
 msgstr "%s avec %s=%s existe déjà."
 
+msgid "%s with %s %s already exists."
+msgstr "Un(e) %s avec le %s %s existe déjà."
+
+msgid "Unique ID Number"
+msgstr "Numéro d'Identification unique"
+
 msgid "Job title"
 msgstr "Titre"
 
