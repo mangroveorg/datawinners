@@ -84,7 +84,7 @@
                     $(this).find('tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols + '><div class="select_all_message"></div></td></tr>');
                     $(this).find(".select_all_message").data('all_selected', false);
                     $(".repeat_ans").parents("td").addClass('repeat_ans_style');
-
+                    format_repeat_question();
                     if (typeof orignal_handler == "function") orignal_handler.apply(this, arguments);
                 }
             }(defaults["fnDrawCallback"]);
@@ -307,4 +307,17 @@ function get_updated_table_page_index(table, allIds, all_selected) {
                 (table.find("input.row_checkbox").length == allIds.length))
     }
 
+}
+
+function format_repeat_question(){
+    var repeatedQuestions = $(".repeat_qtn_label");
+    for (var i = 0; i < repeatedQuestions.length; i++) {
+        var currentRepeatQuestion = repeatedQuestions[i];
+        var questionText = $(currentRepeatQuestion).text();
+        var displayText = questionText.length > 20 ? questionText.substr(0, 20) + '... ' : questionText;
+        $(currentRepeatQuestion).text(displayText);
+        var toolTip = '<div class="tooltip"><p>' + questionText + '</p></div>';
+        $(toolTip).insertAfter(currentRepeatQuestion);
+        DW.ToolTip({target: $(currentRepeatQuestion)});
+    }
 }

@@ -57,7 +57,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
                                field_set=[field1, field2, field3])
         entry = u'[{"name": "messi", "age": "24", "lang": null}, {"name": "ronaldo", "age": "28", "lang": "eng fre spa"}, {"name": "mueller", "age": "22", "lang": "ger"}]'
         formatted_values = _format_fieldset_values_for_representation(entry, multi_field)
-        result = '"wat is ur name: messi", "wat is ur age: 24", "wat languages do you kno: ";<br>' \
-                 '"wat is ur name: ronaldo", "wat is ur age: 28", "wat languages do you kno: (English US, French, Spanish)";<br>' \
-                 '"wat is ur name: mueller", "wat is ur age: 22", "wat languages do you kno: German";<br>'
+        result = '<span class="repeat_ans">"<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur age</span>: 24", "<span class="repeat_qtn_label">wat languages do you kno</span>: ";<br><br>' \
+                 '"<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur age</span>: 28", "<span class="repeat_qtn_label">wat languages do you kno</span>: (English US, French, Spanish)";<br><br>' \
+                 '"<span class="repeat_qtn_label">wat is ur name</span>: mueller", "<span class="repeat_qtn_label">wat is ur age</span>: 22", "<span class="repeat_qtn_label">wat languages do you kno</span>: German";<br><br></span>'
         self.assertEqual(formatted_values, result)
