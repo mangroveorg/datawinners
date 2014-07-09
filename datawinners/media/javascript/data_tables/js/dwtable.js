@@ -83,6 +83,8 @@
                     var nCols = $(this).find('thead>tr').children('th').length;
                     $(this).find('tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols + '><div class="select_all_message"></div></td></tr>');
                     $(this).find(".select_all_message").data('all_selected', false);
+                    $(".repeat_ans").parents("td").addClass('repeat_ans_style');
+
                     if (typeof orignal_handler == "function") orignal_handler.apply(this, arguments);
                 }
             }(defaults["fnDrawCallback"]);
@@ -105,7 +107,6 @@
                         $(document.body).append('<div id="' + dropdown_id + '" class="dropdown"> <ul class="dropdown-menu"><li class="none-selected disabled"><label>' + select_link_text + '</label><li></ul> </div>');
 
                         $(".checkall-checkbox").parents("th").addClass("checkbox_col");
-                        $(".repeat_ans").parents("td").addClass('repeat_ans_style');
                         for (var item = 0; item < actionItems.length; item++) {
                             var item_handler = function (handler) {
                                 return  function (e) {
