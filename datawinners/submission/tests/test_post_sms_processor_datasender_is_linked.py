@@ -1,10 +1,12 @@
 import unittest
+
+from mock import patch, Mock
+
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException, DatasenderIsNotLinkedException
 from datawinners.project.models import Project
 from mangrove.form_model.form_model import FormModel, EntityFormModel
-from mock import patch, Mock
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsLinkedToProject
-from datawinners.messageprovider.messages import NOT_AUTHORIZED_DATASENDER_MSG
+
 
 class TestPostSMSProcessorCheckDSIsLinkedToProject(unittest.TestCase):
     def setUp(self):

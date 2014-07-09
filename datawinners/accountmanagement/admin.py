@@ -420,15 +420,13 @@ def _remove_default_name_fields():
 def export_user_list_to_excel(a,b,c):
     #Custom Method to export user details.
     def is_required(user):
-        return False if user.groups.filter(name="Data Senders").count() or user.groups.filter(name="SMS API Users").count() else True
+        return True if user.groups.filter(name="NGO Admins").count() or user.groups.filter(name="Project Managers").count() else False
 
     def user_role(user):
         if user.groups.filter(name='NGO Admins').count():
             return 'Admin'
         elif user.groups.filter(name='Project Managers').count():
             return 'User'
-        else:
-            return 'Other'
 
     list = []
     for ngo_user in NGOUserProfile.objects.all():
@@ -441,12 +439,13 @@ def export_user_list_to_excel(a,b,c):
                 org_id = ngo_user.org_id
                 organization = Organization.objects.get(org_id = org_id)
                 details.append(organization.name)
+                details.append(organization.status)
                 details.append(organization.language)
                 details.append(user_role(user))
                 list.append(details)
         except Exception:
             continue
-    headers = ['Name', 'email', 'Organization Name', 'Account language','User Role']
+    headers = ['Name', 'email', 'Organization Name', 'Status', 'Account language','User Role']
     response = create_excel_response(headers,list,'user_list')
     return response
 

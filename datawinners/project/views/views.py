@@ -460,6 +460,7 @@ def get_questionnaire_ajax(request, project_id):
                                        'name': project.name,
                                        'language': project.language,
                                        'questions': existing_questions,
+                                       'is_outgoing_sms_enabled': project.is_outgoing_sms_replies_enabled,
                                        'datasenders': project.data_senders,
                                        'reminder_and_deadline': project.reminder_and_deadline
                                    }, default=field_to_json), content_type='application/json')
@@ -540,7 +541,7 @@ class SubjectWebQuestionnaireRequest():
         return render_to_response(self.template, form_context,
                                   context_instance=RequestContext(self.request))
 
-    def success_resposne(self, is_update, organization, questionnaire_form):
+    def success_response(self, is_update, organization, questionnaire_form):
         success_message = None
         error_message = None
         try:
@@ -558,6 +559,8 @@ class SubjectWebQuestionnaireRequest():
             logger.exception(exception)
             message = exception_messages.get(DataObjectNotFound).get(WEB)
             error_message = _(message) % (self.form_model.entity_type[0], self.form_model.entity_type[0])
+        except DataObjectAlreadyExists as exception:
+            error_message = _("%s with %s %s already exists.") % (exception.data[2], _(exception.data[0]), exception.data[1])
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
@@ -574,7 +577,7 @@ class SubjectWebQuestionnaireRequest():
         if not questionnaire_form.is_valid():
             return self.invalid_data_response(questionnaire_form, is_update)
 
-        return self.success_resposne(is_update, organization, questionnaire_form)
+        return self.success_response(is_update, organization, questionnaire_form)
 
 
 class SurveyWebQuestionnaireRequest():

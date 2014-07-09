@@ -1,11 +1,11 @@
-from django.test import TestCase
+import unittest
 from datawinners.messageprovider.errors_translation_processor import TranslationProcessor
 from mock import Mock, patch
 from mangrove.form_model.form_model import FormModel
 import mangrove.errors.MangroveException as ex
 from collections import OrderedDict
 
-class TestErrorTranslationProcess(TestCase):
+class TestErrorTranslationProcess(unittest.TestCase):
 
     def setUp(self):
         self.form_model = Mock(spec=FormModel)

@@ -867,6 +867,12 @@ msgstr "Ajouter des Expéditeurs maintenant"
 msgid "(Optional)"
 msgstr "(Optionnel)"
 
+msgid "optional"
+msgstr "optionnel"
+
+msgid "Choose the language of your "
+msgstr "Choisissez la langue pour votre "
+
 msgid "Add Data Senders Manually"
 msgstr "Ajouter des Expéditeurs de Données Manuellement"
 
@@ -1741,8 +1747,8 @@ msgstr "Le type de sujet %s existe déja. Veuillez choisir %s dans la liste dér
 msgid "%s already exists."
 msgstr "%s existe déja."
 
-msgid "Entity with Unique Identification Number (ID) = %s already exists."
-msgstr "Une entité avec le numéro d'identification unique (ID) =% s existe déjà."
+msgid "Unique Identification Number (ID) = %s already exists."
+msgstr "Ny lohahevitra manana ny kaody (ID) = %s dia efa misy."
 
 msgid "answer"
 msgstr "réponse"
@@ -2098,13 +2104,13 @@ msgstr "Période"
 
 msgid "tooltip_error_language"
 msgstr "Les Expéditeurs de Données reçoivent une réponse SMS automatique de DataWinners après chaque Soumission.\
- Il y a deux types de réponse SMS : Par rapport au Questionnaire (Exemple : «Merci David. Nous avons reçu votre SMS») \
- Par rapport au compte (Exemple : «Erreur. Vous n'êtes pas enregistré comme Expéditeurs de Données. \
+ Il y a deux types de réponse SMS : 1) Par rapport au Questionnaire (Exemple : «Merci David. Nous avons reçu votre SMS») et; \
+ 2) Par rapport au compte (Exemple : «Erreur. Vous n'êtes pas enregistré comme Expéditeurs de Données. \
  Veuillez contacter votre superviseur»).Sélectionnez la langue de votre choix pour les réponses SMS relatives au Questionnaire ici.\
   Vous pouvez choisir la langue pour les réponses SMS sur la page Langues."
 
 msgid "tooltip_language_checkbox"
-msgstr "Positionnez ce bouton vers \"ARRET\" et cliquez sur le bouton \"Enregistrer\" pour désactiver l'envoi de  messages de retour automatiques pour ce Questionnaire, par DataWinners. <br /> Positionnez ce bouton sur \"MARCHE\" et cliquez sur le bouton \"Enregistrer\" pour réactiver."
+msgstr "Cliquez sur le fond bleu pour positionner ce bouton sur \"OFF\" (arret) et cliquez sur le bouton \"Enregistrer\" pour désactiver l'envoi de messages de retour automatiques pour ce Questionnaire. <br /> Cliquez sur le fond gris pour positionner ce bouton sur \"ON\" (marche) et cliquez sur \"Enregistrer\" pour réactiver."
 
 msgid "Your project"
 msgstr "Vos projet"
@@ -2513,6 +2519,12 @@ msgstr "obligatoire"
 
 msgid "%s with %s = %s already exists."
 msgstr "%s avec %s=%s existe déjà."
+
+msgid "%s with %s %s already exists."
+msgstr "Un(e) %s avec le %s %s existe déjà."
+
+msgid "Unique ID Number"
+msgstr "Numéro d'Identification unique"
 
 msgid "Job title"
 msgstr "Titre"
@@ -4816,9 +4828,6 @@ msgstr "Utilisez les Numéros d'Identification pour améliorer l'exactitude de v
 msgid "If you have registered your Data Senders and/or Identification Numbers with GPS Coordinates, they will be displayed on the map below."
 msgstr "Si vous avez enregistré des Expéditeurs de Données et/ou des Numéros d'Identification avec des coordonnées GPS, ils seront affichés sur la carte ci-dessous."
 
-msgid "Finish your questionnaire, then register each person, place or thing you want to collect data about with its own Identification Number (example: register your primary schools)."
-msgstr "Terminez votre Questionnaire, puis enregistrez chaque personne, lieu ou chose sur lequel vous voulez collecter des données, sous leur propre Numéro d'Identification (exemple: enregistrez vos écoles primaires)."
-
 msgid "Data Senders must use Identification Numbers that are already registered in Datawinners."
 msgstr "Les Expéditeurs de Données doivent utiliser les Numéros d'Identification qui sont déjà enregistrés dans DataWinners."
 
@@ -4832,7 +4841,7 @@ msgid "more_wrong_question"
 msgstr "les autres"
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
-msgstr "Erreur. Vous n'êtes pas enregistré en tant qu'Expéditeur de Données. Veuillez contacter votre superviseur."
+msgstr "Erreur. Vous netes pas enregistre en tant quExpediteur de Donnees. Veuillez contacter votre superviseur."
 
 msgid "Answer must be the Identification Number of the %s you are reporting on."
 msgstr "La réponse doit être le Numéro d’identification du %s sur lequel votre rapport porte."

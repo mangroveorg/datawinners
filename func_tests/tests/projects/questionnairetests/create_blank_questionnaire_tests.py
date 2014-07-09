@@ -1,11 +1,13 @@
 from nose.plugins.attrib import attr
-from framework.base_test import teardown_driver, HeadlessRunnerTest
+
+from framework.base_test import HeadlessRunnerTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.loginpage.login_page import login
 from pages.projectspage.projects_page import ProjectsPage
 from pages.questionnairetabpage.questionnaire_tab_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
-from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS, DIALOG_PROJECT_DATA, NEW_UNIQUE_ID_TYPE
+from tests.projects.questionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, \
+    QUESTIONS_WITH_INVALID_ANSWER_DETAILS, QUESTIONS, DIALOG_PROJECT_DATA, NEW_UNIQUE_ID_TYPE, EXISTING_UNIQUE_ID_TYPE
 
 
 class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
@@ -17,16 +19,11 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
         cls.create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
 
-
-    @classmethod
-    def tearDownClass(cls):
-        teardown_driver(cls.driver)
-
     @attr('functional_test')
     def test_should_not_select_any_question_by_default(self):
         self.create_questionnaire_page.refresh()
-        select_or_add_question_message = self.create_questionnaire_page.get_select_or_edit_question_message()
-        self.assertTrue(select_or_add_question_message.is_displayed(), "Select/add question text not present")
+        is_visible = self.create_questionnaire_page.get_select_or_edit_question_message_visibility()
+        self.assertTrue(is_visible)
 
     @attr('functional_test')
     def test_should_clear_questionnaire_form_on_recreating_questionnaire(self):
@@ -39,11 +36,10 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
         create_questionnaire_page.submit_errored_questionnaire()
         create_questionnaire_page.back_to_questionnaire_creation_page().select_blank_questionnaire_creation_option()
-        self.assertEqual(create_questionnaire_page.get_questionnaire_title(), "", "Questionnaire title should be blank")
+        self.assertEqual(create_questionnaire_page.get_questionnaire_title(), "")
         self.assertEqual(create_questionnaire_page.get_existing_questions_count(), 0,
                          "No questions should be present for a blank questionnaire")
-        self.assertTrue(create_questionnaire_page.get_select_or_edit_question_message().is_displayed(),
-                        "No question should be selected by default")
+        self.assertTrue(create_questionnaire_page.get_select_or_edit_question_message_visibility())
 
     @attr('functional_test')
     def test_submitting_a_blank_questionnaire(self):
@@ -79,17 +75,19 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         self._validate_unique_id_type()
 
     @attr('functional_test')
-    def test_submitting_a_questionnaire_with_already_existing_questionnaire_code(self):
+    def test_submitting_a_questionnaire_with_already_existing_questionnaire_code_and_name(self):
         create_questionnaire_page = self.create_questionnaire_page
         create_questionnaire_page.refresh()
-        create_questionnaire_page.set_questionnaire_title("Duplicate project")
-        create_questionnaire_page.set_questionnaire_code("cli051")
+        create_questionnaire_page.set_questionnaire_title("clinic test project1")
+        create_questionnaire_page.set_questionnaire_code("cli001")
         create_questionnaire_page.click_add_question_link()
         create_questionnaire_page.set_question_title("Some qn")
         create_questionnaire_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
         create_questionnaire_page.submit_errored_questionnaire()
         self.assertEqual(create_questionnaire_page.get_duplicate_questionnaire_code_error_message(),
-                         "Questionnaire with this code already exists", "Duplicate questionnaire code should show up")
+                         "Questionnaire with same code already exists.")
+        self.assertEqual(create_questionnaire_page.get_duplicate_questionnaire_title_error_message(),
+                         "Questionnaire with same name already exists.")
 
     @attr('functional_test')
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
@@ -130,7 +128,11 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
         modified_warning_dialog.save_changes()
         all_projects_page.wait_for_page_to_load()
-        self.assertTrue(all_projects_page.is_project_present(project_name.lower()), "Project should be saved")
+        self.assertTrue(all_projects_page.is_project_present(project_name), "Project should be saved")
+        project_overview_page = all_projects_page.navigate_to_project_overview_page(project_name)
+        is_outgoing_sms_enabled = project_overview_page.navigate_send_message_tab().navigate_to_automatic_reply_sms_page().get_reply_messages_switch_status()
+        self.assertTrue(is_outgoing_sms_enabled)
+
 
     def _validate_max_length_for_invalid_entry(self):
         create_questionnaire_page = self.create_questionnaire_page
@@ -271,9 +273,9 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         self.assertEqual(message, MANDATORY_FIELD_ERROR_MESSAGE, "Error message is incorrect for choice1")
 
     def _validate_duplicate_unique_id(self, create_questionnaire_page):
-        new_type_name = fetch_(NEW_UNIQUE_ID_TYPE, from_(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7]))
+        new_type_name = fetch_(EXISTING_UNIQUE_ID_TYPE, from_(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[7]))
 
         create_questionnaire_page.add_new_unique_id_type(new_type_name)
         is_visible, message = create_questionnaire_page.get_new_unique_id_error_msg()
         self.assertTrue(is_visible)
-        self.assertEqual(message, '%s already registered as a subject type.' % new_type_name)
+        self.assertEqual(message, '%s already exists.' % new_type_name.capitalize())

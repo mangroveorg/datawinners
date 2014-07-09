@@ -46,6 +46,10 @@ class QuestionnaireBuilder(object):
     def update_reminder(self, reminder_and_deadline):
         if reminder_and_deadline:
             self.form_model.reminder_and_deadline = reminder_and_deadline
+        return self
+
+    def update_outgoing_sms_enabled_flag(self, is_outgoing_sms_enabled):
+        self.form_model.is_outgoing_sms_replies_enabled = is_outgoing_sms_enabled == 'true'
 
 class QuestionBuilder(object):
     def __init__(self, dbm):

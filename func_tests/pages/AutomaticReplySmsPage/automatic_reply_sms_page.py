@@ -47,6 +47,13 @@ class AutomaticReplySmsPage(Page):
     def is_language_selection_enabled(self):
         return self.driver.find(AVAILABLE_LANGUAGES_DROPDOWN_ID).is_enabled()
 
+    def get_reply_messages_switch_status(self):
+        try:
+            self.driver.find_visible_element(by_css('.onoffswitch-checked'))
+            return True
+        except Exception:
+            return False
+
     def open_sms_tester_light_box(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT,TEST_QUESTIONNAIRE_LINK,True)
         self.driver.find(TEST_QUESTIONNAIRE_LINK).click()

@@ -23,10 +23,10 @@ def url(path):
 
 DATA_WINNER_HOME_PAGE = "/home"
 DATA_WINNER_LOGIN_PAGE = url("/login")
-ALL_DATA_PAGE = url("/questionnaire")
+ALL_DATA_PAGE = url("/alldata/")
 LOGOUT = url('/logout')
 DATA_WINNER_DASHBOARD_PAGE = url("/dashboard")
-DATA_WINNER_ALL_PROJECTS_PAGE = url("/questionnaire")
+DATA_WINNER_ALL_PROJECTS_PAGE = url("/alldata/")
 DATA_WINNER_REGISTER_PAGE = url("/register")
 DATA_WINNER_REGISTER_TRIAL_PAGE = url("/register/trial")
 DATA_WINNER_SMS_TESTER_PAGE = url("/smstester")

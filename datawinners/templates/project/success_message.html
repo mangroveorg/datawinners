@@ -34,7 +34,9 @@
                     <li><p class="black_italic">{% trans "Register each Identification Number you need to collect data about and want to track on a map." %} </p>
                     </li>
                 {% endif %}
-
+                <li class="automatic-sms-link"><span class="black_italic">{% trans "Choose the language of your " %}</span><a href="{{ project_links.automatic_sms_link }}">{% trans "Automatic Reply SMS" %}</a>
+                                    <span class="italic_grey">{% trans "optional" %}</span>
+                </li>
             </ul>
             <div class="gray_text">{% trans "Test your Questionnaire" %}...</div>
             <ul>

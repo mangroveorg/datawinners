@@ -36,7 +36,7 @@ def is_running_in_pycharm():
 class HeadlessRunnerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        browser="phantom"
+        browser = "phantom"
         if is_running_in_pycharm():
             browser = settings.DEBUG_BROWSER or "firefox"
         cls.driver = setup_driver(browser)
@@ -49,6 +49,7 @@ class HeadlessRunnerTest(unittest.TestCase):
         exception_info = sys.exc_info()
         if exception_info != (None, None, None):
             import os
+
             if not os.path.exists("screenshots"):
                 os.mkdir("screenshots")
             self.driver.get_screenshot_as_file(

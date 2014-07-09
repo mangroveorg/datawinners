@@ -2,7 +2,9 @@ $.widget("dw.TextNTags", {
     options: {
         plainText: '',
         openingTag: '{<{',
+        openingTagEncoded: '{&lt;{',
         closingTag: '}>}',
+        closingTagEncoded: '}&gt;}',
         contentChangedHandler: function () {
         }
     },
@@ -28,14 +30,15 @@ $.widget("dw.TextNTags", {
 
     setText: function (plainText){
         var self = this;
-        var regexPattern = new RegExp("\\"+ self.options.openingTag +"(.*?)\\" + self.options.closingTag, 'gi');
+        var regexPattern = new RegExp("\\"+ self.options.openingTagEncoded +"(.*?)\\" + self.options.closingTagEncoded, 'gi');
+        var encodedText = safe_tags_replace(plainText);
 
-        self.tags = plainText.match(regexPattern) || [];
-        var styledText = plainText;
+        self.tags = encodedText.match(regexPattern) || [];
+        var styledText = encodedText;
         if(self.tags){
             $.each(self.tags, function(i, tag){
-                var tagValue = _.str.ltrim(tag, self.options.openingTag);
-                var tagValue = _.str.rtrim(tagValue, self.options.closingTag);
+                var tagValue = _.str.ltrim(tag, self.options.openingTagEncoded);
+                var tagValue = _.str.rtrim(tagValue, self.options.closingTagEncoded);
                 var translated_tag = gettext(tagValue);
                 styledText = styledText.replace(tag, '<span class="tags" data-tag="'+ tagValue +'">' + translated_tag + '</span>');
                 self.tags[i] = translated_tag;
@@ -72,7 +75,7 @@ $.widget("dw.TextNTags", {
         .on('blur keyup', function (e) {
 
                 if ($(el).find('span.tags').text() != self.tags.join("").replace(new RegExp(self.options.openingTag, 'g'), '').replace(new RegExp(self.options.closingTag, 'g'), '')) {
-                    var after = $(el).html();
+                    var after = $(el).html().replace("<br>", "");
                     var start, end;
                     for(start = 0; start < before.length && start < after.length; start++){
                         if(before[start]!=after[start]){
@@ -160,6 +163,20 @@ $.widget("dw.TextNTags", {
     }
 });
 
+var tagsToReplace = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;'
+};
+
+function replaceTag(tag) {
+    return tagsToReplace[tag] || tag;
+}
+
+function safe_tags_replace(str) {
+    return str.replace(/[&<>]/g, replaceTag);
+}
+
 function isCharacterKeyPress(evt) {
     if (typeof evt.which == "undefined") {
         // This is IE, which only fires keypress events for printable keys
@@ -169,7 +186,7 @@ function isCharacterKeyPress(evt) {
         // only greater than zero if the keypress is a printable key.
         // We need to filter out backspace and ctrl/alt/meta key combinations
         // 37-40 (left, top , right, down)
-        return !evt.ctrlKey && !evt.metaKey && !evt.altKey && evt.which != 8 && evt.which != 46 && !(evt.which >= 37 && evt.which <=40);
+        return !evt.ctrlKey && !evt.metaKey && evt.which != 8 && evt.which != 46 && !(evt.which >= 37 && evt.which <=40);
     }
     return false;
 }
