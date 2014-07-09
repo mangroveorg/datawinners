@@ -78,8 +78,8 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
     def test_submitting_a_questionnaire_with_already_existing_questionnaire_code_and_name(self):
         create_questionnaire_page = self.create_questionnaire_page
         create_questionnaire_page.refresh()
-        create_questionnaire_page.set_questionnaire_title("Duplicate project")
-        create_questionnaire_page.set_questionnaire_code("cli051")
+        create_questionnaire_page.set_questionnaire_title("clinic test project1")
+        create_questionnaire_page.set_questionnaire_code("cli001")
         create_questionnaire_page.click_add_question_link()
         create_questionnaire_page.set_question_title("Some qn")
         create_questionnaire_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
