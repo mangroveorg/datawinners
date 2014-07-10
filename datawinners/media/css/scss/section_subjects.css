@@ -763,6 +763,9 @@ form div.action-section {
   text-align: right;
   float: none; }
 
+a.dialog-anchor {
+  color: #0070ac !important; }
+
 .dataTables_info {
   float: left;
   padding-right: 2em; }
