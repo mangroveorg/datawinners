@@ -316,7 +316,7 @@ function format_repeat_question(){
         var questionText = $(currentRepeatQuestion).text();
         var questionTextArray = questionText.split(' ');
         if (questionTextArray.length > 3){
-            var displayText = questionTextArray.slice(0,3).join(' ') + '... '
+            var displayText = questionTextArray.slice(0,3).join(' ') + '... ';
             $(currentRepeatQuestion).text(displayText);
             var toolTip = '<div class="tooltip"><p>' + questionText + '</p></div>';
             $(toolTip).insertAfter(currentRepeatQuestion);

@@ -1,4 +1,8 @@
 article.paper {
+  .disabled-state{
+      background-image: none !important;
+  }
+
   border: 1px solid #CCC;
   h3, h4, span, legend {
     font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;

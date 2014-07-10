@@ -1,5 +1,7 @@
 article.paper {
   border: 1px solid #CCC; }
+  article.paper .disabled-state {
+    background-image: none !important; }
   article.paper h3, article.paper h4, article.paper span, article.paper legend {
     font-family: Lucida Grande, Lucida Sans, Arial, sans-serif; }
   article.paper h3, article.paper h4 {
