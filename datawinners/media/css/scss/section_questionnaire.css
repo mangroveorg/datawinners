@@ -432,3 +432,7 @@ div.margin_top_20 input {
 #unique_id_learn_more_form .learn_more_text {
   padding-top: 10px;
   padding-bottom: 10px; }
+
+.upload_xls {
+  width: 315px;
+  margin-bottom: 20px; }

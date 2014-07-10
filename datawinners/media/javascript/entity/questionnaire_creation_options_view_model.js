@@ -73,6 +73,9 @@ var questionnaireCreationOptionsViewModel = {
             else if(selectedOption == 1){
                 location.hash = 'questionnaire/copy/' + that.selectedQuestionnaireId();
             }
+            else if(selectedOption == 3){
+                location.hash = 'questionnaire/xlsupload/';
+            }
         }
     };
 
@@ -85,6 +88,8 @@ var questionnaireCreationOptionsViewModel = {
         if(creationOption == 1 && this.selectedQuestionnaireId())
             return true;
         if(creationOption == 2 && this.selectedTemplateId())
+            return true;
+        if(creationOption == 3)
             return true;
         return false;
     }, questionnaireCreationOptionsViewModel);

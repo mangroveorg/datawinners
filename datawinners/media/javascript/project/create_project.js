@@ -99,6 +99,13 @@ DW.controllers = {
             questionnaireViewModel.questionnaireCode(questionnaire_code);
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
     },
+    "uploadQuestionnaire": function(){
+        questionnaireViewModel.clearQuestionnaire();
+        questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+        questionnaireViewModel.questionnaireCode(questionnaire_code);
+        questionnaireViewModel.enableQuestionnaireTitleFocus(true);
+        questionnaireViewModel.isXLSUploadQuestionnaire(true);
+    },
     "questionnaireCreationOptions": function () {
             questionnaireCreationOptionsViewModel.resetCreationOption();
             questionnaireDataFetcher.clearCache();
@@ -111,7 +118,8 @@ DW.controllers = {
 DW.projectRouter = Sammy(function () {
         this.get('#questionnaire/new', DW.controllers.blankQuestionnaire);
         this.get('#questionnaire/load/:template_id', DW.controllers.templateQuestionnaire);
-        this.get('#questionnaire/copy/:questionnaire_id', DW.controllers.copyQuestionnaire)
+        this.get('#questionnaire/copy/:questionnaire_id', DW.controllers.copyQuestionnaire);
+        this.get('#questionnaire/xlsupload/$', DW.controllers.uploadQuestionnaire);
         this.get('project/wizard/create/$', DW.controllers.questionnaireCreationOptions);
 });
 
