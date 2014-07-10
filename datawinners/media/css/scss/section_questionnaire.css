@@ -435,4 +435,24 @@ div.margin_top_20 input {
 
 .upload_xls {
   width: 315px;
+  position: absolute;
+  top: -222px; }
+
+#uploadXLS {
+  border: 1px solid #d4972d !important;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background: #FFD857;
+  background: -webkit-gradient(linear, left top, left bottom, from(#feea89), to(#ffd857));
+  background: -moz-linear-gradient(top, #feea89, #ffd857);
+  color: #6f451d !important;
+  font-family: "Arial";
+  font-weight: bold;
+  text-decoration: none !important;
+  padding: 6px 23px 5px 22px;
+  cursor: pointer;
+  cursor: hand;
+  opacity: 0.9;
+  font-size: 15px;
+  height: 34px;
   margin-bottom: 20px; }

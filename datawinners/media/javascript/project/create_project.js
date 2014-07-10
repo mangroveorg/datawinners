@@ -155,12 +155,41 @@ $(document).ready(function () {
                   };
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
 
-    $("#save_and_create").bind("click", function () {
+    $("#save_and_create").on("click", function () {
             _save_questionnaire(function (response) {
                 var redirect_url = '/project/overview/' + response.project_id;
                 window.location.replace(redirect_url);
                 return true;
             });
+    });
+    $("#uploadXLS").on("click", function(){
+        var questionnaireName = questionnaireViewModel.projectName;
+        DW.ko.mandatoryValidator(questionnaireName);
+        if(!questionnaireName.valid()){
+            return false;
+        }
+
+        new qq.FileUploader({
+            element: document.getElementById('file_uploader'),
+            action: '/xlsform/upload/?pname='+questionnaireName(),
+            params: {},
+            buttonText: "Upload XLSForm and create Questionnaire",
+            onSubmit: function () {
+                $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
+            },
+            onComplete: function(id, fileName, responseJSON){
+                $.unblockUI();
+                if (responseJSON['error_msg']) {
+                    alert(responseJSON['error_msg']);
+                } else {
+                    alert('Project created: ' + responseJSON.project_name);
+                    window.location.replace('/project/overview/' + responseJSON.project_id +'/');
+                }
+            }
+        });
+
+        $("input[name=file]").click();
+        return false;
     });
 
     DW.projectRouter.run();

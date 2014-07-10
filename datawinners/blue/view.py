@@ -46,7 +46,6 @@ class ProjectUpload(View):
 
     def post(self, request):
         try:
-            file_name = request.GET.get('qqfile').split('.')[0]
             file_content = request.raw_post_data
             tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
             tmp_file.write(file_content)
@@ -54,7 +53,7 @@ class ProjectUpload(View):
 
             manager = get_database_manager(request.user)
             questionnaire_code =  generate_questionnaire_code(manager)
-            project_name = file_name + '-' + questionnaire_code
+            project_name = request.GET['pname']
 
             xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name=project_name).parse()
 
