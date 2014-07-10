@@ -40,6 +40,8 @@
     <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
     <script type="text/javascript" src="/media/javascript/datasender_modified_warning.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/bind_project_links.js"></script>
+    <script src="/media/javascript/project/bind_project_links.js" type="text/javascript"></script>
 
     <script>
         var user_dict = {{ user_dict|safe }};
@@ -49,8 +51,19 @@
 
 {% block content %}
     <div>
-        <div class="grid_8 alpha">
+        <div class="grid_8 alpha" style="width: 380px!important;">
             <h2>{% trans "My Data Senders" %}</h2>
+            <strong>People Authorized to Submit Data Using SMS</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon">
+            <div class="tooltip">
+                <p>
+                    You decide who has permission to submit data using SMS for this Questionnaire:</br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;1. Everyone – Any phone can submit data</br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;2. Only Registered People  – Data Senders must be &nbsp;&nbsp;&nbsp;&nbsp;registered first before submitting data.
+                </p>
+            </div>
+            </br>
+            Everyone – Anyone with a simple phone can submit data&nbsp;&nbsp;<a class="change_setting">Change</a>
+            </br></br>
         </div>
         <div class="float_right">
 
@@ -84,6 +97,15 @@
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     <div id="datasender-popup" style="display:none;"></div>
-
+    <div id="change_ds_setting">
+    <p class="warning_message margin_bottom_5">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
+        <input type="radio" value="select_everyone"><span class="margin_left_10">Everyone</span></br>
+        <span class="italic font_size_12 margin_left_30">Anyone with a simple phone can submit data.</span></br></br>
+        <input type="radio" value="select_registered"><span class="margin_left_10">Only Registered People</span></br>
+            <span class="italic font_size_12 margin_left_30">Data Senders must be registered first before submitting data.</span></br>
+            <span class="italic font_size_12 margin_left_30 margin_bottom_5">Example: Registered field staff, community based workers, supervisors</span></br></br>
+        <a href="#" class="cancel_link margin_left_365">{% trans "Cancel" %}</a>
+        <a href="#" class="button padding_bottom_top_3 padding_left_right_20" id="save_ds_setting" style="float: right">{% trans "Save" %}</a></br>
+    </div>
 {% endblock %}
 
