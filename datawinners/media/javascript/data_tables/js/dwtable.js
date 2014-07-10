@@ -314,13 +314,14 @@ function format_repeat_question(){
     for (var i = 0; i < repeatedQuestions.length; i++) {
         var currentRepeatQuestion = repeatedQuestions[i];
         var questionText = $(currentRepeatQuestion).text();
-//        var displayText = questionText.length > 20 ? questionText.substr(0, 20) + '... ' : questionText;
         var questionTextArray = questionText.split(' ');
-        var displayText = questionTextArray.length > 3 ? questionTextArray.slice(0,3).join(' ') + '... ' : questionText;
+        if (questionTextArray.length > 3){
+            var displayText = questionTextArray.slice(0,3).join(' ') + '... '
+            $(currentRepeatQuestion).text(displayText);
+            var toolTip = '<div class="tooltip"><p>' + questionText + '</p></div>';
+            $(toolTip).insertAfter(currentRepeatQuestion);
+            DW.ToolTip({target: $(currentRepeatQuestion)});
 
-        $(currentRepeatQuestion).text(displayText);
-        var toolTip = '<div class="tooltip"><p>' + questionText + '</p></div>';
-        $(toolTip).insertAfter(currentRepeatQuestion);
-        DW.ToolTip({target: $(currentRepeatQuestion)});
+        }
     }
 }
