@@ -430,3 +430,19 @@ function populate_dialog_box_for_web_users(table, all_selected) {
 
     $("#web_user_block").dialog("open")
 }
+
+$(document).ready(function(){
+    $("#change_ds_setting").dialog({
+        title: gettext("People Authorized to Submit Data Using SMS"),
+        modal: true,
+        autoOpen: false,
+        height: 280,
+        width: 520,
+        closeText: 'hide'
+      }
+   );
+   $("#change_ds_setting .cancel_link").bind("click", function() {
+       $("#change_ds_setting").dialog("close");
+       return false;
+   });
+});
