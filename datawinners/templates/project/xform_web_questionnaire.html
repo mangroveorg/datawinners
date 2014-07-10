@@ -33,7 +33,7 @@
 
     {% block page_js %}
         {{ block.super }}
-
+        <script src="/media/javascript/pubsub.js" type="text/javascript"></script>
         <script>
             var surveyResponseId = '{{ survey_response_id }}';
             var modelStr;
@@ -46,6 +46,7 @@
         </script>
 
         <script type="text/javascript" src="/media/javascript/app.js"></script>
+        <script type="text/javascript" src="/media/javascript/dw-dcs.js"></script>
 
     {% endblock %}
 
