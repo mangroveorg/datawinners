@@ -12,45 +12,50 @@ DW.UploadQuestionnaire.prototype._showSuccess = function(message){
     var flash_message = $("#xlx-message");
     flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
     html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
-    $('#message-label').delay(5000).fadeOut();
-}
+    flash_message.delay(5000).fadeOut(); //verify this
+};
 
 DW.UploadQuestionnaire.prototype._init = function(options){
-        var self = this;
-        var preUploadValidation =  options.preUploadValidation || function(){ return true;};
+    var self = this;
+    var preUploadValidation =  options.preUploadValidation || function(){ return true;};
 
-        $("#uploadXLS").on("click", function() {
+    var uploadButton = $("#uploadXLS");
+    var cancelUploadLink = $("#cancel-xlx-upload");
 
-            if(!preUploadValidation()){
-                return false;
-            }
+    uploadButton.on("click", function() {
 
-            new qq.FileUploader({
-                element: document.getElementById('file_uploader'),
-                action: options.postUrl(),
-                params: {},
-                buttonText: options.buttonText,
-                onSubmit: function(){
-                    $("#cancel-xlx-upload").removeClass("none");
-                    options.onSubmit && options.onSubmit();
-                },
-                onComplete: function (id, fileName, responseJSON) {
-                    $("#cancel-xlx-upload").addClass("none");
-                    if (responseJSON['error_msg']) {
-                        self._showError(responseJSON['error_msg']);
-                    } else {
-                        options.postSuccessSave && options.postSuccessSave(responseJSON);
-                    }
+        if(!preUploadValidation()){
+            return false;
+        }
+
+        new qq.FileUploader({
+            element: document.getElementById('file_uploader'),
+            action: options.postUrl(),
+            params: {},
+            buttonText: options.buttonText,
+            onSubmit: function(){
+                cancelUploadLink.removeClass("none");
+                options.onSubmit && options.onSubmit();
+            },
+            onComplete: function (id, fileName, responseJSON){
+                cancelUploadLink.addClass("none");
+                if(responseJSON['error_msg']){
+                    self._showError(responseJSON['error_msg']);
                 }
-            });
-
-            $("input[name=file]").click();
-            return false;
+                else{
+                    self._showSuccess();
+                    options.postSuccessSave && options.postSuccessSave(responseJSON);
+                }
+            }
         });
 
-        $("#cancel-xlx-upload").on("click", function(){
-            $(".qq-upload-cancel")[0].click();
-            $("#cancel-xlx-upload").addClass("none");
-            return false;
-        });
+        $("input[name=file]").click();
+        return false;
+    });
+
+    cancelUploadLink.on("click", function(){
+        $(".qq-upload-cancel")[0].click();
+        cancelUploadLink.addClass("none");
+        return false;
+    });
 };
