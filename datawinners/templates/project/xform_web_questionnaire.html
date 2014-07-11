@@ -40,11 +40,12 @@
             var submissionCreateUrl='{{ submission_create_url }}';
             var submissionUpdateUrl='{{ submission_update_url }}';
             var submissionLogURL='{{ project_links.submission_log_link }}';
-            var submissionURL ='{{ project_links.xform_link }}'
+            var submissionURL ='{{ project_links.xform_link }}';
             var xform_xml = $('<div/>').html("{{ xform_xml }}").text();
             var dataStrToEdit = $('<div/>').html("{{ edit_model_str }}").text();
         </script>
 
+        <script type="text/javascript" src="/media/javascript/xform_post_load_action.js"></script>
         <script type="text/javascript" src="/media/javascript/app.js"></script>
 
     {% endblock %}
