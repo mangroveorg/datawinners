@@ -5,7 +5,11 @@
         <div>
             <div class="text-content">{% trans "QUESTIONNAIRE" %}</div><div class="text-content-right-arrow"></div>
             <div class="clear-both">
-                <a href="{{ project_links.questionnaire_link }}">{% trans "View" %} </a> |
+                {% if not project.xform %}
+                    <a href="{{ project_links.questionnaire_link }}">{% trans "View" %} </a> |
+                {% else%}
+                    <a href="{{ project_links.questionnaire_link }}">{% trans "Edit" %} </a> |
+                {% endif %}
                 <a href="{{ project_links.test_questionnaire_link }}">{% trans "Input Data" %}</a>
             </div>
         </div>
@@ -14,9 +18,11 @@
     <ul>
         <li><span style="font-weight: bold;">{{ number_of_questions }}</span> {% trans "Questions" %}</li>
         <div class="line"></div>
-        <li><img src="/media/images/mini_mobile.png" /><a href="#" class="sms_questionnaire sms-preview"> {% trans "SMS Questionnaire" %}</a></li>
-        {% include 'sms_preview_template.html' %}
-        <div class="line"></div>
+        {% if not project.xform %}
+            <li><img src="/media/images/mini_mobile.png" /><a href="#" class="sms_questionnaire sms-preview"> {% trans "SMS Questionnaire" %}</a></li>
+            {% include 'sms_preview_template.html' %}
+            <div class="line"></div>
+        {% endif %}
         {% if 'web' in project.devices %}
             <li><img src="/media/images/mini_computer.png"/><a href="{{ links.web_questionnaire_list }}" class="web_questionnaire"> {% trans "Web Questionnaire" %}</a></li>
         {% endif %}
