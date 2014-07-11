@@ -43,8 +43,10 @@
         </div>
         <input type="hidden" id="project_name" value="{{ project.name }}"/>
         <div class="project_detail">
-            {% include 'project/sms_tester_form.html' %}
-                <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
+            {% if not project.xform %}
+                {% include 'project/sms_tester_form.html' %}
+                <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>&nbsp&nbsp|&nbsp
+            {% endif %}
         {% if user|in_group:"NGO Admins,Project Managers" %}
             <a href="{{ project_links.delete_project_link }}"
                class="delete_project">{% trans "Delete this Questionnaire" %}</a>

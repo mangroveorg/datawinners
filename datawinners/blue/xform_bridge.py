@@ -185,8 +185,8 @@ class MangroveService():
             questionnaire = create_questionnaire(post=project_json, manager=self.manager, name=self.name,
                                                  language=self.language,
                                                  reporter_id=self.reporter_id, question_set_json=self.json_xform_data,
-                                                 xform=self.xform)
-            questionnaire.xform = self.xform_with_form_code
+                                                 xform=self.xform_with_form_code)
+            # questionnaire.xform = self.xform_with_form_code
 
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:

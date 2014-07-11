@@ -58,6 +58,10 @@
     </div>
 
     <div id="project_language_section">
+        {% if project.xform %}
+            <div class="warning-message-box">
+                <p>{% trans "This feature is not applicable for excel upload feature." %}</p></div>
+        {% endif %}
          <div>
             <h6 class="title_set_SMS">
                 {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
