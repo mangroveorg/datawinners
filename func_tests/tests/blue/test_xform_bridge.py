@@ -204,7 +204,7 @@ class TestXFormBridge(unittest.TestCase):
         questionnaire_code =  generate_questionnaire_code(manager)
         project_name = 'xform-' + questionnaire_code
 
-        xform_as_string, json_xform_data = XlsFormParser(self.REPEAT, project_name=project_name).parse()
+        xform_as_string, json_xform_data = XlsFormParser(self.REPEAT).parse()
 
         mangroveService = MangroveService(self.user, xform_as_string, json_xform_data, project_name=project_name)
         mangroveService.create_project()
