@@ -179,43 +179,6 @@ $(document).ready(function () {
         }
     });
 
-//    $("#uploadXLS").on("click", function(){
-//        var questionnaireName = questionnaireViewModel.projectName;
-//        DW.ko.mandatoryValidator(questionnaireName);
-//        if(!questionnaireName.valid()){
-//            return false;
-//        }
-//
-//        function show_error(responseText) {
-//            var flash_message = $("#xlx-error-message");
-//            flash_message.removeClass("none").addClass("message-box").
-//                html("<label class='error_message'>" + responseText + "</label>").show();
-//        }
-//
-//
-//        new qq.FileUploader({
-//            element: document.getElementById('file_uploader'),
-//            action: '/xlsform/upload/?pname='+encodeURIComponent(questionnaireName()),
-//            params: {},
-//            buttonText: "Upload XLSForm and create Questionnaire",
-//            onSubmit: function () {
-//                $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
-//            },
-//            onComplete: function(id, fileName, responseJSON){
-//                $.unblockUI();
-//                if (responseJSON['error_msg']) {
-//                    show_error(responseJSON['error_msg']);
-//                } else {
-//                    alert('Project created: ' + responseJSON.project_name);
-//
-//                }
-//            }
-//        });
-//
-//        $("input[name=file]").click();
-//        return false;
-//    });
-
     DW.projectRouter.run();
 
 });
