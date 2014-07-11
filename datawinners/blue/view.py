@@ -96,7 +96,7 @@ class ProjectUpdate(View):
             tmp_file.seek(0)
             #is_project_name_changed = file_name != questionnaire.name
 
-            xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name=questionnaire.name).parse()
+            xform_as_string, json_xform_data = XlsFormParser(tmp_file).parse()
             mangroveService = MangroveService(request.user, xform_as_string, json_xform_data, questionnaire_code=questionnaire.form_code, project_name=questionnaire.name)
 
             old_form_code = questionnaire.form_code
