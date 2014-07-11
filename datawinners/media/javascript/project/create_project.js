@@ -110,6 +110,7 @@ DW.controllers = {
             questionnaireCreationOptionsViewModel.resetCreationOption();
             questionnaireDataFetcher.clearCache();
             questionnaireViewModel.showQuestionnaireForm(false);
+            questionnaireViewModel.isXLSUploadQuestionnaire(false);
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(true);
     }
 };
