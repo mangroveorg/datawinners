@@ -41,7 +41,7 @@
         {% if show_xls_download_link %}
         <div class="heading_block alpha data_ana border_none">
             <span class="links float_right">
-                <a href="javascript:void(0);" class="download_link">{% trans "Download Project" %}</a>
+                <a href="javascript:void(0);" class="download_link">{{ project.name|slugify }}.xls</a>
             </span>
         </div>
         {% endif %}
