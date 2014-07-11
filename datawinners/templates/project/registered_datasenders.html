@@ -51,21 +51,23 @@
 
 {% block content %}
     <div>
-        <div class="grid_8 alpha" style="width: 380px!important;">
+        <div class="grid_8 alpha">
             <h2>{% trans "My Data Senders" %}</h2>
-            <strong>People Authorized to Submit Data Using SMS</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon">
+        </div>
+        <div class="float_left full_width">
+        <strong>{% trans "People Authorized to Submit Data Using SMS" %}</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon">
             <div class="tooltip">
-                <p>
-                    You decide who has permission to submit data using SMS for this Questionnaire:</br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;1. Everyone – Any phone can submit data</br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;2. Only Registered People  – Data Senders must be &nbsp;&nbsp;&nbsp;&nbsp;registered first before submitting data.
-                </p>
+                <ol class="margin_left_20">
+                <span>{% trans "You decide who has permission to submit data using SMS for this Questionnaire:" %} </br> </span>
+                    <li class="margin_left_30">{% trans "Everyone – Any phone can submit data" %} </br> </li>
+                    <li class="margin_left_30">{% trans "Only Registered People  – Data Senders must be registered first before submitting data."%}</li>
+                </ol>
             </div>
             </br>
-            Everyone – Anyone with a simple phone can submit data&nbsp;&nbsp;<a class="change_setting">Change</a>
+            {% trans "Everyone – Anyone with a simple phone can submit data" %}&nbsp;&nbsp;<a class="change_setting">{% trans "Change" %}</a>
             </br></br>
         </div>
-        <div class="float_right">
+        <div align="right">
 
 {#            <a href="{{ project_links.register_datasenders_link }}"#}
 {#               class="register_data_sender">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;#}
@@ -99,13 +101,14 @@
     <div id="datasender-popup" style="display:none;"></div>
     <div id="change_ds_setting">
     <p class="warning_message margin_bottom_5">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
-        <input type="radio" value="select_everyone"><span class="margin_left_10">Everyone</span></br>
-        <span class="italic font_size_12 margin_left_30">Anyone with a simple phone can submit data.</span></br></br>
-        <input type="radio" value="select_registered"><span class="margin_left_10">Only Registered People</span></br>
-            <span class="italic font_size_12 margin_left_30">Data Senders must be registered first before submitting data.</span></br>
-            <span class="italic font_size_12 margin_left_30 margin_bottom_5">Example: Registered field staff, community based workers, supervisors</span></br></br>
-        <a href="#" class="cancel_link margin_left_365">{% trans "Cancel" %}</a>
-        <a href="#" class="button padding_bottom_top_3 padding_left_right_20" id="save_ds_setting" style="float: right">{% trans "Save" %}</a></br>
+        <input type="radio" value="select_everyone"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
+        <span class="italic font_size_12 margin_left_30">{% trans "Anyone with a simple phone can submit data." %}</span></br></br>
+        <input type="radio" value="select_registered"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
+            <span class="italic font_size_12 margin_left_30">{% trans "Data Senders must be registered first before submitting data." %}</span></br>
+            <span class="italic font_size_12 margin_left_30 margin_bottom_5">{% trans "Example: Registered field staff, community based workers, supervisors" %}</span></br>
+
+        <a href="#" class="button margin_top_15" id="save_ds_setting" style="float: right">{% trans "Save" %}</a>
+        <a href="#" class="cancel_link float_right">{% trans "Cancel" %}</a></br>
     </div>
 {% endblock %}
 

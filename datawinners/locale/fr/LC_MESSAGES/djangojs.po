@@ -1312,3 +1312,6 @@ msgstr "Enregistrement de Numéro d'Identification avec un nombre de réponses i
 
 msgid "Identification Number ID Already Exists"
 msgstr "ID de Numéro d'Identification déjà existant"
+
+msgid "People Authorized to Submit Data Using SMS"
+msgstr "Personne autorisée à soumettre des données via SMS"

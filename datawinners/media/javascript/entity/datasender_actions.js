@@ -437,7 +437,7 @@ $(document).ready(function(){
         modal: true,
         autoOpen: false,
         height: 280,
-        width: 520,
+        width: 620,
         closeText: 'hide'
       }
    );
