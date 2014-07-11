@@ -20,6 +20,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     var preUploadValidation =  options.preUploadValidation || function(){ return true;};
 
     var uploadButton = $("#uploadXLS");
+    var initialUploadButtonText = uploadButton.text();
     var cancelUploadLink = $("#cancel-xlx-upload");
 
     uploadButton.on("click", function() {
@@ -35,10 +36,12 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             buttonText: options.buttonText,
             onSubmit: function(){
                 cancelUploadLink.removeClass("none");
+                uploadButton.text(gettext("Uploading..."));
                 options.onSubmit && options.onSubmit();
             },
             onComplete: function (id, fileName, responseJSON){
                 cancelUploadLink.addClass("none");
+                uploadButton.text(initialUploadButtonText);
                 if(responseJSON['error_msg']){
                     self._showError(responseJSON['error_msg']);
                 }
@@ -56,6 +59,8 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     cancelUploadLink.on("click", function(){
         $(".qq-upload-cancel")[0].click();
         cancelUploadLink.addClass("none");
+        uploadButton.text(initialUploadButtonText);
+        options.postCancelCallBack && options.postCancelCallBack();
         return false;
     });
 };
