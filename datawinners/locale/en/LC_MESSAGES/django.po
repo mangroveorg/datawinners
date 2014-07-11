@@ -4630,3 +4630,6 @@ msgstr "). For each reply, DataWinners will personalize the information found in
 
 msgid "account wide sms learn more text part1"
 msgstr "Translate each automatic reply SMS. For some replies, DataWinners creates a personalized response. These personalized messages have text inside a gray box (example:"
+
+msgid "nested repeats not supported"
+msgstr "Sorry!  We could not upload your Questionnaire. Currently, DataWinners only supports one level of a repeated set of questions. Your Questionnaire contains two levels. Please remove the second level and try again."

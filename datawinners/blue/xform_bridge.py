@@ -72,9 +72,14 @@ class XlsFormParser():
         for field in fields:
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
+                    self._validate_for_nested_repeats(field)
                     return self._validate_fields_are_recognised(field['children'])
             else:
                 raise TypeNotSupportedException("question type '" + field['type'] + "' is not supported")
+
+    def _validate_for_nested_repeats(self, field):
+        if field['type'] == 'repeat' and "repeat" in [f["type"] for f in field['children']]:
+            raise NestedRepeatsNotSupportedException()
 
     def parse(self):
         self._validate_fields_are_recognised(self.xform_dict['children'])
@@ -269,6 +274,14 @@ class TypeNotSupportedException(Exception):
 
     def __init__(self, message):
         self.message = message
+
+    def __str__(self):
+        return self.message
+
+class NestedRepeatsNotSupportedException(Exception):
+
+    def __init__(self):
+        self.message = _("nested repeats not supported")
 
     def __str__(self):
         return self.message
