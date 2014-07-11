@@ -35,7 +35,7 @@ class XlsFormParser():
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
 
-    def __init__(self, path_or_file, project_name='Project'):
+    def __init__(self, path_or_file):
         if isinstance(path_or_file, basestring):
             self._file_object = None
             path = path_or_file
@@ -43,7 +43,7 @@ class XlsFormParser():
             self._file_object = path_or_file
             path = path_or_file.name
 
-        self.xform_dict = parse_file_to_json(path, default_name=project_name, file_object=path_or_file)
+        self.xform_dict = parse_file_to_json(path, file_object=path_or_file)
         survey = create_survey_element_from_dict(self.xform_dict)
         self.xform = survey.to_xml()
 
@@ -186,7 +186,7 @@ class MangroveService():
                                                  language=self.language,
                                                  reporter_id=self.reporter_id, question_set_json=self.json_xform_data,
                                                  xform=self.xform)
-            questionnaire.xform =  self.xform_with_form_code
+            questionnaire.xform = self.xform_with_form_code
 
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:

@@ -12,6 +12,8 @@ from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
+from django.template.defaultfilters import slugify
+
 import xlwt
 from datawinners import settings
 
@@ -46,21 +48,23 @@ class ProjectUpload(View):
 
     def post(self, request):
         try:
+            file_name = request.GET.get('qqfile').split('.')[0]
             file_content = request.raw_post_data
             tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
             manager = get_database_manager(request.user)
-            questionnaire_code =  generate_questionnaire_code(manager)
+            questionnaire_code = generate_questionnaire_code(manager)
             project_name = request.GET['pname']
+            file_name_with_suffix = file_name + '-' + questionnaire_code
 
-            xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name=project_name).parse()
+            xform_as_string, json_xform_data = XlsFormParser(tmp_file).parse()
 
             mangroveService = MangroveService(request.user, xform_as_string, json_xform_data, questionnaire_code=questionnaire_code, project_name=project_name, xls_form=file_content)
             id, name = mangroveService.create_project()
         except Exception as e:
-            return HttpResponse(content_type='application/json', content=json.dumps({'error_msg':e.message}))
+            return HttpResponse(content_type='application/json', content=json.dumps({'error_msg': e.message}))
 
         return HttpResponse(
             json.dumps(
@@ -275,7 +279,7 @@ def project_download(request):
         excel_transformed = XlsProjectParser().parse(raw_excel);
 
         response = HttpResponse(mimetype="application/vnd.ms-excel")
-        response['Content-Disposition'] = 'attachment; filename="%s.xls"' % project_name
+        response['Content-Disposition'] = 'attachment; filename="%s.xls"' % slugify(project_name)
 
         wb = xlwt.Workbook()
         for sheet in excel_transformed:

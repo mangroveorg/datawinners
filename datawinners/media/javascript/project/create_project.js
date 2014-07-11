@@ -171,7 +171,7 @@ $(document).ready(function () {
 
         new qq.FileUploader({
             element: document.getElementById('file_uploader'),
-            action: '/xlsform/upload/?pname='+questionnaireName(),
+            action: '/xlsform/upload/?pname='+encodeURIComponent(questionnaireName()),
             params: {},
             buttonText: "Upload XLSForm and create Questionnaire",
             onSubmit: function () {
