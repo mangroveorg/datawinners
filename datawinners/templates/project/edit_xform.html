@@ -30,8 +30,10 @@
             var project_id = "{{ project_id }}"
         </script>
         <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-        <script type="text/javascript" src="/media/javascript/project/update_project.js"></script>
-        <script type="text/javascript" src="/media/javascript/project/project_download.js"></script>
+{#        <script type="text/javascript" src="/media/javascript/project/update_project.js"></script>#}
+{#        <script type="text/javascript" src="/media/javascript/project/project_download.js"></script>#}
+        <script type="text/javascript" src="/media/javascript/project/upload_questionnaire.js"></script>
+        <script type="text/javascript" src="/media/javascript/project/edit_project_index.js"></script>
 
 
 {% endblock %}
@@ -54,8 +56,10 @@
             <noscript>
                 <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
             </noscript>
-            <div id="file_uploader" class="button" style="width:200px;"></div>
+             <div id="file_uploader" class="button upload_xls"></div>
+            <button id="uploadXLS">{% trans "Upload New XLSForm" %}</button>
         </div>
+        <div id="xlx-error-message"></div>
         <div id="survey" style="height: 200px;"></div>
         <div id="choices" style="height: 200px;"></div>
         <div id="cascades" style="height: 200px;"></div>
