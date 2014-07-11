@@ -19518,7 +19518,7 @@ requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form' ],
 
         $( '#validate-form' ).before( formStr );
         initializeForm();
-
+        $("form").trigger("postFormLoadAction");
         //validate handler for validate button
         $( '#validate-form' ).on( 'click', function() {
             form.validate();
