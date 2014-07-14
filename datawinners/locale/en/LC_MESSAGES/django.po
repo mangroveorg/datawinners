@@ -2415,6 +2415,9 @@ msgstr ""
 msgid "%s with %s = %s already exists."
 msgstr ""
 
+msgid "%s with Unique ID Number = %s already exists."
+msgstr ""
+
 msgid "Job title"
 msgstr ""
 

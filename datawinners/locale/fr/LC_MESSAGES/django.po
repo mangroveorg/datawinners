@@ -2520,6 +2520,9 @@ msgstr "obligatoire"
 msgid "%s with %s = %s already exists."
 msgstr "%s avec %s=%s existe déjà."
 
+msgid "%s with Unique ID Number = %s already exists."
+msgstr "Le/la %s portant le Numéro d’Identification Unique : %s existe déjà"
+
 msgid "%s with %s %s already exists."
 msgstr "Un(e) %s avec le %s %s existe déjà."
 
