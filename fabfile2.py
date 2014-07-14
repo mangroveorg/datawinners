@@ -179,6 +179,9 @@ def _deploy_datawinners(context):
         activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
         activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
 
+    with cd(context.code_dir):
+        activate_and_run(context.virtual_env, "git submodule update --init")
+
     restart_memcache()
     migrate_couchdb(context)
     restart_memcache()
