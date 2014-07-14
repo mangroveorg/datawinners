@@ -211,9 +211,8 @@ class MangroveService():
             questionnaire.add_attachments(self.xls_form, 'questionnaire.xls')
             # UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
             #                       detail=questionnaire.name)
-            return questionnaire.id, self.name
-        return None, None
-
+            return questionnaire.id, self.name, error_message
+        return None, None, error_message
 
 class XFormSubmissionProcessor():
 

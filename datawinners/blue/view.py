@@ -60,9 +60,13 @@ class ProjectUpload(View):
             xform_as_string, json_xform_data = XlsFormParser(tmp_file).parse()
 
             mangroveService = MangroveService(request.user, xform_as_string, json_xform_data, questionnaire_code=questionnaire_code, project_name=project_name, xls_form=file_content)
-            id, name = mangroveService.create_project()
+            id, name, error_message = mangroveService.create_project()
         except Exception as e:
             return HttpResponse(content_type='application/json', content=json.dumps({'error_msg': e.message}))
+
+        if error_message:
+            return HttpResponse(json.dumps(
+                {'success': False, 'error_msg': error_message}), content_type='application/json')
 
         return HttpResponse(
             json.dumps(

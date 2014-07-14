@@ -4,7 +4,11 @@ $(function () {
         buttonText: "Upload New XLSForm",
         postUrl: function(){
            return '/xlsform/upload/update/'+ project_id +'/';
+        },
+        postErrorHandler: function(responseJSON) {
+            DW.showError(responseJSON['error_msg']);
         }
+
     });
 
     $('.download_link').click(function(){
