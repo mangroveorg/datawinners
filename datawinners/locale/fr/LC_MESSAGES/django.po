@@ -5116,3 +5116,6 @@ msgstr "Non, ne pas annuler les modifications"
 
 msgid "nested repeats not supported"
 msgstr "Désolé ! Nous n'avons pas pu télécharger votre Questionnaire. Actuellement, DataWinners accepte seulement un niveau de répétition de séries de questions . Votre Questionnaire comporte deux niveaux. Veuillez supprimer le second niveau et essayez une nouvelle fois."
+
+msgid "Questionnaire has not been created, please upload again to create Questionnaire"
+msgstr ""

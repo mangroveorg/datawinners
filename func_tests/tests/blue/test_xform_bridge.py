@@ -10,6 +10,7 @@ from nose.plugins.attrib import attr
 from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, TypeNotSupportedException
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code
+from framework.utils.common_utils import random_string
 from mangrove.form_model.field import FieldSet
 from mangrove.form_model.form_model import get_form_model_by_code
 
@@ -64,7 +65,7 @@ class TestXFormBridge(unittest.TestCase):
         xform, json_xform_data = XlsFormParser(self.ALL_FIELDS).parse()
 
         mangroveService = MangroveService(self.user, xform, json_xform_data)
-        id, name = mangroveService.create_project()
+        id, name, errors = mangroveService.create_project()
 
         self.assertIsNotNone(id)
         self.assertIsNotNone(name)
@@ -73,7 +74,7 @@ class TestXFormBridge(unittest.TestCase):
     def test_should_convert_skip_logic_question(self):
         xform_as_string, json_xform_data = XlsFormParser(self.SKIP).parse()
         mangroveService = MangroveService(self.user, xform_as_string, json_xform_data)
-        id, name = mangroveService.create_project()
+        id, name, errors = mangroveService.create_project()
 
         self.assertIsNotNone(id)
         self.assertIsNotNone(name)
@@ -82,7 +83,7 @@ class TestXFormBridge(unittest.TestCase):
     def test_should_convert_multi_select_question(self):
         xform_as_string, json_xform_data = XlsFormParser(self.MULTI_SELECT).parse()
         mangroveService = MangroveService(self.user, xform_as_string, json_xform_data)
-        id, name = mangroveService.create_project()
+        id, name, errors = mangroveService.create_project()
 
         self.assertIsNotNone(id)
         self.assertIsNotNone(name)
@@ -257,10 +258,11 @@ class TestXFormBridge(unittest.TestCase):
 
     #integration
     def test_should_create_project_when_xlsform_is_uploaded(self):
+        project_name = random_string()
         client = Client()
         client.login(username='tester150411@gmail.com', password='tester150411')
 
-        r = client.post(path='/xlsform/upload/?qqfile=text_and_integer.xls',
+        r = client.post(path='/xlsform/upload/?pname='+project_name+'&qqfile=text_and_integer.xls',
                         data=open(os.path.join(self.test_data, 'text_and_integer.xls'), 'r').read(),
                                   content_type='application/octet-stream')
 

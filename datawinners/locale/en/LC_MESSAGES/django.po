@@ -4633,3 +4633,6 @@ msgstr "Translate each automatic reply SMS. For some replies, DataWinners create
 
 msgid "nested repeats not supported"
 msgstr "Sorry!  We could not upload your Questionnaire. Currently, DataWinners only supports one level of a repeated set of questions. Your Questionnaire contains two levels. Please remove the second level and try again."
+
+msgid "Questionnaire has not been created, please upload again to create Questionnaire"
+msgstr ""
