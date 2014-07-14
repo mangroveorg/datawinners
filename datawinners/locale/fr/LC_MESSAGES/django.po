@@ -5079,7 +5079,7 @@ msgid "Oops, something went wrong. You deleted a personalized response (gray box
 msgstr "Oups, une erreur est survenue. Vous avez supprimé une réponse personnalisée (zone grisée). Veuillez modifier le texte sans supprimer la réponse personnalisée et enregistrez de nouveau."
 
 msgid "questionnaire reply learn more text part1"
-msgstr "Pour certains retours, DataWinners crée des réponses personnalisées. Ces messages personnalisés contiennent des textes affichés dans les rectangles gris (exemple :"
+msgstr "Cliquez sur la liste déroulante pour choisir une langue existante ou ajoutez en une nouvelle selon vos besoins. Pour certains retours, DataWinners crée des réponses personnalisées. Ces messages personnalisés contiennent des textes affichés dans les rectangles gris (exemple :"
 
 msgid "customized reply learn more text part2"
 msgstr "). Pour chaque retour, DataWinners personnalisera l'information figurant dans les rectangles."
