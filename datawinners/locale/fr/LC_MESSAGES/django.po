@@ -4856,7 +4856,7 @@ msgid "Language"
 msgstr "Langue"
 
 msgid "Languages for Automatic Reply SMS"
-msgstr "Langues pour les Retour SMS Automatique"
+msgstr "Langues pour les Retour SMS Automatiques"
 
 msgid "language help text"
 msgstr "Pour chaque Questionnaire, vous pouvez choisir une langue pour les retours SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes de retour SMS automatiques suggérés. Vous pouvez également ajouter de nouvelles langues correspondant à vos besoins."
@@ -4865,7 +4865,7 @@ msgid "You are not authorized to submit data for this Questionnaire. Please cont
 msgstr "Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
 
 msgid "Successful Submission"
-msgstr "Soumissions réussie"
+msgstr "Soumissions réussies"
 
 msgid "Submission with an Error"
 msgstr "Soumissions avec erreur"
@@ -4892,7 +4892,7 @@ msgid "The Data Sender you are submitting on behalf of cannot submit to this Que
 msgstr "L'Expéditeur de Données pour le compte duquel vous soumettez des Données n'est pas autorisé à soumettre des Données pour ce Questionnaire. Ajoutez l'Expéditeur de Données à ce Questionnaire."
 
 msgid "DataWinners analyzes"
-msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une retour SMS."
+msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement un retour SMS."
 
 msgid "Send Automatic SMS Replies for My Questionnaire"
 msgstr "Envoyer des retours SMS automatiques pour mon Questionnaire"

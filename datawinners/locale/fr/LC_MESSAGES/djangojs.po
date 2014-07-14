@@ -1281,7 +1281,7 @@ msgid "Edit Datasender"
 msgstr "Modifier l'Expéditeur de Données"
 
 msgid "Successful Submission"
-msgstr "Soumissions réussie"
+msgstr "Soumissions réussies"
 
 msgid "Submission with an Error"
 msgstr "Soumissions avec erreur"
