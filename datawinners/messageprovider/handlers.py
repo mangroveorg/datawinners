@@ -11,7 +11,6 @@ from datawinners.messageprovider.messages import SMS
 def default_exception_handler(exception, request):
     return get_exception_message_for(exception=exception, channel=SMS)
 
-
 def default_exception_handler_with_logger(exception, request):
     exception_message = get_exception_message_for(exception=exception, channel=SMS)
     create_failure_log(exception_message, request)
@@ -19,17 +18,9 @@ def default_exception_handler_with_logger(exception, request):
 
 def wrong_questionnaire_code_handler(exception, request):
     return incorrect_questionnaire_code_handler(request['dbm'], exception.data[0], request)
-    # if request.get('exception'):
-    #     handler = exception_handlers.get(type(request.get('exception')), default_exception_handler)
-    #     return handler(request.get('exception'), request)
-    # return default_exception_handler_with_logger(exception, request)
 
 def data_object_not_found_handler(exception, request):
     return get_exception_message_for(exception=exception, channel=SMS, formatter=data_object_not_found_formatter)
-
-
-def sms_parser_wrong_number_of_answers_handler(exception, request):
-    return default_exception_handler_with_logger(exception, request)
 
 def exceed_limit_handler(exception, request):
     request.get('organization').increment_message_count_for(sms_registration_count=1)

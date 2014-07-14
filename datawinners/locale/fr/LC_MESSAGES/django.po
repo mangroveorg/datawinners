@@ -4268,10 +4268,10 @@ msgid "question_prefix%s"
 msgstr "%s"
 
 msgid "and"
-msgstr "et"
+msgstr "&"
 
 msgid "ending_and"
-msgstr "et"
+msgstr "&"
 
 msgid "singular_question"
 msgstr "la question"
@@ -4838,7 +4838,7 @@ msgid "Error. Questionnaire Code %s is incorrect. Find the Code on the top of th
 msgstr "Erreur. Le code Questionnaire %s est incorrect. Trouvez le Code dans le haut du Questionnaire imprime et renvoyez votre SMS avec ce Code."
 
 msgid "more_wrong_question"
-msgstr "les autres"
+msgstr "..."
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
 msgstr "Erreur. Vous netes pas enregistre en tant quExpediteur de Donnees. Veuillez contacter votre superviseur."

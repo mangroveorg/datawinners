@@ -4152,10 +4152,10 @@ msgid "question_prefix%s"
 msgstr "%s"
 
 msgid "and"
-msgstr "and"
+msgstr "&"
 
 msgid "ending_and"
-msgstr "and"
+msgstr "&"
 
 msgid "singular_question"
 msgstr "question"
@@ -4536,7 +4536,7 @@ msgid "Data Senders must use Identification Numbers that are already registered 
 msgstr ""
 
 msgid "more_wrong_question"
-msgstr "other questions"
+msgstr "..."
 
 msgid "Error. You are not registered as a Data Sender. Please contact your supervisor."
 msgstr ""
