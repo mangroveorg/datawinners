@@ -313,6 +313,13 @@ class Project(FormModel):
             self.save(process_post_update=False)
             update_datasender_index_by_id(data_sender_code, dbm)
 
+    @property
+    def is_open_datasender(self):
+        return self._doc.is_open_datasender
+
+    @is_open_datasender.setter
+    def is_open_datasender(self, value):
+        self._doc.is_open_datasender = value
 
 def get_all_projects(dbm, data_sender_id=None):
     if data_sender_id:

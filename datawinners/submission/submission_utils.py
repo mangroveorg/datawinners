@@ -28,6 +28,23 @@ class PostSMSProcessorLanguageActivator(object):
         else:
             self.request['is_registration'] = True
 
+class PostSMSProcessorCheckDSIsRegistered(object):
+    def __init__(self, dbm, request):
+        self.dbm = dbm
+        self.request = request
+
+    def _get_response(self):
+        response = Response(reporters=[], survey_response_id=None)
+        response.errors = data_sender_not_registered_handler(self.dbm, self.request)
+        return response
+
+    def process(self, form_code, submission_values):
+        form_model = get_form_model_by_code(self.dbm, form_code)
+        project = Project.from_form_model(form_model=form_model)
+        exception = self.request.get('exception')
+        if exception and isinstance(exception, NumberNotRegisteredException) and not project.is_open_datasender:
+           return self._get_response()
+
 
 class PostSMSProcessorNumberOfAnswersValidators(object):
     def __init__(self, dbm, request):
@@ -100,11 +117,12 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
 
     def process(self, form_code, submission_values):
         form_model = get_form_model_by_code(self.dbm, form_code)
+        project = Project.from_form_model(form_model=form_model)
         reporter_entity = self.request.get('reporter_entity')
 
-        if reporter_entity.short_code == "test" or \
+        if project.is_open_datasender or (reporter_entity.short_code == "test" or \
                 isinstance(form_model, EntityFormModel) or \
-                        reporter_entity.short_code in Project.from_form_model(form_model).data_senders:
+                        reporter_entity.short_code in Project.from_form_model(form_model).data_senders):
             self.check_answers_numbers()
             return None
 

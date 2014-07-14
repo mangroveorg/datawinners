@@ -85,7 +85,7 @@ def get_submission_error_message_for(response, form_model, dbm, request):
 
 def get_success_msg_for_submission_using(response, form_model, dbm, request):
     from datawinners.messageprovider.handlers import success_questionnaire_submission_handler
-    datasender_name = response.reporters[0].get('name').split()[0].capitalize()
+    datasender_name = response.reporters[0].get('name').split()[0].capitalize() if response.reporters else ''
     answers_response_text = ResponseBuilder(form_model=form_model,
                                     processed_data=response.processed_data).get_expanded_response()
     message = success_questionnaire_submission_handler(dbm, form_model.form_code, datasender_name, answers_response_text, request)
