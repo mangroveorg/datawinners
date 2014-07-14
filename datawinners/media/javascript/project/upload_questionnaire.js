@@ -24,36 +24,36 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     var cancelUploadLink = $("#cancel-xlx-upload");
     var warningMessageBox = $(".warning-message-box");
     var flash_message = $("#xlx-message");
+    new qq.FileUploader({
+        element: document.getElementById('file_uploader'),
+        action: options.postUrl(),
+        params: {},
+        buttonText: options.buttonText,
+        onSubmit: function () {
+            cancelUploadLink.removeClass("none");
+            uploadButton.text(gettext("Uploading..."));
+            this.params = (options.params && options.params()) || {};
+            options.onSubmit && options.onSubmit();
+        },
+        onComplete: function (id, fileName, responseJSON) {
+            warningMessageBox.addClass("none");
+            cancelUploadLink.addClass("none");
+            uploadButton.text(initialUploadButtonText);
+            if (responseJSON['error_msg']) {
+                options.postErrorHandler(responseJSON);
+            }
+            else {
+                self._showSuccess();
+                options.postSuccessSave && options.postSuccessSave(responseJSON);
+            }
+        }
+    });
 
     uploadButton.on("click", function() {
 
         if(!preUploadValidation()){
             return false;
         }
-
-        new qq.FileUploader({
-            element: document.getElementById('file_uploader'),
-            action: options.postUrl(),
-            params: {},
-            buttonText: options.buttonText,
-            onSubmit: function(){
-                cancelUploadLink.removeClass("none");
-                uploadButton.text(gettext("Uploading..."));
-                options.onSubmit && options.onSubmit();
-            },
-            onComplete: function (id, fileName, responseJSON){
-                warningMessageBox.addClass("none");
-                cancelUploadLink.addClass("none");
-                uploadButton.text(initialUploadButtonText);
-                if(responseJSON['error_msg']){
-                    options.postErrorHandler(responseJSON);
-                }
-                else{
-                    self._showSuccess();
-                    options.postSuccessSave && options.postSuccessSave(responseJSON);
-                }
-            }
-        });
 
         $("input[name=file]").click();
         return false;

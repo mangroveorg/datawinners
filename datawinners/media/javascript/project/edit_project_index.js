@@ -7,11 +7,31 @@ $(function () {
         },
         postErrorHandler: function(responseJSON) {
             DW.showError(responseJSON['error_msg']);
+        },
+        preUploadValidation:function(){
+            var editQuestionnaireWarningOptions = {
+                successCallBack: function (callback) {
+                    callback();
+                    $("input[name=file]").click();
+                    return false;
+                },
+                title: gettext("Warning: Changes to Questionnaire will impact previously collected data"),
+                link_selector: "#cancel_changes",
+                dialogDiv: "#cancel_questionnaire_edit",
+                cancelLinkSelector: "#cancel_dialog",
+                width: 580
+            };
+            var warningDialog = new DW.Dialog(editQuestionnaireWarningOptions).init();
+            warningDialog.show();
+            return false;
         }
-
     });
 
-    $('.download_link').click(function(){
+    $('.download_link').click(function () {
         $('#download_form').attr('action', '/xlsform/download/').submit();
     });
+
+
 });
+
+

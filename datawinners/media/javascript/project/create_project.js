@@ -167,8 +167,9 @@ $(document).ready(function () {
     new DW.UploadQuestionnaire({
         buttonText: "Upload XLSForm and create Questionnaire",
         postUrl: function(){
-           return '/xlsform/upload/?pname='+encodeURIComponent(questionnaireViewModel.projectName())
+           return '/xlsform/upload/';
         },
+        params : function(){return {'pname':questionnaireViewModel.projectName()};},
         preUploadValidation: function(){
             var questionnaireName = questionnaireViewModel.projectName;
             DW.ko.mandatoryValidator(questionnaireName);

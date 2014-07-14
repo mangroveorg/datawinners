@@ -32,6 +32,7 @@
         <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
 {#        <script type="text/javascript" src="/media/javascript/project/update_project.js"></script>#}
 {#        <script type="text/javascript" src="/media/javascript/project/project_download.js"></script>#}
+        <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
         <script type="text/javascript" src="/media/javascript/project/upload_questionnaire.js"></script>
         <script type="text/javascript" src="/media/javascript/project/edit_project_index.js"></script>
 
@@ -39,6 +40,7 @@
 {% endblock %}
 
 {% block content %}
+    <div id="xlx-message"></div>
     <div>
         <div class="grid_8 alpha">
             <h2>{% trans "Questionnaire" %}</h2>
@@ -75,7 +77,19 @@
         <a id="cancel-xlx-upload" class="none" href="javascript:void(0);">{% trans "Cancel Upload" %}</a>
     </div>
     <h6 class="create_questionnaire_help margin_bottom_20 margin_top_10">{% trans "Need help and support on how to create a XLSForm and advanced Questionnaire logic?" %} <a>{% trans "learn more | Example Forms" %}</a></h6>
-    <div id="xlx-message"></div>
+
+    <div id="cancel_questionnaire_edit" style="display: none;">
+        {% trans "Editing current Questionnaire might delete previously collected data." %}<br/>
+
+        <p class="font_size_13">{% trans "Consider to create a new Questionnaire instead of editing the current one." %}</p>
+        <a class="font_size_13">{% trans "Learn More" %}</a>
+
+        <div class="text_align_right padding_top_20">
+            <a id="cancel_dialog" class="dialog_cancel_button" href="javascript:void(0);">{% trans "Cancel" %}</a>
+            <a id="save_changes" class="button yes_button">{% trans "Continue" %}</a>
+        </div>
+    </div>
+
     <div id="survey" style="height: 200px;"></div>
     <div id="choices" style="height: 200px;"></div>
     <div id="cascades" style="height: 200px;"></div>
