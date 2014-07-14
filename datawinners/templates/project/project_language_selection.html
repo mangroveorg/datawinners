@@ -61,61 +61,61 @@
         {% if project.xform %}
             <div class="warning-message-box">
                 <p>{% trans "This feature is not applicable for excel upload feature." %}</p></div>
-        {% endif %}
-         <div>
-            <h6 class="title_set_SMS">
-                {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
-                <img src="/media/images/help_icon.png" class="help_icon">
-                <div class="tooltip">
-                   <p style="text-align: justify !important;" > {% trans "tooltip_language_checkbox" %} </p>
-                </div>
-            </h6>
-            <div class="onoffswitch" data-bind="onoff: enable_sms_replies" id="myonoffswitch">
-                <label class="onoffswitch-label" for="myonoffswitch">
-                    <span class="onoffswitch-inner"></span>
-                    <span class="onoffswitch-switch"></span>
-                </label>
-            </div>
-        </div>
-        <div class="languages_selection">
-             <ul>
-                <li>
-                    <h6 data-bind="css: { 'disabled-text': is_outgoing_sms_disabled}">
-                        {% trans "Language" %}
-                        <img src="/media/images/help_icon.png" class="help_icon">
-                        <div class="tooltip">
-                           <p style="text-align: justify !important;"> {% trans "tooltip_error_language" %} </p>
-                        </div>
-                    </h6>
-                    <div style="margin-bottom: 2px" class="help_accordion">
-                        {% trans "Choose the language of your reply SMS. View and add new languages on the "%}
-                        <a href='/customizemessages' data-bind="css: {'disable_link': is_outgoing_sms_disabled }, disable: is_outgoing_sms_disabled">{% trans "language page link" %}.</a>
+        {% else %}
+             <div>
+                <h6 class="title_set_SMS">
+                    {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
+                    <img src="/media/images/help_icon.png" class="help_icon">
+                    <div class="tooltip">
+                       <p style="text-align: justify !important;" > {% trans "tooltip_language_checkbox" %} </p>
                     </div>
-                <select id="project_language" name="project_language" class="dropdown_style"
-                        data-bind="enable:enable_sms_replies, options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
-                </li>
+                </h6>
+                <div class="onoffswitch" data-bind="onoff: enable_sms_replies" id="myonoffswitch">
+                    <label class="onoffswitch-label" for="myonoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="languages_selection">
+                 <ul>
+                    <li>
+                        <h6 data-bind="css: { 'disabled-text': is_outgoing_sms_disabled}">
+                            {% trans "Language" %}
+                            <img src="/media/images/help_icon.png" class="help_icon">
+                            <div class="tooltip">
+                               <p style="text-align: justify !important;"> {% trans "tooltip_error_language" %} </p>
+                            </div>
+                        </h6>
+                        <div style="margin-bottom: 2px" class="help_accordion">
+                            {% trans "Choose the language of your reply SMS. View and add new languages on the "%}
+                            <a href='/customizemessages' data-bind="css: {'disable_link': is_outgoing_sms_disabled }, disable: is_outgoing_sms_disabled">{% trans "language page link" %}.</a>
+                        </div>
+                    <select id="project_language" name="project_language" class="dropdown_style"
+                            data-bind="enable:enable_sms_replies, options: available_languages, value: selected_language, optionsText: 'name', optionsValue: 'code'"></select>
+                    </li>
 
 
-             </ul>
-             {% csrf_token %}
+                 </ul>
+                 {% csrf_token %}
 
-        </div>
-        <div class="grid_15 float_right">
-            <div class="right_aligned_button">
-                <input type="button" data-bind="click: save_and_reload, value: save_text, css:{'ui-state-disabled': isSaveDisabled}" class="button" />
+            </div>
+            <div class="grid_15 float_right">
+                <div class="right_aligned_button">
+                    <input type="button" data-bind="click: save_and_reload, value: save_text, css:{'ui-state-disabled': isSaveDisabled}" class="button" />
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="cancel_language_changes_warning" style="display: none;">
-        {% trans "Do you want to save the changes before leaving this page?" %}<br/>
-        <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
+        <div id="cancel_language_changes_warning" style="display: none;">
+            {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+            <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
 
-        <div class="text_align_right padding_top_20">
-            <a id="cancel_dialog" href="javascript:void(0);">{% trans "Cancel" %}</a>
-            <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
-            <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
+            <div class="text_align_right padding_top_20">
+                <a id="cancel_dialog" href="javascript:void(0);">{% trans "Cancel" %}</a>
+                <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
+                <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
+            </div>
         </div>
-    </div>
-
+    {% endif %}
 {% endblock %}
