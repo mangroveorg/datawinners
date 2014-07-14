@@ -5,11 +5,9 @@ from nose.plugins.attrib import attr
 
 from framework.utils.data_fetcher import fetch_, from_
 from pages.languagespage.account_wide_reply_sms_page import AccountWideSmsReplyPage
-from pages.languagespage.customized_language_locator import SUBMISSION_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, \
-    SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR
-from pages.languagespage.customized_languages_page import CustomizedLanguagePage
+from pages.languagespage.customized_language_locator import SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR
 from pages.loginpage.login_page import login
-from testdata.test_data import CUSTOMIZE_MESSAGES_URL, ACCOUNT_MESSAGES_URL
+from testdata.test_data import ACCOUNT_MESSAGES_URL
 from tests.smstestertests.sms_tester_data import *
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID
 from datawinners.accountmanagement.models import Organization

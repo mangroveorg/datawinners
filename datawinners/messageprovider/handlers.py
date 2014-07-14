@@ -99,8 +99,6 @@ def data_sender_not_linked_handler(dbm, request, form_code):
     message = get_customized_message_for_questionnaire(dbm, request,
                                                              message_code='reply_ds_not_authorized',
                                                              form_code=form_code)
-    create_failure_log(message, request)
-
     return message
 
 def data_sender_not_registered_handler(exception, request):
