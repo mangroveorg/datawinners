@@ -726,7 +726,7 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
     template = 'project/questionnaire_preview.html' if sms_preview else 'project/questionnaire_preview_list.html'
     return render_to_response(template,
                               {"questions": questions, 'questionnaire_code': questionnaire.form_code,
-                               'project': questionnaire, 'project_links': project_links,
+                               'project': questionnaire, 'project_links': project_links,'project_name':questionnaire.name,
                                'is_quota_reached': is_quota_reached(request),
                                'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
                               context_instance=RequestContext(request))
