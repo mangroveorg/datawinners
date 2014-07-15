@@ -79,6 +79,12 @@ class SuccessSubmissionHeader(SubmissionHeader):
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         return header_dict
 
+class MobileSubmissionHeader(SubmissionHeader):
+    def update_static_header_info(self):
+        header_dict = OrderedDict()
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
+        header_dict.update({"date": "Submission Date"})
+        return header_dict
 
 class ErroredSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
@@ -94,7 +100,8 @@ class HeaderFactory():
     def __init__(self, form_model, language='en'):
         self.header_to_class_dict = {"all": AllSubmissionHeader, "deleted": AllSubmissionHeader,
                                      "analysis": SubmissionAnalysisHeader,
-                                     "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader}
+                                     "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader,
+                                     "mobile": MobileSubmissionHeader}
         self.form_model = form_model
         self.language = language
 

@@ -227,7 +227,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
         submissions = get_survey_responses(self.manager, self.questionnaire.form_code, None, None, view_name="undeleted_survey_response")
         for submission in submissions:
             submission_list.append({'submission_uuid': submission.id,
-                                    'version': submission._doc.rev,
+                                    'version': submission.version,
                                     'project_uuid': self.questionnaire.id,
                                     'created': py_datetime_to_js_datestring(submission.created)
                                   })
@@ -237,7 +237,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
         submission = get_survey_response_by_id(self.manager, submission_uuid)
 
         return {'submission_uuid': submission.id,
-                'version': submission._doc.rev,
+                'version': submission.version,
                 'project_uuid': self.questionnaire.id,
                 'created': py_datetime_to_js_datestring(submission.created),
                 'xml': self._model_str_of(submission.id, self.questionnaire.name),
