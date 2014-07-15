@@ -790,6 +790,9 @@ msgstr "Période de Rapport"
 msgid "Submission Date"
 msgstr "Date de soumission"
 
+msgid "Datasender Id"
+msgstr ""
+
 msgid "Click to select a date range"
 msgstr "Cliquer pour sélectionner une période"
 

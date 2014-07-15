@@ -6,7 +6,7 @@ import datetime
 import logging
 from string import capitalize
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -393,7 +393,7 @@ def export(request):
     questionnaire_code = request.POST.get(u'questionnaire_code')
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-
+    current_language = get_language()
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
                     "number_of_results": 50000,
@@ -409,7 +409,7 @@ def export(request):
         return XFormSubmissionExporter(form_model, project_name, request.user) \
         .create_excel_response(submission_type, query_params)
 
-    return SubmissionExporter(form_model, project_name, request.user) \
+    return SubmissionExporter(form_model, project_name, request.user, current_language) \
         .create_excel_response(submission_type, query_params)
 
 

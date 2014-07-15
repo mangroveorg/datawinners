@@ -70,9 +70,10 @@ class SubmissionsPageHeader():
 
 
 class SubmissionExcelHeader():
-    def __init__(self, form_model, submission_type):
+    def __init__(self, form_model, submission_type, language='en'):
         self._form_model = form_model
         self.submission_type = submission_type
+        self.language = language
 
     def add_datasender_id_column(self, header_dict, result):
         result.update({
@@ -95,7 +96,7 @@ class SubmissionExcelHeader():
                                                        'fieldset_type': field.fieldset_type})
 
     def get_columns(self):
-        header = HeaderFactory(self._form_model).create_header(self.submission_type)
+        header = HeaderFactory(self._form_model, self.language).create_header(self.submission_type)
         header_dict = header.get_header_field_dict()
         result = OrderedDict()
         for key in header_dict:
