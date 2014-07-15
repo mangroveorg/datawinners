@@ -36,6 +36,8 @@
 
 {% block questionnaire %}
     <div class="questionnaire-header">
+        <h3 class="project_name">{{ project.name }}</h3>
+        <p class="instructions italic">{% trans "Fill out the following Questionnaire and click on Submit." %}</p>
         {% if is_quota_reached %}
         <div class="warning-message-box padding_right_10">
             <p>{% trans "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data." %}</p>
