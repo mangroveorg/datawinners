@@ -24,6 +24,19 @@ $(function () {
             var warningDialog = new DW.Dialog(editQuestionnaireWarningOptions).init();
             warningDialog.show();
             return false;
+        },
+        onSuccess:function(){
+            var kwargs = {dialogDiv: "#inform_datasender_about_changes",
+                title: gettext('Inform Your Data Senders about the Changes'),
+                width:650,
+                successCallBack: function(callback) {
+                    callback();
+                    DW.showSuccess();
+                }
+            };
+            var informAboutChanges = new DW.Dialog(kwargs).init();
+            informAboutChanges.show();
+            return true;
         }
     });
 

@@ -8,7 +8,7 @@ DW.showError = function(errorMessage){
         html("<label class='error_message'>" + errorMessage + "</label>").show();
 };
 
-DW.UploadQuestionnaire.prototype._showSuccess = function(message){
+DW.showSuccess = function(message){
     var flash_message = $("#xlx-message");
     flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
     html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
@@ -43,7 +43,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
                 options.postErrorHandler(responseJSON);
             }
             else {
-                self._showSuccess();
+                (options.onSuccess && options.onSuccess()) || DW.showSuccess();
                 options.postSuccessSave && options.postSuccessSave(responseJSON);
             }
         }
