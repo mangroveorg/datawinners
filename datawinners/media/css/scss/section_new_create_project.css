@@ -867,7 +867,7 @@ fieldset {
         display: none; }
 
 .selected {
-  background: url("/media/images/questions_hover_arrow.png") no-repeat scroll right top/auto 100% rgba(0, 0, 0, 0);
+  background: url("/media/images/questions_hover_arrow.png") no-repeat scroll right top/auto 100% transparent;
   background-color: #d7e4ed;
   left: 269px; }
   .selected + .selected-notify {
@@ -963,3 +963,6 @@ fieldset {
       .uniqueIdTypeSection .uniqueIdTypeContents .uniqueIdList li:hover {
         background-color: #0088CC;
         color: #ffffff; }
+
+.dialog-link {
+  color: #0070AC !important; }

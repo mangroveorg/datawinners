@@ -82,15 +82,15 @@
         {% trans "Editing current Questionnaire might delete previously collected data." %}<br/>
 
         <p class="font_size_13">{% trans "Consider to create a new Questionnaire instead of editing the current one." %}</p>
-        <a class="font_size_13">{% trans "Learn More" %}</a>
+        <a class="font_size_13 dialog-link">{% trans "Learn More" %}</a>
 
         <div class="text_align_right padding_top_20">
-            <a id="cancel_dialog" class="dialog_cancel_button" href="javascript:void(0);">{% trans "Cancel" %}</a>
+            <a id="cancel_dialog" class="dialog_cancel_button dialog-link" href="javascript:void(0);">{% trans "Cancel" %}</a>
             <a id="save_changes" class="button yes_button">{% trans "Continue" %}</a>
         </div>
     </div>
     <div style="display: none">
-        {% include "redistribute_questionnaire_dialog.html" %}
+        {% include "project/inform_datasender_of_excel_questionnaire_changes.html" %}
     </div>
 
     <div id="survey" style="height: 200px;"></div>
