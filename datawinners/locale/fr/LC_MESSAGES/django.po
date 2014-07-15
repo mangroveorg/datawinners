@@ -791,7 +791,7 @@ msgid "Submission Date"
 msgstr "Date de soumission"
 
 msgid "Datasender Id"
-msgstr ""
+msgstr "Id de l'Expéditeur de Données"
 
 msgid "Click to select a date range"
 msgstr "Cliquer pour sélectionner une période"

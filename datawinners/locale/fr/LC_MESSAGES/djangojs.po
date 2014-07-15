@@ -1018,7 +1018,7 @@ msgid "Example: %(day)s of October for October report"
 msgstr "Exemple: le %(day)s Octobre pour le rapport du mois de Septembre"
 
 msgid "Example: %(day)s of October for September report"
-msgstr "Exemple: le %(day)s Octobre pour le rapport du mois de October"
+msgstr "Exemple: le %(day)s Octobre pour le rapport du mois de Octobre"
 
 msgid "Example: %(day)s of the week following the reporting week"
 msgstr "Exemple: %(day)s de la semaine suivante"
