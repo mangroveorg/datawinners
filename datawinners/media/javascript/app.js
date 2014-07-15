@@ -19513,6 +19513,7 @@ requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form' ],
         var $data;
         data = xform_xml.replace( /jr\:template=/gi, 'template=' );
         $data = $( $.parseXML( data ) );
+        $($data.find( 'form:eq(0)' )[0]).find("#form-title").remove();
         formStr = ( new XMLSerializer() ).serializeToString( $data.find( 'form:eq(0)' )[ 0 ] );
         modelStr = ( new XMLSerializer() ).serializeToString( $data.find( 'model:eq(0)' )[ 0 ] );
 
