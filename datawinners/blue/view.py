@@ -248,8 +248,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 @csrf_exempt
 def new_xform_submission_post(request):
     try:
-        response = XFormWebSubmissionHandler(request.user, request=request).\
-            create_new_submission_response()
+        response = XFormWebSubmissionHandler(request.user, request=request).create_new_submission_response()
         response['Location'] = request.build_absolute_uri(request.path)
         return response
     except Exception as e:

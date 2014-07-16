@@ -1,11 +1,10 @@
-import base64
 import json
 from django.http import HttpResponseBadRequest, HttpResponse
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
-from datawinners.messageprovider.messages import SMART_PHONE
+from datawinners.messageprovider.messages import WEB
 from datawinners.submission.views import check_quotas_and_update_users
 from datawinners.xforms.views import sp_submission_logger, logger, get_errors
 from mangrove.transport import Request, TransportInfo
@@ -29,7 +28,7 @@ class XFormWebSubmissionHandler():
         self.user_profile = NGOUserProfile.objects.get(user=self.request_user)
         self.mangrove_request = Request(message=self.xml_submission_file, media=self.media_file,
             transportInfo=
-            TransportInfo(transport=SMART_PHONE,
+            TransportInfo(transport=WEB,
                 source=self.request_user.email,
                 destination=''
             ))
@@ -54,7 +53,7 @@ class XFormWebSubmissionHandler():
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
             return HttpResponseBadRequest()
 
-        self.organization.increment_message_count_for(incoming_sp_count=1)
+        self.organization.increment_message_count_for(incoming_web_count=1)
         content = json.dumps({'submission_uuid':response.survey_response_id,
                               'version': response.version,
                               'created':py_datetime_to_js_datestring(response.created)})
