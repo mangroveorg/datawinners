@@ -54,7 +54,7 @@ class SubmissionAnalysisHeader(SubmissionHeader):
         header_dict = OrderedDict()
 
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         return header_dict
 
@@ -63,7 +63,7 @@ class AllSubmissionHeader(SubmissionHeader):
 
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         header_dict.update({"status": translate("Status", self.language, ugettext)})
@@ -74,7 +74,7 @@ class AllSubmissionHeader(SubmissionHeader):
 class SuccessSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         return header_dict
@@ -89,7 +89,7 @@ class MobileSubmissionHeader(SubmissionHeader):
 class ErroredSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         header_dict.update({"error_msg": translate("Error Message", self.language, ugettext)})
