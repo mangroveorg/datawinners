@@ -268,6 +268,11 @@ class XFormTransformer():
         r.extend(form_tree.getroot())
         return etree.tostring(r)
 
+    def get_id_name(self):
+        #Method to get the temp name of the xform.
+        #todo : May not work for all scenarios.
+        model_doc = etree.fromstring(self.xform)
+        return list(list(model_doc)[0])[0].text
 
 class TypeNotSupportedException(Exception):
 

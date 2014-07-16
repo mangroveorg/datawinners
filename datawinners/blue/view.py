@@ -198,8 +198,9 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 
         if self.questionnaire.xform:
             form_context.update({'survey_response_id': survey_response_id })
-            form_context.update({'xform_xml':re.sub(r"\n", " ", XFormTransformer(self.questionnaire.xform).transform())})
-            form_context.update({'edit_model_str': self._model_str_of(survey_response_id, self.questionnaire.name)})
+            xform_transformer = XFormTransformer(self.questionnaire.xform)
+            form_context.update({'xform_xml':re.sub(r"\n", " ", xform_transformer.transform())})
+            form_context.update({'edit_model_str': self._model_str_of(survey_response_id, xform_transformer.get_id_name())})
             form_context.update({'submission_update_url': reverse('update_web_submission', kwargs={'survey_response_id':survey_response_id})})
             form_context.update({'is_advance_questionnaire': True})
 
