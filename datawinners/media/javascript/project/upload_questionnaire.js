@@ -35,6 +35,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             spinner.removeClass("none");
             uploadButton.text(gettext("Uploading..."));
             uploadButton.attr("disabled","disabled");
+            uploadButton.addClass("disabled_yellow_submit_button");
             this.params = (options.params && options.params()) || {};
             options.onSubmit && options.onSubmit();
         },
@@ -43,12 +44,13 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             cancelUploadLink.addClass("none");
             spinner.addClass("none");
             uploadButton.text(initialUploadButtonText);
+            uploadButton.removeClass("disabled_yellow_submit_button");
             uploadButton.removeAttr("disabled");
             if (responseJSON['error_msg']) {
                 options.postErrorHandler(responseJSON);
             }
             else {
-                (options.onSuccess && options.onSuccess()) || DW.showSuccess();
+                (options.onSuccess && options.onSuccess());
                 options.postSuccessSave && options.postSuccessSave(responseJSON);
             }
         }
@@ -70,6 +72,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
         spinner.addClass("none");
         uploadButton.text(initialUploadButtonText);
         uploadButton.removeAttr("disabled");
+        uploadButton.removeClass("disabled_yellow_submit_button")
         warningMessageBox.removeClass("none");
         flash_message.addClass("none");
         options.postCancelCallBack && options.postCancelCallBack();

@@ -40,7 +40,6 @@
 {% endblock %}
 
 {% block content %}
-    <div id="xlx-message"></div>
     <div>
         <div class="grid_8 alpha">
             <h2>{% trans "Questionnaire" %}</h2>
@@ -51,16 +50,18 @@
         {% trans "View and edit your Questionnaire." %}
     </div>
 
+    <div id="xlx-message"></div>
+    <div class="warning-message-box none" ><p>{% trans "Upload was cancelled" %}</p></div>
     <div class="download_xls">
-        <div class="download_header">
+        <span class="download_header">
             Download Current XLSForm (Excel file):
-        </div>
+        </span>
         {% if show_xls_download_link %}
-            <div class="heading_block alpha data_ana border_none">
+            <span class="heading_block alpha data_ana border_none">
                 <span class="links">
                     <a href="javascript:void(0);" class="download_link">{{ project.name|slugify }}.xls</a>
                 </span>
-            </div>
+            </span>
         {% endif %}
     </div>
     <form id="download_form" method="POST">
@@ -75,8 +76,9 @@
         <div id="file_uploader" class="button upload_xls"></div>
         <button id="uploadXLS">{% trans "Upload New XLSForm" %}</button>
         <a id="cancel-xlx-upload" class="none" href="javascript:void(0);">{% trans "Cancel Upload" %}</a>
+        <img class="upload_spinner none" src="/media/images/ajax-loader.gif">
     </div>
-    <h6 class="create_questionnaire_help margin_bottom_20 margin_top_10">{% trans "Need help and support on how to create a XLSForm and advanced Questionnaire logic?" %} <a>{% trans "learn more | Example Forms" %}</a></h6>
+    <h6 class="create_questionnaire_help margin_bottom_20 margin_top_10">{% trans "Need help and support on how to create a XLSForm and advanced Questionnaire logic?" %} <a>{% trans "Learn More | Example Forms" %}</a></h6>
 
     <div id="cancel_questionnaire_edit" style="display: none;">
         {% trans "Editing current Questionnaire might delete previously collected data." %}<br/>

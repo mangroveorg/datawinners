@@ -266,7 +266,7 @@ div.sms_tester_form div.clear_and_submit {
   font-family: Lucida Grande,Lucida Sans,Arial,sans-serif; }
 
 .download_xls {
-  padding-bottom: 10px; }
+  padding-bottom: 10px;
+  padding-top: 10px; }
   .download_xls .download_header {
-    font-size: 20px;
-    padding-top: 20px; }
+    font-size: 17px; }

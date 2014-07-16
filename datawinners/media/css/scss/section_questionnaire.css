@@ -439,16 +439,16 @@ div.margin_top_20 input {
   top: -222px; }
 
 #uploadXLS {
-  border: 1px solid #d4972d !important;
+  border: 1px solid #d4972d;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   background: #FFD857;
   background: -webkit-gradient(linear, left top, left bottom, from(#feea89), to(#ffd857));
   background: -moz-linear-gradient(top, #feea89, #ffd857);
-  color: #6f451d !important;
+  color: #6f451d;
   font-family: "Arial";
   font-weight: bold;
-  text-decoration: none !important;
+  text-decoration: none;
   padding: 6px 23px 5px 22px;
   cursor: pointer;
   cursor: hand;
