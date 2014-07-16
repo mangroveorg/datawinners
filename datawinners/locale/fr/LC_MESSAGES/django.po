@@ -4859,7 +4859,7 @@ msgid "Language"
 msgstr "Langue"
 
 msgid "Languages for Automatic Reply SMS"
-msgstr "Langues pour les Retour SMS Automatiques"
+msgstr "Langues pour les Retours SMS Automatiques"
 
 msgid "language help text"
 msgstr "Pour chaque Questionnaire, vous pouvez choisir une langue pour les retours SMS automatiques. Cliquez sur la liste déroulante et choisissez une langue pour voir et modifier les textes de retour SMS automatiques suggérés. Vous pouvez également ajouter de nouvelles langues correspondant à vos besoins."
@@ -5064,7 +5064,7 @@ msgid "Reply SMS for Questionnaires"
 msgstr "Retours SMS relatifs aux Questionnaires"
 
 msgid "Datawinners analyzes each of the SMS Submission and automatically sends back an SMS reply."
-msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement un retour SMS."
+msgstr "DataWinners analyse chaque Soumission SMS et envoie automatiquement une retour SMS."
 
 msgid "Identification Number Registration with an Error"
 msgstr "Enregistrement de Numéro d'Identification comportant une erreur"
