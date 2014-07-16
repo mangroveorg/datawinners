@@ -73,7 +73,7 @@ class XlsFormParser():
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
                     self._validate_for_nested_repeats(field)
-                    return self._validate_fields_are_recognised(field['children'])
+                    self._validate_fields_are_recognised(field['children'])
             else:
                 raise TypeNotSupportedException("question type '" + field['type'] + "' is not supported")
 
