@@ -1171,3 +1171,6 @@ msgstr "Add a new language on the Languages page"
 
 msgid "Edit Datasender"
 msgstr ""
+
+msgid "People Authorized to Submit Data Using SMS"
+msgstr ""

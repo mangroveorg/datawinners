@@ -1472,7 +1472,7 @@ msgid "Questionnaire - Reminders"
 msgstr "Questionnaire - Messages de rappel"
 
 msgid "Everyone"
-msgstr "Tous le monde"
+msgstr "Tout le monde"
 
 msgid "Reminders are not enabled for this project. Click on Settings tab to activate reminders for this project."
 msgstr "Messages de rappel non activés pour ce projet. Cliquez sur l'onglet Paramètres pour activer les messages de rappel pour ce projet."
@@ -5108,4 +5108,35 @@ msgstr "Oui, annuler les modifications"
 msgid "No, Don't Cancel Changes"
 msgstr "Non, ne pas annuler les modifications"
 
+msgid "People Authorized to Submit Data Using SMS"
+msgstr "Personne autorisée à soumettre des données via SMS"
 
+msgid "Change"
+msgstr "Changement"
+
+msgid "You decide who has permission to submit data using SMS for this Questionnaire:"
+msgstr "Vous décidez qui a la permission de soumettre des données via SMS pour ce Questionnaire :"
+
+msgid "Everyone – Anyone with a simple phone can submit data"
+msgstr "Tout le monde - N'importe qui possédant un simple téléphone peut soumettre des données"
+
+msgid "Only Registered People  – Data Senders must be registered first before submitting data."
+msgstr "Seulement les personnnes enregistrées - Les Expéditeurs de Données doivent être enregistrées avant de pouvoir soumettre des données."
+
+msgid "Who has permission to submit data using SMS for this Questionnaire:"
+msgstr "Qui est autorisé à soumettre des données via SMS pour ce Questionnaire:"
+
+msgid "Anyone with a simple phone can submit data."
+msgstr "N'importe qui possédant un simple téléphone peut soumettre des données."
+
+msgid "Only Registered People"
+msgstr "Seulement les personnes enregistrées."
+
+msgid "Data Senders must be registered first before submitting data."
+msgstr "Les Expéditeurs de Données doivent être enregistrées avant de pouvoir soumettre des données."
+
+msgid "Example: Registered field staff, community based workers, supervisors"
+msgstr "Exemple : Personnel de terrain enregistré, travailleurs communautaires, superviseurs"
+
+msgid "Everyone – Any phone can submit data"
+msgstr "Tout le monde - N'importe quel téléphone peut soumettre des données "

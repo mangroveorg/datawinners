@@ -1322,3 +1322,5 @@ msgstr "Apprenez comment ajouter et modifier les langues"
 msgid "Cancel Changes"
 msgstr "Annuler les modifications"
 
+msgid "People Authorized to Submit Data Using SMS"
+msgstr "Personne autorisée à soumettre des données via SMS"

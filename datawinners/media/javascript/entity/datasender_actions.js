@@ -432,12 +432,12 @@ function populate_dialog_box_for_web_users(table, all_selected) {
 }
 
 $(document).ready(function(){
-    $("#change_ds_setting").dialog({
+   $("#change_ds_setting").dialog({
         title: gettext("People Authorized to Submit Data Using SMS"),
         modal: true,
         autoOpen: false,
-        height: 280,
-        width: 520,
+        height: 260,
+        width: 620,
         closeText: 'hide'
       }
    );
@@ -445,4 +445,37 @@ $(document).ready(function(){
        $("#change_ds_setting").dialog("close");
        return false;
    });
+   $("#change_ds_setting #save_ds_setting").bind("click", function(){
+       var project_id = $('#project_id').val();
+       var selected = $("#change_ds_setting input[name='ds_setting']:checked").val()
+       $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px', zIndex:1000000}});
+       $.ajax({'url':'/project/change_ds_setting/', 'type':'POST',
+            data: { 'project_id':project_id,
+                    //'selected':$("input[name=ds_setting]:radio").val()
+                    'selected':selected
+                  }
+       }).done(function (json_response) {
+                var response = $.parseJSON(json_response);
+                    if (response.success) {
+                        
+                        window.location.href = "/project/registered_datasenders/" + project_id + "/";
+                    }
+                // alert(json_response)
+                //alert("test")
+              /*{
+                  $("#for_everyone").css("display:display");
+                  $("#for_registered").css("display:none");
+
+              }
+              else{
+                   $("#for_everyone").css("display:none");
+                  $("#for_registered").css("display:display");
+              }*/
+
+
+              //window.location.href = "/project/registered_datasenders/" + project_id + "/";
+
+            }
+       );
+    });
 });

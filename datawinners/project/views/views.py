@@ -66,6 +66,10 @@ from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTI
 from datawinners.project.views.utils import get_form_context
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
+from django.views.decorators.http import require_http_methods
+from datawinners.accountmanagement.decorators import is_not_expired
 
 
 logger = logging.getLogger("django")
@@ -890,3 +894,21 @@ def edit_my_subject(request, entity_type, entity_id, project_id=None):
         return subject_request.response_for_get_request(is_update=True)
     elif request.method == 'POST':
         return subject_request.post(is_update=True)
+
+@login_required
+@csrf_view_exempt
+@csrf_response_exempt
+@require_http_methods(['POST'])
+@is_not_expired
+def change_ds_setting(request):
+    manager = get_database_manager(request.user)
+    project_id = request.POST.get("project_id")
+    ds_setting = request.POST.get("selected")
+    questionnaire = Project.get(manager, project_id)
+    if ds_setting == "select_everyone":
+        questionnaire.is_open_datasender = True
+    else:
+        questionnaire.is_open_datasender = False
+    questionnaire.save()
+    messages.success(request, _("Change saved succesfully."))
+    return HttpResponse(json.dumps({'success': True}))

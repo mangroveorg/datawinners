@@ -4632,3 +4632,33 @@ msgstr "). For each reply, DataWinners will personalize the information found in
 
 msgid "account wide sms learn more text part1"
 msgstr "Translate each automatic reply SMS. For some replies, DataWinners creates a personalized response. These personalized messages have text inside a gray box (example:"
+
+msgid "People Authorized to Submit Data Using SMS"
+msgstr ""
+
+msgid "Change"
+msgstr ""
+
+msgid "You decide who has permission to submit data using SMS for this Questionnaire:"
+msgstr ""
+
+msgid "Everyone – Any phone can submit data "
+msgstr ""
+
+msgid "Only Registered People  – Data Senders must be registered first before submitting data."
+msgstr ""
+
+msgid "Who has permission to submit data using SMS for this Questionnaire:"
+msgstr ""
+
+msgid "Anyone with a simple phone can submit data."
+msgstr ""
+
+msgid "Only Registered People"
+msgstr ""
+
+msgid "Data Senders must be registered first before submitting data."
+msgstr ""
+
+msgid "Example: Registered field staff, community based workers, supervisors"
+msgstr ""

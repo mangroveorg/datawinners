@@ -16,14 +16,6 @@
 .padding_left_right_10 {
   padding: 0 10px; }
 
-.padding_left_right_20 {
-  padding-left: 20px;
-  padding-right: 20px; }
-
-.padding_bottom_top_3 {
-  padding-top: 3px !important;
-  padding-bottom: 3px !important; }
-
 .padding_bottom_10 {
   padding-bottom: 10px; }
 
@@ -84,6 +76,9 @@
 
 .margin_left_20 {
   margin-left: 20px; }
+
+.margin_left_30 {
+  margin-left: 30px; }
 
 .margin_left_180 {
   margin-left: 180px !important; }
@@ -238,7 +233,7 @@ div.tooltip {
   margin: 0 !important;
   border: none !important;
   z-index: 9000; }
-  div.tooltip p {
+  div.tooltip p, div.tooltip ol {
     background: #000 !important;
     font-size: 12px !important;
     font-weight: normal !important;
