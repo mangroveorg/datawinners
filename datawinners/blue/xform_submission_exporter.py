@@ -24,7 +24,7 @@ class XFormSubmissionExporter(SubmissionExporter):
 
         wb = xlwt.Workbook()
         for book_name, header_row in headers.items():
-            workbook_add_sheet(wb, [header_row] + data_rows_dict[book_name], book_name)
+            workbook_add_sheet(wb, [header_row] + data_rows_dict.get(book_name,[]), book_name)
         wb.save(response)
         return response
 
