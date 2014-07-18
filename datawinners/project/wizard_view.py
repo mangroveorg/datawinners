@@ -43,6 +43,7 @@ def create_questionnaire(post, manager, name, language, reporter_id):
     questionnaire = Project(manager, name=name,
                            fields=[], form_code=questionnaire_code, language=language,
                            devices=[u'sms', u'web', u'smartPhone'])
+    questionnaire.is_open_datasender = post.get('is_open_datasender')
     if reporter_id is not None:
         questionnaire.data_senders.append(reporter_id)
 

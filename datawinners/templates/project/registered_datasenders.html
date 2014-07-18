@@ -31,7 +31,6 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/common/location_auto_suggest_widget.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/datasender_import.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
@@ -42,9 +41,10 @@
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
     <script type="text/javascript" src="/media/javascript/project/bind_project_links.js"></script>
     <script src="/media/javascript/project/bind_project_links.js" type="text/javascript"></script>
-
+    <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
     <script>
         var user_dict = {{ user_dict|safe }};
+        var initial_is_open_datasender = "{{ is_open_datasender }}";
         var import_datasenders_link = "{% url registered_datasenders project.id %}"
     </script>
 {% endblock %}
@@ -64,7 +64,7 @@
                 </ol>
             </div>
             </br>
-            {% trans "Everyone – Anyone with a simple phone can submit data" %}&nbsp;&nbsp;<a class="change_setting">{% trans "Change" %}</a>
+            <span data-bind="text:ds_setting_description">{% trans "Everyone – Anyone with a simple phone can submit data" %}</span>&nbsp;&nbsp;<a class="change_setting">{% trans "Change" %}</a>
             </br></br>
         </div>
         <div align="right">
@@ -101,9 +101,9 @@
     <div id="datasender-popup" style="display:none;"></div>
     <div id="change_ds_setting">
     <p class="warning_message margin_bottom_5">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
-        <input type="radio" name="ds_setting" value="select_everyone" checked="True"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
+        <input type="radio" name="ds_setting" value="1" data-bind="checked:is_open_datasender"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
         <span class="italic font_size_12 margin_left_30">{% trans "Anyone with a simple phone can submit data." %}</span></br></br>
-        <input type="radio" name="ds_setting" value="select_registered"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
+        <input type="radio" name="ds_setting" value="" data-bind="checked:is_open_datasender"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
             <span class="italic font_size_12 margin_left_30">{% trans "Data Senders must be registered first before submitting data." %}</span></br>
             <span class="italic font_size_12 margin_left_30 margin_bottom_5">{% trans "Example: Registered field staff, community based workers, supervisors" %}</span></br>
         <a href="#" class="button margin_top_15" id="save_ds_setting" style="float: right">{% trans "Save" %}</a>

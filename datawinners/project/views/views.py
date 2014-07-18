@@ -442,6 +442,7 @@ def get_questionnaire_ajax(request, project_id):
                                        'language': project.language,
                                        'questions': existing_questions,
                                        'datasenders': project.data_senders,
+                                       'is_open_datasender': 1,
                                        'reminder_and_deadline': project.reminder_and_deadline
                                    }, default=field_to_json), content_type='application/json')
 
@@ -905,10 +906,7 @@ def change_ds_setting(request):
     project_id = request.POST.get("project_id")
     ds_setting = request.POST.get("selected")
     questionnaire = Project.get(manager, project_id)
-    if ds_setting == "select_everyone":
-        questionnaire.is_open_datasender = True
-    else:
-        questionnaire.is_open_datasender = False
+    questionnaire.is_open_datasender = ds_setting
     questionnaire.save()
     messages.success(request, _("Change saved succesfully."))
     return HttpResponse(json.dumps({'success': True}))

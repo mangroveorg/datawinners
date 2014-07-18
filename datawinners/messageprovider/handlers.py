@@ -64,6 +64,10 @@ def invalid_answer_for_uid_registration_handler(dbm, invalid_answers):
     return get_account_wide_sms_reply(dbm, "reply_incorrect_answers", placeholder_dict= {'Question Numbers for Wrong Answer(s)': invalid_answers})
 
 def incorrect_questionnaire_code_handler(dbm, invalid_form_code, request):
+    exception = request.get('exception')
+    if exception:
+        handler = exception_handlers.get(type(exception), default_exception_handler)
+        return handler(exception, request)
     message = get_account_wide_sms_reply(dbm, "reply_incorrect_questionnaire_code",
                                        placeholder_dict={'Submitted Questionnaire Code': invalid_form_code})
     create_failure_log(message, request)

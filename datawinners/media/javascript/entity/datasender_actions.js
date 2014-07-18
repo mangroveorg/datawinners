@@ -438,44 +438,35 @@ $(document).ready(function(){
         autoOpen: false,
         height: 260,
         width: 620,
-        closeText: 'hide'
+        closeText: 'hide',
+        close: function(){
+            DW.vm.is_open_datasender(initial_is_open_datasender);
+        }
       }
    );
+    
    $("#change_ds_setting .cancel_link").bind("click", function() {
        $("#change_ds_setting").dialog("close");
+       DW.vm.is_open_datasender(initial_is_open_datasender);
        return false;
    });
+
    $("#change_ds_setting #save_ds_setting").bind("click", function(){
+       DW.loading();
        var project_id = $('#project_id').val();
-       var selected = $("#change_ds_setting input[name='ds_setting']:checked").val()
-       $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px', zIndex:1000000}});
-       $.ajax({'url':'/project/change_ds_setting/', 'type':'POST',
-            data: { 'project_id':project_id,
-                    //'selected':$("input[name=ds_setting]:radio").val()
-                    'selected':selected
-                  }
+       var selected = $("#change_ds_setting input[name='ds_setting']:checked").val();
+       $.ajax({url:'/project/change_ds_setting/',
+               type:'POST',
+               data: { 'project_id':project_id,
+                       'selected':selected
+               }
        }).done(function (json_response) {
-                var response = $.parseJSON(json_response);
+
+           var response = $.parseJSON(json_response);
                     if (response.success) {
-                        
                         window.location.href = "/project/registered_datasenders/" + project_id + "/";
                     }
-                // alert(json_response)
-                //alert("test")
-              /*{
-                  $("#for_everyone").css("display:display");
-                  $("#for_registered").css("display:none");
-
-              }
-              else{
-                   $("#for_everyone").css("display:none");
-                  $("#for_registered").css("display:display");
-              }*/
-
-
-              //window.location.href = "/project/registered_datasenders/" + project_id + "/";
-
-            }
+           }
        );
-    });
+   });
 });

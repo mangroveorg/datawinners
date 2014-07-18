@@ -22,6 +22,7 @@ DW.post_project_data = function (callback) {
 
     var post_data = {
                       'questionnaire-code':questionnaireViewModel.questionnaireCode(),
+                      'is_open_datasender':questionnaireViewModel.isOpenDatasender(),
                       'question-set':questionnaire_data,
                       'profile_form':basic_project_info(),
                       'csrfmiddlewaretoken':$('#question_form input[name=csrfmiddlewaretoken]').val()
@@ -73,6 +74,7 @@ DW.controllers = {
                     questionnaireViewModel.loadQuestion(new DW.question(question));
                 });
                 questionnaireViewModel.showQuestionnaireForm(true);
+                questionnaireViewModel.isOpenDatasender(templateData.is_open_datasender);
                 questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
             });
 
@@ -90,6 +92,7 @@ DW.controllers = {
         questionnaireViewModel.showQuestionnaireForm(true);
         questionnaireViewModel.enableQuestionnaireTitleFocus(true);
         questionnaireViewModel.questionnaireCode(questionnaire_code);
+        questionnaireViewModel.isOpenDatasender(questionnaireData.is_open_datasender)
     },
     "blankQuestionnaire": function () {
             questionnaireViewModel.clearQuestionnaire();
@@ -97,6 +100,7 @@ DW.controllers = {
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
             questionnaireViewModel.questionnaireCode(questionnaire_code);
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
+            questionnaireViewModel.isOpenDatasender(1);
     },
     "questionnaireCreationOptions": function () {
             questionnaireCreationOptionsViewModel.resetCreationOption();
