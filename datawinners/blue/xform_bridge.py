@@ -46,7 +46,7 @@ class XlsFormParser():
         self.xform_dict = parse_file_to_json(path, file_object=path_or_file)
 
     def _validate_for_uppercase_names(self, field):
-        if filter(lambda x: x.isupper, field['name']):
+        if filter(lambda x: x.isupper(), field['name']):
             raise UppercaseNamesNotSupportedException()
 
     def _create_question(self, field):
