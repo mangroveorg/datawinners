@@ -44,8 +44,10 @@ class XlsFormParser():
             path = path_or_file.name
 
         self.xform_dict = parse_file_to_json(path, file_object=path_or_file)
-        survey = create_survey_element_from_dict(self.xform_dict)
-        self.xform = survey.to_xml()
+
+    def _validate_for_uppercase_names(self, field):
+        if filter(lambda x: x.isupper, field['name']):
+            raise UppercaseNamesNotSupportedException()
 
     def _create_question(self, field):
         question = None
@@ -73,6 +75,7 @@ class XlsFormParser():
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
                     self._validate_for_nested_repeats(field)
+                    self._validate_for_uppercase_names(field)
                     self._validate_fields_are_recognised(field['children'])
             else:
                 raise TypeNotSupportedException("question type '" + field['type'] + "' is not supported")
@@ -84,7 +87,9 @@ class XlsFormParser():
     def parse(self):
         self._validate_fields_are_recognised(self.xform_dict['children'])
         questions = self._create_questions(self.xform_dict['children'])
-        return self.xform, questions
+        survey = create_survey_element_from_dict(self.xform_dict)
+        xform = survey.to_xml()
+        return xform, questions
 
     def _group(self, field):
         group_label = field['label']
@@ -98,7 +103,7 @@ class XlsFormParser():
 
         if not group_label: #todo create appropriate error class
             raise QuestionAlreadyExistsException('Unique repeat label is required')
-        name = field['name']
+        name = field['name'].lower()
         questions = self._create_questions(field['children'])
         question = {'title': group_label, 'type': 'field_set', "is_entity_question": False,
                  "code": name, "name": group_label, 'required': False,
@@ -286,6 +291,14 @@ class NestedRepeatsNotSupportedException(Exception):
 
     def __init__(self):
         self.message = _("nested repeats not supported")
+
+    def __str__(self):
+        return self.message
+
+class UppercaseNamesNotSupportedException(Exception):
+
+    def __init__(self):
+        self.message = _("Uppercase in names not supported")
 
     def __str__(self):
         return self.message
