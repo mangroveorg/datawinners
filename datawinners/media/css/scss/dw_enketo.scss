@@ -46,15 +46,16 @@ article.paper {
     opacity: 0.9;
     font-size: 15px;
     height: 37px;
-    margin-left: 475px;
-    text: "submit";
   }
   .question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) label input[type="checkbox"]:checked ~ .option-label:before,
   .question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) label input[type="radio"]:checked ~ .option-label:before {
     color: #AFCCFF;
   }
   .enketo-power {
-    display: none;
+    font-size: 7px;
+    img {
+      width: 40px;
+    }
   }
   .note {
     color: #333333;

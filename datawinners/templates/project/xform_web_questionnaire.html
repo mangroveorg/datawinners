@@ -80,12 +80,9 @@
                 <div class="ajax-loader"><img src="/media/images/ajax-loader.gif"/><span
                         class="loading">{% trans "Just a moment..." %}</span></div>
                 <button id="validate-form" class="btn btn-primary btn-large disabled-state disabled">Submit</button>
-                <div class="enketo-power">Powered by <a href="http://enketo.org" title="enketo.org website"><img
-                        src="/media/images/enketo_powered_by.png" alt="enketo logo"/></a>
-                </div>
                 {% if is_quota_reached %}
-                <div class="can-not-submit">
-                            <span class="can-not-submit-link-quest help_icon" style="float: right">{% trans "Why canʼt I submit?" %}</span>
+                <div class="can-not-submit" style="width: 628px;text-align: center;">
+                            <span class="can-not-submit-link-quest help_icon">{% trans "Why canʼt I submit?" %}</span>
                         <div class="tooltip">
                             <p>
                                 {% trans 'You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data.' %}
@@ -93,6 +90,9 @@
                         </div>
                     </div>
                 {% endif %}
+                <div class="enketo-power">Powered by <a href="http://enketo.org" title="enketo.org website"><img
+                            src="/media/images/enketo_powered_by.png" alt="enketo logo"/></a>
+                    </div>
             </article>
         </div>
     </div>

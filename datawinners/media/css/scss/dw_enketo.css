@@ -37,14 +37,14 @@ article.paper {
     cursor: hand;
     opacity: 0.9;
     font-size: 15px;
-    height: 37px;
-    margin-left: 475px;
-    text: "submit"; }
+    height: 37px; }
   article.paper .question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) label input[type="checkbox"]:checked ~ .option-label:before,
   article.paper .question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) label input[type="radio"]:checked ~ .option-label:before {
     color: #AFCCFF; }
   article.paper .enketo-power {
-    display: none; }
+    font-size: 7px; }
+    article.paper .enketo-power img {
+      width: 40px; }
   article.paper .note {
     color: #333333;
     border: 0;
