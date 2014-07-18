@@ -908,5 +908,5 @@ def change_ds_setting(request):
     questionnaire = Project.get(manager, project_id)
     questionnaire.is_open_datasender = ds_setting
     questionnaire.save()
-    messages.success(request, _("Change saved succesfully."))
+    messages.success(request, _("Changes saved successfully."))
     return HttpResponse(json.dumps({'success': True}))

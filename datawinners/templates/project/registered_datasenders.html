@@ -55,6 +55,7 @@
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
         <div class="float_left full_width">
+        {% include 'flash_message.html' %}
         <strong>{% trans "People Authorized to Submit Data Using SMS" %}</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon">
             <div class="tooltip">
                 <ol class="margin_left_20">
@@ -88,7 +89,6 @@
         {% endblock %}
     </div>
 
-    {% include 'flash_message.html' %}
 
     {% include 'entity/all_data_senders/web_submission_access_block.html' %}
     <input type="text" value="{{ project.id }}" class="none" id="project_id"/>

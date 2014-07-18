@@ -1324,3 +1324,10 @@ msgstr "Annuler les modifications"
 
 msgid "People Authorized to Submit Data Using SMS"
 msgstr "Personne autorisée à soumettre des données via SMS"
+
+msgid "Everyone – Anyone with a simple phone can submit data"
+msgstr "Tout le monde - N'importe qui possédant un simple téléphone peut soumettre des données"
+
+msgid "Only Registered People – Data Senders must be registered first before submitting data."
+msgstr "Seulement les personnnes enregistrées - Les Expéditeurs de Données doivent être enregistrées avant de pouvoir soumettre des données."
+

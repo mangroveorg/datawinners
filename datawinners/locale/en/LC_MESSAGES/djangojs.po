@@ -1174,3 +1174,9 @@ msgstr ""
 
 msgid "People Authorized to Submit Data Using SMS"
 msgstr ""
+
+msgid "Everyone – Anyone with a simple phone can submit data"
+msgstr ""
+
+msgid "Only Registered People  – Data Senders must be registered first before submitting data."
+msgstr ""

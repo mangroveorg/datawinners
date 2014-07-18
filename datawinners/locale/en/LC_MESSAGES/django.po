@@ -4648,6 +4648,9 @@ msgstr ""
 msgid "Only Registered People  – Data Senders must be registered first before submitting data."
 msgstr ""
 
+msgid "Everyone – Anyone with a simple phone can submit data"
+msgstr ""
+
 msgid "Who has permission to submit data using SMS for this Questionnaire:"
 msgstr ""
 
