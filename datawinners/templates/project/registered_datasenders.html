@@ -54,6 +54,7 @@
         <div class="grid_8 alpha">
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
+        {% if not in_trial_mode %}
         <div class="float_left full_width">
         {% include 'flash_message.html' %}
         <strong>{% trans "People Authorized to Submit Data Using SMS" %}</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon">
@@ -68,6 +69,7 @@
             <span data-bind="text:ds_setting_description">{% trans "Everyone – Anyone with a simple phone can submit data" %}</span>&nbsp;&nbsp;<a class="change_setting">{% trans "Change" %}</a>
             </br></br>
         </div>
+        {% endif %}
         <div align="right">
 
 {#            <a href="{{ project_links.register_datasenders_link }}"#}
@@ -99,8 +101,9 @@
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     <div id="datasender-popup" style="display:none;"></div>
+    {% if not in_trial_mode %}
     <div id="change_ds_setting">
-    <p class="warning_message margin_bottom_5">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
+        <p class="warning_message margin_bottom_5">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
         <input type="radio" name="ds_setting" value="1" data-bind="checked:is_open_datasender"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
         <span class="italic font_size_12 margin_left_30">{% trans "Anyone with a simple phone can submit data." %}</span></br></br>
         <input type="radio" name="ds_setting" value="" data-bind="checked:is_open_datasender"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
@@ -109,5 +112,6 @@
         <a href="#" class="button margin_top_15" id="save_ds_setting" style="float: right">{% trans "Save" %}</a>
         <a href="#" class="cancel_link float_right">{% trans "Cancel" %}</a></br>
     </div>
+    {% endif %}
 {% endblock %}
 
