@@ -185,7 +185,7 @@ def process_create_data_sender_form(dbm, form, org_id):
             else:
                 form.update_errors(response.errors)
         except IntegrityError as e:
-            form.update_errors(_(u'Sorry, the telephone number %s has already been registered.') % form.cleaned_data["telephone_number"])
+            form.update_errors({MOBILE_NUMBER_FIELD_CODE:_(u'Sorry, the telephone number %s has already been registered.') % form.cleaned_data["telephone_number"]})
         except DataObjectAlreadyExists as e:
             message = _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1],)
         except MangroveException as exception:
