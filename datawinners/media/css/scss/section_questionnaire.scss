@@ -524,7 +524,9 @@ div.margin_top_20 input {
 .upload_xls {
   width:315px;
   position: absolute;
-  top: -222px;
+  top: -10000px;
+  opacity: 0 !important;
+   pointer-events: none !important;
 }
 
 #uploadXLS {
