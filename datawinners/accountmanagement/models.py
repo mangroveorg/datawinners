@@ -278,6 +278,10 @@ class Organization(models.Model):
     def in_trial_mode(self):
         return self.account_type == "Basic"
 
+    @property
+    def is_pro_sms(self):
+        return  self.account_type == "Pro SMS"
+
 
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)

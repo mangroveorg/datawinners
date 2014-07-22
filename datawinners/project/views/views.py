@@ -872,6 +872,9 @@ def create_data_sender_and_web_user(request, project_id):
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode
 
+def _is_pro_sms(request):
+    return utils.get_organization(request).is_pro_sms
+
 
 @login_required
 @session_not_expired

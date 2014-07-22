@@ -54,7 +54,7 @@
         <div class="grid_8 alpha">
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
-        {% if not in_trial_mode %}
+        {% if is_pro_sms %}
         <div class="float_left full_width">
         {% include 'flash_message.html' %}
         <strong>{% trans "People Authorized to Submit Data Using SMS" %}</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon">
@@ -101,7 +101,7 @@
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     <div id="datasender-popup" style="display:none;"></div>
-    {% if not in_trial_mode %}
+    {% if is_pro_sms %}
     <div id="change_ds_setting">
         <p class="warning_message margin_bottom_5">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
         <input type="radio" name="ds_setting" value="1" data-bind="checked:is_open_datasender"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
