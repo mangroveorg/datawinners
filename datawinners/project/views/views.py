@@ -71,21 +71,7 @@ from datawinners.submission.views import check_quotas_and_update_users
 
 
 logger = logging.getLogger("django")
-performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
-
-END_OF_DAY = " 23:59:59"
-START_OF_DAY = " 00:00:00"
-
-PAGE_SIZE = 10
-NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
-MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
-DATE_TYPE_OPTIONS = ["Latest"]
-GEO_TYPE_OPTIONS = ["Latest"]
-TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
-
-XLS_TUPLE_FORMAT = "%s (%s)"
-
 
 @login_required
 @session_not_expired
@@ -101,7 +87,6 @@ def delete_project(request, project_id):
         return HttpResponseRedirect(dashboard_page)
     helper.delete_project(questionnaire)
     undelete_link = reverse(undelete_project, args=[project_id])
-    # if len(get_all_projects(manager)) > 0:
     messages.info(request, undelete_link)
     UserActivityLog().log(request, action=DELETED_QUESTIONNAIRE, project=questionnaire.name)
     return HttpResponseRedirect(reverse(views.index))
@@ -228,7 +213,6 @@ def _format_reminder(reminder, project_id):
     return dict(message=reminder.message, id=reminder.id,
                 to=_format_string_for_reminder_table(reminder.remind_to),
                 when=_make_reminder_mode(reminder.reminder_mode, reminder.day))
-    # delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
 
 
 def _format_reminders(reminders, project_id):

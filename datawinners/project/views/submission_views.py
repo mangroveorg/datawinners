@@ -54,7 +54,6 @@ from mangrove.transport.repository.survey_responses import get_survey_response_b
 from mangrove.transport.contract.survey_response import SurveyResponse
 
 
-performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
 
 
