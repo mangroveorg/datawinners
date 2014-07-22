@@ -54,6 +54,15 @@
         <div class="grid_8 alpha">
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
+        {% if in_trial_mode %}
+            <div class="float_left full_width">
+                <div class="warning-message-box clear-both overflow_hidden padding_left_right_10 padding_top_10">
+                    {% trans "In the Basic account only registered Data Senders can send you data. However, when you upgrade to a Pro SMS  account you have the option to let anyone send in data." %}
+                    <a class="button margin_10 float_right" target="blank" href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
+                    <a class="float_right margin_10 padding_top_10" href="/{% trans "en" %}/pricing/" target="blank">{% trans "Learn More" %}</a>
+                </div>
+            </div>
+        {% endif %}
         {% if is_pro_sms %}
         <div class="float_left full_width">
         {% include 'flash_message.html' %}
