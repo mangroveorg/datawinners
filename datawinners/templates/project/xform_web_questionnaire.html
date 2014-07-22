@@ -46,8 +46,9 @@
         var isQuotaReached = '{{ is_quota_reached }}';
     </script>
 
-    <script type="text/javascript" src="/media/javascript/xform_post_load_action.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/app.js"></script>
+    <script type="text/javascript" src="/media/javascript/xform_post_load_action.js"></script>
 
 {% endblock %}
 
@@ -98,5 +99,17 @@
                 </div>
             </article>
         </div>
+        <div id="cancel_language_changes_warning" style="display: none;">
+            {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+
+            <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
+
+            <div class="text_align_right padding_top_20">
+                <a id="cancel_dialog" href="javascript:void(0);">{% trans "Cancel" %}</a>
+                <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
+                <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
+            </div>
+        </div>
+
     </div>
 {% endblock %}

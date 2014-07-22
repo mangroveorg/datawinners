@@ -17509,6 +17509,22 @@ define('bootstrap', [], function() {
     return jQuery;
 });
 
+function saveXformSubmission() {
+    form.validate();
+    if (!form.isValid()) {
+//                alert( 'Form contain errors. Please see fields marked in red.' );
+    }
+    else {
+        DW.loading();
+        var data = form.getDataStr();
+        var saveURL = submissionUpdateUrl || submissionCreateUrl;
+
+        var success = function (data, status) {
+            window.location.replace(surveyResponseId === '' ? submissionURL : submissionLogURL);
+        };
+        $.post(saveURL, {'form_data': data}).done(success);
+    }
+}
 requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form' ],
     function( $, Modernizr, Form ) {
         var loadErrors, form;
@@ -17533,21 +17549,7 @@ requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form' ],
 
         //validate handler for validate button
         $( '#validate-form' ).on( 'click', function() {
-            form.validate();
-            if ( !form.isValid() ){
-//                alert( 'Form contain errors. Please see fields marked in red.' );
-            }
-            else
-            {
-                DW.loading();
-                var data = form.getDataStr();
-                var saveURL= submissionUpdateUrl || submissionCreateUrl;
-
-                var success = function(data, status){
-                    window.location.replace(surveyResponseId === '' ? submissionURL : submissionLogURL);
-                };
-                $.post(saveURL,{'form_data':data}).done(success);
-            }
+            saveXformSubmission();
         });
 
         //initialize the form

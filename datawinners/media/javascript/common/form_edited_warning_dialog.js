@@ -1,7 +1,7 @@
 DW.CancelWarningDialog = function (options) {
     var self = this;
     var _successCallBack = options.successCallBack;
-    var isQuestionnaireModified = options.isQuestionnaireModified;
+    var isFormModified = options.isQuestionnaireModified;
     var _cancelCallback = options["cancelCallback"]|| function(){};
     var _ignoreCallback = options["ignoreCallback"]|| function(){};
     var _redirect = options["actionCallback"] || function () {
@@ -72,7 +72,7 @@ DW.CancelWarningDialog = function (options) {
         $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(ignore_links).bind('click', {self: this}, function (event) {
             var that = event.data.self;
             self.redirect_url = $(this).attr("href");
-            if (isQuestionnaireModified()) {
+            if (isFormModified()) {
                 self.cancelDialog.dialog("open");
                 return false;
             }
