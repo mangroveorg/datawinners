@@ -171,7 +171,7 @@ def update_submission_search_for_datasender_edition(entity_doc, dbm):
 
     kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): entity_doc.short_code}
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
-    project_form_model_ids = [project.id for project in get_all_projects(dbm)]
+    project_form_model_ids = [project.id for project in get_all_projects(dbm,entity_doc.short_code)]
 
     filtered_query = SubmissionQueryBuilder().query_all(dbm.database_name, *project_form_model_ids, **kwargs)
 
