@@ -161,7 +161,7 @@ def check_account_and_datasender(incoming_request):
                                                incoming_request.get('transport_info').source)
         incoming_request['reporter_entity'] = reporter_entity
         if organization.in_trial_mode:
-            check_quotas_for_trial(incoming_request)
+            check_quotas_for_trial(organization)
     except Exception as e:
         incoming_request['exception'] = e
 
@@ -172,8 +172,7 @@ def check_account_and_datasender(incoming_request):
     return incoming_request
 
 
-def check_quotas_for_trial(incoming_request):
-    organization = incoming_request.get('organization')
+def check_quotas_for_trial(organization):
     if organization.has_exceeded_submission_limit():
         raise ExceedSubmissionLimitException()
 

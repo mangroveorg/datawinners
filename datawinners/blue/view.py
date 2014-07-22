@@ -13,6 +13,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
 from django.template.defaultfilters import slugify
+from mangrove.transport.contract.response import Response
+from mangrove.errors.MangroveException import ExceedSubmissionLimitException
 
 import xlwt
 from datawinners import settings
@@ -252,6 +254,8 @@ def new_xform_submission_post(request):
         response = XFormWebSubmissionHandler(request.user, request=request).create_new_submission_response()
         response['Location'] = request.build_absolute_uri(request.path)
         return response
+    except ExceedSubmissionLimitException as e:
+        return HttpResponse(json.dumps({'error_message':e.message}))
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
         return HttpResponseBadRequest()
