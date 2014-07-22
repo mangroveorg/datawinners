@@ -415,9 +415,9 @@ def questionnaire(request, project_id):
                                    'in_trial_mode': in_trial_mode,
                                    'show_xls_download_link': show_xls_download_link,
                                    'post_url': reverse(edit_project, args=[project_id]),
-                                   # 'xls_form': repr(json.dumps(XlsProjectParser().parse(questionnaire.get_attachments(attachment_name='questionnaire.xls')))),
                                    'preview_links': get_preview_and_instruction_links()},
                                   context_instance=RequestContext(request))
+
         return render_to_response('project/questionnaire.html',
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,

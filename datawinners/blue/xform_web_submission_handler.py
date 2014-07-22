@@ -1,5 +1,7 @@
 import json
+from django.contrib import messages
 from django.http import HttpResponseBadRequest, HttpResponse
+from django.utils.translation import ugettext
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
@@ -54,13 +56,16 @@ class XFormWebSubmissionHandler():
         mail_feed_errors(response, self.manager.database_name)
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
+            messages.error(self.request, ugettext('Submission failed %s', get_errors(response.errors)), extra_tags='error')
             return HttpResponseBadRequest()
 
         self.organization.increment_message_count_for(incoming_web_count=1)
-        content = json.dumps({'submission_uuid':response.survey_response_id,
+        content = json.dumps({'submission_uuid': response.survey_response_id,
                               'version': response.version,
-                              'created':py_datetime_to_js_datestring(response.created)})
-        success_response = HttpResponse(content, status=201)
+                              'created': py_datetime_to_js_datestring(response.created)})
+        success_response = HttpResponse(content, status=201, content_type='application/json')
         success_response['submission_id'] = response.survey_response_id
+        messages.success(self.request, ugettext('Successfully submitted'), extra_tags='success')
+
         check_quotas_and_update_users(self.organization)
         return success_response
