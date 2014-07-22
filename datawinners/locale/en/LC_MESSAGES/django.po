@@ -4665,3 +4665,6 @@ msgstr ""
 
 msgid "Example: Registered field staff, community based workers, supervisors"
 msgstr ""
+
+msgid "In the Basic account only registered Data Senders can send you data. However, when you upgrade to a Pro SMS  account you have the option to let anyone send in data."
+msgstr ""

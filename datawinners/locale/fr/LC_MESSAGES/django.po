@@ -5140,3 +5140,6 @@ msgstr "Exemple : Personnel de terrain enregistré, travailleurs communautaires,
 
 msgid "Everyone – Any phone can submit data"
 msgstr "Tout le monde - N'importe quel téléphone peut soumettre des données "
+
+msgid "In the Basic account only registered Data Senders can send you data. However, when you upgrade to a Pro SMS  account you have the option to let anyone send in data."
+msgstr "Pour un compte Basique, seuls les Expéditeurs de Données enregistrés peuvent soumettre des données. Par contre, quand vous passez vers un compte Pro SMS, vous avez l'option de laisser tout le monde soumettre des données."
