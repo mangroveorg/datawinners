@@ -35,7 +35,7 @@ from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
 
 
-def create_questionnaire(post, manager, name, language, reporter_id, in_trial_mode=False):
+def create_questionnaire(post, manager, name, language, reporter_id, is_open_datasender=False):
     questionnaire_code = post['questionnaire-code'].lower()
     datasenders = json.loads(post.get('datasenders', "[]"))
     json_string = post['question-set']
@@ -43,7 +43,7 @@ def create_questionnaire(post, manager, name, language, reporter_id, in_trial_mo
     questionnaire = Project(manager, name=name,
                            fields=[], form_code=questionnaire_code, language=language,
                            devices=[u'sms', u'web', u'smartPhone'])
-    if not in_trial_mode:
+    if is_open_datasender:
         questionnaire.is_open_datasender = post.get('is_open_datasender')
         
     if reporter_id is not None:
@@ -128,10 +128,11 @@ def create_project(request):
         project_info = json.loads(request.POST['profile_form'])
 
         try:
-            in_trial_mode = get_organization(request).in_trial_mode
+            is_open_datasender = get_organization(request).is_pro_sms
             questionnaire = create_questionnaire(post=request.POST, manager=manager, name=project_info.get('name'),
                                                  language=project_info.get('language', active_language),
-                                                 reporter_id=ngo_admin.reporter_id, in_trial_mode=in_trial_mode)
+                                                 reporter_id=ngo_admin.reporter_id,
+                                                 is_open_datasender=is_open_datasender)
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
             return HttpResponse(
