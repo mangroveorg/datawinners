@@ -16662,7 +16662,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                             .removeAttr( 'data-items-path' );
 
                         $htmlItemLabels = ( labelType === 'itext' ) ?
-                            $labels.find( '[data-itext-id="' + $( this ).children( labelRef ).text() + '"]' ).clone() :
+                            $labels.find( '[data-itext-id="' + $( this ).children( labelRef ).text() + '"]').addClass('option-label').clone() :
                             $( '<span class="active" lang="">' + $( this ).children( labelRef ).text() + '</span>' );
 
                         value = $( this ).children( valueRef ).text();
