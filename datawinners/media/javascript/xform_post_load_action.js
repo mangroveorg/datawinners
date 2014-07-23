@@ -1,14 +1,17 @@
-$(document).on("postFormLoadAction", function (evt) {
-    $(".ajax-loader").hide();
-    if (isQuotaReached != "True") {
-        $("#validate-form").removeClass("disabled-state").removeClass("disabled");
-    }
+$(function(){
+    $(document).on("postFormLoadAction", function(evt){
+        $(".ajax-loader").hide();
+        if (isQuotaReached != "True") {
+            $("#validate-form").removeClass("disabled-state").removeClass("disabled");
+        }
 
-    $("form").change(function () {
-        if (typeof(cancelWarningPopUp) == "undefined")
-            _initializeWarningDialog();
+        $("form").change(function (){
+            if (typeof(cancelWarningPopUp) == "undefined")
+                _initializeWarningDialog();
+        });
     });
 });
+
 
 function _initializeWarningDialog() {
     var options = {
