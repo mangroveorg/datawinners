@@ -22,7 +22,7 @@ function _initializeWarningDialog() {
             return true;
         },
 
-        cancelDialogDiv: "#cancel_language_changes_warning",
+        cancelDialogDiv: "#cancel_submission_warning_message",
         ignore_links: "#cancel_changes"
     };
     cancelWarningPopUp = new DW.CancelWarningDialog(options).init();
