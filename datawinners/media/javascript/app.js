@@ -17509,7 +17509,7 @@ define('bootstrap', [], function() {
     return jQuery;
 });
 
-function saveXformSubmission() {
+function saveXformSubmission(callback) {
     form.validate();
     if (!form.isValid()) {
 //                alert( 'Form contain errors. Please see fields marked in red.' );
@@ -17520,7 +17520,10 @@ function saveXformSubmission() {
         var saveURL = submissionUpdateUrl || submissionCreateUrl;
 
         var success = function (data, status) {
-            window.location.replace(surveyResponseId === '' ? submissionURL : submissionLogURL);
+            if(typeof(callback) == "function")
+                callback();
+            else
+                window.location.replace(surveyResponseId === '' ? submissionURL : submissionLogURL);
         };
         $.post(saveURL, {'form_data': data}).done(success);
     }

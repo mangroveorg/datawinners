@@ -13,7 +13,7 @@ $(document).on("postFormLoadAction", function (evt) {
 function _initializeWarningDialog() {
     var options = {
         successCallBack: function (callback) {
-            saveXformSubmission();
+            saveXformSubmission(callback);
         },
         isQuestionnaireModified: function () {
             return true;
