@@ -486,7 +486,7 @@ qq.FileUploader = function(o){
                 
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>' + gettext("Drop files here to upload") + '</span></div>' +
-                '<div class="qq-upload-button">' + gettext("Upload a file") + '</div>' +
+                '<div class="qq-upload-button">' + gettext(o.buttonText || "Upload a file") + '</div>' +
                 '<ul class="qq-upload-list"></ul>' + 
              '</div>',
 
@@ -495,7 +495,7 @@ qq.FileUploader = function(o){
                 '<span class="qq-upload-file"></span>' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
-                '<a class="qq-upload-cancel" href="#">' + gettext("Cancel") + '</a>' +
+                '<a class="qq-upload-cancel" href="javascript:void(0);">' + gettext("Cancel") + '</a>' +
                 '<span class="qq-upload-failed-text">' + gettext("Failed") + '</span>' +
             '</li>',        
         

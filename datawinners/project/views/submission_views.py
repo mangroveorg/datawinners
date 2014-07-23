@@ -4,9 +4,9 @@ import json
 import re
 import datetime
 import logging
-from string import capitalize, lower
+from string import capitalize
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -17,11 +17,13 @@ from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
 from mangrove.datastore.entity import Entity
-from mangrove.errors.MangroveException import FormModelDoesNotExistsException
+from datawinners.blue.xform_submission_exporter import XFormSubmissionExporter
+from datawinners.blue.view import SurveyWebXformQuestionnaireRequest
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 
 from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.blue.xform_bridge import XFormSubmissionProcessor
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -52,7 +54,6 @@ from mangrove.transport.repository.survey_responses import get_survey_response_b
 from mangrove.transport.contract.survey_response import SurveyResponse
 
 
-performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
 
 
@@ -248,6 +249,12 @@ def construct_request_dict(survey_response, questionnaire_form_model, short_code
     result_dict.update({'dsid': short_code})
     return result_dict
 
+@valid_web_user
+def edit_xform_submission_get(request, project_id, survey_response_id):
+
+    survey_request = SurveyWebXformQuestionnaireRequest(request, project_id, XFormSubmissionProcessor())
+    if request.method == 'GET':
+        return survey_request.response_for_xform_edit_get_request(survey_response_id)
 
 @valid_web_user
 @is_project_exist
@@ -385,7 +392,7 @@ def export(request):
     questionnaire_code = request.POST.get(u'questionnaire_code')
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-
+    current_language = get_language()
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
                     "number_of_results": 50000,
@@ -397,7 +404,11 @@ def export(request):
     query_params.update({"search_text": search_text})
     query_params.update({"filter": submission_type})
 
-    return SubmissionExporter(form_model, project_name, request.user) \
+    if form_model.xform:
+        return XFormSubmissionExporter(form_model, project_name, request.user) \
+        .create_excel_response(submission_type, query_params)
+
+    return SubmissionExporter(form_model, project_name, request.user, current_language) \
         .create_excel_response(submission_type, query_params)
 
 

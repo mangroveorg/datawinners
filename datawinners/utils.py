@@ -25,6 +25,7 @@ EXCEL_DATE_STYLE = {'mm.yyyy': xlwt.easyxf(num_format_str='MMM, YYYY'),
                     'mm.dd.yyyy': xlwt.easyxf(num_format_str='MMM DD, YYYY'),
                     'submission_date': xlwt.easyxf(num_format_str='MMM DD, YYYY hh:mm:ss')}
 
+
 def get_excel_sheet(raw_data, sheet_name):
     wb = xlwt.Workbook()
     workbook_add_sheet(wb, raw_data, sheet_name)

@@ -1,0 +1,73 @@
+article.paper {
+  .disabled-state{
+      background-image: none !important;
+  }
+
+  border: 1px solid #CCC;
+  h3, h4, span, legend {
+    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
+  }
+  h3, h4 {
+    color: #222222;
+    padding: 0 0 10px 0;
+    text-align: left;
+  }
+  h3 {
+    font-size: 21px;
+  }
+  h4, legend {
+    font-size: 17px;
+  }
+  span.repeat-number {
+    color: #333333;
+  }
+  section.or-repeat {
+    background-color: #CCDFED;
+    margin-right: 18px;
+    margin-bottom: 18px;
+  }
+  button#validate-form {
+    border: 1px solid #d4972d !important;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: #FFD857;
+    /* for non-css3 browsers */
+    background: -webkit-gradient(linear, left top, left bottom, from(#feea89), to(#ffd857));
+    /* for webkit browsers */
+    background: -moz-linear-gradient(top, #feea89, #ffd857);
+    /* for firefox 3.6+ */
+    color: #6f451d !important;
+    font-family: "Arial";
+    font-weight: bold;
+    text-decoration: none !important;
+    padding: 6px 23px 5px 22px;
+    cursor: pointer;
+    cursor: hand;
+    opacity: 0.9;
+    font-size: 15px;
+    height: 37px;
+  }
+  .question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) label input[type="checkbox"]:checked ~ .option-label:before,
+  .question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) label input[type="radio"]:checked ~ .option-label:before {
+    color: #AFCCFF;
+  }
+  .enketo-power {
+    font-size: 7px;
+    img {
+      width: 40px;
+    }
+  }
+  .note {
+    color: #333333;
+    border: 0;
+    background-color: #E8EFF6;
+    font-style: italic;
+  }
+  section.or-group {
+    border: 1px solid #CCC;
+    padding-left: 18px;
+  }
+  .option-wrapper > label:hover:not(.filler) {
+    background-color: #CCDFED;
+  }
+}

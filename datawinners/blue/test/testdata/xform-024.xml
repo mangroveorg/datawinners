@@ -1,0 +1,39 @@
+<?xml version="1.0"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:ns2="http://openrosa.org/javarosa">
+  <html:head>
+    <html:title>sun</html:title>
+    <model>
+      <instance>
+        <sun id="sun">
+          <city />
+          <center ns2:template="">
+            <centername />
+            <area />
+          </center>
+          <meta>
+            <instanceID />
+          </meta>
+        <form_code>024</form_code></sun>
+      </instance>
+      <bind nodeset="/sun/city" type="string" />
+      <bind nodeset="/sun/center/centername" type="string" />
+      <bind nodeset="/sun/center/area" type="string" />
+      <bind calculate="concat('uuid:', uuid())" nodeset="/sun/meta/instanceID" readonly="true()" type="string" />
+    <bind nodeset="/sun/form_code" type="string" /></model>
+  </html:head>
+  <html:body>
+    <input ref="/sun/city">
+      <label>What is the City name?</label>
+    </input>
+    <group ref="/sun/center">
+      <label>Center Information</label>
+      <repeat nodeset="/sun/center">
+        <input ref="/sun/center/centername">
+          <label>Center Name?</label>
+        </input>
+        <input ref="/sun/center/area">
+          <label>Area?</label>
+        </input>
+      </repeat>
+    </group>
+  </html:body>
+</html:html>

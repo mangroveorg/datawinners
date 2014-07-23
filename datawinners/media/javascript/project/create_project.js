@@ -99,10 +99,18 @@ DW.controllers = {
             questionnaireViewModel.questionnaireCode(questionnaire_code);
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
     },
+    "uploadQuestionnaire": function(){
+        questionnaireViewModel.clearQuestionnaire();
+        questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+        questionnaireViewModel.questionnaireCode(questionnaire_code);
+        questionnaireViewModel.enableQuestionnaireTitleFocus(true);
+        questionnaireViewModel.isXLSUploadQuestionnaire(true);
+    },
     "questionnaireCreationOptions": function () {
             questionnaireCreationOptionsViewModel.resetCreationOption();
             questionnaireDataFetcher.clearCache();
             questionnaireViewModel.showQuestionnaireForm(false);
+            questionnaireViewModel.isXLSUploadQuestionnaire(false);
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(true);
     }
 };
@@ -111,7 +119,8 @@ DW.controllers = {
 DW.projectRouter = Sammy(function () {
         this.get('#questionnaire/new', DW.controllers.blankQuestionnaire);
         this.get('#questionnaire/load/:template_id', DW.controllers.templateQuestionnaire);
-        this.get('#questionnaire/copy/:questionnaire_id', DW.controllers.copyQuestionnaire)
+        this.get('#questionnaire/copy/:questionnaire_id', DW.controllers.copyQuestionnaire);
+        this.get('#questionnaire/xlsupload/$', DW.controllers.uploadQuestionnaire);
         this.get('project/wizard/create/$', DW.controllers.questionnaireCreationOptions);
 });
 
@@ -147,12 +156,38 @@ $(document).ready(function () {
                   };
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
 
-    $("#save_and_create").bind("click", function () {
+    $("#save_and_create").on("click", function () {
             _save_questionnaire(function (response) {
                 var redirect_url = '/project/overview/' + response.project_id;
                 window.location.replace(redirect_url);
                 return true;
             });
+    });
+
+    new DW.UploadQuestionnaire({
+        buttonText: "Upload XLSForm and create Questionnaire",
+        postUrl: function(){
+           return '/xlsform/upload/';
+        },
+        params : function(){return {'pname':questionnaireViewModel.projectName()};},
+        preUploadValidation: function(){
+            var questionnaireName = questionnaireViewModel.projectName;
+            DW.ko.mandatoryValidator(questionnaireName);
+            return questionnaireName.valid();
+        },
+        postSuccessSave: function(responseJSON){
+            window.location.replace('/project/overview/' + responseJSON.project_id +'/');
+        },
+        postErrorHandler: function(responseJSON){
+            var errorMessage = responseJSON.error_msg;
+            if(errorMessage['name']){
+                var flash_message = $("#xlx-message");
+                flash_message.addClass("none");
+                questionnaireViewModel.projectName.setError(errorMessage['name']);
+            }
+            else
+                DW.showError(errorMessage);
+        }
     });
 
     DW.projectRouter.run();

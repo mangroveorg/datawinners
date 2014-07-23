@@ -1,0 +1,82 @@
+{% extends 'project/tab_navigation.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Web Submission" %}  {% endblock %}
+
+{% load user_tags %}
+{% load field_tags %}
+{% load dw_tabs %}
+{% block navigation %}
+    {% activetab "tab_nav" "data" %}
+    {{ block.super }}
+{% endblock %}
+{% block body %}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_project_overview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_web_questionnaire.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/media/css/scss/section_public.css"/>
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link type="text/css" href="/media/css/scss/formhub.css" media="all" rel="stylesheet"/>
+    <link href="/media/css/scss/xform.css" rel="stylesheet"/>
+    <link href="/media/css/scss/dw_enketo.css" rel="stylesheet"/>
+
+{% endblock %}
+
+{% block ie7_js %}
+    {{ block.super }}
+    <script src="/media/javascript/project/ie7_web_questionnaire.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+
+    <script>
+        var surveyResponseId = '{{ survey_response_id }}';
+        var modelStr;
+        var submissionCreateUrl = '{{ submission_create_url }}';
+        var submissionUpdateUrl = '{{ submission_update_url }}';
+        var submissionLogURL = '{{ project_links.submission_log_link }}';
+        var submissionURL = '{{ project_links.xform_link }}';
+        var xform_xml = $('<div/>').html("{{ xform_xml }}").text();
+        var dataStrToEdit = $('<div/>').html("{{ edit_model_str }}").text();
+        var isQuotaReached = '{{ is_quota_reached }}';
+    </script>
+
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/xform_post_load_action.js"></script>
+    <script type="text/javascript" src="/media/javascript/app.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+    {% block secondary_navigation_data %}
+        {% activetab "secondary_tab_nav" "web_questionnaire" %}
+        {{ block.super }}
+    {% endblock %}
+    <div class="questionnaire-header">
+        {% if is_quota_reached %}
+            <div class="warning-message-box clear-both overflow_hidden">
+                <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects." %}</p>
+                {% if user|in_group:'NGO Admins,' %}
+                    <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/"
+                       target="blank">{% trans "Learn More" %}</a>
+                    <a class="button margin_10 float_left" target="blank"
+                       href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
+                {% else %}
+                    <a class="float_right margin_10 padding_top_10" href="/{% trans "en" %}/pricing/"
+                       target="blank">{% trans "Learn More" %}</a>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% for message in messages %}
+            <div class="{{ message.tags }}-message-box message-box clear-left">{{ message }}</div>
+        {% endfor %}
+    </div>
+        {% include "project/_xform_web_submission.html" %}
+
+{% endblock %}

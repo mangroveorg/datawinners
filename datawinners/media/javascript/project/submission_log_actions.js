@@ -81,7 +81,11 @@ function handle_submission_log_delete(table, selected_ids, all_selected, project
 
 function handle_submission_log_edit(table, selected_ids, all_selected, active_tab_index, project_id) {
     survey_response_id = selected_ids[0];
-    location.href = '/project/' + project_id + '/submissions/edit/' + survey_response_id + '/tab/' + active_tab_index
+    if (is_advance_questionnaire != 'True') {
+        location.href = '/project/' + project_id + '/submissions/edit/' + survey_response_id + '/tab/' + active_tab_index
+    } else {
+        location.href = '/xlsform/' + project_id + '/web_submission/' + survey_response_id
+    }
 }
 
 function removeRowsFromDataTable(ids) {

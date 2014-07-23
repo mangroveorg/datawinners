@@ -8,6 +8,15 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        var advance_questionnaire = '{{ is_advance_questionnaire }}';
+    </script>
+    <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_submission.js"></script>
+{% endblock %}
+
 {% block questionnaire %}
     <div class="questionnaire-header">
         <h3 class="project_name">{{ project.name }}</h3>

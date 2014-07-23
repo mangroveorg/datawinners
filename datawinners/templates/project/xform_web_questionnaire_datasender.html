@@ -1,0 +1,56 @@
+{% extends 'layout_datasender.html' %}
+{% load i18n %}
+{% load field_tags %}
+{% load dw_tabs %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link type="text/css" href="/media/css/scss/formhub.css" media="all" rel="stylesheet"/>
+    <link href="/media/css/scss/xform.css" rel="stylesheet"/>
+    <link href="/media/css/scss/dw_enketo.css" rel="stylesheet"/>
+
+{% endblock %}
+{% block page_js %}
+    {{ block.super }}
+
+    <script>
+        var surveyResponseId = '{{ survey_response_id }}';
+        var modelStr;
+        var submissionCreateUrl = '{{ submission_create_url }}';
+        var submissionUpdateUrl = '{{ submission_update_url }}';
+        var submissionLogURL = '{{ project_links.submission_log_link }}';
+        var submissionURL = '{{ project_links.xform_link }}';
+        var xform_xml = $('<div/>').html("{{ xform_xml }}").text();
+        var dataStrToEdit = $('<div/>').html("{{ edit_model_str }}").text();
+        var advance_questionnaire = '{{ is_advance_questionnaire }}';
+        var isQuotaReached = '{{ is_quota_reached }}';
+
+    </script>
+
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/app.js"></script>
+    <script type="text/javascript" src="/media/javascript/xform_post_load_action.js"></script>
+{% endblock %}
+
+{% block device_navigation %}
+    {% activetab "device_tab_nav" "web" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block questionnaire %}
+    <div class="questionnaire-header">
+        <h3 class="project_name">{{ project.name }}</h3>
+
+        <p class="instructions italic">{% trans "Fill out the following Questionnaire and click on Submit." %}</p>
+        {% if is_quota_reached %}
+            <div class="warning-message-box padding_right_10">
+                <p>{% trans "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data." %}</p>
+            </div>
+        {% endif %}
+        {% for message in messages %}
+            <div class="{{ message.tags }}-message-box message-box clear-left">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% include "project/_xform_web_submission.html" %}
+
+{% endblock %}

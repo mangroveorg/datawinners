@@ -1,5 +1,5 @@
 from django.utils.translation import ugettext
-from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, ShortCodeField
+from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, ShortCodeField, FieldSet, ImageField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, EntityFormModel
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
 from mangrove.form_model.validators import UniqueIdExistsValidator
@@ -77,6 +77,18 @@ class QuestionBuilder(object):
             return self._create_unique_id_question(post_dict, code)
         if post_dict["type"] == "short_code":
             return self._create_short_code_field(post_dict, code)
+        if post_dict["type"] == "field_set":
+            return self._create_field_set_question( post_dict, code )
+        if post_dict["type"] == "image":
+            return self._create_media_question( post_dict, code )
+
+    def _create_field_set_question(self, post_dict, code):
+
+        fields = post_dict.get( "fields" )
+        sub_form_fields = [self.create_question(f, f['code']) for i,f in enumerate(fields)]
+        return FieldSet( name=self._get_name( post_dict ), code=code, label=post_dict["title"],
+                          instruction=post_dict.get( "instruction" ), required=post_dict.get( "required"), field_set=sub_form_fields,
+                          fieldset_type=post_dict.get("fieldset_type"))
 
     def create_entity_id_question_for_activity_report(self):
         entity_id_code = "eid"
@@ -152,6 +164,11 @@ class QuestionBuilder(object):
     def _create_location_question(self, post_dict, code):
         return HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=code,
                               label=post_dict["title"], instruction=post_dict.get("instruction"))
+
+    def _create_media_question(self, post_dict, code):
+        return ImageField( name=self._get_name(post_dict), code=code,
+                           label=post_dict["title"], instruction=post_dict.get("instruction"), required=post_dict.get( "required" ) )
+
 
     def _get_unique_id_type(self, post_dict):
         return post_dict["uniqueIdType"].strip().lower()

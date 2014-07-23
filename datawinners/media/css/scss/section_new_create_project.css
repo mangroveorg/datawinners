@@ -963,3 +963,11 @@ fieldset {
       .uniqueIdTypeSection .uniqueIdTypeContents .uniqueIdList li:hover {
         background-color: #0088CC;
         color: #ffffff; }
+
+.dialog-link {
+  color: #0070AC !important; }
+
+.advanced_questionnaire_section_header {
+  border-bottom: 1px solid #CCCCCC !important;
+  padding: 10px;
+  padding-top: 50px; }

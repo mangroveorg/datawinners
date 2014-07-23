@@ -27,22 +27,22 @@ def is_not_local_address(remote_address):
 
 def restrict_request_country(f):
     def wrapper(*args, **kw):
-        request = args[0]
-        user = request.user
-
-        org = Organization.objects.get(org_id=user.get_profile().org_id)
-        try:
-            remote_address = request.META.get('REMOTE_ADDR')
-            if is_not_local_address(remote_address):
-                country_code = GeoIP().country_code(remote_address)
-                log_message = 'User: %s, IP: %s resolved in %s, for Oragnization id: %s located in country: %s ' %\
-                      (user, request.META.get('REMOTE_ADDR'), country_code, org.org_id, org.country)
-            else:
-                log_message = "Skipping resolving ip to country for local address %s" % remote_address
-            logger.info(log_message)
-        except Exception as e:
-            logger.exception("Error resolving country from IP : \n%s" % e)
-            raise
+        # request = args[0]
+        # user = request.user
+        #
+        # org = Organization.objects.get(org_id=user.get_profile().org_id)
+        # try:
+        #     remote_address = request.META.get('REMOTE_ADDR')
+        #     if is_not_local_address(remote_address):
+        #         country_code = GeoIP().country_code(remote_address)
+        #         log_message = 'User: %s, IP: %s resolved in %s, for Oragnization id: %s located in country: %s ' %\
+        #               (user, request.META.get('REMOTE_ADDR'), country_code, org.org_id, org.country)
+        #     else:
+        #         log_message = "Skipping resolving ip to country for local address %s" % remote_address
+        #     logger.info(log_message)
+        # except Exception as e:
+        #     logger.exception("Error resolving country from IP : \n%s" % e)
+        #     raise
 
         return f(*args, **kw)
 

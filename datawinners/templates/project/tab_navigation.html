@@ -28,6 +28,7 @@
     <script type="text/javascript">
         var questionnaire_preview_link ="{{ project_links.questionnaire_preview_link }}";
         var sms_questionnaire_preview_link = "{{ project_links.sms_questionnaire_preview_link }}";
+        var is_advance_questionnaire = '{{ is_advance_questionnaire }}';
         var is_outgoing_sms_replies_enabled = "{{ project.is_outgoing_sms_replies_enabled }}";
 
     </script>
@@ -42,8 +43,10 @@
         </div>
         <input type="hidden" id="project_name" value="{{ project.name }}"/>
         <div class="project_detail">
-            {% include 'project/sms_tester_form.html' %}
-                <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
+            {% if not project.xform %}
+                {% include 'project/sms_tester_form.html' %}
+                <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>&nbsp&nbsp|&nbsp
+            {% endif %}
         {% if user|in_group:"NGO Admins,Project Managers" %}
             <a href="{{ project_links.delete_project_link }}"
                class="delete_project">{% trans "Delete this Questionnaire" %}</a>

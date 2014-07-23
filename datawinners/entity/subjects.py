@@ -3,7 +3,6 @@ from mangrove.datastore.entity_type import get_unique_id_types
 from datawinners.main.utils import timebox
 
 
-@timebox
 def load_subject_type_with_projects(manager):
     result = OrderedDict()
     subject_types = get_unique_id_types(manager)

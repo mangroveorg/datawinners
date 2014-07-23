@@ -169,7 +169,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
 
 def create_request(questionnaire_form, username, is_update=None):
     return Request(message=questionnaire_form.cleaned_data,
-        transportInfo=get_web_transport_info(username), is_update=is_update)
+        transportInfo=get_web_transport_info(username), is_update=is_update, media=[])
 
 
 def _translate_messages(error_dict, fields):

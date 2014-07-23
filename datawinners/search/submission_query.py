@@ -1,3 +1,5 @@
+import json
+from operator import indexOf, index
 from django.utils.translation import ugettext, get_language
 import elasticutils
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
@@ -6,6 +8,8 @@ from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.settings import ELASTIC_SEARCH_URL
 from datawinners.search.query import QueryBuilder, Query
+from mangrove.form_model.field import ImageField, FieldSet, SelectField
+from mangrove.form_model.form_model import get_field_by_attribute_value
 
 
 class SubmissionQueryBuilder(QueryBuilder):
@@ -82,6 +86,8 @@ class SubmissionQueryResponseCreator():
     def create_response(self, required_field_names, query):
         entity_question_codes = [es_field_name(field.code, self.form_model.id) for field in
                                  self.form_model.entity_questions]
+        fieldset_questions = [es_field_name(field.code, self.form_model.id)
+                              for field in filter(lambda x: isinstance(x, FieldSet), self.form_model.fields)]
         meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
         meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
 
@@ -105,11 +111,30 @@ class SubmissionQueryResponseCreator():
                         if error_msg.find('| |') != -1:
                             error_msg = error_msg.split('| |,')[['en', 'fr'].index(language)]
                         submission.append(error_msg)
+                    elif key in fieldset_questions:
+                        submission.append(_format_fieldset_values_for_representation(res.get(key),
+                                                                                     get_field_by_attribute_value(
+                                                                                         self.form_model, 'code',
+                                                                                         self._get_key(key))))
                     else:
-                        submission.append(res.get(key))
-
+                        submission.append(self.append_if_attachments_are_present(res, key))
             submissions.append(submission)
         return submissions
+
+    def _get_key(self, key):
+        if '_' in key:
+            return key[key.index('_') + 1:]
+        else:
+            return key
+
+    def append_if_attachments_are_present(self,res,  key):
+        if type(get_field_by_attribute_value(self.form_model, 'code', self._get_key(key))) is ImageField:
+            value = res.get(key)
+            if value:
+                return  "<span style=\"display:inline-block;width:70px; height: 70px;border:1px solid #CCC; margin-right:5px;display: table-cell;vertical-align: middle;\"><img style=\"width:70px;\" src='/attachment/%s/%s'/></span>" \
+                        "<span style=\"display: table-cell;vertical-align: middle;padding: 5px;\"><a href='/download/attachment/%s/%s'>%s</a></span>" % (res._id, value, res._id, value, value)
+        else:
+            return res.get(ugettext(key))
 
 
 class SubmissionQuery(Query):
@@ -138,3 +163,20 @@ class SubmissionQuery(Query):
         return submissions
 
 
+def _format_fieldset_values_for_representation(entry, field_set):
+    formatted_value = ''
+    for value_dict in json.loads(entry):
+        for i, field in enumerate(field_set.fields):
+            if isinstance(field, SelectField):
+                choices = value_dict.get(field.code)
+                if choices:
+                    choice_texts = [field.get_value_by_option(option) for option in choices.split(' ')]
+                    value = '('+', '.join(choice_texts)+')' if len(choice_texts) >1 else ', '.join(choice_texts)
+                else:
+                    value = ''
+            else:
+                value = value_dict.get(field.code) or ''
+            formatted_value += '"' + '<span class="repeat_qtn_label">'+field.label +'</span>'+ ': ' + value + '"'
+            formatted_value += ';' if i == len(field_set.fields)-1 else ', '
+        formatted_value += '<br><br>'
+    return '<span class="repeat_ans">'+formatted_value+'</span>'

@@ -71,3 +71,7 @@ if (!('indexOf' in Array.prototype)) {
         return -1;
     };
 }
+
+$.fn.addBack = function (selector) {
+    return this.add(selector == null ? this.prevObject : this.prevObject.filter(selector));
+};

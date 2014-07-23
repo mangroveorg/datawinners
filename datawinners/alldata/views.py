@@ -70,6 +70,7 @@ def get_project_info(manager, project):
                         name=project['value']['name'],
                         qid=questionnaire_code,
                         created=project['value']['created'],
+                        is_advanced_questionnaire=bool(project['value'].get('xform')),
                         link=(reverse('project-overview', args=[project_id])),
                         log=log, analysis=analysis, disabled=disabled,
                         web_submission_link=web_submission_link,
@@ -128,7 +129,8 @@ def index(request):
                        create_subjects_link=project['create_subjects_link'],
                        entity_type=project['entity_type'],
                        encoded_name=project['encoded_name'],
-                       import_template_file_name=project['import_template_file_name']
+                       import_template_file_name=project['import_template_file_name'],
+                       is_advanced_questionnaire=bool(project['is_advanced_questionnaire'])
         )
 
         project_list.append(project)

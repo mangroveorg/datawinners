@@ -790,6 +790,9 @@ msgstr "Période de Rapport"
 msgid "Submission Date"
 msgstr "Date de soumission"
 
+msgid "Datasender Id"
+msgstr "Id de l'Expéditeur de Données"
+
 msgid "Click to select a date range"
 msgstr "Cliquer pour sélectionner une période"
 
@@ -5117,4 +5120,8 @@ msgstr "Oui, annuler les modifications"
 msgid "No, Don't Cancel Changes"
 msgstr "Non, ne pas annuler les modifications"
 
+msgid "nested repeats not supported"
+msgstr "Désolé ! Nous n'avons pas pu télécharger votre Questionnaire. Actuellement, DataWinners accepte seulement un niveau de répétition de séries de questions . Votre Questionnaire comporte deux niveaux. Veuillez supprimer le second niveau et essayez une nouvelle fois."
 
+msgid "Questionnaire has not been created, please upload again to create Questionnaire"
+msgstr ""

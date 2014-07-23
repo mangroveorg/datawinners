@@ -21,7 +21,7 @@ def _make_form_context(survey_response_form, form_model, hide_link_class, disabl
             'back_to_project_link': reverse("alldata_index"),
             'smart_phone_instruction_link': reverse("smart_phone_instruction", args=[form_model.id]),
             'is_update': is_update,
-            'questionnaire_code':form_model.form_code
+            'questionnaire_code': form_model.form_code
     }
 
 

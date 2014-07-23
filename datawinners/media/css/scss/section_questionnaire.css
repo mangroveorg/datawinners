@@ -361,7 +361,6 @@ div.margin_top_20 input {
   src: url("/media/css/font/architectsdaughter-webfont.eot?#iefix") format("embedded-opentype"), url("/media/css/font/architectsdaughter-webfont.woff") format("woff"), url("/media/css/font/architectsdaughter-webfont.ttf") format("truetype"), url("/media/css/font/architectsdaughter-webfont.svg#architects_daughterregular") format("svg");
   font-weight: normal;
   font-style: normal; }
-
 .validationText {
   color: #FFFFFF;
   background: #c20303;
@@ -432,3 +431,28 @@ div.margin_top_20 input {
 #unique_id_learn_more_form .learn_more_text {
   padding-top: 10px;
   padding-bottom: 10px; }
+
+.upload_xls {
+  width: 315px;
+  position: absolute;
+  top: -10000px;
+  opacity: 0 !important;
+  pointer-events: none !important; }
+
+#uploadXLS {
+  border: 1px solid #d4972d;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background: #FFD857;
+  background: -webkit-gradient(linear, left top, left bottom, from(#feea89), to(#ffd857));
+  background: -moz-linear-gradient(top, #feea89, #ffd857);
+  color: #6f451d;
+  font-family: "Arial";
+  font-weight: bold;
+  text-decoration: none;
+  padding: 6px 23px 5px 22px;
+  cursor: pointer;
+  cursor: hand;
+  opacity: 0.9;
+  font-size: 15px;
+  height: 34px; }

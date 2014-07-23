@@ -1,0 +1,57 @@
+article.paper {
+  border: 1px solid #CCC; }
+  article.paper .disabled-state {
+    background-image: none !important; }
+  article.paper h3, article.paper h4, article.paper span, article.paper legend {
+    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif; }
+  article.paper h3, article.paper h4 {
+    color: #222222;
+    padding: 0 0 10px 0;
+    text-align: left; }
+  article.paper h3 {
+    font-size: 21px; }
+  article.paper h4, article.paper legend {
+    font-size: 17px; }
+  article.paper span.repeat-number {
+    color: #333333; }
+  article.paper section.or-repeat {
+    background-color: #CCDFED;
+    margin-right: 18px;
+    margin-bottom: 18px; }
+  article.paper button#validate-form {
+    border: 1px solid #d4972d !important;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: #FFD857;
+    /* for non-css3 browsers */
+    background: -webkit-gradient(linear, left top, left bottom, from(#feea89), to(#ffd857));
+    /* for webkit browsers */
+    background: -moz-linear-gradient(top, #feea89, #ffd857);
+    /* for firefox 3.6+ */
+    color: #6f451d !important;
+    font-family: "Arial";
+    font-weight: bold;
+    text-decoration: none !important;
+    padding: 6px 23px 5px 22px;
+    cursor: pointer;
+    cursor: hand;
+    opacity: 0.9;
+    font-size: 15px;
+    height: 37px; }
+  article.paper .question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) label input[type="checkbox"]:checked ~ .option-label:before,
+  article.paper .question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) label input[type="radio"]:checked ~ .option-label:before {
+    color: #AFCCFF; }
+  article.paper .enketo-power {
+    font-size: 7px; }
+    article.paper .enketo-power img {
+      width: 40px; }
+  article.paper .note {
+    color: #333333;
+    border: 0;
+    background-color: #E8EFF6;
+    font-style: italic; }
+  article.paper section.or-group {
+    border: 1px solid #CCC;
+    padding-left: 18px; }
+  article.paper .option-wrapper > label:hover:not(.filler) {
+    background-color: #CCDFED; }

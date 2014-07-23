@@ -1,0 +1,40 @@
+{% load i18n %}
+<div id="upload_questionnaire"  data-bind="visible: isXLSUploadQuestionnaire" class="questionnaire_form_header">
+    <div id="project-message-label" class="message-box"
+         data-bind="visible: errorInResponse,scrollToElement: responseErrorMsg">
+        <label class='error_message' data-bind="text: responseErrorMsg"></label>
+    </div>
+
+    <div id="questionnaire">
+        <fieldset>
+            <h5>2. {% trans "Enter Name and Create Questionnaire" %}</h5>
+        </fieldset>
+        <div class="line"></div>
+        <div id="xlx-message"></div>
+        <div class="warning-message-box none" ><p>{% trans "Questionnaire has not been created, please upload again to create Questionnaire" %}</p></div>
+        <form id="question_form">
+            {% csrf_token %}
+            <fieldset>
+                <div class="clearfix">
+                    {% include 'project/questionnaire_info_indicator.html' %}
+                    <div id="file_uploader" class="button upload_xls"></div>
+                </div>
+                <button id="uploadXLS">{% trans "Upload XLSForm and create Questionnaire" %}</button>
+                <a id="cancel-xlx-upload" class="none" href="javascript:void(0);">{% trans "Cancel Upload" %}</a>
+                <img class="upload_spinner none" src="/media/images/ajax-loader.gif">
+            </fieldset>
+        </form>
+    </div>
+    <h6 class="create_questionnaire_help margin_bottom_20 margin_top_10">{% trans "Need help and support on how to create a XLSForm and advanced Questionnaire logic?" %} <a>{% trans "Learn More | Example Forms" %}</a></h6>
+    <div class="create_project">
+        <div class="grid_5">
+            <a href="{% url datawinners.project.wizard_view.create_project%}?prev=dash" id="back_to_create_options">{% trans "Back" %} </a>
+        </div>
+        <div class="grid_15 float_right">
+            <div class="right_aligned_button">
+                <a href="{{ cancel_link }}" class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
+            </div>
+        </div>
+        <div class="clear-both"></div>
+    </div>
+</div>

@@ -1,13 +1,16 @@
 from abc import abstractmethod
 from collections import OrderedDict
+from django.utils.translation import ugettext
 from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
+from datawinners.utils import translate
 from mangrove.form_model.form_model import header_fields
 
 
 class SubmissionHeader():
-    def __init__(self, form_model):
+    def __init__(self, form_model, language='en'):
         self.form_model = form_model
+        self.language = language
 
     def get_header_dict(self):
         header_dict = OrderedDict()
@@ -50,9 +53,9 @@ class SubmissionAnalysisHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
 
-        header_dict.update({"date": "Submission Date"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
+        header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         return header_dict
 
 
@@ -60,10 +63,10 @@ class AllSubmissionHeader(SubmissionHeader):
 
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
-        header_dict.update({"date": "Submission Date"})
-        header_dict.update({"status": "Status"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+        header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
+        header_dict.update({"status": translate("Status", self.language, ugettext)})
 
         return header_dict
 
@@ -71,29 +74,37 @@ class AllSubmissionHeader(SubmissionHeader):
 class SuccessSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+        header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
+        return header_dict
+
+class MobileSubmissionHeader(SubmissionHeader):
+    def update_static_header_info(self):
+        header_dict = OrderedDict()
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
         header_dict.update({"date": "Submission Date"})
         return header_dict
-
 
 class ErroredSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
-        header_dict.update({"date": "Submission Date"})
-        header_dict.update({"error_msg": "Error Message"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+        header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
+        header_dict.update({"error_msg": translate("Error Message", self.language, ugettext)})
         return header_dict
 
 
 class HeaderFactory():
-    def __init__(self, form_model):
+    def __init__(self, form_model, language='en'):
         self.header_to_class_dict = {"all": AllSubmissionHeader, "deleted": AllSubmissionHeader,
                                      "analysis": SubmissionAnalysisHeader,
-                                     "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader}
+                                     "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader,
+                                     "mobile": MobileSubmissionHeader}
         self.form_model = form_model
+        self.language = language
 
     def create_header(self, submission_type):
         header_class = self.header_to_class_dict.get(submission_type)
-        return header_class(self.form_model)
+        return header_class(self.form_model, self.language)

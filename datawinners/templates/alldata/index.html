@@ -74,11 +74,12 @@
                         </span>
                             <a href="{{ project.web_submission_link }}"
                                class="{{ project.disabled }} {{ project.web_submission_link_disabled }} send-in-data-link">{% trans "Make a Submission" %}</a>
+                            {% if not project.is_advanced_questionnaire %}
                             |
-                            <a class="{%if not project.disabled  %}import_link {% endif %} {{ project.disabled}}" data-projectname="{{ project.encoded_name }}"
+                                <a class="{%if not project.disabled  %}import_link {% endif %} {{ project.disabled}}" data-projectname="{{ project.encoded_name }}"
                                data-formcode="{{ project.qid }}" data-projectid="{{ project.project_id }}"
                                data-filename="{{ project.import_template_file_name }}"
-                               href="javascript:void(0);">{% trans "Import a List of Submissions" %}</a>
+                               href="javascript:void(0);">{% trans "Import a List of Submissions" %}</a>{% endif %}
 
                             {% if project.create_subjects_link %}
                                 {% for entity_type, subject_link in project.create_subjects_link.iteritems %}

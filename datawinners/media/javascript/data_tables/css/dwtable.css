@@ -109,6 +109,18 @@ ul.dropdown-menu>li.disabled label{
     border: 1px solid #CCCCCC;
     padding: 6px;
 }
+.dataTables_wrapper table td.repeat_ans_style{
+    white-space: nowrap;
+}
+
+.dataTables_wrapper table td.repeat_ans_style .tooltip{
+    white-space: normal;
+}
+
+.dataTables_wrapper table td.repeat_ans_style .tooltip p{
+    width:auto;
+}
+
 .select_all_message {
     clear: both;
     height: 2em;

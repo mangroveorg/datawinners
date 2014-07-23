@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from _codecs import encode
 import json
 import datetime
 import logging
@@ -32,6 +33,7 @@ from mangrove.transport.repository.survey_responses import survey_response_count
 
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, is_not_expired, is_new_user, project_has_web_device, valid_web_user
+from datawinners.blue.xform_bridge import XlsProjectParser
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -69,21 +71,7 @@ from datawinners.submission.views import check_quotas_and_update_users
 
 
 logger = logging.getLogger("django")
-performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
-
-END_OF_DAY = " 23:59:59"
-START_OF_DAY = " 00:00:00"
-
-PAGE_SIZE = 10
-NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
-MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
-DATE_TYPE_OPTIONS = ["Latest"]
-GEO_TYPE_OPTIONS = ["Latest"]
-TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
-
-XLS_TUPLE_FORMAT = "%s (%s)"
-
 
 @login_required
 @session_not_expired
@@ -99,7 +87,6 @@ def delete_project(request, project_id):
         return HttpResponseRedirect(dashboard_page)
     helper.delete_project(questionnaire)
     undelete_link = reverse(undelete_project, args=[project_id])
-    # if len(get_all_projects(manager)) > 0:
     messages.info(request, undelete_link)
     UserActivityLog().log(request, action=DELETED_QUESTIONNAIRE, project=questionnaire.name)
     return HttpResponseRedirect(reverse(views.index))
@@ -226,7 +213,6 @@ def _format_reminder(reminder, project_id):
     return dict(message=reminder.message, id=reminder.id,
                 to=_format_string_for_reminder_table(reminder.remind_to),
                 when=_make_reminder_mode(reminder.reminder_mode, reminder.day))
-    # delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
 
 
 def _format_reminders(reminders, project_id):
@@ -411,6 +397,27 @@ def questionnaire(request, project_id):
         active_language = request.LANGUAGE_CODE
         if "success" in [m.message for m in messages.get_messages(request)]:
             is_success = True
+        if questionnaire.xform:
+                try: # find a better way to check attachement exisits
+                    questionnaire.get_attachments('questionnaire.xls')
+                    show_xls_download_link = True
+                except LookupError:
+                    show_xls_download_link = False
+
+                return render_to_response('project/edit_xform.html',
+                                  {"existing_questions": repr(existing_questions),
+                                   'questionnaire_code': questionnaire.form_code,
+                                   'project': questionnaire,
+                                   'project_id': project_id,
+                                   'project_has_submissions': project_has_submissions,
+                                   'project_links': project_links,
+                                   'is_quota_reached': is_quota_reached(request),
+                                   'in_trial_mode': in_trial_mode,
+                                   'show_xls_download_link': show_xls_download_link,
+                                   'post_url': reverse(edit_project, args=[project_id]),
+                                   'preview_links': get_preview_and_instruction_links()},
+                                  context_instance=RequestContext(request))
+
         return render_to_response('project/questionnaire.html',
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,
@@ -578,6 +585,8 @@ class SurveyWebQuestionnaireRequest():
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
         if self.questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
+        if self.questionnaire.xform:
+            return HttpResponseRedirect(reverse('xform_web_questionnaire', args=[self.questionnaire.id]))
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, is_update)
@@ -585,6 +594,7 @@ class SurveyWebQuestionnaireRequest():
             'is_quota_reached': is_quota_reached(self.request),
             'questionnaire_code': self.questionnaire.form_code,
             'is_datasender': self.is_data_sender,
+            'is_advance_questionnaire': False,
         })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
@@ -700,7 +710,7 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
     template = 'project/questionnaire_preview.html' if sms_preview else 'project/questionnaire_preview_list.html'
     return render_to_response(template,
                               {"questions": questions, 'questionnaire_code': questionnaire.form_code,
-                               'project': questionnaire, 'project_links': project_links,
+                               'project': questionnaire, 'project_links': project_links,'project_name':questionnaire.name,
                                'is_quota_reached': is_quota_reached(request),
                                'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
                               context_instance=RequestContext(request))

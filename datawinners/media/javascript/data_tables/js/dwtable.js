@@ -83,6 +83,8 @@
                     var nCols = $(this).find('thead>tr').children('th').length;
                     $(this).find('tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols + '><div class="select_all_message"></div></td></tr>');
                     $(this).find(".select_all_message").data('all_selected', false);
+                    $(".repeat_ans").parents("td").addClass('repeat_ans_style');
+                    format_repeat_question();
                     if (typeof orignal_handler == "function") orignal_handler.apply(this, arguments);
                 }
             }(defaults["fnDrawCallback"]);
@@ -105,7 +107,6 @@
                         $(document.body).append('<div id="' + dropdown_id + '" class="dropdown"> <ul class="dropdown-menu"><li class="none-selected disabled"><label>' + select_link_text + '</label><li></ul> </div>');
 
                         $(".checkall-checkbox").parents("th").addClass("checkbox_col");
-
                         for (var item = 0; item < actionItems.length; item++) {
                             var item_handler = function (handler) {
                                 return  function (e) {
@@ -306,4 +307,21 @@ function get_updated_table_page_index(table, allIds, all_selected) {
                 (table.find("input.row_checkbox").length == allIds.length))
     }
 
+}
+
+function format_repeat_question(){
+    var repeatedQuestions = $(".repeat_qtn_label");
+    for (var i = 0; i < repeatedQuestions.length; i++) {
+        var currentRepeatQuestion = repeatedQuestions[i];
+        var questionText = $(currentRepeatQuestion).text();
+        var questionTextArray = questionText.split(' ');
+        if (questionTextArray.length > 3){
+            var displayText = questionTextArray.slice(0,3).join(' ') + '... ';
+            $(currentRepeatQuestion).text(displayText);
+            var toolTip = '<div class="tooltip"><p>' + questionText + '</p></div>';
+            $(toolTip).insertAfter(currentRepeatQuestion);
+            DW.ToolTip({target: $(currentRepeatQuestion)});
+
+        }
+    }
 }

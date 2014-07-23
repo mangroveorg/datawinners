@@ -1,64 +1,66 @@
 {% load i18n %}
-{% load i18n %}
-<div id="create_questionnaire"  data-bind="visible: showQuestionnaireForm">
-    <div id="project-message-label" class="message-box"
-         data-bind="visible: errorInResponse,scrollToElement: responseErrorMsg">
-        <label class='error_message' data-bind="text: responseErrorMsg"></label>
-    </div>
+<div id="create_questionnaire">
+    <div data-bind="visible: showQuestionnaireForm">
+        <div id="project-message-label" class="message-box"
+             data-bind="visible: errorInResponse,scrollToElement: responseErrorMsg">
+            <label class='error_message' data-bind="text: responseErrorMsg"></label>
+        </div>
 
-
-    <div id="questionnaire" class="clear_both">
-        <fieldset>
-            <h5>2. {% trans "Write and Edit Your Questions" %}</h5>
-        </fieldset>
-        <div class="line"></div>
-        <br/>
-        <form id="question_form">
-            {% csrf_token %}
+        <div id="questionnaire" class="clear_both">
             <fieldset>
-                <div class="questionnaire_form_header clearfix">
-                    {% include 'project/questionnaire_info_indicator.html' %}
-                    <span style="float: left">{% trans "SMS Questionnaire Code" %}:
-            <input id='questionnaire-code' data-bind="value: questionnaireCode"/>
-            <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
-            <div class="tooltip">
-                <p>{% trans "tooltip_question_code" %}</p>
-            </div>
-            <div class="validationMessage" data-bind="ifnot: questionnaireCode.valid">
-                <span id="questionnaire_code_validation_message" class="validationText" data-bind="text: questionnaireCode.error , scrollToElement: questionnaireCode.error"></span>
-            </div>
-                    </span>
-                    {% include 'project/preview_navigation.html' %}
-                </div>
-                <div class="questionnare_content grid_23 alpha omega">
-                    <div>
-                        {% include 'project/question_list.html' %}
+                <h5>2. {% trans "Write and Edit Your Questions" %}</h5>
+            </fieldset>
+            <div class="line"></div>
+            <br/>
+            <form id="question_form">
+                {% csrf_token %}
+                <fieldset>
+                    <div class="questionnaire_form_header clearfix">
+                        {% include 'project/questionnaire_info_indicator.html' %}
+                        <span style="float: left">{% trans "SMS Questionnaire Code" %}:
+                            <input id='questionnaire-code' data-bind="value: questionnaireCode"/>
+                            <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+                            <div class="tooltip">
+                                <p>{% trans "tooltip_question_code" %}</p>
+                            </div>
+                            <div class="validationMessage" data-bind="ifnot: questionnaireCode.valid">
+                                <span id="questionnaire_code_validation_message" class="validationText" data-bind="text: questionnaireCode.error , scrollToElement: questionnaireCode.error"></span>
+                            </div>
+                        </span>
+                        {% include 'project/preview_navigation.html' %}
+                    </div>
+                    <div class="questionnare_content grid_23 alpha omega">
+                        <div>
+                            {% include 'project/question_list.html' %}
 
-                        <div id="question-detail-panel">
-                            <div class="select_question_message"
-                                 data-bind="hidden: selectedQuestion">{% trans "Add or edit a question"%}</div>
-                            {% include 'project/question_detail_panel.html' %}
-                            {% include 'project/sms_preview.html' %}
+                            <div id="question-detail-panel">
+                                <div class="select_question_message"
+                                     data-bind="hidden: selectedQuestion">{% trans "Add or edit a question"%}</div>
+                                {% include 'project/question_detail_panel.html' %}
+                                {% include 'project/sms_preview.html' %}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </fieldset>
-        </form>
+                </fieldset>
+            </form>
 
-        <div class="create_project">
-            <div class="grid_5">
-                <a href="{% url datawinners.project.wizard_view.create_project%}?prev=dash" id="back_to_create_options">{% trans "Back" %} </a>
-            </div>
-            <div class="grid_15 float_right">
-                <div class="right_aligned_button">
-                    <a href="{{ cancel_link }}" class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
-                    <input type="button" class="button_wizard_next" id="save_and_create"
-                           value="{% trans "Save & Create Questionnaire" %}"/>
+            <div class="create_project">
+                <div class="grid_5">
+                    <a href="{% url datawinners.project.wizard_view.create_project%}?prev=dash" id="back_to_create_options">{% trans "Back" %} </a>
                 </div>
+                <div class="grid_15 float_right">
+                    <div class="right_aligned_button">
+                        <a href="{{ cancel_link }}" class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
+                        <input type="button" class="button_wizard_next" id="save_and_create"
+                               value="{% trans "Save & Create Questionnaire" %}"/>
+                    </div>
+                </div>
+                <div class="clear-both"></div>
             </div>
-            <div class="clear-both"></div>
+            {% include "warning_edit_questionnaire.html" %}
         </div>
     </div>
-    {% include "warning_edit_questionnaire.html" %}
+
+    {% include 'project/xls_upload.html' %}
 
 </div>
