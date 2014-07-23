@@ -5,32 +5,32 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link type="text/css" href="/media/css/scss/formhub.css" media="all" rel="stylesheet" />
+    <link type="text/css" href="/media/css/scss/formhub.css" media="all" rel="stylesheet"/>
     <link href="/media/css/scss/xform.css" rel="stylesheet"/>
     <link href="/media/css/scss/dw_enketo.css" rel="stylesheet"/>
 
 {% endblock %}
 {% block page_js %}
-        {{ block.super }}
+    {{ block.super }}
 
-        <script>
-            var surveyResponseId = '{{ survey_response_id }}';
-            var modelStr;
-            var submissionCreateUrl='{{ submission_create_url }}';
-            var submissionUpdateUrl='{{ submission_update_url }}';
-            var submissionLogURL='{{ project_links.submission_log_link }}';
-            var submissionURL ='{{ project_links.xform_link }}';
-            var xform_xml = $('<div/>').html("{{ xform_xml }}").text();
-            var dataStrToEdit = $('<div/>').html("{{ edit_model_str }}").text();
-            var advance_questionnaire = '{{ is_advance_questionnaire }}';
-            var isQuotaReached = '{{ is_quota_reached }}';
+    <script>
+        var surveyResponseId = '{{ survey_response_id }}';
+        var modelStr;
+        var submissionCreateUrl = '{{ submission_create_url }}';
+        var submissionUpdateUrl = '{{ submission_update_url }}';
+        var submissionLogURL = '{{ project_links.submission_log_link }}';
+        var submissionURL = '{{ project_links.xform_link }}';
+        var xform_xml = $('<div/>').html("{{ xform_xml }}").text();
+        var dataStrToEdit = $('<div/>').html("{{ edit_model_str }}").text();
+        var advance_questionnaire = '{{ is_advance_questionnaire }}';
+        var isQuotaReached = '{{ is_quota_reached }}';
 
-        </script>
+    </script>
 
-        <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
-        <script type="text/javascript" src="/media/javascript/xform_post_load_action.js"></script>
-        <script type="text/javascript" src="/media/javascript/app.js"></script>
-    {% endblock %}
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/app.js"></script>
+    <script type="text/javascript" src="/media/javascript/xform_post_load_action.js"></script>
+{% endblock %}
 
 {% block device_navigation %}
     {% activetab "device_tab_nav" "web" %}
@@ -40,6 +40,7 @@
 {% block questionnaire %}
     <div class="questionnaire-header">
         <h3 class="project_name">{{ project.name }}</h3>
+
         <p class="instructions italic">{% trans "Fill out the following Questionnaire and click on Submit." %}</p>
         {% if is_quota_reached %}
             <div class="warning-message-box padding_right_10">
@@ -50,25 +51,6 @@
             <div class="{{ message.tags }}-message-box message-box clear-left">{{ message }}</div>
         {% endfor %}
     </div>
+    {% include "project/_xform_web_submission.html" %}
 
-    <div class="main">
-        <article class="paper" >
-            <!-- this is where the form will go -->
-            <button id="validate-form" class="btn btn-primary btn-large" ><i class="glyphicon glyphicon-ok"></i>Save</button>
-            <div class="enketo-power">Powered by <a  href="http://enketo.org" title="enketo.org website"><img src="https://enketo.org/images/enketo_bare_100x37.png" alt="enketo logo" /></a>
-            </div>
-        </article>
-    </div>
-
-        <div id="cancel_submission_warning_message" style="display: none;">
-            {% trans "Do you want to save the changes before leaving this page?" %}<br/>
-
-            <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
-
-            <div class="text_align_right padding_top_20">
-                <a id="cancel_dialog" href="javascript:void(0);">{% trans "Cancel" %}</a>
-                <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
-                <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
-            </div>
-        </div>
 {% endblock %}

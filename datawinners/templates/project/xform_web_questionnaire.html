@@ -77,39 +77,6 @@
             <div class="{{ message.tags }}-message-box message-box clear-left">{{ message }}</div>
         {% endfor %}
     </div>
-    <div>
-        <div class="main">
-            <article class="paper">
-                <!-- this is where the form will go -->
-                <div class="ajax-loader"><img src="/media/images/ajax-loader.gif"/><span
-                        class="loading">{% trans "Just a moment..." %}</span></div>
-                <button id="validate-form" class="btn btn-primary btn-large disabled-state disabled">Submit</button>
-                {% if is_quota_reached %}
-                    <div class="can-not-submit" style="width: 628px;text-align: center;">
-                                <span class="can-not-submit-link-quest help_icon">{% trans "Why canʼt I submit?" %}</span>
-                            <div class="tooltip">
-                                <p>
-                                    {% trans 'You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data.' %}
-                                </p>
-                            </div>
-                    </div>
-                {% endif %}
-                <div class="enketo-power">Powered by <a href="http://enketo.org" title="enketo.org website"><img
-                            src="/media/images/enketo_powered_by.png" alt="enketo logo"/></a>
-                </div>
-            </article>
-        </div>
-        <div id="cancel_submission_warning_message" style="display: none;">
-            {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+        {% include "project/_xform_web_submission.html" %}
 
-            <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
-
-            <div class="text_align_right padding_top_20">
-                <a id="cancel_dialog" href="javascript:void(0);">{% trans "Cancel" %}</a>
-                <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
-                <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
-            </div>
-        </div>
-
-    </div>
 {% endblock %}
