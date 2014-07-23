@@ -16662,7 +16662,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                             .removeAttr( 'data-items-path' );
 
                         $htmlItemLabels = ( labelType === 'itext' ) ?
-                            $labels.find( '[data-itext-id="' + $( this ).children( labelRef ).text() + '"]' ).clone() :
+                            $labels.find( '[data-itext-id="' + $( this ).children( labelRef ).text() + '"]').addClass('option-label').clone() :
                             $( '<span class="active" lang="">' + $( this ).children( labelRef ).text() + '</span>' );
 
                         value = $( this ).children( valueRef ).text();
@@ -17544,6 +17544,7 @@ requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form' ],
         modelStr = ( new XMLSerializer() ).serializeToString( $data.find( 'model:eq(0)' )[ 0 ] );
 
         $( '#validate-form' ).before( formStr );
+        $("form").trigger("initializePostFormLoadAction");
         initializeForm();
         $("form").trigger("postFormLoadAction");
 

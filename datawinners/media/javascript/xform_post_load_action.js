@@ -1,5 +1,5 @@
-$(function(){
-    $(document).on("postFormLoadAction", function(evt){
+$(document).on('initializePostFormLoadAction', 'form', function(){
+    $(document).on("postFormLoadAction", function(){
         $(".ajax-loader").hide();
         if (isQuotaReached != "True") {
             $("#validate-form").removeClass("disabled-state").removeClass("disabled");
@@ -9,8 +9,7 @@ $(function(){
             if (typeof(cancelWarningPopUp) == "undefined")
                 _initializeWarningDialog();
         });
-    });
-});
+})});
 
 
 function _initializeWarningDialog() {
