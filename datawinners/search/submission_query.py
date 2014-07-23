@@ -83,11 +83,18 @@ class SubmissionQueryResponseCreator():
             ["%s<span class='small_grey'>  %s</span>" % (
                 entity_name, short_code)]) if entity_name else submission.append(entity_name)
 
+    def get_field_set_fields(self,fields):
+        field_set_field_dict = {}
+        for field in fields:
+            if(isinstance(field,FieldSet)):
+              field_set_field_dict.update({es_field_name(field.code,self.form_model.id):field})
+              field_set_field_dict.update(self.get_field_set_fields(field.fields))
+        return field_set_field_dict
+
     def create_response(self, required_field_names, query):
         entity_question_codes = [es_field_name(field.code, self.form_model.id) for field in
                                  self.form_model.entity_questions]
-        fieldset_questions = [es_field_name(field.code, self.form_model.id)
-                              for field in filter(lambda x: isinstance(x, FieldSet), self.form_model.fields)]
+        fieldset_fields = self.get_field_set_fields(self.form_model.fields)
         meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
         meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
 
@@ -111,11 +118,8 @@ class SubmissionQueryResponseCreator():
                         if error_msg.find('| |') != -1:
                             error_msg = error_msg.split('| |,')[['en', 'fr'].index(language)]
                         submission.append(error_msg)
-                    elif key in fieldset_questions:
-                        submission.append(_format_fieldset_values_for_representation(res.get(key),
-                                                                                     get_field_by_attribute_value(
-                                                                                         self.form_model, 'code',
-                                                                                         self._get_key(key))))
+                    elif key in fieldset_fields.keys():
+                        submission.append(_format_fieldset_values_for_representation(res.get(key),fieldset_fields.get(key)))
                     else:
                         submission.append(self.append_if_attachments_are_present(res, key))
             submissions.append(submission)
