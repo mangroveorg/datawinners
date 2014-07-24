@@ -1,4 +1,12 @@
 $(document).on('initializePostFormLoadAction', 'form', function(){
+
+    var isEditSubmission = dataStrToEdit !== "";
+
+    if(isEditSubmission){
+        $("#validate-form").wrap("<div id='submission-action-section'></div>");
+        $("<a id='cancel-link' href=" + submissionLogURL + " class='cancel-link'>"+ gettext("Cancel Editing") +"</a>").insertBefore("#validate-form");
+    }
+
     $(document).on("postFormLoadAction", function(){
         $(".ajax-loader").hide();
         if (isQuotaReached != "True") {
@@ -9,7 +17,9 @@ $(document).on('initializePostFormLoadAction', 'form', function(){
             if (typeof(cancelWarningPopUp) == "undefined")
                 _initializeWarningDialog();
         });
-})});
+    })
+});
+
 
 
 function _initializeWarningDialog() {

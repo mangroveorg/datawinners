@@ -73,9 +73,7 @@
                 {% endif %}
             </div>
         {% endif %}
-        {% for message in messages %}
-            <div class="{{ message.tags }}-message-box message-box clear-left">{{ message }}</div>
-        {% endfor %}
+    {% include "flash_message.html" %}
     </div>
         {% include "project/_xform_web_submission.html" %}
 

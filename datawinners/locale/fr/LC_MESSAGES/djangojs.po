@@ -1322,3 +1322,5 @@ msgstr "Apprenez comment ajouter et modifier les langues"
 msgid "Cancel Changes"
 msgstr "Annuler les modifications"
 
+msgid "Cancel Editing"
+msgstr "Annuler les Modifications"
