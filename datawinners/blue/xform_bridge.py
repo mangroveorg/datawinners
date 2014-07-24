@@ -98,8 +98,18 @@ class XlsFormParser():
         xform = survey.to_xml()
         return xform, questions
 
+    def _get_label(self, field):
+
+        if 'label' not in field:
+            return 'fixthis'
+
+        if isinstance(field['label'], dict):
+            return field['label'].values()[0]
+        else:
+            return field['label']
+
     def _group(self, field):
-        group_label = field['label']
+        group_label = self._get_label(field)
 
         fieldset_type = 'entity'
 
@@ -127,7 +137,7 @@ class XlsFormParser():
     def _field(self, field):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', 'calculate': 'integer'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', 'calculate': 'number'}
-        name = field.get('label') if field.get('label') else 'fixthis'
+        name = self._get_label(field)
         code = field['name']
         type = field['type']
 
@@ -140,7 +150,7 @@ class XlsFormParser():
         return question
 
     def _select(self, field):
-        name = field['label']
+        name = self._get_label(field)
         code = field['name']
         if field.get('choices'):
             choices = [{'value': {'text': f.get('label') or f['name'], 'val': f['name']}} for f in field.get('choices')]
@@ -159,7 +169,7 @@ class XlsFormParser():
         return False
 
     def _media(self, field):
-        name = field['label']
+        name = self._get_label(field)
         code = field['name']
         question = {"title": name, "code": code, "type": "image", 'required': self.is_required(field),
                     "is_entity_question": False}
