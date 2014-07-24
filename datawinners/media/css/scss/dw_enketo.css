@@ -61,3 +61,8 @@ article.paper {
 
 #submission-action-section {
   align-self: center; }
+
+.editField {
+  border-color: #646464 #EBEBEB #EBEBEB #646464 !important;
+  height: 25px !important;
+  width: 350px !important; }
