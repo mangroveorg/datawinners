@@ -4642,3 +4642,9 @@ msgstr "Sorry!  We could not upload your Questionnaire. Currently, DataWinners o
 
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""
+
+msgid "q_tooltip_advanced_questionnaire_option"
+msgstr "Use this option if you want to create advanced logic in your Questionnaire, for example skip logic or repeated set of questions.<br/><br/>"
+
+msgid "r_tooltip_advanced_questionnaire_option"
+msgstr "This functionality is released in it’s first version and will be improved continuously. See Learn More link for details, examples and tutorials."
