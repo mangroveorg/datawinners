@@ -4590,19 +4590,19 @@ msgid "Click on the Upload a file button and select the saved template."
 msgstr "Cliquez sur le bouton \"Télécharger un fichier\" et sélectionnez le modèle sauvegardé."
 
 msgid "Answer %s for question %s is of the wrong type."
-msgstr "Le type de la réponse %s pour la question \"%s\" est erroné."
+msgstr "Le type de réponse %s pour la question %s est erroné."
 
 msgid "Answer %s for question %s is smaller than allowed."
-msgstr "La réponse %s pour la question \"%s\" est inférieure à ce q ui est permise."
+msgstr "La réponse %s pour la question %s est inférieure à ce q ui est permise."
 
 msgid "Answer %s for question %s is greater than allowed."
-msgstr "La réponse %s pour la question \"%s\" est supérieure à ce qui est permise."
+msgstr "La réponse %s pour la question %s est supérieure à ce qui est permise."
 
 msgid "Answer %s for question %s contains more than one value."
-msgstr "La réponse %s pour la question \"%s\" contient plus d'une valeur."
+msgstr "La réponse %s pour la question %s contient plus d'une valeur."
 
 msgid "Answer %s for question %s is not present in the allowed options."
-msgstr "La réponse %s pour la question \"%s\" ne figure pas parmi les options permises."
+msgstr "La réponse %s pour la question %s ne figure pas parmi les options permises."
 
 msgid "Enter 1 or more answers from the list."
 msgstr "Tapez 1 ou plusieurs réponses parmi al liste."
