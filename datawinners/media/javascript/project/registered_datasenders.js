@@ -2,9 +2,9 @@ var viewModel = function(initial_value){
     this.is_open_datasender = ko.observable(initial_value);
     this.ds_setting_description = ko.computed(function(){
         if (this.is_open_datasender() == '1')
-            return gettext("Everyone – Anyone with a simple phone can submit data");
+            return gettext("Everyone - Anyone with a simple phone can submit data");
         else
-            return gettext("Only Registered People – Data Senders must be registered first before submitting data.");
+            return gettext("Only Registered People - Data Senders must be registered first before submitting data.");
     }, this);
 }
 
