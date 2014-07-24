@@ -11,7 +11,8 @@ from pyxform import create_survey_element_from_dict
 from pyxform.xls2json import parse_file_to_json
 from datawinners.project.wizard_view import create_questionnaire
 
-from mangrove.errors.MangroveException import QuestionAlreadyExistsException, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
+from mangrove.errors.MangroveException import QuestionAlreadyExistsException, QuestionCodeAlreadyExistsException, \
+    EntityQuestionAlreadyExistsException
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code
@@ -26,12 +27,13 @@ from datawinners.search import *
 from mangrove.transport.player.parser import XlsParser
 from django.utils.translation import ugettext as _
 
+
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select'],
-                 'auto_filled':['note', 'start','end','today', 'deviceid','subscriberid','imei','phonenumber'],
+                 'auto_filled': ['note', 'start', 'end', 'today', 'deviceid', 'subscriberid', 'imei', 'phonenumber'],
                  'select': ['select one', 'select all that apply']
-                 }
+    }
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
 
@@ -72,6 +74,7 @@ class XlsFormParser():
 
     def _validate_fields_are_recognised(self, fields):
         for field in fields:
+            self._validate_for_single_language(field)
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
                     self._validate_for_nested_repeats(field)
@@ -83,6 +86,10 @@ class XlsFormParser():
     def _validate_for_nested_repeats(self, field):
         if field['type'] == 'repeat' and "repeat" in [f["type"] for f in field['children']]:
             raise NestedRepeatsNotSupportedException()
+
+    def _validate_for_single_language(self, field):
+        if 'label' in field and isinstance(field['label'], dict) and len(field['label']) > 1:
+            raise MultipleLanguagesNotSupportedException()
 
     def parse(self):
         self._validate_fields_are_recognised(self.xform_dict['children'])
@@ -101,14 +108,20 @@ class XlsFormParser():
         elif field['type'] == 'group':
             fieldset_type = 'group'
 
-        if not group_label: #todo create appropriate error class
+        if not group_label:  # todo create appropriate error class
             raise QuestionAlreadyExistsException('Unique repeat label is required')
         name = field['name'].lower()
         questions = self._create_questions(field['children'])
-        question = {'title': group_label, 'type': 'field_set', "is_entity_question": False,
-                 "code": name, "name": group_label, 'required': False,
-                 "instruction": "No answer required","fieldset_type": fieldset_type,
-                 'fields':questions}
+        question = {
+            'title': group_label,
+            'type': 'field_set',
+            "is_entity_question": False,
+            "code": name, "name": group_label,
+            "required": False,
+            "instruction": "No answer required",
+            "fieldset_type": fieldset_type,
+            "fields": questions
+        }
         return question
 
     def _field(self, field):
@@ -119,22 +132,23 @@ class XlsFormParser():
         type = field['type']
 
         question = {'title': name, 'type': xform_dw_type_dict.get(type, type), "is_entity_question": False,
-                 "code": code, "name": name, 'required': self.is_required(field),
-                 "instruction": "Answer must be a %s" % help_dict.get(type, type)} # todo help text need improvement
+                    "code": code, "name": name, 'required': self.is_required(field),
+                    "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
         if type == 'date':
-                question.update({'date_format': 'dd.mm.yyyy', 'event_time_field_flag': False,
-                          "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
+            question.update({'date_format': 'dd.mm.yyyy', 'event_time_field_flag': False,
+                             "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
         return question
 
     def _select(self, field):
         name = field['label']
         code = field['name']
         if field.get('choices'):
-            choices = [{'value':{'text':f.get('label') or f['name'], 'val':f['name']}} for f in field.get('choices')]
+            choices = [{'value': {'text': f.get('label') or f['name'], 'val': f['name']}} for f in field.get('choices')]
         else:
-            choices = [{'value':{'text':f.get('label') or f['name'], 'val':f['name']}} for f in self.xform_dict['choices'].get(field['itemset'])]
+            choices = [{'value': {'text': f.get('label') or f['name'], 'val': f['name']}} for f in
+                       self.xform_dict['choices'].get(field['itemset'])]
         question = {"title": name, "code": code, "type": "select", 'required': self.is_required(field),
-                 "choices": choices, "is_entity_question": False}
+                    "choices": choices, "is_entity_question": False}
         if field['type'] == 'select one':
             question.update({"type": "select1"})
         return question
@@ -147,19 +161,21 @@ class XlsFormParser():
     def _media(self, field):
         name = field['label']
         code = field['name']
-        question = {"title": name, "code": code, "type": "image", 'required': self.is_required(field), "is_entity_question": False}
+        question = {"title": name, "code": code, "type": "image", 'required': self.is_required(field),
+                    "is_entity_question": False}
         return question
 
 
 class MangroveService():
-
-    def __init__(self, user, xform_as_string, json_xform_data, questionnaire_code=None, project_name=None, xls_form=None):
+    def __init__(self, user, xform_as_string, json_xform_data, questionnaire_code=None, project_name=None,
+                 xls_form=None):
         self.user = user
         user_profile = NGOUserProfile.objects.get(user=self.user)
         self.reporter_id = user_profile.reporter_id
         self.manager = get_database_manager(self.user)
         self.entity_type = ['reporter']
-        self.questionnaire_code =  questionnaire_code if questionnaire_code else generate_questionnaire_code(self.manager)
+        self.questionnaire_code = questionnaire_code if questionnaire_code else generate_questionnaire_code(
+            self.manager)
         self.name = 'Xlsform-Project-' + self.questionnaire_code if not project_name else project_name
         self.language = 'en'
         self.xform = xform_as_string
@@ -173,11 +189,12 @@ class MangroveService():
         [self._add(r, name, value) for r in root.iter(model)]
 
         node_set = '/%s/%s' % (project_name, name)
-        [ET.SubElement(r, '{http://www.w3.org/2002/xforms}bind', {'nodeset': node_set, 'type': "string"}) for r in root.getiterator() if
-            r.tag == '{http://www.w3.org/2002/xforms}model']
+        [ET.SubElement(r, '{http://www.w3.org/2002/xforms}bind', {'nodeset': node_set, 'type': "string"}) for r in
+         root.getiterator() if
+         r.tag == '{http://www.w3.org/2002/xforms}model']
 
     def _add(self, instance, name, value):
-        e = ET.SubElement(instance,'{http://www.w3.org/2002/xforms}%s' %name)
+        e = ET.SubElement(instance, '{http://www.w3.org/2002/xforms}%s' % name)
         e.text = value
         return e
 
@@ -215,12 +232,12 @@ class MangroveService():
             questionnaire.update_doc_and_save()
             questionnaire.add_attachments(self.xls_form, 'questionnaire.xls')
             # UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
-            #                       detail=questionnaire.name)
+            # detail=questionnaire.name)
             return questionnaire.id, self.name, error_message
         return None, None, error_message
 
-class XFormSubmissionProcessor():
 
+class XFormSubmissionProcessor():
     def get_dict(self, field, value):
         if not value:
             return {field.code: ''}
@@ -241,17 +258,17 @@ class XFormSubmissionProcessor():
 
     def get_model_edit_str(self, form_model_fields, submission_values, project_name, form_code):
         # todo instead of using form_model fields, use xform to find the fields
-        d, s = {'form_code':form_code}, {}
+        d, s = {'form_code': form_code}, {}
         for f in form_model_fields:
             d.update(self.get_dict(f, submission_values.get(f.code, '')))
-        s.update({project_name:d})
+        s.update({project_name: d})
         return xmldict.dict_to_xml(s)
+
 
 DIR = os.path.dirname(__file__)
 
 
 class XFormTransformer():
-
     def __init__(self, xform_as_string):
         self.xform = xform_as_string
         self.xls_folder = os.path.join(DIR, 'xsl')
@@ -274,34 +291,42 @@ class XFormTransformer():
         return etree.tostring(r)
 
     def get_id_name(self):
-        #Method to get the temp name of the xform.
+        # Method to get the temp name of the xform.
         #todo : May not work for all scenarios.
         model_doc = etree.fromstring(self.xform)
         return list(list(model_doc)[0])[0].text
 
-class TypeNotSupportedException(Exception):
 
+class TypeNotSupportedException(Exception):
     def __init__(self, message):
         self.message = message
 
     def __str__(self):
         return self.message
 
-class NestedRepeatsNotSupportedException(Exception):
 
+class NestedRepeatsNotSupportedException(Exception):
     def __init__(self):
         self.message = _("nested repeats not supported")
 
     def __str__(self):
         return self.message
 
-class UppercaseNamesNotSupportedException(Exception):
+class MultipleLanguagesNotSupportedException(Exception):
+    def __init__(self):
+        self.message = _("multiple languages not supported")
 
+    def __str__(self):
+        return self.message
+
+
+class UppercaseNamesNotSupportedException(Exception):
     def __init__(self):
         self.message = _("Uppercase in names not supported")
 
     def __str__(self):
         return self.message
+
 
 class XlsProjectParser(XlsParser):
     def parse(self, xls_contents):
@@ -309,8 +334,8 @@ class XlsProjectParser(XlsParser):
         workbook = xlrd.open_workbook(file_contents=xls_contents)
         xls_dict = {}
         for worksheet in workbook.sheets():
-            parsedData=[]
-            for row_num in range(0,worksheet.nrows):
+            parsedData = []
+            for row_num in range(0, worksheet.nrows):
                 row = worksheet.row_values(row_num)
                 row = self._clean(row)
                 parsedData.append(row)
