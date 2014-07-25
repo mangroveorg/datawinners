@@ -125,3 +125,34 @@ class ProjectDataSendersPage(Page):
     def get_checkbox_selector_for_datasender_row(self, row_number):
         # first row is used to show all rows select message
         return by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[1]/input" % (row_number + 1))
+
+    def open_setting_popup(self):
+        try:
+            self.driver.find(by_css("a.change_setting")).click()
+        except Exception:
+            pass
+
+    def get_setting_value(self):
+        return self.driver.find(by_css("[name=ds_setting]:checked")).get_attribute("value")
+
+    def set_setting_value(self, value):
+        self.driver.find(by_css("[name=ds_setting][value='%s']" % value)).click()
+
+    def save_setting(self):
+        self.driver.find(by_css("#save_ds_setting")).click()
+
+    def set_setting_to_open_datasender(self):
+        self.set_setting_value(1)
+
+    def set_setting_to_only_registered_datasender(self):
+        self.set_setting_value('')
+
+    def get_setting_description(self):
+        description_locator = self.driver.find(by_css("#setting_description"))
+        return unicode(self.driver.execute_script("return $(arguments[0]).html()", description_locator))
+
+    def click_cancel_link_on_setting_lightbox(self):
+        self.driver.find(by_css("#change_ds_setting a.cancel_link")).click()
+
+    def is_change_setting_option_displayed(self):
+        return self.driver.is_element_present(by_css("#setting_description"))

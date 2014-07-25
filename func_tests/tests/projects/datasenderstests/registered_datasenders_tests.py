@@ -9,11 +9,10 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from framework.base_test import setup_driver, teardown_driver
 from pages.loginpage.login_page import LoginPage
 from tests.projects.datasenderstests.registered_datasenders_data import *
+from framework.base_test import HeadlessRunnerTest
 
 
-@attr('suit_1')
-@SkipTest # In development - Ajay/Yogesh
-class TestRegisteredDataSenders(unittest.TestCase):
+class TestRegisteredDataSenders(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
@@ -33,6 +32,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
         project_overview_page = all_project_page.navigate_to_project_overview_page(project_name)
         return project_overview_page.navigate_to_datasenders_page()
 
+    @SkipTest
     @attr("functional_test")
     def test_should_load_actions_dynamically(self):
         registered_ds_page = self.go_to_registered_datasenders_page()
@@ -56,6 +56,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
         self.assertTrue(registered_ds_page.actions_menu_shown())
         self.assertFalse(registered_ds_page.is_edit_disabled())
 
+    @SkipTest
     @attr("functional_test")
     def test_should_check_all_checkboxes_following_master_cb(self):
         registered_ds_page = self.go_to_registered_datasenders_page()
@@ -68,6 +69,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
         registered_ds_page.click_checkall_checkbox()
         self.assertEqual(registered_ds_page.get_number_of_selected_datasenders(), 0)
 
+    @SkipTest
     @attr("functional_test")
     def test_should_uncheck_checkall_if_one_cb_is_unchecked(self):
         registered_ds_page = self.go_to_registered_datasenders_page()
@@ -78,6 +80,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
         registered_ds_page.select_a_data_sender_by_id("rep3")
         self.assertTrue(registered_ds_page.is_checkall_checked())
 
+    @SkipTest
     @attr("functional_test")
     def test_should_disable_checkall_cb_if_there_is_no_ds(self):
         registered_ds_page = self.go_to_registered_datasenders_page("project having people as subject")
@@ -89,3 +92,28 @@ class TestRegisteredDataSenders(unittest.TestCase):
             if not check_all_enabled: break;
             time.sleep(2**try_count)  # exponential back-off
         self.assertFalse(check_all_enabled, "Check all was enabled after removing all data senders from the project")
+
+
+    @attr("functional_test")
+    def test_should_save_changed_setting(self):
+        registered_ds_page = self.go_to_registered_datasenders_page("Project having people as subject")
+        registered_ds_page.open_setting_popup()
+        self.assertEqual(registered_ds_page.get_setting_description(), u"Only Registered People - Data Senders must be registered first before submitting data.")
+        registered_ds_page.set_setting_value("1")
+        registered_ds_page.save_setting()
+        time.sleep(3)
+        self.assertEqual(registered_ds_page.get_setting_description(), u"Everyone - Anyone with a simple phone can submit data")
+
+
+    @attr("functional_test")
+    def test_should_revert_back_default_value_when_canceling_change(self):
+        registered_ds_page = self.go_to_registered_datasenders_page("Project having people as subject")
+        initial_description = registered_ds_page.get_setting_description()
+        registered_ds_page.open_setting_popup()
+        initial_value = registered_ds_page.get_setting_value()
+        opposite_value = {'1':'', '':'1'}
+        registered_ds_page.set_setting_value(opposite_value.get(initial_value))
+        self.assertNotEqual(initial_description, registered_ds_page.get_setting_description())
+        registered_ds_page.click_cancel_link_on_setting_lightbox()
+        self.assertEqual(initial_description, registered_ds_page.get_setting_description())
+    

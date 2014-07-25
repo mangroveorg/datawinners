@@ -73,12 +73,17 @@ class DatabaseManager(object):
         return document_store
 
     def update_active_date_to_expired(self, email, date):
-        ngo_user_profile = NGOUserProfile.objects.get(user__email=email)
-        org = Organization.objects.get(org_id = ngo_user_profile.org_id)
+        org = self.get_organization_by_email(email)
 
         active_date = datetime.datetime.today().replace(microsecond=0) - datetime.timedelta(date)
         org.active_date = active_date
         org.save()
+
+    def get_organization_by_email(self, email):
+        ngo_user_profile = NGOUserProfile.objects.get(user__email=email)
+        return Organization.objects.get(org_id = ngo_user_profile.org_id)
+
+        
 
 if __name__ == "__main__":
     db = DatabaseManager()
