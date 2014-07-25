@@ -77,15 +77,19 @@ class XlsFormParser():
             self._validate_for_single_language(field)
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
-                    self._validate_for_nested_repeats(field)
+                    if field['type'] == 'repeat' :
+                        self._validate_for_nested_repeats(field)
                     self._validate_for_uppercase_names(field)
                     self._validate_fields_are_recognised(field['children'])
             else:
                 raise TypeNotSupportedException("question type '" + field['type'] + "' is not supported")
 
     def _validate_for_nested_repeats(self, field):
-        if field['type'] == 'repeat' and "repeat" in [f["type"] for f in field['children']]:
-            raise NestedRepeatsNotSupportedException()
+        for f in field["children"]:
+            if f["type"] == "repeat":
+                raise NestedRepeatsNotSupportedException()
+            if f["type"]=="group":
+                self._validate_for_nested_repeats(f)
 
     def _validate_for_single_language(self, field):
         if 'label' in field and isinstance(field['label'], dict) and len(field['label']) > 1:
