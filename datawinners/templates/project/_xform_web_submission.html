@@ -5,7 +5,7 @@
             <!-- this is where the form will go -->
             <div class="ajax-loader"><img src="/media/images/ajax-loader.gif"/><span
                     class="loading">{% trans "Just a moment..." %}</span></div>
-            <button id="validate-form" class="btn btn-primary btn-large disabled-state disabled">Submit</button>
+            <button id="validate-form" class="btn btn-primary btn-large disabled-state disabled">{% trans "Submit" %}</button>
             {% if is_quota_reached %}
                 <div class="can-not-submit" style="width: 628px;text-align: center;">
                     <span class="can-not-submit-link-quest help_icon">{% trans "Why canʼt I submit?" %}</span>
