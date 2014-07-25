@@ -32,7 +32,7 @@ from datawinners.search.index_utils import es_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQuery
-from mangrove.form_model.field import SelectField, DateField, UniqueIdField
+from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -88,26 +88,32 @@ def _is_unique_id_type_present(fields_array, unique_id_type):
     return len([item for item in fields_array if item['type'] == 'unique_id' and item['entity_type'] == unique_id_type]) > 0
 
 
-def _get_filterable_fields(questionnaire):
-    fields_array = []
-    for field in questionnaire.fields:
+def get_filterable_field_details(field,filterable_fields):
         if isinstance(field, DateField):
-            fields_array.append({
+            return {
                 'type': 'date',
                 'code': field.code,
                 'label': field.label,
                 'is_month_format': field.is_monthly_format,
                 'format': field.date_format
-            })
+            }
         elif isinstance(field, UniqueIdField):
-            if not _is_unique_id_type_present(fields_array, field.unique_id_type):
-                fields_array.append({
+            if not _is_unique_id_type_present(filterable_fields, field.unique_id_type):
+                return {
                     'type': 'unique_id',
                     'code': field.code,
                     'entity_type': field.unique_id_type,
-                })
-    return fields_array
+                }
 
+def get_filterable_fields(fields):
+        filterable_fields = []
+        for field in fields:
+          field_detials = get_filterable_field_details(field, filterable_fields)
+          if field_detials:
+              filterable_fields.append(field_detials)
+          if(isinstance(field,FieldSet) and field.is_group()):
+            filterable_fields.extend(get_filterable_fields(field.fields))
+        return filterable_fields
 
 
 @login_required
@@ -125,7 +131,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
             return HttpResponseRedirect(dashboard_page)
 
-        filterable_fields = _get_filterable_fields(questionnaire)
+        filterable_fields = get_filterable_fields(questionnaire.fields)
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {
@@ -157,7 +163,7 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
         if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
 
-        filterable_fields = _get_filterable_fields(questionnaire)
+        filterable_fields = get_filterable_fields(questionnaire.fields)
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {
