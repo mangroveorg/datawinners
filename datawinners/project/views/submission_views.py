@@ -16,12 +16,11 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
-from mangrove.datastore.entity import Entity
+
 from datawinners.blue.xform_submission_exporter import XFormSubmissionExporter
 from datawinners.blue.view import SurveyWebXformQuestionnaireRequest
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
-
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.blue.xform_bridge import XFormSubmissionProcessor
 from datawinners.feeds.database import get_feeds_database
@@ -37,13 +36,12 @@ from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project import helper
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
 from datawinners.project.models import Project
-
 from datawinners.project.utils import project_info, is_quota_reached
 from datawinners.project.Header import SubmissionsPageHeader
 from datawinners.activitylog.models import UserActivityLog

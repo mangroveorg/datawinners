@@ -7,7 +7,7 @@ from datawinners.blue.xform_bridge import XlsFormParser, UppercaseNamesNotSuppor
 class TestXformBridge(unittest.TestCase):
     def test_xform_validation_for_uppercase_names(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
-            xls_form_parser = XlsFormParser('some_path')
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
             fields = {
                 'children': [{u'bind': {u'required': u'yes'}, u'type': u'text', u'name': u'name', u'label': u'Name'}, {
                     u'children': [
@@ -27,7 +27,7 @@ class TestXformBridge(unittest.TestCase):
 
     def test_xform_validation_for_nested_repeats_names(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
-            xls_form_parser = XlsFormParser('some_path')
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
             fields = {
                 'children': [{u'bind': {u'required': u'yes'}, u'type': u'text', u'name': u'name', u'label': u'Name'},
                              {u'children': [{u'children': [
@@ -47,7 +47,7 @@ class TestXformBridge(unittest.TestCase):
 
     def test_should_raise_exception_when_label_defined_in_multiple_languages(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
-            xls_form_parser = XlsFormParser('some_path')
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
             fields = {'children': [{u'bind': {u'required': u'yes'}, u'type': u'text', u'name': u'name',
                                     u'label': {u'french': u'1. What is your name?',
                                                u'english': u'1. What is your name?'}},
@@ -66,7 +66,7 @@ class TestXformBridge(unittest.TestCase):
 
     def test_should_not_raise_exception_when_label_defined_in_single_explict_language(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
-            xls_form_parser = XlsFormParser('some_path')
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
             fields = {'children': [{u'bind': {u'required': u'yes'}, u'type': u'text', u'name': u'name',
                                     u'label': {u'english': u'1. What is your name?'}},
                                    {u'bind': {u'required': u'yes'}, u'type': u'integer', u'name': u'age',

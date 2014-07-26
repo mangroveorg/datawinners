@@ -59,7 +59,7 @@ class ProjectUpload(View):
             questionnaire_code = generate_questionnaire_code(manager)
             project_name = request.GET['pname']
 
-            xform_as_string, json_xform_data = XlsFormParser(tmp_file).parse()
+            xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name).parse()
 
             mangroveService = MangroveService(request.user, xform_as_string, json_xform_data, questionnaire_code=questionnaire_code, project_name=project_name, xls_form=file_content)
             id, name, error_message = mangroveService.create_project()
@@ -95,14 +95,12 @@ class ProjectUpdate(View):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         try:
-            # file_name = request.GET.get('qqfile').split('.')[0]
             file_content = request.raw_post_data
             tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
             tmp_file.write(file_content)
             tmp_file.seek(0)
-            #is_project_name_changed = file_name != questionnaire.name
 
-            xform_as_string, json_xform_data = XlsFormParser(tmp_file).parse()
+            xform_as_string, json_xform_data = XlsFormParser(tmp_file, questionnaire.name).parse()
             mangroveService = MangroveService(request.user, xform_as_string, json_xform_data, questionnaire_code=questionnaire.form_code, project_name=questionnaire.name)
 
             old_form_code = questionnaire.form_code
@@ -201,7 +199,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
         if self.questionnaire.xform:
             form_context.update({'survey_response_id': survey_response_id })
             xform_transformer = XFormTransformer(self.questionnaire.xform)
-            form_context.update({'xform_xml':re.sub(r"\n", " ", xform_transformer.transform())})
+            form_context.update({'xform_xml': re.sub(r"\n", " ", xform_transformer.transform())})
             form_context.update({'edit_model_str': self._model_str_of(survey_response_id, xform_transformer.get_id_name())})
             form_context.update({'submission_update_url': reverse('update_web_submission', kwargs={'survey_response_id':survey_response_id})})
             form_context.update({'is_advance_questionnaire': True})

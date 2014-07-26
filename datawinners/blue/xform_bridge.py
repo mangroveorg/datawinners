@@ -1,6 +1,7 @@
 import itertools
 import json
 import os
+import re
 from xml.etree import ElementTree as ET
 from django.http import HttpResponse
 
@@ -37,7 +38,8 @@ class XlsFormParser():
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
 
-    def __init__(self, path_or_file):
+    def __init__(self, path_or_file, questionnaire_name):
+        self.questionnaire_name = questionnaire_name
         if isinstance(path_or_file, basestring):
             self._file_object = None
             path = path_or_file
@@ -100,7 +102,11 @@ class XlsFormParser():
         questions = self._create_questions(self.xform_dict['children'])
         survey = create_survey_element_from_dict(self.xform_dict)
         xform = survey.to_xml()
-        return xform, questions
+        updated_xform = self.update_xform_with_questionnaire_name(xform)
+        return updated_xform, questions
+
+    def update_xform_with_questionnaire_name(self, xform):
+        return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % self.questionnaire_name, xform)
 
     def _get_label(self, field):
 
@@ -305,11 +311,10 @@ class XFormTransformer():
         return etree.tostring(r)
 
     def get_id_name(self):
-        # Method to get the temp name of the xform.
-        #todo : May not work for all scenarios.
-        model_doc = etree.fromstring(self.xform)
-        return list(list(model_doc)[0])[0].text
-
+        #retreive the generated project id from xform
+        xform_cleaned = re.sub(r"\s+", " ", re.sub(r"\n", "", self.xform))
+        match = re.search('<model> <instance> <(.+) id="', xform_cleaned)
+        return match.group(1)
 
 class TypeNotSupportedException(Exception):
     def __init__(self, message):
