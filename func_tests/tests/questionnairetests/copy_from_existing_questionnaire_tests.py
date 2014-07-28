@@ -8,8 +8,9 @@ from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import COPY_PROJECT_QUESTIONNAIRE_DATA, COPY_PROJECT_DATA
+from django.utils.unittest.case import SkipTest
 
-
+@SkipTest
 class TestCopyExistingQuestionnaire(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
