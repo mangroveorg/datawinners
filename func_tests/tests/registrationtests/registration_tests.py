@@ -64,6 +64,7 @@ class TestRegistrationPage(HeadlessRunnerTest):
     @attr('functional_test')
     def test_content_box_exist_in_registration_page(self):
         self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
+        self.driver.wait_for_page_load()
         about_datawinners_box = self.driver.find_elements_(by_css("h5"))
         self.assertEqual('About DataWinners', about_datawinners_box[0].text)
         self.assertEqual('Subscription Details', about_datawinners_box[1].text)
@@ -71,6 +72,7 @@ class TestRegistrationPage(HeadlessRunnerTest):
     @attr('functional_test')
     def test_content_box_exist_in_registration_complete_page(self):
         self.driver.go_to(DATA_WINNER_REGISTRATION_COMPLETE_PAGE)
+        self.driver.wait_for_page_load()
         about_datawinners_box = self.driver.find_elements_(by_css("h5"))
         self.assertEqual('About DataWinners', about_datawinners_box[0].text)
         self.assertEqual('Subscription Details', about_datawinners_box[1].text)

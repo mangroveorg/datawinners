@@ -8,7 +8,7 @@ from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModif
 from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS, DIALOG_PROJECT_DATA, NEW_UNIQUE_ID_TYPE
 from django.utils.unittest.case import SkipTest
 
-@SkipTest #Lastly, These tests were not ran, cause of __init__ file missing.
+@SkipTest #Lastly, these tests were not ran, cause of __init__ file missing.
 class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
