@@ -1179,7 +1179,7 @@ msgid "Error. You are not authorized to submit data for this Questionnaire. Plea
 msgstr "Erreur. Vous n'etes pas autorise a soumettre des donnees pour ce Questionnaire. Contactez votre superviseur."
 
 msgid "Error. {<{Submitted Identification Number}>} is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."
-msgstr "Erreur. {<{Numéro d'Identification Soumis}>} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez SMS en entier ou contactez votre superviseur."
+msgstr "Erreur. {<{Numéro d'Identification Soumis}>} n'est pas enregistre. Verifiez le Numero d'Identification et renvoyez le SMS en entier ou contactez votre superviseur."
 
 msgid "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS."
 msgstr "Erreur. Nombre de reponses incorrect. Veuillez revoir le Questionnaire imprime et renvoyez tout le SMS."
