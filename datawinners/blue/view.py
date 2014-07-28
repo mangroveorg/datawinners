@@ -19,7 +19,7 @@ from datawinners import settings
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
 from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
-    XlsProjectParser
+    XlsProjectParser, get_generated_xform_id_name
 from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, is_project_exist
@@ -205,7 +205,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
             xform_transformer = XFormTransformer(self.questionnaire.xform)
             form_context.update({'xform_xml': re.sub(r"\n", " ", xform_transformer.transform())})
             form_context.update(
-                {'edit_model_str': self._model_str_of(survey_response_id, xform_transformer.get_id_name())})
+                {'edit_model_str': self._model_str_of(survey_response_id, get_generated_xform_id_name(self.questionnaire.xform))})
             form_context.update({'submission_update_url': reverse('update_web_submission',
                                                                   kwargs={'survey_response_id': survey_response_id})})
             form_context.update({'is_advance_questionnaire': True})

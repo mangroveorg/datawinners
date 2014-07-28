@@ -316,12 +316,6 @@ class XFormTransformer():
         r.extend(form_tree.getroot())
         return etree.tostring(r)
 
-    def get_id_name(self):
-        #retreive the generated project id from xform
-        xform_cleaned = re.sub(r"\s+", " ", re.sub(r"\n", "", self.xform))
-        match = re.search('<model> <instance> <(.+) id="', xform_cleaned)
-        return match.group(1)
-
 class TypeNotSupportedException(Exception):
     def __init__(self, message):
         self.message = message
