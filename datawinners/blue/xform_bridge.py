@@ -100,6 +100,8 @@ class XlsFormParser():
     def parse(self):
         self._validate_fields_are_recognised(self.xform_dict['children'])
         questions = self._create_questions(self.xform_dict['children'])
+        if not questions:
+            raise Exception("Uploaded file is empty!")
         survey = create_survey_element_from_dict(self.xform_dict)
         xform = survey.to_xml()
         updated_xform = self.update_xform_with_questionnaire_name(xform)
