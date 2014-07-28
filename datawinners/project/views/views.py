@@ -104,7 +104,8 @@ def rename_project(request, project_id):
 
     if questionnaire.name != new_project_name:
         questionnaire.name = new_project_name
-        questionnaire.update_xform_with_questionnaire_name(new_project_name)
+        if questionnaire.xform:
+            questionnaire.update_xform_with_questionnaire_name(new_project_name)
         try:
             questionnaire.save(process_post_update=True)
             UserActivityLog().log(request, action=RENAMED_QUESTIONNAIRE, project=questionnaire.name)
