@@ -60,9 +60,11 @@
             <h5>{% trans "Send your answers using SMS" %}</h5>
             <div class="org-number">{% trans "Send your SMS to the telephone number:" %} <strong>{{ org_number|format_organization_number }}</strong></div>
         </li>
-        <li>
-            <h5>{% trans "Wait for our reply SMS" %}</h5>
-            <div>{% trans "You will receive an SMS confirmation or specific error message." %}</div>
-        </li>
+        {% if project.is_outgoing_sms_replies_enabled %}
+            <li>
+                <h5>{% trans "Wait for our reply SMS" %}</h5>
+                <div>{% trans "You will receive an SMS confirmation or specific error message." %}</div>
+            </li>
+        {% endif %}
     </ol>
 </div>
