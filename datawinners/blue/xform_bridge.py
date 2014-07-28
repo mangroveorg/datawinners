@@ -3,13 +3,14 @@ import json
 import os
 import re
 from xml.etree import ElementTree as ET
-from django.http import HttpResponse
 
+from django.http import HttpResponse
 from lxml import etree
 import xlrd
 import xmldict
 from pyxform import create_survey_element_from_dict
 from pyxform.xls2json import parse_file_to_json
+
 from datawinners.project.wizard_view import create_questionnaire
 
 from mangrove.errors.MangroveException import QuestionAlreadyExistsException, QuestionCodeAlreadyExistsException, \
@@ -17,16 +18,18 @@ from mangrove.errors.MangroveException import QuestionAlreadyExistsException, Qu
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code
-from datawinners.project.models import Project
-from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.form_model.field import FieldSet, GeoCodeField, DateField
-from mangrove.form_model.form_model import FormModel
-
 
 # noinspection PyUnresolvedReferences
 from datawinners.search import *
 from mangrove.transport.player.parser import XlsParser
 from django.utils.translation import ugettext as _
+
+
+def get_generated_xform_id_name(xform):
+    xform_cleaned = re.sub(r"\s+", " ", re.sub(r"\n", "", xform))
+    match = re.search('<model> <instance> <(.+) id="', xform_cleaned)
+    return match.group(1)
 
 
 class XlsFormParser():
@@ -201,16 +204,16 @@ class MangroveService():
         self.name = 'Xlsform-Project-' + self.questionnaire_code if not project_name else project_name
         self.language = 'en'
         self.xform = xform_as_string
-        self.xform_with_form_code = self.add_from_code(xform_as_string, self.questionnaire_code)
+        self.xform_with_form_code = self.add_form_code(xform_as_string, self.questionnaire_code)
         self.json_xform_data = json_xform_data
         self.xls_form = xls_form
 
     def _add_model_sub_element(self, root, name, value):
-        project_name = [r.text for r in root.iter('{http://www.w3.org/1999/xhtml}title')][0]
-        model = '{http://www.w3.org/2002/xforms}%s' % project_name
+        generated_id = get_generated_xform_id_name(self.xform)
+        model = '{http://www.w3.org/2002/xforms}%s' % generated_id
         [self._add(r, name, value) for r in root.iter(model)]
 
-        node_set = '/%s/%s' % (project_name, name)
+        node_set = '/%s/%s' % (generated_id, name)
         [ET.SubElement(r, '{http://www.w3.org/2002/xforms}bind', {'nodeset': node_set, 'type': "string"}) for r in
          root.getiterator() if
          r.tag == '{http://www.w3.org/2002/xforms}model']
@@ -220,7 +223,7 @@ class MangroveService():
         e.text = value
         return e
 
-    def add_from_code(self, xform, form_code):
+    def add_form_code(self, xform, form_code):
         ET.register_namespace('', 'http://www.w3.org/2002/xforms')
         root = ET.fromstring(xform.encode('utf-8'))
         self._add_model_sub_element(root, 'form_code', form_code)

@@ -91,8 +91,6 @@ def delete_project(request, project_id):
     UserActivityLog().log(request, action=DELETED_QUESTIONNAIRE, project=questionnaire.name)
     return HttpResponseRedirect(reverse(views.index))
 
-
-
 @csrf_view_exempt
 @valid_web_user
 @is_datasender
@@ -104,8 +102,9 @@ def rename_project(request, project_id):
         return HttpResponse(json.dumps({"status": "error", "message": ugettext("This field is required.")}),
                             content_type='application/json')
 
-    if (questionnaire.name != new_project_name):
+    if questionnaire.name != new_project_name:
         questionnaire.name = new_project_name
+        questionnaire.update_xform_with_questionnaire_name(new_project_name)
         try:
             questionnaire.save(process_post_update=True)
             UserActivityLog().log(request, action=RENAMED_QUESTIONNAIRE, project=questionnaire.name)

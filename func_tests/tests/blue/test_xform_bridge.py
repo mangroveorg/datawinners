@@ -173,7 +173,7 @@ class TestXFormBridge(unittest.TestCase):
         xform_as_string = open(self.NAME_SPACE, 'r').read()
         default_namespace_definition_format = 'xmlns="http://www.w3.org/2002/xforms"'
 
-        updated_xform = MangroveService(self.user, xform_as_string, None).add_from_code(xform_as_string, None)
+        updated_xform = MangroveService(self.user, xform_as_string, None).add_form_code(xform_as_string, None)
 
         self.assertTrue(updated_xform.find(default_namespace_definition_format) != -1)
 
@@ -195,7 +195,7 @@ class TestXFormBridge(unittest.TestCase):
         expected_form_code = '022-somthing-making-it-unique-in-xml'
 
         updated_xform = MangroveService(self.user, xform_as_string, None)\
-            .add_from_code(xform_as_string, '%s' % expected_form_code)
+            .add_form_code(xform_as_string, '%s' % expected_form_code)
 
         form_code = self._find_in_instance(updated_xform, 'form_code')
         self.assertEqual(form_code, expected_form_code)
