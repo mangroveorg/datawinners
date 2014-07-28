@@ -1,8 +1,10 @@
+import os
 import unittest
 from mock import patch
 from datawinners.blue.xform_bridge import XlsFormParser, UppercaseNamesNotSupportedException, \
-    NestedRepeatsNotSupportedException, MultipleLanguagesNotSupportedException
+    NestedRepeatsNotSupportedException, MultipleLanguagesNotSupportedException, get_generated_xform_id_name
 
+DIR = os.path.dirname(__file__)
 
 class TestXformBridge(unittest.TestCase):
     def test_xform_validation_for_uppercase_names(self):
@@ -81,3 +83,21 @@ class TestXformBridge(unittest.TestCase):
                 xls_form_parser._validate_fields_are_recognised(fields['children'])
             except MultipleLanguagesNotSupportedException:
                 self.fail("Should not throw exception")
+
+
+class TestXformParsing(unittest.TestCase):
+
+    def setUp(self):
+         self.test_data = os.path.join(DIR, 'testdata')
+
+    def test_should_return_generated_xform_id_for_questionnaire_with_single_explict_language(self):
+        with open (os.path.join(self.test_data, 'xform-single-explict-language.xml'), "r") as file:
+            xform_as_string = file.read()
+            actual_generated_id = get_generated_xform_id_name(xform_as_string)
+            self.assertEqual('tmpl8G0vO', actual_generated_id)
+
+    def test_should_return_generated_xform_id_for_questionnaire_with_single_explict_language(self):
+        with open (os.path.join(self.test_data, 'xform-single-explict-language.xml'), "r") as file:
+            xform_as_string = file.read()
+            actual_generated_id = get_generated_xform_id_name(xform_as_string)
+            self.assertEqual('tmpl8G0vO', actual_generated_id)

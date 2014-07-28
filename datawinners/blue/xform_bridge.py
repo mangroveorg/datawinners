@@ -20,6 +20,7 @@ from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, associate_account_users_to_project
 from mangrove.form_model.field import FieldSet, GeoCodeField, DateField
 
+# used for edit questionnaire in xls questionnaire flow
 # noinspection PyUnresolvedReferences
 from datawinners.search import *
 from mangrove.transport.player.parser import XlsParser
@@ -28,7 +29,7 @@ from django.utils.translation import ugettext as _
 
 def get_generated_xform_id_name(xform):
     xform_cleaned = re.sub(r"\s+", " ", re.sub(r"\n", "", xform))
-    match = re.search('<model> <instance> <(.+) id="', xform_cleaned)
+    match = re.search('<model>.* <instance> <(.+) id="', xform_cleaned)
     return match.group(1)
 
 
