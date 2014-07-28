@@ -153,7 +153,7 @@ class EntityIdRegistrationInstruction:
 
     @staticmethod
     def get_instruction(context):
-        return _("Assign a unique ID for each Subject."), _(
+        return _("Assign a unique ID for each Identification Number."), _(
             "Leave this column blank if you want DataWinners to assign an ID for you.")
 
 

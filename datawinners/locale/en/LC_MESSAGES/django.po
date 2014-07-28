@@ -4046,7 +4046,7 @@ msgstr ""
 msgid "Contact <a href=\"mailto:support@datawinners.com\">support@datawinners.com</a> if you need help."
 msgstr ""
 
-msgid "Assign a unique ID for each Subject."
+msgid "Assign a unique ID for each Identification Number."
 msgstr ""
 
 msgid "Leave this column blank if you want DataWinners to assign an ID for you."

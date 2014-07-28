@@ -4162,8 +4162,8 @@ msgstr "Nous vous avons envoyé un email d’activation. Veuillez vérifier dans
 msgid "Contact <a href=\"mailto:support@datawinners.com\">support@datawinners.com</a> if you need help."
 msgstr "Veuillez contacter <a href=\"support@datawinners.com\">support@datawinners.com</a> si vous avez besoin d'aide."
 
-msgid "Assign a unique ID for each Subject."
-msgstr "Attribuez un code ID unique à chaque Sujet."
+msgid "Assign a unique ID for each Identification Number."
+msgstr "Attribuez un code ID unique à chaque Numéro d’Identification."
 
 msgid "Leave this column blank if you want DataWinners to assign an ID for you."
 msgstr "Laissez cette colonne vide si vous voulez que DataWinners attribue un code ID pour vous."
