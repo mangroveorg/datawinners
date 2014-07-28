@@ -31,7 +31,7 @@ from datawinners.utils import get_changed_questions, get_organization_from_manag
 from datawinners.common.constant import CREATED_QUESTIONNAIRE, EDITED_QUESTIONNAIRE, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
     SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from datawinners.project.helper import is_project_exist
+from datawinners.project.helper import is_project_exist, associate_account_users_to_project
 from datawinners.project.utils import is_quota_reached
 
 
@@ -99,12 +99,6 @@ def get_template_details(request, template_id):
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 
 
-def _associate_account_users_to_project(manager,questionnaire):
-    user_ids = get_all_user_repids_for_org(get_organization_from_manager(manager).org_id)
-    for id in user_ids:
-        questionnaire.associate_data_sender_to_project(manager, id)
-
-
 @login_required
 @session_not_expired
 @csrf_exempt
@@ -146,7 +140,7 @@ def create_project(request):
             name_has_errors = True
             error_message["name"] = _("Questionnaire with same name already exists.")
         if not code_has_errors and not name_has_errors:
-            _associate_account_users_to_project(manager, questionnaire)
+            associate_account_users_to_project(manager, questionnaire)
             questionnaire.update_doc_and_save()
             UserActivityLog().log(request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
                                   detail=questionnaire.name)

@@ -17,7 +17,7 @@ from mangrove.errors.MangroveException import QuestionAlreadyExistsException, Qu
     EntityQuestionAlreadyExistsException
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_database_manager
-from datawinners.project.helper import generate_questionnaire_code
+from datawinners.project.helper import generate_questionnaire_code, associate_account_users_to_project
 from mangrove.form_model.field import FieldSet, GeoCodeField, DateField
 
 # noinspection PyUnresolvedReferences
@@ -238,7 +238,7 @@ class MangroveService():
                                                  language=self.language,
                                                  reporter_id=self.reporter_id, question_set_json=self.json_xform_data,
                                                  xform=self.xform_with_form_code)
-            # questionnaire.xform = self.xform_with_form_code
+            associate_account_users_to_project(self.manager, questionnaire)
 
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:

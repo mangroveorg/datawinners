@@ -8,6 +8,8 @@ from django.http import Http404, HttpResponseRedirect
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
 from datawinners import settings
+from datawinners.accountmanagement.helper import get_all_user_repids_for_org
+from datawinners.utils import get_organization_from_manager
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
@@ -228,3 +230,9 @@ def get_feed_dictionary(project):
 
 def get_web_transport_info(username):
         return TransportInfo(transport="web", source=username, destination="")
+
+
+def associate_account_users_to_project(manager,questionnaire):
+    user_ids = get_all_user_repids_for_org(get_organization_from_manager(manager).org_id)
+    for id in user_ids:
+        questionnaire.associate_data_sender_to_project(manager, id)
