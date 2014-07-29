@@ -66,12 +66,11 @@ def get_errors(errors):
 
 
 def __authorized_to_make_submission_on_requested_form(request_user, submission_file):
-    # rows = get_all_project_for_user(request_user)
-    # questionnaire_ids = [(row['id']) for row in rows]
-    # dom = xml.dom.minidom.parseString(submission_file)
-    # requested_qid = dom.getElementsByTagName('data')[0].getAttribute('id')
-    # return requested_qid in questionnaire_ids
-    return True
+    rows = get_all_project_for_user(request_user)
+    form_code_list = [(row['value']['form_code']) for row in rows]
+    dom = xml.dom.minidom.parseString(submission_file)
+    requested_form_code = dom.getElementsByTagName('form_code')[0].firstChild.data
+    return requested_form_code in form_code_list
 
 
 @csrf_exempt
