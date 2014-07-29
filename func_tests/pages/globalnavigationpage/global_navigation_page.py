@@ -60,6 +60,7 @@ class GlobalNavigationPage(Page):
          """
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         self.driver.find(DASHBOARD_PAGE_LINK).click()
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Dashboard")
         return DashboardPage(self.driver)
 
     def navigate_to_all_data_page(self):
