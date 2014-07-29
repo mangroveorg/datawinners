@@ -1,10 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from _codecs import encode
 import json
 import datetime
 import logging
-from operator import itemgetter
-import datawinners
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -15,8 +12,10 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, ugettext
+
 from datawinners.alldata import views
 from datawinners.common.urlextension import append_query_strings_to_url
+from datawinners.search.submission_index import update_submission_search_for_subject_edition
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.datastore.queries import get_entity_count_for_type
@@ -30,10 +29,8 @@ from mangrove.utils.types import is_empty, is_string
 from mangrove.transport.contract.transport_info import Channel
 from mangrove.transport.player.new_players import WebPlayerV2
 from mangrove.transport.repository.survey_responses import survey_response_count
-
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, is_not_expired, is_new_user, project_has_web_device, valid_web_user
-from datawinners.blue.xform_bridge import XlsProjectParser
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -54,12 +51,11 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
-from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
+from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, viewable_questionnaire, initialize_values, get_example_sms_message, get_example_sms
 from datawinners.location.LocationTree import get_location_hierarchy
-from datawinners.project import models
 from datawinners.project import helper
 from datawinners.project.utils import make_project_links
 from datawinners.project.helper import is_project_exist, get_feed_dictionary
@@ -533,6 +529,8 @@ class SubjectWebQuestionnaireRequest():
             response = self.player_response(created_request)
             if response.success:
                 ReportRouter().route(organization.org_id, response)
+                #assumption q6 - unique_id code and q2 - lastname codes cannot be changed
+                update_submission_search_for_subject_edition(self.manager, self.form_model.entity_type, response.processed_data['q6'], response.processed_data['q2'])
                 success_message = _("Your changes have been saved.") if is_update else self.success_message(
                     response.short_code)
             if not is_update:

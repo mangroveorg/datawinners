@@ -82,13 +82,11 @@ class TestSubmissionIndex(unittest.TestCase):
 
 
     def test_should_update_entity_field_in_submission_index(self):
-        entity_doc = MagicMock(spec=Entity)
         dbm = MagicMock(spec=DatabaseManager)
-        data = {'name': {'value': 'bangalore'}}
         dbm.database_name = 'db_name'
-        entity_doc.entity_type = ['clinic']
-        entity_doc.short_code = 'cli001'
-        entity_doc.data = data
+        entity_type = ['clinic']
+        short_code = 'cli001'
+        last_name = 'bangalore'
         with patch.object(SubmissionQueryBuilder, 'query_all') as query_all:
             with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
                 load_all_rows_in_view.return_value = [{'doc': {'name': "project name", "form_code": "cli001",
@@ -104,7 +102,7 @@ class TestSubmissionIndex(unittest.TestCase):
 
                 with patch.object(SubmissionIndexUpdateHandler,
                                   'update_field_in_submission_index') as update_field_in_submission_index:
-                    update_submission_search_for_subject_edition(entity_doc, dbm)
+                    update_submission_search_for_subject_edition(dbm, entity_type, short_code, last_name)
 
                     query_all.assert_called_with('db_name', 'form_model_id',
                                                  **{'form_model_id_q1_unique_code': 'cli001'})

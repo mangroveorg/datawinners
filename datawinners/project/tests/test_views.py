@@ -194,56 +194,6 @@ class TestProjectViews(unittest.TestCase):
         self.assertDictEqual({'Name':'changed name'},changed_dict)
 
 class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
-    def test_form_should_not_have_initial_values_when_subject_creation_successful(self):
-        request = HttpRequest()
-        request.POST = {}
-        request.user = User(username="atest")
-        form = Mock(spec=SubjectRegistrationForm)
-        form.is_valid.return_value = True
-        with patch("datawinners.project.views.views.get_organization") as get_org:
-            with patch("datawinners.project.views.views.ReportRouter") as router:
-                with patch("datawinners.project.views.views.SubjectRegistrationForm") as subject_form:
-                    with patch("datawinners.project.views.views.get_form_context"):
-                        with patch("datawinners.project.views.views.RequestContext"):
-                            with patch("datawinners.project.views.views.render_to_response"):
-                                organization = Mock()
-                                organization.country_name.return_value = "country"
-                                get_org.return_value = organization
-                                subject_form.return_value = Mock()
-                                router.return_value = Mock()
-                                subject_web_request = self.StubSubjectWebQuestionnaireRequest(request, "project_id","entity_type",
-                                                                                              form)
-                                subject_web_request.post()
-
-                                self.assertTrue(subject_form.call_args_list == [call(None, data={}, country="country"),
-                                                                                call(None, data=None,
-                                                                                     country="country")]
-                                    , msg="this should be called twice with the arguments as listed above")
-
-    def test_form_should_have_initial_values_when_subject_edit_successful(self):
-        request = HttpRequest()
-        request.POST = {}
-        request.user = User(username="atest")
-        form = Mock(spec=SubjectRegistrationForm)
-        form.is_valid.return_value = True
-        with patch("datawinners.project.views.views.get_organization") as get_org:
-            with patch("datawinners.project.views.views.ReportRouter") as router:
-                with patch("datawinners.project.views.views.SubjectRegistrationForm") as subject_form:
-                    with patch("datawinners.project.views.views.get_form_context"):
-                        with patch("datawinners.project.views.views.RequestContext"):
-                            with patch("datawinners.project.views.views.render_to_response"):
-                                organization = Mock()
-                                organization.country_name.return_value = "country"
-                                get_org.return_value = organization
-                                subject_form.return_value = Mock()
-                                router.return_value = Mock()
-                                subject_web_request = self.StubSubjectWebQuestionnaireRequest(request, "project_id","entity_type",
-                                                                                              form)
-                                subject_web_request.post(is_update=True)
-
-                                self.assertTrue(subject_form.call_args_list == [call(None, data={}, country="country")]
-                                    , msg="this should be called only once with the arguments as listed above")
-
 
     def test_should_return_date_and_unique_id_fields_from_questionnaire(self):
         fields = [
@@ -279,8 +229,8 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
     class StubSubjectWebQuestionnaireRequest(SubjectWebQuestionnaireRequest):
         def __init__(self, request, project_id, entity_type,form_list):
             self.form_list = form_list
-            SubjectWebQuestionnaireRequest.__init__(self, request, project_id,entity_type)
-            self.form_model = None
+            SubjectWebQuestionnaireRequest.__init__(self, request, project_id, entity_type)
+            self.form_model = MagicMock()
 
 
         def _initialize(self, project_id, entity_type):

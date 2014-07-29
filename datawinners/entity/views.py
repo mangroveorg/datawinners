@@ -25,6 +25,7 @@ from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.utils import get_database_name
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import es_field_name, delete_mapping
+from datawinners.search.submission_index import update_submission_search_for_subject_edition
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.field import field_to_json, DateField
 from mangrove.transport import Channel
@@ -441,6 +442,8 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
                 create_request(questionnaire_form, request.user.username, is_update=True))
 
             if response.success:
+                #assumption q6 - unique_id code and q2 - lastname codes cannot be changed
+                update_submission_search_for_subject_edition(manager, [entity_type], entity_id, response.processed_data['q2'])
                 success_message = _("Your changes have been saved.")
                 questionnaire_form = SubjectRegistrationForm(form_model, data=request.POST,
                                                              country=get_organization_country(request))

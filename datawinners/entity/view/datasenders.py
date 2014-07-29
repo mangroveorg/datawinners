@@ -19,6 +19,7 @@ from datawinners.location.LocationTree import get_location_tree, get_location_hi
 from datawinners.main.database import get_database_manager
 from datawinners.project.models import Project
 from datawinners.project.view_models import ReporterEntity
+from datawinners.search.submission_index import update_submission_search_for_datasender_edition
 from datawinners.submission.location import LocationBridge
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
@@ -85,7 +86,8 @@ class EditDataSenderView(TemplateView):
                         update_data_sender_from_trial_organization(current_telephone_number,
                                                                    form.cleaned_data["telephone_number"], org_id)
                     if email and current_name != form.cleaned_data["name"]:
-                        update_user_name_if_exists(email,form.cleaned_data["name"])
+                        update_user_name_if_exists(email, form.cleaned_data["name"])
+                    update_submission_search_for_datasender_edition(manager, reporter_id, form.cleaned_data["name"])
                     message = _("Your changes have been saved.")
 
                     detail_dict = {"Unique ID": reporter_id}

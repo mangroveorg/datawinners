@@ -158,20 +158,14 @@ class FieldTypeChangeException(Exception):
 def get_submission_meta_fields():
     return submission_meta_fields
 
-
-def submission_update_on_entity_edition(entity_doc, dbm):
-    if entity_doc.entity_type != ['reporter']:
-        update_submission_search_for_subject_edition(entity_doc, dbm)
-    else:
-        update_submission_search_for_datasender_edition(entity_doc, dbm)
-
-
-def update_submission_search_for_datasender_edition(entity_doc, dbm):
+def update_submission_search_for_datasender_edition(dbm, short_code, ds_name):
     from datawinners.search.submission_query import SubmissionQueryBuilder
 
-    kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): entity_doc.short_code}
-    fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
-    project_form_model_ids = [project.id for project in get_all_projects(dbm,entity_doc.short_code)]
+    # kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): entity_doc.short_code}
+    kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): short_code}
+    # fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
+    fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: ds_name}
+    project_form_model_ids = [project.id for project in get_all_projects(dbm, short_code)]
 
     filtered_query = SubmissionQueryBuilder().query_all(dbm.database_name, *project_form_model_ids, **kwargs)
 
@@ -180,24 +174,24 @@ def update_submission_search_for_datasender_edition(entity_doc, dbm):
             survey_response._id, fields_mapping)
 
 
-def update_submission_search_for_subject_edition(entity_doc, dbm):
+def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code, last_name):
     from datawinners.search.submission_query import SubmissionQueryBuilder
 
-    entity_type = entity_doc.entity_type
     projects = []
-    for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True):
+    for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=unique_id_type[0], include_docs=True):
         projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc'])))
     for project in projects:
         entity_field_code = None
         for field in project.entity_questions:
-            if [field.unique_id_type] == entity_type:
+            if [field.unique_id_type] == unique_id_type:
                 entity_field_code = field.code
 
         if entity_field_code:
             unique_id_field_name = es_field_name(entity_field_code, project.id)
 
-            fields_mapping = {unique_id_field_name: entity_doc.data['name']['value']}
-            args = {es_unique_id_code_field_name(unique_id_field_name): entity_doc.short_code}
+            # fields_mapping = {unique_id_field_name: entity_doc.data['name']['value']}
+            fields_mapping = {unique_id_field_name: last_name}
+            args = {es_unique_id_code_field_name(unique_id_field_name): short_code}
 
             survey_response_filtered_query = SubmissionQueryBuilder(project).query_all(dbm.database_name, project.id,
                                                                                        **args)
