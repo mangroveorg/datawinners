@@ -110,7 +110,7 @@ class ReminderForm(Form):
     reminder_text_after_deadline = CharField(label=ugettext_lazy("Reminder text after deadline"), widget=forms.Textarea,
                                              required=False)
 
-    whom_to_send_message = BooleanField(label=ugettext_lazy("Only send reminders to senders who have not already submitted data for the current deadline."),
+    whom_to_send_message = BooleanField(label=ugettext_lazy("Only send Reminders to registered Data Senders who have not yet submitted data for the current deadline."),
                                        required=False, initial=True)
 
     def __init__(self, *args, **kwargs):
@@ -146,3 +146,14 @@ class ReminderForm(Form):
                 self.errors['reminder_text_after_deadline'] = self.error_class([msg])
 
         return self.cleaned_data
+
+    def disable_all_field(self):
+        self.fields['frequency_period'].widget.attrs['disabled'] = 'disabled'
+        self.fields['should_send_reminders_before_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['number_of_days_before_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['reminder_text_before_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['should_send_reminders_on_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['reminder_text_on_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['number_of_days_after_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['reminder_text_after_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['whom_to_send_message'].widget.attrs['disabled'] = 'disabled'

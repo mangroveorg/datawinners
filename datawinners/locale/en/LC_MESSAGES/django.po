@@ -241,7 +241,7 @@ msgstr ""
 msgid "The day of the deadline"
 msgstr ""
 
-msgid "Only send reminders to senders who have not already submitted data for the current deadline."
+msgid "Only send Reminders to registered Data Senders who have not yet submitted data for the current deadline."
 msgstr ""
 msgid "Successfully submitted"
 msgstr ""
@@ -2333,7 +2333,7 @@ msgstr ""
 msgid "Set Reminders"
 msgstr ""
 
-msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your questionnaire"
+msgid "By un-checking this box, automatic Reminders will be sent to all registered Data Senders linked to your Questionnaire."
 msgstr ""
 
 msgid "tooltip_devices"
@@ -2554,7 +2554,7 @@ msgstr ""
 msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
 msgstr ""
 
-msgid "Specify when you want to send automatic Reminders to your Data Senders"
+msgid "Specify when you want to send automatic Reminders to your registered Data Senders."
 msgstr ""
 
 msgid "Between %d -- %d characters"
@@ -4666,7 +4666,6 @@ msgstr ""
 msgid "Example: Registered field staff, community based workers, supervisors"
 msgstr ""
 
-
 msgid "In the Basic account only registered Data Senders can send you data. However, when you upgrade to a Pro SMS  account you have the option to let anyone send in data."
 msgstr ""
 
@@ -4677,4 +4676,7 @@ msgid "Only Registered People - Data Senders must be registered first before sub
 msgstr ""
 
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
+msgstr ""
+
+msgid "You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='{{ url_to_my_datasender }}'> My Data Senders </a>page."
 msgstr ""

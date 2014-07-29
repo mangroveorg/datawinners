@@ -33,6 +33,7 @@ from datawinners.common.constant import CREATED_QUESTIONNAIRE, EDITED_QUESTIONNA
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
+from mangrove.utils.types import is_empty
 
 
 def create_questionnaire(post, manager, name, language, reporter_id, is_open_datasender=False):
@@ -236,19 +237,28 @@ def reminder_settings(request, project_id):
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     from datawinners.project.views.views import make_project_links
+    from datawinners.project.utils import make_data_sender_links
+
 
     project_links = make_project_links(questionnaire)
     org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
     organization = Organization.objects.get(org_id=org_id)
+    is_reminder_enabled = is_empty(questionnaire.data_senders)
+    url_to_my_datasender = project_links['registered_datasenders_link']
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
     if request.method == 'GET':
         form = ReminderForm(data=(_reminder_info_about_project(questionnaire)))
+        if is_reminder_enabled:
+            form.disable_all_field()
+
         return render_to_response(html,
                                   {'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request, organization=organization),
                                    'project': questionnaire,
                                    'form': form,
-                                   'questionnaire_code': questionnaire.form_code
+                                   'questionnaire_code': questionnaire.form_code,
+                                   'is_reminder_enabled': is_reminder_enabled,
+                                   'url_to_my_datasender': url_to_my_datasender
                                   }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
