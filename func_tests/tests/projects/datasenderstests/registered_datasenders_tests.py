@@ -13,13 +13,6 @@ from framework.base_test import HeadlessRunnerTest
 
 
 class TestRegisteredDataSenders(HeadlessRunnerTest):
-    @classmethod
-    def setUpClass(cls):
-        cls.driver = setup_driver()
-
-    @classmethod
-    def tearDownClass(cls):
-        teardown_driver(cls.driver)
 
     def tearDown(self):
         self.global_navigation.sign_out()

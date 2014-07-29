@@ -20,7 +20,7 @@ class TestCreateBlankQuestionnaireProAccount(HeadlessRunnerTest):
         HeadlessRunnerTest.setUpClass()
         cls.global_navigation = login(cls.driver)
         dashboard_page = cls.global_navigation.navigate_to_dashboard_page()
-        self.driver.wait_for_page_with_title(10, "Dashboard")
+        cls.driver.wait_for_page_with_title(10, "Dashboard")
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
         cls.create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
         cls.dbm = get_db_manager('hni_testorg_slx364903')
