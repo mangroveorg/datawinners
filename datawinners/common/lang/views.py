@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.generic.base import TemplateView, View
 
 from datawinners.accountmanagement.decorators import session_not_expired, is_datasender, is_not_expired
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.common.lang.messages import save_questionnaire_custom_messages, save_account_wide_sms_messages
 from datawinners.common.lang.utils import questionnaire_customized_message_details, get_available_project_languages, create_new_questionnaire_reply_message_template, DuplicateLanguageException, account_wide_customized_message_details, \
     questionnaire_reply_default_messages, account_wide_sms_default_messages
@@ -155,8 +155,13 @@ class AccountMessagesView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)
+        messages = account_wide_customized_message_details(dbm)
+        organization = OrganizationSetting.objects.get(document_store=dbm.database.name).organization
+        #removing datasender not registered message for trail accounts since it cannot be customised
+        if organization.in_trial_mode:
+            messages.pop(0)
         return self.render_to_response(RequestContext(request, {
-            "account_messages": json.dumps(account_wide_customized_message_details(dbm))
+            "account_messages": json.dumps(messages)
         }))
 
     @method_decorator(login_required)
