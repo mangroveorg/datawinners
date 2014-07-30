@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
 from django.template.defaultfilters import slugify
@@ -66,7 +67,10 @@ class ProjectUpload(View):
                                                xls_form=file_content)
             id, name, error_message = mangrove_service.create_project()
         except Exception as e:
-            return HttpResponse(content_type='application/json', content=json.dumps({'error_msg': e.message}))
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': e.message if e.message else ugettext("Errors in excel")
+            }))
 
         if error_message:
             return HttpResponse(json.dumps(
@@ -75,6 +79,7 @@ class ProjectUpload(View):
         return HttpResponse(
             json.dumps(
                 {
+                    "success": True,
                     "project_name": name,
                     "project_id": id,
                     "xls_dict": XlsProjectParser().parse(file_content)
