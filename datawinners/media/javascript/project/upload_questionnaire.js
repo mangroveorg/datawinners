@@ -33,6 +33,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
         onSubmit: function () {
             cancelUploadLink.removeClass("none");
             spinner.removeClass("none");
+            flash_message.addClass("none");
             uploadButton.text(gettext("Uploading..."));
             uploadButton.attr("disabled","disabled");
             uploadButton.addClass("disabled_yellow_submit_button");
@@ -57,7 +58,6 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     });
 
     uploadButton.on("click", function() {
-
         if(!preUploadValidation()){
             return false;
         }
