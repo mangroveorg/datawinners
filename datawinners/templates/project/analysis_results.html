@@ -119,7 +119,9 @@
                 <label>{% trans "View:" %}</label>
                 <ul>
                     <li id="table_view_option" class="active list"><a>{% trans "List" %}</a></li>
-                    <li id="chart_view_option" class="chart"><a>{% trans "Chart" %}</a></li>
+                    {% if not project.xform %}
+                        <li id="chart_view_option" class="chart"><a>{% trans "Chart" %}</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
