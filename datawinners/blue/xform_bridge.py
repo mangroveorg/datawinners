@@ -108,6 +108,8 @@ class XlsFormParser():
             raise Exception("Uploaded file is empty!")
         survey = create_survey_element_from_dict(self.xform_dict)
         xform = survey.to_xml()
+        #encoding is added to support ie8
+        xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
         return updated_xform, questions
 
