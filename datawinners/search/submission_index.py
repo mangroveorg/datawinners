@@ -51,7 +51,7 @@ class SubmissionSearchStore():
 
         except (ElasticHttpError, FieldTypeChangeException) as e:
             if isinstance(e, FieldTypeChangeException) or e[1].startswith('MergeMappingException'):
-                self.recreate_elastic_store()
+                self.recreate_and_populate_elastic_store()
             else:
                 logger.error(e)
         except Exception as e:
@@ -111,6 +111,9 @@ class SubmissionSearchStore():
     def recreate_elastic_store(self):
         self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
         self.es.put_mapping(self.dbm.database_name, self.latest_form_model.id, self.get_mappings())
+
+    def recreate_and_populate_elastic_store(self):
+        self.recreate_elastic_store()
         from datawinners.search.submission_index_task import async_populate_submission_index
 
         async_populate_submission_index.delay(self.dbm.database_name, self.latest_form_model.form_code)

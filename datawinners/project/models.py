@@ -282,7 +282,7 @@ class Project(FormModel):
     def save(self, process_post_update=True):
         assert isinstance(self._dbm, DatabaseManager)
         self._check_if_project_name_unique()
-        return super(Project, self).save()
+        return super(Project, self).save(process_post_update)
 
     def update(self, value_dict):
         attribute_list = [item[0] for item in (self._doc.items())]

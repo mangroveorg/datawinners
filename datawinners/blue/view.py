@@ -15,6 +15,10 @@ from django.views.generic.base import View
 from django.template.defaultfilters import slugify
 import xlwt
 
+from datawinners.feeds.database import get_feeds_database
+from datawinners.search import update_datasender_for_project_change
+from datawinners.search.index_utils import get_elasticsearch_handle
+from datawinners.search.submission_index import SubmissionSearchStore
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException
 from datawinners import settings
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
@@ -28,12 +32,11 @@ from datawinners.project.models import Project
 from datawinners.project.utils import is_quota_reached
 from datawinners.project.views.utils import get_form_context
 from datawinners.project.views.views import SurveyWebQuestionnaireRequest
-from datawinners.project.wizard_view import update_associated_submissions, \
-    _get_deleted_question_codes
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.utils import workbook_add_sheet
 from mangrove.form_model.form_model import get_form_model_by_code
-from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses
+from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
+    survey_responses_by_form_code
 from mangrove.utils.dates import py_datetime_to_js_datestring
 
 
@@ -97,6 +100,23 @@ class ProjectUpdate(View):
     def dispatch(self, *args, **kwargs):
         return super(ProjectUpdate, self).dispatch(*args, **kwargs)
 
+    def _purge_feed_documents(self, questionnaire, request):
+        feed_dbm = get_feeds_database(request.user)
+        rows = feed_dbm.view.questionnaire_feed(startkey=[questionnaire.form_code],
+                                                endkey=[questionnaire.form_code, {}], include_docs=True)
+        for row in rows:
+            feed_dbm.database.delete(row['doc'])
+
+    def _purge_submissions(self, manager, questionnaire):
+        survey_responses = survey_responses_by_form_code(manager, questionnaire.form_code)
+        for survey_response in survey_responses:
+            survey_response.data_record.delete()
+            survey_response.delete()
+
+    def recreate_submissions_mapping(self, manager, questionnaire):
+        es = get_elasticsearch_handle()
+        SubmissionSearchStore(manager, es, questionnaire, None).recreate_elastic_store()
+
     def post(self, request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
@@ -108,32 +128,31 @@ class ProjectUpdate(View):
 
             xform_as_string, json_xform_data = XlsFormParser(tmp_file, questionnaire.name).parse()
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
-                                              questionnaire_code=questionnaire.form_code,
-                                              project_name=questionnaire.name)
-
-            old_form_code = questionnaire.form_code
-            old_field_codes = questionnaire.field_codes()
+                                               questionnaire_code=questionnaire.form_code,
+                                               project_name=questionnaire.name)
 
             QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(json_xform_data)
             questionnaire.xform = mangrove_service.xform_with_form_code
 
-            questionnaire.save()
             tmp_file.seek(0)
+            questionnaire.save(process_post_update=False)
             questionnaire.add_attachments(tmp_file, 'questionnaire.xls')
 
-            deleted_question_codes = _get_deleted_question_codes(old_codes=old_field_codes,
-                                                                 new_codes=questionnaire.field_codes())
-            update_associated_submissions.delay(manager.database_name, old_form_code,
-                                          questionnaire.form_code,
-                                          deleted_question_codes)
+            update_datasender_for_project_change(questionnaire._doc, manager)
+            self._purge_submissions(manager, questionnaire)
+            self._purge_feed_documents(questionnaire, request)
+            self.recreate_submissions_mapping(manager, questionnaire)
 
 
         except Exception as e:
-            return HttpResponse(content_type='application/json', content=json.dumps({'error_msg': e.message}))
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'error_msg': e.message, 'success': False
+            }))
 
         return HttpResponse(
             json.dumps(
                 {
+                    "success": True,
                     "project_name": questionnaire.name,
                     "project_id": questionnaire.id,
                     "xls_dict": XlsProjectParser().parse(file_content)
@@ -210,7 +229,8 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
             xform_transformer = XFormTransformer(self.questionnaire.xform)
             form_context.update({'xform_xml': re.sub(r"\n", " ", xform_transformer.transform())})
             form_context.update(
-                {'edit_model_str': self._model_str_of(survey_response_id, get_generated_xform_id_name(self.questionnaire.xform))})
+                {'edit_model_str': self._model_str_of(survey_response_id,
+                                                      get_generated_xform_id_name(self.questionnaire.xform))})
             form_context.update({'submission_update_url': reverse('update_web_submission',
                                                                   kwargs={'survey_response_id': survey_response_id})})
             form_context.update({'is_advance_questionnaire': True})
