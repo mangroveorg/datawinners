@@ -123,7 +123,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.set_question_title("some question")
         questionnaire_tab_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
         self.assertTrue(modified_warning_dialog.is_hidden())
-        self.global_navigation.navigate_to_dashboard_page()
+        self.global_navigation.navigate_to_all_data_page()
         self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
         modified_warning_dialog.cancel()
         self.assertEqual(questionnaire_tab_page.get_questionnaire_title(), self.project_name,
