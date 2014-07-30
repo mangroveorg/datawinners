@@ -22,6 +22,11 @@ def make_data_sender_links(project_id):
     return datasender_links
 
 
+def get_url_name_for_data_link(project):
+    #For Advanced questionnaires (created using excel) analysis page is not show for MVP1
+    return "submissions" if project.xform else "submission_analysis"
+
+
 def make_project_links(project, entity_type=None):
     project_id = project.id
     #Anywhere from project tabs , clicking on my identification number tab should always take
@@ -34,7 +39,7 @@ def make_project_links(project, entity_type=None):
                      'sms_questionnaire_preview_link': reverse("sms_questionnaire_preview", args=[project_id]),
                      'my_datasenders_ajax_link': reverse("my_datasenders_ajax", args=[urlquote(project.name)]),
                      'current_language': translation.get_language(),
-                     'data_analysis_link': reverse("submission_analysis", args=[project_id, project.form_code]),
+                     'data_analysis_link': reverse(get_url_name_for_data_link(project), args=[project_id, project.form_code]),
                      'submission_log_link': reverse("submissions", args=[project_id, project.form_code]),
                      'questionnaire_language_selection_link': reverse("project-language", args=[project_id]),
                      'reminders_link': reverse('reminder_settings', args=[project_id]),

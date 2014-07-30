@@ -157,6 +157,10 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
 
     if request.method == 'GET':
         questionnaire = Project.get(manager, project_id)
+
+        if questionnaire.xform:
+            return HttpResponseRedirect(settings.HOME_PAGE)
+
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
         if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
