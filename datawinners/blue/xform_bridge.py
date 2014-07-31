@@ -81,6 +81,7 @@ class XlsFormParser():
     def _validate_fields_are_recognised(self, fields):
         for field in fields:
             self._validate_for_single_language(field)
+            self._validate_same_language(field)
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
                     if field['type'] == 'repeat' :
@@ -98,8 +99,30 @@ class XlsFormParser():
                 self._validate_for_nested_repeats(f)
 
     def _validate_for_single_language(self, field):
-        if 'label' in field and isinstance(field['label'], dict) and len(field['label']) > 1:
-            raise MultipleLanguagesNotSupportedException()
+        single_language_headers = ['label','hint','constraint_message']
+        for header in single_language_headers:
+            if self._has_multiple_languages(field.get(header)):
+                raise MultipleLanguagesNotSupportedException()
+        field.get("choices") and self._validate_for_single_language(field.get("choices")[0])
+
+    def _validate_same_language(self,field):
+        parent_label = field.get('label')
+        same_language_headers = ['hint','constraint_message']
+        if parent_label and isinstance(parent_label, dict):
+            for header in same_language_headers:
+                if self._is_not_same_language_set(field,header,parent_label):
+                    raise LanguageNotSameException()
+            #validates languages across the survey and the choice sheet.
+            if field.get("choices") and self._is_not_same_language_set(field.get("choices")[0],"label"
+                ,parent_label):
+                raise LanguageNotSameException()
+
+    def _is_not_same_language_set(self,field,header,parent_label):
+        header_details = field.get(header)
+        return header_details and isinstance(header_details,dict) and header_details.keys() != parent_label.keys()
+
+    def _has_multiple_languages(self,header):
+        return header and isinstance(header, dict) and len(header) > 1
 
     def parse(self):
         self._validate_fields_are_recognised(self.xform_dict['children'])
@@ -336,6 +359,13 @@ class NestedRepeatsNotSupportedException(Exception):
 class MultipleLanguagesNotSupportedException(Exception):
     def __init__(self):
         self.message = _("multiple languages not supported")
+
+    def __str__(self):
+        return self.message
+
+class LanguageNotSameException(Exception):
+    def __init__(self):
+        self.message = _("languages should be same for label and hint across sheets")
 
     def __str__(self):
         return self.message
