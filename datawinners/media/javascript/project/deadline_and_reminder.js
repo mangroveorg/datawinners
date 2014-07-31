@@ -1,3 +1,9 @@
+$.valHooks.textarea = {
+  get: function(elem){
+      return elem.value.replace(/\r?\n/g, "\r\n");
+  }
+};
+
 //All the deadline related drop-downs. They are very very very annoying.
 DW.DeadlineDetails = function(){
     this.deadlineSectionSelectControls = '#frequency_values select';
@@ -136,7 +142,16 @@ sms_text_counter.prototype = {
             var cls = this;
             $(this.sms_textarea_id).keyup(function(){
                 cls.update_counter_value();
-            })
+            });
+
+            $(this.sms_textarea_id).keypress(function(e){
+                var code = (e.keyCode ? e.keyCode : e.which);
+                if(code == 13 && !cls.can_allow_enter_key()) { //Enter keycode
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
+            });
         };
         this.update_counter_value = function() {
             if (this.sms_max_length < this.get_sms_length()) {
@@ -145,6 +160,11 @@ sms_text_counter.prototype = {
 
             $(this.sms_counter_container_id).html($(this.sms_textarea_id).val().length);
         };
+
+        this.can_allow_enter_key = function(){
+          return this.sms_max_length >= this.get_sms_length() + 2;
+        };
+
         this.get_sms_text = function () {
             return $(this.sms_textarea_id).val();
         }

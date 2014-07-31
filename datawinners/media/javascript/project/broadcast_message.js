@@ -1,4 +1,10 @@
-DW.broadcast_sms = function () {
+$.valHooks.textarea = {
+  get: function(elem){
+      return elem.value.replace(/\r?\n/g, "\r\n");
+  }
+};
+
+DW.broadcast_sms = function() {
     this.clearElementId = '#clear_broadcast_sms_form';
     this.formElementId = "#broadcast_sms_form";
     this.idToElement = "#id_to";
@@ -6,7 +12,6 @@ DW.broadcast_sms = function () {
     this.smsContentElement = "#sms_content";
     this.maxSMSChar = 160;
     this.additional_column = new DW.additional_column();
-
 };
 
 DW.broadcast_sms.prototype = {
@@ -71,6 +76,11 @@ DW.broadcast_sms.prototype = {
     getSMSLength: function () {
         return $(this.smsContentElement).val().length;
     },
+
+    canAllowEnterKey: function(){
+      return this.getSMSLength() + 2 <= this.maxSMSChar;
+    },
+
     clearContent: function () {
         $(this.smsContentElement).val("");
         $(this.additional_column.telephoneNumbersElementId).val("");
@@ -82,7 +92,7 @@ DW.broadcast_sms.prototype = {
     getSMSContent: function () {
         return $(this.smsContentElement).val()
     },
-    limitCount: function () {
+    limitCount: function (e) {
         if (this.getSMSLength() > this.maxSMSChar) {
             $(this.smsContentElement).val(this.getSMSContent().substring(0, this.maxSMSChar));
         }
@@ -209,17 +219,27 @@ DW.getDigitsNumberLimit = function () {
     return 10;
 };
 
-$(document).ready(function () {
+$(document).ready(function() {
     DW.digits_number_limit = DW.getDigitsNumberLimit();
     DW.broadcast_sms_handler = new DW.broadcast_sms();
     DW.broadcast_sms_handler.init();
 
-    $(DW.broadcast_sms_handler.smsContentElement).keyup(function () {
-        DW.broadcast_sms_handler.limitCount();
+    $(DW.broadcast_sms_handler.smsContentElement).keyup(function (e) {
+        DW.broadcast_sms_handler.limitCount(e);
     });
 
-    $(DW.broadcast_sms_handler.smsContentElement).keydown(function () {
-        DW.broadcast_sms_handler.limitCount();
+    $(DW.broadcast_sms_handler.smsContentElement).keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        //enter key
+        if(code == 13 && !DW.broadcast_sms_handler.canAllowEnterKey()){
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    });
+
+    $(DW.broadcast_sms_handler.smsContentElement).keydown(function (e) {
+        DW.broadcast_sms_handler.limitCount(e);
     });
 
     $('#clear_broadcast_sms_form').click(function () {
@@ -238,7 +258,7 @@ $(document).ready(function () {
         continue_handler: function () {
             this.form.submit();
         }
-    }
+    };
     DW.broadcast_warning = new DW.warning_dialog(kwargs);
 
 });
