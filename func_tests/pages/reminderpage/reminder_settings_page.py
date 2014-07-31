@@ -170,3 +170,11 @@ class ReminderSettingsPage(Page):
     def click_sent_reminder_tab(self):
         self.driver.find(SENT_REMINDERS_LINK).click()
 
+    @property
+    def is_disabled(self):
+        elements = self.driver.find_elements_(by_css("input,select"))
+        for element in elements:
+
+            if element.is_displayed() and not element.is_enabled():
+                return True
+        return False
