@@ -114,8 +114,7 @@ class ProjectUpdate(View):
             survey_response.delete()
 
     def recreate_submissions_mapping(self, manager, questionnaire):
-        es = get_elasticsearch_handle()
-        SubmissionSearchStore(manager, es, questionnaire, None).recreate_elastic_store()
+        SubmissionSearchStore(manager, questionnaire, None).recreate_elastic_store()
 
     def post(self, request, project_id):
         manager = get_database_manager(request.user)

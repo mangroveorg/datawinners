@@ -28,14 +28,13 @@ def get_code_from_es_field_name(es_field_name, form_model_id):
 
 
 def create_submission_mapping(dbm, latest_form_model, old_form_model):
-    es = get_elasticsearch_handle()
-    SubmissionSearchStore(dbm, es, latest_form_model, old_form_model).update_store()
+    SubmissionSearchStore(dbm, latest_form_model, old_form_model).update_store()
 
 
 class SubmissionSearchStore():
-    def __init__(self, dbm, es, latest_form_model, old_form_model):
+    def __init__(self, dbm, latest_form_model, old_form_model):
         self.dbm = dbm
-        self.es = es
+        self.es = get_elasticsearch_handle()
         self.latest_form_model = latest_form_model
         self.old_form_model = old_form_model
 
@@ -164,9 +163,7 @@ def get_submission_meta_fields():
 def update_submission_search_for_datasender_edition(dbm, short_code, ds_name):
     from datawinners.search.submission_query import SubmissionQueryBuilder
 
-    # kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): entity_doc.short_code}
     kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): short_code}
-    # fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: ds_name}
     project_form_model_ids = [project.id for project in get_all_projects(dbm, short_code)]
 
@@ -192,7 +189,6 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
         if entity_field_code:
             unique_id_field_name = es_field_name(entity_field_code, project.id)
 
-            # fields_mapping = {unique_id_field_name: entity_doc.data['name']['value']}
             fields_mapping = {unique_id_field_name: last_name}
             args = {es_unique_id_code_field_name(unique_id_field_name): short_code}
 
@@ -207,7 +203,6 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
 def update_submission_search_index(submission_doc, dbm, refresh_index=True):
     es = get_elasticsearch_handle()
     form_model = get_form_model_by_code(dbm, submission_doc.form_code)
-    #submission_doc = SurveyResponseDocument.load(dbm.database, feed_submission_doc.id)
     search_dict = _meta_fields(submission_doc, dbm)
     _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
     es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
