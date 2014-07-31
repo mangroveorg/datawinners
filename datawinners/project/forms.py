@@ -36,8 +36,8 @@ class BroadcastMessageForm(forms.Form):
 
     def __init__(self, associated_ds=0, number_of_ds=0, *args, **kwargs):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)
-        self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My Data Senders linked to this questionnaire"), str(associated_ds))),
-                                                        ("All", u"%s %s" % (ugettext_lazy("All Data Senders of all questionnaires"), str(number_of_ds))),
+        self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My registered Data Senders linked to this questionnaire"), str(associated_ds))),
+                                                        ("All", u"%s %s" % (ugettext_lazy("All registered Data Senders of all questionnaires"), str(number_of_ds))),
                                                         ("Additional", ugettext_lazy("Other People")))
         self.fields["to"].widget.attrs["class"] = "none"
         self.fields['text'].widget.attrs['watermark'] = ugettext_lazy('Enter your SMS text')

@@ -4228,10 +4228,10 @@ msgstr "Choisissez un Expéditeur de données dans la liste."
 msgid "disabled"
 msgstr "desactivés"
 
-msgid "My Data Senders linked to this questionnaire"
-msgstr "Mes Expéditeurs de données liés à ce questionnaire"
+msgid "My registered Data Senders linked to this questionnaire"
+msgstr "Mes Expéditeurs de données enregistrés liés à ce questionnaire"
 
-msgid "All Data Senders of all questionnaires"
+msgid "All registered Data Senders of all questionnaires"
 msgstr "Tous les Expéditeurs de données de tous les questionnaires"
 
 msgid "Do you want to send this message to <span id=\"number_of_peoples\"></span> recipient(s)?"
