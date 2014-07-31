@@ -68,6 +68,6 @@
         </fieldset>
     </div>
     <div class="right_aligned_button margin_right_4">
-        <input id="submit-button" class="button" type="submit" value="{% trans 'Save' %}"/>
+        <input id="submit-button" class="{% if is_reminder_enabled %}disabled_button{% else %}button{% endif %}" type="submit" value="{% trans 'Save' %}" {% if is_reminder_enabled %}disabled="disabled" {% endif %}/>
     </div>
 </form>
