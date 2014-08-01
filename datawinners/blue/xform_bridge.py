@@ -72,7 +72,8 @@ class XlsFormParser():
     def _create_questions(self, fields):
         questions = []
         for field in fields:
-            if field.get('control'):
+
+            if field.get('control', None) and field['control'].get('bodyless', False): #ignore calculate type
                 continue
             if field['type'] in self.supported_types:
                 questions.append(self._create_question(field))
