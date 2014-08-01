@@ -91,6 +91,8 @@ class XlsFormParser():
                     self._validate_fields_are_recognised(field['children'])
             else:
                 raise TypeNotSupportedException("question type '" + field['type'] + "' is not supported")
+            if field.get('media'):
+                raise TypeNotSupportedException("attaching media to fields is not supported")
 
     def _validate_for_nested_repeats(self, field):
         for f in field["children"]:
@@ -125,8 +127,24 @@ class XlsFormParser():
     def _has_multiple_languages(self,header):
         return header and isinstance(header, dict) and len(header) > 1
 
+    @staticmethod
+    def _media_in_choices(choices):
+        for choice in choices:
+            if choice.get('media'):
+                return True
+        return False
+
+    def _validate_media_in_choices(self, fields):
+        for field in fields:
+            if field['type'] in self.type_dict['group']:
+                self._validate_media_in_choices(field['children'])
+            choices = field.get('choices')
+            if choices and self._media_in_choices(choices):
+                raise TypeNotSupportedException("media is not supported in choices")
+
     def parse(self):
         self._validate_fields_are_recognised(self.xform_dict['children'])
+        self._validate_media_in_choices(self.xform_dict['children'])
         questions = self._create_questions(self.xform_dict['children'])
         if not questions:
             raise Exception("Uploaded file is empty!")
