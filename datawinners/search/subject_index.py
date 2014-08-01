@@ -1,5 +1,7 @@
 from datawinners.search.datasender_index import update_datasender_index
-from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, get_fields_mapping_by_field_def, es_field_name, subject_dict
+from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, get_fields_mapping_by_field_def, \
+    subject_dict, \
+    es_questionnaire_field_name
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
@@ -9,7 +11,7 @@ def create_subject_mapping(dbm, form_model):
     fields_definition = []
     for field in form_model.fields:
         fields_definition.append(
-            get_field_definition(field, field_name=es_field_name(field.code, form_model.id)))
+            get_field_definition(field, field_name=es_questionnaire_field_name(field.code, form_model.id)))
     mapping = get_fields_mapping_by_field_def(doc_type=form_model.id, fields_definition=fields_definition)
     es.put_mapping(dbm.database_name, form_model.entity_type[0], mapping)
 

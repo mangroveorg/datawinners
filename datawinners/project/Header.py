@@ -1,6 +1,8 @@
 from collections import OrderedDict
+
 from django.utils.translation import ugettext
-from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
+
+from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.form_model.field import DateField, GeoCodeField, FieldSet
@@ -61,7 +63,7 @@ class SubmissionsPageHeader():
         header = HeaderFactory(self._form_model).create_header(self.submission_type)
         header_dict = header.get_header_field_dict()
         header_dict.pop('ds_id', None)
-        unique_question_field_names = [es_unique_id_code_field_name(es_field_name(field.code, self._form_model.id)) for
+        unique_question_field_names = [es_unique_id_code_field_name(es_questionnaire_field_name(field.code, self._form_model.id)) for
                                        field in
                                        self._form_model.entity_questions]
         for field_name in unique_question_field_names:
@@ -85,7 +87,7 @@ class SubmissionExcelHeader():
             if isinstance(field, FieldSet) and field.is_group():
                 self._update_with_field_meta(field.fields, result)
             else:
-                field_name = es_field_name(field.code.lower(), self._form_model.id)
+                field_name = es_questionnaire_field_name(field.code.lower(), self._form_model.id)
 
                 if result.has_key(field_name):
                     result.get(field_name).update({"type": field.type})

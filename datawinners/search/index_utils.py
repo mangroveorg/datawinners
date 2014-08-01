@@ -76,7 +76,7 @@ def subject_dict(entity_type, entity_doc, dbm, form_model):
     data = tabulate_data(entity, form_model, codes)
     dictionary = OrderedDict()
     for index in range(0, len(field_names)):
-        dictionary.update({es_field_name(codes[index],form_model.id): data['cols'][index]})
+        dictionary.update({es_questionnaire_field_name(codes[index],form_model.id): data['cols'][index]})
     dictionary.update({"entity_type": entity_type})
     dictionary.update({"void": entity.is_void()})
     return dictionary
@@ -86,13 +86,29 @@ def get_elasticsearch_handle(timeout=ELASTIC_SEARCH_TIMEOUT):
     return elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=timeout)
 
 
-def es_field_name(field_code, form_model_id):
+# def es_field_name(field_code, form_model_id):
+#     """
+#         prefixes form_model id to namespace all additional fields on questionnaire (ds_name, ds_id, status and date are not prefixed)
+#     :param field_code:
+#     """
+#     if is_submission_meta_field(field_code):
+#         return es_submission_meta_field_name(field_code)
+#     else:
+#         return es_questionnaire_field_name(field_code, form_model_id)
+
+def es_submission_meta_field_name(field_code):
     """
-        prefixes form_model id to namespace all additional fields on questionnaire (ds_name, ds_id, status and date are not prefixed)
+        returns the field name for meta fields in the submission document
     :param field_code:
     """
-    return field_code if is_submission_meta_field(field_code) else "%s_%s" % (form_model_id, lower(field_code))
+    return field_code
 
+
+def es_questionnaire_field_name(field_code, form_model_id):
+    """
+        prefixes form_model id to namespace all fields on questionnaire
+    """
+    return "%s_%s" % (form_model_id, lower(field_code))
 
 def es_unique_id_code_field_name(es_field_name):
     return es_field_name+'_unique_code'

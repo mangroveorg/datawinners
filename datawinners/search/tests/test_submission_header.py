@@ -1,6 +1,7 @@
 import unittest
+
 from mock import MagicMock, Mock
-from datawinners.search.index_utils import es_field_name
+
 from datawinners.search.submission_headers import SubmissionAnalysisHeader, AllSubmissionHeader, SuccessSubmissionHeader, ErroredSubmissionHeader, HeaderFactory
 from mangrove.form_model.field import TextField, IntegerField, UniqueIdField
 from mangrove.form_model.form_model import FormModel
@@ -43,8 +44,7 @@ class TestSubmissionHeader(unittest.TestCase):
 
         headers = AllSubmissionHeader(self.form_model).get_header_field_names()
 
-        expected = [es_field_name(f, self.form_model.id) for f in
-                    ["ds_id", "ds_name", "date", "status", "q1", "q2", "q3", "q3_unique_code", "q4", "q4_unique_code"]]
+        expected = ["ds_id", "ds_name", "date", "status", "form_model_id_q1", "form_model_id_q2", "form_model_id_q3", "form_model_id_q3_unique_code", "form_model_id_q4", "form_model_id_q4_unique_code"]
         self.assertListEqual(expected, headers)
 
 
@@ -54,8 +54,7 @@ class TestSubmissionHeader(unittest.TestCase):
 
         headers = SuccessSubmissionHeader(self.form_model).get_header_field_names()
 
-        expected = [es_field_name(f, self.form_model.id) for f in
-                    ["ds_id", "ds_name", "date", "q1", "q2", "q3", "q3_unique_code", "q4", "q4_unique_code"]]
+        expected = ["ds_id", "ds_name", "date", "form_model_id_q1", "form_model_id_q2", "form_model_id_q3", "form_model_id_q3_unique_code", "form_model_id_q4", "form_model_id_q4_unique_code"]
         self.assertListEqual(expected, headers)
 
     def test_submission_status_headers_for_errored_submissions(self):
@@ -64,8 +63,7 @@ class TestSubmissionHeader(unittest.TestCase):
 
         headers = ErroredSubmissionHeader(self.form_model).get_header_field_names()
 
-        expected = [es_field_name(f, self.form_model.id) for f in
-                    ["ds_id", "ds_name", "date","error_msg", "q1", "q2", "q3", "q3_unique_code", "q4", "q4_unique_code"]]
+        expected = ["ds_id", "ds_name", "date","error_msg", "form_model_id_q1", "form_model_id_q2", "form_model_id_q3", "form_model_id_q3_unique_code", "form_model_id_q4", "form_model_id_q4_unique_code"]
         self.assertListEqual(expected, headers)
 
 

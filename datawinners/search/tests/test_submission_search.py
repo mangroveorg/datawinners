@@ -1,16 +1,12 @@
-from collections import OrderedDict
-import json
 import unittest
-from elasticutils import S, DictSearchResults
 
-from mock import Mock, patch, PropertyMock, MagicMock
-from datawinners.search.index_utils import es_field_name
+from elasticutils import DictSearchResults
+from mock import Mock, MagicMock
 
-from datawinners.search.submission_query import SubmissionQuery, SubmissionQueryResponseCreator, \
+from datawinners.search.submission_query import SubmissionQueryResponseCreator, \
     _format_fieldset_values_for_representation
-from mangrove.form_model.field import Field, UniqueIdField, TextField, IntegerField, SelectField, FieldSet
+from mangrove.form_model.field import UniqueIdField, TextField, IntegerField, SelectField, FieldSet
 from mangrove.form_model.form_model import FormModel
-from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
 class TestSubmissionResponseCreator(unittest.TestCase):

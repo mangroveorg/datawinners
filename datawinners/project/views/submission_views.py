@@ -27,7 +27,7 @@ from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.exporter import SubmissionExporter
-from datawinners.search.index_utils import es_field_name
+from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQuery
@@ -471,7 +471,7 @@ def get_submissions(request, form_code):
 def get_facet_response_for_choice_fields(query_with_criteria, choice_fields, form_model_id):
     facet_results = []
     for field in choice_fields:
-        field_name = es_field_name(field.code, form_model_id) + "_exact"
+        field_name = es_questionnaire_field_name(field.code, form_model_id) + "_exact"
         facet_response = query_with_criteria.facet(field_name, filtered=True).facet_counts()
         facet_result_options = []
         facet_result = {

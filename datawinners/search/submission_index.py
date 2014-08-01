@@ -5,6 +5,7 @@ from string import lower
 
 from babel.dates import format_datetime
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
+
 from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, convert_choice_options_to_options_text
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
@@ -13,7 +14,8 @@ from datawinners.project.models import get_all_projects, Project
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
-from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, es_field_name, _add_date_field_mapping, es_unique_id_code_field_name
+from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, es_unique_id_code_field_name, \
+    es_questionnaire_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
 from mangrove.form_model.form_model import get_form_model_by_code
 
@@ -97,7 +99,7 @@ class SubmissionSearchStore():
     def _get_submission_fields(self, fields_definition, fields):
         for field in fields:
             if isinstance(field, UniqueIdField):
-                unique_id_field_name = es_field_name(field.code, self.latest_form_model.id)
+                unique_id_field_name = es_questionnaire_field_name(field.code, self.latest_form_model.id)
                 fields_definition.append(
                     get_field_definition(field, field_name=es_unique_id_code_field_name(unique_id_field_name)))
 
@@ -105,7 +107,7 @@ class SubmissionSearchStore():
                 self._get_submission_fields(fields_definition, field.fields)
                 continue
             fields_definition.append(
-                get_field_definition(field, field_name=es_field_name(field.code, self.latest_form_model.id)))
+                get_field_definition(field, field_name=es_questionnaire_field_name(field.code, self.latest_form_model.id)))
 
     def recreate_elastic_store(self):
         self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
@@ -187,7 +189,7 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
                 entity_field_code = field.code
 
         if entity_field_code:
-            unique_id_field_name = es_field_name(entity_field_code, project.id)
+            unique_id_field_name = es_questionnaire_field_name(entity_field_code, project.id)
 
             fields_mapping = {unique_id_field_name: last_name}
             args = {es_unique_id_code_field_name(unique_id_field_name): short_code}
@@ -276,7 +278,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                 entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
                 entry_code = entry
                 search_dict.update(
-                    {es_unique_id_code_field_name(es_field_name(lower(field.code), form_model.id)): entry_code or UNKNOWN})
+                    {es_unique_id_code_field_name(es_questionnaire_field_name(lower(field.code), form_model.id)): entry_code or UNKNOWN})
                 entry = entity_name
         elif field.type == "select":
             field = _update_select_field_by_revision(field, form_model, submission_doc)
@@ -315,9 +317,9 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                     for value in submission_values[field_code]:
                         _update_search_dict(dbm,form_model, field.fields, search_dict, submission_doc, value)
                         continue
-                search_dict.update({es_field_name(lower(field_code), form_model.id): json.dumps(entry)})
+                search_dict.update({es_questionnaire_field_name(lower(field_code), form_model.id): json.dumps(entry)})
             else:
-                search_dict.update({es_field_name(lower(field.code), form_model.id): entry})
+                search_dict.update({es_questionnaire_field_name(lower(field.code), form_model.id): entry})
 
     search_dict.update({'void': submission_doc.void})
 

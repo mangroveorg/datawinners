@@ -1,9 +1,10 @@
 import json
-from operator import indexOf, index
+
 from django.utils.translation import ugettext, get_language
 import elasticutils
+
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
-from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
+from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.settings import ELASTIC_SEARCH_URL
@@ -41,7 +42,8 @@ class SubmissionQueryBuilder(QueryBuilder):
         if date_filters:
             for question_code, date_range in date_filters.items():
                 if date_range:
-                    query = DateQuestionRangeFilter(date_range, self.form_model, question_code).build_filter_query(query)
+                    query = DateQuestionRangeFilter(date_range, self.form_model, question_code).build_filter_query(
+                        query)
         return query
 
     def add_query_criteria(self, query_fields, query, query_text, query_params=None):
@@ -68,11 +70,14 @@ class SubmissionQueryBuilder(QueryBuilder):
             for uniqueIdType, uniqueIdFilter in uniqueIdFilters.iteritems():
                 if uniqueIdFilter:
                     search_options = elasticutils.F()
-                    for question in [question for question in self.form_model.entity_questions if question.unique_id_type == uniqueIdType]:
-                        es_field_code = es_unique_id_code_field_name(es_field_name(question.code, self.form_model.id))
-                        search_options |= elasticutils.F(**{es_field_code : uniqueIdFilter})
+                    for question in [question for question in self.form_model.entity_questions if
+                                     question.unique_id_type == uniqueIdType]:
+                        es_field_code = es_unique_id_code_field_name(
+                            es_questionnaire_field_name(question.code, self.form_model.id))
+                        search_options |= elasticutils.F(**{es_field_code: uniqueIdFilter})
                     query = query.filter(search_options)
         return query
+
 
 class SubmissionQueryResponseCreator():
     def __init__(self, form_model):
@@ -83,16 +88,16 @@ class SubmissionQueryResponseCreator():
             ["%s<span class='small_grey'>  %s</span>" % (
                 entity_name, short_code)]) if entity_name else submission.append(entity_name)
 
-    def get_field_set_fields(self,fields):
+    def get_field_set_fields(self, fields):
         field_set_field_dict = {}
         for field in fields:
-            if(isinstance(field,FieldSet)):
-              field_set_field_dict.update({es_field_name(field.code,self.form_model.id):field})
-              field_set_field_dict.update(self.get_field_set_fields(field.fields))
+            if isinstance(field, FieldSet):
+                field_set_field_dict.update({es_questionnaire_field_name(field.code, self.form_model.id): field})
+                field_set_field_dict.update(self.get_field_set_fields(field.fields))
         return field_set_field_dict
 
     def create_response(self, required_field_names, query):
-        entity_question_codes = [es_field_name(field.code, self.form_model.id) for field in
+        entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id) for field in
                                  self.form_model.entity_questions]
         fieldset_fields = self.get_field_set_fields(self.form_model.fields)
         meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
@@ -119,7 +124,8 @@ class SubmissionQueryResponseCreator():
                             error_msg = error_msg.split('| |,')[['en', 'fr'].index(language)]
                         submission.append(error_msg)
                     elif key in fieldset_fields.keys():
-                        submission.append(_format_fieldset_values_for_representation(res.get(key),fieldset_fields.get(key)))
+                        submission.append(
+                            _format_fieldset_values_for_representation(res.get(key), fieldset_fields.get(key)))
                     else:
                         submission.append(self.append_if_attachments_are_present(res, key))
             submissions.append(submission)
@@ -131,12 +137,13 @@ class SubmissionQueryResponseCreator():
         else:
             return key
 
-    def append_if_attachments_are_present(self,res,  key):
+    def append_if_attachments_are_present(self, res, key):
         if type(get_field_by_attribute_value(self.form_model, 'code', self._get_key(key))) is ImageField:
             value = res.get(key)
             if value:
-                return  "<span style=\"display:inline-block;width:70px; height: 70px;border:1px solid #CCC; margin-right:5px;display: table-cell;vertical-align: middle;\"><img style=\"width:70px;\" src='/attachment/%s/%s'/></span>" \
-                        "<span style=\"display: table-cell;vertical-align: middle;padding: 5px;\"><a href='/download/attachment/%s/%s'>%s</a></span>" % (res._id, value, res._id, value, value)
+                return "<span style=\"display:inline-block;width:70px; height: 70px;border:1px solid #CCC; margin-right:5px;display: table-cell;vertical-align: middle;\"><img style=\"width:70px;\" src='/attachment/%s/%s'/></span>" \
+                       "<span style=\"display: table-cell;vertical-align: middle;padding: 5px;\"><a href='/download/attachment/%s/%s'>%s</a></span>" % (
+                           res._id, value, res._id, value, value)
         else:
             return res.get(ugettext(key))
 
@@ -175,12 +182,12 @@ def _format_fieldset_values_for_representation(entry, field_set):
                 choices = value_dict.get(field.code)
                 if choices:
                     choice_texts = [field.get_value_by_option(option) for option in choices.split(' ')]
-                    value = '('+', '.join(choice_texts)+')' if len(choice_texts) >1 else ', '.join(choice_texts)
+                    value = '(' + ', '.join(choice_texts) + ')' if len(choice_texts) > 1 else ', '.join(choice_texts)
                 else:
                     value = ''
             else:
                 value = value_dict.get(field.code) or ''
-            formatted_value += '"' + '<span class="repeat_qtn_label">'+field.label +'</span>'+ ': ' + value + '"'
-            formatted_value += ';' if i == len(field_set.fields)-1 else ', '
+            formatted_value += '"' + '<span class="repeat_qtn_label">' + field.label + '</span>' + ': ' + value + '"'
+            formatted_value += ';' if i == len(field_set.fields) - 1 else ', '
         formatted_value += '<br><br>'
-    return '<span class="repeat_ans">'+formatted_value+'</span>'
+    return '<span class="repeat_ans">' + formatted_value + '</span>'

@@ -21,10 +21,10 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
     valid_web_user
 from datawinners.entity.entity_export_helper import get_subject_headers
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
-from datawinners.main.database import get_database_manager, get_db_manager
+from datawinners.main.database import get_database_manager
 from datawinners.main.utils import get_database_name
 from datawinners.search.entity_search import SubjectQuery
-from datawinners.search.index_utils import es_field_name, delete_mapping
+from datawinners.search.index_utils import delete_mapping, es_questionnaire_field_name
 from datawinners.search.submission_index import update_submission_search_for_subject_edition
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.field import field_to_json, DateField
@@ -62,7 +62,6 @@ from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, DELETE
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from datetime import datetime
 
 
 websubmission_logger = logging.getLogger("websubmission")
@@ -640,9 +639,9 @@ def subject_autocomplete(request, entity_type):
     dbm = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(dbm, [entity_type.lower()])
     subject_name_field = get_field_by_attribute_value(form_model, 'name', 'name')
-    es_field_name_for_subject_name = es_field_name(subject_name_field.code, form_model.id)
+    es_field_name_for_subject_name = es_questionnaire_field_name(subject_name_field.code, form_model.id)
     subject_short_code_field = get_field_by_attribute_value(form_model, 'name', 'short_code')
-    es_field_name_for_short_code = es_field_name(subject_short_code_field.code, form_model.id)
+    es_field_name_for_short_code = es_questionnaire_field_name(subject_short_code_field.code, form_model.id)
     query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(lower(entity_type)) \
         .query(or_={es_field_name_for_subject_name + '__match': search_text,
                     es_field_name_for_subject_name + '_value': search_text,

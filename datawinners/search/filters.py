@@ -1,8 +1,11 @@
-from babel.dates import format_datetime
 import datetime
-from datawinners.search.index_utils import es_field_name
+
+from babel.dates import format_datetime
+
+from datawinners.search.index_utils import es_questionnaire_field_name, es_submission_meta_field_name
 from datawinners.search.submission_index_meta_fields import ES_SUBMISSION_FIELD_DATE
 from mangrove.form_model.field import DateField
+
 
 DATE_PICKER_WIDGET_DATE_FORMAT = '%d.%m.%Y'
 
@@ -51,7 +54,7 @@ class DateRangeFilter():
 
 class SubmissionDateRangeFilter(DateRangeFilter):
     def get_date_field_name(self):
-        return es_field_name(ES_SUBMISSION_FIELD_DATE, None)
+        return es_submission_meta_field_name(ES_SUBMISSION_FIELD_DATE)
 
     def get_persisted_date_format(self):
         return DateField.FORMAT_DATE_DICTIONARY.get('submission_date_format')
@@ -71,7 +74,7 @@ class DateQuestionRangeFilter(DateRangeFilter):
         return None
 
     def get_date_field_name(self):
-        return es_field_name(self.date_field.code, self.form_model.id)
+        return es_questionnaire_field_name(self.date_field.code, self.form_model.id)
 
     def get_python_date_format(self, date):
         if self.date_field:

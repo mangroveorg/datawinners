@@ -1,7 +1,9 @@
 from abc import abstractmethod
 from collections import OrderedDict
+
 from django.utils.translation import ugettext
-from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
+
+from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.utils import translate
 from mangrove.form_model.form_model import header_fields
@@ -23,7 +25,7 @@ class SubmissionHeader():
         entity_question_dict = dict((field.code, field) for field in entity_questions)
         headers = header_fields(self.form_model, key_attribute)
         for field_code, val in headers.items():
-            key = es_field_name(field_code, self.form_model.id)
+            key = es_questionnaire_field_name(field_code, self.form_model.id)
             if field_code in entity_question_dict.keys():
                 self.add_unique_id_field(entity_question_dict.get(field_code), header_dict)
             else:
@@ -34,7 +36,7 @@ class SubmissionHeader():
     def add_unique_id_field(self, unique_id_field, header_dict):
         unique_id_question_code = unique_id_field.code
         subject_title = unique_id_field.unique_id_type
-        unique_id_field_name = es_field_name(unique_id_question_code, self.form_model.id)
+        unique_id_field_name = es_questionnaire_field_name(unique_id_question_code, self.form_model.id)
         header_dict.update({unique_id_field_name: unique_id_field.label})
         header_dict.update({es_unique_id_code_field_name(unique_id_field_name): "%s ID" % subject_title})
 

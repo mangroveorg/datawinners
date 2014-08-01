@@ -233,7 +233,7 @@ def add_imported_data_sender_to_trial_organization(org_id, imported_datasenders,
 
 
 def get_entity_type_fields(manager, form_code='reg'):
-    form_model=get_form_model_by_code(manager,form_code)
+    form_model=get_form_model_by_code(manager, form_code)
     json_fields = form_model._doc["json_fields"]
     return get_json_field_infos(json_fields)
 
