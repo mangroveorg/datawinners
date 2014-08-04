@@ -2,7 +2,8 @@ import os
 import unittest
 from mock import patch
 from datawinners.blue.xform_bridge import XlsFormParser, UppercaseNamesNotSupportedException, \
-    NestedRepeatsNotSupportedException, MultipleLanguagesNotSupportedException, get_generated_xform_id_name, LanguageNotSameException
+    NestedRepeatsNotSupportedException, MultipleLanguagesNotSupportedException, get_generated_xform_id_name, LanguageNotSameException, \
+    LabelForChoiceNotPresentException
 
 DIR = os.path.dirname(__file__)
 
@@ -133,6 +134,19 @@ class TestXformBridge(unittest.TestCase):
             get_xform_dict.return_value = fields
             self.assertRaises(LanguageNotSameException, xls_form_parser._validate_fields_are_recognised,
                               fields['children'])
+
+    def test_should_raise_exception_when_choice_has_no_label(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+            fields = {'children': [{u'bind': {u'required': u'yes'}, u'type': u'select one', u'name': u'is_student',
+                                    u'label': {u'french': u'1. Are you a student?'},u'choices':[{u'name': u'yes'}, {u'name': u'no', u'label': {u'hindi': u'No'}}]},
+                                   {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                       {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                        'type': 'calculate', 'name': 'instanceID'}]}]}
+            get_xform_dict.return_value = fields
+            self.assertRaises(LabelForChoiceNotPresentException, xls_form_parser._create_questions,
+                              fields['children'])
+
 
     def test_should_not_raise_exception_when_the_label_of_survey_and_choice_sheets_match(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:

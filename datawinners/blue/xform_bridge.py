@@ -85,7 +85,7 @@ class XlsFormParser():
             self._validate_same_language(field)
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
-                    if field['type'] == 'repeat' :
+                    if field['type'] == 'repeat':
                         self._validate_for_nested_repeats(field)
                     self._validate_for_uppercase_names(field)
                     self._validate_fields_are_recognised(field['children'])
@@ -98,7 +98,7 @@ class XlsFormParser():
         for f in field["children"]:
             if f["type"] == "repeat":
                 raise NestedRepeatsNotSupportedException()
-            if f["type"]=="group":
+            if f["type"] == "group":
                 self._validate_for_nested_repeats(f)
 
     def _validate_for_single_language(self, field):
@@ -213,15 +213,22 @@ class XlsFormParser():
         name = self._get_label(field)
         code = field['name']
         if field.get('choices'):
-            choices = [{'value': {'text': f.get('label') or f['name'], 'val': f['name']}} for f in field.get('choices')]
+            choices = [{'value': {'text': self._get_choice_label(f), 'val': f['name']}} for f in field.get('choices')]
         else:
-            choices = [{'value': {'text': f.get('label') or f['name'], 'val': f['name']}} for f in
+            #cascade select
+            choices = [{'value': {'text': self._get_choice_label(f), 'val': f['name']}} for f in
                        self.xform_dict['choices'].get(field['itemset'])]
         question = {"title": name, "code": code, "type": "select", 'required': self.is_required(field),
                     "choices": choices, "is_entity_question": False}
         if field['type'] == 'select one':
             question.update({"type": "select1"})
         return question
+
+    def _get_choice_label(self, choice_field):
+        if not choice_field.get('label', None):
+            raise LabelForChoiceNotPresentException(choice_field.get('name', ''))
+
+        return choice_field.get('label')
 
     def is_required(self, field):
         if field.get('bind') and 'yes' == str(field['bind'].get('required')).lower():
@@ -388,6 +395,14 @@ class LanguageNotSameException(Exception):
 
     def __str__(self):
         return self.message
+
+class LabelForChoiceNotPresentException(Exception):
+    def __init__(self, choice_name):
+        self.message = _("Label mandatory for choice option with name %s" % choice_name)
+
+    def __str__(self):
+        return self.message
+
 
 
 class UppercaseNamesNotSupportedException(Exception):
