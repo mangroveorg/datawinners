@@ -15,6 +15,7 @@ from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from datawinners.scheduler.smsclient import SMSClient
 from datawinners.sms.models import MSG_TYPE_USER_MSG
+from datawinners.search.submission_query import SubmissionQueryBuilder
 
 
 class TestHelper(unittest.TestCase):
@@ -166,6 +167,24 @@ class TestHelper(unittest.TestCase):
             mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "2613312345678", sms_content, MSG_TYPE_USER_MSG)
             helper.broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker)
             mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "03312345678", sms_content, MSG_TYPE_USER_MSG)
+
+    def test_should_get_only_non_registered_number(self):
+        patcher1 = patch("datawinners.project.helper.get_form_model_by_code")
+        project_mock = Mock(spec=Project)
+        self.dbm.database_name = 'test'
+
+        with patch.object(Project, "from_form_model") as from_form_model_patch:
+            from_form_model_patch.return_value = project_mock
+            project_mock.get_data_senders.return_value = [{"mobile_number":"123456"}, {"mobile_number":"1234567"}]
+
+            form_code_mock = patcher1.start()
+            from elasticutils import S
+            s_mock = Mock(spec=S)
+            s_mock.values_dict.return_value = [{"open_datasender_phone_number":"123456"}, {"open_datasender_phone_number":"2354"}]
+            with patch.object(SubmissionQueryBuilder, "query_all") as query_all_mock:
+                query_all_mock.return_value = s_mock
+                unregistered = helper.get_unregistered_datasenders(self.dbm, "form_code")
+                self.assertEqual(unregistered, ["2354"])
 
 
 class TestPreviewCreator(unittest.TestCase):

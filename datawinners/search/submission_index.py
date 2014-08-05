@@ -221,6 +221,7 @@ def _meta_fields(submission_doc, dbm):
     search_dict.update({"ds_id": datasender_id})
     search_dict.update({"ds_name": datasender_name})
     search_dict.update({"error_msg": submission_doc.error_message})
+    search_dict.update({"open_datasender_phone_number": submission_doc.open_datasender_phone_number})
     return search_dict
 
 

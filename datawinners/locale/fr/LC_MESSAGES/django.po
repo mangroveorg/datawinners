@@ -5146,3 +5146,6 @@ msgstr "Pour un compte Basique, seuls les Expéditeurs de Données enregistrés 
 
 msgid "You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='%(url_to_my_datasender)s'> My Data Senders </a>page."
 msgstr "Vous pouvez envoyer des rappels uniquement aux Expéditeurs de Données enregistrés. Premièrement, enregistrez vos Expéditeurs de Données sur la page<a style='float: none; margin: 0;' href='%(url_to_my_datasender)s'> Mes Expéditeurs </a>."
+
+msgid "My registered Data Senders linked to this Questionnaire and un-registered people who submitted data"
+msgstr "Mes Expéditeurs de Données enregistrés liés à ce Questionnaire et les personnes non enregistrées ayant soumis des donnée"

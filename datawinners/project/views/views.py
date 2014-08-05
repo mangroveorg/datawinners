@@ -51,7 +51,7 @@ from datawinners.entity.import_data import load_all_entities_of_type, get_entity
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from datawinners.project.forms import BroadcastMessageForm
+from datawinners.project.forms import BroadcastMessageForm, OpenDsBroadcastMessageForm
 from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
@@ -267,7 +267,7 @@ def _get_data_senders(dbm, form, project):
     data_senders = []
     if form.cleaned_data['to'] == "All":
         data_senders = _get_all_data_senders(dbm)
-    elif form.cleaned_data['to'] == "Associated":
+    elif form.cleaned_data['to'] in ["Associated", "Unregistered"]:
         data_senders = project.get_data_senders(dbm)
     return data_senders
 
@@ -279,19 +279,22 @@ def _get_data_senders(dbm, form, project):
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
+    form_class = OpenDsBroadcastMessageForm if questionnaire.is_open_datasender else BroadcastMessageForm
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     number_associated_ds = len(questionnaire.data_senders)
     number_of_ds = len(import_module.load_all_entities_of_type(dbm, type=REPORTER)[0]) - 1
     organization = utils.get_organization(request)
+    unregistered_ds = helper.get_unregistered_datasenders(dbm, questionnaire.form_code)
 
     account_type = organization.account_type
     if (account_type == 'Pro'):
         account_type = True
 
     if request.method == 'GET':
-        form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
+        form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
+                                    unregistered_ds=len(unregistered_ds))
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': questionnaire,
                                          "project_links": make_project_links(questionnaire),
@@ -302,7 +305,8 @@ def broadcast_message(request, project_id):
         },
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
-        form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
+        form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
+                          unregistered_ds=len(unregistered_ds), data=request.POST)
         if form.is_valid():
             no_smsc = False
             data_senders = _get_data_senders(dbm, form, questionnaire)
@@ -310,6 +314,7 @@ def broadcast_message(request, project_id):
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
+            other_numbers.extend(unregistered_ds)
 
             failed_numbers = []
             try:
@@ -323,10 +328,11 @@ def broadcast_message(request, project_id):
             success = not no_smsc and len(failed_numbers) == 0
 
             if success:
-                form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
+                form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
+                                  unregistered_ds=len(unregistered_ds))
             else:
-                form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
-                                            data=request.POST)
+                form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
+                                  unregistered_ds=len(unregistered_ds), data=request.POST)
             return render_to_response('project/broadcast_message.html',
                                       {'project': questionnaire,
                                        "project_links": make_project_links(questionnaire),

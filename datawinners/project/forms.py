@@ -31,10 +31,11 @@ class BroadcastMessageForm(forms.Form):
     text = CharField(label=ugettext_lazy("Text:"), required=True, max_length=160, widget=forms.Textarea)
     to = ChoiceField(label=ugettext_lazy("To:"),widget=MySelect(), choices=(("All", ugettext_lazy("All Data Senders")),
                                                          ("Associated", ugettext_lazy("Data Senders associated to my project")),
-                                                         ("Additional", ugettext_lazy("Other People"))),initial=("Asossciated"))
+                                                         ("Additional", ugettext_lazy("Other People")),
+                                                         ("Unregistered", ugettext_lazy("Unregistered"))),initial=("Asossciated"))
     others = CharField(label=ugettext_lazy("Other People:"), widget=forms.Textarea, required=False)
 
-    def __init__(self, associated_ds=0, number_of_ds=0, *args, **kwargs):
+    def __init__(self, associated_ds=0, number_of_ds=0, unregistered_ds=0,*args, **kwargs):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)
         self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My registered Data Senders linked to this questionnaire"), str(associated_ds))),
                                                         ("All", u"%s %s" % (ugettext_lazy("All registered Data Senders of all questionnaires"), str(number_of_ds))),
@@ -46,6 +47,17 @@ class BroadcastMessageForm(forms.Form):
     def clean_others(self):
         others = self.cleaned_data['others']
         return [number.strip() for number in others.split(',') if number.strip() !='']
+
+class OpenDsBroadcastMessageForm(BroadcastMessageForm):
+
+    def __init__(self, associated_ds=0, number_of_ds=0, unregistered_ds=0, *args, **kwargs):
+        super(OpenDsBroadcastMessageForm, self).__init__(*args, **kwargs)
+        unregistered_label = u"%s %s" % (ugettext_lazy("My registered Data Senders linked to this Questionnaire and un-registered people who submitted data"), str(unregistered_ds))
+        self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My registered Data Senders linked to this questionnaire"), str(associated_ds))),
+                                                        ("All", u"%s %s" % (ugettext_lazy("All registered Data Senders of all questionnaires"), str(number_of_ds))),
+            ("Unregistered" , unregistered_label),
+                                                        ("Additional", ugettext_lazy("Other People")))
+        
 
 
 class MyRadioFieldRenderer(RadioFieldRenderer):
