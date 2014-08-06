@@ -101,11 +101,12 @@ class XlsFormParser():
                 self._validate_for_nested_repeats(f)
 
     def _validate_for_no_language(self, field):
-        language_based_headers = ['label','hint','constraint_message']
-        for header in language_based_headers:
+        for header in ['label','hint']:
             if self._has_languages(field.get(header)):
                 raise MultipleLanguagesNotSupportedException()
         field.get("choices") and self._validate_for_no_language(field.get("choices")[0])
+        if field.get('bind') and self._has_languages(field.get('bind').get('jr:constraintMsg')):
+            raise MultipleLanguagesNotSupportedException()
 
     def _has_languages(self,header):
         return header and isinstance(header, dict) and len(header) >= 1
