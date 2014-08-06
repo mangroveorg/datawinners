@@ -268,18 +268,11 @@ class MangroveService():
 
         project_json = {'questionnaire-code': self.questionnaire_code}
 
-        try:
-            questionnaire = create_questionnaire(post=project_json, manager=self.manager, name=self.name,
-                                                 language=self.language,
-                                                 reporter_id=self.reporter_id, question_set_json=self.json_xform_data,
-                                                 xform=self.xform_with_form_code)
-            associate_account_users_to_project(self.manager, questionnaire)
-
-        except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
-                EntityQuestionAlreadyExistsException) as ex:
-            return HttpResponse(
-                json.dumps({'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}))
-
+        questionnaire = create_questionnaire(post=project_json, manager=self.manager, name=self.name,
+                                             language=self.language,
+                                             reporter_id=self.reporter_id, question_set_json=self.json_xform_data,
+                                             xform=self.xform_with_form_code)
+        associate_account_users_to_project(self.manager, questionnaire)
         code_has_errors, name_has_errors = False, False
         error_message = {}
         if not questionnaire.is_form_code_unique():
