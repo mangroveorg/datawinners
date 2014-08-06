@@ -76,7 +76,9 @@ class XlsFormParser():
             if field.get('control', None) and field['control'].get('bodyless', False): #ignore calculate type
                 continue
             if field['type'] in self.supported_types:
-                questions.append(self._create_question(field))
+                question = self._create_question(field)
+                if question:
+                    questions.append(question)
         return questions
 
     def _validate_fields_are_recognised(self, fields):
@@ -193,7 +195,13 @@ class XlsFormParser():
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
         return question
 
+    def _get_appearance(self,field):
+        if field.get('control') and field['control'].get('appearance'):
+            return field['control']['appearance']
+
     def _select(self, field):
+        if self._get_appearance(field) == 'label':
+            return
         name = self._get_label(field)
         code = field['name']
         if field.get('choices'):

@@ -126,6 +126,17 @@ class TestXformBridge(unittest.TestCase):
             self.assertRaises(LabelForChoiceNotPresentException, xls_form_parser._create_questions,
                               fields['children'])
 
+    def test_should_not_create_question_for_select_that_are_only_labels(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+            fields = [{u'control': {u'appearance': u'label'}, u'name': u'table_list_test_label', u'hint': u'Show only the labels of these options and not the inputs (type=select_one yes_no, appearance=label)', u'choices': [{u'name': u'yes', u'label': u'Yes'}, {u'name': u'no', u'label': u'No'}, {u'name': u'dk', u'label': u"Don't Know"}, {u'name': u'na', u'label': u'Not Applicable'}], u'label': u'Table', u'type': u'select one'}, {u'control': {u'appearance': u'list-nolabel'}, u'name': u'table_list_1', u'hint': u'Show only the inputs of these options and not the labels (type=select_one yes_no, appearance=list-nolabel)', u'choices': [{u'name': u'yes', u'label': u'Yes'}, {u'name': u'no', u'label': u'No'}, {u'name': u'dk', u'label': u"Don't Know"}, {u'name': u'na', u'label': u'Not Applicable'}], u'label': u'Q1', u'type': u'select one'}, {u'control': {u'appearance': u'list-nolabel'}, u'name': u'table_list_2', u'hint': u'Show only the inputs of these options and not the labels (type=select_one yes_no, appearance=list-nolabel)', u'choices': [{u'name': u'yes', u'label': u'Yes'}, {u'name': u'no', u'label': u'No'}, {u'name': u'dk', u'label': u"Don't Know"}, {u'name': u'na', u'label': u'Not Applicable'}], u'label': u'Question 2', u'type': u'select one'}, {'control': {'bodyless': True}}]
+
+            questions = xls_form_parser._create_questions(fields)
+
+            self.assertEqual(questions.__len__(),2)
+            self.assertDictEqual(questions[0],{'code': u'table_list_1', 'title': u'Q1', 'required': False, 'choices': [{'value': {'text': u'Yes', 'val': u'yes'}}, {'value': {'text': u'No', 'val': u'no'}}, {'value': {'text': u"Don't Know", 'val': u'dk'}}, {'value': {'text': u'Not Applicable', 'val': u'na'}}], 'is_entity_question': False, 'type': 'select1'})
+            self.assertDictEqual(questions[1],{'code': u'table_list_2', 'title': u'Question 2', 'required': False, 'choices': [{'value': {'text': u'Yes', 'val': u'yes'}}, {'value': {'text': u'No', 'val': u'no'}}, {'value': {'text': u"Don't Know", 'val': u'dk'}}, {'value': {'text': u'Not Applicable', 'val': u'na'}}], 'is_entity_question': False, 'type': 'select1'})
+
 
 class TestXformParsing(unittest.TestCase):
 
