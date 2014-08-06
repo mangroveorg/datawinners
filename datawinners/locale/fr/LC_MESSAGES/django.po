@@ -4688,7 +4688,7 @@ msgstr "Inscrivez-vous à notre liste d'envoi"
 msgid "Create a New Questionnaire"
 msgstr "Créer un nouveau Questionnaire"
 
-msgid "Choose How You Want To Start"
+msgid "Choose How To Start"
 msgstr "Comment souhaitez-vous commencer"
 
 msgid "Copy an Existing Questionnaire"

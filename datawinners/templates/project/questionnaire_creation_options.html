@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div id="project_profile" class="clear_both" data-bind="visible: showQuestionnaireCreationOptions">
-    <h5>1. {% trans "Choose How You Want To Start" %}</h5>
+    <h5>1. {% trans "Choose How To Start" %}</h5>
 
     <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedCreationOption}">
         <div class="questionnaire_type_header">
@@ -25,7 +25,7 @@
             {% include 'project/questionnaire_template.html' %}
         </div>
         <div class="advanced_questionnaire_section_header">
-            <span>{% trans "Advanced Questionnaire Option" %}</span>
+            <span>{% trans "Advanced Option (Beta Version)" %}</span>
             <img class="help_icon submission_date_help_icon" src="/media/images/help_icon.png">
             <div class="tooltip">
                 <p>
@@ -37,10 +37,10 @@
             </div>
         </div>
         <div class="questionnaire_type_header">
-            <span class="header">{% trans "Upload a XLSForm - Advanced Questionnaire Option" %}</span>
+            <span class="header">{% trans "Upload a XLSForm" %}</span>
         </div>
         <div>
-            <h6 class="create_questionnaire_help">{% trans "Choose this option to upload XLSForm (Excel file) and create advanced Questionnaire logic." %} <a class="dialog-anchor">{% trans "Learn More" %}</a></h6>
+            <h6 class="create_questionnaire_help">{% trans "Choose this option to upload an XLSForm (Excel file) and create advanced Questionnaire logic." %} <a class="dialog-anchor">{% trans "Learn More" %}</a></h6>
         </div>
     </div>
     <div class="right_aligned_button create_project">

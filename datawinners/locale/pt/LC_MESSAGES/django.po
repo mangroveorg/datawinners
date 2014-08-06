@@ -4469,7 +4469,7 @@ msgstr ""
 msgid "Create a New Questionnaire"
 msgstr ""
 
-msgid "Choose How You Want To Start"
+msgid "Choose How To Start"
 msgstr ""
 
 msgid "Copy an Existing Questionnaire"
