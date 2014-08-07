@@ -287,6 +287,7 @@ def broadcast_message(request, project_id):
     number_of_ds = len(import_module.load_all_entities_of_type(dbm, type=REPORTER)[0]) - 1
     organization = utils.get_organization(request)
     unregistered_ds = helper.get_unregistered_datasenders(dbm, questionnaire.form_code)
+    unregistered_with_linked = len(unregistered_ds) + number_associated_ds
 
     account_type = organization.account_type
     if (account_type == 'Pro'):
@@ -294,7 +295,7 @@ def broadcast_message(request, project_id):
 
     if request.method == 'GET':
         form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
-                                    unregistered_ds=len(unregistered_ds))
+                                    unregistered_ds=unregistered_with_linked)
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': questionnaire,
                                          "project_links": make_project_links(questionnaire),
@@ -306,7 +307,7 @@ def broadcast_message(request, project_id):
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
-                          unregistered_ds=len(unregistered_ds), data=request.POST)
+                          unregistered_ds=unregistered_with_linked, data=request.POST)
         if form.is_valid():
             no_smsc = False
             data_senders = _get_data_senders(dbm, form, questionnaire)
@@ -329,10 +330,10 @@ def broadcast_message(request, project_id):
 
             if success:
                 form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
-                                  unregistered_ds=len(unregistered_ds))
+                                  unregistered_ds=unregistered_with_linked)
             else:
                 form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
-                                  unregistered_ds=len(unregistered_ds), data=request.POST)
+                                  unregistered_ds=unregistered_with_linked, data=request.POST)
             return render_to_response('project/broadcast_message.html',
                                       {'project': questionnaire,
                                        "project_links": make_project_links(questionnaire),
