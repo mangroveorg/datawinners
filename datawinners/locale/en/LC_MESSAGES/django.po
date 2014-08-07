@@ -4644,7 +4644,7 @@ msgid "Questionnaire has not been created, please upload again to create Questio
 msgstr ""
 
 msgid "q_tooltip_advanced_questionnaire_option"
-msgstr "Use this option if you want to create advanced features in your Questionnaire such as skip logic or repeated sets of questions <br/><br/>"
+msgstr "Use this option if you want to create advanced features in your Questionnaire such as skip logic or repeated sets of questions. <br/><br/>"
 
 msgid "r_tooltip_advanced_questionnaire_option"
 msgstr "This is our first release of the Upload XLSForm feature.  Please help us to improve it by sending any feedback to <a> support@datawinners.com. </a>"
