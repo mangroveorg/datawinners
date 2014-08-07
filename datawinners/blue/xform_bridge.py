@@ -29,7 +29,7 @@ from django.utils.translation import ugettext as _
 
 def get_generated_xform_id_name(xform):
     xform_cleaned = re.sub(r"\s+", " ", re.sub(r"\n", "", xform))
-    match = re.search('<model>.* <instance> <(.+) id="', xform_cleaned)
+    match = re.search('<model>.* <instance> <(.+?) id="', xform_cleaned)
     return match.group(1)
 
 
