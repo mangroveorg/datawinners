@@ -45,7 +45,7 @@
         <div class="clear-both"></div>
     </div>
     <div class="help_accordion">
-        {% trans "View and edit your Questionnaire." %}
+        {% trans "Download and edit your Questionnaire." %}
     </div>
 
     <div id="xlx-message"></div>
@@ -67,6 +67,7 @@
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
+    <h5>{% trans "Edit Questionnaire" %}</h5>
     <div>
         <noscript>
             <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
@@ -79,11 +80,11 @@
     <h6 class="create_questionnaire_help margin_bottom_20 margin_top_10">{% trans "Need help and support on how to create a XLSForm and advanced Questionnaire logic?" %} <a>{% trans "Learn More | Example Forms" %}</a></h6>
 
     <div id="cancel_questionnaire_edit" style="display: none;">
-        {% trans "Editing current Questionnaire might delete previously collected data." %}<br/>
+        {% trans "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!" %}<br/><br/>
+        <p class="font_size_13">{% blocktrans with project_links.submission_log_link as log_link %} You can <a class='dialog-link' href='{{ log_link }}'>Export Your Submissions</a> first or {% endblocktrans %}<a class='dialog-link' href="{% url create_project %}?prev=ques#questionnaire/xlsupload/">{% trans "Create a New Questionnaire"%}</a> {% trans 'instead.'%} </p><br/>
 
-        <p class="font_size_13">{% trans "Consider to create a new Questionnaire instead of editing the current one." %}</p>
-        <a class="font_size_13 dialog-link">{% trans "Learn More" %}</a>
 
+        {% trans "Do you want to continue uploading the edited XLSForm?" %}
         <div class="text_align_right padding_top_20">
             <a id="cancel_dialog" class="dialog_cancel_button dialog-link" href="javascript:void(0);">{% trans "Cancel" %}</a>
             <a id="save_changes" class="button yes_button">{% trans "Continue" %}</a>

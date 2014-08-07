@@ -15,7 +15,7 @@ $(function () {
                     $("input[name=file]").click();
                     return false;
                 },
-                title: gettext("Warning: Changes to Questionnaire will impact previously collected data"),
+                title: gettext("Warning: Your Data Will be Lost"),
                 link_selector: "#cancel_changes",
                 dialogDiv: "#cancel_questionnaire_edit",
                 cancelLinkSelector: "#cancel_dialog",
