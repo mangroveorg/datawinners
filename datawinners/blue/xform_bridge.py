@@ -191,7 +191,10 @@ class XlsFormParser():
                     "code": code, "name": name, 'required': self.is_required(field),
                     "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
         if type == 'date':
-            question.update({'date_format': 'dd.mm.yyyy', 'event_time_field_flag': False,
+            DATE_FORMAT_MAP = {'month-year': 'mm.yyyy','year':'yyyy'}
+            appearance = self._get_appearance(field)
+            format = DATE_FORMAT_MAP.get(appearance) if appearance else 'dd.mm.yyyy'
+            question.update({'date_format': format, 'event_time_field_flag': False,
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
         return question
 
