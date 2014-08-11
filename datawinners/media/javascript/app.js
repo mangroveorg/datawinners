@@ -30359,9 +30359,10 @@ define( 'enketo-widget/date/datepicker-extended',[ 'enketo-js/Widget', 'Moderniz
          */
         DatepickerExtended.prototype._createFakeDateInput = function( format ) {
             var $dateI = $( this.element ),
+                val = this._formatDate(format, $dateI.val()),
                 $fakeDate = $(
                     '<div class="widget date"><input class="ignore input-small" readonly="readonly" type="text" value="' +
-                    $dateI.val() + '" placeholder="' + format + '" />' +
+                    val + '" placeholder="' + format + '" />' +
                     '<button class="btn-reset"><i class="glyphicon glyphicon-refresh"> </i></button></div>' ),
                 //$fakeDateReset = $fakeDate.find( '.btn-reset' ),
                 $fakeDateI = $fakeDate.find( 'input' );
@@ -30370,6 +30371,19 @@ define( 'enketo-widget/date/datepicker-extended',[ 'enketo-js/Widget', 'Moderniz
             $dateI.hide().after( $fakeDate );
 
             return $fakeDateI;
+        };
+
+        DatepickerExtended.prototype._formatDate = function(format,value){
+            var dateSplit = value.split('-');
+            if(format == 'yyyy'){
+                return dateSplit[0];
+            }
+            else if(format == "yyyy-mm"){
+                return dateSplit[0]+'-'+dateSplit[1];
+            }
+            else{
+                return value;
+            }
         };
 
         /**
