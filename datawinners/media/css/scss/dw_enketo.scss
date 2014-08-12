@@ -84,3 +84,9 @@ article.paper {
   height: 25px !important;
   width: 350px !important;
 }
+
+.geopicker {
+  .btn-remove , .toggle-input-btn{
+    display: none;
+  }
+}
