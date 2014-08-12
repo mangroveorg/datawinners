@@ -30638,6 +30638,7 @@ define( 'enketo-widget/date/datepicker-extended',[ 'enketo-js/Widget', 'Moderniz
         };
 
         DatepickerExtended.prototype._formatDate = function(format,value){
+            if (value == "") return "";
             var dateSplit = value.split('-');
             if(format == 'yyyy'){
                 return dateSplit[0];
