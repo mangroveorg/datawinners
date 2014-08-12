@@ -50,7 +50,7 @@ article.paper {
     border: 0;
     background-color: #E8EFF6;
     font-style: italic; }
-  article.paper section.or-group {
+  article.paper section.or-group, article.paper section.or-group-data {
     border: 1px solid #CCC;
     padding-left: 18px; }
   article.paper .option-wrapper > label:hover:not(.filler) {

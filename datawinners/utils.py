@@ -3,6 +3,7 @@ import re
 from datetime import datetime
 
 from django.template.defaultfilters import slugify
+import random
 import xlwt
 from django.utils.translation import ugettext_lazy as _, activate, get_language
 from django.contrib.auth.forms import PasswordResetForm
@@ -243,3 +244,6 @@ def get_map_key(host):
         return settings.API_KEYS.get(host)
     except :
         return ""
+
+def random_string(length=6):
+    return ''.join(random.sample('abcdefghijklmnopqrs', length))

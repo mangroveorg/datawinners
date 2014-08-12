@@ -12,6 +12,7 @@ from pyxform import create_survey_element_from_dict
 from pyxform.xls2json import parse_file_to_json
 
 from datawinners.project.wizard_view import create_questionnaire
+from datawinners.utils import random_string
 
 from mangrove.errors.MangroveException import QuestionAlreadyExistsException, QuestionCodeAlreadyExistsException, \
     EntityQuestionAlreadyExistsException
@@ -147,7 +148,10 @@ class XlsFormParser():
     def _get_label(self, field):
 
         if 'label' not in field:
-            return 'fixthis'
+            if field['type'] == 'group':
+                return random_string()
+            else:
+                raise LabelForFieldNotPresentException(field_name=field['name'])
 
         if isinstance(field['label'], dict):
             return field['label'].values()[0]
@@ -385,6 +389,12 @@ class LabelForChoiceNotPresentException(Exception):
         return self.message
 
 
+class LabelForFieldNotPresentException(Exception):
+    def __init__(self, field_name):
+        self.message = _("Label mandatory for question with name %s" % field_name)
+
+    def __str__(self):
+        return self.message
 
 class UppercaseNamesNotSupportedException(Exception):
     def __init__(self):
