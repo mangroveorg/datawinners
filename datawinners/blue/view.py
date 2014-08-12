@@ -63,28 +63,34 @@ class ProjectUpload(View):
             questionnaire_code = generate_questionnaire_code(manager)
             project_name = request.GET['pname']
 
-            xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name).parse()
+            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name).parse()
+            if errors:
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': False,
+                    'error_msg': list(errors)
+                }))
 
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
                                                questionnaire_code=questionnaire_code, project_name=project_name,
                                                xls_form=file_content)
-            id, name, error_message = mangrove_service.create_project()
+            questionnaire_id = mangrove_service.create_project()
+
         except Exception as e:
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': e.message if e.message else ugettext("Errors in excel")
+                'error_msg': [e.message if e.message else ugettext("Errors in excel")]
             }))
 
-        if error_message:
+        if not questionnaire_id:
             return HttpResponse(json.dumps(
-                {'success': False, 'error_msg': error_message}), content_type='application/json')
+                {'success': False, 'error_msg': [ugettext("Questionnaire with same name already exists.")]}), content_type='application/json')
 
         return HttpResponse(
             json.dumps(
                 {
                     "success": True,
-                    "project_name": name,
-                    "project_id": id,
+                    "project_name": project_name,
+                    "project_id": questionnaire_id,
                     "xls_dict": XlsProjectParser().parse(file_content)
                 }),
             content_type='application/json')
@@ -125,7 +131,14 @@ class ProjectUpdate(View):
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
-            xform_as_string, json_xform_data = XlsFormParser(tmp_file, questionnaire.name).parse()
+            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, questionnaire.name).parse()
+
+            if errors:
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': False,
+                    'error_msg': list(errors)
+                }))
+
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
                                                questionnaire_code=questionnaire.form_code,
                                                project_name=questionnaire.name)
@@ -137,7 +150,6 @@ class ProjectUpdate(View):
             questionnaire.save(process_post_update=False)
             questionnaire.add_attachments(tmp_file, 'questionnaire.xls')
 
-            update_datasender_for_project_change(questionnaire._doc, manager)
             self._purge_submissions(manager, questionnaire)
             self._purge_feed_documents(questionnaire, request)
             self.recreate_submissions_mapping(manager, questionnaire)
@@ -145,7 +157,7 @@ class ProjectUpdate(View):
 
         except Exception as e:
             return HttpResponse(content_type='application/json', content=json.dumps({
-                'error_msg': e.message, 'success': False
+                'error_msg': [e.message], 'success': False
             }))
 
         return HttpResponse(

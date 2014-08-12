@@ -60,41 +60,64 @@ class XlsFormParser():
 
     def _create_question(self, field):
         question = None
+        errors = []
         if field['type'] in self.type_dict['group']:
-            question = self._group(field)
+            question, errors = self._group(field)
         elif field['type'] in self.type_dict['field']:
             question = self._field(field)
         elif field['type'] in self.type_dict['select']:
             question = self._select(field)
         elif field['type'] in self.type_dict['media']:
             question = self._media(field)
-        return question
+        return question, errors
 
     def _create_questions(self, fields):
         questions = []
+        errors = []
         for field in fields:
-
             if field.get('control', None) and field['control'].get('bodyless', False): #ignore calculate type
                 continue
             if field['type'] in self.supported_types:
-                question = self._create_question(field)
-                if question:
-                    questions.append(question)
-        return questions
+                try:
+                    question, field_errors = self._create_question(field)
+
+                    if not field_errors and question:
+                        questions.append(question)
+                    else:
+                        errors.extend(field_errors)
+                except LabelForChoiceNotPresentException as e:
+                    errors.append(e.message)
+                except LabelForFieldNotPresentException as e:
+                    errors.append(e.message)
+        return questions, set(errors)
+
+    def _validate_group(self, errors, field):
+        if field['type'] == 'repeat':
+            try:
+                self._validate_for_nested_repeats(field)
+            except NestedRepeatsNotSupportedException as e:
+                errors.append(e.message)
+        self._validate_fields_are_recognised(field['children'])
 
     def _validate_fields_are_recognised(self, fields):
+        errors = []
         for field in fields:
-            self._validate_for_no_language(field)
+            try:
+                self._validate_for_no_language(field)
+            except MultipleLanguagesNotSupportedException as e:
+                errors.append(e.message)
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
-                    if field['type'] == 'repeat':
-                        self._validate_for_nested_repeats(field)
+                    self._validate_group(errors, field)
+                try:
                     self._validate_for_uppercase_names(field)
-                    self._validate_fields_are_recognised(field['children'])
+                except UppercaseNamesNotSupportedException as e:
+                    errors.append(e.message)
             else:
-                raise TypeNotSupportedException("question type '" + field['type'] + "' is not supported")
+                errors.append("question type '" + field['type'] + "' is not supported")
             if field.get('media'):
-                raise TypeNotSupportedException("attaching media to fields is not supported")
+                errors.append("attaching media to fields is not supported")
+        return set(errors)
 
     def _validate_for_nested_repeats(self, field):
         for f in field["children"]:
@@ -127,20 +150,27 @@ class XlsFormParser():
                 self._validate_media_in_choices(field['children'])
             choices = field.get('choices')
             if choices and self._media_in_choices(choices):
-                raise TypeNotSupportedException("media is not supported in choices")
+                raise TypeNotSupportedException("media is not supported in choices" )
 
     def parse(self):
-        self._validate_fields_are_recognised(self.xform_dict['children'])
-        self._validate_media_in_choices(self.xform_dict['children'])
-        questions = self._create_questions(self.xform_dict['children'])
-        if not questions:
-            raise Exception("Uploaded file is empty!")
+        errors = self._validate_fields_are_recognised(self.xform_dict['children'])
+        try:
+            self._validate_media_in_choices(self.xform_dict['children'])
+        except TypeNotSupportedException as e:
+            errors.add(e.message)
+        questions, question_errors = self._create_questions(self.xform_dict['children'])
+        if question_errors:
+            errors.union(question_errors)
+        if not errors and not questions:
+            errors.add("Uploaded file is empty!")
+        if errors:
+            return errors, None, None
         survey = create_survey_element_from_dict(self.xform_dict)
         xform = survey.to_xml()
         #encoding is added to support ie8
         xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
-        return updated_xform, questions
+        return [], updated_xform, questions
 
     def update_xform_with_questionnaire_name(self, xform):
         return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % self.questionnaire_name, xform)
@@ -168,10 +198,8 @@ class XlsFormParser():
         elif field['type'] == 'group':
             fieldset_type = 'group'
 
-        if not group_label:  # todo create appropriate error class
-            raise QuestionAlreadyExistsException('Unique repeat label is required')
         name = field['name'].lower()
-        questions = self._create_questions(field['children'])
+        questions, errors = self._create_questions(field['children'])
         question = {
             'title': group_label,
             'type': 'field_set',
@@ -182,7 +210,7 @@ class XlsFormParser():
             "fieldset_type": fieldset_type,
             "fields": questions
         }
-        return question
+        return question, errors
 
     def _field(self, field):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', 'calculate': 'integer'}
@@ -281,29 +309,22 @@ class MangroveService():
         return '<?xml version="1.0"?>%s' % ET.tostring(root)
 
     def create_project(self):
-
         project_json = {'questionnaire-code': self.questionnaire_code}
 
         questionnaire = create_questionnaire(post=project_json, manager=self.manager, name=self.name,
                                              language=self.language,
                                              reporter_id=self.reporter_id, question_set_json=self.json_xform_data,
                                              xform=self.xform_with_form_code)
-        associate_account_users_to_project(self.manager, questionnaire)
-        code_has_errors, name_has_errors = False, False
-        error_message = {}
-        if not questionnaire.is_form_code_unique():
-            code_has_errors = True
-            error_message["code"] = _("Questionnaire with same code already exists.")
+
         if not questionnaire.is_project_name_unique():
-            name_has_errors = True
-            error_message["name"] = _("Questionnaire with same name already exists.")
-        if not code_has_errors and not name_has_errors:
-            questionnaire.update_doc_and_save()
-            questionnaire.add_attachments(self.xls_form, 'questionnaire.xls')
-            # UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
-            # detail=questionnaire.name)
-            return questionnaire.id, self.name, error_message
-        return None, None, error_message
+            return None
+
+        associate_account_users_to_project(self.manager, questionnaire)
+        questionnaire.update_doc_and_save()
+        questionnaire.add_attachments(self.xls_form, 'questionnaire.xls')
+        # UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
+        # detail=questionnaire.name)
+        return questionnaire.id
 
 
 class XFormSubmissionProcessor():
