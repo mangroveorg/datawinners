@@ -457,3 +457,7 @@ div.margin_top_20 input {
   opacity: 0.9;
   font-size: 15px;
   height: 34px; }
+
+.xls_errors {
+  list-style-type: disc;
+  margin-left: 25px; }

@@ -179,9 +179,7 @@ $(document).ready(function () {
             window.location.replace('/project/overview/' + responseJSON.project_id +'/');
         },
         postErrorHandler: function(responseJSON){
-            var errors = responseJSON.error_msg;
-            var error_message = errors.join("<br/>");
-            DW.showError(error_message);
+            DW.showError(responseJSON.error_msg);
         }
     });
 

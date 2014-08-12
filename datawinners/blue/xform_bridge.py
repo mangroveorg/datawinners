@@ -160,7 +160,7 @@ class XlsFormParser():
             errors.add(e.message)
         questions, question_errors = self._create_questions(self.xform_dict['children'])
         if question_errors:
-            errors.union(question_errors)
+            errors = errors.union(question_errors)
         if not errors and not questions:
             errors.add("Uploaded file is empty!")
         if errors:
