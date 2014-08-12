@@ -90,3 +90,7 @@ article.paper {
     display: none;
   }
 }
+
+.geopicker .btn[name="geodetect"]:not(.close-chain-btn){
+  display: none;
+}

@@ -69,3 +69,6 @@ article.paper {
 
 .geopicker .btn-remove, .geopicker .toggle-input-btn {
   display: none; }
+
+.geopicker .btn[name="geodetect"]:not(.close-chain-btn) {
+  display: none; }
