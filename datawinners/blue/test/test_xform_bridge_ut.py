@@ -136,6 +136,21 @@ class TestXformBridge(unittest.TestCase):
 
             self.assertEquals(actual_errors, {"Label mandatory for choice option with name yes"})
 
+    def test_should_populate_error_when_calculate_field_with_prefetch_present(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{u'bind': {u'calculate': u'pulldata(fruit, "mangoes")'}, u'type': u'calculate', u'name': u'calc',
+                                    u'label': u'1. Are you a student?'},
+                                   {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                       {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                        'type': 'calculate', 'name': 'instanceID'}]}]}
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+            actual_errors,updated_xform, questions = xls_form_parser.parse()
+
+            self.assertEquals(actual_errors, {"Prefetch of csv not supported"})
+
+
     def test_should_not_create_question_for_select_that_are_only_labels(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')

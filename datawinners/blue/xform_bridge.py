@@ -56,7 +56,8 @@ class XlsFormParser():
 
     def _validate_for_uppercase_names(self, field):
         if filter(lambda x: x.isupper(), field['name']):
-            raise UppercaseNamesNotSupportedException()
+            return _("Uppercase in names not supported")
+        return None
 
     def _create_question(self, field):
         question = None
@@ -109,15 +110,13 @@ class XlsFormParser():
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
                     self._validate_group(errors, field)
-                try:
-                    self._validate_for_uppercase_names(field)
-                except UppercaseNamesNotSupportedException as e:
-                    errors.append(e.message)
+                errors.append(self._validate_for_uppercase_names(field))
+                errors.append(self._validate_for_prefetch_csv(field))
             else:
                 errors.append("question type '" + field['type'] + "' is not supported")
             if field.get('media'):
                 errors.append("attaching media to fields is not supported")
-        return set(errors)
+        return set(errors) - set([None])
 
     def _validate_for_nested_repeats(self, field):
         for f in field["children"]:
@@ -269,6 +268,11 @@ class XlsFormParser():
                     "is_entity_question": False}
         return question
 
+    def _validate_for_prefetch_csv(self, field):
+        if 'bind' in field and 'calculate' in field['bind'] and 'pulldata(' in field['bind']['calculate']:
+            return _("Prefetch of csv not supported")
+        return None
+
 
 class MangroveService():
     def __init__(self, user, xform_as_string, json_xform_data, questionnaire_code=None, project_name=None,
@@ -405,6 +409,13 @@ class MultipleLanguagesNotSupportedException(Exception):
 class LabelForChoiceNotPresentException(Exception):
     def __init__(self, choice_name):
         self.message = _("Label mandatory for choice option with name %s" % choice_name)
+
+    def __str__(self):
+        return self.message
+
+class PrefetchCSVNotSupportedException(Exception):
+    def __init__(self):
+        self.message = _("Prefetch of csv not supported")
 
     def __str__(self):
         return self.message
