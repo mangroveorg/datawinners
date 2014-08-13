@@ -162,6 +162,23 @@ class TestXformBridge(unittest.TestCase):
             self.assertDictEqual(questions[0],{'code': u'table_list_1', 'title': u'Q1', 'required': False, 'choices': [{'value': {'text': u'Yes', 'val': u'yes'}}, {'value': {'text': u'No', 'val': u'no'}}, {'value': {'text': u"Don't Know", 'val': u'dk'}}, {'value': {'text': u'Not Applicable', 'val': u'na'}}], 'is_entity_question': False, 'type': 'select1'})
             self.assertDictEqual(questions[1],{'code': u'table_list_2', 'title': u'Question 2', 'required': False, 'choices': [{'value': {'text': u'Yes', 'val': u'yes'}}, {'value': {'text': u'No', 'val': u'no'}}, {'value': {'text': u"Don't Know", 'val': u'dk'}}, {'value': {'text': u'Not Applicable', 'val': u'na'}}], 'is_entity_question': False, 'type': 'select1'})
 
+    def test_should_return_correct_date_format_for_year_or_monthyear_appearance(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{ u'type': u'date', u'name': u'birth_date', u'label': u'1. What is your date of birth?', u'control': {u'appearance': u'year'}},
+                                   { u'type': u'date', u'name': u'birth_date2', u'label': u'2. What is your date of birth?', u'control': {u'appearance': u'month-year'}}]}
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+            self.assertEquals('yyyy',xls_form_parser._get_date_format(fields['children'][0]))
+            self.assertEquals('mm.yyyy',xls_form_parser._get_date_format(fields['children'][1]))
+
+    def test_should_return_default_date_format_for_any_other_appearance(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{ u'type': u'date', u'name': u'birth_date', u'label': u'1. What is your date of birth?', u'control': {u'appearance': u'w4'}
+                                   }]}
+            get_xform_dict.return_value = fields
+
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+            self.assertEquals('dd.mm.yyyy',xls_form_parser._get_date_format(fields['children'][0]))
 
 class TestXformParsing(unittest.TestCase):
 

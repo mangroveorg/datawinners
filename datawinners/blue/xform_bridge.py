@@ -1,10 +1,8 @@
 import itertools
-import json
 import os
 import re
 from xml.etree import ElementTree as ET
 
-from django.http import HttpResponse
 from lxml import etree
 import xlrd
 import xmldict
@@ -12,14 +10,11 @@ from pyxform import create_survey_element_from_dict
 from pyxform.xls2json import parse_file_to_json
 
 from datawinners.project.wizard_view import create_questionnaire
-from datawinners.utils import random_string
-
-from mangrove.errors.MangroveException import QuestionAlreadyExistsException, QuestionCodeAlreadyExistsException, \
-    EntityQuestionAlreadyExistsException
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, associate_account_users_to_project
 from mangrove.form_model.field import FieldSet, GeoCodeField, DateField
+
 
 # used for edit questionnaire in xls questionnaire flow
 # noinspection PyUnresolvedReferences
@@ -211,6 +206,15 @@ class XlsFormParser():
         }
         return question, errors
 
+    def _get_date_format(self, field):
+        DATE_FORMAT_MAP = {'month-year': 'mm.yyyy', 'year': 'yyyy'}
+        appearance = self._get_appearance(field)
+        format_by_appearance = None
+        if appearance:
+            format_by_appearance = DATE_FORMAT_MAP.get(appearance)
+        format = format_by_appearance if format_by_appearance else 'dd.mm.yyyy'
+        return format
+
     def _field(self, field):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', 'calculate': 'integer'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', 'calculate': 'number'}
@@ -222,9 +226,7 @@ class XlsFormParser():
                     "code": code, "name": name, 'required': self.is_required(field),
                     "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
         if type == 'date':
-            DATE_FORMAT_MAP = {'month-year': 'mm.yyyy','year':'yyyy'}
-            appearance = self._get_appearance(field)
-            format = DATE_FORMAT_MAP.get(appearance) if appearance else 'dd.mm.yyyy'
+            format = self._get_date_format(field)
             question.update({'date_format': format, 'event_time_field_flag': False,
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
         return question

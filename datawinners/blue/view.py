@@ -156,8 +156,9 @@ class ProjectUpdate(View):
 
 
         except Exception as e:
+            message = e.message if e.message else "Some error in excel"
             return HttpResponse(content_type='application/json', content=json.dumps({
-                'error_msg': [e.message], 'success': False
+                'error_msg': [message], 'success': False
             }))
 
         return HttpResponse(
