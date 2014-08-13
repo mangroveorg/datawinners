@@ -170,6 +170,14 @@ class TestXformBridge(unittest.TestCase):
             self.assertEquals('yyyy',xls_form_parser._get_date_format(fields['children'][0]))
             self.assertEquals('mm.yyyy',xls_form_parser._get_date_format(fields['children'][1]))
 
+    def test_should_return_correct_date_format_for_year_or_monthyear_appearance_combined_With_other_appearance(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{ u'type': u'date', u'name': u'birth_date', u'label': u'1. What is your date of birth?', u'control': {u'appearance': u'w2 year'}},
+                                   { u'type': u'date', u'name': u'birth_date2', u'label': u'2. What is your date of birth?', u'control': {u'appearance': u'w4 horizontal month-year'}}]}
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+            self.assertEquals('yyyy',xls_form_parser._get_date_format(fields['children'][0]))
+            self.assertEquals('mm.yyyy',xls_form_parser._get_date_format(fields['children'][1]))
+
     def test_should_return_default_date_format_for_any_other_appearance(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
             fields = {'children': [{ u'type': u'date', u'name': u'birth_date', u'label': u'1. What is your date of birth?', u'control': {u'appearance': u'w4'}

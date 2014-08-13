@@ -207,13 +207,13 @@ class XlsFormParser():
         return question, errors
 
     def _get_date_format(self, field):
-        DATE_FORMAT_MAP = {'month-year': 'mm.yyyy', 'year': 'yyyy'}
         appearance = self._get_appearance(field)
-        format_by_appearance = None
         if appearance:
-            format_by_appearance = DATE_FORMAT_MAP.get(appearance)
-        format = format_by_appearance if format_by_appearance else 'dd.mm.yyyy'
-        return format
+            if 'month-year' in appearance:
+                return 'mm.yyyy'
+            if 'year' in appearance:
+                return 'yyyy'
+        return 'dd.mm.yyyy'
 
     def _field(self, field):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', 'calculate': 'integer'}
