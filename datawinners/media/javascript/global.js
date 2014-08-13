@@ -10,7 +10,9 @@ $.ajaxSetup ({
 
 //Google analytics event tracking
 DW.trackEvent = function(category, action){
-    _gaq && _gaq.push(['_trackEvent', category, action]);
+    if (typeof _gaq !== 'undefined') {
+        _gaq.push(['_trackEvent', category, action]);
+    }
 };
 
 
