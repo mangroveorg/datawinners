@@ -75,8 +75,8 @@ DW.controllers = {
                 });
                 questionnaireViewModel.showQuestionnaireForm(true);
                 questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+                DW.trackEvent('questionnaire-creation-method', 'copy-from-template');
             });
-
     },
     "copyQuestionnaire": function(){
         questionnaireViewModel.clearQuestionnaire();
@@ -91,6 +91,7 @@ DW.controllers = {
         questionnaireViewModel.showQuestionnaireForm(true);
         questionnaireViewModel.enableQuestionnaireTitleFocus(true);
         questionnaireViewModel.questionnaireCode(questionnaire_code);
+        DW.trackEvent('questionnaire-creation-method', 'copy-questionnaire');
     },
     "blankQuestionnaire": function () {
             questionnaireViewModel.clearQuestionnaire();
@@ -98,6 +99,7 @@ DW.controllers = {
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
             questionnaireViewModel.questionnaireCode(questionnaire_code);
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
+            DW.trackEvent('questionnaire-creation-method', 'blank-questionnaire');
     },
     "uploadQuestionnaire": function(){
         questionnaireViewModel.clearQuestionnaire();
@@ -159,6 +161,7 @@ $(document).ready(function () {
     $("#save_and_create").on("click", function () {
             _save_questionnaire(function (response) {
                 var redirect_url = '/project/overview/' + response.project_id;
+                DW.trackEvent('questionnaire-creation-method', 'qns-creation-success');
                 window.location.replace(redirect_url);
                 return true;
             });
@@ -176,9 +179,11 @@ $(document).ready(function () {
             return questionnaireName.valid();
         },
         postSuccessSave: function(responseJSON){
+            DW.trackEvent('questionnaire-creation-method', 'advanced-qns-success');
             window.location.replace('/project/overview/' + responseJSON.project_id +'/');
         },
         postErrorHandler: function(responseJSON){
+            DW.trackEvent('questionnaire-creation-method', 'advanced-qns-errored');
             DW.showError(responseJSON.error_msg);
         }
     });

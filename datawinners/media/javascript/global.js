@@ -8,6 +8,12 @@ $.ajaxSetup ({
     cache: false
 });
 
+//Google analytics event tracking
+DW.trackEvent = function(category, action){
+    _gaq && _gaq.push(['_trackEvent', category, action]);
+};
+
+
 $(document).ready(function() {
 
     DW.flash_message = function() {
