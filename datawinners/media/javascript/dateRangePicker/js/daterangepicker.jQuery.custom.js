@@ -203,7 +203,7 @@ jQuery.fn.daterangepicker = function(settings){
     rp.data('state', 'closed');
 
     function isMonthFormat() {
-        return options.dateFormat.indexOf('dd') < 0;
+        return options.dateFormat.indexOf('mm.yy') >= 0 || options.dateFormat.indexOf('yy.mm') >= 0;
     };
 
     function isDateRangeActive() {
