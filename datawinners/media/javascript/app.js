@@ -4822,17 +4822,17 @@ XPathJS = (function(){
 		return new Date(this.value * (1000 * 60 * 60 * 24) );
 	}
 	/** 
-     * Date type used in JavaRosa functions 
-     **/
-    DateType = function(value)
-    {
-    	BaseType.call(this, value, 'date', [
-    		'date',
-    		'string',
-    		'number',
-    		'boolean'
-    	])
-    }
+	 * Date type used in JavaRosa functions 
+	 **/
+	DateType = function(value)
+	{
+		BaseType.call(this, value, 'date', [
+			'date',
+			'string',
+			'number',
+			'boolean'
+		])
+	}
 
 	DateType.prototype = new BaseType;
 	DateType.constructor = DateType;
@@ -7444,6 +7444,23 @@ XPathJS = (function(){
 				ret: 'string'
 			},
 
+			/* Alias of "date-time"
+			 * Not 100% sure this is correct, but I think the behaviour will match ODK's behaviour.
+			 */
+			'decimal-date-time': {
+
+				fn: function(obj)
+				{
+					return new DateType(obj.toDate());
+				},
+
+				args: [
+					{t: 'object'}
+				],
+
+				ret: 'string'
+			},
+
 			today: {
 				
 				fn: function()
@@ -7512,8 +7529,8 @@ XPathJS = (function(){
 				{
 					//from broofa: http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
 					var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    					var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-    					return v.toString(16);
+						var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+						return v.toString(16);
 					});
 					return new StringType(uuid);
 				}, 
@@ -7940,7 +7957,7 @@ XPathJS = (function(){
 				fn: function()
 				{
 					var root = (this.node.nodeName === '#document') ? this.node.documentElement : this.node.ownerDocument.firstElementChild,
-					 	versionAttr = root.attributes['version'];
+						versionAttr = root.attributes['version'];
 
 					if( versionAttr ) {
 						return new StringType(versionAttr.textContent);
@@ -7953,6 +7970,110 @@ XPathJS = (function(){
 				ret: 'string'
 
 			},
+
+			/**
+			 * The once function returns the value of the parameter if its own value
+			 * is not empty, NaN, [Infinity or -Infinity]. The naming is therefore misleading! 
+			 * Also note that the parameter expr is always evaluated.
+			 * This function simply decides whether to return the new result or the old value.
+			 *
+			 * @return {StringType}
+			 */
+			once : {
+
+				fn: function(a)
+				{
+					var curValue = nodeStringValue(this.node),
+						newValue = a.toString();
+
+					// disable NaN, Infinity and -Infinity...
+					newValue = (newValue === 'NaN' /*|| newValue === 'Infinity' || newValue === '-Infinity'*/) ? "" : newValue;
+
+					return (curValue !== "") ? new StringType(curValue) : new StringType(newValue); 
+				},
+
+				args: [
+					{t: 'string'}
+				],
+
+				ret: 'string'
+
+			},
+
+			/**
+			 * The area function returns the area in m2 of a single geoshape
+			 * value, or of a nodeset of ordered geopoints.
+			 *
+			 * @return {NumberType}
+			 */
+			"area" : {
+
+				fn: function(a)
+				{
+					var area, allValid,
+						geopoints = [],
+						latLngs = [];
+
+					if (a instanceof NodeSetType && a.value.length > 1){
+						a.value.forEach(function(node){
+							geopoints.push(nodeStringValue(node));
+						});
+					} else if (a instanceof NodeSetType) {
+						geopoints = nodeStringValue(a.value[0]).split(';');
+					} else if (a instanceof StringType) {
+						geopoints = a.value.split(';');	
+					}
+
+					latLngs = geopoints.map(function(geopoint){
+						return geopoint.trim().split(' ');
+					});
+					
+					// check if all geopoints are valid (copied from Enketo FormModel)
+					allValid = latLngs.every(function(coords){
+						return ( 
+							(coords[ 0 ] !== '' && coords[ 0 ] >= -90 && coords[ 0 ] <= 90 ) &&
+							( coords[ 1 ] !== '' && coords[ 1 ] >= -180 && coords[ 1 ] <= 180 ) &&
+							( typeof coords[ 2 ] == 'undefined' || !isNaN( coords[ 2 ] ) ) &&
+							( typeof coords[ 3 ] == 'undefined' || ( !isNaN( coords[ 3 ] ) && coords[ 3 ] >= 0 ) )
+							);
+					});
+
+					if (!allValid) {
+						area = Number.NaN;
+					} else {
+						var EARTH_RADIUS = 6378100,
+							pointsCount = latLngs.length,
+							d2r = Math.PI / 180,
+							p1, p2;
+							area = 0.0;
+
+						if ( pointsCount > 2 ) {
+							for ( var i = 0; i < pointsCount; i++ ) {
+								p1 = {
+									lat: latLngs[ i ][ 0 ],
+									lng: latLngs[ i ][ 1 ]
+								};
+								p2 = {
+									lat: latLngs[ ( i + 1 ) % pointsCount ][ 0 ],
+									lng: latLngs[ ( i + 1 ) % pointsCount ][ 1 ]
+								};
+								area += ( ( p2.lng - p1.lng ) * d2r ) *
+									( 2 + Math.sin( p1.lat * d2r ) + Math.sin( p2.lat * d2r ) );
+							}
+							area = area * EARTH_RADIUS * EARTH_RADIUS / 2.0;
+						}
+						area = Math.abs( Math.round(area*100) ) / 100;
+					}
+					
+					return new NumberType(area); 
+				},
+
+				args: [
+					{t: 'string'}
+				],
+
+				ret: 'number'
+			}
 
 			/**
 			 * The indexed-repeat function... should be used as little as possible
@@ -17545,12 +17666,18 @@ function saveXformSubmission(callback) {
         var saveURL = submissionUpdateUrl || submissionCreateUrl;
 
         var success = function (data, status) {
+            DW.trackEvent('advanced-qns-submission', 'advanced-qns-submission-success');
             if(typeof(callback) == "function")
                 callback();
             else
                 window.location.reload();
         };
-        $.post(saveURL, {'form_data': data}).done(success);
+
+        var error = function(){
+            DW.trackEvent('advanced-qns-submission', 'advanced-qns-submission-failure');
+        };
+
+        $.post(saveURL, {'form_data': data}).done(success).fail(error);
     }
 }
 requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form' ],
@@ -30638,7 +30765,6 @@ define( 'enketo-widget/date/datepicker-extended',[ 'enketo-js/Widget', 'Moderniz
         };
 
         DatepickerExtended.prototype._formatDate = function(format,value){
-            if (value == "") return "";
             var dateSplit = value.split('-');
             if(format == 'yyyy'){
                 return dateSplit[0];
