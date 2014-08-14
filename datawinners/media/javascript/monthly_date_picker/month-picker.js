@@ -300,6 +300,9 @@ function showMP(monthPicker) {
 
 function setMPDates(monthpicker, start_year, start_month, end_year, end_month){
     var data = monthpicker.data('monthpicker');
+    if(typeof data === 'undefined'){
+        return;
+    }
     data.settings_start.year = start_year;
     data.settings_start.month = start_month;
     data.settings_end.year = end_year;
@@ -307,6 +310,9 @@ function setMPDates(monthpicker, start_year, start_month, end_year, end_month){
 }
 
 function setMPText(monthpicker) {
+    if(typeof monthpicker.data('monthpicker') === 'undefined'){
+        return;
+    }
     var global_settings = monthpicker.data('monthpicker').settings,
         settings_start = monthpicker.data('monthpicker').settings_start,
         settings_end = monthpicker.data('monthpicker').settings_end;
