@@ -60,7 +60,7 @@ from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project import helper
 from datawinners.project.utils import make_project_links
-from datawinners.project.helper import is_project_exist, get_feed_dictionary
+from datawinners.project.helper import is_project_exist, get_feed_dictionary, get_unregistered_datasenders
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE
 from datawinners.project.views.utils import get_form_context
@@ -149,7 +149,8 @@ def undelete_project(request, project_id):
 def project_overview(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-
+    open_datasender_questionnaire= questionnaire.is_open_datasender
+    is_pro_sms = _is_pro_sms(request)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
@@ -158,6 +159,7 @@ def project_overview(request, project_id):
     project_links = make_project_links(questionnaire)
     map_api_key = get_map_key(request.META['HTTP_HOST'])
     number_data_sender = len(questionnaire.data_senders)
+    number_unregistered_data_sender = len(get_unregistered_datasenders(manager, questionnaire_code))
     number_records = survey_response_count(manager, questionnaire_code, None, None)
     number_reminders = Reminder.objects.filter(project_id=questionnaire.id).count()
     links = {'registered_data_senders': reverse("registered_datasenders", args=[project_id]),
@@ -200,7 +202,10 @@ def project_overview(request, project_id):
         'has_multiple_unique_id':has_multiple_unique_id,
         'entity_type': json.dumps(entity_type),
         'unique_id_header_text': unique_id_header_text,
-        'org_number': get_organization_telephone_number(request)
+        'org_number': get_organization_telephone_number(request),
+        'open_datasender_questionnaire': open_datasender_questionnaire,
+        'is_pro_sms': is_pro_sms,
+        'number_unregistered_data_sender': number_unregistered_data_sender
     }))
 
 

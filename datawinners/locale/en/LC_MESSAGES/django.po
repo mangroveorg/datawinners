@@ -1201,9 +1201,9 @@ msgid "How it Works"
 msgstr ""
 
 msgid "sms instruction"
-msgstr "Print out the SMS Questionnaire and give it to your registered Data Senders. Then they ﬁll in the answer"
-"for each question on the paper Questionnaire. Then your Data Senders follow the “Example SMS"
-" Answer” format on the Questionnaire to type their SMS into the phone and send it in a single SMS."
+msgstr "Print out the SMS Questionnaire and give it to your Data Senders. "
+"They ﬁll in their answers for each question on the paper SMS Questionnaire. Following the example format in Step B of the Questionnaire, "
+"they then type their SMS into their phone and send it in a single SMS."
 
 msgid "Answer the questions"
 msgstr ""
@@ -4682,4 +4682,10 @@ msgid "You can only send Reminders to registered Data Senders. First, register y
 msgstr ""
 
 msgid "My registered Data Senders linked to this Questionnaire and un-registered people who submitted data"
+msgstr ""
+
+msgid "registered Data Senders"
+msgstr ""
+
+msgid "unregistered Data Senders"
 msgstr ""

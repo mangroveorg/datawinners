@@ -1276,10 +1276,10 @@ msgid "How it Works"
 msgstr "Comment ça Marche"
 
 msgid "sms instruction"
-msgstr "Imprimez le Questionnaire SMS et remettez-le à vos Expéditeurs de Données enregistrés. "
-"Ensuite, ils remplissent les réponses à chaque question sur le Questionnaire papier. "
-"Par la suite, vos Expéditeurs de Données suivent le format de « l’Exemple de Réponse SMS » sur"
-"le Questionnaire pour taper leur SMS sur le téléphone et l'envoyer en un seul SMS."
+msgstr "Imprimez le Questionnaire SMS et remettez-le à vos Expéditeurs de Données . "
+"Ils remplissent les réponses à chaque question sur le Questionnaire papier. "
+"Par la suite, en suivant le format de la section B « Exemple de Réponse SMS » du Questionnaire, "
+"ils tapent leur SMS sur leur téléphone et envoient le tout en un seul SMS."
 
 msgid "Answer the questions"
 msgstr "Répondez aux questions"
@@ -5149,3 +5149,9 @@ msgstr "Vous pouvez envoyer des rappels uniquement aux Expéditeurs de Données 
 
 msgid "My registered Data Senders linked to this Questionnaire and un-registered people who submitted data"
 msgstr "Mes Expéditeurs de Données enregistrés liés à ce Questionnaire et les personnes non enregistrées ayant soumis des donnée"
+
+msgid "registered Data Senders"
+msgstr "Expéditeurs de Données enregistrés"
+
+msgid "unregistered Data Senders"
+msgstr "Expéditeurs de Données non enregistrés"
