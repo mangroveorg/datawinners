@@ -33,13 +33,12 @@
 {% block content %}
 
     {% block secondary_navigation_data %}
-        {% activetab "secondary_tab_nav" "reminders" %}
         {% include 'project/messages_and_reminders_tabs.html' %}
     {% endblock %}
     <div>
     {% if is_reminder_enabled %}
         <div class="warning-message-box padding_left_right_10 padding_top_10 padding_bottom_10">
-            {% blocktrans with 'url_to_my_datasender' as url_to_my_datasender %}You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='{{ url_to_my_datasender }}'> My Data Senders </a>page.{% endblocktrans %}
+            {% blocktrans with url_to_my_datasender as url_to_my_datasender %}You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='{{ url_to_my_datasender }}'> My Data Senders </a>page.{% endblocktrans %}
         </div>
 
     {% endif %}
