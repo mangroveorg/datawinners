@@ -24,6 +24,7 @@ EXCEL_CELL_INTEGER_STYLE = xlwt.easyxf(num_format_str='#0')
 EXCEL_DATE_STYLE = {'mm.yyyy': xlwt.easyxf(num_format_str='MMM, YYYY'),
                     'dd.mm.yyyy': xlwt.easyxf(num_format_str='MMM DD, YYYY'),
                     'mm.dd.yyyy': xlwt.easyxf(num_format_str='MMM DD, YYYY'),
+                    'yyyy': xlwt.easyxf(num_format_str='YYYY'),
                     'submission_date': xlwt.easyxf(num_format_str='MMM DD, YYYY hh:mm:ss')}
 
 
