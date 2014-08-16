@@ -47,7 +47,7 @@ def start_servers():
 
 def showcase():
     env.user = "mangrover"
-    env.hosts = ["184.72.223.168"]
+    env.hosts = ["184.72.223.168:51986"]
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
@@ -67,7 +67,7 @@ def local():
 
 def prod():
     env.user = "mangrover"
-    env.hosts = ["54.243.31.50"]
+    env.hosts = ["54.243.31.50:51986"]
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
