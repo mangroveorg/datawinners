@@ -4,7 +4,7 @@ import json
 from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 import xlwt
-from datawinners.project.submission.export import export_filename
+from datawinners.project.submission.export import export_filename, add_sheet_with_data
 from datawinners.project.submission.exporter import SubmissionExporter
 
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
@@ -23,8 +23,8 @@ class XFormSubmissionExporter(SubmissionExporter):
         response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
 
         wb = xlwt.Workbook()
-        for book_name, header_row in headers.items():
-            workbook_add_sheet(wb, [header_row] + data_rows_dict.get(book_name,[]), book_name)
+        for sheet_name, header_row in headers.items():
+            add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name)
         wb.save(response)
         return response
 
