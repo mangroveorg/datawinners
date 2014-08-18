@@ -183,7 +183,6 @@ class AssociateDataSendersView(DataSenderActionView):
             UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_QUESTIONNAIRES,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
-
         return HttpResponse(
             json.dumps({"success": True, "message": _("The Data Sender(s) are added to Questionnaire(s) successfully")}))
 
@@ -195,13 +194,18 @@ class DisassociateDataSendersView(DataSenderActionView):
         projects_name = Set()
         removed_rep_ids = Set()
         selected_rep_ids = data_sender_short_codes(request, manager)
+        users_in_selected_ds = []
+        superusers = rep_id_name_dict_of_users(manager)
 
         for questionnaire in questionnaires:
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
             if questionnaire.is_void():
                 return HttpResponseRedirect(dashboard_page)
             for rep_id in selected_rep_ids:
-                if rep_id in questionnaire.data_senders:
+                if rep_id in superusers.keys():
+                    users_in_selected_ds.append(superusers[rep_id])
+
+                elif rep_id in questionnaire.data_senders:
                     questionnaire.delete_datasender(manager, rep_id)
                     projects_name.add(questionnaire.name.capitalize())
                     removed_rep_ids.add(rep_id)
@@ -212,7 +216,24 @@ class DisassociateDataSendersView(DataSenderActionView):
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
         return HttpResponse(
-            json.dumps({"success": True, "message": _("The Data Sender(s) are removed from Questionnaire(s) successfully")}))
+            json.dumps({"success": True, "message": self.responseMessage(selected_rep_ids,users_in_selected_ds)}))
+
+    def fun(self, manager, project):
+        project.delete_datasender(manager, id)
+
+
+    def responseMessage(self, selected_rep_ids, users_in_selected_ds):
+        message = _("The Data Sender(s) are removed from project(s) successfully")
+        selected_users_count = len(users_in_selected_ds)
+
+        if len(selected_rep_ids) == selected_users_count:
+            message = _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
+                      ', '.join(users_in_selected_ds)
+        elif selected_users_count > 0:
+            message = _("The Data Sender(s) are removed from Questionnaire(s) successfully") + ". " + \
+                      _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
+                      ', '.join(users_in_selected_ds)
+        return message
 
 
 @csrf_view_exempt
