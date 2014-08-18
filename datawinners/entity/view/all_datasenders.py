@@ -223,7 +223,7 @@ class DisassociateDataSendersView(DataSenderActionView):
 
 
     def responseMessage(self, selected_rep_ids, users_in_selected_ds):
-        message = _("The Data Sender(s) are removed from project(s) successfully")
+        message = _("The Data Sender(s) are removed from Questionnaire(s) successfully")
         selected_users_count = len(users_in_selected_ds)
 
         if len(selected_rep_ids) == selected_users_count:
