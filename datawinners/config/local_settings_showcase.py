@@ -24,7 +24,7 @@ API_KEYS = {
 
 GOOGLE_ANALYTICS_ENABLED = False
 
-HNI_SUPPORT_EMAIL_ID = 'yadavr@thoughtworks.com'
+HNI_SUPPORT_EMAIL_ID = 'datawinnersblr@thoughtworks.com'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

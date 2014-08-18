@@ -2,6 +2,7 @@ import json
 import logging
 import re
 from tempfile import NamedTemporaryFile
+import traceback
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -14,10 +15,11 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt,
 from django.views.generic.base import View
 from django.template.defaultfilters import slugify
 import xlwt
+from datawinners.accountmanagement.models import Organization
+from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
+from django.core.mail import EmailMessage
 
 from datawinners.feeds.database import get_feeds_database
-from datawinners.search import update_datasender_for_project_change
-from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.search.submission_index import SubmissionSearchStore
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException
 from datawinners import settings
@@ -53,6 +55,7 @@ class ProjectUpload(View):
         return super(ProjectUpload, self).dispatch(*args, **kwargs)
 
     def post(self, request):
+        file_content = None
         try:
             file_content = request.raw_post_data
             tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
@@ -76,6 +79,7 @@ class ProjectUpload(View):
             questionnaire_id = mangrove_service.create_project()
 
         except Exception as e:
+            send_email_on_exception(request.user,"Questionnaire Upload",traceback.format_exc(),additional_details={'file_contents':file_content})
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [e.message if e.message else ugettext("Errors in excel")]
@@ -125,6 +129,7 @@ class ProjectUpdate(View):
     def post(self, request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
+        file_content = None
         try:
             file_content = request.raw_post_data
             tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
@@ -156,6 +161,7 @@ class ProjectUpdate(View):
 
 
         except Exception as e:
+            send_email_on_exception(request.user,"Questionnaire Edit",traceback.format_exc(),additional_details={'file_contents':file_content})
             message = e.message if e.message else "Some error in excel"
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'error_msg': [message], 'success': False
@@ -300,6 +306,7 @@ def new_xform_submission_post(request):
         return HttpResponse(json.dumps({'error_message': e.message}))
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
+        send_email_on_exception(request.user,"New Web Submission",traceback.format_exc())
         return HttpResponseBadRequest()
 
 
@@ -310,6 +317,7 @@ def edit_xform_submission_post(request, survey_response_id):
             update_submission_response(survey_response_id)
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
+        send_email_on_exception(request.user,"Edit Web Submission",traceback.format_exc(),additional_details={'survey_response_id':survey_response_id})
         return HttpResponseBadRequest()
 
 
@@ -326,7 +334,7 @@ def project_download(request):
 
     try:
         raw_excel = questionnaire.get_attachments('questionnaire.xls')
-        excel_transformed = XlsProjectParser().parse(raw_excel);
+        excel_transformed = XlsProjectParser().parse(raw_excel)
 
         response = HttpResponse(mimetype="application/vnd.ms-excel")
         response['Content-Disposition'] = 'attachment; filename="%s.xls"' % slugify(project_name)
@@ -339,3 +347,23 @@ def project_download(request):
         response = HttpResponse(status=404)
 
     return response
+
+
+def send_email_on_exception(user,error_type,stack_trace,additional_details=None):
+    email_message = ''
+    profile = user.get_profile()
+    organization = Organization.objects.get(org_id=profile.org_id)
+    file_contents = additional_details.pop('file_contents') if additional_details and additional_details.get('file_contents') else None
+    email_message += '\nError Scenario : %s (%s)\n' % (organization.name, profile.org_id)
+    email_message += '\nOrganization Details : %s (%s)' % (organization.name, profile.org_id)
+    email_message += '\nUser Email Id : %s\n' % user.username
+    email_message += '\n%s' % stack_trace
+    email = EmailMessage(subject="[ERROR] %s" % error_type, body=repr(re.sub("\n","<br/>",email_message)),
+                         from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
+    email.content_subtype = "html"
+
+    if file_contents:
+        email.attach("errored_excel.xls",content=file_contents,mimetype='application/ms-excel')
+
+
+    email.send()
