@@ -108,7 +108,7 @@ def es_questionnaire_field_name(field_code, form_model_id):
     """
         prefixes form_model id to namespace all fields on questionnaire
     """
-    return "%s_%s" % (form_model_id, lower(field_code))
+    return "%s_%s" % (form_model_id, (field_code))
 
 def es_unique_id_code_field_name(es_field_name):
     return es_field_name+'_unique_code'

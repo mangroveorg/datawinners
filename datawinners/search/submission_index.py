@@ -278,7 +278,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                 entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
                 entry_code = entry
                 search_dict.update(
-                    {es_unique_id_code_field_name(es_questionnaire_field_name(lower(field.code), form_model.id)): entry_code or UNKNOWN})
+                    {es_unique_id_code_field_name(es_questionnaire_field_name(field.code, form_model.id)): entry_code or UNKNOWN})
                 entry = entity_name
         elif field.type == "select":
             field = _update_select_field_by_revision(field, form_model, submission_doc)
@@ -317,9 +317,9 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                     for value in submission_values[field_code]:
                         _update_search_dict(dbm,form_model, field.fields, search_dict, submission_doc, value)
                         continue
-                search_dict.update({es_questionnaire_field_name(lower(field_code), form_model.id): json.dumps(entry)})
+                search_dict.update({es_questionnaire_field_name(field_code, form_model.id): json.dumps(entry)})
             else:
-                search_dict.update({es_questionnaire_field_name(lower(field.code), form_model.id): entry})
+                search_dict.update({es_questionnaire_field_name(field.code, form_model.id): entry})
 
     search_dict.update({'void': submission_doc.void})
 

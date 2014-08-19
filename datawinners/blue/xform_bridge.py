@@ -105,7 +105,7 @@ class XlsFormParser():
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
                     self._validate_group(errors, field)
-                errors.append(self._validate_for_uppercase_names(field))
+                #errors.append(self._validate_for_uppercase_names(field))
                 errors.append(self._validate_for_prefetch_csv(field))
             else:
                 errors.append("question type '" + field['type'] + "' is not supported")
@@ -429,14 +429,6 @@ class LabelForFieldNotPresentException(Exception):
 
     def __str__(self):
         return self.message
-
-class UppercaseNamesNotSupportedException(Exception):
-    def __init__(self):
-        self.message = _("Uppercase in names not supported")
-
-    def __str__(self):
-        return self.message
-
 
 class XlsProjectParser(XlsParser):
     def parse(self, xls_contents):

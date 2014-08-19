@@ -87,7 +87,7 @@ class SubmissionExcelHeader():
             if isinstance(field, FieldSet) and field.is_group():
                 self._update_with_field_meta(field.fields, result)
             else:
-                field_name = es_questionnaire_field_name(field.code.lower(), self._form_model.id)
+                field_name = es_questionnaire_field_name(field.code, self._form_model.id)
 
                 if result.has_key(field_name):
                     result.get(field_name).update({"type": field.type})

@@ -9,27 +9,6 @@ from datawinners.blue.xform_bridge import XlsFormParser, get_generated_xform_id_
 DIR = os.path.dirname(__file__)
 
 class TestXformBridge(unittest.TestCase):
-    def test_should_populate_error_when_name_contains_uppercase_characters(self):
-        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
-            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
-            fields = {
-                'children': [{u'bind': {u'required': u'yes'}, u'type': u'text', u'name': u'name', u'label': u'Name'}, {
-                    u'children': [
-                        {u'bind': {u'required': u'no'}, u'type': u'text', u'name': u'college',
-                         u'label': u'College Name'}
-                    ],
-                    # here is uppercase name
-                    u'type': u'repeat', u'name': u'Highest_Degree', u'label': u'degree'},
-                             {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
-                                 {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
-                                  'type': 'calculate',
-                                  'name': 'instanceID'}]}]}
-
-            get_xform_dict.return_value = fields
-
-            actual_errors = xls_form_parser._validate_fields_are_recognised(fields['children'])
-
-            self.assertEqual(actual_errors, {"Uppercase in names not supported"})
 
     def test_xform_validation_for_nested_repeats_names(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
