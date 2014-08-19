@@ -19,7 +19,7 @@ class SubmissionHeader():
         header_dict.update(self.update_static_header_info())
 
         def key_attribute(field):
-            return field.code.lower()
+            return field.code
 
         entity_questions = self.form_model.entity_questions
         entity_question_dict = dict((field.code, field) for field in entity_questions)
