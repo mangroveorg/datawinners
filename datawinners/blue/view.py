@@ -14,6 +14,7 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
 from django.template.defaultfilters import slugify
+from pyxform.errors import PyXFormError
 import xlwt
 from datawinners.accountmanagement.models import Organization
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
@@ -77,6 +78,12 @@ class ProjectUpload(View):
                                                questionnaire_code=questionnaire_code, project_name=project_name,
                                                xls_form=file_content)
             questionnaire_id = mangrove_service.create_project()
+
+        except PyXFormError as e :
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [e.message if e.message else ugettext("Errors in excel")]
+            }))
 
         except Exception as e:
             send_email_on_exception(request.user,"Questionnaire Upload",traceback.format_exc(),additional_details={'file_contents':file_content})
