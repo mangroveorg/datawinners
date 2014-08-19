@@ -172,7 +172,10 @@ class XlsFormParser():
     def _get_label(self, field):
 
         if 'label' not in field:
-            if field['type'] == 'group' and field['control']['appearance']=='field-list':
+            if field['type'] == 'group' and 'control' in field:
+                if field['control']['appearance']=='field-list':
+                    return field['name']
+            elif field['type'] == 'calculate':
                 return field['name']
             else:
                 raise LabelForFieldNotPresentException(field_name=field['name'])
