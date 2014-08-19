@@ -38,6 +38,7 @@
     <script type="text/javascript" src="/media/javascript/project/filter/json2form.js"></script>
     <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
     <script src="/media/javascript/data_tables/js/dwtable.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_results.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_results_index.js"></script>
     <script type="text/javascript" src="/media/javascript/project/import_submission.js"></script>
@@ -73,6 +74,7 @@
     {% compress js %}
         <script type="text/javascript">
             var entity_type = '{{ entity_type }}';
+            var is_submission_exported_to_multiple_sheets = '{{ is_submission_exported_to_multiple_sheets }}';
             var render_table_url = '/project/submissions/{{ questionnaire_code }}';
             var project_id = '{{ project.id }}';
             var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
@@ -127,10 +129,6 @@
             <a id="ok_button" class="button yes_button">{% trans "Continue" %}</a>
         </div>
     </div>
-    <form id="export_form" method="POST">
-        {% csrf_token %}
-        <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
-        <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
-    </form>
     {% include "project/import_submission.html" %}
+    {% include "project/export_submission.html" %}
 {% endblock %}

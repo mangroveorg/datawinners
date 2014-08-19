@@ -92,12 +92,37 @@ DW.SubmissionLogExport = function () {
         self.exportLink = $('.export_link');
         self.exportForm = $('#export_form');
         self.url = '/project/export/log' + '?type=' + currentTabName;
+        _initialize_dialog();
         _initialize_events();
+    };
+
+    var _updateAndSubmitForm = function(){
+        self.exportForm.appendJson({"search_filters": JSON.stringify(filter_as_json())}).attr('action', self.url).submit();
+    };
+
+    var _initialize_dialog = function(){
+       var dialogOptions = {
+                successCallBack: function (callback) {
+                    callback();
+                    _updateAndSubmitForm();
+                },
+                title: gettext("Export submissions"),
+                link_selector: ".export_link",
+                dialogDiv: "#export_submission_multiple_sheet_dialog",
+                cancelLinkSelector: "#cancel_dialog",
+                width: 580
+            };
+       self.dialog = new DW.Dialog(dialogOptions).init();
     };
 
     var _initialize_events = function () {
         self.exportLink.click(function () {
-            self.exportForm.appendJson({"search_filters": JSON.stringify(filter_as_json())}).attr('action', self.url).submit();
+           if(is_submission_exported_to_multiple_sheets === 'True'){
+                self.dialog.show();
+           }
+           else{
+               _updateAndSubmitForm();
+           }
         });
     };
 };

@@ -134,6 +134,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
 
         result_dict = {
             "tab": tab,
+            "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253, # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
             "filterable_fields": filterable_fields
@@ -151,8 +152,6 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
 @is_project_exist
 def analysis_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
-
-
     org_id = helper.get_org_id_by_user(request.user)
 
     if request.method == 'GET':
@@ -165,10 +164,11 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {
-            "is_quota_reached": is_quota_reached(request, org_id=org_id),
-            "first_filterable_field": first_filterable_fields,
-            "filterable_fields": filterable_fields
-            }
+                "is_quota_reached": is_quota_reached(request, org_id=org_id),
+                "first_filterable_field": first_filterable_fields,
+                "filterable_fields": filterable_fields,
+                "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253, # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
+              }
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/analysis_results.html', result_dict,
                                   context_instance=RequestContext(request))

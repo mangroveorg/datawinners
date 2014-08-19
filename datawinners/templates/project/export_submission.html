@@ -1,0 +1,15 @@
+{% load i18n %}
+<div id="export_submission_multiple_sheet_dialog" style="display: none;">
+    {% trans "Submission excel will contain multiple sheets" %}<br/><br/>
+    {% trans "Are you ok with the proposed layout?" %}
+    <div class="text_align_right padding_top_20">
+        <a id="cancel_dialog" class="dialog_cancel_button dialog-link" href="javascript:void(0);">{% trans "Cancel" %}</a>
+        <a id="save_changes" class="button yes_button">{% trans "Ok Got it!" %}</a>
+    </div>
+</div>
+
+<form id="export_form" method="POST">
+    {% csrf_token %}
+    <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+    <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
+</form>
