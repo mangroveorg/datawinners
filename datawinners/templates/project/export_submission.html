@@ -1,10 +1,9 @@
 {% load i18n %}
 <div id="export_submission_multiple_sheet_dialog" style="display: none;">
-    {% trans "Submission excel will contain multiple sheets" %}<br/><br/>
-    {% trans "Are you ok with the proposed layout?" %}
+    {% trans "Current Excel version does not support an export of Submissions with more than 256 columns to one sheet. Your submissions will be exported to several Excel sheets." %}<br/><br/>
     <div class="text_align_right padding_top_20">
         <a id="cancel_dialog" class="dialog_cancel_button dialog-link" href="javascript:void(0);">{% trans "Cancel" %}</a>
-        <a id="save_changes" class="button yes_button">{% trans "Ok Got it!" %}</a>
+        <a id="save_changes" class="button yes_button">{% trans "OK, Got it!" %}</a>
     </div>
 </div>
 

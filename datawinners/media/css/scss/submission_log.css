@@ -51,3 +51,6 @@ ul.ui-autocomplete {
 
 .qq-upload-fail, .qq-upload-list {
   display: none; }
+
+.dialog_cancel_button {
+  margin-right: 15px; }
