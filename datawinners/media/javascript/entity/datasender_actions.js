@@ -78,21 +78,23 @@ DW.DataSenderActionHandler = function () {
         handle_datasender_edit(table, selected_ids);
     };
     this["remove_from_project"] = function(table, selectedIds, all_selected) {
-        DW.loading();
-        table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, selectedIds, all_selected);
-        $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
-            data: { 'ids':selectedIds.join(';'),
-                    'project_name':$("#project_name").val(),
-                    'project_id':$("#project_id").val(),
-                    'all_selected':all_selected,
-                    'search_query':$(".dataTables_filter input").val()
-                  }
-        }).done(function (json_response) {
-                table.fnReloadAjax();
-                var response = $.parseJSON(json_response);
-                flash_message(response.message, response.success);
-            }
-        );
+        if(handle_datasender_dissociate(table,selectedIds,all_selected)){
+            DW.loading();
+            table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, selectedIds, all_selected);
+            $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
+                data: { 'ids':selectedIds.join(';'),
+                        'project_name':$("#project_name").val(),
+                        'project_id':$("#project_id").val(),
+                        'all_selected':all_selected,
+                        'search_query':$(".dataTables_filter input").val()
+                      }
+            }).done(function (json_response) {
+                    table.fnReloadAjax();
+                    var response = $.parseJSON(json_response);
+                    flash_message(response.message, response.success);
+                }
+            );
+    }
     };
 };
 
@@ -229,6 +231,23 @@ function delete_all_ds_are_users_show_warning(users) {
     delete_all_ds_are_users.show_warning();
 }
 
+function dissociate_all_ds_are_users_show_warning(users) {
+
+    var kwargs = {container: "#dissociate_all_ds_are_users_warning_dialog",
+        autoOpen: false,
+        cancel_handler: function () {
+            $('#action').removeAttr("data-selected-action");
+            $("input.is_user").attr("checked", false);
+        },
+        width: 550,
+        height: "auto"
+    }
+
+    $(kwargs.container + " .users_list").html(users);
+    var dissociate_all_ds_are_users = new DW.warning_dialog(kwargs);
+    dissociate_all_ds_are_users.show_warning();
+}
+
 function uncheck_users(table, user_ids) {
     $.each(user_ids, function (id) {
         $(table).find(":checked").filter("[value=" + id + "]").attr('checked', false);
@@ -238,6 +257,17 @@ function uncheck_users(table, user_ids) {
     });
 }
 
+function handle_datasender_dissociate(table, allIds, all_selected){
+    var superusers_selected = get_user_names_from_selected_datasenders(table, allIds, all_selected);
+    if (superusers_selected.length) {
+        var users_list_for_html = "<li>" + superusers_selected.join("</li><li>") + "</li>";
+        if (superusers_selected.length == allIds.length) { //Each DS selected is also User
+            dissociate_all_ds_are_users_show_warning(users_list_for_html);
+            return false;
+        }
+    }
+    return true;
+}
 
 function handle_datasender_delete(table, allIds, all_selected){
     $("#note_for_delete_users").hide();
