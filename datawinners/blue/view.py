@@ -166,6 +166,11 @@ class ProjectUpdate(View):
             self._purge_feed_documents(questionnaire, request)
             self.recreate_submissions_mapping(manager, questionnaire)
 
+        except PyXFormError as e :
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [e.message if e.message else ugettext("Errors in excel")]
+            }))
 
         except Exception as e:
             send_email_on_exception(request.user,"Questionnaire Edit",traceback.format_exc(),additional_details={'file_contents':file_content})
