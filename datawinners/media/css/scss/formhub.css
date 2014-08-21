@@ -4,7 +4,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
@@ -328,7 +327,7 @@ th {
 
 html {
   font-size: 62.5%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -1737,7 +1736,6 @@ input[type="button"].btn-block {
   src: url("/media/css/font/glyphicons-halflings-regular.eot");
   src: url("/media/css/font/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/media/css/font/glyphicons-halflings-regular.woff") format("woff"), url("/media/css/font/glyphicons-halflings-regular.ttf") format("truetype"), url("/media/css/font/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
-
 .glyphicon {
   position: relative;
   top: 1px;
@@ -2949,14 +2947,14 @@ input[type="button"].btn-block {
   border: 1px solid #cccccc;
   border-radius: 4px;
 }
-.input-group-addon.input-sm,
+.input-group-addon.input-sm, .input-group-sm > input.input-group-addon:not([type=radio]):not([type=checkbox]),
 .input-group-sm > .input-group-addon,
 .input-group-sm > .input-group-btn > .input-group-addon.btn {
   padding: 5px 10px;
   font-size: 13px;
   border-radius: 3px;
 }
-.input-group-addon.input-lg,
+.input-group-addon.input-lg, .input-group-lg > input.input-group-addon:not([type=radio]):not([type=checkbox]),
 .input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .input-group-addon.btn {
   padding: 10px 16px;
@@ -4365,7 +4363,7 @@ button.close {
   border-radius: 10px;
   cursor: pointer;
   background-color: #000 \9;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
 }
 .carousel-indicators .active {
   margin: 0;
@@ -4466,7 +4464,6 @@ button.close {
 @-ms-viewport {
   width: device-width;
 }
-
 .visible-xs, .visible-sm, .visible-md, .visible-lg {
   display: none !important;
 }
@@ -5436,7 +5433,7 @@ input:not([type="radio"]):not([type="checkbox"]), textarea {
 .geopicker.full-screen .map-canvas-wrapper {
   float: none;
   width: 100%;
-  padding: 0 25px 25px 25px;
+  padding: 25px;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -5481,6 +5478,24 @@ input:not([type="radio"]):not([type="checkbox"]), textarea {
 }
 .geopicker.full-screen .points {
   display: none;
+}
+.geopicker .leaflet-control-layers-toggle,
+.geopicker .leaflet-retina .leaflet-control-layers-toggle {
+  background: none;
+  padding: 5px;
+  color: #888;
+  text-align: center;
+  font-size: 20px;
+}
+
+.question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) .geopicker label {
+  line-height: 16px;
+  font-weight: normal;
+}
+.question:not(.or-appearance-label):not(.or-appearance-compact):not(.or-appearance-quickcompact) .geopicker label input[type=radio] ~ .option-label::before {
+  font-size: 16px;
+  height: 16px;
+  margin-right: 2px;
 }
 
 /* required styles for Leaflet (unchanged) */
@@ -7361,6 +7376,11 @@ input:not([type="radio"]):not([type="checkbox"]), textarea {
 }
 
 /** apply bootstrap .form-control class by default **/
+input:not([type=radio]):not([type=checkbox]), select, textarea {
+  font-size: 15px;
+  padding: 6px 12px;
+}
+
 .or-group {
   border-top: none;
 }
