@@ -8,7 +8,7 @@ class UserDeleteDialog(Page):
         Page.__init__(self, driver)
 
     def ok(self):
-        self.driver.find(by_css("a.no_button")).click()
+        self.driver.find_visible_element(by_css("a.no_button")).click()
         self.driver.wait_until_modal_dismissed()
 
     def get_message(self):

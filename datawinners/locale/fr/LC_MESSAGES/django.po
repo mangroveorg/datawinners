@@ -4117,6 +4117,9 @@ msgstr "Aucune action requise. Nous afficherons la version mise à jour du Quest
 msgid "OK, Got it"
 msgstr "OK, Compris"
 
+msgid "OK, Got It"
+msgstr "OK, Compris"
+
 msgid "Your Submission(s) will be moved to Deleted Submissions.<br/>This action cannot be undone."
 msgstr "Votre/vos Soumission(s) sera/seront déplacée(s) vers Soumissions Supprimées.<br/>Cette action ne peut pas être annulée"
 
@@ -5125,3 +5128,6 @@ msgstr "Désolé ! Nous n'avons pas pu télécharger votre Questionnaire. Actuel
 
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""
+
+msgid "The following Data Senders will not be removed from the Questionnaire(s) as they are DataWinners administrators"
+msgstr "Les Expéditeurs de Données suivants ne seront pas retirés du(des) questionnaire(s) car ils sont des Administrateurs de DataWinners"

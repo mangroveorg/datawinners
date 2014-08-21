@@ -33,8 +33,11 @@
 .device_checkmark {
   padding: 0 4px 0 4px; }
 
-#delete_all_ds_are_users_warning_dialog ul.bulleted, #delete_entity_block ul.bulleted {
+#delete_all_ds_are_users_warning_dialog ul.bulleted, #delete_entity_block ul.bulleted, #dissociate_all_ds_are_users_warning_dialog ul.bulleted {
   padding-left: 20px; }
 
 .ds_action {
   margin-top: 6px; }
+
+.users_list {
+  padding-left: 20px; }

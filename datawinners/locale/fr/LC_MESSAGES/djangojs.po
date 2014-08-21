@@ -1324,3 +1324,6 @@ msgstr "Annuler les modifications"
 
 msgid "Cancel Editing"
 msgstr "Annuler les Modifications"
+
+msgid "DataWinners Administrators Will Not Be Removed"
+msgstr "Les Administrateurs de DataWinners ne seront pas retirés"

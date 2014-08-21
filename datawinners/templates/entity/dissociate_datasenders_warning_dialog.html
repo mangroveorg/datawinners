@@ -1,20 +1,19 @@
 {% load i18n %}
     <div id="dissociate_ds_block" style="display:none;">
         <div class="warning_message">
-            <p>{% trans "data sender delete error text" %}</p>
             <div id="note_for_dissociate_users">
-                <br/>{% trans "The following Data Senders will not be removed from the Questionnaire as they are DataWinners administrators:" %}
-                <ul class="users_list bulleted"></ul>
+                <br/>{% trans "The following Data Senders will not be removed from the Questionnaire(s) as they are DataWinners administrators" %}
+                <ul class="users_list bulleted" style="ma"></ul>
             </div>
         </div>
         <div class="text_align_right">
             <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
-            <a class="button" id="ok_button">{% trans "OK, Got it" %}</a>
+            <a class="button" id="ok_button">{% trans "OK, Got It" %}</a>
         </div>
     </div>
 
     <div id="dissociate_all_ds_are_users_warning_dialog" style="display: none;">
-        <div class="warning_message">{% trans "The following Data Senders will not be removed from the Questionnaire as they are DataWinners administrators:" %}
+        <div class="warning_message">{% trans "The following Data Senders will not be removed from the Questionnaire(s) as they are DataWinners administrators" %}
             <ul class="users_list bulleted"></ul>
         </div>
         <div class="text_align_right">
