@@ -103,6 +103,7 @@ DW.SubmissionLogExport = function () {
     var _initialize_dialog = function(){
        var dialogOptions = {
                 successCallBack: function (callback) {
+                    DW.TrackEvent('export-submissions', 'export-submissions-multiple-sheet');
                     callback();
                     _updateAndSubmitForm();
                 },
@@ -121,6 +122,7 @@ DW.SubmissionLogExport = function () {
                 self.dialog.show();
            }
            else{
+               DW.TrackEvent('export-submissions', 'export-submissions-single-sheet');
                _updateAndSubmitForm();
            }
         });
