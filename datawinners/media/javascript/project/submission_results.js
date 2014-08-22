@@ -107,7 +107,7 @@ DW.SubmissionLogExport = function () {
                     callback();
                     _updateAndSubmitForm();
                 },
-                title: gettext("Submission Exceeds Number of Supported Columns"),
+                title: gettext("Submission Exceeds Number of Supported Columns."),
                 link_selector: ".export_link",
                 dialogDiv: "#export_submission_multiple_sheet_dialog",
                 cancelLinkSelector: "#cancel_dialog",

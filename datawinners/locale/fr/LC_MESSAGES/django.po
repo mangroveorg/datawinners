@@ -4120,6 +4120,9 @@ msgstr "OK, Compris"
 msgid "OK, Got It"
 msgstr "OK, Compris"
 
+msgid "OK, Got it!"
+msgstr "OK, Compris!"
+
 msgid "Your Submission(s) will be moved to Deleted Submissions.<br/>This action cannot be undone."
 msgstr "Votre/vos Soumission(s) sera/seront déplacée(s) vers Soumissions Supprimées.<br/>Cette action ne peut pas être annulée"
 
@@ -5135,8 +5138,6 @@ msgstr "Type de média du formulaire XLS."
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""
 
-
-
 msgid "The following Data Senders will not be removed from the Questionnaire(s) as they are DataWinners administrators"
 msgstr "Les Expéditeurs de Données suivants ne seront pas retirés du(des) questionnaire(s) car ils sont des Administrateurs de DataWinners"
 
@@ -5166,3 +5167,9 @@ msgstr "Préchargement des données CSV (fonction Exctraction de Données)"
 
 msgid "XLSForm settings worksheet and the related values in survey sheet."
 msgstr "la Feuille de paramétrage XLSForm et les valeurs y afférentes dans le formulaire d'enquête"
+
+msgid "Export Submissions"
+msgstr "Exporter les Soumissions"
+
+msgid "The current version of DataWinners supports the export of Submissions to Excel with up to 256 columns per Excel sheet. Your Submissions will be exported to several Excel sheets."
+msgstr "La version actuelle de DataWinners permet l'exportation des Soumissions vers Excel, avec une limite de 256 colonnes par feuille de calcul Excel. Vos Soumissions seront ainsi exportées et réparties en plusieurs feuilles de calcul Excel."
