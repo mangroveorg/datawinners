@@ -156,7 +156,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"Settings sheet is not supported - Form title"})
+            self.assertEquals(actual_errors, {"XLSForm settings worksheet and the related values in survey sheet."})
 
 
     def test_should_populate_error_when_settings_sheet_present_with_form_id(self):
@@ -176,7 +176,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"Settings sheet is not supported - Form Id"})
+            self.assertEquals(actual_errors, {"XLSForm settings worksheet and the related values in survey sheet."})
 
     def test_should_populate_error_when_settings_sheet_present_with_public_key(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -196,7 +196,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"Settings sheet is not supported - Public Key"})
+            self.assertEquals(actual_errors, {"XLSForm settings worksheet and the related values in survey sheet."})
 
     def test_should_populate_error_when_settings_sheet_present_with_default_language(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -215,7 +215,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"Settings sheet is not supported - Default Language"})
+            self.assertEquals(actual_errors, {"XLSForm settings worksheet and the related values in survey sheet."})
 
     def test_should_populate_error_when_settings_sheet_present_with_submission_url(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -235,7 +235,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"Settings sheet is not supported - Submission Url"})
+            self.assertEquals(actual_errors, {"XLSForm settings worksheet and the related values in survey sheet."})
 
     def test_should_not_create_question_for_select_that_are_only_labels(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:

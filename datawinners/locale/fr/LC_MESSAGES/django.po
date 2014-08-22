@@ -5135,6 +5135,8 @@ msgstr "Type de média du formulaire XLS."
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""
 
+
+
 msgid "The following Data Senders will not be removed from the Questionnaire(s) as they are DataWinners administrators"
 msgstr "Les Expéditeurs de Données suivants ne seront pas retirés du(des) questionnaire(s) car ils sont des Administrateurs de DataWinners"
 
@@ -5150,8 +5152,17 @@ msgstr "dateTemps"
 msgid "metadata"
 msgstr "Metadonnées"
 
+msgid "video"
+msgstr "vidéo"
+
+msgid "barcode"
+msgstr "code barre"
+
 msgid "select all that apply or specify other"
 msgstr "\"autre\" fonctionnalité pour les questions à choix multiples "
 
 msgid "Prefetch of csv not supported"
 msgstr "Préchargement des données CSV (fonction Exctraction de Données)"
+
+msgid "XLSForm settings worksheet and the related values in survey sheet."
+msgstr "la Feuille de paramétrage XLSForm et les valeurs y afférentes dans le formulaire d'enquête"

@@ -282,20 +282,21 @@ class XlsFormParser():
 
     def _validate_settings_page_is_not_present(self, xform_dict):
         errors = []
+        setting_page_error = _("XLSForm settings worksheet and the related values in survey sheet.")
         if xform_dict['title'] != xform_dict['name']:
-            errors.append(_("Settings sheet is not supported - Form title"))
+            errors.append(setting_page_error)
 
         if xform_dict['id_string'] != xform_dict['name']:
-            errors.append(_("Settings sheet is not supported - Form Id"))
+            errors.append(setting_page_error)
 
         if xform_dict['default_language'] != 'default':
-            errors.append(_("Settings sheet is not supported - Default Language"))
+            errors.append(setting_page_error)
 
         if 'public_key' in xform_dict:
-            errors.append(_("Settings sheet is not supported - Public Key"))
+            errors.append(setting_page_error)
 
         if 'submission_url' in xform_dict:
-            errors.append(_("Settings sheet is not supported - Submission Url"))
+            errors.append(setting_page_error)
 
         return set(errors)
 
