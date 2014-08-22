@@ -39,12 +39,12 @@ class TestXFormBridge(unittest.TestCase):
     @attr('dcs', 'functional_test')
     def test_should_throw_error_for_unsupported_valid_field_type(self):
         errors, xform, json_xform_data = XlsFormParser(self.UNSUPPORTED_FIELDS, u"My questionnairé").parse()
-        self.assertEqual(errors, set(["question type 'photo' is not supported"]))
+        self.assertEqual(errors, set(["photo as a datatype"]))
 
     @attr('dcs', 'functional_test')
     def test_should_throw_error_for_invalid_field_type(self):
         errors, xform, json_xform_data = XlsFormParser(self.INVALID_FIELDS, u"My questionnairé").parse()
-        self.assertEqual(errors, set(["question type 'dfdfd' is not supported"]))
+        self.assertEqual(errors, set(["dfdfd as a datatype"]))
 
     @attr('dcs', 'functional_test')
     def test_should_convert_cascaded_select_field(self):
