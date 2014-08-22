@@ -107,7 +107,12 @@ class TestXformBridge(unittest.TestCase):
                                     u'label': u'1. Are you a student?',u'choices':[{u'name': u'yes'}, {u'name': u'no', u'label': u'No'}]},
                                    {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
                                        {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
-                                        'type': 'calculate', 'name': 'instanceID'}]}]}
+                                        'type': 'calculate', 'name': 'instanceID'}]}],
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'default_language': 'default'
+                     }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
@@ -121,7 +126,12 @@ class TestXformBridge(unittest.TestCase):
                                     u'label': u'1. Are you a student?'},
                                    {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
                                        {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
-                                        'type': 'calculate', 'name': 'instanceID'}]}]}
+                                        'type': 'calculate', 'name': 'instanceID'}]}],
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'default_language': 'default'
+            }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
@@ -129,6 +139,103 @@ class TestXformBridge(unittest.TestCase):
 
             self.assertEquals(actual_errors, {"Prefetch of csv not supported"})
 
+    def test_should_populate_error_when_settings_sheet_present_with_form_title(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{u'bind': {u'required': u'no'}, u'type': u'text', u'name': u'college',
+                                  u'label': u'College Name'},
+                                   {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                       {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                        'type': 'calculate', 'name': 'instanceID'}]}],
+                      'title': 'My form title',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'default_language': 'default'
+                     }
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+            actual_errors, updated_xform, questions = xls_form_parser.parse()
+
+            self.assertEquals(actual_errors, {"Settings sheet is not supported - Form title"})
+
+
+    def test_should_populate_error_when_settings_sheet_present_with_form_id(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{u'bind': {u'required': u'no'}, u'type': u'text', u'name': u'college',
+                                  u'label': u'College Name'},
+                                   {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                       {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                        'type': 'calculate', 'name': 'instanceID'}]}],
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'My Form Id',
+                      'default_language': 'default'
+                     }
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+            actual_errors, updated_xform, questions = xls_form_parser.parse()
+
+            self.assertEquals(actual_errors, {"Settings sheet is not supported - Form Id"})
+
+    def test_should_populate_error_when_settings_sheet_present_with_public_key(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{u'bind': {u'required': u'no'}, u'type': u'text', u'name': u'college',
+                                  u'label': u'College Name'},
+                                   {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                       {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                        'type': 'calculate', 'name': 'instanceID'}]}],
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'public_key': 'my_public_key',
+                      'default_language': 'default'
+                     }
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+            actual_errors, updated_xform, questions = xls_form_parser.parse()
+
+            self.assertEquals(actual_errors, {"Settings sheet is not supported - Public Key"})
+
+    def test_should_populate_error_when_settings_sheet_present_with_default_language(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{u'bind': {u'required': u'no'}, u'type': u'text', u'name': u'college',
+                                  u'label': u'College Name'},
+                                   {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                       {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                        'type': 'calculate', 'name': 'instanceID'}]}],
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'default_language': 'default_something'
+                     }
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+            actual_errors, updated_xform, questions = xls_form_parser.parse()
+
+            self.assertEquals(actual_errors, {"Settings sheet is not supported - Default Language"})
+
+    def test_should_populate_error_when_settings_sheet_present_with_submission_url(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{u'bind': {u'required': u'no'}, u'type': u'text', u'name': u'college',
+                                  u'label': u'College Name'},
+                                   {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                       {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                        'type': 'calculate', 'name': 'instanceID'}]}],
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'submission_url': 'my submission url',
+                      'default_language': 'default'
+                     }
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+            actual_errors, updated_xform, questions = xls_form_parser.parse()
+
+            self.assertEquals(actual_errors, {"Settings sheet is not supported - Submission Url"})
 
     def test_should_not_create_question_for_select_that_are_only_labels(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:

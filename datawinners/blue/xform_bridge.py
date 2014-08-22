@@ -148,6 +148,8 @@ class XlsFormParser():
 
     def parse(self):
         errors = self._validate_fields_are_recognised(self.xform_dict['children'])
+        settings_page_errors = self._validate_settings_page_is_not_present(self.xform_dict)
+        errors = errors.union(settings_page_errors)
         try:
             self._validate_media_in_choices(self.xform_dict['children'])
         except TypeNotSupportedException as e:
@@ -277,6 +279,25 @@ class XlsFormParser():
         if 'bind' in field and 'calculate' in field['bind'] and 'pulldata(' in field['bind']['calculate']:
             return _("Prefetch of csv not supported")
         return None
+
+    def _validate_settings_page_is_not_present(self, xform_dict):
+        errors = []
+        if xform_dict['title'] != xform_dict['name']:
+            errors.append(_("Settings sheet is not supported - Form title"))
+
+        if xform_dict['id_string'] != xform_dict['name']:
+            errors.append(_("Settings sheet is not supported - Form Id"))
+
+        if xform_dict['default_language'] != 'default':
+            errors.append(_("Settings sheet is not supported - Default Language"))
+
+        if 'public_key' in xform_dict:
+            errors.append(_("Settings sheet is not supported - Public Key"))
+
+        if 'submission_url' in xform_dict:
+            errors.append(_("Settings sheet is not supported - Submission Url"))
+
+        return set(errors)
 
 
 class MangroveService():
