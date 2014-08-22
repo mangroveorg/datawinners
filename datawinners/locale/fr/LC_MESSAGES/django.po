@@ -5124,10 +5124,34 @@ msgid "No, Don't Cancel Changes"
 msgstr "Non, ne pas annuler les modifications"
 
 msgid "nested repeats not supported"
-msgstr "Désolé ! Nous n'avons pas pu télécharger votre Questionnaire. Actuellement, DataWinners accepte seulement un niveau de répétition de séries de questions . Votre Questionnaire comporte deux niveaux. Veuillez supprimer le second niveau et essayez une nouvelle fois."
+msgstr "Plus d'un niveau de répétions de questions."
+
+msgid "Language specification is not supported"
+msgstr "Paramètres de langue du formulaire XLS"
+
+msgid "attaching media to fields is not supported"
+msgstr "Type de média du formulaire XLS."
 
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""
 
 msgid "The following Data Senders will not be removed from the Questionnaire(s) as they are DataWinners administrators"
 msgstr "Les Expéditeurs de Données suivants ne seront pas retirés du(des) questionnaire(s) car ils sont des Administrateurs de DataWinners"
+
+msgid "%s as a datatype"
+msgstr "Type de données : %s"
+
+msgid "time"
+msgstr "temps"
+
+msgid "datetime"
+msgstr "dateTemps"
+
+msgid "metadata"
+msgstr "Metadonnées"
+
+msgid "select all that apply or specify other"
+msgstr "\"autre\" fonctionnalité pour les questions à choix multiples "
+
+msgid "Prefetch of csv not supported"
+msgstr "Préchargement des données CSV (fonction Exctraction de Données)"

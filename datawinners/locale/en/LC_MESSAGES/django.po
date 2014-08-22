@@ -4638,7 +4638,13 @@ msgid "account wide sms learn more text part1"
 msgstr "Translate each automatic reply SMS. For some replies, DataWinners creates a personalized response. These personalized messages have text inside a gray box (example:"
 
 msgid "nested repeats not supported"
-msgstr "Sorry!  We could not upload your Questionnaire. Currently, DataWinners only supports one level of a repeated set of questions. Your Questionnaire contains two levels. Please remove the second level and try again."
+msgstr "more than one level of repeated questions."
+
+msgid "Language specification is not supported"
+msgstr "XLSForm language settings."
+
+msgid "attaching media to fields is not supported"
+msgstr "XLSForm media type."
 
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""
@@ -4648,3 +4654,15 @@ msgstr "Use this option if you want to create advanced features in your Question
 
 msgid "r_tooltip_advanced_questionnaire_option"
 msgstr "This is our first release of the Upload XLSForm feature.  Please help us to improve it by sending any feedback to <a> support@datawinners.com. </a>"
+
+msgid "Prefetch of csv not supported"
+msgstr "Preloading of CSV data (the PullData() function)."
+
+msgid "(%s) as a datatype"
+msgstr "(%s) as a datatype"
+
+msgid "select all that apply or specify other"
+msgstr "\"or_other\" function for multiple choice questions"
+
+
+

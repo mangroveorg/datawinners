@@ -108,9 +108,9 @@ class XlsFormParser():
                 #errors.append(self._validate_for_uppercase_names(field))
                 errors.append(self._validate_for_prefetch_csv(field))
             else:
-                errors.append("question type '" + field['type'] + "' is not supported")
+                errors.append(_("%s as a datatype") % _(field['type']))
             if field.get('media'):
-                errors.append("attaching media to fields is not supported")
+                errors.append(_("attaching media to fields is not supported"))
         return set(errors) - set([None])
 
     def _validate_for_nested_repeats(self, field):
@@ -144,7 +144,7 @@ class XlsFormParser():
                 self._validate_media_in_choices(field['children'])
             choices = field.get('choices')
             if choices and self._media_in_choices(choices):
-                raise TypeNotSupportedException("media is not supported in choices" )
+                raise TypeNotSupportedException(_("attaching media to fields is not supported"))
 
     def parse(self):
         errors = self._validate_fields_are_recognised(self.xform_dict['children'])

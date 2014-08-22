@@ -11,7 +11,7 @@ DW.showError = function(errors){
     error_messages += "</ul>";
     var flash_message = $("#xlx-message");
     flash_message.removeClass("none").removeClass("success-message-box").addClass("message-box").
-        html("<span> Sorry! The current version of DataWinners does not support</span>"+ error_messages +"<span>Update your XLSForm and upload again.</span>").show();
+        html("<span>" + gettext('Sorry! Current version of DataWinners does not support') + "</span>"+ error_messages +"<span>" + gettext('Update your XLSForm and upload again.') + "</span>").show();
 };
 
 DW.showSuccess = function(message){

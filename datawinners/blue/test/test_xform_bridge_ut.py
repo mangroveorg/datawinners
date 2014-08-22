@@ -28,7 +28,7 @@ class TestXformBridge(unittest.TestCase):
             get_xform_dict.return_value = fields
             actual_errors = xls_form_parser._validate_fields_are_recognised(fields['children'])
 
-            self.assertEqual(actual_errors, {"Sorry!  We could not upload your Questionnaire. Currently, DataWinners only supports one level of a repeated set of questions. Your Questionnaire contains two levels. Please remove the second level and try again."})
+            self.assertEqual(actual_errors, {"more than one level of repeated questions."})
 
 
     def test_should_populate_error_when_label_defined_in_multiple_languages(self):
@@ -48,7 +48,7 @@ class TestXformBridge(unittest.TestCase):
                                         'type': 'calculate', 'name': 'instanceID'}]}]}
             get_xform_dict.return_value = fields
             actual_errors = xls_form_parser._validate_fields_are_recognised(fields['children'])
-            self.assertEquals(actual_errors, {"Language specification is not supported"})
+            self.assertEquals(actual_errors, {"XLSForm language settings."})
 
     def test_should_populate_error_when_label_defined_in_single_explict_language(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -64,7 +64,7 @@ class TestXformBridge(unittest.TestCase):
                                         'type': 'calculate', 'name': 'instanceID'}]}]}
             get_xform_dict.return_value = fields
             actual_errors = xls_form_parser._validate_fields_are_recognised(fields['children'])
-            self.assertEquals(actual_errors, {"Language specification is not supported"})
+            self.assertEquals(actual_errors, {"XLSForm language settings."})
 
     def test_should_populate_error_when_hint_defined_in_one_or_more_languages(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -82,7 +82,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors = xls_form_parser._validate_fields_are_recognised(fields['children'])
 
-            self.assertEquals(actual_errors, {"Language specification is not supported"})
+            self.assertEquals(actual_errors, {"XLSForm language settings."})
 
     def test_should_populate_error_when_the_label_in_choice_sheets_has_language(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -98,7 +98,7 @@ class TestXformBridge(unittest.TestCase):
                                         'type': 'calculate', 'name': 'instanceID'}]}]}
             get_xform_dict.return_value = fields
             actual_errors = xls_form_parser._validate_fields_are_recognised(fields['children'])
-            self.assertEquals(actual_errors, {"Language specification is not supported"})
+            self.assertEquals(actual_errors, {"XLSForm language settings."})
 
 
     def test_should_populate_error_when_choice_has_no_label(self):
@@ -137,7 +137,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors,updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"Prefetch of csv not supported"})
+            self.assertEquals(actual_errors, {"Preloading of CSV data (the PullData() function)."})
 
     def test_should_populate_error_when_settings_sheet_present_with_form_title(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
