@@ -15,6 +15,8 @@ from django.utils.translation import ugettext_lazy as _, ugettext
 
 from datawinners.alldata import views
 from datawinners.common.urlextension import append_query_strings_to_url
+from datawinners.monitor.carbon_pusher import send_to_carbon
+from datawinners.monitor.metric_path import create_path
 from datawinners.search.submission_index import update_submission_search_for_subject_edition
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
@@ -630,6 +632,7 @@ class SurveyWebQuestionnaireRequest():
             created_request = helper.create_request(questionnaire_form, self.request.user.username, is_update=is_update)
             reporter_id = self.request.POST.get('dsid')
             response = self.player_response(created_request, reporter_id)
+            send_to_carbon(create_path('submissions.web.simple'), 1)
             if response.success:
                 ReportRouter().route(get_organization(self.request).org_id, response)
                 success_message = _("Successfully submitted")

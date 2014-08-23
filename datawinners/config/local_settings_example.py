@@ -121,3 +121,8 @@ NEAR_SMS_LIMIT_TRIGGER = 5
 VUMI_API_URL = "http://localhost:2020"
 
 DEBUG_BROWSER="firefox" # firefox | chrome | phantom | ie | htmlunit
+
+GRAPHITE_MONITORING_ENABLED = False
+ENVIRONMENT = 'dev'
+CARBON_HOST = '127.0.0.1'
+CARBON_PORT = 2003

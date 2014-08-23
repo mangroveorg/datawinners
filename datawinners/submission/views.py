@@ -11,6 +11,8 @@ from django.utils import translation
 from datawinners.messageprovider.handlers import create_failure_log, incorrect_number_of_answers_for_submission_handler, \
     incorrect_questionnaire_code_handler, identification_number_already_exists_handler, \
     incorrect_number_of_answers_for_uid_registration_handler
+from datawinners.monitor.carbon_pusher import send_to_carbon
+from datawinners.monitor.metric_path import create_path
 from mangrove.transport.contract.request import Request
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, \
     FormModelDoesNotExistsException
@@ -97,6 +99,7 @@ def web_sms(request):
 
 
 def find_dbm(request):
+    send_to_carbon(create_path('submissions.sms'), 1)
     incoming_request = {}
     # This is the http post request. After this state, the request being sent is a python dictionary
     SMSMessageRequestProcessor().process(http_request=request, mangrove_request=incoming_request)

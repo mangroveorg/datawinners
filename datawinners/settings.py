@@ -266,6 +266,12 @@ ELASTIC_SEARCH_TIMEOUT = 180
 QUESTIONNAIRE_TEMPLATE_DB_NAME = "questionnaire_library"
 QUESTIONNAIRE_TEMPLATE_JSON_DATA_FILE = PROJECT_DIR + '/questionnaire/template_data.json'
 
+GRAPHITE_MONITORING_ENABLED = False
+ENVIRONMENT = 'dev'
+CARBON_HOST = '127.0.0.1'
+CARBON_PORT = 2003
+
+
 try:
     from local_settings import *
 except ImportError, e:

@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.generic.base import View
+from datawinners.monitor.carbon_pusher import send_to_carbon
+from datawinners.monitor.metric_path import create_path
 from mangrove.form_model.form_model import get_form_model_by_code
 
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired
@@ -38,7 +40,7 @@ class ImportSubmissionView(View):
         submission_importer = SubmissionImporter(manager, feeds_dbm, request.user, form_model,
                                                  SubmissionQuotaService(organization))
         response = submission_importer.import_submission(request)
-
+        send_to_carbon(create_path('submissions.import'), 1)
         return HttpResponse(
             json.dumps(
                 {

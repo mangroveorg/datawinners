@@ -26,6 +26,8 @@ from datawinners.blue.xform_bridge import XFormSubmissionProcessor
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
+from datawinners.monitor.carbon_pusher import send_to_carbon
+from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
@@ -294,6 +296,7 @@ def edit(request, project_id, survey_response_id, tab=0):
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
+        send_to_carbon(create_path('submissions.web.simple'), 1)
         original_survey_response = survey_response.copy()
         is_errored_before_edit = True if survey_response.errors != '' else False
         form_ui_model.update({"redirect_url": request.POST.get("redirect_url")})

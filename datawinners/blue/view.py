@@ -17,6 +17,8 @@ from django.template.defaultfilters import slugify
 from pyxform.errors import PyXFormError
 import xlwt
 from datawinners.accountmanagement.models import Organization
+from datawinners.monitor.carbon_pusher import send_to_carbon
+from datawinners.monitor.metric_path import create_path
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from django.core.mail import EmailMessage
 
@@ -311,6 +313,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 @csrf_exempt
 def new_xform_submission_post(request):
     try:
+        send_to_carbon(create_path('submissions.web.advanced'), 1)
         response = XFormWebSubmissionHandler(request.user, request=request).create_new_submission_response()
         response['Location'] = request.build_absolute_uri(request.path)
         return response
@@ -325,6 +328,7 @@ def new_xform_submission_post(request):
 @csrf_exempt
 def edit_xform_submission_post(request, survey_response_id):
     try:
+        send_to_carbon(create_path('submissions.web.advanced'), 1)
         return XFormWebSubmissionHandler(request.user, request=request). \
             update_submission_response(survey_response_id)
     except Exception as e:
