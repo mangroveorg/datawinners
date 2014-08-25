@@ -4664,5 +4664,6 @@ msgstr "(%s) as a datatype"
 msgid "select all that apply or specify other"
 msgstr "\"or_other\" function for multiple choice questions"
 
-
+msgid "instead."
+msgstr "instead."
 

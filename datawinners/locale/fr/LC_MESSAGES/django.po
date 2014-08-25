@@ -5173,3 +5173,63 @@ msgstr "Exporter les Soumissions"
 
 msgid "The current version of DataWinners supports the export of Submissions to Excel with up to 256 columns per Excel sheet. Your Submissions will be exported to several Excel sheets."
 msgstr "La version actuelle de DataWinners permet l'exportation des Soumissions vers Excel, avec une limite de 256 colonnes par feuille de calcul Excel. Vos Soumissions seront ainsi exportées et réparties en plusieurs feuilles de calcul Excel."
+
+msgid "Advanced Option (Beta Version)"
+msgstr "Option avancée (version Beta)"
+
+msgid "Upload an XLSForm"
+msgstr "Télécharger un formulaire XLS"
+
+msgid "Choose this option to upload an XLSForm (Excel file) and create advanced Questionnaire logic."
+msgstr "Choisissez cette option pour télécharger un formulaire XLS (fichier Excel) et créer des logiques de questionnaire avancées."
+
+msgid "q_tooltip_advanced_questionnaire_option"
+msgstr "Utilisez cette option si vous voulez créer des fonctionnalités avancées dans votre Questionnaire tels que le branchement conditionnel (skip logic) ou la répétition d'une série de questions. <br/><br/>"
+
+msgid "Beta Version"
+msgstr "Version Beta"
+
+msgid "r_tooltip_advanced_questionnaire_option"
+msgstr "Ceci est notre premier lancement de la fonctionnalité Téléchargement de formulaire XLS. Aidez-nous à l'améliorer en nous envoyant tout feedback par email à support@datawinners.com. <a> support@datawinners.com. </a>"
+
+msgid "Enter Name and Create Questionnaire"
+msgstr ""
+
+msgid "Upload XLSForm and create Questionnaire"
+msgstr "Télécharger un formulaire XLS pour créer un Questionnaire"
+
+msgid "Need help and support on how to create a XLSForm and advanced Questionnaire logic?"
+msgstr "Vous avez besoin d'aide pour créer un Questionnaire XLS comportant des logiques avancées ? En savoir plus | Plus d'exemples de formulaires"
+
+msgid "Learn More | Example Forms"
+msgstr "En savoir plus | Plus d'exemples de formulaires"
+
+msgid "Edit your Questionnaire..."
+msgstr "Modifiez votre Questionnaire ..."
+
+msgid "Download Current XLSForm (Excel file):"
+msgstr "Télécharger le formulaire XLS actuel (fichier Excel) :"
+
+msgid "Upload new XLSForm"
+msgstr "Télécharger un nouveau formulaire XLS"
+
+msgid "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!"
+msgstr "Si vous modifiez votre formulaire XLS et le téléchargez une nouvelle fois, toutes les données collectées précédemment seront perdues!"
+
+msgid "Do you want to continue uploading the edited XLSForm?"
+msgstr "Voulez-vous continuer à télécharger le formulaire XLS modifié?"
+
+msgid "You can"
+msgstr "Vous pouvez"
+
+msgid "Export Your Submissions"
+msgstr "exporter vos Soumissions"
+
+msgid "first or"
+msgstr "en premier ou"
+
+msgid "instead."
+msgstr "."
+
+msgid "Upload was cancelled."
+msgstr "Le téléchargement a été annulé"

@@ -15,11 +15,11 @@ $(function () {
                     $("input[name=file]").click();
                     return false;
                 },
-                title: gettext("Warning: Your Data Will be Lost"),
+                title: gettext("Warning: Changes to your Questionnaire will delete previously collected data"),
                 link_selector: "#cancel_changes",
                 dialogDiv: "#cancel_questionnaire_edit",
                 cancelLinkSelector: "#cancel_dialog",
-                width: 580
+                width: 780
             };
             var warningDialog = new DW.Dialog(editQuestionnaireWarningOptions).init();
             warningDialog.show();

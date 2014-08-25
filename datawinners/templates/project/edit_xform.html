@@ -46,10 +46,10 @@
     </div>
 
     <div id="xlx-message"></div>
-    <div class="warning-message-box none" ><p>{% trans "Upload was cancelled" %}</p></div>
+    <div class="warning-message-box none" ><p>{% trans "Upload was cancelled." %}</p></div>
     <div class="download_xls">
         <span class="download_header">
-            Download Current XLSForm (Excel file):
+            {% trans "Download Current XLSForm (Excel file):" %}
         </span>
         {% if show_xls_download_link %}
             <span class="heading_block alpha data_ana border_none">
@@ -64,13 +64,13 @@
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
-    <h5>{% trans "Edit Questionnaire" %}</h5>
+    <h5>{% trans "Edit your Questionnaire..." %}</h5>
     <div>
         <noscript>
             <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
         </noscript>
         <div id="file_uploader" class="button upload_xls"></div>
-        <button id="uploadXLS">{% trans "Upload New XLSForm" %}</button>
+        <button id="uploadXLS">{% trans "Upload new XLSForm" %}</button>
         <a id="cancel-xlx-upload" class="none" href="javascript:void(0);">{% trans "Cancel Upload" %}</a>
         <img class="upload_spinner none" src="/media/images/ajax-loader.gif">
     </div>
@@ -78,7 +78,7 @@
 
     <div id="cancel_questionnaire_edit" style="display: none;">
         {% trans "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!" %}<br/><br/>
-        <p class="font_size_13">{% blocktrans with project_links.submission_log_link as log_link %} You can <a class='dialog-link' href='{{ log_link }}'>Export Your Submissions</a> first or {% endblocktrans %}<a class='dialog-link' href="{% url create_project %}?prev=ques#questionnaire/xlsupload/">{% trans "Create a New Questionnaire"%}</a> {% trans 'instead.'%} </p><br/>
+        <p class="font_size_13">{% trans "You can" %} <a class='dialog-link' href='{{ project_links.submission_log_link }}'> {% trans "Export Your Submissions" %}</a> {% trans "first or" %} <a class='dialog-link' href="{% url create_project %}?prev=ques#questionnaire/xlsupload/">{% trans "Create a New Questionnaire"%}</a> {% trans 'instead.'%} </p><br/>
 
 
         {% trans "Do you want to continue uploading the edited XLSForm?" %}

@@ -1337,3 +1337,5 @@ msgstr "Mettez à jour votre formulaire XLS et téléchargez une nouvelle fois. 
 msgid "Submission Exceeds Number of Supported Columns."
 msgstr "Le Nombre de Colonnes dans votre Soumission dépasse le Nombre de Colonnes autorisées."
 
+msgid "Warning: Changes to your Questionnaire will delete previously collected data"
+msgstr "Attention : Les changements apportés à votre Questionnaire entraineront la suppression de toutes les données collectées précédemment."
