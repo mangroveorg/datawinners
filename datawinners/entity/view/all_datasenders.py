@@ -216,10 +216,25 @@ class DisassociateDataSendersView(DataSenderActionView):
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
         return HttpResponse(
-            json.dumps({"success": True, "message": _("The Data Sender(s) are removed from Questionnaire(s) successfully")}))
+            json.dumps({"success": True, "message": self.responseMessage(selected_rep_ids,users_in_selected_ds)}))
 
     def fun(self, manager, project):
         project.delete_datasender(manager, id)
+
+
+    def responseMessage(self, selected_rep_ids, users_in_selected_ds):
+        message = _("The Data Sender(s) are removed from Questionnaire(s) successfully")
+        selected_users_count = len(users_in_selected_ds)
+
+        if len(selected_rep_ids) == selected_users_count:
+            message = _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
+                      ', '.join(users_in_selected_ds)
+        elif selected_users_count > 0:
+            message = _("The Data Sender(s) are removed from Questionnaire(s) successfully") + ". " + \
+                      _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
+                      ', '.join(users_in_selected_ds)
+        return message
+
 
 @csrf_view_exempt
 @csrf_response_exempt

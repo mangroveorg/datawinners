@@ -8,16 +8,6 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
     delete_dialog.dialog("open");
 }
 
-function warnThenDissociateDialogBox(table,allIds, all_selected,projectIds) {
-    var dissociate_dialog = $("#dissociate_ds_block");
-    dissociate_dialog.data("table", table);
-    dissociate_dialog.data("allIds", allIds);
-    dissociate_dialog.data("all_selected", all_selected);
-    dissociate_dialog.data("projectIds", projectIds);
-    dissociate_dialog.data("pageToGo", get_updated_table_page_index($("#datasender_table").dataTable(), allIds, all_selected));
-    dissociate_dialog.dialog("open");
-}
-
 function init_warnThenDeleteDialogBox() {
     var delete_dialog = $("#delete_ds_block").dialog({
             title: gettext("Warning!"),
@@ -61,55 +51,10 @@ function init_warnThenDeleteDialogBox() {
     });
 }
 
-function initWarnThenDissociateDialogBox() {
-    var dissociate_dialog = $("#dissociate_ds_block").dialog({
-            title: gettext("DataWinners Administrators Will Not Be Removed"),
-            modal: true,
-            autoOpen: false,
-            width: 500,
-            closeText: 'hide'
-        }
-    );
-
-    $("#dissociate_ds_block .cancel_link").click(function () {
-        dissociate_dialog.dialog("close");
-        $('#dissociate_ds_block').data("action_element").value = "";
-        return false;
-    });
-
-
-    $("#dissociate_ds_block #ok_button").click(function () {
-        dissociate_dialog.dialog("close");
-        var table = dissociate_dialog.data("table");
-        var allIds = dissociate_dialog.data("allIds");
-        var all_selected = dissociate_dialog.data("all_selected");
-        var projectIds = dissociate_dialog.data("projectIds");
-        remove_from_project(table,allIds,all_selected,projectIds);
-    });
-}
-
-function remove_from_project(table, selectedIds, all_selected,projectIds) {
-    DW.loading();
-    table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, selectedIds, all_selected);
-    $.ajax({'url': '/project/disassociate/', 'type': 'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
-        data: { 'ids': selectedIds.join(';'),
-            'project_id': projectIds.join(';'),
-            'all_selected': all_selected,
-            'search_query': $(".dataTables_filter input").val()
-        }
-    }).done(function (json_response) {
-            table.fnSettings()._iDisplayStart = get_updated_table_page_index($("#datasender_table").dataTable(), selectedIds, all_selected);
-            table.fnReloadAjax();
-            var response = $.parseJSON(json_response);
-            flash_message(response.message, response.success);
-        }
-    );
-}
 DW.DataSenderActionHandler = function () {
 
     init_dialog_box_for_web_users();
     init_warnThenDeleteDialogBox();
-    initWarnThenDissociateDialogBox();
     init_add_remove_from_project();
     init_dialog_box_for_datasender();
 
@@ -133,8 +78,23 @@ DW.DataSenderActionHandler = function () {
         handle_datasender_edit(table, selected_ids);
     };
     this["remove_from_project"] = function(table, selectedIds, all_selected) {
-        var projectId = $("#project_id").val();
-        handle_datasender_dissociate(table,selectedIds,all_selected,[projectId])
+        if(handle_datasender_dissociate(table,selectedIds,all_selected)){
+            DW.loading();
+            table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, selectedIds, all_selected);
+            $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
+                data: { 'ids':selectedIds.join(';'),
+                        'project_name':$("#project_name").val(),
+                        'project_id':$("#project_id").val(),
+                        'all_selected':all_selected,
+                        'search_query':$(".dataTables_filter input").val()
+                      }
+            }).done(function (json_response) {
+                    table.fnReloadAjax();
+                    var response = $.parseJSON(json_response);
+                    flash_message(response.message, response.success);
+                }
+            );
+    }
     };
 };
 
@@ -170,37 +130,30 @@ function init_add_remove_from_project() {
                 + '</div>').insertBefore($("#all_projects"));
         } else {
             var action = all_project_block.data("action");
-            var table = all_project_block.data("table");
-            var selected_ids = all_project_block.data("selected_ids");
-            var all_selected = all_project_block.data("all_selected");
-            if (action == "disassociate") {
-                $("#all_project_block").dialog("close");
-                handle_datasender_dissociate(table, selected_ids, all_selected,projects)
-            } else {
-                var url = '/entity/' + action + '/';
-                $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
-                    + gettext("Just a moment") + '...</span></h1>', css: { width: '275px', zIndex: 1000000}});
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    headers: { "X-CSRFToken": $.cookie('csrftoken') },
+            var url = '/entity/' + action + '/';
+            $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
+                + gettext("Just a moment") + '...</span></h1>', css: { width: '275px', zIndex: 1000000}});
+            $.ajax({
+                        url: url,
+                        type: "POST",
+                        headers: { "X-CSRFToken": $.cookie('csrftoken') },
                     data: {
-                        'ids': $.map(all_project_block.data("selected_ids"),function (e) {
-                            return e.toLowerCase();
-                        }).join(';'),
-                        'project_id': projects.join(';'),
-                        'all_selected': all_project_block.data("all_selected"),
-                        'search_query': $(".dataTables_filter input").val()
-                    }
+                            'ids': $.map(all_project_block.data("selected_ids"), function(e){return e.toLowerCase();}).join(';'),
+                            'project_id': projects.join(';'),
+                            'all_selected': all_project_block.data("all_selected"),
+                            'search_query':$(".dataTables_filter input").val()
+                        }
 
-                }).done(function (json_response) {
-                        var table = $("#datasender_table").dataTable();
-                        $("#all_project_block").dialog('close');
-                        table.fnReloadAjax();
-                        var response = $.parseJSON(json_response);
-                        flash_message(response.message, response.success);
-                    });
-            }
+            }).done(function (json_response) {
+                    var table = $("#datasender_table").dataTable();
+                    if (action == "disassociate") {
+                        table.fnSettings()._iDisplayStart = all_project_block.data("pageToGo");
+                    }
+                    $("#all_project_block").dialog('close');
+                    table.fnReloadAjax();
+                    var response = $.parseJSON(json_response);
+                    flash_message(response.message, response.success);
+                });
         }
     });
 }
@@ -212,7 +165,6 @@ function add_remove_from_project(action, table, selected_ids, all_selected) {
     all_project_block.data("selected_ids", selected_ids);
     all_project_block.data("all_selected", all_selected);
     all_project_block.data("action", action);
-    all_project_block.data("table",table);
     all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
     all_project_block.dialog("open");
 }
@@ -305,21 +257,16 @@ function uncheck_users(table, user_ids) {
     });
 }
 
-function handle_datasender_dissociate(table, allIds, all_selected,projectIds){
+function handle_datasender_dissociate(table, allIds, all_selected){
     var superusers_selected = get_user_names_from_selected_datasenders(table, allIds, all_selected);
     if (superusers_selected.length) {
         var users_list_for_html = "<li>" + superusers_selected.join("</li><li>") + "</li>";
         if (superusers_selected.length == allIds.length) { //Each DS selected is also User
             dissociate_all_ds_are_users_show_warning(users_list_for_html);
-            return;
-        }else{
-            $("#note_for_dissociate_users .users_list").html(users_list_for_html);
-            $("#note_for_dissociate_users").show();
-            warnThenDissociateDialogBox(table,allIds, all_selected,projectIds);
-            return;
+            return false;
         }
     }
-     remove_from_project(table, allIds, all_selected,projectIds);
+    return true;
 }
 
 function handle_datasender_delete(table, allIds, all_selected){
