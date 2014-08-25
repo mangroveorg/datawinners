@@ -85,6 +85,8 @@ class XlsFormParser():
                     errors.append(e.message)
                 except LabelForFieldNotPresentException as e:
                     errors.append(e.message)
+            else:
+                errors.append(_("%s as a datatype") % _(field['type']))
         return questions, set(errors)
 
     def _validate_group(self, errors, field):

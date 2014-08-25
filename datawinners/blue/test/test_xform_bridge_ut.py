@@ -274,6 +274,29 @@ class TestXformBridge(unittest.TestCase):
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
             self.assertEquals('dd.mm.yyyy',xls_form_parser._get_date_format(fields['children'][0]))
 
+    def test_should_populate_error_when_date_time_and_time_questions_present_within_a_repeat(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = { u'children': [
+                        {u'children': [
+                                        {u'bind': {u'required': u'yes'},
+                                         u'type': u'time', u'name': u'timeq', u'label': u'Time q'},
+                                        {u'bind': {u'required': u'yes'}, u'type': u'dateTime', u'name': u'datetq',
+                                         u'label': u'Date time q'}],
+                                         u'type': u'group', u'name': u'mygroup', u'label': u'My group'
+                        }], u'type': u'repeat', u'name': u'myrepeat', u'label': u'My repeat',
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'default_language': 'default'
+                    }
+
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+            actual_errors, updated_xform, questions = xls_form_parser.parse()
+
+            self.assertEquals(actual_errors, {"time as a datatype", "dateTime as a datatype"})
+
 class TestXformParsing(unittest.TestCase):
 
     def setUp(self):
