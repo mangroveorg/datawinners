@@ -85,8 +85,6 @@ class XlsFormParser():
                     errors.append(e.message)
                 except LabelForFieldNotPresentException as e:
                     errors.append(e.message)
-            else:
-                errors.append(_("%s as a datatype") % _(field['type']))
         return questions, set(errors)
 
     def _validate_group(self, errors, field):
@@ -95,7 +93,8 @@ class XlsFormParser():
                 self._validate_for_nested_repeats(field)
             except NestedRepeatsNotSupportedException as e:
                 errors.append(e.message)
-        self._validate_fields_are_recognised(field['children'])
+        child_errors = self._validate_fields_are_recognised(field['children'])
+        errors.extend(child_errors)
 
     def _validate_fields_are_recognised(self, fields):
         errors = []
