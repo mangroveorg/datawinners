@@ -48,7 +48,7 @@ class XFormWebSubmissionHandler():
         if not survey_response:
             raise LookupError()
 
-        player_response = self.player.update_survey_response(self.mangrove_request, self.user_profile.reporter_id,
+        player_response = self.player.update_survey_response(self.mangrove_request,
                                                       logger=sp_submission_logger, survey_response=survey_response)
         return self._post_save(player_response)
 
