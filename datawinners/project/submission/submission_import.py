@@ -2,7 +2,7 @@
 from collections import OrderedDict
 import logging
 import os
-from django.utils.translation import gettext
+from django.utils.translation import gettext, ugettext
 import xlrd
 from datawinners.accountmanagement.helper import is_org_user
 from datawinners.accountmanagement.models import NGOUserProfile
@@ -142,7 +142,7 @@ class ImportValidationError(Exception):
 
 
 def is_on_behalf_of_reporter_question(question_label):
-    return BEHALF_OF in question_label
+    return ugettext(BEHALF_OF) in question_label
 
 
 class SubmissionWorkbookMapper():
