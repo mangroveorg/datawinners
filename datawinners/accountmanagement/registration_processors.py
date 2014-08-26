@@ -8,13 +8,6 @@ from datawinners.accountmanagement.utils import PRO_MONTHLY_PRICING, PRO_HALF_YE
     PRO_SMS_MONTHLY_PRICING, PRO_SMS_HALF_YEARLY_PRICING, PRO_SMS_YEARLY_PRICING
 from django.utils.translation import ugettext as _
 
-def get_registration_processor(organization):
-    registration_processor_dict = {'Basic':TrialAccountRegistrationProcessor,
-                                   'Pro':ProAccountRegistrationProcessor,
-                                   'Pro SMS':ProSMSAccountRegistrationProcessor }
-    registration_processor = registration_processor_dict.get(organization.account_type)
-    return registration_processor(organization)
-
 class TrialAccountRegistrationProcessor(object):
     def __init__(self, organization):
         self.organization = organization

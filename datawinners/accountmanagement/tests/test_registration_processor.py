@@ -5,7 +5,8 @@ from django.utils import unittest
 from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
-from datawinners.accountmanagement.registration_processors import get_registration_processor, \
+from datawinners.accountmanagement.registration_backend import RegistrationBackend
+from datawinners.accountmanagement.registration_processors import \
     ProSMSAccountRegistrationProcessor, PaidAccountRegistrationProcessor, TrialAccountRegistrationProcessor
 from django.contrib.sites.models import Site
 from django.conf import settings
@@ -52,6 +53,7 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         NGOUserProfile(user = self.user1,title = 'Mr.',org_id = self.paid_organization.org_id).save()
         NGOUserProfile(user = self.user2,title = 'Ms.',org_id = self.trial_organization.org_id).save()
+        self.processor = RegistrationBackend()
 
 
     def tearDown(self):
@@ -62,14 +64,15 @@ class TestRegistrationProcessor(unittest.TestCase):
 
 
     def test_should_get_the_correct_registration_processor(self):
-        self.assertTrue(isinstance(get_registration_processor(self.trial_organization), TrialAccountRegistrationProcessor))
 
-        self.assertTrue(isinstance(get_registration_processor(self.paid_organization), PaidAccountRegistrationProcessor))
+        self.assertTrue(isinstance(self.processor.get_registration_processor(self.trial_organization), TrialAccountRegistrationProcessor))
+
+        self.assertTrue(isinstance(self.processor.get_registration_processor(self.paid_organization), PaidAccountRegistrationProcessor))
 
     def test_should_process_registration_data_for_paid_acccount_in_english(self):
         with patch.object(ProSMSAccountRegistrationProcessor, '_get_invoice_total') as get_invoice_total_patch:
             get_invoice_total_patch.return_value = PRO_SMS_MONTHLY_PRICING, '1 month'
-            processor = get_registration_processor(self.paid_organization)
+            processor = self.processor.get_registration_processor(self.paid_organization)
 
 
             site = Site(domain='test', name='test_site')
@@ -102,7 +105,7 @@ class TestRegistrationProcessor(unittest.TestCase):
             payment_detail.delete()
 
     def test_should_process_registration_data_for_trial_acccount_in_english(self):
-        processor = get_registration_processor(self.trial_organization)
+        processor = self.processor.get_registration_processor(self.trial_organization)
 
         site = Site(domain='test', name='test_site')
         kwargs = dict(invoice_period='', preferred_payment='')
@@ -129,7 +132,7 @@ class TestRegistrationProcessor(unittest.TestCase):
     def test_should_process_registration_data_for_paid_acccount_in_french(self):
         with patch.object(ProSMSAccountRegistrationProcessor, '_get_invoice_total') as get_invoice_total_patch:
             get_invoice_total_patch.return_value = PRO_SMS_MONTHLY_PRICING, '1 month'
-            processor = get_registration_processor(self.paid_organization)
+            processor = self.processor.get_registration_processor(self.paid_organization)
 
             site = Site(domain='test', name='test_site')
             kwargs = dict(invoice_period='', preferred_payment='')
@@ -160,7 +163,7 @@ class TestRegistrationProcessor(unittest.TestCase):
             payment_detail.delete()
 
     def test_should_process_registration_data_for_trial_acccount_in_french(self):
-        processor = get_registration_processor(self.trial_organization)
+        processor = self.processor.get_registration_processor(self.trial_organization)
 
         site = Site(domain='test', name='test_site')
         kwargs = dict(invoice_period='', preferred_payment='')
