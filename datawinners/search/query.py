@@ -1,7 +1,7 @@
 from string import lower
 import elasticutils
 from datawinners.main.database import get_database_manager
-from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 
 
 class Query(object):
@@ -37,7 +37,7 @@ class QueryBuilder(object):
         self.elastic_utils_helper = ElasticUtilsHelper()
 
     def get_query(self, database_name, doc_type):
-        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type).filter(void=False)
+        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(database_name).doctypes(doc_type).filter(void=False)
 
     def create_paginated_query(self, query, query_params):
         start_result_number = query_params.get("start_result_number")

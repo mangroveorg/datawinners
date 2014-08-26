@@ -4,7 +4,7 @@ from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRa
 from datawinners.search.index_utils import es_field_name, es_unique_id_code_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
-from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from datawinners.search.query import QueryBuilder, Query
 
 
@@ -14,7 +14,7 @@ class SubmissionQueryBuilder(QueryBuilder):
         self.form_model = form_model
 
     def get_query(self, database_name, *doc_type):
-        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(*doc_type)
+        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(database_name).doctypes(*doc_type)
 
     def filter_by_submission_type(self, query, query_params):
         submission_type_filter = query_params.get('filter')

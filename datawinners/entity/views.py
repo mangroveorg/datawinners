@@ -25,7 +25,7 @@ from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.utils import get_database_name
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import es_field_name, delete_mapping
-from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.form_model.field import field_to_json, DateField
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -640,7 +640,7 @@ def subject_autocomplete(request, entity_type):
     es_field_name_for_subject_name = es_field_name(subject_name_field.code, form_model.id)
     subject_short_code_field = get_field_by_attribute_value(form_model, 'name', 'short_code')
     es_field_name_for_short_code = es_field_name(subject_short_code_field.code, form_model.id)
-    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(lower(entity_type)) \
+    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(database_name).doctypes(lower(entity_type)) \
         .query(or_={es_field_name_for_subject_name + '__match': search_text,
                     es_field_name_for_subject_name + '_value': search_text,
                     es_field_name_for_short_code + '__match': search_text,

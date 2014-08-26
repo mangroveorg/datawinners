@@ -12,7 +12,7 @@ class TestQueryBuilder(TestCase):
                 QueryBuilder().get_query("database_name", "subject_type")
 
                 elasticUtilsMock.S.assert_called_with()
-                elasticUtilsMock.es.assert_called_with(urls=searchUrl)
+                elasticUtilsMock.es.assert_called_with(urls=searchUrl, timeout=180)
 
     def test_should_create_query_with_index_as_given_database_name(self):
         with patch("datawinners.search.query.elasticutils") as elasticUtilsMock:
