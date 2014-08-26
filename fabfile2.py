@@ -165,6 +165,9 @@ def _checkout_datawinners_conf(code_dir):
     run("rm -f %s" % project_dir)
     run('git clone git@github.com:hnidev/%s.git %s' % (conf_project_name, project_dir))
 
+def _compile_css(context):
+    with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS, 'media', 'css', 'scss')):
+        run("sass --update .:.")
 
 def _deploy_datawinners(context):
     if context.environment == "prod":
@@ -182,6 +185,7 @@ def _deploy_datawinners(context):
     with cd(os.path.join(context.code_dir, DATAWINNERS)):
         activate_and_run(context.virtual_env, "git submodule update --init")
 
+    _compile_css(context)
     restart_memcache()
     migrate_couchdb(context)
     restart_memcache()
