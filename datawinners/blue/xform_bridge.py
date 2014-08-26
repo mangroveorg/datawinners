@@ -198,7 +198,7 @@ class XlsFormParser():
         elif field['type'] == 'group':
             fieldset_type = 'group'
 
-        name = field['name'].lower()
+        name = field['name']
         questions, errors = self._create_questions(field['children'])
         question = {
             'title': group_label,
