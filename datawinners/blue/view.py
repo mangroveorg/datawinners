@@ -60,6 +60,12 @@ class ProjectUpload(View):
     def post(self, request):
         file_content = None
         try:
+            file_errors = _perform_file_validations(request)
+            if file_errors:
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': False,
+                    'error_msg': list(file_errors)
+                }))
             file_content = request.raw_post_data
             tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
             tmp_file.write(file_content)
@@ -383,3 +389,16 @@ def send_email_on_exception(user,error_type,stack_trace,additional_details=None)
 
 
     email.send()
+
+
+def _perform_file_validations(request):
+    errors = []
+    if request.GET and request.GET.get("qqfile"):
+        import os
+        file_extension = os.path.splitext(request.GET["qqfile"])[1]
+        if(file_extension not in [".xls",".xlsx"]):
+            errors.append("Please upload an excel file")
+    EXCEL_UPLOAD_FILE_SIZE = 10485760 # 10MB
+    if request.META.get('CONTENT_LENGTH') and int(request.META.get('CONTENT_LENGTH')) > EXCEL_UPLOAD_FILE_SIZE:
+        errors.append("Please upload an excel file less than or equal to 10MB in size")
+    return errors
