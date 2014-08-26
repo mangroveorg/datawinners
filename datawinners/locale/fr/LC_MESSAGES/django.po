@@ -5193,7 +5193,7 @@ msgid "r_tooltip_advanced_questionnaire_option"
 msgstr "Ceci est notre premier lancement de la fonctionnalité Téléchargement de formulaire XLS. Aidez-nous à l'améliorer en nous envoyant tout feedback par email à support@datawinners.com. <a> support@datawinners.com. </a>"
 
 msgid "Enter Name and Create Questionnaire"
-msgstr ""
+msgstr "Saisissez le nom et Créez le Questionnaire"
 
 msgid "Upload XLSForm and create Questionnaire"
 msgstr "Télécharger un formulaire XLS pour créer un Questionnaire"
