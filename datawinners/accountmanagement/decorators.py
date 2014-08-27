@@ -4,6 +4,7 @@ from django.conf import settings as django_settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from mangrove.errors.MangroveException import DataObjectNotFound
 
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.local_settings import CRS_ORG_ID
@@ -18,19 +19,23 @@ def is_datasender_allowed(f):
     def wrapper(*args, **kw):
         superuser = False
         user = args[0].user
-        if user.get_profile().reporter:
-            projects = get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
-        else:
-            projects = get_all_projects(get_database_manager(user))
+        user_profile = user.get_profile()
+        if not user_profile.reporter:
             superuser = True
-        project_ids = [project.id for project in projects]
-        project_id = kw['project_id']
-        if not project_id in project_ids:
-            if not superuser:
-                return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD + "?associate=False")
-            else:
-                return HttpResponseRedirect(django_settings.HOME_PAGE + "?deleted=True")
 
+        dbm = get_database_manager(user)
+        try:
+            questionnaire = Project.get(dbm, kw['project_id'])
+        except DataObjectNotFound:
+            questionnaire = None
+        if not questionnaire or questionnaire.is_void():
+            if superuser:
+                return HttpResponseRedirect(
+                    django_settings.HOME_PAGE + "?deleted=True") if superuser else HttpResponseRedirect(
+                    django_settings.DATASENDER_DASHBOARD + "?associate=False")
+        else:
+            if not superuser and user_profile.reporter_id not in questionnaire.data_senders:
+                return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD + "?associate=False")
         return f(*args, **kw)
 
     return wrapper
