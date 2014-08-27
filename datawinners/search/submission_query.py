@@ -174,21 +174,29 @@ class SubmissionQuery(Query):
         return submissions
 
 
+def _format_values(field_set, formatted_value, value_dict):
+    for i, field in enumerate(field_set.fields):
+        if isinstance(field, SelectField):
+            choices = value_dict.get(field.code)
+            if choices:
+                choice_texts = [field.get_value_by_option(option) for option in choices.split(' ')]
+                value = '(' + ', '.join(choice_texts) + ')' if len(choice_texts) > 1 else ', '.join(choice_texts)
+            else:
+                value = ''
+        elif isinstance(field, FieldSet):
+            value = ''
+            value = _format_values(field, value, value_dict.get(field.code)[0])
+        else:
+            value = value_dict.get(field.code) or ''
+        formatted_value += '"' + '<span class="repeat_qtn_label">' + field.label + '</span>' + ': ' + value + '"'
+        formatted_value += ';' if i == len(field_set.fields) - 1 else ', '
+    return formatted_value
+
+
 def _format_fieldset_values_for_representation(entry, field_set):
     formatted_value = ''
     if entry:
         for value_dict in json.loads(entry):
-            for i, field in enumerate(field_set.fields):
-                if isinstance(field, SelectField):
-                    choices = value_dict.get(field.code)
-                    if choices:
-                        choice_texts = [field.get_value_by_option(option) for option in choices.split(' ')]
-                        value = '(' + ', '.join(choice_texts) + ')' if len(choice_texts) > 1 else ', '.join(choice_texts)
-                    else:
-                        value = ''
-                else:
-                    value = value_dict.get(field.code) or ''
-                formatted_value += '"' + '<span class="repeat_qtn_label">' + field.label + '</span>' + ': ' + value + '"'
-                formatted_value += ';' if i == len(field_set.fields) - 1 else ', '
+            formatted_value = _format_values(field_set, formatted_value, value_dict)
             formatted_value += '<br><br>'
         return '<span class="repeat_ans">' + formatted_value + '</span>'
