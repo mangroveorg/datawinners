@@ -267,7 +267,7 @@ def _get_select_field_answer_from_snapshot(entry, field_for_revision):
 def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values):
 
     for field in fields:
-        field_code = field.code.lower()
+        field_code = field.code
         entry = submission_values.get(field_code)
         if field.is_entity_field:
             if entry:
@@ -326,7 +326,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     #Submission value may have capitalized keys in some cases. This conversion is to do
     #case insensitive lookup.
-    submission_values = OrderedDict((k.lower(), v) for k, v in submission_doc.values.iteritems())
+    submission_values = OrderedDict((k, v) for k, v in submission_doc.values.iteritems())
     _update_search_dict(dbm, form_model, form_model.fields, search_dict, submission_doc, submission_values)
     return search_dict
 
