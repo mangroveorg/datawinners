@@ -5132,8 +5132,8 @@ msgstr "Plus d'un niveau de répétions de questions."
 msgid "Language specification is not supported"
 msgstr "Paramètres de langue du formulaire XLS"
 
-msgid "attaching media to fields is not supported"
-msgstr "Type de média du formulaire XLS."
+msgid "attaching media to fields is not supported %s"
+msgstr "Type de média du formulaire XLS (%s)."
 
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""
@@ -5233,3 +5233,6 @@ msgstr "."
 
 msgid "Upload was cancelled."
 msgstr "Le téléchargement a été annulé"
+
+msgid "attaching media to choice fields not supported %s"
+msgstr "XLSForm media type (%s) in choice sheet."

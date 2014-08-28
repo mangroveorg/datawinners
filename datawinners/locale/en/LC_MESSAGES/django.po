@@ -4643,8 +4643,11 @@ msgstr "more than one level of repeated questions."
 msgid "Language specification is not supported"
 msgstr "XLSForm language settings."
 
-msgid "attaching media to fields is not supported"
-msgstr "XLSForm media type."
+msgid "attaching media to fields is not supported %s"
+msgstr "XLSForm media type (%s)."
+
+msgid "attaching media to choice fields not supported %s"
+msgstr "XLSForm media type (%s) in choice sheet."
 
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""

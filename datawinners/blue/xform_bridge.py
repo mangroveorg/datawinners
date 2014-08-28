@@ -111,7 +111,7 @@ class XlsFormParser():
             else:
                 errors.append(_("%s as a datatype") % _(field['type']))
             if field.get('media'):
-                errors.append(_("attaching media to fields is not supported"))
+                errors.append(_("attaching media to fields is not supported %s") % _(field['media'].keys()[0]))
         return set(errors) - set([None])
 
     def _validate_for_nested_repeats(self, field):
@@ -133,19 +133,21 @@ class XlsFormParser():
         return header and isinstance(header, dict) and len(header) >= 1
 
     @staticmethod
-    def _media_in_choices(choices):
+    def _get_media_in_choices(choices):
         for choice in choices:
             if choice.get('media'):
-                return True
-        return False
+                return choice['media'].keys()[0]
+        return None
 
     def _validate_media_in_choices(self, fields):
         for field in fields:
             if field['type'] in self.type_dict['group']:
                 self._validate_media_in_choices(field['children'])
             choices = field.get('choices')
-            if choices and self._media_in_choices(choices):
-                raise TypeNotSupportedException(_("attaching media to fields is not supported"))
+            if choices:
+                media_type_in_choices = self._get_media_in_choices(choices)
+                if media_type_in_choices:
+                    raise TypeNotSupportedException(_("attaching media to choice fields not supported %s") % _(media_type_in_choices))
 
     def parse(self):
         errors = self._validate_fields_are_recognised(self.xform_dict['children'])
