@@ -104,11 +104,12 @@ def es_submission_meta_field_name(field_code):
     return field_code
 
 
-def es_questionnaire_field_name(field_code, form_model_id):
+def es_questionnaire_field_name(field_code, form_model_id, parent_field_code=None):
     """
         prefixes form_model id to namespace all fields on questionnaire
     """
-    return "%s_%s" % (form_model_id, (field_code))
+    code = "%s-%s" % (parent_field_code, field_code) if parent_field_code else field_code
+    return "%s_%s" % (form_model_id, code)
 
 def es_unique_id_code_field_name(es_field_name):
     return es_field_name+'_unique_code'
