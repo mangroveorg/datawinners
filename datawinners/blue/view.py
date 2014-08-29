@@ -118,7 +118,7 @@ class ProjectUpload(View):
                     "success": True,
                     "project_name": project_name,
                     "project_id": questionnaire_id,
-                    "xls_dict": XlsProjectParser().parse(file_content)
+                    # "xls_dict": XlsProjectParser().parse(file_content)
                 }),
             content_type='application/json')
 
@@ -204,7 +204,7 @@ class ProjectUpdate(View):
                     "success": True,
                     "project_name": questionnaire.name,
                     "project_id": questionnaire.id,
-                    "xls_dict": XlsProjectParser().parse(file_content)
+                    # "xls_dict": XlsProjectParser().parse(file_content)
                 }),
             content_type='application/json')
 
