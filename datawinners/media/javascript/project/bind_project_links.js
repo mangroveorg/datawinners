@@ -14,13 +14,6 @@ DW.bind_project_links = function () {
             });
 
         }
-//        else { // bind to the data changed warning dialog
-//            $(".sms_tester, .delete_project, .printLink").unbind().bind("click", function () {
-//                DW.edit_submission_modified_data_handler.click_after_reload = $(this).attr("class");
-//                $("#cancel_submission_warning_message").dialog("open");
-//                return false;
-//            });
-//        }
     };
 
 $(document).ready(function () {

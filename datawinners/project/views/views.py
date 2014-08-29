@@ -118,7 +118,7 @@ def rename_project(request, project_id):
 def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-    helper.delete_project(questionnaire, void=False)
+    questionnaire.void(False)
     return HttpResponseRedirect(reverse(views.index))
 
 

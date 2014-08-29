@@ -30,7 +30,9 @@ DW.Dialog = function (options) {
             modal: true,
             autoOpen: false,
             width: options.width || 550,
-            closeText: 'hide'
+            closeText: 'hide',
+            closeOnEscape: false,
+            open: options.open || function(){}
         });
     };
 

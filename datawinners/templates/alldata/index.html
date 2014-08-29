@@ -11,9 +11,11 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/project/import_submission.js"></script>
     <script src="/media/javascript/project/delete_project.js" type="text/javascript"></script>
     <script src="/media/javascript/project/bind_project_links.js" type="text/javascript"></script>
+    <script src="/media/javascript/alldata/alldata_index.js" type="text/javascript"></script>
     <script type="text/javascript">
         var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
         var import_submission_url = "{% url import_submissions 'form_code'%}";
@@ -41,12 +43,19 @@
         {% endfor %}
         {% if messages %}
             {% for message in messages %}
-                <!--<div class="{{ message.tags }} message-box clear-left">{{ message }}</div>-->
                 <div id="undelete_project_section" class="text_align_left success-message-box">
                     <span>
                         {% trans "Your Questionnaire has been deleted" %}.
                     </span>
                         <a id="undo_delete_project" href="{{ message }}">{% trans "Undo Delete" %}</a>
+                </div>
+                <div id="reminder_add_dialog" class="none">
+                    <p>{% trans "We disabled your Reminders (if set before) when you deleted this Questionnaire." %}</p>
+                    <br/>
+                    <p>{% trans "Please specify your Reminders again." %}</p>
+                    <div class="gotitbutton">
+                        <a class="button yes_button" href="{{ message }}">{% trans "OK, Got it" %}</a>
+                    </div>
                 </div>
             {% endfor %}
         {% endif %}

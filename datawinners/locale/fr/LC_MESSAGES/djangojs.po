@@ -1339,3 +1339,6 @@ msgstr "Le Nombre de Colonnes dans votre Soumission dépasse le Nombre de Colonn
 
 msgid "Warning: Changes to your Questionnaire will delete previously collected data"
 msgstr "Attention : Les changements apportés à votre Questionnaire entraineront la suppression de toutes les données collectées précédemment."
+
+msgid "Specify Reminders"
+msgstr "Spécifiez vos Messages de Rappel"

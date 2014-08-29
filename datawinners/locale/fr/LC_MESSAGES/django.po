@@ -5236,3 +5236,9 @@ msgstr "Le téléchargement a été annulé"
 
 msgid "attaching media to choice fields not supported %s"
 msgstr "XLSForm media type (%s) in choice sheet."
+
+msgid "Please specify your Reminders again."
+msgstr "Veuillez re-spécifier vos Messages de Rappel."
+
+msgid "We disabled your Reminders (if set before) when you deleted this Questionnaire."
+msgstr "Nous avons désactivé vos Messages de Rappel (si configurés auparavant) quand vous avez supprimé ce Questionnaire."

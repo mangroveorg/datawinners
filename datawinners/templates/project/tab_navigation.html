@@ -5,6 +5,7 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
     <script src="/media/javascript/project/delete_project.js" type="text/javascript"></script>
     <script src="/media/javascript/project/sms_tester.js" type="text/javascript"></script>
     <script src="/media/javascript/project/questionnaire_preview.js" type="text/javascript"></script>
@@ -60,6 +61,7 @@
         <a href="#" class="cancel_link float_right cancel_{% trans "en" %}">{% trans "Cancel" %}</a>
         <div class="clear-both">&nbsp;</div>
     </div>
+
 {% endblock %}
 
 {% block navigation %}
