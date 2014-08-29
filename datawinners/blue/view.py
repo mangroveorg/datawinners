@@ -81,10 +81,10 @@ class ProjectUpload(View):
                     'success': False,
                     'error_msg': list(errors)
                 }))
-
+            tmp_file.seek(0)
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
                                                questionnaire_code=questionnaire_code, project_name=project_name,
-                                               xls_form=file_content)
+                                               xls_form=tmp_file)
             questionnaire_id = mangrove_service.create_project()
 
         except (PyXFormError,QuestionAlreadyExistsException) as e :
@@ -100,6 +100,9 @@ class ProjectUpload(View):
                 'success': False,
                 'error_msg': [e.message if e.message else ugettext("Errors in excel")]
             }))
+
+        finally:
+            tmp_file.close()
 
         if not questionnaire_id:
             return HttpResponse(json.dumps(
@@ -174,7 +177,6 @@ class ProjectUpdate(View):
             tmp_file.seek(0)
             questionnaire.save(process_post_update=False)
             questionnaire.add_attachments(tmp_file, 'questionnaire.xls')
-
             self._purge_submissions(manager, questionnaire)
             self._purge_feed_documents(questionnaire, request)
             self.recreate_submissions_mapping(manager, questionnaire)
@@ -192,6 +194,9 @@ class ProjectUpdate(View):
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'error_msg': [message], 'success': False
             }))
+
+        finally:
+            tmp_file.close()
 
         return HttpResponse(
             json.dumps(
