@@ -328,8 +328,8 @@ def get_all_projects_for_datasender(dbm, data_sender_id):
     return rows
 
 
-def get_all_project_names(dbm):
-    return [{'name': result['value']["name"], 'id': result['value']["id"]} for result in dbm.load_all_rows_in_view("project_names")]
+def get_simple_project_names(dbm):
+    return [{'name': result['value']["name"], 'id': result['value']["id"]} for result in dbm.load_all_rows_in_view("simple_project_names")]
 
 
 def count_projects(dbm, include_voided_projects=True):

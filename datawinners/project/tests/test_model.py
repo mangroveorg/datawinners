@@ -9,7 +9,7 @@ from mangrove.datastore.cache_manager import get_cache_manager
 from mangrove.utils.test_utils.database_utils import uniq
 from mangrove.bootstrap import initializer
 from datawinners.main.utils import create_views
-from datawinners.project.models import Project, get_all_projects, get_all_project_names
+from datawinners.project.models import Project, get_all_projects, get_simple_project_names
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import TextField, UniqueIdField
@@ -66,7 +66,7 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(len(projects), 2)
 
     def test_get_all_projects_names(self):
-        projects_names = [project['name'] for project in get_all_project_names(self.manager)]
+        projects_names = [project['name'] for project in get_simple_project_names(self.manager)]
         self.assertTrue(project1_name in projects_names)
         self.assertTrue(project2_name in projects_names)
 
