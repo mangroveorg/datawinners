@@ -184,7 +184,12 @@ $(document).ready(function () {
         },
         postErrorHandler: function(responseJSON){
             DW.trackEvent('questionnaire-creation-method', 'advanced-qns-errored');
-            DW.showError(responseJSON.error_msg);
+            if(responseJSON.duplicate_project_name){
+                questionnaireViewModel.projectName.setError(responseJSON.error_msg[0]);
+            }
+            else{
+                DW.showError(responseJSON.error_msg);
+            }
         }
     });
 

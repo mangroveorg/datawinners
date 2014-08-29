@@ -103,7 +103,11 @@ class ProjectUpload(View):
 
         if not questionnaire_id:
             return HttpResponse(json.dumps(
-                {'success': False, 'error_msg': [ugettext("Questionnaire with same name already exists.")]}), content_type='application/json')
+                {
+                    'success': False,
+                    'duplicate_project_name': True,
+                    'error_msg': [ugettext("Questionnaire with same name already exists.")]}
+                ), content_type='application/json')
 
         return HttpResponse(
             json.dumps(
