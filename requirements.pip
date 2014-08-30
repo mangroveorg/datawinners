@@ -43,6 +43,7 @@ python-magic==0.4.6
 django-urlmiddleware
 celery
 flower
+python-magic==0.4.6
 urllib3
 pyxform
 xmltodict==0.8.6
