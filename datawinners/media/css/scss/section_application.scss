@@ -1,3 +1,4 @@
+@import "_main";
 @import "form";
 
 #container_header_wizard {
@@ -9,13 +10,13 @@
 #container_header_application {
   height: 74px;
   overflow: hidden;
-  background: url('/media/images/hedaer_app_bg.gif') repeat top left;
+  background: url($header-app-bg) repeat top left;
 }
 
 #container_content, #container_wizard {
   overflow: hidden;
   min-height: 600px;
-  background: #e8eff6 url('/media/images/application_bg.gif') repeat-x top left !important;
+  background: $app-bg url($app-bg-img) repeat-x top left !important;
   padding-bottom: 30px;
   .content {
     clear: both;

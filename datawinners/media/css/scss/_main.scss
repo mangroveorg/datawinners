@@ -1,0 +1,24 @@
+$public_body_bg: #123956;
+$intro-bg : #82c553;
+$intro-bg-img: '/media/images/dw_intro_bg.gif';
+
+$about-bg : #feee96;
+$header-bg: #67aa58;
+$public-header-login-bg: #427633;
+
+$header-bg-img: '/media/images/dw_header_bg.gif';
+$header-logo: '/media/images/datawinners_logo.png';
+
+$app-bg-img: "/media/images/application_bg.gif";
+$app-bg: #e8eff6;
+
+$header-app-bg: '/media/images/hedaer_app_bg.gif';
+$nav-active:#3d3d3d;
+// Overide in brand specific
+@import "_brand";
+
+.header_logo_img {
+  width: 133px;
+  height: 20px;
+  background-image: url($header-logo)
+}
