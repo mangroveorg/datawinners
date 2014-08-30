@@ -1,3 +1,4 @@
+@import "_main";
 .organization, .administrative{
   margin-bottom: 15px;
   padding: 10px;
@@ -98,7 +99,7 @@ form{
     }
 }
 .about_datawinners{
-    background: #feee96;
+    background: $about-bg;
     margin-bottom: 30px;
     p{
     margin-top: 10px;
@@ -107,7 +108,7 @@ form{
 
 .subscription_details {
     float: right;
-    background: #feee96;
+    background: $about-bg;
     min-height: 155px !important;
     p{
     margin-top: 10px;

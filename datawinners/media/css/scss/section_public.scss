@@ -1,11 +1,12 @@
+@import "_main";
 body{
   font-family:Helvetica,Arial,sans-serif;
-  background:#123956;
+  background:$public_body_bg;
 }
 #container_header{
   height:93px;
   overflow:hidden;
-  background:#67aa58 url('/media/images/dw_header_bg.gif') repeat-x left 34px;
+  background:$header-bg url($header-bg-img) repeat-x left 34px;
   #container_header_wizard{
     height:34px;
     overflow:hidden;
@@ -24,7 +25,7 @@ body{
   padding:45px 0 20px 0;
 }
 #container_home_intro {
-  background:#82c552 url('/media/images/dw_intro_bg.gif') repeat-x top left;
+  background:$intro-bg url($intro-bg-img) repeat-x top left;
   height:393px;
   overflow:hidden;
   #home_intro_bg{
@@ -804,7 +805,7 @@ ol{
     width:720px;
     h2{
       padding-left:10px;
-      border-bottom:1px solid #67aa58;
+      border-bottom:1px solid $header-bg;
       margin:8px 0 0 0 !important;
       a{
         color:black !important;
@@ -819,7 +820,7 @@ ol{
       overflow:hidden;
       float:left;
       text-align:center;
-      background:#67AA58;
+      background:$header-bg;
       .wrap{
         padding:3px;
         .blog-day{
@@ -829,7 +830,7 @@ ol{
           line-height:22px;
           font-size:18px;
           font-weight:bolder;
-          color:#67AA58;
+          color:$header-bg;
           background:#ffffff;
         }
         color:#ffffff;
