@@ -3,8 +3,8 @@ import tempfile
 import unittest
 from django_digest.test import Client as DigestClient
 from nose.plugins.attrib import attr
-from datawinners.blue.xform_bridge import XFormSubmissionProcessor
-from mangrove.form_model.field import TextField, FieldSet, DateField, IntegerField, SelectField, GeoCodeField
+from datawinners.blue.xform_bridge import XFormSubmissionProcessor, XFormImageProcessor
+from mangrove.form_model.field import TextField, FieldSet, DateField, IntegerField, SelectField, GeoCodeField, PhotoField
 
 DIR = os.path.dirname(__file__)
 
@@ -113,3 +113,27 @@ class TestXFromClientSubmission(unittest.TestCase):
         instance_node_xml = submissionProcessor.get_model_edit_str(form_fields, survey_response_values, 'project-name-01', 'form_code-01')
 
         self.assertEqual(expected_xml, instance_node_xml)
+
+    @attr('dcs')
+    def test_should_create_image_file_names_string(self):
+        img_field = PhotoField('img1', 'img1', 'land image')
+        land_address = TextField('address','address', 'Address')
+        owner_name = TextField('name','name', 'Name')
+        owner_img_field = PhotoField('owner_img', 'owner_img', 'owner image')
+        owners_field_set = FieldSet('owners_info', 'owners_info', 'Owners Information',
+                                    field_set=[owner_name, owner_img_field], fieldset_type='repeat')
+        pet_breed = TextField('breed', 'breed', 'Breed')
+        pet_field_set = FieldSet('pets', 'pets', 'Pet details',
+                                 field_set=[pet_breed], fieldset_type='repeat')
+
+        form_fields = [land_address, img_field, owners_field_set, pet_field_set]
+        survey_response_values = {'address': 'some address', 'img1': 'img1.jgp',
+                                  'owners_info': [{'name':'name a', 'owner_img':'owner1.jpg'}, {'name': 'name b', 'owner_img':'owner2.jpg'}],
+                                  'pets' :[{'breed':'German goat'}]}
+        expected = 'img1.jgp,owner1.jpg,owner2.jpg'
+        imageProcessor = XFormImageProcessor()
+
+        image_file_names_string = imageProcessor.get_media_files_str(form_fields, survey_response_values)
+
+        self.assertEqual(expected, image_file_names_string)
+

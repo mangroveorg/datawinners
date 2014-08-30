@@ -1,5 +1,5 @@
 /** vim: et:ts=4:sw=4:sts=4
- * @license RequireJS 2.1.9 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS 2.1.15 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
@@ -12,7 +12,7 @@ var requirejs, require, define;
 (function (global) {
     var req, s, head, baseElement, dataMain, src,
         interactiveScript, currentlyAddingScript, mainScript, subPath,
-        version = '2.1.9',
+        version = '2.1.15',
         commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg,
         cjsRequireRegExp = /[^.]\s*require\s*\(\s*["']([^'"\s]+)["']\s*\)/g,
         jsSuffixRegExp = /\.js$/,
@@ -108,7 +108,10 @@ var requirejs, require, define;
         if (source) {
             eachProp(source, function (value, prop) {
                 if (force || !hasProp(target, prop)) {
-                    if (deepStringMixin && typeof value !== 'string') {
+                    if (deepStringMixin && typeof value === 'object' && value &&
+                        !isArray(value) && !isFunction(value) &&
+                        !(value instanceof RegExp)) {
+
                         if (!target[prop]) {
                             target[prop] = {};
                         }
@@ -138,7 +141,7 @@ var requirejs, require, define;
         throw err;
     }
 
-    //Allow getting a global that expressed in
+    //Allow getting a global that is expressed in
     //dot notation, like 'a.b.c'.
     function getGlobal(value) {
         if (!value) {
@@ -177,7 +180,7 @@ var requirejs, require, define;
 
     if (typeof requirejs !== 'undefined') {
         if (isFunction(requirejs)) {
-            //Do not overwrite and existing requirejs instance.
+            //Do not overwrite an existing requirejs instance.
             return;
         }
         cfg = requirejs;
@@ -201,6 +204,7 @@ var requirejs, require, define;
                 waitSeconds: 7,
                 baseUrl: './',
                 paths: {},
+                bundles: {},
                 pkgs: {},
                 shim: {},
                 config: {}
@@ -214,6 +218,7 @@ var requirejs, require, define;
             defQueue = [],
             defined = {},
             urlFetched = {},
+            bundlesMap = {},
             requireCounter = 1,
             unnormalizedCounter = 1;
 
@@ -228,20 +233,19 @@ var requirejs, require, define;
          */
         function trimDots(ary) {
             var i, part;
-            for (i = 0; ary[i]; i += 1) {
+            for (i = 0; i < ary.length; i++) {
                 part = ary[i];
                 if (part === '.') {
                     ary.splice(i, 1);
                     i -= 1;
                 } else if (part === '..') {
-                    if (i === 1 && (ary[2] === '..' || ary[0] === '..')) {
-                        //End of the line. Keep at least one non-dot
-                        //path segment at the front so it can be mapped
-                        //correctly to disk. Otherwise, there is likely
-                        //no path mapping for a path starting with '..'.
-                        //This can still fail, but catches the most reasonable
-                        //uses of ..
-                        break;
+                    // If at the start, or previous value is still ..,
+                    // keep them so that when converted to a path it may
+                    // still work when converted to a path, even though
+                    // as an ID it is less than ideal. In larger point
+                    // releases, may be better to just kick out an error.
+                    if (i === 0 || (i == 1 && ary[2] === '..') || ary[i - 1] === '..') {
+                        continue;
                     } else if (i > 0) {
                         ary.splice(i - 1, 2);
                         i -= 2;
@@ -261,54 +265,45 @@ var requirejs, require, define;
          * @returns {String} normalized name
          */
         function normalize(name, baseName, applyMap) {
-            var pkgName, pkgConfig, mapValue, nameParts, i, j, nameSegment,
-                foundMap, foundI, foundStarMap, starI,
-                baseParts = baseName && baseName.split('/'),
-                normalizedBaseParts = baseParts,
+            var pkgMain, mapValue, nameParts, i, j, nameSegment, lastIndex,
+                foundMap, foundI, foundStarMap, starI, normalizedBaseParts,
+                baseParts = (baseName && baseName.split('/')),
                 map = config.map,
                 starMap = map && map['*'];
 
             //Adjust any relative paths.
-            if (name && name.charAt(0) === '.') {
-                //If have a base name, try to normalize against it,
-                //otherwise, assume it is a top-level require that will
-                //be relative to baseUrl in the end.
-                if (baseName) {
-                    if (getOwn(config.pkgs, baseName)) {
-                        //If the baseName is a package name, then just treat it as one
-                        //name to concat the name with.
-                        normalizedBaseParts = baseParts = [baseName];
-                    } else {
-                        //Convert baseName to array, and lop off the last part,
-                        //so that . matches that 'directory' and not name of the baseName's
-                        //module. For instance, baseName of 'one/two/three', maps to
-                        //'one/two/three.js', but we want the directory, 'one/two' for
-                        //this normalization.
-                        normalizedBaseParts = baseParts.slice(0, baseParts.length - 1);
-                    }
+            if (name) {
+                name = name.split('/');
+                lastIndex = name.length - 1;
 
-                    name = normalizedBaseParts.concat(name.split('/'));
-                    trimDots(name);
-
-                    //Some use of packages may use a . path to reference the
-                    //'main' module name, so normalize for that.
-                    pkgConfig = getOwn(config.pkgs, (pkgName = name[0]));
-                    name = name.join('/');
-                    if (pkgConfig && name === pkgName + '/' + pkgConfig.main) {
-                        name = pkgName;
-                    }
-                } else if (name.indexOf('./') === 0) {
-                    // No baseName, so this is ID is resolved relative
-                    // to baseUrl, pull off the leading dot.
-                    name = name.substring(2);
+                // If wanting node ID compatibility, strip .js from end
+                // of IDs. Have to do this here, and not in nameToUrl
+                // because node allows either .js or non .js to map
+                // to same file.
+                if (config.nodeIdCompat && jsSuffixRegExp.test(name[lastIndex])) {
+                    name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
                 }
+
+                // Starts with a '.' so need the baseName
+                if (name[0].charAt(0) === '.' && baseParts) {
+                    //Convert baseName to array, and lop off the last part,
+                    //so that . matches that 'directory' and not name of the baseName's
+                    //module. For instance, baseName of 'one/two/three', maps to
+                    //'one/two/three.js', but we want the directory, 'one/two' for
+                    //this normalization.
+                    normalizedBaseParts = baseParts.slice(0, baseParts.length - 1);
+                    name = normalizedBaseParts.concat(name);
+                }
+
+                trimDots(name);
+                name = name.join('/');
             }
 
             //Apply map config if available.
             if (applyMap && map && (baseParts || starMap)) {
                 nameParts = name.split('/');
 
-                for (i = nameParts.length; i > 0; i -= 1) {
+                outerLoop: for (i = nameParts.length; i > 0; i -= 1) {
                     nameSegment = nameParts.slice(0, i).join('/');
 
                     if (baseParts) {
@@ -325,14 +320,10 @@ var requirejs, require, define;
                                     //Match, update name to the new value.
                                     foundMap = mapValue;
                                     foundI = i;
-                                    break;
+                                    break outerLoop;
                                 }
                             }
                         }
-                    }
-
-                    if (foundMap) {
-                        break;
                     }
 
                     //Check for a star map match, but just hold on to it,
@@ -355,7 +346,11 @@ var requirejs, require, define;
                 }
             }
 
-            return name;
+            // If the name points to a package's name, use
+            // the package main instead.
+            pkgMain = getOwn(config.pkgs, name);
+
+            return pkgMain ? pkgMain : name;
         }
 
         function removeScript(name) {
@@ -377,7 +372,13 @@ var requirejs, require, define;
                 //retry
                 pathConfig.shift();
                 context.require.undef(id);
-                context.require([id]);
+
+                //Custom require that does not do map translation, since
+                //ID is "absolute", already mapped/resolved.
+                context.makeRequire(null, {
+                    skipMap: true
+                })([id]);
+
                 return true;
             }
         }
@@ -443,7 +444,16 @@ var requirejs, require, define;
                             return normalize(name, parentName, applyMap);
                         });
                     } else {
-                        normalizedName = normalize(name, parentName, applyMap);
+                        // If nested plugin references, then do not try to
+                        // normalize, as it will not normalize correctly. This
+                        // places a restriction on resourceIds, and the longer
+                        // term solution is not to normalize until plugins are
+                        // loaded and all normalizations to allow for async
+                        // loading of a loader plugin. But for now, fixes the
+                        // common uses. Details in #1131
+                        normalizedName = name.indexOf('!') === -1 ?
+                                         normalize(name, parentName, applyMap) :
+                                         name;
                     }
                 } else {
                     //A regular module.
@@ -548,7 +558,7 @@ var requirejs, require, define;
                 //local var ref to defQueue, so cannot just reassign the one
                 //on context.
                 apsp.apply(defQueue,
-                           [defQueue.length - 1, 0].concat(globalDefQueue));
+                           [defQueue.length, 0].concat(globalDefQueue));
                 globalDefQueue = [];
             }
         }
@@ -565,7 +575,7 @@ var requirejs, require, define;
                 mod.usingExports = true;
                 if (mod.map.isDefine) {
                     if (mod.exports) {
-                        return mod.exports;
+                        return (defined[mod.map.id] = mod.exports);
                     } else {
                         return (mod.exports = defined[mod.map.id] = {});
                     }
@@ -579,15 +589,9 @@ var requirejs, require, define;
                         id: mod.map.id,
                         uri: mod.map.url,
                         config: function () {
-                            var c,
-                                pkg = getOwn(config.pkgs, mod.map.id);
-                            // For packages, only support config targeted
-                            // at the main module.
-                            c = pkg ? getOwn(config.config, mod.map.id + '/' + pkg.main) :
-                                      getOwn(config.config, mod.map.id);
-                            return  c || {};
+                            return  getOwn(config.config, mod.map.id) || {};
                         },
-                        exports: defined[mod.map.id]
+                        exports: mod.exports || (mod.exports = {})
                     });
                 }
             }
@@ -628,7 +632,7 @@ var requirejs, require, define;
         }
 
         function checkLoaded() {
-            var map, modId, err, usingPathFallback,
+            var err, usingPathFallback,
                 waitInterval = config.waitSeconds * 1000,
                 //It is possible to disable the wait interval by using waitSeconds of 0.
                 expired = waitInterval && (context.startTime + waitInterval) < new Date().getTime(),
@@ -646,8 +650,8 @@ var requirejs, require, define;
 
             //Figure out the state of all the modules.
             eachProp(enabledRegistry, function (mod) {
-                map = mod.map;
-                modId = map.id;
+                var map = mod.map,
+                    modId = map.id;
 
                 //Skip things that are not enabled or in error state.
                 if (!mod.enabled) {
@@ -870,17 +874,14 @@ var requirejs, require, define;
                                 exports = context.execCb(id, factory, depExports, exports);
                             }
 
-                            if (this.map.isDefine) {
-                                //If setting exports via 'module' is in play,
-                                //favor that over return value and exports. After that,
-                                //favor a non-undefined return value over exports use.
+                            // Favor return value over exports. If node/cjs in play,
+                            // then will not have a return value anyway. Favor
+                            // module.exports assignment over exports object.
+                            if (this.map.isDefine && exports === undefined) {
                                 cjsModule = this.module;
-                                if (cjsModule &&
-                                        cjsModule.exports !== undefined &&
-                                        //Make sure it is not already the exports value
-                                        cjsModule.exports !== this.exports) {
+                                if (cjsModule) {
                                     exports = cjsModule.exports;
-                                } else if (exports === undefined && this.usingExports) {
+                                } else if (this.usingExports) {
                                     //exports already set the defined value.
                                     exports = this.exports;
                                 }
@@ -940,6 +941,7 @@ var requirejs, require, define;
 
                 on(pluginMap, 'defined', bind(this, function (plugin) {
                     var load, normalizedMap, normalizedMod,
+                        bundleId = getOwn(bundlesMap, this.map.id),
                         name = this.map.name,
                         parentName = this.map.parentMap ? this.map.parentMap.name : null,
                         localRequire = context.makeRequire(map.parentMap, {
@@ -982,6 +984,14 @@ var requirejs, require, define;
                             normalizedMod.enable();
                         }
 
+                        return;
+                    }
+
+                    //If a paths config, then just load that file instead to
+                    //resolve the plugin, as it is built into that paths layer.
+                    if (bundleId) {
+                        this.map.url = context.nameToUrl(bundleId);
+                        this.load();
                         return;
                     }
 
@@ -1249,30 +1259,37 @@ var requirejs, require, define;
                     }
                 }
 
-                //Save off the paths and packages since they require special processing,
+                //Save off the paths since they require special processing,
                 //they are additive.
-                var pkgs = config.pkgs,
-                    shim = config.shim,
+                var shim = config.shim,
                     objs = {
                         paths: true,
+                        bundles: true,
                         config: true,
                         map: true
                     };
 
                 eachProp(cfg, function (value, prop) {
                     if (objs[prop]) {
-                        if (prop === 'map') {
-                            if (!config.map) {
-                                config.map = {};
-                            }
-                            mixin(config[prop], value, true, true);
-                        } else {
-                            mixin(config[prop], value, true);
+                        if (!config[prop]) {
+                            config[prop] = {};
                         }
+                        mixin(config[prop], value, true, true);
                     } else {
                         config[prop] = value;
                     }
                 });
+
+                //Reverse map the bundles
+                if (cfg.bundles) {
+                    eachProp(cfg.bundles, function (value, prop) {
+                        each(value, function (v) {
+                            if (v !== prop) {
+                                bundlesMap[v] = prop;
+                            }
+                        });
+                    });
+                }
 
                 //Merge shim
                 if (cfg.shim) {
@@ -1294,29 +1311,25 @@ var requirejs, require, define;
                 //Adjust packages if necessary.
                 if (cfg.packages) {
                     each(cfg.packages, function (pkgObj) {
-                        var location;
+                        var location, name;
 
                         pkgObj = typeof pkgObj === 'string' ? { name: pkgObj } : pkgObj;
+
+                        name = pkgObj.name;
                         location = pkgObj.location;
+                        if (location) {
+                            config.paths[name] = pkgObj.location;
+                        }
 
-                        //Create a brand new object on pkgs, since currentPackages can
-                        //be passed in again, and config.pkgs is the internal transformed
-                        //state for all package configs.
-                        pkgs[pkgObj.name] = {
-                            name: pkgObj.name,
-                            location: location || pkgObj.name,
-                            //Remove leading dot in main, so main paths are normalized,
-                            //and remove any trailing .js, since different package
-                            //envs have different conventions: some use a module name,
-                            //some use a file name.
-                            main: (pkgObj.main || 'main')
-                                  .replace(currDirRegExp, '')
-                                  .replace(jsSuffixRegExp, '')
-                        };
+                        //Save pointer to main module ID for pkg name.
+                        //Remove leading dot in main, so main paths are normalized,
+                        //and remove any trailing .js, since different package
+                        //envs have different conventions: some use a module name,
+                        //some use a file name.
+                        config.pkgs[name] = pkgObj.name + '/' + (pkgObj.main || 'main')
+                                     .replace(currDirRegExp, '')
+                                     .replace(jsSuffixRegExp, '');
                     });
-
-                    //Done with modifications, assing packages back to context config
-                    config.pkgs = pkgs;
                 }
 
                 //If there are any "waiting to execute" modules in the registry,
@@ -1469,6 +1482,15 @@ var requirejs, require, define;
                         delete urlFetched[map.url];
                         delete undefEvents[id];
 
+                        //Clean queued defines too. Go backwards
+                        //in array so that the splices do not
+                        //mess up the iteration.
+                        eachReverse(defQueue, function(args, i) {
+                            if(args[0] === id) {
+                                defQueue.splice(i, 1);
+                            }
+                        });
+
                         if (mod) {
                             //Hold on to listeners in case the
                             //module will be attempted to be reloaded
@@ -1488,7 +1510,7 @@ var requirejs, require, define;
             /**
              * Called to enable a module if it is still in the registry
              * awaiting enablement. A second arg, parent, the parent module,
-             * is passed in for context, when this method is overriden by
+             * is passed in for context, when this method is overridden by
              * the optimizer. Not shown here to keep code compact.
              */
             enable: function (depMap) {
@@ -1562,8 +1584,19 @@ var requirejs, require, define;
              * internal API, not a public one. Use toUrl for the public API.
              */
             nameToUrl: function (moduleName, ext, skipExt) {
-                var paths, pkgs, pkg, pkgPath, syms, i, parentModule, url,
-                    parentPath;
+                var paths, syms, i, parentModule, url,
+                    parentPath, bundleId,
+                    pkgMain = getOwn(config.pkgs, moduleName);
+
+                if (pkgMain) {
+                    moduleName = pkgMain;
+                }
+
+                bundleId = getOwn(bundlesMap, moduleName);
+
+                if (bundleId) {
+                    return context.nameToUrl(bundleId, ext, skipExt);
+                }
 
                 //If a colon is in the URL, it indicates a protocol is used and it is just
                 //an URL to a file, or if it starts with a slash, contains a query arg (i.e. ?)
@@ -1577,7 +1610,6 @@ var requirejs, require, define;
                 } else {
                     //A module that needs to be converted to a path.
                     paths = config.paths;
-                    pkgs = config.pkgs;
 
                     syms = moduleName.split('/');
                     //For each module name segment, see if there is a path
@@ -1585,7 +1617,7 @@ var requirejs, require, define;
                     //and work up from it.
                     for (i = syms.length; i > 0; i -= 1) {
                         parentModule = syms.slice(0, i).join('/');
-                        pkg = getOwn(pkgs, parentModule);
+
                         parentPath = getOwn(paths, parentModule);
                         if (parentPath) {
                             //If an array, it means there are a few choices,
@@ -1594,16 +1626,6 @@ var requirejs, require, define;
                                 parentPath = parentPath[0];
                             }
                             syms.splice(0, i, parentPath);
-                            break;
-                        } else if (pkg) {
-                            //If module name is just the package name, then looking
-                            //for the main module.
-                            if (moduleName === pkg.name) {
-                                pkgPath = pkg.location + '/' + pkg.main;
-                            } else {
-                                pkgPath = pkg.location;
-                            }
-                            syms.splice(0, i, pkgPath);
                             break;
                         }
                     }
@@ -2053,10 +2075,10 @@ var requirejs, require, define;
     req(cfg);
 }(this));
 
-define("require.js", function(){});
+define("bower-components/requirejs/require.js", function(){});
 
 /* Modernizr (Custom Build) | MIT & BSD
- * Build: http://modernizr.com/download/#-printshiv-cssclasses-json-touch-svg-input-canvastext-csstransforms3d-flexbox-cssgradients-opacity-backgroundsize-borderimage-borderradius-boxshadow-cssanimations-csscolumns-cssreflections-csstransitions-prefixed-csstransforms-mq-hashchange-draganddrop-generatedcontent-inlinesvg-smil-svgclippaths-inputtypes-fontface-websockets-cors-applicationcache-audio-canvas-geolocation-history-hsla-localstorage-multiplebgs-postmessage-sessionstorage-textshadow-rgba-video-webgl-websqldatabase-webworkers-indexedDB
+ * Build: http://modernizr.com/download/#-printshiv-cssclasses-touch-json-opacity-svg-inputtypes
  */
 ;
 
@@ -2064,7 +2086,7 @@ define("require.js", function(){});
 
 window.Modernizr = (function( window, document, undefined ) {
 
-    var version = '2.7.1',
+    var version = '2.8.3',
 
     Modernizr = {},
 
@@ -2084,13 +2106,6 @@ window.Modernizr = (function( window, document, undefined ) {
 
     prefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
 
-
-
-    omPrefixes = 'Webkit Moz O ms',
-
-    cssomPrefixes = omPrefixes.split(' '),
-
-    domPrefixes = omPrefixes.toLowerCase().split(' '),
 
     ns = {'svg': 'http://www.w3.org/2000/svg'},
 
@@ -2143,64 +2158,6 @@ window.Modernizr = (function( window, document, undefined ) {
       return !!ret;
 
     },
-
-    testMediaQuery = function( mq ) {
-
-      var matchMedia = window.matchMedia || window.msMatchMedia;
-      if ( matchMedia ) {
-        return matchMedia(mq).matches;
-      }
-
-      var bool;
-
-      injectElementWithStyles('@media ' + mq + ' { #' + mod + ' { position: absolute; } }', function( node ) {
-        bool = (window.getComputedStyle ?
-                  getComputedStyle(node, null) :
-                  node.currentStyle)['position'] == 'absolute';
-      });
-
-      return bool;
-
-     },
- 
-
-    isEventSupported = (function() {
-
-      var TAGNAMES = {
-        'select': 'input', 'change': 'input',
-        'submit': 'form', 'reset': 'form',
-        'error': 'img', 'load': 'img', 'abort': 'img'
-      };
-
-      function isEventSupported( eventName, element ) {
-
-        element = element || document.createElement(TAGNAMES[eventName] || 'div');
-        eventName = 'on' + eventName;
-
-            var isSupported = eventName in element;
-
-        if ( !isSupported ) {
-                if ( !element.setAttribute ) {
-            element = document.createElement('div');
-          }
-          if ( element.setAttribute && element.removeAttribute ) {
-            element.setAttribute(eventName, '');
-            isSupported = is(element[eventName], 'function');
-
-                    if ( !is(element[eventName], 'undefined') ) {
-              element[eventName] = undefined;
-            }
-            element.removeAttribute(eventName);
-          }
-        }
-
-        element = null;
-        return isSupported;
-      }
-      return isEventSupported;
-    })(),
-
-
     _hasOwnProperty = ({}).hasOwnProperty, hasOwnProp;
 
     if ( !is(_hasOwnProperty, 'undefined') && !is(_hasOwnProperty.call, 'undefined') ) {
@@ -2273,15 +2230,6 @@ window.Modernizr = (function( window, document, undefined ) {
         return !!~('' + str).indexOf(substr);
     }
 
-    function testProps( props, prefixed ) {
-        for ( var i in props ) {
-            var prop = props[i];
-            if ( !contains(prop, "-") && mStyle[prop] !== undefined ) {
-                return prefixed == 'pfx' ? prop : true;
-            }
-        }
-        return false;
-    }
 
     function testDOMProps( props, obj, elem ) {
         for ( var i in props ) {
@@ -2299,37 +2247,6 @@ window.Modernizr = (function( window, document, undefined ) {
         }
         return false;
     }
-
-    function testPropsAll( prop, prefixed, elem ) {
-
-        var ucProp  = prop.charAt(0).toUpperCase() + prop.slice(1),
-            props   = (prop + ' ' + cssomPrefixes.join(ucProp + ' ') + ucProp).split(' ');
-
-            if(is(prefixed, "string") || is(prefixed, "undefined")) {
-          return testProps(props, prefixed);
-
-            } else {
-          props = (prop + ' ' + (domPrefixes).join(ucProp + ' ') + ucProp).split(' ');
-          return testDOMProps(props, prefixed, elem);
-        }
-    }    tests['flexbox'] = function() {
-      return testPropsAll('flexWrap');
-    };    tests['canvas'] = function() {
-        var elem = document.createElement('canvas');
-        return !!(elem.getContext && elem.getContext('2d'));
-    };
-
-    tests['canvastext'] = function() {
-        return !!(Modernizr['canvas'] && is(document.createElement('canvas').getContext('2d').fillText, 'function'));
-    };
-
-
-
-    tests['webgl'] = function() {
-        return !!window.WebGLRenderingContext;
-    };
-
-
     tests['touch'] = function() {
         var bool;
 
@@ -2346,78 +2263,6 @@ window.Modernizr = (function( window, document, undefined ) {
 
 
 
-    tests['geolocation'] = function() {
-        return 'geolocation' in navigator;
-    };
-
-
-    tests['postmessage'] = function() {
-      return !!window.postMessage;
-    };
-
-
-    tests['websqldatabase'] = function() {
-      return !!window.openDatabase;
-    };
-
-
-    tests['hashchange'] = function() {
-      return isEventSupported('hashchange', window) && (document.documentMode === undefined || document.documentMode > 7);
-    };
-
-    tests['history'] = function() {
-      return !!(window.history && history.pushState);
-    };
-
-    tests['draganddrop'] = function() {
-        var div = document.createElement('div');
-        return ('draggable' in div) || ('ondragstart' in div && 'ondrop' in div);
-    };
-
-    tests['websockets'] = function() {
-        return 'WebSocket' in window || 'MozWebSocket' in window;
-    };
-
-
-    tests['rgba'] = function() {
-        setCss('background-color:rgba(150,255,150,.5)');
-
-        return contains(mStyle.backgroundColor, 'rgba');
-    };
-
-    tests['hsla'] = function() {
-            setCss('background-color:hsla(120,40%,100%,.5)');
-
-        return contains(mStyle.backgroundColor, 'rgba') || contains(mStyle.backgroundColor, 'hsla');
-    };
-
-    tests['multiplebgs'] = function() {
-                setCss('background:url(https://),url(https://),red url(https://)');
-
-            return (/(url\s*\(.*?){3}/).test(mStyle.background);
-    };    tests['backgroundsize'] = function() {
-        return testPropsAll('backgroundSize');
-    };
-
-    tests['borderimage'] = function() {
-        return testPropsAll('borderImage');
-    };
-
-
-
-    tests['borderradius'] = function() {
-        return testPropsAll('borderRadius');
-    };
-
-    tests['boxshadow'] = function() {
-        return testPropsAll('boxShadow');
-    };
-
-    tests['textshadow'] = function() {
-        return document.createElement('div').style.textShadow === '';
-    };
-
-
     tests['opacity'] = function() {
                 setCssAll('opacity:.55');
 
@@ -2425,182 +2270,10 @@ window.Modernizr = (function( window, document, undefined ) {
     };
 
 
-    tests['cssanimations'] = function() {
-        return testPropsAll('animationName');
-    };
-
-
-    tests['csscolumns'] = function() {
-        return testPropsAll('columnCount');
-    };
-
-
-    tests['cssgradients'] = function() {
-        var str1 = 'background-image:',
-            str2 = 'gradient(linear,left top,right bottom,from(#9f9),to(white));',
-            str3 = 'linear-gradient(left top,#9f9, white);';
-
-        setCss(
-                       (str1 + '-webkit- '.split(' ').join(str2 + str1) +
-                       prefixes.join(str3 + str1)).slice(0, -str1.length)
-        );
-
-        return contains(mStyle.backgroundImage, 'gradient');
-    };
-
-
-    tests['cssreflections'] = function() {
-        return testPropsAll('boxReflect');
-    };
-
-
-    tests['csstransforms'] = function() {
-        return !!testPropsAll('transform');
-    };
-
-
-    tests['csstransforms3d'] = function() {
-
-        var ret = !!testPropsAll('perspective');
-
-                        if ( ret && 'webkitPerspective' in docElement.style ) {
-
-                      injectElementWithStyles('@media (transform-3d),(-webkit-transform-3d){#modernizr{left:9px;position:absolute;height:3px;}}', function( node, rule ) {
-            ret = node.offsetLeft === 9 && node.offsetHeight === 3;
-          });
-        }
-        return ret;
-    };
-
-
-    tests['csstransitions'] = function() {
-        return testPropsAll('transition');
-    };
-
-
-
-    tests['fontface'] = function() {
-        var bool;
-
-        injectElementWithStyles('@font-face {font-family:"font";src:url("https://")}', function( node, rule ) {
-          var style = document.getElementById('smodernizr'),
-              sheet = style.sheet || style.styleSheet,
-              cssText = sheet ? (sheet.cssRules && sheet.cssRules[0] ? sheet.cssRules[0].cssText : sheet.cssText || '') : '';
-
-          bool = /src/i.test(cssText) && cssText.indexOf(rule.split(' ')[0]) === 0;
-        });
-
-        return bool;
-    };
-
-    tests['generatedcontent'] = function() {
-        var bool;
-
-        injectElementWithStyles(['#',mod,'{font:0/0 a}#',mod,':after{content:"',smile,'";visibility:hidden;font:3px/1 a}'].join(''), function( node ) {
-          bool = node.offsetHeight >= 3;
-        });
-
-        return bool;
-    };
-    tests['video'] = function() {
-        var elem = document.createElement('video'),
-            bool = false;
-
-            try {
-            if ( bool = !!elem.canPlayType ) {
-                bool      = new Boolean(bool);
-                bool.ogg  = elem.canPlayType('video/ogg; codecs="theora"')      .replace(/^no$/,'');
-
-                            bool.h264 = elem.canPlayType('video/mp4; codecs="avc1.42E01E"') .replace(/^no$/,'');
-
-                bool.webm = elem.canPlayType('video/webm; codecs="vp8, vorbis"').replace(/^no$/,'');
-            }
-
-        } catch(e) { }
-
-        return bool;
-    };
-
-    tests['audio'] = function() {
-        var elem = document.createElement('audio'),
-            bool = false;
-
-        try {
-            if ( bool = !!elem.canPlayType ) {
-                bool      = new Boolean(bool);
-                bool.ogg  = elem.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/,'');
-                bool.mp3  = elem.canPlayType('audio/mpeg;')               .replace(/^no$/,'');
-
-                                                    bool.wav  = elem.canPlayType('audio/wav; codecs="1"')     .replace(/^no$/,'');
-                bool.m4a  = ( elem.canPlayType('audio/x-m4a;')            ||
-                              elem.canPlayType('audio/aac;'))             .replace(/^no$/,'');
-            }
-        } catch(e) { }
-
-        return bool;
-    };
-
-
-    tests['localstorage'] = function() {
-        try {
-            localStorage.setItem(mod, mod);
-            localStorage.removeItem(mod);
-            return true;
-        } catch(e) {
-            return false;
-        }
-    };
-
-    tests['sessionstorage'] = function() {
-        try {
-            sessionStorage.setItem(mod, mod);
-            sessionStorage.removeItem(mod);
-            return true;
-        } catch(e) {
-            return false;
-        }
-    };
-
-
-    tests['webworkers'] = function() {
-        return !!window.Worker;
-    };
-
-
-    tests['applicationcache'] = function() {
-        return !!window.applicationCache;
-    };
-
-
     tests['svg'] = function() {
         return !!document.createElementNS && !!document.createElementNS(ns.svg, 'svg').createSVGRect;
     };
-
-    tests['inlinesvg'] = function() {
-      var div = document.createElement('div');
-      div.innerHTML = '<svg/>';
-      return (div.firstChild && div.firstChild.namespaceURI) == ns.svg;
-    };
-
-    tests['smil'] = function() {
-        return !!document.createElementNS && /SVGAnimate/.test(toString.call(document.createElementNS(ns.svg, 'animate')));
-    };
-
-
-    tests['svgclippaths'] = function() {
-        return !!document.createElementNS && /SVGClipPath/.test(toString.call(document.createElementNS(ns.svg, 'clipPath')));
-    };
-
     function webforms() {
-                                            Modernizr['input'] = (function( props ) {
-            for ( var i = 0, len = props.length; i < len; i++ ) {
-                attrs[ props[i] ] = !!(props[i] in inputElem);
-            }
-            if (attrs.list){
-                                  attrs.list = !!(document.createElement('datalist') && window.HTMLDataListElement);
-            }
-            return attrs;
-        })('autocomplete autofocus list placeholder max min multiple pattern required step'.split(' '));
                             Modernizr['inputtypes'] = (function(props) {
 
             for ( var i = 0, bool, inputElemType, defaultView, len = props.length; i < len; i++ ) {
@@ -2685,31 +2358,8 @@ window.Modernizr = (function( window, document, undefined ) {
     Modernizr._version      = version;
 
     Modernizr._prefixes     = prefixes;
-    Modernizr._domPrefixes  = domPrefixes;
-    Modernizr._cssomPrefixes  = cssomPrefixes;
 
-    Modernizr.mq            = testMediaQuery;
-
-    Modernizr.hasEvent      = isEventSupported;
-
-    Modernizr.testProp      = function(prop){
-        return testProps([prop]);
-    };
-
-    Modernizr.testAllProps  = testPropsAll;
-
-
-    Modernizr.testStyles    = injectElementWithStyles;
-    Modernizr.prefixed      = function(prop, obj, elem){
-      if(!obj) {
-        return testPropsAll(prop, 'pfx');
-      } else {
-            return testPropsAll(prop, obj, elem);
-      }
-    };
-
-
-    docElement.className = docElement.className.replace(/(^|\s)no-js(\s|$)/, '$1$2') +
+    Modernizr.testStyles    = injectElementWithStyles;    docElement.className = docElement.className.replace(/(^|\s)no-js(\s|$)/, '$1$2') +
 
                                                     (enableClasses ? ' js ' + classes.join(' ') : '');
 
@@ -2998,11 +2648,7 @@ window.Modernizr = (function( window, document, undefined ) {
   html5.type += ' print';
   html5.shivPrint = shivPrint;  shivPrint(document);
 
-}(this, document));
-Modernizr.addTest('json', !!window.JSON && !!JSON.parse);
-
-
-Modernizr.addTest('cors', !!(window.XMLHttpRequest && 'withCredentials' in new XMLHttpRequest()));;
+}(this, document));;
 define("Modernizr", (function (global) {
     return function () {
         var ret, fn;
@@ -12229,9 +11875,10 @@ define( 'enketo-js/FormModel',[ 'xpath', 'jquery', 'enketo-js/plugins', 'enketo-
      *
      * @constructor
      * @param {string} dataStr String of the default XML instance
+     * @param {?{full:boolean}} options.full Whether to initialize the full model or only the primary instance (for future)
      */
 
-    function FormModel( dataStr ) {
+    function FormModel( dataStr, options ) {
         var $data,
             that = this;
 
@@ -12242,6 +11889,8 @@ define( 'enketo-js/FormModel',[ 'xpath', 'jquery', 'enketo-js/plugins', 'enketo-
         //TEMPORARY DUE TO FIREFOX ISSUE, REMOVE ALL NAMESPACES FROM STRING, 
         //BETTER TO LEARN HOW TO DEAL WITH DEFAULT NAMESPACES THOUGH
         dataStr = dataStr.replace( /xmlns\=\"[a-zA-Z0-9\:\/\.]*\"/g, '' );
+
+        // TODO: if options && !options.full, strip all secondary instances from string before parsing!
 
         try {
             this.xml = $.parseXML( dataStr );
@@ -12256,7 +11905,6 @@ define( 'enketo-js/FormModel',[ 'xpath', 'jquery', 'enketo-js/plugins', 'enketo-
 
         /**
          * Initializes FormModel
-         *
          */
         FormModel.prototype.init = function() {
             var /** @type {string} */ val;
@@ -12404,7 +12052,7 @@ define( 'enketo-js/FormModel',[ 'xpath', 'jquery', 'enketo-js/plugins', 'enketo-
                 return null;
             }
             if ( $target.length === 0 ) {
-                console.error( 'Data node: ' + this.selector + ' with null-based index: ' + this.index + ' not found!' );
+                console.error( 'Data node: ' + this.selector + ' with null-based index: ' + this.index + ' not found. Ignored.' );
                 return null;
             }
             //always validate if the new value is not empty, even if value didn't change (see validateAll() function)
@@ -13405,7 +13053,7 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!enketo-config',[],function () { return '{\n    "widgets": [\n        "enketo-widget/note/notewidget",\n        "enketo-widget/select-desktop/selectpicker",\n        "enketo-widget/select-mobile/selectpicker",\n        "enketo-widget/geo/geopicker",\n        "enketo-widget/table/tablewidget",\n        "enketo-widget/radio/radiopicker",\n        "enketo-widget/date/datepicker-extended",\n        "enketo-widget/time/timepicker-extended",\n        "enketo-widget/datetime/datetimepicker-extended",\n        "enketo-widget/mediagrid/mediagridpicker",\n        "enketo-widget/file-offline/offline-filepicker",\n        "enketo-widget/select-likert/likertitem",\n        "enketo-widget/distress/distresspicker"\n    ],\n    "maps": [ {\n        "tiles": [ "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" ],\n        "name": "streets",\n        "attribution": "Map data © <a href=\\"http://openstreetmap.org\\">OpenStreetMap</a> contributors"\n    } ],\n    "google_api_key": ""\n}\n';});
+define('text!enketo-config',[],function () { return '{\n    "widgets": [\n        "enketo-widget/note/notewidget",\n        "enketo-widget/select-desktop/selectpicker",\n        "enketo-widget/select-mobile/selectpicker",\n        "enketo-widget/geo/geopicker",\n        "enketo-widget/table/tablewidget",\n        "enketo-widget/radio/radiopicker",\n        "enketo-widget/date/datepicker-extended",\n        "enketo-widget/time/timepicker-extended",\n        "enketo-widget/datetime/datetimepicker-extended",\n        "enketo-widget/mediagrid/mediagridpicker",\n        "enketo-widget/file/filepicker",\n        "enketo-widget/select-likert/likertitem",\n        "enketo-widget/distress/distresspicker",\n        "enketo-widget/trigger/triggerwidget"\n    ],\n    "maps": [ {\n        "tiles": [ "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" ],\n        "name": "streets",\n        "attribution": "Map data © <a href=\\"http://openstreetmap.org\\">OpenStreetMap</a> contributors"\n    } ],\n    "google_api_key": ""\n}\n';});
 
 define( 'enketo-js/widgets',[ 'text!enketo-config', 'Modernizr', 'jquery' ], function( configStr, Modernizr, $ ) {
     
@@ -15838,8 +15486,8 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                     //if there is no corresponding data node but there is a corresponding template node (=> <repeat>)
                     //this use of node(path,index,file).get() is a bit of a trick that is difficult to wrap one's head around
                     else if ( model.node( path, 0, {
-                        noTemplate: false
-                    } ).get().closest( '[template]' ).length > 0 ) {
+                            noTemplate: false
+                        } ).get().closest( '[template]' ).length > 0 ) {
                         //clone the template node 
                         //TODO add support for repeated nodes in forms that do not use template="" (not possible in formhub)
                         $template = model.node( path, 0, {
@@ -16641,6 +16289,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                     var result = model.evaluate( expr, 'boolean', contextPath, index );
                     return result;
                 }
+
                 /**
                  * Processes the evaluation result for a branch
                  *
@@ -16656,6 +16305,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                         disable( $branchNode );
                     }
                 }
+
                 /**
                  * Checks whether branch currently has 'relevant' state
                  *
@@ -16665,6 +16315,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                 function selfRelevant( $branchNode ) {
                     return !$branchNode.hasClass( 'disabled' ) && !$branchNode.hasClass( 'pre-init' );
                 }
+
                 /**
                  * Enables and reveals a branch node/group
                  *
@@ -16695,6 +16346,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                         }
                     }
                 }
+
                 /**
                  * Disables and hides a branch node/group
                  *
@@ -17610,6 +17262,2045 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
         return Form;
     } );
 
+// vim:ts=4:sts=4:sw=4:
+/*!
+ *
+ * Copyright 2009-2012 Kris Kowal under the terms of the MIT
+ * license found at http://github.com/kriskowal/q/raw/master/LICENSE
+ *
+ * With parts by Tyler Close
+ * Copyright 2007-2009 Tyler Close under the terms of the MIT X license found
+ * at http://www.opensource.org/licenses/mit-license.html
+ * Forked at ref_send.js version: 2009-05-11
+ *
+ * With parts by Mark Miller
+ * Copyright (C) 2011 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+(function (definition) {
+    // Turn off strict mode for this function so we can assign to global.Q
+    /* jshint strict: false */
+
+    // This file will function properly as a <script> tag, or a module
+    // using CommonJS and NodeJS or RequireJS module formats.  In
+    // Common/Node/RequireJS, the module exports the Q API and when
+    // executed as a simple <script>, it creates a Q global instead.
+
+    // Montage Require
+    if (typeof bootstrap === "function") {
+        bootstrap("promise", definition);
+
+    // CommonJS
+    } else if (typeof exports === "object") {
+        module.exports = definition();
+
+    // RequireJS
+    } else if (typeof define === "function" && define.amd) {
+        define('q',definition);
+
+    // SES (Secure EcmaScript)
+    } else if (typeof ses !== "undefined") {
+        if (!ses.ok()) {
+            return;
+        } else {
+            ses.makeQ = definition;
+        }
+
+    // <script>
+    } else {
+        Q = definition();
+    }
+
+})(function () {
+
+
+var hasStacks = false;
+try {
+    throw new Error();
+} catch (e) {
+    hasStacks = !!e.stack;
+}
+
+// All code after this point will be filtered from stack traces reported
+// by Q.
+var qStartingLine = captureLine();
+var qFileName;
+
+// shims
+
+// used for fallback in "allResolved"
+var noop = function () {};
+
+// Use the fastest possible means to execute a task in a future turn
+// of the event loop.
+var nextTick =(function () {
+    // linked list of tasks (single, with head node)
+    var head = {task: void 0, next: null};
+    var tail = head;
+    var flushing = false;
+    var requestTick = void 0;
+    var isNodeJS = false;
+
+    function flush() {
+        /* jshint loopfunc: true */
+
+        while (head.next) {
+            head = head.next;
+            var task = head.task;
+            head.task = void 0;
+            var domain = head.domain;
+
+            if (domain) {
+                head.domain = void 0;
+                domain.enter();
+            }
+
+            try {
+                task();
+
+            } catch (e) {
+                if (isNodeJS) {
+                    // In node, uncaught exceptions are considered fatal errors.
+                    // Re-throw them synchronously to interrupt flushing!
+
+                    // Ensure continuation if the uncaught exception is suppressed
+                    // listening "uncaughtException" events (as domains does).
+                    // Continue in next event to avoid tick recursion.
+                    if (domain) {
+                        domain.exit();
+                    }
+                    setTimeout(flush, 0);
+                    if (domain) {
+                        domain.enter();
+                    }
+
+                    throw e;
+
+                } else {
+                    // In browsers, uncaught exceptions are not fatal.
+                    // Re-throw them asynchronously to avoid slow-downs.
+                    setTimeout(function() {
+                       throw e;
+                    }, 0);
+                }
+            }
+
+            if (domain) {
+                domain.exit();
+            }
+        }
+
+        flushing = false;
+    }
+
+    nextTick = function (task) {
+        tail = tail.next = {
+            task: task,
+            domain: isNodeJS && process.domain,
+            next: null
+        };
+
+        if (!flushing) {
+            flushing = true;
+            requestTick();
+        }
+    };
+
+    if (typeof process !== "undefined" && process.nextTick) {
+        // Node.js before 0.9. Note that some fake-Node environments, like the
+        // Mocha test runner, introduce a `process` global without a `nextTick`.
+        isNodeJS = true;
+
+        requestTick = function () {
+            process.nextTick(flush);
+        };
+
+    } else if (typeof setImmediate === "function") {
+        // In IE10, Node.js 0.9+, or https://github.com/NobleJS/setImmediate
+        if (typeof window !== "undefined") {
+            requestTick = setImmediate.bind(window, flush);
+        } else {
+            requestTick = function () {
+                setImmediate(flush);
+            };
+        }
+
+    } else if (typeof MessageChannel !== "undefined") {
+        // modern browsers
+        // http://www.nonblocking.io/2011/06/windownexttick.html
+        var channel = new MessageChannel();
+        // At least Safari Version 6.0.5 (8536.30.1) intermittently cannot create
+        // working message ports the first time a page loads.
+        channel.port1.onmessage = function () {
+            requestTick = requestPortTick;
+            channel.port1.onmessage = flush;
+            flush();
+        };
+        var requestPortTick = function () {
+            // Opera requires us to provide a message payload, regardless of
+            // whether we use it.
+            channel.port2.postMessage(0);
+        };
+        requestTick = function () {
+            setTimeout(flush, 0);
+            requestPortTick();
+        };
+
+    } else {
+        // old browsers
+        requestTick = function () {
+            setTimeout(flush, 0);
+        };
+    }
+
+    return nextTick;
+})();
+
+// Attempt to make generics safe in the face of downstream
+// modifications.
+// There is no situation where this is necessary.
+// If you need a security guarantee, these primordials need to be
+// deeply frozen anyway, and if you don’t need a security guarantee,
+// this is just plain paranoid.
+// However, this **might** have the nice side-effect of reducing the size of
+// the minified code by reducing x.call() to merely x()
+// See Mark Miller’s explanation of what this does.
+// http://wiki.ecmascript.org/doku.php?id=conventions:safe_meta_programming
+var call = Function.call;
+function uncurryThis(f) {
+    return function () {
+        return call.apply(f, arguments);
+    };
+}
+// This is equivalent, but slower:
+// uncurryThis = Function_bind.bind(Function_bind.call);
+// http://jsperf.com/uncurrythis
+
+var array_slice = uncurryThis(Array.prototype.slice);
+
+var array_reduce = uncurryThis(
+    Array.prototype.reduce || function (callback, basis) {
+        var index = 0,
+            length = this.length;
+        // concerning the initial value, if one is not provided
+        if (arguments.length === 1) {
+            // seek to the first value in the array, accounting
+            // for the possibility that is is a sparse array
+            do {
+                if (index in this) {
+                    basis = this[index++];
+                    break;
+                }
+                if (++index >= length) {
+                    throw new TypeError();
+                }
+            } while (1);
+        }
+        // reduce
+        for (; index < length; index++) {
+            // account for the possibility that the array is sparse
+            if (index in this) {
+                basis = callback(basis, this[index], index);
+            }
+        }
+        return basis;
+    }
+);
+
+var array_indexOf = uncurryThis(
+    Array.prototype.indexOf || function (value) {
+        // not a very good shim, but good enough for our one use of it
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] === value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+);
+
+var array_map = uncurryThis(
+    Array.prototype.map || function (callback, thisp) {
+        var self = this;
+        var collect = [];
+        array_reduce(self, function (undefined, value, index) {
+            collect.push(callback.call(thisp, value, index, self));
+        }, void 0);
+        return collect;
+    }
+);
+
+var object_create = Object.create || function (prototype) {
+    function Type() { }
+    Type.prototype = prototype;
+    return new Type();
+};
+
+var object_hasOwnProperty = uncurryThis(Object.prototype.hasOwnProperty);
+
+var object_keys = Object.keys || function (object) {
+    var keys = [];
+    for (var key in object) {
+        if (object_hasOwnProperty(object, key)) {
+            keys.push(key);
+        }
+    }
+    return keys;
+};
+
+var object_toString = uncurryThis(Object.prototype.toString);
+
+function isObject(value) {
+    return value === Object(value);
+}
+
+// generator related shims
+
+// FIXME: Remove this function once ES6 generators are in SpiderMonkey.
+function isStopIteration(exception) {
+    return (
+        object_toString(exception) === "[object StopIteration]" ||
+        exception instanceof QReturnValue
+    );
+}
+
+// FIXME: Remove this helper and Q.return once ES6 generators are in
+// SpiderMonkey.
+var QReturnValue;
+if (typeof ReturnValue !== "undefined") {
+    QReturnValue = ReturnValue;
+} else {
+    QReturnValue = function (value) {
+        this.value = value;
+    };
+}
+
+// long stack traces
+
+var STACK_JUMP_SEPARATOR = "From previous event:";
+
+function makeStackTraceLong(error, promise) {
+    // If possible, transform the error stack trace by removing Node and Q
+    // cruft, then concatenating with the stack trace of `promise`. See #57.
+    if (hasStacks &&
+        promise.stack &&
+        typeof error === "object" &&
+        error !== null &&
+        error.stack &&
+        error.stack.indexOf(STACK_JUMP_SEPARATOR) === -1
+    ) {
+        var stacks = [];
+        for (var p = promise; !!p; p = p.source) {
+            if (p.stack) {
+                stacks.unshift(p.stack);
+            }
+        }
+        stacks.unshift(error.stack);
+
+        var concatedStacks = stacks.join("\n" + STACK_JUMP_SEPARATOR + "\n");
+        error.stack = filterStackString(concatedStacks);
+    }
+}
+
+function filterStackString(stackString) {
+    var lines = stackString.split("\n");
+    var desiredLines = [];
+    for (var i = 0; i < lines.length; ++i) {
+        var line = lines[i];
+
+        if (!isInternalFrame(line) && !isNodeFrame(line) && line) {
+            desiredLines.push(line);
+        }
+    }
+    return desiredLines.join("\n");
+}
+
+function isNodeFrame(stackLine) {
+    return stackLine.indexOf("(module.js:") !== -1 ||
+           stackLine.indexOf("(node.js:") !== -1;
+}
+
+function getFileNameAndLineNumber(stackLine) {
+    // Named functions: "at functionName (filename:lineNumber:columnNumber)"
+    // In IE10 function name can have spaces ("Anonymous function") O_o
+    var attempt1 = /at .+ \((.+):(\d+):(?:\d+)\)$/.exec(stackLine);
+    if (attempt1) {
+        return [attempt1[1], Number(attempt1[2])];
+    }
+
+    // Anonymous functions: "at filename:lineNumber:columnNumber"
+    var attempt2 = /at ([^ ]+):(\d+):(?:\d+)$/.exec(stackLine);
+    if (attempt2) {
+        return [attempt2[1], Number(attempt2[2])];
+    }
+
+    // Firefox style: "function@filename:lineNumber or @filename:lineNumber"
+    var attempt3 = /.*@(.+):(\d+)$/.exec(stackLine);
+    if (attempt3) {
+        return [attempt3[1], Number(attempt3[2])];
+    }
+}
+
+function isInternalFrame(stackLine) {
+    var fileNameAndLineNumber = getFileNameAndLineNumber(stackLine);
+
+    if (!fileNameAndLineNumber) {
+        return false;
+    }
+
+    var fileName = fileNameAndLineNumber[0];
+    var lineNumber = fileNameAndLineNumber[1];
+
+    return fileName === qFileName &&
+        lineNumber >= qStartingLine &&
+        lineNumber <= qEndingLine;
+}
+
+// discover own file name and line number range for filtering stack
+// traces
+function captureLine() {
+    if (!hasStacks) {
+        return;
+    }
+
+    try {
+        throw new Error();
+    } catch (e) {
+        var lines = e.stack.split("\n");
+        var firstLine = lines[0].indexOf("@") > 0 ? lines[1] : lines[2];
+        var fileNameAndLineNumber = getFileNameAndLineNumber(firstLine);
+        if (!fileNameAndLineNumber) {
+            return;
+        }
+
+        qFileName = fileNameAndLineNumber[0];
+        return fileNameAndLineNumber[1];
+    }
+}
+
+function deprecate(callback, name, alternative) {
+    return function () {
+        if (typeof console !== "undefined" &&
+            typeof console.warn === "function") {
+            console.warn(name + " is deprecated, use " + alternative +
+                         " instead.", new Error("").stack);
+        }
+        return callback.apply(callback, arguments);
+    };
+}
+
+// end of shims
+// beginning of real work
+
+/**
+ * Constructs a promise for an immediate reference, passes promises through, or
+ * coerces promises from different systems.
+ * @param value immediate reference or promise
+ */
+function Q(value) {
+    // If the object is already a Promise, return it directly.  This enables
+    // the resolve function to both be used to created references from objects,
+    // but to tolerably coerce non-promises to promises.
+    if (isPromise(value)) {
+        return value;
+    }
+
+    // assimilate thenables
+    if (isPromiseAlike(value)) {
+        return coerce(value);
+    } else {
+        return fulfill(value);
+    }
+}
+Q.resolve = Q;
+
+/**
+ * Performs a task in a future turn of the event loop.
+ * @param {Function} task
+ */
+Q.nextTick = nextTick;
+
+/**
+ * Controls whether or not long stack traces will be on
+ */
+Q.longStackSupport = false;
+
+/**
+ * Constructs a {promise, resolve, reject} object.
+ *
+ * `resolve` is a callback to invoke with a more resolved value for the
+ * promise. To fulfill the promise, invoke `resolve` with any value that is
+ * not a thenable. To reject the promise, invoke `resolve` with a rejected
+ * thenable, or invoke `reject` with the reason directly. To resolve the
+ * promise to another thenable, thus putting it in the same state, invoke
+ * `resolve` with that other thenable.
+ */
+Q.defer = defer;
+function defer() {
+    // if "messages" is an "Array", that indicates that the promise has not yet
+    // been resolved.  If it is "undefined", it has been resolved.  Each
+    // element of the messages array is itself an array of complete arguments to
+    // forward to the resolved promise.  We coerce the resolution value to a
+    // promise using the `resolve` function because it handles both fully
+    // non-thenable values and other thenables gracefully.
+    var messages = [], progressListeners = [], resolvedPromise;
+
+    var deferred = object_create(defer.prototype);
+    var promise = object_create(Promise.prototype);
+
+    promise.promiseDispatch = function (resolve, op, operands) {
+        var args = array_slice(arguments);
+        if (messages) {
+            messages.push(args);
+            if (op === "when" && operands[1]) { // progress operand
+                progressListeners.push(operands[1]);
+            }
+        } else {
+            nextTick(function () {
+                resolvedPromise.promiseDispatch.apply(resolvedPromise, args);
+            });
+        }
+    };
+
+    // XXX deprecated
+    promise.valueOf = function () {
+        if (messages) {
+            return promise;
+        }
+        var nearerValue = nearer(resolvedPromise);
+        if (isPromise(nearerValue)) {
+            resolvedPromise = nearerValue; // shorten chain
+        }
+        return nearerValue;
+    };
+
+    promise.inspect = function () {
+        if (!resolvedPromise) {
+            return { state: "pending" };
+        }
+        return resolvedPromise.inspect();
+    };
+
+    if (Q.longStackSupport && hasStacks) {
+        try {
+            throw new Error();
+        } catch (e) {
+            // NOTE: don't try to use `Error.captureStackTrace` or transfer the
+            // accessor around; that causes memory leaks as per GH-111. Just
+            // reify the stack trace as a string ASAP.
+            //
+            // At the same time, cut off the first line; it's always just
+            // "[object Promise]\n", as per the `toString`.
+            promise.stack = e.stack.substring(e.stack.indexOf("\n") + 1);
+        }
+    }
+
+    // NOTE: we do the checks for `resolvedPromise` in each method, instead of
+    // consolidating them into `become`, since otherwise we'd create new
+    // promises with the lines `become(whatever(value))`. See e.g. GH-252.
+
+    function become(newPromise) {
+        resolvedPromise = newPromise;
+        promise.source = newPromise;
+
+        array_reduce(messages, function (undefined, message) {
+            nextTick(function () {
+                newPromise.promiseDispatch.apply(newPromise, message);
+            });
+        }, void 0);
+
+        messages = void 0;
+        progressListeners = void 0;
+    }
+
+    deferred.promise = promise;
+    deferred.resolve = function (value) {
+        if (resolvedPromise) {
+            return;
+        }
+
+        become(Q(value));
+    };
+
+    deferred.fulfill = function (value) {
+        if (resolvedPromise) {
+            return;
+        }
+
+        become(fulfill(value));
+    };
+    deferred.reject = function (reason) {
+        if (resolvedPromise) {
+            return;
+        }
+
+        become(reject(reason));
+    };
+    deferred.notify = function (progress) {
+        if (resolvedPromise) {
+            return;
+        }
+
+        array_reduce(progressListeners, function (undefined, progressListener) {
+            nextTick(function () {
+                progressListener(progress);
+            });
+        }, void 0);
+    };
+
+    return deferred;
+}
+
+/**
+ * Creates a Node-style callback that will resolve or reject the deferred
+ * promise.
+ * @returns a nodeback
+ */
+defer.prototype.makeNodeResolver = function () {
+    var self = this;
+    return function (error, value) {
+        if (error) {
+            self.reject(error);
+        } else if (arguments.length > 2) {
+            self.resolve(array_slice(arguments, 1));
+        } else {
+            self.resolve(value);
+        }
+    };
+};
+
+/**
+ * @param resolver {Function} a function that returns nothing and accepts
+ * the resolve, reject, and notify functions for a deferred.
+ * @returns a promise that may be resolved with the given resolve and reject
+ * functions, or rejected by a thrown exception in resolver
+ */
+Q.Promise = promise; // ES6
+Q.promise = promise;
+function promise(resolver) {
+    if (typeof resolver !== "function") {
+        throw new TypeError("resolver must be a function.");
+    }
+    var deferred = defer();
+    try {
+        resolver(deferred.resolve, deferred.reject, deferred.notify);
+    } catch (reason) {
+        deferred.reject(reason);
+    }
+    return deferred.promise;
+}
+
+promise.race = race; // ES6
+promise.all = all; // ES6
+promise.reject = reject; // ES6
+promise.resolve = Q; // ES6
+
+// XXX experimental.  This method is a way to denote that a local value is
+// serializable and should be immediately dispatched to a remote upon request,
+// instead of passing a reference.
+Q.passByCopy = function (object) {
+    //freeze(object);
+    //passByCopies.set(object, true);
+    return object;
+};
+
+Promise.prototype.passByCopy = function () {
+    //freeze(object);
+    //passByCopies.set(object, true);
+    return this;
+};
+
+/**
+ * If two promises eventually fulfill to the same value, promises that value,
+ * but otherwise rejects.
+ * @param x {Any*}
+ * @param y {Any*}
+ * @returns {Any*} a promise for x and y if they are the same, but a rejection
+ * otherwise.
+ *
+ */
+Q.join = function (x, y) {
+    return Q(x).join(y);
+};
+
+Promise.prototype.join = function (that) {
+    return Q([this, that]).spread(function (x, y) {
+        if (x === y) {
+            // TODO: "===" should be Object.is or equiv
+            return x;
+        } else {
+            throw new Error("Can't join: not the same: " + x + " " + y);
+        }
+    });
+};
+
+/**
+ * Returns a promise for the first of an array of promises to become fulfilled.
+ * @param answers {Array[Any*]} promises to race
+ * @returns {Any*} the first promise to be fulfilled
+ */
+Q.race = race;
+function race(answerPs) {
+    return promise(function(resolve, reject) {
+        // Switch to this once we can assume at least ES5
+        // answerPs.forEach(function(answerP) {
+        //     Q(answerP).then(resolve, reject);
+        // });
+        // Use this in the meantime
+        for (var i = 0, len = answerPs.length; i < len; i++) {
+            Q(answerPs[i]).then(resolve, reject);
+        }
+    });
+}
+
+Promise.prototype.race = function () {
+    return this.then(Q.race);
+};
+
+/**
+ * Constructs a Promise with a promise descriptor object and optional fallback
+ * function.  The descriptor contains methods like when(rejected), get(name),
+ * set(name, value), post(name, args), and delete(name), which all
+ * return either a value, a promise for a value, or a rejection.  The fallback
+ * accepts the operation name, a resolver, and any further arguments that would
+ * have been forwarded to the appropriate method above had a method been
+ * provided with the proper name.  The API makes no guarantees about the nature
+ * of the returned object, apart from that it is usable whereever promises are
+ * bought and sold.
+ */
+Q.makePromise = Promise;
+function Promise(descriptor, fallback, inspect) {
+    if (fallback === void 0) {
+        fallback = function (op) {
+            return reject(new Error(
+                "Promise does not support operation: " + op
+            ));
+        };
+    }
+    if (inspect === void 0) {
+        inspect = function () {
+            return {state: "unknown"};
+        };
+    }
+
+    var promise = object_create(Promise.prototype);
+
+    promise.promiseDispatch = function (resolve, op, args) {
+        var result;
+        try {
+            if (descriptor[op]) {
+                result = descriptor[op].apply(promise, args);
+            } else {
+                result = fallback.call(promise, op, args);
+            }
+        } catch (exception) {
+            result = reject(exception);
+        }
+        if (resolve) {
+            resolve(result);
+        }
+    };
+
+    promise.inspect = inspect;
+
+    // XXX deprecated `valueOf` and `exception` support
+    if (inspect) {
+        var inspected = inspect();
+        if (inspected.state === "rejected") {
+            promise.exception = inspected.reason;
+        }
+
+        promise.valueOf = function () {
+            var inspected = inspect();
+            if (inspected.state === "pending" ||
+                inspected.state === "rejected") {
+                return promise;
+            }
+            return inspected.value;
+        };
+    }
+
+    return promise;
+}
+
+Promise.prototype.toString = function () {
+    return "[object Promise]";
+};
+
+Promise.prototype.then = function (fulfilled, rejected, progressed) {
+    var self = this;
+    var deferred = defer();
+    var done = false;   // ensure the untrusted promise makes at most a
+                        // single call to one of the callbacks
+
+    function _fulfilled(value) {
+        try {
+            return typeof fulfilled === "function" ? fulfilled(value) : value;
+        } catch (exception) {
+            return reject(exception);
+        }
+    }
+
+    function _rejected(exception) {
+        if (typeof rejected === "function") {
+            makeStackTraceLong(exception, self);
+            try {
+                return rejected(exception);
+            } catch (newException) {
+                return reject(newException);
+            }
+        }
+        return reject(exception);
+    }
+
+    function _progressed(value) {
+        return typeof progressed === "function" ? progressed(value) : value;
+    }
+
+    nextTick(function () {
+        self.promiseDispatch(function (value) {
+            if (done) {
+                return;
+            }
+            done = true;
+
+            deferred.resolve(_fulfilled(value));
+        }, "when", [function (exception) {
+            if (done) {
+                return;
+            }
+            done = true;
+
+            deferred.resolve(_rejected(exception));
+        }]);
+    });
+
+    // Progress propagator need to be attached in the current tick.
+    self.promiseDispatch(void 0, "when", [void 0, function (value) {
+        var newValue;
+        var threw = false;
+        try {
+            newValue = _progressed(value);
+        } catch (e) {
+            threw = true;
+            if (Q.onerror) {
+                Q.onerror(e);
+            } else {
+                throw e;
+            }
+        }
+
+        if (!threw) {
+            deferred.notify(newValue);
+        }
+    }]);
+
+    return deferred.promise;
+};
+
+/**
+ * Registers an observer on a promise.
+ *
+ * Guarantees:
+ *
+ * 1. that fulfilled and rejected will be called only once.
+ * 2. that either the fulfilled callback or the rejected callback will be
+ *    called, but not both.
+ * 3. that fulfilled and rejected will not be called in this turn.
+ *
+ * @param value      promise or immediate reference to observe
+ * @param fulfilled  function to be called with the fulfilled value
+ * @param rejected   function to be called with the rejection exception
+ * @param progressed function to be called on any progress notifications
+ * @return promise for the return value from the invoked callback
+ */
+Q.when = when;
+function when(value, fulfilled, rejected, progressed) {
+    return Q(value).then(fulfilled, rejected, progressed);
+}
+
+Promise.prototype.thenResolve = function (value) {
+    return this.then(function () { return value; });
+};
+
+Q.thenResolve = function (promise, value) {
+    return Q(promise).thenResolve(value);
+};
+
+Promise.prototype.thenReject = function (reason) {
+    return this.then(function () { throw reason; });
+};
+
+Q.thenReject = function (promise, reason) {
+    return Q(promise).thenReject(reason);
+};
+
+/**
+ * If an object is not a promise, it is as "near" as possible.
+ * If a promise is rejected, it is as "near" as possible too.
+ * If it’s a fulfilled promise, the fulfillment value is nearer.
+ * If it’s a deferred promise and the deferred has been resolved, the
+ * resolution is "nearer".
+ * @param object
+ * @returns most resolved (nearest) form of the object
+ */
+
+// XXX should we re-do this?
+Q.nearer = nearer;
+function nearer(value) {
+    if (isPromise(value)) {
+        var inspected = value.inspect();
+        if (inspected.state === "fulfilled") {
+            return inspected.value;
+        }
+    }
+    return value;
+}
+
+/**
+ * @returns whether the given object is a promise.
+ * Otherwise it is a fulfilled value.
+ */
+Q.isPromise = isPromise;
+function isPromise(object) {
+    return isObject(object) &&
+        typeof object.promiseDispatch === "function" &&
+        typeof object.inspect === "function";
+}
+
+Q.isPromiseAlike = isPromiseAlike;
+function isPromiseAlike(object) {
+    return isObject(object) && typeof object.then === "function";
+}
+
+/**
+ * @returns whether the given object is a pending promise, meaning not
+ * fulfilled or rejected.
+ */
+Q.isPending = isPending;
+function isPending(object) {
+    return isPromise(object) && object.inspect().state === "pending";
+}
+
+Promise.prototype.isPending = function () {
+    return this.inspect().state === "pending";
+};
+
+/**
+ * @returns whether the given object is a value or fulfilled
+ * promise.
+ */
+Q.isFulfilled = isFulfilled;
+function isFulfilled(object) {
+    return !isPromise(object) || object.inspect().state === "fulfilled";
+}
+
+Promise.prototype.isFulfilled = function () {
+    return this.inspect().state === "fulfilled";
+};
+
+/**
+ * @returns whether the given object is a rejected promise.
+ */
+Q.isRejected = isRejected;
+function isRejected(object) {
+    return isPromise(object) && object.inspect().state === "rejected";
+}
+
+Promise.prototype.isRejected = function () {
+    return this.inspect().state === "rejected";
+};
+
+//// BEGIN UNHANDLED REJECTION TRACKING
+
+// This promise library consumes exceptions thrown in handlers so they can be
+// handled by a subsequent promise.  The exceptions get added to this array when
+// they are created, and removed when they are handled.  Note that in ES6 or
+// shimmed environments, this would naturally be a `Set`.
+var unhandledReasons = [];
+var unhandledRejections = [];
+var trackUnhandledRejections = true;
+
+function resetUnhandledRejections() {
+    unhandledReasons.length = 0;
+    unhandledRejections.length = 0;
+
+    if (!trackUnhandledRejections) {
+        trackUnhandledRejections = true;
+    }
+}
+
+function trackRejection(promise, reason) {
+    if (!trackUnhandledRejections) {
+        return;
+    }
+
+    unhandledRejections.push(promise);
+    if (reason && typeof reason.stack !== "undefined") {
+        unhandledReasons.push(reason.stack);
+    } else {
+        unhandledReasons.push("(no stack) " + reason);
+    }
+}
+
+function untrackRejection(promise) {
+    if (!trackUnhandledRejections) {
+        return;
+    }
+
+    var at = array_indexOf(unhandledRejections, promise);
+    if (at !== -1) {
+        unhandledRejections.splice(at, 1);
+        unhandledReasons.splice(at, 1);
+    }
+}
+
+Q.resetUnhandledRejections = resetUnhandledRejections;
+
+Q.getUnhandledReasons = function () {
+    // Make a copy so that consumers can't interfere with our internal state.
+    return unhandledReasons.slice();
+};
+
+Q.stopUnhandledRejectionTracking = function () {
+    resetUnhandledRejections();
+    trackUnhandledRejections = false;
+};
+
+resetUnhandledRejections();
+
+//// END UNHANDLED REJECTION TRACKING
+
+/**
+ * Constructs a rejected promise.
+ * @param reason value describing the failure
+ */
+Q.reject = reject;
+function reject(reason) {
+    var rejection = Promise({
+        "when": function (rejected) {
+            // note that the error has been handled
+            if (rejected) {
+                untrackRejection(this);
+            }
+            return rejected ? rejected(reason) : this;
+        }
+    }, function fallback() {
+        return this;
+    }, function inspect() {
+        return { state: "rejected", reason: reason };
+    });
+
+    // Note that the reason has not been handled.
+    trackRejection(rejection, reason);
+
+    return rejection;
+}
+
+/**
+ * Constructs a fulfilled promise for an immediate reference.
+ * @param value immediate reference
+ */
+Q.fulfill = fulfill;
+function fulfill(value) {
+    return Promise({
+        "when": function () {
+            return value;
+        },
+        "get": function (name) {
+            return value[name];
+        },
+        "set": function (name, rhs) {
+            value[name] = rhs;
+        },
+        "delete": function (name) {
+            delete value[name];
+        },
+        "post": function (name, args) {
+            // Mark Miller proposes that post with no name should apply a
+            // promised function.
+            if (name === null || name === void 0) {
+                return value.apply(void 0, args);
+            } else {
+                return value[name].apply(value, args);
+            }
+        },
+        "apply": function (thisp, args) {
+            return value.apply(thisp, args);
+        },
+        "keys": function () {
+            return object_keys(value);
+        }
+    }, void 0, function inspect() {
+        return { state: "fulfilled", value: value };
+    });
+}
+
+/**
+ * Converts thenables to Q promises.
+ * @param promise thenable promise
+ * @returns a Q promise
+ */
+function coerce(promise) {
+    var deferred = defer();
+    nextTick(function () {
+        try {
+            promise.then(deferred.resolve, deferred.reject, deferred.notify);
+        } catch (exception) {
+            deferred.reject(exception);
+        }
+    });
+    return deferred.promise;
+}
+
+/**
+ * Annotates an object such that it will never be
+ * transferred away from this process over any promise
+ * communication channel.
+ * @param object
+ * @returns promise a wrapping of that object that
+ * additionally responds to the "isDef" message
+ * without a rejection.
+ */
+Q.master = master;
+function master(object) {
+    return Promise({
+        "isDef": function () {}
+    }, function fallback(op, args) {
+        return dispatch(object, op, args);
+    }, function () {
+        return Q(object).inspect();
+    });
+}
+
+/**
+ * Spreads the values of a promised array of arguments into the
+ * fulfillment callback.
+ * @param fulfilled callback that receives variadic arguments from the
+ * promised array
+ * @param rejected callback that receives the exception if the promise
+ * is rejected.
+ * @returns a promise for the return value or thrown exception of
+ * either callback.
+ */
+Q.spread = spread;
+function spread(value, fulfilled, rejected) {
+    return Q(value).spread(fulfilled, rejected);
+}
+
+Promise.prototype.spread = function (fulfilled, rejected) {
+    return this.all().then(function (array) {
+        return fulfilled.apply(void 0, array);
+    }, rejected);
+};
+
+/**
+ * The async function is a decorator for generator functions, turning
+ * them into asynchronous generators.  Although generators are only part
+ * of the newest ECMAScript 6 drafts, this code does not cause syntax
+ * errors in older engines.  This code should continue to work and will
+ * in fact improve over time as the language improves.
+ *
+ * ES6 generators are currently part of V8 version 3.19 with the
+ * --harmony-generators runtime flag enabled.  SpiderMonkey has had them
+ * for longer, but under an older Python-inspired form.  This function
+ * works on both kinds of generators.
+ *
+ * Decorates a generator function such that:
+ *  - it may yield promises
+ *  - execution will continue when that promise is fulfilled
+ *  - the value of the yield expression will be the fulfilled value
+ *  - it returns a promise for the return value (when the generator
+ *    stops iterating)
+ *  - the decorated function returns a promise for the return value
+ *    of the generator or the first rejected promise among those
+ *    yielded.
+ *  - if an error is thrown in the generator, it propagates through
+ *    every following yield until it is caught, or until it escapes
+ *    the generator function altogether, and is translated into a
+ *    rejection for the promise returned by the decorated generator.
+ */
+Q.async = async;
+function async(makeGenerator) {
+    return function () {
+        // when verb is "send", arg is a value
+        // when verb is "throw", arg is an exception
+        function continuer(verb, arg) {
+            var result;
+
+            // Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
+            // engine that has a deployed base of browsers that support generators.
+            // However, SM's generators use the Python-inspired semantics of
+            // outdated ES6 drafts.  We would like to support ES6, but we'd also
+            // like to make it possible to use generators in deployed browsers, so
+            // we also support Python-style generators.  At some point we can remove
+            // this block.
+
+            if (typeof StopIteration === "undefined") {
+                // ES6 Generators
+                try {
+                    result = generator[verb](arg);
+                } catch (exception) {
+                    return reject(exception);
+                }
+                if (result.done) {
+                    return result.value;
+                } else {
+                    return when(result.value, callback, errback);
+                }
+            } else {
+                // SpiderMonkey Generators
+                // FIXME: Remove this case when SM does ES6 generators.
+                try {
+                    result = generator[verb](arg);
+                } catch (exception) {
+                    if (isStopIteration(exception)) {
+                        return exception.value;
+                    } else {
+                        return reject(exception);
+                    }
+                }
+                return when(result, callback, errback);
+            }
+        }
+        var generator = makeGenerator.apply(this, arguments);
+        var callback = continuer.bind(continuer, "next");
+        var errback = continuer.bind(continuer, "throw");
+        return callback();
+    };
+}
+
+/**
+ * The spawn function is a small wrapper around async that immediately
+ * calls the generator and also ends the promise chain, so that any
+ * unhandled errors are thrown instead of forwarded to the error
+ * handler. This is useful because it's extremely common to run
+ * generators at the top-level to work with libraries.
+ */
+Q.spawn = spawn;
+function spawn(makeGenerator) {
+    Q.done(Q.async(makeGenerator)());
+}
+
+// FIXME: Remove this interface once ES6 generators are in SpiderMonkey.
+/**
+ * Throws a ReturnValue exception to stop an asynchronous generator.
+ *
+ * This interface is a stop-gap measure to support generator return
+ * values in older Firefox/SpiderMonkey.  In browsers that support ES6
+ * generators like Chromium 29, just use "return" in your generator
+ * functions.
+ *
+ * @param value the return value for the surrounding generator
+ * @throws ReturnValue exception with the value.
+ * @example
+ * // ES6 style
+ * Q.async(function* () {
+ *      var foo = yield getFooPromise();
+ *      var bar = yield getBarPromise();
+ *      return foo + bar;
+ * })
+ * // Older SpiderMonkey style
+ * Q.async(function () {
+ *      var foo = yield getFooPromise();
+ *      var bar = yield getBarPromise();
+ *      Q.return(foo + bar);
+ * })
+ */
+Q["return"] = _return;
+function _return(value) {
+    throw new QReturnValue(value);
+}
+
+/**
+ * The promised function decorator ensures that any promise arguments
+ * are settled and passed as values (`this` is also settled and passed
+ * as a value).  It will also ensure that the result of a function is
+ * always a promise.
+ *
+ * @example
+ * var add = Q.promised(function (a, b) {
+ *     return a + b;
+ * });
+ * add(Q(a), Q(B));
+ *
+ * @param {function} callback The function to decorate
+ * @returns {function} a function that has been decorated.
+ */
+Q.promised = promised;
+function promised(callback) {
+    return function () {
+        return spread([this, all(arguments)], function (self, args) {
+            return callback.apply(self, args);
+        });
+    };
+}
+
+/**
+ * sends a message to a value in a future turn
+ * @param object* the recipient
+ * @param op the name of the message operation, e.g., "when",
+ * @param args further arguments to be forwarded to the operation
+ * @returns result {Promise} a promise for the result of the operation
+ */
+Q.dispatch = dispatch;
+function dispatch(object, op, args) {
+    return Q(object).dispatch(op, args);
+}
+
+Promise.prototype.dispatch = function (op, args) {
+    var self = this;
+    var deferred = defer();
+    nextTick(function () {
+        self.promiseDispatch(deferred.resolve, op, args);
+    });
+    return deferred.promise;
+};
+
+/**
+ * Gets the value of a property in a future turn.
+ * @param object    promise or immediate reference for target object
+ * @param name      name of property to get
+ * @return promise for the property value
+ */
+Q.get = function (object, key) {
+    return Q(object).dispatch("get", [key]);
+};
+
+Promise.prototype.get = function (key) {
+    return this.dispatch("get", [key]);
+};
+
+/**
+ * Sets the value of a property in a future turn.
+ * @param object    promise or immediate reference for object object
+ * @param name      name of property to set
+ * @param value     new value of property
+ * @return promise for the return value
+ */
+Q.set = function (object, key, value) {
+    return Q(object).dispatch("set", [key, value]);
+};
+
+Promise.prototype.set = function (key, value) {
+    return this.dispatch("set", [key, value]);
+};
+
+/**
+ * Deletes a property in a future turn.
+ * @param object    promise or immediate reference for target object
+ * @param name      name of property to delete
+ * @return promise for the return value
+ */
+Q.del = // XXX legacy
+Q["delete"] = function (object, key) {
+    return Q(object).dispatch("delete", [key]);
+};
+
+Promise.prototype.del = // XXX legacy
+Promise.prototype["delete"] = function (key) {
+    return this.dispatch("delete", [key]);
+};
+
+/**
+ * Invokes a method in a future turn.
+ * @param object    promise or immediate reference for target object
+ * @param name      name of method to invoke
+ * @param value     a value to post, typically an array of
+ *                  invocation arguments for promises that
+ *                  are ultimately backed with `resolve` values,
+ *                  as opposed to those backed with URLs
+ *                  wherein the posted value can be any
+ *                  JSON serializable object.
+ * @return promise for the return value
+ */
+// bound locally because it is used by other methods
+Q.mapply = // XXX As proposed by "Redsandro"
+Q.post = function (object, name, args) {
+    return Q(object).dispatch("post", [name, args]);
+};
+
+Promise.prototype.mapply = // XXX As proposed by "Redsandro"
+Promise.prototype.post = function (name, args) {
+    return this.dispatch("post", [name, args]);
+};
+
+/**
+ * Invokes a method in a future turn.
+ * @param object    promise or immediate reference for target object
+ * @param name      name of method to invoke
+ * @param ...args   array of invocation arguments
+ * @return promise for the return value
+ */
+Q.send = // XXX Mark Miller's proposed parlance
+Q.mcall = // XXX As proposed by "Redsandro"
+Q.invoke = function (object, name /*...args*/) {
+    return Q(object).dispatch("post", [name, array_slice(arguments, 2)]);
+};
+
+Promise.prototype.send = // XXX Mark Miller's proposed parlance
+Promise.prototype.mcall = // XXX As proposed by "Redsandro"
+Promise.prototype.invoke = function (name /*...args*/) {
+    return this.dispatch("post", [name, array_slice(arguments, 1)]);
+};
+
+/**
+ * Applies the promised function in a future turn.
+ * @param object    promise or immediate reference for target function
+ * @param args      array of application arguments
+ */
+Q.fapply = function (object, args) {
+    return Q(object).dispatch("apply", [void 0, args]);
+};
+
+Promise.prototype.fapply = function (args) {
+    return this.dispatch("apply", [void 0, args]);
+};
+
+/**
+ * Calls the promised function in a future turn.
+ * @param object    promise or immediate reference for target function
+ * @param ...args   array of application arguments
+ */
+Q["try"] =
+Q.fcall = function (object /* ...args*/) {
+    return Q(object).dispatch("apply", [void 0, array_slice(arguments, 1)]);
+};
+
+Promise.prototype.fcall = function (/*...args*/) {
+    return this.dispatch("apply", [void 0, array_slice(arguments)]);
+};
+
+/**
+ * Binds the promised function, transforming return values into a fulfilled
+ * promise and thrown errors into a rejected one.
+ * @param object    promise or immediate reference for target function
+ * @param ...args   array of application arguments
+ */
+Q.fbind = function (object /*...args*/) {
+    var promise = Q(object);
+    var args = array_slice(arguments, 1);
+    return function fbound() {
+        return promise.dispatch("apply", [
+            this,
+            args.concat(array_slice(arguments))
+        ]);
+    };
+};
+Promise.prototype.fbind = function (/*...args*/) {
+    var promise = this;
+    var args = array_slice(arguments);
+    return function fbound() {
+        return promise.dispatch("apply", [
+            this,
+            args.concat(array_slice(arguments))
+        ]);
+    };
+};
+
+/**
+ * Requests the names of the owned properties of a promised
+ * object in a future turn.
+ * @param object    promise or immediate reference for target object
+ * @return promise for the keys of the eventually settled object
+ */
+Q.keys = function (object) {
+    return Q(object).dispatch("keys", []);
+};
+
+Promise.prototype.keys = function () {
+    return this.dispatch("keys", []);
+};
+
+/**
+ * Turns an array of promises into a promise for an array.  If any of
+ * the promises gets rejected, the whole array is rejected immediately.
+ * @param {Array*} an array (or promise for an array) of values (or
+ * promises for values)
+ * @returns a promise for an array of the corresponding values
+ */
+// By Mark Miller
+// http://wiki.ecmascript.org/doku.php?id=strawman:concurrency&rev=1308776521#allfulfilled
+Q.all = all;
+function all(promises) {
+    return when(promises, function (promises) {
+        var countDown = 0;
+        var deferred = defer();
+        array_reduce(promises, function (undefined, promise, index) {
+            var snapshot;
+            if (
+                isPromise(promise) &&
+                (snapshot = promise.inspect()).state === "fulfilled"
+            ) {
+                promises[index] = snapshot.value;
+            } else {
+                ++countDown;
+                when(
+                    promise,
+                    function (value) {
+                        promises[index] = value;
+                        if (--countDown === 0) {
+                            deferred.resolve(promises);
+                        }
+                    },
+                    deferred.reject,
+                    function (progress) {
+                        deferred.notify({ index: index, value: progress });
+                    }
+                );
+            }
+        }, void 0);
+        if (countDown === 0) {
+            deferred.resolve(promises);
+        }
+        return deferred.promise;
+    });
+}
+
+Promise.prototype.all = function () {
+    return all(this);
+};
+
+/**
+ * Waits for all promises to be settled, either fulfilled or
+ * rejected.  This is distinct from `all` since that would stop
+ * waiting at the first rejection.  The promise returned by
+ * `allResolved` will never be rejected.
+ * @param promises a promise for an array (or an array) of promises
+ * (or values)
+ * @return a promise for an array of promises
+ */
+Q.allResolved = deprecate(allResolved, "allResolved", "allSettled");
+function allResolved(promises) {
+    return when(promises, function (promises) {
+        promises = array_map(promises, Q);
+        return when(all(array_map(promises, function (promise) {
+            return when(promise, noop, noop);
+        })), function () {
+            return promises;
+        });
+    });
+}
+
+Promise.prototype.allResolved = function () {
+    return allResolved(this);
+};
+
+/**
+ * @see Promise#allSettled
+ */
+Q.allSettled = allSettled;
+function allSettled(promises) {
+    return Q(promises).allSettled();
+}
+
+/**
+ * Turns an array of promises into a promise for an array of their states (as
+ * returned by `inspect`) when they have all settled.
+ * @param {Array[Any*]} values an array (or promise for an array) of values (or
+ * promises for values)
+ * @returns {Array[State]} an array of states for the respective values.
+ */
+Promise.prototype.allSettled = function () {
+    return this.then(function (promises) {
+        return all(array_map(promises, function (promise) {
+            promise = Q(promise);
+            function regardless() {
+                return promise.inspect();
+            }
+            return promise.then(regardless, regardless);
+        }));
+    });
+};
+
+/**
+ * Captures the failure of a promise, giving an oportunity to recover
+ * with a callback.  If the given promise is fulfilled, the returned
+ * promise is fulfilled.
+ * @param {Any*} promise for something
+ * @param {Function} callback to fulfill the returned promise if the
+ * given promise is rejected
+ * @returns a promise for the return value of the callback
+ */
+Q.fail = // XXX legacy
+Q["catch"] = function (object, rejected) {
+    return Q(object).then(void 0, rejected);
+};
+
+Promise.prototype.fail = // XXX legacy
+Promise.prototype["catch"] = function (rejected) {
+    return this.then(void 0, rejected);
+};
+
+/**
+ * Attaches a listener that can respond to progress notifications from a
+ * promise's originating deferred. This listener receives the exact arguments
+ * passed to ``deferred.notify``.
+ * @param {Any*} promise for something
+ * @param {Function} callback to receive any progress notifications
+ * @returns the given promise, unchanged
+ */
+Q.progress = progress;
+function progress(object, progressed) {
+    return Q(object).then(void 0, void 0, progressed);
+}
+
+Promise.prototype.progress = function (progressed) {
+    return this.then(void 0, void 0, progressed);
+};
+
+/**
+ * Provides an opportunity to observe the settling of a promise,
+ * regardless of whether the promise is fulfilled or rejected.  Forwards
+ * the resolution to the returned promise when the callback is done.
+ * The callback can return a promise to defer completion.
+ * @param {Any*} promise
+ * @param {Function} callback to observe the resolution of the given
+ * promise, takes no arguments.
+ * @returns a promise for the resolution of the given promise when
+ * ``fin`` is done.
+ */
+Q.fin = // XXX legacy
+Q["finally"] = function (object, callback) {
+    return Q(object)["finally"](callback);
+};
+
+Promise.prototype.fin = // XXX legacy
+Promise.prototype["finally"] = function (callback) {
+    callback = Q(callback);
+    return this.then(function (value) {
+        return callback.fcall().then(function () {
+            return value;
+        });
+    }, function (reason) {
+        // TODO attempt to recycle the rejection with "this".
+        return callback.fcall().then(function () {
+            throw reason;
+        });
+    });
+};
+
+/**
+ * Terminates a chain of promises, forcing rejections to be
+ * thrown as exceptions.
+ * @param {Any*} promise at the end of a chain of promises
+ * @returns nothing
+ */
+Q.done = function (object, fulfilled, rejected, progress) {
+    return Q(object).done(fulfilled, rejected, progress);
+};
+
+Promise.prototype.done = function (fulfilled, rejected, progress) {
+    var onUnhandledError = function (error) {
+        // forward to a future turn so that ``when``
+        // does not catch it and turn it into a rejection.
+        nextTick(function () {
+            makeStackTraceLong(error, promise);
+            if (Q.onerror) {
+                Q.onerror(error);
+            } else {
+                throw error;
+            }
+        });
+    };
+
+    // Avoid unnecessary `nextTick`ing via an unnecessary `when`.
+    var promise = fulfilled || rejected || progress ?
+        this.then(fulfilled, rejected, progress) :
+        this;
+
+    if (typeof process === "object" && process && process.domain) {
+        onUnhandledError = process.domain.bind(onUnhandledError);
+    }
+
+    promise.then(void 0, onUnhandledError);
+};
+
+/**
+ * Causes a promise to be rejected if it does not get fulfilled before
+ * some milliseconds time out.
+ * @param {Any*} promise
+ * @param {Number} milliseconds timeout
+ * @param {String} custom error message (optional)
+ * @returns a promise for the resolution of the given promise if it is
+ * fulfilled before the timeout, otherwise rejected.
+ */
+Q.timeout = function (object, ms, message) {
+    return Q(object).timeout(ms, message);
+};
+
+Promise.prototype.timeout = function (ms, message) {
+    var deferred = defer();
+    var timeoutId = setTimeout(function () {
+        deferred.reject(new Error(message || "Timed out after " + ms + " ms"));
+    }, ms);
+
+    this.then(function (value) {
+        clearTimeout(timeoutId);
+        deferred.resolve(value);
+    }, function (exception) {
+        clearTimeout(timeoutId);
+        deferred.reject(exception);
+    }, deferred.notify);
+
+    return deferred.promise;
+};
+
+/**
+ * Returns a promise for the given value (or promised value), some
+ * milliseconds after it resolved. Passes rejections immediately.
+ * @param {Any*} promise
+ * @param {Number} milliseconds
+ * @returns a promise for the resolution of the given promise after milliseconds
+ * time has elapsed since the resolution of the given promise.
+ * If the given promise rejects, that is passed immediately.
+ */
+Q.delay = function (object, timeout) {
+    if (timeout === void 0) {
+        timeout = object;
+        object = void 0;
+    }
+    return Q(object).delay(timeout);
+};
+
+Promise.prototype.delay = function (timeout) {
+    return this.then(function (value) {
+        var deferred = defer();
+        setTimeout(function () {
+            deferred.resolve(value);
+        }, timeout);
+        return deferred.promise;
+    });
+};
+
+/**
+ * Passes a continuation to a Node function, which is called with the given
+ * arguments provided as an array, and returns a promise.
+ *
+ *      Q.nfapply(FS.readFile, [__filename])
+ *      .then(function (content) {
+ *      })
+ *
+ */
+Q.nfapply = function (callback, args) {
+    return Q(callback).nfapply(args);
+};
+
+Promise.prototype.nfapply = function (args) {
+    var deferred = defer();
+    var nodeArgs = array_slice(args);
+    nodeArgs.push(deferred.makeNodeResolver());
+    this.fapply(nodeArgs).fail(deferred.reject);
+    return deferred.promise;
+};
+
+/**
+ * Passes a continuation to a Node function, which is called with the given
+ * arguments provided individually, and returns a promise.
+ * @example
+ * Q.nfcall(FS.readFile, __filename)
+ * .then(function (content) {
+ * })
+ *
+ */
+Q.nfcall = function (callback /*...args*/) {
+    var args = array_slice(arguments, 1);
+    return Q(callback).nfapply(args);
+};
+
+Promise.prototype.nfcall = function (/*...args*/) {
+    var nodeArgs = array_slice(arguments);
+    var deferred = defer();
+    nodeArgs.push(deferred.makeNodeResolver());
+    this.fapply(nodeArgs).fail(deferred.reject);
+    return deferred.promise;
+};
+
+/**
+ * Wraps a NodeJS continuation passing function and returns an equivalent
+ * version that returns a promise.
+ * @example
+ * Q.nfbind(FS.readFile, __filename)("utf-8")
+ * .then(console.log)
+ * .done()
+ */
+Q.nfbind =
+Q.denodeify = function (callback /*...args*/) {
+    var baseArgs = array_slice(arguments, 1);
+    return function () {
+        var nodeArgs = baseArgs.concat(array_slice(arguments));
+        var deferred = defer();
+        nodeArgs.push(deferred.makeNodeResolver());
+        Q(callback).fapply(nodeArgs).fail(deferred.reject);
+        return deferred.promise;
+    };
+};
+
+Promise.prototype.nfbind =
+Promise.prototype.denodeify = function (/*...args*/) {
+    var args = array_slice(arguments);
+    args.unshift(this);
+    return Q.denodeify.apply(void 0, args);
+};
+
+Q.nbind = function (callback, thisp /*...args*/) {
+    var baseArgs = array_slice(arguments, 2);
+    return function () {
+        var nodeArgs = baseArgs.concat(array_slice(arguments));
+        var deferred = defer();
+        nodeArgs.push(deferred.makeNodeResolver());
+        function bound() {
+            return callback.apply(thisp, arguments);
+        }
+        Q(bound).fapply(nodeArgs).fail(deferred.reject);
+        return deferred.promise;
+    };
+};
+
+Promise.prototype.nbind = function (/*thisp, ...args*/) {
+    var args = array_slice(arguments, 0);
+    args.unshift(this);
+    return Q.nbind.apply(void 0, args);
+};
+
+/**
+ * Calls a method of a Node-style object that accepts a Node-style
+ * callback with a given array of arguments, plus a provided callback.
+ * @param object an object that has the named method
+ * @param {String} name name of the method of object
+ * @param {Array} args arguments to pass to the method; the callback
+ * will be provided by Q and appended to these arguments.
+ * @returns a promise for the value or error
+ */
+Q.nmapply = // XXX As proposed by "Redsandro"
+Q.npost = function (object, name, args) {
+    return Q(object).npost(name, args);
+};
+
+Promise.prototype.nmapply = // XXX As proposed by "Redsandro"
+Promise.prototype.npost = function (name, args) {
+    var nodeArgs = array_slice(args || []);
+    var deferred = defer();
+    nodeArgs.push(deferred.makeNodeResolver());
+    this.dispatch("post", [name, nodeArgs]).fail(deferred.reject);
+    return deferred.promise;
+};
+
+/**
+ * Calls a method of a Node-style object that accepts a Node-style
+ * callback, forwarding the given variadic arguments, plus a provided
+ * callback argument.
+ * @param object an object that has the named method
+ * @param {String} name name of the method of object
+ * @param ...args arguments to pass to the method; the callback will
+ * be provided by Q and appended to these arguments.
+ * @returns a promise for the value or error
+ */
+Q.nsend = // XXX Based on Mark Miller's proposed "send"
+Q.nmcall = // XXX Based on "Redsandro's" proposal
+Q.ninvoke = function (object, name /*...args*/) {
+    var nodeArgs = array_slice(arguments, 2);
+    var deferred = defer();
+    nodeArgs.push(deferred.makeNodeResolver());
+    Q(object).dispatch("post", [name, nodeArgs]).fail(deferred.reject);
+    return deferred.promise;
+};
+
+Promise.prototype.nsend = // XXX Based on Mark Miller's proposed "send"
+Promise.prototype.nmcall = // XXX Based on "Redsandro's" proposal
+Promise.prototype.ninvoke = function (name /*...args*/) {
+    var nodeArgs = array_slice(arguments, 1);
+    var deferred = defer();
+    nodeArgs.push(deferred.makeNodeResolver());
+    this.dispatch("post", [name, nodeArgs]).fail(deferred.reject);
+    return deferred.promise;
+};
+
+/**
+ * If a function would like to support both Node continuation-passing-style and
+ * promise-returning-style, it can end its internal promise chain with
+ * `nodeify(nodeback)`, forwarding the optional nodeback argument.  If the user
+ * elects to use a nodeback, the result will be sent there.  If they do not
+ * pass a nodeback, they will receive the result promise.
+ * @param object a result (or a promise for a result)
+ * @param {Function} nodeback a Node.js-style callback
+ * @returns either the promise or nothing
+ */
+Q.nodeify = nodeify;
+function nodeify(object, nodeback) {
+    return Q(object).nodeify(nodeback);
+}
+
+Promise.prototype.nodeify = function (nodeback) {
+    if (nodeback) {
+        this.then(function (value) {
+            nextTick(function () {
+                nodeback(null, value);
+            });
+        }, function (error) {
+            nextTick(function () {
+                nodeback(error);
+            });
+        });
+    } else {
+        return this;
+    }
+};
+
+// All code before this point will be filtered from stack traces.
+var qEndingLine = captureLine();
+
+return Q;
+
+});
+
+/**
+ * Simple file manager with cross-browser support. That uses the FileReader
+ * to create previews. Can be replaced with a more advanced version that
+ * obtains files from storage.
+ *
+ * The replacement should support the same public methods and return the same
+ * types.
+ */
+
+define( 'file-manager',[ "q", "jquery" ], function( Q, $ ) {
+    
+
+    var maxSize,
+        supported = typeof FileReader === 'function',
+        notSupportedAdvisoryMsg = '';
+
+    /**
+     * Initialize the file manager .
+     * @return {[type]} promise boolean or rejection with Error
+     */
+    function init() {
+        var deferred = Q.defer();
+
+        if ( supported ) {
+            deferred.resolve( true );
+        } else {
+            deferred.reject( new Error( 'FileReader not supported.' ) );
+        }
+
+        return deferred.promise;
+    }
+
+    /**
+     * Whether filemanager is supported in browser
+     * @return {Boolean}
+     */
+    function isSupported() {
+        return supported;
+    }
+
+    /**
+     * Whether the filemanager is waiting for user permissions
+     * @return {Boolean} [description]
+     */
+    function isWaitingForPermissions() {
+        return false;
+    }
+
+    /**
+     * Obtains a url that can be used to show a preview of the file when used
+     * as a src attribute.
+     *
+     * @param  {?string|Object} subject File or filename
+     * @return {[type]}         promise url string or rejection with Error
+     */
+    function getFileUrl( subject ) {
+        var error, reader,
+            deferred = Q.defer();
+
+        if ( !subject ) {
+            deferred.resolve( null );
+        } else if ( typeof subject === 'string' ) {
+            // TODO obtain from storage
+        } else if ( typeof subject === 'object' ) {
+            if ( _isTooLarge( subject ) ) {
+                error = new Error( 'File too large (max ' +
+                    ( Math.round( ( _getMaxSize() * 100 ) / ( 1024 * 1024 ) ) / 100 ) +
+                    ' Mb)' );
+                deferred.reject( error );
+            } else {
+                reader = new FileReader();
+                reader.onload = function( e ) {
+                    deferred.resolve( e.target.result );
+                };
+                reader.onerror = function( e ) {
+                    deferred.reject( error );
+                };
+                reader.readAsDataURL( subject );
+            }
+        } else {
+            deferred.reject( new Error( 'Unknown error occurred' ) );
+        }
+        return deferred.promise;
+    }
+
+    /**
+     * Obtain files currently stored in file input elements of open record
+     * @return {[File]} array of files
+     */
+    function getCurrentFiles() {
+        var file,
+            deferred = Q.defer(),
+            files = [];
+
+        // first get any files inside file input elements
+        $( 'form.or input[type="file"]' ).each( function() {
+            file = this.files[ 0 ];
+            if ( file ) {
+                files.push( file );
+            }
+        } );
+        return files;
+    }
+
+    /**
+     * Whether the file is too large too handle and should be rejected
+     * @param  {[type]}  file the File
+     * @return {Boolean}
+     */
+    function _isTooLarge( file ) {
+        return file && file.size > _getMaxSize();
+    }
+
+    /**
+     * Returns the maximum size of a file
+     * @return {Number}
+     */
+    function _getMaxSize() {
+        if ( !maxSize ) {
+            maxSize = $( document ).data( 'maxSubmissionSize' ) || 5 * 1024 * 1024;
+        }
+        return maxSize;
+    }
+
+    return {
+        isSupported: isSupported,
+        notSupportedAdvisoryMsg: notSupportedAdvisoryMsg,
+        isWaitingForPermissions: isWaitingForPermissions,
+        init: init,
+        getFileUrl: getFileUrl,
+        getCurrentFiles: getCurrentFiles
+    };
+} );
+
 requirejs.config( {
     baseUrl: "../lib",
     paths: {
@@ -17618,11 +19309,13 @@ requirejs.config( {
         "enketo-config": "../config.json",
         "text": "text/text",
         "xpath": "xpath/build/xpathjs_javarosa",
-        "file-manager": "file-manager/src/file-manager",
+        "file-manager": "../src/js/file-manager",
+        "jquery": "bower-components/jquery/dist/jquery",
         "jquery.xpath": "jquery-xpath/jquery.xpath",
         "jquery.touchswipe": "jquery-touchswipe/jquery.touchSwipe",
         "leaflet": "leaflet/leaflet",
-        "bootstrap-slider": "bootstrap-slider/js/bootstrap-slider"
+        "bootstrap-slider": "bootstrap-slider/js/bootstrap-slider",
+        "q": "bower-components/q/q"
     },
     shim: {
         "xpath": {
@@ -17658,11 +19351,43 @@ define('bootstrap', [], function() {
     return jQuery;
 });
 
+function getFormData(data) {
+    var formData = new FormData();
+    formData.append("form_data", data);
+    formData.append("form_code", questionnaire_code);
+    return addAttachmentData(formData);
+}
+
+function addAttachmentData(formData) {
+    var retainFiles = [];
+    var mediaInputs = $('form.or input[type="file"]')
+    if (!mediaInputs)
+        return formData;
+
+    mediaInputs.each(function () {
+        var file = this.files[0];
+        //Take the latest selected file for upload
+        if (file) {
+            formData.append(file.name, file);
+        }
+        if (submissionUpdateUrl) {
+            var fileNotChangedDuringEdit = $(this).attr('data-loaded-file-name');
+            if (fileNotChangedDuringEdit) {
+                retainFiles.push(fileNotChangedDuringEdit);
+            }
+        }
+    });
+    if (retainFiles.length > 0)
+        formData.append("retain_files", retainFiles);
+
+    return formData;
+}
+
 function saveXformSubmission(callback) {
     form.validate();
     if (form.isValid()){
         DW.loading();
-        var data = form.getDataStr();
+        var dataXml = form.getDataStr();
         var saveURL = submissionUpdateUrl || submissionCreateUrl;
 
         var success = function (data, status) {
@@ -17676,12 +19401,21 @@ function saveXformSubmission(callback) {
         var error = function(){
             DW.trackEvent('advanced-qns-submission', 'advanced-qns-submission-failure');
         };
-
-        $.post(saveURL, {'form_data': data, 'form_code': questionnaire_code}).done(success).fail(error);
+        var formData = getFormData(dataXml);
+        $.ajax({
+            url: saveURL,
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: success,
+            error: error
+        });
     }
 }
-requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form' ],
-    function( $, Modernizr, Form ) {
+requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form', 'file-manager' ],
+    function( $, Modernizr, Form, fileManager ) {
+
         var loadErrors, form;
 
         //if querystring touch=true is added, override Modernizr
@@ -17706,6 +19440,10 @@ requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form' ],
         //validate handler for validate button
         $( '#validate-form' ).on( 'click', function() {
             saveXformSubmission();
+                fileManager.getFiles()
+                    .then( function( files ) {
+                        console.log( 'media files:', files );
+                    } );
         });
 
         //initialize the form
@@ -17781,14 +19519,14 @@ define( 'enketo-js/Widget',[ 'jquery' ], function( $ ) {
          */
         destroy: function( element ) {
             $( element )
-            //data is not used elsewhere by enketo
-            .removeData( this.namespace )
-            //remove all the event handlers that used this.namespace as the namespace
-            .off( '.' + this.namespace )
-            //show the original element
-            .show()
-            //remove elements immediately after the target that have the widget class
-            .next( '.widget' ).remove();
+                //data is not used elsewhere by enketo
+                .removeData( this.namespace )
+                //remove all the event handlers that used this.namespace as the namespace
+                .off( '.' + this.namespace )
+                //show the original element
+                .show()
+                //remove elements immediately after the target that have the widget class
+                .next( '.widget' ).remove();
             //console.debug( this.namespace, 'destroy' );
         },
         /**
@@ -27717,14 +29455,14 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 that = this,
                 defaultLatLng = [ 16.8164, -3.0171 ];
 
+            this.$question = $( this.element ).closest( '.question' );
+
             this.mapId = Math.round( Math.random() * 10000000 );
             this.props = this._getProps();
 
             this._addDomElements();
             this.currentIndex = 0;
             this.points = [];
-
-            this.$question = $( this.element ).closest( '.question' );
 
             // load default value
             if ( loadedVal ) {
@@ -27750,7 +29488,8 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
 
                 event.stopImmediatePropagation();
 
-                if ( event.namespace !== 'bymap' && event.namespace !== 'bysearch' && that.polyline && that.updatedPolylineWouldIntersect( latLng, that.currentIndex ) ) {
+                // if the points array contains empty points, skip the intersection check, it will be done before closing the polygon
+                if ( event.namespace !== 'bymap' && event.namespace !== 'bysearch' && that.polyline && !that.containsEmptyPoints( that.points, that.currentIndex ) && that.updatedPolylineWouldIntersect( latLng, that.currentIndex ) ) {
                     that._showIntersectError();
                     that._updateInputs( that.points[ that.currentIndex ], 'nochange' );
                 } else {
@@ -27791,6 +29530,11 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 that._updateMap();
                 return false;
             } );
+
+            // add wide class if question is wide
+            if ( this.props.wide ) {
+                this.$widget.addClass( 'wide' );
+            }
 
             // copy hide-input class from question to widget and add show/hide input controller
             this.$widget
@@ -27881,7 +29625,8 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 search: map,
                 appearances: appearances,
                 type: this.element.attributes[ 'data-type-xml' ].textContent,
-                touch: this.options.touch
+                touch: this.options.touch,
+                wide: ( this.$question.width() / this.$question.closest( 'form.or' ).width() > 0.8 )
             };
         };
 
@@ -27914,8 +29659,8 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 '</div>' +
                 '</div>' +
                 '<div class="geo-inputs">' +
-                '<label class="geo">latitude (x.y &deg;)<input class="ignore" name="lat" type="number" step="0.0001" min="-90" max="90"/></label>' +
-                '<label class="geo">longitude (x.y &deg;)<input class="ignore" name="long" type="number" step="0.0001" min="-180" max="180"/></label>' +
+                '<label class="geo">latitude (x.y &deg;)<input class="ignore" name="lat" type="number" step="0.000001" min="-90" max="90"/></label>' +
+                '<label class="geo">longitude (x.y &deg;)<input class="ignore" name="long" type="number" step="0.000001" min="-180" max="180"/></label>' +
                 '<label class="geo">altitude (m)<input class="ignore" name="alt" type="number" step="0.1" /></label>' +
                 '<label class="geo">accuracy (m)<input class="ignore" name="acc" type="number" step="0.1" /></label>' +
                 '<button type="button" class="btn-remove"><span class="glyphicon glyphicon-trash"> </span></button>' +
@@ -27976,8 +29721,8 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
          * @return {Boolean} Whether the value was changed.
          */
         Geopicker.prototype._updateValue = function() {
-            var oldGeoTraceValue = $( this.element ).val(),
-                newGeoTraceValue = '',
+            var oldValue = $( this.element ).val(),
+                newValue = '',
                 that = this;
 
             this._markAsValid();
@@ -27992,26 +29737,26 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
 
                 geopoint = ( lat && lng ) ? lat + ' ' + lng + ' ' + alt + ' ' + acc : "";
 
-                //only last item may be empty
+                // only last item may be empty
                 if ( !that._isValidGeopoint( geopoint ) && !( geopoint === '' && index === array.length - 1 ) ) {
                     that._markAsInvalid( index );
                 }
-                //newGeoTraceValue += geopoint;
+                // newGeoTraceValue += geopoint;
                 if ( !( geopoint === '' && index === array.length - 1 ) ) {
-                    newGeoTraceValue += geopoint;
+                    newValue += geopoint;
                     if ( index !== array.length - 1 ) {
-                        newGeoTraceValue += ';';
+                        newValue += ';';
                     }
                 } else {
                     // remove trailing semi-colon
-                    newGeoTraceValue = newGeoTraceValue.substring( 0, newGeoTraceValue.lastIndexOf( ';' ) );
+                    newValue = newValue.substring( 0, newValue.lastIndexOf( ';' ) );
                 }
             } );
 
-            console.log( 'updating value by joining', this.points, 'old value', oldGeoTraceValue, 'new value', newGeoTraceValue );
+            console.log( 'updating value by joining', this.points, 'old value', oldValue, 'new value', newValue );
 
-            if ( oldGeoTraceValue !== newGeoTraceValue ) {
-                $( this.element ).val( newGeoTraceValue ).trigger( 'change' );
+            if ( oldValue !== newValue ) {
+                $( this.element ).val( newValue ).trigger( 'change' );
                 return true;
             } else {
                 return false;
@@ -28111,15 +29856,16 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 event.preventDefault();
                 navigator.geolocation.getCurrentPosition( function( position ) {
                     var latLng = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
+                        lat: Math.round( position.coords.latitude * 1000000 ) / 1000000,
+                        lng: Math.round( position.coords.longitude * 1000000 ) / 1000000
                     };
+
                     if ( that.polyline && that.updatedPolylineWouldIntersect( latLng, that.currentIndex ) ) {
                         that._showIntersectError();
                     } else {
                         //that.points[that.currentIndex] = [ position.coords.latitude, position.coords.longitude ];
                         //that._updateMap( );
-                        that._updateInputs( [ position.coords.latitude, position.coords.longitude, position.coords.altitude, position.coords.accuracy ] );
+                        that._updateInputs( [ latLng.lat, latLng.lng, position.coords.altitude, position.coords.accuracy ] );
                         // if current index is last of points, automatically create next point
                         if ( that.currentIndex === that.points.length - 1 && that.props.type !== 'geopoint' ) {
                             that._addPoint();
@@ -28154,17 +29900,17 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                     if ( address ) {
                         address = address.split( /\s+/ ).join( '+' );
                         $.get( searchSource.replace( '{address}', address ), function( response ) {
-                            var latLng;
-                            if ( response.results && response.results.length > 0 && response.results[ 0 ].geometry && response.results[ 0 ].geometry.location ) {
-                                latLng = response.results[ 0 ].geometry.location;
-                                that._updateMap( [ latLng.lat, latLng.lng ], defaultZoom );
-                                that.$search.closest( '.input-group' ).removeClass( 'has-error' );
-                            } else {
-                                //TODO: add error message
-                                that.$search.closest( '.input-group' ).addClass( 'has-error' );
-                                console.log( "Location '" + address + "' not found" );
-                            }
-                        }, 'json' )
+                                var latLng;
+                                if ( response.results && response.results.length > 0 && response.results[ 0 ].geometry && response.results[ 0 ].geometry.location ) {
+                                    latLng = response.results[ 0 ].geometry.location;
+                                    that._updateMap( [ latLng.lat, latLng.lng ], defaultZoom );
+                                    that.$search.closest( '.input-group' ).removeClass( 'has-error' );
+                                } else {
+                                    //TODO: add error message
+                                    that.$search.closest( '.input-group' ).addClass( 'has-error' );
+                                    console.log( "Location '" + address + "' not found" );
+                                }
+                            }, 'json' )
                             .fail( function() {
                                 //TODO: add error message
                                 that.$search.closest( '.input-group' ).addClass( 'has-error' );
@@ -28242,20 +29988,27 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                     layers: this._getDefaultLayer( layers )
                 };
 
-                // console.log( 'no map yet, creating it' );
                 this.map = L.map( 'map' + this.mapId, options )
                     .on( 'click', function( e ) {
-                        var latLng = e.latlng;
-                        if ( that.polyline && that.updatedPolylineWouldIntersect( latLng, that.currentIndex + 1 ) ) {
+                        var latLng = e.latlng,
+                            indexToPlacePoint = ( that.$lat.val() && that.$lng.val() ) ? that.points.length : that.currentIndex;
+
+                        // reduce precision to 6 decimals
+                        latLng.lat = Math.round( latLng.lat * 1000000 ) / 1000000;
+                        latLng.lng = Math.round( latLng.lng * 1000000 ) / 1000000;
+
+                        // Skip intersection check if points contain empties. It will be done later, before the polygon is closed.
+                        if ( that.props.type !== 'geopoint' && !that.containsEmptyPoints( that.points, indexToPlacePoint ) && that.updatedPolylineWouldIntersect( latLng, indexToPlacePoint ) ) {
                             that._showIntersectError();
                         } else {
-                            // do nothing if the field has a current marker
-                            // instead the user will have to drag to change it by map
                             if ( !that.$lat.val() || !that.$lng.val() || that.props.type === 'geopoint' ) {
                                 that._updateInputs( latLng, 'change.bymap' );
-                            } else if ( that.$lat.val() && that.$lng.val() && that.props.type !== 'geopoint' ) {
+                            } else if ( that.$lat.val() && that.$lng.val() ) {
                                 that._addPoint();
                                 that._updateInputs( latLng, 'change.bymap' );
+                            } else {
+                                // do nothing if the field has a current marker
+                                // instead the user will have to drag to change it by map
                             }
                         }
                     } );
@@ -28384,6 +30137,11 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                     } ).on( 'dragend', function( e ) {
                         var latLng = e.target.getLatLng(),
                             index = e.target.options.alt;
+
+                        // reduce precision to 6 decimals
+                        latLng.lat = Math.round( latLng.lat * 1000000 ) / 1000000;
+                        latLng.lng = Math.round( latLng.lng * 1000000 ) / 1000000;
+
                         if ( that.polyline && that.updatedPolylineWouldIntersect( latLng, index ) ) {
                             that._showIntersectError();
                             that._updateMarkers();
@@ -28495,8 +30253,8 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 readableArea = L.GeometryUtil.readableArea( area );
 
                 L.popup( {
-                    className: 'enketo-area-popup'
-                } )
+                        className: 'enketo-area-popup'
+                    } )
                     .setLatLng( this.polygon.getBounds().getCenter() )
                     .setContent( readableArea )
                     .openOn( this.map );
@@ -28568,6 +30326,11 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 this._addPoint();
             }
 
+            // final check to see if there are intersections
+            if ( this.polyline && !this.containsEmptyPoints( this.points, this.points.length ) && this.updatedPolylineWouldIntersect( this.points[ 0 ], this.currentIndex ) ) {
+                return this._showIntersectError();
+            }
+
             this._updateInputs( this.points[ 0 ] );
         };
 
@@ -28585,10 +30348,10 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
 
             ev = ( typeof ev !== 'undefined' ) ? ev : 'change';
 
-            this.$lat.val( Math.round( lat * 10000 ) / 10000 || '' );
-            this.$lng.val( Math.round( lng * 10000 ) / 10000 || '' );
-            this.$alt.val( Math.round( alt * 10 ) / 10 || '' );
-            this.$acc.val( Math.round( acc * 10 ) / 10 || '' ).trigger( ev );
+            this.$lat.val( lat || '' );
+            this.$lng.val( lng || '' );
+            this.$alt.val( alt || '' );
+            this.$acc.val( acc || '' ).trigger( ev );
         };
 
         /**
@@ -28606,6 +30369,20 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
             this.$map.show();
             this.$widget.find( '.btn' ).removeClass( 'disabled' );
         };
+
+        /**
+         * Checks whether the array of points contains empty ones, excluding the last point.
+         * Marks points as errors if empty
+         *
+         * @allowedIndex {number=} The index in which an empty value is allowed
+         * @return {[type]} [description]
+         */
+        Geopicker.prototype.containsEmptyPoints = function( points, allowedIndex ) {
+            return points.some( function( point, index ) {
+                return index !== allowedIndex && ( !point[ 0 ] || !point[ 1 ] );
+            } );
+        };
+
 
         /**
          * Check if a polyline created from the current collection of points
@@ -28693,7 +30470,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 if ( area >= 10000 ) {
                     areaStr = ( area * 0.0001 ).toFixed( 2 ) + ' ha';
                 } else {
-                    areaStr = area.toFixed( 2 ) + ' m&sup2;';
+                    areaStr = area.toFixed( 0 ) + ' m&sup2;';
                 }
 
                 return areaStr;
@@ -28722,34 +30499,6 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                     }
                 }
                 return false;
-            },
-
-            // Check for intersection if new latlng was added to this polyline.
-            // NOTE: does not support detecting intersection for degenerate cases.
-            newLatLngIntersects: function( latlng, skipFirst ) {
-                // Cannot check a polyline for intersecting lats/lngs when not added to the map
-                if ( !this._map ) {
-                    return false;
-                }
-
-                return this.newPointIntersects( this._map.latLngToLayerPoint( latlng ), skipFirst );
-            },
-
-            // Check for intersection if new point was added to this polyline.
-            // newPoint must be a layer point.
-            // NOTE: does not support detecting intersection for degenerate cases.
-            newPointIntersects: function( newPoint, skipFirst ) {
-                var points = this._originalPoints,
-                    len = points ? points.length : 0,
-                    lastPoint = points ? points[ len - 1 ] : null,
-                    // The previous previous line segment. Previous line segment doesn't need testing.
-                    maxIndex = len - 2;
-
-                if ( this._tooFewPointsForIntersection( 1 ) ) {
-                    return false;
-                }
-
-                return this._lineSegmentsIntersectsRange( lastPoint, newPoint, maxIndex, skipFirst ? 1 : 0 );
             },
 
             // Polylines with 2 sides can only intersect in cases where points are collinear (we don't support detecting these).
@@ -32018,11 +33767,11 @@ define( 'enketo-widget/time/timepicker-extended',[ 'enketo-js/Widget', 'Moderniz
             $timeI.hide().after( $fakeTime );
 
             $fakeTimeI.timepicker( {
-                defaultTime: ( timeVal.length > 0 ) ? timeVal : 'current',
-                showMeridian: false
-            } ).val( timeVal )
-            //the time picker itself has input elements
-            .closest( '.widget' ).find( 'input' ).addClass( 'ignore' );
+                    defaultTime: ( timeVal.length > 0 ) ? timeVal : 'current',
+                    showMeridian: false
+                } ).val( timeVal )
+                //the time picker itself has input elements
+                .closest( '.widget' ).find( 'input' ).addClass( 'ignore' );
 
             $fakeTimeI.on( 'change', function() {
                 var $this = $( this ),
@@ -32152,8 +33901,8 @@ define( 'enketo-widget/datetime/datetimepicker-extended',[ 'enketo-js/Widget', '
                     showMeridian: false
                 } )
                 .val( timeVal )
-            //the time picker itself has input elements
-            .closest( '.widget' ).find( 'input' ).addClass( 'ignore' );
+                //the time picker itself has input elements
+                .closest( '.widget' ).find( 'input' ).addClass( 'ignore' );
 
             this._setManualHandler( $fakeDateI );
             this._setFocusHandler( $fakeDateI.add( $fakeTimeI ) );
@@ -32275,605 +34024,14 @@ define( 'enketo-widget/datetime/datetimepicker-extended',[ 'enketo-js/Widget', '
 
 define("enketo-widget/mediagrid/mediagridpicker", function(){});
 
-/**
- * This library copies liberally from http://www.html5rocks.com/en/tutorials/file/filesystem/#toc-filesystemurls
- * by Eric Bidelman. Thanks a lot, Eric!
- *
- * Copyright 2013 Martijn van de Rijdt & Modi Labs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
- * FileManager Class for PERSISTENT file storage, used to storage file inputs for later submission
- * Could be expanded, if ever needed, to use TEMPORARY file storage as well
- *
- * @constructor
- */
-
-define( 'file-manager',[ 'jquery' ], function( $ ) {
+define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-manager' ], function( $, Widget, fileManager ) {
     
 
-    var getCurrentQuota, getCurrentQuotaUsed, supported, isSupported, fs, init, setDir, requestQuota,
-        requestFileSystem, errorHandler, setCurrentQuotaUsed, _traverseAll, saveFile, retrieveFile,
-        retrieveFileUrl, retrieveFileEntry, retrieveFileFromFileEntry, deleteFile, createDir, deleteDir, currentDir,
-        deleteAll, _getDirPrefix, listAll, getFilesystem, filesystemReady,
-        deferred = $.Deferred(),
-        currentQuota = null,
-        currentQuotaUsed = null,
-        DEFAULTBYTESREQUESTED = 100 * 1024 * 1024;
-
-    console.log( 'in file manager' );
-
-    getCurrentQuota = function() {
-        return currentQuota;
-    };
-
-    getCurrentQuotaUsed = function() {
-        return currentQuotaUsed;
-    };
+    var pluginName = 'filepicker';
 
     /**
-     * Initializes the File Manager
-     * @return {boolean} returns true/false if File API is supported by browser
-     */
-    init = function() {
-        //check if filesystem API is supported by browser
-        window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-        window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
-        supported = ( typeof window.requestFileSystem !== 'undefined' && typeof window.resolveLocalFileSystemURL !== 'undefined' && typeof navigator.webkitPersistentStorage !== 'undefined' );
-        console.log( 'supported: ', supported );
-        if ( supported ) {
-            setCurrentQuotaUsed();
-            filesystemReady = getFilesystem();
-            return true;
-        } else {
-            console.log( 'filesystem API not supported in this browser' );
-            return false;
-        }
-    };
-
-    /**
-     * Returns jquery promise object that will be resolved when the user has approved the use of the filesystem
-     * @return {*} jquery promise object
-     */
-    getFilesystem = function() {
-        //var deferred = $.Deferred();
-
-        if ( !fs ) {
-            requestQuota(
-                DEFAULTBYTESREQUESTED, {
-                    success: function( grantedBytes ) {
-                        requestFileSystem(
-                            grantedBytes, {
-                                success: function( fsys ) {
-                                    fs = fsys;
-                                    deferred.resolve();
-                                },
-                                error: function( e ) {
-                                    errorHandler( e );
-                                }
-                            }
-                        );
-                    },
-                    error: errorHandler
-                }
-            );
-        } else {
-            deferred.resolve();
-        }
-        return deferred.promise();
-    };
-
-    /**
-     * @param  {string}                             dirName name of directory to store files in
-     * @param  {{success:Function, error:Function}} callbacks callback functions (error, and success)
-     */
-    setDir = function( dirName, callbacks ) {
-        var currentSuccessCb = callbacks.success;
-
-        if ( dirName && dirName.length > 0 ) {
-
-            callbacks.success = function( dirEntry ) {
-                currentDir = dirName;
-                currentSuccessCb();
-            };
-
-            filesystemReady.done( function() {
-                createDir( dirName, callbacks );
-            } );
-
-        } else {
-            console.error( 'directory name empty or missing' );
-            return false;
-        }
-    };
-
-    /**
-     * Checks if File API is supported by browser
-     * @return {boolean}
-     */
-    isSupported = function() {
-        return supported;
-    };
-
-    /**
-     * returns dir prefix to be use to build a filesystem path
-     * @param  {string=} dirName the dirName to use if provided, otherwise the current directory name is used
-     * @return {string} returns the path prefix or '/' (root)
-     */
-    _getDirPrefix = function( dirName ) {
-        return ( dirName ) ? '/' + dirName + '/' : ( currentDir ) ? '/' + currentDir + '/' : '/';
-    };
-
-    /**
-     * Requests PERSISTENT file storage (may prompt user) asynchronously
-     * @param  {number}                     bytesRequested the storage size in bytes that is requested
-     * @param  {Object.<string, Function>}  callbacks      callback functions (error, and success)
-     */
-    requestQuota = function( bytesRequested, callbacks ) {
-        console.log( 'requesting persistent filesystem quota' );
-        $( document ).trigger( 'quotarequest', bytesRequested ); //just to facilitate testing
-        navigator.webkitPersistentStorage.requestQuota(
-            bytesRequested,
-            //successhandler is called immediately if asking for increase in quota
-            callbacks.success,
-            callbacks.error
-        );
-    };
-
-    /**
-     * requests filesystem
-     * @param  {number} bytes       when called by requestQuota for PERSISTENt storage this is the number of bytes granted
-     * @param  {Object.<string, Function>} callbacks   callback functions (error, and success)
-     */
-    requestFileSystem = function( bytes, callbacks ) {
-        console.log( 'quota for persistent storage granted in MegaBytes: ' + bytes / ( 1024 * 1024 ) );
-        if ( bytes > 0 ) {
-            currentQuota = bytes;
-            window.requestFileSystem(
-                window.PERSISTENT,
-                bytes,
-                callbacks.success,
-                callbacks.error
-            );
-        } else {
-            //actually not correct to treat this as an error
-            console.error( 'User did not approve storage of local data using the File API' );
-            callbacks.error();
-        }
-    };
-
-    /**
-     * generic error handler
-     * @param  {(Error|FileError|string)=} e [description]
-     */
-    errorHandler = function( e ) {
-        var msg = '';
-
-        if ( typeof e !== 'undefined' ) {
-            switch ( e.code ) {
-                case window.FileError.QUOTA_EXCEEDED_ERR:
-                    msg = 'QUOTA_EXCEEDED_ERR';
-                    break;
-                case window.FileError.NOT_FOUND_ERR:
-                    msg = 'NOT_FOUND_ERR';
-                    break;
-                case window.FileError.SECURITY_ERR:
-                    msg = 'SECURITY_ERR';
-                    break;
-                case window.FileError.INVALID_MODIFICATION_ERR:
-                    msg = 'INVALID_MODIFICATION_ERR';
-                    break;
-                case window.FileError.INVALID_STATE_ERR:
-                    msg = 'INVALID_STATE_ERR';
-                    break;
-                default:
-                    msg = 'Unknown Error';
-                    break;
-            }
-        }
-        console.log( 'Error occurred: ' + msg );
-        if ( typeof console.trace !== 'undefined' ) console.trace();
-    };
-
-    /**
-     * Requests the amount of storage used (asynchronously) and sets variable (EXPERIMENTAL/UNSTABLE API)
-     */
-    setCurrentQuotaUsed = function() {
-        if ( typeof navigator.webkitPersistentStorage.queryUsageAndQuota !== 'undefined' ) {
-            navigator.webkitPersistentStorage.queryUsageAndQuota(
-                function( quotaUsed ) {
-                    currentQuotaUsed = quotaUsed;
-                },
-                errorHandler
-            );
-        } else {
-            console.error( 'browser does not support queryUsageAndQuota' );
-        }
-    };
-
-    /**
-     * Saves a file (asynchronously) in the directory provided upon initialization
-     * @param  {Blob}                       file      File object from input field
-     * @param  {Object.<string, Function>}  callbacks callback functions (error, and success)
-     */
-    saveFile = function( file, callbacks ) {
-
-        filesystemReady.done( function() {
-            console.log( 'saving file with url: ', _getDirPrefix() + file.name );
-            fs.root.getFile(
-                _getDirPrefix() + file.name, {
-                    create: true,
-                    exclusive: false
-                },
-                function( fileEntry ) {
-                    fileEntry.createWriter( function( fileWriter ) {
-                        fileWriter.write( file );
-                        fileWriter.onwriteend = function( e ) {
-                            //if a file write does not complete because the file is larger than the granted quota
-                            //the onwriteend event still fires. (This may be a browser bug.)
-                            //so we're checking if the complete file was saved and if not, do nothing and assume
-                            //that the onerror event will fire
-                            if ( e.total === e.loaded ) {
-                                //console.log('write completed', e);
-                                setCurrentQuotaUsed();
-                                console.log( 'complete file stored, with persistent url:' + fileEntry.toURL() );
-                                callbacks.success( fileEntry.toURL() );
-                            }
-                        };
-                        fileWriter.onerror = function( e ) {
-                            var newBytesRequest,
-                                targetError = e.target.error;
-                            if ( targetError instanceof FileError && targetError.code === window.FileError.QUOTA_EXCEEDED_ERR ) {
-                                newBytesRequest = ( ( e.total * 5 ) < DEFAULTBYTESREQUESTED ) ? currentQuota + DEFAULTBYTESREQUESTED : currentQuota + ( 5 * e.total );
-                                console.log( 'Required storage exceeding quota, going to request more, in bytes: ' + newBytesRequest );
-                                requestQuota(
-                                    newBytesRequest, {
-                                        success: function( bytes ) {
-                                            console.log( 'request for additional quota approved! (quota: ' + bytes + ' bytes)' );
-                                            currentQuota = bytes;
-                                            saveFile( file, callbacks );
-                                        },
-                                        error: callbacks.error
-                                    }
-                                );
-                            } else {
-                                callbacks.error( e );
-                            }
-                        };
-                    }, callbacks.error );
-                },
-                callbacks.error
-            );
-        } );
-    };
-
-    /**
-     * Obtains specified files from a specified directory (asynchronously)
-     * @param {string}                              directoryName   directory to look in for files
-     * @param {{newName: string, fileName: string}} fileO           object of file properties
-     * @param {{success:Function, error:Function}}  callbacks       callback functions (error, and success)
-     */
-    retrieveFile = function( directoryName, fileO, callbacks ) {
-        var retrievedFile = {},
-            pathPrefix = _getDirPrefix( directoryName ),
-            callbacksForFileEntry = {
-                success: function( fileEntry ) {
-                    retrieveFileFromFileEntry( fileEntry, {
-                        success: function( file ) {
-                            console.debug( 'retrieved file! ', file );
-                            fileO.file = file;
-                            callbacks.success( fileO );
-                        },
-                        error: callbacks.error
-                    } );
-                },
-                error: callbacks.error
-            };
-
-        retrieveFileEntry( pathPrefix + fileO.fileName, {
-            success: callbacksForFileEntry.success,
-            error: callbacksForFileEntry.error
-        } );
-    };
-
-    // retrieve a local filesystem URL if the file exists
-    retrieveFileUrl = function( directoryName, fileName, callbacks ) {
-        var pathPrefix = _getDirPrefix( directoryName );
-
-        retrieveFileEntry( pathPrefix + fileName, {
-            success: function( fileEntry ) {
-                callbacks.success( fileEntry.toURL() );
-            },
-            error: callbacks.error
-        } );
-    };
-
-    /**
-     * Obtains a fileEntry (asynchronously)
-     * @param  {string}                             fullPath    full filesystem path to the file
-     * @param {{success:Function, error:Function}}  callbacks   callback functions (error, and success)
-     */
-    retrieveFileEntry = function( fullPath, callbacks ) {
-        console.debug( 'retrieving fileEntry for: ' + fullPath );
-
-        filesystemReady.done( function() {
-            fs.root.getFile( fullPath, {},
-                function( fileEntry ) {
-                    console.log( 'fileEntry retrieved: ', fileEntry, 'persistent URL: ', fileEntry.toURL() );
-                    callbacks.success( fileEntry );
-                },
-                function( e ) {
-                    console.error( 'file with path: ' + fullPath + ' not found', e );
-                    callbacks.error( e );
-                }
-            );
-        } );
-    };
-
-    /**
-     * Retrieves a file from a fileEntry (asynchronously)
-     * @param  {FileEntry} fileEntry [description]
-     * @param  {{success:function(File), error: ?function(FileError)}} callbacks [description]
-     */
-    retrieveFileFromFileEntry = function( fileEntry, callbacks ) {
-        fileEntry.file( callbacks.success, callbacks.error );
-    };
-
-    /**
-     * Deletes a file from the file system (asynchronously) from the directory set upon initialization
-     * @param {string}                              fileName        file name
-     * @param {{success:Function, error:Function}}  callbacks       callback functions (error, and success)
-     */
-    deleteFile = function( fileName, callbacks ) {
-        //check if filesystem is ready?
-        //console.log('amount of storage used: '+this.getStorageUsed());
-        console.log( 'deleting file: ' + fileName );
-        callbacks = callbacks || {
-            success: function() {},
-            error: function() {}
-        };
-        //console.log('amount of storage used: '+this.getStorageUsed());
-        filesystemReady.done( function() {
-            fs.root.getFile( _getDirPrefix() + fileName, {
-                    create: false
-                },
-                function( fileEntry ) {
-                    fileEntry.remove( function() {
-                        setCurrentQuotaUsed();
-                        console.log( fileName + ' removed from file system' );
-                        callbacks.success();
-                    } );
-                },
-                function( e ) {
-                    errorHandler( e );
-                    callbacks.error();
-                }
-            );
-        } );
-    };
-
-    /**
-     * Creates a directory
-     * @param  {string}                                 name      name of directory
-     * @param  {{success: Function, error: Function}}   callbacks callback functions (error, and success)
-     */
-    createDir = function( name, callbacks ) {
-
-        callbacks = callbacks || {
-            success: function() {},
-            error: function() {}
-        };
-
-        filesystemReady.done( function() {
-            fs.root.getDirectory( name, {
-                    create: true
-                },
-                function( dirEntry ) {
-                    setCurrentQuotaUsed();
-                    console.log( 'Directory: ' + name + ' created (or found)', dirEntry );
-                    callbacks.success();
-                },
-                function( e ) {
-                    console.log( 'error during creation of directory', e );
-                    var newBytesRequest; //,
-                    if ( e instanceof FileError && e.code === window.FileError.QUOTA_EXCEEDED_ERR ) {
-                        console.log( 'Required storage exceeding quota, going to request more.' );
-                        newBytesRequest = ( ( e.total * 5 ) < DEFAULTBYTESREQUESTED ) ? currentQuota + DEFAULTBYTESREQUESTED : currentQuota + ( 5 * e.total );
-                        requestQuota(
-                            newBytesRequest, {
-                                success: function( bytes ) {
-                                    currentQuota = bytes;
-                                    createDir( name, callbacks );
-                                },
-                                error: callbacks.error
-                            }
-                        );
-                    } else {
-                        callbacks.error( e );
-                    }
-                }
-                //TODO: ADD similar request for additional storage if FileError.QUOTA_EXCEEEDED_ERR is thrown as done in saveFile()
-            );
-        } );
-    };
-
-    /**
-     * Deletes a complete directory with all its contents
-     * @param {string}                                  name        name of directory
-     * @param {{success: Function, error: Function}}    callbacks   callback functions (error, and success)
-     */
-    deleteDir = function( name, callbacks ) {
-
-        callbacks = callbacks || {
-            success: function() {},
-            error: function() {}
-        };
-
-        console.log( 'going to delete filesystem directory: ' + name );
-
-        filesystemReady.done( function() {
-            console.log( 'fs is ready, going for it!' );
-            fs.root.getDirectory( name, {},
-                function( dirEntry ) {
-                    dirEntry.removeRecursively(
-                        function() {
-                            setCurrentQuotaUsed();
-                            callbacks.success();
-                        },
-                        function( e ) {
-                            errorHandler( e );
-                            callbacks.error();
-                        }
-                    );
-                },
-                errorHandler
-            );
-        } );
-    };
-
-    /**
-     * Deletes all files stored (for a subsubdomain)
-     * @param {Function=} callbackComplete  function to call when complete
-     */
-    deleteAll = function( callbackComplete ) {
-        callbackComplete = callbackComplete || function() {};
-
-        var process = {
-            entryFound: function( entry ) {
-                if ( entry.isDirectory ) {
-                    entry.removeRecursively(
-                        function() {
-                            setCurrentQuotaUsed();
-                            console.log( 'Directory: ' + entry.name + ' deleted' );
-                        },
-                        errorHandler
-                    );
-                } else {
-                    entry.remove( function() {
-                            setCurrentQuotaUsed();
-                            console.log( 'File: ' + entry.name + ' deleted' );
-                        },
-                        errorHandler
-                    );
-                }
-            },
-            complete: callbackComplete
-        };
-
-        filesystemReady.done( function() {
-            _traverseAll( process );
-        } );
-    };
-
-    /**
-     * Lists all files/folders in root (function may not be required)
-     * @param {Function=} callbackComplete  function to call when complete
-     */
-    listAll = function( callbackComplete ) {
-        //check if filesystem is ready?
-        callbackComplete = callbackComplete || function() {};
-        var entries = [],
-            process = {
-                entryFound: function( entry ) {
-                    if ( entry.isDirectory ) {
-                        entries.push( 'folder: ' + entry.name );
-                    } else {
-                        entries.push( 'file: ' + entry.name );
-                    }
-                },
-                complete: function() {
-                    console.log( 'entries: ', entries );
-                    callbackComplete();
-                }
-            };
-        _traverseAll( process );
-    };
-
-    /**
-     * traverses all folders and files in root
-     * @param  {{entryFound: Function, complete}} process [description]
-     */
-    _traverseAll = function( process ) {
-        var entry, type,
-            dirReader = fs.root.createReader();
-
-        // Call the reader.readEntries() until no more results are returned.
-        var readEntries = function() {
-            dirReader.readEntries( function( results ) {
-                if ( !results.length ) {
-                    process.complete();
-                } else {
-                    for ( var i = 0; i < results.length; i++ ) {
-                        entry = results[ i ];
-                        process.entryFound( entry );
-                    }
-                    readEntries();
-                }
-            }, errorHandler );
-        };
-        readEntries();
-    };
-
-    init();
-
-    return {
-        init: init,
-        isSupported: isSupported,
-        setDir: setDir,
-        getCurrentQuota: getCurrentQuota,
-        getCurrentQuotaUsed: getCurrentQuotaUsed,
-        saveFile: saveFile,
-        retrieveFile: retrieveFile,
-        retrieveFileUrl: retrieveFileUrl,
-        deleteFile: deleteFile,
-        createDir: createDir,
-        deleteDir: deleteDir,
-        deleteAll: deleteAll,
-        listAll: listAll
-    };
-
-} );
-
-/**
- * @preserve Copyright 2012 Martijn van de Rijdt & Modi Labs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-define( 'enketo-widget/file-offline/offline-filepicker',[ 'jquery', 'enketo-js/Widget', 'file-manager' ], function( $, Widget, fileManager ) {
-    
-
-    var pluginName = 'offlineFilepicker';
-
-    /**
-     * File picker meant for offline-enabled form views
-     *
-     * Good references:
-     * http://www.html5rocks.com/en/tutorials/file/filesystem/#toc-filesystemurls
-     * http://updates.html5rocks.com/2012/08/Integrating-input-type-file-with-the-Filesystem-API
-     * http://html5-demos.appspot.com/static/filesystem/generatingResourceURIs.html
+     * FilePicker that works both offline and online. It abstracts the file storage/cache away
+     * with the injected fileManager.
      *
      * @constructor
      * @param {Element} element [description]
@@ -32881,7 +34039,7 @@ define( 'enketo-widget/file-offline/offline-filepicker',[ 'jquery', 'enketo-js/W
      * @param {*=} e     event
      */
 
-    function OfflineFilepicker( element, options, e ) {
+    function Filepicker( element, options, e ) {
         if ( e ) {
             e.stopPropagation();
             e.preventDefault();
@@ -32891,204 +34049,148 @@ define( 'enketo-widget/file-offline/offline-filepicker',[ 'jquery', 'enketo-js/W
         this._init();
     }
 
-    //copy the prototype functions from the Widget super class
-    OfflineFilepicker.prototype = Object.create( Widget.prototype );
+    // copy the prototype functions from the Widget super class
+    Filepicker.prototype = Object.create( Widget.prototype );
 
-    //ensure the constructor is the new one
-    OfflineFilepicker.prototype.constructor = OfflineFilepicker;
+    // ensure the constructor is the new one
+    Filepicker.prototype.constructor = Filepicker;
 
     /**
-     * initialize
-     *
+     * Initialize
      */
-    OfflineFilepicker.prototype._init = function() {
-        var existingFileName,
-            $input = $( this.element ),
-            feedbackMsg = "Awaiting user permission to store local data (files)",
-            feedbackClass = "info",
-            allClear = false,
+    Filepicker.prototype._init = function() {
+        var $input = $( this.element ),
+            existingFileName = $input.attr( 'data-loaded-file-name' ),
             that = this;
 
-        //TODO: add online file widget in case fileManager is undefined or use file manager with temporary storage?
-        if ( typeof fileManager == "undefined" || !fileManager ) {
-            feedbackClass = "warning";
-            feedbackMsg = "File uploads not supported."; //" in previews and iframed views.";
-        } else if ( !fileManager.isSupported() ) {
-            feedbackClass = "warning";
-            feedbackMsg = "File uploads not supported by your browser";
-        } else {
-            allClear = true;
-        }
+        this.mediaType = $input.attr( 'accept' );
 
         $input
-            .prop( 'disabled', true )
-            .addClass( 'ignore force-disabled' )
-            .after( '<div class="file-feedback text-' + feedbackClass + '">' + feedbackMsg + '</div>' );
+            .attr( 'disabled', 'disabled' )
+            .addClass( 'transparent' )
+            .parent().addClass( 'with-media clearfix' );
 
-        if ( !allClear ) {
-            $( this.element ).hide();
+        this.$widget = $(
+                '<div class="widget file-picker">' +
+                '<div class="fake-file-input"></div>' +
+                '<div class="file-feedback"></div>' +
+                '<div class="file-preview"></div>' +
+                '</div>' )
+            .insertAfter( $input );
+        this.$feedback = this.$widget.find( '.file-feedback' );
+        this.$preview = this.$widget.find( '.file-preview' );
+        this.$fakeInput = this.$widget.find( '.fake-file-input' );
+
+        // show loaded file name regardless of whether widget is supported
+        if ( existingFileName ) {
+            this._showFileName( existingFileName, this.mediaType );
+            $input.removeAttr( 'data-loaded-file-name' );
+        }
+
+        if ( !fileManager || !fileManager.isSupported() ) {
+            var advice = ( fileManager.notSupportedAdvisoryMsg ) ? fileManager.notSupportedAdvisoryMsg : '';
+            this._showFeedback( 'Media questions are not supported in this browser. ' + advice, 'warning' );
             return;
         }
 
-        this._changeListener();
-        this._createDirectory();
-
-        //this attribute is added by the Form instance when loading data to edit
-        existingFileName = $input.attr( 'data-loaded-file-name' );
-
-        if ( existingFileName ) {
-            fileManager.retrieveFileUrl( this._getInstanceID(), existingFileName, {
-                success: function( fsUrl ) {
-                    var $prev = that._createPreview( fsUrl, 'image/*' );
-                    $input.attr( 'data-previous-file-name', existingFileName )
-                        .removeAttr( 'data-loaded-file-name' )
-                        .siblings( '.file-loaded' ).remove();
-                    $input.after( $prev );
-                },
-                error: function() {
-                    $input.after( '<div class="file-loaded text-warning">This form was loaded with "' +
-                        existingFileName + '". To preserve this file, do not change this input.</div>' );
-                }
-            } );
+        if ( fileManager.isWaitingForPermissions() ) {
+            this._showFeedback( 'Waiting for user permissions.', 'warning' );
         }
-        $input.parent().addClass( 'with-media clearfix' );
 
+        fileManager.init()
+            .then( function() {
+                that._showFeedback();
+                that._changeListener();
+                $input.removeAttr( 'disabled' );
+                if ( existingFileName ) {
+                    fileManager.getFileUrl( existingFileName )
+                        .then( function( url ) {
+                            that._showPreview( url, that.mediaType );
+                        } )
+                        .catch( function() {
+                            that._showFeedback( 'File "' + existingFileName + '" could not be found (leave unchanged if already submitted and you want to preserve it).', 'error' );
+                        } );
+                }
+            } )
+            .catch( function( error ) {
+                that._showFeedback( error.message, 'error' );
+            } );
     };
 
-    OfflineFilepicker.prototype._getMaxSubmissionSize = function() {
+    Filepicker.prototype._getMaxSubmissionSize = function() {
         var maxSize = $( document ).data( 'maxSubmissionSize' );
         return maxSize || 5 * 1024 * 1024;
     };
 
-    OfflineFilepicker.prototype._changeListener = function() {
-        /*
-         * This delegated eventhander should actually be added asynchronously( or not at all
-         * if no FS support / permission ).However, it
-         * needs to start * before * the regular input change event handler
-         * for 2 reasons:
-         * 1.If saving the file in the browser 's file system fails, the instance should not be updated
-         * 2. The regular eventhandler has event.stopImmediatePropagation which would mean this handler is never called.
-         * The easiest way to achieve this is to always add it but only let it do something if permission is granted to use FS.
-         */
-        var that = this,
-            $input = $( this.element );
-        $input.on( 'change.passthrough.' + this.namespace, function( event ) {
-            if ( fileManager.getCurrentQuota() ) {
-                var prevFileName, file, mediaType, $preview,
-                    maxSubmissionSize = that._getMaxSubmissionSize();
-                //console.debug( 'namespace: ' + event.namespace );
-                if ( event.namespace === 'passthrough' ) {
-                    //console.debug('returning true');
-                    $input.trigger( 'change.file' );
-                    return false;
-                }
-                prevFileName = $input.attr( 'data-previous-file-name' );
-                file = $input[ 0 ].files[ 0 ];
-                mediaType = $input.attr( 'accept' );
+    Filepicker.prototype._changeListener = function() {
+        var that = this;
 
-                // removed cleanup as it will cause a problem in the following scenario:
-                // 1. record is loaded from local storage with file input
-                // 2. user changes file input 
-                // 3. but user changes mind and decides not to save updated record
-                // 4. the file in the stored record no longer exists
-                // It is better to let the controller deal with clearing filesystem storage (which it does)
-                // if ( prevFileName && ( !file || prevFileName !== file.name ) ) {
-                //    fileManager.deleteFile( prevFileName );
-                // }
-                $input.siblings( '.file-feedback, .file-preview, .file-loaded' ).remove();
-                console.debug( 'file: ', file );
-                if ( file && file.size > 0 && file.size <= maxSubmissionSize ) {
-                    //save it in filesystem
-                    fileManager.saveFile(
-                        file, {
-                            success: function( fsURL ) {
-                                $preview = that._createPreview( fsURL, mediaType );
-                                //$preview.attr( 'src', fsURL );
-                                $input.attr( 'data-previous-file-name', file.name )
-                                    .removeAttr( 'data-loaded-file-name' )
-                                    .siblings( '.file-loaded' ).remove();
-                                $input.trigger( 'change.passthrough' ).after( $preview );
-                            },
-                            error: function( e ) {
-                                console.error( 'error: ', e );
-                                $input.val( '' )
-                                    .removeAttr( 'data-loaded-file-name' )
-                                    .siblings( '.file-loaded' ).remove();
-                                $input.after( '<div class="file-feedback text-error">' +
-                                    'Failed to save file</span>' );
-                            }
-                        }
-                    );
-                    return false;
-                } else {
-                    //clear instance value by letting it bubble up to normal change handler
-                    if ( file.size > maxSubmissionSize ) {
-                        $input.after( '<div class="file-feedback text-error">' +
-                            'File too large (max ' +
-                            ( Math.round( ( maxSubmissionSize * 100 ) / ( 1024 * 1024 ) ) / 100 ) +
-                            ' Mb)</div>' );
-                    }
-                    return true;
-                }
+        $( this.element ).on( 'change.passthrough.' + this.namespace, function( event ) {
+            var file,
+                $input = $( this );
+
+            // trigger eventhandler to update instance value
+            if ( event.namespace === 'passthrough' ) {
+                $input.trigger( 'change.file' );
+                return false;
             }
+
+            // get the file
+            file = this.files[ 0 ];
+
+            // process the file
+            fileManager.getFileUrl( file )
+                .then( function( url ) {
+                    that._showPreview( url, that.mediaType );
+                    that._showFeedback( '' );
+                    that._showFileName( file );
+                    $input.trigger( 'change.passthrough' );
+                } )
+                .catch( function( error ) {
+                    $input.val( '' );
+                    that._showPreview( null );
+                    that._showFeedback( error.message, 'error' );
+                } );
         } );
     };
 
-    OfflineFilepicker.prototype._createPreview = function( fsURL, mediaType ) {
-        var $preview;
-
-        $preview = ( mediaType && mediaType === 'image/*' ) ? $( '<img />' ) : ( mediaType === 'audio/*' ) ? $( '<audio controls="controls"/>' ) : ( mediaType === 'video/*' ) ? $( '<video controls="controls"/>' ) : $( '<span>No preview for this mediatype</span>' );
-
-        return $preview.addClass( 'file-preview' ).attr( 'src', fsURL );
+    Filepicker.prototype._showFileName = function( file ) {
+        var fileName = ( typeof file === 'object' && file.name ) ? file.name : file;
+        this.$fakeInput.text( fileName );
     };
 
-    OfflineFilepicker.prototype._getInstanceID = function() {
-        var id = $( 'form.or' ).data( 'instanceID' );
-        if ( !id ) {
-            console.error( 'Filepicker widget could not find instanceID. Files will not be saved correctly!' );
+    Filepicker.prototype._showFeedback = function( message, status ) {
+        message = message || '';
+        status = status || '';
+        // replace text and replace all existing classes with the new status class
+        this.$feedback.text( message ).attr( 'class', 'file-feedback ' + status );
+    };
+
+    Filepicker.prototype._showPreview = function( url, mediaType ) {
+        var $el;
+
+        this.$widget.find( '.file-preview' ).empty();
+
+        switch ( mediaType ) {
+            case 'image/*':
+                $el = $( '<img />' );
+                break;
+            case 'audio/*':
+                $el = $( '<audio controls="controls"/>' );
+                break;
+            case 'video/*':
+                $el = $( '<video controls="controls"/>' );
+                break;
+            default:
+                $el = $( '<span>No preview for this mediatype</span>' );
+                break;
         }
-        return id;
+
+        if ( url ) {
+            this.$preview.append( $el.attr( 'src', url ) );
+        }
     };
 
-    OfflineFilepicker.prototype._createDirectory = function() {
-        var $input = $( this.element ),
-            callbacks = {
-                success: function() {
-                    console.log( 'Whoheee, we have permission to use the file system' );
-                    $input.removeClass( 'ignore force-disabled' )
-                        .prop( 'disabled', false )
-                        .siblings( '.file-feedback' ).remove()
-                        .end()
-                        .after( '<div class="file-feedback text-info">' +
-                            'File inputs are experimental. Use only for testing.' );
-                },
-                error: function() {
-                    $input.siblings( '.file-feedback' ).remove();
-                    $input.after( '<div class="file-feedback text-warning">' +
-                        'No permission given to store local data (or an error occurred).</div>' );
-                }
-            };
-
-        fileManager.setDir( this._getInstanceID(), callbacks );
-    };
-
-    OfflineFilepicker.prototype.destroy = function( element ) {
-        $( element )
-        //data is not used elsewhere by enketo
-        .removeData( this.namespace )
-        //remove all the event handlers that used this.namespace as the namespace
-        .off( '.' + this.namespace )
-        //show the original element
-        .show()
-        //remove elements immediately after the target that have the widget class
-        .next( '.widget' ).remove().end()
-        //console.debug( this.namespace, 'destroy' );
-        .siblings( '.file-feedback, .file-preview, .file-loaded' ).remove();
-    };
-
-    /**
-     *
-     */
     $.fn[ pluginName ] = function( options, event ) {
 
         options = options || {};
@@ -33099,7 +34201,7 @@ define( 'enketo-widget/file-offline/offline-filepicker',[ 'jquery', 'enketo-js/W
 
             //only instantiate if options is an object (i.e. not a string) and if it doesn't exist already
             if ( !data && typeof options === 'object' ) {
-                $this.data( pluginName, ( data = new OfflineFilepicker( this, options, event ) ) );
+                $this.data( pluginName, ( data = new Filepicker( this, options, event ) ) );
             }
             //only call method if widget was instantiated before
             else if ( data && typeof options == 'string' ) {
@@ -34012,6 +35114,70 @@ define( 'enketo-widget/distress/distresspicker',[ 'enketo-js/Widget', 'jquery', 
 
 } );
 
+/**
+ * @preserve Copyright 2012 Martijn van de Rijdt & Modilabs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+define( 'enketo-widget/trigger/triggerwidget',[ 'enketo-js/Widget', 'jquery', 'enketo-js/plugins' ], function( Widget, $ ) {
+    
+
+    var pluginName = 'triggerwidget';
+
+    /**
+     * Creates a trigger widget
+     *
+     * @constructor
+     * @param {Element} element [description]
+     * @param {(boolean|{touch: boolean, repeat: boolean})} options options
+     * @param {*=} e     event
+     */
+
+    function Triggerwidget( element, options ) {
+        this.namespace = pluginName;
+        Widget.call( this, element, options );
+        this._init();
+    }
+
+    //copy the prototype functions from the Widget super class
+    Triggerwidget.prototype = Object.create( Widget.prototype );
+
+    //ensure the constructor is the new one
+    Triggerwidget.prototype.constructor = Triggerwidget;
+
+    Triggerwidget.prototype._init = function() {
+        var $el = $( this.element );
+        $el.find( '.question-label' ).markdownToHtml();
+    };
+
+    $.fn[ pluginName ] = function( options, event ) {
+        return this.each( function() {
+            var $this = $( this ),
+                data = $this.data( pluginName );
+
+            options = options || {};
+
+            if ( !data && typeof options === 'object' ) {
+                $this.data( pluginName, ( data = new Triggerwidget( this, options, event ) ) );
+            } else if ( data && typeof options == 'string' ) {
+                data[ options ]( this );
+            }
+        } );
+    };
+
+} );
+
 
 define('text!enketo-widget/note/config.json',[],function () { return '{\n    "name": "notewidget",\n    "stylesheet": "note.scss",\n    "selector": ".note, .trigger",\n    "options": {}\n}\n';});
 
@@ -34043,11 +35209,14 @@ define('text!enketo-widget/datetime/config.json',[],function () { return '{\n   
 define('text!enketo-widget/mediagrid/config.json',[],function () { return '{\n    "name": null,\n    "stylesheet": "mediagridpicker.scss",\n    "selector": null,\n    "options": {}\n}\n';});
 
 
-define('text!enketo-widget/file-offline/config.json',[],function () { return '{\n\t"name": "offlineFilepicker",\n\t"stylesheet": "offline-filepicker.scss",\n\t"selector": "input[type=\\"file\\"]",\n\t"options": {}\n}';});
+define('text!enketo-widget/file/config.json',[],function () { return '{\n    "name": "filepicker",\n    "stylesheet": "filepicker.scss",\n    "selector": "input[type=\\"file\\"]",\n    "options": {}\n}\n';});
 
 
 define('text!enketo-widget/select-likert/config.json',[],function () { return '{\n    "name": null,\n    "stylesheet": "likertitem.scss",\n    "selector": null,\n    "options": {}\n}\n';});
 
 
 define('text!enketo-widget/distress/config.json',[],function () { return '{\n    "name": "distresspicker",\n    "stylesheet": "distresspicker.scss",\n    "selector": ".or-appearance-distress input[type=\'number\']",\n    "options": {}\n}\n';});
+
+
+define('text!enketo-widget/trigger/config.json',[],function () { return '{\n    "name": "triggerwidget",\n    "stylesheet": "trigger.scss",\n    "selector": ".trigger",\n    "options": {}\n}\n';});
 

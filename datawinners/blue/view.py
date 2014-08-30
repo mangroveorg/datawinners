@@ -1,5 +1,6 @@
 import json
 import logging
+import mimetypes
 import os
 import re
 from tempfile import NamedTemporaryFile
@@ -33,6 +34,7 @@ from datawinners.search.submission_index import SubmissionSearchStore
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
+    XlsProjectParser, get_generated_xform_id_name, XFormImageProcessor
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, is_project_exist
 from datawinners.project.utils import is_quota_reached
@@ -420,13 +422,16 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 
     def get_submission(self, submission_uuid):
         submission = get_survey_response_by_id(self.manager, submission_uuid)
+        imageProcessor = XFormImageProcessor()
 
         return {'submission_uuid': submission.id,
                 'version': submission.version,
                 'project_uuid': self.questionnaire.id,
                 'created': py_datetime_to_js_datestring(submission.created),
-                'xml': self._model_str_of(submission.id, self.questionnaire.name),
-                'html': self._to_html(submission.values)
+                'media_file_names_string': imageProcessor
+                                            .get_media_files_str(self.questionnaire.fields, submission.values),
+                'xml': self._model_str_of(submission.id, get_generated_xform_id_name(self.questionnaire.xform)),
+                'data': json.dumps(submission.values)
         }
 
 
@@ -523,3 +528,22 @@ def _perform_file_validations(request):
         errors.append(_("larger files than 10MB."))
     return errors
 
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
+def get_attachment(request, document_id, attachment_name):
+    manager = get_database_manager(request.user)
+    return HttpResponse(manager.get_attachments(document_id, attachment_name=attachment_name))
+
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
+def attachment_download(request, document_id, attachment_name):
+    manager = get_database_manager(request.user)
+    raw_file = manager.get_attachments(document_id, attachment_name=attachment_name)
+    mime_type = mimetypes.guess_type(os.path.basename(attachment_name))[0]
+    response = HttpResponse(raw_file, mimetype=mime_type)
+    response['Content-Disposition'] = 'attachment; filename="%s"' % attachment_name
+    return response
