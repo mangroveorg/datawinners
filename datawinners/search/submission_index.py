@@ -315,7 +315,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
             if isinstance(field, FieldSet):
                 if field.is_group():
                     for value in submission_values[field_code]:
-                        _update_search_dict(dbm,form_model, field.fields, search_dict, submission_doc, value)
+                        _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value)
                         continue
                 search_dict.update({es_questionnaire_field_name(field_code, form_model.id): json.dumps(entry)})
             else:
