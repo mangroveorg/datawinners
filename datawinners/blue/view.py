@@ -157,8 +157,16 @@ class ProjectUpdate(View):
         questionnaire = Project.get(manager, project_id)
         file_content = None
         try:
-            file_content = request.raw_post_data
             tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
+
+            file_errors = _perform_file_validations(request)
+            if file_errors:
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': False,
+                    'error_msg': file_errors
+                }))
+
+            file_content = request.raw_post_data
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
@@ -409,7 +417,7 @@ def _perform_file_validations(request):
     errors = []
     if request.GET and request.GET.get("qqfile"):
         file_extension = os.path.splitext(request.GET["qqfile"])[1]
-        if file_extension not in [".xls",".xlsx"]:
+        if file_extension not in [".xls", ".xlsx"]:
             errors.append("Please upload an excel file")
             return errors
 
