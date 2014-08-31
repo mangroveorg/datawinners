@@ -65,10 +65,14 @@ class ProjectUpload(View):
 
             file_errors = _perform_file_validations(request)
             if file_errors:
+                logger.error("Uploaded invalid file type")
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
                     'error_msg': file_errors
                 }))
+            else:
+                logger.error("Uploaded file type is valid")
+
 
             file_content = request.raw_post_data
             tmp_file.write(file_content)
@@ -106,6 +110,8 @@ class ProjectUpload(View):
 
         finally:
             tmp_file.close()
+            logger.error("Finally done")
+
 
         if not questionnaire_id:
             return HttpResponse(json.dumps(
