@@ -62,19 +62,13 @@ class ProjectUpload(View):
         file_content = None
         try:
             tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
+            file_content = request.raw_post_data
 
             file_errors = _perform_file_validations(request)
             if file_errors:
-                logger.error("Uploaded invalid file type")
-                return HttpResponse(content_type='application/json', content=json.dumps({
-                    'success': False,
-                    'error_msg': file_errors
-                }))
-            else:
-                logger.error("Uploaded file type is valid")
+                return HttpResponse(json.dumps({'success': False, 'error_msg': file_errors}),
+                                    content_type='application/json')
 
-
-            file_content = request.raw_post_data
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
@@ -94,7 +88,7 @@ class ProjectUpload(View):
                                                xls_form=tmp_file)
             questionnaire_id = mangrove_service.create_project()
 
-        except (PyXFormError,QuestionAlreadyExistsException) as e :
+        except (PyXFormError, QuestionAlreadyExistsException) as e:
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [e.message if e.message else ugettext("Errors in excel")]
@@ -102,7 +96,8 @@ class ProjectUpload(View):
 
         except Exception as e:
             if not 'ODK Validate Errors:' in e.message:
-                send_email_on_exception(request.user,"Questionnaire Upload",traceback.format_exc(),additional_details={'file_contents':file_content})
+                send_email_on_exception(request.user, "Questionnaire Upload", traceback.format_exc(),
+                                        additional_details={'file_contents': file_content})
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [e.message if e.message else ugettext("Errors in excel")]
@@ -110,8 +105,6 @@ class ProjectUpload(View):
 
         finally:
             tmp_file.close()
-            logger.error("Finally done")
-
 
         if not questionnaire_id:
             return HttpResponse(json.dumps(
@@ -119,7 +112,7 @@ class ProjectUpload(View):
                     'success': False,
                     'duplicate_project_name': True,
                     'error_msg': [ugettext("Questionnaire with same name already exists.")]}
-                ), content_type='application/json')
+            ), content_type='application/json')
 
         return HttpResponse(
             json.dumps(
@@ -164,6 +157,7 @@ class ProjectUpdate(View):
         file_content = None
         try:
             tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
+            file_content = request.raw_post_data
 
             file_errors = _perform_file_validations(request)
             if file_errors:
@@ -172,7 +166,6 @@ class ProjectUpdate(View):
                     'error_msg': file_errors
                 }))
 
-            file_content = request.raw_post_data
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
@@ -198,7 +191,7 @@ class ProjectUpdate(View):
             self._purge_feed_documents(questionnaire, request)
             self.recreate_submissions_mapping(manager, questionnaire)
 
-        except (PyXFormError,QuestionAlreadyExistsException) as e :
+        except (PyXFormError, QuestionAlreadyExistsException) as e:
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [e.message if e.message else ugettext("Errors in excel")]
@@ -206,7 +199,8 @@ class ProjectUpdate(View):
 
         except Exception as e:
             if not 'ODK Validate Errors:' in e.message:
-                send_email_on_exception(request.user,"Questionnaire Edit",traceback.format_exc(),additional_details={'file_contents':file_content})
+                send_email_on_exception(request.user, "Questionnaire Edit", traceback.format_exc(),
+                                        additional_details={'file_contents': file_content})
             message = e.message if e.message else "Some error in excel"
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'error_msg': [message], 'success': False
@@ -355,7 +349,7 @@ def new_xform_submission_post(request):
         return HttpResponse(json.dumps({'error_message': e.message}))
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
-        send_email_on_exception(request.user,"New Web Submission",traceback.format_exc())
+        send_email_on_exception(request.user, "New Web Submission", traceback.format_exc())
         return HttpResponseBadRequest()
 
 
@@ -367,7 +361,8 @@ def edit_xform_submission_post(request, survey_response_id):
             update_submission_response(survey_response_id)
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
-        send_email_on_exception(request.user,"Edit Web Submission",traceback.format_exc(),additional_details={'survey_response_id':survey_response_id})
+        send_email_on_exception(request.user, "Edit Web Submission", traceback.format_exc(),
+                                additional_details={'survey_response_id': survey_response_id})
         return HttpResponseBadRequest()
 
 
@@ -399,22 +394,22 @@ def project_download(request):
     return response
 
 
-def send_email_on_exception(user,error_type,stack_trace,additional_details=None):
+def send_email_on_exception(user, error_type, stack_trace, additional_details=None):
     email_message = ''
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
-    file_contents = additional_details.pop('file_contents') if additional_details and additional_details.get('file_contents') else None
+    file_contents = additional_details.pop('file_contents') if additional_details and additional_details.get(
+        'file_contents') else None
     email_message += '\nError Scenario : %s (%s)\n' % (organization.name, profile.org_id)
     email_message += '\nOrganization Details : %s (%s)' % (organization.name, profile.org_id)
     email_message += '\nUser Email Id : %s\n' % user.username
     email_message += '\n%s' % stack_trace
-    email = EmailMessage(subject="[ERROR] %s" % error_type, body=repr(re.sub("\n","<br/>",email_message)),
+    email = EmailMessage(subject="[ERROR] %s" % error_type, body=repr(re.sub("\n", "<br/>", email_message)),
                          from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
 
     if file_contents:
         email.attach("errored_excel.xls", content=file_contents, mimetype='application/ms-excel')
-
 
     email.send()
 
@@ -427,7 +422,7 @@ def _perform_file_validations(request):
             errors.append("Please upload an excel file")
             return errors
 
-    EXCEL_UPLOAD_FILE_SIZE = 10485760 # 10MB
+    EXCEL_UPLOAD_FILE_SIZE = 10485760  # 10MB
     if request.META.get('CONTENT_LENGTH') and int(request.META.get('CONTENT_LENGTH')) > EXCEL_UPLOAD_FILE_SIZE:
         errors.append("Please upload an excel file less than or equal to 10MB in size")
     return errors
