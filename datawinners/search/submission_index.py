@@ -96,7 +96,7 @@ class SubmissionSearchStore():
                                                        fields_definition=fields_definition)
         return mapping
 
-    def _get_submission_fields(self, fields_definition, fields):
+    def _get_submission_fields(self, fields_definition, fields, parent_field_code=None):
         for field in fields:
             if isinstance(field, UniqueIdField):
                 unique_id_field_name = es_questionnaire_field_name(field.code, self.latest_form_model.id)
@@ -106,8 +106,9 @@ class SubmissionSearchStore():
             if isinstance(field, FieldSet) and field.is_group():
                 self._get_submission_fields(fields_definition, field.fields)
                 continue
+            key = "%s-%s" % (parent_field_code, field.code) if parent_field_code else field.code
             fields_definition.append(
-                get_field_definition(field, field_name=es_questionnaire_field_name(field.code, self.latest_form_model.id)))
+                get_field_definition(field, field_name=es_questionnaire_field_name(key, self.latest_form_model.id)))
 
     def recreate_elastic_store(self):
         self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
@@ -264,7 +265,7 @@ def _get_select_field_answer_from_snapshot(entry, field_for_revision):
         value_list.append(options[answer_value])
     return ",".join(value_list)
 
-def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values):
+def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values, parent_field_code=None):
 
     for field in fields:
         field_code = field.code
@@ -315,11 +316,13 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
             if isinstance(field, FieldSet):
                 if field.is_group():
                     for value in submission_values[field_code]:
-                        _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value)
+                        _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value, field.code)
                         continue
-                search_dict.update({es_questionnaire_field_name(field_code, form_model.id): json.dumps(entry)})
+                else:
+                    search_dict.update({es_questionnaire_field_name(field_code, form_model.id): json.dumps(entry)})
             else:
-                search_dict.update({es_questionnaire_field_name(field.code, form_model.id): entry})
+                key = "%s-%s" % (parent_field_code, field.code) if parent_field_code else field.code
+                search_dict.update({es_questionnaire_field_name(key, form_model.id): entry})
 
     search_dict.update({'void': submission_doc.void})
 
