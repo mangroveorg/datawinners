@@ -19,7 +19,8 @@ class TestSubmissionHeader(unittest.TestCase):
         self.form_model.fields = [self.field1, self.field2]
         self.form_model.entity_questions = []
         expected = {'date': 'Submission Date', 'ds_id': 'Datasender Id', 'ds_name': 'Data Sender',
-                    'form_model_id_q1': 'Enter Text', 'form_model_id_q2': 'Enter a Number'}
+                    'open_datasender_phone_number': 'Phone number', 'form_model_id_q1': 'Enter Text',
+                    'form_model_id_q2': 'Enter a Number'}
 
         result = SubmissionAnalysisHeader(self.form_model).get_header_dict()
 
@@ -29,8 +30,8 @@ class TestSubmissionHeader(unittest.TestCase):
         self.form_model.fields = [self.field1, self.field2, self.field3]
         self.form_model.entity_questions = [self.field3]
         expected = {'date': 'Submission Date', 'ds_id': 'Datasender Id', 'ds_name': 'Data Sender',
-                    'form_model_id_q1': 'Enter Text', 'form_model_id_q2': 'Enter a Number',
-                    'form_model_id_q3': 'Which clinic are you reporting on',
+                    'open_datasender_phone_number': 'Phone number', 'form_model_id_q1': 'Enter Text',
+                    'form_model_id_q2': 'Enter a Number', 'form_model_id_q3': 'Which clinic are you reporting on',
                     'form_model_id_q3_unique_code': 'clinic ID'}
 
         result = SubmissionAnalysisHeader(self.form_model).get_header_dict()
@@ -44,7 +45,7 @@ class TestSubmissionHeader(unittest.TestCase):
         headers = AllSubmissionHeader(self.form_model).get_header_field_names()
 
         expected = [es_field_name(f, self.form_model.id) for f in
-                    ["ds_id", "ds_name", "date", "status", "q1", "q2", "q3", "q3_unique_code", "q4", "q4_unique_code"]]
+                    ["ds_id", "ds_name", "date", 'open_datasender_phone_number', "status", "q1", "q2", "q3", "q3_unique_code", "q4", "q4_unique_code"]]
         self.assertListEqual(expected, headers)
 
 
@@ -55,7 +56,7 @@ class TestSubmissionHeader(unittest.TestCase):
         headers = SuccessSubmissionHeader(self.form_model).get_header_field_names()
 
         expected = [es_field_name(f, self.form_model.id) for f in
-                    ["ds_id", "ds_name", "date", "q1", "q2", "q3", "q3_unique_code", "q4", "q4_unique_code"]]
+                    ["ds_id", "ds_name", "date", 'open_datasender_phone_number', "q1", "q2", "q3", "q3_unique_code", "q4", "q4_unique_code"]]
         self.assertListEqual(expected, headers)
 
     def test_submission_status_headers_for_errored_submissions(self):
@@ -65,7 +66,7 @@ class TestSubmissionHeader(unittest.TestCase):
         headers = ErroredSubmissionHeader(self.form_model).get_header_field_names()
 
         expected = [es_field_name(f, self.form_model.id) for f in
-                    ["ds_id", "ds_name", "date","error_msg", "q1", "q2", "q3", "q3_unique_code", "q4", "q4_unique_code"]]
+                    ["ds_id", "ds_name", "date", "error_msg", 'open_datasender_phone_number', "q1", "q2", "q3", "q3_unique_code", "q4", "q4_unique_code"]]
         self.assertListEqual(expected, headers)
 
 

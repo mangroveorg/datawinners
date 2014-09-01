@@ -61,6 +61,7 @@ class SubmissionsPageHeader():
         header = HeaderFactory(self._form_model).create_header(self.submission_type)
         header_dict = header.get_header_field_dict()
         header_dict.pop('ds_id', None)
+        header_dict.pop(SubmissionIndexConstants.DATASENDER_MOBILE_KEY, None)
         unique_question_field_names = [es_unique_id_code_field_name(es_field_name(field.code, self._form_model.id)) for
                                        field in
                                        self._form_model.entity_questions]

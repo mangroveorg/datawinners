@@ -3,6 +3,7 @@ ES_SUBMISSION_FIELD_DS_NAME = "ds_name"
 ES_SUBMISSION_FIELD_DATE = "date"
 ES_SUBMISSION_FIELD_STATUS = "status"
 ES_SUBMISSION_FIELD_ERROR_MSG = "error_msg"
+ES_SUBMISSION_FIELD_DS_PHONE_NUMBER = "open_datasender_phone_number"
 #ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE = "entity_short_code"
 
 meta_fields = [ES_SUBMISSION_FIELD_DS_ID, ES_SUBMISSION_FIELD_DS_NAME, ES_SUBMISSION_FIELD_DATE,
@@ -12,7 +13,8 @@ submission_meta_fields = [{"name": ES_SUBMISSION_FIELD_DATE, "type": "date", "da
                           {"name": ES_SUBMISSION_FIELD_STATUS},
                           {"name": ES_SUBMISSION_FIELD_DS_NAME},
                           {"name": ES_SUBMISSION_FIELD_DS_ID},
-                          {"name": ES_SUBMISSION_FIELD_ERROR_MSG}]
+                          {"name": ES_SUBMISSION_FIELD_ERROR_MSG},
+                          {"name": ES_SUBMISSION_FIELD_DS_PHONE_NUMBER}]
                           #{"name": ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE}]
 
 

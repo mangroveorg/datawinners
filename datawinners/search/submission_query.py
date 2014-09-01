@@ -82,7 +82,7 @@ class SubmissionQueryResponseCreator():
     def create_response(self, required_field_names, query):
         entity_question_codes = [es_field_name(field.code, self.form_model.id) for field in
                                  self.form_model.entity_questions]
-        meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
+        meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY, SubmissionIndexConstants.DATASENDER_MOBILE_KEY]
         meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
 
         submissions = []
@@ -95,7 +95,10 @@ class SubmissionQueryResponseCreator():
                         self.combine_name_and_id(short_code=res.get(es_unique_id_code_field_name(key)),
                                                  entity_name=res.get(key), submission=submission)
                     elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
-                        self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
+                        if res.get(SubmissionIndexConstants.DATASENDER_ID_KEY) == u'N/A':
+                            submission.append(res.get('open_datasender_phone_number'))
+                        else:
+                            self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
                                                  res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY), submission)
                     elif key == 'status':
                         submission.append(ugettext(res.get(key)))
