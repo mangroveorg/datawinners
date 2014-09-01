@@ -5150,6 +5150,9 @@ msgstr "\"autre\" fonctionnalité pour les questions à choix multiples "
 msgid "Prefetch of csv not supported"
 msgstr "Préchargement des données CSV (fonction Exctraction de Données)"
 
+msgid "Cancel Upload"
+msgstr "Annuler le téléchargement"
+
 msgid "XLSForm settings worksheet and the related values in survey sheet."
 msgstr "la Feuille de paramétrage XLSForm et les valeurs y afférentes dans le survey d'enquête"
 
