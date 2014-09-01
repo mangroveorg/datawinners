@@ -47,6 +47,7 @@ function handle_submission_log_delete(table, selected_ids, all_selected, project
                         },
                         success: function (response) {
                             var data = JSON.parse(response);
+                            $("#message_text").show();
                             if (data.success) {
                                 $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
                                 table.fnSettings()._iDisplayStart = get_updated_table_page_index(table,selected_ids,all_selected);
@@ -57,6 +58,7 @@ function handle_submission_log_delete(table, selected_ids, all_selected, project
                             $("#message_text .message").delay(5000).fadeOut();
                         },
                         error: function (e) {
+                            $("#message_text").show();
                             $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
                         }
                     }
