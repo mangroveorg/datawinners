@@ -5144,21 +5144,6 @@ msgstr "Les Expéditeurs de Données suivants ne seront pas retirés du(des) que
 msgid "%s as a datatype"
 msgstr "Type de données : %s"
 
-msgid "time"
-msgstr "temps"
-
-msgid "datetime"
-msgstr "dateTemps"
-
-msgid "metadata"
-msgstr "Metadonnées"
-
-msgid "video"
-msgstr "vidéo"
-
-msgid "barcode"
-msgstr "code barre"
-
 msgid "select all that apply or specify other"
 msgstr "\"autre\" fonctionnalité pour les questions à choix multiples "
 
@@ -5166,7 +5151,7 @@ msgid "Prefetch of csv not supported"
 msgstr "Préchargement des données CSV (fonction Exctraction de Données)"
 
 msgid "XLSForm settings worksheet and the related values in survey sheet."
-msgstr "la Feuille de paramétrage XLSForm et les valeurs y afférentes dans le formulaire d'enquête"
+msgstr "la Feuille de paramétrage XLSForm et les valeurs y afférentes dans le survey d'enquête"
 
 msgid "Export Submissions"
 msgstr "Exporter les Soumissions"
@@ -5222,6 +5207,9 @@ msgstr "Voulez-vous continuer à télécharger le formulaire XLS modifié?"
 msgid "You can"
 msgstr "Vous pouvez"
 
+msgid "Edit your Questionnaire by uploading a new XLSForm"
+msgstr "Modifiez votre Questionnaire en téléchargeant un nouveau formulaire XLS"
+
 msgid "Export Your Submissions"
 msgstr "exporter vos Soumissions"
 
@@ -5235,7 +5223,7 @@ msgid "Upload was cancelled."
 msgstr "Le téléchargement a été annulé"
 
 msgid "attaching media to choice fields not supported %s"
-msgstr "XLSForm media type (%s) in choice sheet."
+msgstr "Type de média du formulaire XLS (%s) le choices d'enquête."
 
 msgid "Please specify your Reminders again."
 msgstr "Veuillez re-spécifier vos Messages de Rappel."

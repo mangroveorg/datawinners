@@ -109,9 +109,9 @@ class XlsFormParser():
                 #errors.append(self._validate_for_uppercase_names(field))
                 errors.append(self._validate_for_prefetch_csv(field))
             else:
-                errors.append(_("%s as a datatype") % _(field['type']))
+                errors.append(_("%s as a datatype") % field['type'])
             if field.get('media'):
-                errors.append(_("attaching media to fields is not supported %s") % _(field['media'].keys()[0]))
+                errors.append(_("attaching media to fields is not supported %s") % field['media'].keys()[0])
         return set(errors) - set([None])
 
     def _validate_for_nested_repeats(self, field):

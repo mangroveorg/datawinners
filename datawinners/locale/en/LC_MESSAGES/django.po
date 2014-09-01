@@ -4647,7 +4647,7 @@ msgid "attaching media to fields is not supported %s"
 msgstr "XLSForm media type (%s)."
 
 msgid "attaching media to choice fields not supported %s"
-msgstr "XLSForm media type (%s) in choice sheet."
+msgstr "XLSForm media type (%s) in choices sheet."
 
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""

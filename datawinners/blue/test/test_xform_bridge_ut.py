@@ -382,7 +382,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"XLSForm media type (image) in choice sheet."})
+            self.assertEquals(actual_errors, {"XLSForm media type (image) in choices sheet."})
 
 
     def test_should_not_populate_errors_when_choice_answer_has_no_media_present(self):
