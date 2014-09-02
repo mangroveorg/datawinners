@@ -326,9 +326,9 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                     for value in submission_values[field_code]:
                         _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value,
                                             field.code)
-                        continue
-                search_dict.update(
-                    {es_questionnaire_field_name(field_code, form_model.id, parent_field_name): json.dumps(entry)})
+                else: 
+                    search_dict.update(
+                        {es_questionnaire_field_name(field_code, form_model.id, parent_field_name): json.dumps(entry)})
             else:
                 search_dict.update({es_questionnaire_field_name(field.code, form_model.id, parent_field_name): entry})
 
