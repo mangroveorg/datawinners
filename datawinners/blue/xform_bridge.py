@@ -149,15 +149,34 @@ class XlsFormParser():
                 if media_type_in_choices:
                     raise TypeNotSupportedException(_("attaching media to choice fields not supported %s") % _(media_type_in_choices))
 
+    def _validate_choice_names(self, fields):
+        errors = []
+        for field in fields:
+            if field['type'] in self.type_dict['group']:
+                errors.extend(self._validate_choice_names(field['children']))
+            choices = field.get('choices')
+            if choices:
+                name_list = [choice['name'] for choice in choices]
+                name_list_without_duplicates = list(set(name_list))
+                if len(name_list) != len(name_list_without_duplicates):
+                    errors.append("All choice codes must be unique")
+                if filter(lambda name: " " in unicode(name), name_list):
+                    errors.append("Invalid choice name. Names must begin with a letter, colon, or underscore."
+                                  "Subsequent characters can include numbers, dashes, and periods.")
+        return errors
+
     def parse(self):
-        errors = self._validate_fields_are_recognised(self.xform_dict['children'])
+        fields = self.xform_dict['children']
+        errors = self._validate_fields_are_recognised(fields)
         settings_page_errors = self._validate_settings_page_is_not_present(self.xform_dict)
         errors = errors.union(settings_page_errors)
         try:
-            self._validate_media_in_choices(self.xform_dict['children'])
+            self._validate_media_in_choices(fields)
         except TypeNotSupportedException as e:
             errors.add(e.message)
-        questions, question_errors = self._create_questions(self.xform_dict['children'])
+        choice_name_errors = self._validate_choice_names(fields)
+        errors = errors.union(set(choice_name_errors))
+        questions, question_errors = self._create_questions(fields)
         if question_errors:
             errors = errors.union(question_errors)
         if not errors and not questions:

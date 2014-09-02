@@ -123,6 +123,27 @@ class TestXformBridge(unittest.TestCase):
 
             self.assertEquals(actual_errors, {"Label mandatory for choice option with name yes"})
 
+    def test_should_populate_error_when_choice_name_has_spaces_and_unique_name(self):
+            with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+                fields = {'children': [{u'bind': {u'required': u'yes'}, u'type': u'select one', u'name': u'is_student',
+                                        u'label': u'1. Are you a student?',
+                                        u'choices': [{u'name': u'yes 1',u'label':'yes'}, {u'name': u'yes 1', u'label': u'No'}]},
+                                       {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                           {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                            'type': 'calculate', 'name': 'instanceID'}]}],
+                          'title': 'asdasx',
+                          'name': 'asdasx',
+                          'id_string': 'asdasx',
+                          'default_language': 'default'
+                }
+                get_xform_dict.return_value = fields
+                xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+                actual_errors, updated_xform, questions = xls_form_parser.parse()
+
+                self.assertEquals(actual_errors, {"All choice codes must be unique","Invalid choice name. Names must begin with a letter, colon, or underscore."
+                              "Subsequent characters can include numbers, dashes, and periods."})
+
     def test_should_populate_error_when_calculate_field_with_prefetch_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
             fields = {'children': [

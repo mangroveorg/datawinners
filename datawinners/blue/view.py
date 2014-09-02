@@ -25,7 +25,7 @@ from django.core.mail import EmailMessage
 
 from datawinners.feeds.database import get_feeds_database
 from datawinners.search.submission_index import SubmissionSearchStore
-from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
+from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException, SpaceInChoicesNotAllowedException, ChoiceCodeAlreadyExistsException
 from datawinners import settings
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
