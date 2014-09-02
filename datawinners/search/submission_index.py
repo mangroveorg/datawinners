@@ -6,7 +6,8 @@ from string import lower
 from babel.dates import format_datetime
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
 
-from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, convert_choice_options_to_options_text
+from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, \
+    convert_choice_options_to_options_text
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
 from mangrove.form_model.field import DateField, UniqueIdField, SelectField, FieldSet
@@ -14,7 +15,8 @@ from datawinners.project.models import get_all_projects, Project
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
-from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, es_unique_id_code_field_name, \
+from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
+    es_unique_id_code_field_name, \
     es_questionnaire_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
 from mangrove.form_model.form_model import get_form_model_by_code
@@ -22,6 +24,7 @@ from mangrove.form_model.form_model import get_form_model_by_code
 
 logger = logging.getLogger("datawinners")
 UNKNOWN = "N/A"
+
 
 def get_code_from_es_field_name(es_field_name, form_model_id):
     for item in es_field_name.split('_'):
@@ -96,7 +99,7 @@ class SubmissionSearchStore():
                                                        fields_definition=fields_definition)
         return mapping
 
-    def _get_submission_fields(self, fields_definition, fields):
+    def _get_submission_fields(self, fields_definition, fields, parent_field_name=None):
         for field in fields:
             if isinstance(field, UniqueIdField):
                 unique_id_field_name = es_questionnaire_field_name(field.code, self.latest_form_model.id)
@@ -104,10 +107,12 @@ class SubmissionSearchStore():
                     get_field_definition(field, field_name=es_unique_id_code_field_name(unique_id_field_name)))
 
             if isinstance(field, FieldSet) and field.is_group():
-                self._get_submission_fields(fields_definition, field.fields)
+                self._get_submission_fields(fields_definition, field.fields, field.code)
                 continue
             fields_definition.append(
-                get_field_definition(field, field_name=es_questionnaire_field_name(field.code, self.latest_form_model.id)))
+                get_field_definition(field,
+                                     field_name=es_questionnaire_field_name(field.code, self.latest_form_model.id,
+                                                                            parent_field_name)))
 
     def recreate_elastic_store(self):
         self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
@@ -162,6 +167,7 @@ class FieldTypeChangeException(Exception):
 def get_submission_meta_fields():
     return submission_meta_fields
 
+
 def update_submission_search_for_datasender_edition(dbm, short_code, ds_name):
     from datawinners.search.submission_query import SubmissionQueryBuilder
 
@@ -214,7 +220,7 @@ def status_message(status):
     return "Success" if status else "Error"
 
 
-#TODO manage_index
+# TODO manage_index
 def _meta_fields(submission_doc, dbm):
     search_dict = {}
     datasender_name, datasender_id = lookup_entity_by_uid(dbm, submission_doc.owner_uid)
@@ -244,6 +250,7 @@ def lookup_entity_name(dbm, id, entity_type):
         pass
     return " "
 
+
 #TODO:This is required only for the migration for creating submission indexes.To be removed following release10
 def _update_select_field_by_revision(field, form_model, submission_doc):
     field_by_revision = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
@@ -253,7 +260,7 @@ def _update_select_field_by_revision(field, form_model, submission_doc):
 def _get_options_map(original_field):
     options_map = {}
     for option in original_field.options:
-        options_map.update({option['val']:option['text']})
+        options_map.update({option['val']: option['text']})
     return options_map
 
 
@@ -264,8 +271,9 @@ def _get_select_field_answer_from_snapshot(entry, field_for_revision):
         value_list.append(options[answer_value])
     return ",".join(value_list)
 
-def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values):
 
+def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values,
+                        parent_field_name=None):
     for field in fields:
         field_code = field.code
         entry = submission_values.get(field_code)
@@ -278,7 +286,8 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                 entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
                 entry_code = entry
                 search_dict.update(
-                    {es_unique_id_code_field_name(es_questionnaire_field_name(field.code, form_model.id)): entry_code or UNKNOWN})
+                    {es_unique_id_code_field_name(
+                        es_questionnaire_field_name(field.code, form_model.id)): entry_code or UNKNOWN})
                 entry = entity_name
         elif field.type == "select":
             field = _update_select_field_by_revision(field, form_model, submission_doc)
@@ -302,7 +311,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                     old_submission_value = entry
                     to_format = field.date_format
                     field_for_revision = form_model.get_field_by_code_and_rev(field.code,
-                                                                        submission_doc.form_model_revision)
+                                                                              submission_doc.form_model_revision)
                     if isinstance(field_for_revision, DateField):
                         current_date = field_for_revision.__date__(entry)
                         entry = current_date.strftime(DateField.DATE_DICTIONARY.get(to_format))
@@ -315,13 +324,16 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
             if isinstance(field, FieldSet):
                 if field.is_group():
                     for value in submission_values[field_code]:
-                        _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value)
+                        _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value,
+                                            field.code)
                         continue
-                search_dict.update({es_questionnaire_field_name(field_code, form_model.id): json.dumps(entry)})
+                search_dict.update(
+                    {es_questionnaire_field_name(field_code, form_model.id, parent_field_name): json.dumps(entry)})
             else:
-                search_dict.update({es_questionnaire_field_name(field.code, form_model.id): entry})
+                search_dict.update({es_questionnaire_field_name(field.code, form_model.id, parent_field_name): entry})
 
     search_dict.update({'void': submission_doc.void})
+
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     #Submission value may have capitalized keys in some cases. This conversion is to do

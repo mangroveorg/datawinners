@@ -82,12 +82,12 @@ class SubmissionExcelHeader():
             SubmissionIndexConstants.DATASENDER_ID_KEY: {
                 "label": header_dict[SubmissionIndexConstants.DATASENDER_ID_KEY]}})
 
-    def _update_with_field_meta(self, fields, result):
+    def _update_with_field_meta(self, fields, result, parent_field_name=None):
         for field in fields:
             if isinstance(field, FieldSet) and field.is_group():
-                self._update_with_field_meta(field.fields, result)
+                self._update_with_field_meta(field.fields, result, field.code)
             else:
-                field_name = es_questionnaire_field_name(field.code, self._form_model.id)
+                field_name = es_questionnaire_field_name(field.code, self._form_model.id, parent_field_name)
 
                 if result.has_key(field_name):
                     result.get(field_name).update({"type": field.type})

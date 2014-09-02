@@ -19,7 +19,8 @@ class SubmissionQueryBuilder(QueryBuilder):
         self.form_model = form_model
 
     def get_query(self, database_name, *doc_type):
-        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(database_name).doctypes(*doc_type)
+        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(
+            database_name).doctypes(*doc_type)
 
     def filter_by_submission_type(self, query, query_params):
         submission_type_filter = query_params.get('filter')
@@ -88,12 +89,14 @@ class SubmissionQueryResponseCreator():
             ["%s<span class='small_grey'>  %s</span>" % (
                 entity_name, short_code)]) if entity_name else submission.append(entity_name)
 
-    def get_field_set_fields(self, fields):
+    def get_field_set_fields(self, fields, parent_field_code=None):
         field_set_field_dict = {}
         for field in fields:
             if isinstance(field, FieldSet):
-                field_set_field_dict.update({es_questionnaire_field_name(field.code, self.form_model.id): field})
-                field_set_field_dict.update(self.get_field_set_fields(field.fields))
+                field_set_field_dict.update(
+                    {es_questionnaire_field_name(field.code, self.form_model.id, parent_field_code): field})
+                group_field_code = field.code if field.is_group() else None
+                field_set_field_dict.update(self.get_field_set_fields(field.fields, group_field_code))
         return field_set_field_dict
 
     def create_response(self, required_field_names, query):
