@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 from django.contrib.auth.models import User
 from django.core.management import call_command
@@ -759,10 +760,10 @@ def load_sms_data_for_cli001(manager):
     MARCH = datetime(2011, 03, 01, tzinfo=UTC)
     DEC_2010 = datetime(2010, 12, 28, hour=00, minute=00, second=59, tzinfo=UTC)
     NOV_2010 = datetime(2010, 11, 26, hour=23, minute=59, second=59, tzinfo=UTC)
-    today = datetime.today()
+    today = datetime.utcnow()
     LAST_WEEK = today - timedelta(days=7)
-    THIS_MONTH = datetime(today.year, today.month, 1, 12, 45, 58)
-    PREV_MONTH = THIS_MONTH - timedelta(days=6)
+    THIS_MONTH = today
+    PREV_MONTH = THIS_MONTH + relativedelta(months=-1)
     sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
 
     FROM_NUMBER = '1234567890'
