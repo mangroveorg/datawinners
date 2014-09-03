@@ -46,36 +46,44 @@
     </div>
 
     <div id="xlx-message"></div>
-    <div class="warning-message-box none" ><p>{% trans "Upload was cancelled." %}</p></div>
-    <div class="download_xls">
-        <span class="download_header">
-            {% trans "Download Current XLSForm (Excel file):" %}
-        </span>
-        {% if show_xls_download_link %}
-            <span class="heading_block alpha data_ana border_none">
-                <span class="links">
-                    <a href="javascript:void(0);" class="download_link">{{ project.name|slugify }}.xls</a>
+    <div class="warning-message-box none"><p>{% trans "Upload was cancelled." %}</p></div>
+    <h5 class="margin_top_12">{% trans "View your Questionnaire" %}</h5>
+    <ul class="bulleted">
+        <div class="download_xls">
+            <li>
+                <span class="download_header">
+                    {% trans "Download Current XLSForm (Excel file):" %}
                 </span>
-            </span>
-        {% endif %}
-    </div>
+                {% if show_xls_download_link %}
+                    <span class="heading_block alpha data_ana border_none">
+                        <span class="links">
+                            <a href="javascript:void(0);" class="download_link">{{ project.name|slugify }}.xls</a>
+                        </span>
+                    </span>
+                {% endif %}
+            </li>
+            <li>
+                <div>{% trans "Look at the " %}<a href="{{ project_links.test_questionnaire_link }}">{% trans "Web Submission" %}</a></div>
+            </li>
+        </div>
+    </ul>
     <form id="download_form" method="POST">
         {% csrf_token %}
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
-    <h5>{% trans "Edit your Questionnaire..." %}</h5>
+    <h5>{% trans "Edit your Questionnaire" %}</h5>
+    <div class="help_accordion margin_top_10">{% trans "Upload a new XLSForm (Excel file) to replace the current Questionnaire" %}</div>
+    <div class="help_accordion margin_bottom_20 margin_top_10">{% trans "Need help and support on how to create a XLSForm and advanced Questionnaire logic?" %} <a>{% trans "Learn More" %}</a> | <a>{% trans "Sample Forms" %}</a></div>
     <div>
         <noscript>
             <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
         </noscript>
         <div id="file_uploader" class="button upload_xls"></div>
-        <button id="uploadXLS">{% trans "Upload new XLSForm" %}</button>
+        <button id="uploadXLS">{% trans "Upload New XLSForm" %}</button>
         <a id="cancel-xlx-upload" class="none" href="javascript:void(0);">{% trans "Cancel Upload" %}</a>
         <img class="upload_spinner none" src="/media/images/ajax-loader.gif">
     </div>
-    <h6 class="create_questionnaire_help margin_bottom_20 margin_top_10">{% trans "Need help and support on how to create a XLSForm and advanced Questionnaire logic?" %} <a>{% trans "Learn More | Example Forms" %}</a></h6>
-
     <div id="cancel_questionnaire_edit" style="display: none;">
         {% trans "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!" %}<br/><br/>
         <p class="font_size_13">{% trans "You can" %} <a class='dialog-link' href='{{ project_links.submission_log_link }}'> {% trans "Export Your Submissions" %}</a> {% trans "first or" %} <a class='dialog-link' href="{% url create_project %}?prev=ques#questionnaire/xlsupload/">{% trans "Create a New Questionnaire"%}</a> {% trans 'instead.'%} </p><br/>

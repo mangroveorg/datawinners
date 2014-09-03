@@ -168,7 +168,7 @@ $(document).ready(function () {
     });
 
     new DW.UploadQuestionnaire({
-        buttonText: "Upload XLSForm and create Questionnaire",
+        buttonText: "Upload XLSForm and Create Questionnaire",
         postUrl: function(){
            return '/xlsform/upload/';
         },

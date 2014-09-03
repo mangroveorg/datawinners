@@ -5168,7 +5168,7 @@ msgstr "Option avancée (version Beta)"
 msgid "Upload an XLSForm"
 msgstr "Télécharger un formulaire XLS"
 
-msgid "Choose this option to upload an XLSForm (Excel file) and create advanced Questionnaire logic."
+msgid "Choose this option to create a Questionnaire with advanced features by uploading an XLSForm (Excel)"
 msgstr "Choisissez cette option pour télécharger un formulaire XLS (fichier Excel) et créer des logiques de questionnaire avancées."
 
 msgid "q_tooltip_advanced_questionnaire_option"
@@ -5183,22 +5183,22 @@ msgstr "Ceci est notre premier lancement de la fonctionnalité Téléchargement 
 msgid "Enter Name and Create Questionnaire"
 msgstr "Saisissez le nom et Créez le Questionnaire"
 
-msgid "Upload XLSForm and create Questionnaire"
+msgid "Upload XLSForm and Create Questionnaire"
 msgstr "Télécharger un formulaire XLS pour créer un Questionnaire"
 
 msgid "Need help and support on how to create a XLSForm and advanced Questionnaire logic?"
-msgstr "Vous avez besoin d'aide pour créer un Questionnaire XLS comportant des logiques avancées ? En savoir plus | Plus d'exemples de formulaires"
+msgstr "Vous avez besoin d'aide pour créer un Questionnaire XLS comportant des logiques avancées? "
 
-msgid "Learn More | Example Forms"
-msgstr "En savoir plus | Plus d'exemples de formulaires"
+msgid "Sample Forms"
+msgstr "Plus d'exemples de formulaires"
 
-msgid "Edit your Questionnaire..."
-msgstr "Modifiez votre Questionnaire ..."
+msgid "Edit your Questionnaire"
+msgstr "Modifiez votre Questionnaire"
 
 msgid "Download Current XLSForm (Excel file):"
 msgstr "Télécharger le formulaire XLS actuel (fichier Excel) :"
 
-msgid "Upload new XLSForm"
+msgid "Upload New XLSForm"
 msgstr "Télécharger un nouveau formulaire XLS"
 
 msgid "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!"

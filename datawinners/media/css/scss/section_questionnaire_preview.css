@@ -268,5 +268,6 @@ div.sms_tester_form div.clear_and_submit {
 .download_xls {
   font-size: 17px;
   font-style: italic;
-  padding-bottom: 50px;
-  padding-top: 10px; }
+  padding-bottom: 10px;
+  padding-top: 10px;
+  padding-left: 25px; }
