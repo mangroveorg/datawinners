@@ -3,9 +3,13 @@ import xml
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException
+from datawinners.accountmanagement.decorators import is_datasender_allowed
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
+from errors.MangroveException import DataObjectNotFound
+from form_model.form_model import get_form_model_by_code
 from mangrove.transport.contract.request import Request
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
@@ -65,12 +69,16 @@ def get_errors(errors):
     return '\n'.join(['{0} : {1}'.format(key, val) for key, val in errors.items()])
 
 
-def __authorized_to_make_submission_on_requested_form(request_user, submission_file):
-    rows = get_all_project_for_user(request_user)
-    form_code_list = [(row['value']['form_code']) for row in rows]
-    dom = xml.dom.minidom.parseString(submission_file)
-    requested_form_code = dom.getElementsByTagName('form_code')[0].firstChild.data
-    return requested_form_code in form_code_list
+def __authorized_to_make_submission_on_requested_form(request_user, submission_file, dbm):
+    try:
+        dom = xml.dom.minidom.parseString(submission_file)
+        requested_form_code = dom.getElementsByTagName('form_code')[0].firstChild.data
+        questionnaire = get_form_model_by_code(dbm,requested_form_code)
+        if questionnaire.void or request_user.reporter_id not in questionnaire.data_senders:
+            return False
+    except FormModelDoesNotExistsException as e:
+        return False
+    return True
 
 
 @csrf_exempt
@@ -84,22 +92,22 @@ def submission(request):
 
     request_user = request.user
     submission_file = request.FILES.get("xml_submission_file").read()
+    manager = get_database_manager(request_user)
 
-    if not __authorized_to_make_submission_on_requested_form(request_user, submission_file) \
+    if not __authorized_to_make_submission_on_requested_form(request_user, submission_file, manager) \
         or is_quota_reached(request):
         response = HttpResponse(status=403)
         return response
 
-    manager = get_database_manager(request_user)
     player = XFormPlayerV2(manager, get_feeds_database(request_user))
     try:
         user_profile = NGOUserProfile.objects.get(user=request_user)
         mangrove_request = Request(message=submission_file,
-            transportInfo=
-            TransportInfo(transport=SMART_PHONE,
-                source=request_user.email,
-                destination=''
-            ))
+                                   transportInfo=
+                                   TransportInfo(transport=SMART_PHONE,
+                                                 source=request_user.email,
+                                                 destination=''
+                                   ))
 
         response = player.add_survey_response(mangrove_request, user_profile.reporter_id ,logger=sp_submission_logger)
         mail_feed_errors(response, manager.database_name)
