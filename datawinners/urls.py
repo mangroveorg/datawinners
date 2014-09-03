@@ -32,5 +32,6 @@ urlpatterns = patterns('',
                        (r'', include('datawinners.smsapi.urls')),
                        (r'', include('datawinners.blue.urls')),
                        (r'', include('datawinners.dcs_app.urls')),
+                       url(r'^admin-apis/', include('datawinners.admin_apis.urls')),
                        url(r'^admin/', include(admin.site.urls)),
 )

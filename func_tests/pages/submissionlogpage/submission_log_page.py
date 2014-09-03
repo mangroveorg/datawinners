@@ -4,6 +4,8 @@ import time
 
 from pages.page import Page
 from framework.utils.data_fetcher import *
+from pages.projectdatasenderspage.project_data_senders_page import ProjectDataSendersPage
+from pages.projectoverviewpage.project_overview_locator import DATASENDERS_TAB
 from pages.submissionlogpage.submission_log_locator import *
 from tests.submissionlogtests.submission_log_data import UNIQUE_VALUE
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -26,6 +28,11 @@ class SubmissionLogPage(Page):
                         DAILY_DATE_RANGE: DAILY_DATE_RANGE_LABEL,
                         MONTHLY_DATE_RANGE: MONTHLY_DATE_RANGE_LABEL,
                         ALL_PERIODS:ALL_PERIODS_LABEL}
+
+    def get_number_of_columns(self, row):
+        row = row + 1 #to ignore hidden row for select all msg
+        columns = self.driver.find_elements_(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td" % row))
+        return len(columns)
 
     def get_submission_message(self, sms_data):
         """
@@ -74,9 +81,11 @@ class SubmissionLogPage(Page):
             index += 1
         return column_data
 
-    def get_all_data_on_nth_row(self, row, header_count):
+    def get_all_data_on_nth_row(self, row, header_count=None):
         row_data = []
         time.sleep(2)
+        if not header_count:
+            header_count = self.get_number_of_columns(row)
         for col in range(2, header_count + 1):
             row_data.append(self.get_cell_value(row, col))
         return row_data
@@ -170,4 +179,6 @@ class SubmissionLogPage(Page):
             time.sleep(1)
             button.click()
 
-
+    def navigate_to_datasenders_page(self):
+        self.driver.find(DATASENDERS_TAB).click()
+        return ProjectDataSendersPage(self.driver)

@@ -180,6 +180,7 @@ INSTALLED_APPS = (
     'datawinners.submission',
     'datawinners.xforms',
     'datawinners.dataextraction',
+    'datawinners.admin_apis',
     'django_extensions',
     'django.contrib.flatpages',
     'south',

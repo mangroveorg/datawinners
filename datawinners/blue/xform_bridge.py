@@ -370,14 +370,14 @@ class MangroveService():
                                              xform=self.xform_with_form_code)
 
         if not questionnaire.is_project_name_unique():
-            return None
+            return None,None
 
         associate_account_users_to_project(self.manager, questionnaire)
         questionnaire.update_doc_and_save()
         questionnaire.add_attachments(self.xls_form, 'questionnaire.xls')
         # UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
         # detail=questionnaire.name)
-        return questionnaire.id
+        return questionnaire.id,questionnaire.form_code
 
 
 class XFormSubmissionProcessor():

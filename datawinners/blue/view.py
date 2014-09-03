@@ -73,8 +73,9 @@ class ProjectUpload(View):
             tmp_file.seek(0)
 
             manager = get_database_manager(request.user)
-            questionnaire_code = generate_questionnaire_code(manager)
+            #questionnaire_code = generate_questionnaire_code(manager)
             project_name = request.GET['pname']
+            questionnaire_code = request.GET['form_code']
 
             errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name).parse()
             if errors:
@@ -86,7 +87,7 @@ class ProjectUpload(View):
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
                                                questionnaire_code=questionnaire_code, project_name=project_name,
                                                xls_form=tmp_file)
-            questionnaire_id = mangrove_service.create_project()
+            questionnaire_id,form_code = mangrove_service.create_project()
 
         except (PyXFormError, QuestionAlreadyExistsException) as e:
             return HttpResponse(content_type='application/json', content=json.dumps({
@@ -120,6 +121,7 @@ class ProjectUpload(View):
                     "success": True,
                     "project_name": project_name,
                     "project_id": questionnaire_id,
+                    "form_code":form_code
                     # "xls_dict": XlsProjectParser().parse(file_content)
                 }),
             content_type='application/json')
@@ -339,6 +341,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 
 
 @csrf_exempt
+@is_datasender_allowed
 def new_xform_submission_post(request):
     try:
         send_to_carbon(create_path('submissions.web.advanced'), 1)

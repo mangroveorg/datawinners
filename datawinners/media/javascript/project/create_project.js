@@ -172,7 +172,7 @@ $(document).ready(function () {
         postUrl: function(){
            return '/xlsform/upload/';
         },
-        params : function(){return {'pname':questionnaireViewModel.projectName()};},
+        params : function(){return {'pname':questionnaireViewModel.projectName(),'form_code':questionnaireViewModel.questionnaireCode()};},
         preUploadValidation: function(){
             var questionnaireName = questionnaireViewModel.projectName;
             DW.ko.mandatoryValidator(questionnaireName);

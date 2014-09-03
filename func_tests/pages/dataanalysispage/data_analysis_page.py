@@ -13,11 +13,6 @@ class DataAnalysisPage(SubmissionLogPage):
     def __init__(self, driver):
         super(DataAnalysisPage, self).__init__(driver)
 
-    def get_number_of_columns(self, row):
-        row = row + 1 #to ignore hidden row for select all msg
-        columns = self.driver.find_elements_(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td" % row))
-        return len(columns)
-
     def get_all_data_on_nth_row(self, row):
         row_data = []
         time.sleep(2)
