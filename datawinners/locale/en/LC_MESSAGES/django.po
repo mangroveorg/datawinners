@@ -4664,8 +4664,11 @@ msgstr "Preloading of CSV data (the PullData() function)."
 msgid "(%s) as a datatype"
 msgstr "(%s) as a datatype"
 
-msgid "select all that apply or specify other"
-msgstr "\"or_other\" function for multiple choice questions"
+msgid "select all that apply or specify other as a datatype"
+msgstr "\"or_other\" function for single or multiple choice questions"
+
+msgid "select one or specify other as a datatype"
+msgstr "\"or_other\" function for single or multiple choice questions"
 
 msgid "instead."
 msgstr "instead."
