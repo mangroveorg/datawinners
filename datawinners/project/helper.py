@@ -119,6 +119,7 @@ def _update_survey_responses(manager, questionnaire, void):
 
 def delete_project(questionnaire):
     [reminder.delete() for reminder in (Reminder.objects.filter(project_id=questionnaire.id))]
+    questionnaire.reset_reminder_and_deadline()
     questionnaire.void(True)
 
 def get_activity_report_questions(dbm):

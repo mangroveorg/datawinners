@@ -150,6 +150,11 @@ class ReminderLog(DataObject):
         return (' '.join(value.split('_'))).title()
 
 
+default_reminder_and_deadline = {"deadline_type": "Following", "should_send_reminder_to_all_ds": False,
+                                 "has_deadline": True,
+                                 "deadline_month": "5", "frequency_period": "month"}
+
+
 class Project(FormModel):
     __document_class__ = ProjectDocument
 
@@ -170,11 +175,7 @@ class Project(FormModel):
             self._doc.goals = goals
             self._doc.devices = devices
             self._doc.sender_group = sender_group
-            self._doc.reminder_and_deadline = {"deadline_type": "Following",
-                                               "should_send_reminder_to_all_ds": False,
-                                               "has_deadline": True,
-                                               "deadline_month": "5",
-                                               "frequency_period": "month"}
+            self._doc.reminder_and_deadline = default_reminder_and_deadline
 
     @classmethod
     def from_form_model(cls, form_model):
@@ -216,6 +217,9 @@ class Project(FormModel):
     @reminder_and_deadline.setter
     def reminder_and_deadline(self, value):
         self._doc.reminder_and_deadline = value
+
+    def reset_reminder_and_deadline(self):
+        self.reminder_and_deadline = default_reminder_and_deadline
 
     def get_data_senders(self, dbm):
         all_data, fields, label = load_data_senders(dbm, self.data_senders)
@@ -289,9 +293,9 @@ class Project(FormModel):
         for key in value_dict:
             if key in attribute_list:
                 # if key == 'name':
-                #     setattr(self._doc, key, value_dict.get(key))
+                # setattr(self._doc, key, value_dict.get(key))
                 # else:
-                    setattr(self._doc, key, value_dict.get(key))
+                setattr(self._doc, key, value_dict.get(key))
 
     def set_void(self, void=True):
         self._doc.void = void
@@ -316,7 +320,8 @@ class Project(FormModel):
 
 def get_all_projects(dbm, data_sender_id=None):
     if data_sender_id:
-        rows = dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id, include_docs=True)
+        rows = dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id,
+                                         include_docs=True)
         for row in rows:
             row.update({'value': row["doc"]})
         return rows
@@ -329,7 +334,8 @@ def get_all_projects_for_datasender(dbm, data_sender_id):
 
 
 def get_simple_project_names(dbm):
-    return [{'name': result['value']["name"], 'id': result['value']["id"]} for result in dbm.load_all_rows_in_view("simple_project_names")]
+    return [{'name': result['value']["name"], 'id': result['value']["id"]} for result in
+            dbm.load_all_rows_in_view("simple_project_names")]
 
 
 def count_projects(dbm, include_voided_projects=True):
