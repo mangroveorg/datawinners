@@ -39,8 +39,9 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
 
         self._verify_questionnaire_creation(form_code, project_name)
-        form, web_submission_page = self._verify_web_submission_page_is_loaded(project_name)
-        self._do_web_submission(form, form_code)
+        form_element, web_submission_page = self._verify_web_submission_page_is_loaded(project_name)
+        project_temp_name = form_element.get_attribute('id')
+        self._do_web_submission(project_temp_name, form_code)
         self._verify_submission_log_page(web_submission_page)
         self._register_datasender()
 
@@ -48,6 +49,9 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         datasender_page = DataSenderPage(self.driver)
         datasender_page.send_in_data()
+        self._verify_advanced_web_submission_page_is_loaded()
+
+
 
     def _activate_datasender(self, email):
         r = self.client.post(path='/admin-apis/datasender/generate_token/', data={'ds_email': email})
@@ -57,15 +61,18 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         activation_page.type_same_password(NEW_PASSWORD)
         activation_page.click_submit()
 
+    def _verify_advanced_web_submission_page_is_loaded(self):
+        form_element = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("form"), True)
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".ajax-loader"))
+        return form_element
+
     def _verify_web_submission_page_is_loaded(self, project_name):
         all_data_page = self.global_navigation_page.navigate_to_all_data_page()
         web_submission_page = all_data_page.navigate_to_web_submission_page(project_name)
-        form = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("form"), True)
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".ajax-loader"))
-        return form, web_submission_page
+        form_element = self._verify_advanced_web_submission_page_is_loaded()
+        return form_element, web_submission_page
 
-    def _do_web_submission(self, form, form_code):
-        project_temp_name = form.get_attribute('id')
+    def _do_web_submission(self, project_temp_name, form_code):
         submission_data = open(os.path.join(self.test_data, 'submission_data.xml'), 'r').read()
         submission_data = re.sub("tmpW3OW1B", project_temp_name, submission_data)
         submission_data = re.sub("<form_code>010", "<form_code>" + form_code, submission_data)
