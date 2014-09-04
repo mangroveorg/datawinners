@@ -32,7 +32,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
         self.client = Client()
 
-    @attr('smoke')
+    @attr('functional_test')
     def test_should_create_project_when_xlsform_is_uploaded(self):
         project_name = random_string()
         form_code = project_name[0:3]
