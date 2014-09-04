@@ -341,7 +341,6 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 
 
 @csrf_exempt
-@is_datasender_allowed
 def new_xform_submission_post(request):
     try:
         send_to_carbon(create_path('submissions.web.advanced'), 1)
