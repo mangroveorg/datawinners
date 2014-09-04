@@ -52,7 +52,7 @@ class ProjectDataSendersPage(Page):
 
     def perform_datasender_action(self, action_to_be_performed):
         self.driver.find(ACTION_DROP_DOWN).click()
-        option = self.driver.find_visible_element(by_id(action_to_be_performed))
+        option = self.driver.find_visible_element(by_css(".%s" % action_to_be_performed))
         option.click()
 
     def give_web_access(self, email_id):

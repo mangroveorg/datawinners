@@ -10,9 +10,9 @@ from tests.endtoendtest.end_to_end_tests import add_trial_organization_and_login
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.projects.questionnairetests.project_questionnaire_data import COPY_PROJECT_DATA
 from tests.registrationtests.registration_data import REGISTRATION_PASSWORD
+from testdata.constants import *
 from tests.remindertests.reminder_data import *
 from framework.utils.data_fetcher import fetch_, from_
-from testdata.constants import *
 
 
 class TestReminderSend(HeadlessRunnerTest):
