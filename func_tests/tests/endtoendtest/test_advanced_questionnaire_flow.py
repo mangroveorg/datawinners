@@ -65,7 +65,8 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         text_answer_locator = by_css('input[name="/'+project_temp_name+'/text_widgets/my_string"]')
         advanced_web_submission_page = AdvancedWebSubmissionPage(self.driver).update_text_input(text_answer_locator, '-edited').submit()
 
-        data = advanced_web_submission_page.navigate_to_submission_log().get_all_data_on_nth_row(1)
+        data = advanced_web_submission_page.navigate_to_submission_log().wait_for_table_data_to_load()\
+                .get_all_data_on_nth_row(1)
 
         EDITED_SUBMISSION_DATA = 'a Mickey Duck '+ datasender_rep_id + " " + regex_date_match + ' Success name-edited multiline text 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option a,option b option 8 option 5 Don\'t Know option 8 agree option d option a,option b,option c,option d option d   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy United States New York City Harlem The Netherlands Rotterdam Downtown 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60";'
         self.assertRegexpMatches(" ".join(data), EDITED_SUBMISSION_DATA)

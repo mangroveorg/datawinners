@@ -122,6 +122,7 @@ class SubmissionLogPage(Page):
 
     def wait_for_table_data_to_load(self):
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".dataTables_processing"))
+        return self
 
     def search(self, search_text):
         self.driver.find_text_box(by_css("#search_text")).enter_text(search_text)

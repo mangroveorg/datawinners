@@ -115,7 +115,7 @@
         <a href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Analysis" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.submission_log_link }}"
+        <a id="submission_log_link" href="{{ project_links.submission_log_link }}"
            class="{{ disable_link_class }}">{% trans "Submission Log" %}</a>
     </li>
     {% if project_links.test_questionnaire_link != "" %}

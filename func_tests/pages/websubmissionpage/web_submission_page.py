@@ -86,7 +86,7 @@ class WebSubmissionPage(Page):
         return labels, instructions
 
     def navigate_to_submission_log(self):
-        self.driver.find_elements_by_css_selector('.secondary_tab .inactive>a')[1].click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id('submission_log_link'), True).click()
         return SubmissionLogPage(self.driver)
 
     def get_text_value(self, qcode):
