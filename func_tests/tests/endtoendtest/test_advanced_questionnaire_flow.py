@@ -59,14 +59,19 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
         submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(project_name)
         self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
+        submission_log_page.search(datasender_rep_id)
 
         submission_log_page.check_submission_by_row_number(1).click_action_button().choose_on_dropdown_action(EDIT_BUTTON)
         self._verify_advanced_web_submission_page_is_loaded()
         text_answer_locator = by_css('input[name="/'+project_temp_name+'/text_widgets/my_string"]')
         advanced_web_submission_page = AdvancedWebSubmissionPage(self.driver).update_text_input(text_answer_locator, '-edited').submit()
 
-        data = advanced_web_submission_page.navigate_to_submission_log().wait_for_table_data_to_load()\
-                .get_all_data_on_nth_row(1)
+        submission_log_page = advanced_web_submission_page.navigate_to_submission_log().wait_for_table_data_to_load()
+
+        self.assertEqual(submission_log_page.get_total_number_of_rows(), 3) # 2 rows + 1 hidden row for select all
+        submission_log_page.search(datasender_rep_id)
+
+        data = submission_log_page.get_all_data_on_nth_row(1)
 
         EDITED_SUBMISSION_DATA = 'a Mickey Duck '+ datasender_rep_id + " " + regex_date_match + ' Success name-edited multiline text 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option a,option b option 8 option 5 Don\'t Know option 8 agree option d option a,option b,option c,option d option d   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy United States New York City Harlem The Netherlands Rotterdam Downtown 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60";'
         self.assertRegexpMatches(" ".join(data), EDITED_SUBMISSION_DATA)
