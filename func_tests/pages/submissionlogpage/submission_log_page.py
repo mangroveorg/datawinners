@@ -99,6 +99,7 @@ class SubmissionLogPage(Page):
     def click_action_button(self):
         buttons = self.driver.find(by_css("#submission_logs")).find_elements(by="css selector", value="button.action")
         buttons[1].click()
+        return self
 
     def is_none_selected_shown(self):
         return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()
@@ -108,6 +109,7 @@ class SubmissionLogPage(Page):
 
     def check_submission_by_row_number(self, row_number):
         self.driver.find(by_css(SUBMISSION_CB_LOCATOR % str(row_number+1))).click()
+        return self
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_CB_CSS_LOCATOR).get_attribute("checked") == "true"
