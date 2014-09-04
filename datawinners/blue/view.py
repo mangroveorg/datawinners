@@ -236,7 +236,7 @@ def upload_project(request):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
-def new_xform_submission_get(request, project_id=None):
+def new_xform_submission_get(request, project_id):
     survey_request = SurveyWebXformQuestionnaireRequest(request, project_id, XFormSubmissionProcessor())
     if request.method == 'GET':
         return survey_request.response_for_get_request()
@@ -344,7 +344,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 def new_xform_submission_post(request):
     try:
         send_to_carbon(create_path('submissions.web.advanced'), 1)
-        response = XFormWebSubmissionHandler(request.user, request=request).create_new_submission_response()
+        response = XFormWebSubmissionHandler(request=request).create_new_submission_response()
         response['Location'] = request.build_absolute_uri(request.path)
         return response
     except ExceedSubmissionLimitException as e:
@@ -359,7 +359,7 @@ def new_xform_submission_post(request):
 def edit_xform_submission_post(request, survey_response_id):
     try:
         send_to_carbon(create_path('submissions.web.advanced'), 1)
-        return XFormWebSubmissionHandler(request.user, request=request). \
+        return XFormWebSubmissionHandler(request=request). \
             update_submission_response(survey_response_id)
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)

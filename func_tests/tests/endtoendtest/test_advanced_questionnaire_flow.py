@@ -69,7 +69,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         submission_data = open(os.path.join(self.test_data, 'submission_data.xml'), 'r').read()
         submission_data = re.sub("tmpW3OW1B", project_temp_name, submission_data)
         submission_data = re.sub("<form_code>010", "<form_code>" + form_code, submission_data)
-        r = self.client.post(path='/xlsform/web_submission/', data={'form_data': submission_data})
+        r = self.client.post(path='/xlsform/web_submission/', data={'form_data': submission_data, 'form_code': form_code})
         self.assertEquals(r.status_code, 201)
         self.assertNotEqual(r._container[0].find('submission_uuid'), -1)
 

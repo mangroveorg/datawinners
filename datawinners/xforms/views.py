@@ -66,16 +66,21 @@ def get_errors(errors):
     return '\n'.join(['{0} : {1}'.format(key, val) for key, val in errors.items()])
 
 
-def __authorized_to_make_submission_on_requested_form(request_user, submission_file, dbm):
+def is_authorized_for_questionnaire(dbm, request_user, form_code):
     try:
-        dom = xml.dom.minidom.parseString(submission_file)
-        requested_form_code = dom.getElementsByTagName('form_code')[0].firstChild.data
-        questionnaire = get_form_model_by_code(dbm,requested_form_code)
-        if questionnaire.void or request_user.reporter_id not in questionnaire.data_senders:
+        questionnaire = get_form_model_by_code(dbm, form_code)
+        if questionnaire.is_void() or request_user.get_profile().reporter_id not in questionnaire.data_senders:
             return False
     except FormModelDoesNotExistsException as e:
         return False
     return True
+
+
+def __authorized_to_make_submission_on_requested_form(request_user, submission_file, dbm):
+    dom = xml.dom.minidom.parseString(submission_file)
+    requested_form_code = dom.getElementsByTagName('form_code')[0].firstChild.data
+
+    return is_authorized_for_questionnaire(dbm, request_user, requested_form_code)
 
 
 @csrf_exempt

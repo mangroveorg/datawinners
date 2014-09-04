@@ -8,7 +8,7 @@ from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.messageprovider.messages import WEB
 from datawinners.submission.views import check_quotas_and_update_users, check_quotas_for_trial
-from datawinners.xforms.views import sp_submission_logger, logger, get_errors
+from datawinners.xforms.views import sp_submission_logger, logger, get_errors, is_authorized_for_questionnaire
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
@@ -17,10 +17,10 @@ from mangrove.utils.dates import py_datetime_to_js_datestring
 
 class XFormWebSubmissionHandler():
 
-    def __init__(self, request_user, request):
+    def __init__(self, request):
         self.request = request
-        self.manager = get_database_manager(request_user)
-        self.request_user = request_user
+        self.request_user = request.user
+        self.manager = get_database_manager(self.request_user)
         self.player = XFormPlayerV2(self.manager, get_feeds_database(self.request_user))
         self.xml_submission_file = request.POST['form_data']
         self.media_file = {}
@@ -37,13 +37,21 @@ class XFormWebSubmissionHandler():
         self.organization = Organization.objects.get(org_id=self.user_profile.org_id)
 
     def create_new_submission_response(self):
+
+        if not is_authorized_for_questionnaire(self.manager, self.request_user, self.request.POST['form_code']):
+            return HttpResponse(status=403)
+
         if self.organization.in_trial_mode:
             check_quotas_for_trial(self.organization)
 
-        player_response = self.player.add_survey_response(self.mangrove_request, self.user_profile.reporter_id ,logger=sp_submission_logger)
+        player_response = self.player.add_survey_response(self.mangrove_request, self.user_profile.reporter_id, logger=sp_submission_logger)
         return self._post_save(player_response)
 
     def update_submission_response(self, survey_response_id):
+
+        if not is_authorized_for_questionnaire(self.manager, self.request_user, self.request.POST['form_code']):
+            return HttpResponse(status=403)
+
         survey_response = get_survey_response_by_id(self.manager, survey_response_id)
         if not survey_response:
             raise LookupError()
