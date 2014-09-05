@@ -1,4 +1,4 @@
-function initializeDialogWithAccordion(dialogSection, options){
+function AccordionDialog(dialogSection, options){
         dialogSection.dialog({
                 autoOpen: false,
                 width: 940,

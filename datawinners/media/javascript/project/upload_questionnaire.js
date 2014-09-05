@@ -101,14 +101,13 @@ DW.UploadQuestionnaire.prototype._init = function(options){
 DW.XLSHelpSection = function(){
     this.init = function () {
         var options = {
-            title:"Learn More About How To Create Questionnaires With Advanced Features"
+            title: "Learn More About How To Create Questionnaires With Advanced Features"
         };
         var dialogSection = $("#xls_learn_more_form");
-        initializeDialogWithAccordion(dialogSection, options);
+        AccordionDialog(dialogSection, options);
         $("#xls_learn_more").on('click', function () {
             dialogSection.removeClass("none");
             dialogSection.dialog("open");
-//                dialogSection.parent(".ui-dialog")[0].scrollIntoView();
         });
     }
 };

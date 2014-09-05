@@ -232,8 +232,8 @@ div.margin_top_20 input {
   z-index: 1002;
   left: 0px;
   box-shadow: 3px 3px 5px gray, -3px 3px 5px gray;
-  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f2f2f2));
-  background: -moz-linear-gradient(top, white, #f2f2f2);
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#F2F2F2));
+  background: -moz-linear-gradient(top, white, #F2F2F2);
   border: 1px solid #CCBF97;
   padding-bottom: 30px; }
   #container_content #questionnaire_preview_instruction .close_preview {
@@ -361,7 +361,6 @@ div.margin_top_20 input {
   src: url("/media/css/font/architectsdaughter-webfont.eot?#iefix") format("embedded-opentype"), url("/media/css/font/architectsdaughter-webfont.woff") format("woff"), url("/media/css/font/architectsdaughter-webfont.ttf") format("truetype"), url("/media/css/font/architectsdaughter-webfont.svg#architects_daughterregular") format("svg");
   font-weight: normal;
   font-style: normal; }
-
 .validationText {
   color: #FFFFFF;
   background: #c20303;
@@ -463,3 +462,22 @@ div.margin_top_20 input {
 .xls_errors {
   list-style-type: disc;
   margin-left: 25px; }
+
+#xls_learn_more_form ul {
+  margin-left: 17px; }
+#xls_learn_more_form ol {
+  margin-left: 19px; }
+#xls_learn_more_form ul li {
+  list-style-type: disc; }
+#xls_learn_more_form #step1_section {
+  height: 417px !important; }
+#xls_learn_more_form #step2_section {
+  height: 323px !important; }
+#xls_learn_more_form #step3_section {
+  height: 391px !important; }
+#xls_learn_more_form #step4_section {
+  height: 479px !important; }
+#xls_learn_more_form #step5_section {
+  height: 552px !important; }
+
+/*# sourceMappingURL=section_questionnaire.css.map */
