@@ -31,6 +31,7 @@
         </script>
         <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
         <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
+        <script type="text/javascript" src="/media/javascript/dialog_with_accordion.js"></script>
         <script type="text/javascript" src="/media/javascript/project/upload_questionnaire.js"></script>
         <script type="text/javascript" src="/media/javascript/project/edit_project_index.js"></script>
 
@@ -74,7 +75,9 @@
     </form>
     <h5>{% trans "Edit Questionnaire" %}</h5>
     <div class="help_accordion">{% trans "Upload a new XLSForm (Excel file) to replace the current Questionnaire" %}</div>
-    <div class="help_accordion margin_bottom_20">{% trans "Need help and support on how to edit an XLSForm?" %} &emsp; <a>{% trans "Learn More" %}</a> | <a>{% trans "Sample Forms" %}</a></div>
+    <div class="help_accordion margin_bottom_20">{% trans "Need help and support on how to edit an XLSForm?" %} &emsp;
+        <a id="xls_learn_more" href="javascript:void(0);">{% trans "Learn More" %}</a> | <a>{% trans "Sample Forms" %}</a></div>
+        {% include "project/xls_learn_more.html" %}
     <div>
         <noscript>
             <p>{% trans "Please enable JavaScript to use file uploader." %}</p>

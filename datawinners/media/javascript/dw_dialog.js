@@ -71,5 +71,4 @@ DW.Dialog = function (options) {
             }
         });
     };
-
-}
+};

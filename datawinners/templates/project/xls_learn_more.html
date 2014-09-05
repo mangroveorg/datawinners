@@ -1,0 +1,51 @@
+{% load i18n %}
+
+<div id="xls_learn_more_form" class="none">
+    <div class="learn_more_text">
+        {% trans "Use XLSForms to create a Questionnaire with advanced features (such as skip logic), then upload the XLSForm to your DataWinners account" %}
+    </div>
+    <hr>
+    <div class="learn_more_accordion">
+
+        <div class="learn_more_header">
+            <div class="learn_more_header_text">{% trans "Step 1. Create an XLSForm" %}</div>
+        </div>
+        <div class="learn_more_image">
+            <img src="/media/images/Step_1_Webform_{{ active_language }}.png"/>
+        </div>
+
+
+        <div class="learn_more_header">
+            <div class="learn_more_header_text">{% trans "Step 2. Upload an XLSForm to your DataWinners account" %}</div>
+        </div>
+        <div class="learn_more_image">
+            <img src="/media/images/Step_2_Questionnaire_{{ active_language }}.png"/>
+        </div>
+
+
+        <div class="learn_more_header">
+            <div class="learn_more_header_text">{% trans "Step 3. Test your Questionnaire" %}</div>
+        </div>
+        <div class="learn_more_image">
+            <img src="/media/images/Step_3_Analysis_{{ active_language }}.png"/>
+        </div>
+        <div class="learn_more_header">
+            <div class="learn_more_header_text">{% trans "Step 4. Edit your Questionnaire" %}</div>
+        </div>
+
+        <div class="learn_more_image">
+            <img src="/media/images/Step_4_{{ active_language }}.png"/>
+        </div>
+        <div class="learn_more_header">
+            <div class="learn_more_header_text">{% trans "Step 5. Export your Data" %}</div>
+        </div>
+        <div class="analysis_image">
+            {% trans "Data Senders must use Identification Numbers that are already registered in Datawinners." %}
+            <img src="/media/images/Step_5_{{ active_language }}.png"/>
+        </div>
+
+    </div>
+    <div class="gotitbutton">
+        <a class="button yes_button" id="close_unique_id_learn_more_section">{% trans "OK, Got it" %}</a>
+    </div>
+</div>

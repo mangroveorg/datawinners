@@ -21,7 +21,11 @@
                     <div id="file_uploader" class="button upload_xls"></div>
                 </div>
                 <label>{% trans "XLSForm" %}</label>
-                <span class="help_accordion margin_bottom_20 margin_top_10">{% trans "Need help and support on how to create a XLSForm and advanced Questionnaire logic?" %}</span> <a>{% trans "Learn More" %}</a> | <a>{% trans "Sample Forms" %}</a>
+                <div>
+                    <span class="help_accordion margin_bottom_20 margin_top_10">{% trans "Need help and support on how to create a XLSForm and advanced Questionnaire logic?" %}</span>
+                    <a id="xls_learn_more" href="javascript:void(0);">{% trans "Learn More" %}</a> | <a>{% trans "Sample Forms" %}</a>
+                    {% include "project/xls_learn_more.html" %}
+                </div>
                 <button id="uploadXLS" class="margin_bottom_20">{% trans "Upload an XLSForm to Create a Questionnaire" %}</button>
                 <a id="cancel-xlx-upload" class="none" href="javascript:void(0);">{% trans "Cancel Upload" %}</a>
                 <img class="upload_spinner none" src="/media/images/ajax-loader.gif">
