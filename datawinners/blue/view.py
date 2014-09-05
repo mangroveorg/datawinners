@@ -95,7 +95,7 @@ class ProjectUpload(View):
         except (PyXFormError, QuestionAlreadyExistsException) as e:
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': [e.message if e.message else ugettext("Errors in excel")]
+                'error_msg': [e.message if e.message else ugettext("all XLSForm features. Please check the list of unsupported features.")]
             }))
 
         except Exception as e:
@@ -117,7 +117,7 @@ class ProjectUpload(View):
                 {
                     'success': False,
                     'duplicate_project_name': True,
-                    'error_msg': [ugettext("Questionnaire with same name already exists.")]}
+                    'error_msg': [ugettext("Questionnaire with same name already exists.Upload was cancelled.")]}
             ), content_type='application/json')
 
         return HttpResponse(

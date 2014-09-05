@@ -4780,6 +4780,9 @@ msgstr "Modifier le nom"
 msgid "Questionnaire with same name already exists."
 msgstr "Un Questionnaire portant le même nom existe déjà."
 
+msgid "Questionnaire with same name already exists.Upload was cancelled."
+msgstr "Un Questionnaire portant le même nom existe déjà.Le téléchargement a été annulé"
+
 msgid "My Identification Numbers"
 msgstr "Mes Numéros d'identification"
 
@@ -5284,3 +5287,7 @@ msgstr "Désolé ! La version actuelle de DataWinners ne prend pas en charge"
 
 msgid "Update your XLSForm and upload again."
 msgstr "Mettez à jour votre formulaire XLS et téléchargez une nouvelle fois."
+
+msgid "all XLSForm features. Please check the list of unsupported features."
+msgstr "Toutes les fonctionnalités XLSForm. Veuillez vérifier la liste des fonctionnalités non prises en charge"
+
