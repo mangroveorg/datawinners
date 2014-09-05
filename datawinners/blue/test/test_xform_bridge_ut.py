@@ -162,7 +162,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"Preloading of CSV data (the PullData() function)."})
+            self.assertEquals(actual_errors, {"preloading of CSV data (the PullData() function)."})
 
     def test_should_populate_error_when_settings_sheet_present_with_form_title(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -378,7 +378,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"XLSForm media type (audio)."})
+            self.assertEquals(actual_errors, {"XLSForm media type (audio) in survey sheet."})
 
 
     def test_should_populate_error_when_choice_answer_has_media_present(self):
