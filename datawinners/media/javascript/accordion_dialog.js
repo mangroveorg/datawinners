@@ -1,5 +1,6 @@
-function AccordionDialog(dialogSection, options){
-        dialogSection.dialog({
+DW.AccordionDialog = function(options){
+        var dialogElement = $(options.dialogElementSelector);
+        var dialog = dialogElement.dialog({
                 autoOpen: false,
                 width: 940,
                 modal: true,
@@ -13,9 +14,7 @@ function AccordionDialog(dialogSection, options){
                     $(".learn_more_accordion").accordion( "destroy" );
                 }
         });
-        dialogSection.off('click', '#close_unique_id_learn_more_section', _closeDialogHandler);
-        dialogSection.on('click', '#close_unique_id_learn_more_section', _closeDialogHandler);
-}
-function _closeDialogHandler(){
-        $("#xls_learn_more_form").dialog('close');
-}
+        dialogElement.on('click', '#close_accordion_link', function(){
+            dialog.dialog('close');
+        });
+};

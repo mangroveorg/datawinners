@@ -146,7 +146,7 @@ $(document).ready(function () {
     new DW.UniqueIdHelpSection().init();
     DW.init_delete_periodicity_question_warning();
     DW.init_empty_questionnaire_warning();
-    new DW.XLSHelpSection().init();
+    new DW.XLSHelpSection();
     var options = {
                     successCallBack: _save_questionnaire,
                     isQuestionnaireModified: function(){

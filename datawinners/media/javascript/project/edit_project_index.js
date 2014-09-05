@@ -1,6 +1,6 @@
 $(function () {
 
-    new DW.XLSHelpSection().init();
+    new DW.XLSHelpSection();
     new DW.UploadQuestionnaire({
         buttonText: "Upload New XLSForm",
         postUrl: function(){

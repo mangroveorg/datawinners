@@ -98,16 +98,16 @@ DW.UploadQuestionnaire.prototype._init = function(options){
         return false;
     });
 };
+
 DW.XLSHelpSection = function(){
-    this.init = function () {
-        var options = {
-            title: "Learn More About How To Create Questionnaires With Advanced Features"
-        };
-        var dialogSection = $("#xls_learn_more_form");
-        AccordionDialog(dialogSection, options);
-        $("#xls_learn_more").on('click', function () {
-            dialogSection.removeClass("none");
-            dialogSection.dialog("open");
-        });
-    }
+    var options = {
+        dialogElementSelector: "#xls_learn_more_form",
+        title: "Learn More About How To Create Questionnaires With Advanced Features"
+    };
+    var dialogSection = $("#xls_learn_more_form");
+    DW.AccordionDialog(options);
+    $("#xls_learn_more").on('click', function () {
+        dialogSection.removeClass("none");
+        dialogSection.dialog("open");
+    });
 };
