@@ -1328,12 +1328,6 @@ msgstr "Annuler les Modifications"
 msgid "DataWinners Administrators Will Not Be Removed"
 msgstr "Les Administrateurs de DataWinners ne seront pas retirés"
 
-msgid "Sorry! Current version of DataWinners does not support"
-msgstr "Désolé ! La version actuelle de DataWinners ne prend pas en charge"
-
-msgid "Update your XLSForm and upload again."
-msgstr "Mettez à jour votre formulaire XLS et téléchargez une nouvelle fois. "
-
 msgid "Submission Exceeds Number of Supported Columns."
 msgstr "Le Nombre de Colonnes dans votre Soumission dépasse le Nombre de Colonnes autorisées."
 

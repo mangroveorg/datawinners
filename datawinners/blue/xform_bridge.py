@@ -166,10 +166,9 @@ class XlsFormParser():
                 name_list = [choice['name'] for choice in choices]
                 name_list_without_duplicates = list(set(name_list))
                 if len(name_list) != len(name_list_without_duplicates):
-                    errors.append("All choice codes must be unique")
+                    errors.append(_("duplicate names within one list (choices sheet)"))
                 if filter(lambda name: " " in unicode(name), name_list):
-                    errors.append("Invalid choice name. Names must begin with a letter, colon, or underscore."
-                                  "Subsequent characters can include numbers, dashes, and periods.")
+                    errors.append(_("spaces in name column (choice sheet)"))
         return errors
 
     def parse(self):

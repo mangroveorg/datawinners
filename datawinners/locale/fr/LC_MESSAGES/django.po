@@ -5269,3 +5269,15 @@ msgstr "fichiers plus volumineux que 10Mo."
 
 msgid "Please upload an excel file"
 msgstr "Le fichier que vous essayez de télécharger n'est pas pris en charge. DataWinners prend en charge uniquement les fichiers .xls et .xlxs files."
+
+msgid "spaces in name column (choice sheet)"
+msgstr "Espaces dans la colonne name (feuille choices)"
+
+msgid "duplicate names within one list (choices sheet)"
+msgstr "Doublon au niveau des noms dans une seule liste (feuille choices)"
+
+msgid "Sorry! Current version of DataWinners does not support"
+msgstr "Désolé ! La version actuelle de DataWinners ne prend pas en charge"
+
+msgid "Update your XLSForm and upload again."
+msgstr "Mettez à jour votre formulaire XLS et téléchargez une nouvelle fois."
