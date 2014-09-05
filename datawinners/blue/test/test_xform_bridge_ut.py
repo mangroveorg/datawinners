@@ -141,8 +141,7 @@ class TestXformBridge(unittest.TestCase):
 
                 actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-                self.assertEquals(actual_errors, {"All choice codes must be unique","Invalid choice name. Names must begin with a letter, colon, or underscore."
-                              "Subsequent characters can include numbers, dashes, and periods."})
+                self.assertEquals(actual_errors, {"duplicate names within one list (choices sheet)","spaces in name column (choice sheet)"})
 
     def test_should_populate_error_when_calculate_field_with_prefetch_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
