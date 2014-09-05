@@ -106,7 +106,7 @@ DW.XLSHelpSection = function(){
     };
     var dialogSection = $("#xls_learn_more_form");
     DW.AccordionDialog(options);
-    $("#xls_learn_more").on('click', function () {
+    $(".xls_learn_more").on('click', function () {
         dialogSection.removeClass("none");
         dialogSection.dialog("open");
     });
