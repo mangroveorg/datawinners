@@ -2,16 +2,29 @@ DW.UploadQuestionnaire = function(options){
     var self = this;
     self._init(options);
 };
-DW.showError = function(errors){
-    var error_message_prefix = gettext("<br/>");
+DW.showError = function(errors,message_prefix,message_suffix){
+    var error_message_prefix = '';
+    var error_message_suffix = '';
+    var apply_class = '';
+
+    if(message_prefix){
+        error_message_prefix = message_prefix;
+        apply_class = 'xls_errors';
+    }
+    if(message_suffix){
+        error_message_suffix = message_suffix;
+        apply_class = 'xls_errors';
+    }
+
     var error_messages = "<ul>";
+
     $.each(errors, function(index, error){
-       error_messages += "<li class='xls_errors'>" + error + "</li>";
+       error_messages += "<li class='"+ apply_class +"'>" + error + "</li>";
     });
     error_messages += "</ul>";
     var flash_message = $("#xlx-message");
     flash_message.removeClass("none").removeClass("success-message-box").addClass("message-box").
-        html("<span>" + gettext('Sorry! Current version of DataWinners does not support') + "</span>"+ error_messages +"<span>" + gettext('Update your XLSForm and upload again.') + "</span>").show();
+        html("<span>" + error_message_prefix + "</span>"+ error_messages +"<span>" + error_message_suffix + "</span>").show();
 };
 
 DW.showSuccess = function(message){

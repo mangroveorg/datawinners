@@ -189,7 +189,7 @@ $(document).ready(function () {
                 questionnaireViewModel.projectName.setError(responseJSON.error_msg[0]);
             }
             else{
-                DW.showError(responseJSON.error_msg);
+                DW.showError(responseJSON.error_msg,responseJSON.message_prefix,responseJSON.message_suffix);
             }
         }
     });

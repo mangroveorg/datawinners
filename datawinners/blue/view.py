@@ -81,7 +81,9 @@ class ProjectUpload(View):
             if errors:
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
-                    'error_msg': list(errors)
+                    'error_msg': list(errors),
+                    'message_prefix':_("Sorry! Current version of DataWinners does not support"),
+                    'message_suffix':_("Update your XLSForm and upload again.")
                 }))
             tmp_file.seek(0)
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
@@ -101,7 +103,9 @@ class ProjectUpload(View):
                                         additional_details={'file_contents': file_content})
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': [e.message if e.message else ugettext("Errors in excel")]
+                'error_msg': [e.message if e.message else ugettext("Errors in excel")],
+                'message_prefix':_("Sorry! Current version of DataWinners does not support"),
+                'message_suffix':_("Update your XLSForm and upload again.")
             }))
 
         finally:
