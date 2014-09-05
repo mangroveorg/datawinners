@@ -44,6 +44,7 @@ from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
     survey_responses_by_form_code
 from mangrove.utils.dates import py_datetime_to_js_datestring
+from django.utils.translation import ugettext as _
 
 
 logger = logging.getLogger("datawinners.xlsform")
@@ -425,10 +426,10 @@ def _perform_file_validations(request):
     if request.GET and request.GET.get("qqfile"):
         file_extension = os.path.splitext(request.GET["qqfile"])[1]
         if file_extension not in [".xls", ".xlsx"]:
-            errors.append("Please upload an excel file")
+            errors.append(_("Please upload an excel file"))
             return errors
 
     EXCEL_UPLOAD_FILE_SIZE = 10485760  # 10MB
     if request.META.get('CONTENT_LENGTH') and int(request.META.get('CONTENT_LENGTH')) > EXCEL_UPLOAD_FILE_SIZE:
-        errors.append("Please upload an excel file less than or equal to 10MB in size")
+        errors.append(_("larger files than 10MB."))
     return errors

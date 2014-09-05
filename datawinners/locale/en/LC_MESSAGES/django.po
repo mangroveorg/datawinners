@@ -4671,13 +4671,16 @@ msgid "photo"
 msgstr "image"
 
 msgid "select all that apply or specify other as a datatype"
-msgstr "\"or_other\" function for single or multiple choice questions"
+msgstr "XLSForm \"or_other\" function for multiple choice or single choice questions"
 
 msgid "select one or specify other as a datatype"
-msgstr "\"or_other\" function for single or multiple choice questions"
+msgstr "XLSForm \"or_other\" function for multiple choice or single choice questions"
 
 msgid "instead."
 msgstr "instead."
 
 msgid "Label mandatory for question with name [%s]"
 msgstr "optional labels. Label is a mandatory field for question with name [%s]"
+
+msgid "Please upload an excel file"
+msgstr "The file you are trying to uplaod is unsupported. DataWinners only support .xls and .xlxs files."

@@ -5154,7 +5154,10 @@ msgid "photo"
 msgstr "image"
 
 msgid "select all that apply or specify other"
-msgstr "\"autre\" fonctionnalité pour les questions à choix multiples "
+msgstr "Fonctionnalité \"or_other\" du XLSForm pour les"
+
+msgid "select one or specify other as a datatype"
+msgstr "Fonctionnalité \"or_other\" du XLSForm pour les"
 
 msgid "Prefetch of csv not supported"
 msgstr "préchargement des données CSV (fonction PullData())"
@@ -5163,7 +5166,7 @@ msgid "Cancel Upload"
 msgstr "Annuler le téléchargement"
 
 msgid "XLSForm settings worksheet and the related values in survey sheet."
-msgstr "la Feuille de paramétrage XLSForm et les valeurs y afférentes dans le survey d'enquête"
+msgstr "la Feuille de paramétrage XLSForm et les valeurs y afférentes dans la feuille survey"
 
 msgid "Export Submissions"
 msgstr "Exporter les Soumissions"
@@ -5260,3 +5263,9 @@ msgstr "Télécharger un nouveau formulaire XLS (fichier Excel) pour remplacer l
 
 msgid "XLSForm"
 msgstr "formulaire XLS"
+
+msgid "larger files than 10MB."
+msgstr "fichiers plus volumineux que 10Mo."
+
+msgid "Please upload an excel file"
+msgstr "Le fichier que vous essayez de télécharger n'est pas pris en charge. DataWinners prend en charge uniquement les fichiers .xls et .xlxs files."
