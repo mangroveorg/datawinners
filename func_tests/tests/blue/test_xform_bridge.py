@@ -39,7 +39,7 @@ class TestXFormBridge(unittest.TestCase):
     @attr('dcs', 'functional_test')
     def test_should_throw_error_for_unsupported_valid_field_type(self):
         errors, xform, json_xform_data = XlsFormParser(self.UNSUPPORTED_FIELDS, u"My questionnairé").parse()
-        self.assertEqual(errors, set(["photo as a datatype"]))
+        self.assertEqual(errors, set(["image as a datatype"]))
 
     @attr('dcs', 'functional_test')
     def test_should_throw_error_for_invalid_field_type(self):
