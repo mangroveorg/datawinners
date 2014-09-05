@@ -980,6 +980,9 @@ msgstr ""
 msgid "SMS Questionnaire"
 msgstr "Questionnaire SMS"
 
+msgid "View your Questionnaire"
+msgstr "Voir votre Questionnaire"
+
 msgid "Test your Questionnaire by this SMS tester"
 msgstr "Testez votre Questionnaire avec ce simulateur d'envoi par SMS"
 
@@ -5175,10 +5178,10 @@ msgid "Upload an XLSForm"
 msgstr "Télécharger un formulaire XLS"
 
 msgid "Choose this option to create a Questionnaire with advanced features by uploading an XLSForm (Excel file)"
-msgstr "Choisissez cette option pour télécharger un formulaire XLS (fichier Excel) et créer des logiques de questionnaire avancées."
+msgstr "Choisissez cette option pour créer un Questionnaire en utilisant les fonctionnalités avancées en téléchargeant un formulaire XLS (fichier Excel)."
 
 msgid "q_tooltip_advanced_questionnaire_option"
-msgstr "Utilisez cette option si vous voulez créer des fonctionnalités avancées dans votre Questionnaire tels que le branchement conditionnel (skip logic) ou la répétition d'une série de questions. <br/><br/>"
+msgstr "Utilisez cette option si vous voulez créer des fonctionnalités avancées dans votre Questionnaire tels que le branchement conditionnel (skip logic) ou la répétition d'une série de questions. <br/>Cliquez sur Télécharger un formulaire XLS pour en<br><br/>"
 
 msgid "Beta Version"
 msgstr "Version Beta"
@@ -5198,8 +5201,8 @@ msgstr "Vous avez besoin d'aide pour créer un Questionnaire XLS comportant des 
 msgid "Sample Forms"
 msgstr "Plus d'exemples de formulaires"
 
-msgid "Test and Edit your Questionnaire"
-msgstr "Modifiez votre Questionnaire"
+msgid "Edit your Questionnaire..."
+msgstr "Modifiez votre Questionnaire..."
 
 msgid "Download the current XLSForm (Excel file):"
 msgstr "Télécharger le formulaire XLS actuel (fichier Excel) :"
@@ -5242,3 +5245,18 @@ msgstr "Nous avons désactivé vos Messages de Rappel (si configurés auparavant
 
 msgid "Label mandatory for question with name [%s]"
 msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour une question comportant un nom [%s]"
+
+msgid "Upload an XLSForm to Create a Questionnaire"
+msgstr "Télécharger un formulaire XLS pour créer un"
+
+msgid "Need help and support on how to edit an XLSForm?"
+msgstr "Beoin d'aide et d'assistance pour modifier un formulaire XLSEdit Questionnaire?"
+
+msgid "Edit Questionnaire"
+msgstr "Modifier le Questionnaire"
+
+msgid "Upload a new XLSForm (Excel file) to replace the current Questionnaire"
+msgstr "Télécharger un nouveau formulaire XLS (fichier Excel) pour remplacer le Questionnaire actuel"
+
+msgid "XLSForm"
+msgstr "formulaire XLS"
