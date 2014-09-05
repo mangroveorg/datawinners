@@ -21,9 +21,15 @@ class SubmissionFormatter(object):
                 headers.append(col_def['label'] + " Latitude")
                 headers.append(col_def['label'] + " Longitude")
             else:
-                headers.append(col_def['label'])
+                if col_def['label'] != "Phone number":
+                    headers.append(col_def['label'])
         for row in values:
             formatted_values.append(self._format_row(row))
+        for val in formatted_values:
+            if val[0] == "N/A":
+                val[0] = val[3]
+            val.pop(3)
+
         return headers, formatted_values
 
     def _format_row(self, row):
