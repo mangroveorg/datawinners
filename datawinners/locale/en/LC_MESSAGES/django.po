@@ -4684,3 +4684,6 @@ msgstr "optional labels. Label is a mandatory field for question with name [%s]"
 
 msgid "Please upload an excel file"
 msgstr "The file you are trying to upload is unsupported. DataWinners only support .xls and .xlxs files."
+
+msgid "Label mandatory for choice option with name %s"
+msgstr "optional labels. Label is a mandatory field for choice option with name [%s]"

@@ -4,10 +4,10 @@ import re
 from xml.etree import ElementTree as ET
 
 from lxml import etree
+from pyxform.xls2json import parse_file_to_json, parse_file_to_workbook_dict
 import xlrd
 import xmldict
 from pyxform import create_survey_element_from_dict
-from pyxform.xls2json import parse_file_to_json
 
 from datawinners.project.wizard_view import create_questionnaire
 from datawinners.accountmanagement.models import NGOUserProfile
@@ -461,7 +461,7 @@ class MultipleLanguagesNotSupportedException(Exception):
 
 class LabelForChoiceNotPresentException(Exception):
     def __init__(self, choice_name):
-        self.message = _("Label mandatory for choice option with name %s" % choice_name)
+        self.message = _("Label mandatory for choice option with name %s") % choice_name
 
     def __str__(self):
         return self.message

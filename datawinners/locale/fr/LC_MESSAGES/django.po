@@ -5249,6 +5249,9 @@ msgstr "Nous avons désactivé vos Messages de Rappel (si configurés auparavant
 msgid "Label mandatory for question with name [%s]"
 msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour une question comportant un nom [%s]"
 
+msgid "Label mandatory for choice option with name %s"
+msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour l'option choix comportant un nom [%s]"
+
 msgid "Upload an XLSForm to Create a Questionnaire"
 msgstr "Télécharger un formulaire XLS pour créer un"
 

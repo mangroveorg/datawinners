@@ -121,7 +121,7 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"Label mandatory for choice option with name yes"})
+            self.assertEquals(actual_errors, {"optional labels. Label is a mandatory field for choice option with name [yes]"})
 
     def test_should_populate_error_when_choice_name_has_spaces_and_unique_name(self):
             with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
