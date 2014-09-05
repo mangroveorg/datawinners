@@ -4644,7 +4644,7 @@ msgid "Language specification is not supported"
 msgstr "XLSForm language settings."
 
 msgid "attaching media to fields is not supported %s"
-msgstr "XLSForm media type (%s)."
+msgstr "XLSForm media type (%s) in survey sheet."
 
 msgid "attaching media to choice fields not supported %s"
 msgstr "XLSForm media type (%s) in choices sheet."
@@ -4659,10 +4659,16 @@ msgid "r_tooltip_advanced_questionnaire_option"
 msgstr "This is our first release of the Upload XLSForm feature.  Please help us to improve it by sending any feedback to <a> support@datawinners.com. </a>"
 
 msgid "Prefetch of csv not supported"
-msgstr "Preloading of CSV data (the PullData() function)."
+msgstr "preloading of CSV data (the PullData() function)."
 
 msgid "(%s) as a datatype"
 msgstr "(%s) as a datatype"
+
+msgid "(%s) as a datatype (metadata)"
+msgstr "(%s) as a datatype (metadata)"
+
+msgid "photo"
+msgstr "image"
 
 msgid "select all that apply or specify other as a datatype"
 msgstr "\"or_other\" function for single or multiple choice questions"
@@ -4673,3 +4679,5 @@ msgstr "\"or_other\" function for single or multiple choice questions"
 msgid "instead."
 msgstr "instead."
 
+msgid "Label mandatory for question with name [%s]"
+msgstr "optional labels. Label is a mandatory field for question with name [%s]"

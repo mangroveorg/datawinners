@@ -35,6 +35,7 @@ class XlsFormParser():
                  'auto_filled': ['note', 'today'],
                  'select': ['select one', 'select all that apply']
     }
+    meta_data_types = ["start","end","today","imei","deviceid","subscriberid","phonenumber","simserial"]
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
 
@@ -109,9 +110,12 @@ class XlsFormParser():
                 #errors.append(self._validate_for_uppercase_names(field))
                 errors.append(self._validate_for_prefetch_csv(field))
             else:
-                errors.append(_("%s as a datatype" % field['type']))
+                if(field["type"] in self.meta_data_types):
+                    errors.append(_("%s as a datatype (metadata)") % _(field['type']))
+                else: errors.append(_("%s as a datatype") % _(field['type']))
             if field.get('media'):
-                errors.append(_("attaching media to fields is not supported %s") % field['media'].keys()[0])
+                for media_type in field['media'].keys():
+                    errors.append(_("attaching media to fields is not supported %s") % media_type)
         return set(errors) - set([None])
 
     def _validate_for_nested_repeats(self, field):
@@ -136,18 +140,21 @@ class XlsFormParser():
     def _get_media_in_choices(choices):
         for choice in choices:
             if choice.get('media'):
-                return choice['media'].keys()[0]
-        return None
+                return choice['media'].keys()
+        return []
 
     def _validate_media_in_choices(self, fields):
+        errors = []
         for field in fields:
             if field['type'] in self.type_dict['group']:
-                self._validate_media_in_choices(field['children'])
+                choice_errors = self._validate_media_in_choices(field['children'])
+                [errors.append(choice_error) for choice_error in choice_errors if choice_error]
             choices = field.get('choices')
             if choices:
                 media_type_in_choices = self._get_media_in_choices(choices)
-                if media_type_in_choices:
-                    raise TypeNotSupportedException(_("attaching media to choice fields not supported %s") % _(media_type_in_choices))
+                for media_type in media_type_in_choices:
+                    errors.append(_("attaching media to choice fields not supported %s") % _(media_type))
+        return errors
 
     def _validate_choice_names(self, fields):
         errors = []
@@ -170,10 +177,8 @@ class XlsFormParser():
         errors = self._validate_fields_are_recognised(fields)
         settings_page_errors = self._validate_settings_page_is_not_present(self.xform_dict)
         errors = errors.union(settings_page_errors)
-        try:
-            self._validate_media_in_choices(fields)
-        except TypeNotSupportedException as e:
-            errors.add(e.message)
+        choice_errors = self._validate_media_in_choices(fields)
+        [errors.add(choice_error) for choice_error in choice_errors if choice_error]
         choice_name_errors = self._validate_choice_names(fields)
         errors = errors.union(set(choice_name_errors))
         questions, question_errors = self._create_questions(fields)
@@ -472,7 +477,7 @@ class PrefetchCSVNotSupportedException(Exception):
 
 class LabelForFieldNotPresentException(Exception):
     def __init__(self, field_name):
-        self.message = _("Label mandatory for question with name %s" % field_name)
+        self.message = _("Label mandatory for question with name [%s]") % field_name
 
     def __str__(self):
         return self.message

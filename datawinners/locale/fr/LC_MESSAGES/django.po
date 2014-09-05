@@ -5130,10 +5130,10 @@ msgid "nested repeats not supported"
 msgstr "Plus d'un niveau de répétions de questions."
 
 msgid "Language specification is not supported"
-msgstr "Paramètres de langue du formulaire XLS"
+msgstr "Paramètres de langue du formulaire XLS."
 
 msgid "attaching media to fields is not supported %s"
-msgstr "Type de média du formulaire XLS (%s)."
+msgstr "Type de média du formulaire XLS (%s) dans la feuille survey."
 
 msgid "Questionnaire has not been created, please upload again to create Questionnaire"
 msgstr ""
@@ -5144,11 +5144,17 @@ msgstr "Les Expéditeurs de Données suivants ne seront pas retirés du(des) que
 msgid "%s as a datatype"
 msgstr "Type de données : %s"
 
+msgid "%s as a datatype (metadata)"
+msgstr "Type de données : %s (metadata)"
+
+msgid "photo"
+msgstr "image"
+
 msgid "select all that apply or specify other"
 msgstr "\"autre\" fonctionnalité pour les questions à choix multiples "
 
 msgid "Prefetch of csv not supported"
-msgstr "Préchargement des données CSV (fonction Exctraction de Données)"
+msgstr "préchargement des données CSV (fonction PullData())"
 
 msgid "Cancel Upload"
 msgstr "Annuler le téléchargement"
@@ -5226,10 +5232,13 @@ msgid "Upload was cancelled."
 msgstr "Le téléchargement a été annulé"
 
 msgid "attaching media to choice fields not supported %s"
-msgstr "Type de média du formulaire XLS (%s) le choices d'enquête."
+msgstr "Type de média du formulaire XLS (%s) dans la feuille choice."
 
 msgid "Please specify your Reminders again."
 msgstr "Veuillez re-spécifier vos Messages de Rappel."
 
 msgid "We disabled your Reminders (if set before) when you deleted this Questionnaire."
 msgstr "Nous avons désactivé vos Messages de Rappel (si configurés auparavant) quand vous avez supprimé ce Questionnaire."
+
+msgid "Label mandatory for question with name [%s]"
+msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour une question comportant un nom [%s]"
