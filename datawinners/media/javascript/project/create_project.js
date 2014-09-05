@@ -189,10 +189,17 @@ $(document).ready(function () {
                 questionnaireViewModel.projectName.setError(responseJSON.error_msg[0]);
             }
             else{
-                DW.showError(responseJSON.error_msg,responseJSON.message_prefix,responseJSON.message_suffix);
+                DW.showError(responseJSON.error_msg,responseJSON.message_prefix, responseJSON.message_suffix);
             }
         }
     });
+
+    new DW.Dialog({
+        title: "Download Sample Forms",
+        dialogDiv: "#sample_xls_forms_section",
+        link_selector: "#sample_forms_link",
+        width: 800
+    }).init().initializeLinkBindings();
 
     DW.projectRouter.run();
 

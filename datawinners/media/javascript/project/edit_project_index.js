@@ -1,6 +1,15 @@
 $(function () {
 
     new DW.XLSHelpSection();
+
+    new DW.Dialog({
+        title: "Download Sample Forms",
+        dialogDiv: "#sample_xls_forms_section",
+        link_selector: "#sample_forms_link",
+        width: 800
+    }).init().initializeLinkBindings();
+
+
     new DW.UploadQuestionnaire({
         buttonText: "Upload New XLSForm",
         postUrl: function(){
