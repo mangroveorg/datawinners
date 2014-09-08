@@ -1,11 +1,12 @@
 from django.forms import CharField, HiddenInput, ChoiceField
 from django.forms.forms import Form
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, gettext
 from mangrove.form_model.field import UniqueIdField
 
 from datawinners.project.questionnaire_fields import FormField, as_choices
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from django.core.exceptions import ValidationError
+from operator import itemgetter
 
 class BaseSubmissionForm(Form):
     def __init__(self, project, data, is_datasender, datasender_name):
@@ -13,16 +14,18 @@ class BaseSubmissionForm(Form):
         self.form_model = project
         self.fields['form_code'] = CharField(widget=HiddenInput, initial=project.form_code)
         if not is_datasender:
-            choices = as_choices(project.get_data_senders(project._dbm))
 
+            default_choice = [("", gettext("Choose Data Sender"))]
+            list = (as_choices(project.get_data_senders(project._dbm)))
+            list_sorted = sorted(list, key=itemgetter(1))
+            default_choice.extend(list_sorted)
             if data:
                 error_message = {'invalid_choice':_("The Data Sender %s (%s) is not linked to your Questionnaire.") % (datasender_name, data.get("dsid"))}
             else:
                 error_message = None
-            self.fields['dsid'] = ChoiceField(label=_('I am submitting this data on behalf of'),
-                                          choices=choices,
-                                          error_messages=error_message,
-                                          help_text=_('Choose Data Sender from this list.'))
+            self.fields['dsid'] = ChoiceField(label=_('I want to submit this data on behalf of a registered Data Sender:'),
+                                          choices=default_choice,
+                                          error_messages=error_message)
 
 
 class SurveyResponseForm(BaseSubmissionForm):

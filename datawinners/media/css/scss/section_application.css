@@ -17,7 +17,7 @@ form ul li {
     width: 350px;
     height: 100px;
     border-color: #646464 #ebebeb #ebebeb #646464;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li label {
     font-size: 14px;
     display: block;
@@ -27,7 +27,7 @@ form ul li {
     font-weight: bold; }
   form ul li input {
     float: left;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li span[wmwrap=true] {
     float: left;
     top: 3px; }
@@ -74,7 +74,7 @@ div.error_arrow {
 span.error_arrow, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 3px;
   display: inline;
-  float: left!important; }
+  float: left !important; }
 
 span .error_arrow label, div.error_arrow label, label.error_arrow label {
   float: none;
@@ -675,3 +675,29 @@ table.error_table td {
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
     border-right: 6px solid #C20303; }
+
+ul.errorlist {
+  margin-top: 5px;
+  list-style-type: none !important;
+  float: left;
+  color: #FFFFFF;
+  display: inline;
+  background: url(/media/images/arrow_error.png) no-repeat left 10px;
+  margin-top: 0;
+  padding: 3px 10px 3px 10px;
+  /*border:1px solid #000000;*/
+  -moz-border-radius: 5px;
+  -webkit-moz-border-radius: 5px;
+  -webkit-border-radius: 5px; }
+
+#on_behalf_of_error {
+  background: #c20303;
+  padding: 3px 10px 3px 10px;
+  /*border:1px solid black;*/
+  -moz-border-radius: 5px;
+  -webkit-moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  background: #c20303;
+  padding-bottom: 20px !important;
+  text-align: center;
+}

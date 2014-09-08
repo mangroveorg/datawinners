@@ -2607,8 +2607,8 @@ msgstr "La réponse doit être un nombre. Le maximum est %s"
 msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"
 msgstr "Entrez le numéro d'identification de l'Expéditeur de données. Cliquez sur 'Expéditeurs de données' en haut de cette page pour trouver ces numéros d'identification. Exemple: rep10"
 
-msgid "I am submitting this data on behalf of"
-msgstr "Je soumets ces données pour le compte de"
+msgid "I want to submit this data on behalf of a registered Data Sender:"
+msgstr "Je vous soumettre ces données pour le compte d'un Expéditeur de Données enregistré:"
 
 msgid "What is associated Data sender type?"
 msgstr "Quel est le type de sujet associé ?"
@@ -2723,7 +2723,7 @@ msgstr "<b>Qu'est-ce que c'est?</b></br>"
        "Au lieu de soumettre des données en votre nom, vous pouvez en soumettre pour le compte d'un de vos Expéditeurs enregistrés</br>"
        "Sur les pages Analyse et Journal de Soumission, cette Soumission sera par la suite affichée sous le nom de l'Expéditeur de Données."
        "</br></br><b>Que dois-je faire?</b></br>"
-       "Votre nom apparaît par défaut. Sélectionnez l'Expéditeur de Données, pour lequel vous souhaitez soumettre des données, dans la liste déroulante."
+       "Sélectionnez l'Expéditeur de Données, pour lequel vous souhaitez soumettre des données, dans la liste déroulante."
 
 msgid "tooltip_questionnaire_form_subject_entity_question"
 msgstr "Sélectionnez votre Sujet dans la liste déroulante. Si votre Sujet n'est pas sur la liste, cliquez sur l'onglet Mes Sujets pour l'enregistrer au préalable."
@@ -5155,3 +5155,6 @@ msgstr "Expéditeurs de Données enregistrés"
 
 msgid "unregistered Data Senders"
 msgstr "Expéditeurs de Données non enregistrés"
+
+msgid "Choose Data Sender"
+msgstr "Choisissez un Expéditeur de données"

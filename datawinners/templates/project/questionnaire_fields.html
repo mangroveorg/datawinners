@@ -1,5 +1,34 @@
 {% load i18n %}
 {% load field_tags %}
+{% block page_js %}
+    <script language="JavaScript">
+    $(document).ready(function() {
+        if (!($('#on_behal_of').is(':checked'))){
+            reporter_id = DW.reporter_id
+            $('select#id_dsid option[value='+ reporter_id +']').attr("selected", "selected");
+        }
+        else{
+            $('select#id_dsid option:eq(0)').attr("selected", "selected");}
+            $('#on_behalf_of').live("click", function() {
+            if ($(this).is(':checked')) {
+                $('#choice_ds').removeClass("display_none");
+                $('select#id_dsid option:eq(0)').attr("selected", "selected");
+            } else {
+                $('#choice_ds').addClass("display_none");
+            }
+
+        });
+        if ($('ul.errorlist li span#on_behalf_of_error ').length){
+            $('#choice_ds').removeClass("display_none");
+            $('#on_behalf_of').attr("checked", "checked") ;
+            $('select#id_dsid option:eq(0)').attr("selected", "selected");
+        }
+
+
+    });
+    </script>
+{% endblock %}
+
 {% for field in questionnaire_form %}
     {% if field.is_hidden %}
         <div class="answer">
@@ -23,15 +52,44 @@
         </div>
     {% endif %}
 {% endfor %}
+{% for field in questionnaire_form %}
+    {% if not field.is_hidden %}
+        {% if field.name == 'dsid' %}
+            <div class="float_left">
+            <input type="checkbox" value="on_behalf_of" id="on_behalf_of" class="margin_left_minus_16">
+            {{ field.label }}
+            </div>
+            <div class="float_left">
+        <p id="ins_{{ field.name }}" class="instructions italic">
+             <span id="choice_ds" class="display_none margin_left_10 italic">
+                    {{ field }}
+             </span>
+        </p></div>
+            <span id="tlp1" class="float_left">
+            {% include 'project/partials/tooltip_datasender.html' %}
+            </span>
+            {% if field.errors %}
+                <ul class="errorlist margin_left_30"><li>
+                {% for error in field.errors %}
+                    <span id="on_behalf_of_error" class="padding_bottom_10">
+                    {{ error }} 
+                    </span>
+                {% endfor %}
+                <li></ul>
+            {% endif %}
+        {% endif %}
+        <ul>
+
+        </ul>
+    {% endif %}
+{% endfor %}
 <ol class="que_width">
     {% for field in questionnaire_form %}
         {% if not field.is_hidden %}
+            {% if field.name != 'dsid' %}
             <li>
                 <h6>
                     {{ field.label }}
-                    {% if field.name == 'dsid' %}
-                        {% include 'project/partials/tooltip_datasender.html' %}
-                    {% endif %}
                 </h6>
                 <input id='code1' type="hidden" value="{{ field.name }}"/>
 
@@ -72,6 +130,7 @@
                     <div class="clear-left"></div>
                 </div>
             </li>
+            {% endif %}
         {% endif %}
     {% endfor %}
 </ol>

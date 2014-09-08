@@ -2491,7 +2491,7 @@ msgstr "Answer must be a word %d characters maximum"
 msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"
 msgstr ""
 
-msgid "I am submitting this data on behalf of"
+msgid "I want to submit this data on behalf of a registered Data Sender:"
 msgstr ""
 
 msgid "What is associated Data sender type?"
@@ -2607,7 +2607,7 @@ msgstr "<b>What is this?</b></br>"
        "Instead of submitting data in your name, you can submit it for one of your registered Data Senders.</br>"
        "On the Analysis and Submission Log pages, this Submission will then be displayed with the Data Sender's name."
        "</br></br><b>What do I need to do?</b></br>"
-       "Your name appears by default. Select the Data Sender you want to submit data for from the drop-down list."
+       "Select the Data Sender you want to submit data for from the drop-down list."
 
 msgid "tooltip_questionnaire_form_subject_entity_question"
 msgstr "Select your subject from the drop down list.If your subject is not on the list, click on the My Subjects tab to register the subject first."
@@ -4688,4 +4688,7 @@ msgid "registered Data Senders"
 msgstr ""
 
 msgid "unregistered Data Senders"
+msgstr ""
+
+msgid "Choose Data Sender"
 msgstr ""

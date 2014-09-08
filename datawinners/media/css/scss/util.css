@@ -86,6 +86,9 @@
 .margin_right_20 {
   margin-right: 20px; }
 
+.margin_left_minus_16 {
+  margin-left: -16px; }
+
 /* Float styling */
 .float_left {
   float: left; }
