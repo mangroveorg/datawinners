@@ -16,7 +16,7 @@ $(function () {
            return '/xlsform/upload/update/'+ project_id +'/';
         },
         postErrorHandler: function(responseJSON) {
-            DW.showError(responseJSON['error_msg']);
+            DW.showError(responseJSON['error_msg'],responseJSON.message_prefix, responseJSON.message_suffix);
         },
         preUploadValidation:function(){
             var editQuestionnaireWarningOptions = {

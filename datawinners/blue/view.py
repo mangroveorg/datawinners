@@ -104,7 +104,7 @@ class ProjectUpload(View):
                                         additional_details={'file_contents': file_content})
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': [e.message if e.message else ugettext("Errors in excel")],
+                'error_msg': [e.message if e.message else _("Errors in excel")],
                 'message_prefix':_("Sorry! Current version of DataWinners does not support"),
                 'message_suffix':_("Update your XLSForm and upload again.")
             }))
@@ -117,7 +117,7 @@ class ProjectUpload(View):
                 {
                     'success': False,
                     'duplicate_project_name': True,
-                    'error_msg': [ugettext("Questionnaire with same name already exists.Upload was cancelled.")]}
+                    'error_msg': [_("Questionnaire with same name already exists.Upload was cancelled.")]}
             ), content_type='application/json')
 
         return HttpResponse(
@@ -181,7 +181,9 @@ class ProjectUpdate(View):
             if errors:
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
-                    'error_msg': list(errors)
+                    'error_msg': list(errors),
+                    'message_prefix':_("Sorry! Current version of DataWinners does not support"),
+                    'message_suffix':_("Update your XLSForm and upload again.")
                 }))
 
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
@@ -210,7 +212,9 @@ class ProjectUpdate(View):
                                         additional_details={'file_contents': file_content})
             message = e.message if e.message else "Some error in excel"
             return HttpResponse(content_type='application/json', content=json.dumps({
-                'error_msg': [message], 'success': False
+                'error_msg': [message], 'success': False,
+                'message_prefix':_("Sorry! Current version of DataWinners does not support"),
+                'message_suffix':_("Update your XLSForm and upload again.")
             }))
 
         finally:
