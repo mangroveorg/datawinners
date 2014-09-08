@@ -5213,6 +5213,27 @@ msgstr "Télécharger le XLSForm actuel (fichier Excel) :"
 msgid "Look at the "
 msgstr "Voir les"
 
+msgid "We Can Help You"
+msgstr "Nous pouvons vous aider."
+
+msgid "We build XLSForms!  Contact"
+msgstr "Nous créons des XLSForms. Contactez"
+
+msgid " to learn about our form building service including pricing."
+msgstr " pour en savoir plus sur notre service de création de Questionnaire incluant les prix."
+
+msgid "For advanced Questionnaire features to work on Android Devices you need to download"
+msgstr "Pour que les Questionnaires utilisant les fonctionnalités avancées puissent fonctionner avec les appareils Android, vous devez télécharger"
+
+msgid "the latest version of the DataWinners app (Google Playstore)."
+msgstr "la dernière version de l'application DataWinners (Google Playstore)."
+
+msgid "For details see our tutorial"
+msgstr "Pour plus de détails, lisez notre tutoriel sur Comment"
+
+msgid "Install DataWinners on your Smartphone!"
+msgstr " installer DataWinners sur votre Smartphone !"
+
 msgid "Upload New XLSForm"
 msgstr "Télécharger un nouveau XLSForm"
 
@@ -5285,7 +5306,7 @@ msgstr "Etape 3. Testez votre Questionnaire"
 msgid "Step 4. Edit your Questionnaire"
 msgstr "Etape 4. Modifiez votre Questionnaire"
 
-msgid "Step5. Export your Data"
+msgid "Step 5. Export your Data"
 msgstr "Etape 5. Exportez vos Données"
 
 msgid "Repeats (Repeated set of questions)"

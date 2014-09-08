@@ -1325,6 +1325,9 @@ msgstr "Annuler les modifications"
 msgid "Cancel Editing"
 msgstr "Annuler les Modifications"
 
+msgid "Learn More About How To Create Questionnaires With Advanced Features"
+msgstr "En savoir plus sur Comment créer des Questionnaires en utilisant des fonctionnalités avancées"
+
 msgid "DataWinners Administrators Will Not Be Removed"
 msgstr "Les Administrateurs de DataWinners ne seront pas retirés"
 
