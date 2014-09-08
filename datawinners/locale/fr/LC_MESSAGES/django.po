@@ -5181,13 +5181,13 @@ msgid "Advanced Option (Beta Version)"
 msgstr "Option avancée (version Beta)"
 
 msgid "Upload an XLSForm"
-msgstr "Télécharger un formulaire XLS"
+msgstr "Télécharger un XLSForm"
 
 msgid "Choose this option to create a Questionnaire with advanced features by uploading an XLSForm (Excel file)"
-msgstr "Choisissez cette option pour créer un Questionnaire en utilisant les fonctionnalités avancées en téléchargeant un formulaire XLS (fichier Excel)."
+msgstr "Choisissez cette option pour créer un Questionnaire en utilisant les fonctionnalités avancées en téléchargeant un XLSForm (fichier Excel).."
 
 msgid "q_tooltip_advanced_questionnaire_option"
-msgstr "Utilisez cette option si vous voulez créer des fonctionnalités avancées dans votre Questionnaire tels que le branchement conditionnel (skip logic) ou la répétition d'une série de questions. <br/>Cliquez sur Télécharger un formulaire XLS pour en<br><br/>"
+msgstr "Utilisez cette option si vous voulez créer des fonctionnalités avancées dans votre Questionnaire tels que le branchement conditionnel (skip logic) ou la répétition d'une série de questions. <br/>Cliquez sur Télécharger un XLSForm pour en savoir plus !<br><br/>"
 
 msgid "Beta Version"
 msgstr "Version Beta"
@@ -5204,17 +5204,17 @@ msgstr "Télécharger un formulaire XLS pour créer un Questionnaire"
 msgid "Need help and support on how to create a XLSForm and advanced Questionnaire logic?"
 msgstr "Vous avez besoin d'aide pour créer un Questionnaire XLS comportant des logiques avancées? "
 
-msgid "Sample Forms"
-msgstr "Plus d'exemples de formulaires"
-
 msgid "Edit your Questionnaire..."
 msgstr "Modifiez votre Questionnaire..."
 
 msgid "Download the current XLSForm (Excel file):"
-msgstr "Télécharger le formulaire XLS actuel (fichier Excel) :"
+msgstr "Télécharger le XLSForm actuel (fichier Excel) :"
+
+msgid "Look at the "
+msgstr "Voir les"
 
 msgid "Upload New XLSForm"
-msgstr "Télécharger un nouveau formulaire XLS"
+msgstr "Télécharger un nouveau XLSForm"
 
 msgid "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!"
 msgstr "Si vous modifiez votre formulaire XLS et le téléchargez une nouvelle fois, toutes les données collectées précédemment seront perdues!"
@@ -5226,7 +5226,7 @@ msgid "You can"
 msgstr "Vous pouvez"
 
 msgid "Edit your Questionnaire by uploading a new XLSForm"
-msgstr "Modifiez votre Questionnaire en téléchargeant un nouveau formulaire XLS"
+msgstr "Modifiez votre Questionnaire en téléchargeant un nouveau XLSForm"
 
 msgid "Export Your Submissions"
 msgstr "exporter vos Soumissions"
@@ -5256,19 +5256,88 @@ msgid "Label mandatory for choice option with name %s"
 msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour l'option choix comportant un nom [%s]"
 
 msgid "Upload an XLSForm to Create a Questionnaire"
-msgstr "Télécharger un formulaire XLS pour créer un"
+msgstr "Télécharger un XLSForm pour créer un Questionnaire"
 
 msgid "Need help and support on how to edit an XLSForm?"
-msgstr "Beoin d'aide et d'assistance pour modifier un formulaire XLSEdit Questionnaire?"
+msgstr "Besoin d'aide et d'assistance pour modifier un XLSForm ?"
 
 msgid "Edit Questionnaire"
 msgstr "Modifier le Questionnaire"
 
 msgid "Upload a new XLSForm (Excel file) to replace the current Questionnaire"
-msgstr "Télécharger un nouveau formulaire XLS (fichier Excel) pour remplacer le Questionnaire actuel"
+msgstr "Télécharger un nouveau XLSForm (fichier Excel) pour remplacer le Questionnaire actuel"
+
+msgid "Use XLSForms to create a Questionnaire with advanced features (such as skip logic), then upload the XLSForm to your DataWinners account"
+msgstr "Utilisez les XLSForms pour créer un Questionnaire incluant les fonctionnalités avancées (tel que Skip Logic), puis téléchargez l'XLSForm dans votre compte DataWinners"
 
 msgid "XLSForm"
 msgstr "formulaire XLS"
+
+msgid "Step 1. Create an XLSForm"
+msgstr "Etape 1. Créez un XLSForm"
+
+msgid "Step 2. Upload an XLSForm to your DataWinners account"
+msgstr "Etape 2. Téléchargez un XLSForm dans votre compte DataWinners"
+
+msgid "Step 3. Test your Questionnaire"
+msgstr "Etape 3. Testez votre Questionnaire"
+
+msgid "Step 4. Edit your Questionnaire"
+msgstr "Etape 4. Modifiez votre Questionnaire"
+
+msgid "Step5. Export your Data"
+msgstr "Etape 5. Exportez vos Données"
+
+msgid "Repeats (Repeated set of questions)"
+msgstr "Répétition d'une série de questions"
+
+msgid "XLSForm is a tool that will allow you to design a Questionnaire with advanced features:"
+msgstr "XLSForm est un outil qui vous permettra de créer votre Questionnaire en utilisant des fonctionnalités avancées :"
+
+msgid "Skip logic"
+msgstr "Branchement conditionnel (ou Skip Logic)"
+
+msgid "Grouping questions"
+msgstr "Questions groupées"
+
+msgid "Cascading selects"
+msgstr "Sélections en cascade"
+
+msgid "Answer Constraints"
+msgstr "Réponses à contraintes"
+
+msgid "Calculations"
+msgstr "Calculs"
+
+msgid "Required and optional questions"
+msgstr "Questions obligatoires et optionnelles"
+
+msgid "Hints (Instruction texts)"
+msgstr "Astuces (Instructions)"
+
+msgid "Default answers"
+msgstr "Réponses par défault"
+
+msgid "Read more: "
+msgstr "En savoir plus:"
+
+msgid "How to create XLSForms in DataWinners"
+msgstr "Comment créer des XLSForms dans DataWinners"
+
+msgid "Sample Forms"
+msgstr "Modèles de formulaires"
+
+msgid "Repeated set of questions, Skip logic, Cascading selects, Multi Choice questions:"
+msgstr "Répétition d'une série de questions, Skip Logic, Séléctions en cascade, Questions à choix multiples:"
+
+msgid "Grouping questions, Answer constraint, Calculations:"
+msgstr "Questions groupées, Réponses à contraintes, Calculs:"
+
+msgid "Hints, Required and optional, Default answers:"
+msgstr "Astuces, Questions obligatoires et optionnelles, Réponses par défaut:"
+
+msgid "Download sample XLSForms to see how to create advanced Questionnaire features in Excel."
+msgstr "Téléchargez les modèles de XLSForm pour voir comment des Questionnaires incluant des fonctionnalités avancées sur Excel."
 
 msgid "larger files than 10MB."
 msgstr "fichiers plus volumineux que 10Mo."
@@ -5299,3 +5368,5 @@ msgstr "Le nom du groupe ou de la question %s a été omis. Mettez à jour votre
 
 msgid "%s Invalid question name %sNames must begin with a letter, colon, or underscore.Subsequent characters can include numbers, dashes, and periods."
 msgstr "%s Nom de variable non valide %s. Les noms doivent commencer par une lettre, deux-points, ou underscore. Les caractères suivants peuvent inclure des chiffres, des tirets, et des points. Mettez à jour votre formulaire XLS et téléchargez de nouveau."
+
+
