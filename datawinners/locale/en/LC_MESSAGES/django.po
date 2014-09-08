@@ -4687,3 +4687,12 @@ msgstr "The file you are trying to upload is unsupported. DataWinners only suppo
 
 msgid "Label mandatory for choice option with name %s"
 msgstr "optional labels. Label is a mandatory field for choice option with name [%s]"
+
+msgid "Duplicate column header %s"
+msgstr "Duplicate column header:'%s'. Update your XLSForm and upload again."
+
+msgid "%s Question or group with no name."
+msgstr "%s Question or group name is missing. Update your XLSForm and upload again."
+
+msgid "%s Invalid question name %sNames must begin with a letter, colon, or underscore.Subsequent characters can include numbers, dashes, and periods."
+msgstr "%s Invalid question name %s Names must begin with a letter, colon, or underscore.Subsequent characters can include numbers, dashes, and periods. Update your XLSForm and upload again."

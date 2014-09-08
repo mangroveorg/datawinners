@@ -5291,3 +5291,11 @@ msgstr "Mettez à jour votre formulaire XLS et téléchargez une nouvelle fois."
 msgid "all XLSForm features. Please check the list of unsupported features."
 msgstr "Toutes les fonctionnalités XLSForm. Veuillez vérifier la liste des fonctionnalités non prises en charge"
 
+msgid "Duplicate column header %s"
+msgstr "Enregistrement d'en-tête de colonne en double:'%s'. Mettez à jour votre formulaire XLS et téléchargez de nouveau."
+
+msgid "%s Question or group with no name."
+msgstr "Le nom du groupe ou de la question %s a été omis. Mettez à jour votre formulaire XLS et téléchargez de nouveau."
+
+msgid "%s Invalid question name %sNames must begin with a letter, colon, or underscore.Subsequent characters can include numbers, dashes, and periods."
+msgstr "%s Nom de variable non valide %s. Les noms doivent commencer par une lettre, deux-points, ou underscore. Les caractères suivants peuvent inclure des chiffres, des tirets, et des points. Mettez à jour votre formulaire XLS et téléchargez de nouveau."

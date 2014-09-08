@@ -18,6 +18,7 @@ from django.template.defaultfilters import slugify
 from pyxform.errors import PyXFormError
 import xlwt
 from datawinners.accountmanagement.models import Organization
+from datawinners.blue.utils import transform_error_message
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
@@ -93,9 +94,10 @@ class ProjectUpload(View):
             questionnaire_id,form_code = mangrove_service.create_project()
 
         except (PyXFormError, QuestionAlreadyExistsException) as e:
+            message = transform_error_message(e.message)
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': [e.message if e.message else ugettext("all XLSForm features. Please check the list of unsupported features.")]
+                'error_msg': [message if message else ugettext("all XLSForm features. Please check the list of unsupported features.")]
             }))
 
         except Exception as e:
@@ -437,3 +439,4 @@ def _perform_file_validations(request):
     if request.META.get('CONTENT_LENGTH') and int(request.META.get('CONTENT_LENGTH')) > EXCEL_UPLOAD_FILE_SIZE:
         errors.append(_("larger files than 10MB."))
     return errors
+
