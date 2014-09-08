@@ -95,6 +95,7 @@ def get_template_details(request, template_id):
     template_details = {'template_id': template.id, 'project_name': template.get('name'),
                         'project_language': template.get('language'),
                         'questionnaire_code': template.get('form_code'),
+                        'is_open_datasender': 1,
                         'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 
@@ -129,7 +130,7 @@ def create_project(request):
         project_info = json.loads(request.POST['profile_form'])
 
         try:
-            is_open_datasender = get_organization(request).is_pro_sms
+            is_open_datasender = get_organization(request).is_pro_sms and request.POST.get('is_open_datasender')
             questionnaire = create_questionnaire(post=request.POST, manager=manager, name=project_info.get('name'),
                                                  language=project_info.get('language', active_language),
                                                  reporter_id=ngo_admin.reporter_id,

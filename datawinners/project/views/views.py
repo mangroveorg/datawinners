@@ -454,7 +454,7 @@ def get_questionnaire_ajax(request, project_id):
                                        'language': project.language,
                                        'questions': existing_questions,
                                        'datasenders': project.data_senders,
-                                       'is_open_datasender': 1,
+                                       'is_open_datasender': 1 if project.is_open_datasender else '',
                                        'reminder_and_deadline': project.reminder_and_deadline
                                    }, default=field_to_json), content_type='application/json')
 
@@ -592,6 +592,7 @@ class SurveyWebQuestionnaireRequest():
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
         if self.questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
+        reporter_id = NGOUserProfile.objects.get(user=self.request.user).reporter_id
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, is_update)
@@ -599,6 +600,7 @@ class SurveyWebQuestionnaireRequest():
             'is_quota_reached': is_quota_reached(self.request),
             'questionnaire_code': self.questionnaire.form_code,
             'is_datasender': self.is_data_sender,
+            'reporter_id': reporter_id,
         })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
