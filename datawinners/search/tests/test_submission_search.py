@@ -44,29 +44,43 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         expected = [['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer']]
         self.assertEqual(submissions, expected)
 
-    def test_should_format_multi_field_values_for_repeat(self):
+    def test_should_format_repeat_with_multi_select_question(self):
         field1 = TextField(name='name', code='name', label='wat is ur name')
         field2 = IntegerField(name='age', code='age', label='wat is ur age')
         field3 = SelectField(name='languages', code='lang', label='wat languages do you kno',
-                             options=[("English US", "eng"), ("French", "fre"), ("German", "ger"), ("Spanish", "spa")])
+                             options=[("English US", "eng"), ("French", "fre"), ("German", "ger"), ("Spanish", "spa")], single_select_flag=False)
         multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
                                field_set=[field1, field2, field3])
-        entry = u'[{"name": "messi", "age": "24", "lang": null}, {"name": "ronaldo", "age": "28", "lang": "eng fre spa"}, {"name": "mueller", "age": "22", "lang": "ger"}]'
+        entry = u'[{"name": "messi", "age": "24", "lang": []}, {"name": "ronaldo", "age": "28", "lang": ["English US", "French", "Spanish"]}, {"name": "mueller", "age": "22", "lang": ["German"]}]'
         formatted_values = _format_fieldset_values_for_representation(entry, multi_field)
         result = '<span class="repeat_ans">"<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur age</span>: 24", "<span class="repeat_qtn_label">wat languages do you kno</span>: ";<br><br>' \
                  '"<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur age</span>: 28", "<span class="repeat_qtn_label">wat languages do you kno</span>: (English US, French, Spanish)";<br><br>' \
                  '"<span class="repeat_qtn_label">wat is ur name</span>: mueller", "<span class="repeat_qtn_label">wat is ur age</span>: 22", "<span class="repeat_qtn_label">wat languages do you kno</span>: German";<br><br></span>'
         self.assertEqual(formatted_values, result)
 
-    def test_should_format_group_values_in_repeat(self):
+    def test_should_format_repeat_with_single_select_question(self):
         field1 = TextField(name='name', code='name', label='wat is ur name')
         field2 = IntegerField(name='age', code='age', label='wat is ur age')
         field3 = SelectField(name='languages', code='lang', label='wat languages do you kno',
-                             options=[("English US", "eng"), ("French", "fre"), ("German", "ger"), ("Spanish", "spa")])
+                             options=[("English US", "eng"), ("French", "fre"), ("German", "ger"), ("Spanish", "spa")], single_select_flag=True)
+        multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
+                               field_set=[field1, field2, field3])
+        entry = u'[{"name": "messi", "age": "24", "lang": ""}, {"name": "ronaldo", "age": "28", "lang": "English US"}, {"name": "mueller", "age": "22", "lang": "German"}]'
+        formatted_values = _format_fieldset_values_for_representation(entry, multi_field)
+        result = '<span class="repeat_ans">"<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur age</span>: 24", "<span class="repeat_qtn_label">wat languages do you kno</span>: ";<br><br>' \
+                 '"<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur age</span>: 28", "<span class="repeat_qtn_label">wat languages do you kno</span>: English US";<br><br>' \
+                 '"<span class="repeat_qtn_label">wat is ur name</span>: mueller", "<span class="repeat_qtn_label">wat is ur age</span>: 22", "<span class="repeat_qtn_label">wat languages do you kno</span>: German";<br><br></span>'
+        self.assertEqual(formatted_values, result)
+
+    def test_should_format_repeat_with_group_question(self):
+        field1 = TextField(name='name', code='name', label='wat is ur name')
+        field2 = IntegerField(name='age', code='age', label='wat is ur age')
+        field3 = SelectField(name='languages', code='lang', label='wat languages do you kno',
+                             options=[("English US", "eng"), ("French", "fre"), ("German", "ger"), ("Spanish", "spa")], single_select_flag=False)
         group_field = FieldSet('group','group','group',field_set=[field1,field2,field3])
         multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
                                field_set=[group_field])
-        entry = u'[{"group":[{"name": "messi", "age": "24", "lang": null}]},{"group": [{"name": "ronaldo", "age": "28", "lang": "eng fre spa"}]},{"group": [{"name": "mueller", "age": "22", "lang": "ger"}]}]'
+        entry = u'[{"group":[{"name": "messi", "age": "24", "lang": []}]},{"group": [{"name": "ronaldo", "age": "28", "lang": ["English US", "French", "Spanish"]}]},{"group": [{"name": "mueller", "age": "22", "lang": ["German"]}]}]'
         formatted_values = _format_fieldset_values_for_representation(entry, multi_field)
         result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur age</span>: 24", "<span class="repeat_qtn_label">wat languages do you kno</span>: ";";<br><br>' \
                  '"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur age</span>: 28", "<span class="repeat_qtn_label">wat languages do you kno</span>: (English US, French, Spanish)";";<br><br>' \

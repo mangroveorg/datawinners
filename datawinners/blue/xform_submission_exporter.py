@@ -88,9 +88,9 @@ class AdvanceSubmissionFormatter():
         result = []
         for field_code in columns.keys():
             try:
-                parsed_value= ""
+                parsed_value = ""
                 if row.get(field_code):
-                    parsed_value = ', '.join(row.get(field_code)) if isinstance(row.get(field_code),list) else row.get(field_code)
+                    parsed_value = ', '.join(row.get(field_code)) if isinstance(row.get(field_code), list) else row.get(field_code)
 
                 if columns[field_code].get("type") == "date" or field_code == "date":
                     date_format = columns[field_code].get("format")
@@ -104,21 +104,18 @@ class AdvanceSubmissionFormatter():
                 elif columns[field_code].get("type") == GEODCODE_FIELD_CODE:
                         col_val = self._split_gps(parsed_value)
                         result.extend(col_val)
-                elif columns[field_code].get("type") == 'select':
-                    result.append(parsed_value)
                 elif columns[field_code].get("type") == 'integer':
                     col_val_parsed = try_parse(float, parsed_value)
                     result.append(col_val_parsed)
                 elif columns[field_code].get("type") == 'field_set':
                     _repeat_row = []
-                    data_node = json.loads(row.get(field_code))
-                    for row_ in data_node:
-                        for question_code,data_value in row_.items():
-                            if isinstance(data_value, list):
-                                row_[question_code] = json.dumps(data_value)
-
-                    for value in data_node:
-                        _result = self.__format_row(value, columns[field_code].get('fields'), index, repeat)
+                    repeat_answers = json.loads(row.get(field_code))
+                    repeat_fields = columns[field_code].get('fields')
+                    for repeat_item in repeat_answers:
+                        for question_code, data_value in repeat_item.items():
+                            if repeat_fields[question_code].get('type') == 'field_set': #every field_set in a repeat is a list
+                                repeat_item[question_code] = json.dumps(data_value)
+                        _result = self.__format_row(repeat_item, repeat_fields, index, repeat)
                         _repeat_row.append(_result)
                         _result.append('')
                         _result.append(index+1)

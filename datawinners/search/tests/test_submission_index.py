@@ -6,10 +6,12 @@ from datawinners.search.submission_index_helper import SubmissionIndexUpdateHand
 from datawinners.search.submission_query import SubmissionQueryBuilder
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import TextField, Field, GeoCodeField, SelectField, DateField, UniqueIdField
+from mangrove.form_model.field import TextField, Field, GeoCodeField, SelectField, DateField, UniqueIdField, FieldSet
 from mangrove.form_model.form_model import FormModel
-from datawinners.search.submission_index import _update_with_form_model_fields, update_submission_search_for_subject_edition
-from mangrove.datastore.documents import EnrichedSurveyResponseDocument, SurveyResponseDocument, DocumentBase, FormModelDocument
+from datawinners.search.submission_index import _update_with_form_model_fields, \
+    update_submission_search_for_subject_edition
+from mangrove.datastore.documents import EnrichedSurveyResponseDocument, SurveyResponseDocument, DocumentBase, \
+    FormModelDocument
 
 
 class TestSubmissionIndex(unittest.TestCase):
@@ -18,16 +20,24 @@ class TestSubmissionIndex(unittest.TestCase):
         self.field1 = UniqueIdField(unique_id_type='clinic', name='unique_id', code="q1", label='which clinic')
         self.field2 = TextField('text', "q2", "enter text")
         self.field3 = GeoCodeField('gps', "q3", "enter gps")
-        self.field4 = SelectField('select', 'q4', 'enter one',
+        self.field4 = SelectField('select', 'q4', 'select multple options',
                                   [{'text': 'one', 'val': 'a'}, {'text': 'two', 'val': 'b'}], single_select_flag=False)
         self.field5 = DateField('date', 'q5', 'enter date', 'mm.dd.yyyy')
+        self.field6 = SelectField('select', 'single-select', 'select one option',
+                                  [{'text': 'one', 'val': 'a'}, {'text': 'two', 'val': 'b'}], single_select_flag=True)
+        self.repeat_question = FieldSet(name="repeat", code="repeat-code", label="repeat-label", fieldset_type="repeat",
+                                        field_set=[self.field4, self.field6])
+        self.group_question = FieldSet(name="group", code="group-code", label="group-label", fieldset_type="group",
+                                       field_set=[self.field4, self.field6])
+
+
 
     def test_should_update_search_dict_with_form_field_questions_for_success_submissions(self):
         search_dict = {}
         self.form_model.fields = [self.field4]
         values = {
-                  'q4': "ab"
-                  }
+            'q4': "ab"
+        }
         submission_doc = SurveyResponseDocument(values=values, status="success")
         self.form_model.get_field_by_code_and_rev.return_value = self.field4
         with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
@@ -37,8 +47,8 @@ class TestSubmissionIndex(unittest.TestCase):
 
             self.assertEquals(
                 {
-                 '1212_q4': ['one', 'two'],
-                 'void': False}, search_dict)
+                    '1212_q4': ['one', 'two'],
+                    'void': False}, search_dict)
 
     def test_should_update_search_dict_with_form_field_questions_for_error_submissions(self):
         search_dict = {}
@@ -63,6 +73,40 @@ class TestSubmissionIndex(unittest.TestCase):
         self.assertEquals(
             {'1212_q2': 'wrong number', '1212_q3': 'wrong text',
              'void': False},
+            search_dict)
+
+    def test_should_update_search_dict_with_select_field_in_field_set(self):
+        search_dict = {}
+        self.form_model.fields = [self.repeat_question]
+        values = {'repeat-code': [{'q4': 'a b', 'single-select': 'a'}]}
+        submission_doc = SurveyResponseDocument(values=values, status="success")
+        _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
+        self.assertEquals(
+            {'1212_repeat-code': '[{"single-select": "one", "q4": ["one", "two"]}]',
+             'void': False},
+            search_dict)
+
+    def test_should_update_search_dict_with_select_field_in_group_within_repeat(self):
+        search_dict = {}
+        self.form_model.fields = [FieldSet(name="repeat", code="repeat-code", label="repeat-label", fieldset_type="repeat",
+                                        field_set=[self.group_question])]
+        values = {'repeat-code': [{'group-code': [{'q4': 'a b', 'single-select': 'a'}]}]}
+        submission_doc = SurveyResponseDocument(values=values, status="success")
+        _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
+        self.assertEquals(
+            {'1212_repeat-code': '[{"group-code": [{"single-select": "one", "q4": ["one", "two"]}]}]',
+             'void': False},
+            search_dict)
+
+    def test_should_update_search_dict_with_select_field_in_group(self):
+        search_dict = {}
+        self.form_model.fields = [self.group_question]
+        values = {'group-code': [{'q4': 'a b', 'single-select': 'a'}]}
+        submission_doc = SurveyResponseDocument(values=values, status="success")
+        self.form_model.get_field_by_code_and_rev.side_effect = lambda code, revision: {"q4": self.field4, "single-select": self.field6}[code]
+        _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
+        self.assertEquals(
+            {'void': False, '1212_group-code-single-select': 'one', '1212_group-code-q4': ['one', 'two']},
             search_dict)
 
     def test_should_update_submission_index_date_field_with_current_format(self):
@@ -90,10 +134,10 @@ class TestSubmissionIndex(unittest.TestCase):
         with patch.object(SubmissionQueryBuilder, 'query_all') as query_all:
             with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
                 load_all_rows_in_view.return_value = [{'doc': {'name': "project name", "form_code": "cli001",
-                                                                 "json_fields": [
-                                                                     {"name": "unique_id_field", "type": "unique_id",
-                                                                      "unique_id_type": 'clinic', "code": 'q1'}],
-                                                                 "_id": "form_model_id"}}]
+                                                               "json_fields": [
+                                                                   {"name": "unique_id_field", "type": "unique_id",
+                                                                    "unique_id_type": 'clinic', "code": 'q1'}],
+                                                               "_id": "form_model_id"}}]
                 survey_response_index1 = Mock(_id='id1')
                 filtered_query = Mock(spec=elasticutils.S)
                 filtered_query.all.return_value = [survey_response_index1]
@@ -112,12 +156,12 @@ class TestSubmissionIndex(unittest.TestCase):
     def test_should_get_comma_separated_list_if_field_changed_from_choice_to_unique_id(self):
         search_dict = {}
 
-        options=[{'text':'option1','val':'a'},{'text':'option2','val':'b'}]
+        options = [{'text': 'option1', 'val': 'a'}, {'text': 'option2', 'val': 'b'}]
 
         self.form_model.fields = [self.field1]
-        original_field = SelectField('selectField','q1','q1',options)
+        original_field = SelectField('selectField', 'q1', 'q1', options)
         self.form_model.get_field_by_code_and_rev.return_value = original_field
-        values = {'q1':'ab','q2': 'wrong number', 'q3': 'wrong text'}
+        values = {'q1': 'ab', 'q2': 'wrong number', 'q3': 'wrong text'}
         submission_doc = SurveyResponseDocument(values=values, status="error")
         with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
             lookup_entity_name.return_value = 'N/A'

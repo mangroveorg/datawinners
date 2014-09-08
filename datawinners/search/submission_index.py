@@ -252,7 +252,7 @@ def lookup_entity_name(dbm, id, entity_type):
 
 
 #TODO:This is required only for the migration for creating submission indexes.To be removed following release10
-def _update_select_field_by_revision(field, form_model, submission_doc):
+def _get_select_field_by_revision(field, form_model, submission_doc):
     field_by_revision = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
     return field_by_revision if field_by_revision else field
 
@@ -270,6 +270,41 @@ def _get_select_field_answer_from_snapshot(entry, field_for_revision):
     for answer_value in list(entry):
         value_list.append(options[answer_value])
     return ",".join(value_list)
+
+
+def _fetch_single_select_answer(choices, field):
+    if choices:
+        choice_text = field.get_value_by_option(choices)
+    else:
+        choice_text = ""
+
+    return choice_text
+
+
+def _fetch_multi_select_answer(choices, field):
+    if choices:
+        choice_text = [field.get_value_by_option(option) for option in choices.split(' ')]
+    else:
+        choice_text = []
+
+    return choice_text
+
+
+def _update_choice_value(entry, field):
+    choices = entry.get(field.code)
+    if field.is_single_select:
+        entry[field.code] = _fetch_single_select_answer(choices, field)
+    else:
+        entry[field.code] = _fetch_multi_select_answer(choices, field)
+
+
+def _update_repeat_fields_with_choice_values(repeat_entries, repeat_field):
+    for entry in repeat_entries:
+        for field in repeat_field.fields:
+            if field.is_field_set and field.is_group():
+                _update_repeat_fields_with_choice_values(entry.get(field.code), field)
+            elif isinstance(field, SelectField):
+                _update_choice_value(entry, field)
 
 
 def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values,
@@ -290,13 +325,13 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                         es_questionnaire_field_name(field.code, form_model.id)): entry_code or UNKNOWN})
                 entry = entity_name
         elif field.type == "select":
-            field = _update_select_field_by_revision(field, form_model, submission_doc)
+            field = _get_select_field_by_revision(field, form_model, submission_doc)
             if field.type == "select":
                 entry = field.get_option_value_list(entry)
             elif field.type == "select1":
                 entry = ",".join(field.get_option_value_list(entry))
         elif field.type == "select1":
-            field = _update_select_field_by_revision(field, form_model, submission_doc)
+            field = _get_select_field_by_revision(field, form_model, submission_doc)
             if field.type == "select":
                 entry = field.get_option_value_list(entry)
             elif field.type == "select1":
@@ -327,6 +362,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                         _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value,
                                             field.code)
                 else: 
+                    _update_repeat_fields_with_choice_values(entry, field)
                     search_dict.update(
                         {es_questionnaire_field_name(field_code, form_model.id, parent_field_name): json.dumps(entry)})
             else:

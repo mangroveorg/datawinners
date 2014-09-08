@@ -182,8 +182,10 @@ def _format_values(field_set, formatted_value, value_dict):
         if isinstance(field, SelectField):
             choices = value_dict.get(field.code)
             if choices:
-                choice_texts = [field.get_value_by_option(option) for option in choices.split(' ')]
-                value = '(' + ', '.join(choice_texts) + ')' if len(choice_texts) > 1 else ', '.join(choice_texts)
+                if field.is_single_select:
+                    value = choices
+                else:
+                    value = '(' + ', '.join(choices) + ')' if len(choices) > 1 else ', '.join(choices)
             else:
                 value = ''
         elif isinstance(field, FieldSet):
