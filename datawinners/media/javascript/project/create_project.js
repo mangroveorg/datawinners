@@ -195,7 +195,7 @@ $(document).ready(function () {
     });
 
     new DW.Dialog({
-        title: "Download Sample Forms",
+        title: gettext("Download Sample Forms"),
         dialogDiv: "#sample_xls_forms_section",
         link_selector: "#sample_forms_link",
         width: 800
