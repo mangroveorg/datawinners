@@ -107,6 +107,7 @@ DW.controllers = {
         questionnaireViewModel.questionnaireCode(questionnaire_code);
         questionnaireViewModel.enableQuestionnaireTitleFocus(true);
         questionnaireViewModel.isXLSUploadQuestionnaire(true);
+        DW.trackEvent('questionnaire-creation-method', 'advanced-questionnaire');
     },
     "questionnaireCreationOptions": function () {
             questionnaireCreationOptionsViewModel.resetCreationOption();
@@ -147,6 +148,9 @@ $(document).ready(function () {
     DW.init_delete_periodicity_question_warning();
     DW.init_empty_questionnaire_warning();
     new DW.XLSHelpSection();
+    DW.XLSSampleSectionTracker();
+
+
     var options = {
                     successCallBack: _save_questionnaire,
                     isQuestionnaireModified: function(){
@@ -162,7 +166,7 @@ $(document).ready(function () {
     $("#save_and_create").on("click", function () {
             _save_questionnaire(function (response) {
                 var redirect_url = '/project/overview/' + response.project_id;
-                DW.trackEvent('questionnaire-creation-method', 'qns-creation-success');
+                DW.trackEvent('questionnaire-creation-method', 'simple-qns-success');
                 window.location.replace(redirect_url);
                 return true;
             });
@@ -193,13 +197,6 @@ $(document).ready(function () {
             }
         }
     });
-
-    new DW.Dialog({
-        title: gettext("Download Sample Forms"),
-        dialogDiv: "#sample_xls_forms_section",
-        link_selector: "#sample_forms_link",
-        width: 800
-    }).init().initializeLinkBindings();
 
     DW.projectRouter.run();
 

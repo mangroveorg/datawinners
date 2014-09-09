@@ -106,8 +106,29 @@ DW.XLSHelpSection = function(){
     };
     var dialogSection = $("#xls_learn_more_form");
     DW.AccordionDialog(options);
-    $(".xls_learn_more").on('click', function () {
+    $(".xls_learn_more").on('click', function() {
+        DW.trackEvent('advanced-questionnaire', 'learn-more-clicked');
         dialogSection.removeClass("none");
         dialogSection.dialog("open");
     });
+
+    $("#xls_learn_more_form #learn-xls-forms-pdf-link").on('click', function(){
+        DW.trackEvent('advanced-questionnaire', 'xlsforms-pdf-downloaded');
+        return true;
+    });
 };
+
+DW.XLSSampleSectionTracker = function(){
+
+    new DW.Dialog({
+        title: gettext("Download Sample Forms"),
+        dialogDiv: "#sample_xls_forms_section",
+        link_selector: "#sample_forms_link",
+        width: 800
+    }).init().initializeLinkBindings();
+
+    $("#sample_xls_forms_section_dialog_section #sample_xls_section").on('click', "a", function(){
+        DW.trackEvent('advanced-questionnaire', 'sample-xls-downloaded');
+        return true;
+    });
+}

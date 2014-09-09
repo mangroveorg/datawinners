@@ -2,13 +2,7 @@ $(function () {
 
     new DW.XLSHelpSection();
 
-    new DW.Dialog({
-        title: gettext("Download Sample Forms"),
-        dialogDiv: "#sample_xls_forms_section",
-        link_selector: "#sample_forms_link",
-        width: 800
-    }).init().initializeLinkBindings();
-
+    DW.XLSSampleSectionTracker();
 
     new DW.UploadQuestionnaire({
         buttonText: "Upload New XLSForm",
@@ -16,6 +10,8 @@ $(function () {
            return '/xlsform/upload/update/'+ project_id +'/';
         },
         postErrorHandler: function(responseJSON) {
+            DW.trackEvent('advanced-questionnaire-edited', 'edit-questionnaire-errored');
+
             DW.showError(responseJSON['error_msg'],responseJSON.message_prefix, responseJSON.message_suffix);
         },
         preUploadValidation:function(){
@@ -36,6 +32,8 @@ $(function () {
             return false;
         },
         onSuccess:function(){
+            DW.trackEvent('advanced-questionnaire-edited', 'edit-questionnaire-success');
+
             var kwargs = {dialogDiv: "#inform_datasender_about_changes",
                 title: gettext('Inform Your Data Senders about the Changes'),
                 width:650,
