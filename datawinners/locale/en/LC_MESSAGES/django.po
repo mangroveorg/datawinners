@@ -4701,6 +4701,8 @@ msgid "%s List name not in choices sheet%s"
 msgstr "%s List name not in choices sheet%s."
 
 msgid "Choice names with spaces cannot be added to multiple choice selects. See [%s] in [%s]"
-msgstr "Choice names with spaces cannot be added to multiple choice selects. See [%s] in [%s]"
+msgstr "Choice names with spaces cannot be added to multiple choice selects. See [%s] in [%s]."
 
+msgid "Unmatched begin statement%s"
+msgstr "Unmatched begin statement%s."
 
