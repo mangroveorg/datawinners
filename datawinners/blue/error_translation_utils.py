@@ -3,6 +3,8 @@ import re
 
 
 def transform_error_message(message):
+    if not message:
+        return ""
     if "Duplicate column header" in message:
         message = get_duplicate_column_error(message)
     elif "two survey elements named" in message:
@@ -51,3 +53,8 @@ def get_duplicate_element_names_error_in_survey_sheet(message):
         escaped_element_names = ['\'' + name + '\'' for name in element_names]
         message = replace_param_for_string_substitution(escaped_element_names, message)
         return _(message) % element_names[0]
+
+def translate_odk_message(message):
+   if "Group has no children" in message:
+        return _("No content in Group.")
+   return message

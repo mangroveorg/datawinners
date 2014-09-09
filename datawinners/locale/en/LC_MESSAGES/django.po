@@ -4692,7 +4692,7 @@ msgid "Duplicate column header %s"
 msgstr "Duplicate column header: '%s'."
 
 msgid "[%s] Invalid question name [%s]Names must begin with a letter, colon, or underscore.Subsequent characters can include numbers, dashes, and periods."
-msgstr "[%s] Invalid question name [%s]. Names must begin with a letter, colon, or underscore.Subsequent characters can include numbers, dashes, and periods. Update your XLSForm and upload again."
+msgstr "[%s] Invalid question name [%s]. Names must begin with a letter, colon, or underscore.Subsequent characters can include numbers, dashes, and periods."
 
 msgid "The survey sheet must have on the first row name and type columns."
 msgstr "The first and second column of the survey sheet must be \"type\" and \"name\"."

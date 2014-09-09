@@ -18,7 +18,7 @@ from django.template.defaultfilters import slugify
 from pyxform.errors import PyXFormError
 import xlwt
 from datawinners.accountmanagement.models import Organization
-from datawinners.blue.utils import transform_error_message
+from datawinners.blue.error_translation_utils import transform_error_message, translate_odk_message
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
@@ -101,12 +101,17 @@ class ProjectUpload(View):
             }))
 
         except Exception as e:
+            message = e.message if e.message else _("Errors in excel")
+            odk_message = ''
             if not 'ODK Validate Errors:' in e.message:
-                send_email_on_exception(request.user, "Questionnaire Upload", traceback.format_exc(),
+                send_email_on_exception(request.user, "Questionnaire Edit", traceback.format_exc(),
                                         additional_details={'file_contents': file_content})
+            else:
+                odk_message = translate_odk_message(e.message)
+            message = odk_message if odk_message else message
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': [e.message if e.message else _("Errors in excel")],
+                'error_msg': [message],
                 'message_prefix':_("Sorry! Current version of DataWinners does not support"),
                 'message_suffix':_("Update your XLSForm and upload again.")
             }))
@@ -203,16 +208,21 @@ class ProjectUpdate(View):
             self.recreate_submissions_mapping(manager, questionnaire)
 
         except (PyXFormError, QuestionAlreadyExistsException) as e:
+            message = transform_error_message(e.message)
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': [e.message if e.message else ugettext("Errors in excel")]
+                'error_msg': [message if message else ugettext("Errors in excel")]
             }))
 
         except Exception as e:
+            message = e.message if e.message else _("Some error in excel")
+            odk_message = ''
             if not 'ODK Validate Errors:' in e.message:
                 send_email_on_exception(request.user, "Questionnaire Edit", traceback.format_exc(),
                                         additional_details={'file_contents': file_content})
-            message = e.message if e.message else "Some error in excel"
+            else:
+                odk_message = translate_odk_message(e.message)
+            message = odk_message if odk_message else message
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'error_msg': [message], 'success': False,
                 'message_prefix':_("Sorry! Current version of DataWinners does not support"),
