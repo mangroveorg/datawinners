@@ -48,7 +48,7 @@ from mangrove.utils.dates import py_datetime_to_js_datestring
 from django.utils.translation import ugettext as _
 
 
-logger = logging.getLogger("datawinners.xlsform")
+logger = logging.getLogger("datawinners.xls-questionnaire")
 
 
 class ProjectUpload(View):
@@ -68,40 +68,51 @@ class ProjectUpload(View):
 
             file_errors = _perform_file_validations(request)
             if file_errors:
+                logger.info("User: %s. Upload File validation failed: %s. File name: %s, size: %d", request.user.username,
+                            json.dumps(file_errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
+
                 return HttpResponse(json.dumps({'success': False, 'error_msg': file_errors}),
                                     content_type='application/json')
 
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
-            manager = get_database_manager(request.user)
-            #questionnaire_code = generate_questionnaire_code(manager)
             project_name = request.GET['pname']
             questionnaire_code = request.GET['form_code']
 
             errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name).parse()
             if errors:
+                error_list = list(errors)
+                logger.info("User: %s. Upload Errors: %s", request.user.username, json.dumps(error_list))
+
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
-                    'error_msg': list(errors),
-                    'message_prefix':_("Sorry! Current version of DataWinners does not support"),
-                    'message_suffix':_("Update your XLSForm and upload again.")
+                    'error_msg': error_list,
+                    'message_prefix': _("Sorry! Current version of DataWinners does not support"),
+                    'message_suffix': _("Update your XLSForm and upload again.")
                 }))
             tmp_file.seek(0)
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
                                                questionnaire_code=questionnaire_code, project_name=project_name,
                                                xls_form=tmp_file)
-            questionnaire_id,form_code = mangrove_service.create_project()
+            questionnaire_id, form_code = mangrove_service.create_project()
 
         except (PyXFormError, QuestionAlreadyExistsException) as e:
+            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
+
             message = transform_error_message(e.message)
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': [message if message else ugettext("all XLSForm features. Please check the list of unsupported features.")]
+                'error_msg': [message if message else ugettext(
+                    "all XLSForm features. Please check the list of unsupported features.")]
             }))
 
         except Exception as e:
+
             message = e.message if e.message else _("Errors in excel")
+
+            logger.info("User: %s. Upload Exception message: %s", request.user.username, e.message)
+
             odk_message = ''
             if not 'ODK Validate Errors:' in e.message:
                 send_email_on_exception(request.user, "Questionnaire Edit", traceback.format_exc(),
@@ -112,8 +123,8 @@ class ProjectUpload(View):
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [message],
-                'message_prefix':_("Sorry! Current version of DataWinners does not support"),
-                'message_suffix':_("Update your XLSForm and upload again.")
+                'message_prefix': _("Sorry! Current version of DataWinners does not support"),
+                'message_suffix': _("Update your XLSForm and upload again.")
             }))
 
         finally:
@@ -133,8 +144,7 @@ class ProjectUpload(View):
                     "success": True,
                     "project_name": project_name,
                     "project_id": questionnaire_id,
-                    "form_code":form_code
-                    # "xls_dict": XlsProjectParser().parse(file_content)
+                    "form_code": form_code
                 }),
             content_type='application/json')
 
@@ -175,6 +185,9 @@ class ProjectUpdate(View):
 
             file_errors = _perform_file_validations(request)
             if file_errors:
+                logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d", request.user.username,
+                            json.dumps(file_errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
+
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
                     'error_msg': file_errors
@@ -186,11 +199,14 @@ class ProjectUpdate(View):
             errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, questionnaire.name).parse()
 
             if errors:
+                error_list = list(errors)
+                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(error_list))
+
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
-                    'error_msg': list(errors),
-                    'message_prefix':_("Sorry! Current version of DataWinners does not support"),
-                    'message_suffix':_("Update your XLSForm and upload again.")
+                    'error_msg': error_list,
+                    'message_prefix': _("Sorry! Current version of DataWinners does not support"),
+                    'message_suffix': _("Update your XLSForm and upload again.")
                 }))
 
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
@@ -209,12 +225,18 @@ class ProjectUpdate(View):
 
         except (PyXFormError, QuestionAlreadyExistsException) as e:
             message = transform_error_message(e.message)
+
+            logger.info("User: %s. Edit Upload Error: %s", request.user.username, e.message)
+
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [message if message else ugettext("Errors in excel")]
             }))
 
         except Exception as e:
+
+            logger.info("User: %s. Edit Upload Exception message: %s", request.user.username, e.message)
+
             message = e.message if e.message else _("Some error in excel")
             odk_message = ''
             if not 'ODK Validate Errors:' in e.message:
@@ -225,8 +247,8 @@ class ProjectUpdate(View):
             message = odk_message if odk_message else message
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'error_msg': [message], 'success': False,
-                'message_prefix':_("Sorry! Current version of DataWinners does not support"),
-                'message_suffix':_("Update your XLSForm and upload again.")
+                'message_prefix': _("Sorry! Current version of DataWinners does not support"),
+                'message_suffix': _("Update your XLSForm and upload again.")
             }))
 
         finally:

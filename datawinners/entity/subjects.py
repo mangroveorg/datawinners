@@ -1,6 +1,6 @@
 from collections import OrderedDict
+
 from mangrove.datastore.entity_type import get_unique_id_types
-from datawinners.main.utils import timebox
 
 
 def load_subject_type_with_projects(manager):

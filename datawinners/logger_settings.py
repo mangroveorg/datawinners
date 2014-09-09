@@ -12,6 +12,7 @@ LOG_FILE_NAME = "datawinners.log"
 TASKS_LOG_FILE_NAME = "celery-tasks.log"
 REMINDER_LOG_FILE_NAME = "datawinners_reminders.log"
 XFORM_LOG_FILE_NAME = "datawinners_xform.log"
+XLS_QUESTIONNAIRE_LOG_FILE_NAME = "datawinners_xsl_questionnaire.log"
 PERFORMANCE_LOG_FILE_NAME = "datawinners-performance.log"
 WEB_SUBMISSION_LOG_FILE_NAME = "websubmission.log"
 SP_SUBMISSION_LOG_FILE_NAME = "sp-submission.log"
@@ -78,6 +79,15 @@ LOGGING = {
             'maxBytes': MAX_LOG_BYTES,
             'backupCount': BACK_UP_COUNT
         },
+        'xls-questionnaire-log-file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, XLS_QUESTIONNAIRE_LOG_FILE_NAME),
+            'mode': 'a', #append+create
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
+        },
         'web-submission': {
             'level': 'INFO',
             'class': 'logging.handlers.CompressRotatingFileHandler',
@@ -108,7 +118,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'handlers': ['log-file'],
             'propagate': True,
         },
@@ -143,8 +153,13 @@ LOGGING = {
             'propagate': True,
         },
         'datawinners.xform': {
-            'level': 'INFO',
+            'level': 'ERROR',
             'handlers': ['xform-log-file'],
+            'propagate': True,
+        },
+        'datawinners.xls-questionnaire': {
+            'level': 'INFO',
+            'handlers': ['xls-questionnaire-log-file'],
             'propagate': True,
         },
         'datawinners.scheduler': {
@@ -153,17 +168,17 @@ LOGGING = {
             'propagate': True,
         },
         'apscheduler.scheduler': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'handlers': ['reminder-log-file'],
             'propagate': True,
         },
         'websubmission': {
-            'level': 'INFO',
+            'level': 'ERROR',
             'handlers': ['web-submission'],
             'propagate': True,
         },
         'spsubmission': {
-            'level': 'INFO',
+            'level': 'ERROR',
             'handlers': ['sp-submission'],
             'propagate': True,
         },
