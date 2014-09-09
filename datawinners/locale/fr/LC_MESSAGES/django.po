@@ -5382,13 +5382,13 @@ msgid "all XLSForm features. Please check the list of unsupported features."
 msgstr "Toutes les fonctionnalités XLSForm. Veuillez vérifier la liste des fonctionnalités non prises en charge"
 
 msgid "Duplicate column header %s"
-msgstr "Enregistrement d'en-tête de colonne en double:'%s'. Mettez à jour votre formulaire XLS et téléchargez de nouveau."
+msgstr "Enregistrement d'en-tête de colonne en double:'%s'."
 
-msgid "%s Question or group with no name."
-msgstr "Le nom du groupe ou de la question %s a été omis. Mettez à jour votre formulaire XLS et téléchargez de nouveau."
+msgid "[%s] Question or group with no name."
+msgstr "Le nom du groupe ou de la question [%s] a été omis."
 
-msgid "%s Invalid question name %sNames must begin with a letter, colon, or underscore.Subsequent characters can include numbers, dashes, and periods."
-msgstr "%s Nom de variable non valide %s. Les noms doivent commencer par une lettre, deux-points, ou underscore. Les caractères suivants peuvent inclure des chiffres, des tirets, et des points. Mettez à jour votre formulaire XLS et téléchargez de nouveau."
+msgid "[%s] Invalid question name [%s]Names must begin with a letter, colon, or underscore.Subsequent characters can include numbers, dashes, and periods."
+msgstr "[%s] Nom de variable non valide [%s]. Les noms doivent commencer par une lettre, deux-points, ou underscore. Les caractères suivants peuvent inclure des chiffres, des tirets, et des points. Mettez à jour votre formulaire XLS et téléchargez de nouveau."
 
 msgid "The survey sheet is missing column headers."
 msgstr "Il n'y a pas d'en-têtes de colonne sur la feuille survey."
@@ -5405,9 +5405,26 @@ msgstr "La feuille de choix ne comporte pas d'en-têtes de colonne."
 msgid "The choices sheet must have on the first row list_name and name."
 msgstr "Dans la feuille choices, il doit y avoir list_name et name sur la première ligne."
 
-msgid "On the choices sheet there is a option with no name. %s."
-msgstr "Sur la feuille choices, il y a une option ne comportant pas de nom. %s."
+msgid "On the choices sheet there is a option with no name. [%s]"
+msgstr "Sur la feuille choices, il y a une option ne comportant pas de nom. [%s]."
 
-msgid "There are two survey elements named '%s' in the section named '%s'."
+msgid "There are two survey elements named %s in the section named %s."
 msgstr "Il y a deux éléments d'enquête nommés '%s'."
 
+msgid "Repeat loop without list name."
+msgstr "Mettez à jour votre formulaire XLS et téléchargez de nouveau."
+
+msgid "Cascading select needs a name."
+msgstr "Cascading select requiert un nom."
+
+msgid "There should be a choices sheet in this xlsform. Please ensure that the choices sheet name is all in small caps."
+msgstr "Cet XLSForm doit comporter une feuille choices. Veuillez vous assurer que le nom de la feuille choices est tout en miniscules."
+
+msgid "Choice names with spaces cannot be added to multiple choice selects. See [%s] in [%s]"
+msgstr "Les Choice names contenant des espaces ne peuvent pas être ajoutés aux multiple choice selects. Voir [%s] dans [%s]."
+
+msgid "Unmatched begin statement%s"
+msgstr "Aucun end correspondant au begin%s"
+
+msgid "%s List name not in choices sheet%s"
+msgstr "%s List name ne figure pas dans la feuille choices %s."
