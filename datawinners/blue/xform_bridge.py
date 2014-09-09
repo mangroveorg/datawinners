@@ -38,6 +38,7 @@ class XlsFormParser():
     meta_data_types = ["start","end","today","imei","deviceid","subscriberid","phonenumber","simserial"]
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
+    or_other_data_types = ['select all that apply or specify other', 'select one or specify other']
 
     def __init__(self, path_or_file, questionnaire_name):
         self.questionnaire_name = questionnaire_name
@@ -112,6 +113,8 @@ class XlsFormParser():
             else:
                 if(field["type"] in self.meta_data_types):
                     errors.append(_("%s as a datatype (metadata)") % _(field['type']))
+                if(field["type"]) in self.or_other_data_types:
+                    errors.append(_("XLSForm \"or_other\" function for multiple choice or single choice questions"))
                 else: errors.append(_("%s as a datatype") % _(field['type']))
             if field.get('media'):
                 for media_type in field['media'].keys():

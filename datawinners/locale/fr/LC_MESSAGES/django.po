@@ -5156,11 +5156,8 @@ msgstr "Type de données : %s (metadata)"
 msgid "photo"
 msgstr "image"
 
-msgid "select all that apply or specify other"
-msgstr "Fonctionnalité \"or_other\" du XLSForm pour les"
-
-msgid "select one or specify other as a datatype"
-msgstr "Fonctionnalité \"or_other\" du XLSForm pour les"
+msgid "XLSForm \"or_other\" function for multiple choice or single choice questions"
+msgstr "Fonctionnalité \"or_other\" du XLSForm pour les questions à choix multiples ou à choix uniques"
 
 msgid "Prefetch of csv not supported"
 msgstr "préchargement des données CSV (fonction PullData())"
