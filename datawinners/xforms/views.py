@@ -68,8 +68,11 @@ def get_errors(errors):
 
 def is_authorized_for_questionnaire(dbm, request_user, form_code):
     try:
+        user_profile = request_user.get_profile()
+        if not user_profile.reporter:
+            return True
         questionnaire = get_form_model_by_code(dbm, form_code)
-        if questionnaire.is_void() or request_user.get_profile().reporter_id not in questionnaire.data_senders:
+        if questionnaire.is_void() or user_profile.reporter_id not in questionnaire.data_senders:
             return False
     except FormModelDoesNotExistsException as e:
         return False
