@@ -5208,7 +5208,7 @@ msgid "Download the current XLSForm (Excel file):"
 msgstr "Télécharger le XLSForm actuel (fichier Excel) :"
 
 msgid "Look at the "
-msgstr "Voir les"
+msgstr "Voir les "
 
 msgid "We Can Help You"
 msgstr "Nous pouvons vous aider."
@@ -5350,9 +5350,6 @@ msgstr "Répétition d'une série de questions, Skip Logic, Séléctions en casc
 
 msgid "Grouping questions, Answer constraint, Calculations:"
 msgstr "Questions groupées, Réponses à contraintes, Calculs:"
-
-msgid "Hints, Required and optional, Default answers:"
-msgstr "Astuces, Questions obligatoires et optionnelles, Réponses par défaut:"
 
 msgid "Download sample XLSForms to see how to create advanced Questionnaire features in Excel."
 msgstr "Téléchargez les modèles de XLSForm pour voir comment des Questionnaires incluant des fonctionnalités avancées sur Excel."
