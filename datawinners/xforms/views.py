@@ -3,6 +3,8 @@ import xml
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
+from datawinners.monitor.carbon_pusher import send_to_carbon
+from datawinners.monitor.metric_path import create_path
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
@@ -33,7 +35,7 @@ def restrict_request_country(f):
         #
         # org = Organization.objects.get(org_id=user.get_profile().org_id)
         # try:
-        #     remote_address = request.META.get('REMOTE_ADDR')
+        # remote_address = request.META.get('REMOTE_ADDR')
         #     if is_not_local_address(remote_address):
         #         country_code = GeoIP().country_code(remote_address)
         #         log_message = 'User: %s, IP: %s resolved in %s, for Oragnization id: %s located in country: %s ' %\
@@ -95,12 +97,13 @@ def submission(request):
         response['Location'] = request.build_absolute_uri()
         return response
 
+    send_to_carbon(create_path('submissions.smartphone'), 1)
     request_user = request.user
     submission_file = request.FILES.get("xml_submission_file").read()
     manager = get_database_manager(request_user)
 
     if not __authorized_to_make_submission_on_requested_form(request_user, submission_file, manager) \
-        or is_quota_reached(request):
+            or is_quota_reached(request):
         response = HttpResponse(status=403)
         return response
 
@@ -114,7 +117,7 @@ def submission(request):
                                                  destination=''
                                    ))
 
-        response = player.add_survey_response(mangrove_request, user_profile.reporter_id ,logger=sp_submission_logger)
+        response = player.add_survey_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
         mail_feed_errors(response, manager.database_name)
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
