@@ -28,7 +28,7 @@ DW.Dialog = function (options) {
         self.cancelDialog.dialog({
             title: gettext(options.title),
             modal: true,
-            autoOpen: false,
+            autoOpen: typeof options.autoOpen === 'undefined' ? false : options.autoOpen,
             width: options.width || 550,
             closeText: 'hide',
             closeOnEscape: false,
@@ -64,7 +64,7 @@ DW.Dialog = function (options) {
 
     this.initializeLinkBindings = function () {
         var ignore_links = options.ignore_link_selector || "";
-        $(options.link_selector).not(ignore_links).bind('click', {self: this}, function (event) {
+        options.link_selector && $(options.link_selector).not(ignore_links).bind('click', {self: this}, function (event) {
             if (self.openPredicate()) {
                 self.cancelDialog.dialog("open");
                 return false;

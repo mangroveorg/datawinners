@@ -41,6 +41,11 @@
         });
     </script>
   {% endif %}
+    <script type="text/javascript">
+        var isSmartPhoneUpgradeInfoFlagPresent = '{{ show_sp_upgrade_info }}';
+    </script>
+    <script type="text/javascript" src="/media/javascript/project/overview_index.js"></script>
+
 {% endblock %}
 
 
@@ -73,6 +78,14 @@
             {% include 'project/questionnaire_and_DS.html'%}
         </div>
 
+    </div>
+
+    <div id="smartphone_upgrade_section" class="none">
+        {% trans "For advanced Questionnaire features to work on Android Devices tell your Data Senders to download "%}
+        <a href="#" class="dialog-link">{%trans "the latest version of the DataWinners app. "%}</a>
+        <div class="gotitbutton">
+            <a class="button yes_button" id="close_accordion_link">{% trans "OK, Got It" %}</a>
+        </div>
     </div>
 
 {% endblock %}

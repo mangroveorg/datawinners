@@ -122,6 +122,10 @@ def undelete_project(request, project_id):
     return HttpResponseRedirect(reverse(views.index))
 
 
+def _is_smart_phone_upgrade_info_flag_present(request):
+    return request.GET.get('show-sp-upgrade-info', None) == '1'
+
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -178,7 +182,8 @@ def project_overview(request, project_id):
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
         'questionnaire_code': questionnaire_code,
-        'has_multiple_unique_id':has_multiple_unique_id,
+        'has_multiple_unique_id': has_multiple_unique_id,
+        'show_sp_upgrade_info': _is_smart_phone_upgrade_info_flag_present(request),
         'entity_type': json.dumps(entity_type),
         'unique_id_header_text': unique_id_header_text,
         'org_number': get_organization_telephone_number(request)

@@ -1342,3 +1342,6 @@ msgstr "Attention : Les changements apportés à votre Questionnaire entraineron
 
 msgid "Specify Reminders"
 msgstr "Spécifiez vos Messages de Rappel"
+
+msgid "Use the New Version of Our Android App"
+msgstr "Utilisez la nouvelle version de notre application pour Android"

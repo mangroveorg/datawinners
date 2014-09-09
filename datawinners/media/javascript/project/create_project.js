@@ -185,7 +185,7 @@ $(document).ready(function () {
         },
         postSuccessSave: function(responseJSON){
             DW.trackEvent('questionnaire-creation-method', 'advanced-qns-success');
-            window.location.replace('/project/overview/' + responseJSON.project_id +'/');
+            window.location.replace('/project/overview/' + responseJSON.project_id +'/?show-sp-upgrade-info=1');
         },
         postErrorHandler: function(responseJSON){
             DW.trackEvent('questionnaire-creation-method', 'advanced-qns-errored');

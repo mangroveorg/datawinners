@@ -5425,3 +5425,9 @@ msgstr "%s List name ne figure pas dans la feuille choices %s."
 
 msgid "No content in Group."
 msgstr "Aucun contenu dans Group."
+
+msgid "For advanced Questionnaire features to work on Android Devices tell your Data Senders to download "
+msgstr "Pour que les Questionnaires comportant des logiques avancées puissent fonctionner sur les appareils Android, veuillez demander "
+
+msgid "the latest version of the DataWinners app."
+msgstr "à vos Expéditeurs de Données de télécharger la version la plus récente de l'application DataWinners."
