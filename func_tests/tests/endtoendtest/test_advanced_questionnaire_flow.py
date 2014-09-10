@@ -26,7 +26,6 @@ SUBMISSION_DATA = 'Tester Pune rep276 ' + regex_date_match + ' Success name mult
 
 
 class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
-
     def setUp(self):
         self.test_data = os.path.join(DIR, 'testdata')
         self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
@@ -69,11 +68,13 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.global_navigation_page.sign_out()
 
         self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
-        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(self.project_name)
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
+            self.project_name)
         self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
         submission_log_page.search(datasender_rep_id)
 
-        submission_log_page.check_submission_by_row_number(1).click_action_button().choose_on_dropdown_action(EDIT_BUTTON)
+        submission_log_page.check_submission_by_row_number(1).click_action_button().choose_on_dropdown_action(
+            EDIT_BUTTON)
         self._verify_advanced_web_submission_page_is_loaded()
         self._edit_and_verify_submission(datasender_rep_id, project_temp_name)
 
@@ -81,12 +82,14 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     def _verify_edit_of_questionnaire(self):
         r = self.client.post(
-            path='/xlsform/upload/update/'+self.project_id+"/",
+            path='/xlsform/upload/update/' + self.project_id + "/",
             data=open(os.path.join(self.test_data, 'ft_advanced_questionnaire.xls'), 'r').read(),
             content_type='application/octet-stream')
         self.assertEquals(r.status_code, 200)
 
-        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(self.project_name)
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
+            self.project_name).wait_for_table_data_to_load()
+
         self.assertEquals(submission_log_page.get_total_number_of_records(), 0)
 
 

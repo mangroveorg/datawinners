@@ -234,7 +234,7 @@ class XlsFormParser():
             "is_entity_question": False,
             "code": name, "name": group_label,
             "required": False,
-            "parent_field_code": None,
+            "parent_field_code": parent_field_code,
             "instruction": "No answer required",
             "fieldset_type": fieldset_type,
             "fields": questions

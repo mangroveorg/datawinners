@@ -51,12 +51,12 @@ class TestXFormBridge(unittest.TestCase):
         errors, xform, json_xform_data = XlsFormParser(self.CASCADE, "My questionnaire").parse()
 
         expected_json = [{'code': 'name', 'name': 'What is your name?', 'title': 'What is your name?', 'required': False,
-          'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': 'text'},
-         {'code': 'respondent_district_counties', 'title': 'Please select the county', 'required': False,
+          'is_entity_question': False, 'instruction': 'Answer must be a word', 'parent_field_code': None, 'type': 'text'},
+         {'code': 'respondent_district_counties', 'parent_field_code': None, 'title': 'Please select the county', 'required': False,
           'choices': [{'value': {'text': 'Bomi', 'val': 'bomi'}},
                       {'value': {'text': 'Grand Bassa', 'val': 'grand_bassa'}}], 'is_entity_question': False,
           'type': 'select1'},
-         {'code': 'respondent_district', 'title': 'Please select the district', 'required': False,
+         {'code': 'respondent_district', 'parent_field_code': None, 'title': 'Please select the district', 'required': False,
           'choices': [{'value': {'text': 'Klay', 'val': 'klay'}},
                       {'value': {'text': 'Commonwealth 1', 'val': 'commonwealth_1'}}], 'is_entity_question': False,
           'type': 'select1'}]
@@ -101,36 +101,36 @@ class TestXFormBridge(unittest.TestCase):
         errors, xform, json_xform_data = XlsFormParser(self.ALL_FIELDS, "My questionnaire").parse()
 
         expected_json = \
-            [{'code': 'name', 'name': 'What is your name?', 'title': 'What is your name?', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': 'text'},
+            [{'code': 'name', 'parent_field_code': None, 'name': 'What is your name?', 'title': 'What is your name?', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': 'text'},
                 # repeat
-             {'code': 'education', 'instruction': 'No answer required', 'name': 'Education', 'title': 'Education',
-                'fields': [{'code': 'degree', 'name': 'Degree name', 'title': 'Degree name', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': 'text'},
-                         {'code': 'completed_on', 'date_format': 'dd.mm.yyyy', 'name': 'Degree completion year', 'title': 'Degree completion year', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a date in the following format: day.month.year. Example: 25.12.2011','event_time_field_flag': False, 'type': 'date'}], 'is_entity_question': False,
+             {'code': 'education', 'parent_field_code': None, 'instruction': 'No answer required', 'name': 'Education', 'title': 'Education',
+                'fields': [{'code': 'degree', 'parent_field_code': u'education', 'name': 'Degree name', 'title': 'Degree name', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': 'text'},
+                         {'code': 'completed_on', 'parent_field_code': u'education', 'date_format': 'dd.mm.yyyy', 'name': 'Degree completion year', 'title': 'Degree completion year', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a date in the following format: day.month.year. Example: 25.12.2011','event_time_field_flag': False, 'type': 'date'}], 'is_entity_question': False,
                           'type': 'field_set', 'required': False, 'fieldset_type': 'repeat'},
                 # end repeat
-            {'code': 'age', 'name': 'What is your age?', 'title': 'What is your age?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a number', 'type': 'integer'},
-             {'code': 'height', 'name': 'What is your height?', 'title': 'What is your height?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a decimal or number', 'type': 'integer'},
-             {'code': 'fav_color', 'title': 'Which colors you like?', 'required': True,
+            {'code': 'age', 'parent_field_code': None, 'name': 'What is your age?', 'title': 'What is your age?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a number', 'type': 'integer'},
+             {'code': 'height', 'parent_field_code': None, 'name': 'What is your height?', 'title': 'What is your height?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a decimal or number', 'type': 'integer'},
+             {'code': 'fav_color', 'parent_field_code': None, 'title': 'Which colors you like?', 'required': True,
                 'choices': [{'value':{'text': 'Red', 'val': 'a'}}, {'value': {'text': 'Blue', 'val': 'b'}},
                           {'value':{'text': 'Green', 'val': 'c'}}], 'is_entity_question': False, 'type': 'select'},
                 #group
-            {'code': u'pizza_test_group', 'instruction': 'No answer required', 'name': u'Pizza fan', 'title': u'Pizza fan',
-              'fields': [{'code': u'pizza_fan', 'title': u'Do you like pizza?', 'required': True,
+            {'code': u'pizza_test_group', 'parent_field_code': None, 'instruction': 'No answer required', 'name': u'Pizza fan', 'title': u'Pizza fan',
+              'fields': [{'code': u'pizza_fan', 'parent_field_code': u'pizza_test_group', 'title': u'Do you like pizza?', 'required': True,
                           'choices': [{'value': {'text': u'Yes', 'val': u'a'}}, {'value': {'text': u'No', 'val': u'b'}}],
                           'is_entity_question': False, 'type': 'select1'},
                          #group
-                         {'code': u'like_group', 'instruction': 'No answer required', 'name': u'Like group', 'title': u'Like group',
+                         {'code': u'like_group', 'parent_field_code': u'pizza_test_group', 'instruction': 'No answer required', 'name': u'Like group', 'title': u'Like group',
                           'fields': [
-                              {'code': u'other', 'name': u'What else you like?', 'title': u'What else you like?', 'required': False,
+                              {'code': u'other', 'parent_field_code': u'like_group', 'name': u'What else you like?', 'title': u'What else you like?', 'required': False,
                                'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': u'text'},
-                              {'code': u'pizza_type', 'name': u'Which pizza type you like?', 'title': u'Which pizza type you like?',
+                              {'code': u'pizza_type', 'parent_field_code': u'like_group', 'name': u'Which pizza type you like?', 'title': u'Which pizza type you like?',
                                'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a word',
                                'type': u'text'}], 'is_entity_question': False, 'type': 'field_set', 'fieldset_type': 'group',
                           'required': False}], 'is_entity_question': False, 'type': 'field_set', 'fieldset_type': 'group', 'required': False},
 
-             {'code': 'location', 'name': 'Your location?', 'title': 'Your location?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a geopoint', 'type': 'geocode'},
-             {'code': 'add_age_height', 'name': 'Age and height', 'title': 'Age and height', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a number', 'type': 'integer'},
-             {'code': 'ab', 'title': 'A or B?', 'required': True,
+             {'code': 'location', 'parent_field_code': None, 'name': 'Your location?', 'title': 'Your location?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a geopoint', 'type': 'geocode'},
+             {'code': 'add_age_height', 'parent_field_code': None, 'name': 'Age and height', 'title': 'Age and height', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a number', 'type': 'integer'},
+             {'code': 'ab','parent_field_code': None, 'title': 'A or B?', 'required': True,
                 'choices': [{'value':{'text': 'A', 'val': 'a'}}, {'value':{'text': 'B', 'val': 'b'}}], 'is_entity_question': False, 'type': 'select1'}]
 
         self.assertEqual(expected_json, json_xform_data)
