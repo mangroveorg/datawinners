@@ -90,7 +90,8 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
             self.project_name).wait_for_table_data_to_load()
 
-        self.assertEquals(submission_log_page.get_total_number_of_records(), 0)
+        self.driver.create_screenshot('empty_rows.png')
+        self.assertEquals(submission_log_page.get_total_number_of_rows(), 2) #for placeholder rows
 
 
     def _activate_datasender(self, email):
