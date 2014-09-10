@@ -34,12 +34,12 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_create_project_when_xlsform_is_uploaded(self):
-        project_name = random_string()
+        self.project_name = random_string()
 
         self.client.login(username='tester150411@gmail.com', password='tester150411')
 
-        form_code = self._verify_questionnaire_creation(project_name)
-        form_element, web_submission_page = self._navigate_and_verify_web_submission_page_is_loaded(project_name)
+        form_code = self._verify_questionnaire_creation(self.project_name)
+        form_element, web_submission_page = self._navigate_and_verify_web_submission_page_is_loaded(self.project_name)
         project_temp_name = form_element.get_attribute('id')
         self._do_web_submission(project_temp_name, form_code, 'tester150411@gmail.com', 'tester150411')
         self._verify_submission_log_page(web_submission_page)
@@ -54,7 +54,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.global_navigation_page.sign_out()
 
         self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
-        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(project_name)
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(self.project_name)
         self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
         submission_log_page.search(datasender_rep_id)
 
@@ -73,6 +73,17 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         EDITED_SUBMISSION_DATA = 'a Mickey Duck '+ datasender_rep_id + " " + regex_date_match + ' Success name-edited multiline text 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option a,option b option 8 option 5 Don\'t Know option 8 agree option d option a,option b,option c,option d option d   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy United States New York City Harlem The Netherlands Rotterdam Downtown 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60";'
         self.assertRegexpMatches(" ".join(data), EDITED_SUBMISSION_DATA)
 
+        self._verify_edit_of_questionnaire()
+
+    def _verify_edit_of_questionnaire(self):
+        r = self.client.post(
+            path='/xlsform/upload/update/'+self.project_id+"/",
+            data=open(os.path.join(self.test_data, 'ft_advanced_questionnaire.xls'), 'r').read(),
+            content_type='application/octet-stream')
+        self.assertEquals(r.status_code, 200)
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(self.project_name)
+        self.assertEquals(submission_log_page.get_total_number_of_records(),0)
+
 
     def _activate_datasender(self, email):
         r = self.client.post(path='/admin-apis/datasender/generate_token/', data={'ds_email': email})
@@ -87,9 +98,9 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".ajax-loader"))
         return form_element
 
-    def _navigate_and_verify_web_submission_page_is_loaded(self, project_name):
+    def _navigate_and_verify_web_submission_page_is_loaded(self):
         all_data_page = self.global_navigation_page.navigate_to_all_data_page()
-        web_submission_page = all_data_page.navigate_to_web_submission_page(project_name)
+        web_submission_page = all_data_page.navigate_to_web_submission_page(self.project_name)
         form_element = self._verify_advanced_web_submission_page_is_loaded()
         return form_element, web_submission_page
 
@@ -116,6 +127,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEquals(r.status_code, 200)
         self.assertNotEqual(r._container[0].find('project_name'), -1)
         response = json.loads(r._container[0])
+        self.project_id = response.get('project_id')
         return response['form_code']
 
     def _register_datasender(self):
