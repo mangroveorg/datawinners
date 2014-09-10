@@ -77,7 +77,7 @@ class ProjectUpload(View):
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
-            project_name = request.GET['pname']
+            project_name = request.GET['pname'].strip()
             manager = get_database_manager(request.user)
             questionnaire_code = generate_questionnaire_code(manager)
 
