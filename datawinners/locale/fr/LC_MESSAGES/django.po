@@ -4228,11 +4228,11 @@ msgstr "Choisissez un Expéditeur de données dans la liste."
 msgid "disabled"
 msgstr "desactivés"
 
-msgid "My registered Data Senders linked to this questionnaire"
-msgstr "Mes Expéditeurs de données enregistrés liés à ce questionnaire"
+msgid "My registered Data Senders linked to this Questionnaire"
+msgstr "Mes Expéditeurs de données enregistrés liés à ce Questionnaire"
 
-msgid "All registered Data Senders of all questionnaires"
-msgstr "Tous les Expéditeurs de données de tous les questionnaires"
+msgid "All registered Data Senders of all Questionnaires"
+msgstr "Tous les Expéditeurs de données de tous les Questionnaires"
 
 msgid "Do you want to send this message to <span id=\"number_of_peoples\"></span> recipient(s)?"
 msgstr "Voulez-vous envoyer ce message à <span id=\"number_of_peoples\"></span> destinataire(s)?"
@@ -5147,8 +5147,8 @@ msgstr "Pour un compte Basique, seuls les Expéditeurs de Données enregistrés 
 msgid "You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='%(url_to_my_datasender)s'> My Data Senders </a>page."
 msgstr "Vous pouvez envoyer des rappels uniquement aux Expéditeurs de Données enregistrés. Premièrement, enregistrez vos Expéditeurs de Données sur la page<a style='float: none; margin: 0;' href='%(url_to_my_datasender)s'> Mes Expéditeurs </a>."
 
-msgid "My registered Data Senders linked to this Questionnaire and un-registered people who submitted data"
-msgstr "Mes Expéditeurs de Données enregistrés liés à ce Questionnaire et les personnes non enregistrées ayant soumis des donnée"
+msgid "All people who submitted data (registered & un-registered) "
+msgstr "Mes Expéditeurs de Données enregistrés liés à ce Questionnaire et les personnes non enregistrées ayant soumis des données"
 
 msgid "registered Data Senders"
 msgstr "Expéditeurs de Données enregistrés"

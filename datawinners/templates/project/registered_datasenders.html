@@ -64,13 +64,13 @@
             </div>
         {% endif %}
         {% if is_pro_sms %}
-        <div class="float_left full_width">
+        <div class="float_left full_width margin_top_15">
         {% include 'flash_message.html' %}
-        <strong>{% trans "People Authorized to Submit Data Using SMS" %}</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon">
+        <strong>{% trans "People Authorized to Submit Data Using SMS" %}</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon margin_bottom_5">
             <div class="tooltip">
                 <ol class="margin_left_20">
                 <span>{% trans "You decide who has permission to submit data using SMS for this Questionnaire:" %} </br> </span>
-                    <li class="margin_left_30">{% trans "Everyone – Any phone can submit data" %} </br> </li>
+                    <li class="margin_left_30">{% trans "Everyone – Any phone can submit data." %} </br> </li>
                     <li class="margin_left_30">{% trans "Only Registered People  – Data Senders must be registered first before submitting data."%}</li>
                 </ol>
             </div>
@@ -112,13 +112,13 @@
     <div id="datasender-popup" style="display:none;"></div>
     {% if is_pro_sms %}
     <div id="change_ds_setting">
-        <p class="warning_message margin_bottom_5">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
+        <p class="warning_message margin_bottom_10">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
         <input type="radio" name="ds_setting" value="1" data-bind="checked:is_open_datasender"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
-        <span class="italic font_size_12 margin_left_30">{% trans "Anyone with a simple phone can submit data." %}</span></br></br>
-        <input type="radio" name="ds_setting" value="" data-bind="checked:is_open_datasender"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
+        <span class="italic font_size_12 margin_left_30">{% trans "Anyone with a simple phone can submit data." %}</span></br>
+        <input type="radio" name="ds_setting" value="" data-bind="checked:is_open_datasender" class="margin_top_15"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
             <span class="italic font_size_12 margin_left_30">{% trans "Data Senders must be registered first before submitting data." %}</span></br>
             <span class="italic font_size_12 margin_left_30 margin_bottom_5">{% trans "Example: Registered field staff, community based workers, supervisors" %}</span></br>
-        <a href="#" class="button margin_top_15" id="save_ds_setting" style="float: right">{% trans "Save" %}</a>
+        <a href="#" class="button margin_top_13 float_right" id="save_ds_setting" style="float: right">{% trans "Save" %}</a>
         <a href="#" class="cancel_link float_right">{% trans "Cancel" %}</a></br>
     </div>
     {% endif %}

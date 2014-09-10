@@ -95,7 +95,7 @@ class TestRegisteredDataSenders(HeadlessRunnerTest):
         registered_ds_page.set_setting_value("1")
         registered_ds_page.save_setting()
         time.sleep(3)
-        self.assertEqual(registered_ds_page.get_setting_description(), u"Everyone - Anyone with a simple phone can submit data")
+        self.assertEqual(registered_ds_page.get_setting_description(), u"Everyone - Anyone with a simple phone can submit data.")
 
 
     @attr("functional_test")

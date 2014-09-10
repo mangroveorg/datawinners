@@ -453,6 +453,7 @@ $(document).ready(function(){
 
    $("#change_ds_setting #save_ds_setting").bind("click", function(){
        DW.loading();
+       $("#save_ds_setting").html(gettext('Saving...'));
        var project_id = $('#project_id').val();
        var selected = $("#change_ds_setting input[name='ds_setting']:checked").val();
        $.ajax({url:'/project/change_ds_setting/',
