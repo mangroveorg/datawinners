@@ -5420,6 +5420,9 @@ msgstr "Les Choice names contenant des espaces ne peuvent pas être ajoutés aux
 msgid "Unmatched begin statement%s"
 msgstr "Aucun end correspondant au begin%s."
 
+msgid "Unmatched end statement: %s."
+msgstr "Aucun end correspondant au begin: %s."
+
 msgid "%s List name not in choices sheet%s"
 msgstr "%s List name ne figure pas dans la feuille choices %s."
 

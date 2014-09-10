@@ -12,6 +12,8 @@ def transform_error_message(message):
     elif "List name not in choices" in message or "Unmatched begin statement" in message:
         pattern = "\[\D*\d*\]|:\s\d*\D*"
         message = parse(message,pattern)
+    elif "Unmatched end" in message:
+        message = _("Unmatched end statement: %s.") % message.split("Control type: ")[1]
     else:
         message = parse(message)
     return message + _(" Update your XLSForm and upload again.")
