@@ -88,7 +88,7 @@ class QuestionBuilder(object):
         sub_form_fields = [self.create_question(f, f['code']) for i,f in enumerate(fields)]
         return FieldSet( name=self._get_name( post_dict ), code=code, label=post_dict["title"],
                           instruction=post_dict.get( "instruction" ), required=post_dict.get( "required"), field_set=sub_form_fields,
-                          fieldset_type=post_dict.get("fieldset_type"))
+                          fieldset_type=post_dict.get("fieldset_type"), parent_field_code=post_dict.get('parent_field_code'))
 
     def create_entity_id_question_for_activity_report(self):
         entity_id_code = "eid"
@@ -116,7 +116,7 @@ class QuestionBuilder(object):
         constraints = self._add_text_length_constraint(post_dict)
         return TextField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
                          constraints=constraints,
-                         instruction=post_dict.get("instruction"), required=post_dict.get("required"))
+                         instruction=post_dict.get("instruction"), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
 
 
     def _create_integer_question(self, post_dict, code):
@@ -127,33 +127,33 @@ class QuestionBuilder(object):
         range = NumericRangeConstraint(min=min_range, max=max_range)
         return IntegerField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
                             constraints=[range], instruction=post_dict.get("instruction"),
-                            required=post_dict.get("required"))
+                            required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
 
 
     def _create_date_question(self, post_dict, code):
         return DateField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
                          date_format=post_dict.get('date_format'),
                          instruction=post_dict.get("instruction"),
-                         required=post_dict.get("required"))
+                         required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
 
 
     def _create_geo_code_question(self, post_dict, code):
         return GeoCodeField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
-                            instruction=post_dict.get("instruction"), required=post_dict.get("required"))
+                            instruction=post_dict.get("instruction"), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
 
 
     def _create_select_question(self, post_dict, single_select_flag, code):
         options = [(choice['value'].get("text"), choice['value'].get("val")) for choice in post_dict["choices"]]
         return SelectField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
                            options=options, single_select_flag=single_select_flag,
-                           instruction=post_dict.get("instruction"), required=post_dict.get("required"))
+                           instruction=post_dict.get("instruction"), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
 
 
     def _create_telephone_number_question(self, post_dict, code):
         return TelephoneNumberField(name=self._get_name(post_dict), code=code,
                                     label=post_dict["title"],
                                     instruction=post_dict.get("instruction"), constraints=(
-                self._create_constraints_for_mobile_number()), required=post_dict.get("required"))
+                self._create_constraints_for_mobile_number()), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
 
     def _create_constraints_for_mobile_number(s_create_short_code_fieldelf):
         mobile_number_length = TextLengthConstraint(max=15)
@@ -163,11 +163,12 @@ class QuestionBuilder(object):
 
     def _create_location_question(self, post_dict, code):
         return HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=code,
-                              label=post_dict["title"], instruction=post_dict.get("instruction"))
+                              label=post_dict["title"], instruction=post_dict.get("instruction"), parent_field_code=post_dict.get('parent_field_code'))
 
     def _create_media_question(self, post_dict, code):
         return ImageField( name=self._get_name(post_dict), code=code,
-                           label=post_dict["title"], instruction=post_dict.get("instruction"), required=post_dict.get( "required" ) )
+                           label=post_dict["title"], instruction=post_dict.get("instruction"), required=post_dict.get( "required" ),
+                           parent_field_code=post_dict.get('parent_field_code') )
 
 
     def _get_unique_id_type(self, post_dict):
@@ -177,12 +178,14 @@ class QuestionBuilder(object):
         return UniqueIdField(unique_id_type=self._get_unique_id_type(post_dict), name=self._get_name(post_dict),
                              code=code,
                              label=post_dict["title"],
-                             instruction=ugettext("Answer must be the Identification Number of the %s you are reporting on.") % self._get_unique_id_type(post_dict))
+                             instruction=ugettext("Answer must be the Identification Number of the %s you are reporting on.") % self._get_unique_id_type(post_dict),
+                             parent_field_code=post_dict.get('parent_field_code'))
 
     def _create_short_code_field(self, post_dict, code):
         return ShortCodeField(name=self._get_name(post_dict), code=code,
                               label=post_dict["title"],
-                              instruction=post_dict.get("instruction"))
+                              instruction=post_dict.get("instruction"),
+                              parent_field_code=post_dict.get('parent_field_code'))
 
 
 def get_max_code(fields):

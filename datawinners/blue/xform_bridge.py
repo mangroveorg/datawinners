@@ -56,20 +56,20 @@ class XlsFormParser():
             return _("Uppercase in names not supported")
         return None
 
-    def _create_question(self, field):
+    def _create_question(self, field, parent_field_code=None):
         question = None
         errors = []
         if field['type'] in self.type_dict['group']:
-            question, errors = self._group(field)
+            question, errors = self._group(field, parent_field_code)
         elif field['type'] in self.type_dict['field']:
-            question = self._field(field)
+            question = self._field(field, parent_field_code)
         elif field['type'] in self.type_dict['select']:
-            question = self._select(field)
+            question = self._select(field, parent_field_code)
         elif field['type'] in self.type_dict['media']:
-            question = self._media(field)
+            question = self._media(field, parent_field_code)
         return question, errors
 
-    def _create_questions(self, fields):
+    def _create_questions(self, fields, parent_field_code=None):
         questions = []
         errors = []
         for field in fields:
@@ -77,7 +77,7 @@ class XlsFormParser():
                 continue
             if field['type'] in self.supported_types:
                 try:
-                    question, field_errors = self._create_question(field)
+                    question, field_errors = self._create_question(field, parent_field_code)
 
                     if not field_errors and question:
                         questions.append(question)
@@ -216,7 +216,7 @@ class XlsFormParser():
         else:
             return field['label']
 
-    def _group(self, field):
+    def _group(self, field, parent_field_code=None):
         group_label = self._get_label(field)
 
         fieldset_type = 'entity'
@@ -227,13 +227,14 @@ class XlsFormParser():
             fieldset_type = 'group'
 
         name = field['name']
-        questions, errors = self._create_questions(field['children'])
+        questions, errors = self._create_questions(field['children'], field['name'])
         question = {
             'title': group_label,
             'type': 'field_set',
             "is_entity_question": False,
             "code": name, "name": group_label,
             "required": False,
+            "parent_field_code": None,
             "instruction": "No answer required",
             "fieldset_type": fieldset_type,
             "fields": questions
@@ -249,7 +250,7 @@ class XlsFormParser():
                 return 'yyyy'
         return 'dd.mm.yyyy'
 
-    def _field(self, field):
+    def _field(self, field, parent_field_code=None):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', 'calculate': 'integer'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', 'calculate': 'number'}
         name = self._get_label(field)
@@ -258,6 +259,7 @@ class XlsFormParser():
 
         question = {'title': name, 'type': xform_dw_type_dict.get(type, type), "is_entity_question": False,
                     "code": code, "name": name, 'required': self.is_required(field),
+                    "parent_field_code": parent_field_code,
                     "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
         if type == 'date':
             format = self._get_date_format(field)
@@ -269,7 +271,7 @@ class XlsFormParser():
         if field.get('control') and field['control'].get('appearance'):
             return field['control']['appearance']
 
-    def _select(self, field):
+    def _select(self, field, parent_field_code=None):
         if self._get_appearance(field) == 'label':
             return
         name = self._get_label(field)
@@ -281,6 +283,7 @@ class XlsFormParser():
             choices = [{'value': {'text': self._get_choice_label(f), 'val': f['name']}} for f in
                        self.xform_dict['choices'].get(field['itemset'])]
         question = {"title": name, "code": code, "type": "select", 'required': self.is_required(field),
+                    "parent_field_code": parent_field_code,
                     "choices": choices, "is_entity_question": False}
         if field['type'] == 'select one':
             question.update({"type": "select1"})
@@ -297,10 +300,11 @@ class XlsFormParser():
             return True
         return False
 
-    def _media(self, field):
+    def _media(self, field, parent_field_code=None):
         name = self._get_label(field)
         code = field['name']
         question = {"title": name, "code": code, "type": "image", 'required': self.is_required(field),
+                    "parent_field_code": parent_field_code,
                     "is_entity_question": False}
         return question
 
@@ -384,7 +388,7 @@ class MangroveService():
         questionnaire.add_attachments(self.xls_form, 'questionnaire.xls')
         # UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
         # detail=questionnaire.name)
-        return questionnaire.id,questionnaire.form_code
+        return questionnaire.id, questionnaire.form_code
 
 
 class XFormSubmissionProcessor():

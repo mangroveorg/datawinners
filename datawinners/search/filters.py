@@ -74,7 +74,8 @@ class DateQuestionRangeFilter(DateRangeFilter):
         return None
 
     def get_date_field_name(self):
-        return es_questionnaire_field_name(self.date_field.code, self.form_model.id)
+        #Assumption is that date filters won't appear for dates questions within repeat fields
+        return es_questionnaire_field_name(self.date_field.code, self.form_model.id, self.date_field.parent_field_code)
 
     def get_python_date_format(self, date):
         if self.date_field:
