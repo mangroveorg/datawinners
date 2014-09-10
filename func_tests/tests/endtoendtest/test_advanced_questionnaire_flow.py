@@ -39,7 +39,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
 
         form_code = self._verify_questionnaire_creation(self.project_name)
-        form_element, web_submission_page = self._navigate_and_verify_web_submission_page_is_loaded(self.project_name)
+        form_element, web_submission_page = self._navigate_and_verify_web_submission_page_is_loaded()
         project_temp_name = form_element.get_attribute('id')
         self._do_web_submission(project_temp_name, form_code, 'tester150411@gmail.com', 'tester150411')
         self._verify_submission_log_page(web_submission_page)
