@@ -1987,7 +1987,7 @@ msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
 
 msgid "All questions must be unique"
-msgstr "Toutes les questions doivent être uniques. Veuillez supprimer les doublons"
+msgstr "Toutes les questions doivent être uniques. Veuillez supprimer les doublons."
 
 msgid "Question Code Already Exists"
 msgstr "Ce Code Question existe déja"

@@ -113,7 +113,7 @@ class XlsFormParser():
             else:
                 if(field["type"] in self.meta_data_types):
                     errors.append(_("%s as a datatype (metadata)") % _(field['type']))
-                if(field["type"]) in self.or_other_data_types:
+                elif(field["type"]) in self.or_other_data_types:
                     errors.append(_("XLSForm \"or_other\" function for multiple choice or single choice questions"))
                 else: errors.append(_("%s as a datatype") % _(field['type']))
             if field.get('media'):

@@ -1914,7 +1914,7 @@ msgid "Error. You are not authorized to submit data for this Questionnaire. Plea
 msgstr ""
 
 msgid "All questions must be unique"
-msgstr "All questions must be unique. Please delete duplicates"
+msgstr "All questions must be unique. Please delete duplicates."
 
 msgid "Question Code Already Exists"
 msgstr ""
