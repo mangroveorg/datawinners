@@ -6,15 +6,12 @@ from nose.plugins.attrib import attr
 from django.test import Client
 
 from framework.base_test import HeadlessRunnerTest
-
-from framework.utils.common_utils import random_string, by_css, generate_random_email_id, by_id
+from framework.utils.common_utils import random_string, by_css, generate_random_email_id
 from pages.advancedwebsubmissionpage.advanced_web_submission_page import AdvancedWebSubmissionPage
-from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.loginpage.login_page import login
 from pages.resetpasswordpage.reset_password_page import ResetPasswordPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
-from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from testdata.test_data import url
 from tests.activateaccounttests.activate_account_data import DS_ACTIVATION_URL, NEW_PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL
@@ -38,10 +35,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_create_project_when_xlsform_is_uploaded(self):
         project_name = random_string()
-        form_code = project_name[0:3]
+
         self.client.login(username='tester150411@gmail.com', password='tester150411')
 
-        self._verify_questionnaire_creation(form_code, project_name)
+        form_code = self._verify_questionnaire_creation(project_name)
         form_element, web_submission_page = self._navigate_and_verify_web_submission_page_is_loaded(project_name)
         project_temp_name = form_element.get_attribute('id')
         self._do_web_submission(project_temp_name, form_code, 'tester150411@gmail.com', 'tester150411')
@@ -111,13 +108,15 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         submission = self.submission_log_page.get_all_data_on_nth_row(1)
         self.assertRegexpMatches(" ".join(submission), SUBMISSION_DATA)
 
-    def _verify_questionnaire_creation(self, form_code, project_name):
+    def _verify_questionnaire_creation(self, project_name):
         r = self.client.post(
-            path='/xlsform/upload/?pname=' + project_name + '&qqfile=text_and_integer.xls&form_code=' + form_code,
+            path='/xlsform/upload/?pname=' + project_name + '&qqfile=ft_advanced_questionnaire.xls',
             data=open(os.path.join(self.test_data, 'ft_advanced_questionnaire.xls'), 'r').read(),
             content_type='application/octet-stream')
         self.assertEquals(r.status_code, 200)
         self.assertNotEqual(r._container[0].find('project_name'), -1)
+        response = json.loads(r._container[0])
+        return response['form_code']
 
     def _register_datasender(self):
         data_sender_page = self.submission_log_page.navigate_to_datasenders_page()

@@ -78,7 +78,8 @@ class ProjectUpload(View):
             tmp_file.seek(0)
 
             project_name = request.GET['pname']
-            questionnaire_code = request.GET['form_code']
+            manager = get_database_manager(request.user)
+            questionnaire_code = generate_questionnaire_code(manager)
 
             errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name).parse()
             if errors:

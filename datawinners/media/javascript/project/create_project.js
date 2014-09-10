@@ -177,7 +177,7 @@ $(document).ready(function () {
         postUrl: function(){
            return '/xlsform/upload/';
         },
-        params : function(){return {'pname':questionnaireViewModel.projectName(),'form_code':questionnaireViewModel.questionnaireCode()};},
+        params : function(){return {'pname':questionnaireViewModel.projectName()};},
         preUploadValidation: function(){
             var questionnaireName = questionnaireViewModel.projectName;
             DW.ko.mandatoryValidator(questionnaireName);
