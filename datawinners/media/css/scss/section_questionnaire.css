@@ -474,7 +474,7 @@ div.margin_top_20 input {
 #xls_learn_more_form #step2_section {
   height: 323px !important; }
 #xls_learn_more_form #step3_section {
-  height: 391px !important; }
+  height: 480px !important; }
 #xls_learn_more_form #step4_section {
   height: 479px !important; }
 #xls_learn_more_form #step5_section {
@@ -482,5 +482,8 @@ div.margin_top_20 input {
 
 #sample_xls_forms_section_dialog_section ol {
   margin-left: 21px; }
+
+.xls_learn_more, #sample_forms_link {
+  font-style: normal !important; }
 
 /*# sourceMappingURL=section_questionnaire.css.map */

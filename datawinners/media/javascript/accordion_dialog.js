@@ -2,7 +2,7 @@ DW.AccordionDialog = function(options){
         var dialogElement = $(options.dialogElementSelector);
         var dialog = dialogElement.dialog({
                 autoOpen: false,
-                width: 940,
+                width: options.width || 940,
                 modal: true,
                 position:"top",
                 title: gettext(options.title) || gettext("dialog title"),

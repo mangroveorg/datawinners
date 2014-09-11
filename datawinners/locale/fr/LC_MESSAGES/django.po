@@ -5201,8 +5201,8 @@ msgstr "Télécharger un formulaire XLS pour créer un Questionnaire"
 msgid "Need help and support on how to create a XLSForm and advanced Questionnaire logic?"
 msgstr "Vous avez besoin d'aide pour créer un Questionnaire XLS comportant des logiques avancées? "
 
-msgid "Edit your Questionnaire..."
-msgstr "Modifiez votre Questionnaire..."
+msgid "Test and Edit your Questionnaire..."
+msgstr "Testez et Modifiez votre Questionnaire..."
 
 msgid "Download the current XLSForm (Excel file):"
 msgstr "Télécharger le XLSForm actuel (fichier Excel) :"

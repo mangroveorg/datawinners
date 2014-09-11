@@ -102,7 +102,8 @@ DW.UploadQuestionnaire.prototype._init = function(options){
 DW.XLSHelpSection = function(){
     var options = {
         dialogElementSelector: "#xls_learn_more_form",
-        title: "Learn More About How To Create Questionnaires With Advanced Features"
+        title: "Learn More About How To Create Questionnaires With Advanced Features",
+        width:955
     };
     var dialogSection = $("#xls_learn_more_form");
     DW.AccordionDialog(options);
