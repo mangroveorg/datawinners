@@ -469,16 +469,8 @@ div.margin_top_20 input {
   margin-left: 19px; }
 #xls_learn_more_form ul li {
   list-style-type: disc; }
-#xls_learn_more_form #step1_section {
-  height: 417px !important; }
-#xls_learn_more_form #step2_section {
-  height: 323px !important; }
-#xls_learn_more_form #step3_section {
-  height: 480px !important; }
-#xls_learn_more_form #step4_section {
-  height: 479px !important; }
-#xls_learn_more_form #step5_section {
-  height: 552px !important; }
+#xls_learn_more_form #step_section {
+  height: auto; }
 
 #sample_xls_forms_section_dialog_section ol {
   margin-left: 21px; }
