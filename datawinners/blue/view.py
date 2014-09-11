@@ -236,6 +236,7 @@ class ProjectUpdate(View):
 
         except Exception as e:
 
+            logger.exception("Exception", e)
             logger.info("User: %s. Edit Upload Exception message: %s", request.user.username, e.message)
 
             message = e.message if e.message else _("Some error in excel")
