@@ -120,7 +120,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
             data=open(os.path.join(self.test_data, 'ft_advanced_questionnaire.xls'), 'r').read(),
             content_type='application/octet-stream')
         self.assertEquals(r.status_code, 200)
-        self.assertNotEqual(r._container[0].find('"success": true'), -1)
+        self.assertNotEqual(r._container[0].find('"success": true'), -1, r._container[0])
 
         submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
             self.project_name).wait_for_table_data_to_load()
