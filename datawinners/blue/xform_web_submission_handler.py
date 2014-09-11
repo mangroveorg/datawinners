@@ -64,7 +64,7 @@ class XFormWebSubmissionHandler():
         mail_feed_errors(response, self.manager.database_name)
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
-            messages.error(self.request, ugettext('Submission failed %s', get_errors(response.errors)), extra_tags='error')
+            messages.error(self.request, ugettext('Submission failed %s' % get_errors(response.errors)), extra_tags='error')
             return HttpResponseBadRequest()
 
         self.organization.increment_message_count_for(incoming_web_count=1)
