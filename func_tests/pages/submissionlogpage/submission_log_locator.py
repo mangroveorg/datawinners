@@ -42,7 +42,7 @@ DS_AND_SUBJECT_FILTER_LOCATOR_BY_NAME = "//a[contains(text(),'%s')]"
 DS_AND_SUBJECT_FILTER_LOCATOR_BY_ID = "//a/span[@class='small_grey'][contains(text(),'%s')]"
 DATASENDER_FILTER_LOCATOR_BY_NAME = "//a[contains(text(),'%s')]"
 DATASENDER_FILTER_LOCATOR_BY_ID = "//a/span[@class='small_grey'][contains(text(),'%s')]"
-ALL_PERIODS_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='All Periods']")
+ALL_PERIODS_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='All Dates']")
 CURRENT_MONTH_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Current month']")
 LAST_MONTH_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Last Month']")
 YEAR_TO_DATE_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Year to date']")

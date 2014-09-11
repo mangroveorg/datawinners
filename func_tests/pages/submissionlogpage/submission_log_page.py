@@ -128,6 +128,12 @@ class SubmissionLogPage(Page):
         self.driver.find_text_box(by_css("#search_text")).enter_text(search_text)
         self.wait_for_table_data_to_load()
 
+    def get_date_filter_count(self):
+        return len(self.driver.find_elements_(by_css('.datepicker')))
+
+    def show_all_filters(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#show_filters a"), True).click()
+
     def filter_by_datasender(self,datasender):
         self.driver.find_text_box(by_css("#data_sender_filter")).enter_text(datasender)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".ui-autocomplete span.small_grey"), True)
@@ -181,6 +187,15 @@ class SubmissionLogPage(Page):
             button = self.driver.wait_for_element(UI_TEST_TIMEOUT, BTN_DONE_, want_visible=True)
             time.sleep(1)
             button.click()
+
+    def filter_by_date_question(self, type, date_element_locator):
+        self.driver.find(date_element_locator).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, self.date_range_dict.get(type), want_visible=True).click()
+        if type == DAILY_DATE_RANGE:
+            button = self.driver.wait_for_element(UI_TEST_TIMEOUT, BTN_DONE_, want_visible=True)
+            time.sleep(1)
+            button.click()
+        return self
 
     def navigate_to_datasenders_page(self):
         self.driver.find(DATASENDERS_TAB).click()
