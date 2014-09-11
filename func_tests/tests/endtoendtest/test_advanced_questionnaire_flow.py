@@ -52,6 +52,16 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         EDITED_SUBMISSION_DATA = 'a Mickey Duck ' + datasender_rep_id + " " + regex_date_match + ' Success 11.09.2014 name-edited multiline 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option b,option c option 5,option 8 option 4 No option 5 neither agree nor disagree option a option c option c   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy The Netherlands Amsterdam Westerpark United States New York City Harlem 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60", "Date within a...\n: 17.09.2014";'
         self.assertRegexpMatches(" ".join(data), EDITED_SUBMISSION_DATA)
 
+    def _verify_date_filters(self, submission_log_page):
+        self.assertEqual(submission_log_page.get_date_filter_count(), 5)  # 4 date filters + 1 submission date filter
+        submission_log_page.show_all_filters()
+        submission_log_page.filter_by_date_question(LAST_MONTH, by_id('date-question-filter-my_date_year')) \
+            .wait_for_table_data_to_load()
+        self.assertEqual(submission_log_page.get_total_number_of_records(), 0)
+        submission_log_page.filter_by_date_question(ALL_PERIODS, by_id('date-question-filter-my_date_year')) \
+            .wait_for_table_data_to_load()
+        self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
+
     @attr('functional_test')
     def test_should_create_project_when_xlsform_is_uploaded(self):
         self.project_name = random_string()
@@ -79,18 +89,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
 
-        self.assertEqual(submission_log_page.get_date_filter_count(), 5) # 4 date filters + 1 submission date filter
-        submission_log_page.show_all_filters()
-        submission_log_page.filter_by_date_question(LAST_MONTH, by_id('date-question-filter-my_date_year'))\
-            .wait_for_table_data_to_load()
-
-        self.assertEqual(submission_log_page.get_total_number_of_records(), 0)
-
-        submission_log_page.filter_by_date_question(ALL_PERIODS, by_id('date-question-filter-my_date_year'))\
-            .wait_for_table_data_to_load()
-
-        self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
-
+        self._verify_date_filters(submission_log_page)
 
         submission_log_page.search(datasender_rep_id)
         submission_log_page.check_submission_by_row_number(1).click_action_button().choose_on_dropdown_action(
