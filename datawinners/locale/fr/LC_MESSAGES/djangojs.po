@@ -1347,4 +1347,4 @@ msgid "Use the New Version of Our Android App"
 msgstr "Utilisez la nouvelle version de notre application pour Android"
 
 msgid "Uploading..."
-msgstr ""
+msgstr "En cours..."

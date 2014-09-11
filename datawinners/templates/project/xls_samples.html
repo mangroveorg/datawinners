@@ -2,10 +2,16 @@
 
 <div id="sample_xls_forms_section" class="none">
     {% trans "Download sample XLSForms to see how to create advanced Questionnaire features in Excel."%}
-    <br/><br/>
+    <br/>
     <ol id="sample_xls_section">
-        <li> {% trans "Repeated set of questions, Skip logic, Cascading selects, Multi Choice questions:" %} <a class="dialog-link" href="/media/files/DataWinners_ImporterLesEnvoyeursDeDonnees.xls">household_details.xls</a></li>
-        <li>{% trans "Grouping questions, Answer constraint, Calculations:" %} <a class="dialog-link" href="/media/files/DataWinners_ImporterLesEnvoyeursDeDonnees.xls">health_survey.xls</a></li>
+        <li class="margin_top_10">{% trans "Simple form" %}: <a class="dialog-link"  href="/media/files/{% trans "health_survey.xlsx"%}">{% trans "health_survey.xlsx"%}</a>
+            <br>
+            <span style="font-style: italic">{% trans "Question types, Skip Logic, Multi Choice, Hints, Required and Default" %}</span>
+        </li>
+        <li class="margin_top_10"> {% trans "Advanced Form" %}: <a class="dialog-link" href="/media/files/{% trans "household_details.xls" %}">{% trans "household_details.xls" %}</a>
+            <br>
+            <span style="font-style: italic">{% trans "Repeats, Skip Logic, Cascading selects, Grouping, Answer constraint, Calculations" %}</span>
+        </li>
     </ol>
     <div class="gotitbutton">
         <a class="button yes_button" id="close_accordion_link">{% trans "Close" %}</a>

@@ -5189,6 +5189,24 @@ msgstr "Utilisez cette option si vous voulez créer des fonctionnalités avancé
 msgid "Beta Version"
 msgstr "Version Beta"
 
+msgid "Simple form"
+msgstr "Simple formulaire"
+
+msgid "health_survey.xlsx"
+msgstr "enquete_sante.xlsx"
+
+msgid "household_details.xls"
+msgstr "details_menage.xls"
+
+msgid "Advanced Form"
+msgstr "Formulaire avancé"
+
+msgid "Repeats, Skip Logic, Cascading selects, Grouping, Answer constraint, Calculations"
+msgstr "Répétitions, Skip Logic, Sélections en cascade, Questions groupées, Contraintes, Calculs"
+
+msgid "Question types, Skip Logic, Multi Choice, Hints, Required and Default"
+msgstr "Types de quesion, Skip Logic, Choix multiples, Astuces, Obligatoire et par défaut"
+
 msgid "r_tooltip_advanced_questionnaire_option"
 msgstr "Ceci est notre premier lancement de la fonctionnalité Téléchargement de formulaire XLS. Aidez-nous à l'améliorer en nous envoyant tout feedback par email à support@datawinners.com. <a> support@datawinners.com. </a>"
 
@@ -5418,10 +5436,10 @@ msgid "Choice names with spaces cannot be added to multiple choice selects. See 
 msgstr "Les Choice names contenant des espaces ne peuvent pas être ajoutés aux multiple choice selects. Voir [%s] dans [%s]."
 
 msgid "Unmatched begin statement%s"
-msgstr "Aucun begin correspondant au end%s."
+msgstr "Aucun end correspondant au begin%s."
 
 msgid "Unmatched end statement: %s."
-msgstr "Aucun end correspondant au begin: %s."
+msgstr "Aucun begin correspondant au end: %s."
 
 msgid "%s List name not in choices sheet%s"
 msgstr "%s List name ne figure pas dans la feuille choices %s."
