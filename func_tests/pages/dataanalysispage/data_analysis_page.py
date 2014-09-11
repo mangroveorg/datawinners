@@ -1,12 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import time
-import datetime
 
 from pages.dataanalysispage.data_analysis_locator import *
-from pages.page import Page
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from tests.dataanalysistests.data_analysis_data import CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE, DAILY_DATE_RANGE, MONTHLY_DATE_RANGE
 
 
 class DataAnalysisPage(SubmissionLogPage):

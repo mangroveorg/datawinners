@@ -9,8 +9,10 @@ import time
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import random_string, by_css, generate_random_email_id, by_id
 from pages.advancedwebsubmissionpage.advanced_web_submission_page import AdvancedWebSubmissionPage
+from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.loginpage.login_page import login
+from pages.projectdatasenderspage.project_data_senders_page import DISASSOCIATE, ProjectDataSendersPage
 from pages.resetpasswordpage.reset_password_page import ResetPasswordPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.submissionlogpage.submission_log_page import LAST_MONTH, ALL_PERIODS
@@ -33,6 +35,7 @@ SUBMISSION_DATA = 'Tester Pune rep276 ' + regex_date_match + ' Success 11.09.201
 class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     def setUp(self):
         self.test_data = os.path.join(DIR, 'testdata')
+        self.admin_email_id = 'tester150411@gmail.com'
         self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
         self.client = Client()
 
@@ -66,12 +69,22 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     def test_should_create_project_when_xlsform_is_uploaded(self):
         self.project_name = random_string()
 
-        self.client.login(username='tester150411@gmail.com', password='tester150411')
+        self.client.login(username=self.admin_email_id, password='tester150411')
 
         form_code = self._verify_questionnaire_creation(self.project_name)
         form_element, web_submission_page = self._navigate_and_verify_web_submission_page_is_loaded()
         project_temp_name = form_element.get_attribute('id')
-        self._do_web_submission(project_temp_name, form_code, 'tester150411@gmail.com', 'tester150411')
+
+        web_submission_page.navigate_to_datasenders_page()
+        datasender_page = ProjectDataSendersPage(self.driver)
+        datasender_page.search_with("1234123413").\
+            select_a_data_sender_by_mobile_number("1234123413").perform_datasender_action(by_css(".remove"))\
+            .navigate_to_analysis_page()
+
+        DataAnalysisPage(self.driver).navigate_to_web_submission_tab()
+
+        web_submission_page = AdvancedWebSubmissionPage(self.driver)
+        self._do_web_submission(project_temp_name, form_code, self.admin_email_id, 'tester150411')
         self._verify_submission_log_page(web_submission_page)
         datasender_rep_id, ds_email = self._register_datasender()
 

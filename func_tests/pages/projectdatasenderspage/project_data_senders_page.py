@@ -1,15 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from framework.utils.common_utils import by_xpath
 from pages.accountpage.account_page import AccountPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import DATA_SENDER_DEVICES
 from pages.projectdatasenderspage.project_data_senders_locator import *
 from tests.projects.datasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
-# from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
 
-
+DISASSOCIATE = "disassociate"
 class ProjectDataSendersPage(Page):
     def __init__(self, driver):
         super(ProjectDataSendersPage, self).__init__(driver)
@@ -38,6 +36,7 @@ class ProjectDataSendersPage(Page):
         Function to select a data sender on all data sender page
          """
         self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_MOBILE_XPATH % mobile_number)).click()
+        return self
 
     def get_data_sender_email_by_id(self, data_sender_id):
         """
@@ -50,10 +49,15 @@ class ProjectDataSendersPage(Page):
         option_to_select = GIVE_WEB_ACCESS
         self.perform_datasender_action(option_to_select)
 
-    def perform_datasender_action(self, action_to_be_performed):
+    def perform_datasender_action(self, locator):
         self.driver.find(ACTION_DROP_DOWN).click()
-        option = self.driver.find_visible_element(by_id(action_to_be_performed))
+        option = self.driver.find_visible_element(locator)
         option.click()
+        return self
+
+    def navigate_to_analysis_page(self):
+        self.driver.find_visible_element(by_id("data_tab")).click()
+
 
     def give_web_access(self, email_id):
         """
@@ -121,7 +125,14 @@ class ProjectDataSendersPage(Page):
 
     def search_with(self, search_text):
         self.driver.find_text_box(by_css("div#datasender_table_filter input")).enter_text(search_text)
+        self.wait_for_table_data_to_load()
+        return self
 
     def get_checkbox_selector_for_datasender_row(self, row_number):
         # first row is used to show all rows select message
         return by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[1]/input" % (row_number + 1))
+
+
+    def wait_for_table_data_to_load(self):
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".dataTables_processing"))
+        return self
