@@ -4,6 +4,7 @@ import re
 
 from nose.plugins.attrib import attr
 from django.test import Client
+import time
 
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import random_string, by_css, generate_random_email_id
@@ -86,6 +87,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
             data=open(os.path.join(self.test_data, 'ft_advanced_questionnaire.xls'), 'r').read(),
             content_type='application/octet-stream')
         self.assertEquals(r.status_code, 200)
+        time.sleep(60)
 
         submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
             self.project_name).wait_for_table_data_to_load()
