@@ -81,19 +81,31 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         self._verify_edit_of_questionnaire()
 
+    def _wait_for_table_to_be_empty(self, submission_log_page):
+        count = 0
+        while True:
+            if count > 5:
+                return False
+            count += 1
+            if submission_log_page.get_total_number_of_records() == 0: #for placeholder rows
+                return True
+            time.sleep(10)
+
+        return False
+
     def _verify_edit_of_questionnaire(self):
         r = self.client.post(
             path='/xlsform/upload/update/' + self.project_id + "/",
             data=open(os.path.join(self.test_data, 'ft_advanced_questionnaire.xls'), 'r').read(),
             content_type='application/octet-stream')
         self.assertEquals(r.status_code, 200)
-        time.sleep(60)
 
         submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
             self.project_name).wait_for_table_data_to_load()
 
+        is_table_empty = self._wait_for_table_to_be_empty(submission_log_page)
         self.driver.create_screenshot('empty_rows.png')
-        self.assertEquals(submission_log_page.get_total_number_of_rows(), 2) #for placeholder rows
+        self.assertTrue(is_table_empty)
 
 
     def _activate_datasender(self, email):
