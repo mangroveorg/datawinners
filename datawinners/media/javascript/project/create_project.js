@@ -184,11 +184,11 @@ $(document).ready(function () {
             return questionnaireName.valid();
         },
         postSuccessSave: function(responseJSON){
-            DW.trackEvent('questionnaire-creation-method', 'advanced-qns-success');
+            DW.trackEvent('questionnaire-creation-method', 'advanced-qns-creation-success');
             window.location.replace('/project/overview/' + responseJSON.project_id +'/?show-sp-upgrade-info=1');
         },
         postErrorHandler: function(responseJSON){
-            DW.trackEvent('questionnaire-creation-method', 'advanced-qns-errored');
+            DW.trackEvent('questionnaire-creation-method', 'advanced-qns-creation-errored');
             if(responseJSON.duplicate_project_name){
                 questionnaireViewModel.projectName.setError(responseJSON.error_msg[0]);
             }
