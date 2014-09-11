@@ -1,10 +1,10 @@
 from nose.plugins.attrib import attr
+
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.testsettings import UI_TEST_TIMEOUT
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_xpath, by_css
-
 from pages.loginpage.login_page import login
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT, DATA_WINNER_ALL_DATA_SENDERS_PAGE, \
     DATA_WINNER_ALL_PROJECTS_PAGE
@@ -15,7 +15,6 @@ from pages.dashboardpage.dashboard_page import DashboardPage
 from tests.projects.questionnairetests.project_questionnaire_data import SENDER, RECEIVER, SMS, VALID_SUMMARY_REPORT_DATA, QUESTIONNAIRE_CODE, \
     DEFAULT_QUESTION, QUESTION, GEN_RANDOM, CODE, TYPE, DATE, QUESTIONS, DATE_FORMAT, DD_MM_YYYY
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
 
 
 QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "addtest", GEN_RANDOM: True,

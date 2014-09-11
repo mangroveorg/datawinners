@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
 from pages.dataanalysispage.data_analysis_locator import *
+import time
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 
