@@ -38,12 +38,13 @@ class DataExtractionAPITestCase(unittest.TestCase):
         self.assertEquals(response.status_code, 401)
 
     def test_should_return_404_response_status_when_date_format_is_invalid(self):
-        response = requests.get(url('/api/r
+        response = requests.get(url('/api/registereddata/clinic/2/'), auth=self.DIGEST_CREDENTIALS)
+        self.assertEquals(response.status_code, 404)
+
     def test_should_get_form_data_by_form_code_and_only_start_date(self):
         response = requests.get(url('/api/get_for_form/cli/03-08-2012/'), auth=self.DIGEST_CREDENTIALS)
         self.assertEquals(response.status_code, 200)
-egistereddata/clinic/2/'), auth=self.DIGEST_CREDENTIALS)
-        self.assertEquals(response.status_code, 404)
+
 
         response = requests.get(url('/api/registereddata/clinic/01-08-2012/03082012/'), auth=self.DIGEST_CREDENTIALS)
         self.assertEquals(response.status_code, 404)
