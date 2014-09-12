@@ -5192,7 +5192,7 @@ msgstr "Version Beta"
 msgid "Simple form"
 msgstr "Simple formulaire"
 
-msgid "health_survey.xlsx"
+msgid "health_survey.xls"
 msgstr "enquete_sante.xlsx"
 
 msgid "household_details.xls"
