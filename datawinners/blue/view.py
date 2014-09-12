@@ -124,8 +124,6 @@ class ProjectUpload(View):
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [message],
-                'message_prefix': _("Sorry! Current version of DataWinners does not support"),
-                'message_suffix': _("Update your XLSForm and upload again.")
             }))
 
         finally:
@@ -248,8 +246,6 @@ class ProjectUpdate(View):
             message = odk_message if odk_message else message
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'error_msg': [message], 'success': False,
-                'message_prefix': _("Sorry! Current version of DataWinners does not support"),
-                'message_suffix': _("Update your XLSForm and upload again.")
             }))
 
         finally:
