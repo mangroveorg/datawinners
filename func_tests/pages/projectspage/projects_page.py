@@ -49,3 +49,8 @@ class ProjectsPage(Page):
                 return
         raise CouldNotLocateElementException(['.styled_table tbody tr', 'project-id-class', 'delete_project'], 'by_css')
 
+
+    def trigger_undo_delete(self):
+        self.driver.find_visible_element(by_id("undo_delete_project")).click()
+        return self
+

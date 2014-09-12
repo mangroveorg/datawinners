@@ -1,8 +1,12 @@
 from nose.plugins.attrib import attr
 
 from framework.base_test import HeadlessRunnerTest
+from framework.utils.common_utils import by_css, by_id
+from pages.alldatapage.all_data_page import AllDataPage
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import login
+from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
+from pages.projectspage.projects_page import ProjectsPage
 from pages.reminderpage.reminder_settings_page import ReminderSettingsPage
 from testdata.test_data import LOGOUT
 from tests.alldatasenderstests.trial_data_senders_tests import QUESTIONNAIRE_DATA
@@ -123,3 +127,34 @@ class TestReminderSend(HeadlessRunnerTest):
         self.assertEqual(reminder_settings.get_example_text(), text_example_before_save)
 
 
+    def test_should_delete_reminders_when_project_is_deleted(self):
+        global_navigation = login(self.driver, VALID_CREDENTIALS)
+        create_questionnaire_page = global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page() \
+            .select_blank_questionnaire_creation_option()
+        overview_page = create_questionnaire_page.create_questionnaire_with(COPY_PROJECT_DATA,
+                                                                            QUESTIONNAIRE_DATA).save_and_create_project_successfully()
+        project_title = overview_page.get_project_title()
+
+        reminder_settings_page = overview_page.navigate_to_reminder_page()
+        default_reminder_settings_text = reminder_settings_page.get_example_text()
+        self._verify_reminder_setting(reminder_settings_page)
+
+        projects_page = global_navigation.navigate_to_view_all_project_page()
+        projects_page.delete_project(project_title)
+        self._perform_undo_deletion(projects_page)
+
+        self._verify_default_reminder_settings(project_title,default_reminder_settings_text)
+
+    def _verify_default_reminder_settings(self,project_name,default_reminder_message):
+        self.assertEquals(default_reminder_message, ProjectsPage(self.driver).navigate_to_project_overview_page(
+            project_name).navigate_to_reminder_page().get_example_text())
+
+    def _verify_reminder_setting(self,reminder_settings_page):
+        reminder_settings_page.set_deadline_by_week(fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK)))
+        self.assertEqual(reminder_settings_page.get_example_text(),
+                         fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK))[EXAMPLE_TEXT])
+
+    def _perform_undo_deletion(self,projects_page):
+        projects_page.trigger_undo_delete()
+        self.assertTrue(self.driver.is_element_present(by_id("reminder_add_dialog_dialog_section")))
+        self.driver.find_visible_element(by_css(".yes_button")).click()

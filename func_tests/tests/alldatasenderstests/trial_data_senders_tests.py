@@ -12,7 +12,7 @@ from tests.registrationtests.trial_registration_tests import register_and_get_em
 from tests.endtoendtest.end_to_end_tests import activate_account
 from testdata.test_data import LOGOUT
 
-QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
+QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: True,
                       DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "WID"},
                       QUESTIONS: [{QUESTION: "Water Level", CODE: "WL", TYPE: NUMBER, MIN: "1", MAX: "1000"},
                                   {QUESTION: "Date of report in DD.MM.YYY format", CODE: "DMY", TYPE: DATE,
