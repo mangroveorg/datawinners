@@ -5452,3 +5452,9 @@ msgstr "Pour que les Questionnaires comportant des logiques avancées puissent f
 
 msgid "the latest version of the DataWinners app."
 msgstr "la nouvelle version de l'application DataWinners."
+
+msgid "Duplicate labels. All questions (labels) must be unique."
+msgstr "Doublon au niveau des labels. Toutes les questions (labels) doivent être uniques."
+
+msgid "missing list reference, check your select_one or select multiple question types"
+msgstr "il manque une liste de référence, vérifiez vos types de question select_one ou select_multiple"

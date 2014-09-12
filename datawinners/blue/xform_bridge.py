@@ -39,6 +39,7 @@ class XlsFormParser():
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
     or_other_data_types = ['select all that apply or specify other', 'select one or specify other']
+    select_without_list_name = ['select_one', 'select_multiple']
 
     def __init__(self, path_or_file, questionnaire_name):
         self.questionnaire_name = questionnaire_name
@@ -115,6 +116,8 @@ class XlsFormParser():
                     errors.append(_("%s as a datatype (metadata)") % _(field['type']))
                 elif(field["type"]) in self.or_other_data_types:
                     errors.append(_("XLSForm \"or_other\" function for multiple choice or single choice questions"))
+                elif(field["type"]) in self.select_without_list_name:
+                    errors.append(_("missing list reference, check your select_one or select multiple question types"))
                 else: errors.append(_("%s as a datatype") % _(field['type']))
             if field.get('media'):
                 for media_type in field['media'].keys():

@@ -98,7 +98,7 @@ class ProjectUpload(View):
                                                xls_form=tmp_file)
             questionnaire_id, form_code = mangrove_service.create_project()
 
-        except (PyXFormError, QuestionAlreadyExistsException) as e:
+        except PyXFormError as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
 
             message = transform_error_message(e.message)
@@ -106,6 +106,16 @@ class ProjectUpload(View):
                 'success': False,
                 'error_msg': [message if message else ugettext(
                     "all XLSForm features. Please check the list of unsupported features.")]
+            }))
+
+        except QuestionAlreadyExistsException as e:
+            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
+
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [_("Duplicate labels. All questions (labels) must be unique.")],
+                'message_prefix': _("Sorry! Current version of DataWinners does not support"),
+                'message_suffix': _("Update your XLSForm and upload again.")
             }))
 
         except Exception as e:
@@ -222,15 +232,26 @@ class ProjectUpdate(View):
             self._purge_feed_documents(questionnaire, request)
             self.recreate_submissions_mapping(manager, questionnaire)
 
-        except (PyXFormError, QuestionAlreadyExistsException) as e:
-            message = transform_error_message(e.message)
+        except PyXFormError as e:
+            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
 
-            logger.info("User: %s. Edit Upload Error: %s", request.user.username, e.message)
+            message = transform_error_message(e.message)
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [message if message else ugettext(
+                    "all XLSForm features. Please check the list of unsupported features.")]
+            }))
+
+        except QuestionAlreadyExistsException as e:
+            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
 
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': [message if message else ugettext("Errors in excel")]
+                'error_msg': [_("Duplicate labels. All questions (labels) must be unique.")],
+                'message_prefix': _("Sorry! Current version of DataWinners does not support"),
+                'message_suffix': _("Update your XLSForm and upload again.")
             }))
+
 
         except Exception as e:
 
