@@ -34,7 +34,7 @@ function _initializeWarningDialog() {
         },
 
         cancelDialogDiv: "#cancel_submission_warning_message",
-        ignore_links: "#cancel_changes , .map-canvas-wrapper"
+        ignore_links: "#cancel_changes , .map-canvas-wrapper a"
     };
     cancelWarningPopUp = new DW.CancelWarningDialog(options).init();
     cancelWarningPopUp.initializeLinkBindings();
