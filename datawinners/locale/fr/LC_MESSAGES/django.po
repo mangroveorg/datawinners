@@ -5193,7 +5193,7 @@ msgid "Simple form"
 msgstr "Simple formulaire"
 
 msgid "health_survey.xls"
-msgstr "enquete_sante.xlsx"
+msgstr "enquete_sante.xls"
 
 msgid "household_details.xls"
 msgstr "details_menage.xls"
