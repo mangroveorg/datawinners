@@ -421,16 +421,11 @@ def project_download(request):
 
     try:
         raw_excel = questionnaire.get_attachments('questionnaire.xls')
-        excel_transformed = XlsProjectParser().parse(raw_excel)
 
-        response = HttpResponse(mimetype="application/vnd.ms-excel")
+        response = HttpResponse(mimetype="application/vnd.ms-excel", content=raw_excel)
         response['Content-Disposition'] = 'attachment; filename="%s.xls"' % slugify(project_name)
 
-        wb = xlwt.Workbook()
-        for sheet in excel_transformed:
-            workbook_add_sheet(wb, excel_transformed[sheet], sheet)
-        wb.save(response)
-    except LookupError as e:
+    except LookupError:
         response = HttpResponse(status=404)
 
     return response
