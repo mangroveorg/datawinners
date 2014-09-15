@@ -5208,7 +5208,7 @@ msgid "Question types, Skip Logic, Multi Choice, Hints, Required and Default"
 msgstr "Types de quesion, Skip Logic, Choix multiples, Astuces, Obligatoire et par défaut"
 
 msgid "r_tooltip_advanced_questionnaire_option"
-msgstr "Ceci est notre premier lancement de la fonctionnalité Téléchargement de formulaire XLS. Aidez-nous à l'améliorer en nous envoyant tout feedback par email à support@datawinners.com. <a> support@datawinners.com. </a>"
+msgstr "Ceci est notre premier lancement de la fonctionnalité Téléchargement de formulaire XLS. Aidez-nous à l'améliorer en nous envoyant tout feedback par email à <a> support@datawinners.com. </a>"
 
 msgid "Enter Name and Create Questionnaire"
 msgstr "Saisissez le nom et Créez le Questionnaire"
