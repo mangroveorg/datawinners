@@ -1350,9 +1350,6 @@ msgstr "Utilisez votre Smartphone Android pour soumettre des données. Suivez le
 msgid "/media/files/DataWinners_InstallDataWinnersOnYourSmartphone.en.pdf"
 msgstr "/media/files/DataWinners_InstallDataWinnersOnYourSmartphone.fr.pdf"
 
-msgid "Install DataWinners on your Smartphone"
-msgstr "Télécharger DataWinners sur votre Smartphone"
-
 msgid "Tutorial"
 msgstr "Tutoriel"
 
@@ -1637,6 +1634,9 @@ msgstr ""
 
 msgid "Web Submission"
 msgstr "Envoi Web"
+
+msgid "Web Submission Form"
+msgstr "Soumissions Web"
 
 msgid "Registered Subjects"
 msgstr "Sujet(s) enregistré(s)"
@@ -5225,7 +5225,7 @@ msgstr "Testez et Modifiez votre Questionnaire..."
 msgid "Download the current XLSForm (Excel file):"
 msgstr "Télécharger le XLSForm actuel (fichier Excel) :"
 
-msgid "Look at the "
+msgid "View the "
 msgstr "Voir les "
 
 msgid "We Can Help You"
@@ -5247,7 +5247,7 @@ msgid "For details see our tutorial"
 msgstr "Pour plus de détails, lisez notre tutoriel sur Comment"
 
 msgid "Install DataWinners on your Smartphone"
-msgstr " installer DataWinners sur votre Smartphone"
+msgstr "Installer DataWinners sur votre Smartphone"
 
 msgid "Upload New XLSForm"
 msgstr "Télécharger un nouveau XLSForm"
@@ -5294,8 +5294,8 @@ msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour l'option c
 msgid "Upload an XLSForm to Create a Questionnaire"
 msgstr "Télécharger un XLSForm pour créer un Questionnaire"
 
-msgid "Need help and support on how to edit an XLSForm?"
-msgstr "Besoin d'aide et d'assistance pour modifier un XLSForm ?"
+msgid "Need help to edit an XLSForm?"
+msgstr "Besoin d'aide pour modifier un XLSForm?"
 
 msgid "Edit Questionnaire"
 msgstr "Modifier le Questionnaire"
