@@ -247,7 +247,6 @@ div.margin_top_20 input {
     margin: 0;
     padding: 0; }
 #container_content .questionnaire_form_header {
-  border-bottom: 3px solid black;
   position: relative; }
   #container_content .questionnaire_form_header .questionnaire_code li {
     padding: 5px 0 !important;

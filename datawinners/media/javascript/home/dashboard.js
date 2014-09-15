@@ -31,34 +31,8 @@ DW.dashboard_project.prototype={
 };
 
 $(document).ready(function() {
-    $( "#how_to" ).accordion({
-        collapsible: true,
-        active: 0
-    });
-
     var project=new DW.dashboard_project();
     project.create_submission_template('submissionTemplate');
-
-    $( "#projects" ).accordion({
-        header: '.project_header',
-        autoHeight: false,
-        collapsible: true,
-        active:100,
-        change: function(event, ui){
-            var accordionContentElement = $(ui.newContent);
-            var id = accordionContentElement.find('.project_id').html();
-            if((id == null) || (accordionContentElement.attr("content_loaded") === 'true')){
-                return false;
-            }
-            project.toggleAjaxLoader(accordionContentElement.find('.ajax_loader_image'), true);
-            $.get('/submission/details/'+ id +'/', function(data) {
-                accordionContentElement.find('.submission_list').html(project.getSubmissionDetails(data));
-                project.toggleAjaxLoader(accordionContentElement.find('.ajax_loader_image'), false);
-                accordionContentElement.attr("content_loaded", true);
-            });
-        }
-    });
-
     $('.project_id').each(function(){
         project.showSubmissionBreakup($(this).html());
     });

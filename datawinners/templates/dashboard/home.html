@@ -57,18 +57,9 @@
         <div id="projects">
         {% for project in projects %}
             <div class="project_header">
-                <span class="header">{{ project.name }} </span>
+                <a href="{{ project.link }}">{{ project.name }} </a>
                 <span id="submission_success_breakup_{{ project.id }}" class="success_error"></span>
-            </div>
-            <div>
-                <a class="go_to_project"href="{{ project.link }}">{% trans "go to this Questionnaire" %}»</a>
                 <span class="project_id none">{{ project.id }}</span>
-                <img class="ajax_loader_image none" src="/media/images/ajax-loader-horizontal-bar.gif"/>
-                <table>
-                    <tbody class="submission_list">
-
-                    </tbody>
-                </table>
             </div>
         {% endfor %}
         </div>
