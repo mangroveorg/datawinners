@@ -5204,8 +5204,8 @@ msgstr "Formulaire avancé"
 msgid "Repeats, Skip Logic, Cascading selects, Grouping, Answer constraint, Calculations"
 msgstr "Répétitions, Skip Logic, Sélections en cascade, Questions groupées, Contraintes, Calculs"
 
-msgid "Question types, Skip Logic, Multi Choice, Hints, Required and Default"
-msgstr "Types de quesion, Skip Logic, Choix multiples, Astuces, Obligatoire et par défaut"
+msgid "Question types, Skip Logic, Repeated set of Questions, Required and Hints"
+msgstr "Types de question, Skip Logic ou branchement conditionnel, Répétition d'une série de questions, Obligatoires et Astuces"
 
 msgid "r_tooltip_advanced_questionnaire_option"
 msgstr "Ceci est notre premier lancement de la fonctionnalité Téléchargement de formulaire XLS. Aidez-nous à l'améliorer en nous envoyant tout feedback par email à <a> support@datawinners.com. </a>"
@@ -5246,8 +5246,8 @@ msgstr "la dernière version de l'application DataWinners (Google Playstore)."
 msgid "For details see our tutorial"
 msgstr "Pour plus de détails, lisez notre tutoriel sur Comment"
 
-msgid "Install DataWinners on your Smartphone!"
-msgstr " installer DataWinners sur votre Smartphone !"
+msgid "Install DataWinners on your Smartphone"
+msgstr " installer DataWinners sur votre Smartphone"
 
 msgid "Upload New XLSForm"
 msgstr "Télécharger un nouveau XLSForm"
@@ -5303,8 +5303,8 @@ msgstr "Modifier le Questionnaire"
 msgid "Upload a new XLSForm (Excel file) to replace the current Questionnaire"
 msgstr "Téléchargez un nouveau XLSForm (fichier Excel) pour remplacer le Questionnaire actuel"
 
-msgid "Use XLSForms to create a Questionnaire with advanced features (such as skip logic), then upload the XLSForm to your DataWinners account"
-msgstr "Utilisez les XLSForms pour créer un Questionnaire incluant les fonctionnalités avancées (tel que Skip Logic), puis téléchargez l'XLSForm dans votre compte DataWinners"
+msgid "Use XLSForms to create a Questionnaire with advanced features (such as skip logic), then upload the XLSForm to DataWinners account"
+msgstr "Utilisez les XLSForms pour créer un Questionnaire incluant les fonctionnalités avancées (tel que Skip Logic), puis téléchargez l'XLSForm dans compte DataWinners"
 
 msgid "XLSForm"
 msgstr "formulaire XLS"
@@ -5312,8 +5312,8 @@ msgstr "formulaire XLS"
 msgid "Step 1. Create an XLSForm"
 msgstr "Etape 1. Créez un XLSForm"
 
-msgid "Step 2. Upload an XLSForm to your DataWinners account"
-msgstr "Etape 2. Téléchargez un XLSForm dans votre compte DataWinners"
+msgid "Step 2. Upload an XLSForm to DataWinners"
+msgstr "Etape 2. Téléchargez un XLSForm dans DataWinners"
 
 msgid "Step 3. Test your Questionnaire"
 msgstr "Etape 3. Testez votre Questionnaire"
@@ -5327,8 +5327,8 @@ msgstr "Etape 5. Exportez vos Données"
 msgid "Repeats (Repeated set of questions)"
 msgstr "Répétition d'une série de questions"
 
-msgid "XLSForm is a tool that will allow you to design a Questionnaire with advanced features:"
-msgstr "XLSForm est un outil qui vous permettra de créer votre Questionnaire en utilisant des fonctionnalités avancées :"
+msgid "XLSForm is a tool that allows you to design a Questionnaire with advanced features:"
+msgstr "XLSForm est un outil qui vous permet de créer votre Questionnaire en utilisant des fonctionnalités avancées:"
 
 msgid "Skip logic"
 msgstr "Branchement conditionnel (ou Skip Logic)"
@@ -5369,8 +5369,8 @@ msgstr "Répétition d'une série de questions, Skip Logic, Séléctions en casc
 msgid "Grouping questions, Answer constraint, Calculations:"
 msgstr "Questions groupées, Réponses à contraintes, Calculs:"
 
-msgid "Download sample XLSForms to see how to create advanced Questionnaire features in Excel."
-msgstr "Téléchargez les modèles de XLSForm pour voir comment créer des Questionnaires incluant des fonctionnalités avancées sur Excel."
+msgid "Download sample XLSForms to see how to create a Questionnaire with advanced features in Excel."
+msgstr "Téléchargez les modèles de XLSForm pour voir comment créer des Questionnaires en utilisant des fonctionnalités avancées sur Excel."
 
 msgid "larger files than 10MB."
 msgstr "fichiers plus volumineux que 10Mo."

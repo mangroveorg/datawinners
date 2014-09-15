@@ -2,7 +2,7 @@
 
 <div id="xls_learn_more_form" class="none">
     <div class="learn_more_text">
-        {% trans "Use XLSForms to create a Questionnaire with advanced features (such as skip logic), then upload the XLSForm to your DataWinners account" %}
+        {% trans "Use XLSForms to create a Questionnaire with advanced features (such as skip logic), then upload the XLSForm to DataWinners account" %}
     </div>
     <hr>
     <div class="learn_more_accordion" id="learn_more_section">
@@ -11,7 +11,7 @@
             <div class="learn_more_header_text">{% trans "Step 1. Create an XLSForm" %}</div>
         </div>
         <div id="step_section">
-            {% trans "XLSForm is a tool that will allow you to design a Questionnaire with advanced features:"%}
+            {% trans "XLSForm is a tool that allows you to design a Questionnaire with advanced features:"%}
             <br/><br/>
             <ul>
                 <li>{% trans "Repeats (Repeated set of questions)" %} </li>
@@ -30,12 +30,12 @@
             <br/><br/>
             <h4>{%  trans "Sample Forms" %}</h4>
 
-            {% trans "Download sample XLSForms to see how to create advanced Questionnaire features in Excel." %}
+            {% trans "Download sample XLSForms to see how to create a Questionnaire with advanced features in Excel." %}
             <ol id="sample_xls_section">
                 <li class="margin_top_10">{% trans "Simple form" %}: <a class="dialog-link"
                                                                         href="/media/files/{% trans "health_survey.xls" %}">{% trans "health_survey.xls" %}</a>
                     <br>
-                    <span style="font-style: italic">{% trans "Question types, Skip Logic, Multi Choice, Hints, Required and Default" %}</span>
+                    <span style="font-style: italic">{% trans "Question types, Skip Logic, Repeated set of Questions, Required and Hints" %}</span>
                 </li>
                 <li class="margin_top_10"> {% trans "Advanced Form" %}: <a class="dialog-link"
                                                                            href="/media/files/{% trans "household_details.xls" %}">{% trans "household_details.xls" %}</a>
@@ -50,7 +50,7 @@
 
 
         <div class="learn_more_header">
-            <div class="learn_more_header_text">{% trans "Step 2. Upload an XLSForm to your DataWinners account" %}</div>
+            <div class="learn_more_header_text">{% trans "Step 2. Upload an XLSForm to DataWinners" %}</div>
         </div>
         <div id="step_section">
             <img src="/media/images/xls_feature/upload_xls_step2_{{ active_language }}.jpg"/>
@@ -59,7 +59,7 @@
             <div class="learn_more_header_text">{% trans "Step 3. Test your Questionnaire" %}</div>
         </div>
         <div id="step_section">
-            <p>{% trans "For advanced Questionnaire features to work on Android Devices you need to download" %} <a class="dialog-link" target="_blank" href="https://play.google.com/store/apps/details?id=org.hni.datawinners.android.collect&hl=en">{%trans "the latest version of the DataWinners app (Google Playstore)."%}</a>{% trans "For details see our tutorial" %} <a class="dialog-link" target="_blank" href="/media/files/DataWinners_InstallDataWinnersOnYourSmartphone.{{ active_language }}.pdf">{% trans "Install DataWinners on your Smartphone!"%}</a></p>
+            <p>{% trans "For advanced Questionnaire features to work on Android Devices you need to download" %} <a class="dialog-link" target="_blank" href="https://play.google.com/store/apps/details?id=org.hni.datawinners.android.collect&hl=en">{%trans "the latest version of the DataWinners app (Google Playstore)."%} </a>{% trans "For details see our tutorial" %} <a class="dialog-link" target="_blank" href="/media/files/DataWinners_InstallDataWinnersOnYourSmartphone.{{ active_language }}.pdf">{% trans "Install DataWinners on your Smartphone"%}</a></p>
             <img src="/media/images/xls_feature/upload_xls_step3_{{ active_language }}.jpg"/>
             </br></br>
             <img src="/media/images/xls_feature/upload_xls_step3_image2_{{ active_language }}.png"/>
