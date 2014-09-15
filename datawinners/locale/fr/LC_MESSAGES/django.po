@@ -5253,10 +5253,10 @@ msgid "Upload New XLSForm"
 msgstr "Télécharger un nouveau XLSForm"
 
 msgid "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!"
-msgstr "Si vous modifiez votre formulaire XLS et le téléchargez une nouvelle fois, toutes les données collectées précédemment seront perdues!"
+msgstr "Si vous modifiez votre formulaire XLS et le téléchargez une nouvelle fois, toutes les données collectées précédemment seront perdues !"
 
 msgid "Do you want to continue uploading the edited XLSForm?"
-msgstr "Voulez-vous continuer à télécharger le formulaire XLS modifié?"
+msgstr "Voulez-vous continuer à télécharger le formulaire XLS modifié ?"
 
 msgid "You can"
 msgstr "Vous pouvez"

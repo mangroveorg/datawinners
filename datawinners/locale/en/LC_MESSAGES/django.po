@@ -4671,7 +4671,7 @@ msgid "photo"
 msgstr "image"
 
 msgid "instead."
-msgstr "instead."
+msgstr " instead."
 
 msgid "Label mandatory for question with name [%s]"
 msgstr "optional labels. Label is a mandatory field for question with name [%s]"

@@ -91,10 +91,10 @@
     </div>
     <div id="cancel_questionnaire_edit" style="display: none;">
         {% trans "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!" %}<br/><br/>
-        <p class="font_size_13">{% trans "You can" %} <a class='dialog-link' href='{{ project_links.submission_log_link }}'> {% trans "Export Your Submissions" %}</a> {% trans "first or" %} <a class='dialog-link' href="{% url create_project %}?prev=ques#questionnaire/xlsupload/">{% trans "Create a New Questionnaire"%}</a> {% trans 'instead.'%} </p><br/>
+        <p class="font_size_13">{% trans "You can" %} <a class='dialog-link' href='{{ project_links.submission_log_link }}'> {% trans "Export Your Submissions" %}</a> {% trans "first or" %} <a class='dialog-link' href="{% url create_project %}?prev=ques#questionnaire/xlsupload/">{% trans "Create a New Questionnaire"%}</a>{% trans 'instead.'%} </p><br/>
 
 
-        {% trans "Do you want to continue uploading the edited XLSForm?" %}
+        {% trans "Do you want to continue uploading the edited XLSForm ?" %}
         <div class="text_align_right padding_top_20">
             <a id="cancel_dialog" class="dialog_cancel_button dialog-link" href="javascript:void(0);">{% trans "Cancel" %}</a>
             <a id="save_changes" class="button yes_button">{% trans "Continue" %}</a>
