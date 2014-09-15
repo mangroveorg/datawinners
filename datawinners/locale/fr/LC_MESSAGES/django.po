@@ -5301,7 +5301,7 @@ msgid "Edit Questionnaire"
 msgstr "Modifier le Questionnaire"
 
 msgid "Upload a new XLSForm (Excel file) to replace the current Questionnaire"
-msgstr "Télécharger un nouveau XLSForm (fichier Excel) pour remplacer le Questionnaire actuel"
+msgstr "Téléchargez un nouveau XLSForm (fichier Excel) pour remplacer le Questionnaire actuel"
 
 msgid "Use XLSForms to create a Questionnaire with advanced features (such as skip logic), then upload the XLSForm to your DataWinners account"
 msgstr "Utilisez les XLSForms pour créer un Questionnaire incluant les fonctionnalités avancées (tel que Skip Logic), puis téléchargez l'XLSForm dans votre compte DataWinners"
