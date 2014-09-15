@@ -5229,7 +5229,7 @@ msgid "Look at the "
 msgstr "Voir les "
 
 msgid "We Can Help You"
-msgstr "Nous pouvons vous aider."
+msgstr "Nous pouvons vous aider"
 
 msgid "We build XLSForms!  Contact"
 msgstr "Nous créons des XLSForms. Contactez"
@@ -5370,7 +5370,7 @@ msgid "Grouping questions, Answer constraint, Calculations:"
 msgstr "Questions groupées, Réponses à contraintes, Calculs:"
 
 msgid "Download sample XLSForms to see how to create advanced Questionnaire features in Excel."
-msgstr "Téléchargez les modèles de XLSForm pour voir comment des Questionnaires incluant des fonctionnalités avancées sur Excel."
+msgstr "Téléchargez les modèles de XLSForm pour voir comment créer des Questionnaires incluant des fonctionnalités avancées sur Excel."
 
 msgid "larger files than 10MB."
 msgstr "fichiers plus volumineux que 10Mo."
