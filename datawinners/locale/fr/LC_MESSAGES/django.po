@@ -5458,3 +5458,6 @@ msgstr "Doublon au niveau des labels. Toutes les questions (labels) doivent êtr
 
 msgid "missing list reference, check your select_one or select multiple question types"
 msgstr "il manque une liste de référence, vérifiez vos types de question select_one ou select_multiple"
+
+msgid "Inform your Data Senders to download the new version of the Questionnaire."
+msgstr "Demandez à vos Expéditeurs de Données de télécharger la nouvelle version du Questionnaire."
