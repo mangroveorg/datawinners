@@ -26,11 +26,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 DIR = os.path.dirname(__file__)
 
 regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}\W\S{2}'
-# SUBMISSION_DATA = 'Tester Pune rep276 ' + regex_date_match + ' Success  name multiline text 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option a,option b option 8 option 5 Don\'t Know option 8 agree option d option a,option b,option c,option d option d   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy United States New York City Harlem The Netherlands Rotterdam Downtown 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60", "Date within a...\n: ";'
 SUBMISSION_DATA = 'Tester Pune rep276 ' + regex_date_match + ' Success 11.09.2014 name multiline 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option b,option c option 5,option 8 option 4 No option 5 neither agree nor disagree option a option c option c   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy The Netherlands Amsterdam Westerpark United States New York City Harlem 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60", "Date within a...\n: 17.09.2014";'
-
-# SUBMISSION_DATA = 'Tester Pune rep276 ' + regex_date_match + ' Success name multiline text 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option a,option b option 8 option 5 Don\'t Know option 8 agree option d option a,option b,option c,option d option d   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy United States New York City Harlem The Netherlands Rotterdam Downtown 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60";'
-
 
 class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     def setUp(self):
@@ -51,7 +47,6 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEqual(submission_log_page.get_total_number_of_rows(), 3)  # 2 rows + 1 hidden row for select all
         submission_log_page.search(datasender_rep_id)
         data = submission_log_page.get_all_data_on_nth_row(1)
-        # EDITED_SUBMISSION_DATA = 'a Mickey Duck ' + datasender_rep_id + " " + regex_date_match + ' Success name-edited multiline text 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option a,option b option 8 option 5 Don\'t Know option 8 agree option d option a,option b,option c,option d option d   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy United States New York City Harlem The Netherlands Rotterdam Downtown 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60";'
         EDITED_SUBMISSION_DATA = 'a Mickey Duck ' + datasender_rep_id + " " + regex_date_match + ' Success 11.09.2014 name-edited multiline 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option b,option c option 5,option 8 option 4 No option 5 neither agree nor disagree option a option c option c   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy The Netherlands Amsterdam Westerpark United States New York City Harlem 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60", "Date within a...\n: 17.09.2014";'
         self.assertRegexpMatches(" ".join(data), EDITED_SUBMISSION_DATA)
 
