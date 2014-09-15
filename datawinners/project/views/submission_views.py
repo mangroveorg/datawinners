@@ -412,7 +412,7 @@ def export(request):
     query_params.update({"filter": submission_type})
 
     if form_model.xform:
-        return XFormSubmissionExporter(form_model, project_name, request.user) \
+        return XFormSubmissionExporter(form_model, project_name, request.user, current_language) \
         .create_excel_response(submission_type, query_params)
 
     return SubmissionExporter(form_model, project_name, request.user, current_language) \
