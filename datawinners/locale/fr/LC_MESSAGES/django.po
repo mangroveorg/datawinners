@@ -5240,8 +5240,11 @@ msgstr " pour en savoir plus sur notre service de création de Questionnaire inc
 msgid "For advanced Questionnaire features to work on Android Devices you need to download"
 msgstr "Pour que les Questionnaires utilisant les fonctionnalités avancées puissent fonctionner avec les appareils Android, vous devez télécharger"
 
-msgid "the latest version of the DataWinners app (Google Playstore)."
-msgstr "la dernière version de l'application DataWinners (Google Playstore)."
+msgid "the latest version of the DataWinners app (Google Playstore).Uninstall the current version."
+msgstr "la dernière version de l'application DataWinners (Google Playstore).Désinstallez la version actuelle."
+
+msgid "Uninstall the current version."
+msgstr "Désinstallez la version actuelle."
 
 msgid "For details see our tutorial"
 msgstr "Pour plus de détails, lisez notre tutoriel sur Comment"
