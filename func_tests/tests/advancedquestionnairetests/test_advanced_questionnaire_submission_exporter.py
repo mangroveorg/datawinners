@@ -2,8 +2,6 @@
 import json
 import os
 import tempfile
-import uuid
-import re
 
 from django.test import Client
 from nose.plugins.attrib import attr
@@ -11,10 +9,9 @@ import xlrd
 
 from datawinners.utils import random_string
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import by_css
 from pages.loginpage.login_page import login
+from tests.advancedquestionnairetests.advanced_questionnaire_test_helper import navigate_and_verify_web_submission_page_is_loaded, perform_submission
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.testsettings import UI_TEST_TIMEOUT
 
 
 DIR = os.path.dirname(__file__)
@@ -102,7 +99,7 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
         self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
         questionnaire_code = self._verify_questionnaire_creation(self.project_name)
-        temporary_project_name = self._navigate_and_verify_web_submission_page_is_loaded()
+        temporary_project_name = navigate_and_verify_web_submission_page_is_loaded(self.driver,self.global_navigation_page,self.project_name)
         # Make 2 submissions
         self._do_web_submission(temporary_project_name, questionnaire_code, 'tester150411@gmail.com', 'tester150411')
         self._do_web_submission(temporary_project_name, questionnaire_code, 'tester150411@gmail.com', 'tester150411')
@@ -124,17 +121,6 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
         self._verify_third_sheet(workbook)
         self._verify_fourth_sheet(workbook)
 
-    def _navigate_and_verify_web_submission_page_is_loaded(self):
-        all_data_page = self.global_navigation_page.navigate_to_all_data_page()
-        all_data_page.navigate_to_web_submission_page(self.project_name)
-        form_element = self._verify_advanced_web_submission_page_is_loaded()
-        return form_element.get_attribute('id')
-
-    def _verify_advanced_web_submission_page_is_loaded(self):
-        form_element = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("form"), True)
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".ajax-loader"))
-        return form_element
-
     def _verify_questionnaire_creation(self, project_name):
         r = self.client.post(
             path='/xlsform/upload/?pname=' + project_name + '&qqfile=ft_advanced_questionnaire_export.xls',
@@ -147,22 +133,9 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
         return response['form_code']
 
     def _do_web_submission(self, project_temp_name, form_code, user, password):
-        submission_data = open(os.path.join(self.test_data, 'advanced_questionnaire_export_submission.xml'), 'r').read()
-        submission_data = re.sub("tmpdt7nQf", project_temp_name, submission_data)
-        submission_data = re.sub("<form_code>053", "<form_code>" + form_code, submission_data)
-        client = Client()
-        client.login(username=user, password=password)
-        r = client.post(path='/xlsform/web_submission/', data={'form_data': submission_data, 'form_code': form_code})
+        credentials = {'user': user, 'password': password}
+        r = perform_submission('advanced_questionnaire_export_submission.xml',project_temp_name,form_code, credentials)
         self.assertEquals(r.status_code, 201)
         self.assertNotEqual(r._container[0].find('submission_uuid'), -1)
-
-    def create_submissions(self):
-        _from = "917798987116"
-        _to = "919880734937"
-        for i in [17, 18]:
-            message = "cli001 cid001 export%s %d 02.02.2012 a a 2,2 a" % (i, i)
-            data = {"message": message, "from_msisdn": _from, "to_msisdn": _to, "message_id": uuid.uuid1().hex}
-            self.client.post("/submission", data)
-
 
 
