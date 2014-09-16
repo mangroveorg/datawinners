@@ -45,4 +45,4 @@ flower
 urllib3
 pyxform
 xmltodict==0.8.6
--e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@13_0_release#egg=mangrove
