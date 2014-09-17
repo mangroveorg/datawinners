@@ -18,7 +18,7 @@ from datawinners.project import helper
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, \
     EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
-from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
+from mangrove.transport.repository.survey_responses import survey_responses_by_form_model_id
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.project.forms import ReminderForm
@@ -201,8 +201,8 @@ def edit_project(request, project_id):
             deleted_question_codes = _get_deleted_question_codes(old_codes=old_field_codes,
                                                                  new_codes=questionnaire.field_codes())
 
-            update_associated_submissions.delay(manager.database_name, old_form_code,
-                                                questionnaire.form_code,
+            update_associated_submissions.delay(manager.database_name,
+                                                questionnaire.id,
                                                 deleted_question_codes)
             UserActivityLog().log(request, project=questionnaire.name, action=EDITED_QUESTIONNAIRE, detail=json.dumps(detail))
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
@@ -370,19 +370,19 @@ def _get_activity_log_action(reminder_list, new_value):
     return action
 
 
-def update_submissions_for_form_code_change(manager, new_form_code, old_form_code):
-    if old_form_code != new_form_code:
-        survey_responses = survey_responses_by_form_code(manager, old_form_code)
-        documents = []
-        for survey_response in survey_responses:
-            survey_response.form_code = new_form_code
-            documents.append(survey_response._doc)
-        manager._save_documents(documents)
+#def update_submissions_for_form_code_change(manager, new_form_code, old_form_code):
+#    if old_form_code != new_form_code:
+#        survey_responses = survey_responses_by_form_code(manager, old_form_code)
+#        documents = []
+#        for survey_response in survey_responses:
+#            survey_response.form_code = new_form_code
+#            documents.append(survey_response._doc)
+#        manager._save_documents(documents)
 
 
-def remove_deleted_questions_from_submissions(manager, old_form_code, deleted_question_codes):
+def remove_deleted_questions_from_submissions(manager, form_model_id, deleted_question_codes):
     if deleted_question_codes:
-        survey_responses = survey_responses_by_form_code(manager, old_form_code)
+        survey_responses = survey_responses_by_form_model_id(manager, form_model_id)
         for survey_response in survey_responses:
             for code in deleted_question_codes:
                 survey_response._doc.values.pop(code, None)
@@ -390,10 +390,10 @@ def remove_deleted_questions_from_submissions(manager, old_form_code, deleted_qu
 
 
 @app.task(max_retries=3, throw=False)
-def update_associated_submissions(database_name, old_form_code, new_form_code, deleted_question_codes):
+def update_associated_submissions(database_name, form_model_id, deleted_question_codes):
     try:
         manager = get_db_manager(database_name)
-        update_submissions_for_form_code_change(manager, new_form_code, old_form_code)
-        remove_deleted_questions_from_submissions(manager, new_form_code, deleted_question_codes)
+        #update_submissions_for_form_code_change(manager, new_form_code, old_form_code)
+        remove_deleted_questions_from_submissions(manager, form_model_id, deleted_question_codes)
     except Exception as e:
         current.retry(exc=e)

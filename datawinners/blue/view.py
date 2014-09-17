@@ -43,7 +43,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.utils import workbook_add_sheet
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
-    survey_responses_by_form_code
+    survey_responses_by_form_model_id
 from mangrove.utils.dates import py_datetime_to_js_datestring
 from django.utils.translation import ugettext as _
 
@@ -176,7 +176,7 @@ class ProjectUpdate(View):
             feed_dbm.database.delete(row['doc'])
 
     def _purge_submissions(self, manager, questionnaire):
-        survey_responses = survey_responses_by_form_code(manager, questionnaire.form_code)
+        survey_responses = survey_responses_by_form_model_id(manager, questionnaire.id)
         for survey_response in survey_responses:
             survey_response.data_record.delete()
             survey_response.delete()
