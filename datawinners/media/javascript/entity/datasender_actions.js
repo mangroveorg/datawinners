@@ -452,8 +452,8 @@ $(document).ready(function(){
    });
 
    $("#change_ds_setting #save_ds_setting").bind("click", function(){
-       DW.loading();
        $("#save_ds_setting").html(gettext('Saving...'));
+       DW.loading();
        var project_id = $('#project_id').val();
        var selected = $("#change_ds_setting input[name='ds_setting']:checked").val();
        $.ajax({url:'/project/change_ds_setting/',
@@ -466,6 +466,7 @@ $(document).ready(function(){
            var response = $.parseJSON(json_response);
                     if (response.success) {
                         window.location.href = "/project/registered_datasenders/" + project_id + "/";
+                        $("#save_ds_setting").html(gettext('Save'));
                     }
            }
        );

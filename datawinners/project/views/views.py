@@ -580,9 +580,12 @@ class SurveyWebQuestionnaireRequest():
         self.feeds_dbm = get_feeds_database(request.user)
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
+        self.reporter_id = NGOUserProfile.objects.get(user=self.request.user).reporter_id
+        self.reporter_name = NGOUserProfile.objects.get(user=self.request.user).user.first_name
+        self.is_linked = self.reporter_id in self.questionnaire.data_senders
 
     def form(self, initial_data=None):
-        return SurveyResponseForm(self.questionnaire, data=initial_data, is_datasender=self.is_data_sender)
+        return SurveyResponseForm(self.questionnaire, data=initial_data, is_datasender=self.is_data_sender, reporter_id=self.reporter_id, reporter_name=self.reporter_name, is_linked=self.is_linked)
 
     @property
     def template(self):
@@ -593,6 +596,7 @@ class SurveyWebQuestionnaireRequest():
         if self.questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
         reporter_id = NGOUserProfile.objects.get(user=self.request.user).reporter_id
+        reporter_name = NGOUserProfile.objects.get(user=self.request.user).user.first_name
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, is_update)
@@ -601,6 +605,8 @@ class SurveyWebQuestionnaireRequest():
             'questionnaire_code': self.questionnaire.form_code,
             'is_datasender': self.is_data_sender,
             'reporter_id': reporter_id,
+            'reporter_name': reporter_name,
+            'is_linked': self.is_linked,
         })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
@@ -623,9 +629,11 @@ class SurveyWebQuestionnaireRequest():
     def response_for_post_request(self, is_update=None):
         questionnaire_form = self.form(self.request.POST)
         quota_reached = is_quota_reached(self.request)
+        reporter_id = NGOUserProfile.objects.get(user=self.request.user).reporter_id
+        is_linked = self.reporter_id in self.questionnaire.data_senders
         if not questionnaire_form.is_valid() or quota_reached:
             form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
-                                            self.disable_link_class)
+                                            self.disable_link_class, is_linked, reporter_id,)
             form_context.update({'is_quota_reached': quota_reached})
             return render_to_response(self.template, form_context,
                                       context_instance=RequestContext(self.request))
@@ -655,7 +663,7 @@ class SurveyWebQuestionnaireRequest():
                                             self.disable_link_class, is_update=is_update)
 
         _project_context.update({'success_message': success_message, 'error_message': error_message,
-                                 'questionnaire_form': self.form(), })
+                                 'questionnaire_form': self.form(), 'is_linked':is_linked, 'reporter_id': reporter_id,})
 
         return render_to_response(self.template, _project_context,
                                   context_instance=RequestContext(self.request))

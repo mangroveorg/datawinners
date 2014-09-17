@@ -2607,8 +2607,8 @@ msgstr "La réponse doit être un nombre. Le maximum est %s"
 msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"
 msgstr "Entrez le numéro d'identification de l'Expéditeur de données. Cliquez sur 'Expéditeurs de données' en haut de cette page pour trouver ces numéros d'identification. Exemple: rep10"
 
-msgid "I want to submit this data on behalf of a registered Data Sender:"
-msgstr "Je vous soumettre ces données pour le compte d'un Expéditeur de Données enregistré:"
+msgid "I want to submit this data on behalf of a registered Data Sender"
+msgstr "Je vous soumettre ces données pour le compte d'un Expéditeur de Données enregistré"
 
 msgid "What is associated Data sender type?"
 msgstr "Quel est le type de sujet associé ?"
@@ -2707,7 +2707,10 @@ msgid "Just one more step..."
 msgstr "Juste une étape de plus ..."
 
 msgid "Just two more steps..."
-msgstr "Encore quelques étapes..."
+msgstr "Encore deux étapes..."
+
+msgid "Just three more steps..."
+msgstr "Encore trois étapes..."
 
 msgid "Enhance your project..."
 msgstr "Améliorer votre projet..."
@@ -5148,7 +5151,7 @@ msgid "You can only send Reminders to registered Data Senders. First, register y
 msgstr "Vous pouvez envoyer des rappels uniquement aux Expéditeurs de Données enregistrés. Premièrement, enregistrez vos Expéditeurs de Données sur la page<a style='float: none; margin: 0;' href='%(url_to_my_datasender)s'> Mes Expéditeurs </a>."
 
 msgid "All people who submitted data (registered & un-registered) "
-msgstr "Mes Expéditeurs de Données enregistrés liés à ce Questionnaire et les personnes non enregistrées ayant soumis des données"
+msgstr "Tous ceux qui ont soumis des données (enregistrés et non-enregistrés)"
 
 msgid "registered Data Senders"
 msgstr "Expéditeurs de Données enregistrés"
@@ -5157,4 +5160,4 @@ msgid "unregistered Data Senders"
 msgstr "Expéditeurs de Données non enregistrés"
 
 msgid "Choose Data Sender"
-msgstr "Choisissez un Expéditeur de données"
+msgstr "Choisir un Expéditeur de données"

@@ -2491,7 +2491,7 @@ msgstr "Answer must be a word %d characters maximum"
 msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"
 msgstr ""
 
-msgid "I want to submit this data on behalf of a registered Data Sender:"
+msgid "I want to submit this data on behalf of a registered Data Sender"
 msgstr ""
 
 msgid "What is associated Data sender type?"

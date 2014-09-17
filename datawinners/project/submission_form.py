@@ -9,28 +9,31 @@ from django.core.exceptions import ValidationError
 from operator import itemgetter
 
 class BaseSubmissionForm(Form):
-    def __init__(self, project, data, is_datasender, datasender_name):
+    def __init__(self, project, data, is_datasender, datasender_name, reporter_id, reporter_name, is_linked):
         super(BaseSubmissionForm, self).__init__(data)
         self.form_model = project
         self.fields['form_code'] = CharField(widget=HiddenInput, initial=project.form_code)
+        self.is_datasender = is_datasender
         if not is_datasender:
 
             default_choice = [("", gettext("Choose Data Sender"))]
-            list = (as_choices(project.get_data_senders(project._dbm)))
-            list_sorted = sorted(list, key=itemgetter(1))
+            list_ds = (as_choices(project.get_data_senders(project._dbm)))
+            if not is_linked:
+                list_ds.append((reporter_id, reporter_name))
+            list_sorted = sorted(list_ds, key=itemgetter(1))
             default_choice.extend(list_sorted)
             if data:
                 error_message = {'invalid_choice':_("The Data Sender %s (%s) is not linked to your Questionnaire.") % (datasender_name, data.get("dsid"))}
             else:
                 error_message = None
-            self.fields['dsid'] = ChoiceField(label=_('I want to submit this data on behalf of a registered Data Sender:'),
+            self.fields['dsid'] = ChoiceField(label=_('I want to submit this data on behalf of a registered Data Sender'),
                                           choices=default_choice,
                                           error_messages=error_message)
 
 
 class SurveyResponseForm(BaseSubmissionForm):
-    def __init__(self, project, data=None, is_datasender=False, datasender_name=''):
-        super(SurveyResponseForm, self).__init__(project, data, is_datasender, datasender_name)
+    def __init__(self, project, data=None, is_datasender=False, datasender_name='', reporter_id=None, reporter_name=None, is_linked=False):
+        super(SurveyResponseForm, self).__init__(project, data, is_datasender, datasender_name, reporter_id, reporter_name, is_linked)
 
         for field in self.form_model.fields:
             if isinstance(field, UniqueIdField):

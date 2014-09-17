@@ -3,28 +3,33 @@
 {% block page_js %}
     <script language="JavaScript">
     $(document).ready(function() {
+        reporter_id = DW.reporter_id;
+        is_linked = DW.is_linked;
+        if (!is_linked){
+            $('select#id_dsid option[value='+ reporter_id +']').addClass("display_none");
+        }
+
         if (!($('#on_behal_of').is(':checked'))){
-            reporter_id = DW.reporter_id
-            $('select#id_dsid option[value='+ reporter_id +']').attr("selected", "selected");
+           $('select#id_dsid option[value='+ reporter_id +']').attr("selected", "selected");
         }
         else{
-            $('select#id_dsid option:eq(0)').attr("selected", "selected");}
-            $('#on_behalf_of').live("click", function() {
+              $('select#id_dsid option:eq(0)').attr("selected", "selected");
+        }
+        $('#on_behalf_of').live("click", function() {
             if ($(this).is(':checked')) {
                 $('#choice_ds').removeClass("display_none");
                 $('select#id_dsid option:eq(0)').attr("selected", "selected");
-            } else {
+            }
+            else {
                 $('#choice_ds').addClass("display_none");
             }
-
         });
+        
         if ($('ul.errorlist li span#on_behalf_of_error ').length){
             $('#choice_ds').removeClass("display_none");
             $('#on_behalf_of').attr("checked", "checked") ;
             $('select#id_dsid option:eq(0)').attr("selected", "selected");
         }
-
-
     });
     </script>
 {% endblock %}
@@ -55,7 +60,7 @@
 {% for field in questionnaire_form %}
     {% if not field.is_hidden %}
         {% if field.name == 'dsid' %}
-            <div class="float_left">
+            <div class="float_left margin_bottom_10">
             <input type="checkbox" value="on_behalf_of" id="on_behalf_of" class="margin_left_minus_16">
             {{ field.label }}
             </div>
