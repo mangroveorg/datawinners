@@ -39,7 +39,7 @@ def stop_servers():
 
 def start_servers():
     run("sudo service uwsgi start")
-    run("sudo service nginx stop || echo 'nginx already stopped'")
+    # run("sudo service nginx stop || echo 'nginx already stopped'")
     run("sudo service nginx start")
     run("sudo service celeryd start")
     print 'server started..'
@@ -162,7 +162,7 @@ def _link_repo(context, link_name):
 def _checkout_datawinners_conf(code_dir):
     conf_project_name = "datawinners-conf"
     project_dir = os.path.join(code_dir, conf_project_name)
-    run("rm -f %s" % project_dir)
+    run("rm -rf %s" % project_dir)
     run('git clone git@github.com:hnidev/%s.git %s' % (conf_project_name, project_dir))
 
 
