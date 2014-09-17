@@ -7,19 +7,19 @@ from datawinners.tasks import app
 
 
 @app.task(max_retries=3, throw=False)
-def async_populate_submission_index(db_name, form_code):
+def async_populate_submission_index(db_name, form_model_id):
     logger = logging.getLogger('datawinners.tasks')
     try:
         try:
             dbm = get_db_manager(db_name)
             from datawinners.search.manage_index import populate_submission_index
 
-            populate_submission_index(dbm, form_code)
+            populate_submission_index(dbm, form_model_id)
             _clear_index_cache(dbm)
         except Exception as e:
             current.retry(exc=e)
     except Exception as e:
-        logger.exception('Failed for db: %s ,form code: %s' % (db_name, form_code))
+        logger.exception('Failed for db: %s ,form model id: %s' % (db_name, form_model_id))
         logger.exception(e)
 
 

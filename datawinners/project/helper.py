@@ -114,7 +114,7 @@ def _get_instruction_text(field):
 
 
 def _update_survey_responses(manager, questionnaire, void):
-    [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
+    [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.id, None, None)]
 
 
 def delete_project(questionnaire):

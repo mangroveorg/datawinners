@@ -5,9 +5,9 @@ from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 
 
-def populate_submission_index(dbm, form_code=None):
-    start_key = [form_code] if form_code else []
-    end_key = [form_code, {}] if form_code else [{}, {}]
+def populate_submission_index(dbm, form_model_id=None):
+    start_key = [form_model_id] if form_model_id else []
+    end_key = [form_model_id, {}] if form_model_id else [{}, {}]
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False, startkey=start_key, endkey=end_key)
     logger = logging.getLogger(dbm.database_name)
     ignored = 0

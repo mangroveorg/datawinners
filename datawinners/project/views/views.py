@@ -139,11 +139,11 @@ def project_overview(request, project_id):
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     number_of_questions = len(questionnaire.fields)
-    questionnaire_code = questionnaire.form_code
+    questionnaire_id = questionnaire.id
     project_links = make_project_links(questionnaire)
     map_api_key = get_map_key(request.META['HTTP_HOST'])
     number_data_sender = len(questionnaire.data_senders)
-    number_records = survey_response_count(manager, questionnaire_code, None, None)
+    number_records = survey_response_count(manager, questionnaire_id, None, None)
     number_reminders = Reminder.objects.filter(project_id=questionnaire.id).count()
     links = {'registered_data_senders': reverse("registered_datasenders", args=[project_id]),
              'web_questionnaire_list': reverse('web_questionnaire', args=[project_id])}
@@ -181,7 +181,7 @@ def project_overview(request, project_id):
         'links': links,
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
-        'questionnaire_code': questionnaire_code,
+        'questionnaire_code': questionnaire_id,
         'has_multiple_unique_id': has_multiple_unique_id,
         'show_sp_upgrade_info': _is_smart_phone_upgrade_info_flag_present(request),
         'entity_type': json.dumps(entity_type),
@@ -393,7 +393,7 @@ def questionnaire(request, project_id):
         fields = questionnaire.fields
         existing_questions = json.dumps(fields, default=field_to_json)
         project_links = make_project_links(questionnaire)
-        success, error = submission_stats(manager, questionnaire.form_code)
+        success, error = submission_stats(manager, questionnaire.id)
         project_has_submissions = (success + error > 0)
         in_trial_mode = _in_trial_mode(request)
         is_success = False
@@ -894,7 +894,7 @@ def _in_trial_mode(request):
 def project_has_data(request, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    success, error = submission_stats(manager, form_model.form_code)
+    success, error = submission_stats(manager, form_model.id)
     return HttpResponse(encode_json({'has_data': (success + error > 0)}))
 
 

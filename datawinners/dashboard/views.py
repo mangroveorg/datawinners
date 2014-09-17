@@ -49,7 +49,7 @@ def _make_message(row):
 def get_submission_breakup(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
-    submission_success, submission_errors = submission_stats(dbm, questionnaire.form_code)
+    submission_success, submission_errors = submission_stats(dbm, questionnaire.id)
     response = json.dumps([submission_success, submission_errors])
     return HttpResponse(response)
 
@@ -58,8 +58,8 @@ def get_submission_breakup(request, project_id):
 def get_submissions_about_project(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
-    rows = dbm.load_all_rows_in_view('undeleted_survey_response', reduce=False, descending=True, startkey=[questionnaire.form_code, {}],
-                                     endkey=[questionnaire.form_code], limit=7)
+    rows = dbm.load_all_rows_in_view('undeleted_survey_response', reduce=False, descending=True, startkey=[questionnaire.id, {}],
+                                     endkey=[questionnaire.id], limit=7)
     submission_list = []
     for row in rows:
         reporter = _find_reporter_name(dbm, row)

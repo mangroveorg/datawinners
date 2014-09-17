@@ -379,7 +379,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 
     def get_submissions(self):
         submission_list = []
-        submissions = get_survey_responses(self.manager, self.questionnaire.form_code, None, None,
+        submissions = get_survey_responses(self.manager, self.questionnaire.id, None, None,
                                            view_name="undeleted_survey_response")
         for submission in submissions:
             submission_list.append({'submission_uuid': submission.id,

@@ -232,8 +232,8 @@ class Project(FormModel):
 
     def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):
         start_date, end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
-        form_code = self.form_code
-        data_senders_with_submission = get_reporters_who_submitted_data_for_frequency_period(dbm, form_code, start_date,
+        form_model_id= self.id
+        data_senders_with_submission = get_reporters_who_submitted_data_for_frequency_period(dbm, form_model_id, start_date,
                                                                                              end_date)
         return [ds.short_code for ds in data_senders_with_submission]
 
