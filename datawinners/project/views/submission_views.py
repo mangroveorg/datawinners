@@ -208,7 +208,7 @@ def delete(request, project_id):
                                                                              websubmission_logger)
         mail_feed_errors(delete_response, dbm.database_name)
         if survey_response.data_record:
-            ReportRouter().delete(get_organization(request).org_id, survey_response.form_code,
+            ReportRouter().delete(get_organization(request).org_id, questionnaire.form_code,
                                   survey_response.data_record.id)
 
     if len(received_times):
