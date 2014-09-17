@@ -5,7 +5,7 @@
 
 #broadcast_sms_form{
     > ul > li{
-        width: 569px;
+        width: 664px;
         #sms_content{
             margin: 0;
             padding: 0;
@@ -21,7 +21,7 @@
             margin-bottom: 26px;
         }
         textarea{
-            width: 425px;
+            width: 521px;
         }
         > label{
             width: 130px;
@@ -69,12 +69,12 @@
 
 #input_to{
     display: inline-block;
-    background: url('/media/images/arrow.png') no-repeat scroll 402px 4px transparent;
+    background: url('/media/images/arrow.png') no-repeat scroll 498px 4px transparent;
     > span{
         display: inline-block;
         border: 2px inset rgb(204, 204, 204);
         /*width: 351px;*/
-        width: 425px;
+        width: 520px;
         > span{
             display: inline-block;
             padding: 5px 0px 0px 5px;
@@ -83,11 +83,11 @@
 }
 
 #to_list ul{
-    width: 427px;
+    width: 522px;
     border-radius: 0 0 6px 6px;
-    max-width: 500px;
+    max-width: 550px;
     li {
-        width: 427px;
+        width: 522px;
         a:hover{
             text-decoration: none !important;
             span{
