@@ -10,7 +10,7 @@ def load_sms_data():
         sender = "1234567890"
         receiver = 12345
         dbm._save_document(SurveyResponseDocument(channel="sms",
-                                                 destination=receiver, form_code="cli001",
+                                                 destination=receiver, form_model_id="cli001",
                                                  values={"EID": "CID001", "Q1": "prabhu", "Q2": 20},
                                                  status=True, error_message=""))
 

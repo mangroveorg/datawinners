@@ -27,8 +27,8 @@ class TestUpdateAssociatedSubmission(unittest.TestCase):
 
                 update_submissions_for_form_code_change(managerMock, 'new_form_code', 'old_form_code')
                 managerMock._save_documents.assert_called_with([mock_document1, mock_document2])
-                self.assertEquals(mock_document1.form_code, "new_form_code")
-                self.assertEquals(mock_document2.form_code, "new_form_code")
+                self.assertEquals(mock_document1.form_model_id, "new_form_code")
+                self.assertEquals(mock_document2.form_model_id, "new_form_code")
 
     def test_should_update_submissions_for_form_field_change(self):
         dbm = Mock(spec=DatabaseManager)
