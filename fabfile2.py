@@ -40,7 +40,7 @@ def stop_servers():
 def start_servers():
     run("sudo service uwsgi start")
     # run("sudo service nginx stop || echo 'nginx already stopped'")
-    run("sudo service nginx start")
+    # run("sudo service nginx start")
     run("sudo service celeryd start")
     print 'server started..'
 
