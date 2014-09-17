@@ -19,7 +19,7 @@ from datawinners.search.index_utils import get_elasticsearch_handle, get_field_d
     es_unique_id_code_field_name, \
     es_questionnaire_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
-from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.form_model import  FormModel
 
 
 logger = logging.getLogger("datawinners")
@@ -210,7 +210,7 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
 
 def update_submission_search_index(submission_doc, dbm, refresh_index=True):
     es = get_elasticsearch_handle()
-    form_model = get_form_model_by_code(dbm, submission_doc.form_code)
+    form_model = FormModel.get(dbm,submission_doc.form_model_id)
     search_dict = _meta_fields(submission_doc, dbm)
     _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
     es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
