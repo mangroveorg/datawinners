@@ -35,8 +35,8 @@
         <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
         <script type="text/javascript" src="/media/javascript/project/edit_submission.js"></script>
     {% else %}
-    <script type="text/javascript">
-        {{ block.super }}
+            {{ block.super }}
+            <script type="text/javascript">
          DW.reporter_id = "{{ reporter_id }}";
          DW.is_linked = {{ is_linked|lower }};
     </script>
