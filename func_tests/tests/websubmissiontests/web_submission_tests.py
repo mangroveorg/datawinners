@@ -44,5 +44,5 @@ class TestWebSubmission(HeadlessRunnerTest):
         web_submission_page = self.navigate_to_web_submission()
         self.driver.wait_for_page_with_title(5, web_submission_page.get_title())
         questions, instructions = web_submission_page.get_questions_and_instructions()
-        self.assertEqual(questions[2], u"What is age \xf6f father?")
-        self.assertEqual(instructions[2], "Answer must be a number between 18-100.")
+        self.assertEqual(questions[3], u"What is age \xf6f father?")
+        self.assertEqual(instructions[3], "Answer must be a number between 18-100.")
