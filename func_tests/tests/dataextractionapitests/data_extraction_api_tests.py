@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 from time import sleep
+import unittest
 
 from nose.plugins.attrib import attr
 import requests
@@ -152,3 +153,13 @@ class DataExtractionAPITestCase(HeadlessRunnerTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 0)
         self.assertEqual(result["message"], NO_DATA_SUCCESS_MESSAGE_FOR_QUESTIONNAIRE)
+
+
+class TestUniqueIdExtraction(unittest.TestCase):
+    def setUp(self):
+        self.DIGEST_CREDENTIALS = HTTPDigestAuth('tester150411@gmail.com', 'tester150411')
+
+    @attr('functional_test')
+    def test_should_return_unique_ids_for_given_form_code(self):
+        response = requests.get(url('/api/unique-id/wat/'), auth=self.DIGEST_CREDENTIALS)
+        self.assertEquals(response.status_code, 200)

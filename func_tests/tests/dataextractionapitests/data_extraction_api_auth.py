@@ -1,8 +1,10 @@
 import unittest
-from nose.plugins.attrib import attr
+
 import requests
 from requests.auth import HTTPDigestAuth
+
 from testdata.test_data import url
+
 
 class DataExtractionAPITestCase(unittest.TestCase):
     def setUp(self):
@@ -49,15 +51,6 @@ class DataExtractionAPITestCase(unittest.TestCase):
 
         response = requests.get(url('/api/registereddata/clinic/01-08-2012/03082012/'), auth=self.DIGEST_CREDENTIALS)
         self.assertEquals(response.status_code, 404)
-
-class TestUniqueIdExtraction(unittest.TestCase):
-    def setUp(self):
-        self.DIGEST_CREDENTIALS = HTTPDigestAuth('tester150411@gmail.com', 'tester150411')
-
-    @attr('functional_test')
-    def test_should_return_unique_ids_for_given_form_code(self):
-        response = requests.get(url('/api/unique-id/wat/'), auth=self.DIGEST_CREDENTIALS)
-        self.assertEquals(response.status_code, 200)
 
 
 
