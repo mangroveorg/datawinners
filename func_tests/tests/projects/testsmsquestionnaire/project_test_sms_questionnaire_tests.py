@@ -32,7 +32,6 @@ class TestProjectTestSMSPreview(HeadlessRunnerTest):
         cls.message_tracker.save()
         # doing successful login with valid credentials
         login(cls.driver, VALID_CREDENTIALS)
-        cls.driver.create_screenshot("after_login.png")
 
     @classmethod
     def tearDownClass(cls):
