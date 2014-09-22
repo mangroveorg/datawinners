@@ -178,7 +178,10 @@ class ProjectUpdate(View):
     def _purge_submissions(self, manager, questionnaire):
         survey_responses = survey_responses_by_form_model_id(manager, questionnaire.id)
         for survey_response in survey_responses:
-            survey_response.data_record.delete()
+            data_record = survey_response.data_record
+            if data_record:
+                data_record.delete()
+
             survey_response.delete()
 
     def recreate_submissions_mapping(self, manager, questionnaire):
