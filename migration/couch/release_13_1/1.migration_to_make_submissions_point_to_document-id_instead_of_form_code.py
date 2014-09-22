@@ -19,7 +19,7 @@ def make_survey_response_link_to_document_id(db_name):
                 form_model = get_form_model_by_code(dbm, survey_response.form_code)
                 del survey_response._doc['form_code']
                 survey_response._doc['form_model_id'] = form_model.id
-                survey_response.save()
+                survey_response._dbm._save_document(survey_response._doc, process_post_update=False)
             else:
                 logger.info("form_code not present in survey response:"+survey_response.id)
     except Exception as e:
