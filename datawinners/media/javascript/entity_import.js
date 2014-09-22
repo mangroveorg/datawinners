@@ -1,5 +1,7 @@
 DW.SubjectImportResponseHandler = function (id, fileName, responseJSON) {
     $.unblockUI();
+    DW.trackEvent("unique-id", "unique-ids-imported");
+
     $(".blockUI").fadeOut("slow");
     $('#message').remove();
     $('.error_tbody').html('');

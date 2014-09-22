@@ -33,6 +33,7 @@ $(document).ready(function () {
             function (response) {
                 var data = JSON.parse(response);
                 if (data.success) {
+                    DW.trackEvent("unique-id-type", "unique-id-type-created");
                     if ($("#subjects_create_type").length) {
                         $("#subjects_create_type").dialog("close");
                         window.location.replace("/entity/subjects/");
