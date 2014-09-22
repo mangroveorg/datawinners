@@ -50,7 +50,7 @@ class DataExtractionAPITestCase(HeadlessRunnerTest):
         dashboard_page = DashboardPage(cls.driver)
 
         questionnaire_creation_options_page = dashboard_page.navigate_to_create_project_page()
-        #VALID_PROJECT_DATA[SUBJECT] = cls.subject_type
+        # VALID_PROJECT_DATA[SUBJECT] = cls.subject_type
         create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()
         create_questionnaire_page.create_questionnaire_with(VALID_PROJECT_DATA, QUESTIONNAIRE_DATA)
         cls.form_code = create_questionnaire_page.get_questionnaire_code()
@@ -165,6 +165,26 @@ class TestUniqueIdExtraction(unittest.TestCase):
         self.assertEquals(response.status_code, 200)
         response_body = json.loads(response.content)
         self.assertEqual(len(response_body), 3)
+        self.assertDictEqual(response_body[0], {u"What is the waterpoint's location?": u'India,Gujrat,Ahmedabad',
+                                                u"What is the waterpoint's GPS co-ordinates?": u'23.0395677, 72.566005',
+                                                u"What is the waterpoint's Unique ID Number?": u'wp01',
+                                                u'deleted': False, u"What is the waterpoint's last name?": u'Test',
+                                                u"What is the waterpoint's mobile telephone number?": u'1234563',
+                                                u"What is the waterpoint's first name?": u'Ahmedabad waterpoint'})
+
+        self.assertDictEqual(response_body[1], {u"What is the waterpoint's location?": u'India,Haryana,Gurgaon',
+                                                u"What is the waterpoint's GPS co-ordinates?": u'28.46385, 77.017838',
+                                                u"What is the waterpoint's Unique ID Number?": u'wp03',
+                                                u'deleted': False, u"What is the waterpoint's last name?": u'Test',
+                                                u"What is the waterpoint's mobile telephone number?": u'1234564',
+                                                u"What is the waterpoint's first name?": u'Gurgaon waterpoint'})
+
+        self.assertDictEqual(response_body[2], {u"What is the waterpoint's location?": u'India,Gujrat,Bhuj',
+                                                u"What is the waterpoint's GPS co-ordinates?": u'23.251671, 69.66256',
+                                                u"What is the waterpoint's Unique ID Number?": u'wp02',
+                                                u'deleted': False, u"What is the waterpoint's last name?": u'Test',
+                                                u"What is the waterpoint's mobile telephone number?": u'1234564',
+                                                u"What is the waterpoint's first name?": u'Bhuj waterpoint'})
 
 
     @attr('functional_test')
