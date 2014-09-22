@@ -9,10 +9,16 @@ $.ajaxSetup ({
 });
 
 //Google analytics event tracking
-DW.trackEvent = function(category, action){
+DW.trackEvent = function(category, action, label){
     if (typeof _gaq !== 'undefined') {
-        _gaq.push(['_trackEvent', category, action]);
+        if(typeof label === 'undefined'){
+            _gaq.push(['_trackEvent', category, action]);
+        }
+        else{
+            _gaq.push(['_trackEvent', category, action, label]);
+        }
     }
+
 };
 
 
