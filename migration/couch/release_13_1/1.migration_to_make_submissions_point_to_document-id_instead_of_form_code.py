@@ -26,4 +26,4 @@ def make_survey_response_link_to_document_id(db_name):
         logger.error(e.message + db_name)
     mark_as_completed(db_name)
 
-migrate(all_db_names(), make_survey_response_link_to_document_id, version=(13,1,1), threads=1)
+migrate(all_db_names(), make_survey_response_link_to_document_id, version=(13,1,1), threads=3)
