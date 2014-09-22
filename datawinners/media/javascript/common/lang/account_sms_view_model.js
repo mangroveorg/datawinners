@@ -19,6 +19,8 @@ function AccountWideSmsViewModel() {
                 data = JSON.parse(data);
                 self.saveButtonText(gettext("Save"));
                 if(data.success) {
+                    DW.trackEvent("customized-message", "accountwide-custom-messages-updated");
+
                     displaySuccessMessage(data);
                     $.each(self.messages(), function (index, element) {
                         element.message.clearError();

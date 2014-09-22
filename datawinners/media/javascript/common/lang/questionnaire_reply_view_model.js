@@ -45,6 +45,8 @@ function QuestionnaireReplyViewModel() {
                 data = JSON.parse(data);
                 self.saveButtonText(gettext("Save"));
                 if (data.success) {
+                    DW.trackEvent("customized-message", "questionnaire-custom-messages-updated");
+
                     $.each(self.messages(), function (index, element) {
                        element.message.clearError();
                     });
@@ -75,6 +77,7 @@ function QuestionnaireReplyViewModel() {
                 .done(function (responseString) {
                     var response = $.parseJSON(responseString);
                     if (response.language_code) {
+                        DW.trackEvent("customized-message", "added-new-language");
                         self.addLanguageText(gettext("Add Language"));
                         $('#add_new_language_pop .yes_button').removeClass('ui-state-disabled');
                         $('#add_new_language_pop').dialog('close');

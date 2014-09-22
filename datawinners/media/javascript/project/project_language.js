@@ -43,6 +43,7 @@ function ProjectLanguageViewModel(){
           success: function(response){
               self.save_text(gettext('Save'));
               if(response.success){
+                  DW.trackEvent("customized-message", "project-language-selected");
                   self.is_modified = false;
                   if(callback)
                     callback();
