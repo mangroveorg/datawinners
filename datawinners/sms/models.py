@@ -1,6 +1,8 @@
 from django.db import models
 
 from datawinners.accountmanagement.models import Organization
+import datefilterspec
+
 
 MSG_TYPE_USER_MSG = "User Message"
 MSG_TYPE_API = "API"
@@ -11,6 +13,7 @@ class SMS(models.Model):
     organization = models.ForeignKey(Organization)
     created_at = models.DateField(auto_now_add=True)
     delivered_at = models.DateField(null=True)
+    delivered_at.date_filter = True
     status = models.CharField(max_length=20)
     message_id = models.CharField(max_length=32, unique=True)
     message = models.TextField()

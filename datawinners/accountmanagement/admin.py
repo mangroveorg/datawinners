@@ -83,7 +83,7 @@ class OrganizationSettingAdmin(DatawinnerAdmin):
 
 
 class MessageTrackerAdmin(DatawinnerAdmin):
-    list_display = ("organization_name", "organization_id", "month", "combined_total_incoming",
+    list_display = ("organization_name", "organization_id","type", "month", "combined_total_incoming",
                     "total_incoming_per_month", "total_messages", "total_outgoing_messages", "outgoing_sms_count","outgoing_sms_charged_count",
                     "sent_reminders_count","sent_reminders_charged_count", "send_message_count","send_message_charged_count",  "sms_api_usage_count","sms_api_usage_charged_count", "sms_submission", "incoming_sp_count",
                     "incoming_web_count", "sms_registration_count")
@@ -98,6 +98,9 @@ class MessageTrackerAdmin(DatawinnerAdmin):
     def organization_name(self, obj):
         return obj.organization.name
     organization_name.short_description = mark_safe('Organisation<br/>name')
+
+    def type(self,obj):
+        return obj.organization.account_type
 
 
     def organization_id(self, obj):
