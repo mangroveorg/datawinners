@@ -75,6 +75,7 @@ DW.SubmissionAnalysisView = function(){
     var _showChartView = function () {
         if (isChartViewShown)
             return;
+        DW.trackEvent('chart-view', 'chart-view-link-clicked');
         tableViewOption.removeClass("active");
         chartViewOption.addClass("active-right");
         isChartViewShown = true;

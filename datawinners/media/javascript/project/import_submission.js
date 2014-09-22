@@ -107,7 +107,8 @@ DW.SubmissionFileUploader = function(options){
 
     self.onComplete = function(id, fileName, responseJSON){
         $.unblockUI();
-         _clearTables();
+        _clearTables();
+        DW.trackEvent("simple-questionnaire", "import-submissions");
         if(responseJSON.success_submissions.length > 0){
              _populateSuccessTable(responseJSON.question_map, responseJSON.success_submissions);
              $('#success_import_section').show();
