@@ -235,5 +235,5 @@ def get_web_transport_info(username):
 
 def associate_account_users_to_project(manager,questionnaire):
     user_ids = get_all_user_repids_for_org(get_organization_from_manager(manager).org_id)
-    for id in user_ids:
-        questionnaire.associate_data_sender_to_project(manager, id)
+    #for id in user_ids:
+    questionnaire.associate_data_sender_to_project(manager, user_ids)

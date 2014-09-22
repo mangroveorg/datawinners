@@ -868,7 +868,7 @@ def create_data_sender_and_web_user(request, project_id):
 
         if not len(form.errors) and reporter_id:
             project = questionnaire
-            project.associate_data_sender_to_project(manager, reporter_id)
+            project.associate_data_sender_to_project(manager, [reporter_id])
             if form.requires_web_access():
                 email_id = request.POST['email']
                 create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,

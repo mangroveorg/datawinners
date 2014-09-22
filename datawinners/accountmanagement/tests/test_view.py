@@ -37,4 +37,4 @@ class TestUserAssociationToProject(unittest.TestCase):
 
                 associate_user_with_existing_project(dbm, 'rep123')
 
-                project_mock.associate_data_sender_to_project.assert_called_once_with(dbm, 'rep123')
+                project_mock.associate_data_sender_to_project.assert_called_once_with(dbm, ['rep123'])

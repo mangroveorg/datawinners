@@ -154,7 +154,7 @@ class RegisterDatasenderView(TemplateView):
         if message is not None and reporter_id:
             if form.cleaned_data['project_id'] != "":
                 questionnaire = Project.get(dbm, form.cleaned_data['project_id'])
-                questionnaire.associate_data_sender_to_project(dbm, reporter_id)
+                questionnaire.associate_data_sender_to_project(dbm, [reporter_id])
                 questionnaire = questionnaire.name
             else:
                 questionnaire = ""

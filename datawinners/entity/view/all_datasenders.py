@@ -175,8 +175,7 @@ class AssociateDataSendersView(DataSenderActionView):
         questionnaires = self._get_projects(manager, request)
         projects_name = Set()
         for questionnaire in questionnaires:
-            for id in data_sender_short_codes(request, manager):
-                questionnaire.associate_data_sender_to_project(manager, id)
+            questionnaire.associate_data_sender_to_project(manager, data_sender_short_codes(request, manager))
             projects_name.add(questionnaire.name.capitalize())
         ids = request.POST["ids"].split(';')
         if len(ids):

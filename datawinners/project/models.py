@@ -307,15 +307,18 @@ class Project(FormModel):
         self.save(process_post_update=False)
         update_datasender_index_by_id(entity_id, dbm)
 
-    def associate_data_sender_to_project(self, dbm, data_sender_code):
-        if data_sender_code in self.data_senders: return
+    def associate_data_sender_to_project(self, dbm, data_senders_list):
+        for data_senders_code in data_senders_list:
+            if data_senders_code in self.data_senders:
+                data_senders_list.remove(data_senders_code)
         from datawinners.search.datasender_index import update_datasender_index_by_id
         # Normally this case should not happen. However in a special case
         # blank id was sent from client side. So introduced this check.
-        if data_sender_code:
-            self.data_senders.append(data_sender_code)
+        if data_senders_list:
+            self.data_senders.extend(data_senders_list)
             self.save(process_post_update=False)
-            update_datasender_index_by_id(data_sender_code, dbm)
+            for data_senders_code in data_senders_list:
+                update_datasender_index_by_id(data_senders_code, dbm)
 
 
 def get_all_projects(dbm, data_sender_id=None):
