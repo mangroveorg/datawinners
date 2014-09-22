@@ -5,6 +5,7 @@ import elasticutils
 from datawinners.main.database import get_database_manager
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.form_model import get_form_model_by_code, header_fields
 
 
@@ -27,7 +28,12 @@ def _create_response(required_field_names, query, header_dict):
 
 
 def _get_unique_ids_for_form_code(dbm, form_code, user):
-    form_model = get_form_model_by_code(dbm, form_code)
+    try:
+        form_model = get_form_model_by_code(dbm, form_code)
+        if not form_model.is_entity_registration_form():
+            return None
+    except FormModelDoesNotExistsException:
+        return None
     header_dict = header_fields(form_model)
     required_field_names = SubjectQuery().get_headers(user, form_model.entity_type[0])
     query = _create_elastic_search_query(form_model.entity_type[0], dbm)
@@ -41,4 +47,6 @@ def get_unique_ids_for_form_code(request, form_code):
         user = request.user
         dbm = get_database_manager(user)
         subjects = _get_unique_ids_for_form_code(dbm, form_code, user)
+        if subjects is None:
+            return HttpResponse(status=404)
         return HttpResponse(json.dumps(subjects), content_type='application/json; charset=UTF-8')

@@ -163,3 +163,17 @@ class TestUniqueIdExtraction(unittest.TestCase):
     def test_should_return_unique_ids_for_given_form_code(self):
         response = requests.get(url('/api/unique-id/wat/'), auth=self.DIGEST_CREDENTIALS)
         self.assertEquals(response.status_code, 200)
+        response_body = json.loads(response.content)
+        self.assertEqual(len(response_body), 3)
+
+
+    @attr('functional_test')
+    def test_should_return_not_found_error_when_unique_id_does_not_exists_for_given_form_code(self):
+        response = requests.get(url('/api/unique-id/random/'), auth=self.DIGEST_CREDENTIALS)
+        self.assertEquals(response.status_code, 404)
+
+
+    @attr('functional_test')
+    def test_should_return_not_found_error_when_for_a_questionnaire_form_code(self):
+        response = requests.get(url('/api/unique-id/cli001/'), auth=self.DIGEST_CREDENTIALS)
+        self.assertEquals(response.status_code, 404)
