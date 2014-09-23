@@ -225,8 +225,8 @@ class ProjectUpdate(View):
                                                questionnaire_code=questionnaire.form_code,
                                                project_name=questionnaire.name)
 
-            QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(json_xform_data)
             questionnaire.xform = mangrove_service.xform_with_form_code
+            QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(json_xform_data)
 
             tmp_file.seek(0)
             questionnaire.save(process_post_update=False)
