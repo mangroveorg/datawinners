@@ -97,7 +97,7 @@ class TestRegistrationPage(HeadlessRunnerTest):
             WITHOUT_PREFERRED_PAYMENT)
         self.assertEquals(registration_confirmation_page.registration_success_message(), REGISTRATION_SUCCESS_MESSAGE)
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_register_ngo_with_begin_end_spaced_password(self):
         self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
         registration_page = RegistrationPage(self.driver)
