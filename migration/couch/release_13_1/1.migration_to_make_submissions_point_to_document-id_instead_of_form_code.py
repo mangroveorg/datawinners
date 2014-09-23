@@ -15,13 +15,13 @@ def make_survey_response_link_to_document_id(db_name):
     survey_responses = [SurveyResponse.new_from_doc(dbm=dbm, doc=SurveyResponse.__document_class__.wrap(survey_response['value'])) for survey_response in survey_responses]
     try:
         for survey_response in survey_responses:
-            if survey_response.form_code:
+            try:
                 form_model = get_form_model_by_code(dbm, survey_response.form_code)
                 del survey_response._doc['form_code']
                 survey_response._doc['form_model_id'] = form_model.id
                 survey_response._dbm._save_document(survey_response._doc, process_post_update=False)
-            else:
-                logger.info("form_code not present in survey response:"+survey_response.id)
+            except AttributeError:
+                logger.info("form_code not present in survey response:%s" % survey_response.id)
     except Exception as e:
         logger.error(e.message + db_name)
     mark_as_completed(db_name)
