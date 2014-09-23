@@ -181,7 +181,7 @@ def project_overview(request, project_id):
         'links': links,
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
-        'questionnaire_code': questionnaire_id,
+        'questionnaire_code': questionnaire.form_code,
         'has_multiple_unique_id': has_multiple_unique_id,
         'show_sp_upgrade_info': _is_smart_phone_upgrade_info_flag_present(request),
         'entity_type': json.dumps(entity_type),
