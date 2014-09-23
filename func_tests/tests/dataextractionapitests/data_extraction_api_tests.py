@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 from time import sleep
+import unittest
 
 from nose.plugins.attrib import attr
 import requests
@@ -152,3 +153,50 @@ class DataExtractionAPITestCase(HeadlessRunnerTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 0)
         self.assertEqual(result["message"], NO_DATA_SUCCESS_MESSAGE_FOR_QUESTIONNAIRE)
+
+
+class TestUniqueIdExtraction(unittest.TestCase):
+    def setUp(self):
+        self.DIGEST_CREDENTIALS = HTTPDigestAuth('tester150411@gmail.com', 'tester150411')
+
+    @attr('functional_test')
+    def test_should_return_unique_ids_for_given_form_code(self):
+        response = requests.get(url('/api/unique-id/wat/'), auth=self.DIGEST_CREDENTIALS)
+        self.assertEquals(response.status_code, 200)
+        response_body = json.loads(response.content)
+        unique_ids_ = response_body['unique-ids']
+        self.assertEqual(len(unique_ids_), 3)
+        self.assertDictEqual(unique_ids_[0], {u'geo_code': u'23.0395677, 72.566005', u'name': u'Test',
+                                              u'firstname': u'Ahmedabad waterpoint', u'short_code': u'wp01',
+                                              u'deleted': False, u'location': u'India,Gujrat,Ahmedabad',
+                                              u'mobile_number': u'1234563'})
+
+        self.assertDictEqual(unique_ids_[1],
+                             {u'geo_code': u'23.251671, 69.66256', u'name': u'Test', u'firstname': u'Bhuj waterpoint',
+                              u'short_code': u'wp02', u'deleted': False, u'location': u'India,Gujrat,Bhuj',
+                              u'mobile_number': u'1234564'})
+
+        self.assertDictEqual(unique_ids_[2], {u'geo_code': u'28.46385, 77.017838', u'name': u'Test',
+                                              u'firstname': u'Gurgaon waterpoint', u'short_code': u'wp03',
+                                              u'deleted': False, u'location': u'India,Haryana,Gurgaon',
+                                              u'mobile_number': u'1234564'})
+
+        self.assertDictEqual(response_body['questionnaire'],
+                             {u'geo_code': u"What is the waterpoint's GPS co-ordinates?",
+                              u'name': u"What is the waterpoint's last name?",
+                              u'firstname': u"What is the waterpoint's first name?",
+                              u'short_code': u"What is the waterpoint's Unique ID Number?",
+                              u'location': u"What is the waterpoint's location?",
+                              u'mobile_number': u"What is the waterpoint's mobile telephone number?"})
+
+
+    @attr('functional_test')
+    def test_should_return_not_found_error_when_unique_id_does_not_exists_for_given_form_code(self):
+        response = requests.get(url('/api/unique-id/random/'), auth=self.DIGEST_CREDENTIALS)
+        self.assertEquals(response.status_code, 404)
+
+
+    @attr('functional_test')
+    def test_should_return_not_found_error_when_for_a_questionnaire_form_code(self):
+        response = requests.get(url('/api/unique-id/cli001/'), auth=self.DIGEST_CREDENTIALS)
+        self.assertEquals(response.status_code, 404)
