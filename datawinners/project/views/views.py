@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, ugettext
 
 from datawinners.alldata import views
+from datawinners.common.authorization import is_data_sender
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
@@ -576,7 +577,7 @@ class SurveyWebQuestionnaireRequest():
         self.questionnaire = Project.get(self.manager, project_id)
         self.form_code = self.questionnaire.form_code
         self.feeds_dbm = get_feeds_database(request.user)
-        self.is_data_sender = self.request.user.get_profile().reporter
+        self.is_data_sender = is_data_sender(request)
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
 
     def form(self, initial_data=None):
@@ -625,7 +626,10 @@ class SurveyWebQuestionnaireRequest():
         if not questionnaire_form.is_valid() or quota_reached:
             form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                             self.disable_link_class)
-            form_context.update({'is_quota_reached': quota_reached})
+            form_context.update({
+                                  'is_quota_reached': quota_reached,
+                                  'is_datasender': self.is_data_sender,
+                                })
             return render_to_response(self.template, form_context,
                                       context_instance=RequestContext(self.request))
 
@@ -654,8 +658,11 @@ class SurveyWebQuestionnaireRequest():
         _project_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                             self.disable_link_class, is_update=is_update)
 
-        _project_context.update({'success_message': success_message, 'error_message': error_message,
-                                 'questionnaire_form': self.form(), })
+        _project_context.update({
+                                 'success_message': success_message, 'error_message': error_message,
+                                 'questionnaire_form': self.form(),
+                                 'is_datasender': self.is_data_sender,
+                                })
 
         return render_to_response(self.template, _project_context,
                                   context_instance=RequestContext(self.request))

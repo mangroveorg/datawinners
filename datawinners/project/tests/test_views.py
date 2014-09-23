@@ -1,15 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
-
 import unittest
 
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpRequest
-from mock import Mock, patch, call, MagicMock
+from mock import Mock, patch, MagicMock
+
 from datawinners.project.views.submission_views import get_filterable_fields
 from mangrove.transport import Response
-
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField, DateField, UniqueIdField
 from datawinners.entity.forms import ReporterRegistrationForm
@@ -18,7 +15,6 @@ from datawinners.project.views.views import _format_reminders, SubjectWebQuestio
 from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context_from_project_data
 from datawinners.project.utils import make_subject_links
 from datawinners.project.views.views import append_success_to_context, formatted_data
-from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 from datawinners.project.wizard_view import get_preview_and_instruction_links, _get_changed_data
 from datawinners.questionnaire.questionnaire_builder import get_max_code
 from mangrove.form_model.form_model import FormModel
@@ -124,8 +120,9 @@ class TestProjectViews(unittest.TestCase):
             with patch("datawinners.project.preview_views.SurveyResponseForm") as SurveyResponseForm:
                 mock_form = Mock(spec=SurveyResponseForm)
                 SurveyResponseForm.return_value = mock_form
-                web_preview_context = get_web_preview_context_from_project_data(manager, {}, project_info)
-                project = web_preview_context['project']
+                request = MagicMock()
+                request.POST = {}
+                web_preview_context = get_web_preview_context_from_project_data(manager, request, project_info)
                 questionnaire_form = web_preview_context['questionnaire_form']
                 self.assertEquals(questionnaire_form, mock_form)
 

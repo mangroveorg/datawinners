@@ -23,6 +23,7 @@ from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.blue.xform_bridge import XFormSubmissionProcessor
+from datawinners.common.authorization import is_data_sender
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -277,7 +278,10 @@ def edit(request, project_id, survey_response_id, tab=0):
                         kwargs={"project_id": project_id, "questionnaire_code": questionnaire_form_model.form_code,
                                 "tab": tab})
     form_ui_model = build_static_info_context(manager, survey_response)
-    form_ui_model.update({"back_link": back_link})
+    form_ui_model.update({
+                            "back_link": back_link,
+                            'is_datasender': is_data_sender(request)
+                         })
     data_sender = get_data_sender(manager, survey_response)
     short_code = data_sender[1]
     if request.method == 'GET':
@@ -299,7 +303,11 @@ def edit(request, project_id, survey_response_id, tab=0):
         send_to_carbon(create_path('submissions.web.simple'), 1)
         original_survey_response = survey_response.copy()
         is_errored_before_edit = True if survey_response.errors != '' else False
-        form_ui_model.update({"redirect_url": request.POST.get("redirect_url")})
+        form_ui_model.update({
+                                "redirect_url": request.POST.get("redirect_url"),
+                                'is_datasender': is_data_sender(request)
+
+                             })
         form_ui_model.update({"click_after_reload": request.POST.get("click_after_reload")})
         if request.POST.get("discard"):
             survey_response_form = SurveyResponseForm(questionnaire_form_model, survey_response.values)

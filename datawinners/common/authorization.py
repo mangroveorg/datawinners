@@ -97,7 +97,8 @@ def is_not_datasender(func):
 
     return inner
 
-
+def is_data_sender(request):
+    return request.user.get_profile().reporter
 
 
 def authenticate_api_user(username, password):

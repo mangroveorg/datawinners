@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from datawinners.common.authorization import is_data_sender
 from datawinners.project.models import Project
 from mangrove.form_model.form_model import FormModel
 
@@ -48,10 +49,12 @@ def sms_preview(request):
 
 
 
-def get_web_preview_context_from_project_data(manager, post, project_info):
-    form_model = get_questionnaire_form_model(manager, project_info, post)
+def get_web_preview_context_from_project_data(manager, request, project_info):
+    is_datasender = is_data_sender(request)
+    form_model = get_questionnaire_form_model(manager, project_info, request.POST)
     questionnaire_form = SurveyResponseForm(form_model)
     return {'project': project_info,
+            'is_datasender': is_datasender,
             'questionnaire_form': questionnaire_form}
 
 def get_web_preview_context_from_existing_project(project_info):
@@ -65,7 +68,7 @@ def web_preview(request):
     manager = get_database_manager(request.user)
 
     return render_to_response("project/web_instruction_preview.html",
-                              get_web_preview_context_from_project_data(manager, request.POST, project_info),
+                              get_web_preview_context_from_project_data(manager, request, project_info),
                               context_instance=RequestContext(request))
 
 
