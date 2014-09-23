@@ -101,7 +101,7 @@ class TestSubmissionFormatter(TestCase):
         headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
 
         self.assertEquals(headers, ['What programming languages do you use'])
-        self.assertEquals(values, [['Python, C#, Java']])
+        self.assertEquals(values, [['Python; C#; Java']])
 
     def test_should_parse_numeric_values_when_type_is_numeric(self):
         columns = {'form_id_q1': {'type': 'integer', 'label':'How many hours do you code'}}

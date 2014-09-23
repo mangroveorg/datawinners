@@ -90,7 +90,7 @@ class AdvanceSubmissionFormatter():
             try:
                 parsed_value = ""
                 if row.get(field_code):
-                    parsed_value = ', '.join(row.get(field_code)) if isinstance(row.get(field_code), list) else row.get(field_code)
+                    parsed_value = '; '.join(row.get(field_code)) if isinstance(row.get(field_code), list) else row.get(field_code)
 
                 if columns[field_code].get("type") == "date" or field_code == "date":
                     date_format = columns[field_code].get("format")

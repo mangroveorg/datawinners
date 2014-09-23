@@ -32,7 +32,7 @@ class SubmissionFormatter(object):
             try:
                 parsed_value= ""
                 if row.get(field_code):
-                    parsed_value = ', '.join(row.get(field_code)) if isinstance(row.get(field_code),list) else row.get(field_code)
+                    parsed_value = '; '.join(row.get(field_code)) if isinstance(row.get(field_code),list) else row.get(field_code)
 
                 if self.columns[field_code].get("type") == "date" or field_code == "date":
                     date_format = self.columns[field_code].get("format")

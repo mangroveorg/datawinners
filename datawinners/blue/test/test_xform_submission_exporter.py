@@ -55,7 +55,7 @@ class TestXFormSubmissionExporter(unittest.TestCase):
         submission_list = [{'uuid1_city': ['Bangalore','Pune']}]
 
         expected_header = ['City','_index', '_parent_index']
-        main_submission_rows = [['Bangalore, Pune',1]]
+        main_submission_rows = [['Bangalore; Pune',1]]
         headers, data_rows_dict = AdvanceSubmissionFormatter(columns).format_tabular_data(submission_list)
 
         self.assertEqual(expected_header, headers['main'])
