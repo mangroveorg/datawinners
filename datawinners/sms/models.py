@@ -1,7 +1,8 @@
 from django.db import models
 
 from datawinners.accountmanagement.models import Organization
-import datefilterspec
+#noinspection PyUnresolvedReferences
+import datefilterspec  #added this for the custom date filter
 
 
 MSG_TYPE_USER_MSG = "User Message"
