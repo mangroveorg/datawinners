@@ -31,13 +31,13 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
             "[u'Tester Pune', u'rep276']",
             str(workbook.sheet_by_index(0).row_values(1, 0, 2)))
         self.assertEqual(
-            "[u'Success', 43466.0, 41791.0, 41900.0, u'Outer text', u'Yes', u'Yes, No', 43466.0, 41640.0, 41900.0, u'text in group', u'Yes', u'No', 42005.0, 41640.0, 41891.0, u'text123', u'No', u'Yes, No', 1.0, '']",
+            "[u'Success', 43466.0, 41791.0, 41900.0, u'Outer text', u'Yes', u'Yes; No', 43466.0, 41640.0, 41900.0, u'text in group', u'Yes', u'No', 42005.0, 41640.0, 41891.0, u'text123', u'No', u'Yes; No', 1.0, '']",
             str(workbook.sheet_by_index(0).row_values(1, 3)))
         self.assertEqual(
             "[u'Tester Pune', u'rep276']",
             str(workbook.sheet_by_index(0).row_values(2, 0, 2)))
         self.assertEqual(
-            "[u'Success', 43466.0, 41791.0, 41900.0, u'Outer text', u'Yes', u'Yes, No', 43466.0, 41640.0, 41900.0, u'text in group', u'Yes', u'No', 42005.0, 41640.0, 41891.0, u'text123', u'No', u'Yes, No', 2.0, '']",
+            "[u'Success', 43466.0, 41791.0, 41900.0, u'Outer text', u'Yes', u'Yes; No', 43466.0, 41640.0, 41900.0, u'text in group', u'Yes', u'No', 42005.0, 41640.0, 41891.0, u'text123', u'No', u'Yes; No', 2.0, '']",
             str(workbook.sheet_by_index(0).row_values(2, 3)))
         self.assertEquals(3, workbook.sheet_by_index(0).nrows)
 
@@ -49,13 +49,13 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
             "[u'Yes', u'text in group - repeat1', 41907.0, u'Yes', 41640.0, 40544.0, '', 1.0]",
             str(workbook.sheet_by_index(1).row_values(1)))
         self.assertEqual(
-            "[u'Yes, No', u'text in group - repeat2', 41901.0, u'No', 41640.0, 40909.0, '', 1.0]",
+            "[u'Yes; No', u'text in group - repeat2', 41901.0, u'No', 41640.0, 40909.0, '', 1.0]",
             str(workbook.sheet_by_index(1).row_values(2)))
         self.assertEqual(
             "[u'Yes', u'text in group - repeat1', 41907.0, u'Yes', 41640.0, 40544.0, '', 2.0]",
             str(workbook.sheet_by_index(1).row_values(3)))
         self.assertEqual(
-            "[u'Yes, No', u'text in group - repeat2', 41901.0, u'No', 41640.0, 40909.0, '', 2.0]",
+            "[u'Yes; No', u'text in group - repeat2', 41901.0, u'No', 41640.0, 40909.0, '', 2.0]",
             str(workbook.sheet_by_index(1).row_values(4)))
         self.assertEquals(5, workbook.sheet_by_index(1).nrows)
 
@@ -85,13 +85,13 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
             "[41896.0, u'Yes', 41640.0, u'group', 41640.0, u'Yes', '', 1.0]",
             str(workbook.sheet_by_index(3).row_values(1)))
         self.assertEqual(
-            "[41892.0, u'No', 41640.0, u'group3', 40179.0, u'Yes, No', '', 1.0]",
+            "[41892.0, u'No', 41640.0, u'group3', 40179.0, u'Yes; No', '', 1.0]",
             str(workbook.sheet_by_index(3).row_values(2)))
         self.assertEqual(
             "[41896.0, u'Yes', 41640.0, u'group', 41640.0, u'Yes', '', 2.0]",
             str(workbook.sheet_by_index(3).row_values(3)))
         self.assertEqual(
-            "[41892.0, u'No', 41640.0, u'group3', 40179.0, u'Yes, No', '', 2.0]",
+            "[41892.0, u'No', 41640.0, u'group3', 40179.0, u'Yes; No', '', 2.0]",
             str(workbook.sheet_by_index(3).row_values(4)))
         self.assertEquals(5, workbook.sheet_by_index(1).nrows)
 
