@@ -171,15 +171,16 @@ class TestUniqueIdExtraction(unittest.TestCase):
                                               u'deleted': False, u'location': u'India,Gujrat,Ahmedabad',
                                               u'mobile_number': u'1234563'})
 
-        self.assertDictEqual(unique_ids_[1],
+        self.assertDictEqual(unique_ids_[1], {u'geo_code': u'28.46385, 77.017838', u'name': u'Test',
+                                              u'firstname': u'Gurgaon waterpoint', u'short_code': u'wp03',
+                                              u'deleted': False, u'location': u'India,Haryana,Gurgaon',
+                                              u'mobile_number': u'1234564'})
+
+        self.assertDictEqual(unique_ids_[2],
                              {u'geo_code': u'23.251671, 69.66256', u'name': u'Test', u'firstname': u'Bhuj waterpoint',
                               u'short_code': u'wp02', u'deleted': False, u'location': u'India,Gujrat,Bhuj',
                               u'mobile_number': u'1234564'})
 
-        self.assertDictEqual(unique_ids_[2], {u'geo_code': u'28.46385, 77.017838', u'name': u'Test',
-                                              u'firstname': u'Gurgaon waterpoint', u'short_code': u'wp03',
-                                              u'deleted': False, u'location': u'India,Haryana,Gurgaon',
-                                              u'mobile_number': u'1234564'})
 
         self.assertDictEqual(response_body['questionnaire'],
                              {u'geo_code': u"What is the waterpoint's GPS co-ordinates?",
