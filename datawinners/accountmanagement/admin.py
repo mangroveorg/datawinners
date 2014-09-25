@@ -18,6 +18,7 @@ from datawinners.project.submission.export import create_excel_response
 from datawinners.search.index_utils import get_elasticsearch_handle
 from forms import forms
 from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization, NGOUserProfile, OutgoingNumberSetting
+from mangrove.form_model.field import ExcelDate
 from mangrove.utils.types import is_empty, is_not_empty
 from datawinners.countrytotrialnumbermapping.models import Country, Network
 from datawinners.utils import get_database_manager_for_org
@@ -136,6 +137,35 @@ class MessageTrackerAdmin(DatawinnerAdmin):
         return obj.incoming_sms_count - obj.sms_registration_count
     sms_submission.short_description = mark_safe('SMS<br/>Submissions')
 
+    def export_message_tracker_details_to_excel(modeladmin, request, query_set):
+        headers = ["Organization Name", "Organization Id","Type", "Month", "Total Incoming Submissions (In total)", "Total Incoming Submissions",
+                   "Total SMS (incoming and outgoing)", "Outgoing Charged SMS: Total", "Outgoing SMS: Auto Reply", "Outgoing Charged SMS: Auto Reply",
+                   "Outgoing SMS: Reminders", "Outgoing Charged SMS: Reminders", "Outgoing SMS: Send Message", "Outgoing Charged SMS: Send Message",
+                   "Outgoing SMS: API", "Outgoing Charged SMS: API", "SMS Submissions", "SP Submissions", "Web Submissions", "SMS Subject Registration"]
+        list = []
+
+        for messageTracker in query_set:
+            sms_tracker_month = ExcelDate(datetime.datetime.combine(messageTracker.month, datetime.datetime.min.time()),
+                                          'dd.mm.yyyy') if messageTracker.month else None
+
+            list.append([modeladmin.organization_name(messageTracker), modeladmin.organization_id(messageTracker),
+                         modeladmin.type(messageTracker),
+                         sms_tracker_month, messageTracker.total_incoming_in_total(),
+                         messageTracker.total_monthly_incoming_messages(),
+                         messageTracker.total_messages(), messageTracker.outgoing_message_count(),
+                         messageTracker.outgoing_sms_count, messageTracker.outgoing_sms_charged_count,
+                         messageTracker.sent_reminders_count, messageTracker.sent_reminders_charged_count,
+                         messageTracker.send_message_count,
+                         messageTracker.send_message_charged_count, messageTracker.sms_api_usage_count,
+                         messageTracker.sms_api_usage_charged_count,
+                         modeladmin.sms_submission(messageTracker), messageTracker.incoming_sp_count,
+                         messageTracker.incoming_web_count, messageTracker.sms_registration_count])
+
+        response = create_excel_response(headers, list, 'tracker_list')
+        return response
+
+    actions = [export_message_tracker_details_to_excel]
+
 
 class OrganizationChangeList(ChangeList):
     def get_query_set(self):
@@ -173,6 +203,7 @@ class OrganizationChangeList(ChangeList):
             qs = qs.order_by('-active_date')
         return qs
 
+
 class OrganizationChangeList(ChangeList):
     def get_query_set(self):
         if not self.params.get("q", ""):
@@ -208,6 +239,7 @@ class OrganizationChangeList(ChangeList):
         else:
             qs = qs.order_by('-active_date')
         return qs
+
 
 class OrganizationAdmin(DatawinnerAdmin):
     list_display = (
