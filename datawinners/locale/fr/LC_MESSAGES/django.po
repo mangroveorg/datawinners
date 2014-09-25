@@ -5467,3 +5467,6 @@ msgstr "il manque une liste de référence, vérifiez vos types de question sele
 
 msgid "Inform your Data Senders to download the new version of the Questionnaire."
 msgstr "Demandez à vos Expéditeurs de Données de télécharger la nouvelle version du Questionnaire."
+
+msgid "You have reached your 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your Questionnaires."
+msgstr "Vous avez atteint vos 1 000 Soumissions gratuites. Inscrivez-vous pour un abonnement mensuel pour continuer à soumettre des données pour ces Questionnaires."
