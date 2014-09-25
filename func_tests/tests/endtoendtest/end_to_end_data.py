@@ -259,7 +259,7 @@ EDITED_WEB_ANSWER_LOG = {
 
 VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                       RECEIVER: "",
-                      SMS: "WPS01 11.10.2011 98 04.2011 04.12.2011 c Mr.Tessy ab 27.178057,-78.007789 game1 school1",
+                      SMS: "WPS01 11.10.2011 98 04.2011 04.12.2011 c Mr.Tessy AB 27.178057,-78.007789 game1 school1",
                       SUCCESS_MESSAGE: 'Thank you'}
 
 VALID_DATA_FOR_SMS_LIGHT_BOX = {
