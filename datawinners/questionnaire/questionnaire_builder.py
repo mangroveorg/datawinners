@@ -147,7 +147,7 @@ class QuestionBuilder(object):
 
 
     def _create_select_question(self, post_dict, single_select_flag, code):
-        options = [(choice['value'].get("text"), choice['value'].get("val")) for choice in post_dict["choices"]]
+        options = [(choice['value'].get("text"), choice['value'].get("val").lower()) for choice in post_dict["choices"]]
         return SelectField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
                            options=options, single_select_flag=single_select_flag,
                            instruction=post_dict.get("instruction"), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))

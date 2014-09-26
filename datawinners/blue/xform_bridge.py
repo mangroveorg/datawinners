@@ -169,7 +169,7 @@ class XlsFormParser():
                 errors.extend(self._validate_choice_names(field['children']))
             choices = field.get('choices')
             if choices:
-                name_list = [choice['name'] for choice in choices]
+                name_list = [choice['name'].lower() for choice in choices]
                 name_list_without_duplicates = list(set(name_list))
                 if len(name_list) != len(name_list_without_duplicates):
                     errors.append(_("duplicate names within one list (choices sheet)"))
