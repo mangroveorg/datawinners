@@ -19,9 +19,11 @@ class QuestionnaireBuilder(object):
 
         for question in question_set:
             question_code = question['code']
-            if question_code == 'code':
+
+            if not self.form_model.xform and question_code == 'code':
                 max_code += 1
                 question_code = 'q%s' % max_code
+
             field = self.question_builder.create_question(question, question_code)
             new_fields.append(field)
         return new_fields
@@ -35,7 +37,9 @@ class QuestionnaireBuilder(object):
 
     def update_questionnaire_with_questions(self, question_set):
         origin_json_fields = [f._to_json() for f in self.form_model.fields]
-        max_code = get_max_code_in_question_set(origin_json_fields or question_set)
+        max_code = None
+        if not self.form_model.xform:
+            max_code = get_max_code_in_question_set(origin_json_fields or question_set)
         new_fields = self._generate_fields_by_question_set(max_code, question_set)
         self.form_model.create_snapshot()
         self.form_model.delete_all_fields()
@@ -143,7 +147,7 @@ class QuestionBuilder(object):
 
 
     def _create_select_question(self, post_dict, single_select_flag, code):
-        options = [(choice['value'].get("text"), choice['value'].get("val")) for choice in post_dict["choices"]]
+        options = [(choice['value'].get("text"), choice['value'].get("val").lower()) for choice in post_dict["choices"]]
         return SelectField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
                            options=options, single_select_flag=single_select_flag,
                            instruction=post_dict.get("instruction"), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
