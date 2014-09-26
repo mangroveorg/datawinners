@@ -4165,10 +4165,10 @@ msgid "question_prefix%s"
 msgstr "%s"
 
 msgid "and"
-msgstr "e"
+msgstr "&"
 
 msgid "ending_and"
-msgstr "e"
+msgstr "&"
 
 msgid "singular_question"
 msgstr "pergunta"
@@ -4536,7 +4536,7 @@ msgid "My Identification Numbers"
 msgstr ""
 
 msgid "more_wrong_question"
-msgstr "outras"
+msgstr "..."
 
 msgid "Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}"
 msgstr "Obrigado {<{Name of Data Sender}>}. Recebemos a sua SMS: {<{List of Answers}>}"

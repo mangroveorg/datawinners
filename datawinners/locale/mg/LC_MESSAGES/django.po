@@ -2873,19 +2873,19 @@ msgid "Enter a word"
 msgstr ""
 
 msgid "and"
-msgstr "sy"
+msgstr "&"
 
 msgid "ending_and"
-msgstr "ary"
+msgstr "&"
 
 msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
 msgstr "Diso. Valiny diso hoan'ny %s. Amarino ny vondrom-panontaniana ary avereno alefa ny SMS iray manontolo."
 
 msgid "sms_glue"
-msgstr " sy "
+msgstr ", "
 
 msgid "question_prefix%s"
-msgstr "faha-%s"
+msgstr "%s"
 
 msgid "singular_question"
 msgstr "fanontaniana"
@@ -2906,7 +2906,7 @@ msgid "You have reached your limit of 1000 free Submissions. Upgrade to a monthl
 msgstr "Efa tratra ny fetran'ny fandefasanao maimaimpoana 1000. Azafady, misorata anarana amin'ny tolotra andoavam-bola mba hahafahanao manohy ny fandefasana."
 
 msgid "more_wrong_question"
-msgstr "ny hafa"
+msgstr "..."
 
 msgid "Thank you {<{Name of Data Sender}>}. We received your SMS: {<{List of Answers}>}"
 msgstr "Misaotra {<{Name of Data Sender}>}. Voarainay ny SMS-nao: {<{List of Answers}>}"
