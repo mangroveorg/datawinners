@@ -44,6 +44,7 @@ def make_survey_response_link_to_form_model_document_id(db_name):
     logger = logging.getLogger(db_name)
     survey_responses = _get_survey_responses(dbm)
     try:
+        logger.info("Total submissions_count:%d" % len(survey_responses))
         for survey_response in survey_responses:
             try:
                 if 'form_code' not in survey_response._doc:
