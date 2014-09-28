@@ -50,7 +50,7 @@ def make_survey_response_link_to_form_model_document_id(db_name):
                 if not form_models:
                     logger.info("No Questionnaire found for survey response:%s with form_code: %s" %
                                 survey_response.uuid, survey_response._doc['form_code'])
-                elif form_models.__len__() > 1:
+                elif len(form_models) > 1:
                     form_models.sort(key=lambda form_model: form_model._doc.created,reverse= True)
                     matching_form_model = _get_matching_form_model(survey_response.created, form_models)
                     if matching_form_model:
@@ -61,7 +61,7 @@ def make_survey_response_link_to_form_model_document_id(db_name):
                         logger.info(
                             "No Questionnaire found with matching date for survey response: %s and form_code:%s" % survey_response.uuid,
                             survey_response._doc['form_code'])
-                elif form_models.__len__() == 1:
+                elif len(form_models) == 1:
                     del survey_response._doc['form_code']
                     survey_response.form_model_id = form_models[0].id
                     survey_response.save(process_post_update=False)
@@ -72,4 +72,4 @@ def make_survey_response_link_to_form_model_document_id(db_name):
     mark_as_completed(db_name)
 
 
-migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 1), threads=1)
+migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 1), threads=3)
