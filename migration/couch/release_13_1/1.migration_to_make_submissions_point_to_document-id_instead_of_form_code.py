@@ -1,12 +1,12 @@
 import logging
+
 from mangrove.datastore.documents import FormModelDocument
-
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import SurveyResponse
-
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.main.database import get_db_manager
 from migration.couch.utils import migrate, mark_as_completed
+
 
 get_form_model = """
 function(doc) {
@@ -32,21 +32,17 @@ def _get_form_models(dbm, survey_response):
 
 
 def _get_survey_responses(dbm):
-    survey_responses = dbm.load_all_rows_in_view("survey_response_by_survey_response_id", include_docs=True)
-    survey_responses = [
-        SurveyResponse.new_from_doc(dbm=dbm, doc=SurveyResponse.__document_class__.wrap(survey_response['value'])) for
-        survey_response in survey_responses]
-    return survey_responses
+    return dbm.database.iterview("survey_response_by_survey_response_id/survey_response_by_survey_response_id", 1000, include_docs=True)
 
 
 def make_survey_response_link_to_form_model_document_id(db_name):
     dbm = get_db_manager(db_name)
     logger = logging.getLogger(db_name)
-    survey_responses = _get_survey_responses(dbm)
+    survey_response_docs = _get_survey_responses(dbm)
     try:
-        logger.info("Total submissions_count:%d" % len(survey_responses))
-        for survey_response in survey_responses:
+        for survey_response_doc in survey_response_docs:
             try:
+                survey_response = SurveyResponse.new_from_doc(dbm=dbm, doc=SurveyResponse.__document_class__.wrap(survey_response_doc['value']))
                 if 'form_code' not in survey_response._doc:
                     logger.info("form_code not present in survey response:%s" % survey_response.uuid)
                     continue
@@ -76,4 +72,4 @@ def make_survey_response_link_to_form_model_document_id(db_name):
     mark_as_completed(db_name)
 
 
-migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 1), threads=3)
+migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 1), threads=1)
