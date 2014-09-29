@@ -166,20 +166,26 @@ class TestUniqueIdExtraction(unittest.TestCase):
         response_body = json.loads(response.content)
         unique_ids_ = response_body['unique-ids']
         self.assertEqual(len(unique_ids_), 3)
+        sorted(unique_ids_, key=lambda k: k['short_code'])
+
         self.assertDictEqual(unique_ids_[0], {u'geo_code': u'23.0395677, 72.566005', u'name': u'Test',
                                               u'firstname': u'Ahmedabad waterpoint', u'short_code': u'wp01',
                                               u'deleted': False, u'location': u'India,Gujrat,Ahmedabad',
                                               u'mobile_number': u'1234563'})
 
-        self.assertDictEqual(unique_ids_[1], {u'geo_code': u'28.46385, 77.017838', u'name': u'Test',
+
+        self.assertDictEqual(unique_ids_[1],
+                             {u'geo_code': u'23.251671, 69.66256', u'name': u'Test', u'firstname': u'Bhuj waterpoint',
+                              u'short_code': u'wp02', u'deleted': False, u'location': u'India,Gujrat,Bhuj',
+                              u'mobile_number': u'1234564'})
+
+
+
+        self.assertDictEqual(unique_ids_[2], {u'geo_code': u'28.46385, 77.017838', u'name': u'Test',
                                               u'firstname': u'Gurgaon waterpoint', u'short_code': u'wp03',
                                               u'deleted': False, u'location': u'India,Haryana,Gurgaon',
                                               u'mobile_number': u'1234564'})
 
-        self.assertDictEqual(unique_ids_[2],
-                             {u'geo_code': u'23.251671, 69.66256', u'name': u'Test', u'firstname': u'Bhuj waterpoint',
-                              u'short_code': u'wp02', u'deleted': False, u'location': u'India,Gujrat,Bhuj',
-                              u'mobile_number': u'1234564'})
 
 
         self.assertDictEqual(response_body['questionnaire'],
