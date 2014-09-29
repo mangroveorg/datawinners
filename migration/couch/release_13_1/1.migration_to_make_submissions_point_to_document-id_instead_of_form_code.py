@@ -32,7 +32,7 @@ def _get_form_models(dbm, survey_response):
 
 
 def _get_survey_responses(dbm):
-    return dbm.database.iterview("survey_response_by_survey_response_id/survey_response_by_survey_response_id", 1000, include_docs=True)
+    return dbm.database.iterview("survey_response_by_survey_response_id/survey_response_by_survey_response_id", 5000, include_docs=True)
 
 
 def make_survey_response_link_to_form_model_document_id(db_name):
@@ -72,4 +72,4 @@ def make_survey_response_link_to_form_model_document_id(db_name):
     mark_as_completed(db_name)
 
 
-migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 1), threads=3)
+migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 1), threads=2)
