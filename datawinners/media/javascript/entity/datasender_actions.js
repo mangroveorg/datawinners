@@ -440,14 +440,14 @@ $(document).ready(function(){
         width: 620,
         closeText: 'hide',
         close: function(){
-            DW.vm.is_open_datasender(initial_is_open_datasender);
+            DW.vm.is_open_survey(initial_is_open_survey);
         }
       }
    );
     
    $("#change_ds_setting .cancel_link").bind("click", function() {
        $("#change_ds_setting").dialog("close");
-       DW.vm.is_open_datasender(initial_is_open_datasender);
+       DW.vm.is_open_survey(initial_is_open_survey);
        return false;
    });
 

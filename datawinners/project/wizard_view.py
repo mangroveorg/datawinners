@@ -36,7 +36,7 @@ from datawinners.project.utils import is_quota_reached
 from mangrove.utils.types import is_empty
 
 
-def create_questionnaire(post, manager, name, language, reporter_id, is_open_datasender=False):
+def create_questionnaire(post, manager, name, language, reporter_id, is_open_survey=False):
     questionnaire_code = post['questionnaire-code'].lower()
     datasenders = json.loads(post.get('datasenders', "[]"))
     json_string = post['question-set']
@@ -44,8 +44,8 @@ def create_questionnaire(post, manager, name, language, reporter_id, is_open_dat
     questionnaire = Project(manager, name=name,
                            fields=[], form_code=questionnaire_code, language=language,
                            devices=[u'sms', u'web', u'smartPhone'])
-    if is_open_datasender:
-        questionnaire.is_open_datasender = post.get('is_open_datasender')
+    if is_open_survey:
+        questionnaire.is_open_survey = post.get('is_open_survey')
         
     if reporter_id is not None:
         questionnaire.data_senders.append(reporter_id)
@@ -95,7 +95,7 @@ def get_template_details(request, template_id):
     template_details = {'template_id': template.id, 'project_name': template.get('name'),
                         'project_language': template.get('language'),
                         'questionnaire_code': template.get('form_code'),
-                        'is_open_datasender': 1,
+                        'is_open_survey': 1,
                         'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 
@@ -130,11 +130,11 @@ def create_project(request):
         project_info = json.loads(request.POST['profile_form'])
 
         try:
-            is_open_datasender = get_organization(request).is_pro_sms and request.POST.get('is_open_datasender')
+            is_open_survey = get_organization(request).is_pro_sms and request.POST.get('is_open_survey')
             questionnaire = create_questionnaire(post=request.POST, manager=manager, name=project_info.get('name'),
                                                  language=project_info.get('language', active_language),
                                                  reporter_id=ngo_admin.reporter_id,
-                                                 is_open_datasender=is_open_datasender)
+                                                 is_open_survey=is_open_survey)
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
             return HttpResponse(

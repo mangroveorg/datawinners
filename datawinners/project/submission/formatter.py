@@ -33,9 +33,7 @@ class SubmissionFormatter(object):
         result = []
         for field_code in self.columns.keys():
             try:
-                if field_code == SubmissionIndexConstants.DATASENDER_MOBILE_KEY:
-                    continue
-                    
+                
                 parsed_value= ""
                 if row.get(field_code):
                     parsed_value = ', '.join(row.get(field_code)) if isinstance(row.get(field_code),list) else row.get(field_code)
@@ -57,8 +55,6 @@ class SubmissionFormatter(object):
                 elif self.columns[field_code].get("type") == 'integer':
                     col_val_parsed = try_parse(float, parsed_value)
                     result.append(col_val_parsed)
-                elif field_code == SubmissionIndexConstants.DATASENDER_NAME_KEY and row.get(field_code) == 'N/A':
-                    result.append(row.get(SubmissionIndexConstants.DATASENDER_MOBILE_KEY))
                 elif field_code == SubmissionIndexConstants.DATASENDER_ID_KEY and row.get(field_code) == 'N/A':
                     col_val = ""
                     result.append(col_val)

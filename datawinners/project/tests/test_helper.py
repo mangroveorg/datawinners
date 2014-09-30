@@ -180,7 +180,7 @@ class TestHelper(unittest.TestCase):
             form_code_mock = patcher1.start()
             from elasticutils import S
             s_mock = Mock(spec=S)
-            s_mock.values_dict.return_value = [{"open_datasender_phone_number":"123456"}, {"open_datasender_phone_number":"2354"}]
+            s_mock.values_dict.return_value = [{"ds_name":"123456", "ds_id": "N/A"}, {"ds_name":"2354", "ds_id": "N/A"}]
             with patch.object(SubmissionQueryBuilder, "query_all") as query_all_mock:
                 query_all_mock.return_value = s_mock
                 unregistered = helper.get_unregistered_datasenders(self.dbm, "form_code")

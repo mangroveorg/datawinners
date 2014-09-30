@@ -45,7 +45,7 @@ class TestCreateBlankQuestionnaireProAccount(HeadlessRunnerTest):
         self.assertFalse(self.registered_datasenders_page.is_change_setting_option_displayed())
         form_model = get_form_model_by_code(self.dbm, self.questionnaire_code)
         project = Project.from_form_model(form_model)
-        self.assertFalse(project.is_open_datasender)
+        self.assertFalse(project.is_open_survey)
 
 
   

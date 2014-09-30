@@ -53,7 +53,6 @@ class SubmissionAnalysisHeader(SubmissionHeader):
         header_dict.update({"date": "Submission Date"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_MOBILE_KEY: "Phone number"})
         return header_dict
 
 
@@ -64,7 +63,6 @@ class AllSubmissionHeader(SubmissionHeader):
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
         header_dict.update({"date": "Submission Date"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_MOBILE_KEY: "Phone number"})
         header_dict.update({"status": "Status"})
 
         return header_dict
@@ -76,7 +74,6 @@ class SuccessSubmissionHeader(SubmissionHeader):
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
         header_dict.update({"date": "Submission Date"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_MOBILE_KEY: "Phone number"})
         return header_dict
 
 
@@ -87,7 +84,6 @@ class ErroredSubmissionHeader(SubmissionHeader):
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
         header_dict.update({"date": "Submission Date"})
         header_dict.update({"error_msg": "Error Message"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_MOBILE_KEY: "Phone number"})
         return header_dict
 
 

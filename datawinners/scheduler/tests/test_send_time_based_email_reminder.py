@@ -42,6 +42,7 @@ class TestSendTimeBasedReminder(TestCase):
                 subject, template, sender = get_email_detail_by_type(email_type)
                 send_time_based_reminder_email()
                 site = Site.objects.get_current()
+                self.assertEqual(len(mail.outbox), 1)
                 email = mail.outbox.pop()
                 self.assertEqual(['chinatwu2@gmail.com'], email.to)
                 ctx = {'username':'Trial User', 'organization':self.organization, 'site':site,

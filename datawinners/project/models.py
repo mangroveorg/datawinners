@@ -314,12 +314,12 @@ class Project(FormModel):
             update_datasender_index_by_id(data_sender_code, dbm)
 
     @property
-    def is_open_datasender(self):
-        return self._doc.is_open_datasender
+    def is_open_survey(self):
+        return self._doc.is_open_survey
 
-    @is_open_datasender.setter
-    def is_open_datasender(self, value):
-        self._doc.is_open_datasender = value
+    @is_open_survey.setter
+    def is_open_survey(self, value):
+        self._doc.is_open_survey = value
 
 def get_all_projects(dbm, data_sender_id=None):
     if data_sender_id:

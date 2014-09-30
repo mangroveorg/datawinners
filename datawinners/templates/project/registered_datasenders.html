@@ -44,7 +44,7 @@
     <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
     <script>
         var user_dict = {{ user_dict|safe }};
-        var initial_is_open_datasender = "{{ is_open_datasender }}";
+        var initial_is_open_survey = "{{ is_open_survey }}";
         var import_datasenders_link = "{% url registered_datasenders project.id %}"
     </script>
 {% endblock %}
@@ -113,9 +113,9 @@
     {% if is_pro_sms %}
     <div id="change_ds_setting">
         <p class="warning_message margin_bottom_10">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
-        <input type="radio" name="ds_setting" value="1" data-bind="checked:is_open_datasender"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
+        <input type="radio" name="ds_setting" value="1" data-bind="checked:is_open_survey"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
         <span class="italic font_size_12 margin_left_30">{% trans "Anyone with a simple phone can submit data." %}</span></br>
-        <input type="radio" name="ds_setting" value="" data-bind="checked:is_open_datasender" class="margin_top_15"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
+        <input type="radio" name="ds_setting" value="" data-bind="checked:is_open_survey" class="margin_top_15"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
             <span class="italic font_size_12 margin_left_30">{% trans "Data Senders must be registered first before submitting data." %}</span></br>
             <span class="italic font_size_12 margin_left_30 margin_bottom_5">{% trans "Example: Registered field staff, community based workers, supervisors" %}</span></br>
         <a href="#" class="button margin_top_13 float_right" id="save_ds_setting" style="float: right">{% trans "Save" %}</a>

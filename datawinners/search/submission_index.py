@@ -216,12 +216,13 @@ def status_message(status):
 def _meta_fields(submission_doc, dbm):
     search_dict = {}
     datasender_name, datasender_id = lookup_entity_by_uid(dbm, submission_doc.owner_uid)
+    if submission_doc.anonymous_submission:
+        datasender_name = submission_doc.created_by
     search_dict.update({"status": status_message(submission_doc.status)})
     search_dict.update({"date": format_datetime(submission_doc.submitted_on, "MMM. dd, yyyy, hh:mm a", locale="en")})
     search_dict.update({"ds_id": datasender_id})
     search_dict.update({"ds_name": datasender_name})
     search_dict.update({"error_msg": submission_doc.error_message})
-    search_dict.update({"open_datasender_phone_number": submission_doc.open_datasender_phone_number})
     return search_dict
 
 

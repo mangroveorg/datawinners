@@ -42,7 +42,7 @@ class PostSMSProcessorCheckDSIsRegistered(object):
         form_model = get_form_model_by_code(self.dbm, form_code)
         project = Project.from_form_model(form_model=form_model)
         exception = self.request.get('exception')
-        if exception and isinstance(exception, NumberNotRegisteredException) and not project.is_open_datasender:
+        if exception and isinstance(exception, NumberNotRegisteredException) and not project.is_open_survey:
            return self._get_response()
 
 
@@ -120,7 +120,7 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         project = Project.from_form_model(form_model=form_model)
         reporter_entity = self.request.get('reporter_entity')
 
-        if project.is_open_datasender or (reporter_entity.short_code == "test" or \
+        if project.is_open_survey or (reporter_entity.short_code == "test" or \
                 isinstance(form_model, EntityFormModel) or \
                         reporter_entity.short_code in Project.from_form_model(form_model).data_senders):
             self.check_answers_numbers()

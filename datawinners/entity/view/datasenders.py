@@ -186,7 +186,7 @@ class RegisterDatasenderView(TemplateView):
 def update_survey_response(dbm, row, reporter_id):
     survey_response_doc = SurveyResponse.__document_class__.wrap(row['value'])
     survey_response = SurveyResponse.new_from_doc(dbm=dbm, doc=survey_response_doc)
-    survey_response.open_datasender_phone_number = None
+    survey_response.anonymous_submission = None
     survey_response.owner_uid = reporter_id
     survey_response.save()
 

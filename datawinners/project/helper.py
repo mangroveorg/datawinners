@@ -241,8 +241,8 @@ def get_unregistered_datasenders(dbm, form_code):
 
     query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, form_model.id)
     unregistered_number = []
-    for res in query.values_dict(tuple(['open_datasender_phone_number', 'ds_id'])):
-        number = res.get("open_datasender_phone_number")
+    for res in query.values_dict(tuple(['ds_name', 'ds_id'])):
+        number = res.get("ds_name") if res.get("ds_id") == "N/A" else None
         if number and number not in unregistered_number and number not in registered_datasender:
-            unregistered_number.append(res.get("open_datasender_phone_number"))
+            unregistered_number.append(number)
     return unregistered_number

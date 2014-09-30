@@ -27,7 +27,7 @@ class TestPostSMSProcessorCheckDSIsLinkedToProject(unittest.TestCase):
     def _get_project_mock(self):
         project = Mock(spec=Project)
         project.data_senders = ['rep2']
-        project.is_open_datasender = False
+        project.is_open_survey = False
         return project
 
     def test_should_raise_no_exception_if_ds_is_linked_and_number_of_answers_is_correct(self):

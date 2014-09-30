@@ -411,7 +411,7 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
     order_by = int(post_dict.get('iSortCol_0')) - 1
     header = HeaderFactory(form_model).create_header(filter_type)
     headers = header.get_header_field_names()
-    meta_fields = ['ds_id', 'entity_short_code', 'open_datasender_phone_number']
+    meta_fields = ['ds_id', 'entity_short_code']
     for field in meta_fields:
         #Remove extra meta fields with which ordering in submission values
         #and submission headers will not match

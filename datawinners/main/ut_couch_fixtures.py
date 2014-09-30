@@ -635,7 +635,7 @@ def create_open_datasender_project(ENTITY_TYPE, manager):
                                 fields=questions_, goals="This project is for automation",
                                 devices=["sms", "web", "smartPhone"], sender_group="close"
     )
-    project.is_open_datasender = True
+    project.is_open_survey = True
     try:
         open_ds = project.save()
     except DataObjectAlreadyExists as e:

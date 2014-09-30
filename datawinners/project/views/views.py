@@ -149,7 +149,7 @@ def undelete_project(request, project_id):
 def project_overview(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-    open_datasender_questionnaire= questionnaire.is_open_datasender
+    open_survey_questionnaire= questionnaire.is_open_survey
     is_pro_sms = _is_pro_sms(request)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
@@ -203,7 +203,7 @@ def project_overview(request, project_id):
         'entity_type': json.dumps(entity_type),
         'unique_id_header_text': unique_id_header_text,
         'org_number': get_organization_telephone_number(request),
-        'open_datasender_questionnaire': open_datasender_questionnaire,
+        'open_survey_questionnaire': open_survey_questionnaire,
         'is_pro_sms': is_pro_sms,
         'number_unregistered_data_sender': number_unregistered_data_sender
     }))
@@ -284,7 +284,7 @@ def _get_data_senders(dbm, form, project):
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
-    form_class = OpenDsBroadcastMessageForm if questionnaire.is_open_datasender else BroadcastMessageForm
+    form_class = OpenDsBroadcastMessageForm if questionnaire.is_open_survey else BroadcastMessageForm
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
@@ -454,7 +454,7 @@ def get_questionnaire_ajax(request, project_id):
                                        'language': project.language,
                                        'questions': existing_questions,
                                        'datasenders': project.data_senders,
-                                       'is_open_datasender': 1 if project.is_open_datasender else '',
+                                       'is_open_survey': 1 if project.is_open_survey else '',
                                        'reminder_and_deadline': project.reminder_and_deadline
                                    }, default=field_to_json), content_type='application/json')
 
@@ -931,7 +931,7 @@ def change_ds_setting(request):
     project_id = request.POST.get("project_id")
     ds_setting = request.POST.get("selected")
     questionnaire = Project.get(manager, project_id)
-    questionnaire.is_open_datasender = ds_setting
+    questionnaire.is_open_survey = ds_setting
     questionnaire.save()
     messages.success(request, ugettext("Changes saved successfully."))
     return HttpResponse(json.dumps({'success': True}))

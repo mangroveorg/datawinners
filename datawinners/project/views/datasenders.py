@@ -112,7 +112,7 @@ def registered_datasenders(request, project_id):
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
         is_pro_sms = _is_pro_sms(request)
-        is_open_datasender = '1' if questionnaire.is_open_datasender else ''
+        is_open_survey = '1' if questionnaire.is_open_survey else ''
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
         return render_to_response('project/registered_datasenders.html',
                                   {'project': questionnaire,
@@ -122,7 +122,7 @@ def registered_datasenders(request, project_id):
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,
                                    'is_pro_sms': is_pro_sms,
-                                   'is_open_datasender': is_open_datasender,
+                                   'is_open_survey': is_open_survey,
                                    'user_dict': json.dumps(user_rep_id_name_dict)},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':

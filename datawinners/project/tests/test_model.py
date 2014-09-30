@@ -166,18 +166,18 @@ class TestProjectModel(unittest.TestCase):
             self.assertEqual(self.project1.data_senders, expected_data_senders)
 
 
-    def test_should_set_project_to_open_datasender(self):
-        self.change_is_open_datasender_value(True)
+    def test_should_set_project_to_open_survey(self):
+        self.change_is_open_survey_value(True)
         project = Project.get(self.manager, self.project1_id)
-        self.assertTrue(project.is_open_datasender)
+        self.assertTrue(project.is_open_survey)
         self.assert_is_changed_to_false()
 
     def assert_is_changed_to_false(self):
-        self.change_is_open_datasender_value(False)
+        self.change_is_open_survey_value(False)
         project = Project.get(self.manager, self.project1_id)
-        self.assertFalse(project.is_open_datasender)
+        self.assertFalse(project.is_open_survey)
 
-    def change_is_open_datasender_value(self, value):
+    def change_is_open_survey_value(self, value):
         project = Project.get(self.manager, self.project1_id)
-        project.is_open_datasender = value
+        project.is_open_survey = value
         project.save()
