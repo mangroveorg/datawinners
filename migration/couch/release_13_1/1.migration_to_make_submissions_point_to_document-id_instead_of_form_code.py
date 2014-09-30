@@ -57,6 +57,7 @@ def make_survey_response_link_to_form_model_document_id(db_name):
                         del survey_response._doc['form_code']
                         survey_response.form_model_id = matching_form_model.id
                         survey_response.save(process_post_update=False)
+                        logger.info('.')
                     else:
                         logger.info(
                             "No Questionnaire found with matching date for survey response: %s and form_code:%s" % survey_response.uuid,
@@ -65,6 +66,8 @@ def make_survey_response_link_to_form_model_document_id(db_name):
                     del survey_response._doc['form_code']
                     survey_response.form_model_id = form_models[0].id
                     survey_response.save(process_post_update=False)
+                    logger.info('.')
+
             except Exception as e:
                 logger.exception("Exception for survey response:%s" % survey_response.uuid, e)
     except Exception as e:
