@@ -44,7 +44,7 @@ class SubmissionImporter():
             #todo add this when default reporter question gets added
             self._add_reporter_id_for_datasender(q_answer_dicts, user_profile, is_organization_user)
 
-            valid_rows, invalid_row_details = self.submission_validator.validate_rows(q_answer_dicts)
+            valid_rows, invalid_row_details = self.submission_validator.validate_rows(q_answer_dicts, is_organization_user)
             ignored_entries, saved_entries = self.submission_persister.save_submissions(is_organization_user,
                                                                                         user_profile, valid_rows)
             total_submissions = len(invalid_row_details)+len(valid_rows)
@@ -77,7 +77,6 @@ class SubmissionImporter():
         return file_content
 
     def _add_reporter_id_for_datasender(self, parsed_rows, user_profile, is_organization_user):
-
         for row in parsed_rows:
             if is_organization_user:
                 if row['dsid'] == '':

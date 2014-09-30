@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.generic.base import View
+from datawinners.entity.helper import rep_id_name_dict_of_users
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from mangrove.form_model.form_model import get_form_model_by_code
@@ -14,7 +15,6 @@ from datawinners.accountmanagement.decorators import session_not_expired, is_not
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager
-from datawinners.project.models import Project
 from datawinners.project.submission.submission_import import SubmissionImporter
 
 
@@ -33,7 +33,6 @@ class ImportSubmissionView(View):
     def post(self, request, form_code):
         manager = get_database_manager(request.user)
         feeds_dbm = get_feeds_database(request.user)
-        project_id = request.GET["project_id"]
         form_model = get_form_model_by_code(manager, form_code)
         user_profile = NGOUserProfile.objects.get(user=request.user)
         organization = Organization.objects.get(org_id=user_profile.org_id)
