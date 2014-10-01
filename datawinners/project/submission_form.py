@@ -9,8 +9,9 @@ from django.core.exceptions import ValidationError
 from operator import itemgetter
 
 class BaseSubmissionForm(Form):
-    def __init__(self, project, data, is_datasender, datasender_name, reporter_id, reporter_name, is_linked):
-        super(BaseSubmissionForm, self).__init__(data)
+    def __init__(self, project, data, is_datasender, datasender_name, reporter_id, reporter_name,
+                 is_linked, is_anonymous_submission, initial=None):
+        super(BaseSubmissionForm, self).__init__(data, initial=initial)
         self.form_model = project
         self.fields['form_code'] = CharField(widget=HiddenInput, initial=project.form_code)
         self.is_datasender = is_datasender
@@ -26,14 +27,18 @@ class BaseSubmissionForm(Form):
                 error_message = {'invalid_choice':_("The Data Sender %s (%s) is not linked to your Questionnaire.") % (datasender_name, data.get("dsid"))}
             else:
                 error_message = None
-            self.fields['dsid'] = ChoiceField(label=_('I want to submit this data on behalf of a registered Data Sender'),
+
+            if not is_anonymous_submission:
+                self.fields['dsid'] = ChoiceField(label=_('I want to submit this data on behalf of a registered Data Sender'),
                                           choices=default_choice,
-                                          error_messages=error_message)
+                                          error_messages=error_message, required=False)
 
 
 class SurveyResponseForm(BaseSubmissionForm):
-    def __init__(self, project, data=None, is_datasender=False, datasender_name='', reporter_id=None, reporter_name=None, is_linked=False):
-        super(SurveyResponseForm, self).__init__(project, data, is_datasender, datasender_name, reporter_id, reporter_name, is_linked)
+    def __init__(self, project, data=None, is_datasender=False, datasender_name='', reporter_id=None,
+                 reporter_name=None, is_linked=False, is_anonymous_submission=False, initial=None):
+        super(SurveyResponseForm, self).__init__(project, data, is_datasender, datasender_name, reporter_id,
+                                                 reporter_name, is_linked, is_anonymous_submission, initial)
 
         for field in self.form_model.fields:
             if isinstance(field, UniqueIdField):
@@ -46,6 +51,7 @@ class SurveyResponseForm(BaseSubmissionForm):
 
     def clean(self):
         cleaned_data = self.cleaned_data
+        #cleaned_data = super(SurveyResponseForm, self).clean()
         cleaned_data.pop('dsid', None)
         return cleaned_data
 

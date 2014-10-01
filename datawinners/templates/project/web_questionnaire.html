@@ -30,26 +30,19 @@
 
 
     {% block page_js %}
+    <script type="text/javascript">
+         DW.reporter_id = '{{ reporter_id }}';
+         DW.is_linked = {{ is_linked|lower }};
+         DW.reporter_name = '{{ reporter_name }}';
+    </script>
         {% if is_edit %}
         {{ block.super }}
         <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
         <script type="text/javascript" src="/media/javascript/project/edit_submission.js"></script>
     {% else %}
-            {{ block.super }}
-            <script type="text/javascript">
-         DW.reporter_id = "{{ reporter_id }}";
-         DW.is_linked = {{ is_linked|lower }};
-    </script>
+        <script type="text/javascript" src="/media/javascript/project/web_submission.js"></script>
         {% endif %}
     {% endblock %}
-
-
-
-
-       <script type="text/javascript">
-         DW.reporter_id = {{ reporter_id }};
-         DW.is_linked = {{ is_linked|lower }};
-    </script>
 
 {% block content %}
 

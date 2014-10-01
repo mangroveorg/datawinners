@@ -633,8 +633,8 @@ class SurveyWebQuestionnaireRequest():
         is_linked = self.reporter_id in self.questionnaire.data_senders
         if not questionnaire_form.is_valid() or quota_reached:
             form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
-                                            self.disable_link_class, is_linked, reporter_id,)
-            form_context.update({'is_quota_reached': quota_reached})
+                                            self.disable_link_class,)
+            form_context.update({'is_quota_reached': quota_reached, 'is_linked': is_linked, 'reporter_id': reporter_id,})
             return render_to_response(self.template, form_context,
                                       context_instance=RequestContext(self.request))
 

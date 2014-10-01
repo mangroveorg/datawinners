@@ -1,5 +1,14 @@
 {% load i18n %}
 {% load field_tags %}
+
+{% block page_js %}
+    <script type="text/javascript">
+         DW.reporter_id = '{{ reporter_id }}';
+         DW.is_linked = {{ is_linked|lower }};
+         DW.reporter_name = '{{ reporter_name }}';
+    </script>
+{% endblock %}
+
 <form method="POST">
     <div >
         <a href="{{ back_link }}" class="back-to-list"> « {% trans "Back to Submission Log" %}</a>
