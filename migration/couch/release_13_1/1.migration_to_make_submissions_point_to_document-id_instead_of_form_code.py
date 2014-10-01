@@ -9,15 +9,6 @@ from datawinners.main.database import get_db_manager
 from migration.couch.utils import migrate, mark_as_completed
 
 
-get_form_model = """
-function(doc) {
- if (doc.document_type == 'FormModel') {
-        emit(doc.form_code, doc);
-    }
-}
-"""
-
-
 def _get_matching_form_model(surveyresponse_date, form_models):
     for form_model in form_models:
         if form_model._doc.created < surveyresponse_date:
@@ -26,7 +17,7 @@ def _get_matching_form_model(surveyresponse_date, form_models):
 
 
 def _get_form_models(dbm, survey_response):
-    rows = dbm.database.query(get_form_model, include_docs=True, key=survey_response._doc['form_code'])
+    rows = dbm.load_all_rows_in_view('all_questionnaire', include_docs=True, key=survey_response._doc['form_code'])
     if rows:
         return [FormModel.new_from_doc(dbm, FormModelDocument.wrap(row["value"])) for row in rows]
     return None
