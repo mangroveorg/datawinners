@@ -45,7 +45,7 @@
   margin: 15px; }
 
 .margin_top_20 {
-  margin-top: 20px; }
+  margin-top: 20px !important; }
 
 .margin_top_15 {
   margin-top: 15px; }
