@@ -67,11 +67,10 @@ def _process_survey_response(survey_response_doc, db_name):
 def make_survey_response_link_to_form_model_document_id(db_name):
     dbm = get_db_manager(db_name)
     logger = logging.getLogger(db_name)
-    survey_response_docs = _get_survey_responses(dbm)
     process_count = 8 if db_name in ['hni_palme_flm546389', 'hni_usaid-mikolo_lei526034'] else 4
     p = Pool(processes=process_count)
     try:
-        for survey_response_doc in survey_response_docs:
+        for survey_response_doc in _get_survey_responses(dbm):
             p.apply_async(_process_survey_response, (survey_response_doc, db_name))
     except Exception as e:
         logger.error(e.message + db_name)
