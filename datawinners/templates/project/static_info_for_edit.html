@@ -14,10 +14,6 @@ $(document).ready(function(){
         $('#edit_ds_popup span select#id_dsid option[value='+ reporter_id +']').addClass("none");
     }
 
-    /*if (!$('#edit_ds_popup span select#id_dsid option[value='+ reporter_id +']').is(':checked')){
-        $('#edit_ds_popup span select#id_dsid option[value='+ reporter_id +']').addClass("none");
-        $('#edit_ds_popup span select#id_dsid option[value=""]').attr('selected','selected');
-    }*/
 
     $("#edit_ds_popup").dialog({
         title: gettext("Change Data Sender"),
@@ -45,11 +41,6 @@ $(document).ready(function(){
         $('#choice_field_hidden span select#id_dsid option[value="'+datasender_id+'"]').attr('selected','selected');
     });
 
-    if (($(".datasender").html() == reporter_id) && !is_linked){
-        $("#text").text(gettext("The Data Sender "+reporter_name+" ("+reporter_id+") is not linked to your Questionnaire"));
-        $('#edit_ds_popup span select#id_dsid option[value='+ reporter_id +']').addClass("none");
-        $('#edit_ds_popup span select#id_dsid option[value=""]').attr('selected','selected');
-    }
     if ($(".datasender").html() != reporter_id){
         $('#edit_ds_popup span select#id_dsid option[value=""]').addClass("none");
     }
@@ -68,14 +59,18 @@ $(document).ready(function(){
                     <text class='ds_id'>{{ value.0 }}</text>
                     <text class='datasender'>{{ value.1 }}</text>
                     <a id="edit_ds_link" class="margin_left_10">Change</a><br/>
+                    {% if error_message %}
+                        <span id="text" class="error_message">{{ error_message }}</span>
+                    {% endif %}
 
                 {% else %}
                     <text class='content-values'>{{ value }}</text>
                 {% endif %}
-                <span id="text" class="error_message"></span>
+
             </li>
 
         {% endfor %}
+
         <li class="info">
             {% if is_error_to_success %}
                 <text class='highlight content-header'>{% trans 'Status' %}</text>

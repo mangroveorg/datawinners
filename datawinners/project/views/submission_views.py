@@ -21,7 +21,7 @@ from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 
-from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile, User
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -34,11 +34,11 @@ from mangrove.form_model.field import SelectField, DateField, UniqueIdField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.utils import get_organization
+from datawinners.utils import get_organization, get_organization_from_manager
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project import helper
-from datawinners.project.data_sender_helper import get_data_sender
+from datawinners.project.data_sender_helper import get_data_sender, get_data_sender_by_reporter_id
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
 from datawinners.project.models import Project
 
@@ -214,9 +214,15 @@ def delete(request, project_id):
     return HttpResponse(response)
 
 
-def build_static_info_context(manager, survey_response, ui_model=None):
+def build_static_info_context(manager, survey_response, ui_model=None, questionnaire_form_model=None, reporter_id=None):
     form_ui_model = OrderedDict() if ui_model is None else ui_model
     registered_datasender =  get_data_sender(manager, survey_response)
+    all_linked_datasender = questionnaire_form_model.data_senders
+    org_id = get_organization_from_manager(manager).org_id
+    check_existing_datasender = User.objects.filter(ngouserprofile__org_id=org_id, ngouserprofile__reporter_id=registered_datasender[1], groups__name__in=["NGO Admins", "Project Managers"])
+    error_message = ""
+    if not len(check_existing_datasender)<0 and registered_datasender not in all_linked_datasender:
+        error_message = ugettext("The Data Sender %s (%s) is not linked to your Questionnaire.") % (registered_datasender[0], registered_datasender[1])
     unregistered_datasender= survey_response.created_by
     if registered_datasender[1] == 'N/A' :
         static_content = {'Data sender': unregistered_datasender,
@@ -234,6 +240,7 @@ def build_static_info_context(manager, survey_response, ui_model=None):
     form_ui_model.update({'static_content': static_content})
     form_ui_model.update({'is_edit': True})
     form_ui_model.update({'status': ugettext('Success') if survey_response.status else ugettext('Error')})
+    form_ui_model.update({'error_message': error_message})
     return form_ui_model
 
 
@@ -275,7 +282,8 @@ def edit(request, project_id, survey_response_id, tab=0):
     back_link = reverse(index,
                         kwargs={"project_id": project_id, "questionnaire_code": questionnaire_form_model.form_code,
                                 "tab": tab})
-    form_ui_model = build_static_info_context(manager, survey_response)
+    form_ui_model = build_static_info_context(manager, survey_response,
+                                              questionnaire_form_model=questionnaire_form_model, reporter_id=reporter_id)
     form_ui_model.update({"back_link": back_link})
     data_sender = get_data_sender(manager, survey_response)
     short_code = data_sender[1]
@@ -355,7 +363,7 @@ def edit(request, project_id, survey_response_id, tab=0):
                                   additional_feed_dictionary, websubmission_logger)
         mail_feed_errors(response, manager.database_name)
         if response.success:
-            build_static_info_context(manager, survey_response, form_ui_model)
+            build_static_info_context(manager, survey_response, form_ui_model, questionnaire_form_model, reporter_id)
             ReportRouter().route(get_organization(request).org_id, response)
             _update_static_info_block_status(form_ui_model, is_errored_before_edit)
             log_edit_action(original_survey_response, survey_response, request, questionnaire_form_model.name,

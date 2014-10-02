@@ -31,7 +31,7 @@ class BaseSubmissionForm(Form):
             if not is_anonymous_submission:
                 self.fields['dsid'] = ChoiceField(label=_('I want to submit this data on behalf of a registered Data Sender'),
                                           choices=default_choice,
-                                          error_messages=error_message, required=False)
+                                          error_messages=error_message)
 
 
 class SurveyResponseForm(BaseSubmissionForm):
