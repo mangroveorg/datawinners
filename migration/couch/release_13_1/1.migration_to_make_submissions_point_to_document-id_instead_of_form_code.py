@@ -31,7 +31,7 @@ def _get_survey_responses(dbm, is_large_account):
     if is_large_account:
         extra_params['stale'] = 'ok'
 
-    return dbm.database.iterview("survey_response_by_survey_response_id/survey_response_by_survey_response_id", 20000,
+    return dbm.database.iterview("survey_response_by_survey_response_id/survey_response_by_survey_response_id", 80000,
                                  **extra_params)
 
 
