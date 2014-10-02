@@ -5,27 +5,21 @@
 
 
 $(document).ready(function(){
-    reporter_id = DW.reporter_id;
-    is_linked = DW.is_linked;
-    reporter_name = DW.reporter_name;
-    reporter_html = reporter_name +" ("+ reporter_id +")";
-
-    if (!is_linked){
-        $('#edit_ds_popup span select#id_dsid option[value='+ reporter_id +']').addClass("none");
-    }
-
-
-    $("#edit_ds_popup").dialog({
+    var popup = $("#edit_ds_popup").dialog({
         title: gettext("Change Data Sender"),
         modal: true,
         autoOpen: false,
         height: 180,
         width: 450
-      }
-    );
+    });
+    popup.parent().appendTo($("#edit_submission_form"));
 
-    $("#edit_ds_link").unbind().bind("click", function () {
+    $("#change_ds_link").unbind().bind("click", function () {
         $("#edit_ds_popup").dialog("open");
+    });
+
+    $("#edit_ds_popup .cancel_link").bind("click", function(){
+        $("#edit_ds_popup").dialog("close");
     });
 
     $("#save_ds").bind("click", function(){
@@ -33,19 +27,13 @@ $(document).ready(function(){
         selected_ds_split = selected_ds.split("  ");
         datasender_name = selected_ds_split[0].replace(/^\w/, function($0) { return $0.toUpperCase(); });
         datasender_id = selected_ds_split[1].replace(')','').replace('(','')
-        alert(datasender_name+"/"+datasender_id)
+        
         $(".datasender").text(datasender_id);
-         $(".ds_id").text(datasender_name);
+        $(".ds_id").text(datasender_name);
+        $(".datasender_error_message").addClass("none");
         $("#edit_ds_popup").dialog("close");
-
-        $('#choice_field_hidden span select#id_dsid option[value="'+datasender_id+'"]').attr('selected','selected');
     });
-
-    if ($(".datasender").html() != reporter_id){
-        $('#edit_ds_popup span select#id_dsid option[value=""]').addClass("none");
-    }
-
-    });
+});
 
 </script>
 {% endblock %}
@@ -58,9 +46,9 @@ $(document).ready(function(){
                 {% if header == 'Data Sender' %}
                     <text class='ds_id'>{{ value.0 }}</text>
                     <text class='datasender'>{{ value.1 }}</text>
-                    <a id="edit_ds_link" class="margin_left_10">Change</a><br/>
-                    {% if error_message %}
-                        <span id="text" class="error_message">{{ error_message }}</span>
+                    <a id="change_ds_link" class="margin_left_10">{% trans "Change" %}</a><br/>
+                    {% if datasender_error_message %}
+                        <span class="font_color_red datasender_error_message">{{ datasender_error_message }}</span>
                     {% endif %}
 
                 {% else %}
@@ -82,33 +70,22 @@ $(document).ready(function(){
             {% endif %}
         </li>
     </ul>
-<div id="edit_ds_popup">
-    <span class="margin_bottom_20">Which registered Data Sender sent you this Submission?</span></br>
-    {% for field in questionnaire_form %}
-        {% if not field.is_hidden %}
-            {% if field.name == 'dsid' %}
-                 <span id="choice_field">
-                        {{ field }}
-                 </span></br></br>
+    <div id="edit_ds_popup">
+        <span class="margin_bottom_20">{% trans "Which registered Data Sender sent you this Submission?" %}</span></br>
+        {% for field in questionnaire_form %}
+            {% if not field.is_hidden %}
+                {% if field.name == 'dsid' %}
+                     <span id="choice_field">
+                            {{ field }}
+                     </span></br></br>
+                {% endif %}
             {% endif %}
-        {% endif %}
-    {% endfor %}
+        {% endfor %}
 
-        <span id="number" class="margin_left_10 none"></span>
-        <a href="#" class="button margin_top_13 float_right" id="save_ds" style="float: right">{% trans "Change" %}</a>
-        <a href="#" class="float_right margin_top_20 cancel_link">{% trans "Cancel" %}</a></br>
-</div>
-<div id="choice_field_hidden" class="none">
-    {% for field in questionnaire_form %}
-        {% if not field.is_hidden %}
-            {% if field.name == 'dsid' %}
-                 <span>
-                        {{ field }}
-                 </span>
-            {% endif %}
-        {% endif %}
-    {% endfor %}
-</div>
+            <span id="number" class="margin_left_10 none"></span>
+            <a href="javascript:void(0);" class="button margin_top_13 float_right" id="save_ds" style="float: right">{% trans "Change" %}</a>
+            <a href="javascript:void(0);" class="float_right margin_top_20 cancel_link">{% trans "Cancel" %}</a></br>
+    </div>
 </div>
 
 

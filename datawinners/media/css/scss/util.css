@@ -574,3 +574,6 @@ div.border_top_bottom {
   font-weight: bold;
   font-family: "Arial";
   opacity: 0.5; }
+
+.font_color_red{
+  color: red; }

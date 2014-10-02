@@ -585,7 +585,8 @@ class SurveyWebQuestionnaireRequest():
         self.is_linked = self.reporter_id in self.questionnaire.data_senders
 
     def form(self, initial_data=None):
-        return SurveyResponseForm(self.questionnaire, data=initial_data, is_datasender=self.is_data_sender, reporter_id=self.reporter_id, reporter_name=self.reporter_name, is_linked=self.is_linked)
+        return SurveyResponseForm(self.questionnaire, data=initial_data, is_datasender=self.is_data_sender,
+                                  reporter_id=self.reporter_id, reporter_name=self.reporter_name)
 
     @property
     def template(self):

@@ -29,12 +29,13 @@
         {% if not field.is_hidden %}
             {% if field.name == 'dsid' %}
                 <div class="float_left margin_bottom_10">
-                <input type="checkbox" value="on_behalf_of" id="on_behalf_of" class="margin_left_minus_16">
+                <input type="checkbox" value="1" id="on_behalf_of" class="margin_left_minus_16"
+                       name="on_behalf_of">
                 {{ field.label }}
                 </div>
                 <div class="float_left">
             <p id="ins_{{ field.name }}" class="instructions italic">
-                 <span id="choice_ds" class="display_none margin_left_10 italic">
+                 <span id="choice_ds" class="none margin_left_10 italic">
                         {{ field }}
                  </span>
             </p></div>
