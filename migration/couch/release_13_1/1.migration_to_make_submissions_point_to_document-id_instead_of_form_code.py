@@ -77,15 +77,15 @@ def make_survey_response_link_to_form_model_document_id(db_name):
     dbm = get_db_manager(db_name)
     logger = logging.getLogger(db_name)
     is_large_account = db_name in ['hni_palme_flm546389', 'hni_usaid-mikolo_lei526034']
-    process_count = 10 if is_large_account else 6
+    process_count = 6 if is_large_account else 4
     p = Pool(processes=process_count)
     try:
         for survey_response_doc in _get_survey_responses(dbm, is_large_account):
-            p.apply_async(_process_survey_response, (survey_response_doc, db_name))
+            p.apply(_process_survey_response, (survey_response_doc, db_name))
     except Exception as e:
         logger.error(e.message + db_name)
     p.close()
     p.join()
     mark_as_completed(db_name)
 
-migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 1), threads=1)
+migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 1), threads=2)
