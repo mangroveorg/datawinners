@@ -35,17 +35,13 @@ def _get_survey_responses(dbm, is_large_account):
                                  **extra_params)
 
 
-def _process_survey_response_wrapper(params):
-    _process_survey_response(*params)
-
-
 def _process_survey_response(survey_response_doc, db_name):
     dbm = get_db_manager(db_name)
     logger = logging.getLogger(db_name)
 
     try:
         survey_response = SurveyResponse.new_from_doc(dbm=dbm, doc=SurveyResponse.__document_class__.wrap(
-            survey_response_doc['value']))
+            survey_response_doc['doc']))
         if 'form_code' not in survey_response._doc:
             logger.error("form_code not present in survey response:%s" % survey_response.uuid)
             return
@@ -70,7 +66,7 @@ def _process_survey_response(survey_response_doc, db_name):
             survey_response.save(process_post_update=False)
 
     except Exception as e:
-        logger.exception("Exception for survey response:%s" % survey_response.uuid, e)
+        logger.exception("Exception for survey response:%s" % survey_response.uuid)
 
 
 def make_survey_response_link_to_form_model_document_id(db_name):
@@ -83,7 +79,7 @@ def make_survey_response_link_to_form_model_document_id(db_name):
         for survey_response_doc in _get_survey_responses(dbm, is_large_account):
             p.apply(_process_survey_response, (survey_response_doc, db_name))
     except Exception as e:
-        logger.error(e.message + db_name)
+        logger.exception(db_name)
     p.close()
     p.join()
     mark_as_completed(db_name)
