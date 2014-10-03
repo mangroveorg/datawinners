@@ -17,7 +17,7 @@ def _get_matching_form_model(surveyresponse_date, form_models):
 
 
 def _get_form_models(dbm, survey_response):
-    rows = dbm.load_all_rows_in_view('all_questionnaire', include_docs=True, key=survey_response._doc['form_code'])
+    rows = dbm.load_all_rows_in_view('all_questionnaire', key=survey_response._doc['form_code'])
     if rows:
         return [FormModel.new_from_doc(dbm, FormModelDocument.wrap(row["value"])) for row in rows]
     return None
