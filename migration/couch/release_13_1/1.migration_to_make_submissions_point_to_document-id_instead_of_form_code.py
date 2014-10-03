@@ -15,21 +15,27 @@ def _get_matching_form_model(surveyresponse_date, form_models):
             return form_model
     return None
 
+LARGE_ACCOUNTS = ['hni_palme_flm546389', 'hni_usaid-mikolo_lei526034', 'hni_psi_dmf792011']
+
+def _set_stale_state_for_large_accounts(database_name):
+    extra_params = {}
+    if database_name in LARGE_ACCOUNTS:
+        extra_params['stale'] = 'ok'
+
+    return extra_params
+
 
 def _get_form_models(dbm, survey_response):
-    rows = dbm.load_all_rows_in_view('all_questionnaire', key=survey_response._doc['form_code'])
+    extra_params = _set_stale_state_for_large_accounts(dbm.database_name)
+
+    rows = dbm.load_all_rows_in_view('all_questionnaire', key=survey_response._doc['form_code'], **extra_params)
     if rows:
         return [FormModel.new_from_doc(dbm, FormModelDocument.wrap(row["value"])) for row in rows]
     return None
 
 
-def _get_survey_responses(dbm, is_large_account):
-    extra_params = {
-        # 'include_docs': True
-    }
-
-    if is_large_account:
-        extra_params['stale'] = 'ok'
+def _get_survey_responses(dbm):
+    extra_params = _set_stale_state_for_large_accounts(dbm.database_name)
 
     return dbm.database.iterview("survey_response_by_survey_response_id/survey_response_by_survey_response_id", 80000,
                                  **extra_params)
@@ -72,11 +78,10 @@ def _process_survey_response(survey_response_doc, db_name):
 def make_survey_response_link_to_form_model_document_id(db_name):
     dbm = get_db_manager(db_name)
     logger = logging.getLogger(db_name)
-    is_large_account = db_name in ['hni_palme_flm546389', 'hni_usaid-mikolo_lei526034']
-    process_count = 6 if is_large_account else 4
+    process_count = 6 if (db_name in LARGE_ACCOUNTS) else 4
     p = Pool(processes=process_count)
     try:
-        for survey_response_doc in _get_survey_responses(dbm, is_large_account):
+        for survey_response_doc in _get_survey_responses(dbm):
             p.apply(_process_survey_response, (survey_response_doc, db_name))
     except Exception as e:
         logger.exception(db_name)
@@ -84,4 +89,4 @@ def make_survey_response_link_to_form_model_document_id(db_name):
     p.join()
     mark_as_completed(db_name)
 
-migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 1), threads=2)
+migrate(all_db_names(), make_survey_response_link_to_form_model_document_id, version=(13, 1, 2), threads=2)
