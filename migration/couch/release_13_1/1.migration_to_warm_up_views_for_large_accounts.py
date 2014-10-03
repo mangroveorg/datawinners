@@ -1,4 +1,5 @@
 import logging
+import datetime
 
 import requests
 
@@ -18,15 +19,20 @@ def _get_response_for_view(db_name, view_name):
 def warm_up_views_for_large_accounts(db_name):
     logger = logging.getLogger(db_name)
     try:
+        start_time = datetime.datetime.now()
         survey_response_view = "%s/_design/survey_response_by_survey_response_id/_view/survey_response_by_survey_response_id?limit=1"
         response = _get_response_for_view(db_name, survey_response_view)
-        logger.error('%s: survey_response status:%d' % (db_name, response.status_code))
-        logger.error('%s: survey_response:%s' % (db_name, response.text))
+        logger.error('survey_response status:%d' % response.status_code)
+        logger.error('survey_response:%s' % response.text)
+        logger.error('survey_response time-taken:' + str(datetime.datetime.now()-start_time))
 
+        start_time = datetime.datetime.now()
         all_questionnaire_view = "%s/_design/all_questionnaire/_view/all_questionnaire?limit=1"
         response = _get_response_for_view(db_name, all_questionnaire_view)
-        logger.error('%s: all_questionnaire_view status:%d' % (db_name, response.status_code))
-        logger.error('%s: all_questionnaire:%s' % (db_name, response.text))
+        logger.error('all_questionnaire_view status:%d' % response.status_code)
+        logger.error('all_questionnaire:%s' % response.text)
+        logger.error('all_questionnaire time-taken:' + str(datetime.datetime.now()-start_time))
+
     except Exception as e:
         logger.exception(db_name)
     mark_as_completed(db_name)
