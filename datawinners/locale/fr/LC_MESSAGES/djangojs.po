@@ -1330,3 +1330,6 @@ msgstr "Tout le monde - N'importe qui possédant un simple téléphone peut soum
 
 msgid "Only Registered People - Data Senders must be registered first before submitting data."
 msgstr "Seulement les personnnes enregistrées - Les Expéditeurs de Données doivent être enregistrées avant de pouvoir soumettre des données."
+
+msgid "Change Data Sender"
+msgstr "Modifier l'Expéditeur de Données"

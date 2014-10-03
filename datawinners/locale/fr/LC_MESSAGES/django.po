@@ -5161,3 +5161,6 @@ msgstr "Expéditeurs de Données non enregistrés"
 
 msgid "Choose Data Sender"
 msgstr "Choisir un Expéditeur de données"
+
+msgid "Which registered Data Sender sent you this Submission?"
+msgstr "Quel Expéditeur de Données enregistré vous a envoyé cette Soumission?"
