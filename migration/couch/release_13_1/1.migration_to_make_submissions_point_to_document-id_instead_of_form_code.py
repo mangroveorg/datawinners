@@ -25,7 +25,7 @@ def _get_form_models(dbm, survey_response):
 
 def _get_survey_responses(dbm, is_large_account):
     extra_params = {
-        'include_docs': True
+        # 'include_docs': True
     }
 
     if is_large_account:
@@ -41,7 +41,7 @@ def _process_survey_response(survey_response_doc, db_name):
 
     try:
         survey_response = SurveyResponse.new_from_doc(dbm=dbm, doc=SurveyResponse.__document_class__.wrap(
-            survey_response_doc['doc']))
+            survey_response_doc['value']))
         if 'form_code' not in survey_response._doc:
             logger.error("form_code not present in survey response:%s" % survey_response.uuid)
             return
