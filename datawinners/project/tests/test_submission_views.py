@@ -48,7 +48,6 @@ class TestSubmissionViews(unittest.TestCase):
                 'Submission Date': submission_date.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)}})
             expected_values.update({'is_edit': True})
             expected_values.update({'status': u'Error'})
-            expected_values.update({'datasender_error_message':''})
             self.assertEqual(expected_values, static_info)
 
     def test_log_edit_of_existing_successful_submission(self):

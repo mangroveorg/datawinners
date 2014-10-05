@@ -217,15 +217,6 @@ def delete(request, project_id):
 def build_static_info_context(manager, survey_response, ui_model=None, questionnaire_form_model=None, reporter_id=None):
     form_ui_model = OrderedDict() if ui_model is None else ui_model
     sender_name, sender_id =  get_data_sender(manager, survey_response)[:2]
-    all_linked_datasender = questionnaire_form_model.data_senders
-    org_id = get_organization_from_manager(manager).org_id
-    is_admin = len(User.objects.filter(ngouserprofile__org_id=org_id,
-                                                    ngouserprofile__reporter_id=sender_id,
-                                                    groups__name__in=["NGO Admins", "Project Managers"])) > 0
-    error_message = ""
-    if not is_admin and sender_id not in all_linked_datasender:
-        error_message = ugettext("The Data Sender %s (%s) is not linked to your Questionnaire.") % (sender_name, sender_id)
-    
     if sender_id == 'N/A':
         static_content = {'Data sender': survey_response.created_by}
     else:
@@ -233,11 +224,10 @@ def build_static_info_context(manager, survey_response, ui_model=None, questionn
     static_content.update({'Source': capitalize(
                           survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
                           'Submission Date': survey_response.submitted_on.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
-    
+
     form_ui_model.update({'static_content': static_content})
     form_ui_model.update({'is_edit': True})
     form_ui_model.update({'status': ugettext('Success') if survey_response.status else ugettext('Error')})
-    form_ui_model.update({'datasender_error_message': error_message})
     return form_ui_model
 
 

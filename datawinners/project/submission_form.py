@@ -49,8 +49,23 @@ class SurveyResponseForm(BaseSubmissionForm):
 
     def clean(self):
         cleaned_data = self.cleaned_data
+        if self.errors.get("dsid"):
+            self.validate_dsid()
         cleaned_data.pop('dsid', None)
         return cleaned_data
+
+    def validate_dsid(self):
+        sender_id = self.data.get("dsid")
+        if sender_id:
+            from datawinners.accountmanagement.models import User
+            from datawinners.utils import get_organization_from_manager
+            org_id = get_organization_from_manager(self.form_model._dbm).org_id
+            is_admin = len(User.objects.filter(ngouserprofile__org_id=org_id,
+                                                        ngouserprofile__reporter_id=sender_id,
+                                                        groups__name__in=["NGO Admins", "Project Managers"])) > 0
+            if is_admin:
+                self.errors.pop("dsid")
+
 
 #
 # class SurveyResponseForm(SurveyResponseForm):

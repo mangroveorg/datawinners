@@ -28,21 +28,20 @@
     <script src="/media/javascript/project/ie7_web_questionnaire.js" type="text/javascript"></script>
 {% endblock %}
 
-
-    {% block page_js %}
+{% block page_js %}
+        {{ block.super }}
     <script type="text/javascript">
          DW.reporter_id = '{{ reporter_id }}';
          DW.is_linked = {{ is_linked|lower }};
          DW.reporter_name = '{{ reporter_name }}';
     </script>
-        {% if is_edit %}
-        {{ block.super }}
+    {% if is_edit %}
         <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
         <script type="text/javascript" src="/media/javascript/project/edit_submission.js"></script>
     {% else %}
         <script type="text/javascript" src="/media/javascript/project/web_submission.js"></script>
-        {% endif %}
-    {% endblock %}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 

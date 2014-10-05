@@ -9,6 +9,12 @@ def get_form_context(questionnaire, survey_response_form, manager, hide_link_cla
     form_context = _make_form_context(survey_response_form, questionnaire, hide_link_class, disable_link_class, entity_type, is_update)
     form_context.update(_get_subject_info(manager, entity_type))
 
+    error_message = ""
+    if not survey_response_form.is_valid() and survey_response_form.errors.has_key("dsid"):
+        error_message = survey_response_form.errors.get("dsid")[0]
+
+    form_context.update({'datasender_error_message': error_message})
+
     return form_context
 
 
