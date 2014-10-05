@@ -2,13 +2,14 @@ import logging
 import datetime
 
 import requests
+from datawinners.main.couchdb.utils import all_db_names
 
 from migration.couch.utils import migrate, mark_as_completed
 from datawinners import settings
 
 TIMEOUT_IN_SECONDS = 120 * 60
 
-LARGE_ACCOUNTS = ['hni_palme_flm546389', 'hni_usaid-mikolo_lei526034', 'hni_psi_dmf792011']
+# LARGE_ACCOUNTS = ['hni_palme_flm546389', 'hni_usaid-mikolo_lei526034', 'hni_psi_dmf792011']
 
 
 def _get_response_for_view(db_name, view_name):
@@ -38,4 +39,4 @@ def warm_up_views_for_large_accounts(db_name):
     mark_as_completed(db_name)
 
 
-migrate(LARGE_ACCOUNTS, warm_up_views_for_large_accounts, version=(13, 1, 1), threads=3)
+migrate(all_db_names(), warm_up_views_for_large_accounts, version=(13, 1, 1), threads=5)

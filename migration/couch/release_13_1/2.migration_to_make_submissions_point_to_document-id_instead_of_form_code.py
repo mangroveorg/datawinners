@@ -16,21 +16,21 @@ def _get_matching_form_model(surveyresponse_date, form_models):
             return form_model
     return None
 
-LARGE_ACCOUNTS = ['hni_palme_flm546389', 'hni_usaid-mikolo_lei526034', 'hni_psi_dmf792011']
+# LARGE_ACCOUNTS = ['hni_palme_flm546389', 'hni_usaid-mikolo_lei526034', 'hni_psi_dmf792011']
 
-def _set_stale_state_for_large_accounts(database_name):
-    extra_params = {}
-    if database_name in LARGE_ACCOUNTS:
-        extra_params['stale'] = 'ok'
-
-    return extra_params
+# def _set_stale_state_for_large_accounts(database_name):
+#     extra_params = {}
+#     if database_name in LARGE_ACCOUNTS:
+#         extra_params['stale'] = 'ok'
+#
+#     return extra_params
 
 FORM_MODEL_EXPIRY_TIME_IN_SEC = 60 * 60
 
 
 def _fetch_form_model_docs_from_couch(dbm, form_code):
-    extra_params = _set_stale_state_for_large_accounts(dbm.database_name)
-    form_model_docs = dbm.load_all_rows_in_view('all_questionnaire', key=form_code, **extra_params)
+    # extra_params = _set_stale_state_for_large_accounts(dbm.database_name)
+    form_model_docs = dbm.load_all_rows_in_view('all_questionnaire', key=form_code, stale='ok')
     return form_model_docs
 
 def _get_form_model_docs(dbm, form_code):
@@ -54,10 +54,10 @@ def _get_form_models(dbm, form_code):
     return None
 
 def _get_survey_responses(dbm):
-    extra_params = _set_stale_state_for_large_accounts(dbm.database_name)
+    # extra_params = _set_stale_state_for_large_accounts(dbm.database_name)
 
     return dbm.database.iterview("survey_response_by_survey_response_id/survey_response_by_survey_response_id", 80000,
-                                 **extra_params)
+                                 stale='ok')
 
 
 def _process_survey_response(survey_response_doc, dbm, logger):
