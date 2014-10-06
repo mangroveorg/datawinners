@@ -93,9 +93,10 @@
                         </span>
                         <div id="to_list" class="dropdown" >
                             <ul class="dropdown-menu">
-                                <li><a id="Associated" href="javascript:void(0);">{% trans "My Data Senders linked to this questionnaire" %} <span class="small_grey"></span></a></li>
-                                <li><a id="All" href="javascript:void(0);">{% trans "All Data Senders of all questionnaires" %}  <span class="small_grey"></span></a></li>
+                                <li><a id="Associated" href="javascript:void(0);">{% trans "My registered Data Senders linked to this Questionnaire" %} <span class="small_grey"></span></a></li>
+                                <li><a id="All" href="javascript:void(0);">{% trans "All registered Data Senders of all Questionnaires" %}  <span class="small_grey"></span></a></li>
                                 <li><a id="Additional" href="javascript:void(0);">{% trans "Other People" %}</a></li>
+                                <li><a id="Unregistered" href="javascript:void(0);">{% trans "All people who submitted data (registered & un-registered)" %} <span class="small_grey"></span></a></li>
                             </ul>
                         </div>
                         {{ form.to.errors }}

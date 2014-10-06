@@ -45,10 +45,13 @@
   margin: 15px; }
 
 .margin_top_20 {
-  margin-top: 20px; }
+  margin-top: 20px !important; }
 
 .margin_top_15 {
   margin-top: 15px; }
+
+.margin_top_13 {
+  margin-top: 13px; }
 
 .margin_bottom_20 {
   margin-bottom: 20px; }
@@ -68,14 +71,26 @@
 .margin_left_10 {
   margin-left: 10px; }
 
+.margin_left_30 {
+  margin-left: 30px; }
+
+.margin_left_365 {
+  margin-left: 365px; }
+
 .margin_left_20 {
   margin-left: 20px; }
+
+.margin_left_30 {
+  margin-left: 30px; }
 
 .margin_left_180 {
   margin-left: 180px !important; }
 
 .margin_right_20 {
   margin-right: 20px; }
+
+.margin_left_minus_16 {
+  margin-left: -16px; }
 
 /* Float styling */
 .float_left {
@@ -224,7 +239,7 @@ div.tooltip {
   margin: 0 !important;
   border: none !important;
   z-index: 9000; }
-  div.tooltip p {
+  div.tooltip p, div.tooltip ol {
     background: #000 !important;
     font-size: 12px !important;
     font-weight: normal !important;
@@ -537,6 +552,9 @@ div.border_top_bottom {
 .font_size_10 {
   font-size: 10px; }
 
+.font_size_12 {
+  font-size: 12px; }
+
 .hide {
   display: none; }
 
@@ -545,3 +563,17 @@ div.border_top_bottom {
 
 .disabled-text {
   color: #888888; }
+
+.disabled_button {
+  background: -moz-linear-gradient(center top, #eeeeee, #cccccc) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+  color: #888888 !important;
+  border: 1px solid #777777 !important;
+  padding: 6px 23px 5px 22px;
+  height: 33px;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: "Arial";
+  opacity: 0.5; }
+
+.font_color_red{
+  color: red; }

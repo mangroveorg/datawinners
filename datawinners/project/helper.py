@@ -24,6 +24,7 @@ from datawinners.scheduler.smsclient import SMSClient
 from datawinners.sms.models import MSG_TYPE_USER_MSG
 import models
 from models import Reminder
+from datawinners.search.submission_query import SubmissionQueryBuilder
 
 
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION = "%b. %d, %Y, %I:%M %p"
@@ -237,3 +238,19 @@ def associate_account_users_to_project(manager,questionnaire):
     user_ids = get_all_user_repids_for_org(get_organization_from_manager(manager).org_id)
     #for id in user_ids:
     questionnaire.associate_data_sender_to_project(manager, user_ids)
+
+def get_unregistered_datasenders(dbm, form_code):
+    form_model = get_form_model_by_code(dbm, form_code)
+    datasenders = models.Project.from_form_model(form_model).get_data_senders(dbm)
+    registered_datasender = []
+    for datasender in datasenders:
+        registered_datasender.append(datasender.get('mobile_number'))
+
+
+    query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, form_model.id)
+    unregistered_number = []
+    for res in query.values_dict(tuple(['ds_name', 'ds_id'])):
+        number = res.get("ds_name") if res.get("ds_id") == "N/A" else None
+        if number and number not in unregistered_number and number not in registered_datasender:
+            unregistered_number.append(number)
+    return unregistered_number

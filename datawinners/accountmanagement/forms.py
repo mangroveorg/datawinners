@@ -262,6 +262,11 @@ class PasswordSetForm(SetPasswordForm):
 class UpgradeForm(forms.Form):
     account_type, invoice_period, preferred_payment = payment_details_form()
 
+class UpgradeFormProSms(UpgradeForm):
+    def __init__(self, *args, **kwargs):
+        super(UpgradeForm, self).__init__(*args, **kwargs)
+        self.fields['account_type'].initial = 'Pro SMS'
+
 class ProRegistrationForm(FullRegistrationForm):
     def __init__(self, *args, **kwargs):
         super(ProRegistrationForm, self).__init__(*args, **kwargs)

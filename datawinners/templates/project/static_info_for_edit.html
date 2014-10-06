@@ -1,17 +1,25 @@
 {% load i18n %}
-<div id="static-info">
+<div id="static-info" class="padding_top_10 padding_bottom_10">
     <ul>
         {% for header,value in static_content.items %}
             <li class="info">
                 <text class='content-header'>{% trans header %}</text>
                 {% if header == 'Data Sender' %}
-                    <text class='content-values'>{{ value.0 }}</text>
-                    <text class='datasender-id'>{{ value.1 }}</text>
+                    <text class='ds_id'>{{ value.0 }}</text>
+                    <text class='datasender'>{{ value.1 }}</text>
+                    <a id="change_ds_link" class="margin_left_10">{% trans "Change" %}</a><br/>
+                    {% if datasender_error_message %}
+                        <span class="font_color_red datasender_error_message">{{ datasender_error_message }}</span>
+                    {% endif %}
+
                 {% else %}
                     <text class='content-values'>{{ value }}</text>
                 {% endif %}
+
             </li>
+
         {% endfor %}
+
         <li class="info">
             {% if is_error_to_success %}
                 <text class='highlight content-header'>{% trans 'Status' %}</text>
@@ -23,6 +31,24 @@
             {% endif %}
         </li>
     </ul>
+    <div id="edit_ds_popup">
+        <span>{% trans "Which registered Data Sender sent you this Submission?" %}</span></br>
+        {% for field in questionnaire_form %}
+            {% if not field.is_hidden %}
+                {% if field.name == 'dsid' %}
+                     <span id="choice_field">
+                            {{ field }}
+                     </span></br>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+            <span id="number" class="margin_left_10 none"></span>
+            <a href="javascript:void(0);" class="button margin_top_13 float_right" id="save_ds" style="float: right">{% trans "Change" %}</a>
+            <a href="javascript:void(0);" class="float_right margin_top_20 cancel_link">{% trans "Cancel" %}</a>
+    </div>
 </div>
+
+
 
 

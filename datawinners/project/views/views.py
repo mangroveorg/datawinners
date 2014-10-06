@@ -53,20 +53,24 @@ from datawinners.entity.import_data import load_all_entities_of_type, get_entity
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from datawinners.project.forms import BroadcastMessageForm
-from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project
+from datawinners.project.forms import BroadcastMessageForm, OpenDsBroadcastMessageForm
+from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, viewable_questionnaire, initialize_values, get_example_sms_message, get_example_sms
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import helper
 from datawinners.project.utils import make_project_links
-from datawinners.project.helper import is_project_exist, get_feed_dictionary
+from datawinners.project.helper import is_project_exist, get_feed_dictionary, get_unregistered_datasenders
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE
 from datawinners.project.views.utils import get_form_context
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
+from django.views.decorators.http import require_http_methods
+from datawinners.accountmanagement.decorators import is_not_expired
 
 
 logger = logging.getLogger("django")
@@ -135,7 +139,8 @@ def _is_smart_phone_upgrade_info_flag_present(request):
 def project_overview(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
-
+    open_survey_questionnaire= questionnaire.is_open_survey
+    is_pro_sms = _is_pro_sms(request)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
@@ -144,6 +149,7 @@ def project_overview(request, project_id):
     project_links = make_project_links(questionnaire)
     map_api_key = get_map_key(request.META['HTTP_HOST'])
     number_data_sender = len(questionnaire.data_senders)
+    number_unregistered_data_sender = len(get_unregistered_datasenders(manager, questionnaire.form_code))
     number_records = survey_response_count(manager, questionnaire_id, None, None)
     number_reminders = Reminder.objects.filter(project_id=questionnaire.id).count()
     links = {'registered_data_senders': reverse("registered_datasenders", args=[project_id]),
@@ -187,7 +193,10 @@ def project_overview(request, project_id):
         'show_sp_upgrade_info': _is_smart_phone_upgrade_info_flag_present(request),
         'entity_type': json.dumps(entity_type),
         'unique_id_header_text': unique_id_header_text,
-        'org_number': get_organization_telephone_number(request)
+        'org_number': get_organization_telephone_number(request),
+        'open_survey_questionnaire': open_survey_questionnaire,
+        'is_pro_sms': is_pro_sms,
+        'number_unregistered_data_sender': number_unregistered_data_sender
     }))
 
 
@@ -253,7 +262,7 @@ def _get_data_senders(dbm, form, project):
     data_senders = []
     if form.cleaned_data['to'] == "All":
         data_senders = _get_all_data_senders(dbm)
-    elif form.cleaned_data['to'] == "Associated":
+    elif form.cleaned_data['to'] in ["Associated", "Unregistered"]:
         data_senders = project.get_data_senders(dbm)
     return data_senders
 
@@ -265,19 +274,23 @@ def _get_data_senders(dbm, form, project):
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
+    form_class = OpenDsBroadcastMessageForm if questionnaire.is_open_survey else BroadcastMessageForm
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     number_associated_ds = len(questionnaire.data_senders)
     number_of_ds = len(import_module.load_all_entities_of_type(dbm, type=REPORTER)[0]) - 1
     organization = utils.get_organization(request)
+    unregistered_ds = helper.get_unregistered_datasenders(dbm, questionnaire.form_code)
+    unregistered_with_linked = len(unregistered_ds) + number_associated_ds
 
     account_type = organization.account_type
     if (account_type == 'Pro'):
         account_type = True
 
     if request.method == 'GET':
-        form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
+        form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
+                                    unregistered_ds=unregistered_with_linked)
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': questionnaire,
                                          "project_links": make_project_links(questionnaire),
@@ -288,7 +301,8 @@ def broadcast_message(request, project_id):
         },
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
-        form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
+        form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
+                          unregistered_ds=unregistered_with_linked, data=request.POST)
         if form.is_valid():
             no_smsc = False
             data_senders = _get_data_senders(dbm, form, questionnaire)
@@ -296,6 +310,7 @@ def broadcast_message(request, project_id):
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
+            other_numbers.extend(unregistered_ds)
 
             failed_numbers = []
             try:
@@ -309,10 +324,11 @@ def broadcast_message(request, project_id):
             success = not no_smsc and len(failed_numbers) == 0
 
             if success:
-                form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
+                form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
+                                  unregistered_ds=unregistered_with_linked)
             else:
-                form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
-                                            data=request.POST)
+                form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
+                                  unregistered_ds=unregistered_with_linked, data=request.POST)
             return render_to_response('project/broadcast_message.html',
                                       {'project': questionnaire,
                                        "project_links": make_project_links(questionnaire),
@@ -450,6 +466,7 @@ def get_questionnaire_ajax(request, project_id):
                                        'questions': existing_questions,
                                        'is_outgoing_sms_enabled': project.is_outgoing_sms_replies_enabled,
                                        'datasenders': project.data_senders,
+                                       'is_open_survey': 1 if project.is_open_survey else '',
                                        'reminder_and_deadline': project.reminder_and_deadline
                                    }, default=field_to_json), content_type='application/json')
 
@@ -579,9 +596,13 @@ class SurveyWebQuestionnaireRequest():
         self.feeds_dbm = get_feeds_database(request.user)
         self.is_data_sender = is_data_sender(request)
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
+        self.reporter_id = NGOUserProfile.objects.get(user=self.request.user).reporter_id
+        self.reporter_name = NGOUserProfile.objects.get(user=self.request.user).user.first_name
+        self.is_linked = self.reporter_id in self.questionnaire.data_senders
 
     def form(self, initial_data=None):
-        return SurveyResponseForm(self.questionnaire, data=initial_data, is_datasender=self.is_data_sender)
+        return SurveyResponseForm(self.questionnaire, data=initial_data, is_datasender=self.is_data_sender,
+                                  reporter_id=self.reporter_id, reporter_name=self.reporter_name)
 
     @property
     def template(self):
@@ -593,6 +614,8 @@ class SurveyWebQuestionnaireRequest():
             return HttpResponseRedirect(dashboard_page)
         if self.questionnaire.xform:
             return HttpResponseRedirect(reverse('xform_web_questionnaire', args=[self.questionnaire.id]))
+        reporter_id = NGOUserProfile.objects.get(user=self.request.user).reporter_id
+        reporter_name = NGOUserProfile.objects.get(user=self.request.user).user.first_name
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                         self.disable_link_class, is_update)
@@ -601,6 +624,9 @@ class SurveyWebQuestionnaireRequest():
             'questionnaire_code': self.questionnaire.form_code,
             'is_datasender': self.is_data_sender,
             'is_advance_questionnaire': False,
+            'reporter_id': reporter_id,
+            'reporter_name': reporter_name,
+            'is_linked': self.is_linked,
         })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
@@ -623,11 +649,15 @@ class SurveyWebQuestionnaireRequest():
     def response_for_post_request(self, is_update=None):
         questionnaire_form = self.form(self.request.POST)
         quota_reached = is_quota_reached(self.request)
+        reporter_id = NGOUserProfile.objects.get(user=self.request.user).reporter_id
+        is_linked = self.reporter_id in self.questionnaire.data_senders
         if not questionnaire_form.is_valid() or quota_reached:
             form_context = get_form_context(self.questionnaire, questionnaire_form, self.manager, self.hide_link_class,
                                             self.disable_link_class)
             form_context.update({
                                   'is_quota_reached': quota_reached,
+                                  'is_linked': is_linked,
+                                  'reporter_id': reporter_id,
                                   'is_datasender': self.is_data_sender,
                                 })
             return render_to_response(self.template, form_context,
@@ -661,6 +691,8 @@ class SurveyWebQuestionnaireRequest():
         _project_context.update({
                                  'success_message': success_message, 'error_message': error_message,
                                  'questionnaire_form': self.form(),
+                                 'is_linked': is_linked,
+                                 'reporter_id': reporter_id,
                                  'is_datasender': self.is_data_sender,
                                 })
 
@@ -893,6 +925,9 @@ def create_data_sender_and_web_user(request, project_id):
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode
 
+def _is_pro_sms(request):
+    return utils.get_organization(request).is_pro_sms
+
 
 @login_required
 @session_not_expired
@@ -910,9 +945,24 @@ def edit_my_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
     subject = get_by_short_code(manager, entity_id, [entity_type.lower()])
     subject_request = SubjectWebQuestionnaireRequest(request, project_id, entity_type)
-    form_model = subject_request.form_model
+    form_model = subject_request.form_modelubm
     if request.method == 'GET':
         initialize_values(form_model, subject)
         return subject_request.response_for_get_request(is_update=True)
     elif request.method == 'POST':
         return subject_request.post(is_update=True)
+
+@login_required
+@csrf_view_exempt
+@csrf_response_exempt
+@require_http_methods(['POST'])
+@is_not_expired
+def change_ds_setting(request):
+    manager = get_database_manager(request.user)
+    project_id = request.POST.get("project_id")
+    ds_setting = request.POST.get("selected")
+    questionnaire = Project.get(manager, project_id)
+    questionnaire.is_open_survey = ds_setting
+    questionnaire.save()
+    messages.success(request, ugettext("Changes saved successfully."))
+    return HttpResponse(json.dumps({'success': True}))

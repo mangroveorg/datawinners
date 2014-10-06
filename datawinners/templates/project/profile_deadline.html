@@ -1,7 +1,7 @@
 {% load i18n %}
 <form action="" method="POST" id="reminder_deadline_form">
     {% csrf_token %}
-    <fieldset>
+    <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
         <legend>{% trans "Deadline" %}</legend>
         <ul>
         <li class="form-row-10px">
@@ -19,7 +19,7 @@
     </fieldset>
 
     <div id="reminders_section">
-        <fieldset>
+        <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
             <legend>{% trans "Reminders" %}</legend>
             <ul>
                 <li>
@@ -61,13 +61,13 @@
                  <li>
                      {{ form.whom_to_send_message }}
                      {{ form.whom_to_send_message.label }}
-                     <div class="whom_to_send_help_text">{% trans "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your questionnaire" %}</div>
+                     <div class="whom_to_send_help_text">{% trans "By un-checking this box, automatic Reminders will be sent to all registered Data Senders linked to your Questionnaire." %}</div>
 
                  </li>
                 </ul>
         </fieldset>
     </div>
     <div class="right_aligned_button margin_right_4">
-        <input id="submit-button" class="button" type="submit" value="{% trans 'Save' %}"/>
+        <input id="submit-button" class="{% if is_reminder_enabled %}disabled_button{% else %}button{% endif %}" type="submit" value="{% trans 'Save' %}" {% if is_reminder_enabled %}disabled="disabled" {% endif %}/>
     </div>
 </form>

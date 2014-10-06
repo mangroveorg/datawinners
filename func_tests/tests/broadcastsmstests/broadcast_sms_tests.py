@@ -69,3 +69,12 @@ class TestBroadcastSMS(HeadlessRunnerTest):
         send_message_page.click_send()
         error_message = send_message_page.get_other_people_number_error()
         self.assertEqual(error_message, expected_error_message)
+
+    @attr('functional_test')
+    def test_option_to_send_message_to_unregistered_datasender_should_be_present(self):
+        self.driver.go_to(LOGOUT)
+        send_message_page = self._navigate_to_send_message_page(project_name="Project which everyone can send in data")
+        
+        self.assertTrue(send_message_page.is_send_a_message_to_unregistered_present())
+
+        

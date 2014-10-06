@@ -21,7 +21,7 @@ from datawinners.blue.xform_submission_exporter import XFormSubmissionExporter
 from datawinners.blue.view import SurveyWebXformQuestionnaireRequest
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
-from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile,  User
 from datawinners.blue.xform_bridge import XFormSubmissionProcessor
 from datawinners.common.authorization import is_data_sender
 from datawinners.feeds.database import get_feeds_database
@@ -38,11 +38,11 @@ from mangrove.form_model.field import SelectField, DateField, UniqueIdField, Fie
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.utils import get_organization
-from mangrove.form_model.form_model import get_form_model_by_code
+from datawinners.utils import get_organization, get_organization_from_manager
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project import helper
-from datawinners.project.data_sender_helper import get_data_sender
+from datawinners.project.data_sender_helper import get_data_sender, get_data_sender_by_reporter_id
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
 from datawinners.project.models import Project
 from datawinners.project.utils import project_info, is_quota_reached
@@ -222,13 +222,16 @@ def delete(request, project_id):
     return HttpResponse(response)
 
 
-def build_static_info_context(manager, survey_response, ui_model=None):
+def build_static_info_context(manager, survey_response, ui_model=None, questionnaire_form_model=None, reporter_id=None):
     form_ui_model = OrderedDict() if ui_model is None else ui_model
-    static_content = {'Data Sender': get_data_sender(manager, survey_response),
-                      'Source': capitalize(
+    sender_name, sender_id =  get_data_sender(manager, survey_response)[:2]
+    if sender_id == 'N/A':
+        static_content = {'Data sender': survey_response.created_by}
+    else:
+        static_content = {'Data Sender': (sender_name, sender_id)}
+    static_content.update({'Source': capitalize(
                           survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
-                      'Submission Date': survey_response.submitted_on.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
-    }
+                          'Submission Date': survey_response.submitted_on.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
 
     form_ui_model.update({'static_content': static_content})
     form_ui_model.update({'is_edit': True})
@@ -269,6 +272,9 @@ def edit(request, project_id, survey_response_id, tab=0):
     manager = get_database_manager(request.user)
     questionnaire_form_model = Project.get(manager, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    reporter_id = NGOUserProfile.objects.get(user=request.user).reporter_id
+    is_linked = reporter_id in questionnaire_form_model.data_senders
+    reporter_name = NGOUserProfile.objects.get(user=request.user).user.first_name
     if questionnaire_form_model.is_void():
         return HttpResponseRedirect(dashboard_page)
 
@@ -277,25 +283,32 @@ def edit(request, project_id, survey_response_id, tab=0):
     back_link = reverse(index,
                         kwargs={"project_id": project_id, "questionnaire_code": questionnaire_form_model.form_code,
                                 "tab": tab})
-    form_ui_model = build_static_info_context(manager, survey_response)
-    form_ui_model.update({
-                            "back_link": back_link,
-                            'is_datasender': is_data_sender(request)
-                         })
+    form_ui_model = build_static_info_context(manager, survey_response,
+                                              questionnaire_form_model=questionnaire_form_model, reporter_id=reporter_id)
+    form_ui_model.update({"back_link": back_link, 'is_datasender': is_data_sender(request)})
     data_sender = get_data_sender(manager, survey_response)
     short_code = data_sender[1]
     if request.method == 'GET':
         form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
+
         survey_response_form = SurveyResponseForm(questionnaire_form_model, form_initial_values,
-                                                  datasender_name=data_sender[0])
+                                                  datasender_name=data_sender[0] , reporter_id=reporter_id,
+                                                  reporter_name=reporter_name,
+                                                  is_anonymous_submission=survey_response.anonymous_submission)
 
         form_ui_model.update(get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
                                               disable_link_class))
-        form_ui_model.update({"redirect_url": ""})
+        form_ui_model.update({"redirect_url": "",
+                              "reporter_id": reporter_id,
+                              "is_linked": is_linked,
+                              "reporter_name": reporter_name})
 
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
-            form_ui_model.update({'error_message': error_message})
+            form_ui_model.update({'error_message': error_message,
+                                  "reporter_id": reporter_id,
+                                  "is_linked": is_linked,
+                                  "reporter_name":reporter_name})
         return render_to_response("project/web_questionnaire.html", form_ui_model,
                                   context_instance=RequestContext(request))
 
@@ -314,44 +327,62 @@ def edit(request, project_id, survey_response_id, tab=0):
 
             form_ui_model.update(
                 get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))
+            form_ui_model.update({
+                                  "reporter_id": reporter_id,
+                                  "is_linked": is_linked,
+                                  "reporter_name": reporter_name})
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                                       context_instance=RequestContext(request))
         else:
-            survey_response_form = SurveyResponseForm(questionnaire_form_model, request.POST)
+            form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
+            survey_response_form = SurveyResponseForm(questionnaire_form_model, request.POST, initial=form_initial_values,
+                                                      is_anonymous_submission=survey_response.anonymous_submission)
 
         form_ui_model.update(
             get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))
+        form_ui_model.update({
+                                  "reporter_id": reporter_id,
+                                  "is_linked": is_linked})
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
-            form_ui_model.update({'error_message': error_message})
+            form_ui_model.update({'error_message': error_message,
+                                  "reporter_id": reporter_id,
+                                  "is_linked": is_linked})
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                                       context_instance=RequestContext(request))
 
         success_message = _("Your changes have been saved.")
-        form_ui_model.update({'success_message': success_message})
-        if len(survey_response_form.changed_data) or is_errored_before_edit:
-            created_request = helper.create_request(survey_response_form, request.user.username)
+        form_ui_model.update({'success_message': success_message,
+                              "reporter_id": reporter_id,
+                                  "is_linked": is_linked,
+                                  "reporter_name":reporter_name})
+        #if len(survey_response_form.changed_data) or is_errored_before_edit:
+        created_request = helper.create_request(survey_response_form, request.user.username)
 
-            additional_feed_dictionary = get_project_details_dict_for_feed(questionnaire_form_model)
-            user_profile = NGOUserProfile.objects.get(user=request.user)
-            feeds_dbm = get_feeds_database(request.user)
-            owner_id = request.POST.get("dsid")
+        additional_feed_dictionary = get_project_details_dict_for_feed(questionnaire_form_model)
+        user_profile = NGOUserProfile.objects.get(user=request.user)
+        feeds_dbm = get_feeds_database(request.user)
+        owner_id = request.POST.get("dsid")
 
-            response = WebPlayerV2(manager, feeds_dbm, user_profile.reporter_id) \
-                .edit_survey_response(created_request, survey_response, owner_id,
-                                      additional_feed_dictionary, websubmission_logger)
-            mail_feed_errors(response, manager.database_name)
-            if response.success:
-                build_static_info_context(manager, survey_response, form_ui_model)
-                ReportRouter().route(get_organization(request).org_id, response)
-                _update_static_info_block_status(form_ui_model, is_errored_before_edit)
-                log_edit_action(original_survey_response, survey_response, request, questionnaire_form_model.name,
-                                questionnaire_form_model)
-                if request.POST.get("redirect_url"):
-                    return HttpResponseRedirect(request.POST.get("redirect_url"))
-            else:
-                del form_ui_model["success_message"]
-                survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
+        response = WebPlayerV2(manager, feeds_dbm, user_profile.reporter_id) \
+            .edit_survey_response(created_request, survey_response, owner_id,
+                                  additional_feed_dictionary, websubmission_logger)
+        mail_feed_errors(response, manager.database_name)
+        if response.success:
+            build_static_info_context(manager, survey_response, form_ui_model, questionnaire_form_model, reporter_id)
+            ReportRouter().route(get_organization(request).org_id, response)
+            _update_static_info_block_status(form_ui_model, is_errored_before_edit)
+            log_edit_action(original_survey_response, survey_response, request, questionnaire_form_model.name,
+                            questionnaire_form_model)
+            if request.POST.get("redirect_url"):
+                return HttpResponseRedirect(request.POST.get("redirect_url"))
+        else:
+            del form_ui_model["success_message"]
+            survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
+            form_ui_model.update({
+                              "reporter_id": reporter_id,
+                              "is_linked": is_linked,
+                              "reporter_name": reporter_name})
         return render_to_response("project/web_questionnaire.html", form_ui_model,
                                   context_instance=RequestContext(request))
 
@@ -437,13 +468,14 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
     order_by = int(post_dict.get('iSortCol_0')) - 1
     header = HeaderFactory(form_model).create_header(filter_type)
     headers = header.get_header_field_names()
-    try:
+    meta_fields = ['ds_id', 'entity_short_code']
+    for field in meta_fields:
         #Remove extra meta fields with which ordering in submission values
         #and submission headers will not match
-        headers.remove('ds_id')
-        headers.remove('entity_short_code')
-    except ValueError:
-        pass
+        try:
+            headers.remove(field)
+        except ValueError:
+            pass
     return headers[order_by]
 
 

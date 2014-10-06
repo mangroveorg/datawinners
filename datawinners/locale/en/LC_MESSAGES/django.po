@@ -241,7 +241,7 @@ msgstr ""
 msgid "The day of the deadline"
 msgstr ""
 
-msgid "Only send reminders to senders who have not already submitted data for the current deadline."
+msgid "Only send Reminders to registered Data Senders who have not yet submitted data for the current deadline."
 msgstr ""
 msgid "Successfully submitted"
 msgstr ""
@@ -1204,9 +1204,9 @@ msgid "How it Works"
 msgstr ""
 
 msgid "sms instruction"
-msgstr "Print out the SMS Questionnaire and give it to your registered Data Senders. Then they ﬁll in the answer"
-"for each question on the paper Questionnaire. Then your Data Senders follow the “Example SMS"
-" Answer” format on the Questionnaire to type their SMS into the phone and send it in a single SMS."
+msgstr "Print out the SMS Questionnaire and give it to your Data Senders. "
+"They ﬁll in their answers for each question on the paper SMS Questionnaire. Following the example format in Step B of the Questionnaire, "
+"they then type their SMS into their phone and send it in a single SMS."
 
 msgid "Answer the questions"
 msgstr ""
@@ -2334,7 +2334,7 @@ msgstr ""
 msgid "Set Reminders"
 msgstr ""
 
-msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your questionnaire"
+msgid "By un-checking this box, automatic Reminders will be sent to all registered Data Senders linked to your Questionnaire."
 msgstr ""
 
 msgid "tooltip_devices"
@@ -2495,7 +2495,7 @@ msgstr "Answer must be a word %d characters maximum"
 msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"
 msgstr ""
 
-msgid "I am submitting this data on behalf of"
+msgid "I want to submit this data on behalf of a registered Data Sender"
 msgstr ""
 
 msgid "What is associated Data sender type?"
@@ -2558,7 +2558,7 @@ msgstr ""
 msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
 msgstr ""
 
-msgid "Specify when you want to send automatic Reminders to your Data Senders"
+msgid "Specify when you want to send automatic Reminders to your registered Data Senders."
 msgstr ""
 
 msgid "Between %d -- %d characters"
@@ -2611,7 +2611,7 @@ msgstr "<b>What is this?</b></br>"
        "Instead of submitting data in your name, you can submit it for one of your registered Data Senders.</br>"
        "On the Analysis and Submission Log pages, this Submission will then be displayed with the Data Sender's name."
        "</br></br><b>What do I need to do?</b></br>"
-       "Your name appears by default. Select the Data Sender you want to submit data for from the drop-down list."
+       "Select the Data Sender you want to submit data for from the drop-down list."
 
 msgid "tooltip_questionnaire_form_subject_entity_question"
 msgstr "Select your subject from the drop down list.If your subject is not on the list, click on the My Subjects tab to register the subject first."
@@ -4127,10 +4127,10 @@ msgstr ""
 msgid "disabled"
 msgstr ""
 
-msgid "My Data Senders linked to this questionnaire"
+msgid "My registered Data Senders linked to this Questionnaire"
 msgstr ""
 
-msgid "All Data Senders of all questionnaires"
+msgid "All registered Data Senders of all Questionnaires"
 msgstr ""
 
 msgid "Do you want to send this message to <span id=\"number_of_peoples\"></span> recipient(s)?"
@@ -4706,3 +4706,65 @@ msgstr "Choice names with spaces cannot be added to multiple choice selects. See
 msgid "Unmatched begin statement%s"
 msgstr "Unmatched begin statement%s."
 
+msgid "People Authorized to Submit Data Using SMS"
+msgstr ""
+
+msgid "Change"
+msgstr ""
+
+msgid "You decide who has permission to submit data using SMS for this Questionnaire:"
+msgstr ""
+
+msgid "Everyone – Any phone can submit data "
+msgstr ""
+
+msgid "Only Registered People  – Data Senders must be registered first before submitting data."
+msgstr ""
+
+msgid "Everyone – Anyone with a simple phone can submit data"
+msgstr ""
+
+msgid "Who has permission to submit data using SMS for this Questionnaire:"
+msgstr ""
+
+msgid "Anyone with a simple phone can submit data."
+msgstr ""
+
+msgid "Only Registered People"
+msgstr ""
+
+msgid "Data Senders must be registered first before submitting data."
+msgstr ""
+
+msgid "Example: Registered field staff, community based workers, supervisors"
+msgstr ""
+
+msgid "In the Basic account only registered Data Senders can send you data. However, when you upgrade to a Pro SMS  account you have the option to let anyone send in data."
+msgstr ""
+
+msgid "Everyone - Any phone can submit data "
+msgstr ""
+
+msgid "Only Registered People - Data Senders must be registered first before submitting data."
+msgstr ""
+
+msgid "Questionnaire has not been created, please upload again to create Questionnaire"
+msgstr ""
+
+msgid "You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='{{ url_to_my_datasender }}'> My Data Senders </a>page."
+msgstr ""
+
+msgid "All people who submitted data (registered & un-registered) "
+msgstr ""
+
+msgid "registered Data Senders"
+msgstr ""
+
+msgid "unregistered Data Senders"
+msgstr ""
+
+msgid "Choose Data Sender"
+msgstr ""
+
+msgid "Which registered Data Sender sent you this Submission?"
+msgstr ""

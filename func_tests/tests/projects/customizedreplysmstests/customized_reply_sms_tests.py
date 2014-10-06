@@ -87,10 +87,6 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         sms_tester_page.send_sms_with(sms_data)
         self.assertIn('daakhaleyalli illa', sms_tester_page.get_response_message())
 
-        sms_with_unauthorized_data_sender = get_error_message_from_unauthorized_source(self.questionnaire_code)
-        sms_tester_page.send_sms_with(sms_with_unauthorized_data_sender)
-        self.assertIn('Nimage anumathi illa', sms_tester_page.get_response_message())
-
         self.driver.go_to(FAILED_SUBMISSIONS_PAGE)
         failed_submissions_page = FailedSubmissionsPage(self.driver)
         current_failed_submission_entry_count = failed_submissions_page.get_total_number_of_entries()

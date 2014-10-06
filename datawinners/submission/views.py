@@ -31,6 +31,7 @@ from datawinners.submission.submission_utils import PostSMSProcessorLanguageActi
     PostSMSProcessorNumberOfAnswersValidators
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsLinkedToProject
 from datawinners.submission.submission_utils import PostSMSProcessorCheckLimits
+from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsRegistered
 from datawinners.utils import get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.feeds.database import get_feeds_db_for_org
@@ -210,10 +211,8 @@ def submit_to_player(incoming_request):
         mangrove_request = Request(message=incoming_request['incoming_message'],
                                    transportInfo=incoming_request['transport_info'])
 
-        if incoming_request.get('exception', None):
-            raise incoming_request['exception']
-
-        post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request)]
+        post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request),
+                                      PostSMSProcessorCheckDSIsRegistered(dbm, incoming_request)]
         if organization.in_trial_mode:
             post_sms_parser_processors.append(PostSMSProcessorCheckLimits(dbm, incoming_request))
 

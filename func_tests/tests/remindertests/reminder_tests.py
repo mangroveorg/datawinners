@@ -14,6 +14,7 @@ from tests.endtoendtest.end_to_end_tests import add_trial_organization_and_login
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.projects.questionnairetests.project_questionnaire_data import COPY_PROJECT_DATA
 from tests.registrationtests.registration_data import REGISTRATION_PASSWORD
+from testdata.constants import *
 from tests.remindertests.reminder_data import *
 from framework.utils.data_fetcher import fetch_, from_
 
@@ -28,6 +29,18 @@ class TestReminderSend(HeadlessRunnerTest):
         all_project_page = global_navigation.navigate_to_view_all_project_page()
         overview_page = all_project_page.navigate_to_project_overview_page(project)
         return overview_page.navigate_to_reminder_page()
+
+    def dissociate_all_datasenders_from_clinic3_project(self):
+        global_navigation = login(self.driver, VALID_CREDENTIALS)
+        all_project_page = global_navigation.navigate_to_view_all_project_page()
+        overview_page = all_project_page.navigate_to_project_overview_page("clinic3 test project")
+        ds_page = overview_page.navigate_to_datasenders_page()
+        ds_page.click_checkall_checkbox()
+        number = ds_page.get_number_of_selected_datasenders()
+        if number != 0 :
+            ds_page.perform_datasender_action(DISSOCIATE)
+            self.driver.wait_for_page_load()
+        self.driver.go_to(LOGOUT)
 
     def set_deadline_by_month(self, reminder_settings, deadline):
         reminder_settings.set_frequency(fetch_(FREQUENCY, from_(deadline)))
@@ -126,6 +139,12 @@ class TestReminderSend(HeadlessRunnerTest):
         reminder_settings.save_reminders()
         self.assertEqual(reminder_settings.get_example_text(), text_example_before_save)
 
+    @attr("functional_test")
+    def test_should_disable_reminder_setting_for_project_having_no_datasender(self):
+        self.dissociate_all_datasenders_from_clinic3_project()
+        
+        reminder_settings = self.go_to_reminder_page("clinic3 test project", VALID_CREDENTIALS)
+        self.assertTrue(reminder_settings.is_disabled)
 
     def test_should_delete_reminders_when_project_is_deleted(self):
         global_navigation = login(self.driver, VALID_CREDENTIALS)
@@ -158,3 +177,8 @@ class TestReminderSend(HeadlessRunnerTest):
         projects_page.trigger_undo_delete()
         self.assertTrue(self.driver.is_element_present(by_id("reminder_add_dialog_dialog_section")))
         self.driver.find_visible_element(by_css(".yes_button")).click()
+
+    @attr("functional_test")
+    def test_should_not_disable_reminder_setting_for_project_having_datasenders(self):
+        reminder_settings = self.go_to_reminder_page("clinic2 test project", VALID_CREDENTIALS)
+        self.assertFalse(reminder_settings.is_disabled)

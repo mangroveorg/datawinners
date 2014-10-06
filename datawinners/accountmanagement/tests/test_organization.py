@@ -139,3 +139,13 @@ class TestOrganization(TestCase):
         mt_current_month.save()
         print self.organization.get_total_submission_count()
         self.assertTrue(self.organization.has_exceeded_submission_limit())
+
+    def test_is_pro_sms(self):
+        pro_sms_organization = Organization(name='pro_sms_ngo',
+                                      sector='Education', address='Fianar',
+                                      city='Mahasoabe', country='IN',
+                                      zipcode='301', account_type='Pro SMS',
+                                      org_id=OrganizationIdCreator().generateId(),
+                                      status='Activated')
+        self.assertEqual(pro_sms_organization.is_pro_sms, True)
+        self.assertEqual(pro_sms_organization.in_trial_mode, False)

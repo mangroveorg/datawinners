@@ -114,7 +114,7 @@ class ProjectDataSendersPage(Page):
         return len(self.get_inputs_webelement())
 
     def get_inputs_webelement(self):
-        return self.driver.find(by_id("all_data_senders")).find_elements(by="css selector",
+        return self.driver.find(by_id("datasender_table")).find_elements(by="css selector",
                                                                                 value="tbody tr td input")
 
     def is_checkall_checked(self):
@@ -136,3 +136,34 @@ class ProjectDataSendersPage(Page):
     def wait_for_table_data_to_load(self):
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".dataTables_processing"))
         return self
+
+    def open_setting_popup(self):
+        try:
+            self.driver.find(by_css("a.change_setting")).click()
+        except Exception:
+            pass
+
+    def get_setting_value(self):
+        return self.driver.find(by_css("[name=ds_setting]:checked")).get_attribute("value")
+
+    def set_setting_value(self, value):
+        self.driver.find(by_css("[name=ds_setting][value='%s']" % value)).click()
+
+    def save_setting(self):
+        self.driver.find(by_css("#save_ds_setting")).click()
+
+    def set_setting_to_open_datasender(self):
+        self.set_setting_value(1)
+
+    def set_setting_to_only_registered_datasender(self):
+        self.set_setting_value('')
+
+    def get_setting_description(self):
+        description_locator = self.driver.find(by_css("#setting_description"))
+        return unicode(self.driver.execute_script("return $(arguments[0]).html()", description_locator))
+
+    def click_cancel_link_on_setting_lightbox(self):
+        self.driver.find(by_css("#change_ds_setting a.cancel_link")).click()
+
+    def is_change_setting_option_displayed(self):
+        return self.driver.is_element_present(by_css("#setting_description"))

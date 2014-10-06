@@ -629,6 +629,20 @@ def create_project19(ENTITY_TYPE, manager):
         qid19 = questionnaire19.save()
 
 
+def create_open_datasender_project(ENTITY_TYPE, manager):
+    questions_ = create_questions(ENTITY_TYPE)
+    project = Project(manager, name="Project which everyone can send in data",
+                                form_code="open",
+                                fields=questions_, goals="This project is for automation",
+                                devices=["sms", "web", "smartPhone"], sender_group="close"
+    )
+    project.is_open_survey = True
+    try:
+        open_ds = project.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "open").delete()
+        open_ds = project.save()
+
 def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager):
     clinic_code = "cli00_mp"
 
@@ -1249,6 +1263,16 @@ def load_sms_data_for_cli001(manager):
         transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
+    #for open datasender questionnaire
+    FROM_NUMBER = '1234567899'
+    TO_NUMBER = '919880734937'
+    transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
+
+    mangrove_request = Request("open wp03 rakoto 45 12.12.2013 c d 12,34 d",
+                               transport)
+    sms_player_v2.add_survey_response(mangrove_request)
+
+
 
 def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)
@@ -1342,6 +1366,8 @@ def load_data():
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
     create_clinic_projects(CLINIC_ENTITY_TYPE, manager)
     create_project19(PEOPLE_ENTITY_TYPE, manager)
+    create_open_datasender_project(WATER_POINT_ENTITY_TYPE, manager)
+
     #Register Reporters
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890"),
                                                               (NAME_FIELD, "Shweta")],

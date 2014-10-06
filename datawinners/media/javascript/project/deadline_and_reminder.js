@@ -26,6 +26,9 @@ DW.DeadlineDetails.prototype = {
     init: function() {
         $(this.deadline_types).attr('name', 'deadline_type');
         $(this.deadline_types).attr('disabled', 'disabled');
+        this.is_reminder_enabled = DW.is_reminder_enabled;
+        if (this.is_reminder_enabled)
+            this.hide();
         this.show();
         this.update_example();
         return true; //It's a Best Practice to return either true or false when there are only side effects happening inside a method.
@@ -39,7 +42,8 @@ DW.DeadlineDetails.prototype = {
     },
     show: function(){
         $(this.deadlineSectionSelectControls).each(function(){
-            $(this).removeAttr('disabled');
+            if (this.is_reminder_enabled)
+                $(this).removeAttr('disabled');
         });
         this.toggle_week_and_month_controls();
         $(this.reminders_block_id).show();
@@ -55,13 +59,15 @@ DW.DeadlineDetails.prototype = {
     toggle_when_month_is_selected: function(){
         $(this.month_block_class).show();
         $(this.week_block_class).hide();
-        $(this.deadline_type_month).removeAttr('disabled');
+        if (!this.is_reminder_enabled)
+            $(this.deadline_type_month).removeAttr('disabled');
         $(this.deadline_type_week).attr('disabled', 'disabled');
     },
     toggle_when_week_is_selected: function(){
         $(this.week_block_class).show();
         $(this.month_block_class).hide();
-        $(this.deadline_type_week).removeAttr('disabled');
+        if (!this.is_reminder_enabled)
+            $(this.deadline_type_week).removeAttr('disabled');
         $(this.deadline_type_month).attr('disabled', 'disabled');
     },
     update_example: function(){

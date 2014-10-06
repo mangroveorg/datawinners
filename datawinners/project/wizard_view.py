@@ -27,16 +27,18 @@ from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.utils import get_changed_questions, get_organization_from_manager
+from datawinners.utils import get_changed_questions, get_organization_from_manager, get_organization
 from datawinners.common.constant import CREATED_QUESTIONNAIRE, EDITED_QUESTIONNAIRE, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
     SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.helper import is_project_exist, associate_account_users_to_project
 from datawinners.project.utils import is_quota_reached
+from mangrove.utils.types import is_empty
 
 
 def create_questionnaire(post, manager, name, language, reporter_id, question_set_json=None,
-                         xform=None):
+                         xform=None, is_open_survey=False):
+
     questionnaire_code = post['questionnaire-code'].lower()
     datasenders = json.loads(post.get('datasenders', "[]"))
     question_set = question_set_json if question_set_json else json.loads(post['question-set'])
@@ -45,6 +47,9 @@ def create_questionnaire(post, manager, name, language, reporter_id, question_se
                            devices=[u'sms', u'web', u'smartPhone'])
     questionnaire.xform = xform
 
+    if is_open_survey:
+        questionnaire.is_open_survey = post.get('is_open_survey')
+        
     if reporter_id is not None:
         questionnaire.data_senders.append(reporter_id)
 
@@ -95,6 +100,7 @@ def get_template_details(request, template_id):
     template_details = {'template_id': template.id, 'project_name': template.get('name'),
                         'project_language': template.get('language'),
                         'questionnaire_code': template.get('form_code'),
+                        'is_open_survey': 1,
                         'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 
@@ -123,9 +129,11 @@ def create_project(request):
         project_info = json.loads(request.POST['profile_form'])
 
         try:
+            is_open_survey = get_organization(request).is_pro_sms and request.POST.get('is_open_survey')
             questionnaire = create_questionnaire(post=request.POST, manager=manager, name=project_info.get('name'),
                                                  language=project_info.get('language', active_language),
-                                                 reporter_id=ngo_admin.reporter_id)
+                                                 reporter_id=ngo_admin.reporter_id,
+                                                 is_open_survey=is_open_survey)
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
             return HttpResponse(
@@ -229,19 +237,28 @@ def reminder_settings(request, project_id):
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     from datawinners.project.views.views import make_project_links
+    from datawinners.project.utils import make_data_sender_links
+
 
     project_links = make_project_links(questionnaire)
     org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
     organization = Organization.objects.get(org_id=org_id)
+    is_reminder_enabled = is_empty(questionnaire.data_senders)
+    url_to_my_datasender = project_links['registered_datasenders_link']
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
     if request.method == 'GET':
         form = ReminderForm(data=(_reminder_info_about_project(questionnaire)))
+        if is_reminder_enabled:
+            form.disable_all_field()
+
         return render_to_response(html,
                                   {'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request, organization=organization),
                                    'project': questionnaire,
                                    'form': form,
-                                   'questionnaire_code': questionnaire.form_code
+                                   'questionnaire_code': questionnaire.form_code,
+                                   'is_reminder_enabled': is_reminder_enabled,
+                                   'url_to_my_datasender': url_to_my_datasender
                                   }, context_instance=RequestContext(request))
 
     if request.method == 'POST':

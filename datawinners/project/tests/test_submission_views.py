@@ -25,7 +25,7 @@ class TestSubmissionViews(unittest.TestCase):
         with patch("datawinners.project.views.submission_views.get_data_sender") as get_data_sender:
             survey_response_document = SurveyResponseDocument(channel='web', status=False,
                                                               error_message="Some Error in submission")
-            get_data_sender.return_value = ('Psub', 'rep2', 'tester@gmail.com')
+            get_data_sender.return_value = ('Psub', 'rep2')
             submission_date = datetime(2012, 02, 20, 12, 15, 44)
             survey_response_document.submitted_on = submission_date
             survey_response_document.created = datetime(2012, 02, 20, 12, 15, 50)
@@ -33,10 +33,17 @@ class TestSubmissionViews(unittest.TestCase):
             survey_response = SurveyResponse(Mock())
 
             survey_response._doc = survey_response_document
-            static_info = build_static_info_context(Mock(), survey_response)
+            project=Mock()
+            project.data_senders = ["rep2"]
+            organization_mock = Mock()
+            organization_mock.org_id = "TEST1234"
+            with patch("datawinners.project.views.submission_views.get_organization_from_manager") as get_ngo_from_manager_mock:
+                get_ngo_from_manager_mock.return_value = organization_mock
+                static_info = build_static_info_context(Mock(), survey_response, questionnaire_form_model=project)
+                
 
             expected_values = OrderedDict({'static_content': {
-                'Data Sender': ('Psub', 'rep2', 'tester@gmail.com'),
+                'Data Sender': ('Psub', 'rep2'),
                 'Source': u'Web',
                 'Submission Date': submission_date.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)}})
             expected_values.update({'is_edit': True})

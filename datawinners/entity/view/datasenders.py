@@ -26,6 +26,10 @@ from mangrove.errors.MangroveException import MangroveException, DataObjectAlrea
 from mangrove.form_model.form_model import REPORTER, FormModel
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.player.player import WebPlayer
+from datawinners.tasks import app
+import logging
+from mangrove.transport.contract.survey_response import SurveyResponse
+from datawinners.main.database import get_db_manager
 
 
 class EditDataSenderView(TemplateView):
@@ -144,6 +148,8 @@ class RegisterDatasenderView(TemplateView):
         form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
         try:
             reporter_id, message = process_create_data_sender_form(dbm, form, org_id)
+            update_datasender_on_open_submissions.delay(dbm.database_name, reporter_id)
+
         except DataObjectAlreadyExists as e:
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
         if len(form.errors) == 0 and form.requires_web_access() and reporter_id:
@@ -178,3 +184,26 @@ class RegisterDatasenderView(TemplateView):
     @method_decorator(is_datasender)
     def dispatch(self, *args, **kwargs):
         return super(RegisterDatasenderView, self).dispatch(*args, **kwargs)
+
+def update_survey_response(dbm, row, reporter_id):
+    survey_response_doc = SurveyResponse.__document_class__.wrap(row['value'])
+    survey_response = SurveyResponse.new_from_doc(dbm=dbm, doc=survey_response_doc)
+    survey_response.anonymous_submission = None
+    survey_response.owner_uid = reporter_id
+    survey_response.save()
+
+
+@app.task(max_retries=3, throw=False)
+def update_datasender_on_open_submissions(database_name, reporter_id):
+    logger = logging.getLogger('datawinners.tasks')
+    try:
+        dbm = get_db_manager(database_name)
+        reporter_entity = ReporterEntity(get_by_short_code(dbm, reporter_id, [REPORTER]))
+        rows = dbm.load_all_rows_in_view("anonymous_submissions", key=reporter_entity.mobile_number)
+
+        for row in rows:
+            update_survey_response(dbm, row, reporter_entity.entity.id)
+
+    except Exception as e:
+        logger.exception('Failed for db: %s ,reporter_id: %s' % (database_name, reporter_id))
+        logger.exception(e)

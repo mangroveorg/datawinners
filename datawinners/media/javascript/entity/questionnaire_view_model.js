@@ -17,6 +17,7 @@ function QuestionnaireViewModel(){
     self.language = ko.observable();
     self.projectName = DW.ko.createValidatableObservable();
     self.questionnaireCode = DW.ko.createValidatableObservable();
+    self.isOpenSurvey = DW.ko.createValidatableObservable();
 
     self.showQuestionnaireForm = ko.observable();
 

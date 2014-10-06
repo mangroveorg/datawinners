@@ -116,7 +116,10 @@ class SubmissionQueryResponseCreator():
                         self.combine_name_and_id(short_code=res.get(es_unique_id_code_field_name(key)),
                                                  entity_name=res.get(key), submission=submission)
                     elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
-                        self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
+                        if res.get(SubmissionIndexConstants.DATASENDER_ID_KEY) == u'N/A':
+                            submission.append(res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY))
+                        else:
+                            self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
                                                  res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY), submission)
                     elif key == 'status':
                         submission.append(ugettext(res.get(key)))

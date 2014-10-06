@@ -7,13 +7,14 @@
     <div class="wizard_success_message">
         <div class="wizard_heading">{% trans "You successfully created your Questionnaire!" %} </div>
         <div class="line"></div>
+        {% if is_pro_sms and not open_datasender_questionnaire %}
         <div class="w_content">
             {% if project.entity_type %}
-                <div class="gray_text">{% trans "Just two more steps..." %} </div>
+                <div class="gray_text">{% trans "Just three more steps..." %} </div>
             {% else %}
-                <div class="gray_text">{% trans "Just one more step..." %} </div>
+                <div class="gray_text">{% trans "Just two more steps..." %} </div>
             {% endif %}
-            <ul>
+            <ul class="bulleted">
                 <li><a id="datasenders_edit_link"
                        href="{{ project_links.register_datasenders_link }}">{% trans "Add data senders" %} </a>
                     <span class="italic_grey">{% trans "required" %}</span>
@@ -25,20 +26,72 @@
                          <li><a href="{{ project_links.subjects_link }}">{% trans "Add new Identification Numbers" %} </a>
                             </li>
                     {% else %}
+                        <li>
                         {% for entity_type, subject_link in links.create_subjects_links.iteritems %}
-                            <li><a id="subjects_edit_link"
+                            <a class="subjects_edit_link"
                                    href="{{ subject_link }}">{% trans "Add a new" %} {{ entity_type|capfirst }} </a>
-                            </li>
+
                         {% endfor %}
                     {% endif %}
-                    <li><p class="black_italic">{% trans "Register each Identification Number you need to collect data about and want to track on a map." %} </p>
-                    </li>
+                            <p class="black_italic">{% trans "Register each Identification Number you need to collect data about and want to track on a map." %} </p>
+                        </li>
                 {% endif %}
                 {% if not project.xform %}
                     <li class="automatic-sms-link"><span class="black_italic">{% trans "Choose the language of your " %}</span><a href="{{ project_links.automatic_sms_link }}">{% trans "Automatic Reply SMS" %}</a>
                                         <span class="italic_grey">{% trans "optional" %}</span>
                     </li>
                 {% endif %}
+                <li class="automatic-sms-link">{% trans "Choose the language of your " %}<a href="{{ project_links.automatic_sms_link }}">{% trans "Automatic Reply SMS" %}</a>
+                                    <span class="italic_grey">{% trans "optional" %}</span>
+                </li>
+            </ul>
+            </div>
+        {% endif %}
+        {% if is_pro_sms and open_datasender_questionnaire %}
+            <div class="w_content">
+            {% if project.entity_type %}
+                <div class="gray_text">{% trans "Just two more steps..." %} </div>
+            {% else %}
+                <div class="gray_text">{% trans "Just one more step..." %} </div>
+            {% endif %}
+            {% if project.entity_type %}
+            <ul class="bulleted">
+                {% if has_multiple_unique_id %}
+                    <li><a href="{{ project_links.subjects_link }}">{% trans "Add new Identification Numbers" %} </a>
+                    </li>
+                {% else %}
+                    <li>
+                    {% for entity_type, subject_link in links.create_subjects_links.iteritems %}
+                        <a class="subjects_edit_link" href="{{ subject_link }}">{% trans "Add a new" %} {{ entity_type|capfirst }} </a>
+                    {% endfor %}
+                {% endif %}
+                        <p class="black_italic">{% trans "Register each Identification Number you need to collect data about and want to track on a map." %} </p>
+                    </li>
+                    <li class="automatic-sms-link">{% trans "Choose the language of your " %}<a href="{{ project_links.automatic_sms_link }}">{% trans "Automatic Reply SMS" %}</a>
+                                    <span class="italic_grey">{% trans "optional" %}</span>
+                    </li>
+            </ul>
+
+            {% else %}
+                <ul class="bulleted">
+                <li>{% trans "Choose the language of your " %}<a href="{{ project_links.automatic_sms_link }}">{% trans "Automatic Reply SMS" %}</a>
+                                    <span class="italic_grey">{% trans "optional" %}</span>
+                    </li>
+                </ul>
+            {% endif %}
+            </ul>
+            </div>
+        {% endif %}
+            <div class="w_content">
+            <div class="gray_text">{% trans "Test your Questionnaire" %}...</div>
+            <ul class="bulleted">
+                <li><a class='sms_tester' href="#">{% trans "Test your SMS Questionnaire" %} </a>
+                <p>{% blocktrans with org_number|format_organization_number  as org_number and "<a href='mailto:support@datawinners.com'>support@datawinners.com</a>" as support_id %}Send a test message to {{ org_number}}. Contact {{ support_id }} if you do not receive a reply.{% endblocktrans %}</p>
+                </li>
+                <li><a id="test_web_questionnaire_section"
+                       href="{{ project_links.test_questionnaire_link }}">{% trans "Test your Web Questionnaire" %} </a>
+                </li>
+                <li><a class="sms-preview" href="#" style="padding-left: 1px">{% trans "Print your Questionnaire" %} </a></li>
             </ul>
             {% if not project.xform %}
                 <div class="gray_text">{% trans "Test your Questionnaire" %}...</div>

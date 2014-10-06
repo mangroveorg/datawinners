@@ -15,7 +15,6 @@ DATABASES = {
 GOOGLE_MAPS_ENABLED = False
 GOOGLE_ANALYTICS_ENABLED = False
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 HNI_SUPPORT_EMAIL_ID = 'tester150411@gmail.com'
 

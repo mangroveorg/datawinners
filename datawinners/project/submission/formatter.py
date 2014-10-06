@@ -2,6 +2,7 @@ from datetime import datetime
 import re
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from mangrove.form_model.field import ExcelDate, DateField
+from datawinners.search.submission_index_constants import SubmissionIndexConstants
 
 GEODCODE_FIELD_CODE = "geocode"
 
@@ -21,15 +22,18 @@ class SubmissionFormatter(object):
                 headers.append(col_def['label'] + " Latitude")
                 headers.append(col_def['label'] + " Longitude")
             else:
-                headers.append(col_def['label'])
+                if col_def['label'] != "Phone number":
+                    headers.append(col_def['label'])
         for row in values:
             formatted_values.append(self._format_row(row))
+
         return headers, formatted_values
 
     def _format_row(self, row):
         result = []
         for field_code in self.columns.keys():
             try:
+                
                 parsed_value= ""
                 if row.get(field_code):
                     parsed_value = '; '.join(row.get(field_code)) if isinstance(row.get(field_code),list) else row.get(field_code)
@@ -51,6 +55,9 @@ class SubmissionFormatter(object):
                 elif self.columns[field_code].get("type") == 'integer':
                     col_val_parsed = try_parse(float, parsed_value)
                     result.append(col_val_parsed)
+                elif field_code == SubmissionIndexConstants.DATASENDER_ID_KEY and row.get(field_code) == 'N/A':
+                    col_val = ""
+                    result.append(col_val)
                 else:
                     result.append(parsed_value)
             except Exception:

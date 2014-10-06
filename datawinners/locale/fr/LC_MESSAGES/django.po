@@ -271,8 +271,8 @@ msgstr "jours avant la date de l'échéance"
 msgid "The day of the deadline"
 msgstr "Le jour de l'échéance"
 
-msgid "Only send reminders to senders who have not already submitted data for the current deadline."
-msgstr "Envoyer des rappels uniquement aux expéditeurs qui n’ont pas encore soumis des données à la date de l’échéance actuelle."
+msgid "Only send Reminders to registered Data Senders who have not yet submitted data for the current deadline."
+msgstr "Envoyer des rappels uniquement aux Expéditeurs de Données enregistrés n'ayant pas encore soumis des données pour l'échéance actuelle."
 
 msgid "Cancel"
 msgstr "Annuler"
@@ -1282,10 +1282,10 @@ msgid "How it Works"
 msgstr "Comment ça Marche"
 
 msgid "sms instruction"
-msgstr "Imprimez le Questionnaire SMS et remettez-le à vos Expéditeurs de Données enregistrés. "
-"Ensuite, ils remplissent les réponses à chaque question sur le Questionnaire papier. "
-"Par la suite, vos Expéditeurs de Données suivent le format de « l’Exemple de Réponse SMS » sur"
-"le Questionnaire pour taper leur SMS sur le téléphone et l'envoyer en un seul SMS."
+msgstr "Imprimez le Questionnaire SMS et remettez-le à vos Expéditeurs de Données . "
+"Ils remplissent les réponses à chaque question sur le Questionnaire papier. "
+"Par la suite, en suivant le format de la section B « Exemple de Réponse SMS » du Questionnaire, "
+"ils tapent leur SMS sur leur téléphone et envoient le tout en un seul SMS."
 
 msgid "Answer the questions"
 msgstr "Répondez aux questions"
@@ -1475,7 +1475,7 @@ msgid "Questionnaire - Reminders"
 msgstr "Questionnaire - Messages de rappel"
 
 msgid "Everyone"
-msgstr "Tous le monde"
+msgstr "Tout le monde"
 
 msgid "Reminders are not enabled for this project. Click on Settings tab to activate reminders for this project."
 msgstr "Messages de rappel non activés pour ce projet. Cliquez sur l'onglet Paramètres pour activer les messages de rappel pour ce projet."
@@ -2435,8 +2435,8 @@ msgstr "Facturation"
 msgid "Set Reminders"
 msgstr "Définir des rappels"
 
-msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your questionnaire"
-msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les Expéditeurs de Données associés à votre questionnaire"
+msgid "By un-checking this box, automatic Reminders will be sent to all registered Data Senders linked to your Questionnaire."
+msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les Expéditeurs de Données liés à votre Questionnaire."
 
 msgid "tooltip_devices"
 msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou via Internet. "
@@ -2622,8 +2622,8 @@ msgstr "La réponse doit être un nombre. Le maximum est %s"
 msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"
 msgstr "Entrez le numéro d'identification de l'Expéditeur de données. Cliquez sur 'Expéditeurs de données' en haut de cette page pour trouver ces numéros d'identification. Exemple: rep10"
 
-msgid "I am submitting this data on behalf of"
-msgstr "Je soumets ces données pour le compte de"
+msgid "I want to submit this data on behalf of a registered Data Sender"
+msgstr "Je vous soumettre ces données pour le compte d'un Expéditeur de Données enregistré"
 
 msgid "What is associated Data sender type?"
 msgstr "Quel est le type de sujet associé ?"
@@ -2685,8 +2685,8 @@ msgstr "Abonnez-vous"
 msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
 msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les Expéditeurs de Données associés à votre projet"
 
-msgid "Specify when you want to send automatic Reminders to your Data Senders"
-msgstr "Spécifiez quand est-ce que que vous voulez envoyer des Rappels automatiques à vos Expéditeurs de Données"
+msgid "Specify when you want to send automatic Reminders to your registered Data Senders."
+msgstr "Spécifiez quand est-ce que vous souhaitez envoyer des rappels automatiques à vos Expéditeurs de Données enregistrés."
 
 msgid "Between %d -- %d characters"
 msgstr "Entre %d -- %d caractères"
@@ -2722,7 +2722,10 @@ msgid "Just one more step..."
 msgstr "Juste une étape de plus ..."
 
 msgid "Just two more steps..."
-msgstr "Encore quelques étapes..."
+msgstr "Encore deux étapes..."
+
+msgid "Just three more steps..."
+msgstr "Encore trois étapes..."
 
 msgid "Enhance your project..."
 msgstr "Améliorer votre projet..."
@@ -2738,7 +2741,7 @@ msgstr "<b>Qu'est-ce que c'est?</b></br>"
        "Au lieu de soumettre des données en votre nom, vous pouvez en soumettre pour le compte d'un de vos Expéditeurs enregistrés</br>"
        "Sur les pages Analyse et Journal de Soumission, cette Soumission sera par la suite affichée sous le nom de l'Expéditeur de Données."
        "</br></br><b>Que dois-je faire?</b></br>"
-       "Votre nom apparaît par défaut. Sélectionnez l'Expéditeur de Données, pour lequel vous souhaitez soumettre des données, dans la liste déroulante."
+       "Sélectionnez l'Expéditeur de Données, pour lequel vous souhaitez soumettre des données, dans la liste déroulante."
 
 msgid "tooltip_questionnaire_form_subject_entity_question"
 msgstr "Sélectionnez votre Sujet dans la liste déroulante. Si votre Sujet n'est pas sur la liste, cliquez sur l'onglet Mes Sujets pour l'enregistrer au préalable."
@@ -4249,11 +4252,11 @@ msgstr "Choisissez un Expéditeur de données dans la liste."
 msgid "disabled"
 msgstr "desactivés"
 
-msgid "My Data Senders linked to this questionnaire"
-msgstr "Mes Expéditeurs de données liés à ce questionnaire"
+msgid "My registered Data Senders linked to this Questionnaire"
+msgstr "Mes Expéditeurs de données enregistrés liés à ce Questionnaire"
 
-msgid "All Data Senders of all questionnaires"
-msgstr "Tous les Expéditeurs de données de tous les questionnaires"
+msgid "All registered Data Senders of all Questionnaires"
+msgstr "Tous les Expéditeurs de données de tous les Questionnaires"
 
 msgid "Do you want to send this message to <span id=\"number_of_peoples\"></span> recipient(s)?"
 msgstr "Voulez-vous envoyer ce message à <span id=\"number_of_peoples\"></span> destinataire(s)?"
@@ -5470,3 +5473,57 @@ msgstr "Demandez à vos Expéditeurs de Données de télécharger la nouvelle ve
 
 msgid "You have reached your 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your Questionnaires."
 msgstr "Vous avez atteint vos 1 000 Soumissions gratuites. Inscrivez-vous pour un abonnement mensuel pour continuer à soumettre des données pour ces Questionnaires."
+
+msgid "People Authorized to Submit Data Using SMS"
+msgstr "Personne autorisée à soumettre des données via SMS"
+
+msgid "Change"
+msgstr "Changement"
+
+msgid "You decide who has permission to submit data using SMS for this Questionnaire:"
+msgstr "Vous décidez qui a la permission de soumettre des données via SMS pour ce Questionnaire :"
+
+msgid "Everyone – Anyone with a simple phone can submit data"
+msgstr "Tout le monde - N'importe qui possédant un simple téléphone peut soumettre des données"
+
+msgid "Only Registered People  – Data Senders must be registered first before submitting data."
+msgstr "Seulement les personnnes enregistrées - Les Expéditeurs de Données doivent être enregistrées avant de pouvoir soumettre des données."
+
+msgid "Who has permission to submit data using SMS for this Questionnaire:"
+msgstr "Qui est autorisé à soumettre des données via SMS pour ce Questionnaire:"
+
+msgid "Anyone with a simple phone can submit data."
+msgstr "N'importe qui possédant un simple téléphone peut soumettre des données."
+
+msgid "Only Registered People"
+msgstr "Seulement les personnes enregistrées."
+
+msgid "Data Senders must be registered first before submitting data."
+msgstr "Les Expéditeurs de Données doivent être enregistrées avant de pouvoir soumettre des données."
+
+msgid "Example: Registered field staff, community based workers, supervisors"
+msgstr "Exemple : Personnel de terrain enregistré, travailleurs communautaires, superviseurs"
+
+msgid "Everyone – Any phone can submit data"
+msgstr "Tout le monde - N'importe quel téléphone peut soumettre des données "
+
+msgid "In the Basic account only registered Data Senders can send you data. However, when you upgrade to a Pro SMS  account you have the option to let anyone send in data."
+msgstr "Pour un compte Basique, seuls les Expéditeurs de Données enregistrés peuvent soumettre des données. Par contre, quand vous passez vers un compte Pro SMS, vous avez l'option de laisser tout le monde soumettre des données."
+
+msgid "You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='%(url_to_my_datasender)s'> My Data Senders </a>page."
+msgstr "Vous pouvez envoyer des rappels uniquement aux Expéditeurs de Données enregistrés. Premièrement, enregistrez vos Expéditeurs de Données sur la page<a style='float: none; margin: 0;' href='%(url_to_my_datasender)s'> Mes Expéditeurs </a>."
+
+msgid "All people who submitted data (registered & un-registered) "
+msgstr "Tous ceux qui ont soumis des données (enregistrés et non-enregistrés)"
+
+msgid "registered Data Senders"
+msgstr "Expéditeurs de Données enregistrés"
+
+msgid "unregistered Data Senders"
+msgstr "Expéditeurs de Données non enregistrés"
+
+msgid "Choose Data Sender"
+msgstr "Choisir un Expéditeur de données"
+
+msgid "Which registered Data Sender sent you this Submission?"
+msgstr "Quel Expéditeur de Données enregistré vous a envoyé cette Soumission?"

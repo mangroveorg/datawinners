@@ -31,13 +31,14 @@ class BroadcastMessageForm(forms.Form):
     text = CharField(label=ugettext_lazy("Text:"), required=True, max_length=160, widget=forms.Textarea)
     to = ChoiceField(label=ugettext_lazy("To:"),widget=MySelect(), choices=(("All", ugettext_lazy("All Data Senders")),
                                                          ("Associated", ugettext_lazy("Data Senders associated to my project")),
-                                                         ("Additional", ugettext_lazy("Other People"))),initial=("Asossciated"))
+                                                         ("Additional", ugettext_lazy("Other People")),
+                                                         ("Unregistered", ugettext_lazy("Unregistered"))),initial=("Asossciated"))
     others = CharField(label=ugettext_lazy("Other People:"), widget=forms.Textarea, required=False)
 
-    def __init__(self, associated_ds=0, number_of_ds=0, *args, **kwargs):
+    def __init__(self, associated_ds=0, number_of_ds=0, unregistered_ds=0,*args, **kwargs):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)
-        self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My Data Senders linked to this questionnaire"), str(associated_ds))),
-                                                        ("All", u"%s %s" % (ugettext_lazy("All Data Senders of all questionnaires"), str(number_of_ds))),
+        self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My registered Data Senders linked to this Questionnaire"), str(associated_ds))),
+                                                        ("All", u"%s %s" % (ugettext_lazy("All registered Data Senders of all Questionnaires"), str(number_of_ds))),
                                                         ("Additional", ugettext_lazy("Other People")))
         self.fields["to"].widget.attrs["class"] = "none"
         self.fields['text'].widget.attrs['watermark'] = ugettext_lazy('Enter your SMS text')
@@ -46,6 +47,17 @@ class BroadcastMessageForm(forms.Form):
     def clean_others(self):
         others = self.cleaned_data['others']
         return [number.strip() for number in others.split(',') if number.strip() !='']
+
+class OpenDsBroadcastMessageForm(BroadcastMessageForm):
+
+    def __init__(self, associated_ds=0, number_of_ds=0, unregistered_ds=0, *args, **kwargs):
+        super(OpenDsBroadcastMessageForm, self).__init__(*args, **kwargs)
+        unregistered_label = u"%s %s" % (ugettext_lazy("All people who submitted data (registered & un-registered)"), str(unregistered_ds))
+        self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My registered Data Senders linked to this Questionnaire"), str(associated_ds))),
+                                                        ("All", u"%s %s" % (ugettext_lazy("All registered Data Senders of all Questionnaires"), str(number_of_ds))),
+            ("Unregistered" , unregistered_label),
+                                                        ("Additional", ugettext_lazy("Other People")))
+        
 
 
 class MyRadioFieldRenderer(RadioFieldRenderer):
@@ -110,7 +122,7 @@ class ReminderForm(Form):
     reminder_text_after_deadline = CharField(label=ugettext_lazy("Reminder text after deadline"), widget=forms.Textarea,
                                              required=False)
 
-    whom_to_send_message = BooleanField(label=ugettext_lazy("Only send reminders to senders who have not already submitted data for the current deadline."),
+    whom_to_send_message = BooleanField(label=ugettext_lazy("Only send Reminders to registered Data Senders who have not yet submitted data for the current deadline."),
                                        required=False, initial=True)
 
     def __init__(self, *args, **kwargs):
@@ -146,3 +158,14 @@ class ReminderForm(Form):
                 self.errors['reminder_text_after_deadline'] = self.error_class([msg])
 
         return self.cleaned_data
+
+    def disable_all_field(self):
+        self.fields['frequency_period'].widget.attrs['disabled'] = 'disabled'
+        self.fields['should_send_reminders_before_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['number_of_days_before_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['reminder_text_before_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['should_send_reminders_on_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['reminder_text_on_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['number_of_days_after_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['reminder_text_after_deadline'].widget.attrs['disabled'] = 'disabled'
+        self.fields['whom_to_send_message'].widget.attrs['disabled'] = 'disabled'

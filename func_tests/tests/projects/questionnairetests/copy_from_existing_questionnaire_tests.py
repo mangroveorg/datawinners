@@ -5,10 +5,10 @@ from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPa
 from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from tests.projects.questionnairetests.project_questionnaire_data import COPY_PROJECT_QUESTIONNAIRE_DATA, COPY_PROJECT_DATA
+from django.utils.unittest.case import SkipTest
 
 
 class TestCopyExistingQuestionnaire(HeadlessRunnerTest):
-
     @classmethod
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()

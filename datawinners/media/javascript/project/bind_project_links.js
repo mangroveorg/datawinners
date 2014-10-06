@@ -13,6 +13,13 @@ DW.bind_project_links = function () {
                 return false;
             });
 
+            $(".change_setting").unbind().bind("click", function () {
+                $("#change_ds_setting").dialog("open");
+                $('#save_ds_setting').attr('href', $(this).attr('href'));
+                $("#save_ds_setting").focus();
+                return false;
+            });
+
         }
     };
 

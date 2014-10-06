@@ -33,3 +33,7 @@ class BroadcastSmsPage(Page):
     def navigate_to_automatic_reply_sms_page(self):
         self.driver.find(REPLY_SMS_LINK).click()
         return AutomaticReplySmsPage(self.driver)
+
+    def is_send_a_message_to_unregistered_present(self):
+        self.driver.find(SEND_TO_DDCL).click()
+        return self.driver.find(by_css("ul li a#Unregistered")).is_displayed()
