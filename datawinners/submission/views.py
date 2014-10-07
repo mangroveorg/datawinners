@@ -283,8 +283,8 @@ def submit_to_player(incoming_request):
         SMS(message=message,
             message_id=incoming_request['message_id'],
             organization=incoming_request['organization'],
-            msg_from=mangrove_request.transport.source,
-            msg_to=mangrove_request.transport.destination,
+            msg_from=mangrove_request.transport.destination,
+            msg_to=mangrove_request.transport.source,
             msg_type=MSG_TYPE_SUBMISSION_REPLY,
             status="Submitted").save()
 
