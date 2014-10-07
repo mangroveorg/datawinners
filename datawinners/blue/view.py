@@ -323,7 +323,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
             return HttpResponseRedirect(dashboard_page)
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form,
-                                        self.manager, self.hide_link_class, self.disable_link_class, is_update)
+                                        self.manager, self.hide_link_class, self.disable_link_class, is_update=is_update)
         if self.questionnaire.xform:
             form_context.update(
                 {'xform_xml': re.sub(r"\n", " ", XFormTransformer(self.questionnaire.xform).transform())})
@@ -348,7 +348,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
             return HttpResponseRedirect(dashboard_page)
         questionnaire_form = self.form(initial_data=None)
         form_context = get_form_context(self.questionnaire, questionnaire_form,
-                                        self.manager, self.hide_link_class, self.disable_link_class, False)
+                                        self.manager, self.hide_link_class, self.disable_link_class, is_update=False)
 
         if self.questionnaire.xform:
             form_context.update({'survey_response_id': survey_response_id})
