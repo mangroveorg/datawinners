@@ -18,7 +18,8 @@ DW.data_submission = function (kwargs) {
         },
 
         bind_all_links: function () {
-            $("a[href]:visible").not(".sms_tester, .delete_project").bind('click', {self:this}, function (event) {
+            $("a[href]:visible").not(".sms_tester, .delete_project, #save_ds").bind('click',
+                    {self:this}, function (event) {
                 var that = event.data.self;
                 that.redirect_url = $(this).attr("href");
 
