@@ -13,6 +13,7 @@ from django_digest.models import PartialDigest
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.contrib.admin.views.main import ChangeList
+from datawinners.common.admin.utils import get_text_search_filter, get_admin_panel_filter
 from datawinners.project.submission.export import create_excel_response
 
 from datawinners.search.index_utils import get_elasticsearch_handle
@@ -23,6 +24,7 @@ from mangrove.utils.types import is_empty, is_not_empty
 from datawinners.countrytotrialnumbermapping.models import Country, Network
 from datawinners.utils import get_database_manager_for_org
 from datawinners.feeds.database import feeds_db_for
+from django.db.models import Q
 
 
 admin.site.disable_action('delete_selected')
@@ -144,7 +146,11 @@ class MessageTrackerAdmin(DatawinnerAdmin):
                    "Outgoing SMS: API", "Outgoing Charged SMS: API", "SMS Submissions", "SP Submissions", "Web Submissions", "SMS Subject Registration"]
         list = []
 
-        for messageTracker in query_set:
+        textSearchFilter = get_text_search_filter(request.GET,MessageTrackerAdmin.search_fields)
+        adminPanelFilter = get_admin_panel_filter(request.GET)
+
+        filteredSms = MessageTracker.objects.all().filter(Q(**adminPanelFilter) & (textSearchFilter))
+        for messageTracker in filteredSms:
             sms_tracker_month = ExcelDate(datetime.datetime.combine(messageTracker.month, datetime.datetime.min.time()),
                                           'dd.mm.yyyy') if messageTracker.month else None
 

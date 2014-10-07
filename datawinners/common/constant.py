@@ -26,3 +26,8 @@ ACTIVATED_REMINDERS = "Activated Reminders"
 DEACTIVATED_REMINDERS = "De-Activated Reminders"
 SET_DEADLINE = "Set Deadline"
 DELETED_USERS = "Deleted User(s)"
+
+ADMIN_ORDER_COLUMN = 'o'
+ADMIN_ORDER_TYPE = 'ot'
+ADMIN_QUERY = 'q'
+ADMIN_PAGINATION = 'p'
