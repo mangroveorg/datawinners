@@ -11,7 +11,7 @@ from mangrove.form_model.form_model import get_form_model_by_code, header_fields
 
 def _create_elastic_search_query(entity_type, dbm):
     return elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).\
-        indexes(dbm.database_name).doctypes(entity_type)[0:2000]
+        indexes(dbm.database_name).doctypes(entity_type)
 
 
 def _create_response(required_field_names, query, header_dict):
