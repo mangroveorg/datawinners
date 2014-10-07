@@ -25,9 +25,9 @@ class SMSAdmin(admin.ModelAdmin):
         for sms in filteredSms:
             delivered_date_time = ExcelDate(datetime.combine(sms.delivered_at, datetime.min.time()),
                                             'dd.mm.yyyy') if sms.delivered_at else None
-            list.append([sms.organization_id, sms.status, delivered_date_time, sms.msg_from, sms.msg_to, sms.message])
+            list.append([sms.organization_id, sms.status, delivered_date_time, sms.msg_from, sms.msg_to, sms.msg_type, sms.message])
 
-        headers = ['Organisation Id', 'Status', 'Delivery Date', 'Message from Number', 'Message to Number', 'Content']
+        headers = ['Organisation Id', 'Status', 'Delivery Date', 'Message from Number', 'Message to Number', 'Message Type', 'Content']
         response = create_excel_response(headers, list, 'sms_list')
         return response
 
