@@ -103,7 +103,7 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_page.set_question_title("some question")
         create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
         create_questionnaire_page.submit_errored_questionnaire()
-        self.global_navigation.navigate_to_dashboard_page()
+        self.global_navigation.navigate_to_all_data_page()
         self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
         modified_warning_dialog.cancel()
         self.assertEqual(create_questionnaire_page.get_page_title(), "Create a New Questionnaire",
