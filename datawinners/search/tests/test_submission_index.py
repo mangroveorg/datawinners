@@ -47,20 +47,20 @@ class TestSubmissionIndex(unittest.TestCase):
 
             self.assertEquals(
                 {
-                    '1212_q4': ['one', 'two'],
+                    '1212_q4': ['one', 'two'], 'is_anonymous': False,
                     'void': False}, search_dict)
 
     def test_should_update_search_dict_with_form_field_questions_for_error_submissions(self):
         search_dict = {}
         self.form_model.fields = [self.field1, self.field2, self.field3]
         values = {'q1': 'test_id', 'q2': 'wrong number', 'q3': 'wrong text'}
-        submission_doc = EnrichedSurveyResponseDocument(values=values, status="error")
+        submission_doc = SurveyResponseDocument(values=values, status="error")
         with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
             lookup_entity_name.return_value = 'test1'
             _update_with_form_model_fields(None, submission_doc, search_dict, self.form_model)
             self.assertEquals(
                 {'1212_q1': 'test1', "1212_q1_unique_code": "test_id", '1212_q2': 'wrong number',
-                 '1212_q3': 'wrong text',
+                 '1212_q3': 'wrong text', 'is_anonymous': False,
                  'void': False},
                 search_dict)
 
@@ -71,7 +71,7 @@ class TestSubmissionIndex(unittest.TestCase):
         submission_doc = SurveyResponseDocument(values=values, status="error")
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
-            {'1212_q2': 'wrong number', '1212_q3': 'wrong text',
+            {'1212_q2': 'wrong number', '1212_q3': 'wrong text', 'is_anonymous':False,
              'void': False},
             search_dict)
 
@@ -82,7 +82,7 @@ class TestSubmissionIndex(unittest.TestCase):
         submission_doc = SurveyResponseDocument(values=values, status="success")
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
-            {'1212_repeat-code': '[{"single-select": "one", "q4": ["one", "two"]}]',
+            {'1212_repeat-code': '[{"single-select": "one", "q4": ["one", "two"]}]', 'is_anonymous': False,
              'void': False},
             search_dict)
 
@@ -94,7 +94,7 @@ class TestSubmissionIndex(unittest.TestCase):
         submission_doc = SurveyResponseDocument(values=values, status="success")
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
-            {'1212_repeat-code': '[{"group-code": [{"single-select": "one", "q4": ["one", "two"]}]}]',
+            {'1212_repeat-code': '[{"group-code": [{"single-select": "one", "q4": ["one", "two"]}]}]', 'is_anonymous': False,
              'void': False},
             search_dict)
 
@@ -106,7 +106,7 @@ class TestSubmissionIndex(unittest.TestCase):
         self.form_model.get_field_by_code_and_rev.side_effect = lambda code, revision: {"q4": self.field4, "single-select": self.field6}[code]
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
-            {'void': False, '1212_group-code-single-select': 'one', '1212_group-code-q4': ['one', 'two']},
+            {'void': False, '1212_group-code-single-select': 'one', '1212_group-code-q4': ['one', 'two'], 'is_anonymous': False},
             search_dict)
 
     def test_should_update_submission_index_date_field_with_current_format(self):
@@ -168,5 +168,5 @@ class TestSubmissionIndex(unittest.TestCase):
 
             _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
             self.assertEquals(
-                {'1212_q1': 'N/A', '1212_q1_unique_code': 'option1,option2', 'void': False},
+                {'1212_q1': 'N/A', '1212_q1_unique_code': 'option1,option2', 'is_anonymous': False, 'void': False},
                 search_dict)
