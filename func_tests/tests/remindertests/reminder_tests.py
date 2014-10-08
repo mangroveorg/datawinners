@@ -38,7 +38,7 @@ class TestReminderSend(HeadlessRunnerTest):
         ds_page.click_checkall_checkbox()
         number = ds_page.get_number_of_selected_datasenders()
         if number != 0 :
-            ds_page.perform_datasender_action(DISSOCIATE)
+            ds_page.perform_datasender_action(by_css(".remove"))
             self.driver.wait_for_page_load()
         self.driver.go_to(LOGOUT)
 
