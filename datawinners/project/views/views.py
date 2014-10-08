@@ -945,7 +945,7 @@ def edit_my_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
     subject = get_by_short_code(manager, entity_id, [entity_type.lower()])
     subject_request = SubjectWebQuestionnaireRequest(request, project_id, entity_type)
-    form_model = subject_request.form_modelubm
+    form_model = subject_request.form_model
     if request.method == 'GET':
         initialize_values(form_model, subject)
         return subject_request.response_for_get_request(is_update=True)
