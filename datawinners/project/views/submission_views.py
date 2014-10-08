@@ -294,7 +294,7 @@ def edit(request, project_id, survey_response_id, tab=0):
         survey_response_form = SurveyResponseForm(questionnaire_form_model, form_initial_values,
                                                   datasender_name=data_sender[0] , reporter_id=reporter_id,
                                                   reporter_name=reporter_name,
-                                                  is_anonymous_submission=survey_response.anonymous_submission)
+                                                  is_anonymous_submission=survey_response.is_anonymous_submission)
 
         form_ui_model.update(get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
                                               disable_link_class))
@@ -336,7 +336,7 @@ def edit(request, project_id, survey_response_id, tab=0):
         else:
             form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
             survey_response_form = SurveyResponseForm(questionnaire_form_model, request.POST, initial=form_initial_values,
-                                                      is_anonymous_submission=survey_response.anonymous_submission)
+                                                      is_anonymous_submission=survey_response.is_anonymous_submission)
 
         form_ui_model.update(
             get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))

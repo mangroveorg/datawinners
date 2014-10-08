@@ -221,11 +221,17 @@ def status_message(status):
 
 
 # TODO manage_index
+def _get_datasender_info(dbm, submission_doc):
+    if submission_doc.is_anonymous_submission:
+        datasender_name, datasender_id = submission_doc.created_by, UNKNOWN
+    else:
+        datasender_name, datasender_id = lookup_entity_by_uid(dbm, submission_doc.owner_uid)
+    return datasender_id, datasender_name
+
+
 def _meta_fields(submission_doc, dbm):
     search_dict = {}
-    datasender_name, datasender_id = lookup_entity_by_uid(dbm, submission_doc.owner_uid)
-    if submission_doc.anonymous_submission:
-        datasender_name = submission_doc.created_by
+    datasender_id, datasender_name = _get_datasender_info(dbm, submission_doc)
     search_dict.update({"status": status_message(submission_doc.status)})
     search_dict.update({"date": format_datetime(submission_doc.submitted_on, "MMM. dd, yyyy, hh:mm a", locale="en")})
     search_dict.update({"ds_id": datasender_id})
@@ -371,6 +377,8 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                 search_dict.update({es_questionnaire_field_name(field.code, form_model.id, parent_field_name): entry})
 
     search_dict.update({'void': submission_doc.void})
+    search_dict.update({'is_anonymous': submission_doc.is_anonymous_submission})
+
 
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
