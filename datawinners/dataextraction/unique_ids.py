@@ -57,7 +57,7 @@ def get_unique_ids_for_form_code(request, form_code):
     if request.method == 'GET':
         user = request.user
         dbm = get_database_manager(user)
-        response_limit = request.GET('limit', 15000)
+        response_limit = request.GET.get('limit', 15000)
         unique_ids, questionnaire_dict = _get_response(dbm, form_code, user, response_limit)
         if unique_ids is None:
             return HttpResponse(status=404)
