@@ -27,6 +27,7 @@ DW.instruction_and_preview.prototype = {
 
         $.post(this.preview_url, post_data, function (response_data) {
             $("#questionnaire_content").html(response_data);
+            $('.errorlist').remove();
             $("#questionnaire_preview_instruction").show();
             that.post_callback();
             $.unblockUI();
