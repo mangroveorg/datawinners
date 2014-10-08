@@ -13,7 +13,7 @@ function installPhantomjs(){
 }
 
 # sanity check to make sure phantomjs exists in the PATH
-which phantomjs &> /dev/null
+which ~/bin/phantomjs &> /dev/null
 if [ $? -ne 0 ]; then
     (installPhantomjs)
 fi
@@ -39,7 +39,7 @@ done
 
 # fire up the phantomjs environment and run the test
 cd $SCRIPTDIR
-phantomjs ./js_libs/jasmine_reporters/phantomjs-testrunner.js $TESTFILE
+~/bin/phantomjs ./js_libs/jasmine_reporters/phantomjs-testrunner.js $TESTFILE
 if [ $? -eq 0 ]
 then
     echo -e "\e[0;32;47mAll DW JS test passed\e[0m"
