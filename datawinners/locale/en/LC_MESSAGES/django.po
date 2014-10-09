@@ -4748,9 +4748,6 @@ msgstr ""
 msgid "Only Registered People - Data Senders must be registered first before submitting data."
 msgstr ""
 
-msgid "Questionnaire has not been created, please upload again to create Questionnaire"
-msgstr ""
-
 msgid "You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='{{ url_to_my_datasender }}'> My Data Senders </a>page."
 msgstr ""
 
