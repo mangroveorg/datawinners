@@ -30,7 +30,7 @@
   margin-left: 20px !important;
   float: left;
   height: 40px;
-  width: 950px;
+  width: 910px;
   background: #f0f0f0; }
   .secondary_tab li {
     float: left;
@@ -48,3 +48,5 @@
     top: 1px; }
     .secondary_tab li.active a {
       color: #000; }
+
+/*# sourceMappingURL=section_tab_navigation.css.map */

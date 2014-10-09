@@ -75,7 +75,7 @@ DW.controllers = {
                     questionnaireViewModel.loadQuestion(new DW.question(question));
                 });
                 questionnaireViewModel.showQuestionnaireForm(true);
-                questionnaireViewModel.isOpenSurvey(templateData.is_open_survey);
+                questionnaireViewModel.isOpenSurvey(true);
                 questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
                 DW.trackEvent('questionnaire-creation-method', 'copy-from-template');
             });
@@ -102,6 +102,7 @@ DW.controllers = {
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
             questionnaireViewModel.questionnaireCode(questionnaire_code);
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
+            questionnaireViewModel.isOpenSurvey(true);
             DW.trackEvent('questionnaire-creation-method', 'blank-questionnaire');
     },
     "uploadQuestionnaire": function(){
@@ -110,7 +111,7 @@ DW.controllers = {
         questionnaireViewModel.questionnaireCode(questionnaire_code);
         questionnaireViewModel.enableQuestionnaireTitleFocus(true);
         questionnaireViewModel.isXLSUploadQuestionnaire(true);
-        questionnaireViewModel.isOpenSurvey(true);
+        questionnaireViewModel.isOpenSurvey(false);
         DW.trackEvent('questionnaire-creation-method', 'advanced-questionnaire');
     },
     "questionnaireCreationOptions": function () {
