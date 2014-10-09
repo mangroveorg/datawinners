@@ -22,7 +22,7 @@ class TestUtils(unittest.TestCase):
             instance = MockClass.return_value
 
             getRequestParameters = {ADMIN_QUERY: "bla"}
-            textSearchFilter = get_text_search_filter(getRequestParameters, None)
+            textSearchFilter = get_text_search_filter(getRequestParameters, [])
             self.assertEquals(textSearchFilter, instance)
 
     def test_should_get_empty_Q_object_if_no_admin_query_parameters_in_request_parameters(self):

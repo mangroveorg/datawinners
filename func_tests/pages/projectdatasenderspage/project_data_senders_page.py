@@ -5,7 +5,7 @@ from pages.alldatasenderspage.all_data_senders_locator import DATA_SENDER_DEVICE
 from pages.projectdatasenderspage.project_data_senders_locator import *
 from tests.projects.datasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
 from pages.page import Page
-from tests.testsettings import UI_TEST_TIMEOUT
+from tests.testsettings import UI_TEST_TIMEOUT, WAIT
 
 DISASSOCIATE = "disassociate"
 class ProjectDataSendersPage(Page):
@@ -38,6 +38,13 @@ class ProjectDataSendersPage(Page):
         self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_MOBILE_XPATH % mobile_number)).click()
         return self
 
+    def select_a_data_sender_by_rep_id(self, rep_id):
+        """
+        Function to select a data sender on all data sender page
+         """
+        self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % rep_id)).click()
+        return self
+
     def get_data_sender_email_by_id(self, data_sender_id):
         """
         Function to select a data sender on all data sender page
@@ -49,10 +56,16 @@ class ProjectDataSendersPage(Page):
         option_to_select = GIVE_WEB_ACCESS
         self.perform_datasender_action(option_to_select)
 
+    def disassociate_from_questionnaire(self):
+        self.perform_datasender_action(by_css(".remove.from.questionnaire"))
+        self.driver.wait_for_element(WAIT, by_css("#datasender_table_wrapper .success-message-box"),True)
+        return self
+
     def perform_datasender_action(self, locator):
         self.driver.find(ACTION_DROP_DOWN).click()
         option = self.driver.find_visible_element(locator)
         option.click()
+
         return self
 
     def navigate_to_analysis_page(self):

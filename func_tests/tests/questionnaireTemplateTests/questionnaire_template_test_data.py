@@ -1,6 +1,15 @@
 from framework.utils.common_utils import by_css, by_xpath
 
 GEN_RANDOM = "gen_random"
+QUESTION = "question"
+QUESTIONS = "questions"
+TYPE = "type"
+QUESTIONNAIRE_CODE = "questionnaire_code"
+LIMITED = "limited"
+LIMIT = "limit"
+WORD = "word"
+MAX = "max"
+
 
 NEW_PROJECT_DATA = {'project_name': "new project ", GEN_RANDOM: True}
 
