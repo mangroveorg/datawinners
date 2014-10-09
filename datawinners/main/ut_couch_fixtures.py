@@ -1434,6 +1434,8 @@ def load_data():
                                 {"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
     #create_trial_organization('mamytest@mailinator.com', 'SLX364903', True)
+    manager = get_database_manager(User.objects.get(username="samuel@mailinator.com"))
+    initializer.run(manager)
     create_project_for_nigeria_test_orgnization()
     create_datasender_for_nigeria_test_organization()
 

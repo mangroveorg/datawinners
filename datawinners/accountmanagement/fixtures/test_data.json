@@ -167,7 +167,7 @@
             "is_deactivate_email_sent": false,
             "country": "MG",
             "zipcode": "65212",
-            "account_type": "Pro SMS",
+            "account_type": "Pro",
             "website": "",
             "office_phone": "2614787329",
             "state": "",
@@ -597,7 +597,7 @@
                 1
             ],
             "user_permissions": [],
-            "password": "sha1$398fd$f15eb2447126f6f99749d3f7ec5873794419f1cb",
+            "password": "sha1$8c72d$7bca3757c08d7e047c4bfa91bc79a26af06ff1c4",
             "email": "samuel@mailinator.com",
             "date_joined": "2013-07-12 11:52:00"
         }
