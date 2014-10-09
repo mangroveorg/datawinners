@@ -126,7 +126,7 @@ class ProjectUpload(View):
 
             odk_message = ''
             if not 'ODK Validate Errors:' in e.message:
-                send_email_on_exception(request.user, "Questionnaire Edit", traceback.format_exc(),
+                send_email_on_exception(request.user, "Questionnaire Create", traceback.format_exc(),
                                         additional_details={'file_contents': file_content})
             else:
                 odk_message = translate_odk_message(e.message)
