@@ -29,7 +29,7 @@ class RegistrationPage(Page):
             if key in [ORGANIZATION_SECTOR, ORGANIZATION_COUNTRY, ORGANIZATION_SECTOR_FOR_UPGRADE]:
                 self.driver.find_drop_down(by_css(".registration_form select[name=%s]" % key)).set_selected(value)
             elif key in [PAY_MONTHLY, WIRE_TRANSFER, PRO, PRO_SMS]:
-                self.driver.find_radio_button(by_css(".registration_form input[value=%s]" % key)).click()
+                self.driver.find_radio_button(by_css(".registration_form input[value='%s']" % key)).click()
             else:
                 el = self.driver.find(by_css(".registration_form input[name=%s]" % key))
                 if el.get_attribute("value") != "":

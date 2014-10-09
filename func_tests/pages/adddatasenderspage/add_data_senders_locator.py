@@ -32,3 +32,4 @@ REGISTERED_DATASENDERS_LOCATOR = by_xpath("//a[text()='Registered Data Senders']
 REGISTER_BTN = by_css("input#id_register_button")
 ERROR_MESSAGE_LABEL = by_xpath("//ul[@class='errorlist']/.. | //div[@id='error_messages'] | //div[@class='message-box' and @id='flash-message']")
 FLASH_MESSAGE_LABEL = by_css("#flash-message")
+DS_SETTING_DESCRIPTION = by_css("#setting_description")

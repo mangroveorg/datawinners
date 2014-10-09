@@ -14,6 +14,7 @@ from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
+from pages.adddatasenderspage.add_data_senders_locator import DS_SETTING_DESCRIPTION
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.allsubjectspage.add_subject_page import AddSubjectPage
@@ -164,6 +165,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
             index += 1
         project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
         self.project_name = project_overview_page.get_project_title()
+        return project_overview_page
 
     def add_subject(self, subject_type, subject_data):
         global_navigation = GlobalNavigationPage(self.driver)
@@ -214,14 +216,19 @@ class TestApplicationEndToEnd(unittest.TestCase):
         all_data_sender_page.associate_datasender_to_projects(rep_id, [self.project_name])
         return email
 
-    def verify_admin_present_in_my_datasenders_page(self):
-        global_navigation = GlobalNavigationPage(self.driver)
-        all_project_page = global_navigation.navigate_to_view_all_project_page()
-        project_overview_page = all_project_page.navigate_to_project_overview_page(self.project_name)
-        my_datasenders_page = project_overview_page.navigate_to_datasenders_page()
+    def verify_admin_present(self, my_datasenders_page):
         my_datasenders_page.search_with(self.email)
         self.assertTrue(
             self.driver.is_element_present(my_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
+
+    def verify_if_open_survey(self):
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT, DS_SETTING_DESCRIPTION, want_visible=True)
+        self.assertEqual("Everyone - Anyone with a simple phone can submit data.", locator.text)
+
+    def verify_admin_present_in_my_datasenders_page(self, project_overview_page):
+        my_datasenders_page = project_overview_page.navigate_to_datasenders_page()
+        self.verify_admin_present(my_datasenders_page)
+        self.verify_if_open_survey()
 
 
     def verify_submission_via_sms(self, organization_sms_tel_number):
@@ -317,13 +324,17 @@ class TestApplicationEndToEnd(unittest.TestCase):
         languages_page.select_language("English", wait_for_load=True)
         self.assertIn(appended_message, languages_page.get_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR))
 
+    def create_project_and_verify(self):
+        overview_page = self.verify_project_creation()
+        self.verify_admin_present_in_my_datasenders_page(overview_page)
 
     @attr('smoke')
     def test_end_to_end(self):
         self.email = None
         organization_sms_tel_number = self.do_org_registartion()
 
-        self.verify_project_creation()
+        self.create_project_and_verify()
+
 
         self.register_new_subject_of_type('Gaming', VALID_DATA_FOR_SUB_GAMING)
         self.register_new_subject_of_type('School', VALID_DATA_FOR_SUBJECT_SCHOOL)
@@ -332,7 +343,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.add_edit_delete_subject()
 
         ds_email = self.add_edit_datasender()
-        self.verify_admin_present_in_my_datasenders_page()
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_submission_via_web(ds_email)
         self.verify_setting_customized_error_messages_for_languages()

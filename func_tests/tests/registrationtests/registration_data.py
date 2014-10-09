@@ -47,7 +47,7 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION = {ORGANIZATION_NAME: u"ÑGÓ 001"
                                                  REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
                                                  PAY_MONTHLY: PAY_MONTHLY,
                                                  WIRE_TRANSFER: WIRE_TRANSFER,
-                                                 PRO: PRO}
+                                                 PRO_SMS: PRO_SMS}
 
 REGISTRATION_SUCCESS_MESSAGE = u"You have successfully signed up with DataWinners!!\n\nLast Step: Activate your account\nWe've sent you an activation email. Please check your Spam folder if you haven't received it.\n\nContact support@datawinners.com if you need help."
 
