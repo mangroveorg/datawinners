@@ -2,10 +2,11 @@
 from django.conf.urls.defaults import patterns, url
 from datawinners.entity.view.all_datasenders import DisassociateDataSendersView
 from datawinners.project.views.change_language import QuestionnaireLanguageView
+from datawinners.project.views.create_questionnaire import create_project
 from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders
 from datawinners.project.views.import_submissions_views import ImportSubmissionView
 
-from datawinners.project.wizard_view import create_project, edit_project, reminder_settings, get_templates, get_template_details
+from datawinners.project.wizard_view import edit_project, reminder_settings, get_templates, get_template_details
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview
 from datawinners.project.views import submission_views
 from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \

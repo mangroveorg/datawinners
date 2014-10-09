@@ -1,4 +1,5 @@
 import json
+from datawinners import settings
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -10,11 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from celery.task import current
-from datawinners.accountmanagement.helper import get_all_user_repids_for_org
 
-from mangrove.datastore.entity_type import get_unique_id_types
-from datawinners import settings
-from datawinners.project import helper
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, \
     EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
@@ -27,11 +24,11 @@ from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.utils import get_changed_questions, get_organization_from_manager, get_organization
-from datawinners.common.constant import CREATED_QUESTIONNAIRE, EDITED_QUESTIONNAIRE, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
+from datawinners.utils import get_changed_questions
+from datawinners.common.constant import EDITED_QUESTIONNAIRE, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
     SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from datawinners.project.helper import is_project_exist, associate_account_users_to_project
+from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
 from mangrove.utils.types import is_empty
 
@@ -103,60 +100,6 @@ def get_template_details(request, template_id):
                         'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 
-
-@login_required
-@session_not_expired
-@csrf_exempt
-@is_not_expired
-def create_project(request):
-    manager = get_database_manager(request.user)
-    ngo_admin = NGOUserProfile.objects.get(user=request.user)
-    active_language = request.LANGUAGE_CODE
-    if request.method == 'GET':
-        cancel_link = reverse('dashboard') if request.GET.get('prev', None) == 'dash' else reverse('alldata_index')
-        return render_to_response('project/create_project.html',
-                                  {'preview_links': get_preview_and_instruction_links(),
-                                   'questionnaire_code': helper.generate_questionnaire_code(manager),
-                                   'is_edit': 'false',
-                                   'active_language':active_language,
-                                   'post_url': reverse(create_project),
-                                   'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in
-                                                       get_unique_id_types(manager)]),
-                                   'cancel_link': cancel_link}, context_instance=RequestContext(request))
-
-    if request.method == 'POST':
-        project_info = json.loads(request.POST['profile_form'])
-
-        try:
-            is_open_survey = get_organization(request).is_pro_sms and request.POST.get('is_open_survey')
-            questionnaire = create_questionnaire(post=request.POST, manager=manager, name=project_info.get('name'),
-                                                 language=project_info.get('language', active_language),
-                                                 reporter_id=ngo_admin.reporter_id,
-                                                 is_open_survey=is_open_survey)
-        except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
-                EntityQuestionAlreadyExistsException) as ex:
-            return HttpResponse(
-                json.dumps({'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}))
-
-        code_has_errors, name_has_errors = False, False
-        error_message = {}
-        if not questionnaire.is_form_code_unique():
-            code_has_errors = True
-            error_message["code"] = _("Questionnaire with same code already exists.")
-        if not questionnaire.is_project_name_unique():
-            name_has_errors = True
-            error_message["name"] = _("Questionnaire with same name already exists.")
-        if not code_has_errors and not name_has_errors:
-            associate_account_users_to_project(manager, questionnaire)
-            questionnaire.update_doc_and_save()
-            UserActivityLog().log(request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
-                                  detail=questionnaire.name)
-            return HttpResponse(json.dumps({'success': True, 'project_id': questionnaire.id}))
-
-        return HttpResponse(json.dumps(
-            {'success': False, 'error_message': error_message,
-             'error_in_project_section': False, 'code_has_errors': code_has_errors,
-             'name_has_errors': name_has_errors}))
 
 def _get_deleted_question_codes(new_codes, old_codes):
     diff = set(old_codes) - set(new_codes)
@@ -236,7 +179,6 @@ def reminder_settings(request, project_id):
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     from datawinners.project.views.views import make_project_links
-    from datawinners.project.utils import make_data_sender_links
 
 
     project_links = make_project_links(questionnaire)
