@@ -465,7 +465,8 @@ def send_email_on_exception(user, error_type, stack_trace, additional_details=No
     email_message += '\nOrganization Details : %s (%s)' % (organization.name, profile.org_id)
     email_message += '\nUser Email Id : %s\n' % user.username
     email_message += '\n%s' % stack_trace
-    email = EmailMessage(subject="[ERROR] %s" % error_type, body=repr(re.sub("\n", "<br/>", email_message)),
+    email = EmailMessage(subject="[ERROR] %s : %s" % (error_type, organization.name),
+                         body=repr(re.sub("\n", "<br/>", email_message)),
                          from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
 
