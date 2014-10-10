@@ -1,4 +1,5 @@
 import json
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -6,12 +7,14 @@ from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _, get_language, activate
 from django.views.generic.base import TemplateView
+
 from datawinners.accountmanagement.decorators import valid_web_user, is_datasender
 from datawinners.accountmanagement.helper import update_user_name_if_exists
 from datawinners.accountmanagement.models import Organization
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SENDER, REGISTERED_DATA_SENDER
 from datawinners.entity.data_sender import get_datasender_user_detail
+from datawinners.entity.datasender_tasks import update_datasender_on_open_submissions
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.helper import _get_data, update_data_sender_from_trial_organization, process_create_data_sender_form
 from datawinners.entity.views import create_single_web_user
@@ -23,13 +26,9 @@ from datawinners.search.submission_index import update_submission_search_for_dat
 from datawinners.submission.location import LocationBridge
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
-from mangrove.form_model.form_model import REPORTER, FormModel
+from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.player.player import WebPlayer
-from datawinners.tasks import app
-import logging
-from mangrove.transport.contract.survey_response import SurveyResponse
-from datawinners.main.database import get_db_manager
 
 
 class EditDataSenderView(TemplateView):
@@ -185,25 +184,7 @@ class RegisterDatasenderView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(RegisterDatasenderView, self).dispatch(*args, **kwargs)
 
-def update_survey_response(dbm, row, reporter_id):
-    survey_response_doc = SurveyResponse.__document_class__.wrap(row['value'])
-    survey_response = SurveyResponse.new_from_doc(dbm=dbm, doc=survey_response_doc)
-    survey_response.is_anonymous_submission = None
-    survey_response.owner_uid = reporter_id
-    survey_response.save()
 
 
-@app.task(max_retries=3, throw=False)
-def update_datasender_on_open_submissions(database_name, reporter_id):
-    logger = logging.getLogger('datawinners.tasks')
-    try:
-        dbm = get_db_manager(database_name)
-        reporter_entity = ReporterEntity(get_by_short_code(dbm, reporter_id, [REPORTER]))
-        rows = dbm.load_all_rows_in_view("anonymous_submissions", key=reporter_entity.mobile_number)
 
-        for row in rows:
-            update_survey_response(dbm, row, reporter_entity.entity.id)
 
-    except Exception as e:
-        logger.exception('Failed for db: %s ,reporter_id: %s' % (database_name, reporter_id))
-        logger.exception(e)
