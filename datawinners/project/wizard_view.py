@@ -91,7 +91,6 @@ def get_templates(request):
 
 @login_required
 def get_template_details(request, template_id):
-    dbm = get_database_manager(request.user)
     library = QuestionnaireLibrary()
     template = library.get_questionnaire_template(template_id)
     template_details = {'template_id': template.id, 'project_name': template.get('name'),

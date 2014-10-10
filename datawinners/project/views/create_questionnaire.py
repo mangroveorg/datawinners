@@ -34,12 +34,12 @@ def create_project(request):
                                    'active_language': request.LANGUAGE_CODE,
                                    'post_url': reverse(create_project),
                                    'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in
-                                                       get_unique_id_types(manager)]),
+                                                                  get_unique_id_types(manager)]),
                                    'cancel_link': cancel_link}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         response_dict = _create_project_post_response(request, manager)
-        HttpResponse(json.dumps(response_dict), content_type="application/json")
+        return HttpResponse(json.dumps(response_dict))
 
 
 def _validate_questionnaire_name_and_code(questionnaire):
@@ -81,7 +81,7 @@ def _create_project_post_response(request, manager):
         return {'success': True, 'project_id': questionnaire.id}
 
     return {'success': False,
-                       'error_message': error_message,
-                       'error_in_project_section': False,
-                       'code_has_errors': code_has_errors,
-                       'name_has_errors': name_has_errors}
+            'error_message': error_message,
+            'error_in_project_section': False,
+            'code_has_errors': code_has_errors,
+            'name_has_errors': name_has_errors}
