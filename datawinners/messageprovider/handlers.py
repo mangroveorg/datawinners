@@ -23,7 +23,7 @@ def data_object_not_found_handler(exception, request):
     return get_exception_message_for(exception=exception, channel=SMS, formatter=data_object_not_found_formatter)
 
 def exceed_limit_handler(exception, request):
-    request.get('organization').increment_message_count_for(sms_registration_count=1)
+    #request.get('organization').increment_message_count_for(sms_registration_count=1)
     return default_exception_handler(exception, request)
 
 def number_not_registered_exception_handler(exception, request):

@@ -169,7 +169,7 @@ def check_account_and_datasender(incoming_request):
     except Exception as e:
         incoming_request['exception'] = e
 
-    if not incoming_request.get('test_sms_questionnaire'):
+    if not incoming_request.get('test_sms_questionnaire') and not incoming_request.has_key('exception'):
         organization.increment_incoming_message_count()
 
     incoming_request['next_state'] = submit_to_player
