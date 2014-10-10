@@ -40,7 +40,7 @@ class PaidAccountRegistrationProcessor(object):
 
     def process(self, user, site, language, kwargs):
         self._make_payment_details(kwargs)
-        #self._send_activation_email(site, user, language)
+        self._send_activation_email(site, user, language)
 
     def _make_payment_details(self, kwargs):
         invoice_period = kwargs['invoice_period']
