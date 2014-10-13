@@ -115,8 +115,8 @@ DW.broadcast_sms.prototype = {
     updateToMenuItem: function () {
         $("#All span").html($("#id_to option[value=All]").attr('number') + " " + gettext("recipient(s)"));
         $("#Associated span").html($("#id_to option[value=Associated]").attr('number') + " " + gettext("recipient(s)"));
-        if ($("#id_to option[value=Unregistered]").length) {
-            $("#Unregistered span").html($("#id_to option[value=Unregistered]").attr('number') + " " + gettext("recipient(s)"));
+        if ($("#id_to option[value=AllSubmitted]").length) {
+            $("#AllSubmitted span").html($("#id_to option[value=AllSubmitted]").attr('number') + " " + gettext("recipient(s)"));
         } else {
             $("#to_list ul li:last-child").hide();
         }

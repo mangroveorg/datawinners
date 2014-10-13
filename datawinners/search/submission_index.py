@@ -384,17 +384,22 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     # Submission value may have capitalized keys in some cases. This conversion is to do
-    #case insensitive lookup.
+    # case insensitive lookup.
     submission_values = OrderedDict((k, v) for k, v in submission_doc.values.iteritems())
     _update_search_dict(dbm, form_model, form_model.fields, search_dict, submission_doc, submission_values)
     return search_dict
 
 
+def get_unregistered_datasenders(dbm, questionnaire_id):
+    facets = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name)\
+            .doctypes(questionnaire_id).filter(void=False).filter(is_anonymous=True)\
+            .facet('ds_name_exact', filtered=True).facet_counts()['ds_name_exact']
+
+    return [facet['term'] for facet in facets]
+
+
 def get_unregistered_datasenders_count(dbm, questionnaire_id):
-    return len(elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT) \
-        .indexes(dbm.database_name).doctypes(questionnaire_id) \
-        .filter(void=False).filter(is_anonymous=True).facet('ds_name_exact', filtered=True).facet_counts()[
-        'ds_name_exact'])
+    return len(get_unregistered_datasenders(dbm, questionnaire_id))
 
 
 def get_non_deleted_submission_count(dbm, questionnaire_id):

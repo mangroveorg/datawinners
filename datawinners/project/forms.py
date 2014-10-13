@@ -32,7 +32,7 @@ class BroadcastMessageForm(forms.Form):
     to = ChoiceField(label=ugettext_lazy("To:"),widget=MySelect(), choices=(("All", ugettext_lazy("All Data Senders")),
                                                          ("Associated", ugettext_lazy("Data Senders associated to my project")),
                                                          ("Additional", ugettext_lazy("Other People")),
-                                                         ("Unregistered", ugettext_lazy("Unregistered"))),initial=("Asossciated"))
+                                                         ("AllSubmitted", ugettext_lazy("AllSubmitted"))),initial=("Asossciated"))
     others = CharField(label=ugettext_lazy("Other People:"), widget=forms.Textarea, required=False)
 
     def __init__(self, associated_ds=0, number_of_ds=0, unregistered_ds=0,*args, **kwargs):
@@ -55,7 +55,7 @@ class OpenDsBroadcastMessageForm(BroadcastMessageForm):
         unregistered_label = u"%s %s" % (ugettext_lazy("All people who submitted data (registered & un-registered)"), str(unregistered_ds))
         self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My registered Data Senders linked to this Questionnaire"), str(associated_ds))),
                                                         ("All", u"%s %s" % (ugettext_lazy("All registered Data Senders of all Questionnaires"), str(number_of_ds))),
-            ("Unregistered" , unregistered_label),
+                                                        ("AllSubmitted" , unregistered_label),
                                                         ("Additional", ugettext_lazy("Other People")))
         
 

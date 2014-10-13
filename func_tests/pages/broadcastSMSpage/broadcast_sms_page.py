@@ -36,4 +36,4 @@ class BroadcastSmsPage(Page):
 
     def is_send_a_message_to_unregistered_present(self):
         self.driver.find(SEND_TO_DDCL).click()
-        return self.driver.find(by_css("ul li a#Unregistered")).is_displayed()
+        return self.driver.find(by_css("ul li a#AllSubmitted")).is_displayed()
