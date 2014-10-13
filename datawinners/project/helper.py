@@ -4,27 +4,27 @@ import re
 from datetime import datetime
 
 from babel.dates import format_date
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
+
 from datawinners import settings
 from datawinners.accountmanagement.helper import get_all_user_repids_for_org
+from datawinners.search.submission_query import SubmissionQueryBuilder
 from datawinners.utils import get_organization_from_manager
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, get_form_model_by_code
-from mangrove.utils.types import  is_sequence, sequence_to_str
+from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.utils.types import is_sequence, sequence_to_str
 from mangrove.transport.repository.survey_responses import get_survey_responses
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.request import Request
-
 from datawinners.accountmanagement.models import NGOUserProfile, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.scheduler.smsclient import SMSClient
 from datawinners.sms.models import MSG_TYPE_USER_MSG
 import models
 from models import Reminder
-from datawinners.search.submission_query import SubmissionQueryBuilder
 
 
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION = "%b. %d, %Y, %I:%M %p"
@@ -58,8 +58,10 @@ def generate_questionnaire_code(dbm):
             break
     return code
 
+
 def get_org_id_by_user(user):
     return NGOUserProfile.objects.get(user=user).org_id
+
 
 def case_insensitive_lookup(search_key, dictionary):
     assert isinstance(dictionary, dict)
@@ -68,9 +70,11 @@ def case_insensitive_lookup(search_key, dictionary):
             return value
     return None
 
+
 def get_values_from_dict(dictionary):
     for key, value in dictionary.items():
         return value
+
 
 def _to_str(value, form_field=None):
     if value is None:
@@ -83,8 +87,10 @@ def _to_str(value, form_field=None):
         return format_date(value, date_format)
     return value
 
+
 def format_dt_for_submission_log_page(survey_response):
     return survey_response.submitted_on.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
+
 
 def get_formatted_time_string(time_val):
     try:
@@ -92,6 +98,7 @@ def get_formatted_time_string(time_val):
     except Exception:
         return None
     return time_val.strftime('%d-%m-%Y %H:%M:%S')
+
 
 def remove_reporter(entity_type_list):
     removable = None
@@ -104,11 +111,13 @@ def remove_reporter(entity_type_list):
 
 
 def get_preview_for_field(field):
-    preview = {"description": field.label, "code": field.code, "type": field.type, "instruction": _get_instruction_text(field)}
-    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else\
-    [(option["text"], option["val"]) for option in field.options]
+    preview = {"description": field.label, "code": field.code, "type": field.type,
+               "instruction": _get_instruction_text(field)}
+    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
+        [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
     return preview
+
 
 def _get_instruction_text(field):
     return field.instruction
@@ -123,14 +132,17 @@ def delete_project(questionnaire):
     questionnaire.reset_reminder_and_deadline()
     questionnaire.void(True)
 
+
 def get_activity_report_questions(dbm):
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q1',
-        label="Period being reported on" ,
-        date_format="dd.mm.yyyy", event_time_field_flag=True)
+                                         label="Period being reported on",
+                                         date_format="dd.mm.yyyy", event_time_field_flag=True)
 
     return [activity_report_question]
 
-def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker, country_code=None):
+
+def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker,
+                      country_code=None):
     """
 
     :param data_senders:
@@ -146,7 +158,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
     failed_numbers = []
     for data_sender in data_senders:
         phone_number = data_sender.get(
-            'mobile_number') #This should not be a dictionary but the API in import_data should be fixed to return entity
+            'mobile_number')  # This should not be a dictionary but the API in import_data should be fixed to return entity
         if phone_number is not None and phone_number != TEST_REPORTER_MOBILE_NUMBER:
             logger.info(("Sending broadcast message to %s from %s") % (phone_number, organization_tel_number))
             sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message, MSG_TYPE_USER_MSG)
@@ -173,7 +185,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
 
 def create_request(questionnaire_form, username, is_update=None):
     return Request(message=questionnaire_form.cleaned_data,
-        transportInfo=get_web_transport_info(username), is_update=is_update, media=[])
+                   transportInfo=get_web_transport_info(username), is_update=is_update, media=[])
 
 
 def _translate_messages(error_dict, fields):
@@ -220,24 +232,25 @@ def is_project_exist(f):
 
 
 def get_feed_dictionary(project):
-        additional_feed_dictionary = {}
-        project_dict = {
-            'id': project.id,
-            'name': project.name,
-            'type': project.entity_type,
-        }
-        additional_feed_dictionary.update({'project': project_dict})
-        return additional_feed_dictionary
+    additional_feed_dictionary = {}
+    project_dict = {
+        'id': project.id,
+        'name': project.name,
+        'type': project.entity_type,
+    }
+    additional_feed_dictionary.update({'project': project_dict})
+    return additional_feed_dictionary
 
 
 def get_web_transport_info(username):
-        return TransportInfo(transport="web", source=username, destination="")
+    return TransportInfo(transport="web", source=username, destination="")
 
 
-def associate_account_users_to_project(manager,questionnaire):
+def associate_account_users_to_project(manager, questionnaire):
     user_ids = get_all_user_repids_for_org(get_organization_from_manager(manager).org_id)
-    #for id in user_ids:
+    # for id in user_ids:
     questionnaire.associate_data_sender_to_project(manager, user_ids)
+
 
 def get_unregistered_datasenders(dbm, form_code):
     form_model = get_form_model_by_code(dbm, form_code)
@@ -245,7 +258,6 @@ def get_unregistered_datasenders(dbm, form_code):
     registered_datasender = []
     for datasender in datasenders:
         registered_datasender.append(datasender.get('mobile_number'))
-
 
     query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, form_model.id)
     unregistered_number = []

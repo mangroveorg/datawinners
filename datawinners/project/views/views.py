@@ -18,7 +18,8 @@ from datawinners.common.authorization import is_data_sender
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
-from datawinners.search.submission_index import update_submission_search_for_subject_edition
+from datawinners.search.submission_index import update_submission_search_for_subject_edition, \
+    get_unregistered_datasenders_count, get_non_deleted_submission_count
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.datastore.queries import get_entity_count_for_type
@@ -142,15 +143,16 @@ def project_overview(request, project_id):
     open_survey_questionnaire= questionnaire.is_open_survey
     is_pro_sms = _is_pro_sms(request)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
+
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
+
     number_of_questions = len(questionnaire.fields)
-    questionnaire_id = questionnaire.id
     project_links = make_project_links(questionnaire)
     map_api_key = get_map_key(request.META['HTTP_HOST'])
     number_data_sender = len(questionnaire.data_senders)
-    number_unregistered_data_sender = len(get_unregistered_datasenders(manager, questionnaire.form_code))
-    number_records = survey_response_count(manager, questionnaire_id, None, None)
+    number_unregistered_data_sender = get_unregistered_datasenders_count(manager, questionnaire.id)
+    number_records = get_non_deleted_submission_count(manager, questionnaire.id)
     number_reminders = Reminder.objects.filter(project_id=questionnaire.id).count()
     links = {'registered_data_senders': reverse("registered_datasenders", args=[project_id]),
              'web_questionnaire_list': reverse('web_questionnaire', args=[project_id])}

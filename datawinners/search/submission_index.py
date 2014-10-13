@@ -4,10 +4,12 @@ from collections import OrderedDict
 from string import lower
 
 from babel.dates import format_datetime
+import elasticutils
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
 
 from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, \
     convert_choice_options_to_options_text
+from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
 from mangrove.form_model.field import DateField, UniqueIdField, SelectField, FieldSet
@@ -19,7 +21,7 @@ from datawinners.search.index_utils import get_elasticsearch_handle, get_field_d
     es_unique_id_code_field_name, \
     es_questionnaire_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
-from mangrove.form_model.form_model import  FormModel
+from mangrove.form_model.form_model import FormModel
 
 
 logger = logging.getLogger("datawinners")
@@ -210,7 +212,7 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
 
 def update_submission_search_index(submission_doc, dbm, refresh_index=True):
     es = get_elasticsearch_handle()
-    form_model = FormModel.get(dbm,submission_doc.form_model_id)
+    form_model = FormModel.get(dbm, submission_doc.form_model_id)
     search_dict = _meta_fields(submission_doc, dbm)
     _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
     es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
@@ -259,7 +261,7 @@ def lookup_entity_name(dbm, id, entity_type):
     return " "
 
 
-#TODO:This is required only for the migration for creating submission indexes.To be removed following release10
+# TODO:This is required only for the migration for creating submission indexes.To be removed following release10
 def _get_select_field_by_revision(field, form_model, submission_doc):
     field_by_revision = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
     return field_by_revision if field_by_revision else field
@@ -369,7 +371,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                     for value in submission_values[field_code]:
                         _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value,
                                             field.code)
-                else: 
+                else:
                     _update_repeat_fields_with_choice_values(entry, field)
                     search_dict.update(
                         {es_questionnaire_field_name(field_code, form_model.id, parent_field_name): json.dumps(entry)})
@@ -380,12 +382,22 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
     search_dict.update({'is_anonymous': submission_doc.is_anonymous_submission})
 
 
-
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
-    #Submission value may have capitalized keys in some cases. This conversion is to do
+    # Submission value may have capitalized keys in some cases. This conversion is to do
     #case insensitive lookup.
     submission_values = OrderedDict((k, v) for k, v in submission_doc.values.iteritems())
     _update_search_dict(dbm, form_model, form_model.fields, search_dict, submission_doc, submission_values)
     return search_dict
 
 
+def get_unregistered_datasenders_count(dbm, questionnaire_id):
+    return len(elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT) \
+        .indexes(dbm.database_name).doctypes(questionnaire_id) \
+        .filter(void=False).filter(is_anonymous=True).facet('ds_name_exact', filtered=True).facet_counts()[
+        'ds_name_exact'])
+
+
+def get_non_deleted_submission_count(dbm, questionnaire_id):
+    return elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT) \
+        .indexes(dbm.database_name).doctypes(questionnaire_id) \
+        .filter(void=False).count()
