@@ -568,7 +568,7 @@ def get_stats(request, form_code):
 
 
 def create_statistics_response(facet_results, form_model):
-    analysis_response = {}
+    analysis_response = OrderedDict()
     for facet_result in facet_results:
         field_code = get_code_from_es_field_name(facet_result['es_field_name'], form_model.id)
         field = form_model.get_field_by_code(field_code)
