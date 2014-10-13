@@ -37,9 +37,8 @@ class PostSMSProcessorCheckDSIsRegistered(object):
 
     def process(self, form_code, submission_values):
         form_model = get_form_model_by_code(self.dbm, form_code)
-        project = Project.from_form_model(form_model=form_model)
         exception = self.request.get('exception')
-        if exception and isinstance(exception, NumberNotRegisteredException) and not project.is_open_survey:
+        if exception and isinstance(exception, NumberNotRegisteredException) and not form_model.is_open_survey:
            return self._get_response()
 
 

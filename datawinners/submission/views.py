@@ -13,6 +13,7 @@ from datawinners.messageprovider.handlers import create_failure_log, incorrect_n
     incorrect_number_of_answers_for_uid_registration_handler
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
+from datawinners.sms_utils import log_sms
 from mangrove.transport.contract.request import Request
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, \
     FormModelDoesNotExistsException
@@ -166,22 +167,24 @@ def check_account_and_datasender(incoming_request):
         incoming_request['reporter_entity'] = reporter_entity
         if organization.in_trial_mode:
             check_quotas_for_trial(organization)
+
+    except ExceedSMSLimitException as e:
+        return post_player_handler(incoming_request, e.message)
+
     except Exception as e:
         incoming_request['exception'] = e
-
-    if not incoming_request.get('test_sms_questionnaire') and not incoming_request.has_key('exception'):
-        organization.increment_incoming_message_count()
 
     incoming_request['next_state'] = submit_to_player
     return incoming_request
 
 
 def check_quotas_for_trial(organization):
+    if organization.has_exceeded_message_limit():
+        raise ExceedSMSLimitException()
+
     if organization.has_exceeded_submission_limit():
         raise ExceedSubmissionLimitException()
 
-    if organization.has_exceeded_message_limit():
-        raise ExceedSMSLimitException()
 
 
 def check_quotas_and_update_users(organization, sms_channel=False):
@@ -199,6 +202,25 @@ def check_quotas_and_update_users(organization, sms_channel=False):
 def send_message(incoming_request, response):
     ReportRouter().route(incoming_request['organization'].org_id, response)
 
+
+def post_player_handler(incoming_request, message):
+    transport_info = incoming_request['transport_info']
+    organization = incoming_request['organization']
+    message = incoming_request.get('error_message', message)
+    is_outgoing_reply_sms_enabled = incoming_request.get('is_outgoing_reply_sms_enabled', True)
+    incoming_request['outgoing_message'] = message if is_outgoing_reply_sms_enabled else ""
+
+    if not incoming_request.get('test_sms_questionnaire', False):
+        if is_outgoing_reply_sms_enabled:
+            organization.increment_message_count_for(outgoing_sms_count=1)
+        log_sms(message=message,
+                message_id=incoming_request['message_id'],
+                organization=incoming_request['organization'],
+                from_tel=transport_info.destination,
+                to_tel=transport_info.source,
+                transport_name="",
+                message_type=MSG_TYPE_SUBMISSION_REPLY)
+    return incoming_request
 
 def submit_to_player(incoming_request):
     sent_via_sms_test_questionnaire = incoming_request.get('test_sms_questionnaire', False)
@@ -230,8 +252,7 @@ def submit_to_player(incoming_request):
             incoming_request['is_registration'] = True
             if not sent_via_sms_test_questionnaire:
                 organization.increment_message_count_for(sms_registration_count=1)
-
-        if not response.is_registration:
+        else:
             if sent_via_sms_test_questionnaire:
                 organization.increment_message_count_for(incoming_web_count=1)
             check_quotas_and_update_users(organization, sms_channel=True)
@@ -266,30 +287,15 @@ def submit_to_player(incoming_request):
         elif not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
 
+    except ExceedSubmissionLimitException as exception:
+        message = handle(exception, incoming_request)
+
     except Exception as exception:
         if sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(incoming_web_count=1)
         message = handle(exception, incoming_request)
 
-    message = incoming_request.get('error_message', message)
-    incoming_request['outgoing_message'] = message if incoming_request.get('is_outgoing_reply_sms_enabled',
-                                                                           True) else ""
-
-    if not sent_via_sms_test_questionnaire:
-
-        if incoming_request.get('is_outgoing_reply_sms_enabled', True):
-            organization.increment_message_count_for(outgoing_sms_count=1)
-
-        SMS(message=message,
-            message_id=incoming_request['message_id'],
-            organization=incoming_request['organization'],
-            msg_from=mangrove_request.transport.destination,
-            msg_to=mangrove_request.transport.source,
-            msg_type=MSG_TYPE_SUBMISSION_REPLY,
-            status="Submitted").save()
-
-    return incoming_request
-
+    return post_player_handler(incoming_request, message)
 
 def _get_organization(request):
     _from, _to = _get_from_and_to_numbers(request)

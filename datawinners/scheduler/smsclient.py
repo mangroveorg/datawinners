@@ -1,32 +1,24 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
 from urllib2 import URLError
-import uuid
-from django.conf import settings
 import logging
+import socket
+
+from django.conf import settings
+
 from datawinners.scheduler.vumiclient import VumiClient, Connection, VumiInvalidDestinationNumberException
-from datawinners.sms.models import SMS, MSG_TYPE_REMINDER
+from datawinners.sms.models import MSG_TYPE_REMINDER
+from datawinners.sms_utils import log_sms
 from datawinners.submission.organization_finder import OrganizationFinder
 from mangrove.utils.types import is_not_empty
 from datawinners.utils import strip_accents
-import socket
+
 
 logger = logging.getLogger("datawinners.reminders")
 
 
 class NoSMSCException(Exception):
     pass
-
-
-def log_sms(to_tel, from_tel, message, organization, message_id, transport_name, message_type):
-    SMS(message= message,
-        message_id=message_id,
-        organization=organization,
-        msg_from = from_tel,
-        msg_to= to_tel,
-        smsc = transport_name,
-        msg_type = message_type,
-        status="Submitted").save()
 
 
 class SMSClient(object):

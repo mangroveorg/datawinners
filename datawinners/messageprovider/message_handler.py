@@ -19,9 +19,6 @@ def default_formatter(exception, message):
 def data_object_not_found_formatter(exception, message):
     return message % (exception.data[1])
 
-def data_object_not_found_formatter(exception, message):
-    return message % (exception.data[1])
-
 
 def get_exception_message_for(exception, channel=None, formatter=default_formatter):
     ex_type = type(exception)
