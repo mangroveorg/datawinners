@@ -44,6 +44,6 @@ CRS_ORG_ID = 'JHW14178'
 FEEDS_ENABLED=True
 MAX_FEED_ENTRIES=10000
 
-VUMI_API_URL = "http://localhost:2020"
+VUMI_API_URL = "http://localhost/smstester/vumi-stub"
 
 GOOGLE_MAPS_ENABLED = True

@@ -192,6 +192,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'kombu.transport.django',
     'celery',
+    'datawinners.smstester',
 )
 
 WAYBILL_SENT_QUESTIONNAIRE_CODE = 'way1'

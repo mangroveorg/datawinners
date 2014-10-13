@@ -1,14 +1,17 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import json
 import uuid
 from atom.http_core import HttpRequest
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.views.decorators.csrf import csrf_exempt
 from datawinners.smstester.forms import SMSTesterForm
+from datawinners.smstester.models import OutgoingMessage
 from mangrove.errors.MangroveException import MangroveException
 from datawinners.submission.views import sms
-
+from django.http import HttpResponse
 
 def index(request):
     message = ""
@@ -36,3 +39,10 @@ def index(request):
     return render_to_response('smstester/index.html',
             {'form': form, 'message': message}, context_instance=RequestContext(request))
 
+@csrf_exempt
+def vumi_stub(request):
+    message = OutgoingMessage(from_msisdn=request.POST['from_msisdn'], to_msisdn=request.POST['to_msisdn'],
+                              message=request.POST['message'])
+    message.save()
+
+    return HttpResponse(status=201, content=json.dumps([{'id': message.id}]), content_type='application/json')
