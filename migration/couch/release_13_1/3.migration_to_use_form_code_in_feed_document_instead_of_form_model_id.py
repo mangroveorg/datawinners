@@ -28,7 +28,7 @@ def make_feed_document_use_form_code_instead_of_form_model_id(db_name):
                 try:
                     enriched_survey_response = EnrichedSurveyResponseDocument.wrap(feed.doc)
                     enriched_survey_response.form_code = questionnaire['value']['form_code']
-                    feed_dbm._save_document(enriched_survey_response)
+                    feed_dbm._save_document(enriched_survey_response, modified=enriched_survey_response.modified)
                 except Exception as e:
                     logger.exception("failed for feed:"+feed.id)
         except Exception as e:
