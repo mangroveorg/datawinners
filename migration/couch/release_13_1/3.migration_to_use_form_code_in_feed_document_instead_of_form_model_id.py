@@ -2,7 +2,7 @@ import logging
 from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import EnrichedSurveyResponseDocument
-from migration.couch.utils import migrate
+from migration.couch.utils import migrate, mark_as_completed
 
 db_names = [
     "hni_psi-madagascar_qmx864597",
@@ -33,5 +33,6 @@ def make_feed_document_use_form_code_instead_of_form_model_id(db_name):
                     logger.exception("failed for feed:"+feed.id)
         except Exception as e:
             logger.exception("failed for questionnaire:"+questionnaire.id)
+    mark_as_completed(db_name)
 
 migrate(db_names, make_feed_document_use_form_code_instead_of_form_model_id, version=(13, 1, 3), threads=3)
