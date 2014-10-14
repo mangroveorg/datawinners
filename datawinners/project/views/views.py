@@ -19,6 +19,7 @@ from datawinners.common.authorization import is_data_sender
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
+from datawinners.project.send_message import get_data_sender_phone_numbers
 from datawinners.search.submission_index import update_submission_search_for_subject_edition, \
     get_unregistered_datasenders_count, get_non_deleted_submission_count, get_unregistered_datasenders
 from mangrove.datastore.entity import get_by_short_code
@@ -305,16 +306,16 @@ def broadcast_message(request, project_id):
                           unregistered_ds=unregistered_with_linked, data=request.POST)
         if form.is_valid():
             no_smsc = False
-            data_senders = _get_data_senders(dbm, form, questionnaire)
+            # data_senders = _get_data_senders(dbm, for m, questionnaire)
+            data_sender_phone_numbers = get_data_sender_phone_numbers(dbm, questionnaire, form)
             organization_setting = OrganizationSetting.objects.get(organization=organization)
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
-            other_numbers.extend(unregistered_ds)
-
+            # other_numbers.extend(unregistered_ds)
             failed_numbers = []
             try:
-                failed_numbers = helper.broadcast_message(data_senders, form.cleaned_data['text'],
+                failed_numbers = helper.broadcast_message(data_sender_phone_numbers, form.cleaned_data['text'],
                                                           organization_setting.get_organisation_sms_number()[0],
                                                           other_numbers,
                                                           message_tracker,

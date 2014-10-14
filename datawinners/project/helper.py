@@ -141,11 +141,11 @@ def get_activity_report_questions(dbm):
     return [activity_report_question]
 
 
-def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker,
+def broadcast_message(data_sender_phone_numbers, message, organization_tel_number, other_numbers, message_tracker,
                       country_code=None):
     """
 
-    :param data_senders:
+    :param data_sender_phone_numbers:
     :param message:
     :param organization_tel_number:
     :param other_numbers:
@@ -156,9 +156,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
     sms_client = SMSClient()
     sms_sent = None
     failed_numbers = []
-    for data_sender in data_senders:
-        phone_number = data_sender.get(
-            'mobile_number')  # This should not be a dictionary but the API in import_data should be fixed to return entity
+    for phone_number in data_sender_phone_numbers:
         if phone_number is not None and phone_number != TEST_REPORTER_MOBILE_NUMBER:
             logger.info(("Sending broadcast message to %s from %s") % (phone_number, organization_tel_number))
             sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message, MSG_TYPE_USER_MSG)
