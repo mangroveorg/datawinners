@@ -113,7 +113,6 @@ class TestFeeds(HeadlessRunnerTest):
                                  '\d{4}-\d{2}-\d{2}\W\d{2}:\d{2}:\d{2}\.\d{6}\+\d{2}\:\d{2}')
         self.assertEquals(feed_entry['status'], status)
 
-    @SkipTest
     @attr('functional_test')
     def test_feeds(self):
         start_date = self._get_encoded_date()
@@ -137,7 +136,9 @@ class TestFeeds(HeadlessRunnerTest):
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list))
         feed_entry = response_list[-1]
-        expected_data = {'q2': {'deleted': False, 'id': 'wp01', 'name': 'Test'}, 'q3': '5.0', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
+        #expected_data = {'q2': {'deleted': False, 'id': 'wp01', 'name': 'Test'}, 'q3': '5.0', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
+        #                 'q6': 'admin', 'q8': '12.0,12.0'}
+        expected_data = {'q2':'wp01', 'q3': '5.0', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
                          'q6': 'admin', 'q8': '12.0,12.0'}
         rep_id = "rep276"
         status = "success"
@@ -149,7 +150,10 @@ class TestFeeds(HeadlessRunnerTest):
         edited_response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(edited_response_list))
         edited_feed_entry = edited_response_list[-1]
-        expected_data_after_edit = {"q3": "8.0", "q2": {"deleted": False, "id": "wp01", "name": "Test"},
+        #expected_data_after_edit = {"q3": "8.0", "q2": {"deleted": False, "id": "wp01", "name": "Test"},
+        #                            "q5": ["b"], "q4": "24.12.2012",  "q7": ["a", "b"], "q6": "admin1",
+        #                            "q8": "-18,27"}
+        expected_data_after_edit = {"q3": "8.0", "q2": "wp01",
                                     "q5": ["b"], "q4": "24.12.2012",  "q7": ["a", "b"], "q6": "admin1",
                                     "q8": "-18,27"}
         self.assert_feed_values(edited_feed_entry, expected_data_after_edit, rep_id, status)
@@ -160,7 +164,10 @@ class TestFeeds(HeadlessRunnerTest):
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]
-        expected_data_after_delete = {'q2': {"deleted": False, "id": "wp01", "name": "Test"}, 'q3': '8.0', 'q5': ['b'], 'q4': '24.12.2012',
+        #expected_data_after_delete = {'q2': {"deleted": False, "id": "wp01", "name": "Test"}, 'q3': '8.0', 'q5': ['b'], 'q4': '24.12.2012',
+        #                              'q7': ['a', 'b'],
+        #                              'q6': 'admin1', 'q8': '-18,27'}
+        expected_data_after_delete = {'q2': "wp01", 'q3': '8.0', 'q5': ['b'], 'q4': '24.12.2012',
                                       'q7': ['a', 'b'],
                                       'q6': 'admin1', 'q8': '-18,27'}
         status = "deleted"
