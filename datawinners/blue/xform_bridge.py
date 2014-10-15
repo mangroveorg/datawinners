@@ -254,8 +254,8 @@ class XlsFormParser():
         return 'dd.mm.yyyy'
 
     def _field(self, field, parent_field_code=None):
-        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', 'calculate': 'integer'}
-        help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', 'calculate': 'number'}
+        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', 'calculate': 'text'}
+        help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', 'calculate': 'calculated field'}
         name = self._get_label(field)
         code = field['name']
         type = field['type']
