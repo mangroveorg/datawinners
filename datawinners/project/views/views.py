@@ -286,8 +286,7 @@ def broadcast_message(request, project_id):
     unregistered_with_linked = len(unregistered_ds) + number_associated_ds
 
     account_type = organization.account_type
-    if (account_type == 'Pro'):
-        account_type = True
+    account_type = True if account_type == 'Pro' else False
 
     if request.method == 'GET':
         form = form_class(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
