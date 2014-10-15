@@ -1,28 +1,26 @@
 from datetime import datetime
-import os
 import time
-import unittest
 import urllib2
-from django.utils.unittest.case import SkipTest
+
 import jsonpickle
 from nose.plugins.attrib import attr
 import requests
-from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
+
+from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.common_utils import by_css, by_xpath
 from framework.utils.data_fetcher import fetch_, from_
-from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.dashboardpage.dashboard_page import DashboardPage
-from pages.loginpage.login_page import LoginPage, login
+from pages.loginpage.login_page import login
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON, DELETE_BUTTON
 from pages.warningdialog.warning_dialog import WarningDialog
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, get_test_port, get_target_test_host, \
+from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, get_test_port, get_target_test_host, \
     get_target_test_scheme
 from tests.projects.questionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, WATERPOINT_PROJECT_DATA
-from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import MESSAGE
 from tests.submissionlogtests.edit_survey_response_data import ANSWERS_TO_BE_SUBMITTED, EDITED_ANSWERS, get_errorred_sms_data_with_questionnaire_code
+
 
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
 
@@ -32,7 +30,7 @@ def sleep_until(f, timeout):
         if f():
             break
         else:
-            time.sleep(1000)
+            time.sleep(10)
 
 
 class TestFeeds(HeadlessRunnerTest):
@@ -121,7 +119,7 @@ class TestFeeds(HeadlessRunnerTest):
 
         self._submit_errorred_data(questionnaire_code)
         end_date = self._get_encoded_date()
-        sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) > 0, 30)
+        # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) > 0, 30)
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(1, len(response_list))
         feed_entry = response_list[-1]
@@ -132,7 +130,7 @@ class TestFeeds(HeadlessRunnerTest):
 
         self._submit_success_data(project_name)
         end_date = self._get_encoded_date()
-        sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
+        # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list))
         feed_entry = response_list[-1]
@@ -146,7 +144,7 @@ class TestFeeds(HeadlessRunnerTest):
 
         self._edit_data()
         end_date = self._get_encoded_date()
-        sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
+        # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         edited_response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(edited_response_list))
         edited_feed_entry = edited_response_list[-1]
@@ -160,7 +158,7 @@ class TestFeeds(HeadlessRunnerTest):
 
         self.delete_submission()
         end_date = self._get_encoded_date()
-        sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
+        # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]
