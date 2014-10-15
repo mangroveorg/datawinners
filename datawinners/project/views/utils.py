@@ -3,6 +3,7 @@ from mangrove.form_model.field import SelectField
 
 from datawinners.entity.import_data import get_entity_type_info
 from datawinners.project.utils import make_project_links
+from django.utils.translation import ugettext_lazy as _
 
 
 def get_form_context(questionnaire, survey_response_form, manager, hide_link_class, disable_link_class,entity_type=None, is_update=False):
@@ -14,7 +15,7 @@ def get_form_context(questionnaire, survey_response_form, manager, hide_link_cla
         error_message = survey_response_form.errors.get("dsid")[0]
 
     if not error_message and survey_response_form.data.get("dsid") == "N/A":
-       error_message = "This DS is not registered"
+       error_message = _("This Data Sender is not registered")
 
     form_context.update({'datasender_error_message': error_message})
 

@@ -4765,3 +4765,6 @@ msgstr ""
 
 msgid "Which registered Data Sender sent you this Submission?"
 msgstr ""
+
+msgid "This Data Sender is not registered"
+msgstr ""
