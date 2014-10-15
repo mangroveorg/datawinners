@@ -9,18 +9,29 @@
         <div class="line"></div>
         {% if is_pro_sms and not open_datasender_questionnaire %}
         <div class="w_content">
-            {% if project.entity_type %}
-                <div class="gray_text">{% trans "Just three more steps..." %} </div>
+            {% if project.is_open_survey %}
+                {% if project.entity_type %}
+                    <div class="gray_text">{% trans "Just two more steps..." %} </div>
+                {% else %}
+                    <div class="gray_text">{% trans "Just one more step..." %} </div>
+                {% endif %}
             {% else %}
-                <div class="gray_text">{% trans "Just two more steps..." %} </div>
+                {% if project.entity_type %}
+                    <div class="gray_text">{% trans "Just three more steps..." %} </div>
+                {% else %}
+                    <div class="gray_text">{% trans "Just two more step..." %} </div>
+                {% endif %}
             {% endif %}
+
             <ul class="bulleted">
+                {% if not project.is_open_survey %}
                 <li><a id="datasenders_edit_link"
                        href="{{ project_links.register_datasenders_link }}">{% trans "Add data senders" %} </a>
                     <span class="italic_grey">{% trans "required" %}</span>
 
                     <p class="black_italic">{% trans "Register each Data Sender (e.g. field staff) to enable them to send data into your Questionnaire." %} </p>
                 </li>
+                {% endif %}
                 {% if project.entity_type %}
                     {% if has_multiple_unique_id %}
                          <li><a href="{{ project_links.subjects_link }}">{% trans "Add new Identification Numbers" %} </a>
