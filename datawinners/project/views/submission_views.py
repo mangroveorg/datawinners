@@ -226,7 +226,7 @@ def build_static_info_context(manager, survey_response, ui_model=None, questionn
     form_ui_model = OrderedDict() if ui_model is None else ui_model
     sender_name, sender_id =  get_data_sender(manager, survey_response)[:2]
     if sender_id == 'N/A':
-        static_content = {'Data sender': survey_response.created_by}
+        static_content = {'Data Sender': (survey_response.created_by, '')}
     else:
         static_content = {'Data Sender': (sender_name, sender_id)}
     static_content.update({'Source': capitalize(
@@ -303,7 +303,7 @@ def edit(request, project_id, survey_response_id, tab=0):
                               "is_linked": is_linked,
                               "reporter_name": reporter_name})
 
-        if not survey_response_form.is_valid():
+        if not survey_response_form.is_valid() or survey_response.is_anonymous_submission:
             error_message = _("Please check your answers below for errors.")
             form_ui_model.update({'error_message': error_message,
                                   "reporter_id": reporter_id,

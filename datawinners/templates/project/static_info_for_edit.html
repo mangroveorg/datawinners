@@ -7,7 +7,10 @@
                 {% if header == 'Data Sender' %}
                     <text class='ds_id'>{{ value.0 }}</text>
                     <text class='datasender'>{{ value.1 }}</text>
-                    <a id="change_ds_link" class="margin_left_10">{% trans "Change" %}</a><br/>
+                    {% if value.1 != "" %}
+                        <a id="change_ds_link" class="margin_left_10">{% trans "Change" %}
+                    {% endif %}</a>
+                    </br>
                     {% if datasender_error_message %}
                         <span class="font_color_red datasender_error_message">{{ datasender_error_message }}</span>
                     {% endif %}
