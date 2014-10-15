@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 import urllib2
 
@@ -15,11 +15,14 @@ from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON, DELETE_BUTTON
 from pages.warningdialog.warning_dialog import WarningDialog
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, get_test_port, get_target_test_host, \
+from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, get_test_port, \
+    get_target_test_host, \
     get_target_test_scheme
-from tests.projects.questionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, WATERPOINT_PROJECT_DATA
+from tests.projects.questionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, \
+    WATERPOINT_PROJECT_DATA
 from tests.smstestertests.sms_tester_data import MESSAGE
-from tests.submissionlogtests.edit_survey_response_data import ANSWERS_TO_BE_SUBMITTED, EDITED_ANSWERS, get_errorred_sms_data_with_questionnaire_code
+from tests.submissionlogtests.edit_survey_response_data import ANSWERS_TO_BE_SUBMITTED, EDITED_ANSWERS, \
+    get_errorred_sms_data_with_questionnaire_code
 
 
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
@@ -49,7 +52,7 @@ class TestFeeds(HeadlessRunnerTest):
         cls.dashboard_page = DashboardPage(cls.driver)
         create_questionnaire_options_page = cls.dashboard_page.navigate_to_create_project_page()
         create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
-        create_questionnaire_page.create_questionnaire_with(WATERPOINT_PROJECT_DATA,WATERPOINT_QUESTIONNAIRE_DATA)
+        create_questionnaire_page.create_questionnaire_with(WATERPOINT_PROJECT_DATA, WATERPOINT_QUESTIONNAIRE_DATA)
         return create_questionnaire_page.save_and_create_project_successfully()
 
     def _submit_success_data(self, project_name):
@@ -70,16 +73,21 @@ class TestFeeds(HeadlessRunnerTest):
         submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
         submission_page = WebSubmissionPage(self.driver)
         submission_page.fill_and_submit_answer(EDITED_ANSWERS)
-        self.assertEqual(submission_page.get_success_message(), "Your changes have been saved.", "Edit of web submission failed")
+        self.assertEqual(submission_page.get_success_message(), "Your changes have been saved.",
+                         "Edit of web submission failed")
 
-    def _get_encoded_date(self):
+    def _get_encoded_date(self, add_time_delta=False):
         date = datetime.utcnow()
+        if add_time_delta:
+            date = date + timedelta(seconds=1)
+        else:
+            date = date + timedelta(seconds=-1)
         date = urllib2.quote(date.strftime(DATE_FORMAT).encode("utf-8"))
         return date
 
     def get_feed_response(self, questionnaire_code, start_date, end_date):
-        url = get_target_test_scheme() + "://" + get_target_test_host() +":" + get_test_port() + "/feeds/" + questionnaire_code + "?start_date=" + start_date + "&end_date=" + end_date
-        actual_data = requests.get(url, auth=('tester150411@gmail.com', 'tester150411' ))
+        url = get_target_test_scheme() + "://" + get_target_test_host() + ":" + get_test_port() + "/feeds/" + questionnaire_code + "?start_date=" + start_date + "&end_date=" + end_date
+        actual_data = requests.get(url, auth=('tester150411@gmail.com', 'tester150411'))
         response_list = jsonpickle.decode(actual_data.content)
         return response_list
 
@@ -94,9 +102,9 @@ class TestFeeds(HeadlessRunnerTest):
     def delete_submission(self):
         analysis_page = self.project_overview_page.navigate_to_data_page()
         submission_log_page = analysis_page.navigate_to_all_data_record_page()
-        self.driver.wait_until_element_is_not_present(20, by_css("loading")) #wait for table to load
+        self.driver.wait_until_element_is_not_present(20, by_css("loading"))  # wait for table to load
         self.driver.find(by_xpath("//table[@class='submission_table']//td[text()='admin1']/../td/input")).click()
-        #submission_log_page.check_submission_by_row_number(1)
+        # submission_log_page.check_submission_by_row_number(1)
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
@@ -118,32 +126,33 @@ class TestFeeds(HeadlessRunnerTest):
         project_name = self.project_overview_page.get_project_title()
 
         self._submit_errorred_data(questionnaire_code)
-        end_date = self._get_encoded_date()
+        end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) > 0, 30)
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(1, len(response_list))
         feed_entry = response_list[-1]
-        expected_data = {'q3': '5', 'q2': 'wp01', 'q5': 'a', 'q4': '25.12.2010', 'q7': 'f', 'q6': 'admin', 'q8': '12,12'}
+        expected_data = {'q3': '5', 'q2': 'wp01', 'q5': 'a', 'q4': '25.12.2010', 'q7': 'f', 'q6': 'admin',
+                         'q8': '12,12'}
         status = "error"
         reporter_id = "rep276"
         self.assert_feed_values(feed_entry, expected_data, reporter_id, status)
 
         self._submit_success_data(project_name)
-        end_date = self._get_encoded_date()
+        end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list))
         feed_entry = response_list[-1]
-        #expected_data = {'q2': {'deleted': False, 'id': 'wp01', 'name': 'Test'}, 'q3': '5.0', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
+        # expected_data = {'q2': {'deleted': False, 'id': 'wp01', 'name': 'Test'}, 'q3': '5.0', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
         #                 'q6': 'admin', 'q8': '12.0,12.0'}
-        expected_data = {'q2':'wp01', 'q3': '5.0', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
+        expected_data = {'q2': 'wp01', 'q3': '5.0', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
                          'q6': 'admin', 'q8': '12.0,12.0'}
         rep_id = "rep276"
         status = "success"
         self.assert_feed_values(feed_entry, expected_data, rep_id, status)
 
         self._edit_data()
-        end_date = self._get_encoded_date()
+        end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         edited_response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(edited_response_list))
@@ -152,12 +161,12 @@ class TestFeeds(HeadlessRunnerTest):
         #                            "q5": ["b"], "q4": "24.12.2012",  "q7": ["a", "b"], "q6": "admin1",
         #                            "q8": "-18,27"}
         expected_data_after_edit = {"q3": "8.0", "q2": "wp01",
-                                    "q5": ["b"], "q4": "24.12.2012",  "q7": ["a", "b"], "q6": "admin1",
+                                    "q5": ["b"], "q4": "24.12.2012", "q7": ["a", "b"], "q6": "admin1",
                                     "q8": "-18,27"}
         self.assert_feed_values(edited_feed_entry, expected_data_after_edit, rep_id, status)
 
         self.delete_submission()
-        end_date = self._get_encoded_date()
+        end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list_after_delete))
