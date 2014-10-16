@@ -118,9 +118,14 @@ class QuestionBuilder(object):
 
     def _create_text_question(self, post_dict, code):
         constraints = self._add_text_length_constraint(post_dict)
-        return TextField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
+        return TextField(name=self._get_name(post_dict),
+                         code=code,
+                         label=post_dict["title"],
                          constraints=constraints,
-                         instruction=post_dict.get("instruction"), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
+                         instruction=post_dict.get("instruction"),
+                         required=post_dict.get("required"),
+                         parent_field_code=post_dict.get('parent_field_code'),
+                         is_calculated=post_dict.get('is_calculated'))
 
 
     def _create_integer_question(self, post_dict, code):

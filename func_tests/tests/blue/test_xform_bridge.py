@@ -129,7 +129,7 @@ class TestXFormBridge(unittest.TestCase):
                           'required': False}], 'is_entity_question': False, 'type': 'field_set', 'fieldset_type': 'group', 'required': False},
 
              {'code': 'location', 'parent_field_code': None, 'name': 'Your location?', 'title': 'Your location?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a geopoint', 'type': 'geocode'},
-             {'code': 'add_age_height', 'parent_field_code': None, 'name': 'Age and height', 'title': 'Age and height', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a calculated field', 'type': 'text'},
+             {'code': 'add_age_height', 'parent_field_code': None, 'name': 'Age and height', 'title': 'Age and height', 'required': False, 'is_calculated': True, 'is_entity_question': False, 'instruction': 'Answer must be a calculated field', 'type': 'text'},
              {'code': 'ab','parent_field_code': None, 'title': 'A or B?', 'required': True,
                 'choices': [{'value':{'text': 'A', 'val': 'a'}}, {'value':{'text': 'B', 'val': 'b'}}], 'is_entity_question': False, 'type': 'select1'}]
 
