@@ -43,6 +43,11 @@
 
 {% load i18n %}
 {% block content %}
+    {% if deleted_subject_error_message %}
+        {% for message in deleted_subject_error_message %}
+                <div class="{{ message.tags }}-message-box message-box clear-left">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
     <div id="subject_create_type_link">
         <a id="add_new_subject_type" href="javascript:void(0);">{% trans "Add a New Identification Number Type" %}</a>
     </div>

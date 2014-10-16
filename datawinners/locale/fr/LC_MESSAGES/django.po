@@ -4658,8 +4658,8 @@ msgstr "La réponse doit être une date selon le format suivant:"
 msgid "Upload a file"
 msgstr "Télécharger un fichier"
 
-msgid "The questionnaire you are requesting for has been deleted from the system."
-msgstr "Le questionnaire que vous recherchez a été effacé du système."
+msgid "Sorry. The Questionnaire you are looking for has been deleted"
+msgstr "Désolé. Le Questionnaire que vous recherchez a été supprimé"
 
 msgid "Add or edit a question"
 msgstr "Ajouter ou modifier une question"
@@ -5530,3 +5530,6 @@ msgstr "Quel Expéditeur de Données enregistré vous a envoyé cette Soumission
 
 msgid "This Data Sender is not registered"
 msgstr "Cet Expéditeur de Données n'est pas enregistré"
+
+msgid "Sorry. The Identification Number Type you are looking for has been deleted"
+msgstr "Désolé. Le Numéro d'Identification que vous recherchez a été supprimé"

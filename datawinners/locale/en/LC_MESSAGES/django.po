@@ -4420,7 +4420,7 @@ msgstr ""
 msgid "12 months"
 msgstr ""
 
-msgid "The questionnaire you are requesting for has been deleted from the system."
+msgid "Sorry. The Questionnaire you are looking for has been deleted"
 msgstr ""
 
 msgid "Add or edit a question"
@@ -4767,4 +4767,7 @@ msgid "Which registered Data Sender sent you this Submission?"
 msgstr ""
 
 msgid "This Data Sender is not registered"
+msgstr ""
+
+msgid "Sorry. The Identification Number Type you are looking for has been deleted"
 msgstr ""

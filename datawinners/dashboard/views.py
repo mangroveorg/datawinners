@@ -90,7 +90,7 @@ def dashboard(request):
     questionnaire_does_not_exist = "NoExist" in request.GET.keys()
 
     if "deleted" in request.GET.keys():
-        messages.info(request, ugettext('The questionnaire you are requesting for has been deleted from the system.'), extra_tags='error')
+        messages.info(request, ugettext('Sorry. The Questionnaire you are looking for has been deleted'), extra_tags='error')
 
     return render_to_response('dashboard/home.html',
                               {"projects": questionnaire_list, 'trial_account': organization.in_trial_mode,

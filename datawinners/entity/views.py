@@ -16,7 +16,7 @@ from django.utils.translation import ugettext as _, ugettext
 import elasticutils
 import jsonpickle
 from django.contrib import messages
-
+from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, \
     valid_web_user
 from datawinners.entity.entity_export_helper import get_subject_headers
@@ -110,7 +110,16 @@ def all_subject_types(request):
     manager = get_database_manager(request.user)
     subjects_data = load_subject_type_with_projects(manager)
     subjects_count = get_subjects_count(manager)
-    return render_to_response('entity/all_subject_types.html',
+    if "deleted_subject" in request.GET.keys():
+        deleted_subject_error_message = _('Sorry. The Identification Number Type you are looking for has been deleted')
+        return render_to_response('entity/all_subject_types.html',
+                              {'all_data': subjects_data, 'current_language': translation.get_language(),
+                               'subjects_count': subjects_count,
+                               'deleted_subject_error_message': [deleted_subject_error_message],
+                              },
+                              context_instance=RequestContext(request))
+    else:
+        return render_to_response('entity/all_subject_types.html',
                               {'all_data': subjects_data, 'current_language': translation.get_language(),
                                'subjects_count': subjects_count,
                               },
@@ -142,9 +151,14 @@ def delete_subject_types(request):
 def all_subjects(request, subject_type):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [subject_type])
-    header_dict = header_fields(form_model)
-    form_model = get_form_model_by_entity_type(manager, [subject_type])
-    return render_to_response('entity/all_subjects.html',
+    from datawinners.project.models import Project
+    if not form_model:
+        all_subject_types_page = '/entity/subjects/' + "?deleted_subject=true"
+        return HttpResponseRedirect(all_subject_types_page)
+    else:
+        header_dict = header_fields(form_model)
+        form_model = get_form_model_by_entity_type(manager, [subject_type])
+        return render_to_response('entity/all_subjects.html',
                               {'subject_headers': header_dict,
                                'current_language': translation.get_language(),
                                'entity_type': subject_type,
