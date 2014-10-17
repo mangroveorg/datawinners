@@ -19,6 +19,7 @@ def remove_reminders_for_deleted_questionnaires(db_name):
        for reminder in reminders:
            questionnaire = Project.get(dbm, reminder.project_id)
            if questionnaire._doc['void']:
+               logger.error("Questionnaire Id %s for reminder %s " % (reminder.project_id, reminder.id))
                reminder.delete()
     except Exception as e:
         logger.exception(db_name)
