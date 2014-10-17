@@ -223,7 +223,7 @@ def submit_to_player(incoming_request):
     organization = incoming_request.get('organization')
     organization = organization
     should_increment_incoming_sms_count = True if not sent_via_sms_test_questionnaire else False
-
+    response =None
     try:
 
         dbm = incoming_request['dbm']
