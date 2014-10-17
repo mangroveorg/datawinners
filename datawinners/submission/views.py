@@ -168,26 +168,19 @@ def check_account_and_datasender(incoming_request):
         if organization.in_trial_mode:
             check_quotas_for_trial(organization)
 
-    except ExceedSMSLimitException as e:
-        return post_player_handler(incoming_request, e.message)
-
     except Exception as e:
         incoming_request['exception'] = e
-
-    if not incoming_request.get('test_sms_questionnaire'):
-        organization.increment_incoming_message_count()
 
     incoming_request['next_state'] = submit_to_player
     return incoming_request
 
 
 def check_quotas_for_trial(organization):
-    if organization.has_exceeded_message_limit():
-        raise ExceedSMSLimitException()
-
     if organization.has_exceeded_submission_limit():
         raise ExceedSubmissionLimitException()
 
+    if organization.has_exceeded_message_limit():
+        raise ExceedSMSLimitException()
 
 
 def check_quotas_and_update_users(organization, sms_channel=False):
@@ -229,6 +222,7 @@ def submit_to_player(incoming_request):
     sent_via_sms_test_questionnaire = incoming_request.get('test_sms_questionnaire', False)
     organization = incoming_request.get('organization')
     organization = organization
+    should_increment_incoming_sms_count = True if not sent_via_sms_test_questionnaire else False
 
     try:
 
@@ -281,15 +275,17 @@ def submit_to_player(incoming_request):
     except SMSParserWrongNumberOfAnswersException as exception:
         form_model = sms_player.get_form_model(mangrove_request)
         if not form_model.is_entity_registration_form():
-            if sent_via_sms_test_questionnaire:
-                organization.increment_message_count_for(incoming_web_count=1)
+            organization.increment_message_count_for(
+                incoming_web_count=1) if sent_via_sms_test_questionnaire else organization.increment_message_count_for(
+                incoming_sms_count=1)
             message = incorrect_number_of_answers_for_submission_handler(dbm, form_model.form_code, incoming_request)
         elif form_model.is_entity_registration_form():
             message = incorrect_number_of_answers_for_uid_registration_handler(dbm, form_model.form_code, incoming_request)
-            if not sent_via_sms_test_questionnaire:
-                organization.increment_message_count_for(sms_registration_count=1)
+        elif not sent_via_sms_test_questionnaire:
+            organization.increment_message_count_for(sms_registration_count=1)
 
-    except ExceedSubmissionLimitException as exception:
+    except (ExceedSubmissionLimitException, ExceedSMSLimitException) as exception:
+        should_increment_incoming_sms_count = False
         message = handle(exception, incoming_request)
 
     except Exception as exception:
@@ -297,6 +293,10 @@ def submit_to_player(incoming_request):
             organization.increment_message_count_for(incoming_web_count=1)
         message = handle(exception, incoming_request)
 
+    if should_increment_incoming_sms_count:
+        organization.increment_incoming_message_count()
+    if not response.is_registration:
+        check_quotas_and_update_users(organization, )
     return post_player_handler(incoming_request, message)
 
 def _get_organization(request):

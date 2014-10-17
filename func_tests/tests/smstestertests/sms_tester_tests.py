@@ -9,7 +9,7 @@ from pages.languagespage.customized_language_locator import SUBJECT_REG_WITH_INC
 from pages.loginpage.login_page import login
 from testdata.test_data import ACCOUNT_MESSAGES_URL
 from tests.smstestertests.sms_tester_data import *
-from datawinners.tests.data import DEFAULT_TEST_ORG_ID
+from datawinners.tests.data import DEFAULT_TEST_ORG_ID, TRIAL_ACCOUNT_ORGANIZATION_ID
 from datawinners.accountmanagement.models import Organization
 from tests.submissionlogtests.submission_log_tests import send_sms_with
 from framework.base_test import HeadlessRunnerTest
@@ -24,13 +24,21 @@ class TestSMSTester(HeadlessRunnerTest):
           'Updated')
         account_wide_sms_reply_page.save_changes()
         assert account_wide_sms_reply_page.get_success_message() == 'Changes saved successfully.'
+        cls.trial_organization = Organization.objects.get(org_id=TRIAL_ACCOUNT_ORGANIZATION_ID)
+        cls.trial_org_message_tracker = cls.trial_organization._get_message_tracker(datetime.today())
+        cls.incoming_sms_count_initial = cls.trial_org_message_tracker.incoming_sms_count
+        cls.incoming_web_count_initial = cls.trial_org_message_tracker.incoming_web_count
 
     @classmethod
     def tearDownClass(cls):
         cls.driver.go_to(ACCOUNT_MESSAGES_URL)
         AccountWideSmsReplyPage(cls.driver).remove_appended_message_for_selector(SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, 'Updated')
-
         HeadlessRunnerTest.tearDownClass()
+
+    def tearDown(self):
+        self.trial_org_message_tracker.incoming_sms_count = self.incoming_sms_count_initial
+        self.trial_org_message_tracker.incoming_web_count = self.incoming_web_count_initial
+        self.trial_org_message_tracker.save()
 
     @attr('functional_test')
     def test_sms_player_for_exceeding_word_length(self):
@@ -58,6 +66,53 @@ class TestSMSTester(HeadlessRunnerTest):
         message_tracker_after = organization._get_message_tracker(datetime.today())
         self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
         self.assertEqual(message_tracker_before.sms_registration_count + 1, message_tracker_after.sms_registration_count)
+
+    @attr('functional_test')
+    def test_counters_for_trail_org_for_registration_of_new_subject_when_sms_limit_reached(self):
+        message_tracker_before = self.trial_org_message_tracker
+        message_tracker_before.incoming_sms_count = 50
+        message_tracker_before.save()
+        response = send_sms_with(REGISTER_NEW_SUBJECT_TRIAL_ACCOUNT)
+        message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
+        self.assertEqual(message_tracker_before.incoming_sms_count, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.sms_registration_count, message_tracker_after.sms_registration_count)
+
+    @attr('functional_test')
+    def test_counters_for_trail_org_for_registration_of_new_subject_when_submission_limit_reached(self):
+        message_tracker_before =self.trial_org_message_tracker
+        message_tracker_before.incoming_web_count = 1000
+        message_tracker_before.save()
+        response = send_sms_with(REGISTER_NEW_SUBJECT_TRIAL_ACCOUNT)
+        message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
+        self.assertEqual(message_tracker_before.incoming_sms_count+1, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.sms_registration_count+1, message_tracker_after.sms_registration_count)
+
+    @attr('functional_test')
+    def test_counters_for_trail_org_for_new_submission_when_sms_limit_and_total_submission_limit_reached(self):
+        message_tracker_before = self.trial_org_message_tracker
+        message_tracker_before.incoming_sms_count = 50
+        message_tracker_before.incoming_web_count = 950
+        message_tracker_before.save()
+        response = send_sms_with(NEW_SUBMISSION_TRIAL_ACCOUNT)
+        message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
+        self.assertEqual(message_tracker_before.incoming_sms_count, message_tracker_after.incoming_sms_count)
+
+    @attr('functional_test')
+    def test_counters_for_trail_org_for_new_submission_when_sms_limit_not_reached_and_total_submission_limit_reached(self):
+        message_tracker_before = self.trial_org_message_tracker
+        message_tracker_before.incoming_web_count = 1000
+        message_tracker_before.save()
+        response = send_sms_with(NEW_SUBMISSION_TRIAL_ACCOUNT)
+        message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
+        self.assertEqual(message_tracker_before.incoming_sms_count, message_tracker_after.incoming_sms_count)
+
+    @attr('functional_test')
+    def test_counters_for_trail_org_for_new_submission_when_neither_sms_limit_nor_total_submission_limit_is_reached(self):
+        message_tracker_before = self.trial_org_message_tracker
+        message_tracker_before.save()
+        response = send_sms_with(NEW_SUBMISSION_TRIAL_ACCOUNT)
+        message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
+        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
 
     @attr('functional_test')
     def test_sms_player_for_registration_of_existing_subject_short_code(self):

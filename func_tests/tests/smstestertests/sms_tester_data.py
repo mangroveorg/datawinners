@@ -3,6 +3,7 @@
 
 ##Variables
 from datawinners.messageprovider.tests.test_message_handler import THANKS
+from datawinners.tests.data import TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO
 from framework.utils.common_utils import random_number
 
 SENDER = "from"
@@ -67,6 +68,16 @@ REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
 REGISTER_NEW_SUBJECT = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
                         SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur . ",
+                        SUCCESS_MESSAGE: "Thank you Shweta"}
+
+REGISTER_NEW_SUBJECT_TRIAL_ACCOUNT = {SENDER: TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO,
+                        RECEIVER: "447860034166",
+                        SMS: "cli fn ln loc 1,1 1283192",
+                        SUCCESS_MESSAGE: "Thank you Shweta"}
+
+NEW_SUBMISSION_TRIAL_ACCOUNT = {SENDER: TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO,
+                        RECEIVER: "447860034166",
+                        SMS: "cli051 cid001 name 24 25.12.2012 a a 1,1 a",
                         SUCCESS_MESSAGE: "Thank you Shweta"}
 
 REGISTER_EXISTING_SUBJECT_SHORT_CODE = {SENDER: "1234567890",
