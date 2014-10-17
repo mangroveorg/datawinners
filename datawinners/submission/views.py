@@ -295,7 +295,7 @@ def submit_to_player(incoming_request):
 
     if should_increment_incoming_sms_count:
         organization.increment_incoming_message_count()
-    if not response.is_registration:
+    if response and not response.is_registration:
         check_quotas_and_update_users(organization, )
     return post_player_handler(incoming_request, message)
 
