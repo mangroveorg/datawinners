@@ -7,8 +7,8 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from migration.couch.utils import migrate, mark_as_completed
 
 
-org_ids_with_reminders = [org[0] for org in Reminder.objects.values_list('organization').distinct()]
-organization_names = [store[0] for store in OrganizationSetting.objects.filter(organization__in=org_ids_with_reminders).values_list('document_store')]
+org_ids_with_reminders = [org[0] for org in Reminder.objects.order_by('organization').values_list('organization').distinct()]
+organization_names = [store[0] for store in OrganizationSetting.objects.order_by('organization').filter(organization__in=org_ids_with_reminders).values_list('document_store')]
 datastore_org_id_map = dict(zip(organization_names, org_ids_with_reminders))
 
 def remove_reminders_for_deleted_questionnaires(db_name):
