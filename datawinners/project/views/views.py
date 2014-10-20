@@ -150,8 +150,8 @@ def project_overview(request, project_id):
     project_links = make_project_links(questionnaire)
     map_api_key = get_map_key(request.META['HTTP_HOST'])
     number_data_sender = len(questionnaire.data_senders)
-    number_unregistered_data_sender = get_unregistered_datasenders_count(manager, questionnaire.id)
-    number_records = get_non_deleted_submission_count(manager, questionnaire.id)
+    # number_unregistered_data_sender = get_unregistered_datasenders_count(manager, questionnaire.id)
+    # number_records = get_non_deleted_submission_count(manager, questionnaire.id)
     number_reminders = Reminder.objects.filter(project_id=questionnaire.id).count()
     links = {'registered_data_senders': reverse("registered_datasenders", args=[project_id]),
              'web_questionnaire_list': reverse('web_questionnaire', args=[project_id])}
@@ -184,7 +184,7 @@ def project_overview(request, project_id):
         'number_of_questions': number_of_questions,
         'map_api_key': map_api_key,
         'number_data_sender': number_data_sender,
-        'number_records': number_records,
+        # 'number_records': number_records,
         'number_reminders': number_reminders,
         'links': links,
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
@@ -196,8 +196,8 @@ def project_overview(request, project_id):
         'unique_id_header_text': unique_id_header_text,
         'org_number': get_organization_telephone_number(request),
         'open_survey_questionnaire': open_survey_questionnaire,
-        'is_pro_sms': is_pro_sms,
-        'number_unregistered_data_sender': number_unregistered_data_sender
+        'is_pro_sms': is_pro_sms
+        # 'number_unregistered_data_sender': number_unregistered_data_sender
     }))
 
 
