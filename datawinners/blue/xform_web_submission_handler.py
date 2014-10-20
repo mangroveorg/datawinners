@@ -10,6 +10,7 @@ from datawinners.messageprovider.messages import WEB
 from datawinners.submission.views import check_quotas_and_update_users, check_quotas_for_trial
 from datawinners.xforms.views import sp_submission_logger, logger, get_errors, is_authorized_for_questionnaire
 from mangrove.transport import Request, TransportInfo
+from mangrove.errors.MangroveException import ExceedSMSLimitException
 from mangrove.transport.player.new_players import XFormPlayerV2
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.utils.dates import py_datetime_to_js_datestring
@@ -37,14 +38,16 @@ class XFormWebSubmissionHandler():
         self.organization = Organization.objects.get(org_id=self.user_profile.org_id)
 
     def create_new_submission_response(self):
-
-        if not is_authorized_for_questionnaire(self.manager, self.request_user, self.request.POST['form_code']):
-            return HttpResponse(status=403)
-
-        if self.organization.in_trial_mode:
-            check_quotas_for_trial(self.organization)
-
-        player_response = self.player.add_survey_response(self.mangrove_request, self.user_profile.reporter_id, logger=sp_submission_logger)
+        try:
+            if not is_authorized_for_questionnaire(self.manager, self.request_user, self.request.POST['form_code']):
+                return HttpResponse(status=403)
+            if self.organization.in_trial_mode:
+                check_quotas_for_trial(self.organization)
+        except Exception as e:
+            if not isinstance(e, ExceedSMSLimitException):
+                raise e
+        player_response = self.player.add_survey_response(self.mangrove_request, self.user_profile.reporter_id,
+                                                          logger=sp_submission_logger)
         return self._post_save(player_response)
 
     def update_submission_response(self, survey_response_id):
