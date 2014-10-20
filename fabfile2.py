@@ -173,6 +173,7 @@ def _deploy_datawinners(context):
 
     with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS)):
         replace_setting_file_for_environment(context.environment)
+        activate_and_run(context.virtual_env, "python manage.py syncdb")
         activate_and_run(context.virtual_env, "python manage.py migrate")
         activate_and_run(context.virtual_env, "python manage.py compilemessages")
         restart_celery()
