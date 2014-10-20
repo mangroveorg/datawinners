@@ -1,7 +1,7 @@
 $(document).ready(function(){
     var options = {
         ignore_links: "#edit_ds_popup .cancel_link",
-        
+
         bind_cancel_link_in_dialog:function () {
             $("#cancel_submission_warning_message #cancel_leave").bind('click', function () {
                 $("#cancel_submission_warning_message").dialog("close");
@@ -63,6 +63,8 @@ $(document).ready(function(){
     });
 
     $("#edit_ds_popup .cancel_link").bind("click", function(){
+        datasender_id = $(".datasender").text();
+        $("#id_dsid").val(datasender_id);
         $("#edit_ds_popup").dialog("close");
     });
     $('#choice_field span select#id_dsid option:selected').addClass("margin_top_20")
