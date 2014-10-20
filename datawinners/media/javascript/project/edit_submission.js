@@ -1,5 +1,7 @@
 $(document).ready(function(){
     var options = {
+        ignore_links: "#edit_ds_popup .cancel_link",
+        
         bind_cancel_link_in_dialog:function () {
             $("#cancel_submission_warning_message #cancel_leave").bind('click', function () {
                 $("#cancel_submission_warning_message").dialog("close");

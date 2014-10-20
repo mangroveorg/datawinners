@@ -18,7 +18,7 @@ DW.data_submission = function (kwargs) {
         },
 
         bind_all_links: function () {
-            $("a[href]:visible").not(".sms_tester, .delete_project, #save_ds").bind('click',
+            $("a[href]:visible").not(this.ignore_links).bind('click',
                     {self:this}, function (event) {
                 var that = event.data.self;
                 that.redirect_url = $(this).attr("href");
@@ -43,6 +43,8 @@ DW.data_submission.prototype = {
         this.bind_yes_button_in_dialog = opts.bind_yes_button_in_dialog;
         this.bind_cancel_link_in_dialog = opts.bind_cancel_link_in_dialog;
         this.bind_all_links = opts.bind_all_links;
+        this.default_ignore_links = ".sms_tester, .delete_project, #save_ds";
+        this.ignore_links = opts.ignore_links ? this.default_ignore_links+","+opts.ignore_links : this.default_ignore_links
         this.cancel_id = "#cancel";
         this.handlers = [];
         this.click_after_reload = '';
