@@ -1,7 +1,7 @@
 var viewModel = function(initial_value){
     this.is_open_survey = ko.observable(initial_value);
     this.ds_setting_description = ko.computed(function(){
-        if (this.is_open_survey() == '1')
+        if (this.is_open_survey() == 'open')
             return gettext("Everyone - Anyone with a simple phone can submit data.");
         else
             return gettext("Only Registered People - Data Senders must be registered first before submitting data.");
