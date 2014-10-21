@@ -77,6 +77,8 @@ $(document).ready(function () {
             $('#message').remove();
             $('#error_body').html('');
             $("#error_import_section").hide();
+            DW.trackEvent("datasenders", "import-datasenders");
+
             if ($.isEmptyObject(responseJSON)) {
                 $('<div id="message" class="error_message message-box clear-left">' + gettext("Sorry, an error occured - the reason could be connectivity issues or the import taking too long to process.  Please try again.  Limit the number of subjects you import to 200 or less.") + '</div>').insertAfter($('#template-download-section'));
             }
