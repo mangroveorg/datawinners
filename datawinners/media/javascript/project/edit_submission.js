@@ -58,13 +58,18 @@ $(document).ready(function(){
     });
     popup.parent().appendTo($("#edit_submission_form"));
 
-    $("#change_ds_link").unbind().bind("click", function () {
+    var change_datasender_link = $("#change_ds_link");
+
+    change_datasender_link.on("click", function(){
+        DW.trackEvent('edit-submission', 'change-datasender');
         $("#edit_ds_popup").dialog("open");
     });
 
+    var change_ds_dropdown = $("#id_dsid");
+
     $("#edit_ds_popup .cancel_link").bind("click", function(){
         datasender_id = $(".datasender").text();
-        $("#id_dsid").val(datasender_id);
+        change_ds_dropdown.val(datasender_id);
         $("#edit_ds_popup").dialog("close");
     });
     $('#choice_field span select#id_dsid option:selected').addClass("margin_top_20")
@@ -79,4 +84,10 @@ $(document).ready(function(){
         $(".datasender_error_message").addClass("none");
         $("#edit_ds_popup").dialog("close");
     });
+
+    change_ds_dropdown.on('change', function(){
+       DW.trackEvent('edit-submission', 'choose-datasender-from-list');
+    });
+    
+
 });
