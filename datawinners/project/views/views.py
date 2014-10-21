@@ -956,12 +956,12 @@ def edit_my_subject(request, entity_type, entity_id, project_id=None):
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @is_not_expired
-def change_ds_setting(request):
+def change_ds_group(request):
     manager = get_database_manager(request.user)
     project_id = request.POST.get("project_id")
     ds_setting = request.POST.get("selected")
     questionnaire = Project.get(manager, project_id)
-    questionnaire.is_open_survey = ds_setting
+    questionnaire.is_open_survey = ds_setting == 'open'
     questionnaire.save()
     messages.success(request, ugettext("Changes saved successfully."))
     return HttpResponse(json.dumps({'success': True}))

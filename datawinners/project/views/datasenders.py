@@ -112,7 +112,7 @@ def registered_datasenders(request, project_id):
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
         is_open_survey_allowed = _is_pro_sms(request) and not questionnaire.xform
-        is_open_survey = '1' if questionnaire.is_open_survey else ''
+        is_open_survey = 'open' if questionnaire.is_open_survey else 'restricted'
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
         return render_to_response('project/registered_datasenders.html',
                                   {'project': questionnaire,

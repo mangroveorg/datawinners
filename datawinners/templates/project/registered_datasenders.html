@@ -80,13 +80,6 @@
         </div>
         {% endif %}
         <div align="right">
-
-{#            <a href="{{ project_links.register_datasenders_link }}"#}
-{#               class="register_data_sender">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;#}
-
-
-
-
             <a class="register_data_sender" onclick="register_datasender()">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
         </div>
@@ -113,13 +106,13 @@
     {% if is_open_survey_allowed %}
     <div id="change_ds_setting">
         <p class="warning_message margin_bottom_10">{% trans "Who has permission to submit data using SMS for this Questionnaire:" %}</p>
-        <input type="radio" name="ds_setting" value="1" data-bind="checked:is_open_survey"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
+        <input type="radio" name="ds_setting" value="open" data-bind="checked:is_open_survey"><span class="margin_left_10">{% trans "Everyone" %}</span></br>
         <span class="italic font_size_12 margin_left_30">{% trans "Anyone with a simple phone can submit data." %}</span></br>
-        <input type="radio" name="ds_setting" value="" data-bind="checked:is_open_survey" class="margin_top_15"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
+        <input type="radio" name="ds_setting" value="restricted" data-bind="checked:is_open_survey" class="margin_top_15"><span class="margin_left_10">{% trans "Only Registered People" %}</span></br>
             <span class="italic font_size_12 margin_left_30">{% trans "Data Senders must be registered first before submitting data." %}</span></br>
             <span class="italic font_size_12 margin_left_30 margin_bottom_5">{% trans "Example: Registered field staff, community based workers, supervisors" %}</span></br>
-        <a href="#" class="button margin_top_13 float_right" id="save_ds_setting" style="float: right">{% trans "Save" %}</a>
-        <a href="#" class="cancel_link float_right">{% trans "Cancel" %}</a></br>
+        <a href="javascript:void(0);" class="button margin_top_13 float_right" id="save_ds_setting" style="float: right">{% trans "Save" %}</a>
+        <a href="javascript:void(0);" id="cancel_ds_setting" class="cancel_link float_right">{% trans "Cancel" %}</a></br>
     </div>
     {% endif %}
 {% endblock %}

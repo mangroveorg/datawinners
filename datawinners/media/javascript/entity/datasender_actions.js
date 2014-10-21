@@ -445,29 +445,38 @@ $(document).ready(function(){
       }
    );
     
-   $("#change_ds_setting .cancel_link").bind("click", function() {
+   $("#change_ds_setting #cancel_ds_setting").on("click", function() {
+       DW.trackEvent('datsender-group', 'cancel-datasender-group-dialog');
        $("#change_ds_setting").dialog("close");
        DW.vm.is_open_survey(initial_is_open_survey);
        return false;
    });
 
-   $("#change_ds_setting #save_ds_setting").bind("click", function(){
+   $("#change_ds_setting #save_ds_setting").on("click", function(){
        $("#save_ds_setting").html(gettext('Saving...'));
        DW.loading();
        var project_id = $('#project_id').val();
        var selected = $("#change_ds_setting input[name='ds_setting']:checked").val();
-       $.ajax({url:'/project/change_ds_setting/',
+       $.ajax({url:'/project/change-group/',
                type:'POST',
                data: { 'project_id':project_id,
                        'selected':selected
                }
        }).done(function (json_response) {
-
            var response = $.parseJSON(json_response);
-                    if (response.success) {
-                        window.location.href = "/project/registered_datasenders/" + project_id + "/";
-                        $("#save_ds_setting").html(gettext('Save'));
-                    }
+
+                if(selected == 'open'){
+                    DW.trackEvent('datasender-group', 'updated-to-open-survey');
+                }
+                else{
+                    DW.trackEvent('datasender-group', 'updated-to-restricted-survey');
+
+                }
+
+                if (response.success) {
+                    window.location.href = "/project/registered_datasenders/" + project_id + "/";
+                    $("#save_ds_setting").html(gettext('Save'));
+                }
            }
        );
    });

@@ -11,7 +11,7 @@ from datawinners.project.preview_views import sms_preview, web_preview, smart_ph
 from datawinners.project.views import submission_views
 from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \
     registered_subjects, broadcast_message, sent_reminders, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject, get_questionnaire_ajax, \
-    rename_project, change_ds_setting
+    rename_project, change_ds_group
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -84,6 +84,6 @@ urlpatterns = patterns('',
                        (r'^project/submissions/(?P<form_code>.+?)/analysis$', submission_views.get_stats),
                        (r'^project/submissions/(?P<form_code>.+?)$', submission_views.get_submissions),
                        url(r'^project/import-submissions/(?P<form_code>.+?)$', ImportSubmissionView.as_view(), name="import_submissions"),
-                       url(r'^project/change_ds_setting/$', change_ds_setting),
+                       url(r'^project/change-group/$', change_ds_group),
                        )
 
