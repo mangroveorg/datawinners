@@ -14,11 +14,10 @@ def get_form_context(questionnaire, survey_response_form, manager, hide_link_cla
     if not survey_response_form.is_valid() and survey_response_form.errors.has_key("dsid"):
         error_message = survey_response_form.errors.get("dsid")[0]
 
-    if not error_message and survey_response_form.data.get("dsid") == "N/A":
-       error_message = _("This Data Sender is not registered")
+    if not error_message and survey_response_form.data.get("dsid") == "N/A" and not questionnaire.is_open_survey:
+        error_message = _("This Data Sender is not registered")
 
     form_context.update({'datasender_error_message': error_message})
-
     return form_context
 
 

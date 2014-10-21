@@ -37,7 +37,7 @@ class SurveyResponseForm(BaseSubmissionForm):
                  reporter_name=None, is_anonymous_submission=False, initial=None):
         super(SurveyResponseForm, self).__init__(project, data, is_datasender, datasender_name, reporter_id,
                                                  reporter_name, is_anonymous_submission, initial)
-
+        self.is_anonymous_submission = is_anonymous_submission
         for field in self.form_model.fields:
             if isinstance(field, UniqueIdField):
                 self.fields[field.code] = SubjectQuestionFieldCreator(self.form_model).create(field)
@@ -63,7 +63,8 @@ class SurveyResponseForm(BaseSubmissionForm):
             is_admin = len(User.objects.filter(ngouserprofile__org_id=org_id,
                                                         ngouserprofile__reporter_id=sender_id,
                                                         groups__name__in=["NGO Admins", "Project Managers"])) > 0
-            if is_admin:
+
+            if self.form_model.is_open_survey or is_admin:
                 self.errors.pop("dsid")
 
 

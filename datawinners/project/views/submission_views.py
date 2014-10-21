@@ -303,7 +303,7 @@ def edit(request, project_id, survey_response_id, tab=0):
                               "is_linked": is_linked,
                               "reporter_name": reporter_name})
 
-        if not survey_response_form.is_valid() or survey_response.is_anonymous_submission:
+        if not survey_response_form.is_valid() or form_ui_model['datasender_error_message']:
             error_message = _("Please check your answers below for errors.")
             form_ui_model.update({'error_message': error_message,
                                   "reporter_id": reporter_id,
