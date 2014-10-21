@@ -73,6 +73,8 @@
     {% load compress %}
     {% compress js %}
         <script type="text/javascript">
+            var user_email = '{{ user_email }}';
+            var organization_name = '{{ organization_name }}';
             var entity_type = '{{ entity_type }}';
             var is_submission_exported_to_multiple_sheets = '{{ is_submission_exported_to_multiple_sheets }}';
             var render_table_url = '/project/submissions/{{ questionnaire_code }}';

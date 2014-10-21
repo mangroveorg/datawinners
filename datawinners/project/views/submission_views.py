@@ -136,6 +136,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {
+            "user_email": request.user.email,
             "tab": tab,
             "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253, # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
@@ -167,6 +168,7 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {
+                "user_email": request.user.email,
                 "is_quota_reached": is_quota_reached(request, org_id=org_id),
                 "first_filterable_field": first_filterable_fields,
                 "filterable_fields": filterable_fields,
