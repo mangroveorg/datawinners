@@ -78,7 +78,6 @@ websubmission_logger = logging.getLogger("websubmission")
 
 @login_required
 @session_not_expired
-@is_new_user
 @is_datasender
 @is_not_expired
 @is_project_exist
