@@ -11,4 +11,5 @@ var viewModel = function(initial_value){
 $(document).ready(function () {
     DW.vm = new viewModel(initial_is_open_survey);
     ko.applyBindings(DW.vm);
+    DW.trackEvent('questionnaire', 'accessed-my-datasenders');
 });

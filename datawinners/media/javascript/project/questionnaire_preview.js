@@ -3,6 +3,7 @@ $(document).ready(function () {
         init:function () {
             DW.questionnaire_preview.init_sms_questionnaire_preview();
             DW.questionnaire_preview.init_questionnaire_preview();
+            DW.trackEvent('questionnaire', 'accessed-overview');
         },
         init_sms_questionnaire_preview:function () {
             DW.questionnaire_preview.init_dialog(".sms-questionnaire-preview", sms_questionnaire_preview_link);
@@ -41,5 +42,6 @@ $(document).ready(function () {
             });
         }
     };
+
     DW.questionnaire_preview.init();
 });
