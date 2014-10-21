@@ -148,6 +148,7 @@ DW.DataSenderFilter = function (postFilterSelectionCallBack) {
             "select": function (event, ui) {
                 self.filter.data('ds_id', ui.item.id);
                 self.filter.data('label', ui.item.label);
+                DW.trackEvent('submissions', 'searched-by-datasender');
                 postFilterSelection();
             }
         }).data("autocomplete")._renderItem = function (ul, item) {
@@ -157,7 +158,7 @@ DW.DataSenderFilter = function (postFilterSelectionCallBack) {
 
     self.initialize_events = function () {
         // change on autocomplete is not working in certain cases like select an item and then clear doesn't fire change event. so using input element's change.
-        self.filter.change(function () {
+        self.filter.change(function() {
             if (self.filter.val() == '') {
                 self.filter.data('ds_id', '');
                 postFilterSelection();
@@ -187,11 +188,13 @@ DW.SubjectFilter = function (postFilterSelectionCallBack) {
         var self = this;
         self.filters.each(function(i, el){
         var $el = $(el);
+        var unique_id_type = $el.attr('entity_type');
         $el.autocomplete({
-            "source": "/entity/" + $el.attr('entity_type') + "/autocomplete/",
+            "source": "/entity/" + unique_id_type + "/autocomplete/",
             "select": function (event, ui) {
                 $el.data('value', ui.item.id);
                 $el.data('label', ui.item.label);
+                DW.trackEvent('submissions', 'searched-by-unique-id', unique_id_type);
                 postFilterSelection();
             }
         }).data("autocomplete")._renderItem = function (ul, item) {
@@ -213,10 +216,10 @@ DW.SubjectFilter = function (postFilterSelectionCallBack) {
 
         self.filters.each(function(i,el){
             $(el).on("blur", function() {
-            if ($(el).data('label') != $(el).val()) {
-                $(el).val("");
-            }
-        });
+                if($(el).data('label') != $(el).val()){
+                    $(el).val("");
+                }
+            });
 
         });
     };
@@ -226,13 +229,18 @@ DW.DateFilter = function (postFilterSelectionCallBack) {
     var self = this;
 
     self.init = function () {
+        var callbackWrapper = function(){
+           DW.trackEvent('submissions', 'searched-by-date');
+           postFilterSelectionCallBack();
+        };
+
         self.filterSelects = $('.datepicker');
         _.each(self.filterSelects, function(dateTimePickerInput){
             var dateInput = $(dateTimePickerInput);
             var format = dateInput.data("format");
             var qcode = dateInput.data("question-code");
             var options = {
-                             onCloseCallback: postFilterSelectionCallBack,
+                             onCloseCallback: callbackWrapper,
                              monthpicker:{
                                      start: {'id': "start" + qcode},
                                      end: {'id': "end" + qcode}
@@ -256,7 +264,8 @@ DW.SearchTextFilter = function (postFilterSelectionCallBack) {
     };
 
     var _initialize_events = function () {
-        self.filter.keyup(function () {
+        self.filter.keyup(function() {
+            DW.trackEvent('submissions', 'free-text-search-submissions');
             postFilterSelection();
         })
     };

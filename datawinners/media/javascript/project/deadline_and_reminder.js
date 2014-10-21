@@ -234,7 +234,6 @@ $(document).ready(function() {
         }
 
         DW.trackEvent('reminders', 'saved-reminders');
+        return true;
     });
-
-
-})
+});

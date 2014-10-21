@@ -1,16 +1,14 @@
-/**
- * Created by PyCharm.
- * User: herihaja
- * Date: 7/4/12
- * Time: 7:06 PM
- * To change this template use File | Settings | File Templates.
- */
 $(document).ready(function(){
     $("#dateRangePicker").daterangepicker({
         presetRanges: [],
         presets: {dateRange: gettext('Date Range')},
         dateFormat:'dd-mm-yy',
         rangeSplitter:gettext("to")
+    });
+
+    $('#log_filter').on('click',function(){
+       DW.trackEvent('activity-log', 'filter-activity');
+       return true;
     });
 
     $('#log_data').dataTable({
