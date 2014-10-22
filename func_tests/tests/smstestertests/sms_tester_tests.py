@@ -14,6 +14,7 @@ from datawinners.accountmanagement.models import Organization
 from tests.submissionlogtests.submission_log_tests import send_sms_with
 from framework.base_test import HeadlessRunnerTest
 
+
 class TestSMSTester(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
@@ -21,7 +22,7 @@ class TestSMSTester(HeadlessRunnerTest):
         languages_page = login(cls.driver).navigate_to_languages_page()
         account_wide_sms_reply_page = languages_page.navigate_to_account_message_Tab()
         account_wide_sms_reply_page.update_message_for_selector(SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR,
-          'Updated')
+                                                                'Updated')
         account_wide_sms_reply_page.save_changes()
         assert account_wide_sms_reply_page.get_success_message() == 'Changes saved successfully.'
         cls.trial_organization = Organization.objects.get(org_id=TRIAL_ACCOUNT_ORGANIZATION_ID)
@@ -32,7 +33,8 @@ class TestSMSTester(HeadlessRunnerTest):
     @classmethod
     def tearDownClass(cls):
         cls.driver.go_to(ACCOUNT_MESSAGES_URL)
-        AccountWideSmsReplyPage(cls.driver).remove_appended_message_for_selector(SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, 'Updated')
+        AccountWideSmsReplyPage(cls.driver).remove_appended_message_for_selector(
+            SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR, 'Updated')
         HeadlessRunnerTest.tearDownClass()
 
     def tearDown(self):
@@ -49,7 +51,8 @@ class TestSMSTester(HeadlessRunnerTest):
         """
         Function to test the registration of the reporter using sms submission with registered number
         """
-        self.assertRegexpMatches(send_sms_with(REGISTER_DATA_SENDER), fetch_(SUCCESS_MESSAGE, from_(REGISTER_DATA_SENDER)))
+        self.assertRegexpMatches(send_sms_with(REGISTER_DATA_SENDER),
+                                 fetch_(SUCCESS_MESSAGE, from_(REGISTER_DATA_SENDER)))
 
     @attr('functional_test')
     def test_sms_player_for_addition_of_data_sender_from_unknown_number(self):
@@ -65,7 +68,8 @@ class TestSMSTester(HeadlessRunnerTest):
             fetch_(SUCCESS_MESSAGE, from_(REGISTER_NEW_SUBJECT)) in response)
         message_tracker_after = organization._get_message_tracker(datetime.today())
         self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
-        self.assertEqual(message_tracker_before.sms_registration_count + 1, message_tracker_after.sms_registration_count)
+        self.assertEqual(message_tracker_before.sms_registration_count + 1,
+                         message_tracker_after.sms_registration_count)
 
     @attr('functional_test')
     def test_counters_for_trail_org_for_registration_of_new_subject_when_sms_limit_reached(self):
@@ -79,13 +83,14 @@ class TestSMSTester(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_counters_for_trail_org_for_registration_of_new_subject_when_submission_limit_reached(self):
-        message_tracker_before =self.trial_org_message_tracker
+        message_tracker_before = self.trial_org_message_tracker
         message_tracker_before.incoming_web_count = 1000
         message_tracker_before.save()
         response = send_sms_with(REGISTER_NEW_SUBJECT_TRIAL_ACCOUNT)
         message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
-        self.assertEqual(message_tracker_before.incoming_sms_count+1, message_tracker_after.incoming_sms_count)
-        self.assertEqual(message_tracker_before.sms_registration_count+1, message_tracker_after.sms_registration_count)
+        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.sms_registration_count + 1,
+                         message_tracker_after.sms_registration_count)
 
     @attr('functional_test')
     def test_counters_for_trail_org_for_new_submission_when_sms_limit_and_total_submission_limit_reached(self):
@@ -98,7 +103,8 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(message_tracker_before.incoming_sms_count, message_tracker_after.incoming_sms_count)
 
     @attr('functional_test')
-    def test_counters_for_trail_org_for_new_submission_when_sms_limit_not_reached_and_total_submission_limit_reached(self):
+    def test_counters_for_trail_org_for_new_submission_when_sms_limit_not_reached_and_total_submission_limit_reached(
+            self):
         message_tracker_before = self.trial_org_message_tracker
         message_tracker_before.incoming_web_count = 1000
         message_tracker_before.save()
@@ -107,7 +113,8 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(message_tracker_before.incoming_sms_count, message_tracker_after.incoming_sms_count)
 
     @attr('functional_test')
-    def test_counters_for_trail_org_for_new_submission_when_neither_sms_limit_nor_total_submission_limit_is_reached(self):
+    def test_counters_for_trail_org_for_new_submission_when_neither_sms_limit_nor_total_submission_limit_is_reached(
+            self):
         message_tracker_before = self.trial_org_message_tracker
         message_tracker_before.save()
         response = send_sms_with(NEW_SUBMISSION_TRIAL_ACCOUNT)
@@ -126,7 +133,8 @@ class TestSMSTester(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_sms_player_for_registration_with_incorrect_number_of_answers(self):
-        self.assertEqual(fetch_(ERROR_MSG, from_(REGISTER_WITH_WRONG_NUMBER_OF_ANSWERS)),send_sms_with(REGISTER_WITH_WRONG_NUMBER_OF_ANSWERS))
+        self.assertEqual(fetch_(ERROR_MSG, from_(REGISTER_WITH_WRONG_NUMBER_OF_ANSWERS)),
+                         send_sms_with(REGISTER_WITH_WRONG_NUMBER_OF_ANSWERS))
 
     @attr('functional_test')
     def test_sms_player_for_unregistered_subject_and_invalid_geo_code(self):
@@ -141,6 +149,7 @@ class TestSMSTester(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_check_with_right_order(self):
         test_data = MULTIPLE_WRONG_DATA.copy()
+        paid_test_org = Organization.objects.get(org_id=DEFAULT_TEST_ORG_ID)
         self.assertEqual(send_sms_with(test_data),
                          "Error. You are not registered as a Data Sender. Please contact your supervisor.")
 
@@ -155,8 +164,11 @@ class TestSMSTester(HeadlessRunnerTest):
                          "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")
 
         test_data.update({SENDER: "1234567890"})
+        message_tracker_before = paid_test_org._get_message_tracker(datetime.today())
         self.assertEqual(send_sms_with(test_data),
                          "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
+        message_tracker_after = paid_test_org._get_message_tracker(datetime.today())
+        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("extradata", "")})

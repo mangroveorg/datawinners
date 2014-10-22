@@ -272,17 +272,15 @@ def submit_to_player(incoming_request):
             organization.increment_message_count_for(incoming_web_count=1)
         message = incorrect_questionnaire_code_handler(dbm, exception.data[0], incoming_request)
 
-    except SMSParserWrongNumberOfAnswersException as exception:
+    except SMSParserWrongNumberOfAnswersException:
         form_model = sms_player.get_form_model(mangrove_request)
         if not form_model.is_entity_registration_form():
-            organization.increment_message_count_for(
-                incoming_web_count=1) if sent_via_sms_test_questionnaire else organization.increment_message_count_for(
-                incoming_sms_count=1)
+            if sent_via_sms_test_questionnaire:
+                organization.increment_message_count_for(incoming_web_count=1)
+
             message = incorrect_number_of_answers_for_submission_handler(dbm, form_model.form_code, incoming_request)
         elif form_model.is_entity_registration_form():
             message = incorrect_number_of_answers_for_uid_registration_handler(dbm, form_model.form_code, incoming_request)
-        elif not sent_via_sms_test_questionnaire:
-            organization.increment_message_count_for(sms_registration_count=1)
 
     except (ExceedSubmissionLimitException, ExceedSMSLimitException) as exception:
         should_increment_incoming_sms_count = False
@@ -295,6 +293,7 @@ def submit_to_player(incoming_request):
 
     if should_increment_incoming_sms_count:
         organization.increment_incoming_message_count()
+
     if response and not response.is_registration:
         check_quotas_and_update_users(organization, )
     return post_player_handler(incoming_request, message)
