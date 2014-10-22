@@ -1,0 +1,13 @@
+/var/log/nginx/datawinners.access.log {
+        daily
+        size 100M
+        rotate 14
+        compress
+        delaycompress
+        missingok
+        notifempty
+        create 644 root root
+        postrotate
+                kill -USR1 `cat /opt/nginx-1.2.9/logs/nginx.pid`
+        endscript
+}
