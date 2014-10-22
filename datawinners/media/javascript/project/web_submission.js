@@ -6,7 +6,7 @@ $(document).ready(function() {
             }
             else {
                 $('#choice_ds').addClass("none");
-                $('ul.errorlist li span#on_behalf_of_error').parent().parent().addClass("none");
+                $('#on_behalf_of_error').parent().parent().addClass("none");
             }
             DW.trackEvent('web-submission','change-datasender');
         });

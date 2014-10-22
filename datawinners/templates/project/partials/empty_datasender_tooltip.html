@@ -1,0 +1,11 @@
+{% load i18n %}
+{% if field.field.choices|length == 1 %}
+    <div>
+        <a class="can-not-submit-link-quest help_icon">{% trans "Why canʼt I choose a Data Sender?" %}</a>
+    </div>
+    <div class="tooltip">
+        <p style="width: auto!important">
+            You don't have any Data Senders</br> linked to your Questionnaire
+        </p>
+    </div>
+{% endif %}

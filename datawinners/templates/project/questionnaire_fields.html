@@ -34,11 +34,13 @@
                 {{ field.label }}
                 </div>
                 <div class="float_left">
-            <p id="ins_{{ field.name }}" class="instructions italic">
-                 <span id="choice_ds" class="none margin_left_10 italic">
-                        {{ field }}
-                 </span>
-            </p></div>
+                    <p id="ins_{{ field.name }}" class="instructions italic">
+                        <div id="choice_ds" class="none margin_left_10">
+                            {{ field }}
+                            {% include 'project/partials/empty_datasender_tooltip.html' %}
+                        </div>
+                    </p>
+                </div>
                 <span id="tlp1" class="float_left">
                 {% include 'project/partials/tooltip_datasender.html' %}
                 </span>

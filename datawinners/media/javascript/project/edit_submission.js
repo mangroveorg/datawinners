@@ -53,7 +53,7 @@ $(document).ready(function(){
         title: gettext("Change Data Sender"),
         modal: true,
         autoOpen: false,
-        height: 180,
+        height: 'auto',
         width: 550
     });
     popup.parent().appendTo($("#edit_submission_form"));

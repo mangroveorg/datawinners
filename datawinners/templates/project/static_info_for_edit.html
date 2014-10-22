@@ -39,9 +39,10 @@
         {% for field in questionnaire_form %}
             {% if not field.is_hidden %}
                 {% if field.name == 'dsid' %}
-                     <span id="choice_field">
-                            {{ field }}
-                     </span></br>
+                    <div id="choice_field">
+                        {{ field }}
+                        {% include 'project/partials/empty_datasender_tooltip.html' %}
+                    </div></br>
                 {% endif %}
             {% endif %}
         {% endfor %}

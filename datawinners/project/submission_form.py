@@ -1,4 +1,4 @@
-from django.forms import CharField, HiddenInput, ChoiceField
+from django.forms import CharField, HiddenInput, ChoiceField, Select
 from django.forms.forms import Form
 from django.utils.translation import ugettext_lazy as _, gettext
 from mangrove.form_model.field import UniqueIdField
@@ -28,8 +28,10 @@ class BaseSubmissionForm(Form):
 
             if not is_anonymous_submission:
                 required = data is not None and data.has_key("on_behalf_of")
-                self.fields['dsid'] = ChoiceField(label=_('I want to submit this data on behalf of a registered Data Sender'),
-                                          choices=default_choice,required=required, error_messages=error_message)
+                widget = None if len(list_sorted) else Select(attrs={'disabled': 'disabled'})
+                self.fields['dsid'] = ChoiceField(
+                    label=_('I want to submit this data on behalf of a registered Data Sender'),
+                    choices=default_choice, required=required, error_messages=error_message, widget=widget)
 
 
 class SurveyResponseForm(BaseSubmissionForm):
