@@ -92,7 +92,7 @@ class TestRegisteredDataSenders(HeadlessRunnerTest):
         registered_ds_page = self.go_to_registered_datasenders_page("Project having people as subject")
         registered_ds_page.open_setting_popup()
         self.assertEqual(registered_ds_page.get_setting_description(), u"Only Registered People - Data Senders must be registered first before submitting data.")
-        registered_ds_page.set_setting_value("1")
+        registered_ds_page.set_setting_value("open")
         registered_ds_page.save_setting()
         time.sleep(3)
         self.assertEqual(registered_ds_page.get_setting_description(), u"Everyone - Anyone with a simple phone can submit data.")
@@ -104,7 +104,7 @@ class TestRegisteredDataSenders(HeadlessRunnerTest):
         initial_description = registered_ds_page.get_setting_description()
         registered_ds_page.open_setting_popup()
         initial_value = registered_ds_page.get_setting_value()
-        opposite_value = {'1':'', '':'1'}
+        opposite_value = {'open': 'restricted', 'restricted': 'open'}
         registered_ds_page.set_setting_value(opposite_value.get(initial_value))
         self.assertNotEqual(initial_description, registered_ds_page.get_setting_description())
         registered_ds_page.click_cancel_link_on_setting_lightbox()

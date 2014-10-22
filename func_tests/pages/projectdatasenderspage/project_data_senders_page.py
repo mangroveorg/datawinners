@@ -166,10 +166,10 @@ class ProjectDataSendersPage(Page):
         self.driver.find(by_css("#save_ds_setting")).click()
 
     def set_setting_to_open_datasender(self):
-        self.set_setting_value(1)
+        self.set_setting_value("open")
 
     def set_setting_to_only_registered_datasender(self):
-        self.set_setting_value('')
+        self.set_setting_value('restricted')
 
     def get_setting_description(self):
         description_locator = self.driver.find(by_css("#setting_description"))
