@@ -146,6 +146,9 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(send_sms_with(UNAUTHORIZED_DATASENDER),
                          fetch_(ERROR_MSG, from_(UNAUTHORIZED_DATASENDER)))
 
+    def _get_test_paid_org_message_tracker(self, paid_test_org):
+        return paid_test_org._get_message_tracker(datetime.today())
+
     @attr('functional_test')
     def test_should_check_with_right_order(self):
         test_data = MULTIPLE_WRONG_DATA.copy()
@@ -160,15 +163,18 @@ class TestSMSTester(HeadlessRunnerTest):
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("wrcode", "cli002")})
+        count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")
+        self.assertEqual(count_before_submission + 1,
+                         self._get_test_paid_org_message_tracker(paid_test_org).incoming_sms_count)
 
         test_data.update({SENDER: "1234567890"})
-        message_tracker_before = paid_test_org._get_message_tracker(datetime.today())
+        count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
-        message_tracker_after = paid_test_org._get_message_tracker(datetime.today())
-        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
+        self.assertEqual(count_before_submission + 1,
+                         self._get_test_paid_org_message_tracker(paid_test_org).incoming_sms_count)
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("extradata", "")})
@@ -182,7 +188,10 @@ class TestSMSTester(HeadlessRunnerTest):
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("age", "56")})
+        count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Thank you Shweta. We received your SMS.")
+        self.assertEqual(count_before_submission + 1,
+                         self._get_test_paid_org_message_tracker(paid_test_org).incoming_sms_count)
 
 
