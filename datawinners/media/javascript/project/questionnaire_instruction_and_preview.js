@@ -1,12 +1,14 @@
-DW.instruction_and_preview = function (preview_url, preview_navigation_item) {
+DW.instruction_and_preview = function (preview_url, preview_navigation_item, preview_type) {
     this.preview_url = preview_url;
     this.preview_navigation_item = preview_navigation_item;
+    this.preview_type = preview_type;
 };
 
 DW.instruction_and_preview.prototype = {
     bind_preview_navigation_item: function () {
         var that = this;
         $(this.preview_navigation_item).click(function () {
+            DW.trackEvent('questionnaire', that.preview_type + '-preview-clicked');
             DW.instruction_and_preview.remove_sms_questionnaire_print();
             if ($("#questionnaire_preview_instruction").css("display") == "none") {
                 if(!(questionnaireViewModel.validateQuestionnaireDetails() && questionnaireViewModel.validateSelectedQuestion()))
@@ -48,7 +50,7 @@ DW.instruction_and_preview.prototype = {
 
 DW.web_instruction_and_preview = function () {
 };
-DW.web_instruction_and_preview.prototype = new DW.instruction_and_preview(web_preview_link, '.navigation-web-preview');
+DW.web_instruction_and_preview.prototype = new DW.instruction_and_preview(web_preview_link, '.navigation-web-preview', 'web');
 DW.web_instruction_and_preview.prototype.post_callback = function () {
     $("#questionnaire_preview_instruction .help_icon").tooltip({
         position: "top right",
@@ -64,9 +66,9 @@ DW.web_instruction_and_preview.prototype.post_callback = function () {
     }).dynamic({ bottom: { direction: 'down', bounce: true } });
 };
 
-DW.sms_instruction_and_preview = function () {
+DW.sms_instruction_and_preview = function() {
 };
-DW.sms_instruction_and_preview.prototype = new DW.instruction_and_preview(sms_preview_link, '.navigation-sms-preview');
+DW.sms_instruction_and_preview.prototype = new DW.instruction_and_preview(sms_preview_link, '.navigation-sms-preview', 'sms');
 DW.sms_instruction_and_preview.prototype.post_callback = function () {
     var questionnaire = $(".sms-questionnaire").clone();
     questionnaire.addClass("sms-questionnaire");
@@ -75,9 +77,9 @@ DW.sms_instruction_and_preview.prototype.post_callback = function () {
     $("body > div").addClass("none_for_print");
 };
 
-DW.smart_phone_instruction_and_preview = function () {
+DW.smart_phone_instruction_and_preview = function(){
 };
-DW.smart_phone_instruction_and_preview.prototype = new DW.instruction_and_preview(smart_phone_preview_link, '.navigation-smart-phone-preview');
+DW.smart_phone_instruction_and_preview.prototype = new DW.instruction_and_preview(smart_phone_preview_link, '.navigation-smart-phone-preview', 'smart-phone');
 DW.smart_phone_instruction_and_preview.prototype.get_post_data = function () {
     return {};
 };
