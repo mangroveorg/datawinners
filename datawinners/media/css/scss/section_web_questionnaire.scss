@@ -73,3 +73,22 @@ a#cancel_leave{
 #edit_ds_popup #id_dsid{
     margin-top: 10px;
 }
+
+#id_dsid{
+     //border: 0px !important;  /* Removes border */
+  -webkit-appearance: none; /*Removes default chrome and safari style*/
+  -moz-appearance: none; /*Removes default style Firefox*/
+  text-indent: 0.01px;
+  text-overflow: "";
+  width: 190px;
+  height: 23px;
+  background: url('/media/images/arrow_dd.png') no-repeat scroll right -3px;
+  //background-position: 167px -3px;
+  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
+  font-size: 11px !important;
+  margin-left: 0px;
+  padding: 2px;
+  option {
+    margin: 3px;
+  }
+}
