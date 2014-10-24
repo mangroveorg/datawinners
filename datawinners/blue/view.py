@@ -68,7 +68,8 @@ class ProjectUpload(View):
 
             file_errors = _perform_file_validations(request)
             if file_errors:
-                logger.info("User: %s. Upload File validation failed: %s. File name: %s, size: %d", request.user.username,
+                logger.info("User: %s. Upload File validation failed: %s. File name: %s, size: %d",
+                            request.user.username,
                             json.dumps(file_errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
 
                 return HttpResponse(json.dumps({'success': False, 'error_msg': file_errors}),
@@ -197,7 +198,8 @@ class ProjectUpdate(View):
 
             file_errors = _perform_file_validations(request)
             if file_errors:
-                logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d", request.user.username,
+                logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
+                            request.user.username,
                             json.dumps(file_errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
 
                 return HttpResponse(content_type='application/json', content=json.dumps({
@@ -323,7 +325,8 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
             return HttpResponseRedirect(dashboard_page)
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.questionnaire, questionnaire_form,
-                                        self.manager, self.hide_link_class, self.disable_link_class, is_update=is_update)
+                                        self.manager, self.hide_link_class, self.disable_link_class,
+                                        is_update=is_update)
         if self.questionnaire.xform:
             form_context.update(
                 {'xform_xml': re.sub(r"\n", " ", XFormTransformer(self.questionnaire.xform).transform())})
@@ -415,7 +418,8 @@ def new_xform_submission_post(request):
         return HttpResponse(json.dumps({'error_message': e.message}))
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
-        send_email_on_exception(request.user, "New Web Submission", traceback.format_exc())
+        send_email_on_exception(request.user, "New Web Submission", traceback.format_exc(),
+                                additional_details={'submitted-data': request.POST['form_data']})
         return HttpResponseBadRequest()
 
 
@@ -428,7 +432,9 @@ def edit_xform_submission_post(request, survey_response_id):
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
         send_email_on_exception(request.user, "Edit Web Submission", traceback.format_exc(),
-                                additional_details={'survey_response_id': survey_response_id})
+                                additional_details={'survey_response_id': survey_response_id,
+                                                    'submitted-data': request.POST['form_data']
+                                                    })
         return HttpResponseBadRequest()
 
 
@@ -461,6 +467,8 @@ def send_email_on_exception(user, error_type, stack_trace, additional_details=No
     organization = Organization.objects.get(org_id=profile.org_id)
     file_contents = additional_details.pop('file_contents') if additional_details and additional_details.get(
         'file_contents') else None
+    submitted_data = additional_details.pop('submitted-data') if additional_details and additional_details.get(
+        'submitted-data') else None
     email_message += '\nError Scenario : %s (%s)\n' % (organization.name, profile.org_id)
     email_message += '\nOrganization Details : %s (%s)' % (organization.name, profile.org_id)
     email_message += '\nUser Email Id : %s\n' % user.username
@@ -472,6 +480,9 @@ def send_email_on_exception(user, error_type, stack_trace, additional_details=No
 
     if file_contents:
         email.attach("errored_excel.xls", content=file_contents, mimetype='application/ms-excel')
+
+    if submitted_data:
+        email.attach("submitted-data.xml", content=submitted_data, mimetype='text/xml')
 
     email.send()
 
