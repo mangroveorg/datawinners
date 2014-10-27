@@ -6,23 +6,22 @@ from nose.plugins.skip import SkipTest
 from framework.utils.common_utils import by_css, by_id
 
 from framework.utils.data_fetcher import fetch_, from_
-from framework.base_test import setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
 from pages.adddatasenderspage.add_data_senders_locator import NAME_TB, MOBILE_NUMBER_TB, COMMUNE_TB, GPS_TB
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import LoginPage, login
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 
-class TestAllDataSenderRegistration(unittest.TestCase):
+class TestAllDataSenderRegistration(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        login_page.do_successful_login_with(VALID_CREDENTIALS)
+        HeadlessRunnerTest.setUpClass()
+        cls.global_navigation_page = login(cls.driver, VALID_CREDENTIALS)
+
 
     def setUp(self):
         TestAllDataSenderRegistration.driver.refresh()

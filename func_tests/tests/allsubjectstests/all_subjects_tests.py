@@ -2,25 +2,21 @@ from time import sleep
 import unittest
 from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
-from framework.base_test import setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from framework.utils.common_utils import by_id, random_string
 from pages.allsubjectspage.subjects_page import SubjectsPage
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import LoginPage, login
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, url
 from tests.allsubjectstests.all_subjects_data import SUBJECT_TYPE, SUBJECT_TYPE_WHITE_SPACES, ERROR_MSG_INVALID_ENTRY, SUBJECT_TYPE_SPL_CHARS, SUBJECT_TYPE_BLANK, ERROR_MSG_EMPTY_ENTRY
 from tests.logintests.login_data import VALID_CREDENTIALS
 
-class TestSubjectsPage(unittest.TestCase):
+class TestSubjectsPage(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
-        cls.login_with(VALID_CREDENTIALS)
+        HeadlessRunnerTest.setUpClass()
+        cls.global_navigation_page = login(cls.driver, VALID_CREDENTIALS)
 
-    @classmethod
-    def login_with(cls, credential):
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        LoginPage(cls.driver).login_with(credential)
 
     @classmethod
     def tearDownClass(cls):
@@ -29,7 +25,7 @@ class TestSubjectsPage(unittest.TestCase):
     def check_pagination_size(self, subjects_page, size):
         # +1 for the select all hidden row in the beginning of the table
         self.assertTrue(size+1 >= subjects_page.number_of_rows())
-        self.assertEqual(size , subjects_page.selected_page_size())
+        self.assertEqual(size, subjects_page.selected_page_size())
 
 
     def add_subject_type(self, entity_type):

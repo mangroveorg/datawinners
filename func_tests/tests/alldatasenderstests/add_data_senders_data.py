@@ -18,7 +18,7 @@ BLANK_FIELDS = {NAME: "",
                 MOBILE_NUMBER: "",
                 COMMUNE: "",
                 GPS: "",
-                ERROR_MSG: "Name This field is required.Mobile Number This field is required.Name Please fill out at least one location field correctly.GPS Coordinates Find GPS coordinates Please fill out at least one location field correctly."}
+                ERROR_MSG: "This field is required.This field is required.Please fill out at least one location field correctly.Please fill out at least one location field correctly."}
 
 VALID_DATA = {NAME: "ab Mickey Duck",
               MOBILE_NUMBER: random_number(9),
@@ -59,13 +59,13 @@ VALID_DATA_WITHOUT_EMAIL = {NAME: "Mickey Duck",
                             COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                             EMAIL_ADDRESS: "",
                             GPS: "-21.7622088847 48.0690991394",
-                            ERROR_MSG: "Email address This field is required."}
+                            ERROR_MSG: "This field is required."}
 
 EXISTING_DATA = {NAME: "Mickey Mouse",
                  MOBILE_NUMBER: "123-4567-890",
                  COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                  GPS: "-21.7622088847 48.0690991394",
-                 ERROR_MSG: "Mobile Number Sorry, the telephone number 1234567890 has already been registered."}
+                 ERROR_MSG: "Sorry, the telephone number 1234567890 has already been registered."}
 
 WITHOUT_LOCATION_NAME = {NAME: "a Mini Mouse",
                          MOBILE_NUMBER: random_number(),
@@ -83,19 +83,19 @@ INVALID_LATITUDE_GPS = {NAME: "Invalid Latitude GPS",
                         MOBILE_NUMBER: "+673-4568-345",
                         COMMUNE: "",
                         GPS: "123 90",
-                        ERROR_MSG: "GPS Coordinates Find GPS coordinates Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
+                        ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
 
 INVALID_LONGITUDE_GPS = {NAME: "Invalid Longitude GPS",
                          MOBILE_NUMBER: "(73)456-834-56",
                          COMMUNE: "",
                          GPS: "23 190",
-                         ERROR_MSG: "GPS Coordinates Find GPS coordinates Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
+                         ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
 
 INVALID_GPS = {NAME: "Invalid GPS with Semi-Colon",
                MOBILE_NUMBER: "7345abc456",
                COMMUNE: "",
                GPS: "23; 10",
-               ERROR_MSG: u"Mobile Number Please enter a valid phone number.GPS Coordinates Find GPS coordinates Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
+               ERROR_MSG: 'Please enter a valid phone number.Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315'}
 
 INVALID_GPS_WITH_COMMA = {NAME: "Invalid GPS With Comma",
                           MOBILE_NUMBER: "7348457456",
@@ -107,7 +107,7 @@ WITH_UNICODE_IN_GPS = {NAME: "Unicode in GPS",
                        MOBILE_NUMBER: "567!@#$834",
                        COMMUNE: "",
                        GPS: u"23º 45",
-                       ERROR_MSG: "Mobile Number Please enter a valid phone number.GPS Coordinates Find GPS coordinates Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
+                       ERROR_MSG: "Please enter a valid phone number.Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
 
 VALID_DATA_FOR_LONG_UID = {NAME: "Donald Duck",
                            MOBILE_NUMBER: "261336231",
