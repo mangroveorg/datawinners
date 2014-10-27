@@ -72,7 +72,6 @@ $(document).ready(function(){
         change_ds_dropdown.val(datasender_id);
         $("#edit_ds_popup").dialog("close");
     });
-    $('#id_dsid option:selected').addClass("margin_top_20")
     $("#save_ds").bind("click", function(){
         selected_ds = $('#id_dsid option:selected').text();
         selected_ds_split = selected_ds.split("  ");
