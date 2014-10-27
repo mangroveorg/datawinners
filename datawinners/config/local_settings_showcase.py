@@ -47,3 +47,4 @@ MAX_FEED_ENTRIES=10000
 VUMI_API_URL = "http://localhost/smstester/vumi-stub"
 
 GOOGLE_MAPS_ENABLED = True
+GOOGLE_ANALYTICS_ENABLED = True
