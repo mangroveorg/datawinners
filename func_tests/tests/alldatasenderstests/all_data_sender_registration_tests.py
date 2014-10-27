@@ -3,7 +3,7 @@ import time
 
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
-from framework.utils.common_utils import by_css
+from framework.utils.common_utils import by_css, by_id
 
 from framework.utils.data_fetcher import fetch_, from_
 from framework.base_test import setup_driver, teardown_driver
@@ -16,7 +16,6 @@ from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 
-@SkipTest # Skipped since datasender registration form is now a popup and the page current page is testing is no longer used
 class TestAllDataSenderRegistration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -28,6 +27,7 @@ class TestAllDataSenderRegistration(unittest.TestCase):
     def setUp(self):
         TestAllDataSenderRegistration.driver.refresh()
         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
+        self.driver.find(by_id("register_link")).click()
         self.current_page = AddDataSenderPage(self.driver)
 
     @classmethod
@@ -125,7 +125,6 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         add_data_sender_page.enter_data_sender_details_from(WITH_UNICODE_IN_GPS)
         self.assertEqual(add_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(WITH_UNICODE_IN_GPS)))
 
-    @SkipTest
     def test_addition_of_data_sender_with_invalid_gps_with_comma(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(INVALID_GPS_WITH_COMMA)

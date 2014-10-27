@@ -98,10 +98,10 @@ INVALID_GPS = {NAME: "Invalid GPS with Semi-Colon",
                ERROR_MSG: u"Mobile Number Please enter a valid phone number.GPS Coordinates Find GPS coordinates Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
 
 INVALID_GPS_WITH_COMMA = {NAME: "Invalid GPS With Comma",
-                          MOBILE_NUMBER: "734ABCD456",
+                          MOBILE_NUMBER: "7348457456",
                           COMMUNE: "",
-                          GPS: "23,10",
-                          ERROR_MSG: "Mobile Number Please enter a valid phone number.Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
+                          GPS: "23",
+                          ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
 
 WITH_UNICODE_IN_GPS = {NAME: "Unicode in GPS",
                        MOBILE_NUMBER: "567!@#$834",

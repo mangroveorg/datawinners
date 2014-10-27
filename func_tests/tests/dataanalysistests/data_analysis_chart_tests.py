@@ -9,7 +9,7 @@ from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import PROJECT_NAME, DEFAULT_DATA_FOR_QUESTIONNAIRE, DAILY_DATE_RANGE
 from tests.dataextractionapitests.data_extraction_api_data import VALID_CREDENTIALS
-
+#We will test this when we play any story or fix bugs doing charting
 @SkipTest
 class TestDataAnalysisChart(BaseTest):
     @classmethod
@@ -40,7 +40,7 @@ class TestDataAnalysisChart(BaseTest):
     def _go_to_chart_view(self, project_name = fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
         analysis_page = self.go_to_analysis_page(project_name)
         analysis_page.go_to_chart_view()
-        return analysis_page;
+        return analysis_page
 
     def _filter_data_of_today(self, end_date):
         analysis_page = self._go_to_chart_view()
@@ -50,7 +50,7 @@ class TestDataAnalysisChart(BaseTest):
         analysis_page.select_date_range(today.year, today.month, today.day, end_date.year, end_date.month, end_date.day)
         time.sleep(1)
         analysis_page.click_go_button()
-        return analysis_page;
+        return analysis_page
 
     def test_should_return_chart_info_when_there_are_mc_questions_and_submissions(self):
         expected = "View charts of your multiple choice questions."

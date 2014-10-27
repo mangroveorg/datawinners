@@ -280,7 +280,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self.assertFalse(is_visible, "Max length error message should not be displayed for valid length")
 
 
-    @SkipTest
+    # @SkipTest
     def test_successful_questionnaire_editing(self):
         """
         Function to test the successful editing of a Questionnaire with given details

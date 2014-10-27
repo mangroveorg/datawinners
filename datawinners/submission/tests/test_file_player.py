@@ -31,7 +31,7 @@ class FilePlayerTest(unittest.TestCase):
     def setUp(self):
         organization = Organization.objects.get(pk=DEFAULT_TEST_ORG_ID)
         self.manager = utils.get_database_manager_for_org(organization)
-    @SkipTest
+
     def test_should_import_xls_file(self):
         self._init_xls_data()
         self._build_fixtures()
@@ -66,7 +66,7 @@ class FilePlayerTest(unittest.TestCase):
 
         try:
             self.form_model = EntityFormModel(self.manager, entity_type=entity_type, name='form_model_name', label='form_model_label',
-                                        form_code='clf12', type='form_model_type',  fields=fields, is_registration_model=True)
+                                        form_code='clf12',  fields=fields, is_registration_model=True)
             form_model_id = self.form_model.save()
             self.form_model = FormModel.get(self.manager, form_model_id)
         except DataObjectAlreadyExists:
