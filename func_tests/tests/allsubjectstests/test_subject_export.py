@@ -3,14 +3,15 @@ import random
 import tempfile
 import unittest
 import uuid
-
 from django.test import Client
+
 from nose.plugins.attrib import attr
 import xlrd
+from framework.base_test import HeadlessRunnerTest
 
 
 @attr('functional_test')
-class TestSubjectExport(unittest.TestCase):
+class TestSubjectExport(HeadlessRunnerTest):
 
     def setUp(self):
         self.client = Client()

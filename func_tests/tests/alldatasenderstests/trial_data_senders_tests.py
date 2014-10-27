@@ -57,7 +57,7 @@ class TestTrialDataSenders(HeadlessRunnerTest):
         self.driver.go_to(LOGOUT)
         add_data_sender_page = self.add_trial_organization_with_data_sender()
         self.assertEqual(
-            "Mobile Number Sorry, this number has already been used for a different DataWinners Basic account.",
+            "Sorry, this number has already been used for a different DataWinners Basic account.",
             add_data_sender_page.get_error_message())
 
 
