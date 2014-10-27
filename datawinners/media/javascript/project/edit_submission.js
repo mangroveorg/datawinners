@@ -72,9 +72,9 @@ $(document).ready(function(){
         change_ds_dropdown.val(datasender_id);
         $("#edit_ds_popup").dialog("close");
     });
-    $('#choice_field span select#id_dsid option:selected').addClass("margin_top_20")
+    $('#id_dsid option:selected').addClass("margin_top_20")
     $("#save_ds").bind("click", function(){
-        selected_ds = $('#edit_ds_popup span select#id_dsid option:selected').text();
+        selected_ds = $('#id_dsid option:selected').text();
         selected_ds_split = selected_ds.split("  ");
         datasender_name = selected_ds_split[0].replace(/^\w/, function($0) { return $0.toUpperCase(); });
         datasender_id = selected_ds_split[1].replace(')','').replace('(','')
