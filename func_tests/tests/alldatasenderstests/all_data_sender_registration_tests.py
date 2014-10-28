@@ -152,27 +152,27 @@ class TestAllDataSenderRegistration(HeadlessRunnerTest):
     @attr('functional_test')
     def test_edit_datasender_should_populate_all_fields_properly(self):
         add_data_sender_page = self.current_page
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL)
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL_TO_EDIT_A_DATASENDER)
         success_msg = self.current_page.get_success_message()
         rep_id = self._parse(success_msg)
         self.assertRegexpMatches(success_msg,
-                                 fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL)))
+                                 fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL_TO_EDIT_A_DATASENDER)))
 
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_datasender_page = AllDataSendersPage(self.driver)
         edit_datasender_page = all_datasender_page.edit_datasender(rep_id)
 
-        self.assert_fields_are_populated_properly_in_edit_page(VALID_DATA_WITH_EMAIL)
+        self.assert_fields_are_populated_properly_in_edit_page(VALID_DATA_WITH_EMAIL_TO_EDIT_A_DATASENDER)
 
-        edit_datasender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL_EDITED)
+        edit_datasender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL_OF_A_DATASENDER_EDITED)
         self.assertRegexpMatches(edit_datasender_page.get_success_message(),
-                                 fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL_EDITED)))
+                                 fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL_OF_A_DATASENDER_EDITED)))
 
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_datasender_page = AllDataSendersPage(self.driver)
         all_datasender_page.edit_datasender(rep_id)
 
-        self.assert_fields_are_populated_properly_in_edit_page(VALID_DATA_WITH_EMAIL_EDITED)
+        self.assert_fields_are_populated_properly_in_edit_page(VALID_DATA_WITH_EMAIL_OF_A_DATASENDER_EDITED)
 
      # @attr('functional_test')
 #     def test_should_uncheck_reporter_id_checkbox_if_user_has_given_id(self):
