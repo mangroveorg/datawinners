@@ -2,9 +2,8 @@
 import os
 import unittest
 
-from django.utils.unittest.case import SkipTest
 import xlwt
-
+from django.test import TestCase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel, EntityFormModel
 from datawinners import utils
@@ -27,7 +26,11 @@ UPLOAD_DATA = """
 
                                 clf12,14,205,Dr. E,CLP005
 """
-class FilePlayerTest(unittest.TestCase):
+
+class FilePlayerTest(TestCase):
+
+    fixtures = ['test_data.json']
+
     def setUp(self):
         organization = Organization.objects.get(pk=DEFAULT_TEST_ORG_ID)
         self.manager = utils.get_database_manager_for_org(organization)
