@@ -2,6 +2,7 @@
 import os
 import unittest
 from unittest import SkipTest
+from nose.plugins.attrib import attr
 import xlwt
 from django.test import TestCase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -26,7 +27,7 @@ UPLOAD_DATA = """
 
                                 clf12,14,205,Dr. E,CLP005
 """
-@SkipTest
+
 class FilePlayerTest(TestCase):
 
     fixtures = ['test_data.json']
@@ -35,6 +36,7 @@ class FilePlayerTest(TestCase):
         organization = Organization.objects.get(pk=DEFAULT_TEST_ORG_ID)
         self.manager = utils.get_database_manager_for_org(organization)
 
+    @attr('functional_test')
     def test_should_import_xls_file(self):
         self._init_xls_data()
         self._build_fixtures()
