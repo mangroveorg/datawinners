@@ -27,7 +27,6 @@ UPLOAD_DATA = """
 
                                 clf12,14,205,Dr. E,CLP005
 """
-@SkipTest
 class FilePlayerTest(unittest.TestCase):
     def setUp(self):
         organization = Organization.objects.get(pk=DEFAULT_TEST_ORG_ID)
