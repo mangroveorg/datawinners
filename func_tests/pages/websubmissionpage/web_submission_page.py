@@ -1,3 +1,5 @@
+import new
+from selenium.webdriver.support.select import Select
 from pages.datasenderpage.data_sender_locator import SMARTPHONE_NAV
 from pages.page import Page
 from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage
@@ -94,3 +96,20 @@ class WebSubmissionPage(Page):
 
     def get_text_value(self, qcode):
         return self.driver.find(by_css("input#id_%s" % qcode)).get_attribute('value')
+
+    def click_on_change_ds_link(self):
+        self.driver.find(by_id('change_ds_link')).click()
+
+    def change_datasender(self, datasender):
+        dropDownListBox = self.driver.find(by_id("id_dsid"))
+        clickThis = Select(dropDownListBox)
+        clickThis.select_by_value(datasender)
+        # self.driver.find(by_id("id_dsid")).click()
+        # self.driver.find(by_name(datasender)).click()
+
+
+    def select_checkbox_to_submit_on_behalf(self):
+        self.driver.find(by_id('on_behalf_of')).click()
+
+    def save_change_datasender(self):
+        self.driver.find(by_id('save_ds')).click()

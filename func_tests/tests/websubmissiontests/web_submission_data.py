@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners.messageprovider.tests.test_message_handler import THANKS
+from framework.utils.common_utils import by_css
 
 PROJECT_NAME = "project_name"
 QCODE = 'qcode'
@@ -13,6 +14,20 @@ SENDER = "from"
 RECEIVER = "to"
 SMS = "sms"
 SUCCESS_MESSAGE = "success_message"
+GEN_RANDOM = "gen_random"
+QUESTIONNAIRE_CODE = "questionnaire_code"
+
+NEW_PROJECT_DATA = {PROJECT_NAME: "SubmitDataOnBehalfOf", GEN_RANDOM: True}
+QUESTION = "question"
+QUESTIONS = "questions"
+CODE = "code"
+MIN = "min"
+MAX = "max"
+NUMBER = "number"
+
+QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "Sub", GEN_RANDOM: True,
+                      QUESTIONS: [{QUESTION: "Number of Docs", TYPE: NUMBER, MIN: "1", MAX: "10"}]}
+
 
 VALID_ANSWERS = [
     {QCODE: 'eid', ANSWER: 'Indore Clinic', TYPE: SELECT},
@@ -38,3 +53,12 @@ DEFAULT_ORG_DATA = {
 TRIAL_ORG_DATA = {
     PROJECT_NAME: 'FILL ME IN!'
 }
+
+VALID_ANSWER = [
+    {QCODE: 'q2', ANSWER: '5', TYPE: TEXT}]
+
+EDIT_BUTTON = by_css(".edit")
+
+EDITED_ANSWERS = [
+    {QCODE: 'q2', ANSWER: '4', TYPE: TEXT}]
+
