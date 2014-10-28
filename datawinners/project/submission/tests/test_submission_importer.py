@@ -112,9 +112,8 @@ class TestSubmissionPersister(TestCase):
 
                     submission_persister.save_submissions(True, user_profile, valid_rows)
 
-                    service.save_survey.assert_called_with("form_code", valid_row, [],
-                                                           transport_info, valid_row, expected_reporter_id,
-                                                           additional_feed_dictionary)
+                    service.save_survey.assert_called_with("form_code", valid_row, [], transport_info,
+                                                           expected_reporter_id, additional_feed_dictionary)
 
 
 class SubmissionParserTest(TestCase):

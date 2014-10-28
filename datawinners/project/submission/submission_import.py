@@ -120,7 +120,7 @@ class SubmissionPersister():
         additional_feed_dictionary = get_feed_dictionary(self.form_model)
         transport_info = get_web_transport_info(self.user.username)
         return service.save_survey(self.form_model.form_code, valid_row, [],
-                                   transport_info, valid_row, valid_row.get('dsid'), additional_feed_dictionary)
+                                   transport_info, valid_row.get('dsid'), additional_feed_dictionary)
 
 
 class SubmissionWorkbookValidator():
