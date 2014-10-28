@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
 import unittest
-
+from unittest import SkipTest
 import xlwt
 from django.test import TestCase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -26,7 +26,7 @@ UPLOAD_DATA = """
 
                                 clf12,14,205,Dr. E,CLP005
 """
-
+@SkipTest
 class FilePlayerTest(TestCase):
 
     fixtures = ['test_data.json']
