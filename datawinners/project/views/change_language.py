@@ -12,8 +12,9 @@ from datawinners.accountmanagement.decorators import session_not_expired, is_dat
 from datawinners.common.lang.utils import get_available_project_languages
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import is_project_exist
-from datawinners.project.models import Project
 from datawinners.project.utils import make_project_links
+from mangrove.form_model.project import Project
+
 
 class QuestionnaireLanguageView(TemplateView):
     template_name = 'project/project_language_selection.html'

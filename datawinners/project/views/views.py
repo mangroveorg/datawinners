@@ -29,6 +29,7 @@ from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjec
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER, header_fields, get_form_code_by_entity_type
+from mangrove.form_model.project import Project
 from mangrove.transport.player.player import WebPlayer
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
@@ -57,7 +58,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm, OpenDsBroadcastMessageForm
-from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project
+from datawinners.project.models import Reminder, ReminderMode, get_all_reminder_logs_for_project
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, viewable_questionnaire, initialize_values, get_example_sms_message, get_example_sms

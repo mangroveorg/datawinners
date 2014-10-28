@@ -15,7 +15,7 @@ from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
 from datawinners.entity.subject_template_validator import SubjectTemplateValidator
-from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, entity_type_as_sequence, get_organization_telephone_number
+from datawinners.entity.helper import get_country_appended_location, entity_type_as_sequence, get_organization_telephone_number
 
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
 from datawinners.location.LocationTree import get_location_tree
@@ -26,6 +26,7 @@ from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatExcept
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, \
     NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD
+from mangrove.form_model.project import get_entity_type_fields, tabulate_data
 from mangrove.transport.player.parser import CsvParser, XlsParser, XlsDatasenderParser
 from mangrove.transport.contract.transport_info import Channel
 from mangrove.transport.contract.response import Response

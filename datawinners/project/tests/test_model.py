@@ -6,10 +6,11 @@ from mangrove.datastore.documents import FormModelDocument
 from mock import Mock, patch
 
 from mangrove.datastore.cache_manager import get_cache_manager
+from mangrove.form_model.project import Project
 from mangrove.utils.test_utils.database_utils import uniq
 from mangrove.bootstrap import initializer
 from datawinners.main.utils import create_views
-from datawinners.project.models import Project, get_all_projects, get_simple_project_names
+from datawinners.project.models import get_all_projects, get_simple_project_names
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import TextField, UniqueIdField
@@ -139,8 +140,8 @@ class TestProjectModel(unittest.TestCase):
         questionnaire.data_senders = ["rep1", "rep2", "rep3", "rep4", "rep5"]
         dbm = Mock(spec=DatabaseManager)
 
-        with patch("datawinners.project.models.get_reporters_who_submitted_data_for_frequency_period") as get_reporters_who_submitted_data_for_frequency_period_mock:
-            with patch("datawinners.project.models.load_data_senders") as load_data_senders_mock:
+        with patch("mangrove.form_model.project.get_reporters_who_submitted_data_for_frequency_period") as get_reporters_who_submitted_data_for_frequency_period_mock:
+            with patch("mangrove.form_model.project.load_data_senders") as load_data_senders_mock:
                 load_data_senders_mock.return_value = (
                 [{"cols": ["%s" % rep, rep], "short_code": "%s" % rep}  for rep in questionnaire.data_senders], ["short_code", "mobile_number"],
                 ["What is DS Unique ID", "What is DS phone number"])

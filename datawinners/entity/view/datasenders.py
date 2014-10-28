@@ -20,7 +20,6 @@ from datawinners.entity.helper import _get_data, update_data_sender_from_trial_o
 from datawinners.entity.views import create_single_web_user
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
-from datawinners.project.models import Project
 from datawinners.project.view_models import ReporterEntity
 from datawinners.search.submission_index import update_submission_search_for_datasender_edition
 from datawinners.submission.location import LocationBridge
@@ -28,6 +27,7 @@ from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import Request, TransportInfo
+from mangrove.form_model.project import Project
 from mangrove.transport.player.player import WebPlayer
 
 

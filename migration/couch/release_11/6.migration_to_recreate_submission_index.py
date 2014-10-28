@@ -3,11 +3,11 @@ import logging
 from mangrove.datastore.documents import FormModelDocument, SurveyResponseDocument, ProjectDocument
 
 from datawinners.main.couchdb.utils import all_db_names
-from datawinners.project.models import Project
 from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.search import form_model_change_handler
 from datawinners.main.database import get_db_manager
 from datawinners.search.submission_index import _update_with_form_model_fields, _meta_fields
+from mangrove.form_model.project import Project
 from migration.couch.utils import migrate, mark_as_completed
 
 

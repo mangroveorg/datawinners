@@ -5,10 +5,10 @@ from mock import Mock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField, UniqueIdField, ShortCodeField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, EntityFormModel
-from datawinners.project.models import Project
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project.submission_form import SurveyResponseForm
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, WebForm
+from mangrove.form_model.project import Project
 
 
 class TestWebForm(TestCase):

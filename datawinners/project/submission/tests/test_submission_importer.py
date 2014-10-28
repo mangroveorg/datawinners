@@ -2,11 +2,11 @@ from unittest import TestCase
 import unittest
 from django.contrib.auth.models import User
 from mock import patch, Mock, MagicMock
-from datawinners.project.models import Project
 from datawinners.project.submission.submission_import import SubmissionPersister, SubmissionWorkbookValidator, SubmissionWorkbookMapper, ImportValidationError
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField, UniqueIdField
 from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.project import Project
 
 
 class TestSubmissionPersister(TestCase):

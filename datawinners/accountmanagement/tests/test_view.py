@@ -1,14 +1,9 @@
 import unittest
 from django.test import TestCase
 
-from django_digest.test import Client
-from mock import Mock, patch, PropertyMock, MagicMock
-from django.contrib.auth.models import User
-from django.http import HttpRequest
-from datawinners.accountmanagement.helper import get_all_users_for_organization
-from datawinners.project.models import Project
-from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_PASSWORD
-from datawinners.accountmanagement.views import users, associate_user_with_existing_project
+from mock import Mock, patch, MagicMock
+from datawinners.accountmanagement.views import associate_user_with_existing_project
+from mangrove.form_model.project import Project
 
 
 class TestUserActivityLogDetails(TestCase):

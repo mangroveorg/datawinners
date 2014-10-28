@@ -1,6 +1,6 @@
 from datawinners.common.lang.utils import questionnaire_customized_message_details, account_wide_customized_message_details
-from datawinners.project.models import Project
 from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel
+from mangrove.form_model.project import Project
 
 
 def _replace_placeholders_in_message(message, placeholder_dict):

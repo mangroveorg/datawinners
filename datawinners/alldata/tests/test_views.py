@@ -6,7 +6,7 @@ from mock import Mock, patch
 from mangrove.datastore.database import DatabaseManager
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.alldata.views import  get_project_info
-from datawinners.project.models import Project
+from mangrove.form_model.project import Project
 
 
 class TestViews(TestCase):

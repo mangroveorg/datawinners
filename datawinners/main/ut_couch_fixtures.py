@@ -11,11 +11,12 @@ from datawinners import initializer
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER, NGOUserProfile
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.main.management.commands.utils import TEST_EMAILS
-from datawinners.project.models import Project, Reminder, ReminderMode
+from datawinners.project.models import Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.initial_template_creation import create_questionnaire_templates
+from mangrove.form_model.project import Project
 from mangrove.form_model.validators import UniqueIdExistsValidator
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField, UniqueIdField

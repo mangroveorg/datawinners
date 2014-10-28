@@ -1,20 +1,15 @@
 import json
 
-from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.common.authorization import is_data_sender
-from datawinners.project.models import Project
 from mangrove.form_model.form_model import FormModel
 
-from datawinners import settings
 from datawinners.accountmanagement.decorators import valid_web_user
 from datawinners.entity.helper import get_organization_telephone_number
 from datawinners.entity.views import get_example_sms
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import  get_preview_for_field
-from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project.submission_form import SurveyResponseForm
 from datawinners.project.wizard_view import create_questionnaire
 

@@ -1,11 +1,11 @@
 import unittest
 from django.forms import ChoiceField
 from mock import Mock, PropertyMock, patch, MagicMock
-from datawinners.project.models import Project
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import IntegerField, DateField, GeoCodeField, TextField, UniqueIdField
 from datawinners.project.submission_form import SurveyResponseForm
+from mangrove.form_model.project import Project
 
 
 class TestSubmissionForm(unittest.TestCase):

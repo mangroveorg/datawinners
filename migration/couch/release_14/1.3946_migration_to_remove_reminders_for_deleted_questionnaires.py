@@ -2,8 +2,9 @@ import logging
 
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.database import get_db_manager
-from datawinners.project.models import Reminder, Project
+from datawinners.project.models import Reminder
 from mangrove.errors.MangroveException import DataObjectNotFound
+from mangrove.form_model.project import Project
 from migration.couch.utils import migrate, mark_as_completed
 
 

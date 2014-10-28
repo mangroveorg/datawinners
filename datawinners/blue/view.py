@@ -4,6 +4,7 @@ import os
 import re
 from tempfile import NamedTemporaryFile
 import traceback
+from datawinners import settings
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -16,36 +17,33 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt,
 from django.views.generic.base import View
 from django.template.defaultfilters import slugify
 from pyxform.errors import PyXFormError
-import xlwt
+from django.core.mail import EmailMessage
+from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
+    get_generated_xform_id_name
+from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
+from django.utils.translation import ugettext as _
+
 from datawinners.accountmanagement.models import Organization
 from datawinners.blue.error_translation_utils import transform_error_message, translate_odk_message
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
-from django.core.mail import EmailMessage
-
 from datawinners.feeds.database import get_feeds_database
 from datawinners.search.submission_index import SubmissionSearchStore
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
-from datawinners import settings
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
-from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
-    XlsProjectParser, get_generated_xform_id_name
-from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, is_project_exist
-from datawinners.project.models import Project
 from datawinners.project.utils import is_quota_reached
 from datawinners.project.views.utils import get_form_context
 from datawinners.project.views.views import SurveyWebQuestionnaireRequest
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from datawinners.utils import workbook_add_sheet
 from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
     survey_responses_by_form_model_id
 from mangrove.utils.dates import py_datetime_to_js_datestring
-from django.utils.translation import ugettext as _
 
 
 logger = logging.getLogger("datawinners.xls-questionnaire")

@@ -9,7 +9,8 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.local_settings import CRS_ORG_ID
 from datawinners.main.database import get_database_manager
-from datawinners.project.models import get_all_projects, Project
+from datawinners.project.models import get_all_projects
+from mangrove.form_model.project import Project
 
 
 logger = logging.getLogger("django")

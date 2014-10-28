@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import date
 from unittest import TestCase
-from datawinners.scheduler.deadline import Deadline, Month, Week, NotADeadLine
+from mangrove.form_model.deadline import Deadline, Month, Week, NotADeadLine
 
 
 class TestDeadline(TestCase):
@@ -172,14 +172,6 @@ class TestDeadline(TestCase):
     def test_should_get_applicapable_frequency_only_if_given_date_is_a_monthly_deadline(self):
         deadline = Deadline(frequency=Month(2),mode="Following")
         self.assertRaises(  NotADeadLine , deadline.get_applicable_frequency_period_for,date(2011,9,14))
-
-    def test_should_return_description_of_monthly_deadline_in_that_mode(self):
-        deadline = Deadline(frequency=Month(2),mode="That")
-        self.assertEqual('2nd of the Month',deadline.description())
-
-    def test_should_return_description_of_monthly_deadline_in_following_mode(self):
-        deadline = Deadline(frequency=Month(2),mode="Following")
-        self.assertEqual('2nd of the Following Month',deadline.description())
 
     def test_should_return_description_of_weekly_deadline_in_that_mode(self):
         deadline = Deadline(frequency=Week(1),mode="That")

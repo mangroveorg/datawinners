@@ -1,11 +1,11 @@
 from collections import OrderedDict
 from string import lower
 import elasticutils
-from datawinners.entity.helper import get_entity_type_fields, tabulate_data
 from datawinners.search.submission_index_meta_fields import submission_meta_field_names
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import DateField
+from mangrove.form_model.project import get_entity_type_fields, tabulate_data
 
 
 def _add_date_field_mapping(mapping_fields, field_def):

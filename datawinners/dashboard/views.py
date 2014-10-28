@@ -16,9 +16,8 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
-from datawinners.project.models import Project
 from datawinners.utils import get_map_key
-from django.utils.translation import get_language
+from mangrove.form_model.project import Project
 
 
 def _find_reporter_name(dbm, row):

@@ -32,7 +32,6 @@ from datawinners.accountmanagement.forms import OrganizationForm, UserProfileFor
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, \
     DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for
 from datawinners.project.models import get_all_projects, delete_datasenders_from_project
-from datawinners.project.models import Project
 from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS
@@ -40,6 +39,8 @@ from datawinners.entity.helper import delete_datasender_for_trial_mode, \
     delete_datasender_users_if_any, delete_entity_instance
 from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
+from mangrove.form_model.project import Project
+
 
 def registration_complete(request):
     return render_to_response('registration/registration_complete.html')

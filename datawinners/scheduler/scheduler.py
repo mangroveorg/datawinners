@@ -4,11 +4,12 @@ from datetime import date, datetime
 import logging
 
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
-from datawinners.project.models import Project, get_reminder_repository
+from datawinners.project.models import get_reminder_repository
 from datawinners.scheduler.smsclient import SMSClient
 from datawinners.main.database import get_db_manager
 from dateutil.relativedelta import relativedelta
 from datawinners.accountmanagement.utils import RELATIVE_DELTA_BY_EMAIL_TYPE
+from mangrove.form_model.project import Project
 
 
 logger = logging.getLogger("datawinners.reminders")

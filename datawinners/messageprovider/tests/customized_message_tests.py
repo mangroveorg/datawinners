@@ -1,8 +1,8 @@
 from unittest import TestCase
 from mock import patch, Mock, MagicMock
 from datawinners.messageprovider.handlers import success_questionnaire_submission_handler
-from datawinners.project.models import Project
 from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.project import Project
 
 
 class TestSuccessfulSubmissionReplyMessage(TestCase):

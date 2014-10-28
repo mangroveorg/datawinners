@@ -1,13 +1,12 @@
 from nose.plugins.attrib import attr
 from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.data_fetcher import fetch_, from_
+from mangrove.form_model.project import Project
 from pages.loginpage.login_page import login
-from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from tests.projects.customizedreplysmstests.customized_reply_sms_data import PROJECT_DATA, PROJECT_QUESTIONNAIRE_DATA
 from framework.utils.database_manager_postgres import DatabaseManager
 from tests.logintests.login_data import *
 from mangrove.form_model.form_model import get_form_model_by_code
-from datawinners.project.models import Project
 from datawinners.main.database import get_db_manager
 
 
