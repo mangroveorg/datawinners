@@ -17,6 +17,7 @@ from framework.utils.common_utils import *
 LOCATOR = "locator"
 BY = "by"
 
-PROJECT_LINK_XPATH = "//a[@class='project-id-class ' and text()='%s']"
+# PROJECT_LINK_XPATH = '//a[@class="project-id-class" and text()="%s"]'
+PROJECT_LINK_XPATH = '//table//tr//td//a[text()="%s"]'
 ALL_PROJECTS_TABLE_LINK = by_css("table")
 CREATE_A_NEW_PROJECT_LINK = by_id("create_project_link")

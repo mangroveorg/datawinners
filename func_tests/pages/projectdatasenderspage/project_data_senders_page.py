@@ -61,6 +61,11 @@ class ProjectDataSendersPage(Page):
         self.driver.wait_for_element(WAIT, by_css("#datasender_table_wrapper .success-message-box"),True)
         return self
 
+    def perform_datasender_action_to_dissociate(self):
+        self.driver.find(ACTION_DROP_DOWN).click()
+        option = self.driver.find_visible_element(by_css(".remove.from.questionnaire"))
+        option.click()
+
     def perform_datasender_action(self, locator):
         self.driver.find(ACTION_DROP_DOWN).click()
         option = self.driver.find_visible_element(locator)
@@ -113,8 +118,18 @@ class ProjectDataSendersPage(Page):
     def is_none_selected_shown(self):
         return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()
 
+    def select_a_data_sender_by_id(self, data_sender_id):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id),
+                                     True)
+
+        self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
+
     def actions_menu_shown(self):
         return self.driver.find(ACTION_MENU).is_displayed()
+
+    def is_edit_disabled(self):
+        class_name = self.driver.find(by_xpath(".//a[contains(@class,'edit')]/..")).get_attribute("class")
+        return class_name.find('disabled') > 0
 
     def click_checkall_checkbox(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CHECKALL_CB, True)

@@ -25,7 +25,6 @@ class TestRegisteredDataSenders(HeadlessRunnerTest):
         project_overview_page = all_project_page.navigate_to_project_overview_page(project_name)
         return project_overview_page.navigate_to_datasenders_page()
 
-    @SkipTest
     @attr("functional_test")
     def test_should_load_actions_dynamically(self):
         registered_ds_page = self.go_to_registered_datasenders_page()
@@ -42,14 +41,12 @@ class TestRegisteredDataSenders(HeadlessRunnerTest):
 
     def assert_none_selected_shown(self, registered_ds_page):
         self.assertTrue(registered_ds_page.is_none_selected_shown())
-        self.assertFalse(registered_ds_page.actions_menu_shown())
 
     def assert_action_menu_shown_for(self, registered_ds_page):
         self.assertFalse(registered_ds_page.is_none_selected_shown())
         self.assertTrue(registered_ds_page.actions_menu_shown())
         self.assertFalse(registered_ds_page.is_edit_disabled())
 
-    @SkipTest
     @attr("functional_test")
     def test_should_check_all_checkboxes_following_master_cb(self):
         registered_ds_page = self.go_to_registered_datasenders_page()
@@ -62,7 +59,6 @@ class TestRegisteredDataSenders(HeadlessRunnerTest):
         registered_ds_page.click_checkall_checkbox()
         self.assertEqual(registered_ds_page.get_number_of_selected_datasenders(), 0)
 
-    @SkipTest
     @attr("functional_test")
     def test_should_uncheck_checkall_if_one_cb_is_unchecked(self):
         registered_ds_page = self.go_to_registered_datasenders_page()
@@ -73,13 +69,12 @@ class TestRegisteredDataSenders(HeadlessRunnerTest):
         registered_ds_page.select_a_data_sender_by_id("rep3")
         self.assertTrue(registered_ds_page.is_checkall_checked())
 
-    @SkipTest
     @attr("functional_test")
     def test_should_disable_checkall_cb_if_there_is_no_ds(self):
-        registered_ds_page = self.go_to_registered_datasenders_page("project having people as subject")
+        registered_ds_page = self.go_to_registered_datasenders_page("Project having people as subject")
         if registered_ds_page.is_checkall_enabled():
             registered_ds_page.click_checkall_checkbox()
-            registered_ds_page.perform_datasender_action("disassociate")
+            registered_ds_page.perform_datasender_action_to_dissociate()
         for try_count in range(1,7):
             check_all_enabled = registered_ds_page.is_checkall_enabled()
             if not check_all_enabled: break;
@@ -91,11 +86,12 @@ class TestRegisteredDataSenders(HeadlessRunnerTest):
     def test_should_save_changed_setting(self):
         registered_ds_page = self.go_to_registered_datasenders_page("Project having people as subject")
         registered_ds_page.open_setting_popup()
-        self.assertEqual(registered_ds_page.get_setting_description(), u"Only Registered People - Data Senders must be registered first before submitting data.")
-        registered_ds_page.set_setting_value("open")
+        registered_ds_page.set_setting_value('open')
+        self.assertEqual(registered_ds_page.get_setting_description(), u"Everyone - Anyone with a simple phone can submit data.")
+        registered_ds_page.set_setting_value("restricted")
         registered_ds_page.save_setting()
         time.sleep(3)
-        self.assertEqual(registered_ds_page.get_setting_description(), u"Everyone - Anyone with a simple phone can submit data.")
+        self.assertEqual(registered_ds_page.get_setting_description(), u"Only Registered People - Data Senders must be registered first before submitting data.")
 
 
     @attr("functional_test")
