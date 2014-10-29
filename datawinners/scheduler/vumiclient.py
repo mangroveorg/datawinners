@@ -229,7 +229,7 @@ class VumiClient(object):
         :keyword message: the message being sent
 
         """
-        if kwargs['from_msisdn'] in kwargs.get("to_msisdn",{}):
+        if kwargs['from_msisdn'] in kwargs["to_msisdn"]:
             raise VumiInvalidDestinationNumberException()
         else:
             return self.connection.post('/api/v1/sms/send.json', kwargs)
