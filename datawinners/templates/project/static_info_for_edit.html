@@ -48,7 +48,7 @@
         {% endfor %}
 
             <span id="number" class="margin_left_10 none"></span>
-                {% if questionnaire_form.fields.dsid.choices|length %}
+                {% if questionnaire_form.fields.dsid.choices|length == 1 %}
                         <a href="javascript:void(0);" class="disabled_yellow_submit_button" disabled="disabled" id="save_ds" style="float: right;text-decoration: None; margin-top: 11px;">{% trans "Change" %}</a>
                 {% else %}
                     <a href="javascript:void(0);" class="button margin_top_13 float_right" id="save_ds" style="float: right">{% trans "Change" %}</a>
