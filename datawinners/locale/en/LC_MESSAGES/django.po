@@ -4751,9 +4751,6 @@ msgstr ""
 msgid "You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='{{ url_to_my_datasender }}'> My Data Senders </a>page."
 msgstr ""
 
-msgid "All people who submitted data (registered & un-registered) "
-msgstr ""
-
 msgid "registered Data Senders"
 msgstr ""
 
