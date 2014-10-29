@@ -5533,3 +5533,12 @@ msgstr "Cet Expéditeur de Données n'est pas enregistré"
 
 msgid "Sorry. The Identification Number Type you are looking for has been deleted"
 msgstr "Désolé. Le Numéro d'Identification que vous recherchez a été supprimé"
+
+msgid "You don't have any Data Senders"
+msgstr "Vous n'avez aucun Expéditeur de Données"
+
+msgid "linked to your Questionnaire"
+msgstr "lié à votre Questionnaire"
+
+msgid "Why canʼt I choose a Data Sender?"
+msgstr "Pourquoi est-ce que je ne peux pas choisir un Expéditeur de Données?"
