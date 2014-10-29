@@ -3,9 +3,9 @@ import elasticutils
 from datawinners.search.index_utils import es_questionnaire_field_name
 from mangrove.form_model.form_model import header_fields, get_form_model_by_entity_type
 from mangrove.form_model.form_model import REPORTER
-from datawinners.entity.helper import get_entity_type_fields
 from datawinners.main.database import get_database_manager
 from datawinners.search.query import Query, QueryBuilder
+from mangrove.form_model.project import get_entity_type_fields
 
 
 class DatasenderQuery(Query):

@@ -2,13 +2,13 @@ import logging
 import traceback
 import sys
 from datawinners.main.couchdb.utils import all_db_names
+from mangrove.form_model.project import Project
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
 from datawinners.main.database import get_db_manager
 
-from datawinners.project.models import Project
 from migration.couch.utils import mark_as_completed, migrate
 
 

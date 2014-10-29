@@ -5,13 +5,14 @@ from django.http import Http404
 from mock import Mock, patch
 from datawinners.project import helper
 from datawinners.project.helper import is_project_exist
-from datawinners.project.models import delete_datasenders_from_project, Project
+from datawinners.project.models import delete_datasenders_from_project
 # from datawinners.project.tests.submission_log_data import SUBMISSIONS
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field, UniqueIdField
 from mangrove.form_model.form_model import FormModel, FORM_CODE
+from mangrove.form_model.project import Project
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from datawinners.scheduler.smsclient import SMSClient
 from datawinners.sms.models import MSG_TYPE_USER_MSG

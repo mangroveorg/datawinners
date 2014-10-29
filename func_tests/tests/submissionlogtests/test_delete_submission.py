@@ -7,7 +7,6 @@ from nose.plugins.attrib import attr
 from mangrove.form_model.form_model import get_form_model_by_code
 
 from datawinners.main.database import get_db_manager
-from datawinners.project.models import project_by_form_model_id
 from datawinners.search.submission_query import SubmissionQuery
 from framework.utils.common_utils import random_string
 

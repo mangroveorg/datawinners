@@ -1,9 +1,10 @@
 from datawinners.main.database import get_db_manager
-from datawinners.project.models import get_all_projects_for_datasender, Project
+from datawinners.project.models import get_all_projects_for_datasender
 from datawinners.search.index_utils import _entity_dict, get_fields_mapping, get_elasticsearch_handle
 from mangrove.datastore.entity import get_all_entities, _entity_by_short_code
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE
+from mangrove.form_model.project import Project
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 

@@ -4,7 +4,7 @@ from django.utils import unittest
 from mock import Mock, patch
 
 from datawinners.accountmanagement.models import Organization, MessageTracker
-from datawinners.project.models import Reminder, RemindTo, ReminderRepository, Project
+from datawinners.project.models import Reminder, RemindTo, ReminderRepository
 from datawinners.scheduler.scheduler import send_reminders_on, send_reminders_for_an_organization
 
 
@@ -15,6 +15,7 @@ from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.database import DatabaseManager
 from datawinners.scheduler.scheduler import _get_active_paid_organization
 from datawinners.sms.models import MSG_TYPE_REMINDER
+from mangrove.form_model.project import Project
 
 
 class TestScheduler(unittest.TestCase):

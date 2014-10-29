@@ -19,11 +19,12 @@ from datawinners.entity.views import log_activity, get_success_message
 from datawinners.main.database import get_database_manager
 from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, \
     delete_datasender_for_trial_mode, rep_id_name_dict_of_users
-from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
+from datawinners.project.models import get_all_projects, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports
 from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
 from mangrove.form_model.form_model import REPORTER, header_fields, get_form_model_by_code
+from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization
 from mangrove.transport.player.parser import XlsDatasenderParser

@@ -1,9 +1,8 @@
 import logging
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.main.database import get_db_manager
-from datawinners.project.models import Project, Reminder, ReminderLog
+from datawinners.project.models import Reminder, ReminderLog
 from migration.couch.utils import migrate, mark_as_completed
-from mangrove.datastore.documents import ProjectDocument
 from mangrove.form_model.form_model import FormModel
 
 #This migration removes state in form model, copies over project details into form model and updates

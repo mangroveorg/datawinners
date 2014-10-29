@@ -15,11 +15,12 @@ from celery.task import current
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, \
     EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
+from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_model_id
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.project.forms import ReminderForm
-from datawinners.project.models import Project, Reminder, ReminderMode
+from datawinners.project.models import Reminder, ReminderMode
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from datawinners.tasks import app

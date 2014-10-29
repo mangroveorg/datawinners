@@ -10,7 +10,7 @@ from mangrove.transport import Response
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField, DateField, UniqueIdField
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
+from datawinners.project.models import Reminder, RemindTo, ReminderMode
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
 from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context_from_project_data
 from datawinners.project.utils import make_subject_links
@@ -18,6 +18,7 @@ from datawinners.project.views.views import append_success_to_context, formatted
 from datawinners.project.wizard_view import get_preview_and_instruction_links, _get_changed_data
 from datawinners.questionnaire.questionnaire_builder import get_max_code
 from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.project import Project
 
 
 class TestProjectViews(unittest.TestCase):

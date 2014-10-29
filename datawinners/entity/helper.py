@@ -232,64 +232,11 @@ def add_imported_data_sender_to_trial_organization(org_id, imported_datasenders,
                 _add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
 
 
-def get_entity_type_fields(manager, form_code='reg'):
-    form_model=get_form_model_by_code(manager, form_code)
-    json_fields = form_model._doc["json_fields"]
-    return get_json_field_infos(json_fields)
-
-
-def tabulate_data(entity, form_model, field_codes):
-    data = {'id': entity.id, 'short_code': entity.short_code}
-
-    dict = OrderedDict()
-    for field in form_model.fields:
-        if field.name in entity.data:
-            dict[field.code] = _get_field_value(field.name, entity)
-        else:
-            dict[field.code] = _get_field_default_value(field.name, entity)
-
-    stringified_dict = form_model.stringify(dict)
-
-    data['cols'] = [stringified_dict[field_code] for field_code in field_codes]
-    return data
-
-
-def _get_field_value(key, entity):
-    value = entity.value(key)
-    if key == 'geo_code':
-        if value is None:
-            return entity.geometry.get('coordinates')
-    elif key == 'location':
-        if value is None:
-            return entity.location_path
-
-    return value
-
-
-def _get_field_default_value(key, entity):
-    if key == 'geo_code':
-        return entity.geometry.get('coordinates')
-    if key == 'location':
-        return entity.location_path
-    if key == 'short_code':
-        return entity.short_code
-    return None
-
-
 def entity_type_as_sequence(entity_type):
     if not is_sequence(entity_type):
         entity_type = [entity_type.lower()]
     return entity_type
 
-
-def get_json_field_infos(fields):
-    fields_names, labels, codes = [], [], []
-    for field in fields:
-        if field['name'] != 'entity_type':
-            fields_names.append(field['name'])
-            labels.append(field['label'])
-            codes.append(field['code'])
-    return fields_names, labels, codes
 
 def put_email_information_to_entity(dbm, entity, email):
     email_field_code = "email"

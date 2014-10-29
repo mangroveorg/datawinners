@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import date
 from unittest import TestCase
-from datawinners.scheduler.deadline import Quarter, Week, Month
+from mangrove.form_model.deadline import Week, Month, Quarter
 
 
 class TestQuarterlyFrequency(TestCase):

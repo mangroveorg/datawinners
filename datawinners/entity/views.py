@@ -151,7 +151,6 @@ def delete_subject_types(request):
 def all_subjects(request, subject_type):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [subject_type])
-    from datawinners.project.models import Project
     if not form_model:
         all_subject_types_page = '/entity/subjects/' + "?deleted_subject=true"
         return HttpResponseRedirect(all_subject_types_page)

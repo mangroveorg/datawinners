@@ -6,10 +6,10 @@ from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersExcep
 from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
 from mangrove.errors.MangroveException import DatasenderIsNotLinkedException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
+from mangrove.form_model.project import Project
 from mangrove.transport.contract.response import Response
 from mangrove.form_model.form_model import EntityFormModel
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
-from datawinners.project.models import Project
 
 
 class PostSMSProcessorLanguageActivator(object):

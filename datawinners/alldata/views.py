@@ -1,33 +1,27 @@
 from __builtin__ import dict
+from operator import itemgetter
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.utils.http import urlquote
-from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user, is_datasender
+from django.utils.translation import ugettext as _
+from django.http import Http404
+
+from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
 from datawinners.settings import CRS_ORG_ID
-from datawinners.project.models import Project, get_all_projects
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_all_entities
-from django.utils.translation import ugettext as _
-from mangrove.datastore.entity_type import get_all_entity_types
-from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 from datawinners.project.utils import is_quota_reached
-from datawinners.entity.views import create_subject
-from django.http import Http404
-from operator import itemgetter
-from datawinners import settings
-from datawinners.project import helper
-from django.contrib import messages
-from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DELETED_QUESTIONNAIRE
-from django.http import HttpResponseRedirect
+from mangrove.form_model.project import Project
+
 
 REPORTER_ENTITY_TYPE = u'reporter'
 

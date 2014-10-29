@@ -2,12 +2,13 @@
 from datetime import date, datetime
 import unittest
 from mock import Mock, MagicMock
-from nose.plugins.skip import Skip, SkipTest
-from datawinners.project.models import Reminder, ReminderMode, Project, RemindTo, ReminderLog
-from datawinners.scheduler.deadline import Deadline, Week
+from datawinners.project.models import Reminder, ReminderMode, RemindTo, ReminderLog
 from mangrove.datastore.database import DatabaseManager
 from datawinners.project.forms import ReminderForm
 from decimal import Decimal
+from mangrove.form_model.deadline import Deadline, Week
+from mangrove.form_model.project import Project
+
 
 class TestReminders(unittest.TestCase):
     def test_should_return_true_for_reminder_before_deadline_type_if_today_is_two_days_before_deadline(self):
