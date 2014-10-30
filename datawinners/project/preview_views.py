@@ -52,10 +52,6 @@ def get_web_preview_context_from_project_data(manager, request, project_info):
             'is_datasender': is_datasender,
             'questionnaire_form': questionnaire_form}
 
-def get_web_preview_context_from_existing_project(project_info):
-    return {'project': project_info,
-            'questionnaire_form': SurveyResponseForm(project_info)}
-
 
 @valid_web_user
 def web_preview(request):
