@@ -5513,8 +5513,8 @@ msgstr "Pour un compte Basique, seuls les Expéditeurs de Données enregistrés 
 msgid "You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='%(url_to_my_datasender)s'> My Data Senders </a>page."
 msgstr "Vous pouvez envoyer des rappels uniquement aux Expéditeurs de Données enregistrés. Premièrement, enregistrez vos Expéditeurs de Données sur la page<a style='float: none; margin: 0;' href='%(url_to_my_datasender)s'> Mes Expéditeurs </a>."
 
-msgid "All people who submitted data (registered & un-registered) "
-msgstr "Tous ceux qui ont soumis des données (enregistrés et non-enregistrés)"
+msgid "My Data Senders linked to this Questionnaire & un-registered submitters"
+msgstr "Mes Expéditeurs de Données liés à ce Questionnaire et les Expéditeurs non enregistrés"
 
 msgid "registered Data Senders"
 msgstr "Expéditeurs de Données enregistrés"
@@ -5542,3 +5542,6 @@ msgstr "lié à votre Questionnaire"
 
 msgid "Why canʼt I choose a Data Sender?"
 msgstr "Pourquoi est-ce que je ne peux pas choisir un Expéditeur de Données?"
+
+msgid "This feature is not applicable for excel upload feature."
+msgstr "Cette fonctionnalité n’est pas disponible pour la fonctionnalité Excel Upload."
