@@ -548,6 +548,9 @@ form div.action-section {
 a.dialog-anchor {
   color: #0070ac !important; }
 
+.dropdown .dropdown-menu LI > A, .dropdown .dropdown-menu LABEL {
+  white-space: normal !important; }
+
 #container_header_wizard {
   height: 37px;
   overflow: hidden;
@@ -697,6 +700,4 @@ ul.errorlist {
   -webkit-moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   background: #c20303;
-  padding-bottom: 20px !important;
-  text-align: center;
-}
+  padding-bottom: 20px !important; }

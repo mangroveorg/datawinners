@@ -548,6 +548,9 @@ form div.action-section {
 a.dialog-anchor {
   color: #0070ac !important; }
 
+.dropdown .dropdown-menu LI > A, .dropdown .dropdown-menu LABEL {
+  white-space: normal !important; }
+
 .help-steps {
   margin-left: 31px; }
 

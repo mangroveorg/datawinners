@@ -10,7 +10,7 @@ from operator import itemgetter
 
 class BaseSubmissionForm(Form):
     def __init__(self, project, data, is_datasender, datasender_name, reporter_id, reporter_name,
-                 is_anonymous_submission, initial=None):
+                 enable_datasender_edit, initial=None):
         super(BaseSubmissionForm, self).__init__(data, initial=initial)
         self.form_model = project
         self.fields['form_code'] = CharField(widget=HiddenInput, initial=project.form_code)
@@ -26,7 +26,7 @@ class BaseSubmissionForm(Form):
             else:
                 error_message = None
 
-            if not is_anonymous_submission:
+            if enable_datasender_edit:
                 required = data is not None and data.has_key("on_behalf_of")
                 widget = None if len(list_sorted) else Select(attrs={'disabled': 'disabled'})
                 self.fields['dsid'] = ChoiceField(
@@ -36,10 +36,9 @@ class BaseSubmissionForm(Form):
 
 class SurveyResponseForm(BaseSubmissionForm):
     def __init__(self, project, data=None, is_datasender=False, datasender_name='', reporter_id=None,
-                 reporter_name=None, is_anonymous_submission=False, initial=None):
+                 reporter_name=None, enable_datasender_edit=True, initial=None):
         super(SurveyResponseForm, self).__init__(project, data, is_datasender, datasender_name, reporter_id,
-                                                 reporter_name, is_anonymous_submission, initial)
-        self.is_anonymous_submission = is_anonymous_submission
+                                                 reporter_name, enable_datasender_edit, initial)
         for field in self.form_model.fields:
             if isinstance(field, UniqueIdField):
                 self.fields[field.code] = SubjectQuestionFieldCreator(self.form_model).create(field)

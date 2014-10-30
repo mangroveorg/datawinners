@@ -290,13 +290,13 @@ def edit(request, project_id, survey_response_id, tab=0):
     form_ui_model.update({"back_link": back_link, 'is_datasender': is_data_sender(request)})
     data_sender = get_data_sender(manager, survey_response)
     short_code = data_sender[1]
+    enable_datasender_edit = True if survey_response.owner_uid else False
     if request.method == 'GET':
         form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
-
         survey_response_form = SurveyResponseForm(questionnaire_form_model, form_initial_values,
                                                   datasender_name=data_sender[0] , reporter_id=reporter_id,
                                                   reporter_name=reporter_name,
-                                                  is_anonymous_submission=survey_response.is_anonymous_submission)
+                                                  enable_datasender_edit=enable_datasender_edit)
 
         form_ui_model.update(get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
                                               disable_link_class))
@@ -338,7 +338,7 @@ def edit(request, project_id, survey_response_id, tab=0):
         else:
             form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
             survey_response_form = SurveyResponseForm(questionnaire_form_model, request.POST, initial=form_initial_values,
-                                                      is_anonymous_submission=survey_response.is_anonymous_submission)
+                                                      enable_datasender_edit=enable_datasender_edit)
 
         form_ui_model.update(
             get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))

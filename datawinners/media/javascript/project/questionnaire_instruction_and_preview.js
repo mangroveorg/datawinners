@@ -64,6 +64,7 @@ DW.web_instruction_and_preview.prototype.post_callback = function () {
         }
 
     }).dynamic({ bottom: { direction: 'down', bounce: true } });
+    $(document).trigger('initialize_ds_dropdown');
 };
 
 DW.sms_instruction_and_preview = function() {

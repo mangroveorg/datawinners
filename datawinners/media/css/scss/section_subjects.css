@@ -766,6 +766,9 @@ form div.action-section {
 a.dialog-anchor {
   color: #0070ac !important; }
 
+.dropdown .dropdown-menu LI > A, .dropdown .dropdown-menu LABEL {
+  white-space: normal !important; }
+
 .dataTables_info {
   float: left;
   padding-right: 2em; }
@@ -947,10 +950,13 @@ select[name=datasender_table_length], select[name=subjects_table_length] {
   margin: 15px; }
 
 .margin_top_20 {
-  margin-top: 20px; }
+  margin-top: 20px !important; }
 
 .margin_top_15 {
   margin-top: 15px; }
+
+.margin_top_13 {
+  margin-top: 13px; }
 
 .margin_bottom_20 {
   margin-bottom: 20px; }
@@ -1473,6 +1479,9 @@ div.border_top_bottom {
   font-weight: bold;
   font-family: "Arial";
   opacity: 0.5; }
+
+.font_color_red {
+  color: red; }
 
 #wrapper_div_for_table .action_button {
   display: inline;
