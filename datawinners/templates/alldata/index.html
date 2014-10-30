@@ -70,7 +70,11 @@
             </thead>
             {% for project in projects %}
                 <tr>
-                    <td><a href="{{ project.link }}" class='project-id-class {{ disable_link_class }}'>{{ project.name }}</a></td>
+                {% if disable_link_class == ''  %}
+                    <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
+                {% else %}
+                    <td>{{ project.name }}</td>
+                {% endif %}
                     <td class="{{ hide_link_class }}" style="width: 90px">{{ project.created|date:"DATE_FORMAT" }}</td>
                     <td>
                         <span class="report_links">
