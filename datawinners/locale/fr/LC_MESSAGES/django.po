@@ -5542,3 +5542,7 @@ msgstr "lié à votre Questionnaire"
 
 msgid "Why canʼt I choose a Data Sender?"
 msgstr "Pourquoi est-ce que je ne peux pas choisir un Expéditeur de Données?"
+
+msgid "This feature is not applicable for excel upload feature."
+msgstr "Cette fonctionnalité n’est pas disponible pour la fonctionnalité Excel Upload."
+
