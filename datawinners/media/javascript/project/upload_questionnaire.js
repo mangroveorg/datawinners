@@ -111,6 +111,7 @@ DW.XLSHelpSection = function(){
         DW.trackEvent('advanced-questionnaire', 'learn-more-clicked');
         dialogSection.removeClass("none");
         dialogSection.dialog("open");
+        $(document).scrollTop(0);
     });
 
     $("#xls_learn_more_form #learn-xls-forms-pdf-link").on('click', function(){
