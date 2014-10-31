@@ -318,13 +318,14 @@ def edit(request, project_id, survey_response_id, tab=0):
         send_to_carbon(create_path('submissions.web.simple'), 1)
         original_survey_response = survey_response.copy()
         is_errored_before_edit = True if survey_response.errors != '' else False
+        submitted_values = request.POST
+        owner_id = submitted_values.get("dsid")
         form_ui_model.update({
-                                "redirect_url": request.POST.get("redirect_url"),
-                                'is_datasender': is_data_sender(request)
-
-                             })
-        form_ui_model.update({"click_after_reload": request.POST.get("click_after_reload")})
-        if request.POST.get("discard"):
+            "redirect_url": submitted_values.get("redirect_url"),
+            'is_datasender': is_data_sender(request)
+        })
+        form_ui_model.update({"click_after_reload": submitted_values.get("click_after_reload")})
+        if submitted_values.get("discard"):
             survey_response_form = SurveyResponseForm(questionnaire_form_model, survey_response.values)
 
             form_ui_model.update(
@@ -337,14 +338,18 @@ def edit(request, project_id, survey_response_id, tab=0):
                                       context_instance=RequestContext(request))
         else:
             form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
-            survey_response_form = SurveyResponseForm(questionnaire_form_model, request.POST, initial=form_initial_values,
+            if not owner_id:
+                submitted_values = submitted_values.copy()
+                submitted_values['dsid'] =form_initial_values['dsid']
+
+            survey_response_form = SurveyResponseForm(questionnaire_form_model, submitted_values, initial=form_initial_values,
                                                       enable_datasender_edit=enable_datasender_edit)
 
         form_ui_model.update(
             get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))
         form_ui_model.update({
-                                  "reporter_id": reporter_id,
-                                  "is_linked": is_linked})
+            "reporter_id": reporter_id,
+            "is_linked": is_linked})
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
             form_ui_model.update({'error_message': error_message,
@@ -356,16 +361,14 @@ def edit(request, project_id, survey_response_id, tab=0):
         success_message = _("Your changes have been saved.")
         form_ui_model.update({'success_message': success_message,
                               "reporter_id": reporter_id,
-                                  "is_linked": is_linked,
-                                  "reporter_name":reporter_name})
+                              "is_linked": is_linked,
+                              "reporter_name":reporter_name})
         #if len(survey_response_form.changed_data) or is_errored_before_edit:
         created_request = helper.create_request(survey_response_form, request.user.username)
 
         additional_feed_dictionary = get_project_details_dict_for_feed(questionnaire_form_model)
         user_profile = NGOUserProfile.objects.get(user=request.user)
         feeds_dbm = get_feeds_database(request.user)
-        owner_id = request.POST.get("dsid")
-
         response = WebPlayerV2(manager, feeds_dbm, user_profile.reporter_id) \
             .edit_survey_response(created_request, survey_response, owner_id,
                                   additional_feed_dictionary, websubmission_logger)
@@ -376,8 +379,8 @@ def edit(request, project_id, survey_response_id, tab=0):
             _update_static_info_block_status(form_ui_model, is_errored_before_edit)
             log_edit_action(original_survey_response, survey_response, request, questionnaire_form_model.name,
                             questionnaire_form_model)
-            if request.POST.get("redirect_url"):
-                return HttpResponseRedirect(request.POST.get("redirect_url"))
+            if submitted_values.get("redirect_url"):
+                return HttpResponseRedirect(submitted_values.get("redirect_url"))
         else:
             del form_ui_model["success_message"]
             survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
