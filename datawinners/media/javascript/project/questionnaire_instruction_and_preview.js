@@ -65,6 +65,7 @@ DW.web_instruction_and_preview.prototype.post_callback = function () {
 
     }).dynamic({ bottom: { direction: 'down', bounce: true } });
     $(document).trigger('initialize_ds_dropdown');
+    $('#choice_ds .tooltip>p').html(gettext('This is only a preview. To send in data, Go to the "Data" tab, then to "Web Submission".'));
 };
 
 DW.sms_instruction_and_preview = function() {
