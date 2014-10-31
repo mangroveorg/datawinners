@@ -1361,3 +1361,5 @@ msgstr "Seulement les personnnes enregistrées - Les Expéditeurs de Données do
 msgid "Change Data Sender"
 msgstr "Modifier l'Expéditeur de Données"
 
+msgid "This is only a preview. To send in data, Go to the \"Data\" tab, then to \"Web Submission\"."
+msgstr "Ceci n’est qu’un aperçu. Pour soumettre des données, Cliquez sur l’onglet « Données », et ensuite sur « Soumission Web »."
