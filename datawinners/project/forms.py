@@ -20,7 +20,7 @@ class MySelect(forms.Select):
         number_html = ''
         if options_labels is not None:
             option_label, number = options_labels.groups()
-            number_html = ' number="%s"' % number
+            number_html = ' data-number="%s"' % number
         return u'<option value="%s"%s%s>%s</option>' % (
             escape(option_value), selected_html, number_html,
             conditional_escape(force_unicode(option_label)))

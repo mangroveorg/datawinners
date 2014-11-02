@@ -49,6 +49,7 @@ DW.broadcast_sms.prototype = {
                     $("#number_of_peoples").html(people_number);
                     DW.broadcast_warning.show_warning();
                 } else {
+                    DW.trackEvent('send-message', 'message-submitted');
                     form.submit();
                 }
 
@@ -101,7 +102,7 @@ DW.broadcast_sms.prototype = {
     getPeopleNumber: function () {
         if (this.isAdditionalSelected())
             return $("#id_others").val().split(',').length;
-        return parseInt($(this.idToElement + ' :selected').attr('number'));
+        return parseInt($(this.idToElement + ' :selected').attr('data-number'));
     },
     updateToFieldText: function () {
         $("#input_to > span > span:first-child").html($('#id_to option:selected').html());
@@ -113,10 +114,10 @@ DW.broadcast_sms.prototype = {
         }
     },
     updateToMenuItem: function () {
-        $("#All span").html($("#id_to option[value=All]").attr('number') + " " + gettext("recipient(s)"));
-        $("#Associated span").html($("#id_to option[value=Associated]").attr('number') + " " + gettext("recipient(s)"));
+        $("#All span").html($("#id_to option[value=All]").attr('data-number') + " " + gettext("recipient(s)"));
+        $("#Associated span").html($("#id_to option[value=Associated]").attr('data-number') + " " + gettext("recipient(s)"));
         if ($("#id_to option[value=AllSubmitted]").length) {
-            $("#AllSubmitted span").html($("#id_to option[value=AllSubmitted]").attr('number') + " " + gettext("recipient(s)"));
+            $("#AllSubmitted span").html($("#id_to option[value=AllSubmitted]").attr('data-number') + " " + gettext("recipient(s)"));
         } else {
             $("#to_list ul li:last-child").hide();
         }
@@ -252,7 +253,9 @@ $(document).ready(function() {
     });
 
     $("#to_list ul li a").bind("click", function () {
-        $("#id_to").val($(this).attr("id"));
+        var id = $(this).attr("id");
+        $("#id_to").val(id);
+        DW.trackEvent('send-message', 'to-selection', id);
         DW.broadcast_sms_handler.processAddtionalColumnValidation();
     });
 
@@ -265,5 +268,4 @@ $(document).ready(function() {
         }
     };
     DW.broadcast_warning = new DW.warning_dialog(kwargs);
-
 });
