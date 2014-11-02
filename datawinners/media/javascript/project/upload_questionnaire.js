@@ -130,7 +130,8 @@ DW.XLSSampleSectionTracker = function(){
     }).init().initializeLinkBindings();
 
     $("#sample_xls_forms_section_dialog_section #sample_xls_section").on('click', "a", function(){
-        DW.trackEvent('advanced-questionnaire', 'sample-xls-downloaded');
+        var excel_file_name = $(this).text();
+        DW.trackEvent('advanced-questionnaire', 'sample-xls-downloaded', excel_file_name);
         return true;
     });
 }
