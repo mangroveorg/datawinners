@@ -12,10 +12,12 @@ from datawinners import settings
 from datawinners.accountmanagement.helper import get_all_user_repids_for_org
 from datawinners.search.submission_query import SubmissionQueryBuilder
 from datawinners.utils import get_organization_from_manager
+from mangrove.datastore.documents import ProjectDocument
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
 from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.project import Project
 from mangrove.utils.types import is_sequence, sequence_to_str
 from mangrove.transport.repository.survey_responses import get_survey_responses
 from mangrove.transport.contract.transport_info import TransportInfo
@@ -248,3 +250,10 @@ def associate_account_users_to_project(manager, questionnaire):
     user_ids = get_all_user_repids_for_org(get_organization_from_manager(manager).org_id)
     # for id in user_ids:
     questionnaire.associate_data_sender_to_project(manager, user_ids)
+
+
+def get_projects_by_unique_id_type(dbm, unique_id_type):
+    projects = []
+    for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=unique_id_type[0], include_docs=True):
+        projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc'])))
+    return projects
