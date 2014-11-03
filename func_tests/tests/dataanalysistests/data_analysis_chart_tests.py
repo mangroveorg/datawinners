@@ -2,42 +2,48 @@
 import time
 from datetime import datetime, timedelta
 from unittest import SkipTest
-from framework.base_test import BaseTest, setup_driver, teardown_driver
+from framework.base_test import BaseTest, setup_driver, teardown_driver, HeadlessRunnerTest
 from framework.exception import CouldNotLocateElementException
+from framework.utils.common_utils import by_css
 from framework.utils.data_fetcher import fetch_, from_
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import LoginPage, login
+from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
-from tests.dataanalysistests.data_analysis_data import PROJECT_NAME, DEFAULT_DATA_FOR_QUESTIONNAIRE, DAILY_DATE_RANGE
+from tests.dataanalysistests.data_analysis_data import PROJECT_NAME, DEFAULT_DATA_FOR_QUESTIONNAIRE, DAILY_DATE_RANGE, \
+    NEW_PROJECT_DATA, QUESTIONNAIRE_DATA, NO_CHART_TEXT, NEW_PROJECT_DATA_WITHOUT_MCQ, QUESTIONNAIRE_DATA_WITHOUT_MCQ, \
+    NEW_PROJECT_DATA_SINGLE_CHOICE, QUESTIONNAIRE_DATA_SINGLE_CHOICE, VALID_ANSWERS, QUESTIONNAIRE_DATA_MULTIPLE_CHOICE, \
+    NEW_PROJECT_DATA_MULTIPLE_CHOICE, VALID_ANSWERS_MULTIPLE_CHOICE, NEW_PROJECT_DATA_ORDER, QUESTIONNAIRE_DATA_ORDER, \
+    VALID_ANSWERS_ORDER
 from tests.dataextractionapitests.data_extraction_api_data import VALID_CREDENTIALS
 #We will test this when we play any story or fix bugs doing charting
-@SkipTest
-class TestDataAnalysisChart(BaseTest):
+# @SkipTest
+class TestDataAnalysisChart(HeadlessRunnerTest):
     @classmethod
-    def setUpClass(cls):
-        cls.driver = setup_driver()
-        cls.global_navigation = cls.prerequisites_of_data_analysis()
+    def setUpClass(self):
+        HeadlessRunnerTest.setUpClass()
+        self.global_navigation_page = login(self.driver)
+
+    @classmethod
+    def create_new_project(self, new_project_data, questionnaire_data):
+        dashboard = self.global_navigation_page.navigate_to_dashboard_page()
+        questionnaire_creation_options_page = dashboard.navigate_to_create_project_page()
+        create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page.create_questionnaire_with(new_project_data, questionnaire_data)
+        create_questionnaire_page.save_and_create_project_successfully()
+        self.driver.wait_for_page_with_title(5, 'Questionnaires - Overview')
+        return ProjectOverviewPage(self.driver)
 
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    def setUp(self):pass
-
-    def tearDown(self):pass
-
     @classmethod
     def go_to_analysis_page(cls, project_name = fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
-        all_data_page = cls.global_navigation.navigate_to_all_data_page()
+        all_data_page = cls.global_navigation_page.navigate_to_all_data_page()
         return all_data_page.navigate_to_data_analysis_page(project_name)
 
-    @classmethod
-    def prerequisites_of_data_analysis(cls):
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        return global_navigation
-
     def _go_to_chart_view(self, project_name = fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
+
         analysis_page = self.go_to_analysis_page(project_name)
         analysis_page.go_to_chart_view()
         return analysis_page
@@ -52,72 +58,47 @@ class TestDataAnalysisChart(BaseTest):
         analysis_page.click_go_button()
         return analysis_page
 
-    def test_should_return_chart_info_when_there_are_mc_questions_and_submissions(self):
-        expected = "View charts of your multiple choice questions."
-        analysis_page = self._go_to_chart_view()
-        self.assertEqual(expected,  analysis_page.get_chart_info_2_text())
-
     def test_should_return_chart_info_when_there_are_mc_questions_and_no_submissions(self):
-        expected = u"successful submissions will appear here. Learn More"
-        analysis_page = self._go_to_chart_view(project_name="clinic2 test project")
-        self.assertTrue(analysis_page.get_chart_info_2_text().find(expected)>=0)
-
-    def test_should_return_chart_info_when_there_are_mc_questions_and_no_submissions_after_filtered(self):
-        expected = u"No submissions available for this search. Try changing some of the filters."
-        analysis_page = self._filter_data_of_today(end_date=datetime.today()-timedelta(1))
-        self.assertEqual(analysis_page.get_chart_info_2_text(),expected)
+        expected = u"Once your Data Senders have sent in Submissions, they will appear here."
+        project_overview_page = self.create_new_project(NEW_PROJECT_DATA, QUESTIONNAIRE_DATA)
+        analysis_page = project_overview_page.navigate_to_data_page()
+        analysis_page.go_to_chart_view()
+        self.assertEqual(analysis_page.get_no_charts_text(), expected)
 
     def test_should_return_chart_info_when_there_no_mc_questions(self):
-        expected = u"You do not have any multiple choice questions (Answer Type: List of choices) to display here."
-        analysis_page = self._go_to_chart_view(project_name="clinic test project with monthly reporting period")
-        self.assertEqual(analysis_page.get_chart_info_2_text(),expected)
-
+        expected = u'Once your Data Senders have sent in Submissions, they will appear here.'
+        project_overview_page = self.create_new_project(NEW_PROJECT_DATA_WITHOUT_MCQ, QUESTIONNAIRE_DATA_WITHOUT_MCQ)
+        analysis_page = project_overview_page.navigate_to_data_page()
+        analysis_page.go_to_chart_view()
+        self.assertEqual(analysis_page.get_no_charts_text(), expected)
 
 
     def test_should_show_pie_chart_and_bar_chart_for_single_choice_questions(self):
-        analysis_page = self._go_to_chart_view()
-        self._assert_pie_and_bar_visibilities(analysis_page, 0, True)
+        project_overview_page = self.create_new_project(NEW_PROJECT_DATA_SINGLE_CHOICE, QUESTIONNAIRE_DATA_SINGLE_CHOICE)
+        web_submission_page = project_overview_page.navigate_to_data_page().navigate_to_web_submission_tab()
+        web_submission_page.fill_questionnaire_with(VALID_ANSWERS)
+        web_submission_page.submit_answers()
+        analysis_page = project_overview_page.navigate_to_data_page()
+        analysis_page.go_to_chart_view()
+        self.assertTrue(analysis_page.is_chart_visible())
 
-        analysis_page.show_bar_chart(0)
-        self._assert_pie_and_bar_visibilities(analysis_page, 0, False)
+    def test_should_return_chart_info_when_there_are_mc_questions_and_submissions(self):
+        project_overview_page = self.create_new_project(NEW_PROJECT_DATA_MULTIPLE_CHOICE, QUESTIONNAIRE_DATA_MULTIPLE_CHOICE)
+        web_submission_page = project_overview_page.navigate_to_data_page().navigate_to_web_submission_tab()
+        web_submission_page.fill_questionnaire_with(VALID_ANSWERS_MULTIPLE_CHOICE)
+        web_submission_page.submit_answers()
+        analysis_page = project_overview_page.navigate_to_data_page()
+        analysis_page.go_to_chart_view()
+        self.assertTrue(analysis_page.is_chart_visible())
 
-        analysis_page.show_pie_chart(0)
-        self._assert_pie_and_bar_visibilities(analysis_page, 0, True)
 
-    def test_should_only_show_bar_chart_for_multiple_choice_questions(self):
-        analysis_page = self._go_to_chart_view()
-        self._assert_pie_and_bar_visibilities(analysis_page, 1, False)
-
-        try:
-            analysis_page.show_pie_chart(1)
-            self.assertTrue(False)
-        except CouldNotLocateElementException as e:
-            pass
-
-    def test_show_table(self):
-        analysis_page = self._go_to_chart_view()
-        self.assertIsNotNone(analysis_page.get_table(0))
-        try:
-            analysis_page.get_multiple_choice_question_explanation(0)
-            self.assertTrue(False)
-        except CouldNotLocateElementException as e:
-            pass
-
-        self.assertIsNotNone(analysis_page.get_table(1))
-        self.assertIsNotNone(analysis_page.get_multiple_choice_question_explanation(1))
-        self.assertIsNotNone(analysis_page.get_table(1))
-        self.assertIsNotNone(analysis_page.get_multiple_choice_question_explanation(2))
-
-    def _assert_pie_and_bar_visibilities(self, analysis_page, question_index, is_pie_shown):
-        pie_chart = analysis_page.get_pie_chart(question_index)
-        bar_chart = analysis_page.get_bar_chart(question_index)
-
-        self.assertIsNotNone(pie_chart)
-        self.assertIsNotNone(bar_chart)
-
-        if is_pie_shown:
-            self.assertTrue(pie_chart.get_attribute('style').find('display: none;') < 0)
-            self.assertTrue(bar_chart.get_attribute('style').find('display: none;') >= 0)
-        else:
-            self.assertTrue(bar_chart.get_attribute('style').find('display: none;') < 0)
-            self.assertTrue(pie_chart.get_attribute('style').find('display: none;') >= 0)
+    def test_should_return_chart_in_the_same_order_as_the_questionnaire_is_created(self):
+        project_overview_page = self.create_new_project(NEW_PROJECT_DATA_ORDER, QUESTIONNAIRE_DATA_ORDER)
+        web_submission_page = project_overview_page.navigate_to_data_page().navigate_to_web_submission_tab()
+        web_submission_page.fill_questionnaire_with(VALID_ANSWERS_ORDER)
+        web_submission_page.submit_answers()
+        analysis_page = project_overview_page.navigate_to_data_page()
+        analysis_page.go_to_chart_view()
+        expected_value = ['Testing chart','Testing chart2']
+        self.assertEquals(expected_value[0],analysis_page.get_chart_question_title("1"))
+        self.assertEquals(expected_value[1],analysis_page.get_chart_question_title("2"))

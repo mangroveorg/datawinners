@@ -104,8 +104,6 @@ class WebSubmissionPage(Page):
         dropDownListBox = self.driver.find(by_id("id_dsid"))
         clickThis = Select(dropDownListBox)
         clickThis.select_by_value(datasender)
-        # self.driver.find(by_id("id_dsid")).click()
-        # self.driver.find(by_name(datasender)).click()
 
 
     def select_checkbox_to_submit_on_behalf(self):

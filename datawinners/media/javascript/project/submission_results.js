@@ -49,9 +49,9 @@ DW.SubmissionLogTable = function (options) {
         dataType: "json"
     });
 
-    var no_data_help = {"all": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+    var no_data_help = {"all": "<span id=\"help_text_chart\">" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
         "analysis": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
-        "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+        "success": "<span>" + gettext("Onfjkljdljce your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
         "error": gettext("No unsuccessful Submissions!"),
         "deleted": gettext("No deleted Submissions.")
     };

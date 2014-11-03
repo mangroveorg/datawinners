@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import datetime
+from framework.utils.common_utils import by_css
 
 PROJECT_NAME = "project_name"
 QUESTIONS = "questions"
@@ -10,6 +11,46 @@ MONTHLY_DATE_RANGE = "month_date_range"
 CURRENT_MONTH = "current_month"
 LAST_MONTH = "last_month"
 YEAR_TO_DATE = "year_to_date"
+
+PAGE_TITLE = "page_title"
+QUESTIONNAIRE_CODE = "questionnaire_code"
+GEN_RANDOM = "gen_random"
+DEFAULT_QUESTION = "default_question"
+QUESTION = "question"
+CODE = "code"
+TYPE = "type"
+LIMIT = "limit"
+NO_LIMIT = "no_limit"
+LIMITED = "limited"
+MIN = "min"
+MAX = "max"
+DATE_FORMAT = "date_format"
+CHOICE = "choice"
+ALLOWED_CHOICE = "allowed_choice"
+NUMBER = "number"
+WORD = "word"
+DATE = "date"
+LIST_OF_CHOICES = "list_of_choices"
+GEO = "geo"
+DD_MM_YYYY = "dd.mm.yyyy"
+ONLY_ONE_ANSWER = "only_one_answer"
+MULTIPLE_ANSWERS = "multiple_answers"
+CHARACTER_REMAINING = "character_remaining"
+
+PROJECT_BACKGROUND = "project_background"
+REPORT_TYPE = "report_type"
+SUBJECT = "subject"
+DEVICES = "devices"
+WARNING_MESSAGE = "warning_message"
+SUCCESS_MSG = "message"
+QCODE = 'qcode'
+ANSWER = 'answer'
+
+SELECT = "select"
+TEXT = "text"
+CHECKBOX = "checkbox"
+
+NO_CHART_TEXT = by_css("#no_charts_here")
 
 today = datetime.today()
 month = today.month - 1
@@ -111,4 +152,68 @@ FILTER_BY_YEAR_TO_DATE = {PROJECT_NAME: "clinic test project",
                           DAILY_DATE_RANGE: YEAR_TO_DATE,
                           DATA_RECORDS: get_year_to_date_data()}
 
+NEW_PROJECT_DATA = {PROJECT_NAME: "Chart Tests",GEN_RANDOM: True}
 
+QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
+                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?"},
+                      QUESTIONS: [{QUESTION: "Testing chart", TYPE: LIST_OF_CHOICES,
+                                   CHOICE: ["chartOne", "chartTwo", "chartThree"],
+                                   ALLOWED_CHOICE: MULTIPLE_ANSWERS}],
+                      CHARACTER_REMAINING: "65 / 160 characters used (1 SMS)",
+                      SUCCESS_MSG: "Your questionnaire has been saved",
+                      PAGE_TITLE: "Data Senders"}
+
+NEW_PROJECT_DATA_WITHOUT_MCQ = {PROJECT_NAME: "Project with single choice",GEN_RANDOM: True}
+
+QUESTIONNAIRE_DATA_WITHOUT_MCQ = {
+    QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
+    QUESTIONS: [{QUESTION: "Without MCQ", TYPE: NUMBER, MIN: "1", MAX: "10"}]}
+
+NEW_PROJECT_DATA_SINGLE_CHOICE = {PROJECT_NAME: "Single Chart Tests",GEN_RANDOM: True}
+
+QUESTIONNAIRE_DATA_SINGLE_CHOICE = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
+                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?"},
+                      QUESTIONS: [{QUESTION: "Testing chart", TYPE: LIST_OF_CHOICES,
+                                   CHOICE: ["chartOne", "chartTwo", "chartThree"],
+                                   ALLOWED_CHOICE: ONLY_ONE_ANSWER}],
+                      CHARACTER_REMAINING: "65 / 160 characters used (1 SMS)",
+                      SUCCESS_MSG: "Your questionnaire has been saved",
+                      PAGE_TITLE: "Data Senders"}
+
+VALID_ANSWERS = [
+    {QCODE: 'q2', ANSWER: 'chartOne', TYPE: SELECT},
+]
+
+NEW_PROJECT_DATA_MULTIPLE_CHOICE = {PROJECT_NAME: "Multiple Choice Chart Tests",GEN_RANDOM: True}
+
+QUESTIONNAIRE_DATA_MULTIPLE_CHOICE = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
+                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?"},
+                      QUESTIONS: [{QUESTION: "Testing chart", TYPE: LIST_OF_CHOICES,
+                                   CHOICE: ["chartOne", "chartTwo", "chartThree"],
+                                   ALLOWED_CHOICE: MULTIPLE_ANSWERS}],
+                      CHARACTER_REMAINING: "65 / 160 characters used (1 SMS)",
+                      SUCCESS_MSG: "Your questionnaire has been saved",
+                      PAGE_TITLE: "Data Senders"}
+
+VALID_ANSWERS_MULTIPLE_CHOICE = [
+    {QCODE: 'q2', ANSWER: 'a', TYPE: CHECKBOX},
+]
+
+NEW_PROJECT_DATA_ORDER = {PROJECT_NAME: "Multiple Choice Chart Order Test",GEN_RANDOM: True}
+
+QUESTIONNAIRE_DATA_ORDER = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
+                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?"},
+                      QUESTIONS: [{QUESTION: "Testing chart", TYPE: LIST_OF_CHOICES,
+                                   CHOICE: ["chartOne", "chartTwo", "chartThree"],
+                                   ALLOWED_CHOICE: MULTIPLE_ANSWERS},
+                                  {QUESTION: "Testing chart2", TYPE: LIST_OF_CHOICES,
+                                   CHOICE: ["chartOne", "chartTwo", "chartThree"],
+                                   ALLOWED_CHOICE: MULTIPLE_ANSWERS}],
+                      CHARACTER_REMAINING: "65 / 160 characters used (1 SMS)",
+                      SUCCESS_MSG: "Your questionnaire has been saved",
+                      PAGE_TITLE: "Data Senders"}
+
+VALID_ANSWERS_ORDER = [
+    {QCODE: 'q2', ANSWER: 'a', TYPE: CHECKBOX},
+    {QCODE: 'q3', ANSWER: 'a', TYPE: CHECKBOX}
+]

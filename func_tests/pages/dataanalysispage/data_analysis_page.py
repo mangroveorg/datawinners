@@ -32,3 +32,20 @@ class DataAnalysisPage(SubmissionLogPage):
         self.driver.find(ALL_DATA_RECORDS_LINK).click()
         self.driver.wait_for_element(20, by_css("table.submission_table"))
         return SubmissionLogPage(self.driver)
+
+    def go_to_chart_view(self):
+        """
+        Function to navigate on next data records page
+        """
+
+
+        self.driver.find(CHART_VIEW_LINK).click()
+
+    def get_no_charts_text(self):
+        return self.driver.find(by_css('#no_charts_here')).text
+
+    def is_chart_visible(self):
+        return self.driver.find_visible_element(CHART_ELEMENT)
+
+    def get_chart_question_title(self, chart_number):
+        return self.driver.find(by_css('#chart_ol li:nth-of-type('+ chart_number +') h6')).text

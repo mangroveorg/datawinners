@@ -1,4 +1,4 @@
-from framework.base_test import HeadlessRunnerTest
+from framework.base_test import HeadlessRunnerTest, teardown_driver
 from framework.utils.common_utils import by_id, by_css
 from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
@@ -24,6 +24,10 @@ class TestWebSubmissionOnBehalfOfAnotherDatasender(HeadlessRunnerTest):
         create_questionnaire_page.save_and_create_project_successfully()
         self.driver.wait_for_page_with_title(5, 'Questionnaires - Overview')
         return ProjectOverviewPage(self.driver)
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown_driver(cls.driver)
 
 
 
