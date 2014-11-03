@@ -9,8 +9,9 @@ from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
 from mock import Mock, patch, PropertyMock
 from django.core import mail
+from datawinners.entity.view.unique_id import _subject_short_codes_to_delete
 
-from datawinners.entity.views import initialize_values, subject_short_codes_to_delete
+from datawinners.entity.views import initialize_values
 from datawinners.entity.views import _format_imported_subjects_datetime_field_to_str
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
@@ -254,15 +255,15 @@ class TestView(TestCase):
     def test_select_short_codes_sent_from_web_when_all_ids_not_selected(self):
         request = HttpRequest()
         request.POST = {"all_ids": "1;2;3"}
-        self.assertEquals(subject_short_codes_to_delete(request, Mock(DatabaseManager), "test_type"), ['1', '2', '3'])
+        self.assertEquals(_subject_short_codes_to_delete(request, Mock(DatabaseManager), "test_type"), ['1', '2', '3'])
 
     def test_select_short_codes_using_search_query_when_all_selected_on_web(self):
         request = HttpRequest()
         request.user = 'test'
         request.POST = {"all_ids": "1;2;3", "all_selected": "true", "search_query": "something"}
-        with patch("datawinners.entity.views.SubjectQuery")  as mock_subject_query_class:
-            with patch("datawinners.entity.views.get_form_model_by_entity_type") as get_form_model_by_entity_type:
-                with patch("datawinners.entity.views.header_fields") as header_fields:
+        with patch("datawinners.entity.view.unique_id.SubjectQuery")  as mock_subject_query_class:
+            with patch("datawinners.entity.view.unique_id.get_form_model_by_entity_type") as get_form_model_by_entity_type:
+                with patch("datawinners.entity.view.unique_id.header_fields") as header_fields:
                     instance = Mock(spec=SubjectQuery)
                     mock_subject_query_class.return_value = instance
                     mock_form_model = Mock(FormModel)
@@ -273,7 +274,7 @@ class TestView(TestCase):
                     header.update({"short_code":"unique id"})
                     header_fields.return_value = header
                     manager = Mock(DatabaseManager)
-                    self.assertEquals(subject_short_codes_to_delete(request, manager, "test_type"),
+                    self.assertEquals(_subject_short_codes_to_delete(request, manager, "test_type"),
                                       ['x', 'y'])
                     instance.query.assert_called_once_with('test', 'test_type', 'something')
                     header_fields.assert_called_once_with(mock_form_model)

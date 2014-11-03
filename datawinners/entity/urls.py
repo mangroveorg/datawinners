@@ -5,10 +5,11 @@ from datawinners.entity.view.datasenders import RegisterDatasenderView
 from datawinners.entity.view.datasenders_autocomplete import AllDataSenderAutoCompleteView
 from datawinners.entity.view.import_template import import_template
 from datawinners.entity.view.questionnaires import get_existing_questionnaires
+from datawinners.entity.view.unique_id import delete_subjects
 from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax
 from datawinners.entity.views import create_subject, subject_autocomplete
 from datawinners.entity.views import create_type
-from datawinners.entity.views import all_subject_types, delete_subjects, all_subjects, all_subjects_ajax
+from datawinners.entity.views import all_subject_types, all_subjects, all_subjects_ajax
 from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.entity.views import export_subject
 from datawinners.entity.views import delete_subject_types

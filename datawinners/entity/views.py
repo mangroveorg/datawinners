@@ -237,32 +237,32 @@ def get_success_message(entity_type):
     return _("Subject(s) successfully deleted.")
 
 
-@csrf_view_exempt
-@csrf_response_exempt
-@login_required
-@is_datasender
-def delete_subjects(request):
-    manager = get_database_manager(request.user)
-    entity_type = request.POST['entity_type']
-    all_ids = subject_short_codes_to_delete(request, manager, entity_type)
-
-    transport_info = TransportInfo("web", request.user.username, "")
-    delete_entity_instance(manager, all_ids, entity_type, transport_info)
-    log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
-    message = get_success_message(entity_type)
-    return HttpResponse(json.dumps({'success': True, 'message': message}))
-
-
-def subject_short_codes_to_delete(request, manager, entity_type):
-    if request.POST.get("all_selected") == 'true':
-        search_query = request.POST.get('search_query')
-        subject_list = SubjectQuery().query(request.user, entity_type, search_query)
-        form_model = get_form_model_by_entity_type(manager, [entity_type])
-        short_code_index = header_fields(form_model).keys().index("short_code")
-        return [s[short_code_index] for s in subject_list]
-
-    return request.POST['all_ids'].split(';')
-
+# @csrf_view_exempt
+# @csrf_response_exempt
+# @login_required
+# @is_datasender
+# def delete_subjects(request):
+#     manager = get_database_manager(request.user)
+#     entity_type = request.POST['entity_type']
+#     all_ids = subject_short_codes_to_delete(request, manager, entity_type)
+#
+#     transport_info = TransportInfo("web", request.user.username, "")
+#     delete_entity_instance(manager, all_ids, entity_type, transport_info)
+#     log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
+#     message = get_success_message(entity_type)
+#     return HttpResponse(json.dumps({'success': True, 'message': message}))
+#
+#
+# def subject_short_codes_to_delete(request, manager, entity_type):
+#     if request.POST.get("all_selected") == 'true':
+#         search_query = request.POST.get('search_query')
+#         subject_list = SubjectQuery().query(request.user, entity_type, search_query)
+#         form_model = get_form_model_by_entity_type(manager, [entity_type])
+#         short_code_index = header_fields(form_model).keys().index("short_code")
+#         return [s[short_code_index] for s in subject_list]
+#
+#     return request.POST['all_ids'].split(';')
+#
 
 # def _index_ofkey_in_ordered_dict(ordered_dict, key):
 #     return ordered_dict.keys().index(key)
