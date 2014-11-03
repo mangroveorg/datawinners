@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 import jsonpickle
+from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
 from mangrove.transport import TransportInfo
 
 from datawinners import settings
@@ -66,6 +67,10 @@ class AllDataSendersView(TemplateView):
                                   detail=json.dumps(
                                       dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})))
 
+    def _convert_anonymous_submissions_to_registered(self, imported_data_senders, manager):
+        imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
+        convert_open_submissions_to_registered_submissions.delay(manager.database_name, imported_datasenders_ids)
+
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         error_message, failure_imports, success_message, successful_imports = import_module.import_data(
@@ -74,6 +79,8 @@ class AllDataSendersView(TemplateView):
             default_parser=XlsDatasenderParser)
 
         imported_data_senders = parse_successful_imports(successful_imports)
+        self._convert_anonymous_submissions_to_registered(imported_data_senders, manager)
+
         self.update_activity_log(request, successful_imports)
 
         return HttpResponse(json.dumps(
