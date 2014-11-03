@@ -123,12 +123,6 @@ def create_registration_form(manager, entity_name):
     form_model.save()
     return form_model
 
-def delete_registration_form(manager, entity_name):
-    assert is_sequence(entity_name)
-    for entity in entity_name:
-        form_model = get_form_model_by_entity_type(manager,[entity])
-        form_model.delete()
-
 def get_country_appended_location(location_hierarchy, country):
     location_hierarchy_split = location_hierarchy.split(',')
     country_already_appended = (location_hierarchy_split[len(location_hierarchy_split)-1].strip() == country)

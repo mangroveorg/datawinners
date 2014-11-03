@@ -1,8 +1,10 @@
 import json
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 import elasticutils
+
 from datawinners.accountmanagement.decorators import is_datasender
 from datawinners.common.constant import DELETED_IDENTIFICATION_NUMBER
 from datawinners.entity.helper import delete_entity_instance
@@ -10,7 +12,7 @@ from datawinners.entity.views import log_activity, get_success_message
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import get_projects_by_unique_id_type
 from datawinners.search.entity_search import SubjectQuery
-from datawinners.search.index_utils import es_questionnaire_field_name, es_unique_id_code_field_name
+from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.entity import get_by_short_code, delete_data_record
 from mangrove.form_model.form_model import get_form_model_by_entity_type, header_fields

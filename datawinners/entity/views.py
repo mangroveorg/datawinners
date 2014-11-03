@@ -16,7 +16,7 @@ from django.utils.translation import ugettext as _, ugettext
 import elasticutils
 import jsonpickle
 from django.contrib import messages
-from datawinners import settings
+
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, \
     valid_web_user
 from datawinners.entity.entity_export_helper import get_subject_headers
@@ -32,13 +32,13 @@ from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, delete_entity_instance, put_email_information_to_entity, \
-    get_organization_telephone_number, delete_registration_form
+from datawinners.entity.helper import create_registration_form, put_email_information_to_entity, \
+    get_organization_telephone_number
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined
-from mangrove.datastore.entity import get_all_entities
+from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
     QuestionAlreadyExistsException
@@ -47,7 +47,6 @@ from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATIO
     get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, \
     header_fields, get_field_by_attribute_value
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport import TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
@@ -57,7 +56,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, DELETED_IDENTIFICATION_NUMBER, REGISTERED_IDENTIFICATION_NUMBER, \
+from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGISTERED_IDENTIFICATION_NUMBER, \
     EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
@@ -130,13 +129,15 @@ def delete_subject_types(request):
     manager = get_database_manager(request.user)
     subject_types = request.POST.get("all_ids")
     subject_types = subject_types.split(";")
-    delete_registration_form(manager, subject_types)
     delete_type(manager, subject_types)
     for subject_type in subject_types:
+        form_model = get_form_model_by_entity_type(manager, [subject_type])
         delete_mapping(manager.database_name, subject_type)
-        ent = get_all_entities(manager, [subject_type])
-        for entities in ent:
-            entities.delete()
+        entities = get_all_entities_include_voided(manager, [subject_type])
+        for entity in entities:
+            delete_data_record(manager, form_model.form_code, entity.short_code)
+            entity.delete()
+        form_model.delete()
     messages.success(request, _("Identification Number Type(s) successfully deleted."))
     return HttpResponse(json.dumps({'success': True}))
 

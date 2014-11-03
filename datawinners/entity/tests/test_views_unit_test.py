@@ -273,7 +273,6 @@ class TestView(TestCase):
                     header.update({"name":"name"})
                     header.update({"short_code":"unique id"})
                     header_fields.return_value = header
-                    manager = Mock(DatabaseManager)
                     self.assertEquals(_subject_short_codes_to_delete(request, mock_form_model, "test_type"),
                                       ['x', 'y'])
                     instance.query.assert_called_once_with('test', 'test_type', 'something')
