@@ -18,6 +18,8 @@ from datawinners.accountmanagement.decorators import is_not_expired, session_not
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS
 from datawinners.entity import import_data as import_module
+from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions, \
+    update_datasender_on_open_submissions
 from datawinners.entity.helper import rep_id_name_dict_of_users
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import is_project_exist
@@ -132,6 +134,7 @@ def registered_datasenders(request, project_id):
         imported_data_senders = parse_successful_imports(successful_imports)
         imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
         _add_imported_datasenders_to_project(imported_datasenders_ids, manager, questionnaire)
+        convert_open_submissions_to_registered_submissions.delay(manager.database_name, imported_datasenders_ids)
 
         if len(imported_datasenders_ids):
             UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
