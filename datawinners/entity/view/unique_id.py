@@ -24,8 +24,10 @@ def _soft_delete_unique_ids(all_ids, entity_type, manager, request):
     delete_entity_instance(manager, all_ids, entity_type, transport_info)
     log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
 
+
 def _delete_unique_id_from_elastic_search(dbm, entity_type, document_id):
-    elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).delete(dbm.database_name, entity_type, document_id)
+    elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).delete(dbm.database_name, entity_type,
+                                                                                        document_id)
 
 
 def _refresh_elastic_search_index(dbm):
@@ -44,22 +46,22 @@ def _hard_delete_unique_ids(unique_ids, dbm, form_model):
 
 
 def _check_if_questionnaire_has_submissions_with_unique_id(manager, project, unique_id):
-    index_name = manager.database_name
-    es_doc_type = project.id
     field_names = [_get_unique_id_es_field_name(field, project.id) for field in project.entity_questions]
-    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(index_name).doctypes(
-        es_doc_type)[:1]
+    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(
+        manager.database_name).doctypes(project.id)[:1]
     for field_name in field_names:
-        params = {field_name:unique_id}
+        params = {field_name: unique_id}
         query = query.filter(**params)
 
     return list(query.values_list('status'))
+
 
 def _get_unique_id_es_field_name(field, project_id):
     unique_id_field_name = es_questionnaire_field_name(field.code, project_id)
     return unique_id_field_name + '_unique_code_exact'
 
-def get_unique_ids_to_hard_delete(unique_ids, entity_type, manager):
+
+def _get_unique_ids_to_hard_delete(unique_ids, entity_type, manager):
     projects = get_projects_by_unique_id_type(manager, [entity_type])
     unique_ids_with_submissions = []
     for project in projects:
@@ -83,7 +85,7 @@ def delete_subjects(request):
     entity_type = request.POST['entity_type']
     form_model = get_form_model_by_entity_type(manager, [entity_type])
     all_ids = _subject_short_codes_to_delete(request, form_model, entity_type)
-    hard_delete_unique_ids = get_unique_ids_to_hard_delete(all_ids, entity_type, manager)
+    hard_delete_unique_ids = _get_unique_ids_to_hard_delete(all_ids, entity_type, manager)
     _hard_delete_unique_ids(hard_delete_unique_ids, manager, form_model)
     unique_ids_to_soft_delete = list(set(all_ids) - set(hard_delete_unique_ids))
     _soft_delete_unique_ids(unique_ids_to_soft_delete, entity_type, manager, request)
