@@ -478,7 +478,7 @@ $(document).ready(function(){
                 if (response.success) {
                     window.location.href = "/project/registered_datasenders/" + project_id + "/";
                     $("#save_ds_setting").html(gettext('Save'));
-                }   
+                }
            }
        );
    });
