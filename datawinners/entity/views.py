@@ -27,6 +27,7 @@ from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import delete_mapping, es_questionnaire_field_name
 from datawinners.search.submission_index import update_submission_search_for_subject_edition
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
+from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
 from mangrove.form_model.field import field_to_json, DateField
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -136,6 +137,7 @@ def delete_subject_types(request):
         entities = get_all_entities_include_voided(manager, [subject_type])
         for entity in entities:
             delete_data_record(manager, form_model.form_code, entity.short_code)
+            manager._save_document(EntityActionDocument(form_model.entity_type[0], entity.short_code, HARD_DELETE))
             entity.delete()
         form_model.delete()
     messages.success(request, _("Identification Number Type(s) successfully deleted."))
