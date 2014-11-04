@@ -164,21 +164,6 @@ table.error_table {
 	border-right:6px solid #C20303;
   }
 }
-ul.errorlist{
-    margin-top: 5px;
-    list-style-type: none !important;
-    float: left;
-    color: #FFFFFF;
-    display: inline;
-    background: url(/media/images/arrow_error.png) no-repeat left 10px;
-    margin-top: 0;
-    padding: 3px 10px 3px 10px;
-    /*border:1px solid #000000;*/
-    -moz-border-radius: 5px;
-    -webkit-moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
-
 #on_behalf_of_error {
       background: #c20303;
       padding: 3px 10px 3px 10px;
@@ -189,4 +174,3 @@ ul.errorlist{
       background: #c20303;
       padding-bottom: 20px!important;
 }
-
