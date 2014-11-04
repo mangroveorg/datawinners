@@ -4,7 +4,7 @@ from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
-from framework.utils.common_utils import by_id, random_string
+from framework.utils.common_utils import by_id, random_string, by_css
 from pages.allsubjectspage.subjects_page import SubjectsPage
 from pages.loginpage.login_page import LoginPage, login
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, url
@@ -75,7 +75,6 @@ class TestSubjectsPage(HeadlessRunnerTest):
         self.driver.find(by_id("cancel_add_type")).click()
         self.add_subject_type(SUBJECT_TYPE_BLANK)
         self.validate_error_messages(ERROR_MSG_EMPTY_ENTRY)
-
 
     def validate_subject_type(self, subject_type):
         element = self.driver.find_element_by_link_text(subject_type).text

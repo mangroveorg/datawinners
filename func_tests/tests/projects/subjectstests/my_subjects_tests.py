@@ -1,5 +1,5 @@
 from nose.plugins.attrib import attr
-from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
+
 from framework.base_test import teardown_driver, HeadlessRunnerTest
 from pages.loginpage.login_page import login
 from tests.projects.subjectstests.my_subjects_data import *
