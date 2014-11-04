@@ -11,7 +11,7 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
     var delete_entity_block = $(delete_block_selector);
 
     delete_entity_block.dialog({
-            title: gettext("Warning !!"),
+            title: gettext("Your Identification Number(s) Will Be Deleted"),
             modal: true,
             autoOpen: false,
             width: 520,

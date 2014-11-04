@@ -1129,8 +1129,8 @@ msgstr "Veuillez entrer un nombre valide."
 msgid "Delete the Identification Number Type"
 msgstr "Supprimer le(s) Type(s) de Numéro d’Identification"
 
-msgid "Delete Associated Questionnaires First"
-msgstr "Supprimer d’abord les Questionnaires associés"
+msgid "Delete Associated Questions First"
+msgstr "Supprimer d’abord les Questions associés"
 
 msgid "The following Questionnaire(s) are collecting data about <b>"
 msgstr "Le(s) Questionnaire(s) suivant(s) collecte(nt) des données sur <b>"
@@ -1363,3 +1363,6 @@ msgstr "Modifier l'Expéditeur de Données"
 
 msgid "This is only a preview. To send in data, Go to the \"Data\" tab, then to \"Web Submission\"."
 msgstr "Ceci n’est qu’un aperçu. Pour soumettre des données, Cliquez sur l’onglet « Données », et ensuite sur « Soumission Web »."
+
+msgid "Your Identification Number(s) Will Be Deleted"
+msgstr ""

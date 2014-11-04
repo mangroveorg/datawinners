@@ -19,7 +19,9 @@ def get_entity_actions(request, start_date=None, end_date=None):
         params['endkey'] = end
 
     rows = dbm.load_all_rows_in_view('entity_actions', **params)
-    entity_actions = [{'entity_type': row["value"]['entity_type'], 'short_code': row["value"]['short_code'],
+    entity_actions = [{'entity_type': row["value"]['entity_type'],
+                       'action': row["value"]['action'],
+                       'short_code': row["value"]['short_code'],
                        'date': row["value"]['created'].strftime("%Y-%m-%d %H:%M:%S")} for row in rows]
 
     return HttpResponse(content_type='application/json', content=json.dumps(entity_actions))

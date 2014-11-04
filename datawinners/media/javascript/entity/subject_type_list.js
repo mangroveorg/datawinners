@@ -33,7 +33,7 @@ $(document).ready(function () {
                     $(this).find(".subject_type_entry:checked").each(function(){
                         if($(line).find(".questionnaires").text()){
                             has_questionnaires = true;
-                            message = gettext("The following Questionnaire(s) are collecting data about <b>") + $(line).find(".header").html()+"</b><ul class='bulleted'>";
+                            message = gettext("The following Questionnaire(s) are collecting data about <b>") + $(line).find(".header").html()+ "</b><ul class='bulleted'>";
                             $(line).find(".questionnaires span").each(function(){
                                 message = message + "<li style='margin-left:15px;'>"+$(this).html()+"</li>";
 
@@ -45,7 +45,7 @@ $(document).ready(function () {
                     });
                     $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").append(message);
                 });
-                content = content + subject_list.join("</b> and <b>") + gettext("</b>, you need to delete the Questionnaire(s) first.");
+                content = content + subject_list.join("</b> and <b>") + gettext("</b>, you need to remove these questions using <b>") + $(line).find(".header").html()+  '</b> as a identification Number first';
                 if(has_questionnaires)
                 {
                     $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").append(content);
@@ -108,7 +108,7 @@ $(document).ready(function () {
             continue_handler:function () {
                 $(".action").val("");
             },
-            title:gettext("Delete Associated Questionnaires First"),
+            title:gettext("Delete Associated Questions First"),
             height:"auto",
             width:550
         }
