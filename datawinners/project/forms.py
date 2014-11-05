@@ -52,7 +52,7 @@ class OpenDsBroadcastMessageForm(BroadcastMessageForm):
 
     def __init__(self, associated_ds=0, number_of_ds=0, unregistered_ds=0, *args, **kwargs):
         super(OpenDsBroadcastMessageForm, self).__init__(*args, **kwargs)
-        unregistered_label = u"%s %s" % (ugettext_lazy("All people who submitted data (registered & un-registered)"), str(unregistered_ds))
+        unregistered_label = u"%s %s" % (ugettext_lazy("My Data Senders linked to this Questionnaire & un-registered submitters"), str(unregistered_ds))
         self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My registered Data Senders linked to this Questionnaire"), str(associated_ds))),
                                                         ("All", u"%s %s" % (ugettext_lazy("All registered Data Senders of all Questionnaires"), str(number_of_ds))),
                                                         ("AllSubmitted" , unregistered_label),
