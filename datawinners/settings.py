@@ -274,6 +274,8 @@ CARBON_HOST = '127.0.0.1'
 CARBON_PORT = 2003
 
 
+BRAND = "dw"
+
 try:
     from local_settings import *
 except ImportError, e:

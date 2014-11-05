@@ -1,3 +1,5 @@
+@import "_main";
+
 #header{
     text-align:left;
     color:#c0ecb1;
@@ -19,7 +21,7 @@
         border-left:none;
     }
     .login{
-        background:#427633;
+        background:$public-header-login-bg;
     }
 }
 #main_tab{

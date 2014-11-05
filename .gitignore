@@ -74,3 +74,5 @@ datawinners/media/CACHE
 ###################
 datawinners/celery
 
+# Generated css files
+datawinners/media/css/scss/*.css

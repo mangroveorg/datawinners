@@ -1,8 +1,9 @@
+@import "_main";
 $font_family:"Arail";
 
 .tab_navigation{
     ul{
-        background:url('/media/images/tab_navigation_bg.gif') repeat-x left 10px scroll;
+        background:url($nav-tab-bg-img) repeat-x left 10px scroll;
         margin-left:15px;
         float:left;
         li{
@@ -10,7 +11,8 @@ $font_family:"Arail";
             padding:7px 13px 8px;
             position:relative;
             margin-top:10px;
-            background:url('/media/images/tab_navigation_pipe.gif') no-repeat top right;
+            background: url($nav-tab-bg-img) no-repeat top right;
+            border-right: $sec-nav-boder;
             a{
                 color:#FFFFFF;
                 text-decoration:none;

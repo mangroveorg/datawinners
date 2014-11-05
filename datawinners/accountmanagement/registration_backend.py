@@ -9,7 +9,8 @@ from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import Organization
-from datawinners.accountmanagement.registration_processors import get_registration_processor
+from datawinners.accountmanagement.registration_processors import TrialAccountRegistrationProcessor, ProAccountRegistrationProcessor, ProSMSAccountRegistrationProcessor
+
 
 class RegistrationBackend(object):
     """
@@ -110,7 +111,7 @@ class RegistrationBackend(object):
 
         new_user = self._create_user(site, kwargs)
 
-        registration_processor = get_registration_processor(organization)
+        registration_processor = self.get_registration_processor(organization)
         registration_processor.process(new_user, site, request.LANGUAGE_CODE, kwargs)
         new_user.save()
 
@@ -121,6 +122,13 @@ class RegistrationBackend(object):
                                      reporter_id=kwargs.get('reporter_id'))
 
         return new_user
+
+    def get_registration_processor(self, organization):
+        registration_processor_dict = {'Basic':TrialAccountRegistrationProcessor,
+                                       'Pro':ProAccountRegistrationProcessor,
+                                       'Pro SMS':ProSMSAccountRegistrationProcessor }
+        registration_processor = registration_processor_dict.get(organization.account_type)
+        return registration_processor(organization)
 
     def is_subscription_registration(self, kwargs):
         return 'organization_address' in kwargs and 'organization_zipcode' in kwargs
