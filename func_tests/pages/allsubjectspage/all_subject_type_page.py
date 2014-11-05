@@ -38,7 +38,7 @@ class AllSubjectTypePage(Page):
         self.driver.find(ADD_SUBJECT_TYPE_LINK).click()
         self.driver.find_text_box(NEW_SUBJECT_TYPE_TB).enter_text(new_type)
         self.driver.find(ADD_SUBJECT_TYPE_SUBMIT_BUTTON).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, ADD_SUBJECT_TYPE_SUBMIT_BUTTON, want_visible=False)
+        self.driver.wait_for_element(120, ADD_SUBJECT_TYPE_SUBMIT_BUTTON, want_visible=False)
         return self
 
     def navigate_to_edit_registration_form(self, entity_type, close_warning=False):
