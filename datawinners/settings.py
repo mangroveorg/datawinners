@@ -6,6 +6,7 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 PROJECT_DIR = os.path.dirname(__file__)
+SCSS_COMPILE_PATH = PROJECT_DIR + '/media/css/scss/'
 EXPIRED_DAYS_FOR_TRIAL_ACCOUNT = 30
 TRIAL_PERIOD_IN_YEAR = 1
 NEAR_SUBMISSION_LIMIT_TRIGGER = 800
@@ -278,7 +279,7 @@ BRAND = "dw"
 
 try:
     from local_settings import *
-except ImportError, e:
+except ImportError as e:
     raise Exception("You need to create a local_settings.py from local_settings_example.py")
 
 from logger_settings import *

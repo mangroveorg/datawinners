@@ -25,6 +25,7 @@ function main {
 		rsdb) restore_couchdb_and_postgres;;
 		rs) run_server;;
 		jt) js_tests;;
+		ccss) compile_css;;
 		*) show_help && exit 1;;
 	esac	
 }

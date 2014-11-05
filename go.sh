@@ -167,3 +167,7 @@ function show_help {
 function recreate_search_index {
   cd "$DWROOT_DIR/datawinners" && python manage.py recreate_search_indexes
 }
+
+function compile_css {
+  cd "$DWROOT_DIR/datawinners" && python manage.py compile_css
+}
