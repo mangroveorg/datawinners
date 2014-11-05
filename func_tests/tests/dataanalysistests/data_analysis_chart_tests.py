@@ -1,22 +1,16 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import time
-from datetime import datetime, timedelta
-from unittest import SkipTest
-from framework.base_test import BaseTest, setup_driver, teardown_driver, HeadlessRunnerTest
-from framework.exception import CouldNotLocateElementException
-from framework.utils.common_utils import by_css
+from datetime import datetime
+from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.data_fetcher import fetch_, from_
-from pages.loginpage.login_page import LoginPage, login
+from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import PROJECT_NAME, DEFAULT_DATA_FOR_QUESTIONNAIRE, DAILY_DATE_RANGE, \
-    NEW_PROJECT_DATA, QUESTIONNAIRE_DATA, NO_CHART_TEXT, NEW_PROJECT_DATA_WITHOUT_MCQ, QUESTIONNAIRE_DATA_WITHOUT_MCQ, \
+    NEW_PROJECT_DATA, QUESTIONNAIRE_DATA, NEW_PROJECT_DATA_WITHOUT_MCQ, QUESTIONNAIRE_DATA_WITHOUT_MCQ, \
     NEW_PROJECT_DATA_SINGLE_CHOICE, QUESTIONNAIRE_DATA_SINGLE_CHOICE, VALID_ANSWERS, QUESTIONNAIRE_DATA_MULTIPLE_CHOICE, \
     NEW_PROJECT_DATA_MULTIPLE_CHOICE, VALID_ANSWERS_MULTIPLE_CHOICE, NEW_PROJECT_DATA_ORDER, QUESTIONNAIRE_DATA_ORDER, \
     VALID_ANSWERS_ORDER
-from tests.dataextractionapitests.data_extraction_api_data import VALID_CREDENTIALS
-#We will test this when we play any story or fix bugs doing charting
-# @SkipTest
+
 class TestDataAnalysisChart(HeadlessRunnerTest):
     @classmethod
     def setUpClass(self):
@@ -99,6 +93,6 @@ class TestDataAnalysisChart(HeadlessRunnerTest):
         web_submission_page.submit_answers()
         analysis_page = project_overview_page.navigate_to_data_page()
         analysis_page.go_to_chart_view()
-        expected_value = ['Testing chart','Testing chart2']
-        self.assertEquals(expected_value[0],analysis_page.get_chart_question_title("1"))
-        self.assertEquals(expected_value[1],analysis_page.get_chart_question_title("2"))
+        expected_value = ['Testing chart', 'Testing chart2']
+        self.assertEquals(expected_value[0], analysis_page.get_chart_question_title("1"))
+        self.assertEquals(expected_value[1], analysis_page.get_chart_question_title("2"))

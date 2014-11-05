@@ -1,13 +1,17 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import datetime
+import json
+from django.test import Client
 
 from nose.plugins.attrib import attr
+import requests
+from requests.auth import HTTPDigestAuth
 
 from framework.utils.data_fetcher import fetch_, from_
 from pages.languagespage.account_wide_reply_sms_page import AccountWideSmsReplyPage
 from pages.languagespage.customized_language_locator import SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR
 from pages.loginpage.login_page import login
-from testdata.test_data import ACCOUNT_MESSAGES_URL
+from testdata.test_data import ACCOUNT_MESSAGES_URL, url
 from tests.smstestertests.sms_tester_data import *
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID, TRIAL_ACCOUNT_ORGANIZATION_ID
 from datawinners.accountmanagement.models import Organization
@@ -19,6 +23,7 @@ class TestSMSTester(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
+        cls.DIGEST_CREDENTIALS = HTTPDigestAuth('tester150411@gmail.com', 'tester150411')
         languages_page = login(cls.driver).navigate_to_languages_page()
         account_wide_sms_reply_page = languages_page.navigate_to_account_message_Tab()
         account_wide_sms_reply_page.update_message_for_selector(SUBJECT_REG_WITH_INCORRECT_NUMBER_OF_RESPONSES_LOCATOR,
@@ -59,8 +64,16 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(send_sms_with(REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER),
                          fetch_(ERROR_MSG, from_(REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER)))
 
+    def _delete_unique_id(self, unique_id, unique_id_type):
+        request = {'all_ids': unique_id, 'entity_type': unique_id_type, 'all_selected': False}
+        client = Client()
+        client.login(username='tester150411@gmail.com', password='tester150411')
+        response = client.post(url('/entity/subjects/delete/'), request)
+        self.assertEquals(response.status_code, 200)
+
     @attr('functional_test')
     def test_sms_player_for_registration_of_new_subject(self):
+
         organization = Organization.objects.get(org_id=DEFAULT_TEST_ORG_ID)
         message_tracker_before = organization._get_message_tracker(datetime.today())
         response = send_sms_with(REGISTER_NEW_SUBJECT)
@@ -70,6 +83,12 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
         self.assertEqual(message_tracker_before.sms_registration_count + 1,
                          message_tracker_after.sms_registration_count)
+        code = response.split(" ")[-1].rstrip(".")
+        self._delete_unique_id(code, 'clinic')
+
+        all_deleted_subjects = json.loads(requests.get(url('/api/entity/actions/'), auth=self.DIGEST_CREDENTIALS).content)
+        deleted_subjects = [dict for dict in all_deleted_subjects if dict['entity_type']== 'clinic' and dict['action'] == 'hard-delete' and dict['short_code'] == code]
+        self.assertGreaterEqual(len(deleted_subjects), 1)
 
     @attr('functional_test')
     def test_counters_for_trail_org_for_registration_of_new_subject_when_sms_limit_reached(self):
@@ -149,6 +168,11 @@ class TestSMSTester(HeadlessRunnerTest):
     def _get_test_paid_org_message_tracker(self, paid_test_org):
         return paid_test_org._get_message_tracker(datetime.today())
 
+    def _register_subject_clinic(self):
+        response = send_sms_with(REGISTER_NEW_SUBJECT_TO_SOFT_DELETE)
+        code = response.split(" ")[-1].rstrip(".")
+        return code
+
     @attr('functional_test')
     def test_should_check_with_right_order(self):
         test_data = MULTIPLE_WRONG_DATA.copy()
@@ -181,8 +205,10 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(send_sms_with(test_data),
                          "Error. cid00x5 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor.")
 
+        code = self._register_subject_clinic()
+
         message = fetch_(SMS, from_(test_data))
-        test_data.update({SMS: message.replace("CID00X5", "CID005")})
+        test_data.update({SMS: message.replace("CID00X5", code)})
         self.assertEqual(send_sms_with(test_data),
                          "Error. Incorrect answer for question 3. Please review printed Questionnaire and resend entire SMS.")
 
@@ -194,4 +220,8 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertEqual(count_before_submission + 1,
                          self._get_test_paid_org_message_tracker(paid_test_org).incoming_sms_count)
 
+        self._delete_unique_id(code, 'clinic')
+        all_deleted_subjects = json.loads(requests.get(url('/api/entity/actions/'), auth=self.DIGEST_CREDENTIALS).content)
+        deleted_subjects = [dict for dict in all_deleted_subjects if dict['entity_type']== 'clinic' and dict['action'] == 'soft-delete' and dict['short_code'] == code]
+        self.assertGreaterEqual(len(deleted_subjects), 1)
 

@@ -70,6 +70,11 @@ REGISTER_NEW_SUBJECT = {SENDER: "1234567890",
                         SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur . ",
                         SUCCESS_MESSAGE: "Thank you Shweta"}
 
+REGISTER_NEW_SUBJECT_TO_SOFT_DELETE = {SENDER: "1234567890",
+                        RECEIVER: "919880734937",
+                        SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur . ",
+                        SUCCESS_MESSAGE: "Thank you Shweta"}
+
 REGISTER_NEW_SUBJECT_TRIAL_ACCOUNT = {SENDER: TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO,
                         RECEIVER: "447860034166",
                         SMS: "cli fn ln loc 1,1 1283192",
