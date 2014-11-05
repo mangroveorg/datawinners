@@ -9,6 +9,7 @@ from pages.projectsubjectspage.project_subjects_page import ProjectSubjectsPage
 from pages.reminderpage.reminder_settings_page import ReminderSettingsPage
 from pages.smstesterlightbox.sms_tester_light_box_page import SMSTesterLightBoxPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class ProjectOverviewPage(Page):
@@ -58,6 +59,7 @@ class ProjectOverviewPage(Page):
 
     def navigate_to_questionnaire_tab(self):
         self.driver.find(QUESTIONNAIRE_TAB).click()
+        self.driver.wait_for_page_load()
         from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
         return QuestionnaireTabPage(self.driver)
 
