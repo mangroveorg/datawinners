@@ -8,6 +8,7 @@ from framework.utils.data_fetcher import from_, fetch_
 from pages.addsubjecttypepage.add_subject_type_locator import *
 from tests.subjecttypetests.add_subject_type_data import *
 from time import sleep
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class AddSubjectTypePage(Page):
@@ -41,7 +42,7 @@ class AddSubjectTypePage(Page):
         self.driver.find_text_box(NEW_SUBJECT_TB).enter_text(entity_type)
         self.driver.find(ADD_BTN).click()
         if wait:
-            self.driver.wait_until_element_is_not_present(5, by_css("#type_message .ajax_loader_small"))
+            self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css("#type_message .ajax_loader_small"))
         return self
 
     def get_error_message(self):
