@@ -75,7 +75,7 @@ $(document).ready(function(){
     $("#save_ds").bind("click", function(){
         selected_ds = $('#id_dsid option:selected').text();
         selected_ds_split = selected_ds.split("  ");
-        datasender_name = selected_ds_split[0].replace(/^\w/, function($0) { return $0.toUpperCase(); });
+        datasender_name = selected_ds_split[0].replace(/^\w/, function($0) { return $0; });
         datasender_id = selected_ds_split[1].replace(')','').replace('(','')
 
         $(".datasender").text(datasender_id);
