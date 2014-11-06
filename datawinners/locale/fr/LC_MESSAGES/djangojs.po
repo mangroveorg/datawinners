@@ -1133,13 +1133,16 @@ msgid "Delete Associated Questions First"
 msgstr "Supprimer d’abord les Questions associés"
 
 msgid "The following Questionnaire(s) are collecting data about <b>"
-msgstr "Le(s) Questionnaire(s) suivant(s) collecte(nt) des données sur <b>"
+msgstr "Les Questionnaire(s) suivants collectent des données sur <b>"
 
 msgid "If you want to delete the Identification Number Type <b>"
 msgstr "Si vous voulez supprimer le Type de Numéro d’Identification <b>"
 
-msgid "</b>, you need to delete the Questionnaire(s) first. "
-msgstr "</b>, vous devez d’abord supprimer le(s) Questionnaire(s)."
+msgid "</b>, you need to remove these questions using "
+msgstr "</b>, vous devez d’abord supprimer ces questions liées "
+
+msgid "<b> %(entity_type)s </b> as a identification Number first"
+msgstr "au Numéro d’Identification <b> %(entity_type)s </b>"
 
 msgid "Save"
 msgstr "Enregistrer"
@@ -1365,4 +1368,4 @@ msgid "This is only a preview. To send in data, Go to the \"Data\" tab, then to 
 msgstr "Ceci n’est qu’un aperçu. Pour soumettre des données, Cliquez sur l’onglet « Données », et ensuite sur « Soumission Web »."
 
 msgid "Your Identification Number(s) Will Be Deleted"
-msgstr ""
+msgstr "Votre(vos) numéro(s) d’identification seront supprimés"

@@ -1088,7 +1088,7 @@ msgstr ""
 msgid "If you want to delete the Identification Number Type <b>"
 msgstr ""
 
-msgid "</b>, you need to delete the Questionnaire(s) first."
+msgid "</b>, you need to remove these questions using <b>"
 msgstr ""
 
 msgid "Save"

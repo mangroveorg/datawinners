@@ -41,11 +41,12 @@ $(document).ready(function () {
                             message = message + "</ul></br>";
                             list = $(line).find(".questionnaires");
                             subject_list.push($(line).find(".header").html());
+                            content = content + subject_list.join("</b> and <b>") + gettext("</b>, you need to remove these questions using ") + interpolate(gettext("<b> %(entity_type)s </b> as a identification Number first"), {entity_type: $(line).find(".header").html()}, true);
                         }
+
                     });
                     $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").append(message);
                 });
-                content = content + subject_list.join("</b> and <b>") + gettext("</b>, you need to remove these questions using <b>") + $(line).find(".header").html()+  '</b> as a identification Number first';
                 if(has_questionnaires)
                 {
                     $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").append(content);
