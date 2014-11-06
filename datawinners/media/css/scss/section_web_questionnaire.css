@@ -75,4 +75,12 @@ a#cancel_leave {
   #id_dsid option {
     margin: 3px; }
 
-/*# sourceMappingURL=section_web_questionnaire.css.map */
+.ds_error_list {
+  float: left;
+  color: #FFFFFF;
+  display: inline;
+  background: url(/media/images/arrow_error.png) no-repeat left 10px;
+  padding: 3px 10px 3px 10px;
+  -moz-border-radius: 5px;
+  -webkit-moz-border-radius: 5px;
+  -webkit-border-radius: 5px; }
