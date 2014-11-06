@@ -63,6 +63,8 @@ def receipt(request):
         message = ""
         try:
             sms = SMS.objects.get(message_id=request.POST.get("id"))
+            if sms.status != 'Submitted':
+                return HttpResponse(message)
             sms.status = request.POST.get('transport_status')
             if not sms.smsc: sms.smsc = request.POST.get('transport_name')
             sms.delivered_at = iso8601.parse_date(request.POST.get('delivered_at'))
