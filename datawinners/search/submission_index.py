@@ -393,7 +393,7 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
 
 def get_unregistered_datasenders(dbm, questionnaire_id):
     facets = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name)\
-            .doctypes(questionnaire_id).filter(is_anonymous=True, ds_id='N/A', void=False)\
+            .doctypes(questionnaire_id).filter(is_anonymous=True, ds_id='n/a', void=False)\
             .facet('ds_name_exact', filtered=True).facet_counts()['ds_name_exact']
 
     return [facet['term'] for facet in facets]
