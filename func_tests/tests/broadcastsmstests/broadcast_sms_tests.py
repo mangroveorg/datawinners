@@ -1,18 +1,22 @@
 from nose.plugins.attrib import attr
-
+import uuid
+from django.test import Client
 from framework.base_test import HeadlessRunnerTest
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, LOGOUT
 from tests.broadcastsmstests.broadcast_sms_data import SMS_VALID_DATA, SMS_EXACT_ON_LIMIT_DATA, \
     ERROR_MESSAGE_MAX_LENGTH_10, MORE_THAN_100_NUMBER, ERROR_MESSAGE_MAX_LENGTH_11
 from tests.logintests.login_data import VALID_CREDENTIALS, NIGERIA_ACCOUNT_CREDENTIAL
+from tests.projects.customizedreplysmstests.customized_reply_sms_data import PROJECT_DATA, PROJECT_QUESTIONNAIRE_DATA
 
 
 class TestBroadcastSMS(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
+        cls.client = Client()
         cls.send_message_page = cls._navigate_to_send_message_page()
+        # cls.client.login(username='tester150411@gmail.com', password='tester150411')
 
     @attr('functional_test')
     def test_retain_sms_content_after_unsuccessful_send(self):
@@ -29,8 +33,8 @@ class TestBroadcastSMS(HeadlessRunnerTest):
     def _navigate_to_send_message_page(cls, project_name="clinic test project1", credential=VALID_CREDENTIALS):
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
-        global_navigation = login_page.do_successful_login_with(credential)
-        all_project_page = global_navigation.navigate_to_view_all_project_page()
+        cls.global_navigation = login_page.do_successful_login_with(credential)
+        all_project_page = cls.global_navigation.navigate_to_view_all_project_page()
         project_overview_page = all_project_page.navigate_to_project_overview_page(project_name)
         send_message_page = project_overview_page.navigate_send_message_tab()
         return send_message_page
@@ -77,4 +81,26 @@ class TestBroadcastSMS(HeadlessRunnerTest):
         
         self.assertTrue(send_message_page.is_send_a_message_to_unregistered_present())
 
-        
+    @attr('functional_test')
+    def test_should_verify_the_total_number_of_anonymous_and_linked_data_senders_to_questionnaire_(self):
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+        self.create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
+        self.create_questionnaire_page.create_questionnaire_with(PROJECT_DATA, PROJECT_QUESTIONNAIRE_DATA)
+        questionnaire_code = self.create_questionnaire_page.get_questionnaire_code()
+        overview_page = self.create_questionnaire_page.save_and_create_project_successfully()
+        project_name = overview_page.get_project_title()
+
+        self.driver.go_to(LOGOUT)
+        self.create_submissions(questionnaire_code)
+        send_message_page = self._navigate_to_send_message_page(project_name)
+
+        actual_number_of_recipients = send_message_page.get_number_of_recipients_text_for_unregistered_and_associated_data_senders()
+        self.assertEquals("4 recipient(s)",actual_number_of_recipients)
+
+    def create_submissions(self, questionnaire_code):
+        _from = "100"
+        _to = "919880734937"
+        message = questionnaire_code + " some_name 50 cid001"
+        data = {"message": message, "from_msisdn": _from, "to_msisdn": _to, "message_id":uuid.uuid1().hex}
+        self.client.post("/submission", data)

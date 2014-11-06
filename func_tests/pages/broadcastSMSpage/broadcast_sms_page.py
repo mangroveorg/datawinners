@@ -27,6 +27,10 @@ class BroadcastSmsPage(Page):
     def get_other_people_number_error(self):
         return self.driver.find(OTHER_PEOPLE_ERROR_TEXT_BY_CSS).text
 
+    def get_number_of_recipients_text_for_unregistered_and_associated_data_senders(self):
+        self.driver.find(DROP_DOWN).click()
+        return self.driver.find(NUMBER_OF_ANONYMOUS_AND_ASSOCIATED_RECIPIENTS_TEXT_BY_CSS).text
+
     def is_warning_shown(self):
         return self.driver.find(by_id("more_people_warning")).is_displayed()
 
