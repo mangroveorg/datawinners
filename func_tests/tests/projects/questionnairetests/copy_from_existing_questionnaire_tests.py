@@ -5,7 +5,7 @@ from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPa
 from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from tests.projects.questionnairetests.project_questionnaire_data import COPY_PROJECT_QUESTIONNAIRE_DATA, COPY_PROJECT_DATA
-from django.utils.unittest.case import SkipTest
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class TestCopyExistingQuestionnaire(HeadlessRunnerTest):
@@ -16,7 +16,7 @@ class TestCopyExistingQuestionnaire(HeadlessRunnerTest):
         cls.project_name, cls.questionnaire_code = cls._create_project(COPY_PROJECT_DATA, COPY_PROJECT_QUESTIONNAIRE_DATA)
 
     @attr("functional_test")
-    def test_to_copy_existing_questionnaire1(self):
+    def test_to_copy_existing_questionnaire(self):
         create_questionnaire_options_page = self.global_navigation.navigate_to_dashboard_page()\
                                                 .navigate_to_create_project_page()
         actual_questions = create_questionnaire_options_page.get_questions_list_for_selected_project(self.project_name)
@@ -57,5 +57,6 @@ class TestCopyExistingQuestionnaire(HeadlessRunnerTest):
         reminder_setting_page.navigate_to_automatic_reply_sms_page().turn_off_reply_messages()
 
         cls.questionnaire_tab_page = overview_page.navigate_to_questionnaire_tab()
+        cls.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, 'Questionnaire')
         return overview_page.get_project_title(), questionnaire_code
 

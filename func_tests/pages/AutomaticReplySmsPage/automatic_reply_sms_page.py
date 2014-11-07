@@ -25,6 +25,7 @@ class AutomaticReplySmsPage(Page):
 
     def save_changes(self):
         self.driver.find(PROJECT_LANGUAGE_PAGE_SAVE_BUTTON).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('.success-message-box'), True)
 
     def get_success_message(self):
         return self.driver.find(PROJECT_LANGUAGE_PAGE_SUCCESS_MESSAGE_BOX).text
