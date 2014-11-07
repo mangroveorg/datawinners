@@ -29,10 +29,21 @@ class BroadcastSmsPage(Page):
 
     def get_number_of_recipients_text_for_unregistered_and_associated_data_senders(self):
         self.driver.find(DROP_DOWN).click()
-        return self.driver.find(NUMBER_OF_ANONYMOUS_AND_ASSOCIATED_RECIPIENTS_TEXT_BY_CSS).text
+        number_of_recipients_text = self.driver.find(NUMBER_OF_ANONYMOUS_AND_ASSOCIATED_RECIPIENTS_TEXT_BY_CSS).text
+        self.driver.find(DROP_DOWN).click()
+        return number_of_recipients_text
+
+    def get_number_of_recipients_for_associated_data_senders(self):
+        self.driver.find(DROP_DOWN).click()
+        number_of_recipients = int(self.driver.find(NUMBER_OF_ASSOCIATED_RECIPIENTS_TEXT_BY_CSS).text.split(' ')[0])
+        self.driver.find(DROP_DOWN).click()
+        return number_of_recipients
 
     def is_warning_shown(self):
         return self.driver.find(by_id("more_people_warning")).is_displayed()
+
+    def close_warning_dialog(self):
+        return self.driver.find(by_id("ok_button")).click()
 
     def navigate_to_automatic_reply_sms_page(self):
         self.driver.find(REPLY_SMS_LINK).click()

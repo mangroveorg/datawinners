@@ -53,6 +53,7 @@ class TestBroadcastSMS(HeadlessRunnerTest):
         self.assertFalse(self.send_message_page.is_warning_shown())
         self.send_message_page.click_send()
         self.assertTrue(self.send_message_page.is_warning_shown())
+        self.send_message_page.close_warning_dialog()
 
     @attr('functional_test')
     def test_should_limit_phone_number_to_10digits_for_other_organization(self):
@@ -78,7 +79,7 @@ class TestBroadcastSMS(HeadlessRunnerTest):
     def test_option_to_send_message_to_unregistered_datasender_should_be_present(self):
         self.driver.go_to(LOGOUT)
         send_message_page = self._navigate_to_send_message_page(project_name="Project which everyone can send in data")
-        
+
         self.assertTrue(send_message_page.is_send_a_message_to_unregistered_present())
 
     @attr('functional_test')
@@ -89,14 +90,14 @@ class TestBroadcastSMS(HeadlessRunnerTest):
         self.create_questionnaire_page.create_questionnaire_with(PROJECT_DATA, PROJECT_QUESTIONNAIRE_DATA)
         questionnaire_code = self.create_questionnaire_page.get_questionnaire_code()
         overview_page = self.create_questionnaire_page.save_and_create_project_successfully()
-        project_name = overview_page.get_project_title()
 
-        self.driver.go_to(LOGOUT)
         self.create_submissions(questionnaire_code)
-        send_message_page = self._navigate_to_send_message_page(project_name)
+        send_message_page = overview_page.navigate_send_message_tab()
 
         actual_number_of_recipients = send_message_page.get_number_of_recipients_text_for_unregistered_and_associated_data_senders()
-        self.assertEquals("4 recipient(s)",actual_number_of_recipients)
+        number_of_associated_data_senders = send_message_page.get_number_of_recipients_for_associated_data_senders()
+
+        self.assertEquals(str(number_of_associated_data_senders + 1) + " recipient(s)",actual_number_of_recipients)
 
     def create_submissions(self, questionnaire_code):
         _from = "100"
