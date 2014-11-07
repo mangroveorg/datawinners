@@ -24,7 +24,7 @@ def send_reminders():
 
 
 def _get_active_paid_organization():
-    return Organization.objects.filter(status='Activated').exclude(account_type='Basic')
+    return Organization.objects.filter(status='Activated', account_type='Pro SMS')
 
 
 def send_reminders_scheduled_on(on_date, sms_client):
@@ -84,7 +84,7 @@ def send_reminders_on(project, reminders, on_date, sms_client, from_number, dbm)
         smses_sent = 0
         try:
             smses_sent = sms_client.send_reminder(from_number, on_date, project, reminder, dbm)
-        except Exception:
+        except Exception as e:
             logger.exception("Exception while sending Reminder")
 
         if smses_sent > 0:
@@ -122,4 +122,5 @@ def send_time_based_reminder_email_by_account_status(date_delta, email_type,
 if __name__ == "__main__":
     #send_reminders_scheduled_on(date(2011, 10, 20), SMSClient())
     send_time_based_reminder_email()
+    send_reminders()
 
