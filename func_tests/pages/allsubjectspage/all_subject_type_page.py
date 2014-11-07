@@ -37,8 +37,11 @@ class AllSubjectTypePage(Page):
 
     def add_new_subject_type(self, new_type):
         self.driver.find(ADD_SUBJECT_TYPE_LINK).click()
+        self.driver.create_screenshot("before_text.png")
         self.driver.find_text_box(NEW_SUBJECT_TYPE_TB).enter_text(new_type)
+        self.driver.create_screenshot("after_text.png")
         self.driver.find(ADD_SUBJECT_TYPE_SUBMIT_BUTTON).click()
+        self.driver.create_screenshot("after_button_click.png")
         time.sleep(1) #waiting for spinner to appear
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ADD_SUBJECT_TYPE_SUBMIT_BUTTON, want_visible=False)
         return self
