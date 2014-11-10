@@ -104,4 +104,5 @@ class TestBroadcastSMS(HeadlessRunnerTest):
         _to = "919880734937"
         message = questionnaire_code + " some_name 50 cid001"
         data = {"message": message, "from_msisdn": _from, "to_msisdn": _to, "message_id":uuid.uuid1().hex}
-        self.client.post("/submission", data)
+        response = self.client.post("/submission", data)
+        self.assertTrue('Thank you' in response.content)
