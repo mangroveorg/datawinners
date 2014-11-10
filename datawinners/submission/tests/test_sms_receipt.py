@@ -11,7 +11,7 @@ class TestSMSReceipt(TestCase):
     def setUp(self):
         self.client = Client()
         o = Organization.objects.get(org_id='SLX364903')
-        SMS(message_id="1234", organization=o, message="abc").save()
+        SMS(message_id="1234", organization=o, message="abc", status="Submitted").save()
 
     def test_sms_receipt(self):
         param = {u'transport_status': u'ACCEPTD', u'delivered_at': u'2014-01-15 12:04:07.000000',
