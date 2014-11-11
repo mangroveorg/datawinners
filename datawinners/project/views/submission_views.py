@@ -134,10 +134,11 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
 
         filterable_fields = get_filterable_fields(questionnaire.fields)
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
-
+        xform = questionnaire.xform
         result_dict = {
             "user_email": request.user.email,
             "tab": tab,
+            "xform": xform,
             "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253, # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,

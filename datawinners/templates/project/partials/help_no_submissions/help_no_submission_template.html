@@ -16,10 +16,13 @@
             <br/>
             <ul class="bulleted margin_left_20">
                 {% if project_links.sms_questionnaire_preview_link %}
-                    <li>
-                        {% blocktrans with "SMS Questionnaire" as val %}to collect data via sms{{ val }}{% endblocktrans %}
-                    </li>
+                    {% if not xform %}
+                        <li>
+                            {% blocktrans with "SMS Questionnaire" as val %}to collect data via sms{{ val }}{% endblocktrans %}
+                        </li>
+                    {% endif %}
                 {% else %}
+
                     <li>{% blocktrans with project_links.overview_link as url %}SMS: Give your
                         <a href="{{ url }}">Questionnaire</a>
                         to your Data Senders and have them send in data{% endblocktrans %}
