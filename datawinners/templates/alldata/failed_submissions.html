@@ -12,19 +12,20 @@
 <div>
    <table class="styled_table">
     <thead>
-        <th width="20%"> {% trans "Questionnaire Code" %} </th>
-        <th width="10%"> {% trans "From" %} </th>
-        <th width="10%"> {% trans "To" %} </th>
-        <th width="20%"> {% trans "Message" %} </th>
-        <th width="40%"> {% trans "Error" %} </th>
+        <th width="15%"> {% trans "Data Sender" %} </th>
+        <th width="10%"> {% trans "Submission Date" %} </th>
+        <th width="10%"> {% trans "Questionnaire Code" %} </th>
+        <th width="20%"> {% trans "SMS Text" %} </th>
+        <th width="45%"> {% trans "Error Message" %} </th>
     </thead>
         {% for log in logs%}
             <tr>
-                <td>{{ log.form_code }}</td>
-                <td>{{ log.from_number}}</td>
-                <td>{{ log.to_number }}</td>
-                <td>{{ log.message }}</td>
-                <td>{{ log.error }}</td>
+                <td>{{ log.datasender.0 }}&nbsp;&nbsp;&nbsp;{{ log.datasender.1 }}&nbsp;&nbsp;{{ log.data.from_number }}</td>
+                <td>{{ log.data.created_at }}</td>
+                <td>{{ log.data.form_code }}</td>
+                <td>{{ log.data.message }}</td>
+                <td>{{ log.data.error }}</td>
+
             </tr>
         {% endfor %}
     </table>

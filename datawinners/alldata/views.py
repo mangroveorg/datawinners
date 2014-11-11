@@ -162,8 +162,21 @@ def failed_submissions(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
     organization = get_organization(request)
     org_logs = DatawinnerLog.objects.filter(organization=organization)
+    from project.data_sender_helper import data_sender_by_mobile
+    manager = get_database_manager(request.user)
+    data = []
+    datasenders = {}
+
+    for log in org_logs:
+        numb = log.from_number
+        if not datasenders.has_key(numb):
+            data_sender = data_sender_by_mobile(manager, numb)
+            datasenders.update({numb: data_sender})
+        data.append({'data':log, 'datasender': datasenders.get(numb)})
+
     return render_to_response('alldata/failed_submissions.html',
-                              {'logs': org_logs, 'page_heading': page_heading,
+                              {'logs': data,
+                               'page_heading': page_heading,
                                'disable_link_class': disable_link_class,
                                'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
                                'project_links': get_alldata_project_links(),
