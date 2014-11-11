@@ -150,7 +150,8 @@ class FilePlayer(Player):
             if filter(lambda x: len(x), values.values()).__len__() == 0:
                 raise EmptyRowException()
             values = self._process(form_model, values)
-            if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
+            is_reporter = case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER
+            if is_reporter:
                 response = self._import_data_sender(form_model, organization, values)
             else:
                 SubjectTemplateValidator(form_model).validate(values)
@@ -161,9 +162,14 @@ class FilePlayer(Player):
 
             return response
         except DataObjectAlreadyExists as e:
-            msg = _("%s with Unique ID Number = %s already exists.") % (e.data[2], e.data[1]) \
-                if e.data[0] == 'Unique ID Number' \
-                else _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1])
+            if is_reporter:
+                msg = _("%s with Unique ID Number = %s already exists.") % (e.data[2], e.data[1]) \
+                    if e.data[0] == 'Unique ID Number' \
+                    else _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1])
+            else:
+                msg = _("%s with Unique ID Number = %s already exists or has previously collected data.") % (e.data[2], e.data[1]) \
+                    if e.data[0] == 'Unique ID Number' \
+                    else _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1])
             return self._appendFailedResponse(msg,
                                                 values=values)
         except EmptyRowException as e:
