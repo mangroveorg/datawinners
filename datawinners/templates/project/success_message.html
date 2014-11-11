@@ -100,14 +100,14 @@
             {% if not project.xform %}
                 <div class="gray_text">{% trans "Test your Questionnaire" %}...</div>
                 <ul>
-                    <li><a class='sms_tester' href="#">{% trans "Test your SMS Questionnaire" %} </a>
+                    <li><a class='sms_tester' href="javascript:void(0);">{% trans "Test your SMS Questionnaire" %} </a>
                     </li>
                     <li><p>{% blocktrans with org_number|format_organization_number  as org_number and "<a href='mailto:support@datawinners.com'>support@datawinners.com</a>" as support_id %}Send a test message to {{ org_number}}. Contact {{ support_id }} if you do not receive a reply.{% endblocktrans %}</p>
                     </li>
                     <li><a id="test_web_questionnaire_section"
                            href="{{ project_links.test_questionnaire_link }}">{% trans "Test your Web Questionnaire" %} </a>
                     </li>
-                    <li><a class="sms-preview" href="#" style="padding-left: 1px">{% trans "Print your Questionnaire" %} </a></li>
+                    <li><a class="sms-preview" href="javascript:void(0);" style="padding-left: 1px">{% trans "Print your Questionnaire" %} </a></li>
                 </ul>
             {% endif %}
             {% if project.xform %}
