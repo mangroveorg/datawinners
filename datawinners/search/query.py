@@ -52,7 +52,7 @@ class QueryBuilder(object):
             query_text_escaped = self.elastic_utils_helper.replace_special_chars(query_text)
             raw_query = {
                 "query_string": {
-                    "fields": tuple(query_fields),
+                    "fields": query_fields,
                     "query": query_text_escaped
                 }
             }
@@ -64,8 +64,7 @@ class QueryBuilder(object):
 class ElasticUtilsHelper():
     def replace_special_chars(self, search_text):
         lucene_special_chars = ['\\', '+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?',
-                                '/',
-                                ':']
+                                '/', ':', ' ']
         for char in lucene_special_chars:
             search_text = search_text.replace(char, '\\' + char)
         return search_text
