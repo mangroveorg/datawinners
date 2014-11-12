@@ -52,7 +52,7 @@ class QueryBuilder(object):
             query_text_escaped = self.elastic_utils_helper.replace_special_chars(query_text)
             raw_query = {
                 "query_string": {
-                    "fields": query_fields,
+                    "fields": tuple(query_fields),
                     "query": query_text_escaped
                 }
             }
