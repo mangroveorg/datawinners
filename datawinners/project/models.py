@@ -8,7 +8,6 @@ from django.db import models
 
 from datawinners.accountmanagement.models import Organization
 from datawinners.project.couch_view_helper import get_all_projects
-from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.datastore.database import DatabaseManager, DataObject
 from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField
 from mangrove.form_model.project import Project
@@ -165,6 +164,8 @@ def count_projects(dbm, include_voided_projects=True):
 
 
 def delete_datasenders_from_project(manager, data_sender_ids):
+    from datawinners.search.datasender_index import update_datasender_index_by_id
+
     for entity_id in data_sender_ids:
         associated_projects = get_all_projects(manager, data_sender_id=entity_id)
         for associated_project in associated_projects:
