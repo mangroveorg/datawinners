@@ -309,11 +309,21 @@ def _update_choice_value(entry, field):
         entry[field.code] = _fetch_multi_select_answer(choices, field)
 
 
+def group_has_answers(group_answers, group_field):
+    if not group_answers:
+        return
+    return filter(lambda field: group_answers[0].get(field.code), group_field.fields)
+
+
 def _update_repeat_fields_with_choice_values(repeat_entries, repeat_field):
     for entry in repeat_entries:
         for field in repeat_field.fields:
             if field.is_field_set and field.is_group():
-                _update_repeat_fields_with_choice_values(entry.get(field.code), field)
+                group_answers = entry.get(field.code)
+                if group_has_answers(group_answers, field):
+                    _update_repeat_fields_with_choice_values(group_answers, field)
+                else:
+                    entry[field.code] = ''
             elif isinstance(field, SelectField):
                 _update_choice_value(entry, field)
 

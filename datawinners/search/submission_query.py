@@ -180,7 +180,10 @@ class SubmissionQuery(Query):
         return submissions
 
 
-def _format_values(field_set, formatted_value, value_dict):
+def _format_values(field_set, formatted_value, value_list):
+    if not value_list:
+        return ''
+    value_dict = value_list[0]
     for i, field in enumerate(field_set.fields):
         if isinstance(field, SelectField):
             choices = value_dict.get(field.code)
@@ -193,7 +196,7 @@ def _format_values(field_set, formatted_value, value_dict):
                 value = ''
         elif isinstance(field, FieldSet):
             value = ''
-            value = _format_values(field, value, value_dict.get(field.code)[0])
+            value = _format_values(field, value, value_dict.get(field.code))
         else:
             value = value_dict.get(field.code) or ''
         formatted_value += '"' + '<span class="repeat_qtn_label">' + field.label + '</span>' + ': ' + value + '"'
@@ -205,6 +208,6 @@ def _format_fieldset_values_for_representation(entry, field_set):
     formatted_value = ''
     if entry:
         for value_dict in json.loads(entry):
-            formatted_value = _format_values(field_set, formatted_value, value_dict)
+            formatted_value = _format_values(field_set, formatted_value, [value_dict])
             formatted_value += '<br><br>'
         return '<span class="repeat_ans">' + formatted_value + '</span>'

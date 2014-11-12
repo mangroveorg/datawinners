@@ -86,3 +86,16 @@ class TestSubmissionResponseCreator(unittest.TestCase):
                  '"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur age</span>: 28", "<span class="repeat_qtn_label">wat languages do you kno</span>: (English US, French, Spanish)";";<br><br>' \
                  '"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: mueller", "<span class="repeat_qtn_label">wat is ur age</span>: 22", "<span class="repeat_qtn_label">wat languages do you kno</span>: German";";<br><br></span>'
         self.assertEqual(formatted_values, result)
+
+    def test_should_format_repeat_with_skippable_group_question(self):
+        field1 = TextField(name='name', code='name', label='wat is ur name')
+        field2 = IntegerField(name='age', code='age', label='wat is ur age')
+        field3 = SelectField(name='languages', code='lang', label='wat languages do you kno',
+                             options=[("English US", "eng"), ("French", "fre"), ("German", "ger"), ("Spanish", "spa")], single_select_flag=False)
+        group_field = FieldSet('group','group','group',field_set=[field1,field2,field3])
+        multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
+                               field_set=[group_field])
+        entry = u'[{}]'
+        formatted_values = _format_fieldset_values_for_representation(entry, multi_field)
+        result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: ";<br><br></span>'
+        self.assertEqual(formatted_values, result)
