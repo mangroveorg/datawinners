@@ -21,6 +21,7 @@ from datawinners.entity.views import create_single_web_user
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
 from datawinners.project.view_models import ReporterEntity
+from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_index import update_submission_search_for_datasender_edition
 from datawinners.submission.location import LocationBridge
 from mangrove.datastore.entity import get_by_short_code
@@ -159,7 +160,11 @@ class RegisterDatasenderView(TemplateView):
         if message is not None and reporter_id:
             if form.cleaned_data['project_id'] != "":
                 questionnaire = Project.get(dbm, form.cleaned_data['project_id'])
-                questionnaire.associate_data_sender_to_project(dbm, [reporter_id])
+                reporters_to_associate = [reporter_id]
+                questionnaire.associate_data_sender_to_project(dbm, reporters_to_associate)
+                for data_senders_code in reporters_to_associate:
+                    update_datasender_index_by_id(data_senders_code, dbm)
+
                 questionnaire = questionnaire.name
             else:
                 questionnaire = ""

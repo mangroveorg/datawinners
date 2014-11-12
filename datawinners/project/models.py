@@ -7,6 +7,8 @@ from django.db.models.fields.related import ForeignKey
 from django.db import models
 
 from datawinners.accountmanagement.models import Organization
+from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.datastore.database import DatabaseManager, DataObject
 from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField
 from mangrove.form_model.project import Project
@@ -145,19 +147,7 @@ class ReminderLog(DataObject):
         return (' '.join(value.split('_'))).title()
 
 
-def get_all_projects(dbm, data_sender_id=None):
-    if data_sender_id:
-        rows = dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id,
-                                         include_docs=True)
-        for row in rows:
-            row.update({'value': row["doc"]})
-        return rows
-    return dbm.load_all_rows_in_view('all_projects')
 
-
-def get_all_projects_for_datasender(dbm, data_sender_id):
-    rows = dbm.load_all_rows_in_view('projects_by_datasenders', key=data_sender_id, include_docs=True)
-    return rows
 
 
 def get_simple_project_names(dbm):
@@ -180,6 +170,7 @@ def delete_datasenders_from_project(manager, data_sender_ids):
         for associated_project in associated_projects:
             project = Project.get(manager, associated_project['value']['_id'])
             project.delete_datasender(manager, entity_id)
+            update_datasender_index_by_id(entity_id, manager)
 
 
 def project_by_form_model_id(dbm, form_model_id):

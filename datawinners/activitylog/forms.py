@@ -3,7 +3,7 @@ from django.forms.fields import ChoiceField, CharField
 from datawinners.activitylog.models import action_list
 from django.utils.translation import ugettext_lazy as _
 from datawinners.accountmanagement.models import NGOUserProfile
-from datawinners.project.models import get_all_projects
+from datawinners.project.couch_view_helper import get_all_projects
 from operator import itemgetter
 from datawinners.main.database import get_database_manager
 

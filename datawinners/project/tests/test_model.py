@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import date
 import unittest
+from datawinners.project.couch_view_helper import get_all_projects
 from mangrove.datastore.documents import FormModelDocument
 
 from mock import Mock, patch
@@ -10,7 +11,7 @@ from mangrove.form_model.project import Project
 from mangrove.utils.test_utils.database_utils import uniq
 from mangrove.bootstrap import initializer
 from datawinners.main.utils import create_views
-from datawinners.project.models import get_all_projects, get_simple_project_names
+from datawinners.project.models import get_simple_project_names
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import TextField, UniqueIdField
@@ -159,12 +160,10 @@ class TestProjectModel(unittest.TestCase):
         self.project1 = Project.get(self.manager, self.project1_id)
         self.project1.data_senders = ['rep1', 'rep2']
         datasender_to_be_deleted = 'rep1'
-        with patch("datawinners.search.datasender_index.update_datasender_index_by_id") as update_datasender_index_by_id:
-            update_datasender_index_by_id.return_value = None
-            self.project1.delete_datasender(self.manager, datasender_to_be_deleted)
-            self.project1 = Project.get(self.manager, self.project1_id)
-            expected_data_senders = ['rep2']
-            self.assertEqual(self.project1.data_senders, expected_data_senders)
+        self.project1.delete_datasender(self.manager, datasender_to_be_deleted)
+        self.project1 = Project.get(self.manager, self.project1_id)
+        expected_data_senders = ['rep2']
+        self.assertEqual(self.project1.data_senders, expected_data_senders)
 
 
     def test_should_set_project_to_open_survey(self):

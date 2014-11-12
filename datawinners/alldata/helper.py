@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.settings import CRS_ORG_ID
 from datawinners.project import models
 from django.utils.translation import ugettext_lazy as _
@@ -7,8 +8,8 @@ from datawinners.main.database import get_database_manager
 
 def get_all_project_for_user(user):
     if user.get_profile().reporter:
-        return models.get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
-    return models.get_all_projects(get_database_manager(user))
+        return get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
+    return get_all_projects(get_database_manager(user))
 
 
 def get_visibility_settings_for(user):

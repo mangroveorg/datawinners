@@ -4,12 +4,12 @@ from django.conf import settings as django_settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from datawinners.project.couch_view_helper import get_all_projects
 from mangrove.errors.MangroveException import DataObjectNotFound
 
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.local_settings import CRS_ORG_ID
 from datawinners.main.database import get_database_manager
-from datawinners.project.models import get_all_projects
 from mangrove.form_model.project import Project
 
 

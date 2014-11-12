@@ -25,11 +25,12 @@ class TestUserAssociationToProject(unittest.TestCase):
         dbm = Mock()
         with patch('datawinners.accountmanagement.views.Project') as ProjectMock:
             with patch("datawinners.accountmanagement.views.get_all_projects") as get_all_projects_mock:
-                get_all_projects_mock.return_value = [{'value':{'_id': 'id1'}}]
-                project_mock = MagicMock(spec=Project)
-                ProjectMock.get.return_value = project_mock
-                project_mock.data_senders = []
+                with patch("datawinners.accountmanagement.views.update_datasender_index_by_id") as update_datasender_index_by_id_mock:
+                    get_all_projects_mock.return_value = [{'value':{'_id': 'id1'}}]
+                    project_mock = MagicMock(spec=Project)
+                    ProjectMock.get.return_value = project_mock
+                    project_mock.data_senders = []
 
-                associate_user_with_existing_project(dbm, 'rep123')
+                    associate_user_with_existing_project(dbm, 'rep123')
 
-                project_mock.associate_data_sender_to_project.assert_called_once_with(dbm, ['rep123'])
+                    project_mock.associate_data_sender_to_project.assert_called_once_with(dbm, ['rep123'])

@@ -2,10 +2,10 @@
 import codecs
 import json
 import os
+from datawinners.project.couch_view_helper import get_all_projects
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import FormModel
 from datawinners.main.database import get_db_manager
-from datawinners.project.models import get_all_projects
 
 
 def generate_template_data():

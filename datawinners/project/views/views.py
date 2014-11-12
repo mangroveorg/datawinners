@@ -20,6 +20,7 @@ from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.send_message import get_data_sender_phone_numbers
+from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_index import update_submission_search_for_subject_edition, \
     get_unregistered_datasenders_count, get_non_deleted_submission_count, get_unregistered_datasenders
 from mangrove.datastore.entity import get_by_short_code
@@ -907,7 +908,11 @@ def create_data_sender_and_web_user(request, project_id):
 
         if not len(form.errors) and reporter_id:
             project = questionnaire
-            project.associate_data_sender_to_project(manager, [reporter_id])
+            reporters_to_associate = [reporter_id]
+            project.associate_data_sender_to_project(manager, reporters_to_associate)
+            for data_senders_code in reporters_to_associate:
+                update_datasender_index_by_id(data_senders_code, manager)
+
             if form.requires_web_access():
                 email_id = request.POST['email']
                 create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,

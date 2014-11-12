@@ -22,6 +22,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
 
 from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
+from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_trial, valid_web_user, is_sms_api_user, is_datasender
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
@@ -31,7 +33,7 @@ from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm, UpgradeFormProSms
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, \
     DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for
-from datawinners.project.models import get_all_projects, delete_datasenders_from_project
+from datawinners.project.models import delete_datasenders_from_project
 from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS
@@ -110,7 +112,12 @@ def associate_user_with_existing_project(manager, reporter_id):
     for row in rows:
         project_id = row['value']['_id']
         questionnaire = Project.get(manager, project_id)
-        questionnaire.associate_data_sender_to_project(manager, [reporter_id])
+        reporters_to_associate = [reporter_id]
+        questionnaire.associate_data_sender_to_project(manager, reporters_to_associate)
+        for data_senders_code in reporters_to_associate:
+            update_datasender_index_by_id(data_senders_code, manager)
+
+
 
 @login_required
 @session_not_expired

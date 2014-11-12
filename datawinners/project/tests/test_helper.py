@@ -257,10 +257,11 @@ class TestPreviewCreator(unittest.TestCase):
             mock_project = Mock(spec=Project)
             mock_project_class.get.return_value = mock_project
             with patch("datawinners.project.models.get_all_projects") as all_projects:
-                all_projects.return_value = [{'value': {'_id': 1}}]
-                dbm = Mock()
-                dbm.database.return_value = ''
+                with patch("datawinners.project.models.update_datasender_index_by_id") as update_datasender_index_by_id_mock:
+                    all_projects.return_value = [{'value': {'_id': 1}}]
+                    dbm = Mock()
+                    dbm.database.return_value = ''
 
-                delete_datasenders_from_project(dbm, entity_ids)
+                    delete_datasenders_from_project(dbm, entity_ids)
 
-                self.assertEqual(mock_project.delete_datasender.call_count, 2)
+                    self.assertEqual(mock_project.delete_datasender.call_count, 2)

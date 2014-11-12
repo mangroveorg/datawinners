@@ -11,6 +11,8 @@ from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 import jsonpickle
 from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
+from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.transport import TransportInfo
 
 from datawinners import settings
@@ -20,7 +22,7 @@ from datawinners.entity.views import log_activity, get_success_message
 from datawinners.main.database import get_database_manager
 from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, \
     delete_datasender_for_trial_mode, rep_id_name_dict_of_users
-from datawinners.project.models import get_all_projects, delete_datasenders_from_project
+from datawinners.project.models import delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports
 from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
@@ -183,7 +185,10 @@ class AssociateDataSendersView(DataSenderActionView):
         questionnaires = self._get_projects(manager, request)
         projects_name = Set()
         for questionnaire in questionnaires:
-            questionnaire.associate_data_sender_to_project(manager, data_sender_short_codes(request, manager))
+            datasenders_to_associate = data_sender_short_codes(request, manager)
+            questionnaire.associate_data_sender_to_project(manager, datasenders_to_associate)
+            for data_senders_code in datasenders_to_associate:
+                update_datasender_index_by_id(data_senders_code, manager)
             projects_name.add(questionnaire.name.capitalize())
         ids = request.POST["ids"].split(';')
         if len(ids):
@@ -210,6 +215,8 @@ class DisassociateDataSendersView(DataSenderActionView):
             for rep_id in selected_rep_ids:
                 if rep_id in questionnaire.data_senders:
                     questionnaire.delete_datasender(manager, rep_id)
+                    update_datasender_index_by_id(rep_id, manager)
+
                     projects_name.add(questionnaire.name.capitalize())
                     removed_rep_ids.add(rep_id)
 

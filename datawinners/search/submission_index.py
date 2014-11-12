@@ -6,6 +6,7 @@ from string import lower
 from babel.dates import format_datetime
 import elasticutils
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
+from datawinners.project.couch_view_helper import get_all_projects
 
 from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, \
     convert_choice_options_to_options_text
@@ -13,7 +14,6 @@ from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
 from mangrove.form_model.field import DateField, UniqueIdField, SelectField, FieldSet
-from datawinners.project.models import get_all_projects
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound

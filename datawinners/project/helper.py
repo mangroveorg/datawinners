@@ -10,6 +10,7 @@ from django.utils.translation import ugettext
 
 from datawinners import settings
 from datawinners.accountmanagement.helper import get_all_user_repids_for_org
+from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_query import SubmissionQueryBuilder
 from datawinners.utils import get_organization_from_manager
 from mangrove.datastore.documents import ProjectDocument
@@ -250,6 +251,9 @@ def associate_account_users_to_project(manager, questionnaire):
     user_ids = get_all_user_repids_for_org(get_organization_from_manager(manager).org_id)
     # for id in user_ids:
     questionnaire.associate_data_sender_to_project(manager, user_ids)
+    for data_senders_code in user_ids:
+        update_datasender_index_by_id(data_senders_code, manager)
+
 
 
 def get_projects_by_unique_id_type(dbm, unique_id_type):
