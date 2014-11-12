@@ -39,6 +39,6 @@ def create_template_from_json_file(dbm, file_name):
                                                          language=data.get('language'))
             template_doc.json_fields = data.get('json_fields')
             template_doc.validators = data.get('validators')
-            doc_id = dbm._save_document(template_doc)
+            doc_id = dbm._save_document(template_doc, process_post_update=False)
             docs.append(doc_id)
     return docs
