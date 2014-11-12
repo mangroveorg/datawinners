@@ -37,7 +37,8 @@ COUCHDBFEED_USERNAME = 'admin'
 COUCHDBFEED_PASSWORD = 'admin'
 COUCHDBFEED_CREDENTIALS = (COUCHDBFEED_USERNAME,COUCHDBFEED_PASSWORD)
 
-HNI_BLOG_FEED = 'http://datawinners.wordpress.com/feed/'
+HNI_BLOG_FEED = 'http://hni.org/blog/category/datawinners-data-collection-for-development/feed/'
+
 VUMI_API_URL = "https://localhost/smstester/vumi-stub"
 
 

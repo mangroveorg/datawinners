@@ -30,6 +30,8 @@ EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winner'
 EMAIL_PORT = 587
 
+HNI_BLOG_FEED = 'http://hni.org/blog/category/datawinners-data-collection-for-development/feed/'
+
 COUCHDBMAIN_USERNAME = 'admin'
 COUCHDBMAIN_PASSWORD = 'admin'
 COUCHDBMAIN_CREDENTIALS = (COUCHDBMAIN_USERNAME, COUCHDBMAIN_PASSWORD)
