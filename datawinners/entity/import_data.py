@@ -167,7 +167,7 @@ class FilePlayer(Player):
                     if e.data[0] == 'Unique ID Number' \
                     else _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1])
             else:
-                msg = _("%s with ID Number %s already exists or has previously collected data.") % (e.data[2], e.data[1])\
+                msg = _("%s with ID Number '%s' already exists or has previously collected data.") % (e.data[2], e.data[1])\
                     if e.data[0] == 'Unique ID Number' \
                     else _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1])
             return self._appendFailedResponse(msg,
