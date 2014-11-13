@@ -1,0 +1,33 @@
+import logging
+
+from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.main.database import get_db_manager
+from datawinners.project.models import Reminder
+from mangrove.errors.MangroveException import DataObjectNotFound
+from mangrove.form_model.project import Project
+from migration.couch.utils import migrate, mark_as_completed
+
+
+org_ids_with_reminders = [org[0] for org in Reminder.objects.order_by('organization').values_list('organization').distinct()]
+organization_names = [store[0] for store in OrganizationSetting.objects.order_by('organization').filter(organization__in=org_ids_with_reminders).values_list('document_store')]
+datastore_org_id_map = dict(zip(organization_names, org_ids_with_reminders))
+
+def remove_reminders_for_deleted_questionnaires(db_name):
+    logger = logging.getLogger(db_name)
+    try:
+       dbm = get_db_manager(db_name)
+       org_id = datastore_org_id_map[db_name]
+       reminders = Reminder.objects.filter(organization=org_id)
+       for reminder in reminders:
+           try:
+               questionnaire = Project.get(dbm, reminder.project_id)
+               if not questionnaire._doc['void'] and questionnaire._doc['reminder_and_deadline']['deadline_type'] == 'Following':
+                   logger.error("Questionnaire Id %s for reminder %s has following setup" % (reminder.project_id, reminder.id))
+           except DataObjectNotFound:
+               pass
+    except Exception:
+        logger.exception(db_name)
+    mark_as_completed(db_name)
+
+
+migrate(organization_names, remove_reminders_for_deleted_questionnaires, version=(14, 0, 4), threads=1)
