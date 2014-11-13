@@ -2535,8 +2535,8 @@ msgstr "Le/la %s portant le Numéro d’Identification Unique : %s existe déjà
 msgid "%s with %s %s already exists."
 msgstr "Un(e) %s avec le %s %s existe déjà."
 
-msgid "%s with %s %s already exists or has previously collected data."
-msgstr "Un(e) %s avec le %s %s existe déjà ou est lié à des données collectées précédemment."
+msgid "%s with ID Number %s already exists or has previously collected data."
+msgstr "Un %s portant le code ID %s existe déjà ou est lié à des données collectées précédemment."
 
 msgid "Unique ID Number"
 msgstr "Numéro d'Identification unique"

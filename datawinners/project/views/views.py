@@ -568,7 +568,7 @@ class SubjectWebQuestionnaireRequest():
             message = exception_messages.get(DataObjectNotFound).get(WEB)
             error_message = _(message) % (self.form_model.entity_type[0], self.form_model.entity_type[0])
         except DataObjectAlreadyExists as exception:
-            error_message = _("%s with %s %s already exists.") % (exception.data[2], _(exception.data[0]), exception.data[1])
+            error_message = _("%s with ID Number %s already exists or has previously collected data.") % (exception.data[2], exception.data[1])
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
