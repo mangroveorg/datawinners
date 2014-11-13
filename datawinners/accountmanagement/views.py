@@ -49,6 +49,7 @@ def registration_complete(request):
 
 
 def registration_activation_complete(request):
+    request.session['activation_successful'] = True
     return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
 
 

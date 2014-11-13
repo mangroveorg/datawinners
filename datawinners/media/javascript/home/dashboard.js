@@ -30,11 +30,17 @@ DW.dashboard_project.prototype={
 
 };
 
+function _trackConversion(){
+    if(is_first_time_activation == 'True'){
+        DW.trackEvent('account', 'activated', account_type, parseInt(account_cost));
+    }
+}
+
 $(document).ready(function() {
     var project=new DW.dashboard_project();
     project.create_submission_template('submissionTemplate');
     $('.project_id').each(function(){
         project.showSubmissionBreakup($(this).html());
     });
-
+    _trackConversion();
 });

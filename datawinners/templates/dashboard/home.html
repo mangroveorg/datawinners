@@ -16,6 +16,11 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript">
+        var is_first_time_activation = "{{ first_time_activation }}";
+        var account_cost = "{{ account_cost }}";
+        var account_type = "{{ account_type }}";
+    </script>
     <script type="text/javascript" src="/media/javascript/home/dashboard.js"></script>
 {% endblock %}
 
