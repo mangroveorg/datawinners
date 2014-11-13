@@ -6,11 +6,13 @@
         <a href="javascript:void(0)" class="show_link">{% trans "Learn More" %}</a>
 
         <div class="details">
-            {% block no_submission_hint %}
-                <br/>
-                {% blocktrans with project_links.submission_log_link as url %}no submission sub hint{{ url }}{% endblocktrans %}
-                <br/>
-            {% endblock %}
+            <div class="analysis_help_text">
+                {% block no_submission_hint %}
+                    <br/>
+                    {% blocktrans with project_links.submission_log_link as url %}no submission sub hint{{ url }}{% endblocktrans %}
+                    <br/>
+                {% endblock %}
+            </div>
             <br/>
             {% trans "To collect data" %}
             <br/>

@@ -51,7 +51,7 @@ DW.SubmissionLogTable = function (options) {
 
     var no_data_help = {"all": "<span id=\"help_text_chart\">" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
         "analysis": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
-        "success": "<span>" + gettext("Onfjkljdljce your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+        "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
         "error": gettext("No unsuccessful Submissions!"),
         "deleted": gettext("No deleted Submissions.")
     };
@@ -75,14 +75,17 @@ DW.SubmissionLogTable = function (options) {
                 "actionItems": options.actions_menu,
                 "fnInitComplete": function () {
                     $('#search_box').append($('.dataTables_wrapper .dataTables_filter'));
+                    if(options.tabName != 'analysis'){
+                        $('.analysis_help_text').remove();
+                    }
                 },
                 "fnHeaderCallback": function (head) {
                 },
                 "getFilter": filter_as_json
             }
         );
-        $(".submission_table").dataTable().fnSetColumnVis(0, options.row_check_box_visible)
-    };
+        $(".submission_table").dataTable().fnSetColumnVis(0, options.row_check_box_visible);
+    }
 };
 
 DW.SubmissionLogExport = function () {
