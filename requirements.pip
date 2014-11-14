@@ -19,7 +19,7 @@ xlwt==0.7.5
 xlrd
 psycopg2==2.4.1
 django-extensions==1.2.2
-apscheduler
+apscheduler==2.1.1
 south==0.7.3
 supervisor
 python-dateutil==1.5
