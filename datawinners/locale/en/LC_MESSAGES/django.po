@@ -4768,3 +4768,6 @@ msgstr ""
 
 msgid "Sorry. The Identification Number Type you are looking for has been deleted"
 msgstr ""
+
+msgid "SMS Text"
+msgstr ""

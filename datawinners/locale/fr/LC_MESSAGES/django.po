@@ -5557,3 +5557,6 @@ msgstr "Tout le monde - N'importe qui possédant un simple téléphone peut soum
 
 msgid "Reminders set for registered Data Senders"
 msgstr "Messages de rappel parametrés pour les Expéditeurs de Données enregistrés"
+
+msgid "SMS Text"
+msgstr "Texte SMS"
