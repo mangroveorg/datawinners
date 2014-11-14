@@ -25,4 +25,4 @@ def undelete_datasenders_for_organization(db_name):
     mark_as_completed(db_name)
 
 
-migrate(['hni_trailworks_lof792'], undelete_datasenders_for_organization, version=(14, 0, 2), threads=1)
+migrate(['hni_pnncseecaline_bpn692977'], undelete_datasenders_for_organization, version=(14, 0, 2), threads=1)
