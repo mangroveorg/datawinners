@@ -15,7 +15,7 @@ from mangrove.form_model.field import ExcelDate, DateField
 class XFormSubmissionExporter(SubmissionExporter):
 
     def _create_response(self, columns, submission_list, submission_type):
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns).format_tabular_data(submission_list)
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model).format_tabular_data(submission_list)
         return self._create_excel_response(headers, data_rows_dict, export_filename(submission_type, self.project_name))
 
     def _create_excel_response(self, headers, data_rows_dict, file_name):
@@ -33,13 +33,13 @@ FIELD_SET = "field_set"
 
 class AdvanceSubmissionFormatter():
 
-    def __init__(self, columns):
+    def __init__(self, columns, form_model):
         self.columns = columns
+        self.form_model = form_model
 
     def append_relating_columns(self, cols):
         cols.append('_index')
         cols.append('_parent_index')
-        return cols
 
     def format_tabular_data(self, values):
 
@@ -50,10 +50,13 @@ class AdvanceSubmissionFormatter():
         formatted_values, formatted_repeats = [], {}
         for i, row in enumerate(values):
             result = self._format_row(row, i, formatted_repeats)
-            result.append(i+1)
+            if self.form_model.has_nested_fields:
+                result.append(i+1)
             formatted_values.append(result)
 
-        self.append_relating_columns(headers)
+        if self.form_model.has_nested_fields:
+            self.append_relating_columns(headers)
+
         repeat_headers.update({'main': headers})
         formatted_repeats.update({'main': formatted_values})
         return repeat_headers, formatted_repeats

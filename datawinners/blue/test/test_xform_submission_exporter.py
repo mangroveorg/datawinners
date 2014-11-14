@@ -1,13 +1,15 @@
 from collections import OrderedDict
 import unittest
+from mock import MagicMock
 from nose.plugins.attrib import attr
 from datawinners.blue.xform_submission_exporter import AdvanceSubmissionFormatter
+from mangrove.form_model.form_model import FormModel
 
 
 class TestXFormSubmissionExporter(unittest.TestCase):
 
-    @attr('dcs')
     def test_should_tabulate_header_and_submissions_rows(self):
+        form_model_mock = MagicMock(spec=FormModel)
         family_dict = OrderedDict({'name': {'type': 'text', 'label': 'Name'}})
         family_dict.update({'age': {'type': 'text', 'label': 'Age'}})
 
@@ -35,7 +37,7 @@ class TestXFormSubmissionExporter(unittest.TestCase):
         # row_n = ['name','age',...]
 
 
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns).format_tabular_data(submission_list)
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, form_model_mock).format_tabular_data(submission_list)
 
         self.assertEqual(expected_header, headers['main'])
         self.assertEqual(expected_family_header, headers['family'])
@@ -48,18 +50,15 @@ class TestXFormSubmissionExporter(unittest.TestCase):
         #     workbook_add_sheet(wb, [header_row] + data_rows_dict[book_name], book_name)
         # wb.save('exported.xls')
 
-    @attr('dcs')
     def test_should_tabulate_header_and_submissions_rows_for_select_field(self):
+        form_model_mock = MagicMock(spec=FormModel)
 
         columns = OrderedDict([('uuid1_city', {'type': 'select', 'label': 'City'})])
         submission_list = [{'uuid1_city': ['Bangalore','Pune']}]
 
         expected_header = ['City','_index', '_parent_index']
         main_submission_rows = [['Bangalore; Pune',1]]
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns).format_tabular_data(submission_list)
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, form_model_mock).format_tabular_data(submission_list)
 
         self.assertEqual(expected_header, headers['main'])
         self.assertEqual(main_submission_rows, data_rows_dict['main'])
-
-    def test_repeat_inside_repeat_submission_data_should_be_tabulated(self):
-            pass
