@@ -18,6 +18,7 @@ from datawinners.project.submission.util import submission_stats
 from datawinners.accountmanagement.models import NGOUserProfile, Organization, PaymentDetails
 from datawinners.utils import get_map_key
 from mangrove.form_model.project import Project
+from mangrove.utils.types import is_empty
 
 
 def _find_reporter_name(dbm, row):
@@ -85,10 +86,10 @@ COST_MAP = {
     }
 
 def _fetch_amount(organization):
-    payment_details = PaymentDetails.objects.filter(organization=organization)[0]
-    if organization.account_type == 'Basic':
+    payment_details = PaymentDetails.objects.filter(organization=organization)
+    if is_empty(payment_details) or organization.account_type == 'Basic':
         return 0
-    return COST_MAP[organization.account_type][payment_details.invoice_period]
+    return COST_MAP[organization.account_type][payment_details[0].invoice_period]
 
 
 @valid_web_user
