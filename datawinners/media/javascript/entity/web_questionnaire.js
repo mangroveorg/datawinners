@@ -9,7 +9,10 @@ $(document).ready(function () {
             return;
         }
 
-        DW.edit_datasender = new DW.data_submission({});
+        var options = {
+                        ignore_links: ['#find_gps_link']
+                      };
+        DW.edit_datasender = new DW.data_submission(options);
     }
 
     $('.secondary_tab li:first-child').attr('class', 'inactive');

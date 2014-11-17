@@ -78,7 +78,7 @@ var sender_registration_link = "{{ registration_link }}";
                   <li class="{{ form.geo_code.css_classes }} form-row-10px">
                       <div class="clearfix">
                           <label for="id_{{ form.geo_code.name }}" style="float: left;">{{ form.geo_code.label  }}</label>
-                          <a href="http://itouchmap.com/latlong.html" class="find_gps_{% trans "en" %}" target="_blank">{% trans "Find GPS coordinates" %}</a>
+                          <a id="find_gps_link" href="http://itouchmap.com/latlong.html" class="find_gps_{% trans "en" %}" target="_blank">{% trans "Find GPS coordinates" %}</a>
                       </div>
                       {{ form.geo_code }}
                       {{ form.geo_code.errors }}

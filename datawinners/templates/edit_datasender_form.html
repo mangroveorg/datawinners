@@ -68,7 +68,7 @@
                     <li class="{{ form.geo_code.css_classes }} form-row-10px">
                         <div class="clearfix">
                             <label for="id_{{ form.geo_code.name }}" style="float: left;">{{ form.geo_code.label  }}</label>
-                            <a href="http://itouchmap.com/latlong.html" class="find_gps_{% trans "en" %}" target="_blank">{% trans "Find GPS coordinates" %}</a>
+                            <a href="http://itouchmap.com/latlong.html" id="find_gps_link" class="find_gps_{% trans "en" %}" target="_blank">{% trans "Find GPS coordinates" %}</a>
                         </div>
                         {{ form.geo_code }}
                         {{ form.geo_code.errors }}
