@@ -204,7 +204,7 @@ def reminder_settings(request, project_id):
                                    'questionnaire_code': questionnaire.form_code,
                                    'is_reminder_enabled': is_reminder_enabled,
                                    'url_to_my_datasender': url_to_my_datasender,
-                                   'reminder_information': reminder_information
+                                   'reminder_information': repr(json.dumps(reminder_information))
                                   }, context_instance=RequestContext(request))
 
     if request.method == 'POST':

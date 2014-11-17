@@ -20,17 +20,17 @@
     <link href="/media/css/scss/section_project_overview.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_reminder.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
-    <link href="/media/css/scss/on-off.css" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script language="JavaScript">
         DW.is_reminder_enabled = {{ is_reminder_enabled|lower }};
+        DW.reminder_information = $.parseJSON({{ reminder_information|safe }});
     </script>
     <script type="text/javascript" src="/media/javascript/project/deadline_and_reminder.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/ko-binding-extensions.js"></script>
 {% endblock %}
+
 
 {% block content %}
 

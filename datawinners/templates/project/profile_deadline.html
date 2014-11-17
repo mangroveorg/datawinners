@@ -1,4 +1,13 @@
 {% load i18n %}
+{% block page_scss %}
+    <link href="/media/css/on-off.css" rel="stylesheet" />
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/reminder_settings.js"></script>
+{% endblock %}
+
 <form action="" method="POST" id="reminder_deadline_form">
     {% csrf_token %}
     <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
@@ -26,17 +35,24 @@
             <div class="italic">{% trans 'Send automatic SMS reminders to your registered Data Senders. Learn more' %}</div>
             <ul>
                 <li>
-{#                    {{ form.should_send_reminders_before_deadline }}#}
-                <div class="onoffswitch" data-bind="onoff: enable_sms_replies" id="myonoffswitch">
-                <label class="onoffswitch-label" for="myonoffswitch">
-                    <span class="onoffswitch-inner"></span>
-                    <span class="onoffswitch-switch"></span>
-                </label>
-                </div>
+                    <div class="onoffswitch" data-bind="onoff: enable_reminder_before_deadline" id="myonoffswitch">
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                    {{ form.should_send_reminders_before_deadline }}
 
-                    {{ form.number_of_days_before_deadline }}
-                    {{ form.number_of_days_before_deadline.label }}
-                    {{ form.number_of_days_before_deadline.errors }}
+                    <div class="month_block">
+                        {{ form.number_of_days_before_deadline_month }}
+                        {{ form.number_of_days_before_deadline_month.label }}
+                        {{ form.number_of_days_before_deadline_month.errors }}
+                    </div>
+                    <div class="week_block">
+                        {{ form.number_of_days_before_deadline_week }}
+                        {{ form.number_of_days_before_deadline_week.label }}
+                        {{ form.number_of_days_before_deadline_week.errors }}
+                    </div>
                 </li>
                 <li>
                     <label>{{ form.reminder_text_before_deadline.label }}</label>
@@ -44,7 +60,13 @@
                     {{ form.reminder_text_before_deadline.errors }}
                     <span id="counter_for_reminder_before_deadline"></span> {% trans " of 160 characters used" %}
                 </li>
-                 <li>
+                <li>
+                     <div class="onoffswitch" data-bind="onoff: enable_reminder_on_deadline" id="myonoffswitch">
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
                      {{ form.should_send_reminders_on_deadline }}
                      {{ form.should_send_reminders_on_deadline.label }}
                  </li>
@@ -55,11 +77,24 @@
                      <span id="counter_for_reminder_on_deadline"></span> {% trans " of 160 characters used" %}
                  </li>
                  <li>
-                     {{ form.should_send_reminders_after_deadline }}
 
-                     {{ form.number_of_days_after_deadline }}
-                     {{ form.number_of_days_after_deadline.label }}
-                     {{ form.number_of_days_after_deadline.errors }}
+                     <div class="onoffswitch" data-bind="onoff: enable_reminder_after_deadline" id="myonoffswitch">
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                        {{ form.should_send_reminders_after_deadline }}
+                     <div class="month_block">
+                        {{ form.number_of_days_after_deadline_month }}
+                        {{ form.number_of_days_after_deadline_month.label }}
+                        {{ form.number_of_days_after_deadline_month.errors }}
+                    </div>
+                    <div class="week_block">
+                        {{ form.number_of_days_after_deadline_week }}
+                        {{ form.number_of_days_after_deadline_week.label }}
+                        {{ form.number_of_days_after_deadline_week.errors }}
+                    </div>
                  </li>
                  <li>
                      <label>{{ form.reminder_text_after_deadline.label }}</label>

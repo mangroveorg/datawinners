@@ -97,8 +97,8 @@ DW.DeadlineDetails.prototype = {
 };
 
 DW.ReminderDetails = function(){
-    this.number_of_days_before_deadline = 'input[name=number_of_days_before_deadline]';
-    this.number_of_days_after_deadline = 'input[name=number_of_days_after_deadline]';
+    this.number_of_days_before_deadline = 'select[name=number_of_days_before_deadline]';
+    this.number_of_days_after_deadline = 'select[name=number_of_days_after_deadline]';
 };
 
 DW.ReminderDetails.prototype = {
@@ -216,6 +216,13 @@ $(document).ready(function() {
     new sms_text_counter({'reminder_type': 'after'});
 
     var deadline_changed = false;
+    var viewModel = new ReminderSettingsModel();
+
+    viewModel.enable_reminder_after_deadline(DW.reminder_information['should_send_reminders_after_deadline']);
+    viewModel.enable_reminder_before_deadline(DW.reminder_information['should_send_reminders_before_deadline']);
+    viewModel.enable_reminder_on_deadline(DW.reminder_information['should_send_reminders_on_deadline']);
+
+    ko.applyBindings(viewModel, $("#reminders_section")[0]);
 
     $("#reminder_deadline_form").on('change', "#id_frequency_period, #id_deadline_month, #id_deadline_type_month", function(){
         if(!deadline_changed){
@@ -236,4 +243,5 @@ $(document).ready(function() {
         DW.trackEvent('reminders', 'saved-reminders');
         return true;
     });
+
 });
