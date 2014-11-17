@@ -2558,7 +2558,7 @@ msgstr ""
 msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
 msgstr ""
 
-msgid "Specify when you want to send automatic Reminders to your registered Data Senders."
+msgid "Increase the number of Submissions each period (weekly, monthly) by sending automatic SMS reminders to your registered Data Senders."
 msgstr ""
 
 msgid "Between %d -- %d characters"

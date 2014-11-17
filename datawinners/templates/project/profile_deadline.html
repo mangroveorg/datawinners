@@ -2,28 +2,37 @@
 <form action="" method="POST" id="reminder_deadline_form">
     {% csrf_token %}
     <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
-        <legend>{% trans "Deadline" %}</legend>
+        <legend>{% trans "Submission Deadline" %}</legend>
         <ul>
-        <li class="form-row-10px">
+            <li class="italic_grey bold">{% trans "Specify when you need your data by. Data Senders can still submit data after the Submission Deadline.." %}</li>
+            <li class="form-row-10px">
             <div id="frequency_values">
                 <ul>
                     <li>{% trans "Every" %}</li>
                     <li>{{ form.frequency_period }}</li>
                     {% include 'project/profile_deadline_week_block.html' %}
                     {% include 'project/profile_deadline_month_block.html' %}
+                    <div class="italic bold" id="deadline_example"></div>
                 </ul>
             </div>
         </li>
         </ul>
-        <div class="italic bold" id="deadline_example"></div>
+
     </fieldset>
 
     <div id="reminders_section">
         <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
             <legend>{% trans "Reminders" %}</legend>
+            <div class="italic">{% trans 'Send automatic SMS reminders to your registered Data Senders. Learn more' %}</div>
             <ul>
                 <li>
-                    {{ form.should_send_reminders_before_deadline }}
+{#                    {{ form.should_send_reminders_before_deadline }}#}
+                <div class="onoffswitch" data-bind="onoff: enable_sms_replies" id="myonoffswitch">
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+                </div>
 
                     {{ form.number_of_days_before_deadline }}
                     {{ form.number_of_days_before_deadline.label }}

@@ -188,7 +188,11 @@ def reminder_settings(request, project_id):
     url_to_my_datasender = project_links['registered_datasenders_link']
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
     if request.method == 'GET':
-        form = ReminderForm(data=(_reminder_info_about_project(questionnaire)))
+        data = (_reminder_info_about_project(questionnaire))
+        reminder_information = {'should_send_reminders_before_deadline': data['should_send_reminders_before_deadline'],
+                                'should_send_reminders_on_deadline': data['should_send_reminders_on_deadline'],
+                                'should_send_reminders_after_deadline': data['should_send_reminders_after_deadline']}
+        form = ReminderForm(data=data)
         if is_reminder_enabled:
             form.disable_all_field()
 
@@ -199,7 +203,8 @@ def reminder_settings(request, project_id):
                                    'form': form,
                                    'questionnaire_code': questionnaire.form_code,
                                    'is_reminder_enabled': is_reminder_enabled,
-                                   'url_to_my_datasender': url_to_my_datasender
+                                   'url_to_my_datasender': url_to_my_datasender,
+                                   'reminder_information': reminder_information
                                   }, context_instance=RequestContext(request))
 
     if request.method == 'POST':

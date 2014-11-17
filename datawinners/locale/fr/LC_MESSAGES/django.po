@@ -2685,8 +2685,8 @@ msgstr "Abonnez-vous"
 msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
 msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les Expéditeurs de Données associés à votre projet"
 
-msgid "Specify when you want to send automatic Reminders to your registered Data Senders."
-msgstr "Spécifiez quand est-ce que vous souhaitez envoyer des rappels automatiques à vos Expéditeurs de Données enregistrés."
+msgid "Increase the number of Submissions each period (weekly, monthly) by sending automatic SMS reminders to your registered Data Senders. "
+msgstr ""
 
 msgid "Between %d -- %d characters"
 msgstr "Entre %d -- %d caractères"
