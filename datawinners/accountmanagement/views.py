@@ -13,7 +13,7 @@ from django.template.context import RequestContext
 from django.template.loader import render_to_string
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.views import login, password_reset, password_reset_confirm
-from django.utils.translation import ugettext as _, get_language, activate
+from django.utils.translation import ugettext as _, get_language, activate, ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.http import Http404
 from django.contrib.auth import login as sign_in, logout
@@ -22,6 +22,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
 
 from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
+from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
 from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.transport import TransportInfo
@@ -72,6 +73,13 @@ def custom_reset_password(request):
                           password_reset_form=ResetPasswordForm)
 
 
+def _get_timezone_information(organization):
+    timedelta = get_country_time_delta(organization.country)
+    localized_time = convert_utc_to_localized(timedelta, datetime.datetime.now())
+    timedelta_as_string = "%s%.2d:%.2d" % (timedelta[0], timedelta[1], timedelta[2])
+    return ugettext("(GMT%s) Now it is: %s" % (timedelta_as_string, datetime.datetime.strftime(localized_time, "%H:%M %p")))
+
+
 @login_required
 @session_not_expired
 @is_admin
@@ -82,7 +90,10 @@ def settings(request):
         organization_form = OrganizationForm(instance=organization)
 
         return render_to_response("accountmanagement/account/org_settings.html",
-                                  {'organization_form': organization_form}, context_instance=RequestContext(request))
+                                  {
+                                      'organization_form': organization_form,
+                                      'timezone_information': _get_timezone_information(organization)
+                                  }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
@@ -104,7 +115,11 @@ def settings(request):
                 UserActivityLog().log(request, action=CHANGED_ACCOUNT_INFO, detail=detail_as_string)
 
         return render_to_response("accountmanagement/account/org_settings.html",
-                                  {'organization_form': organization_form, 'message': message},
+                                  {
+                                   'organization_form': organization_form,
+                                   'message': message,
+                                   'timezone_information':  _get_timezone_information(organization)
+                                  },
                                   context_instance=RequestContext(request))
 
 

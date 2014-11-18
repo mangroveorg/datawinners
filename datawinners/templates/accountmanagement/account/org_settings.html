@@ -61,6 +61,10 @@
 
           {{ organization_form.country.errors }}
         </li>
+        <li class="{{ form.organization_country.css_classes  }} form-row-10px">
+          <label>{% trans 'Timezone' %}</label>
+          {{ timezone_information }}
+        </li>
         <li class="{{ form.organization_zipcode.css_classes  }} form-row-10px">
           {{ organization_form.zipcode|field_label }}
           {{ organization_form.zipcode }}
