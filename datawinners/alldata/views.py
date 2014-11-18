@@ -11,6 +11,7 @@ from django.utils.translation import ugettext as _
 from django.http import Http404
 
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user
+from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
@@ -157,11 +158,19 @@ def index(request):
                                   context_instance=RequestContext(request))
 
 
+def _get_failed_entries(organization):
+    org_logs = DatawinnerLog.objects.filter(organization=organization)
+    local_time_delta = get_country_time_delta(organization.country)
+    for entry in org_logs:
+        entry.created_at = convert_utc_to_localized(local_time_delta, entry.created_at)
+    return org_logs
+
+
 @valid_web_user
 def failed_submissions(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
     organization = get_organization(request)
-    org_logs = DatawinnerLog.objects.filter(organization=organization)
+    org_logs = _get_failed_entries(organization)
 
     return render_to_response('alldata/failed_submissions.html',
                               {'logs': org_logs,
