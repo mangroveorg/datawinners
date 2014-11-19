@@ -5560,3 +5560,18 @@ msgstr "Messages de rappel parametrés pour les Expéditeurs de Données enregis
 
 msgid "SMS Text"
 msgstr "Texte SMS"
+
+msgid "Columns are missing"
+msgstr "Colonnes manquantes"
+
+msgid "Column name is misspelled"
+msgstr "Faute d’orthographe dans le nom de colonne"
+
+msgid "Additional space in column name"
+msgstr "Espace additionnelle dans la colonne name"
+
+msgid "On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:"
+msgstr "Sur votre feuille \"survey\", la première et la deuxième colonne doivent être \"type\" et \"name\". Erreurs possibles:"
+
+msgid "On your \"choices\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:"
+msgstr "Sur votre feuille \"choices\", la première et la deuxième colonne doivent être \"type\" et \"name\". Erreurs possibles:"

@@ -14,6 +14,10 @@ def transform_error_message(message):
         message = parse(message,pattern)
     elif "Unmatched end" in message:
         message = _("Unmatched end statement: %s.") % message.split("Control type: ")[1]
+    elif "The survey sheet must have on the first row name" in message:
+        return 'name_type_error'
+    elif "The choices sheet must have on the first row list_name and name." in message:
+        return 'choice_name_type_error'
     else:
         message = parse(message)
     return message + _(" Update your XLSForm and upload again.")
