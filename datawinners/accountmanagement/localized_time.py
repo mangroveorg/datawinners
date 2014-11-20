@@ -1,5 +1,5 @@
 import os
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 import xmltodict
 
@@ -35,3 +35,7 @@ def get_country_time_delta(country_code):
 def convert_utc_to_localized(time_delta_tuple, datetime):
     sign = -1 if time_delta_tuple[0] == '-' else 1
     return datetime + timedelta(minutes=sign * (time_delta_tuple[1] * 60 + time_delta_tuple[2]))
+
+def convert_local_to_utc(date_str, time_delta):
+    sign = 1 if time_delta[0] == '-' else -1
+    return datetime.strptime(date_str, "%d-%m-%Y %H:%M:%S") + timedelta(minutes=sign * (time_delta[1] * 60 + time_delta[2]))
