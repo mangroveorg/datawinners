@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <countries>
-    <BH>+03:00</BH>
-    <BD>+03:00</BD>
+    <BH>
+        <DESCRIPTION>Bahrain</DESCRIPTION>
+        <TIME>+03:00</TIME>
+        <TIME>+04:00</TIME>
+    </BH>
+    <BD>
+        <DESCRIPTION>BD</DESCRIPTION>
+        <TIME>+05:00</TIME>
+    </BD>
+    <MG>
+        <DESCRIPTION>Madagascar</DESCRIPTION>
+        <TIME>+01:00</TIME>
+    </MG>
 </countries>

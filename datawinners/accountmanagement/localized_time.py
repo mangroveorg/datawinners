@@ -1,7 +1,8 @@
-import json
 import os
 from datetime import timedelta
+
 import xmltodict
+
 
 COUNTRY_TIME_DELTA_LIST = None
 
@@ -17,7 +18,8 @@ def _get_country_time_delta_list():
     return COUNTRY_TIME_DELTA_LIST['countries']
 
 
-def _parse_time_delta(time_delta_string):
+def _parse_time_delta(time_delta_entry):
+    time_delta_string = time_delta_entry[0] if isinstance(time_delta_entry, list) else time_delta_entry
     hours_with_sign = time_delta_string.split(":")[0]
     minutes = time_delta_string.split(":")[1]
     return hours_with_sign[0], int(hours_with_sign[1:]), int(minutes)
@@ -26,7 +28,7 @@ def _parse_time_delta(time_delta_string):
 def get_country_time_delta(country_code):
     country_time_delta_list = _get_country_time_delta_list()
     if country_time_delta_list.get(country_code):
-        return _parse_time_delta(country_time_delta_list[country_code])
+        return _parse_time_delta(country_time_delta_list[country_code]['TIME'])
     return '+', 0, 0
 
 
