@@ -29,10 +29,11 @@ def get_generated_xform_id_name(xform):
     return match.group(1)
 
 CALCULATE = 'calculate'
+BARCODE = 'barcode'
 
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
-                 'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select'],
+                 'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE],
                  'auto_filled': ['note', 'today'],
                  'select': ['select one', 'select all that apply']
     }
@@ -255,7 +256,7 @@ class XlsFormParser():
         return 'dd.mm.yyyy'
 
     def _field(self, field, parent_field_code=None):
-        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text'}
+        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field'}
         name = self._get_label(field)
         code = field['name']
