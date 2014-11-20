@@ -101,11 +101,23 @@ class ProjectUpload(View):
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
 
             message = transform_error_message(e.message)
-            return HttpResponse(content_type='application/json', content=json.dumps({
-                'success': False,
-                'error_msg': [message if message else ugettext(
-                    "all XLSForm features. Please check the list of unsupported features.")]
-            }))
+            if 'name_type_error' in message or 'choice_name_type_error' in message:
+                    if 'choice_name_type_error' in message:
+                        message_prefix = _("On your \"choices\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
+                    else:
+                        message_prefix = _("On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
+                    return HttpResponse(content_type='application/json', content=json.dumps({
+                        'success': False,
+                        'error_msg': [_("Columns are missing"), _("Column name is misspelled"), _("Additional space in column name")],
+                        'message_prefix': message_prefix,
+                        'message_suffix': _("Update your XLSForm and upload again.")
+                    }))
+            else:
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': False,
+                    'error_msg': [message if message else ugettext(
+                        "all XLSForm features. Please check the list of unsupported features.")]
+                }))
 
         except QuestionAlreadyExistsException as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
