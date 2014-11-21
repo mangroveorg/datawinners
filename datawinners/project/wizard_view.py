@@ -31,6 +31,7 @@ from datawinners.common.constant import EDITED_QUESTIONNAIRE, ACTIVATED_REMINDER
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
+from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty
 
 
@@ -172,6 +173,7 @@ def edit_project(request, project_id):
 @is_datasender
 @is_not_expired
 @is_project_exist
+@csrf_exempt
 def reminder_settings(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
@@ -193,42 +195,48 @@ def reminder_settings(request, project_id):
                                 'should_send_reminders_on_deadline': data['should_send_reminders_on_deadline'],
                                 'should_send_reminders_after_deadline': data['should_send_reminders_after_deadline']}
         form = ReminderForm(data=data)
-        if is_reminder_enabled:
-            form.disable_all_field()
+        #if is_reminder_enabled:
+        #    form.disable_all_field()
 
         return render_to_response(html,
                                   {'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request, organization=organization),
                                    'project': questionnaire,
                                    'form': form,
+                                   'reminder_data': repr(json.dumps(data)),
                                    'questionnaire_code': questionnaire.form_code,
                                    'is_reminder_enabled': is_reminder_enabled,
                                    'url_to_my_datasender': url_to_my_datasender,
-                                   'reminder_information': repr(json.dumps(reminder_information))
+                                   'reminder_information': repr(json.dumps(reminder_information)),
+                                   'post_url': reverse(reminder_settings, args=[project_id])
                                   }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        form = ReminderForm(data=request.POST.copy())
-        if form.is_valid():
-            org_id = NGOUserProfile.objects.get(user=request.user).org_id
-            organization = Organization.objects.get(org_id=org_id)
-            reminder_list = Reminder.objects.filter(project_id=questionnaire.id)
-            action = _get_activity_log_action(reminder_list, form.cleaned_data)
-            questionnaire, set_deadline = _add_reminder_info_to_project(form.cleaned_data, questionnaire, organization,
-                                                                  reminder_list=reminder_list)
-            questionnaire.save()
-            if action is not None:
-                UserActivityLog().log(request, action=action, project=questionnaire.name)
-            if set_deadline:
-                UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name)
-            messages.success(request, _("Reminder settings saved successfully."))
-            return HttpResponseRedirect('')
-        else:
-            return render_to_response(html,
-                                      {'project_links': project_links,
-                                       'is_quota_reached': is_quota_reached(request, organization=organization),
-                                       'project': questionnaire, 'form': form}, context_instance=RequestContext(request))
+        post_data = request.POST.copy()
+        post_data['should_send_reminder_to_all_ds'] = not post_data['whom_to_send_message'] == 'true'
+        post_data = _populate_week_month_data(post_data)
+        org_id = NGOUserProfile.objects.get(user=request.user).org_id
+        organization = Organization.objects.get(org_id=org_id)
+        reminder_list = Reminder.objects.filter(project_id=questionnaire.id)
+        action = _get_activity_log_action(reminder_list, post_data)
+        questionnaire, set_deadline = _add_reminder_info_to_project(post_data, questionnaire, organization,
+                                                              reminder_list=reminder_list)
+        questionnaire.save()
+        if action is not None:
+            UserActivityLog().log(request, action=action, project=questionnaire.name)
+        if set_deadline:
+            UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name)
+        response = {'success_message': ugettext("Reminder settings saved successfully."), 'success': True}
+        return HttpResponse(json.dumps(response))
 
+
+def _populate_week_month_data(post_data):
+    post_data['frequency_period'] = post_data['selected_frequency']
+    if post_data['frequency_period'] == 'month':
+        post_data['deadline_month'] = post_data['select_day']
+    else:
+        post_data['deadline_week'] = post_data['select_day']
+    return post_data
 
 def _reminder_info_about_project(project):
     data = {}
@@ -237,10 +245,9 @@ def _reminder_info_about_project(project):
     if deadline_information['has_deadline']:
         data['frequency_period'] = deadline_information['frequency_period']
         if deadline_information['frequency_period'] == 'month':
-            data['deadline_month'] = deadline_information['deadline_month']
+            data['select_day'] = deadline_information['deadline_month']
         else:
-            data['deadline_week'] = deadline_information['deadline_week']
-        data['deadline_type'] = deadline_information['deadline_type']
+            data['select_day'] = deadline_information['deadline_week']
         reminder_before_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.BEFORE_DEADLINE,
                                                            project_id=project.id)
         if reminder_before_deadline.count() > 0:
@@ -271,7 +278,7 @@ def _reminder_info_about_project(project):
             data['number_of_days_after_deadline'] = 2
             data['reminder_text_after_deadline'] = ugettext("Reports are over due. Please submit immediately.")
 
-    data['whom_to_send_message'] = not project.reminder_and_deadline['should_send_reminder_to_all_ds']
+    data['whom_to_send_message'] = not deadline_information['should_send_reminder_to_all_ds']
 
     return data
 
@@ -282,7 +289,7 @@ def _add_reminder_info_to_project(cleaned_data, project, organization, reminder_
         project.reminder_and_deadline['frequency_period'] = cleaned_data['frequency_period']
         if cleaned_data['frequency_period'] == 'month':
             if project.reminder_and_deadline.get('deadline_week'):
-                del project['reminder_and_deadline']['deadline_week']
+                del project.reminder_and_deadline['deadline_week']
                 set_deadline = True
             project.reminder_and_deadline['deadline_month'] = cleaned_data['deadline_month']
         else:
@@ -290,29 +297,28 @@ def _add_reminder_info_to_project(cleaned_data, project, organization, reminder_
                 del project.reminder_and_deadline['deadline_month']
                 set_deadline = True
             project.reminder_and_deadline['deadline_week'] = cleaned_data['deadline_week']
-        if project.reminder_and_deadline.get('deadline_type') != cleaned_data['deadline_type']:
-            set_deadline = True
-        project.reminder_and_deadline['deadline_type'] = cleaned_data['deadline_type']
+        if project.reminder_and_deadline.get('deadline_type', None):
+            del project.reminder_and_deadline['deadline_type']
 
         if reminder_list is None:
             reminder_list = Reminder.objects.filter(project_id=project.id)
         reminder_list.delete()
 
-        if cleaned_data['should_send_reminders_before_deadline']:
+        if cleaned_data['should_send_reminders_before_deadline'] == 'true':
             Reminder(project_id=project.id, day=cleaned_data['number_of_days_before_deadline'],
                      message=cleaned_data['reminder_text_before_deadline'],
                      reminder_mode=ReminderMode.BEFORE_DEADLINE, organization=organization).save()
 
-        if cleaned_data['should_send_reminders_on_deadline']:
+        if cleaned_data['should_send_reminders_on_deadline'] == 'true':
             Reminder(project_id=project.id, day=0, message=cleaned_data['reminder_text_on_deadline'],
                      reminder_mode=ReminderMode.ON_DEADLINE, organization=organization).save()
 
-        if cleaned_data['should_send_reminders_after_deadline']:
+        if cleaned_data['should_send_reminders_after_deadline'] == 'true':
             Reminder(project_id=project.id, day=cleaned_data['number_of_days_after_deadline'],
                      message=cleaned_data['reminder_text_after_deadline'],
                      reminder_mode=ReminderMode.AFTER_DEADLINE, organization=organization).save()
 
-        project.reminder_and_deadline['should_send_reminder_to_all_ds'] = not cleaned_data['whom_to_send_message']
+        project.reminder_and_deadline['should_send_reminder_to_all_ds'] = not cleaned_data['whom_to_send_message'] == 'true'
     else:
         reminder_list = Reminder.objects.filter(project_id=project.id)
         reminder_list.delete()

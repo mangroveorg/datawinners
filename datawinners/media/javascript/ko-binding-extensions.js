@@ -151,8 +151,10 @@ ko.bindingHandlers.onoff = {
             ele.addClass('onoffswitch-checked');
         }
         ele.on('click', function(e){
-            var boolVal = ko.unwrap(valueAccessor());
-            valueAccessor()(!boolVal);
+            if (!ele[0].hasAttribute('disabled')){
+                var boolVal = ko.unwrap(valueAccessor());
+                valueAccessor()(!boolVal);
+            }
             e.preventDefault();
         });
     },

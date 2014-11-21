@@ -1,6 +1,6 @@
 {% load i18n %}
 {% block page_scss %}
-    <link href="/media/css/on-off.css" rel="stylesheet" />
+    <link href="/media/css/on-off.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block js %}
@@ -8,23 +8,30 @@
     <script type="text/javascript" src="/media/javascript/project/reminder_settings.js"></script>
 {% endblock %}
 
-<form action="" method="POST" id="reminder_deadline_form">
+<div id="reminder_deadline_form" data-bind="disableChildren:is_reminder_enabled">
     {% csrf_token %}
     <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
         <legend>{% trans "Submission Deadline" %}</legend>
         <ul>
             <li class="italic_grey bold">{% trans "Specify when you need your data by. Data Senders can still submit data after the Submission Deadline.." %}</li>
             <li class="form-row-10px">
-            <div id="frequency_values">
-                <ul>
-                    <li>{% trans "Every" %}</li>
-                    <li>{{ form.frequency_period }}</li>
-                    {% include 'project/profile_deadline_week_block.html' %}
-                    {% include 'project/profile_deadline_month_block.html' %}
-                    <div class="italic bold" id="deadline_example"></div>
-                </ul>
-            </div>
-        </li>
+                <div id="frequency_values">
+                    <ul>
+                        <li>{% trans "Every" %}</li>
+                        <li>
+                            <select id="id_frequency_period" data-bind="value: selected_frequency"
+                                    name="frequency_period">
+                                <option value="week">Week</option>
+                                <option value="month">Month</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select data-bind="options:select_option, value:select_day, optionsText:display_text"></select>
+                        </li>
+                        <div class="italic bold" id="deadline_example" data-bind="text:next_deadline_string"></div>
+                    </ul>
+                </div>
+            </li>
         </ul>
 
     </fieldset>
@@ -35,83 +42,103 @@
             <div class="italic">{% trans 'Send automatic SMS reminders to your registered Data Senders. Learn more' %}</div>
             <ul>
                 <li>
-                    <div class="onoffswitch" data-bind="onoff: enable_reminder_before_deadline" id="myonoffswitch">
+                    <div class="onoffswitch" data-bind="onoff:reminder_before_deadline.enable"
+                         id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-                    {{ form.should_send_reminders_before_deadline }}
 
-                    <div class="month_block">
-                        {{ form.number_of_days_before_deadline_month }}
-                        {{ form.number_of_days_before_deadline_month.label }}
-                        {{ form.number_of_days_before_deadline_month.errors }}
+                    <div style="margin-left: 150px ">
+                        <select id="before_deadline"
+                                data-bind="options:option_list,value:reminder_before_deadline.number_of_days"></select>
+                        {% trans "days before deadline" %}
                     </div>
-                    <div class="week_block">
-                        {{ form.number_of_days_before_deadline_week }}
-                        {{ form.number_of_days_before_deadline_week.label }}
-                        {{ form.number_of_days_before_deadline_week.errors }}
-                    </div>
+                    <div class="italic bold" id="example_before_deadline"
+                         data-bind="text:reminder_before_deadline.next_date_as_string"></div>
                 </li>
                 <li>
-                    <label>{{ form.reminder_text_before_deadline.label }}</label>
-                    {{ form.reminder_text_before_deadline }}
+                    <label>{% trans "Reminder text before deadline" %}</label>
+                    <textarea name="reminder_text_before_deadline" data-bind="value:reminder_before_deadline.text"
+                              cols="40" maxlength="160" rows="10" id="id_reminder_text_before_deadline"> </textarea>
                     {{ form.reminder_text_before_deadline.errors }}
-                    <span id="counter_for_reminder_before_deadline"></span> {% trans " of 160 characters used" %}
+                    <span id="counter_for_reminder_before_deadline" data-bind="text:reminder_before_deadline.count"></span> {% trans " of 160 characters used" %}
                 </li>
                 <li>
-                     <div class="onoffswitch" data-bind="onoff: enable_reminder_on_deadline" id="myonoffswitch">
+                    <div class="onoffswitch" data-bind="onoff: reminder_on_deadline.enable" id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-                     {{ form.should_send_reminders_on_deadline }}
-                     {{ form.should_send_reminders_on_deadline.label }}
-                 </li>
-                 <li>
-                     <label>{{ form.reminder_text_on_deadline.label }}</label>
-                     {{ form.reminder_text_on_deadline }}
-                     {{ form.reminder_text_on_deadline.errors }}
-                     <span id="counter_for_reminder_on_deadline"></span> {% trans " of 160 characters used" %}
-                 </li>
-                 <li>
+                    <div style="margin-left: 150px ">
+                     {% trans "Reminder on the day of the deadline" %}
+                    </div>
+                    <div class="italic bold" id="example_on_deadline" data-bind="text:reminder_on_deadline.next_date_as_string"></div>
+                </li>
+                <li>
+                    <label>{% trans "Reminder text on deadline" %}</label>
+                    <textarea name="reminder_text_on_deadline" data-bind="value:reminder_on_deadline.text" cols="40"
+                              rows="10" maxlength="160" id="id_reminder_text_on_deadline"> </textarea>
+                    <span id="counter_for_reminder_on_deadline" data-bind="text:reminder_on_deadline.count"></span> {% trans " of 160 characters used" %}
+                </li>
+                <li>
 
-                     <div class="onoffswitch" data-bind="onoff: enable_reminder_after_deadline" id="myonoffswitch">
+                    <div class="onoffswitch" data-bind="onoff: reminder_after_deadline.enable" id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-                        {{ form.should_send_reminders_after_deadline }}
-                     <div class="month_block">
-                        {{ form.number_of_days_after_deadline_month }}
-                        {{ form.number_of_days_after_deadline_month.label }}
-                        {{ form.number_of_days_after_deadline_month.errors }}
+                    <div style="margin-left: 150px ">
+                        <select id="after_deadline"
+                                data-bind="options:option_list,value:reminder_after_deadline.number_of_days"></select>
+                        {% trans "days after deadline" %}
                     </div>
-                    <div class="week_block">
-                        {{ form.number_of_days_after_deadline_week }}
-                        {{ form.number_of_days_after_deadline_week.label }}
-                        {{ form.number_of_days_after_deadline_week.errors }}
-                    </div>
-                 </li>
-                 <li>
-                     <label>{{ form.reminder_text_after_deadline.label }}</label>
-                     {{ form.reminder_text_after_deadline }}
-                     {{ form.reminder_text_after_deadline.errors }}
-                     <span id="counter_for_reminder_after_deadline"></span> {% trans " of 160 characters used" %}
-                 </li>
-                 <li>
-                     {{ form.whom_to_send_message }}
-                     {{ form.whom_to_send_message.label }}
-                     <div class="whom_to_send_help_text">{% trans "By un-checking this box, automatic Reminders will be sent to all registered Data Senders linked to your Questionnaire." %}</div>
+                    <div class="italic bold" id="example_after_deadline" data-bind="text:reminder_after_deadline.next_date_as_string"></div>
+                </li>
+                <li>
+                        <label>{% trans "Reminder text after deadline" %}</label>
+                    <textarea name="reminder_text_after_deadline" data-bind="value:reminder_after_deadline.text"
+                              cols="40" maxlength="160" rows="10" id="id_reminder_text_after_deadline"> </textarea>
+                    {{ form.reminder_text_after_deadline.errors }}
+                    <span id="counter_for_reminder_after_deadline" data-bind="text:reminder_after_deadline.count"></span> {% trans " of 160 characters used" %}
+                </li>
+                <legend>{% trans "Who Receives Reminders" %}</legend>
+                <li>
+                     <span class="italic">
+                         {% trans 'Specify which of your Data Senders receive the reminders There are 127 registered Data Senders for this Questionnaire. ' %}
+                         <a> {% trans 'See List of Data Senders' %} </a>
+                     </span>
+                    <br>
+                     <span class="bold">
+                         {% trans 'Reminders are sent to' %}
+                     </span><br>
 
-                 </li>
-                </ul>
+                    <div>
+                        <input type="radio" id="my_datasenders" value="my_datasender"
+                               data-bind="checked: select_datasender">
+                        {% trans "My Data Senders who have not yet submitted for this deadline." %}<br>
+                        <span class="italic" style="">
+                            {% trans 'DataWinners will send automatic SMS reminders to non-submitters. ' %}
+                            <a>{% trans 'Learn more' %}</a>
+                        </span>
+                        <br>
+                        <input type="radio" id="all_my_datasenders" value='all_my_datasender'
+                               data-bind="checked: select_datasender">
+                        {% trans "All my Data Senders" %}
+                        <br>
+
+                    </div>
+                </li>
+            </ul>
         </fieldset>
     </div>
     <div class="right_aligned_button margin_right_4">
-        <input id="submit-button" class="{% if is_reminder_enabled %}disabled_button{% else %}button{% endif %}" type="submit" value="{% trans 'Save' %}" {% if is_reminder_enabled %}disabled="disabled" {% endif %}/>
+        <a id="cancel" class="cancel_link" data-bind="click:cancel_changes">{% trans "Cancel changes" %}</a>
+        <input id="submit-button" data-bind="click:save_reminders"
+               class="{% if is_reminder_enabled %}disabled_button{% else %}button{% endif %}" type="submit"
+               value="{% trans 'Save' %}" {% if is_reminder_enabled %}disabled="disabled" {% endif %}/>
     </div>
-</form>
+</div>
