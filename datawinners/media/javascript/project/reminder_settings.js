@@ -65,10 +65,19 @@ function ReminderInstance() {
     self.count = ko.computed(function () {
         return self.text().length;
     }, this);
-    self.next_reminder_date = ko.observable();
+    self.next_reminder_date = ko.observable(new Date());
+
+    self.number_of_days.subscribe(function(){
+        self.next_reminder_date(add_days(self.next_reminder_date(), self.multiplier * -1 * self.number_of_days()))
+    },self,'beforeChange');
+
+    self.number_of_days.subscribe(function(){
+        self.update_example(self.next_reminder_date);
+    });
+
     self.next_date_as_string = ko.computed(function () {
         if (self.enable()) {
-            deadline = self.next_reminder_date();
+            var deadline = self.next_reminder_date();
             deadline.convert_to_month_name();
             return "Next scheduled Reminder: " + deadline.getDate() + " " + deadline.month_name + " " + deadline.getFullYear();
         }
@@ -115,7 +124,7 @@ function ReminderSettingsModel() {
     self.whom_to_send_message = ko.observable();
     self.select_datasender = ko.observable();
     self.is_reminder_enabled = ko.observable();
-
+    self.is_modified = false;
     init_variables(self);
     init_reminders(self);
 
@@ -123,6 +132,7 @@ function ReminderSettingsModel() {
         init_variables(self);
         reset_reminders(self);
     };
+
     self.next_deadline = ko.computed(function () {
         var current_date = new Date();
         var next_deadline = new Date();
@@ -140,6 +150,7 @@ function ReminderSettingsModel() {
                 next_deadline = add_days(current_date, ((self.select_day() % 7) - current_date.getDay()));
             }
         }
+        is_modified = true;
         return next_deadline;
     }, this);
 
@@ -197,6 +208,7 @@ function ReminderSettingsModel() {
     }, this);
 
     self.whom_to_send_message = ko.computed(function () {
+        self.is_modified = true;
         return self.select_datasender() == 'my_datasender';
     });
 
@@ -261,3 +273,144 @@ ko.bindingHandlers.disableChildren = {
         }
     }
 };
+
+
+
+//$(function(){
+//    var viewModel = new ReminderSettingsModel();
+//    reset_reminders(viewModel);
+//    viewModel.is_modified = false;
+//
+//    var options = {
+//        successCallBack:function(callback){
+//            viewModel.save(callback);
+//        },
+//        isReminderModified : function(){return viewModel.is_modified;},
+//        cancelDialogDiv : "#cancel_reminder_changes",
+//        validate: function(){
+//            return true;
+//        }
+//    };
+//    DW.CancelReminderWarningDialog(options).init().initializeLinkBindings();
+//    ko.applyBindings(viewModel, $("#reminder_deadline_form")[0]);
+//
+//});
+
+DW.CancelReminderWarningDialog = function (options) {
+    var self = this;
+    var _successCallBack = options.successCallBack;
+    var isFormModified = options.isReminderModified;
+    var _cancelCallback = options["cancelCallback"]|| function(){};
+    var _ignoreCallback = options["ignoreCallback"]|| function(){};
+    var _redirect = options["actionCallback"] || function () {
+        window.location.href = self.redirect_url;
+        return true;
+    };
+
+    this.init = function () {
+        var canceDialogDiv = options.cancelDialogDiv || "#cancel_reminder_changes";
+        var dialogId = canceDialogDiv.substring(1) + "_dialog_section";
+        self.cancelDialog = $('<div id='+ dialogId +'>').html($(canceDialogDiv).html());
+        self.ignoreButton = self.cancelDialog.find(".no_button");
+        self.saveButton = self.cancelDialog.find(".yes_button");
+        self.cancelButton = self.cancelDialog.find("#cancel_dialog");
+        _initializeDialog();
+        _initializeIgnoreButtonHandler();
+        _initializeCancelButtonHandler();
+        _initializeSaveButtonHandler();
+        return this;
+    };
+
+    this.show = function(){
+        self.cancelDialog.dialog("open");
+    };
+
+    var _initializeDialog = function () {
+        self.cancelDialog.dialog({
+            title: gettext("You Have Unsaved Changes"),
+            modal: true,
+            autoOpen: false,
+            width: 550,
+            closeText: 'hide'
+        });
+    };
+
+    var _initializeIgnoreButtonHandler = function () {
+        self.ignoreButton.bind('click', function (event) {
+            _ignoreCallback();
+            self.cancelDialog.dialog("close");
+            return _redirect(event);
+        });
+    };
+
+    var _initializeCancelButtonHandler = function () {
+        self.cancelButton.bind('click', function () {
+            _cancelCallback();
+            self.cancelDialog.dialog("close");
+            return false;
+        });
+    };
+
+    var _initializeSaveButtonHandler = function () {
+        self.saveButton.bind('click', function (event) {
+            if(options.validate()) {
+                _successCallBack(function () {
+                    self.cancelDialog.dialog("close");
+                    return _redirect(event);
+                });
+            }
+            self.cancelDialog.dialog("close");
+        });
+    };
+
+    this.initializeLinkBindings = function () {
+        var default_ignore_links = ".add_link, .preview-navigation a, .sms_tester, .delete_project, #dw_help_link, .option-wrapper";
+        var ignore_links = options.ignore_links ? default_ignore_links + "," + options.ignore_links : default_ignore_links;
+
+        $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(ignore_links).bind('click', {self: this}, function (event) {
+            var that = event.data.self;
+            self.redirect_url = $(this).attr("href");
+            if (isFormModified()) {
+                self.cancelDialog.dialog("open");
+                return false;
+            }
+            else
+                return _redirect();
+        });
+    };
+
+};
+
+$(document).ready(function() {
+    var deadline_changed = false;
+    var viewModel = new ReminderSettingsModel();
+
+    var options = {
+        successCallBack:function(callback){
+            viewModel.save_reminders(callback);
+        },
+        isReminderModified : function(){return viewModel.is_modified;},
+        cancelDialogDiv : "#cancel_reminder_changes"
+
+    };
+    new DW.CancelReminderWarningDialog(options).init().initializeLinkBindings();
+
+    ko.applyBindings(viewModel, $("#reminder_deadline_form")[0]);
+
+
+    $("#submit-button").on('click', function(){
+
+        track_selection({selector: "#id_whom_to_send_message", checked_action: 'remind-all-registered-datasenders', unchecked_action: 'remind-not-submitted-datasenders'});
+        track_deadline_selection({ selector: "#id_should_send_reminders_before_deadline", checked_action: 'reminder-before-deadline-selected', unchecked_action: 'reminder-before-deadline-not-selected', days: "#id_number_of_days_before_deadline"});
+        track_deadline_selection({ selector: "#id_should_send_reminders_on_deadline", checked_action: 'reminder-on-deadline-selected', unchecked_action: 'reminder-on-deadline-not-selected'});
+        track_deadline_selection({ selector: "#id_should_send_reminders_after_deadline", checked_action: 'reminder-after-deadline-selected', unchecked_action: 'reminder-after-deadline-not-selected', days: "#number_of_days_after_deadline"});
+        if(deadline_changed){
+            DW.trackEvent('reminders', 'deadline-changed');
+        }
+
+        DW.trackEvent('reminders', 'saved-reminders');
+        return true;
+    });
+
+});
+

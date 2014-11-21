@@ -12,51 +12,61 @@
     {% csrf_token %}
     <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
         <legend>{% trans "Submission Deadline" %}</legend>
-        <ul>
-            <li class="italic_grey bold">{% trans "Specify when you need your data by. Data Senders can still submit data after the Submission Deadline.." %}</li>
-            <li class="form-row-10px">
-                <div id="frequency_values">
-                    <ul>
-                        <li>{% trans "Every" %}</li>
-                        <li>
-                            <select id="id_frequency_period" data-bind="value: selected_frequency"
-                                    name="frequency_period">
-                                <option value="week">Week</option>
-                                <option value="month">Month</option>
-                            </select>
-                        </li>
-                        <li>
-                            <select data-bind="options:select_option, value:select_day, optionsText:display_text"></select>
-                        </li>
-                        <div class="italic bold" id="deadline_example" data-bind="text:next_deadline_string"></div>
-                    </ul>
-                </div>
-            </li>
-        </ul>
+            <ul>
+                <li class="border_bottom_color"></li>
+                <li class="italic_grey bold">{% trans "Specify when you need your data by. Data Senders can still submit data after the Submission Deadline.." %}</li>
+                <li class="form-row-10px">
+                    <div id="frequency_values">
+                        <div class="bold padding_bottom_10 padding_top_10">{% trans "Submission Deadline" %}</div>
+                        <ul>
+                            <li>{% trans "Every" %}</li>
+                            <li>
+                                <select id="id_frequency_period" data-bind="value: selected_frequency"
+                                        name="frequency_period">
+                                    <option value="week">Week</option>
+                                    <option value="month">Month</option>
+                                </select>
+                            </li>
+                            <li>
+                                <select data-bind="options:select_option, value:select_day, optionsText:display_text"></select>
+                            </li>
+                            <li>
+                                <div class="italic_grey bold"id="deadline_example" data-bind="text:next_deadline_string"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
 
     </fieldset>
 
     <div id="reminders_section">
         <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
             <legend>{% trans "Reminders" %}</legend>
-            <div class="italic">{% trans 'Send automatic SMS reminders to your registered Data Senders. Learn more' %}</div>
+            <div class="border_bottom_color"></div>
+            <div class="italic">{% trans 'Send automatic SMS reminders to your registered Data Senders' %}
+            <a> {% trans 'Learn more' %} </a>
+            </div>
             <ul>
-                <li>
-                    <div class="onoffswitch" data-bind="onoff:reminder_before_deadline.enable"
-                         id="myonoffswitch">
-                        <label class="onoffswitch-label" for="myonoffswitch">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                        </label>
+                <li class="padding_top_10">
+                        <div class="onoffswitch" data-bind="onoff:reminder_before_deadline.enable"
+                             id="myonoffswitch">
+                            <label class="onoffswitch-label" for="myonoffswitch">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
                     </div>
-
-                    <div style="margin-left: 150px ">
+                    <div style="margin-left: 120px">
+                        <span>Reminder</span>
                         <select id="before_deadline"
                                 data-bind="options:option_list,value:reminder_before_deadline.number_of_days"></select>
                         {% trans "days before deadline" %}
                     </div>
+                </li>
+                <li>
                     <div class="italic bold" id="example_before_deadline"
                          data-bind="text:reminder_before_deadline.next_date_as_string"></div>
+                </li>
                 </li>
                 <li>
                     <label>{% trans "Reminder text before deadline" %}</label>
@@ -92,6 +102,7 @@
                         </label>
                     </div>
                     <div style="margin-left: 150px ">
+                        <span class="reminder_font margin_left_100">{% trans "Reminders" %}</span><br>
                         <select id="after_deadline"
                                 data-bind="options:option_list,value:reminder_after_deadline.number_of_days"></select>
                         {% trans "days after deadline" %}
@@ -140,5 +151,16 @@
         <input id="submit-button" data-bind="click:save_reminders"
                class="{% if is_reminder_enabled %}disabled_button{% else %}button{% endif %}" type="submit"
                value="{% trans 'Save' %}" {% if is_reminder_enabled %}disabled="disabled" {% endif %}/>
+    </div>
+    <div id="cancel_reminder_changes" style="display: none;">
+        {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+
+        <p class="font_size_13">{% trans "Your changes will be lost if you don't save them." %}</p>
+
+        <div class="text_align_right padding_top_20">
+            <a id="cancel_dialog" href="javascript:void(0);">{% trans "Cancel" %}</a>
+            <a id="ignore_changes" class="button_blue no_button">{% trans "Don't Save" %}</a>
+            <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
+        </div>
     </div>
 </div>

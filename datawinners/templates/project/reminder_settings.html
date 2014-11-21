@@ -31,6 +31,7 @@
         var post_url = "{{ post_url }}";
     </script>
     <script type="text/javascript" src="/media/javascript/project/deadline_and_reminder.js"></script>
+
 {% endblock %}
 
 
@@ -47,7 +48,7 @@
         </div>
 
     {% endif %}
-    <span><b>{% trans "Reminders" %}</b></span><br>
+    <span class="bold">{% trans "Reminders" %}</span><br>
     <span class="italic_grey bold">{% trans "Increase the number of Submissions each period (weekly, monthly) by sending automatic SMS reminders to your registered Data Senders." %}</span>
         <div class="success-message-box reminder-success none"></div>
     </div>
