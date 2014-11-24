@@ -103,17 +103,19 @@ def is_crs_user(request):
 @is_new_user
 @is_not_expired
 def index(request):
+    organization = get_organization(request)
     disable_link_class, hide_link_class, page_heading = projects_index(request)
     rows = get_project_list(request)
     project_list = []
     project_list.sort(key=itemgetter('name'))
     smart_phone_instruction_link = reverse("smart_phone_instruction")
+    local_time_delta = get_country_time_delta(organization.country)
     for project in rows:
         project_id = project['project_id']
         delete_links = reverse('delete_project', args=[project_id])
         project = dict(delete_links=delete_links,
                        name=project['name'],
-                       created=project['created'],
+                       created=convert_utc_to_localized(local_time_delta, project['created']),
                        qid=project['qid'],
                        link=project['link'],
                        web_submission_link_disabled=project['web_submission_link_disabled'],
