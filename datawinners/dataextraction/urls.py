@@ -11,6 +11,17 @@ urlpatterns = patterns('',
     (r'^api/entity/actions/(?P<start_date>[-0-9]+?)/(?P<end_date>[-0-9]+?)/$', get_entity_actions),
     (r'^api/get_for_form/(?P<form_code>\w+?)/(?P<start_date>[-0-9]+?)/$', get_for_form),
     (r'^api/get_for_form/(?P<form_code>\w+?)/(?P<start_date>[-0-9]+?)/(?P<end_date>[-0-9]+?)/$', get_for_form),
-    (r'^api/get_failed_submissions/$', get_failed_submissions),
-    (r'^api/get_failed_submissions/(?P<start_date>[-0-9]+?)/(?P<end_date>[-0-9]+?)/$', get_failed_submissions)
+    (r'^api/get_failed_submissions/', get_failed_submissions),
+    #(r'^api/get_failed_submissions/(?P<start_date>[-0-9]+?)/$', get_failed_submissions),
+    #(r'^api/get_failed_submissions/to/(?P<end_date>[-0-9]+?)/$', get_failed_submissions),
+    #(r'^api/get_failed_submissions/(?P<start_date>[-0-9]+?)/(?P<end_date>[-0-9]+?)/$', get_failed_submissions),
+    #(r'^api/get_failed_submissions/(?P<to_number>[-0-9]+?)/$', get_failed_submissions),
+     
+
+    #(r'^api/get_failed_submissions/(?P<start_date>[-0-9]+?)/(?P<end_date>[-0-9]+?)/$', get_failed_submissions),
+    #(r'^api/get_failed_submissions/(?P<start_date>[-0-9]+?)/to/(?P<end_date>[-0-9]+?)/$', get_failed_submissions),
+    #(r'^api/get_failed_submissions/(?P<start_date>[-0-9]+?)/to/(?P<to_number>\w+?)/(?P<end_date>[-0-9]+?)/$', get_failed_submissions),
+    #(r'^api/get_failed_submissions/(?P<start_date>[-0-9]+?)/(?P<to_number>\w+?)/$', get_failed_submissions),
+    #(r'^api/get_failed_submissions/(?P<to_number>\w+?)/(?P<end_date>[-0-9]+?)/$', get_failed_submissions),
+    #(r'^api/get_failed_submissions/(?P<to_number>\w+?)/$', get_failed_submissions),
 )
