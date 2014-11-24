@@ -169,6 +169,7 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {
+                "xform": questionnaire.xform,
                 "user_email": request.user.email,
                 "is_quota_reached": is_quota_reached(request, org_id=org_id),
                 "first_filterable_field": first_filterable_fields,

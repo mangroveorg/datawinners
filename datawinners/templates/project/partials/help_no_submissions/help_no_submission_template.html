@@ -30,12 +30,8 @@
                         to your Data Senders and have them send in data{% endblocktrans %}
                     </li>
                 {% endif %}
-                <li>{% blocktrans with project_links.datasenders_link as url %}Web & Smartphone: Grant your Data Senders
-                    Web
-                    submission access on the <a href="{{ url }}">All Data Senders</a> page{% endblocktrans %}</li>
-                <li>{% blocktrans with project_links.test_questionnaire_link as url %}<a href="{{ url }}">Submit Data
-                    </a>
-                    yourself{% endblocktrans %}</li>
+                <li>{% blocktrans with project_links.datasenders_link as url %}Web & Smartphone: Grant your Data Senders Web submission access on the <a href="{{ url }}">All Data Senders</a> page{% endblocktrans %}</li>
+                <li>{% blocktrans with project_links.test_questionnaire_link as url %}<a href="{{ url }}">Submit Data</a> yourself{% endblocktrans %}</li>
             </ul>
             <br/>
             <a href="javascript:void(0)" class="hide_link">{% trans "Hide help" %}</a>
