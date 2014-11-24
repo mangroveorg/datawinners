@@ -12,6 +12,9 @@ class DatawinnerLog(models.Model):
     error = models.TextField()
     organization = models.ForeignKey(Organization, null=True)
 
+    def created_at_formatted(self):
+        return self.created_at.strftime("%b. %d, %Y, %I:%M %p")
+
 
 class SMSResponse(object):
     def __init__(self, response, incoming_request):

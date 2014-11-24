@@ -161,7 +161,7 @@ def index(request):
 def failed_submissions(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
     organization = get_organization(request)
-    org_logs = DatawinnerLog.objects.filter(organization=organization)
+    org_logs = DatawinnerLog.objects.filter(organization=organization).order_by('-created_at')
 
     return render_to_response('alldata/failed_submissions.html',
                               {'logs': org_logs,

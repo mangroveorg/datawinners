@@ -94,6 +94,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
         uploadButton.removeClass("disabled_yellow_submit_button")
         warningMessageBox.removeClass("none");
         flash_message.addClass("none");
+        DW.trackEvent('advanced-questionnaire', 'cancel-upload');
         options.postCancelCallBack && options.postCancelCallBack();
         return false;
     });

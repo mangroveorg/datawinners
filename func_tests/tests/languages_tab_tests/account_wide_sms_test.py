@@ -145,8 +145,8 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         failed_submissions_page = FailedSubmissionsPage(self.driver)
         current_failed_submission_count = failed_submissions_page.get_total_number_of_entries()
         self.assertEqual(current_failed_submission_count, total_failed_submission_count + 2)
-        self.assertEqual(incorrect_ds_number_data[SMS], failed_submissions_page.get_entry_for_row_number(total_failed_submission_count + 1)['message'])
-        self.assertEqual(incorrect_qcode_data[SMS], failed_submissions_page.get_entry_for_row_number(total_failed_submission_count + 2)['message'])
+        self.assertEqual(incorrect_ds_number_data[SMS], failed_submissions_page.get_entry_for_row_number(2)['message'])
+        self.assertEqual(incorrect_qcode_data[SMS], failed_submissions_page.get_entry_for_row_number(1)['message'])
 
         self.reset_account_messages()
 
