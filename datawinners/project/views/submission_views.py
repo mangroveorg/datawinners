@@ -447,7 +447,7 @@ def export(request):
     current_language = get_language()
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
-                    "number_of_results": 50000,
+                    "number_of_results": 10000,
                     "order": "",
                     "sort_field": "date"
     }
