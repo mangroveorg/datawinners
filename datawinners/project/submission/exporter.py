@@ -2,7 +2,8 @@ from datawinners.main.utils import get_database_name
 from datawinners.project.Header import SubmissionExcelHeader
 from datawinners.project.submission.export import create_excel_response, export_filename
 from datawinners.project.submission.formatter import SubmissionFormatter
-from datawinners.search.submission_query import SubmissionQuery
+from datawinners.search.submission_query import SubmissionQuery, SubmissionQueryResponseCreator, \
+    UTCSubmissionQueryResponseCreator
 
 
 class SubmissionExporter:
@@ -20,9 +21,9 @@ class SubmissionExporter:
     def create_excel_response(self, submission_type, query_params):
         columns = SubmissionExcelHeader(self.form_model, submission_type, self.language).get_columns()
 
-
+        response_creator = UTCSubmissionQueryResponseCreator(self.form_model)
         entity_headers, paginated_query, query_with_criteria = SubmissionQuery(self.form_model,
-                                                                               query_params).query_to_be_paginated(
+                                                                               query_params, response_creator).query_to_be_paginated(
                                                                                 self.form_model.id,
                                                                                 self.user)
         submission_list = query_with_criteria.values_dict(tuple(entity_headers))

@@ -17,6 +17,7 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
+from datawinners.accountmanagement.localized_time import get_country_time_delta
 from datawinners.blue.xform_submission_exporter import XFormSubmissionExporter
 from datawinners.blue.view import SurveyWebXformQuestionnaireRequest
 from datawinners.blue.xform_bridge import XFormSubmissionProcessor
@@ -34,7 +35,8 @@ from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
-from datawinners.search.submission_query import SubmissionQuery
+from datawinners.search.submission_query import SubmissionQuery, SubmissionQueryResponseCreator, \
+    DeleteSubmissionQueryResponseCreator
 from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -186,8 +188,8 @@ def get_survey_response_ids_from_request(dbm, request, form_model):
         submission_type = request.POST.get("submission_type")
         query_params = {'search_filters': search_filters}
         query_params.update({'filter': submission_type})
-
-        submissions = SubmissionQuery(form_model, query_params).query(dbm.database_name)
+        response_creator = DeleteSubmissionQueryResponseCreator(form_model)
+        submissions = SubmissionQuery(form_model, query_params, response_creator).query(dbm.database_name)
 
         return [submission[0] for submission in submissions]
     return json.loads(request.POST.get('id_list'))
@@ -503,7 +505,10 @@ def get_submissions(request, form_code):
     search_text = search_filters.get("search_text", '')
     search_parameters.update({"search_text": search_text})
     user = request.user
-    query_count, search_count, submissions = SubmissionQuery(form_model, search_parameters).paginated_query(user,
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+    response_creator = SubmissionQueryResponseCreator(form_model, local_time_delta)
+    query_count, search_count, submissions = SubmissionQuery(form_model, search_parameters, response_creator).paginated_query(user,
                                                                                                             form_model.id)
 
     return HttpResponse(
@@ -558,9 +563,11 @@ def get_stats(request, form_code):
     search_text = search_filters.get("search_text", '')
     search_parameters.update({"search_text": search_text})
     user = request.user
-
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+    response_creator = SubmissionQueryResponseCreator(form_model, local_time_delta)
     entity_headers, paginated_query, query_with_criteria = SubmissionQuery(form_model,
-                                                                           search_parameters).query_to_be_paginated(
+                                                                           search_parameters, response_creator).query_to_be_paginated(
         form_model.id, user)
     facet_results = get_facet_response_for_choice_fields(query_with_criteria, form_model.choice_fields, form_model.id)
 

@@ -22,8 +22,8 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         query.values_dict.return_value = dict_result
         form_model.entity_questions = [UniqueIdField('Test subject', 'name', 'q1', 'which subject')]
         form_model.id = 'form_model_id'
-
-        submissions = SubmissionQueryResponseCreator(form_model).create_response(required_field_names, query)
+        local_time_delta = ('+', 2, 0)
+        submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(required_field_names, query)
 
         expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
                      ["sub_last_name<span class='small_grey'>  subject_id</span>"]]]
@@ -39,7 +39,9 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         query.values_dict.return_value = dict_result
         form_model.entity_questions = []
         form_model.id = 'form_model_id'
-        submissions = SubmissionQueryResponseCreator(form_model).create_response(required_field_names, query)
+        local_time_delta = ('+', 2, 0)
+
+        submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(required_field_names, query)
 
         expected = [['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer']]
         self.assertEqual(submissions, expected)

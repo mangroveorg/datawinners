@@ -1,7 +1,9 @@
 import json
+import datetime
 
 from django.utils.translation import ugettext, get_language
 import elasticutils
+from datawinners.accountmanagement.localized_time import convert_utc_to_localized
 
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
@@ -80,9 +82,10 @@ class SubmissionQueryBuilder(QueryBuilder):
         return query
 
 
-class SubmissionQueryResponseCreator():
-    def __init__(self, form_model):
+class SubmissionQueryResponseCreator(object):
+    def __init__(self, form_model, localized_time_delta):
         self.form_model = form_model
+        self.localized_time_delta = localized_time_delta
 
     def combine_name_and_id(self, short_code, entity_name, submission):
         return submission.append(
@@ -112,6 +115,11 @@ class SubmissionQueryResponseCreator():
             error_msg = error_msg.split('| |,')[['en', 'fr'].index(language)]
         submission.append(error_msg)
 
+    def _convert_to_localized_date_time(self, key, res, submission):
+        submission_date_time = datetime.datetime.strptime(res.get(key), "%b. %d, %Y, %I:%M %p")
+        datetime_local = convert_utc_to_localized(self.localized_time_delta, submission_date_time)
+        submission.append(datetime_local.strftime("%b. %d, %Y, %I:%M %p"))
+
     def create_response(self, required_field_names, query):
         entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id) for field in
                                  self.form_model.entity_questions]
@@ -133,7 +141,7 @@ class SubmissionQueryResponseCreator():
                     elif key == 'status':
                         submission.append(ugettext(res.get(key)))
                     elif key == SubmissionIndexConstants.SUBMISSION_DATE_KEY:
-                        submission.append(ugettext(res.get(key)))
+                        self._convert_to_localized_date_time(key, res, submission)
                     elif key == 'error_msg':
                         self._populate_error_message(key, language, res, submission)
                     elif key in fieldset_fields.keys():
@@ -160,10 +168,26 @@ class SubmissionQueryResponseCreator():
         else:
             return res.get(ugettext(key))
 
+class DeleteSubmissionQueryResponseCreator(SubmissionQueryResponseCreator):
+    def __init__(self, form_model):
+        super(DeleteSubmissionQueryResponseCreator, self).__init__(form_model, None)
+
+    def create_response(self, required_field_names, query):
+        return super(DeleteSubmissionQueryResponseCreator, self).create_response(['status'], query)
+
+
+class UTCSubmissionQueryResponseCreator(SubmissionQueryResponseCreator):
+    def __init__(self, form_model):
+        super(UTCSubmissionQueryResponseCreator, self).__init__(form_model, None)
+
+    def _convert_to_localized_date_time(self, key, res, submission):
+        submission.append(res.get(key))
+
+
 
 class SubmissionQuery(Query):
-    def __init__(self, form_model, query_params):
-        Query.__init__(self, SubmissionQueryResponseCreator(form_model), SubmissionQueryBuilder(form_model),
+    def __init__(self, form_model, query_params, response_creator):
+        Query.__init__(self, response_creator, SubmissionQueryBuilder(form_model),
                        query_params)
         self.form_model = form_model
 
