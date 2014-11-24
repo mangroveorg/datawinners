@@ -3738,7 +3738,7 @@ msgid "Web & Smartphone: Grant your Data Senders Web submission access on the <a
 msgstr "<b>Web</b> & <b>Smartphone</b>: Donnez un accès à l'envoi web dans la page de <a href=\"%(url)s\">Tous les Expéditeurs</a>"
 
 msgid "<a href=\"%(url)s\">Submit Data</a> yourself"
-msgstr "<a href=\"%(url)s\">Envoyez des Données</a> vous-même"
+msgstr "<a href=\"%(url)s\">Soumettez des Données</a> vous-même"
 
 msgid "%dst"
 msgstr "%d"
