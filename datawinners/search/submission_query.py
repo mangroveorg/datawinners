@@ -99,6 +99,19 @@ class SubmissionQueryResponseCreator():
                 field_set_field_dict.update(self.get_field_set_fields(field.fields, group_field_code))
         return field_set_field_dict
 
+    def _populate_datasender(self, res, submission):
+        if res.get(SubmissionIndexConstants.DATASENDER_ID_KEY) == u'N/A':
+            submission.append(res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY))
+        else:
+            self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
+                                     res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY), submission)
+
+    def _populate_error_message(self, key, language, res, submission):
+        error_msg = res.get(key)
+        if error_msg.find('| |') != -1:
+            error_msg = error_msg.split('| |,')[['en', 'fr'].index(language)]
+        submission.append(error_msg)
+
     def create_response(self, required_field_names, query):
         entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id) for field in
                                  self.form_model.entity_questions]
@@ -116,19 +129,13 @@ class SubmissionQueryResponseCreator():
                         self.combine_name_and_id(short_code=res.get(es_unique_id_code_field_name(key)),
                                                  entity_name=res.get(key), submission=submission)
                     elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
-                        if res.get(SubmissionIndexConstants.DATASENDER_ID_KEY) == u'N/A':
-                            submission.append(res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY))
-                        else:
-                            self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
-                                                 res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY), submission)
+                        self._populate_datasender(res, submission)
                     elif key == 'status':
                         submission.append(ugettext(res.get(key)))
-
+                    elif key == SubmissionIndexConstants.SUBMISSION_DATE_KEY:
+                        submission.append(ugettext(res.get(key)))
                     elif key == 'error_msg':
-                        error_msg = res.get(key)
-                        if error_msg.find('| |') != -1:
-                            error_msg = error_msg.split('| |,')[['en', 'fr'].index(language)]
-                        submission.append(error_msg)
+                        self._populate_error_message(key, language, res, submission)
                     elif key in fieldset_fields.keys():
                         submission.append(
                             _format_fieldset_values_for_representation(res.get(key), fieldset_fields.get(key)))
