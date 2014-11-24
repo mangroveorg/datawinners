@@ -25,6 +25,6 @@ class SubmissionExporter:
                                                                                query_params).query_to_be_paginated(
                                                                                 self.form_model.id,
                                                                                 self.user)
-        submission_list = query_with_criteria.values_dict(tuple(entity_headers))
+        submission_list = query_with_criteria.values_dict()
 
         return self._create_response(columns, submission_list, submission_type)
