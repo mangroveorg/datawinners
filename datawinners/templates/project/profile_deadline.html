@@ -1,11 +1,16 @@
 {% load i18n %}
 {% block page_scss %}
     <link href="/media/css/on-off.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block js %}
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/project/reminder_settings.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
 {% endblock %}
 
 <div id="reminder_deadline_form" data-bind="disableChildren:is_reminder_enabled">
@@ -14,7 +19,9 @@
         <legend>{% trans "Submission Deadline" %}</legend>
             <ul>
                 <li class="border_bottom_color"></li>
-                <li class="italic_grey bold">{% trans "Specify when you need your data by. Data Senders can still submit data after the Submission Deadline.." %}</li>
+                <li class="italic_grey" style="font-size: 12px!important">
+                    {% trans "Specify when you need your data by. Data Senders can still submit data after the Submission Deadline." %}
+                </li>
                 <li class="form-row-10px">
                     <div id="frequency_values">
                         <div class="bold padding_bottom_10 padding_top_10">{% trans "Submission Deadline" %}</div>
@@ -26,12 +33,8 @@
                                     <option value="week">Week</option>
                                     <option value="month">Month</option>
                                 </select>
-                            </li>
-                            <li>
                                 <select data-bind="options:select_option, value:select_day, optionsText:display_text"></select>
-                            </li>
-                            <li>
-                                <div class="italic_grey bold"id="deadline_example" data-bind="text:next_deadline_string"></div>
+                                <span id="deadline_example" data-bind="text:next_deadline_string"></span>
                             </li>
                         </ul>
                     </div>
@@ -39,88 +42,81 @@
             </ul>
 
     </fieldset>
-
     <div id="reminders_section">
         <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
             <legend>{% trans "Reminders" %}</legend>
             <div class="border_bottom_color"></div>
             <div class="italic">{% trans 'Send automatic SMS reminders to your registered Data Senders' %}
-            <a> {% trans 'Learn more' %} </a>
+                <a data-bind="click:open,css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled">Learn more</a>
+                <div class="dialog" data-bind="dialog: {autoOpen: false, width:800, height: 500,
+                                                        title:'Learn More About Submission Deadline & Reminders'},
+                                               dialogVisible: isOpen,
+                                               dialogContent:dialogContentHtml">
+                </div>
             </div>
             <ul>
-                <li class="padding_top_10">
+                <li style="padding-top: 10px">
                         <div class="onoffswitch" data-bind="onoff:reminder_before_deadline.enable"
                              id="myonoffswitch">
                             <label class="onoffswitch-label" for="myonoffswitch">
                                 <span class="onoffswitch-inner"></span>
                                 <span class="onoffswitch-switch"></span>
                             </label>
-                    </div>
-                    <div style="margin-left: 120px">
-                        <span>Reminder</span>
+                            </div>
+                    <div style="margin-left: 130px">
+                        <span>{% trans "Reminders" %}</span>
                         <select id="before_deadline"
                                 data-bind="options:option_list,value:reminder_before_deadline.number_of_days"></select>
-                        {% trans "days before deadline" %}
-                    </div>
-                </li>
-                <li>
-                    <div class="italic bold" id="example_before_deadline"
+                        <span>{% trans "days before deadline" %}</span>
+
+                    <div id="example_before_deadline"
                          data-bind="text:reminder_before_deadline.next_date_as_string"></div>
-                </li>
-                </li>
-                <li>
-                    <label>{% trans "Reminder text before deadline" %}</label>
-                    <textarea name="reminder_text_before_deadline" data-bind="value:reminder_before_deadline.text"
+                    <textarea class="helvetica_font" name="reminder_text_before_deadline" data-bind="value:reminder_before_deadline.text, enable:reminder_before_deadline.enable"
                               cols="40" maxlength="160" rows="10" id="id_reminder_text_before_deadline"> </textarea>
                     {{ form.reminder_text_before_deadline.errors }}
                     <span id="counter_for_reminder_before_deadline" data-bind="text:reminder_before_deadline.count"></span> {% trans " of 160 characters used" %}
+                    </div>
                 </li>
-                <li>
+                <li style="padding-top: 25px">
                     <div class="onoffswitch" data-bind="onoff: reminder_on_deadline.enable" id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-                    <div style="margin-left: 150px ">
-                     {% trans "Reminder on the day of the deadline" %}
-                    </div>
-                    <div class="italic bold" id="example_on_deadline" data-bind="text:reminder_on_deadline.next_date_as_string"></div>
-                </li>
-                <li>
-                    <label>{% trans "Reminder text on deadline" %}</label>
-                    <textarea name="reminder_text_on_deadline" data-bind="value:reminder_on_deadline.text" cols="40"
+                    <div style="margin-left: 130px ">
+                    <span>{% trans "Reminder on the day of the deadline" %}</span>
+
+                    <div id="example_on_deadline" data-bind="text:reminder_on_deadline.next_date_as_string"></div>
+                    <textarea class="helvetica_font" name="reminder_text_on_deadline" data-bind="value:reminder_on_deadline.text, enable:reminder_on_deadline.enable" cols="40"
                               rows="10" maxlength="160" id="id_reminder_text_on_deadline"> </textarea>
                     <span id="counter_for_reminder_on_deadline" data-bind="text:reminder_on_deadline.count"></span> {% trans " of 160 characters used" %}
+                    </div>
                 </li>
-                <li>
-
+                <li style="padding-top: 25px">
                     <div class="onoffswitch" data-bind="onoff: reminder_after_deadline.enable" id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-                    <div style="margin-left: 150px ">
-                        <span class="reminder_font margin_left_100">{% trans "Reminders" %}</span><br>
+                    <div style="margin-left: 130px">
+                        <span>{% trans "Reminders" %}</span>
                         <select id="after_deadline"
                                 data-bind="options:option_list,value:reminder_after_deadline.number_of_days"></select>
-                        {% trans "days after deadline" %}
-                    </div>
-                    <div class="italic bold" id="example_after_deadline" data-bind="text:reminder_after_deadline.next_date_as_string"></div>
-                </li>
-                <li>
-                        <label>{% trans "Reminder text after deadline" %}</label>
-                    <textarea name="reminder_text_after_deadline" data-bind="value:reminder_after_deadline.text"
+                        <span>{% trans "days after deadline" %}</span>
+                        <div id="example_after_deadline" data-bind="text:reminder_after_deadline.next_date_as_string"></div>
+                        <textarea class="helvetica_font" name="reminder_text_after_deadline" data-bind="value:reminder_after_deadline.text, enable:reminder_after_deadline.enable"
                               cols="40" maxlength="160" rows="10" id="id_reminder_text_after_deadline"> </textarea>
-                    {{ form.reminder_text_after_deadline.errors }}
                     <span id="counter_for_reminder_after_deadline" data-bind="text:reminder_after_deadline.count"></span> {% trans " of 160 characters used" %}
+                    </div>
                 </li>
                 <legend>{% trans "Who Receives Reminders" %}</legend>
+                <li class="border_bottom_color"></li>
                 <li>
                      <span class="italic">
                          {% trans 'Specify which of your Data Senders receive the reminders There are 127 registered Data Senders for this Questionnaire. ' %}
-                         <a> {% trans 'See List of Data Senders' %} </a>
+                         <a href="{{ url_to_my_datasender}}" data-bind="css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled"> {% trans 'See List of Data Senders' %} </a>
                      </span>
                     <br>
                      <span class="bold">
@@ -131,9 +127,9 @@
                         <input type="radio" id="my_datasenders" value="my_datasender"
                                data-bind="checked: select_datasender">
                         {% trans "My Data Senders who have not yet submitted for this deadline." %}<br>
-                        <span class="italic" style="">
+                        <span class="italic" style="margin-left: 33px">
                             {% trans 'DataWinners will send automatic SMS reminders to non-submitters. ' %}
-                            <a>{% trans 'Learn more' %}</a>
+                            <a class="reminder_learn_more" data-bind="css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled">{% trans 'Learn more' %}</a>
                         </span>
                         <br>
                         <input type="radio" id="all_my_datasenders" value='all_my_datasender'
@@ -147,7 +143,7 @@
         </fieldset>
     </div>
     <div class="right_aligned_button margin_right_4">
-        <a id="cancel" class="cancel_link" data-bind="click:cancel_changes">{% trans "Cancel changes" %}</a>
+        <a id="cancel"  data-bind="click:cancel_changes, css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled">{% trans "Cancel changes" %}</a>
         <input id="submit-button" data-bind="click:save_reminders"
                class="{% if is_reminder_enabled %}disabled_button{% else %}button{% endif %}" type="submit"
                value="{% trans 'Save' %}" {% if is_reminder_enabled %}disabled="disabled" {% endif %}/>
@@ -163,4 +159,6 @@
             <a id="save_changes" class="button yes_button">{% trans "Save" %}</a>
         </div>
     </div>
+    {% include "project/reminder_week_learn_more.html" %}
+    {% include "project/reminder_month_learn_more.html" %}
 </div>

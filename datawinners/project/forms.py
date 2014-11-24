@@ -162,13 +162,3 @@ class ReminderForm(Form):
 
         return self.cleaned_data
 
-    def disable_all_field(self):
-        self.fields['frequency_period'].widget.attrs['disabled'] = 'disabled'
-        self.fields['should_send_reminders_before_deadline'].widget.attrs['disabled'] = 'disabled'
-        self.fields['number_of_days_before_deadline'].widget.attrs['disabled'] = 'disabled'
-        self.fields['reminder_text_before_deadline'].widget.attrs['disabled'] = 'disabled'
-        self.fields['should_send_reminders_on_deadline'].widget.attrs['disabled'] = 'disabled'
-        self.fields['reminder_text_on_deadline'].widget.attrs['disabled'] = 'disabled'
-        self.fields['number_of_days_after_deadline'].widget.attrs['disabled'] = 'disabled'
-        self.fields['reminder_text_after_deadline'].widget.attrs['disabled'] = 'disabled'
-        self.fields['whom_to_send_message'].widget.attrs['disabled'] = 'disabled'

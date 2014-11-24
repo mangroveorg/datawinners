@@ -195,8 +195,6 @@ def reminder_settings(request, project_id):
                                 'should_send_reminders_on_deadline': data['should_send_reminders_on_deadline'],
                                 'should_send_reminders_after_deadline': data['should_send_reminders_after_deadline']}
         form = ReminderForm(data=data)
-        #if is_reminder_enabled:
-        #    form.disable_all_field()
 
         return render_to_response(html,
                                   {'project_links': project_links,
@@ -257,7 +255,7 @@ def _reminder_info_about_project(project):
         else:
             data['should_send_reminders_before_deadline'] = False
             data['number_of_days_before_deadline'] = 2
-            data['reminder_text_before_deadline'] = ugettext("Reports are due in 2 days. Please submit soon.")
+            data['reminder_text_before_deadline'] = ugettext("Hello. We have not received your data yet for this month. Please send it to us within the next 2 days. Thank you.")
 
         reminder_on_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.ON_DEADLINE, project_id=project.id)
         if reminder_on_deadline.count() > 0:
@@ -276,7 +274,7 @@ def _reminder_info_about_project(project):
         else:
             data['should_send_reminders_after_deadline'] = False
             data['number_of_days_after_deadline'] = 2
-            data['reminder_text_after_deadline'] = ugettext("Reports are over due. Please submit immediately.")
+            data['reminder_text_after_deadline'] = ugettext("Hello. We have not received your redata yet for this month. Please send it to us by the end of today. Thank you.")
 
     data['whom_to_send_message'] = not deadline_information['should_send_reminder_to_all_ds']
 

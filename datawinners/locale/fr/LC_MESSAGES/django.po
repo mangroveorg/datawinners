@@ -5551,3 +5551,12 @@ msgstr "Tout le monde - N'importe qui possédant un simple téléphone peut soum
 
 msgid "Reminders set for registered Data Senders"
 msgstr "Messages de rappel parametrés pour les Expéditeurs de Données enregistrés"
+
+msgid "Specify when you need your data by. Data Senders can still submit data after the Submission Deadline."
+msgstr "Spécifiez la date à laquelle vous voulez que vos données soient soumises. Les Expéditeurs de Données peuvent toujours continuer à soumettre des données après l'échéance de la Soumission."
+
+msgid "Increase the number of Submissions each period (weekly, monthly) by sending automatic SMS reminders to your registered Data Senders."
+msgstr "Augmentez le nombre de Soumissions pour chaque période (hebdomadaire, mensuel) en envoyant des rappels automatiques à vos Expéditeurs de Données."
+
+msgid "Next deadline: "
+msgstr "Prochaine échéance: "

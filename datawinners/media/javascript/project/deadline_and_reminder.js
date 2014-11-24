@@ -1,11 +1,3 @@
-function track_selection(options) {
-     if($(options.selector).attr("checked")){
-        DW.trackEvent('reminders', options.checked_action);
-     }
-     else{
-        DW.trackEvent('reminders', options.unchecked_action);
-     }
-}
 
 function track_deadline_selection(options) {
     var selector = $(options.selector);
@@ -19,4 +11,4 @@ function track_deadline_selection(options) {
     else{
         DW.trackEvent('reminders', options.unchecked_action, label);
     }
-}
+    }
