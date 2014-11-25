@@ -1,13 +1,12 @@
 import json
 import logging
 from collections import OrderedDict
-from string import lower
 
 from babel.dates import format_datetime
 import elasticutils
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
-from datawinners.project.couch_view_helper import get_all_projects
 
+from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, \
     convert_choice_options_to_options_text
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
@@ -172,22 +171,21 @@ def get_submission_meta_fields():
 
 
 def update_submission_search_for_datasender_edition(dbm, short_code, ds_name):
-    from datawinners.search.submission_query import SubmissionQueryBuilder
-
     kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): short_code}
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: ds_name}
     project_form_model_ids = [project.id for project in get_all_projects(dbm, short_code)]
 
-    filtered_query = SubmissionQueryBuilder().query_all(dbm.database_name, *project_form_model_ids, **kwargs)
+    # filtered_query = SubmissionQueryBuilder().query_all(dbm.database_name, *project_form_model_ids, **kwargs)
 
-    for survey_response in filtered_query.all():
+    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name).doctypes(*project_form_model_ids)
+    query = query[:query.count()].filter(**kwargs)
+
+    for survey_response in query.values_dict('void'):
         SubmissionIndexUpdateHandler(dbm.database_name, survey_response._type).update_field_in_submission_index(
             survey_response._id, fields_mapping)
 
 
 def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code, last_name):
-    from datawinners.search.submission_query import SubmissionQueryBuilder
-
     projects = []
     for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=unique_id_type[0], include_docs=True):
         projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc'])))
@@ -203,10 +201,13 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
             fields_mapping = {unique_id_field_name: last_name}
             args = {es_unique_id_code_field_name(unique_id_field_name): short_code}
 
-            survey_response_filtered_query = SubmissionQueryBuilder(project).query_all(dbm.database_name, project.id,
-                                                                                       **args)
+            query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name).doctypes(project.id)
+            query = query[:query.count()].filter(**args)
 
-            for survey_response in survey_response_filtered_query.all():
+            # survey_response_filtered_query = SubmissionQueryBuilder(project).query_all(dbm.database_name, project.id,
+            #                                                                            **args)
+
+            for survey_response in query.values_dict('void'):
                 SubmissionIndexUpdateHandler(dbm.database_name, project.id).update_field_in_submission_index(
                     survey_response._id, fields_mapping)
 
@@ -402,9 +403,9 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
 
 
 def get_unregistered_datasenders(dbm, questionnaire_id):
-    facets = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name)\
-            .doctypes(questionnaire_id).filter(is_anonymous=True, ds_id='n/a', void=False)\
-            .facet('ds_name_exact', filtered=True).facet_counts()['ds_name_exact']
+    facets = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name) \
+        .doctypes(questionnaire_id).filter(is_anonymous=True, ds_id='n/a', void=False) \
+        .facet('ds_name_exact', filtered=True).facet_counts()['ds_name_exact']
 
     return [facet['term'] for facet in facets]
 

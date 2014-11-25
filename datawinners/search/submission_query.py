@@ -168,23 +168,6 @@ class SubmissionQueryResponseCreator(object):
         else:
             return res.get(ugettext(key))
 
-class DeleteSubmissionQueryResponseCreator(SubmissionQueryResponseCreator):
-    def __init__(self, form_model):
-        super(DeleteSubmissionQueryResponseCreator, self).__init__(form_model, None)
-
-    def create_response(self, required_field_names, query):
-        return super(DeleteSubmissionQueryResponseCreator, self).create_response(['status'], query)
-
-
-class UTCSubmissionQueryResponseCreator(SubmissionQueryResponseCreator):
-    def __init__(self, form_model):
-        super(UTCSubmissionQueryResponseCreator, self).__init__(form_model, None)
-
-    def _convert_to_localized_date_time(self, key, res, submission):
-        submission.append(res.get(key))
-
-
-
 class SubmissionQuery(Query):
     def __init__(self, form_model, query_params, response_creator):
         Query.__init__(self, response_creator, SubmissionQueryBuilder(form_model),

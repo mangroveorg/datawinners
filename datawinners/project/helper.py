@@ -11,7 +11,6 @@ from django.utils.translation import ugettext
 from datawinners import settings
 from datawinners.accountmanagement.helper import get_all_user_repids_for_org
 from datawinners.search.datasender_index import update_datasender_index_by_id
-from datawinners.search.submission_query import SubmissionQueryBuilder
 from datawinners.utils import get_organization_from_manager
 from mangrove.datastore.documents import ProjectDocument
 from mangrove.errors.MangroveException import DataObjectNotFound

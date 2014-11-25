@@ -5,7 +5,6 @@ import re
 import datetime
 import logging
 from string import capitalize
-from datawinners import settings
 
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.decorators import login_required
@@ -17,12 +16,13 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
+
+from datawinners import settings
 from datawinners.accountmanagement.localized_time import get_country_time_delta
 from datawinners.blue.xform_submission_exporter import XFormSubmissionExporter
 from datawinners.blue.view import SurveyWebXformQuestionnaireRequest
 from datawinners.blue.xform_bridge import XFormSubmissionProcessor
 from datawinners.project import helper
-
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.common.authorization import is_data_sender
@@ -32,18 +32,19 @@ from datawinners.main.database import get_database_manager
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
+from datawinners.project.submission.submission_search import get_submission_search_query, \
+    get_all_submissions_ids_by_criteria
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
-from datawinners.search.submission_query import SubmissionQuery, SubmissionQueryResponseCreator, \
-    DeleteSubmissionQueryResponseCreator
+from datawinners.search.submission_query import SubmissionQueryResponseCreator
 from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.utils import get_organization, get_organization_from_manager
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+from datawinners.utils import get_organization
+from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
@@ -188,10 +189,10 @@ def get_survey_response_ids_from_request(dbm, request, form_model):
         submission_type = request.POST.get("submission_type")
         query_params = {'search_filters': search_filters}
         query_params.update({'filter': submission_type})
-        response_creator = DeleteSubmissionQueryResponseCreator(form_model)
-        submissions = SubmissionQuery(form_model, query_params, response_creator).query(dbm.database_name)
-
-        return [submission[0] for submission in submissions]
+        # response_creator = DeleteSubmissionQueryResponseCreator(form_model)
+        # submissions = SubmissionQuery(form_model, query_params, response_creator).query(dbm.database_name)
+        # return [submission[0] for submission in submissions]
+        return get_all_submissions_ids_by_criteria(dbm, form_model, query_params)
     return json.loads(request.POST.get('id_list'))
 
 
@@ -459,10 +460,10 @@ def export(request):
     query_params.update({"filter": submission_type})
 
     if form_model.xform:
-        return XFormSubmissionExporter(form_model, project_name, request.user, current_language) \
+        return XFormSubmissionExporter(form_model, project_name, request.user, manager, current_language) \
         .create_excel_response(submission_type, query_params)
 
-    return SubmissionExporter(form_model, project_name, request.user, current_language) \
+    return SubmissionExporter(form_model, project_name, request.user, manager, current_language) \
         .create_excel_response(submission_type, query_params)
 
 
@@ -504,20 +505,23 @@ def get_submissions(request, form_code):
     search_parameters.update({"search_filters": search_filters})
     search_text = search_filters.get("search_text", '')
     search_parameters.update({"search_text": search_text})
-    user = request.user
+    # user = request.user
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    response_creator = SubmissionQueryResponseCreator(form_model, local_time_delta)
-    query_count, search_count, submissions = SubmissionQuery(form_model, search_parameters, response_creator).paginated_query(user,
-                                                                                                            form_model.id)
+    # response_creator = SubmissionQueryResponseCreator(form_model, local_time_delta)
+    # query_count, search_count, submissions = SubmissionQuery(form_model, search_parameters, response_creator).paginated_query(user,
+    #                                                                                                         form_model.id)
+    paginated_query, query_with_search_filters, query_fields = get_submission_search_query(dbm, form_model, search_parameters)
+    submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields, query_with_search_filters)
+    # query_count, search_count, submissions = fetch_submissions_paginated(dbm, form_model, search_parameters, local_time_delta)
 
     return HttpResponse(
         jsonpickle.encode(
             {
                 'data': submissions,
-                'iTotalDisplayRecords': query_count,
+                'iTotalDisplayRecords': query_with_search_filters.count(),
                 'iDisplayStart': int(request.POST.get('iDisplayStart')),
-                "iTotalRecords": search_count,
+                "iTotalRecords": paginated_query.count(),
                 'iDisplayLength': int(request.POST.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')
 
@@ -562,13 +566,14 @@ def get_stats(request, form_code):
     search_parameters.update({"search_filters": search_filters})
     search_text = search_filters.get("search_text", '')
     search_parameters.update({"search_text": search_text})
-    user = request.user
+    # user = request.user
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    response_creator = SubmissionQueryResponseCreator(form_model, local_time_delta)
-    entity_headers, paginated_query, query_with_criteria = SubmissionQuery(form_model,
-                                                                           search_parameters, response_creator).query_to_be_paginated(
-        form_model.id, user)
+    # response_creator = SubmissionQueryResponseCreator(form_model, local_time_delta)
+    # entity_headers, paginated_query, query_with_criteria = SubmissionQuery(form_model,
+    #                                                                        search_parameters, response_creator).query_to_be_paginated(
+    #     form_model.id, user)
+    paginated_query, query_with_criteria, query_fields = get_submission_search_query(dbm, form_model, search_parameters)
     facet_results = get_facet_response_for_choice_fields(query_with_criteria, form_model.choice_fields, form_model.id)
 
     #total success submission count irrespective of current fields being present or not

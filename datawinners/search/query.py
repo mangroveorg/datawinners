@@ -62,11 +62,23 @@ class QueryBuilder(object):
 
 
 class ElasticUtilsHelper():
+
+    def add_free_text_search_criteria(self, query, query_fields, query_text):
+        if query_text:
+            query_text_escaped = self.replace_special_chars(query_text)
+            raw_query = {
+                "query_string": {
+                    "fields": tuple(query_fields),
+                    "query": query_text_escaped
+                }
+            }
+            return query.query_raw(raw_query)
+
+        return query.query()
+
     def replace_special_chars(self, search_text):
         lucene_special_chars = ['\\', '+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?',
                                 '/', ':', ' ']
         for char in lucene_special_chars:
             search_text = search_text.replace(char, '\\' + char)
         return search_text
-
-
