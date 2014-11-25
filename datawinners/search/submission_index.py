@@ -185,6 +185,13 @@ def update_submission_search_for_datasender_edition(dbm, short_code, ds_name):
             survey_response._id, fields_mapping)
 
 
+def _get_submissions_for_unique_id_entry(args, dbm, project):
+    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(
+        dbm.database_name).doctypes(project.id)
+    query = query[:query.count()].filter(**args)
+    return query
+
+
 def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code, last_name):
     projects = []
     for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=unique_id_type[0], include_docs=True):
@@ -201,8 +208,7 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
             fields_mapping = {unique_id_field_name: last_name}
             args = {es_unique_id_code_field_name(unique_id_field_name): short_code}
 
-            query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name).doctypes(project.id)
-            query = query[:query.count()].filter(**args)
+            query = _get_submissions_for_unique_id_entry(args, dbm, project)
 
             # survey_response_filtered_query = SubmissionQueryBuilder(project).query_all(dbm.database_name, project.id,
             #                                                                            **args)

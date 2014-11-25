@@ -230,7 +230,7 @@ def delete(request, project_id):
 
 def build_static_info_context(manager, survey_response, ui_model=None, questionnaire_form_model=None, reporter_id=None):
     form_ui_model = OrderedDict() if ui_model is None else ui_model
-    sender_name, sender_id =  get_data_sender(manager, survey_response)[:2]
+    sender_name, sender_id = get_data_sender(manager, survey_response)[:2]
     if sender_id == 'N/A':
         static_content = {'Data Sender': (survey_response.created_by, '')}
     else:

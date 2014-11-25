@@ -1,17 +1,15 @@
 import unittest
+
 import elasticutils
-from mangrove.transport.contract.survey_response import SurveyResponse
-from mock import Mock, PropertyMock, patch, MagicMock
+from mock import Mock, patch, MagicMock
+
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
-from datawinners.search.submission_query import SubmissionQueryBuilder
 from mangrove.datastore.database import DatabaseManager
-from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import TextField, Field, GeoCodeField, SelectField, DateField, UniqueIdField, FieldSet
+from mangrove.form_model.field import TextField, GeoCodeField, SelectField, DateField, UniqueIdField, FieldSet
 from mangrove.form_model.form_model import FormModel
 from datawinners.search.submission_index import _update_with_form_model_fields, \
     update_submission_search_for_subject_edition
-from mangrove.datastore.documents import EnrichedSurveyResponseDocument, SurveyResponseDocument, DocumentBase, \
-    FormModelDocument
+from mangrove.datastore.documents import SurveyResponseDocument, FormModelDocument
 
 
 class TestSubmissionIndex(unittest.TestCase):
@@ -131,7 +129,7 @@ class TestSubmissionIndex(unittest.TestCase):
         entity_type = ['clinic']
         short_code = 'cli001'
         last_name = 'bangalore'
-        with patch.object(SubmissionQueryBuilder, 'query_all') as query_all:
+        with patch("datawinners.search.submission_index._get_submissions_for_unique_id_entry") as _get_submissions_for_unique_id_entry_mock:
             with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
                 load_all_rows_in_view.return_value = [{'doc': {'name': "project name", "form_code": "cli001",
                                                                "json_fields": [
@@ -142,14 +140,17 @@ class TestSubmissionIndex(unittest.TestCase):
                 filtered_query = Mock(spec=elasticutils.S)
                 filtered_query.all.return_value = [survey_response_index1]
 
-                query_all.return_value = filtered_query
+                submission1 = Mock()
+                submission1._id = "id1"
+                query_mock = Mock()
+                query_mock.values_dict.return_value = [submission1]
+                _get_submissions_for_unique_id_entry_mock.return_value = query_mock
 
                 with patch.object(SubmissionIndexUpdateHandler,
                                   'update_field_in_submission_index') as update_field_in_submission_index:
                     update_submission_search_for_subject_edition(dbm, entity_type, short_code, last_name)
 
-                    query_all.assert_called_with('db_name', 'form_model_id',
-                                                 **{'form_model_id_q1_unique_code': 'cli001'})
+                    # _get_submissions_for_unique_id_entry_mock.assert_called_with(**{'form_model_id_q1_unique_code': 'cli001'})
                     update_field_in_submission_index.assert_called_with('id1', {'form_model_id_q1': 'bangalore'})
 
 
