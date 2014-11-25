@@ -1,6 +1,7 @@
 import datetime
 
 from babel.dates import format_datetime
+from datawinners.accountmanagement.localized_time import convert_local_to_utc
 
 from datawinners.search.index_utils import es_questionnaire_field_name, es_submission_meta_field_name
 from datawinners.search.submission_index_meta_fields import ES_SUBMISSION_FIELD_DATE
@@ -10,7 +11,7 @@ from mangrove.form_model.field import DateField
 DATE_PICKER_WIDGET_DATE_FORMAT = '%d.%m.%Y'
 
 
-class DateRangeFilter():
+class DateRangeFilter(object):
     def __init__(self, date_range):
         self.start_date, self.end_date = self._get_dates_from_request(date_range)
 
@@ -53,6 +54,18 @@ class DateRangeFilter():
 
 
 class SubmissionDateRangeFilter(DateRangeFilter):
+
+    def __init__(self, date_range, local_time_delta):
+        super(SubmissionDateRangeFilter, self).__init__(date_range)
+        self.local_time_delta = local_time_delta
+
+    def _get_date_range_filter_args(self, start, end):
+        date_format = "%b. %d, %Y, %I:%M %p"
+        start_local_date_time_str = convert_local_to_utc(start, self.local_time_delta, date_format).strftime(date_format)
+        end_local_date_time_str = convert_local_to_utc(end, self.local_time_delta, date_format).strftime(date_format)
+
+        return super(SubmissionDateRangeFilter, self)._get_date_range_filter_args(start_local_date_time_str, end_local_date_time_str)
+
     def get_date_field_name(self):
         return es_submission_meta_field_name(ES_SUBMISSION_FIELD_DATE)
 

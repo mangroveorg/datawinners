@@ -448,6 +448,9 @@ def export(request):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
     current_language = get_language()
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
                     "number_of_results": 50000,
@@ -460,11 +463,11 @@ def export(request):
     query_params.update({"filter": submission_type})
 
     if form_model.xform:
-        return XFormSubmissionExporter(form_model, project_name, request.user, manager, current_language) \
+        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
         .create_excel_response(submission_type, query_params)
 
-    return SubmissionExporter(form_model, project_name, request.user, manager, current_language) \
-        .create_excel_response(submission_type, query_params)
+    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+        .create_excel_response(submission_type, query_params, local_time_delta, local_time_delta)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
@@ -511,7 +514,7 @@ def get_submissions(request, form_code):
     # response_creator = SubmissionQueryResponseCreator(form_model, local_time_delta)
     # query_count, search_count, submissions = SubmissionQuery(form_model, search_parameters, response_creator).paginated_query(user,
     #                                                                                                         form_model.id)
-    paginated_query, query_with_search_filters, query_fields = get_submission_search_query(dbm, form_model, search_parameters)
+    paginated_query, query_with_search_filters, query_fields = get_submission_search_query(dbm, form_model, search_parameters, local_time_delta)
     submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields, query_with_search_filters)
     # query_count, search_count, submissions = fetch_submissions_paginated(dbm, form_model, search_parameters, local_time_delta)
 
@@ -573,7 +576,7 @@ def get_stats(request, form_code):
     # entity_headers, paginated_query, query_with_criteria = SubmissionQuery(form_model,
     #                                                                        search_parameters, response_creator).query_to_be_paginated(
     #     form_model.id, user)
-    paginated_query, query_with_criteria, query_fields = get_submission_search_query(dbm, form_model, search_parameters)
+    paginated_query, query_with_criteria, query_fields = get_submission_search_query(dbm, form_model, search_parameters, local_time_delta)
     facet_results = get_facet_response_for_choice_fields(query_with_criteria, form_model.choice_fields, form_model.id)
 
     #total success submission count irrespective of current fields being present or not

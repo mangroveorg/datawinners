@@ -56,10 +56,10 @@ def _add_unique_id_filters(form_model, query, uniqueIdFilters):
     return query
 
 
-def _add_search_filters(query, search_filter_param, form_model):
+def _add_search_filters(query, search_filter_param, form_model, local_time_delta):
     if search_filter_param:
         submission_date_range = search_filter_param.get("submissionDatePicker")
-        query = SubmissionDateRangeFilter(submission_date_range).build_filter_query(query)
+        query = SubmissionDateRangeFilter(submission_date_range, local_time_delta).build_filter_query(query)
         query = _add_date_range_filters(query, search_filter_param.get("dateQuestionFilters"), form_model)
         datasender_filter = search_filter_param.get("datasenderFilter")
         if datasender_filter:
@@ -68,12 +68,12 @@ def _add_search_filters(query, search_filter_param, form_model):
     return query
 
 
-def _add_filters(form_model, paginated_query, search_parameters):
+def _add_filters(form_model, paginated_query, search_parameters, local_time_delta):
     query = _filter_by_submission_type(paginated_query, search_parameters.get('filter'))
     query_fields = _get_query_fields(form_model, search_parameters.get('filter'))
     query_text = search_parameters.get("search_text")
     query = ElasticUtilsHelper().add_free_text_search_criteria(query, query_fields, query_text)
-    query_with_search_filters = _add_search_filters(query, search_parameters.get('search_filters'), form_model)
+    query_with_search_filters = _add_search_filters(query, search_parameters.get('search_filters'), form_model, local_time_delta)
     return query_fields, query_with_search_filters
 
 
@@ -82,16 +82,16 @@ def _query_for_questionnaire(dbm, form_model):
         dbm.database_name).doctypes(form_model.id)
 
 
-def get_submission_search_query(dbm, form_model, search_parameters):
+def get_submission_search_query(dbm, form_model, search_parameters, local_time_delta):
     query = _query_for_questionnaire(dbm, form_model)
     query = _add_sort_criteria(query, search_parameters)
     paginated_query = _add_pagination_criteria(query, search_parameters)
-    query_fields, query_with_search_filters = _add_filters(form_model, paginated_query, search_parameters)
+    query_fields, query_with_search_filters = _add_filters(form_model, paginated_query, search_parameters, local_time_delta)
     return paginated_query, query_with_search_filters, query_fields
 
-def get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters):
+def get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters, local_time_delta):
     query = _query_for_questionnaire(dbm, form_model)
     query = query[:query.count()]
-    query_with_search_filters = _add_search_filters(query, search_parameters.get('search_filters'), form_model)
+    query_with_search_filters = _add_search_filters(query, search_parameters.get('search_filters'), form_model, local_time_delta)
     return [entry._id for entry in query_with_search_filters.values_dict('void')]
 
