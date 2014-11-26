@@ -5607,7 +5607,19 @@ msgid "All my Data Senders"
 msgstr "Tous mes Expéditeurs de Données"
 
 msgid "See List of Data Senders"
-msgstr ""
+msgstr "Voir la liste des Expéditeurs de Données"
+
+msgid "Submission Deadline"
+msgstr "Echéance de soumission"
+
+msgid "Send automatic SMS reminders to your registered Data Senders"
+msgstr "Envoyez des rappels SMS automatiques à vos Expéditeurs de Données enregistrés"
+
+msgid "Reminder on the day of the deadline"
+msgstr "Rappel le jour de l'échéance"
+
+msgid "Reminders are sent to"
+msgstr "Les rappels sont envoyés à"
 
 msgid "help_text_month"
 msgstr "Avec DataWinners, vous pouvez envoyer des rappels à vos Expéditeurs de Données qui n'ont pas encore soumis des données, jusqu'à 7 jours avant et après votre échéance mensuelle. Tous les rappels sont envoyés à 8h EAT environ"
@@ -5615,3 +5627,8 @@ msgstr "Avec DataWinners, vous pouvez envoyer des rappels à vos Expéditeurs de
 msgid "help_text_week"
 msgstr "Avec DataWinners, vous pouvez envoyer des rappels à vos Expéditeurs qui n'ont pas encore soumis leurs données jusqu'à 3 jours avant et après votre échéance mensuelle. Tous les rappels sont envoyés à 8h EAT environ"
 
+msgid "Learn More About Submission Deadline & Reminders"
+msgstr "En savoir plus sur léchéance de Soumission et les rappels"
+
+msgid "Hello. We have not received your data yet for this month. Please send it to us within the next 2 days. Thank you."
+msgstr "Bonjour. Nous n’avons pas encore reçu vos données pour ce mois."

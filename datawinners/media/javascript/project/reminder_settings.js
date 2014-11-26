@@ -79,7 +79,10 @@ function ReminderInstance() {
     });
 
     self.update_example = function (next_deadline) {
-        self.next_reminder_date(add_days(next_deadline(), self.multiplier * self.number_of_days()));
+        var next_reminder_date = add_days(next_deadline(), self.multiplier * self.number_of_days());
+        var current_date = new Date();
+        if(next_reminder_date <= current_date) next_reminder_date.setMonth(current_date.getMonth()+1);
+        self.next_reminder_date(next_reminder_date);
     };
 }
 
@@ -157,7 +160,6 @@ function ReminderSettingsModel() {
         self.reminder_on_deadline.update_example(self.next_deadline);
         self.reminder_after_deadline.update_example(self.next_deadline);
         self.is_deadline_date_changed = true;
-
     });
 
     self.next_deadline_string = ko.computed(function () {
