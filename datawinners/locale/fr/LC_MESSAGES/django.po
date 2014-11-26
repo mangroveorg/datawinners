@@ -5573,5 +5573,5 @@ msgstr "Espace additionnelle dans la colonne name"
 msgid "On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:"
 msgstr "Sur votre feuille \"survey\", la première et la deuxième colonne doivent être \"type\" et \"name\". Erreurs possibles:"
 
-msgid "On your \"choices\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:"
-msgstr "Sur votre feuille \"choices\", la première et la deuxième colonne doivent être \"type\" et \"name\". Erreurs possibles:"
+msgid "On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:"
+msgstr "Sur votre feuille \"choices\", la première et la deuxième colonne doivent être \"list_name\" et \"name\". Erreurs possibles:"
