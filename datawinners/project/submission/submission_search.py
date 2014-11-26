@@ -56,8 +56,10 @@ def _add_unique_id_filters(form_model, query, uniqueIdFilters):
     return query
 
 
-def _add_search_filters(query, search_filter_param, form_model, local_time_delta):
+def _add_search_filters(query, search_filter_param, form_model, local_time_delta, query_fields):
     if search_filter_param:
+        query_text = search_filter_param.get("search_text")
+        query = ElasticUtilsHelper().add_free_text_search_criteria(query, query_fields, query_text)
         submission_date_range = search_filter_param.get("submissionDatePicker")
         query = SubmissionDateRangeFilter(submission_date_range, local_time_delta).build_filter_query(query)
         query = _add_date_range_filters(query, search_filter_param.get("dateQuestionFilters"), form_model)
@@ -71,9 +73,7 @@ def _add_search_filters(query, search_filter_param, form_model, local_time_delta
 def _add_filters(form_model, paginated_query, search_parameters, local_time_delta):
     query = _filter_by_submission_type(paginated_query, search_parameters.get('filter'))
     query_fields = _get_query_fields(form_model, search_parameters.get('filter'))
-    query_text = search_parameters.get("search_text")
-    query = ElasticUtilsHelper().add_free_text_search_criteria(query, query_fields, query_text)
-    query_with_search_filters = _add_search_filters(query, search_parameters.get('search_filters'), form_model, local_time_delta)
+    query_with_search_filters = _add_search_filters(query, search_parameters.get('search_filters'), form_model, local_time_delta, query_fields)
     return query_fields, query_with_search_filters
 
 
@@ -92,6 +92,6 @@ def get_submission_search_query(dbm, form_model, search_parameters, local_time_d
 def get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters, local_time_delta):
     query = _query_for_questionnaire(dbm, form_model)
     query = query[:query.count()]
-    query_with_search_filters = _add_search_filters(query, search_parameters.get('search_filters'), form_model, local_time_delta)
+    query_fields, query_with_search_filters = _add_filters(form_model, query, search_parameters, local_time_delta)
     return [entry._id for entry in query_with_search_filters.values_dict('void')]
 

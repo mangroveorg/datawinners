@@ -236,7 +236,7 @@ class TestSubmissionViews(unittest.TestCase):
         post_params = {'id_list': json.dumps(['id1', 'id2'])}
         type(request).POST = PropertyMock(return_value=post_params)
         form_model = Mock(spec=FormModel)
-        ids = get_survey_response_ids_from_request(dbm, request, form_model)
+        ids = get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
         self.assertEqual(ids, ['id1', 'id2'])
 
     def test_get_submission_ids_to_delete_should_call_submission_query_if_select_all_flag_is_true(self):
@@ -249,9 +249,9 @@ class TestSubmissionViews(unittest.TestCase):
         with patch('datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
             get_all_submissions_ids_by_criteria_mock.return_value = []
 
-            get_survey_response_ids_from_request(dbm, request, form_model)
+            get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
 
-            get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'all', 'search_filters': []})
+            get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'all', 'search_filters': []}, ('+', 0, 0))
 
     def test_get_submission_ids_to_delete_should_call_submission_query_with_submission_type_if_select_all_flag_is_true(self):
         dbm = MagicMock(spec=DatabaseManager)
@@ -263,9 +263,9 @@ class TestSubmissionViews(unittest.TestCase):
         with patch('datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
              get_all_submissions_ids_by_criteria_mock.return_value = []
 
-             get_survey_response_ids_from_request(dbm, request, form_model)
+             get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
 
-             get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'success', 'search_filters': []})
+             get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'success', 'search_filters': []}, ('+', 0, 0))
 
 
 

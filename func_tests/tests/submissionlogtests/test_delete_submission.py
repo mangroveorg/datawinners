@@ -4,10 +4,10 @@ import uuid
 
 from django.test import Client
 from nose.plugins.attrib import attr
+from datawinners.project.submission.submission_search import get_all_submissions_ids_by_criteria
 from mangrove.form_model.form_model import get_form_model_by_code
 
 from datawinners.main.database import get_db_manager
-from datawinners.search.submission_query import SubmissionQuery
 from framework.utils.common_utils import random_string
 
 
@@ -70,7 +70,7 @@ class TestDeleteSubmission(unittest.TestCase):
     def get_submissions(self, filter_type, search_text):
         query_params = {'search_filters': {'search_text': search_text,"dateQuestionFilters":{}}}
         query_params.update({'filter': filter_type})
-        submissions = SubmissionQuery(self.form_model, query_params).query(self.dbm.database_name)
+        submissions = get_all_submissions_ids_by_criteria(self.dbm, self.form_model, query_params, ('+', 0, 0))
         return submissions
 
     def project_info(self, form_code):

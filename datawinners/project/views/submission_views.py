@@ -183,16 +183,18 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
                                   context_instance=RequestContext(request))
 
 
-def get_survey_response_ids_from_request(dbm, request, form_model):
+def get_survey_response_ids_from_request(dbm, request, form_model, local_time_delta):
     if request.POST.get('all_selected', "false") == "true":
         search_filters = json.loads(request.POST.get("search_filters"))
         submission_type = request.POST.get("submission_type")
-        query_params = {'search_filters': search_filters}
-        query_params.update({'filter': submission_type})
+        # query_params = {'search_filters': search_filters}
+        # query_params.update({'filter': submission_type})
+        search_parameters = {'filter': submission_type}
+        search_parameters.update({'search_filters': search_filters})
         # response_creator = DeleteSubmissionQueryResponseCreator(form_model)
         # submissions = SubmissionQuery(form_model, query_params, response_creator).query(dbm.database_name)
         # return [submission[0] for submission in submissions]
-        return get_all_submissions_ids_by_criteria(dbm, form_model, query_params)
+        return get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters, local_time_delta)
     return json.loads(request.POST.get('id_list'))
 
 
@@ -203,7 +205,9 @@ def delete(request, project_id):
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    survey_response_ids = get_survey_response_ids_from_request(dbm, request, questionnaire)
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+    survey_response_ids = get_survey_response_ids_from_request(dbm, request, questionnaire, local_time_delta)
     received_times = []
     for survey_response_id in survey_response_ids:
         survey_response = SurveyResponse.get(dbm, survey_response_id)
