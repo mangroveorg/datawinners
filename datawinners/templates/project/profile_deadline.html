@@ -48,9 +48,9 @@
             <legend>{% trans "Reminders" %}</legend>
             <div class="border_bottom_color"></div>
             <div class="font_style italic_grey">{% trans 'Send automatic SMS reminders to your registered Data Senders' %}
-                <a data-bind="click:open,css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled">Learn more</a>
-                <div class="dialog" data-bind="dialog: {autoOpen: false, width:1000, height: 720,
-                                                        title:'Learn More About Submission Deadline & Reminders'},
+                <a data-bind="click:open,css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled">{% trans "Learn more" %}</a>
+                <div class="dialog" data-bind="dialog: {autoOpen: false, width:1000,
+                                                        title:'{% trans 'Learn More About Submission Deadline & Reminders'%}', height: 720 },
                                                dialogVisible: isOpen,
                                                dialogContent:dialogContentHtml">
                 </div>

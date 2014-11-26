@@ -165,7 +165,7 @@ function ReminderSettingsModel() {
         return gettext("Next deadline: ") + self.next_deadline().getDate() + " " + self.next_deadline().month_name + " " + self.next_deadline().getFullYear();
     });
 
-    self.save_reminders = function () {
+    self.save_reminders = function (callback) {
         var post_data = {
             'should_send_reminders_before_deadline': self.reminder_before_deadline.enable(),
             'should_send_reminders_on_deadline': self.reminder_on_deadline.enable(),
@@ -197,6 +197,7 @@ function ReminderSettingsModel() {
                 $('.success-message-box').html(responseJson.success_message);
                 $('.success-message-box').show();
                 $(document).scrollTop(0);
+                if (typeof callback == "function") callback();
                         }
         });
     };

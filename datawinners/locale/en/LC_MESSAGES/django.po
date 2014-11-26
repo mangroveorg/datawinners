@@ -4776,7 +4776,7 @@ msgid "SMS Text"
 msgstr ""
 
 msgid "help_text_month"
-msgstr "With DataWinners you can send reminders up to 7 days before and after your monthly deadline to your registered Data Senders who have not yet submitted data."
+msgstr "With DataWinners you can send reminders up to 7 days before and after your monthly deadline to your registered Data Senders who have not yet submitted data. All Reminders are sent out around 8:00 AM EAT"
 
 msgid "help_text_week"
-msgstr "With DataWinners you can send reminders up to 3 days before and after your weekly deadline to your registered Data Senders who have not yet submitted data."
+msgstr "With DataWinners you can send reminders up to 3 days before and after your weekly deadline to your registered Data Senders who have not yet submitted data. All Reminders are sent out around 8:00 AM EAT"
