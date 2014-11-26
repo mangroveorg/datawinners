@@ -26,7 +26,7 @@ python-dateutil==1.5
 django-nose==1.2
 feedparser
 nose-exclude
-https://github.com/jezdez/django_compressor/tarball/086f05041a28c176994ebc22dc41ce12da74045e
+django_compressor==1.4
 python-digest
 decorator
 django-digest
