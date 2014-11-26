@@ -151,8 +151,10 @@ ko.bindingHandlers.onoff = {
             ele.addClass('onoffswitch-checked');
         }
         ele.on('click', function(e){
-            var boolVal = ko.unwrap(valueAccessor());
-            valueAccessor()(!boolVal);
+            if (!ele[0].hasAttribute('disabled')){
+                var boolVal = ko.unwrap(valueAccessor());
+                valueAccessor()(!boolVal);
+            }
             e.preventDefault();
         });
     },
@@ -181,4 +183,31 @@ ko.bindingHandlers.messageEditor = {
         });
     }
 
+};
+
+ko.bindingHandlers.dialog = {
+        init: function(element, valueAccessor, allBindingsAccessor) {
+            var options = ko.utils.unwrapObservable(valueAccessor()) || {};
+            setTimeout(function() {
+                options.close = function() {
+                    allBindingsAccessor().dialogVisible(false);
+                };
+                $(element).dialog(options);
+            }, 0);
+
+             ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+                 $(element).dialog("destroy");
+             });
+        },
+        update: function(element, valueAccessor, allBindingsAccessor) {
+            var shouldBeOpen = ko.utils.unwrapObservable(allBindingsAccessor().dialogVisible),
+                dialog_content = ko.utils.unwrapObservable(allBindingsAccessor().dialogContent)||" ",
+                $el = $(element),
+                dialog = $el.data("uiDialog") || $el.data("dialog");
+
+            if (dialog) {
+                $el.html(dialog_content);
+                $el.dialog(shouldBeOpen ? "open" : "close");
+            }
+        }
 };

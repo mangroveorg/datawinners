@@ -62,7 +62,7 @@ class Reminder(models.Model):
     def get_sender_list(self, project, on_date, dbm):
         if not project.reminder_and_deadline['should_send_reminder_to_all_ds']:
             deadline_date = self._get_applicapable_deadline_date(project.deadline(), on_date)
-            return project.get_data_senders_without_submissions_for(deadline_date, dbm)
+            return project.get_data_senders_without_submissions_for(deadline_date, dbm, project._frequency_period())
         return project.get_data_senders(dbm)
 
     def _delta(self):

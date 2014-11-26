@@ -1369,3 +1369,9 @@ msgstr "Ceci n’est qu’un aperçu. Pour soumettre des données, Cliquez sur l
 
 msgid "Your Identification Number(s) Will Be Deleted"
 msgstr "Votre(vos) numéro(s) d’identification seront supprimés"
+
+msgid "Next deadline: "
+msgstr "Prochaine échéance: "
+
+msgid "Next scheduled Reminder: "
+msgstr "Prochain rappel programmé: "

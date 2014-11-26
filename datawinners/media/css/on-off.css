@@ -13,7 +13,8 @@
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 999px;
-    width: 90px;
+    margin:0 !important;
+    width: 90px !important;
     height: 25px;
 }
 
@@ -73,9 +74,9 @@
 }
 
 .onoffswitch-checked .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
+    margin-left: 0 !important;
 }
 
 .onoffswitch-checked .onoffswitch-label .onoffswitch-switch {
-    left: 65px;
+    left: 65px !important;
 }
