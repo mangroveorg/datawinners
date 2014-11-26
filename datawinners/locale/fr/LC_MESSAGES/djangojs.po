@@ -1375,3 +1375,6 @@ msgstr "Prochaine échéance: "
 
 msgid "Next scheduled Reminder: "
 msgstr "Prochain rappel programmé: "
+
+msgid "Learn More About Submission Deadline & Reminders"
+msgstr "En savoir plus sur l'échéance de Soumission et les rappels"

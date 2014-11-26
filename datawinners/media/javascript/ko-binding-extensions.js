@@ -192,6 +192,7 @@ ko.bindingHandlers.dialog = {
                 options.close = function() {
                     allBindingsAccessor().dialogVisible(false);
                 };
+                options.title = gettext(options.title);
                 $(element).dialog(options);
             }, 0);
 

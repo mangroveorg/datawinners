@@ -5615,5 +5615,3 @@ msgstr "Avec DataWinners, vous pouvez envoyer des rappels à vos Expéditeurs de
 msgid "help_text_week"
 msgstr "Avec DataWinners, vous pouvez envoyer des rappels à vos Expéditeurs qui n'ont pas encore soumis leurs données jusqu'à 3 jours avant et après votre échéance mensuelle. Tous les rappels sont envoyés à 8h EAT environ"
 
-msgid "Learn More About Submission Deadline & Reminders"
-msgstr "En savoir plus sur léchéance de Soumission et les rappels"
