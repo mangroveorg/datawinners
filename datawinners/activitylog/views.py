@@ -38,14 +38,14 @@ def show_log(request):
                 if key == "daterange":
                     dates = value.split(" %s " % ugettext("to"))
                     # args["log_date__gte"] = convert_dmy_to_ymd(dates[0])
-                    args["log_date__gte"] = convert_to_ymd(convert_local_to_utc(dates[0] + " 00:00:00", time_delta, "%d-%m-%Y %H:%M:%S"))
+                    args["log_date__gte"] = convert_local_to_utc(dates[0] + " 00:00:00", time_delta, "%d-%m-%Y %H:%M:%S")
                     try:
                         end_date = date.today()
                         if len(dates) > 1:
                             # end_date = convert_dmy_to_ymd(dates[1])
-                            end_date = convert_to_ymd(convert_local_to_utc(dates[1] + " 23:59:59", time_delta, "%d-%m-%Y %H:%M:%S"))
+                            end_date = convert_local_to_utc(dates[1] + " 23:59:59", time_delta, "%d-%m-%Y %H:%M:%S")
                         else:
-                            end_date = convert_to_ymd(convert_local_to_utc(dates[0] + " 23:59:59", time_delta, "%d-%m-%Y %H:%M:%S"))
+                            end_date = convert_local_to_utc(dates[0] + " 23:59:59", time_delta, "%d-%m-%Y %H:%M:%S")
                     except KeyError:
                         pass
                     args["log_date__lte"] = "%s" % end_date
