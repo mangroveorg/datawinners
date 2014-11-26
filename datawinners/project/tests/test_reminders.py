@@ -279,7 +279,6 @@ class TestReminderForm(unittest.TestCase):
             'deadline_type': u'',
             'frequency_period': u'',
             'should_send_reminders_before_deadline':False,
-            'number_of_days_before_deadline':None,
             'reminder_text_before_deadline':u'',
             'should_send_reminders_on_deadline':False,
             'reminder_text_on_deadline':u'',

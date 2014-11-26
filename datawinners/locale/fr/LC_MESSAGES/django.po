@@ -5560,3 +5560,36 @@ msgstr "Augmentez le nombre de Soumissions pour chaque période (hebdomadaire, m
 
 msgid "Next deadline: "
 msgstr "Prochaine échéance: "
+
+msgid "Who Receives Reminders"
+msgstr "Qui reçoivent des rappels"
+
+msgid "Specify which of your Data Senders receive the reminders There are 127 registered Data Senders for this Questionnaire."
+msgstr "Spécifiez qui de vos Expéditeurs de Données reçoivent les rappels. Il y a 127 Expéditeurs de Données autorisés pour ce Questionnaire."
+
+msgid "My Data Senders who have not yet submitted for this deadline."
+msgstr "Mes Expéditeurs de Données qui n'ont pas encore soumis pour cette échéance."
+
+msgid "DataWinners will send automatic SMS reminders to non-submitters."
+msgstr "DataWinners enverra des rappels SMS automatiques à ceux qui n'ont pas encore soumis."
+
+msgid "Learn more"
+msgstr "En savoir plus"
+
+msgid "tooltip_for_reminder"
+msgstr "Pour chaque échéance de Soumission, DataWinners divisera les Expéditeurs de Données en deux groupes : ceux qui ont soumis avec succès et ceux qui ne l'ont pas. DataWinners enverra des rappels SMS automatiques à ceux qui n'ont pas encore soumis."
+
+msgid "All my Data Senders"
+msgstr "Tous mes Expéditeurs de Données"
+
+msgid "See List of Data Senders"
+msgstr ""
+
+msgid "help_text_month"
+msgstr "Avec DataWinners, vous pouvez envoyer des rappels à vos Expéditeurs de Données qui n'ont pas encore soumis des données, jusqu'à 7 jours avant et après votre échéance mensuelle. All Reminders are sent out around 8:00 AM EAT / Tous les rappels sont envoyés à 8h EAT environ"
+
+msgid "help_text_week"
+msgstr "Avec DataWinners, vous pouvez envoyer des rappels à vos Expéditeurs qui n'ont pas encore soumis leurs données jusqu'à 3 jours avant et après votre échéance mensuelle."
+
+msgid "Learn More About Submission Deadline & Reminders"
+msgstr "En savoir plus sur l'échéance de Soumission et les rappels"

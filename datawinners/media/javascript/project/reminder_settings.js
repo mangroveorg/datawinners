@@ -4,45 +4,36 @@ $.valHooks.textarea = {
     }
 };
 
+var month_name_map = {0:'January' ,
+                      1: 'February' ,
+                      2: 'March' ,
+                      3: 'April' ,
+                      4: 'May' ,
+                      5: 'June' ,
+                      6: 'July' ,
+                      7: 'August' ,
+                      8: 'September' ,
+                      9: 'October' ,
+                      10:'November' ,
+                      11:'December' };
+
+var is_last_day_of_month = function(date){
+    var last_day_of_current_month = new Date(date.getTime());
+    last_day_of_current_month.setMonth(date.getMonth()+1);
+    last_day_of_current_month.setDate(0);
+    return date.getDate() == last_day_of_current_month.getDate();
+};
+
+var get_last_day_of_next_month = function(date) {
+    var last_day_of_next_month = date;
+    last_day_of_next_month.setMonth(date.getMonth()+2);
+    last_day_of_next_month.setDate(0);
+    return last_day_of_next_month;
+};
+
 Date.prototype.convert_to_month_name = function () {
-    switch (this.getMonth()) {
-        case 0:
-            this.month_name = "January";
-            break;
-        case 1:
-            this.month_name = "February";
-            break;
-        case 2:
-            this.month_name = "March";
-            break;
-        case 3:
-            this.month_name = "April";
-            break;
-        case 4:
-            this.month_name = "May";
-            break;
-        case 5:
-            this.month_name = "June";
-            break;
-        case 6:
-            this.month_name = "July";
-            break;
-        case 7:
-            this.month_name = "August";
-            break;
-        case 8:
-            this.month_name = "September";
-            break;
-        case 9:
-            this.month_name = "October";
-            break;
-        case 10:
-            this.month_name = "November";
-            break;
-        case 11:
-            this.month_name = "December";
-            break;
-    }
+    month_number = this.getMonth();
+    this.month_name =  month_name_map[month_number];
 };
 
 var add_days = function (date, days) {
@@ -130,12 +121,24 @@ function ReminderSettingsModel() {
 
     self.next_deadline = ko.computed(function () {
         var current_date = new Date();
-        var next_deadline = new Date();
+        var next_deadline = new Date(current_date.getTime());
         if (self.selected_frequency() == 'month') {
-            if (self.select_day() < current_date.getDate()) {
+            var lastdays_of_feb = [29, 30, 0];
+            if (self.select_day() <= current_date.getDate()) {
+                if(next_deadline.getMonth() == 0 && lastdays_of_feb.indexOf(self.select_day())!=-1){
+                    next_deadline.setMonth(2);
+                    next_deadline.setDate(0);
+                    return next_deadline;
+                }
                 next_deadline.setMonth(next_deadline.getMonth() + 1);
             }
+            if(next_deadline.getMonth() == 1 && lastdays_of_feb.indexOf(self.select_day())!=-1){
+                next_deadline.setMonth(2);
+            }
             next_deadline.setDate(self.select_day());
+            if(is_last_day_of_month(current_date) && self.select_day()==0){
+                next_deadline = get_last_day_of_next_month(current_date);
+            }
         }
         else {
             if (self.select_day() % 7 < current_date.getDay()) {
@@ -187,14 +190,14 @@ function ReminderSettingsModel() {
             DW.trackEvent('reminders', 'deadline-changed');
         }
         DW.trackEvent('reminders', 'saved-reminders');
-
+        DW.loading();
         $.post(post_url, post_data).done(function (response) {
             var responseJson = $.parseJSON(response);
             if (responseJson.success) {
-                $('.success-message-box').removeClass('none');
                 $('.success-message-box').html(responseJson.success_message);
+                $('.success-message-box').show();
                 $(document).scrollTop(0);
-            }
+                        }
         });
     };
 
@@ -264,50 +267,34 @@ function ReminderSettingsModel() {
     });
 
     self.select_option = ko.computed(function () {
-        return self.selected_frequency() == 'month' ? range_of_numbers(1, 30) : range_of_numbers(1, 7);
+        return self.selected_frequency() == 'month' ? range_of_numbers(1, 30).concat([0]) : range_of_numbers(1, 7);
     }, this);
 
     self.display_text = function (item) {
+        var item_map_week = {};
+        item_map_week[1] = 'Monday';
+        item_map_week[2] = 'Tuesday';
+        item_map_week[3] = 'Wednesday';
+        item_map_week[4] = 'Thursday';
+        item_map_week[5] = 'Friday';
+        item_map_week[6] = 'Saturday';
+        item_map_week[7] = 'Sunday';
+        var item_map_month = {};
+        item_map_month[1] = "1st";
+        item_map_month[2] = "2nd";
+        item_map_month[3] = "3rd";
+        item_map_month[0] = "Last Day";
         if (self.selected_frequency() == 'month') {
-            switch (item) {
-                case 1:
-                    return "1st";
-                    break;
-                case 2:
-                    return "2nd";
-                    break;
-                case 3:
-                    return "3rd";
-                    break;
-                default:
-                    return item.toString() + 'th';
-                    break;
+            if(item<=3 || item == 31){
+                return item_map_month[item];
             }
+            else{
+                return item.toString() + 'th';
+            }
+
         }
         else {
-            switch (item) {
-                case 1:
-                    return "Monday";
-                    break;
-                case 2:
-                    return "Tuesday";
-                    break;
-                case 3:
-                    return "Wednesday";
-                    break;
-                case 4:
-                    return "Thursday";
-                    break;
-                case 5:
-                    return "Friday";
-                    break;
-                case 6:
-                    return "Saturday";
-                    break;
-                case 7:
-                    return "Sunday";
-                    break;
-            }
+               return item_map_week[item];
         }
     };
 }
@@ -344,4 +331,5 @@ $(document).ready(function() {
     };
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
     ko.applyBindings(viewModel, $("#reminder_deadline_form")[0]);
+    $('.success-message-box').hide();
 });

@@ -1295,6 +1295,9 @@ msgstr ""
 msgid "Questionnaire Code:"
 msgstr ""
 
+msgid "tooltip_for_reminder"
+msgstr "For each Submission Deadline, DataWinners will divide authorized Data Senders into two groups:  those who have successfully submitted and those who have not. DataWinners will then send automatic SMS reminders to the non-submitters."
+
 msgid "q_tooltip_questionnaire_code"
 msgstr ""
 "All questionnaires have a Unique Questionnaire Code. DataWinners uses this "

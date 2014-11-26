@@ -184,6 +184,7 @@ def reminder_settings(request, project_id):
 
 
     project_links = make_project_links(questionnaire)
+    active_language = request.LANGUAGE_CODE
     org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
     organization = Organization.objects.get(org_id=org_id)
     is_reminder_enabled = is_empty(questionnaire.data_senders)
@@ -194,16 +195,15 @@ def reminder_settings(request, project_id):
         reminder_information = {'should_send_reminders_before_deadline': data['should_send_reminders_before_deadline'],
                                 'should_send_reminders_on_deadline': data['should_send_reminders_on_deadline'],
                                 'should_send_reminders_after_deadline': data['should_send_reminders_after_deadline']}
-        form = ReminderForm(data=data)
 
         return render_to_response(html,
                                   {'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request, organization=organization),
                                    'project': questionnaire,
-                                   'form': form,
                                    'reminder_data': repr(json.dumps(data)),
                                    'questionnaire_code': questionnaire.form_code,
                                    'is_reminder_enabled': is_reminder_enabled,
+                                   'active_language': active_language,
                                    'url_to_my_datasender': url_to_my_datasender,
                                    'reminder_information': repr(json.dumps(reminder_information)),
                                    'post_url': reverse(reminder_settings, args=[project_id])
