@@ -167,124 +167,124 @@ class TestReminders(unittest.TestCase):
         self.assertTrue(isinstance(log, ReminderLog))
         dbm_mock._save_document.assert_called_once()
 
-
-class TestReminderForm(unittest.TestCase):
-
-    def test_should_give_error_if_before_deadline_field_is_blank(self):
-        data = {
-            'should_send_reminders_before_deadline':True,
-            'number_of_days_before_deadline':'',
-            'reminder_text_before_deadline':''
-        }
-        form = ReminderForm(data)
-        self.assertFalse(form.is_valid())
-        error_message = {
-            'number_of_days_before_deadline':[u'This field is required'],
-            'reminder_text_before_deadline':[u'This field is required']
-        }
-        self.assertEqual(error_message,form.errors)
-
-    def test_should_not_give_error_if_before_deadline_is_not_checked(self):
-        data = {
-            'should_send_reminders_before_deadline':False,
-            'number_of_days_before_deadline':'1',
-            'reminder_text_before_deadline':'1 day left'
-        }
-        form = ReminderForm(data)
-        self.assertTrue(form.is_valid())
-        cleaned_data_value = {
-            'deadline_week': u'',
-            'deadline_type_week': u'',
-            'deadline_month': u'',
-            'deadline_type_month': u'',
-            'deadline_type': u'',
-            'frequency_period': u'',
-            'should_send_reminders_before_deadline':False,
-            'number_of_days_before_deadline':Decimal('1'),
-            'reminder_text_before_deadline':u'1 day left',
-            'should_send_reminders_on_deadline':False,
-            'reminder_text_on_deadline':u'',
-            'should_send_reminders_after_deadline':False,
-            'number_of_days_after_deadline':None,
-            'reminder_text_after_deadline':u'',
-            'whom_to_send_message': False
-        }
-        self.assertEqual(cleaned_data_value,form.cleaned_data)
-
-    def test_should_give_error_if_on_deadline_field_is_blank(self):
-        data = {
-            'should_send_reminders_on_deadline':True,
-            'reminder_text_on_deadline':''
-        }
-        form = ReminderForm(data)
-        self.assertFalse(form.is_valid())
-        error_message = {
-            'reminder_text_on_deadline':[u'This field is required']
-        }
-        self.assertEqual(error_message,form.errors)
-
-    def test_should_not_give_error_if_on_deadline_is_not_checked(self):
-        data = {
-            'should_send_reminders_on_deadline':False,
-            'reminder_text_on_deadline':'1 day left'
-        }
-        form = ReminderForm(data)
-        self.assertTrue(form.is_valid())
-        cleaned_data_value = {
-            'deadline_week': u'',
-            'deadline_type_week': u'',
-            'deadline_month': u'',
-            'deadline_type_month': u'',
-            'deadline_type': u'',
-            'frequency_period': u'',
-            'should_send_reminders_before_deadline':False,
-            'number_of_days_before_deadline':None,
-            'reminder_text_before_deadline':u'',
-            'should_send_reminders_on_deadline':False,
-            'reminder_text_on_deadline':u'1 day left',
-            'should_send_reminders_after_deadline':False,
-            'number_of_days_after_deadline':None,
-            'reminder_text_after_deadline':u'',
-            'whom_to_send_message': False
-        }
-        self.assertEqual(cleaned_data_value,form.cleaned_data)
-
-    def test_should_give_error_if_after_deadline_field_is_blank(self):
-        data = {
-            'should_send_reminders_after_deadline':True,
-            'number_of_days_after_deadline':'',
-            'reminder_text_after_deadline':''
-        }
-        form = ReminderForm(data)
-        self.assertFalse(form.is_valid())
-        error_message = {
-            'number_of_days_after_deadline':[u'This field is required'],
-            'reminder_text_after_deadline':[u'This field is required']
-        }
-        self.assertEqual(error_message,form.errors)
-
-    def test_should_not_give_error_if_after_deadline_is_not_checked(self):
-        data = {
-            'should_send_reminders_after_deadline':False,
-            'number_of_days_after_deadline':'1',
-            'reminder_text_after_deadline':'1 day left'
-        }
-        form = ReminderForm(data)
-        self.assertTrue(form.is_valid())
-        cleaned_data_value = {
-            'deadline_week': u'',
-            'deadline_type_week': u'',
-            'deadline_month': u'',
-            'deadline_type_month': u'',
-            'deadline_type': u'',
-            'frequency_period': u'',
-            'should_send_reminders_before_deadline':False,
-            'reminder_text_before_deadline':u'',
-            'should_send_reminders_on_deadline':False,
-            'reminder_text_on_deadline':u'',
-            'should_send_reminders_after_deadline':False,
-            'number_of_days_after_deadline':Decimal('1'),
-            'reminder_text_after_deadline':u'1 day left',
-            'whom_to_send_message': False
-        }
-        self.assertEqual(cleaned_data_value,form.cleaned_data)
+#move to jasmine tests
+# class TestReminderForm(unittest.TestCase):
+#
+#     def test_should_give_error_if_before_deadline_field_is_blank(self):
+#         data = {
+#             'should_send_reminders_before_deadline':True,
+#             'number_of_days_before_deadline':'',
+#             'reminder_text_before_deadline':''
+#         }
+#         form = ReminderForm(data)
+#         self.assertFalse(form.is_valid())
+#         error_message = {
+#             'number_of_days_before_deadline':[u'This field is required'],
+#             'reminder_text_before_deadline':[u'This field is required']
+#         }
+#         self.assertEqual(error_message,form.errors)
+#
+#     def test_should_not_give_error_if_before_deadline_is_not_checked(self):
+#         data = {
+#             'should_send_reminders_before_deadline':False,
+#             'number_of_days_before_deadline':'1',
+#             'reminder_text_before_deadline':'1 day left'
+#         }
+#         form = ReminderForm(data)
+#         self.assertTrue(form.is_valid())
+#         cleaned_data_value = {
+#             'deadline_week': u'',
+#             'deadline_type_week': u'',
+#             'deadline_month': u'',
+#             'deadline_type_month': u'',
+#             'deadline_type': u'',
+#             'frequency_period': u'',
+#             'should_send_reminders_before_deadline':False,
+#             'number_of_days_before_deadline':Decimal('1'),
+#             'reminder_text_before_deadline':u'1 day left',
+#             'should_send_reminders_on_deadline':False,
+#             'reminder_text_on_deadline':u'',
+#             'should_send_reminders_after_deadline':False,
+#             'number_of_days_after_deadline':None,
+#             'reminder_text_after_deadline':u'',
+#             'whom_to_send_message': False
+#         }
+#         self.assertEqual(cleaned_data_value,form.cleaned_data)
+#
+#     def test_should_give_error_if_on_deadline_field_is_blank(self):
+#         data = {
+#             'should_send_reminders_on_deadline':True,
+#             'reminder_text_on_deadline':''
+#         }
+#         form = ReminderForm(data)
+#         self.assertFalse(form.is_valid())
+#         error_message = {
+#             'reminder_text_on_deadline':[u'This field is required']
+#         }
+#         self.assertEqual(error_message,form.errors)
+#
+#     def test_should_not_give_error_if_on_deadline_is_not_checked(self):
+#         data = {
+#             'should_send_reminders_on_deadline':False,
+#             'reminder_text_on_deadline':'1 day left'
+#         }
+#         form = ReminderForm(data)
+#         self.assertTrue(form.is_valid())
+#         cleaned_data_value = {
+#             'deadline_week': u'',
+#             'deadline_type_week': u'',
+#             'deadline_month': u'',
+#             'deadline_type_month': u'',
+#             'deadline_type': u'',
+#             'frequency_period': u'',
+#             'should_send_reminders_before_deadline':False,
+#             'number_of_days_before_deadline':None,
+#             'reminder_text_before_deadline':u'',
+#             'should_send_reminders_on_deadline':False,
+#             'reminder_text_on_deadline':u'1 day left',
+#             'should_send_reminders_after_deadline':False,
+#             'number_of_days_after_deadline':None,
+#             'reminder_text_after_deadline':u'',
+#             'whom_to_send_message': False
+#         }
+#         self.assertEqual(cleaned_data_value,form.cleaned_data)
+#
+#     def test_should_give_error_if_after_deadline_field_is_blank(self):
+#         data = {
+#             'should_send_reminders_after_deadline':True,
+#             'number_of_days_after_deadline':'',
+#             'reminder_text_after_deadline':''
+#         }
+#         form = ReminderForm(data)
+#         self.assertFalse(form.is_valid())
+#         error_message = {
+#             'number_of_days_after_deadline':[u'This field is required'],
+#             'reminder_text_after_deadline':[u'This field is required']
+#         }
+#         self.assertEqual(error_message,form.errors)
+#
+#     def test_should_not_give_error_if_after_deadline_is_not_checked(self):
+#         data = {
+#             'should_send_reminders_after_deadline':False,
+#             'number_of_days_after_deadline':'1',
+#             'reminder_text_after_deadline':'1 day left'
+#         }
+#         form = ReminderForm(data)
+#         self.assertTrue(form.is_valid())
+#         cleaned_data_value = {
+#             'deadline_week': u'',
+#             'deadline_type_week': u'',
+#             'deadline_month': u'',
+#             'deadline_type_month': u'',
+#             'deadline_type': u'',
+#             'frequency_period': u'',
+#             'should_send_reminders_before_deadline':False,
+#             'reminder_text_before_deadline':u'',
+#             'should_send_reminders_on_deadline':False,
+#             'reminder_text_on_deadline':u'',
+#             'should_send_reminders_after_deadline':False,
+#             'number_of_days_after_deadline':Decimal('1'),
+#             'reminder_text_after_deadline':u'1 day left',
+#             'whom_to_send_message': False
+#         }
+#         self.assertEqual(cleaned_data_value,form.cleaned_data)

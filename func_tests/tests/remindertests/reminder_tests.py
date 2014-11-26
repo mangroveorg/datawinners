@@ -1,3 +1,4 @@
+from unittest import SkipTest
 from nose.plugins.attrib import attr
 
 from framework.base_test import HeadlessRunnerTest
@@ -18,7 +19,7 @@ from testdata.constants import *
 from tests.remindertests.reminder_data import *
 from framework.utils.data_fetcher import fetch_, from_
 
-
+@SkipTest
 class TestReminderSend(HeadlessRunnerTest):
 
     def tearDown(self):
