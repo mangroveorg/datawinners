@@ -471,7 +471,7 @@ def export(request):
         .create_excel_response(submission_type, query_params)
 
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-        .create_excel_response(submission_type, query_params, local_time_delta, local_time_delta)
+        .create_excel_response(submission_type, query_params)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
