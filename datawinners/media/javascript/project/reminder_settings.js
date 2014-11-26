@@ -17,6 +17,15 @@ var month_name_map = {0:'January' ,
                       10:'November' ,
                       11:'December' };
 
+var item_map_week = {
+        1: 'Monday',
+        2: 'Tuesday',
+        3: 'Wednesday',
+        4: 'Thursday',
+        5: 'Friday',
+        6: 'Saturday',
+        0: 'Sunday'
+};
 var is_last_day_of_month = function(date){
     var last_day_of_current_month = new Date(date.getTime());
     last_day_of_current_month.setMonth(date.getMonth()+1);
@@ -54,14 +63,14 @@ function ReminderInstance() {
     self.number_of_days = ko.observable(2);
     self.enable = ko.observable(false);
     self.multiplier = 0;
-    self.next_reminder_date = ko.observable(new Date());
+    self.next_reminder_date = new MonthlyReminder();
     self.count = ko.computed(function () {
         self.is_modified = true;
         return self.text().length;
     }, this);
     self.is_modified = false;
     self.number_of_days.subscribe(function(){
-        self.next_reminder_date(add_days(self.next_reminder_date(), self.multiplier * -1 * self.number_of_days()))
+        self.next_reminder_date.reminder_date = add_days(self.next_reminder_date.reminder_date, self.multiplier * -1 * self.number_of_days())
     },self,'beforeChange');
 
     self.number_of_days.subscribe(function(){
@@ -71,18 +80,77 @@ function ReminderInstance() {
     self.next_date_as_string = ko.computed(function () {
         self.is_modified = true;
         if (self.enable()) {
-            var deadline = self.next_reminder_date();
-            deadline.convert_to_month_name();
-            return gettext("Next scheduled Reminder: ") + deadline.getDate() + " " + deadline.month_name + " " + deadline.getFullYear();
+            return gettext("Next scheduled Reminder: ") + self.next_reminder_date.get_display_string();
         }
         else return gettext("Next scheduled Reminder: ") + gettext("will not be sent");
     });
 
     self.update_example = function (next_deadline) {
-        var next_reminder_date = add_days(next_deadline(), self.multiplier * self.number_of_days());
+        var next_reminder_date = next_deadline.get_new_instance();
+        var next_date= add_days(next_deadline.reminder_date, self.multiplier * self.number_of_days());
         var current_date = new Date();
-        if(next_reminder_date <= current_date) next_reminder_date.setMonth(current_date.getMonth()+1);
-        self.next_reminder_date(next_reminder_date);
+        if(next_date <= current_date) next_date.setMonth(current_date.getMonth()+1);
+        next_reminder_date.reminder_date = next_date;
+        self.next_reminder_date = next_reminder_date;
+        self.enable.valueHasMutated();
+    };
+}
+
+function MonthlyReminder(){
+    var self = this;
+    self.reminder_date = new Date();
+    self.calculate_deadline = function(selected_day){
+        var current_date = new Date();
+        var next_deadline = new Date();
+        var lastdays_of_feb = [29, 30, 0];
+        if (selected_day <= current_date.getDate()) {
+            if(next_deadline.getMonth() == 0 && lastdays_of_feb.indexOf(selected_day)!=-1){
+                next_deadline.setMonth(2);
+                next_deadline.setDate(0);
+                return next_deadline;
+            }
+            next_deadline.setMonth(next_deadline.getMonth() + 1);
+        }
+        if(next_deadline.getMonth() == 1 && lastdays_of_feb.indexOf(selected_day)!=-1){
+            next_deadline.setMonth(2);
+        }
+        next_deadline.setDate(selected_day);
+        if(is_last_day_of_month(current_date) && selected_day==0){
+            next_deadline = get_last_day_of_next_month(current_date);
+        }
+        self.reminder_date = next_deadline;
+    };
+    self.get_display_string = function(){
+        var next_deadline = self.reminder_date;
+        next_deadline.convert_to_month_name();
+        return next_deadline.getDate() + " " + next_deadline.month_name + " " + next_deadline.getFullYear();
+    };
+    self.get_new_instance = function(){
+        return new MonthlyReminder();
+    };
+}
+
+function WeeklyReminder(){
+    var self = this;
+    self.reminder_date = new Date();
+    self.calculate_deadline = function(selected_day){
+        var current_date = new Date();
+        var next_deadline = new Date();
+        if (selected_day % 7 < current_date.getDay()) {
+            next_deadline = add_days(current_date, 7 - (current_date.getDay() - (selected_day % 7)));
+        }
+        else {
+            next_deadline = add_days(current_date, ((selected_day % 7) - current_date.getDay()));
+        }
+        self.reminder_date = next_deadline;
+    };
+    self.get_display_string = function(){
+        var next_deadline = self.reminder_date;
+        next_deadline.convert_to_month_name();
+        return item_map_week[next_deadline.getDay()]+", "+ next_deadline.getDate() + " " + next_deadline.month_name + " " + next_deadline.getFullYear();
+    };
+    self.get_new_instance = function(){
+        return new WeeklyReminder();
     };
 }
 
@@ -95,9 +163,10 @@ function ReminderSettingsModel() {
     self.is_reminder_enabled = ko.observable();
     self.isOpen= ko.observable(false);
     self.label = ko.observable();
+    self.next_deadline_string = ko.observable();
     self.is_modified = false;
     self.open = function() {
-        this.isOpen(true);
+        self.isOpen(true);
     };
 
     self.is_deadline_date_changed = false;
@@ -122,50 +191,26 @@ function ReminderSettingsModel() {
         self.is_modified = false;
     };
 
-    self.next_deadline = ko.computed(function () {
-        var current_date = new Date();
-        var next_deadline = new Date(current_date.getTime());
-        if (self.selected_frequency() == 'month') {
-            var lastdays_of_feb = [29, 30, 0];
-            if (self.select_day() <= current_date.getDate()) {
-                if(next_deadline.getMonth() == 0 && lastdays_of_feb.indexOf(self.select_day())!=-1){
-                    next_deadline.setMonth(2);
-                    next_deadline.setDate(0);
-                    return next_deadline;
-                }
-                next_deadline.setMonth(next_deadline.getMonth() + 1);
-            }
-            if(next_deadline.getMonth() == 1 && lastdays_of_feb.indexOf(self.select_day())!=-1){
-                next_deadline.setMonth(2);
-            }
-            next_deadline.setDate(self.select_day());
-            if(is_last_day_of_month(current_date) && self.select_day()==0){
-                next_deadline = get_last_day_of_next_month(current_date);
-            }
-        }
-        else {
-            if (self.select_day() % 7 < current_date.getDay()) {
-                next_deadline = add_days(current_date, 7 - (current_date.getDay() - (self.select_day() % 7)));
-            }
-            else {
-                next_deadline = add_days(current_date, ((self.select_day() % 7) - current_date.getDay()));
-            }
-        }
+    self.next_deadline = ko.computed(function(){
+        return self.selected_frequency() == 'month'? new MonthlyReminder():new WeeklyReminder();
+    });
+
+    self.select_day.subscribe(function () {
+        self.next_deadline().calculate_deadline(self.select_day());
+        self.next_deadline_string(gettext("Next deadline: ") + self.next_deadline().get_display_string());
+        self.reminder_before_deadline.update_example(self.next_deadline());
+        self.reminder_on_deadline.update_example(self.next_deadline());
+        self.reminder_after_deadline.update_example(self.next_deadline());
         self.is_modified = true;
-        return next_deadline;
+        self.is_deadline_date_changed = true;
     }, this);
 
-    self.next_deadline.subscribe(function () {
-        self.reminder_before_deadline.update_example(self.next_deadline);
-        self.reminder_on_deadline.update_example(self.next_deadline);
-        self.reminder_after_deadline.update_example(self.next_deadline);
-        self.is_deadline_date_changed = true;
-    });
-
-    self.next_deadline_string = ko.computed(function () {
-        self.next_deadline().convert_to_month_name();
-        return gettext("Next deadline: ") + self.next_deadline().getDate() + " " + self.next_deadline().month_name + " " + self.next_deadline().getFullYear();
-    });
+//    self.next_deadline.subscribe(function () {
+//        self.reminder_before_deadline.update_example(self.next_deadline);
+//        self.reminder_on_deadline.update_example(self.next_deadline);
+//        self.reminder_after_deadline.update_example(self.next_deadline);
+//        self.is_deadline_date_changed = true;
+//    });
 
     self.save_reminders = function (callback) {
         var post_data = {
@@ -274,14 +319,6 @@ function ReminderSettingsModel() {
     }, this);
 
     self.display_text = function (item) {
-        var item_map_week = {};
-        item_map_week[1] = 'Monday';
-        item_map_week[2] = 'Tuesday';
-        item_map_week[3] = 'Wednesday';
-        item_map_week[4] = 'Thursday';
-        item_map_week[5] = 'Friday';
-        item_map_week[6] = 'Saturday';
-        item_map_week[7] = 'Sunday';
         var item_map_month = {};
         item_map_month[1] = "1st";
         item_map_month[2] = "2nd";
@@ -297,7 +334,7 @@ function ReminderSettingsModel() {
 
         }
         else {
-               return item_map_week[item];
+               return item_map_week[item%7];
         }
     };
 }
