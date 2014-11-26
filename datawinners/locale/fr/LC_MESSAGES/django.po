@@ -3751,8 +3751,8 @@ msgstr "%d"
 
 msgid "%dth"
 msgstr "%d"
-msgid "If you delete a %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for it on the Data pages. Are you sure you want to delete?"
-msgstr "Si vous supprimez ce/cette %(entity_type)s, vous ne pouvez plus collecter des données le concernant. Cependant, vous pouvez toujours voir les données collectées précedemment sur les pages Données. Etes-vous sûr de vouloir supprimer?"
+msgid "If you delete a %(entity_type)s, you can no longer collect data about it. However, you can still view previously collected data for it on the Data pages.<br/><br/> Are you sure you want to delete?"
+msgstr "Si vous supprimez ce/cette %(entity_type)s, vous ne pouvez plus collecter des données le concernant. Cependant, vous pouvez toujours voir les données collectées précedemment sur les pages Données.<br/><br/> Etes-vous sûr de vouloir supprimer?"
 
 msgid "Yes, Delete"
 msgstr "Oui, Supprimer"
@@ -5573,8 +5573,8 @@ msgstr "Espace additionnelle dans la colonne name"
 msgid "On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:"
 msgstr "Sur votre feuille \"survey\", la première et la deuxième colonne doivent être \"type\" et \"name\". Erreurs possibles:"
 
-msgid "On your \"choices\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:"
-msgstr "Sur votre feuille \"choices\", la première et la deuxième colonne doivent être \"type\" et \"name\". Erreurs possibles:"
+msgid "On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:"
+msgstr "Sur votre feuille \"choices\", la première et la deuxième colonne doivent être \"list_name\" et \"name\". Erreurs possibles:"
 
 msgid "Specify when you need your data by. Data Senders can still submit data after the Submission Deadline."
 msgstr "Spécifiez la date à laquelle vous voulez que vos données soient soumises. Les Expéditeurs de Données peuvent toujours continuer à soumettre des données après l'échéance de la Soumission."
@@ -5632,3 +5632,4 @@ msgstr "En savoir plus sur léchéance de Soumission et les rappels"
 
 msgid "Hello. We have not received your data yet for this month. Please send it to us within the next 2 days. Thank you."
 msgstr "Bonjour. Nous n’avons pas encore reçu vos données pour ce mois."
+

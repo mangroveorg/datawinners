@@ -103,7 +103,7 @@ class ProjectUpload(View):
             message = transform_error_message(e.message)
             if 'name_type_error' in message or 'choice_name_type_error' in message:
                     if 'choice_name_type_error' in message:
-                        message_prefix = _("On your \"choices\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
+                        message_prefix = _("On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:")
                     else:
                         message_prefix = _("On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
                     return HttpResponse(content_type='application/json', content=json.dumps({
@@ -253,7 +253,7 @@ class ProjectUpdate(View):
             message = transform_error_message(e.message)
             if 'name_type_error' in message or 'choice_name_type_error' in message:
                 if 'choice_name_type_error' in message:
-                    message_prefix = _("On your \"choices\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
+                    message_prefix = _("On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:")
                 else:
                     message_prefix = _("On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
                 return HttpResponse(content_type='application/json', content=json.dumps({
