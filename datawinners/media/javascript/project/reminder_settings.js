@@ -136,7 +136,7 @@ function WeeklyReminder(){
     self.calculate_deadline = function(selected_day){
         var current_date = new Date();
         var next_deadline = new Date();
-        if (selected_day % 7 < current_date.getDay()) {
+        if (selected_day % 7 <= current_date.getDay()) {
             next_deadline = add_days(current_date, 7 - (current_date.getDay() - (selected_day % 7)));
         }
         else {
