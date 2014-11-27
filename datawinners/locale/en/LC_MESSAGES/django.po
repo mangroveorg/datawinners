@@ -4780,3 +4780,6 @@ msgstr "With DataWinners you can send reminders up to 7 days before and after yo
 
 msgid "help_text_week"
 msgstr "With DataWinners you can send reminders up to 3 days before and after your weekly deadline to your registered Data Senders who have not yet submitted data. All Reminders are sent out around 8:00 AM EAT"
+
+msgid "le_for_french"
+msgstr " "

@@ -176,8 +176,16 @@ function ReminderSettingsModel() {
     };
 
     self.cancel_changes = function(){
-        self.init_variables(self);
-        self.reset_reminders(self);
+        self.init_variables();
+        self.reset_reminders();
+        self.reset_modified_flags();
+    };
+
+    self.reset_modified_flags = function(){
+        self.is_modified = false;
+        self.reminder_before_deadline.is_modified = false;
+        self.reminder_after_deadline.is_modified = false;
+        self.reminder_on_deadline.is_modified = false;
     };
 
     self.is_reminders_modified = function(){
@@ -204,13 +212,6 @@ function ReminderSettingsModel() {
         self.is_modified = true;
         self.is_deadline_date_changed = true;
     }, this);
-
-//    self.next_deadline.subscribe(function () {
-//        self.reminder_before_deadline.update_example(self.next_deadline);
-//        self.reminder_on_deadline.update_example(self.next_deadline);
-//        self.reminder_after_deadline.update_example(self.next_deadline);
-//        self.is_deadline_date_changed = true;
-//    });
 
     self.save_reminders = function (callback) {
         var post_data = {
@@ -372,4 +373,5 @@ $(document).ready(function() {
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
     ko.applyBindings(viewModel, $("#reminder_deadline_form")[0]);
     $('.success-message-box').hide();
+    viewModel.reset_modified_flags();
 });

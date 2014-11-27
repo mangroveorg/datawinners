@@ -83,9 +83,6 @@ fieldset{
       margin: auto 4px auto 28px;
       width: 120px;
     }
-    span {
-      font-weight: bold;
-    }
   }
 }
 
@@ -109,10 +106,10 @@ fieldset{
 }
 
 .font_style{
-  font-size: 13px !important;
-  font-weight: normal !important;
+  font-size: 13px;
+  font-weight: normal;
 };
 
-.font_size{
-  font-size: 14px !important;
+.section_datasenders_to_send {
+  margin-top: 10px;
 }
