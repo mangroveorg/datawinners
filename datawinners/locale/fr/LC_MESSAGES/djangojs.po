@@ -489,8 +489,7 @@ msgid "Apr"
 msgstr "Avr"
 
 #: media/javascript/monthly_date_picker/month-picker.js:56
-msgid "May"
-msgstr "Mai"
+
 
 #: media/javascript/monthly_date_picker/month-picker.js:56
 msgid "Jun"
@@ -1378,3 +1377,60 @@ msgstr "Prochain rappel programmé: "
 
 msgid "Learn More About Submission Deadline & Reminders"
 msgstr "En savoir plus sur l'échéance de Soumission et les rappels"
+
+msgid "January"
+msgstr "Janvier"
+
+msgid "February"
+msgstr "Février"
+
+msgid "March"
+msgstr "Mars"
+
+msgid "April"
+msgstr "Avril"
+
+msgid "May"
+msgstr "Mai"
+
+msgid "June"
+msgstr "Juin"
+
+msgid "July"
+msgstr "Juillet"
+
+msgid "August"
+msgstr "Août"
+
+msgid "September"
+msgstr "Septembre"
+
+msgid "October"
+msgstr "Octobre"
+
+msgid "November"
+msgstr "Novembre"
+
+msgid "December"
+msgstr "Décembre"
+
+msgid "Monday"
+msgstr "Lundi"
+
+msgid "Tuesday"
+msgstr "Mardi"
+
+msgid "Wednesday"
+msgstr "Mercredi"
+
+msgid "Thursday"
+msgstr "Jeudi"
+
+msgid "Friday"
+msgstr "Vendredi"
+
+msgid "Saturday"
+msgstr "Samedi"
+
+msgid "Sunday"
+msgstr "Dimanche"

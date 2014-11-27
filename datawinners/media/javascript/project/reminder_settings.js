@@ -4,27 +4,27 @@ $.valHooks.textarea = {
     }
 };
 
-var month_name_map = {0:'January' ,
-                      1: 'February' ,
-                      2: 'March' ,
-                      3: 'April' ,
-                      4: 'May' ,
-                      5: 'June' ,
-                      6: 'July' ,
-                      7: 'August' ,
-                      8: 'September' ,
-                      9: 'October' ,
-                      10:'November' ,
-                      11:'December' };
+var month_name_map = {0:gettext('January') ,
+                      1: gettext('February') ,
+                      2: gettext('March') ,
+                      3: gettext('April') ,
+                      4: gettext('May') ,
+                      5: gettext('June') ,
+                      6: gettext('July') ,
+                      7: gettext('August') ,
+                      8: gettext('September'),
+                      9: gettext('October') ,
+                      10:gettext('November') ,
+                      11:gettext('December') };
 
 var item_map_week = {
-        1: 'Monday',
-        2: 'Tuesday',
-        3: 'Wednesday',
-        4: 'Thursday',
-        5: 'Friday',
-        6: 'Saturday',
-        0: 'Sunday'
+        1: gettext('Monday'),
+        2: gettext('Tuesday'),
+        3: gettext('Wednesday'),
+        4: gettext('Thursday'),
+        5: gettext('Friday'),
+        6: gettext('Saturday'),
+        0: gettext('Sunday')
 };
 var is_last_day_of_month = function(date){
     var last_day_of_current_month = new Date(date.getTime());
