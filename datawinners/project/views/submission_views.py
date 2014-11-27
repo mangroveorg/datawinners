@@ -429,6 +429,14 @@ def get_option_value_for_field(diff_value, question_field):
     return reslt_dict
 
 
+ACCOUNTS_WITH_HIGH_SUBMISSION_VOLUME = ['hni_usaid-mikolo_lei526034', 'hni_palme_flm546389']
+
+def _get_export_limit(dbm):
+    if dbm.database_name in ACCOUNTS_WITH_HIGH_SUBMISSION_VOLUME:
+        return 20000
+    return 30000
+
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -448,7 +456,7 @@ def export(request):
     current_language = get_language()
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
-                    "number_of_results": 10000,
+                    "number_of_results": _get_export_limit(manager),
                     "order": "",
                     "sort_field": "date"
     }
