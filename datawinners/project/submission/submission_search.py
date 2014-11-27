@@ -61,7 +61,7 @@ def _add_unique_id_filters(form_model, queries, uniqueIdFilters):
                 for question in [question for question in form_model.entity_questions if
                                  question.unique_id_type == uniqueIdType]:
                     es_field_code = es_unique_id_code_field_name(
-                        es_questionnaire_field_name(question.code, form_model.id))
+                        es_questionnaire_field_name(question.code, form_model.id)) + "_exact"
                     queries.append(TermQuery(field=es_field_code, value=uniqueIdFilter))
 
 
