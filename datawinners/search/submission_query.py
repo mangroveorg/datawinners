@@ -129,8 +129,8 @@ class SubmissionQueryResponseCreator(object):
 
         submissions = []
         language = get_language()
-        for res in query.values_dict(tuple(required_field_names)):
-            submission = [res._id]
+        for res in query:
+            submission = [res._meta.id]
             for key in required_field_names:
                 if not key in meta_fields:
                     if key in entity_question_codes:

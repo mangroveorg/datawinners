@@ -1,6 +1,8 @@
 import datetime
 
 from babel.dates import format_datetime
+from pyes import RangeQuery
+from pyes.utils import ESRange
 from datawinners.accountmanagement.localized_time import convert_local_to_utc
 
 from datawinners.search.index_utils import es_questionnaire_field_name, es_submission_meta_field_name
@@ -43,37 +45,42 @@ class DateRangeFilter(object):
             return None, None
 
     def _get_date_range_filter_args(self, start, end):
-        return {self.get_date_field_name() + '_value__range': [start, end]}
+        return start, end
 
-    def build_filter_query(self, query):
+    def build_filter_query(self):
         if not self.start_date and not self.end_date:
-            return query
+            return None
         else:
-            kwargs = self._get_date_range_filter_args(self.start_date, self.end_date)
-            return query.filter(**kwargs)
+            start, end = self._get_date_range_filter_args(self.start_date, self.end_date)
+            return RangeQuery(qrange=
+                              ESRange(field=self.get_date_field_name(), from_value=start, to_value=end,
+                                      include_lower=True,
+                                      include_upper=True))
 
 
 class SubmissionDateRangeFilter(DateRangeFilter):
-
     def __init__(self, date_range, local_time_delta):
         super(SubmissionDateRangeFilter, self).__init__(date_range)
         self.local_time_delta = local_time_delta
 
     def _get_date_range_filter_args(self, start, end):
         date_format = "%b. %d, %Y, %I:%M %p"
-        start_local_date_time_str = convert_local_to_utc(start, self.local_time_delta, date_format).strftime(date_format)
+        start_local_date_time_str = convert_local_to_utc(start, self.local_time_delta, date_format).strftime(
+            date_format)
         end_local_date_time_str = convert_local_to_utc(end, self.local_time_delta, date_format).strftime(date_format)
 
-        return super(SubmissionDateRangeFilter, self)._get_date_range_filter_args(start_local_date_time_str, end_local_date_time_str)
+        return super(SubmissionDateRangeFilter, self)._get_date_range_filter_args(start_local_date_time_str,
+                                                                                  end_local_date_time_str)
 
     def get_date_field_name(self):
-        return es_submission_meta_field_name(ES_SUBMISSION_FIELD_DATE)
+        return es_submission_meta_field_name(ES_SUBMISSION_FIELD_DATE) + "_value"
 
     def get_persisted_date_format(self):
         return DateField.FORMAT_DATE_DICTIONARY.get('submission_date_format')
 
     def get_python_date_format(self, date):
         return '%d.%m.%Y'
+
 
 class DateQuestionRangeFilter(DateRangeFilter):
     def __init__(self, date_range, form_model, date_question_code):
@@ -87,8 +94,9 @@ class DateQuestionRangeFilter(DateRangeFilter):
         return None
 
     def get_date_field_name(self):
-        #Assumption is that date filters won't appear for dates questions within repeat fields
-        return es_questionnaire_field_name(self.date_field.code, self.form_model.id, self.date_field.parent_field_code)
+        # Assumption is that date filters won't appear for dates questions within repeat fields
+        return es_questionnaire_field_name(self.date_field.code, self.form_model.id,
+                                           self.date_field.parent_field_code) + "_value"
 
     def get_python_date_format(self, date):
         if self.date_field:

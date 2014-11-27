@@ -46,4 +46,5 @@ urllib3
 pyxform
 xmltodict==0.8.6
 pyscss
+pyes
 -e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
