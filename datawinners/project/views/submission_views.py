@@ -33,7 +33,7 @@ from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import get_submission_search_query, \
-    get_all_submissions_ids_by_criteria, get_all_submission_count
+    get_all_submissions_ids_by_criteria
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
@@ -514,14 +514,14 @@ def get_submissions(request, form_code):
     search_parameters.update({"search_text": search_text})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    query_with_search_filters, query_fields = get_submission_search_query(dbm, form_model, search_parameters, local_time_delta)
-    submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields, query_with_search_filters)
+    search_results, query_fields = get_submission_search_query(dbm, form_model, search_parameters, local_time_delta)
+    submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields, search_results)
 
     return HttpResponse(
         jsonpickle.encode(
             {
                 'data': submissions,
-                'iTotalDisplayRecords': query_with_search_filters.count(),
+                'iTotalDisplayRecords': search_results.count(),
                 'iDisplayStart': int(request.POST.get('iDisplayStart')),
                 "iTotalRecords": 0,
                 'iDisplayLength': int(request.POST.get('iDisplayLength'))
@@ -568,18 +568,13 @@ def get_stats(request, form_code):
     search_parameters.update({"search_filters": search_filters})
     search_text = search_filters.get("search_text", '')
     search_parameters.update({"search_text": search_text})
-    # user = request.user
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    # response_creator = SubmissionQueryResponseCreator(form_model, local_time_delta)
-    # entity_headers, paginated_query, query_with_criteria = SubmissionQuery(form_model,
-    #                                                                        search_parameters, response_creator).query_to_be_paginated(
-    #     form_model.id, user)
-    query_with_criteria, query_fields = get_submission_search_query(dbm, form_model, search_parameters, local_time_delta)
-    facet_results = get_facet_response_for_choice_fields(query_with_criteria, form_model.choice_fields, form_model.id)
+    search_results, query_fields = get_submission_search_query(dbm, form_model, search_parameters, local_time_delta)
+    facet_results = get_facet_response_for_choice_fields(search_results, form_model.choice_fields, form_model.id)
 
     #total success submission count irrespective of current fields being present or not
-    total_submissions = query_with_criteria.count()
+    total_submissions = search_results.count()
 
     return HttpResponse(json.dumps(
         {'result': create_statistics_response(facet_results, form_model),

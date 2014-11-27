@@ -120,7 +120,7 @@ class SubmissionQueryResponseCreator(object):
         datetime_local = convert_utc_to_localized(self.localized_time_delta, submission_date_time)
         submission.append(datetime_local.strftime("%b. %d, %Y, %I:%M %p"))
 
-    def create_response(self, required_field_names, query):
+    def create_response(self, required_field_names, search_results):
         entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id) for field in
                                  self.form_model.entity_questions]
         fieldset_fields = self.get_field_set_fields(self.form_model.fields)
@@ -129,7 +129,7 @@ class SubmissionQueryResponseCreator(object):
 
         submissions = []
         language = get_language()
-        for res in query:
+        for res in search_results:
             submission = [res._meta.id]
             for key in required_field_names:
                 if not key in meta_fields:

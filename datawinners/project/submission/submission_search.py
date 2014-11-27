@@ -103,25 +103,9 @@ def get_submission_search_query(dbm, form_model, search_parameters, local_time_d
     query_fields, filters = _add_filters(form_model, search_parameters, local_time_delta)
     filtered_query = BoolQuery(must=filters)
     sort_criteria = _add_sort_criteria(search_parameters)
-    # paginated_query = conn.search(indices=[dbm.database_name], doc_types=[form_model.id], query=MatchAllQuery(),
-    #                               **paginated_parameters)
-    query_with_search_filters = conn.search(indices=[dbm.database_name], doc_types=[form_model.id],
+    search_results = conn.search(indices=[dbm.database_name], doc_types=[form_model.id],
                                             query=filtered_query, sort=sort_criteria, **paginated_parameters)
-    # return paginated_query, query_with_search_filters, query_fields
-    return query_with_search_filters, query_fields
-
-def get_submission_search_query(dbm, form_model, search_parameters, local_time_delta):
-    conn = ES(timeout=ELASTIC_SEARCH_TIMEOUT)
-    paginated_parameters = _add_pagination_criteria(search_parameters)
-    query_fields, filters = _add_filters(form_model, search_parameters, local_time_delta)
-    filtered_query = BoolQuery(must=filters)
-    sort_criteria = _add_sort_criteria(search_parameters)
-    # paginated_query = conn.search(indices=[dbm.database_name], doc_types=[form_model.id], query=MatchAllQuery(),
-    #                               **paginated_parameters)
-    query_with_search_filters = conn.search(indices=[dbm.database_name], doc_types=[form_model.id],
-                                            query=filtered_query, sort=sort_criteria, **paginated_parameters)
-    # return paginated_query, query_with_search_filters, query_fields
-    return query_with_search_filters, query_fields
+    return search_results, query_fields
 
 
 def get_all_submission_count(dbm, form_model, search_parameters):

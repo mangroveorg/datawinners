@@ -24,7 +24,6 @@ class SubmissionExporter:
         #                                                                        query_params, response_creator).query_to_be_paginated(
         #                                                                         self.form_model.id,
         #                                                                         self.user)
-        paginated_query, query_with_criteria, query_fields = get_submission_search_query(self.dbm, self.form_model, query_params, self.local_time_delta)
-        submission_list = query_with_criteria.values_dict()
+        search_results, query_fields = get_submission_search_query(self.dbm, self.form_model, query_params, self.local_time_delta)
 
-        return self._create_response(columns, submission_list, submission_type)
+        return self._create_response(columns, search_results, submission_type)
