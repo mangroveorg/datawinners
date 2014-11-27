@@ -128,7 +128,7 @@
                 <li class="border_bottom_color"></li>
                 <li>
                     <div class="font_style italic_grey">
-                        {% trans 'Specify which of your Data Senders receive the reminders. There are 127 registered Data Senders for this Questionnaire.' %}
+                        {% blocktrans with no_of_my_datasenders as no_of_my_datasenders %}Specify which of your Data Senders receive the reminders. There are {{ no_of_my_datasenders }} registered Data Senders for this Questionnaire.{% endblocktrans %}
                         <a href="{{ url_to_my_datasender }}"
                            data-bind="css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled"> {% trans 'See List of Data Senders' %} </a>
                     </div>

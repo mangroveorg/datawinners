@@ -5588,8 +5588,8 @@ msgstr "Prochaine échéance: "
 msgid "Who Receives Reminders"
 msgstr "Qui reçoivent des rappels"
 
-msgid "Specify which of your Data Senders receive the reminders. There are 127 registered Data Senders for this Questionnaire."
-msgstr "Spécifiez qui de vos Expéditeurs de Données reçoivent les rappels. Il y a 127 Expéditeurs de Données autorisés pour ce Questionnaire."
+msgid "Specify which of your Data Senders receive the reminders. There are %(no_of_my_datasenders)s registered Data Senders for this Questionnaire."
+msgstr "Spécifiez qui de vos Expéditeurs de Données reçoivent les rappels. Il y a %(no_of_my_datasenders)s Expéditeurs de Données autorisés pour ce Questionnaire."
 
 msgid "My Data Senders who have not yet submitted for this deadline."
 msgstr "Mes Expéditeurs de Données qui n'ont pas encore soumis pour cette échéance."

@@ -271,9 +271,9 @@ function ReminderSettingsModel() {
         self.reminder_on_deadline.text(reminder_data['reminder_text_on_deadline']);
         self.reminder_before_deadline.number_of_days(reminder_data['number_of_days_before_deadline']);
         self.reminder_after_deadline.number_of_days(reminder_data['number_of_days_after_deadline']);
-        self.reminder_before_deadline.enable(reminder_information['should_send_reminders_before_deadline']);
-        self.reminder_after_deadline.enable(reminder_information['should_send_reminders_after_deadline']);
-        self.reminder_on_deadline.enable(reminder_information['should_send_reminders_on_deadline']);
+        self.reminder_before_deadline.enable(reminder_data['should_send_reminders_before_deadline']);
+        self.reminder_after_deadline.enable(reminder_data['should_send_reminders_after_deadline']);
+        self.reminder_on_deadline.enable(reminder_data['should_send_reminders_on_deadline']);
         self.reminder_before_deadline.multiplier = -1;
         self.reminder_after_deadline.multiplier = 1;
     };

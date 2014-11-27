@@ -192,9 +192,6 @@ def reminder_settings(request, project_id):
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
     if request.method == 'GET':
         data = (_reminder_info_about_project(questionnaire))
-        reminder_information = {'should_send_reminders_before_deadline': data['should_send_reminders_before_deadline'],
-                                'should_send_reminders_on_deadline': data['should_send_reminders_on_deadline'],
-                                'should_send_reminders_after_deadline': data['should_send_reminders_after_deadline']}
 
         return render_to_response(html,
                                   {'project_links': project_links,
@@ -204,8 +201,8 @@ def reminder_settings(request, project_id):
                                    'questionnaire_code': questionnaire.form_code,
                                    'is_reminder_enabled': is_reminder_enabled,
                                    'active_language': active_language,
+                                   'no_of_my_datasenders': len(questionnaire.data_senders),
                                    'url_to_my_datasender': url_to_my_datasender,
-                                   'reminder_information': repr(json.dumps(reminder_information)),
                                    'post_url': reverse(reminder_settings, args=[project_id])
                                   }, context_instance=RequestContext(request))
 
