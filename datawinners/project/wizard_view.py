@@ -271,7 +271,7 @@ def _reminder_info_about_project(project):
         else:
             data['should_send_reminders_after_deadline'] = False
             data['number_of_days_after_deadline'] = 2
-            data['reminder_text_after_deadline'] = ugettext("Hello. We have not received your redata yet for this month. Please send it to us by the end of today. Thank you.")
+            data['reminder_text_after_deadline'] = ugettext("Hello. We have not received your data yet for this month. Please send it to us by the end of today. Thank you.")
 
     data['whom_to_send_message'] = not deadline_information['should_send_reminder_to_all_ds']
 

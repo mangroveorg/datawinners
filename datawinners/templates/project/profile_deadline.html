@@ -42,8 +42,8 @@
                 </div>
             </li>
         </ul>
-
     </fieldset>
+
     <div id="reminders_section">
         <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
             <legend>{% trans "Reminders" %}</legend>
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <ul>
-                <li class="padding_top_10">
+                <li class="margin_top_12 margin_bottom_20">
                     <div class="onoffswitch" data-bind="onoff:reminder_before_deadline.enable"
                          id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
@@ -82,7 +82,7 @@
                               data-bind="text:reminder_before_deadline.count"></span> {% trans " of 160 characters used" %}
                     </div>
                 </li>
-                <li class="padding_top_25">
+                <li class="margin_bottom_20">
                     <div class="onoffswitch" data-bind="onoff: reminder_on_deadline.enable" id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
@@ -101,7 +101,7 @@
                               data-bind="text:reminder_on_deadline.count"></span> {% trans " of 160 characters used" %}
                     </div>
                 </li>
-                <li class="padding_top_25">
+                <li>
                     <div class="onoffswitch" data-bind="onoff: reminder_after_deadline.enable" id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
@@ -164,7 +164,7 @@
     </div>
     <div class="right_aligned_button margin_right_4">
         <a id="cancel" class="margin_right_30"
-           data-bind="click:cancel_changes, css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled">{% trans "Cancel changes" %}</a>
+           data-bind="click:cancel_changes, css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled">{% trans "Cancel Changes" %}</a>
         <input id="submit-button" data-bind="click:save_reminders"
                class="{% if is_reminder_enabled %}disabled_button{% else %}button{% endif %}" type="submit"
                value="{% trans 'Save' %}" {% if is_reminder_enabled %}disabled="disabled" {% endif %}/>

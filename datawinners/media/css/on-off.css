@@ -1,7 +1,7 @@
 .onoffswitch {
     position: relative;
     width: 6em;
-    height: 1em;
+    height: 0;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
