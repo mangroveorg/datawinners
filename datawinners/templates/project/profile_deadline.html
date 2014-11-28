@@ -31,8 +31,8 @@
                         <li>
                             <select id="id_frequency_period" data-bind="value: selected_frequency"
                                     name="frequency_period">
-                                <option value="week">Week</option>
-                                <option value="month">Month</option>
+                                <option value="week">{% trans "Week" %}</option>
+                                <option value="month">{% trans "Month" %}</option>
                             </select>
                             <span>{% trans "le_for_french" %}</span>
                             <select data-bind="options:select_option, value:select_day, optionsText:display_text"></select>

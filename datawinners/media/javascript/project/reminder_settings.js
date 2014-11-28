@@ -34,7 +34,7 @@ var is_last_day_of_month = function(date){
 };
 
 var get_last_day_of_next_month = function(date) {
-    var last_day_of_next_month = date;
+    var last_day_of_next_month = new Date(date.getTime());
     last_day_of_next_month.setMonth(date.getMonth()+2);
     last_day_of_next_month.setDate(0);
     return last_day_of_next_month;
@@ -87,10 +87,8 @@ function ReminderInstance() {
 
     self.update_example = function (next_deadline) {
         var next_reminder_date = next_deadline.get_new_instance();
-        var next_date= add_days(next_deadline.reminder_date, self.multiplier * self.number_of_days());
-        var current_date = new Date();
-        if(next_date <= current_date) next_date.setMonth(current_date.getMonth()+1);
-        next_reminder_date.reminder_date = next_date;
+        next_reminder_date.reminder_date = add_days(next_deadline.reminder_date, self.multiplier * self.number_of_days());
+        next_reminder_date.shift_to_next_deadline();
         self.next_reminder_date = next_reminder_date;
         self.enable.valueHasMutated();
     };
@@ -128,6 +126,10 @@ function MonthlyReminder(){
     self.get_new_instance = function(){
         return new MonthlyReminder();
     };
+    self.shift_to_next_deadline = function(){
+        var current_date = new Date();
+        if(self.reminder_date <= current_date) self.reminder_date.setMonth(current_date.getMonth()+1);
+    }
 }
 
 function WeeklyReminder(){
@@ -152,6 +154,10 @@ function WeeklyReminder(){
     self.get_new_instance = function(){
         return new WeeklyReminder();
     };
+    self.shift_to_next_deadline = function(){
+        var current_date = new Date();
+        if(self.reminder_date <= current_date) self.reminder_date = add_days(self.reminder_date, 7);
+    }
 }
 
 function ReminderSettingsModel() {
@@ -190,13 +196,6 @@ function ReminderSettingsModel() {
 
     self.is_reminders_modified = function(){
         return self.reminder_before_deadline.is_modified || self.reminder_after_deadline.is_modified || self.reminder_on_deadline.is_modified;
-    };
-
-    self.reset_modified_flag = function(){
-        self.reminder_before_deadline.is_modified = false;
-        self.reminder_after_deadline.is_modified = false;
-        self.reminder_on_deadline.is_modified = false;
-        self.is_modified = false;
     };
 
     self.next_deadline = ko.computed(function(){
@@ -245,6 +244,7 @@ function ReminderSettingsModel() {
                 $('.success-message-box').html(responseJson.success_message);
                 $('.success-message-box').show();
                 $(document).scrollTop(0);
+                self.reset_modified_flags();
                 if (typeof callback == "function") callback();
                         }
         });
@@ -262,7 +262,7 @@ function ReminderSettingsModel() {
         self.reminder_after_deadline = new ReminderInstance();
         self.reminder_on_deadline = new ReminderInstance();
         self.reset_reminders();
-        self.reset_modified_flag();
+        self.reset_modified_flags();
     };
 
     self.reset_reminders = function(){
@@ -321,16 +321,16 @@ function ReminderSettingsModel() {
 
     self.display_text = function (item) {
         var item_map_month = {};
-        item_map_month[1] = "1st";
-        item_map_month[2] = "2nd";
-        item_map_month[3] = "3rd";
-        item_map_month[0] = "Last Day";
+        item_map_month[1] = "1" + gettext('st');
+        item_map_month[2] = "2" + gettext('nd');
+        item_map_month[3] = "3" + gettext('rd');
+        item_map_month[0] = gettext("Last Day");
         if (self.selected_frequency() == 'month') {
             if(item<=3 || item == 31){
                 return item_map_month[item];
             }
             else{
-                return item.toString() + 'th';
+                return item.toString() + gettext('th');
             }
 
         }

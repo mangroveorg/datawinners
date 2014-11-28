@@ -1434,3 +1434,21 @@ msgstr "Samedi"
 
 msgid "Sunday"
 msgstr "Dimanche"
+
+msgid "will not be sent"
+msgstr "ne sera pas envoyé"
+
+msgid "Last Day"
+msgstr "Dernier jour"
+
+msgid "th"
+msgstr " "
+
+msgid "st"
+msgstr " "
+
+msgid "nd"
+msgstr " "
+
+msgid "rd"
+msgstr " "
