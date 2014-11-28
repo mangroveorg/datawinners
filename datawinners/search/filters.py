@@ -1,10 +1,9 @@
 import datetime
 
 from babel.dates import format_datetime
-from pyes import RangeQuery
-from pyes.utils import ESRange
-from datawinners.accountmanagement.localized_time import convert_local_to_utc
+from elasticsearch_dsl import Q
 
+from datawinners.accountmanagement.localized_time import convert_local_to_utc
 from datawinners.search.index_utils import es_questionnaire_field_name, es_submission_meta_field_name
 from datawinners.search.submission_index_meta_fields import ES_SUBMISSION_FIELD_DATE
 from mangrove.form_model.field import DateField
@@ -52,10 +51,8 @@ class DateRangeFilter(object):
             return None
         else:
             start, end = self._get_date_range_filter_args(self.start_date, self.end_date)
-            return RangeQuery(qrange=
-                              ESRange(field=self.get_date_field_name(), from_value=start, to_value=end,
-                                      include_lower=True,
-                                      include_upper=True))
+            params = {self.get_date_field_name(): {"gte": start, "lte": end}}
+            return Q("range", **params)
 
 
 class SubmissionDateRangeFilter(DateRangeFilter):

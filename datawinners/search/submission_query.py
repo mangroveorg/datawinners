@@ -129,7 +129,7 @@ class SubmissionQueryResponseCreator(object):
 
         submissions = []
         language = get_language()
-        for res in search_results:
+        for res in search_results.hits:
             submission = [res._meta.id]
             for key in required_field_names:
                 if not key in meta_fields:

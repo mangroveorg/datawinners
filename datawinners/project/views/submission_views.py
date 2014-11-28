@@ -33,7 +33,7 @@ from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import get_submission_search_query, \
-    get_all_submissions_ids_by_criteria
+    get_all_submissions_ids_by_criteria, get_facets_for_choice_fields
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
@@ -521,7 +521,7 @@ def get_submissions(request, form_code):
         jsonpickle.encode(
             {
                 'data': submissions,
-                'iTotalDisplayRecords': search_results.count(),
+                'iTotalDisplayRecords': len(search_results.hits),
                 'iDisplayStart': int(request.POST.get('iDisplayStart')),
                 "iTotalRecords": 0,
                 'iDisplayLength': int(request.POST.get('iDisplayLength'))
@@ -570,11 +570,8 @@ def get_stats(request, form_code):
     search_parameters.update({"search_text": search_text})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    search_results, query_fields = get_submission_search_query(dbm, form_model, search_parameters, local_time_delta)
-    facet_results = get_facet_response_for_choice_fields(search_results, form_model.choice_fields, form_model.id)
-
     #total success submission count irrespective of current fields being present or not
-    total_submissions = search_results.count()
+    facet_results, total_submissions = get_facets_for_choice_fields(dbm, form_model, search_parameters, local_time_delta)
 
     return HttpResponse(json.dumps(
         {'result': create_statistics_response(facet_results, form_model),
