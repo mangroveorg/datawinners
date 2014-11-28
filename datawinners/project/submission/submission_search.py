@@ -9,6 +9,9 @@ from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 
 
 def _add_sort_criteria(search_parameters, search):
+    if 'sort_field' not in search_parameters:
+        return search
+
     order_by_field = "%s_value" % search_parameters["sort_field"]
     order = search_parameters.get("order")
     order_by_criteria = "-" + order_by_field if order == '-' else order_by_field
@@ -109,40 +112,59 @@ def get_submission_search_query(dbm, form_model, search_parameters, local_time_d
     return search_results, query_fields
 
 
+def get_submission_count(dbm, form_model, search_parameters, local_time_delta):
+    es = Elasticsearch()
+    search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
+    query_fields, search = _add_filters(form_model, search_parameters, local_time_delta, search)
+    body = search.to_dict()
+    return es.search(index=dbm.database_name, doc_type=form_model.id, body=body, search_type='count')['hits']['total']
+
+
+def _get_facet_result(facet_response, field_name):
+    facet_result_options = []
+    facet_result = {
+        "es_field_name": field_name,
+        "facets": facet_result_options,
+        # find total submissions containing specified answer
+        "total": facet_response['hits']['total'] - facet_response['facets'][field_name]['missing']
+    }
+    for facet in facet_response['facets'][field_name]['terms']:
+        facet_result_options.append({
+            "term": facet['term'],
+            "count": facet['count']
+        })
+    return facet_result
+
+
+def _create_facet_request_body(field_name, query_body):
+    facet_terms = {"terms": {"field": field_name}}
+    facet = {"facets": {field_name: facet_terms}}
+    facet.update(query_body)
+    return facet
+
+
 def get_facets_for_choice_fields(dbm, form_model, search_parameters, local_time_delta):
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
     query_body = search.to_dict()
     es = Elasticsearch()
-    total_submission_count = \
-        es.search(index=dbm.database_name, doc_type=form_model.id, body=query_body, search_type='count')['hits'][
-            'total']
+    total_submission_count = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
     facet_results = []
     for field in form_model.choice_fields:
         field_name = es_questionnaire_field_name(field.code, form_model.id) + "_exact"
-        facet_terms = {"terms": {"field": field_name}}
-        facet = {"facets": {field_name: facet_terms}}
-        facet.update(query_body)
+        facet = _create_facet_request_body(field_name, query_body)
         facet_response = es.search(index=dbm.database_name, doc_type=form_model.id, body=facet, search_type='count')
-        facet_result_options = []
-        facet_result = {
-            "es_field_name": field_name,
-            "facets": facet_result_options,
-            # find total submissions containing specified answer
-            "total": facet_response['hits']['total'] - facet_response['facets'][field_name]['missing']
-        }
-        for facet in facet_response['facets'][field_name]['terms']:
-            facet_result_options.append({
-                "term": facet['term'],
-                "count": facet['count']
-            })
+        facet_result = _get_facet_result(facet_response, field_name)
         facet_results.append(facet_result)
 
     return facet_results, total_submission_count
 
 
 def get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters, local_time_delta):
-    query = _query_for_questionnaire(dbm, form_model)
-    query = query[:query.count()]
-    query_fields, query_with_search_filters = _add_filters(form_model, query, search_parameters, local_time_delta)
-    return [entry._id for entry in query_with_search_filters.values_dict('void')]
+    total_submission_count = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
+    es = Elasticsearch()
+    query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
+    search = search.extra(size=total_submission_count, fields=[])
+    body = search.to_dict()
+    result = es.search(index=dbm.database_name, doc_type=form_model.id, body=body)
+    return [entry['_id'] for entry in result['hits']['hits']]
 
