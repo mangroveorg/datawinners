@@ -1,5 +1,6 @@
 from datetime import datetime
 import re
+from datawinners.accountmanagement.localized_time import convert_utc_to_localized
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from mangrove.form_model.field import ExcelDate, DateField
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
@@ -8,11 +9,12 @@ GEODCODE_FIELD_CODE = "geocode"
 
 
 class SubmissionFormatter(object):
-    def __init__(self, columns):
+    def __init__(self, columns, local_time_delta):
         """
         :param header_keys: specifies column order of formated output.
         """
         self.columns = columns
+        self.local_time_delta = local_time_delta
 
     def format_tabular_data(self, values):
         formatted_values = []
@@ -29,6 +31,10 @@ class SubmissionFormatter(object):
 
         return headers, formatted_values
 
+    def _convert_to_localized_date_time(self, submission_date):
+        submission_date_time = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
+        return convert_utc_to_localized(self.local_time_delta, submission_date_time)
+
     def _format_row(self, row):
         result = []
         for field_code in self.columns.keys():
@@ -36,14 +42,18 @@ class SubmissionFormatter(object):
                 
                 parsed_value= ""
                 if row.get(field_code):
-                    parsed_value = '; '.join(row.get(field_code)) if isinstance(row.get(field_code),list) else row.get(field_code)
+                    parsed_value = '; '.join(row.get(field_code)) if isinstance(row.get(field_code), list) else row.get(field_code)
 
                 if self.columns[field_code].get("type") == "date" or field_code == "date":
                     date_format = self.columns[field_code].get("format")
-                    py_date_format = DateField.DATE_DICTIONARY.get(date_format) or SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
+                    date_value_str = row[field_code]
+
+                    if field_code == 'date':
+                        date_value = self._convert_to_localized_date_time(date_value_str)
+                    else:
+                        date_value = datetime.strptime(date_value_str, DateField.DATE_DICTIONARY.get(date_format))
                     try:
-                        col_val = ExcelDate(datetime.strptime(row[field_code], py_date_format),
-                                            date_format or "submission_date")
+                        col_val = ExcelDate(date_value, date_format or "submission_date")
                     except Exception:
                         col_val = row.get(field_code) or ""
                     result.append(col_val)

@@ -1,21 +1,22 @@
 from collections import OrderedDict
 from datetime import datetime
 import json
+
 from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 import xlwt
+
 from datawinners.project.submission.export import export_filename, add_sheet_with_data
 from datawinners.project.submission.exporter import SubmissionExporter
-
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
-from datawinners.utils import workbook_add_sheet
+from datawinners.project.submission.formatter import SubmissionFormatter
 from mangrove.form_model.field import ExcelDate, DateField
 
 
 class XFormSubmissionExporter(SubmissionExporter):
 
     def _create_response(self, columns, submission_list, submission_type):
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model).format_tabular_data(submission_list)
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model, self.local_time_delta).format_tabular_data(submission_list)
         return self._create_excel_response(headers, data_rows_dict, export_filename(submission_type, self.project_name))
 
     def _create_excel_response(self, headers, data_rows_dict, file_name):
@@ -31,10 +32,10 @@ class XFormSubmissionExporter(SubmissionExporter):
 GEODCODE_FIELD_CODE = "geocode"
 FIELD_SET = "field_set"
 
-class AdvanceSubmissionFormatter():
+class AdvanceSubmissionFormatter(SubmissionFormatter):
 
-    def __init__(self, columns, form_model):
-        self.columns = columns
+    def __init__(self, columns, form_model, local_time_delta):
+        super(AdvanceSubmissionFormatter, self).__init__(columns, local_time_delta)
         self.form_model = form_model
 
     def append_relating_columns(self, cols):
@@ -98,9 +99,15 @@ class AdvanceSubmissionFormatter():
                 if columns[field_code].get("type") == "date" or field_code == "date":
                     date_format = columns[field_code].get("format")
                     py_date_format = DateField.DATE_DICTIONARY.get(date_format) or SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
+
+                    date_value_str = row[field_code]
+
+                    if field_code == 'date':
+                        date_value = self._convert_to_localized_date_time(date_value_str)
+                    else:
+                        date_value = datetime.strptime(date_value_str, DateField.DATE_DICTIONARY.get(date_format))
                     try:
-                        col_val = ExcelDate(datetime.strptime(row[field_code], py_date_format),
-                                            date_format or "submission_date")
+                        col_val = ExcelDate(date_value, date_format or "submission_date")
                     except Exception:
                         col_val = row.get(field_code) or ""
                     result.append(col_val)
