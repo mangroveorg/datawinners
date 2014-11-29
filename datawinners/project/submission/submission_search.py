@@ -1,4 +1,4 @@
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, helpers
 from elasticsearch_dsl import Search
 import elasticutils
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
@@ -52,9 +52,9 @@ def _add_date_range_filters(date_filters, form_model, search):
     return search
 
 
-def _add_unique_id_filters(form_model, uniqueIdFilters, search):
-    if uniqueIdFilters:
-        for uniqueIdType, uniqueIdFilter in uniqueIdFilters.iteritems():
+def _add_unique_id_filters(form_model, unique_id_filters, search):
+    if unique_id_filters:
+        for uniqueIdType, uniqueIdFilter in unique_id_filters.iteritems():
             if uniqueIdFilter:
                 for question in [question for question in form_model.entity_questions if
                                  question.unique_id_type == uniqueIdType]:
@@ -106,10 +106,21 @@ def _create_query(dbm, form_model, local_time_delta, search_parameters):
     return query_fields, search
 
 
-def get_submission_search_query(dbm, form_model, search_parameters, local_time_delta):
+def get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta):
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
     search_results = search.execute()
     return search_results, query_fields
+
+
+def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_time_delta):
+    """
+    Efficient way to fetch large number of submissions from ElasticSearch
+    """
+    query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
+    query_dict = search.to_dict()
+    scan_response = helpers.scan(client=Elasticsearch(), index=dbm.database_name, doc_type=form_model.id,
+                                 query=query_dict, timeout="3m", size=4000)
+    return scan_response, query_fields
 
 
 def get_submission_count(dbm, form_model, search_parameters, local_time_delta):

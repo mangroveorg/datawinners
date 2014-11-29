@@ -32,7 +32,7 @@ from datawinners.main.database import get_database_manager
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
-from datawinners.project.submission.submission_search import get_submission_search_query, \
+from datawinners.project.submission.submission_search import get_submissions_paginated, \
     get_all_submissions_ids_by_criteria, get_facets_for_choice_fields, get_submission_count
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
@@ -514,7 +514,7 @@ def get_submissions(request, form_code):
     search_parameters.update({"search_text": search_text})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    search_results, query_fields = get_submission_search_query(dbm, form_model, search_parameters, local_time_delta)
+    search_results, query_fields = get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta)
     total_records = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
     submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields, search_results)
 

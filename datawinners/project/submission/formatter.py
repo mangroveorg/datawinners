@@ -26,8 +26,8 @@ class SubmissionFormatter(object):
             else:
                 if col_def['label'] != "Phone number":
                     headers.append(col_def['label'])
-        for row in values:
-            formatted_values.append(self._format_row(row))
+        for row_dict in values:
+            formatted_values.append(self._format_row(row_dict['_source']))
 
         return headers, formatted_values
 
