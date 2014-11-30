@@ -54,6 +54,12 @@ class TestScheduler(unittest.TestCase):
         self.reminder4.remind_to = RemindTo.ALL_DATASENDERS
         self.reminder4.get_sender_list.return_value = Exception()
 
+        self.reminder5 = Mock(spec=Reminder)
+        self.reminder5.should_be_send_on.return_value = True
+        self.reminder5.message = 'reminder4 message'
+        self.reminder5.remind_to = RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS
+        self.reminder5.get_sender_list.return_value = [ds_1, ds_2, ds_3]
+
         self.reminders = [self.reminder1, self.reminder2, self.reminder3]
         self.sms_client = SMSClient()
         self.sms_client.send_sms = Mock()
@@ -126,34 +132,35 @@ class TestScheduler(unittest.TestCase):
         organizations = _get_active_paid_organization()
         self.assertNotIn(self.organization, organizations)
 
-    # def test_get_active_paid_org_should_not_return_deactivate_org(self):
-    #     ORG_DETAILS = {'organization_name': 'myCompany',
-    #                    'organization_sector': 'Public Health',
-    #                    'organization_city': 'xian',
-    #                    'organization_country': 'china',
-    #                    'organization_address': 'myAddress',
-    #                    'organization_addressline2': 'myAddressL2',
-    #                    'organization_state': "MyState",
-    #                    'organization_zipcode': "1234565",
-    #                    'organization_office_phone': "123113123",
-    #                    'organization_website': "meme@my.com",
-    #                    'language': "en"
-    #     }
-    #     deactivated_organization = Organization.create_organization(ORG_DETAILS)
-    #     deactivated_organization.status = "Deactivated"
-    #     deactivated_organization.save()
-    #
-    #     activated_organization = Organization.create_organization(ORG_DETAILS)
-    #     activated_organization.status = 'Activated'
-    #     activated_organization.save()
-    #
-    #     organizations = _get_active_paid_organization()
-    #
-    #     self.assertNotIn(deactivated_organization, organizations)
-    #     self.assertIn(activated_organization, organizations)
-    #
-    #     activated_organization.delete()
-    #     deactivated_organization.delete()
+    def test_get_active_paid_org_should_not_return_deactivate_org(self):
+         ORG_DETAILS = {'organization_name': 'myCompany',
+                        'organization_sector': 'Public Health',
+                        'organization_city': 'xian',
+                        'organization_country': 'china',
+                        'organization_address': 'myAddress',
+                        'organization_addressline2': 'myAddressL2',
+                        'organization_state': "MyState",
+                        'organization_zipcode': "1234565",
+                        'organization_office_phone': "123113123",
+                        'organization_website': "meme@my.com",
+                        'language': "en",
+                        'account_type': "Pro SMS"
+         }
+         deactivated_organization = Organization.create_organization(ORG_DETAILS)
+         deactivated_organization.status = "Deactivated"
+         deactivated_organization.save()
+
+         activated_organization = Organization.create_organization(ORG_DETAILS)
+         activated_organization.status = 'Activated'
+         activated_organization.save()
+
+         organizations = _get_active_paid_organization()
+
+         self.assertNotIn(deactivated_organization, organizations)
+         self.assertIn(activated_organization, organizations)
+
+         activated_organization.delete()
+         deactivated_organization.delete()
 
     def test_should_continue_with_sending_reminders_if_exception_in_prev(self):
         def expected_side_effect(*args):

@@ -233,6 +233,7 @@ def _populate_week_month_data(post_data):
         post_data['deadline_week'] = post_data['select_day']
     return post_data
 
+
 def _reminder_info_about_project(project):
     data = {}
     deadline_information = project.reminder_and_deadline

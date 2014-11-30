@@ -78,6 +78,9 @@
                         <textarea class="helvetica_font" name="reminder_text_before_deadline"
                                   data-bind="value:reminder_before_deadline.text, enable:reminder_before_deadline.enable"
                                   cols="40" maxlength="160" rows="10" id="id_reminder_text_before_deadline"> </textarea>
+                        <div class="validationMessage" data-bind="ifnot: reminder_before_deadline.is_valid">
+                            <span class="validationText">{% trans "This field is required." %}</span>
+                        </div>
                         <span class="bold" id="counter_for_reminder_before_deadline"
                               data-bind="text:reminder_before_deadline.count"></span> {% trans " of 160 characters used" %}
                     </div>
@@ -97,6 +100,9 @@
                                   data-bind="value:reminder_on_deadline.text, enable:reminder_on_deadline.enable"
                                   cols="40"
                                   rows="10" maxlength="160" id="id_reminder_text_on_deadline"> </textarea>
+                        <div class="validationMessage" data-bind="ifnot: reminder_on_deadline.is_valid">
+                            <span class="validationText">{% trans "This field is required." %}</span>
+                        </div>
                         <span class="bold" id="counter_for_reminder_on_deadline"
                               data-bind="text:reminder_on_deadline.count"></span> {% trans " of 160 characters used" %}
                     </div>
@@ -119,6 +125,9 @@
                         <textarea class="helvetica_font" name="reminder_text_after_deadline"
                                   data-bind="value:reminder_after_deadline.text, enable:reminder_after_deadline.enable"
                                   cols="40" maxlength="160" rows="10" id="id_reminder_text_after_deadline"> </textarea>
+                        <div class="validationMessage" data-bind="ifnot: reminder_after_deadline.is_valid">
+                            <span class="validationText">{% trans "This field is required." %}</span>
+                        </div>
                         <span class="bold" id="counter_for_reminder_after_deadline"
                               data-bind="text:reminder_after_deadline.count"></span> {% trans " of 160 characters used" %}
                     </div>

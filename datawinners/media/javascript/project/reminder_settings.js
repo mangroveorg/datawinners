@@ -26,6 +26,7 @@ var item_map_week = {
         6: gettext('Saturday'),
         0: gettext('Sunday')
 };
+
 var is_last_day_of_month = function(date){
     var last_day_of_current_month = new Date(date.getTime());
     last_day_of_current_month.setMonth(date.getMonth()+1);
@@ -64,11 +65,14 @@ function ReminderInstance() {
     self.enable = ko.observable(false);
     self.multiplier = 0;
     self.next_reminder_date = new MonthlyReminder();
+    self.is_modified = false;
+    self.is_valid = ko.computed(function(){
+        return !(self.enable() && self.text().length <= 0)
+    });
     self.count = ko.computed(function () {
         self.is_modified = true;
         return self.text().length;
     }, this);
-    self.is_modified = false;
     self.number_of_days.subscribe(function(){
         self.next_reminder_date.reminder_date = add_days(self.next_reminder_date.reminder_date, self.multiplier * -1 * self.number_of_days())
     },self,'beforeChange');
@@ -213,6 +217,7 @@ function ReminderSettingsModel() {
     }, this);
 
     self.save_reminders = function (callback) {
+        if (!(self.reminder_before_deadline.is_valid() && self.reminder_on_deadline.is_valid() && self.reminder_after_deadline.is_valid())) return;
         var post_data = {
             'should_send_reminders_before_deadline': self.reminder_before_deadline.enable(),
             'should_send_reminders_on_deadline': self.reminder_on_deadline.enable(),
