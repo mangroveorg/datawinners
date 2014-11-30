@@ -48,13 +48,14 @@ class SubmissionFormatter(object):
                     date_format = self.columns[field_code].get("format")
                     date_value_str = row[field_code]
 
-                    if field_code == 'date':
-                        date_value = self._convert_to_localized_date_time(date_value_str)
-                    else:
-                        date_value = datetime.strptime(date_value_str, DateField.DATE_DICTIONARY.get(date_format))
+
                     try:
-                        col_val = ExcelDate(date_value, date_format or "submission_date")
-                    except Exception:
+                         if field_code == 'date':
+                            date_value = self._convert_to_localized_date_time(date_value_str)
+                         else:
+                            date_value = datetime.strptime(date_value_str, DateField.DATE_DICTIONARY.get(date_format))
+                         col_val = ExcelDate(date_value, date_format or "submission_date")
+                    except ValueError:
                         col_val = row.get(field_code) or ""
                     result.append(col_val)
                 elif self.columns[field_code].get("type") == GEODCODE_FIELD_CODE:

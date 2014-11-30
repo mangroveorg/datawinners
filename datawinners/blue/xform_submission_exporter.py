@@ -98,15 +98,13 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
 
                 if columns[field_code].get("type") == "date" or field_code == "date":
                     date_format = columns[field_code].get("format")
-                    py_date_format = DateField.DATE_DICTIONARY.get(date_format) or SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
-
                     date_value_str = row[field_code]
-
-                    if field_code == 'date':
-                        date_value = self._convert_to_localized_date_time(date_value_str)
-                    else:
-                        date_value = datetime.strptime(date_value_str, DateField.DATE_DICTIONARY.get(date_format))
                     try:
+                        if field_code == 'date':
+                            date_value = self._convert_to_localized_date_time(date_value_str)
+                        else:
+                            date_value = datetime.strptime(date_value_str, DateField.DATE_DICTIONARY.get(date_format))
+
                         col_val = ExcelDate(date_value, date_format or "submission_date")
                     except Exception:
                         col_val = row.get(field_code) or ""
