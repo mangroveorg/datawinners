@@ -167,8 +167,8 @@ def _checkout_datawinners_conf(code_dir):
 
 
 def _deploy_datawinners(context):
-    # if context.environment == "prod":
-    #     _checkout_datawinners_conf(context.code_dir)
+    if context.environment == "prod":
+         _checkout_datawinners_conf(context.code_dir)
     deploy_project(context, DATAWINNERS, post_checkout_datawinners)
 
     with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS)):
