@@ -35,7 +35,7 @@
                                 <option value="month">{% trans "Month" %}</option>
                             </select>
                             <span>{% trans "le_for_french" %}</span>
-                            <select data-bind="options:select_option, value:select_day, optionsText:display_text"></select>
+                            <select id="select_deadline" data-bind="options:select_option, value:select_day, optionsText:display_text"></select>
                             <span id="deadline_example" data-bind="text:next_deadline_string"></span>
                         </li>
                     </ul>
@@ -59,7 +59,7 @@
             </div>
             <ul>
                 <li class="margin_top_12 margin_bottom_20">
-                    <div class="onoffswitch" data-bind="onoff:reminder_before_deadline.enable"
+                    <div id = "before_deadline_switch" class="onoffswitch" data-bind="onoff:reminder_before_deadline.enable"
                          id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
@@ -75,7 +75,7 @@
 
                         <div id="example_before_deadline"
                              data-bind="text:reminder_before_deadline.next_date_as_string"></div>
-                        <textarea class="helvetica_font" name="reminder_text_before_deadline"
+                        <textarea id = "id_should_send_reminders_before_deadline" class="helvetica_font" name="reminder_text_before_deadline"
                                   data-bind="value:reminder_before_deadline.text, enable:reminder_before_deadline.enable"
                                   cols="40" maxlength="160" rows="10" id="id_reminder_text_before_deadline"> </textarea>
                         <div class="validationMessage" data-bind="ifnot: reminder_before_deadline.is_valid">
@@ -86,7 +86,7 @@
                     </div>
                 </li>
                 <li class="margin_bottom_20">
-                    <div class="onoffswitch" data-bind="onoff: reminder_on_deadline.enable" id="myonoffswitch">
+                    <div id = "on_deadline_switch" class="onoffswitch" data-bind="onoff: reminder_on_deadline.enable" id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
@@ -96,7 +96,7 @@
                         <span class="bold">{% trans "Reminder on the day of the deadline" %}</span>
 
                         <div id="example_on_deadline" data-bind="text:reminder_on_deadline.next_date_as_string"></div>
-                        <textarea class="helvetica_font" name="reminder_text_on_deadline"
+                        <textarea id="id_should_send_reminders_on_deadline" class="helvetica_font" name="reminder_text_on_deadline"
                                   data-bind="value:reminder_on_deadline.text, enable:reminder_on_deadline.enable"
                                   cols="40"
                                   rows="10" maxlength="160" id="id_reminder_text_on_deadline"> </textarea>
@@ -108,7 +108,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="onoffswitch" data-bind="onoff: reminder_after_deadline.enable" id="myonoffswitch">
+                    <div id = "after_deadline_switch"class="onoffswitch" data-bind="onoff: reminder_after_deadline.enable" id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
@@ -122,7 +122,7 @@
                             <span>{% trans "days after deadline" %}</span></div>
                         <div id="example_after_deadline"
                              data-bind="text:reminder_after_deadline.next_date_as_string"></div>
-                        <textarea class="helvetica_font" name="reminder_text_after_deadline"
+                        <textarea id = "id_should_send_reminders_after_deadline" class="helvetica_font" name="reminder_text_after_deadline"
                                   data-bind="value:reminder_after_deadline.text, enable:reminder_after_deadline.enable"
                                   cols="40" maxlength="160" rows="10" id="id_reminder_text_after_deadline"> </textarea>
                         <div class="validationMessage" data-bind="ifnot: reminder_after_deadline.is_valid">

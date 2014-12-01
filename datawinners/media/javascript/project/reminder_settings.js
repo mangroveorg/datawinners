@@ -222,7 +222,7 @@ function ReminderSettingsModel() {
             'should_send_reminders_before_deadline': self.reminder_before_deadline.enable(),
             'should_send_reminders_on_deadline': self.reminder_on_deadline.enable(),
             'should_send_reminders_after_deadline': self.reminder_after_deadline.enable(),
-            'selected_frequency': self.selected_frequency(),
+            'frequency_period': self.selected_frequency(),
             'select_day': self.select_day(),
             'reminder_text_on_deadline': self.reminder_on_deadline.text(),
             'reminder_text_after_deadline': self.reminder_after_deadline.text(),

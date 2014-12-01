@@ -43,6 +43,15 @@ class GlobalNavigationPage(Page):
         self.driver.find(PROJECT_LINK).click()
         return ProjectsPage(self.driver)
 
+    def click_on_save_change(self):
+        """
+        Function to navigate to view all projects page of the website.
+
+        Return view all projects page
+         """
+        self.driver.find("#save_changes").click()
+        return ProjectsPage(self.driver)
+
     def navigate_to_all_subject_page(self):
         """
         Function to navigate to add a subject page of the website.

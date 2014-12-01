@@ -1,25 +1,64 @@
-from unittest import SkipTest
+import json
+import os
+
+import django
 from nose.plugins.attrib import attr
 
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css, by_id
-from pages.alldatapage.all_data_page import AllDataPage
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import login
-from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.projectspage.projects_page import ProjectsPage
-from pages.reminderpage.reminder_settings_page import ReminderSettingsPage
 from testdata.test_data import LOGOUT
 from tests.alldatasenderstests.trial_data_senders_tests import QUESTIONNAIRE_DATA
 from tests.endtoendtest.end_to_end_tests import add_trial_organization_and_login
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.projects.questionnairetests.project_questionnaire_data import COPY_PROJECT_DATA
 from tests.registrationtests.registration_data import REGISTRATION_PASSWORD
-from testdata.constants import *
 from tests.remindertests.reminder_data import *
 from framework.utils.data_fetcher import fetch_, from_
 
-@SkipTest
+DIR = os.path.dirname(__file__)
+from django.test import Client
+django.test.utils.setup_test_environment()
+
+
+class TestReminderSettings(HeadlessRunnerTest):
+
+    def setUp(self):
+        self.test_data = os.path.join(DIR, 'testdata')
+        self.admin_email_id = 'tester150411@gmail.com'
+        self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
+        self.client = Client()
+
+    def test_verify_set_one_reminder(self):
+        self.client.login(username=self.admin_email_id, password='tester150411')
+        all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
+        project_reminder_page = all_project_page.navigate_to_project_overview_page('Project having people as subject').navigate_to_reminder_page()
+        project_id = project_reminder_page.get_project_id()
+        reminder_data = {u'should_send_reminders_before_deadline': 'true',
+            u'should_send_reminders_on_deadline': 'true',
+            u'should_send_reminders_after_deadline': 'true',
+            u'frequency_period': u'month',
+            u'select_day': u'10',
+            u'reminder_text_on_deadline': u'save test reminder on deadline',
+            u'reminder_text_after_deadline': u'save test reminder after deadline',
+            u'reminder_text_before_deadline': u'save test reminder before deadline',
+            u'number_of_days_after_deadline': 6,
+            u'number_of_days_before_deadline': 6,
+            u'has_deadline': True,
+            u'whom_to_send_message': False}
+
+        response = self.client.post('/project/set_reminder/'+project_id+'/', data=reminder_data)
+        self.assertEquals(response.status_code, 200)
+        response = self.client.get('/project/set_reminder/'+project_id+'/')
+        self.assertEquals(200, response.status_code)
+        reminder_saved_settings = json.loads(response.context['reminder_data'].strip("'\\"))
+        reminder_data[u'should_send_reminders_before_deadline'] = True
+        reminder_data[u'should_send_reminders_after_deadline'] = True
+        reminder_data[u'should_send_reminders_on_deadline'] = True
+        self.assertDictEqual(reminder_data, reminder_saved_settings)
+
 class TestReminderSend(HeadlessRunnerTest):
 
     def tearDown(self):
@@ -64,48 +103,6 @@ class TestReminderSend(HeadlessRunnerTest):
         self.assertEqual(fetch_(WARNING_MESSAGE, from_(DISABLED_REMINDER)), reminder_settings.get_warning_message())
 
     @attr("functional_test")
-    def test_verify_change_in_deadline_example_for_week(self):
-        reminder_settings = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK)), VALID_CREDENTIALS)
-        reminder_settings.set_deadline_by_week(fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK)))
-        self.assertEqual(reminder_settings.get_example_text(), fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK))[EXAMPLE_TEXT])
-
-        reminder_settings.set_deadline_by_week(fetch_(DEADLINE, from_(DEADLINE_LAST_DAY_OF_SAME_WEEK)))
-        self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_LAST_DAY_OF_SAME_WEEK[DEADLINE])))
-
-        reminder_settings.set_deadline_by_week(fetch_(DEADLINE, from_(DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK)))
-        self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK[DEADLINE])))
-
-        reminder_settings.set_deadline_by_week(fetch_(DEADLINE, from_(DEADLINE_FIFTH_DAY_OF_FOLLOWING_WEEK)))
-        self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_FIFTH_DAY_OF_FOLLOWING_WEEK[DEADLINE])))
-
-    @attr("functional_test")
-    def test_verify_change_in_deadline_example_for_month(self):
-        reminder_settings = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
-
-        self.set_deadline_by_month(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)))
-        self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH[DEADLINE])))
-
-        self.set_deadline_by_month(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_LAST_DAY_OF_SAME_MONTH)))
-        self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_LAST_DAY_OF_SAME_MONTH[DEADLINE])))
-
-        self.set_deadline_by_month(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_TWENTIETH_DAY_OF_FOLLOWING_MONTH)))
-        self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_TWENTIETH_DAY_OF_FOLLOWING_MONTH[DEADLINE])))
-
-        self.set_deadline_by_month(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_ELEVENTH_DAY_OF_FOLLOWING_MONTH)))
-        self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_ELEVENTH_DAY_OF_FOLLOWING_MONTH[DEADLINE])))
-
-    @attr("functional_test")
-    def test_verify_set_one_reminder(self):
-        reminder_settings = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(REMINDER_DATA_WEEKLY)), VALID_CREDENTIALS)
-        reminder_settings.set_deadline_by_week(fetch_(DEADLINE, from_(REMINDER_DATA_WEEKLY)))
-        reminder_settings.set_reminder(fetch_(REMINDERS, from_(REMINDER_DATA_WEEKLY)))
-        reminder_settings.set_whom_to_send(fetch_(WHOM_TO_SEND, from_(REMINDER_DATA_WEEKLY)))
-        reminder_settings.save_reminders()
-        self.assertEqual(reminder_settings.get_success_message(), SUCCESS_MESSAGE)
-        reminders = reminder_settings.get_reminders_of_project(reminder_settings.get_project_id())
-        self.assertEqual(fetch_(REMINDERS, from_(REMINDER_DATA_WEEKLY)), reminders[0])
-
-    @attr("functional_test")
     def test_should_display_sms_character_length_for_various_reminder_types(self):
         reminder_settings = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
         self.display_sms_length_for_a_reminder_type(reminder_settings, "before")
@@ -133,37 +130,31 @@ class TestReminderSend(HeadlessRunnerTest):
         self.assertEqual(length, 10)
 
     @attr("functional_test")
-    def test_deadline_type_should_remain_after_saving(self):
-        reminder_settings = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
-        reminder_settings.set_deadline_by_week(fetch_(DEADLINE, from_(DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK)))
-        text_example_before_save = reminder_settings.get_example_text()
-        reminder_settings.save_reminders()
-        self.assertEqual(reminder_settings.get_example_text(), text_example_before_save)
-
-    @attr("functional_test")
     def test_should_disable_reminder_setting_for_project_having_no_datasender(self):
         self.dissociate_all_datasenders_from_clinic3_project()
-        
+
         reminder_settings = self.go_to_reminder_page("clinic3 test project", VALID_CREDENTIALS)
         self.assertTrue(reminder_settings.is_disabled)
 
-    def test_should_delete_reminders_when_project_is_deleted(self):
-        global_navigation = login(self.driver, VALID_CREDENTIALS)
-        create_questionnaire_page = global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page() \
-            .select_blank_questionnaire_creation_option()
-        overview_page = create_questionnaire_page.create_questionnaire_with(COPY_PROJECT_DATA,
-                                                                            QUESTIONNAIRE_DATA).save_and_create_project_successfully()
-        project_title = overview_page.get_project_title()
-
-        reminder_settings_page = overview_page.navigate_to_reminder_page()
-        default_reminder_settings_text = reminder_settings_page.get_example_text()
-        self._verify_reminder_setting(reminder_settings_page)
-
-        projects_page = global_navigation.navigate_to_view_all_project_page()
-        projects_page.delete_project(project_title)
-        self._perform_undo_deletion(projects_page)
-
-        self._verify_default_reminder_settings(project_title,default_reminder_settings_text)
+    # def test_should_delete_reminders_when_project_is_deleted(self):
+    #     global_navigation = login(self.driver, VALID_CREDENTIALS)
+    #     create_questionnaire_page = global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page() \
+    #         .select_blank_questionnaire_creation_option()
+    #     overview_page = create_questionnaire_page.create_questionnaire_with(COPY_PROJECT_DATA,
+    #                                                                         QUESTIONNAIRE_DATA).save_and_create_project_successfully()
+    #     project_title = overview_page.get_project_title()
+    #
+    #     reminder_settings_page = overview_page.navigate_to_reminder_page()
+    #     default_reminder_settings_text = reminder_settings_page.get_example_text()
+    #     self._verify_reminder_setting(reminder_settings_page)
+    #
+    #     projects_page = global_navigation.navigate_to_view_all_project_page()
+    #     projects_page.click_on_save_changes()
+    #
+    #     projects_page.delete_project(project_title)
+    #     self._perform_undo_deletion(projects_page)
+    #
+    #     self._verify_default_reminder_settings(project_title,default_reminder_settings_text)
 
     def _verify_default_reminder_settings(self,project_name,default_reminder_message):
         self.assertEquals(default_reminder_message, ProjectsPage(self.driver).navigate_to_project_overview_page(
@@ -171,8 +162,6 @@ class TestReminderSend(HeadlessRunnerTest):
 
     def _verify_reminder_setting(self,reminder_settings_page):
         reminder_settings_page.set_deadline_by_week(fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK)))
-        self.assertEqual(reminder_settings_page.get_example_text(),
-                         fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK))[EXAMPLE_TEXT])
 
     def _perform_undo_deletion(self,projects_page):
         projects_page.trigger_undo_delete()

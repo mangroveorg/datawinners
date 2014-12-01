@@ -226,7 +226,6 @@ def reminder_settings(request, project_id):
 
 
 def _populate_week_month_data(post_data):
-    post_data['frequency_period'] = post_data['selected_frequency']
     if post_data['frequency_period'] == 'month':
         post_data['deadline_month'] = post_data['select_day']
     else:

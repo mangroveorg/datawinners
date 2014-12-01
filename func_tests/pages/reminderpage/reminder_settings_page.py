@@ -1,3 +1,5 @@
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.select import Select
 from framework.utils.data_fetcher import from_, fetch_
 from pages.AutomaticReplySmsPage.automatic_reply_sms_page import AutomaticReplySmsPage
 from pages.page import Page
@@ -29,8 +31,8 @@ class ReminderSettingsPage(Page):
     def get_deadline_type_for_week(self):
         return self.driver.find_drop_down(WEEK_DEADLINE_TYPE_DD).get_selected()
 
-    def set_deadline_type_for_week(self, deadline_type):
-        self.driver.find_drop_down(WEEK_DEADLINE_TYPE_DD).set_selected_by_text(deadline_type)
+    # def set_deadline_type_for_week(self, deadline_type):
+    #     self.driver.find_drop_down(WEEK_DEADLINE_TYPE_DD).set_selected_by_text(deadline_type)
 
     def set_deadline_type_for_month(self, deadline_type):
         self.driver.find_drop_down(MONTH_DEADLINE_TYPE_DD).set_selected_by_text(deadline_type)
@@ -47,20 +49,50 @@ class ReminderSettingsPage(Page):
     def get_example_text(self):
         return self.driver.find(DEADLINE_EXAMPLE_LABEL).text
 
-    def enable_before_deadline_reminder(self):
-        checkbox =  self.driver.find(BEFORE_DEADLINE_REMINDER_CB)
-        if not checkbox.is_selected():
-            checkbox.click()
+    # def enable_before_deadline_reminder(self):
+    #     checkbox =  self.driver.find(BEFORE_DEADLINE_REMINDER_CB)
+    #     if not checkbox.is_selected():
+    #         checkbox.click()
 
-    def enable_on_deadline_reminder(self):
-        checkbox =  self.driver.find(ON_DEADLINE_REMINDER_CB)
-        if not checkbox.is_selected():
-            checkbox.click()
+    def enable_before_deadline_reminder(self):
+        try:
+           self.driver.find(SWITCH_ENABLED_BEFORE_DEADLINE)
+
+        except CouldNotLocateElementException:
+           self.driver.find(SWITCH_DISABLED_BEFORE_DEADLINE).click()
 
     def enable_after_deadline_reminder(self):
-        checkbox =  self.driver.find(AFTER_DEADLINE_REMINDER_CB)
-        if not checkbox.is_selected():
-            checkbox.click()
+        try:
+           self.driver.find(SWITCH_ENABLED_AFTER_DEADLINE)
+
+        except CouldNotLocateElementException:
+           self.driver.find(SWITCH_DISABLED_AFTER_DEADLINE).click()
+
+    def enable_on_deadline_reminder(self):
+            try:
+               self.driver.find(SWITCH_ENABLED_ON_DEADLINE)
+
+            except CouldNotLocateElementException:
+               self.driver.find(SWITCH_DISABLED_ON_DEADLINE).click()
+
+    # def enable_on_deadline_reminder(self):
+    #     checkbox =  self.driver.find(ON_DEADLINE_REMINDER_CB)
+    #     if not checkbox.is_selected():
+    #         checkbox.click()
+
+    # def enable_on_deadline_reminder(self):
+    #     try:
+    #        self.driver.find(by_css('#before_deadline_switch.onoffswitch.onoffswitch-checked'))
+    #
+    #     except CouldNotLocateElementException:
+    #        self.driver.find(by_css('#before_deadline_switch.onoffswitch')).click()
+    #
+    #     self.driver.find(by_css('#before_deadline_switch.onoffswitch')).click()
+    #
+    # def enable_after_deadline_reminder(self):
+    #     checkbox =  self.driver.find(AFTER_DEADLINE_REMINDER_CB)
+    #     if not checkbox.is_selected():
+    #         checkbox.click()
 
     def send_reminder_only_ds_not_submitted_data(self):
         checkbox =  self.driver.find(ONLY_DATASENDERS_NOT_SUBMITTED_CB)
@@ -93,7 +125,8 @@ class ReminderSettingsPage(Page):
             checkbox.click()
 
     def set_message_for_before_deadline_reminder(self, message):
-        self.driver.find_text_box(BEFORE_DEADLINE_REMINDER_TB).enter_text(message)
+        textBox = self.driver.find_text_box(BEFORE_DEADLINE_REMINDER_TB).enter_text(message)
+        textBox.send_keys(Keys.TAB)
 
     def get_message_of_before_deadline_reminder(self, message):
         return self.driver.find_text_box(BEFORE_DEADLINE_REMINDER_TB).text
@@ -105,7 +138,8 @@ class ReminderSettingsPage(Page):
         self.driver.find_text_box(NUMBER_OF_DAYS_BEFORE_DEADLINE_TB).text
 
     def set_message_for_after_deadline_reminder(self, message):
-        self.driver.find_text_box(AFTER_DEADLINE_REMINDER_TB).enter_text(message)
+        textBox = self.driver.find_text_box(AFTER_DEADLINE_REMINDER_TB).enter_text(message)
+        textBox.send_keys(Keys.TAB)
 
     def get_message_of_after_deadline_reminder(self, message):
         return self.driver.find_text_box(AFTER_DEADLINE_REMINDER_TB).text
@@ -117,7 +151,8 @@ class ReminderSettingsPage(Page):
         return self.driver.find_text_box(NUMBER_OF_DAYS_AFTER_DEADLINE_TB).text
 
     def set_message_for_on_deadline_reminder(self, message):
-        self.driver.find_text_box(ON_DEADLINE_REMINDER_TB).enter_text(message)
+        textBox = self.driver.find_text_box(ON_DEADLINE_REMINDER_TB).enter_text(message)
+        textBox.send_keys(Keys.TAB)
 
     def get_message_of_on_deadline_reminder(self, message):
         return self.driver.find_text_box(ON_DEADLINE_REMINDER_TB).text
@@ -168,7 +203,7 @@ class ReminderSettingsPage(Page):
     def set_deadline_by_week(self, deadline):
         self.set_frequency(fetch_(FREQUENCY, from_(deadline)))
         self.set_week_day(fetch_(DAY, from_(deadline)))
-        self.set_deadline_type_for_week(fetch_(TYPE, from_(deadline)))
+        # self.set_deadline_type_for_week(fetch_(TYPE, from_(deadline)))
 
     def get_warning_message(self):
         return self.driver.find(WARNING_MESSAGE_LABEL).text

@@ -54,3 +54,5 @@ class ProjectsPage(Page):
         self.driver.find_visible_element(by_id("undo_delete_project")).click()
         return self
 
+    def click_on_save_changes(self):
+        self.driver.find(by_css('#save_changes')).click()
