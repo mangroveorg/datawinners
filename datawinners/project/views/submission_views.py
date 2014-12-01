@@ -429,12 +429,12 @@ def get_option_value_for_field(diff_value, question_field):
     return reslt_dict
 
 
-ACCOUNTS_WITH_HIGH_SUBMISSION_VOLUME = ['hni_usaid-mikolo_lei526034', 'hni_palme_flm546389']
+ACCOUNTS_WITH_HIGH_SUBMISSION_VOLUME = ['hni_usaid-mikolo_lei526034']
 
 def _get_export_limit(dbm):
     if dbm.database_name in ACCOUNTS_WITH_HIGH_SUBMISSION_VOLUME:
-        return 20000
-    return 30000
+        return 10000
+    return 50000
 
 
 @login_required
