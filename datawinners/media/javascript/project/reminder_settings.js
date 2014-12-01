@@ -104,17 +104,15 @@ function MonthlyReminder(){
     self.calculate_deadline = function(selected_day){
         var current_date = new Date();
         var next_deadline = new Date();
-        var lastdays_of_feb = [29, 30, 0];
+        var lastdays_of_feb = [29, 30];
         if (selected_day <= current_date.getDate()) {
-            if(next_deadline.getMonth() == 0 && lastdays_of_feb.indexOf(selected_day)!=-1){
-                next_deadline.setMonth(2);
-                next_deadline.setDate(0);
-                return next_deadline;
-            }
             next_deadline.setMonth(next_deadline.getMonth() + 1);
         }
         if(next_deadline.getMonth() == 1 && lastdays_of_feb.indexOf(selected_day)!=-1){
             next_deadline.setMonth(2);
+            next_deadline.setDate(0);
+            self.reminder_date = next_deadline;
+            return;
         }
         next_deadline.setDate(selected_day);
         if(is_last_day_of_month(current_date) && selected_day==0){
@@ -206,7 +204,7 @@ function ReminderSettingsModel() {
         return self.selected_frequency() == 'month'? new MonthlyReminder():new WeeklyReminder();
     });
 
-    self.select_day.subscribe(function () {
+    self.update_example = function(){
         self.next_deadline().calculate_deadline(self.select_day());
         self.next_deadline_string(gettext("Next deadline: ") + self.next_deadline().get_display_string());
         self.reminder_before_deadline.update_example(self.next_deadline());
@@ -214,6 +212,13 @@ function ReminderSettingsModel() {
         self.reminder_after_deadline.update_example(self.next_deadline());
         self.is_modified = true;
         self.is_deadline_date_changed = true;
+    };
+    self.select_day.subscribe(function () {
+        self.update_example();
+    }, this);
+
+    self.next_deadline.subscribe(function () {
+        self.update_example();
     }, this);
 
     self.save_reminders = function (callback) {
