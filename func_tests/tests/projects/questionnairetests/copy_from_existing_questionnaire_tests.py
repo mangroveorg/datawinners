@@ -1,6 +1,8 @@
+from time import sleep
 from nose.plugins.attrib import attr
 
 from framework.base_test import HeadlessRunnerTest
+from framework.utils.common_utils import by_css
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
@@ -28,7 +30,6 @@ class TestCopyExistingQuestionnaire(HeadlessRunnerTest):
             .navigate_to_reminder_page()
         self.assertEqual("week", copied_projects_reminder_page.get_frequency())
         self.assertEqual("5", copied_projects_reminder_page.get_week_day())
-        self.assertEqual("Same", copied_projects_reminder_page.get_deadline_type_for_week())
 
         is_outgoing_sms_enabled = copied_projects_reminder_page.navigate_to_automatic_reply_sms_page()\
                                   .get_reply_messages_switch_status()
@@ -49,13 +50,12 @@ class TestCopyExistingQuestionnaire(HeadlessRunnerTest):
 
         reminder_setting_page = ProjectOverviewPage(cls.driver).navigate_to_reminder_page()
         reminder_setting_page.set_frequency("Week")
-        reminder_setting_page.set_deadline_type_for_week("Same week")
         reminder_setting_page.set_week_day("Friday")
         reminder_setting_page.enable_before_deadline_reminder()
         reminder_setting_page.save_reminders()
-
-        reminder_setting_page.navigate_to_automatic_reply_sms_page().turn_off_reply_messages()
-
+        cls.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('.success-message-box'),want_visible=True)
+        automatic_reply_sms_page = reminder_setting_page.navigate_to_automatic_reply_sms_page()
+        automatic_reply_sms_page.turn_off_reply_messages()
         cls.questionnaire_tab_page = overview_page.navigate_to_questionnaire_tab()
         cls.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, 'Questionnaire')
         return overview_page.get_project_title(), questionnaire_code

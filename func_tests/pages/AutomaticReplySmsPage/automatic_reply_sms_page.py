@@ -13,6 +13,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 class AutomaticReplySmsPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, AVAILABLE_LANGUAGES_DROPDOWN_ID,)
         self.language_drop_down = DropDown(self.driver.find(AVAILABLE_LANGUAGES_DROPDOWN_ID))
 
 
