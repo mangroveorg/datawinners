@@ -54,12 +54,6 @@ class TestScheduler(unittest.TestCase):
         self.reminder4.remind_to = RemindTo.ALL_DATASENDERS
         self.reminder4.get_sender_list.return_value = Exception()
 
-        self.reminder5 = Mock(spec=Reminder)
-        self.reminder5.should_be_send_on.return_value = True
-        self.reminder5.message = 'reminder4 message'
-        self.reminder5.remind_to = RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS
-        self.reminder5.get_sender_list.return_value = [ds_1, ds_2, ds_3]
-
         self.reminders = [self.reminder1, self.reminder2, self.reminder3]
         self.sms_client = SMSClient()
         self.sms_client.send_sms = Mock()
