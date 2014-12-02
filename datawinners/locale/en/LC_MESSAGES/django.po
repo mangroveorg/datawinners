@@ -4783,3 +4783,6 @@ msgstr "With DataWinners you can send reminders up to 3 days before and after yo
 
 msgid "le_for_french"
 msgstr " "
+
+msgid "large submission export"
+msgstr "The number of Submissions in one export is currently limited to 10.000 rows in Excel.</br> Use filters (Date filter recommended) to manage the number of exported Submissions."
