@@ -48,7 +48,7 @@ def _add_date_range_filters(date_filters, form_model, search):
             if date_range:
                 date_query = DateQuestionRangeFilter(date_range, form_model, question_code).build_filter_query()
                 if date_query:
-                    search.query(date_query)
+                    search = search.query(date_query)
     return search
 
 
@@ -82,7 +82,7 @@ def _add_search_filters(search_filter_param, form_model, local_time_delta, query
     submission_date_query = SubmissionDateRangeFilter(submission_date_range, local_time_delta).build_filter_query()
     if submission_date_query:
         search = search.query(submission_date_query)
-    _add_date_range_filters(search_filter_param.get("dateQuestionFilters"), form_model, search)
+    search = _add_date_range_filters(search_filter_param.get("dateQuestionFilters"), form_model, search)
     datasender_filter = search_filter_param.get("datasenderFilter")
     if datasender_filter:
         search = search.query("term", ds_id_exact=datasender_filter)
