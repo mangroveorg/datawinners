@@ -1,5 +1,5 @@
 from elasticsearch import Elasticsearch, helpers
-from elasticsearch_dsl import Search
+from elasticsearch_dsl import Search, Q, F
 import elasticutils
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
@@ -56,11 +56,17 @@ def _add_unique_id_filters(form_model, unique_id_filters, search):
     if unique_id_filters:
         for uniqueIdType, uniqueIdFilter in unique_id_filters.iteritems():
             if uniqueIdFilter:
+                unique_id_filters = []
+
                 for question in [question for question in form_model.entity_questions if
                                  question.unique_id_type == uniqueIdType]:
                     es_field_code = es_unique_id_code_field_name(
                         es_questionnaire_field_name(question.code, form_model.id)) + "_exact"
-                    search = search.query("term", **{es_field_code: uniqueIdFilter})
+                    # if not unique_id_filters:
+                    #     unique_id_filters = F("term", **{es_field_code: uniqueIdFilter})
+                    # else:
+                    unique_id_filters.append(F("term", **{es_field_code: uniqueIdFilter}))
+                search = search.filter(F('or', unique_id_filters))
     return search
 
 
