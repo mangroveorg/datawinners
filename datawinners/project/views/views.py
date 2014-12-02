@@ -221,7 +221,7 @@ def _format_string_for_reminder_table(value):
 def _make_reminder_mode(reminder_mode, day):
     if reminder_mode == ReminderMode.ON_DEADLINE:
         return _format_string_for_reminder_table(reminder_mode)
-    return str(day) + ' days ' + _format_string_for_reminder_table(reminder_mode)
+    return str(day) + ' day(s) ' + _format_string_for_reminder_table(reminder_mode)
 
 
 def _format_reminder(reminder, project_id):
