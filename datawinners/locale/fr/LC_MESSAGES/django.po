@@ -5641,3 +5641,6 @@ msgstr "jours après la date limite d'envoi"
 
 msgid "le_for_french"
 msgstr "  le  "
+
+msgid "large submission export"
+msgstr "L’exportation est limitée à un maximum de 10.000 soumissions à la fois.</br>Veuillez utiliser les filtres pour gérer le nombre de soumissions à exporter."

@@ -4785,5 +4785,4 @@ msgid "le_for_french"
 msgstr "  on  "
 
 msgid "large submission export"
-msgstr "The number of Submissions in one export is currently limited to 10.000 rows in Excel.</br> Use filters (Date filter recommended) to manage the number of exported Submissions."
-
+msgstr "Exports are limited to a maximum of 10,000 submissions at a time.</br> Use filters to manage the number of submissions to export."
