@@ -257,9 +257,10 @@ function ReminderSettingsModel() {
                 $('.success-message-box').html(responseJson.success_message);
                 $('.success-message-box').show();
                 $(document).scrollTop(0);
+                self.reset_initial_data();
                 self.reset_modified_flags();
                 if (typeof callback == "function") callback();
-                        }
+                }
         });
     };
 
@@ -275,6 +276,19 @@ function ReminderSettingsModel() {
         self.reset_modified_flags();
     };
 
+    self.reset_initial_data = function(){
+        reminder_data['reminder_text_before_deadline'] = self.reminder_before_deadline.text();
+        reminder_data['reminder_text_after_deadline'] = self.reminder_after_deadline.text();
+        reminder_data['reminder_text_on_deadline'] = self.reminder_on_deadline.text();
+        reminder_data['number_of_days_before_deadline'] = self.reminder_before_deadline.number_of_days();
+        reminder_data['number_of_days_after_deadline'] = self.reminder_after_deadline.number_of_days();
+        reminder_data['should_send_reminders_before_deadline'] = self.reminder_before_deadline.enable();
+        reminder_data['should_send_reminders_after_deadline'] = self.reminder_after_deadline.enable();
+        reminder_data['should_send_reminders_on_deadline'] = self.reminder_on_deadline.enable();
+        reminder_data['frequency_period'] = self.selected_frequency();
+        reminder_data['select_day'] = self.select_day();
+        reminder_data['whom_to_send_message'] = self.whom_to_send_message();
+    };
     self.reset_reminders = function(){
         self.reminder_before_deadline.text(reminder_data['reminder_text_before_deadline']);
         self.reminder_after_deadline.text(reminder_data['reminder_text_after_deadline']);
