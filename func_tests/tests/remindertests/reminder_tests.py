@@ -89,6 +89,11 @@ class TestReminderSend(HeadlessRunnerTest):
         return reminder_settings
 
     @attr("functional_test")
+    def test_should_not_disable_reminder_setting_for_project_having_datasenders(self):
+        reminder_settings_page = self.go_to_reminder_page("clinic test project1", VALID_CREDENTIALS)
+        self.assertFalse(reminder_settings_page.is_disabled)
+
+    @attr("functional_test")
     def test_trial_account_should_see_reminder_not_work_message_at_reminder_tab_in_active_project(self):
         email = add_trial_organization_and_login(self.driver)
         createquestionnairepage = DashboardPage(self.driver).navigate_to_create_project_page()\
@@ -136,26 +141,6 @@ class TestReminderSend(HeadlessRunnerTest):
         reminder_settings = self.go_to_reminder_page("clinic3 test project", VALID_CREDENTIALS)
         self.assertTrue(reminder_settings.is_disabled)
 
-    # def test_should_delete_reminders_when_project_is_deleted(self):
-    #     global_navigation = login(self.driver, VALID_CREDENTIALS)
-    #     create_questionnaire_page = global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page() \
-    #         .select_blank_questionnaire_creation_option()
-    #     overview_page = create_questionnaire_page.create_questionnaire_with(COPY_PROJECT_DATA,
-    #                                                                         QUESTIONNAIRE_DATA).save_and_create_project_successfully()
-    #     project_title = overview_page.get_project_title()
-    #
-    #     reminder_settings_page = overview_page.navigate_to_reminder_page()
-    #     default_reminder_settings_text = reminder_settings_page.get_example_text()
-    #     self._verify_reminder_setting(reminder_settings_page)
-    #
-    #     projects_page = global_navigation.navigate_to_view_all_project_page()
-    #     projects_page.click_on_save_changes()
-    #
-    #     projects_page.delete_project(project_title)
-    #     self._perform_undo_deletion(projects_page)
-    #
-    #     self._verify_default_reminder_settings(project_title,default_reminder_settings_text)
-
     def _verify_default_reminder_settings(self,project_name,default_reminder_message):
         self.assertEquals(default_reminder_message, ProjectsPage(self.driver).navigate_to_project_overview_page(
             project_name).navigate_to_reminder_page().get_example_text())
@@ -168,7 +153,3 @@ class TestReminderSend(HeadlessRunnerTest):
         self.assertTrue(self.driver.is_element_present(by_id("reminder_add_dialog_dialog_section")))
         self.driver.find_visible_element(by_css(".yes_button")).click()
 
-    @attr("functional_test")
-    def test_should_not_disable_reminder_setting_for_project_having_datasenders(self):
-        reminder_settings = self.go_to_reminder_page("clinic2 test project", VALID_CREDENTIALS)
-        self.assertFalse(reminder_settings.is_disabled)
