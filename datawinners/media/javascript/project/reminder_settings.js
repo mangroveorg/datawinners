@@ -65,12 +65,12 @@ function ReminderInstance() {
     self.enable = ko.observable(false);
     self.multiplier = 0;
     self.next_reminder_date = new MonthlyReminder();
-    self.is_modified = false;
+    self.is_modified = ko.observable(false);
     self.is_valid = ko.computed(function(){
         return !(self.enable() && self.text().length <= 0)
     });
     self.count = ko.computed(function () {
-        self.is_modified = true;
+        self.is_modified(true);
         return self.text().length;
     }, this);
     self.number_of_days.subscribe(function(){
@@ -82,7 +82,7 @@ function ReminderInstance() {
     });
 
     self.next_date_as_string = ko.computed(function () {
-        self.is_modified = true;
+        self.is_modified(true);
         if (self.enable()) {
             return gettext("Next scheduled Reminder: ") + self.next_reminder_date.get_display_string();
         }
@@ -168,11 +168,14 @@ function ReminderSettingsModel() {
     self.select_day = ko.observable();
     self.whom_to_send_message = ko.observable();
     self.select_datasender = ko.observable();
-    self.is_reminder_enabled = ko.observable();
+    self.is_reminder_disabled = ko.observable();
     self.isOpen= ko.observable(false);
     self.label = ko.observable();
     self.next_deadline_string = ko.observable();
-    self.is_modified = false;
+    self.is_modified = ko.observable(false);
+    self.reminder_before_deadline = new ReminderInstance();
+    self.reminder_after_deadline = new ReminderInstance();
+    self.reminder_on_deadline = new ReminderInstance();
     self.open = function() {
         self.isOpen(true);
     };
@@ -190,15 +193,15 @@ function ReminderSettingsModel() {
     };
 
     self.reset_modified_flags = function(){
-        self.is_modified = false;
-        self.reminder_before_deadline.is_modified = false;
-        self.reminder_after_deadline.is_modified = false;
-        self.reminder_on_deadline.is_modified = false;
+        self.reminder_before_deadline.is_modified(false);
+        self.reminder_after_deadline.is_modified(false);
+        self.reminder_on_deadline.is_modified(false);
+        self.is_modified(false);
     };
 
-    self.is_reminders_modified = function(){
-        return self.reminder_before_deadline.is_modified || self.reminder_after_deadline.is_modified || self.reminder_on_deadline.is_modified;
-    };
+    self.is_reminders_modified = ko.computed(function(){
+        return self.reminder_before_deadline.is_modified() || self.reminder_after_deadline.is_modified() || self.reminder_on_deadline.is_modified();
+    });
 
     self.next_deadline = ko.computed(function(){
         return self.selected_frequency() == 'month'? new MonthlyReminder():new WeeklyReminder();
@@ -210,7 +213,7 @@ function ReminderSettingsModel() {
         self.reminder_before_deadline.update_example(self.next_deadline());
         self.reminder_on_deadline.update_example(self.next_deadline());
         self.reminder_after_deadline.update_example(self.next_deadline());
-        self.is_modified = true;
+        self.is_modified(true);
         self.is_deadline_date_changed = true;
     };
     self.select_day.subscribe(function () {
@@ -264,13 +267,10 @@ function ReminderSettingsModel() {
         self.selected_frequency(reminder_data['frequency_period']);
         self.select_day(reminder_data['select_day']);
         self.select_datasender(reminder_data['whom_to_send_message'] ? 'my_datasender' : 'all_my_datasender');
-        self.is_reminder_enabled(is_reminder_enabled);
+        self.is_reminder_disabled(is_reminder_disabled);
     };
 
     self.init_reminders = function(){
-        self.reminder_before_deadline = new ReminderInstance();
-        self.reminder_after_deadline = new ReminderInstance();
-        self.reminder_on_deadline = new ReminderInstance();
         self.reset_reminders();
         self.reset_modified_flags();
     };
@@ -321,13 +321,17 @@ function ReminderSettingsModel() {
 
 
     self.whom_to_send_message = ko.computed(function () {
-        self.is_modified = true;
+        self.is_modified(true);
         return self.select_datasender() == 'my_datasender';
     });
 
     self.select_option = ko.computed(function () {
         return self.selected_frequency() == 'month' ? range_of_numbers(1, 30).concat([0]) : range_of_numbers(1, 7);
     }, this);
+
+    self.should_not_save = ko.computed(function(){
+        return self.is_reminder_disabled() || !(self.is_modified() || self.is_reminders_modified());
+    });
 
     self.display_text = function (item) {
         var item_map_month = {};
@@ -373,7 +377,7 @@ $(document).ready(function() {
             viewModel.save_reminders(callback);
         },
         isQuestionnaireModified : function(){
-            return viewModel.is_modified || viewModel.is_reminders_modified();
+            return viewModel.is_modified() || viewModel.is_reminders_modified();
         },
         cancelDialogDiv : "#cancel_reminder_changes",
         validate: function(){

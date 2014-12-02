@@ -21,9 +21,9 @@ $(document).ready(function() {
         var self = this;
         this.header = ko.dependentObservable(function() {
             if (self.reminderMode() === "before_deadline") {
-                return self.beforeDay() + gettext(" days before deadline");
+                return self.beforeDay() + gettext(" day(s) before deadline");
             } else if (self.reminderMode() === "after_deadline") {
-                return self.afterDay() + gettext(" days after deadline");
+                return self.afterDay() + gettext(" day(s) after deadline");
             } else {
                 return gettext("On the deadline");
             }

@@ -25,7 +25,7 @@
 {% block page_js %}
     {{ block.super }}
     <script language="JavaScript">
-        var is_reminder_enabled = {{ is_reminder_enabled|lower }};
+        var is_reminder_disabled = {{ is_reminder_disabled|lower }};
         var reminder_data = $.parseJSON({{ reminder_data|safe }});
         var post_url = "{{ post_url }}";
     </script>
@@ -41,7 +41,7 @@
         {% include 'project/messages_and_reminders_tabs.html' %}
     {% endblock %}
     <div>
-    {% if is_reminder_enabled %}
+    {% if is_reminder_disabled %}
         <div class="warning-message-box padding_left_right_10 padding_top_10 padding_bottom_10">
             {% blocktrans with url_to_my_datasender as url_to_my_datasender %}You can only send Reminders to registered Data Senders. First, register your Data Senders on the<a style='float: none; margin: 0;' href='{{ url_to_my_datasender }}'> My Data Senders </a>page.{% endblocktrans %}
         </div>

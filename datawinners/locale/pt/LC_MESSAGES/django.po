@@ -235,7 +235,7 @@ msgstr ""
 msgid "No deadline. Senders can submit data any time."
 msgstr ""
 
-msgid "days before deadline"
+msgid "day(s) before deadline"
 msgstr ""
 
 msgid "The day of the deadline"

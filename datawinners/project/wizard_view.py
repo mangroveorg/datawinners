@@ -187,7 +187,7 @@ def reminder_settings(request, project_id):
     active_language = request.LANGUAGE_CODE
     org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
     organization = Organization.objects.get(org_id=org_id)
-    is_reminder_enabled = is_empty(questionnaire.data_senders)
+    is_reminder_disabled = is_empty(questionnaire.data_senders)
     url_to_my_datasender = project_links['registered_datasenders_link']
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
     if request.method == 'GET':
@@ -199,7 +199,7 @@ def reminder_settings(request, project_id):
                                    'project': questionnaire,
                                    'reminder_data': repr(json.dumps(data)),
                                    'questionnaire_code': questionnaire.form_code,
-                                   'is_reminder_enabled': is_reminder_enabled,
+                                   'is_reminder_disabled': is_reminder_disabled,
                                    'active_language': active_language,
                                    'no_of_my_datasenders': len(questionnaire.data_senders),
                                    'url_to_my_datasender': url_to_my_datasender,

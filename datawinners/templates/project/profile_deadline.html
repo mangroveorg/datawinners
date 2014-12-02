@@ -14,9 +14,9 @@
     <script type="text/javascript" src="/media/javascript/tooltip.js"></script>
 {% endblock %}
 
-<div id="reminder_deadline_form" data-bind="disableChildren:is_reminder_enabled">
+<div id="reminder_deadline_form" data-bind="disableChildren:is_reminder_disabled">
     {% csrf_token %}
-    <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
+    <fieldset data-bind="css: {'grey': is_reminder_disabled}">
         <legend>{% trans "Submission Deadline" %}</legend>
         <ul>
             <li class="border_bottom_color"></li>
@@ -45,11 +45,11 @@
     </fieldset>
 
     <div id="reminders_section">
-        <fieldset class="{% if is_reminder_enabled %}grey{% endif %}">
+        <fieldset data-bind="css: {'grey': is_reminder_disabled}">
             <legend>{% trans "Reminders" %}</legend>
             <div class="border_bottom_color"></div>
-            <div class="font_style italic_grey">{% trans 'Send automatic SMS reminders to your registered Data Senders' %}
-                <a data-bind="click:open,css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled">{% trans "Learn more" %}</a>
+            <div class="font_style italic_grey">{% trans 'Send automatic SMS reminders to your registered Data Senders.' %}
+                <a data-bind="click:open,css: {'disable_link': is_reminder_disabled}, disable: is_reminder_disabled">{% trans "Learn more" %}</a>
 
                 <div class="dialog" data-bind="dialog: {autoOpen: false, width:1000,
                                                         title:'Learn More About Submission Deadline & Reminders', height: 723 },
@@ -73,7 +73,7 @@
                                     data-bind="options:option_list,
                                                enable:reminder_before_deadline.enable,
                                                value:reminder_before_deadline.number_of_days"></select>
-                            <span>{% trans "days before deadline" %}</span></div>
+                            <span>{% trans "day(s) before deadline" %}</span></div>
 
                         <div id="example_before_deadline"
                              data-bind="text:reminder_before_deadline.next_date_as_string"></div>
@@ -127,7 +127,7 @@
                                     data-bind="options:option_list,
                                                enable:reminder_after_deadline.enable,
                                                value:reminder_after_deadline.number_of_days"></select>
-                            <span>{% trans "days after deadline" %}</span></div>
+                            <span>{% trans "day(s) after deadline" %}</span></div>
                         <div id="example_after_deadline"
                              data-bind="text:reminder_after_deadline.next_date_as_string"></div>
                         <textarea id = "id_should_send_reminders_after_deadline" class="helvetica_font" name="reminder_text_after_deadline"
@@ -149,7 +149,7 @@
                     <div class="font_style italic_grey">
                         {% blocktrans with no_of_my_datasenders as no_of_my_datasenders %}Specify which of your Data Senders receive the reminders. There are {{ no_of_my_datasenders }} registered Data Senders for this Questionnaire.{% endblocktrans %}
                         <a href="{{ url_to_my_datasender }}"
-                           data-bind="css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled"> {% trans 'See List of Data Senders' %} </a>
+                           data-bind="css: {'disable_link': is_reminder_disabled}, disable: is_reminder_disabled"> {% trans 'See List of Data Senders' %} </a>
                     </div>
 
                     <div class="section_datasenders_to_send">
@@ -183,10 +183,10 @@
     </div>
     <div class="right_aligned_button margin_right_4">
         <a id="cancel" class="margin_right_30"
-           data-bind="click:cancel_changes, css: {'disable_link': is_reminder_enabled}, disable: is_reminder_enabled">{% trans "Cancel Changes" %}</a>
-        <input id="submit-button" data-bind="click:save_reminders"
-               class="{% if is_reminder_enabled %}disabled_button{% else %}button{% endif %}" type="submit"
-               value="{% trans 'Save' %}" {% if is_reminder_enabled %}disabled="disabled" {% endif %}/>
+           data-bind="click:cancel_changes, css: {'disable_link': should_not_save}, disable:  should_not_save">{% trans "Cancel Changes" %}</a>
+        <input id="submit-button" data-bind="click:save_reminders, css: {'disabled_button': should_not_save, 'button':!(should_not_save())}"
+               type="submit"
+               value="{% trans 'Save' %}" {% if is_reminder_disabled %}disabled="disabled" {% endif %}/>
     </div>
     <div id="cancel_reminder_changes" style="display: none;">
         {% trans "Do you want to save the changes before leaving this page?" %}<br/>

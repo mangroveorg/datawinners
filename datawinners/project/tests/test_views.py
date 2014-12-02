@@ -46,7 +46,7 @@ class TestProjectViews(unittest.TestCase):
         self.assertEqual('On Deadline', formated_reminders[0]['when'])
         self.assertEqual('Datasenders Without Submissions', formated_reminders[0]['to'])
 
-        self.assertEqual('2 days Before Deadline', formated_reminders[1]['when'])
+        self.assertEqual('2 day(s) Before Deadline', formated_reminders[1]['when'])
         self.assertEqual('All Datasenders', formated_reminders[1]['to'])
 
     def test_should_return_subject_project_links(self):
