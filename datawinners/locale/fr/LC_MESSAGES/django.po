@@ -5630,14 +5630,14 @@ msgstr "Avec DataWinners, vous pouvez envoyer des rappels à vos Expéditeurs qu
 msgid "Learn More About Submission Deadline & Reminders"
 msgstr "En savoir plus sur léchéance de Soumission et les rappels"
 
-msgid "Hello. We have not received your data yet for this month. Please send it to us within the next 2 days. Thank you."
-msgstr "Bonjour. Nous n’avons pas reçu vos données pour ce mois. Veuillez les envoyer dans les 2 prochains jours. Merci"
+msgid "Hello. We have not received your data yet for this period. Please send it to us within the next 2 days. Thank you."
+msgstr "Bonjour. Nous n’avons pas reçu vos données pour cette période. Veuillez les envoyer dans les 2 prochains jours. Merci"
 
-msgid "Hello. We have not received your data yet for this month. Please send it to us by the end of today. Thank you."
-msgstr "Bonjour. Nous n’avons pas reçu vos données pour ce mois. Veuillez les envoyer aujourd’hui avant la fin de la journée. Merci"
+msgid "Hello. We have not received your data yet for this period. Please send it to us by the end of today. Thank you."
+msgstr "Bonjour. Nous n’avons pas reçu vos données pour cette période. Veuillez les envoyer aujourd’hui avant la fin de la journée. Merci"
 
 msgid "day(s) after deadline"
 msgstr "jours après la date limite d'envoi"
 
 msgid "le_for_french"
-msgstr " le "
+msgstr "  le  "

@@ -66,7 +66,7 @@
                             <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-                    <div class="margin_left_130" data-bind="css: {'grey': !(reminder_before_deadline.enable())}">
+                    <div class="margin_left_130 reminder_section" data-bind="css: {'grey': !(reminder_before_deadline.enable())}">
                         <div class="bold">
                             <span>{% trans "Reminders" %}</span>
                             <select id="before_deadline"
@@ -85,8 +85,9 @@
                         <div class="validationMessage" data-bind="ifnot: reminder_before_deadline.is_valid">
                             <span class="validationText">{% trans "This field is required." %}</span>
                         </div>
+                        <span class="grey float_right">
                         <span class="bold" id="counter_for_reminder_before_deadline"
-                              data-bind="text:reminder_before_deadline.count"></span> {% trans " of 160 characters used" %}
+                              data-bind="text:reminder_before_deadline.count"></span> {% trans " of 160 characters used" %}</span>
                     </div>
                 </li>
                 <li class="margin_bottom_20">
@@ -96,7 +97,7 @@
                             <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-                    <div class="margin_left_130"  data-bind="css: {'grey': !(reminder_on_deadline.enable())}">
+                    <div class="margin_left_130 reminder_section"  data-bind="css: {'grey': !(reminder_on_deadline.enable())}">
                         <span class="bold">{% trans "Reminder on the day of the deadline" %}</span>
 
                         <div id="example_on_deadline" data-bind="text:reminder_on_deadline.next_date_as_string"></div>
@@ -109,8 +110,9 @@
                         <div class="validationMessage" data-bind="ifnot: reminder_on_deadline.is_valid">
                             <span class="validationText">{% trans "This field is required." %}</span>
                         </div>
-                        <span class="bold" id="counter_for_reminder_on_deadline"
-                              data-bind="text:reminder_on_deadline.count"></span> {% trans " of 160 characters used" %}
+                        <span class="grey float_righti">
+                            <span class="bold" id="counter_for_reminder_on_deadline"
+                                  data-bind="text:reminder_on_deadline.count"></span> {% trans " of 160 characters used" %} </span>
                     </div>
                 </li>
                 <li>
@@ -120,7 +122,7 @@
                             <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-                    <div class="margin_left_130"  data-bind="css: {'grey': !(reminder_after_deadline.enable())}">
+                    <div class="margin_left_130 reminder_section"  data-bind="css: {'grey': !(reminder_after_deadline.enable())}">
                         <div class="bold">
                             <span>{% trans "Reminders" %}</span>
                             <select id="after_deadline"
@@ -138,8 +140,9 @@
                         <div class="validationMessage" data-bind="ifnot: reminder_after_deadline.is_valid">
                             <span class="validationText">{% trans "This field is required." %}</span>
                         </div>
-                        <span class="bold" id="counter_for_reminder_after_deadline"
-                              data-bind="text:reminder_after_deadline.count"></span> {% trans " of 160 characters used" %}
+                        <span class="grey float_right">
+                            <span class="bold" id="counter_for_reminder_after_deadline"
+                                  data-bind="text:reminder_after_deadline.count"></span> {% trans " of 160 characters used" %} </span>
                     </div>
                 </li>
                 <br>

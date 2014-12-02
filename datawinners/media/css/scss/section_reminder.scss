@@ -1,3 +1,9 @@
+select {
+  width:75px;
+}
+select#before_deadline,select#after_deadline {
+    width: 50px;
+  }
 #new_reminder{
     input[type=text]{
         width:100px;
@@ -112,4 +118,11 @@ fieldset{
 
 .section_datasenders_to_send {
   margin-top: 10px;
+}
+
+.reminder_section {
+  width:612px;
+  textarea {
+    width:606px;
+  }
 }
