@@ -22,20 +22,22 @@ describe("Calculation for next deadline for reminders", function() {
         expect(monthly_reminder.get_display_string()).toEqual("31 January 2014");
     });
 
-//    it("should update example for next deadline(lastday + january) in reminder settings month", function () {
-//        sinon.useFakeTimers(new Date(2014,0,31).getTime());
-//        var monthly_reminder = new MonthlyReminder();
-//        expected_date = new Date(2014,1,28);
-//        monthly_reminder.calculate_deadline(0);
-//        expect(monthly_reminder.get_display_string()).toEqual("28 February 2014");
-//    });
-//
-//    it("should update example for next deadline(lastday + february) in reminder settings month", function () {
-//        sinon.useFakeTimers(new Date(2014,1,14).getTime());
-//        var monthly_reminder = new MonthlyReminder();
-//        expected_date = new Date(2014,1,28);
-//        monthly_reminder.calculate_deadline(0);
-//        expect(monthly_reminder.reminder_date).toEqual(expected_date);
+    it("should update example for next deadline(lastday + january) in reminder settings month", function () {
+        sinon.useFakeTimers(new Date(2014,0,31).getTime());
+        var monthly_reminder = new MonthlyReminder();
+        var expected_date = new Date(2014,1,28);
+        monthly_reminder.calculate_deadline(0);
+        expect(monthly_reminder.reminder_date).toEqual(expected_date);
+        expect(monthly_reminder.get_display_string()).toEqual("28 February 2014");
+    });
+
+    it("should update example for next deadline(lastday + february) in reminder settings month", function () {
+        sinon.useFakeTimers(new Date(2014,1,14).getTime());
+        var monthly_reminder = new MonthlyReminder();
+        var expected_date = new Date(2014,1,28);
+        monthly_reminder.calculate_deadline(0);
+        expect(monthly_reminder.reminder_date).toEqual(expected_date);
+        expect(monthly_reminder.get_display_string()).toEqual("28 February 2014");
     });
 
     it("should update example for next deadline in reminder settings week", function () {
