@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 import xlwt
 
-from datawinners.project.submission.export import export_filename, add_sheet_with_data
+from datawinners.project.submission.export import export_filename, add_sheet_with_data, zip_excel_workbook
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from datawinners.project.submission.formatter import SubmissionFormatter
@@ -26,8 +26,7 @@ class XFormSubmissionExporter(SubmissionExporter):
         wb = xlwt.Workbook()
         for sheet_name, header_row in headers.items():
             add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name)
-        wb.save(response)
-        return response
+        return zip_excel_workbook(wb, file_name)
 
 GEODCODE_FIELD_CODE = "geocode"
 FIELD_SET = "field_set"
@@ -49,8 +48,8 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         headers = self._format_tabular_data(self.columns, repeat_headers)
 
         formatted_values, formatted_repeats = [], {}
-        for i, row in enumerate(values):
-            result = self._format_row(row, i, formatted_repeats)
+        for i, row_dict in enumerate(values):
+            result = self._format_row(row_dict['_source'], i, formatted_repeats)
             if self.form_model.has_nested_fields:
                 result.append(i+1)
             formatted_values.append(result)

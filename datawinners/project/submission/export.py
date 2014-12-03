@@ -1,3 +1,7 @@
+from tempfile import NamedTemporaryFile
+import tempfile
+import zipfile
+from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
 import math
 import xlwt
@@ -20,6 +24,29 @@ def add_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix):
         sheet_number += 1
 
 
+def _create_zip_file(file_name_normalized, temporary_excel_file):
+    zip_file = tempfile.TemporaryFile()
+    archive = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED)
+    archive.write(temporary_excel_file.name, compress_type=zipfile.ZIP_DEFLATED,
+                  arcname="%s.xls" % file_name_normalized)
+    archive.close()
+    return zip_file
+
+
+def zip_excel_workbook(excel_workbook, file_name):
+    file_name_normalized = slugify(file_name)
+    temporary_excel_file = NamedTemporaryFile(suffix=".xls", delete=False)
+    excel_workbook.save(temporary_excel_file)
+    temporary_excel_file.flush()
+    temporary_excel_file.close()
+    zip_file = _create_zip_file(file_name_normalized, temporary_excel_file)
+    response = HttpResponse(FileWrapper(zip_file), content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="%s.zip"' % (file_name_normalized,)
+    response['Content-Length'] = zip_file.tell()
+    zip_file.seek(0)
+    return response
+
+
 def create_excel_response(headers, raw_data_list, file_name):
     response = HttpResponse(mimetype="application/vnd.ms-excel")
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
@@ -29,6 +56,13 @@ def create_excel_response(headers, raw_data_list, file_name):
 
     wb.save(response)
     return response
+
+
+def create_zipped_excel_response(headers, raw_data_list, file_name):
+    wb = xlwt.Workbook()
+    add_sheet_with_data(raw_data_list, headers, wb, 'data_log')
+    return zip_excel_workbook(wb, file_name)
+
 
 def export_filename(submission_type, project_name):
     suffix = submission_type + '_log' if submission_type else 'analysis'

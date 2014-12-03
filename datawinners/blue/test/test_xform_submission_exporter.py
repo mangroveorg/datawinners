@@ -19,10 +19,10 @@ class TestXFormSubmissionExporter(unittest.TestCase):
                                ('uuid1_city', {'type': 'text', 'label': 'City'}),
                                ('area', {'type': 'text', 'label': 'Area'})])
         # correct the question to represent correct hierarchy
-        submission_list = [{'uuid1_family': '[{"name": "ram", "age":"20"}, {"name": "shyam", "age":"25"}]',
-                            'ds_id': 'rep276', 'uuid1_city': 'Pune', 'area': '500'},
-                           {'uuid1_family': '[{"name": "maya", "age":"20"}, {"name": "rita", "age":"25"}]',
-                            'ds_id': 'rep277', 'uuid1_city': 'Bangalore', 'area': '800'}]
+        submission_list = [{"_source":{'uuid1_family': '[{"name": "ram", "age":"20"}, {"name": "shyam", "age":"25"}]',
+                            'ds_id': 'rep276', 'uuid1_city': 'Pune', 'area': '500'}},
+            {"_source":{'uuid1_family': '[{"name": "maya", "age":"20"}, {"name": "rita", "age":"25"}]',
+                            'ds_id': 'rep277', 'uuid1_city': 'Bangalore', 'area': '800'}}]
 
         expected_header = ['Datasender Id', 'City', 'Area','_index', '_parent_index']
         expected_family_header = ['Name', 'Age', '_index', '_parent_index']
@@ -44,7 +44,7 @@ class TestXFormSubmissionExporter(unittest.TestCase):
         form_model_mock = MagicMock(spec=FormModel)
 
         columns = OrderedDict([('uuid1_city', {'type': 'select', 'label': 'City'})])
-        submission_list = [{'uuid1_city': ['Bangalore','Pune']}]
+        submission_list = [{"_source":{'uuid1_city': ['Bangalore','Pune']}}]
 
         expected_header = ['City','_index', '_parent_index']
         main_submission_rows = [['Bangalore; Pune',1]]
