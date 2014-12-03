@@ -41,6 +41,13 @@ var get_last_day_of_next_month = function(date) {
     return last_day_of_next_month;
 };
 
+var get_last_day_of_month = function(date) {
+    var last_day_of_next_month = new Date(date.getTime());
+    last_day_of_next_month.setMonth(date.getMonth()+1);
+    last_day_of_next_month.setDate(0);
+    return last_day_of_next_month;
+};
+
 Date.prototype.convert_to_month_name = function () {
     month_number = this.getMonth();
     this.month_name =  month_name_map[month_number];
@@ -104,19 +111,16 @@ function MonthlyReminder(){
         var current_date = new Date();
         var next_deadline = new Date();
         var lastdays_of_feb = [29, 30];
-//        if (selected_day <= current_date.getDate()) {
-//            next_deadline.setMonth(next_deadline.getMonth() + 1);
-//        }
         if(next_deadline.getMonth() == 1 && lastdays_of_feb.indexOf(selected_day)!=-1){
-            next_deadline.setMonth(2);
-            next_deadline.setDate(0);
+            next_deadline.setMonth(1);
+            next_deadline = get_last_day_of_month(next_deadline);
             self.reminder_date = next_deadline;
             return;
         }
-        next_deadline.setDate(selected_day);
-        if(is_last_day_of_month(current_date) && selected_day==0){
-            next_deadline = get_last_day_of_next_month(current_date);
+        if(selected_day==0){
+            next_deadline = is_last_day_of_month(current_date) ? get_last_day_of_next_month(current_date):get_last_day_of_month(next_deadline)
         }
+        else      next_deadline.setDate(selected_day);
         self.reminder_date = next_deadline;
     };
     self.get_display_string = function(){
