@@ -49,7 +49,7 @@
             <legend>{% trans "Reminders" %}</legend>
             <div class="border_bottom_color"></div>
             <div class="font_style italic_grey">{% trans 'Send automatic SMS reminders to your registered Data Senders.' %}
-                <a data-bind="click:open,css: {'disable_link': is_reminder_disabled}, disable: is_reminder_disabled">{% trans "Learn more" %}</a>
+                <a data-bind="click:open,css: {'disable_link': is_reminder_disabled}, disable: is_reminder_disabled">{% trans "Learn More" %}</a>
 
                 <div class="dialog" data-bind="dialog: {autoOpen: false, width:1000,
                                                         title:'Learn More About Submission Deadline & Reminders', height: 723 },
@@ -110,7 +110,7 @@
                         <div class="validationMessage" data-bind="ifnot: reminder_on_deadline.is_valid">
                             <span class="validationText">{% trans "This field is required." %}</span>
                         </div>
-                        <span class="grey float_righti">
+                        <span class="grey float_right">
                             <span class="bold" id="counter_for_reminder_on_deadline"
                                   data-bind="text:reminder_on_deadline.count"></span> {% trans " of 160 characters used" %} </span>
                     </div>

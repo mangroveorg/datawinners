@@ -66,6 +66,7 @@ function ReminderInstance() {
     self.multiplier = 0;
     self.next_reminder_date = new MonthlyReminder();
     self.is_modified = ko.observable(false);
+    self.next_deadline_date = new Date();
     self.is_valid = ko.computed(function(){
         return !(self.enable() && self.text().length <= 0)
     });
@@ -73,11 +74,9 @@ function ReminderInstance() {
         self.is_modified(true);
         return self.text().length;
     }, this);
-    self.number_of_days.subscribe(function(){
-        self.next_reminder_date.reminder_date = add_days(self.next_reminder_date.reminder_date, self.multiplier * -1 * self.number_of_days())
-    },self,'beforeChange');
 
     self.number_of_days.subscribe(function(){
+        self.next_reminder_date.reminder_date = self.next_deadline_date;
         self.update_example(self.next_reminder_date);
     });
 
@@ -90,9 +89,9 @@ function ReminderInstance() {
     });
 
     self.update_example = function (next_deadline) {
+        self.next_deadline_date = next_deadline.reminder_date;
         var next_reminder_date = next_deadline.get_new_instance();
-        next_reminder_date.reminder_date = add_days(next_deadline.reminder_date, self.multiplier * self.number_of_days());
-        next_reminder_date.shift_to_next_deadline();
+        next_reminder_date.update_date(next_deadline.reminder_date, self.multiplier,self.number_of_days());
         self.next_reminder_date = next_reminder_date;
         self.enable.valueHasMutated();
     };
@@ -121,17 +120,29 @@ function MonthlyReminder(){
         self.reminder_date = next_deadline;
     };
     self.get_display_string = function(){
-        var next_deadline = self.reminder_date;
+        var next_deadline = new Date (self.reminder_date.getTime());
+//        var current_date = new Date();
+//        if (next_deadline.getDate() <= current_date.getDate()) {
+//            next_deadline.setMonth(next_deadline.getMonth() + 1);
+//        }
         next_deadline.convert_to_month_name();
         return next_deadline.getDate() + " " + next_deadline.month_name + " " + next_deadline.getFullYear();
     };
     self.get_new_instance = function(){
         return new MonthlyReminder();
     };
-    self.shift_to_next_deadline = function(){
+    self.update_date = function (next_deadline_date, multiplier, number_of_days) {
+        var next_date = add_days(next_deadline_date, multiplier * number_of_days);
         var current_date = new Date();
-        if(self.reminder_date <= current_date) self.reminder_date.setMonth(current_date.getMonth()+1);
-    }
+        if (next_date <= current_date) {
+            var next_month_date = new Date(next_deadline_date.getTime());
+            next_month_date.setMonth(self.reminder_date.getMonth() + 1);
+            self.update_date(next_month_date, multiplier, number_of_days)
+        }
+        else {
+            self.reminder_date = next_date;
+        }
+    };
 }
 
 function WeeklyReminder(){
@@ -156,6 +167,16 @@ function WeeklyReminder(){
     self.get_new_instance = function(){
         return new WeeklyReminder();
     };
+    self.update_date = function (next_deadline_date, multiplier, number_of_days) {
+        var next_date = add_days(next_deadline_date, multiplier * number_of_days);
+        var current_date = new Date();
+        if (next_date <= current_date) {
+            var next_week_date = add_days(next_deadline_date, 7);
+            self.update_date(next_week_date, multiplier, number_of_days)
+        }
+        else self.reminder_date = next_date;
+    };
+
     self.shift_to_next_deadline = function(){
         var current_date = new Date();
         if(self.reminder_date <= current_date) self.reminder_date = add_days(self.reminder_date, 7);
@@ -203,16 +224,16 @@ function ReminderSettingsModel() {
         return self.reminder_before_deadline.is_modified() || self.reminder_after_deadline.is_modified() || self.reminder_on_deadline.is_modified();
     });
 
-    self.next_deadline = ko.computed(function(){
+    self.next_deadline_date = ko.computed(function(){
         return self.selected_frequency() == 'month'? new MonthlyReminder():new WeeklyReminder();
-    });
+    }).extend({ throttle: 20 });
 
     self.update_example = function(){
-        self.next_deadline().calculate_deadline(self.select_day());
-        self.next_deadline_string(gettext("Next deadline: ") + self.next_deadline().get_display_string());
-        self.reminder_before_deadline.update_example(self.next_deadline());
-        self.reminder_on_deadline.update_example(self.next_deadline());
-        self.reminder_after_deadline.update_example(self.next_deadline());
+        self.next_deadline_date().calculate_deadline(self.select_day());
+        self.next_deadline_string(gettext("Next deadline: ") + self.next_deadline_date().get_display_string());
+        self.reminder_before_deadline.update_example(self.next_deadline_date());
+        self.reminder_on_deadline.update_example(self.next_deadline_date());
+        self.reminder_after_deadline.update_example(self.next_deadline_date());
         self.is_modified(true);
         self.is_deadline_date_changed = true;
     };
@@ -220,7 +241,7 @@ function ReminderSettingsModel() {
         self.update_example();
     }, this);
 
-    self.next_deadline.subscribe(function () {
+    self.next_deadline_date.subscribe(function () {
         self.update_example();
     }, this);
 
@@ -289,6 +310,7 @@ function ReminderSettingsModel() {
         reminder_data['select_day'] = self.select_day();
         reminder_data['whom_to_send_message'] = self.whom_to_send_message();
     };
+
     self.reset_reminders = function(){
         self.reminder_before_deadline.text(reminder_data['reminder_text_before_deadline']);
         self.reminder_after_deadline.text(reminder_data['reminder_text_after_deadline']);
@@ -386,6 +408,7 @@ $(document).ready(function() {
     var deadline_changed = false;
     var viewModel = new ReminderSettingsModel();
     viewModel.initialize();
+    vm = viewModel
     var options = {
         successCallBack:function(callback){
             viewModel.save_reminders(callback);
