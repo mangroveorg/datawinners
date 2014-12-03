@@ -104,9 +104,9 @@ function MonthlyReminder(){
         var current_date = new Date();
         var next_deadline = new Date();
         var lastdays_of_feb = [29, 30];
-        if (selected_day <= current_date.getDate()) {
-            next_deadline.setMonth(next_deadline.getMonth() + 1);
-        }
+//        if (selected_day <= current_date.getDate()) {
+//            next_deadline.setMonth(next_deadline.getMonth() + 1);
+//        }
         if(next_deadline.getMonth() == 1 && lastdays_of_feb.indexOf(selected_day)!=-1){
             next_deadline.setMonth(2);
             next_deadline.setDate(0);
@@ -121,10 +121,10 @@ function MonthlyReminder(){
     };
     self.get_display_string = function(){
         var next_deadline = new Date (self.reminder_date.getTime());
-//        var current_date = new Date();
-//        if (next_deadline.getDate() <= current_date.getDate()) {
-//            next_deadline.setMonth(next_deadline.getMonth() + 1);
-//        }
+        var current_date = new Date();
+        if (next_deadline <= current_date) {
+            next_deadline.setMonth(next_deadline.getMonth() + 1);
+        }
         next_deadline.convert_to_month_name();
         return next_deadline.getDate() + " " + next_deadline.month_name + " " + next_deadline.getFullYear();
     };
@@ -151,16 +151,21 @@ function WeeklyReminder(){
     self.calculate_deadline = function(selected_day){
         var current_date = new Date();
         var next_deadline = new Date();
-        if (selected_day % 7 <= current_date.getDay()) {
-            next_deadline = add_days(current_date, 7 - (current_date.getDay() - (selected_day % 7)));
-        }
-        else {
+//        if (selected_day % 7 <= current_date.getDay()) {
+//            next_deadline = add_days(current_date, 7 - (current_date.getDay() - (selected_day % 7)));
+//        }
+//        else {
             next_deadline = add_days(current_date, ((selected_day % 7) - current_date.getDay()));
-        }
+//        }
         self.reminder_date = next_deadline;
     };
     self.get_display_string = function(){
-        var next_deadline = self.reminder_date;
+//        var next_deadline = self.reminder_date;
+        var next_deadline = new Date (self.reminder_date.getTime());
+        var current_date = new Date();
+        if (next_deadline.getDate() <= current_date.getDate()) {
+            next_deadline = add_days(next_deadline, 7);
+        }
         next_deadline.convert_to_month_name();
         return item_map_week[next_deadline.getDay()]+", "+ next_deadline.getDate() + " " + next_deadline.month_name + " " + next_deadline.getFullYear();
     };
