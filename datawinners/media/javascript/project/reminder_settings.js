@@ -160,10 +160,9 @@ function WeeklyReminder(){
         self.reminder_date = next_deadline;
     };
     self.get_display_string = function(){
-//        var next_deadline = self.reminder_date;
         var next_deadline = new Date (self.reminder_date.getTime());
         var current_date = new Date();
-        if (next_deadline.getDate() <= current_date.getDate()) {
+        if (next_deadline <= current_date) {
             next_deadline = add_days(next_deadline, 7);
         }
         next_deadline.convert_to_month_name();
@@ -231,7 +230,7 @@ function ReminderSettingsModel() {
 
     self.next_deadline_date = ko.computed(function(){
         return self.selected_frequency() == 'month'? new MonthlyReminder():new WeeklyReminder();
-    }).extend({ throttle: 20 });
+    });
 
     self.update_example = function(){
         self.next_deadline_date().calculate_deadline(self.select_day());
@@ -252,6 +251,7 @@ function ReminderSettingsModel() {
 
     self.save_reminders = function (callback) {
         if (!(self.reminder_before_deadline.is_valid() && self.reminder_on_deadline.is_valid() && self.reminder_after_deadline.is_valid())) return;
+        if(!(self.is_modified() || self.is_reminders_modified())) return;
         var post_data = {
             'should_send_reminders_before_deadline': self.reminder_before_deadline.enable(),
             'should_send_reminders_on_deadline': self.reminder_on_deadline.enable(),

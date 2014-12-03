@@ -187,9 +187,8 @@
     <div class="right_aligned_button margin_right_4">
         <a id="cancel" class="margin_right_30"
            data-bind="click:cancel_changes, css: {'disable_link': should_not_save}, disable:  should_not_save">{% trans "Cancel Changes" %}</a>
-        <input id="submit-button" data-bind="click:save_reminders, css: {'disabled_button': should_not_save, 'button':!(should_not_save())}"
-               type="submit"
-               value="{% trans 'Save' %}" {% if is_reminder_disabled %}disabled="disabled" {% endif %}/>
+        <a id="submit-button" data-bind="click:save_reminders, css: {'ui-state-disabled': should_not_save}" class ="button"
+               type="submit" {% if is_reminder_disabled %}disabled="disabled" {% endif %}> {% trans 'Save' %} </a>
     </div>
     <div id="cancel_reminder_changes" style="display: none;">
         {% trans "Do you want to save the changes before leaving this page?" %}<br/>
