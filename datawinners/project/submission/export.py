@@ -40,7 +40,7 @@ def zip_excel_workbook(excel_workbook, file_name):
     temporary_excel_file.flush()
     temporary_excel_file.close()
     zip_file = _create_zip_file(file_name_normalized, temporary_excel_file)
-    response = HttpResponse(FileWrapper(zip_file), content_type='application/zip')
+    response = HttpResponse(FileWrapper(zip_file, blksize=8192000), content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename="%s.zip"' % (file_name_normalized,)
     response['Content-Length'] = zip_file.tell()
     zip_file.seek(0)
