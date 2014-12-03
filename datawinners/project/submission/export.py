@@ -1,8 +1,12 @@
+import logging
 from django.http import HttpResponse
 import math
+import resource
 import xlwt
 from datawinners import utils
 from django.template.defaultfilters import slugify
+
+logger = logging.getLogger("datawinners")
 
 
 def add_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix):
@@ -28,6 +32,9 @@ def create_excel_response(headers, raw_data_list, file_name):
     add_sheet_with_data(raw_data_list, headers, wb, 'data_log')
 
     wb.save(response)
+
+    logger.error('Memory before response: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+
     return response
 
 def export_filename(submission_type, project_name):
