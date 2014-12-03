@@ -38,14 +38,15 @@ class SubmissionFormatter(object):
     def _format_row(self, row):
         result = []
         for field_code in self.columns.keys():
+            field = row.get(field_code)
             try:
 
                 parsed_value = ""
-                if row.get(field_code):
-                    parsed_value = '; '.join(row.get(field_code)) if isinstance(row.get(field_code), list) else row.get(
-                        field_code)
+                if field:
+                    parsed_value = '; '.join(field) if isinstance(field, list) else field
 
-                if self.columns[field_code].get("type") == "date" or field_code == "date":
+                field_type = intern(self.columns[field_code].get("type"))
+                if field_type == "date" or field_code == "date":
                     date_format = self.columns[field_code].get("format")
                     date_value_str = row[field_code]
 
@@ -56,23 +57,23 @@ class SubmissionFormatter(object):
                             date_value = datetime.strptime(date_value_str, DateField.DATE_DICTIONARY.get(date_format))
                         col_val = ExcelDate(date_value, date_format or "submission_date")
                     except ValueError:
-                        col_val = row.get(field_code) or ""
+                        col_val = field or ""
                     result.append(col_val)
-                elif self.columns[field_code].get("type") == GEODCODE_FIELD_CODE:
+                elif field_type == intern(GEODCODE_FIELD_CODE):
                     col_val = self._split_gps(parsed_value)
                     result.extend(col_val)
-                elif self.columns[field_code].get("type") == 'select':
+                elif field_type == 'select':
                     result.append(parsed_value)
-                elif self.columns[field_code].get("type") == 'integer':
+                elif field_type == 'integer':
                     col_val_parsed = try_parse(float, parsed_value)
                     result.append(col_val_parsed)
-                elif field_code == SubmissionIndexConstants.DATASENDER_ID_KEY and row.get(field_code) == 'N/A':
+                elif field_code == intern(SubmissionIndexConstants.DATASENDER_ID_KEY) and field == 'N/A':
                     col_val = ""
                     result.append(col_val)
                 else:
                     result.append(parsed_value)
             except Exception:
-                col_val = row.get(field_code) or ""
+                col_val = field or ""
                 result.extend(col_val)
 
         return result
