@@ -49,11 +49,11 @@ describe("Calculation for next deadline for reminders", function() {
     });
 
     it("should update example for next deadline in reminder settings week", function () {
-        var monthly_reminder = new WeeklyReminder();
+        var weekly_reminder = new WeeklyReminder();
         sinon.useFakeTimers(new Date(2015,0,1).getTime());
         expected_date = new Date(2015,0,8);
-        monthly_reminder.calculate_deadline(4);
-        expect(monthly_reminder.get_display_string()).toEqual("Thursday, 8 January 2015");
+        weekly_reminder.calculate_deadline(4);
+        expect(weekly_reminder.get_display_string()).toEqual("Thursday, 8 January 2015");
     });
 
     it("should throw an error when reminder message is empty ", function () {
@@ -63,5 +63,42 @@ describe("Calculation for next deadline for reminders", function() {
 
         expect(reminder.is_valid()).toEqual(false);
     });
+
+    it("should update the example for date greater than the current date to current month", function () {
+        sinon.useFakeTimers(new Date(2014,11,4).getTime());
+        var monthly_reminder = new MonthlyReminder();
+        var reminder_view_model = new ReminderSettingsModel();
+        expected_date = new Date(2014,11,7);
+        monthly_reminder.calculate_deadline(7);
+        expect(monthly_reminder.reminder_date).toEqual(expected_date);
+        expect(monthly_reminder.get_display_string()).toEqual("7 December 2014");
+    });
+
+    it("should update the example for date lesser than the current date to next month", function () {
+        sinon.useFakeTimers(new Date(2014,11,4).getTime());
+        var monthly_reminder = new MonthlyReminder();
+        var reminder_view_model = new ReminderSettingsModel();
+        expected_date = new Date(2015,0,2);
+        monthly_reminder.calculate_deadline(2);
+        expect(monthly_reminder.get_display_string()).toEqual("2 January 2015");
+    });
+
+    it("should update the example for day greater than the current day to current week", function () {
+        sinon.useFakeTimers(new Date(2014,11,4).getTime());
+        var weekly_reminder = new WeeklyReminder();
+        var reminder_view_model = new ReminderSettingsModel();
+        expected_date = new Date(2015,11,6);
+        weekly_reminder.calculate_deadline(6);
+        expect(weekly_reminder.get_display_string()).toEqual("Saturday, 6 December 2014");
+    });
+
+    it("should update the example for day lesser than the current day to next week", function () {
+        sinon.useFakeTimers(new Date(2014,11,4).getTime());
+        var weekly_reminder = new WeeklyReminder();
+        expected_date = new Date(2015,11,9);
+        weekly_reminder.calculate_deadline(2);
+        expect(weekly_reminder.get_display_string()).toEqual("Tuesday, 9 December 2014");
+    });
+
 });
 
