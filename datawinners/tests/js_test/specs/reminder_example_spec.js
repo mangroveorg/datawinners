@@ -100,5 +100,73 @@ describe("Calculation for next deadline for reminders", function() {
         expect(weekly_reminder.get_display_string()).toEqual("Tuesday, 9 December 2014");
     });
 
+    it("should update the next deadline example when month is changed to week", function () {
+        sinon.useFakeTimers(new Date(2014,11,4).getTime());
+        var reminder_view_model = new ReminderSettingsModel();
+
+        reminder_view_model.selected_frequency('month') ;
+        reminder_view_model.select_day(6);
+        expected_date_for_month = new Date(2014,11,6);
+        expect(reminder_view_model.next_deadline_date().reminder_date).toEqual(expected_date_for_month);
+        expect(reminder_view_model.next_deadline_string()).toEqual("Next deadline: 6 December 2014");
+
+        reminder_view_model.selected_frequency('week');
+        reminder_view_model.select_day(5);
+        expected_date_for_week = new Date(2014,11,5);
+        expect(reminder_view_model.next_deadline_date().reminder_date).toEqual(expected_date_for_week);
+        expect(reminder_view_model.next_deadline_string()).toEqual("Next deadline: Friday, 5 December 2014");
+    });
+
+    it("should update the next deadline example when week is changed to month", function () {
+        sinon.useFakeTimers(new Date(2014,11,4).getTime());
+        var reminder_view_model = new ReminderSettingsModel();
+
+        reminder_view_model.selected_frequency('week') ;
+        reminder_view_model.select_day(5);
+        expected_date_for_month = new Date(2014,11,5);
+        expect(reminder_view_model.next_deadline_date().reminder_date).toEqual(expected_date_for_month);
+        expect(reminder_view_model.next_deadline_string()).toEqual("Next deadline: Friday, 5 December 2014");
+
+        reminder_view_model.selected_frequency('month');
+        reminder_view_model.select_day(5);
+        expected_date_for_week = new Date(2014,11,5);
+        expect(reminder_view_model.next_deadline_date().reminder_date).toEqual(expected_date_for_week);
+        expect(reminder_view_model.next_deadline_string()).toEqual("Next deadline: 5 December 2014");
+    });
+
+
+    it("should update the before deadline example when month is selected", function () {
+        sinon.useFakeTimers(new Date(2014,11,4).getTime());
+
+        var reminder_view_model = new ReminderSettingsModel();
+
+        var reminderBeforeDeadlineMonth = reminder_view_model.reminder_before_deadline;
+        reminderBeforeDeadlineMonth.multiplier = -1;
+        reminder_view_model.selected_frequency('month');
+        reminder_view_model.select_day(5);
+        reminderBeforeDeadlineMonth.enable(true);
+        reminderBeforeDeadlineMonth.number_of_days(7);
+
+        expect(reminder_view_model.next_deadline_string()).toEqual("Next deadline: 5 December 2014");
+        expect(reminder_view_model.reminder_before_deadline.next_date_as_string()).toEqual("Next scheduled Reminder: 29 December 2014");
+
+    });
+
+    it("should update the before deadline example when month is selected", function () {
+        sinon.useFakeTimers(new Date(2014,11,4).getTime());
+
+        var reminder_view_model = new ReminderSettingsModel();
+
+        var reminderBeforeDeadline = reminder_view_model.reminder_before_deadline;
+        reminderBeforeDeadline.multiplier = -1;
+        reminder_view_model.selected_frequency('week');
+        reminder_view_model.select_day(5);
+        reminderBeforeDeadline.enable(true);
+        reminderBeforeDeadline.number_of_days(3);
+
+        expect(reminder_view_model.next_deadline_string()).toEqual("Next deadline: Friday, 5 December 2014");
+        expect(reminder_view_model.reminder_before_deadline.next_date_as_string()).toEqual("Next scheduled Reminder: Tuesday, 9 December 2014");
+
+    });
 });
 
