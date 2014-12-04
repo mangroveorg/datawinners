@@ -75,7 +75,7 @@ def custom_reset_password(request):
 
 def _get_timezone_information(organization):
     timedelta = get_country_time_delta(organization.country)
-    localized_time = convert_utc_to_localized(timedelta, datetime.datetime.now())
+    localized_time = convert_utc_to_localized(timedelta, datetime.datetime.utcnow())
     timedelta_as_string = "%s%.2d:%.2d" % (timedelta[0], timedelta[1], timedelta[2])
     return ugettext("(GMT%s) Now it is: %s" % (timedelta_as_string, datetime.datetime.strftime(localized_time, "%H:%M %p")))
 
