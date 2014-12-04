@@ -187,7 +187,7 @@ def reminder_settings(request, project_id):
     active_language = request.LANGUAGE_CODE
     org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
     organization = Organization.objects.get(org_id=org_id)
-    is_reminder_enabled = is_empty(questionnaire.data_senders)
+    is_reminder_disabled = is_empty(questionnaire.data_senders)
     url_to_my_datasender = project_links['registered_datasenders_link']
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
     if request.method == 'GET':
@@ -199,7 +199,7 @@ def reminder_settings(request, project_id):
                                    'project': questionnaire,
                                    'reminder_data': repr(json.dumps(data)),
                                    'questionnaire_code': questionnaire.form_code,
-                                   'is_reminder_enabled': is_reminder_enabled,
+                                   'is_reminder_disabled': is_reminder_disabled,
                                    'active_language': active_language,
                                    'no_of_my_datasenders': len(questionnaire.data_senders),
                                    'url_to_my_datasender': url_to_my_datasender,
@@ -252,7 +252,7 @@ def _reminder_info_about_project(project):
         else:
             data['should_send_reminders_before_deadline'] = False
             data['number_of_days_before_deadline'] = 2
-            data['reminder_text_before_deadline'] = ugettext("Hello. We have not received your data yet for this month. Please send it to us within the next 2 days. Thank you.")
+            data['reminder_text_before_deadline'] = ugettext("Hello. We have not received your data yet for this period. Please send it to us within the next 2 days. Thank you.")
 
         reminder_on_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.ON_DEADLINE, project_id=project.id)
         if reminder_on_deadline.count() > 0:
@@ -271,7 +271,7 @@ def _reminder_info_about_project(project):
         else:
             data['should_send_reminders_after_deadline'] = False
             data['number_of_days_after_deadline'] = 2
-            data['reminder_text_after_deadline'] = ugettext("Hello. We have not received your data yet for this month. Please send it to us by the end of today. Thank you.")
+            data['reminder_text_after_deadline'] = ugettext("Hello. We have not received your data yet for this period. Please send it to us by the end of today. Thank you.")
 
     data['whom_to_send_message'] = not deadline_information['should_send_reminder_to_all_ds']
 

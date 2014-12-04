@@ -193,6 +193,7 @@ ko.bindingHandlers.dialog = {
                     allBindingsAccessor().dialogVisible(false);
                 };
                 options.title = gettext(options.title);
+                options.modal = true;
                 $(element).dialog(options);
             }, 0);
 

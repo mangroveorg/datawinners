@@ -849,11 +849,11 @@ msgid ".Please send it to us today. Thank you."
 msgstr ". Veuillez l'envoyer aujourd'hui. Merci."
 
 #: media/javascript/project/reminders.js:24
-msgid " days before deadline"
+msgid " day(s) before deadline"
 msgstr " jours avant la date limite d'envoi"
 
 #: media/javascript/project/reminders.js:26
-msgid " days after deadline"
+msgid " day(s) after deadline"
 msgstr " jours après la date limite d'envoi"
 
 #: media/javascript/project/reminders.js:28

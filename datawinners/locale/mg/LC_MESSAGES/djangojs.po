@@ -234,10 +234,10 @@ msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour"
 msgid ".Please send it to us today. Thank you."
 msgstr ". Veuillez l'envoyer aujourd'hui. Merci."
 
-msgid " days before deadline"
+msgid " day(s) before deadline"
 msgstr " jours avant la date limite d'envoi"
 
-msgid " days after deadline"
+msgid " day(s) after deadline"
 msgstr " jours après la date limite d'envoi"
 
 msgid "On the deadline"

@@ -141,6 +141,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "xform": xform,
             "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253, # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
+            "is_account_with_large_number_of_submissions": _is_account_with_large_submissions(manager),
             "first_filterable_field": first_filterable_fields,
             "filterable_fields": filterable_fields
         }
@@ -149,6 +150,10 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
         return render_to_response('project/submission_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
+
+
+def _is_account_with_large_submissions(dbm):
+    return dbm.database_name == 'hni_usaid-mikolo_lei526034'
 
 @login_required
 @session_not_expired
@@ -174,6 +179,7 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
                 "is_quota_reached": is_quota_reached(request, org_id=org_id),
                 "first_filterable_field": first_filterable_fields,
                 "filterable_fields": filterable_fields,
+                "is_account_with_large_number_of_submissions": _is_account_with_large_submissions(manager),
                 "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253, # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
               }
         result_dict.update(project_info(request, questionnaire, questionnaire_code))

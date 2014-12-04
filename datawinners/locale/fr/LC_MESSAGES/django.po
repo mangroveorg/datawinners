@@ -265,7 +265,7 @@ msgstr "Envoyé avec succès"
 msgid "No deadline. Senders can submit data any time."
 msgstr "Pas de date limite. Les expéditeurs peuvent soumettre des données à tout moment."
 
-msgid "days before deadline"
+msgid "day(s) before deadline"
 msgstr "jours avant la date de l'échéance"
 
 msgid "The day of the deadline"
@@ -5612,8 +5612,8 @@ msgstr "Voir la liste des Expéditeurs de Données"
 msgid "Submission Deadline"
 msgstr "Echéance de soumission"
 
-msgid "Send automatic SMS reminders to your registered Data Senders"
-msgstr "Envoyez des rappels SMS automatiques à vos Expéditeurs de Données enregistrés"
+msgid "Send automatic SMS reminders to your registered Data Senders."
+msgstr "Envoyez des rappels SMS automatiques à vos Expéditeurs de Données enregistrés."
 
 msgid "Reminder on the day of the deadline"
 msgstr "Rappel le jour de l'échéance"
@@ -5630,14 +5630,17 @@ msgstr "Avec DataWinners, vous pouvez envoyer des rappels à vos Expéditeurs qu
 msgid "Learn More About Submission Deadline & Reminders"
 msgstr "En savoir plus sur léchéance de Soumission et les rappels"
 
-msgid "Hello. We have not received your data yet for this month. Please send it to us within the next 2 days. Thank you."
-msgstr "Bonjour. Nous n’avons pas reçu vos données pour ce mois. Veuillez les envoyer dans les 2 prochains jours. Merci"
+msgid "Hello. We have not received your data yet for this period. Please send it to us within the next 2 days. Thank you."
+msgstr "Bonjour. Nous n’avons pas reçu vos données pour cette période. Veuillez les envoyer dans les 2 prochains jours. Merci"
 
-msgid "Hello. We have not received your data yet for this month. Please send it to us by the end of today. Thank you."
-msgstr "Bonjour. Nous n’avons pas reçu vos données pour ce mois. Veuillez les envoyer aujourd’hui avant la fin de la journée. Merci"
+msgid "Hello. We have not received your data yet for this period. Please send it to us by the end of today. Thank you."
+msgstr "Bonjour. Nous n’avons pas reçu vos données pour cette période. Veuillez les envoyer aujourd’hui avant la fin de la journée. Merci"
 
-msgid "days after deadline"
+msgid "day(s) after deadline"
 msgstr "jours après la date limite d'envoi"
 
 msgid "le_for_french"
-msgstr " le "
+msgstr "  le  "
+
+msgid "large submission export"
+msgstr "L’exportation est limitée à un maximum de 10.000 soumissions à la fois.</br>Veuillez utiliser les filtres pour gérer le nombre de soumissions à exporter."

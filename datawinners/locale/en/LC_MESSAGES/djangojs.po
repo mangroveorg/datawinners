@@ -840,11 +840,11 @@ msgid ".Please send it to us today. Thank you."
 msgstr ""
 
 #: media/javascript/project/reminders.js:24
-msgid " days before deadline"
+msgid " day(s) before deadline"
 msgstr ""
 
 #: media/javascript/project/reminders.js:26
-msgid " days after deadline"
+msgid " day(s) after deadline"
 msgstr ""
 
 #: media/javascript/project/reminders.js:28

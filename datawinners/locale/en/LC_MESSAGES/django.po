@@ -235,7 +235,7 @@ msgstr ""
 msgid "No deadline. Senders can submit data any time."
 msgstr ""
 
-msgid "days before deadline"
+msgid "day(s) before deadline"
 msgstr ""
 
 msgid "The day of the deadline"
@@ -4782,4 +4782,7 @@ msgid "help_text_week"
 msgstr "With DataWinners you can send reminders up to 3 days before and after your weekly deadline to your registered Data Senders who have not yet submitted data. All Reminders are sent out around 8:00 AM EAT"
 
 msgid "le_for_french"
-msgstr " "
+msgstr "  on  "
+
+msgid "large submission export"
+msgstr "Exports are limited to a maximum of 10,000 submissions at a time.</br> Use filters to manage the number of submissions to export."

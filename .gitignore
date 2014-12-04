@@ -76,3 +76,4 @@ datawinners/celery
 
 # Generated css files
 datawinners/media/css/scss/*.css
+datawinners/media/css/scss/*.css.map

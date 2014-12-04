@@ -110,8 +110,8 @@ class ReminderForm(Form):
                                 required=False)
 
     should_send_reminders_before_deadline = BooleanField(required=False, initial=False, widget=forms.CheckboxInput(attrs={"hidden": True}))
-    number_of_days_before_deadline_month = ChoiceField(choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 8)])), label=ugettext_lazy("days before deadline"), required=False)
-    number_of_days_before_deadline_week = ChoiceField(choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 4)])), label=ugettext_lazy("days before deadline"), required=False)
+    number_of_days_before_deadline_month = ChoiceField(choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 8)])), label=ugettext_lazy("day(s) before deadline"), required=False)
+    number_of_days_before_deadline_week = ChoiceField(choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 4)])), label=ugettext_lazy("day(s) before deadline"), required=False)
     reminder_text_before_deadline = CharField(label=ugettext_lazy("Reminder text before deadline"),
                                               widget=forms.Textarea, required=False)
 
@@ -119,9 +119,9 @@ class ReminderForm(Form):
     reminder_text_on_deadline = CharField(label=ugettext_lazy("Reminder text on deadline"),widget=forms.Textarea,
                                           required=False)
 
-    should_send_reminders_after_deadline = BooleanField(label=ugettext_lazy("days after the deadline"), required=False, initial=False, widget=forms.CheckboxInput(attrs={"hidden": True}))
-    number_of_days_after_deadline_month = ChoiceField(choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 8)])), label=ugettext_lazy("days after deadline"), required=False)
-    number_of_days_after_deadline_week = ChoiceField(choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 4)])), label=ugettext_lazy("days after deadline"), required=False)
+    should_send_reminders_after_deadline = BooleanField(label=ugettext_lazy("day(s) after the deadline"), required=False, initial=False, widget=forms.CheckboxInput(attrs={"hidden": True}))
+    number_of_days_after_deadline_month = ChoiceField(choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 8)])), label=ugettext_lazy("day(s) after deadline"), required=False)
+    number_of_days_after_deadline_week = ChoiceField(choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 4)])), label=ugettext_lazy("day(s) after deadline"), required=False)
     reminder_text_after_deadline = CharField(label=ugettext_lazy("Reminder text after deadline"), widget=forms.Textarea,
                                              required=False)
 
