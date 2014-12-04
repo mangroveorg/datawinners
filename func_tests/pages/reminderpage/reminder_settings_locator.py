@@ -42,7 +42,7 @@ NUMBER_OF_DAYS_AFTER_DEADLINE_TB = by_css("input#id_number_of_days_after_deadlin
 AFTER_DEADLINE_REMINDER_TB = by_css("textarea#id_should_send_reminders_after_deadline")
 
 ONLY_DATASENDERS_NOT_SUBMITTED_CB = by_css("input#id_whom_to_send_message")
-SAVE_BUTTON = by_css("input[value='Save']")
+SAVE_BUTTON = by_css("#submit-button")
 
 SUCCESS_MESSAGE_LABEL = by_xpath("//div[@class='success-message-box reminder-success']")
 SMS_TEXT_COUNTER = "counter_for_reminder_%s_deadline"
