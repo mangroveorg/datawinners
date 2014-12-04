@@ -45,7 +45,7 @@ class SubmissionFormatter(object):
                 if field:
                     parsed_value = '; '.join(field) if isinstance(field, list) else field
 
-                field_type = intern(self.columns[field_code].get("type"))
+                field_type = self.columns[field_code].get("type")
                 if field_type == "date" or field_code == "date":
                     date_format = self.columns[field_code].get("format")
                     date_value_str = row[field_code]
