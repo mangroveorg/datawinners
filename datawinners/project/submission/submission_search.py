@@ -62,9 +62,6 @@ def _add_unique_id_filters(form_model, unique_id_filters, search):
                                  question.unique_id_type == uniqueIdType]:
                     es_field_code = es_unique_id_code_field_name(
                         es_questionnaire_field_name(question.code, form_model.id)) + "_exact"
-                    # if not unique_id_filters:
-                    #     unique_id_filters = F("term", **{es_field_code: uniqueIdFilter})
-                    # else:
                     unique_id_filters.append(F("term", **{es_field_code: uniqueIdFilter}))
                 search = search.filter(F('or', unique_id_filters))
     return search

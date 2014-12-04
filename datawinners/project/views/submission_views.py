@@ -195,13 +195,8 @@ def get_survey_response_ids_from_request(dbm, request, form_model, local_time_de
     if request.POST.get('all_selected', "false") == "true":
         search_filters = json.loads(request.POST.get("search_filters"))
         submission_type = request.POST.get("submission_type")
-        # query_params = {'search_filters': search_filters}
-        # query_params.update({'filter': submission_type})
         search_parameters = {'filter': submission_type}
         search_parameters.update({'search_filters': search_filters})
-        # response_creator = DeleteSubmissionQueryResponseCreator(form_model)
-        # submissions = SubmissionQuery(form_model, query_params, response_creator).query(dbm.database_name)
-        # return [submission[0] for submission in submissions]
         return get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters, local_time_delta)
     return json.loads(request.POST.get('id_list'))
 
