@@ -12,6 +12,7 @@ from framework.base_test import HeadlessRunnerTest
 from pages.loginpage.login_page import login
 from tests.advancedquestionnairetests.advanced_questionnaire_test_helper import navigate_and_verify_web_submission_page_is_loaded, perform_submission
 from tests.logintests.login_data import VALID_CREDENTIALS
+from tests.utils import get_xlsfile_from_zipped_response
 
 
 DIR = os.path.dirname(__file__)
@@ -109,9 +110,7 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
                                  'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
                                  'questionnaire_code': questionnaire_code})
 
-        xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
-        os.write(xlfile_fd, resp.content)
-        os.close(xlfile_fd)
+        xlfile_name = get_xlsfile_from_zipped_response(self.project_name, resp)
         workbook = xlrd.open_workbook(xlfile_name)
         self.assertEquals(workbook.sheet_names(),
                           [u'main', u'my-repeat-in-a-group', u'my-group-in-a-repeat', u'my-outer-repeat'])
