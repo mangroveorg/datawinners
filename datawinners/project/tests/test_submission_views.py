@@ -8,7 +8,6 @@ from mock import Mock, patch, call, PropertyMock, MagicMock
 
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SUBMISSION
-from datawinners.search.submission_query import SubmissionQuery
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, DateField
@@ -37,9 +36,9 @@ class TestSubmissionViews(unittest.TestCase):
             project.data_senders = ["rep2"]
             organization_mock = Mock()
             organization_mock.org_id = "TEST1234"
-            with patch("datawinners.project.views.submission_views.get_organization_from_manager") as get_ngo_from_manager_mock:
-                get_ngo_from_manager_mock.return_value = organization_mock
-                static_info = build_static_info_context(Mock(), survey_response, questionnaire_form_model=project)
+            # with patch("datawinners.project.views.submission_views.get_organization_from_manager") as get_ngo_from_manager_mock:
+            #     get_ngo_from_manager_mock.return_value = organization_mock
+            static_info = build_static_info_context(Mock(), survey_response, questionnaire_form_model=project)
                 
 
             expected_values = OrderedDict({'static_content': {
@@ -237,7 +236,7 @@ class TestSubmissionViews(unittest.TestCase):
         post_params = {'id_list': json.dumps(['id1', 'id2'])}
         type(request).POST = PropertyMock(return_value=post_params)
         form_model = Mock(spec=FormModel)
-        ids = get_survey_response_ids_from_request(dbm, request, form_model)
+        ids = get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
         self.assertEqual(ids, ['id1', 'id2'])
 
     def test_get_submission_ids_to_delete_should_call_submission_query_if_select_all_flag_is_true(self):
@@ -247,28 +246,26 @@ class TestSubmissionViews(unittest.TestCase):
         post_params = {"search_filters": json.dumps([]), "submission_type":"all",'all_selected': "true"}
         type(request).POST = PropertyMock(return_value=post_params)
         form_model = Mock(spec=FormModel)
-        with patch('datawinners.project.views.submission_views.SubmissionQuery') as mock_submission_query:
-            query_mock = Mock(spec=SubmissionQuery, name='SubmissionQueryInstance')
-            mock_submission_query.return_value = query_mock
-            query_mock.query.return_value = []
-            get_survey_response_ids_from_request(dbm, request, form_model)
-            mock_submission_query.assert_called_with(form_model, {'filter':'all','search_filters': []})
-            query_mock.query.assert_called_with('db_name')
+        with patch('datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
+            get_all_submissions_ids_by_criteria_mock.return_value = []
+
+            get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
+
+            get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'all', 'search_filters': []}, ('+', 0, 0))
 
     def test_get_submission_ids_to_delete_should_call_submission_query_with_submission_type_if_select_all_flag_is_true(self):
         dbm = MagicMock(spec=DatabaseManager)
         dbm.database_name = 'db_name'
         request = Mock(spec=HttpRequest)
-        post_params = {"search_filters": json.dumps([]), "submission_type":"success",'all_selected': "true"}
+        post_params = {"search_filters": json.dumps([]), "submission_type": "success", 'all_selected': "true"}
         type(request).POST = PropertyMock(return_value=post_params)
         form_model = Mock(spec=FormModel)
-        with patch('datawinners.project.views.submission_views.SubmissionQuery') as mock_submission_query:
-            query_mock = Mock(spec=SubmissionQuery, name='SubmissionQueryInstance')
-            mock_submission_query.return_value = query_mock
-            query_mock.query.return_value = []
-            get_survey_response_ids_from_request(dbm, request, form_model)
-            mock_submission_query.assert_called_with(form_model, {'search_filters': [], 'filter':'success'})
-            query_mock.query.assert_called_with('db_name')
+        with patch('datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
+             get_all_submissions_ids_by_criteria_mock.return_value = []
+
+             get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
+
+             get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'success', 'search_filters': []}, ('+', 0, 0))
 
 
 

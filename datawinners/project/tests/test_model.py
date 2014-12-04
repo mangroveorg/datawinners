@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import date
 import unittest
+from django.utils.unittest.case import SkipTest
 from datawinners.project.couch_view_helper import get_all_projects
 from mangrove.datastore.documents import FormModelDocument
 
