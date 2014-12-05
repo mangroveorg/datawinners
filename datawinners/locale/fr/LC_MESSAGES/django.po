@@ -5601,7 +5601,7 @@ msgid "Learn more"
 msgstr "En savoir plus"
 
 msgid "tooltip_for_reminder"
-msgstr "Pour chaque échéance de Soumission, DataWinners divisera les Expéditeurs de Données en deux groupes : ceux qui ont soumis avec succès et ceux qui ne l'ont pas. DataWinners enverra des rappels SMS automatiques à ceux qui n'ont pas encore soumis."
+msgstr "Pour chaque échéance de Soumission, DataWinners divisera les Expéditeurs de Données en deux groupes : ceux qui ont soumis leurs données et ceux qui ne l’ont pas. DataWinners enverra des rappels SMS automatiques à ceux qui n'ont pas encore soumis."
 
 msgid "All my Data Senders"
 msgstr "Tous mes Expéditeurs de Données"
