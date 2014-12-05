@@ -1085,10 +1085,10 @@ msgstr ""
 msgid "The following Questionnaire(s) are collecting data about <b>"
 msgstr ""
 
-msgid "If you want to delete the Identification Number Type <b>"
+msgid "If you want to delete the Identification Number Type(s) <b>"
 msgstr ""
 
-msgid "</b>, you need to remove these questions using <b>"
+msgid "</b>, you need to remove the Identification Number question(s) from the above-mentioned Questionnaire(s) first."
 msgstr ""
 
 msgid "Save"

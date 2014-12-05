@@ -1134,11 +1134,11 @@ msgstr "Supprimer d’abord les Questions associés"
 msgid "The following Questionnaire(s) are collecting data about <b>"
 msgstr "Les Questionnaire(s) suivants collectent des données sur <b>"
 
-msgid "If you want to delete the Identification Number Type <b>"
-msgstr "Si vous voulez supprimer le Type de Numéro d’Identification <b>"
+msgid "If you want to delete the Identification Number Type(s) <b>"
+msgstr "Si vous voulez supprimer le(s) Type(s) de Numéro d’Identification <b>"
 
-msgid "</b>, you need to remove these questions using "
-msgstr "</b>, vous devez d’abord supprimer ces questions liées "
+msgid "</b>, you need to remove the Identification Number question(s) from the above-mentioned Questionnaire(s) first."
+msgstr "</b>, veuillez d’abord supprimer le(s) question(s) liée(s) au Numéro d’Identification se trouvant dans ce(s) Questionnaire(s)"
 
 msgid "<b> %(entity_type)s </b> as a identification Number first"
 msgstr "au Numéro d’Identification <b> %(entity_type)s </b>"

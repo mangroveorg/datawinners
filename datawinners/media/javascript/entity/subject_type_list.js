@@ -23,10 +23,8 @@ $(document).ready(function () {
                 compt = 0;
                 warning_title = [];
                 has_questionnaires = false;
-                content = gettext("If you want to delete the Identification Number Type <b>");
                 subject_list = [];
                 $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").html("");
-                content = gettext("If you want to delete the Identification Number Type <b>");
                 $('.list_header').each(function() {
                     line = this;
                     message = "";
@@ -41,10 +39,11 @@ $(document).ready(function () {
                             message = message + "</ul></br>";
                             list = $(line).find(".questionnaires");
                             subject_list.push($(line).find(".header").html());
-                            content = content + subject_list.join("</b> and <b>") + gettext("</b>, you need to remove these questions using ") + interpolate(gettext("<b> %(entity_type)s </b> as a identification Number first"), {entity_type: $(line).find(".header").html()}, true);
                         }
 
                     });
+                    content = gettext("If you want to delete the Identification Number Type(s) <b>");
+                    content = content + subject_list +gettext("</b>, you need to remove the Identification Number question(s) from the above-mentioned Questionnaire(s) first.");
                     $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").append(message);
                 });
                 if(has_questionnaires)
