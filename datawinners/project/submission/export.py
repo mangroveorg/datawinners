@@ -1,12 +1,16 @@
+import logging
 from tempfile import NamedTemporaryFile
 import tempfile
 import zipfile
 from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
 import math
+import resource
 import xlwt
 from datawinners import utils, workbook_utils
 from django.template.defaultfilters import slugify
+
+logger = logging.getLogger("datawinners")
 
 
 def add_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix):
@@ -43,6 +47,8 @@ def zip_excel_workbook(excel_workbook, file_name):
     response['Content-Disposition'] = 'attachment; filename="%s.zip"' % (file_name_normalized,)
     response['Content-Length'] = zip_file.tell()
     zip_file.seek(0)
+    logger.error('Before response: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+
     return response
 
 
@@ -69,7 +75,13 @@ def create_excel_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix, 
 
 def create_zipped_excel_response(headers, raw_data, file_name, formatter):
     wb = xlwt.Workbook()
+
+    logger.error('Before filling sheet: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+
     create_excel_sheet_with_data(raw_data, headers, wb, 'data_log', formatter)
+
+    logger.error('After filling sheet: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+
     return zip_excel_workbook(wb, file_name)
 
 
