@@ -5,7 +5,7 @@ from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
 import math
 import xlwt
-from datawinners import utils
+from datawinners import utils, workbook_utils
 from django.template.defaultfilters import slugify
 
 
@@ -57,9 +57,19 @@ def create_excel_response(headers, raw_data_list, file_name):
     return response
 
 
-def create_zipped_excel_response(headers, raw_data_list, file_name):
+def create_excel_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix, formatter):
+    total_column_count = len(headers)
+    number_of_sheets = math.ceil(total_column_count / 256.0)
+    workbook_utils.workbook_add_sheets(wb, number_of_sheets, sheet_name_prefix)
+    workbook_utils.workbook_add_header(wb, headers, number_of_sheets)
+    for row_number, row in enumerate(raw_data_list):
+        row = formatter.format_row(row['_source'])
+        workbook_utils.workbook_add_row(wb, row, number_of_sheets, row_number+1)
+
+
+def create_zipped_excel_response(headers, raw_data, file_name, formatter):
     wb = xlwt.Workbook()
-    add_sheet_with_data(raw_data_list, headers, wb, 'data_log')
+    create_excel_sheet_with_data(raw_data, headers, wb, 'data_log', formatter)
     return zip_excel_workbook(wb, file_name)
 
 

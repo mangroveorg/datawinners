@@ -13,10 +13,10 @@ class SubmissionExporter:
         self.local_time_delta = local_time_delta
 
     def _create_response(self, columns, submission_list, submission_type):
-        header_list, formatted_values = SubmissionFormatter(columns, self.local_time_delta).format_tabular_data(
-            submission_list)
-        return create_zipped_excel_response(header_list, formatted_values,
-                                            export_filename(submission_type, self.project_name))
+        submission_formatter = SubmissionFormatter(columns, self.local_time_delta)
+        header_list= submission_formatter.format_header_data()
+        return create_zipped_excel_response(header_list, submission_list,
+                                            export_filename(submission_type, self.project_name),submission_formatter)
 
     def create_excel_response(self, submission_type, query_params):
         columns = SubmissionExcelHeader(self.form_model, submission_type, self.language).get_columns()

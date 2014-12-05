@@ -16,8 +16,22 @@ class SubmissionFormatter(object):
         self.columns = columns
         self.local_time_delta = local_time_delta
 
-    def format_tabular_data(self, values):
-        formatted_values = []
+    #def format_tabular_data(self, values):
+    #    formatted_values = []
+    #    headers = []
+    #    for col_def in self.columns.values():
+    #        if col_def.get('type', '') == GEODCODE_FIELD_CODE:
+    #            headers.append(col_def['label'] + " Latitude")
+    #            headers.append(col_def['label'] + " Longitude")
+    #        else:
+    #            if col_def['label'] != "Phone number":
+    #                headers.append(col_def['label'])
+    #    for row_dict in values:
+    #        formatted_values.append(self._format_row(row_dict['_source']))
+    #
+    #    return headers, formatted_values
+
+    def format_header_data(self):
         headers = []
         for col_def in self.columns.values():
             if col_def.get('type', '') == GEODCODE_FIELD_CODE:
@@ -26,16 +40,13 @@ class SubmissionFormatter(object):
             else:
                 if col_def['label'] != "Phone number":
                     headers.append(col_def['label'])
-        for row_dict in values:
-            formatted_values.append(self._format_row(row_dict['_source']))
-
-        return headers, formatted_values
+        return headers
 
     def _convert_to_localized_date_time(self, submission_date):
         submission_date_time = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
         return convert_utc_to_localized(self.local_time_delta, submission_date_time)
 
-    def _format_row(self, row):
+    def format_row(self, row):
         result = []
         for field_code in self.columns.keys():
             field = row.get(field_code)
