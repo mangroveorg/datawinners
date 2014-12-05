@@ -50,7 +50,7 @@ class SubmissionQueryResponseCreator(object):
     def _convert_to_localized_date_time(self, key, res, submission):
         submission_date_time = datetime.datetime.strptime(res.get(key), "%b. %d, %Y, %I:%M %p")
         datetime_local = convert_utc_to_localized(self.localized_time_delta, submission_date_time)
-        submission.append(datetime_local.strftime("%b. %d, %Y, %I:%M %p"))
+        submission.append(datetime_local.strftime("%b. %d, %Y, %H:%M"))
 
     def create_response(self, required_field_names, search_results):
         entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id) for field in

@@ -13,7 +13,7 @@ class DatawinnerLog(models.Model):
     organization = models.ForeignKey(Organization, null=True)
 
     def created_at_formatted(self):
-        return self.created_at.strftime("%b. %d, %Y, %I:%M %p")
+        return self.created_at.strftime("%b. %d, %Y, %H:%M")
 
 
 class SMSResponse(object):
