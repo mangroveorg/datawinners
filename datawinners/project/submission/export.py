@@ -68,6 +68,9 @@ def create_excel_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix, 
     number_of_sheets = math.ceil(total_column_count / 256.0)
     workbook_utils.workbook_add_sheets(wb, number_of_sheets, sheet_name_prefix)
     workbook_utils.workbook_add_header(wb, headers, number_of_sheets)
+
+    logger.error('After adding header to excel: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+
     for row_number, row in enumerate(raw_data_list):
         row = formatter.format_row(row['_source'])
         workbook_utils.workbook_add_row(wb, row, number_of_sheets, row_number+1)

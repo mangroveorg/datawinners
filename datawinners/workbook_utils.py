@@ -1,6 +1,9 @@
+import logging
+import resource
 import xlwt
 from datetime import datetime
 from datawinners.utils import write_row_to_worksheet
+logger = logging.getLogger("datawinners")
 
 VAR = "HNI"
 SUBMISSION_DATE_QUESTION = u'Submission Date'
@@ -61,7 +64,11 @@ def workbook_add_row(wb, data, number_of_sheets, row_number):
         data_list_with_max_allowed_columns = data[column_number - 1: column_number + 255]
         column_number += 256
         sheet_number += 1
-        if row_number % MAX_ROWS_IN_MEMORY == 0: ws.flush_row_data()
+        if row_number % MAX_ROWS_IN_MEMORY == 0:
+            logger.error('Before flush for row %d: %s (kb)' % (row_number, resource.getrusage(resource.RUSAGE_SELF).ru_maxrss))
+            ws.flush_row_data()
+            logger.error('After flush for row %d: %s (kb)' % (row_number, resource.getrusage(resource.RUSAGE_SELF).ru_maxrss))
+
         row = _clean(data_list_with_max_allowed_columns)
         write_row_to_worksheet(ws, row, row_number)
 
