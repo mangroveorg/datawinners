@@ -38,7 +38,7 @@ def workbook_add_header(wb, headers, number_of_sheets):
     row_number = 0
     while sheet_number <= number_of_sheets:
         ws = wb.get_sheet(sheet_number - 1)
-        data_list_with_max_allowed_columns = [l[column_number - 1: column_number + 255] for l in headers]
+        data_list_with_max_allowed_columns = headers[column_number - 1: column_number + 255]
         column_number += 256
         sheet_number += 1
         for col_number, val in enumerate(data_list_with_max_allowed_columns):
