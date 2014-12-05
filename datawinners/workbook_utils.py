@@ -67,6 +67,7 @@ def workbook_add_row(wb, data, number_of_sheets, row_number):
         if row_number % MAX_ROWS_IN_MEMORY == 0:
             logger.error('Before flush for row %d: %s (kb)' % (row_number, resource.getrusage(resource.RUSAGE_SELF).ru_maxrss))
             ws.flush_row_data()
+            ws.row_tempfile.flush()
             logger.error('After flush for row %d: %s (kb)' % (row_number, resource.getrusage(resource.RUSAGE_SELF).ru_maxrss))
 
         row = _clean(data_list_with_max_allowed_columns)
