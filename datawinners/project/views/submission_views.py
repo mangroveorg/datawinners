@@ -16,6 +16,7 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
+import resource
 
 from datawinners import settings
 from datawinners.accountmanagement.localized_time import get_country_time_delta
@@ -60,6 +61,7 @@ from mangrove.transport.contract.survey_response import SurveyResponse
 
 
 websubmission_logger = logging.getLogger("websubmission")
+logger = logging.getLogger("datawinners")
 
 
 @login_required
@@ -480,6 +482,9 @@ def export(request):
     if form_model.xform:
         return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
         .create_excel_response(submission_type, query_params)
+
+    logger.error('View before export flow: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+
 
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
         .create_excel_response(submission_type, query_params)
