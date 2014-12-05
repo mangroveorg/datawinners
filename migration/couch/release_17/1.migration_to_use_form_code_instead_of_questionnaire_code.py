@@ -25,4 +25,4 @@ def make_feed_document_use_form_code_instead_of_form_model_id(db_name):
             logger.exception("failed for questionnaire:"+questionnaire.id)
     mark_as_completed(db_name)
 
-migrate(all_db_names(), make_feed_document_use_form_code_instead_of_form_model_id, version=(13, 1, 3), threads=3)
+migrate(all_db_names(), make_feed_document_use_form_code_instead_of_form_model_id, version=(17, 1, 1), threads=3)
