@@ -33,12 +33,17 @@ def _create_zip_file(file_name_normalized, temporary_excel_file):
     return zip_file
 
 
-def zip_excel_workbook(excel_workbook, file_name):
+def create_zipped_workbook(excel_workbook, file_name):
     file_name_normalized = slugify(file_name)
     temporary_excel_file = NamedTemporaryFile(suffix=".xls", delete=False)
     excel_workbook.save(temporary_excel_file)
     temporary_excel_file.close()
     zip_file = _create_zip_file(file_name_normalized, temporary_excel_file)
+    return file_name_normalized, zip_file
+
+
+def zip_excel_workbook(excel_workbook, file_name):
+    file_name_normalized, zip_file = create_zipped_workbook(excel_workbook, file_name)
     response = HttpResponse(FileWrapper(zip_file, blksize=8192000), content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename="%s.zip"' % (file_name_normalized,)
     response['Content-Length'] = zip_file.tell()
@@ -62,6 +67,10 @@ def create_zipped_excel_response(headers, raw_data_list, file_name):
     add_sheet_with_data(raw_data_list, headers, wb, 'data_log')
     return zip_excel_workbook(wb, file_name)
 
+def create_zipped_excel_file(headers, raw_data_list, file_name):
+    wb = xlwt.Workbook()
+    add_sheet_with_data(raw_data_list, headers, wb, 'data_log')
+    return create_zipped_workbook(wb,file_name)
 
 def export_filename(submission_type, project_name):
     suffix = submission_type + '_log' if submission_type else 'analysis'

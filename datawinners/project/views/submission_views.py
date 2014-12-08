@@ -14,6 +14,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
+import dropbox
 from elasticutils import F
 import jsonpickle
 
@@ -120,6 +121,9 @@ def get_filterable_fields(fields):
             filterable_fields.extend(get_filterable_fields(field.fields))
         return filterable_fields
 
+
+def dummy_view(request):
+    return render_to_response('project/dummy_page.html', context_instance=RequestContext(request))
 
 @login_required
 @session_not_expired
@@ -457,6 +461,7 @@ def export(request):
 
 
     project_name = request.POST.get(u"project_name")
+    export_to_dropbox = request.POST.get(u"export_to_dropbox")
     submission_type = request.GET.get(u'type')
     search_filters = json.loads(request.POST.get('search_filters'))
     questionnaire_code = request.POST.get(u'questionnaire_code')
@@ -478,11 +483,27 @@ def export(request):
     query_params.update({"filter": submission_type})
 
     if form_model.xform:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-        .create_excel_response(submission_type, query_params)
+        exporter = XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language)
+    else:
+        exporter = SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language)
 
-    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-        .create_excel_response(submission_type, query_params)
+    if export_to_dropbox == 'true':
+        #access_token = request.POST.get(u"access_token")
+        access_token = "RHFtQwF827QAAAAAAAAfVP2Jt_HP18mZKkmT0ypNcZ6gsbADzjIqAGg5iB12q6LR"
+        client = dropbox.client.DropboxClient(access_token)
+        filename, file = exporter.get_export_file(submission_type, query_params)
+        try:
+            #response = client.put_file('/'+filename+".zip", file)
+            response = client.metadata('/')
+            f=open("sample.txt","wb")
+            f.write('dample')
+            f.close()
+            response = client.put_file('sample.txt', file)
+            HttpResponse(content_type='application/json')
+        except Exception as e:
+            pass
+    else:
+        exporter.create_excel_response(submission_type, query_params)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):

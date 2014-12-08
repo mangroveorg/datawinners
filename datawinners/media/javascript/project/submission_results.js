@@ -90,6 +90,9 @@ DW.SubmissionLogTable = function (options) {
 
 DW.SubmissionLogExport = function () {
     var self = this;
+    var access_token = "";
+    var token_type = "";
+    var user_id = "";
 
     self.init = function (currentTabName) {
         self.exportLink = $('.export_link');
@@ -100,7 +103,7 @@ DW.SubmissionLogExport = function () {
     };
 
     var _updateAndSubmitForm = function(){
-        self.exportForm.appendJson({"search_filters": JSON.stringify(filter_as_json())}).attr('action', self.url).submit();
+        self.exportForm.appendJson({"search_filters": JSON.stringify(filter_as_json()), "access_token":access_token, "user_id":user_id , "export_to_dropbox":true}).attr('action', self.url).submit();
     };
 
     var _initialize_dialog = function(){
@@ -119,15 +122,55 @@ DW.SubmissionLogExport = function () {
        self.dialog = new DW.Dialog(dialogOptions).init();
     };
 
+    var _get_dropbox_token_and_submit = function(){
+        var OAUTHURL    =   'https://www.dropbox.com/1/oauth2/authorize?';
+        var CLIENTID    =   'olstbdhbec2vsqw';
+        var REDIRECT    =   'http://localhost:8000/project/dummyurl';
+        var TYPE        =   'token';
+        var _url        =   OAUTHURL +'client_id=' + CLIENTID + '&redirect_uri=' + REDIRECT + '&response_type=' + TYPE + '&disable_signup=true';
+        var win         =   window.open(_url, "windowname1", 'width=800, height=600');
+
+        var pollTimer   =   window.setInterval(function() {
+            try {
+                console.log(win.document.URL);
+                if (win.document.URL.indexOf(REDIRECT) != -1) {
+                    window.clearInterval(pollTimer);
+                    var url =   win.document.URL;
+                    access_token =   gup(url, 'access_token');
+                    token_type = gup(url, 'token_type');
+                    user_id = gup(url, 'uid');
+                    win.close();
+                    _updateAndSubmitForm();
+                }
+            } catch(e) {
+            }
+        }, 500);
+
+        function gup(url, name) {
+            name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+            var regexS = "[\\#&]"+name+"=([^&#]*)";
+            var regex = new RegExp( regexS );
+            var results = regex.exec( url );
+            if( results == null )
+                return "";
+            else
+                return results[1];
+        }
+    };
     var _initialize_events = function () {
+//        self.exportLink.click(function () {
+//           if(is_submission_exported_to_multiple_sheets === 'True'){
+//                self.dialog.show();
+//           }
+//           else{
+//               DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+//               _updateAndSubmitForm();
+//           }
+//        });
         self.exportLink.click(function () {
-           if(is_submission_exported_to_multiple_sheets === 'True'){
-                self.dialog.show();
-           }
-           else{
-               DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _updateAndSubmitForm();
-           }
+//           DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+           _get_dropbox_token_and_submit();
+//           _updateAndSubmitForm();
         });
     };
 };
