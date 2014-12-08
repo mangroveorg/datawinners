@@ -1,5 +1,6 @@
 import logging
 import resource
+import gc
 import xlwt
 from datetime import datetime
 from datawinners.utils import write_row_to_worksheet
@@ -69,6 +70,7 @@ def workbook_add_row(wb, data, number_of_sheets, row_number):
             ws.flush_row_data()
             ws.row_tempfile.flush()
             logger.error('After flush for row %d: %s (kb)' % (row_number, resource.getrusage(resource.RUSAGE_SELF).ru_maxrss))
+            gc.collect()
 
         row = _clean(data_list_with_max_allowed_columns)
         write_row_to_worksheet(ws, row, row_number)
