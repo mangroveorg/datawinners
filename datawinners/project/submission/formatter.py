@@ -16,20 +16,12 @@ class SubmissionFormatter(object):
         self.columns = columns
         self.local_time_delta = local_time_delta
 
-    #def format_tabular_data(self, values):
-    #    formatted_values = []
-    #    headers = []
-    #    for col_def in self.columns.values():
-    #        if col_def.get('type', '') == GEODCODE_FIELD_CODE:
-    #            headers.append(col_def['label'] + " Latitude")
-    #            headers.append(col_def['label'] + " Longitude")
-    #        else:
-    #            if col_def['label'] != "Phone number":
-    #                headers.append(col_def['label'])
-    #    for row_dict in values:
-    #        formatted_values.append(self._format_row(row_dict['_source']))
-    #
-    #    return headers, formatted_values
+    def format_tabular_data(self, values):
+        formatted_values = []
+        headers = self.format_header_data()
+        for row_dict in values:
+            formatted_values.append(self.format_row(row_dict['_source']))
+        return headers, formatted_values
 
     def format_header_data(self):
         headers = []

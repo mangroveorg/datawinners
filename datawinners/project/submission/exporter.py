@@ -1,11 +1,7 @@
-import logging
-import resource
 from datawinners.project.Header import SubmissionExcelHeader
-from datawinners.project.submission.export import export_filename, create_zipped_excel_response
+from datawinners.project.submission.export import export_filename, export_to_zipped_excel
 from datawinners.project.submission.formatter import SubmissionFormatter
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
-
-logger = logging.getLogger("datawinners")
 
 
 class SubmissionExporter:
@@ -16,29 +12,22 @@ class SubmissionExporter:
         self.dbm = dbm
         self.local_time_delta = local_time_delta
 
-    def _create_response(self, columns, submission_list, submission_type):
+    def _get_header_list(self, columns):
         submission_formatter = SubmissionFormatter(columns, self.local_time_delta)
+        header_list = submission_formatter.format_header_data()
+        return header_list, submission_formatter
 
-        logger.error('Before header list: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+    def _create_zipped_response(self, columns, submission_list, submission_type):
+        header_list, submission_formatter = self._get_header_list(columns)
+        return export_to_zipped_excel(header_list, submission_list,
+                                            export_filename(submission_type, self.project_name), submission_formatter)
 
-        header_list= submission_formatter.format_header_data()
-
-        logger.error('After header list fetch: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
-        return create_zipped_excel_response(header_list, submission_list,
-                                            export_filename(submission_type, self.project_name),submission_formatter)
-
-    def create_excel_response(self, submission_type, query_params):
-
-        logger.error('Before columns fetch: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
+    def get_columns_and_search_results(self, query_params, submission_type):
         columns = SubmissionExcelHeader(self.form_model, submission_type, self.language).get_columns()
-
-        logger.error('After columns fetch: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
         search_results, query_fields = get_scrolling_submissions_query(self.dbm, self.form_model, query_params,
                                                                        self.local_time_delta)
+        return columns, search_results
 
-        logger.error('Fetched cursor: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
-        return self._create_response(columns, search_results, submission_type)
+    def create_excel_response(self, submission_type, query_params):
+        columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
+        return self._create_zipped_response(columns, search_results, submission_type)
