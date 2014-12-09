@@ -3,6 +3,8 @@ import unittest
 import datetime
 from django.test import TestCase
 from django.test.client import RequestFactory
+from datawinners import workbook_utils
+from datawinners.workbook_utils import get_excel_sheet, write_row_to_worksheet
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.settings import COUCHDB_CREDENTIALS
 from mock import Mock, call, PropertyMock, patch
@@ -23,19 +25,19 @@ class TestUtils(TestCase):
         header_list = HEADER_LIST
         raw_data.insert(0, header_list)
         sheet_name = 'test'
-        wb = utils.get_excel_sheet(raw_data, sheet_name)
+        wb = get_excel_sheet(raw_data, sheet_name)
         self.assertEquals(3, len(wb.get_sheet(0).rows))
         self.assertEquals(3, wb.get_sheet(0).row(0).get_cells_count())
 
     def test_should_write_date_value_to_excel_sheet(self):
         raw_data = RAW_DATA
-        wb = utils.get_excel_sheet(raw_data, "test")
+        wb = get_excel_sheet(raw_data, "test")
         self.assertEquals(3, len(wb.get_sheet(0).rows))
         self.assertEquals(3, wb.get_sheet(0).row(0).get_cells_count())
 
     def test_should_add_codes_sheet_to_excel(self):
         raw_data = RAW_DATA
-        wb = utils.get_excel_sheet(raw_data, "test")
+        wb = get_excel_sheet(raw_data, "test")
         add_codes_sheet(wb, "form_code", ('q1', 'q2', 'q3'))
         code_sheet = wb.get_sheet(1)
         self.assertEquals(1, len(code_sheet.rows))
@@ -112,17 +114,17 @@ class TestExcelStyles(unittest.TestCase):
     def test_float_values_should_use_same_style(self):
         ws = Mock(spec=Worksheet)
         row = [12.3, 13.45]
-        utils.write_row_to_worksheet(ws, row, 1)
-        ws.write.assert_any_call(1, 0, 12.3, style=utils.EXCEL_CELL_FLOAT_STYLE)
-        ws.write.assert_any_call(1, 1, 13.45, style=utils.EXCEL_CELL_FLOAT_STYLE)
+        write_row_to_worksheet(ws, row, 1)
+        ws.write.assert_any_call(1, 0, 12.3, style=workbook_utils.EXCEL_CELL_FLOAT_STYLE)
+        ws.write.assert_any_call(1, 1, 13.45, style=workbook_utils.EXCEL_CELL_FLOAT_STYLE)
 
 
     def test_float_values_that_can_be_represented_as_integer_should_use_same_style(self):
         ws = Mock(spec=Worksheet)
         row = [12.0, 13.0]
-        utils.write_row_to_worksheet(ws, row, 1)
-        ws.write.assert_any_call(1, 0, 12, style=utils.EXCEL_CELL_INTEGER_STYLE)
-        ws.write.assert_any_call(1, 1, 13, style=utils.EXCEL_CELL_INTEGER_STYLE)
+        write_row_to_worksheet(ws, row, 1)
+        ws.write.assert_any_call(1, 0, 12, style=workbook_utils.EXCEL_CELL_INTEGER_STYLE)
+        ws.write.assert_any_call(1, 1, 13, style=workbook_utils.EXCEL_CELL_INTEGER_STYLE)
 
 
     def test_data_values_should_use_same_style_for_mm_yyyy_format(self):
@@ -130,17 +132,17 @@ class TestExcelStyles(unittest.TestCase):
         date_1 = ExcelDate(datetime.datetime(2012, 04, 24), 'mm.yyyy')
         date_2 = ExcelDate(datetime.datetime(2012, 05, 24), 'mm.yyyy')
         row = [date_1, date_2]
-        width = utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + utils.BUFFER_WIDTH)
+        width = workbook_utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + workbook_utils.BUFFER_WIDTH)
         mock_width = PropertyMock(return_value=width)
         mock_column = Mock(spec=Column)
         ws.col.return_value = mock_column
         type(mock_column).width = mock_width
 
-        utils.write_row_to_worksheet(ws, row, 1)
+        write_row_to_worksheet(ws, row, 1)
 
         mock_width.assert_called_with(width)
-        ws.write.assert_any_call(1, 0, date_1.date, style=utils.EXCEL_DATE_STYLE.get('mm.yyyy'))
-        ws.write.assert_any_call(1, 1, date_2.date, style=utils.EXCEL_DATE_STYLE.get('mm.yyyy'))
+        ws.write.assert_any_call(1, 0, date_1.date, style=workbook_utils.EXCEL_DATE_STYLE.get('mm.yyyy'))
+        ws.write.assert_any_call(1, 1, date_2.date, style=workbook_utils.EXCEL_DATE_STYLE.get('mm.yyyy'))
         ws.col.assert_any_with(0)
         ws.col.assert_any_with(1)
 
@@ -149,17 +151,17 @@ class TestExcelStyles(unittest.TestCase):
         date_1 = ExcelDate(datetime.datetime(2012, 04, 12), 'dd.mm.yyyy')
         date_2 = ExcelDate(datetime.datetime(2012, 05, 29), 'dd.mm.yyyy')
         row = [date_1, date_2]
-        width = utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + utils.BUFFER_WIDTH)
+        width = workbook_utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + workbook_utils.BUFFER_WIDTH)
         mock_width_property = PropertyMock(return_value=width)
         mock_column = Mock(spec=Column)
         ws.col.return_value = mock_column
         type(mock_column).width = mock_width_property
 
-        utils.write_row_to_worksheet(ws, row, 1)
+        write_row_to_worksheet(ws, row, 1)
 
         mock_width_property.assert_called_with(width)
-        ws.write.assert_any_call(1, 0, date_1.date, style=utils.EXCEL_DATE_STYLE.get('dd.mm.yyyy'))
-        ws.write.assert_any_call(1, 1, date_2.date, style=utils.EXCEL_DATE_STYLE.get('dd.mm.yyyy'))
+        ws.write.assert_any_call(1, 0, date_1.date, style=workbook_utils.EXCEL_DATE_STYLE.get('dd.mm.yyyy'))
+        ws.write.assert_any_call(1, 1, date_2.date, style=workbook_utils.EXCEL_DATE_STYLE.get('dd.mm.yyyy'))
         ws.col.assert_any_with(0)
         ws.col.assert_any_with(1)
 
@@ -168,17 +170,17 @@ class TestExcelStyles(unittest.TestCase):
         date_1 = ExcelDate(datetime.datetime(2012, 04, 12), 'mm.dd.yyyy')
         date_2 = ExcelDate(datetime.datetime(2012, 05, 29), 'mm.dd.yyyy')
         row = [date_1, date_2]
-        width = utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + utils.BUFFER_WIDTH)
+        width = workbook_utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + workbook_utils.BUFFER_WIDTH)
         mock_width_property = PropertyMock(return_value=width)
         mock_column = Mock(spec=Column)
         ws.col.return_value = mock_column
         type(mock_column).width = mock_width_property
 
-        utils.write_row_to_worksheet(ws, row, 1)
+        write_row_to_worksheet(ws, row, 1)
 
         mock_width_property.assert_called_with(width)
-        ws.write.assert_any_call(1, 0, date_1.date, style=utils.EXCEL_DATE_STYLE.get('mm.dd.yyyy'))
-        ws.write.assert_any_call(1, 1, date_2.date, style=utils.EXCEL_DATE_STYLE.get('mm.dd.yyyy'))
+        ws.write.assert_any_call(1, 0, date_1.date, style=workbook_utils.EXCEL_DATE_STYLE.get('mm.dd.yyyy'))
+        ws.write.assert_any_call(1, 1, date_2.date, style=workbook_utils.EXCEL_DATE_STYLE.get('mm.dd.yyyy'))
         ws.col.assert_any_with(0)
         ws.col.assert_any_with(1)
 
@@ -187,17 +189,17 @@ class TestExcelStyles(unittest.TestCase):
         date_1 = ExcelDate(datetime.datetime(2012, 04, 12, 13, 56, 40), 'submission_date')
         date_2 = ExcelDate(datetime.datetime(2012, 05, 29, 13, 56, 40), 'submission_date')
         row = [date_1, date_2]
-        width = utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + utils.BUFFER_WIDTH)
+        width = workbook_utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + workbook_utils.BUFFER_WIDTH)
         mock_width_property = PropertyMock(return_value=width)
         mock_column = Mock(spec=Column)
         ws.col.return_value = mock_column
         type(mock_column).width = mock_width_property
 
-        utils.write_row_to_worksheet(ws, row, 1)
+        write_row_to_worksheet(ws, row, 1)
 
         mock_width_property.assert_called_with(width)
-        ws.write.assert_any_call(1, 0, date_1.date, style=utils.EXCEL_DATE_STYLE.get('submission_date'))
-        ws.write.assert_any_call(1, 1, date_2.date, style=utils.EXCEL_DATE_STYLE.get('submission_date'))
+        ws.write.assert_any_call(1, 0, date_1.date, style=workbook_utils.EXCEL_DATE_STYLE.get('submission_date'))
+        ws.write.assert_any_call(1, 1, date_2.date, style=workbook_utils.EXCEL_DATE_STYLE.get('submission_date'))
         ws.col.assert_any_with(0)
         ws.col.assert_any_with(1)
 

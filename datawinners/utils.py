@@ -1,38 +1,18 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import re
 from datetime import datetime
+import random
+import unicodedata
 
 from django.template.defaultfilters import slugify
-import random
-import xlwt
 from django.utils.translation import ugettext_lazy as _, activate, get_language
 from django.contrib.auth.forms import PasswordResetForm
+
 from datawinners import settings
 from datawinners.main.database import get_db_manager
-from mangrove.form_model.field import ExcelDate
-import unicodedata
 
 
 VAR = "HNI"
-SUBMISSION_DATE_QUESTION = u'Submission Date'
-WIDTH_ONE_CHAR = 256
-MAX_COLUMN_WIDTH_IN_CHAR = 65
-BUFFER_WIDTH = 3
-MAX_ROWS_IN_MEMORY = 500
-EXCEL_CELL_FLOAT_STYLE = xlwt.easyxf(num_format_str='#0.0###')
-EXCEL_CELL_INTEGER_STYLE = xlwt.easyxf(num_format_str='#0')
-EXCEL_DATE_STYLE = {'mm.yyyy': xlwt.easyxf(num_format_str='MMM, YYYY'),
-                    'dd.mm.yyyy': xlwt.easyxf(num_format_str='MMM DD, YYYY'),
-                    'mm.dd.yyyy': xlwt.easyxf(num_format_str='MMM DD, YYYY'),
-                    'yyyy': xlwt.easyxf(num_format_str='YYYY'),
-                    'submission_date': xlwt.easyxf(num_format_str='MMM DD, YYYY hh:mm:ss')}
-
-
-def get_excel_sheet(raw_data, sheet_name):
-    wb = xlwt.Workbook()
-    workbook_add_sheet(wb, raw_data, sheet_name)
-    return wb
-
 
 def sorted_unique_list(value_list):
     return sorted(list(set(value_list)))
@@ -72,77 +52,6 @@ def get_organization_settings_from_request(request):
     from datawinners.accountmanagement.models import OrganizationSetting
 
     return OrganizationSetting.objects.get(organization=get_organization(request))
-
-
-def _clean_date(date_val):
-    new_date_val = date_val.replace(tzinfo=None)
-    return new_date_val
-
-
-def _clean(row):
-    new_row = []
-    for each in row:
-        if type(each) is datetime:
-            each = _clean_date(each)
-        new_row.append(each)
-    return new_row
-
-
-def _header_style():
-    my_font = xlwt.Font()
-    my_font.name = 'Helvetica Bold'
-    my_font.bold = True
-    my_alignment = xlwt.Alignment()
-    my_alignment.vert = my_alignment.VERT_CENTER
-    my_alignment.wrap = my_alignment.WRAP_AT_RIGHT
-    header_style = xlwt.easyxf()
-    header_style.font = my_font
-    header_style.alignment = my_alignment
-    return header_style
-
-
-def workbook_add_sheet(wb, raw_data, sheet_name):
-    ws = wb.add_sheet(sheet_name)
-
-    for row_number, row in enumerate(raw_data):
-        if(row_number == 0):
-            row = _clean(row)
-            style = xlwt.easyxf('borders: top double, bottom double, right double')
-            algn = xlwt.Alignment()
-            algn.wrap = 1
-            style.alignment = algn
-
-            for col_number, val in enumerate(row):
-                if isinstance(val, tuple):
-                    max_width = max([len(item) for item, style_object in val])+BUFFER_WIDTH
-                    max_width = min(max_width,MAX_COLUMN_WIDTH_IN_CHAR)
-                    ws.col(col_number).width = WIDTH_ONE_CHAR * max_width
-                    ws.row(row_number).height = WIDTH_ONE_CHAR * 5
-                    ws.write_rich_text(row_number, col_number, val, style)
-                else:
-                    ws.row(row_number).height = WIDTH_ONE_CHAR * 4
-                    ws.write(row_number, col_number, val, _header_style())
-
-        else:
-            if row_number > 0 and row_number % MAX_ROWS_IN_MEMORY == 0: ws.flush_row_data()
-            row = _clean(row)
-            write_row_to_worksheet(ws, row, row_number)
-    return ws
-
-
-def write_row_to_worksheet(ws, row, row_number):
-    for col_number, val in enumerate(row):
-        if isinstance(val, ExcelDate):
-            ws.col(col_number).width = WIDTH_ONE_CHAR * (len(str(val.date)) + BUFFER_WIDTH)
-            ws.write(row_number, col_number, val.date.replace(tzinfo=None),
-                style=EXCEL_DATE_STYLE.get(val.date_format))
-        elif isinstance(val, float):
-            cell_format = EXCEL_CELL_FLOAT_STYLE
-            if(int(val) == val):
-                cell_format = EXCEL_CELL_INTEGER_STYLE
-            ws.write(row_number, col_number, val, style=cell_format)
-        else:
-            ws.write(row_number, col_number, val, style=xlwt.Style.default_style)
 
 
 def get_organization_from_manager(manager):

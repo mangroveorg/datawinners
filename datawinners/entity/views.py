@@ -27,6 +27,7 @@ from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import delete_mapping, es_questionnaire_field_name
 from datawinners.search.submission_index import update_submission_search_for_subject_edition
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
+from datawinners.workbook_utils import workbook_add_sheet, get_excel_sheet
 from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
 from mangrove.form_model.field import field_to_json, DateField
 from mangrove.transport import Channel
@@ -51,7 +52,7 @@ from mangrove.transport.player.player import WebPlayer
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
+from datawinners.utils import get_organization, get_organization_country, \
     get_database_manager_for_org, get_changed_questions
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code

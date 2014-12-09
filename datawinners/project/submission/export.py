@@ -1,16 +1,16 @@
-import logging
 from tempfile import NamedTemporaryFile
 import tempfile
 import zipfile
-from django.core.servers.basehttp import FileWrapper
-from django.http import HttpResponse
 import math
-import resource
+
+from django.core.servers.basehttp import FileWrapper
+
+from django.http import HttpResponse
 import xlwt
-from datawinners import utils, workbook_utils
 from django.template.defaultfilters import slugify
 
-logger = logging.getLogger("datawinners")
+
+from datawinners.workbook_utils import workbook_add_sheet, workbook_add_sheets, workbook_add_header, workbook_add_row
 
 
 def add_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix):
@@ -23,7 +23,7 @@ def add_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix):
 
     while sheet_number <= number_of_sheets:
         data_list_with_max_allowed_columns = [l[column_number - 1: column_number + 255] for l in data_list]
-        utils.workbook_add_sheet(wb, data_list_with_max_allowed_columns, get_sheet_name())
+        workbook_add_sheet(wb, data_list_with_max_allowed_columns, get_sheet_name())
         column_number += 256
         sheet_number += 1
 
@@ -43,12 +43,15 @@ def zip_excel_workbook(excel_workbook, file_name):
     excel_workbook.save(temporary_excel_file)
     temporary_excel_file.close()
     zip_file = _create_zip_file(file_name_normalized, temporary_excel_file)
+    return file_name_normalized, zip_file
+
+
+def create_zipped_response(excel_workbook, file_name):
+    file_name_normalized, zip_file = zip_excel_workbook(excel_workbook, file_name)
     response = HttpResponse(FileWrapper(zip_file, blksize=8192000), content_type='application/zip')
-    response['Content-Disposition'] = 'attachment; filename="%s.zip"' % (file_name_normalized,)
+    response['Content-Disposition'] = 'attachment; filename="%s.zip"' % file_name_normalized
     response['Content-Length'] = zip_file.tell()
     zip_file.seek(0)
-    logger.error('Before response: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
     return response
 
 
@@ -66,26 +69,17 @@ def create_excel_response(headers, raw_data_list, file_name):
 def create_excel_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix, formatter):
     total_column_count = len(headers)
     number_of_sheets = math.ceil(total_column_count / 256.0)
-    workbook_utils.workbook_add_sheets(wb, number_of_sheets, sheet_name_prefix)
-    workbook_utils.workbook_add_header(wb, headers, number_of_sheets)
-
-    logger.error('After adding header to excel: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
+    workbook_add_sheets(wb, number_of_sheets, sheet_name_prefix)
+    workbook_add_header(wb, headers, number_of_sheets)
     for row_number, row in enumerate(raw_data_list):
         row = formatter.format_row(row['_source'])
-        workbook_utils.workbook_add_row(wb, row, number_of_sheets, row_number+1)
+        workbook_add_row(wb, row, number_of_sheets, row_number + 1)
 
 
-def create_zipped_excel_response(headers, raw_data, file_name, formatter):
+def export_to_zipped_excel(headers, raw_data, file_name, formatter):
     wb = xlwt.Workbook()
-
-    logger.error('Before filling sheet: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
     create_excel_sheet_with_data(raw_data, headers, wb, 'data_log', formatter)
-
-    logger.error('After filling sheet: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
-    return zip_excel_workbook(wb, file_name)
+    return create_zipped_response(wb, file_name)
 
 
 def export_filename(submission_type, project_name):

@@ -7,7 +7,7 @@ from datawinners.accountmanagement.helper import is_org_user
 from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
 from datawinners.entity.views import add_codes_sheet
 from datawinners.main.database import get_database_manager
-from datawinners.utils import get_excel_sheet
+from datawinners.workbook_utils import get_excel_sheet
 from mangrove.form_model.form_model import get_form_model_by_code
 
 @valid_web_user
