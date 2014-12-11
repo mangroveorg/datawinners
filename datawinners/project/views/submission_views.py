@@ -19,7 +19,7 @@ import jsonpickle
 import resource
 
 from datawinners import settings
-from datawinners.accountmanagement.localized_time import get_country_time_delta
+from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
 from datawinners.blue.xform_submission_exporter import XFormSubmissionExporter
 from datawinners.blue.view import SurveyWebXformQuestionnaireRequest
 from datawinners.blue.xform_bridge import XFormSubmissionProcessor
@@ -216,7 +216,7 @@ def delete(request, project_id):
     received_times = []
     for survey_response_id in survey_response_ids:
         survey_response = SurveyResponse.get(dbm, survey_response_id)
-        received_times.append(datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
+        received_times.append(datetime.datetime.strftime(convert_utc_to_localized(local_time_delta , survey_response.submitted_on), "%d/%m/%Y %X"))
         feeds_dbm = get_feeds_database(request.user)
         additional_feed_dictionary = get_project_details_dict_for_feed(questionnaire)
         delete_response = WebPlayerV2(dbm, feeds_dbm).delete_survey_response(survey_response,
