@@ -26,7 +26,7 @@ def get_questionnaire_detail(detail_dict):
 
     if "changed_type" in detail_dict:
         response_type = {"select1": "List of Choices", "select": "List of Choices", "text": "Word or Phrase",
-                         "integer": "Number",
+                         "integer": "Number", "unique_id": "Identification Number",
                          "geocode": "GPS Coordinates", "date": "date", "telephone_number": "Telephone Number"}
         for type_changed in detail_dict["changed_type"]:
             detail_list.append(ugettext('Answer type changed to %(answer_type)s for \"%(question_label)s\"') %
