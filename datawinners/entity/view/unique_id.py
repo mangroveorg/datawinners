@@ -41,17 +41,16 @@ def _refresh_elastic_search_index(dbm):
     elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).refresh(index=dbm.database_name)
 
 
-def _hard_delete_unique_ids(unique_ids, dbm, form_model):
+def _hard_delete_unique_ids(unique_ids, dbm, form_model, request):
     for unique_id in unique_ids:
         entity = get_by_short_code(dbm, unique_id, form_model.entity_type)
         _delete_unique_id_from_elastic_search(dbm, form_model.entity_type[0], entity.id)
         delete_data_record(dbm, form_model.form_code, unique_id)
         dbm._save_document(EntityActionDocument(form_model.entity_type[0], unique_id, HARD_DELETE))
         entity.delete()
-
-
     if unique_ids:
         _refresh_elastic_search_index(dbm)
+        log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (form_model.entity_type.capitalize(), ", ".join(unique_ids)))
 
 
 def _check_if_questionnaire_has_submissions_with_unique_id(manager, project, unique_id):
@@ -95,7 +94,7 @@ def delete_subjects(request):
     form_model = get_form_model_by_entity_type(manager, [entity_type])
     all_ids = _subject_short_codes_to_delete(request, form_model, entity_type)
     hard_delete_unique_ids = _get_unique_ids_to_hard_delete(all_ids, entity_type, manager)
-    _hard_delete_unique_ids(hard_delete_unique_ids, manager, form_model)
+    _hard_delete_unique_ids(hard_delete_unique_ids, manager, form_model, request)
     unique_ids_to_soft_delete = list(set(all_ids) - set(hard_delete_unique_ids))
     _soft_delete_unique_ids(unique_ids_to_soft_delete, entity_type, manager, request)
     message = get_success_message(entity_type)
