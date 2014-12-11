@@ -223,7 +223,7 @@ msgstr "Intervalle de dates"
 #: media/javascript/alldata/data_export.js:65
 #: media/javascript/useractivity/log.js:13
 msgid "to"
-msgstr "au"
+msgstr "à"
 
 #: media/javascript/datasenders/import.js:5
 msgid "Import a Data Senders list"
