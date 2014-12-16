@@ -491,6 +491,49 @@ def export(request):
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
         .create_excel_response(submission_type, query_params)
 
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
+def export_no_zip(request):
+
+    if request.method == 'GET': #To handle django error #3480
+        return HttpResponse(status=405)
+
+
+    project_name = request.POST.get(u"project_name")
+    submission_type = request.GET.get(u'type')
+    search_filters = json.loads(request.POST.get('search_filters'))
+    questionnaire_code = request.POST.get(u'questionnaire_code')
+    manager = get_database_manager(request.user)
+    logger.error('Before form model fetch: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    current_language = get_language()
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+
+    query_params = {"search_filters": search_filters,
+                    "start_result_number": 0,
+                    "number_of_results": _get_export_limit(manager),
+                    "order": "",
+                    "sort_field": "date"
+    }
+
+    search_text = search_filters.get("search_text", '')
+    query_params.update({"search_text": search_text})
+    query_params.update({"filter": submission_type})
+
+    if form_model.xform:
+        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+        .create_excel_response(submission_type, query_params)
+
+    logger.error('View before export flow: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+
+
+    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+        .create_excel_response_without_zip(submission_type, query_params)
+
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
     if is_errored_before_edit:

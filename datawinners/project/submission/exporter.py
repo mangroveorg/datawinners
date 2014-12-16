@@ -1,5 +1,5 @@
 from datawinners.project.Header import SubmissionExcelHeader
-from datawinners.project.submission.export import export_filename, export_to_zipped_excel
+from datawinners.project.submission.export import export_filename, export_to_zipped_excel, export_to_excel_no_zip
 from datawinners.project.submission.formatter import SubmissionFormatter
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
 
@@ -22,6 +22,11 @@ class SubmissionExporter:
         return export_to_zipped_excel(header_list, submission_list,
                                             export_filename(submission_type, self.project_name), submission_formatter)
 
+    def _create_excel_response(self, columns, submission_list, submission_type):
+        header_list, submission_formatter = self._get_header_list(columns)
+        return export_to_excel_no_zip(header_list, submission_list,
+                                            export_filename(submission_type, self.project_name), submission_formatter)
+
     def get_columns_and_search_results(self, query_params, submission_type):
         columns = SubmissionExcelHeader(self.form_model, submission_type, self.language).get_columns()
         search_results, query_fields = get_scrolling_submissions_query(self.dbm, self.form_model, query_params,
@@ -31,3 +36,7 @@ class SubmissionExporter:
     def create_excel_response(self, submission_type, query_params):
         columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
         return self._create_zipped_response(columns, search_results, submission_type)
+
+    def create_excel_response_without_zip(self, submission_type, query_params):
+        columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
+        return self._create_excel_response(columns, search_results, submission_type)

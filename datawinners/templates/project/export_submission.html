@@ -12,3 +12,9 @@
     <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
     <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
 </form>
+
+<form id="export_form_without_zip" method="POST">
+    {% csrf_token %}
+    <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+    <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
+</form>

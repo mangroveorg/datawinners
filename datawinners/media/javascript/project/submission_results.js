@@ -93,14 +93,20 @@ DW.SubmissionLogExport = function () {
 
     self.init = function (currentTabName) {
         self.exportLink = $('.export_link');
+        self.exportLinkWithoutZip = $('.export_link_without_zip');
         self.exportForm = $('#export_form');
+        self.exportFormWithoutZip = $('#export_form_without_zip');
         self.url = '/project/export/log' + '?type=' + currentTabName;
+        self.noZipUrl = '/project/export/log/nozip' + '?type=' + currentTabName;
         _initialize_dialog();
         _initialize_events();
     };
 
     var _updateAndSubmitForm = function(){
         self.exportForm.appendJson({"search_filters": JSON.stringify(filter_as_json())}).attr('action', self.url).submit();
+    };
+    var _updateAndSubmitFormWithoutZip = function(){
+        self.exportFormWithoutZip.appendJson({"search_filters": JSON.stringify(filter_as_json())}).attr('action', self.noZipUrl).submit();
     };
 
     var _initialize_dialog = function(){
@@ -128,6 +134,10 @@ DW.SubmissionLogExport = function () {
                DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
                _updateAndSubmitForm();
            }
+        });
+
+        self.exportLinkWithoutZip.click(function () {
+           _updateAndSubmitFormWithoutZip();
         });
     };
 };

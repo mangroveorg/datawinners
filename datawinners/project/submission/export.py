@@ -54,6 +54,13 @@ def create_zipped_response(excel_workbook, file_name):
     zip_file.seek(0)
     return response
 
+def create_non_zipped_response(excel_workbook, file_name):
+    file_name_normalized = slugify(file_name)
+    response = HttpResponse(mimetype="application/vnd.ms-excel")
+    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (file_name_normalized)
+    excel_workbook.save(response)
+    return response
+
 
 def create_excel_response(headers, raw_data_list, file_name):
     response = HttpResponse(mimetype="application/vnd.ms-excel")
@@ -80,6 +87,11 @@ def export_to_zipped_excel(headers, raw_data, file_name, formatter):
     wb = xlwt.Workbook()
     create_excel_sheet_with_data(raw_data, headers, wb, 'data_log', formatter)
     return create_zipped_response(wb, file_name)
+
+def export_to_excel_no_zip(headers, raw_data, file_name, formatter):
+    wb = xlwt.Workbook()
+    create_excel_sheet_with_data(raw_data, headers, wb, 'data_log', formatter)
+    return create_non_zipped_response(wb, file_name)
 
 
 def export_filename(submission_type, project_name):
