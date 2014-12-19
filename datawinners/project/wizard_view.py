@@ -327,9 +327,9 @@ def _get_activity_log_action(reminder_list, new_value):
                                            new_value['should_send_reminders_on_deadline'] or
                                            new_value['should_send_reminders_before_deadline']):
         action = ACTIVATED_REMINDERS
-    if reminder_list.count() > 0 and not (new_value['should_send_reminders_after_deadline'] or
-                                              new_value['should_send_reminders_on_deadline'] or
-                                              new_value['should_send_reminders_before_deadline']):
+    if reminder_list.count() > 0 and not (new_value['should_send_reminders_after_deadline'] == 'true' or
+                                              new_value['should_send_reminders_on_deadline'] == 'true 'or
+                                              new_value['should_send_reminders_before_deadline'] == 'true'):
         action = DEACTIVATED_REMINDERS
     return action
 
