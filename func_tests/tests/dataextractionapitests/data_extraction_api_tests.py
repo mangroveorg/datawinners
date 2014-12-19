@@ -17,6 +17,9 @@ from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url
 from tests.dataextractionapitests.data_extraction_api_data import *
+from mock import Mock
+from datawinners.accountmanagement.models import Organization
+from datawinners.submission.models import DatawinnerLog
 
 
 class DataExtractionAPITestCase(HeadlessRunnerTest):
@@ -201,3 +204,80 @@ class TestUniqueIdExtraction(unittest.TestCase):
     def test_should_return_not_found_error_when_for_a_questionnaire_form_code(self):
         response = requests.get(url('/api/unique-id/cli001/'), auth=self.DIGEST_CREDENTIALS)
         self.assertEquals(response.status_code, 404)
+
+
+class TestFailedSubmissionExtraction(unittest.TestCase):
+
+    def setUp(self):
+        self.DIGEST_CREDENTIALS = HTTPDigestAuth('tester150411@gmail.com', 'tester150411')
+        self.failed_submission_log()
+
+    @classmethod
+    def failed_submission_log(cls):
+        organization = Mock(spec=Organization)
+        organization.org_id = "SLX364903"
+        cls.datawinners_log1 = DatawinnerLog(
+                message = "12 november 2014 post number 2",
+                from_number = "0330307221",
+                to_number = "919880734937",
+                organization_id = organization.org_id,
+                error = "Error. Questionnaire Code Hello is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code. ")
+
+        cls.datawinners_log2 = DatawinnerLog(message = "12 november 2014 post number 2",
+                from_number = "0330307221",
+                to_number = "919880734937",
+                organization_id = organization.org_id,
+                error = "Error. Questionnaire Code Hello is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code. ")
+
+        cls.datawinners_log3 = DatawinnerLog(message = "12 november 2014 post number 2",
+                from_number = "0330307221",
+                to_number = "919880734937",
+                organization_id = organization.org_id,
+                error = "Error. Questionnaire Code Hello is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code. ")
+        cls.datawinners_log1.save()
+        cls.datawinners_log2.save()
+        cls.datawinners_log3.save()
+
+
+    def get_data_by_uri(self, uri):
+        http_response = requests.get(url(uri), auth=self.DIGEST_CREDENTIALS)
+        return json.loads(http_response.content)
+
+    @attr('functional_test')
+    def test_should_get_all_failed_submissions(self):
+        failed_submission_data = self.get_data_by_uri(
+            "/api/get_failed_submissions/")
+        submissions = failed_submission_data['submissions']
+        self.assertTrue(failed_submission_data['success'])
+        self.assertEqual(len(submissions), 3)
+
+    @attr('functional_test')
+    def test_should_get_all_failed_submissions_with_start_date(self):
+        self.datawinners_log1.created_at = datetime.strptime("2014-11-12", "%Y-%m-%d")
+        self.datawinners_log1.save()
+        self.datawinners_log2.created_at = datetime.strptime("2014-11-13", "%Y-%m-%d")
+        self.datawinners_log2.save()
+        self.datawinners_log3.created_at = datetime.strptime("2014-10-13", "%Y-%m-%d")
+        self.datawinners_log3.save()
+        failed_submission_data = self.get_data_by_uri(
+            "/api/get_failed_submissions/?start_date=%s" % '11-11-2014')
+        submissions = failed_submission_data['submissions']
+        self.assertTrue(failed_submission_data['success'])
+        self.assertEqual(len(submissions), 2)
+
+    @attr('functional_test')
+    def test_should_get_all_failed_submissions_with_start_date_end_date(self):
+        self.datawinners_log1.created_at = datetime.strptime("2014-10-09", "%Y-%m-%d")
+        self.datawinners_log1.save()
+        self.datawinners_log2.created_at = datetime.strptime("2014-10-11", "%Y-%m-%d")
+        self.datawinners_log2.save()
+        self.datawinners_log3.created_at = datetime.strptime("2014-10-13", "%Y-%m-%d")
+        self.datawinners_log3.save()
+        failed_submission_data = self.get_data_by_uri(
+            "/api/get_failed_submissions/?start_date=%s&end_date=%s" % ('06-10-2014', '15-10-2014'))
+        submissions = failed_submission_data['submissions']
+        self.assertTrue(failed_submission_data['success'])
+        self.assertEqual(len(submissions), 3)
+
+    def tearDown(self):
+        DatawinnerLog.objects.filter(organization="SLX364903").delete()

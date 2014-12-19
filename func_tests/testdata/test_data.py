@@ -17,8 +17,8 @@ def get_test_port():
 
 def url(path):
     full_path = get_target_test_scheme() + "://" + get_target_test_host() + ":"+ get_test_port() + path
-    if not full_path.endswith("/"):
-        full_path += "/"
+    #if not full_path.endswith("/"):
+    #    full_path += "/"
     return full_path
 
 DATA_WINNER_HOME_PAGE = "/home"
