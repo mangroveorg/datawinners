@@ -62,6 +62,7 @@ from mangrove.transport.contract.survey_response import SurveyResponse
 
 websubmission_logger = logging.getLogger("websubmission")
 logger = logging.getLogger("datawinners")
+SUBMISSION_EXPORT_LIMIT = 1
 
 
 @login_required
@@ -440,12 +441,6 @@ def get_option_value_for_field(diff_value, question_field):
     return reslt_dict
 
 
-ACCOUNTS_WITH_HIGH_SUBMISSION_VOLUME = ['hni_usaid-mikolo_lei526034']
-
-def _get_export_limit(dbm):
-    if dbm.database_name in ACCOUNTS_WITH_HIGH_SUBMISSION_VOLUME:
-        return 10000
-    return 50000
 
 
 @login_required
@@ -472,7 +467,7 @@ def export(request):
 
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
-                    "number_of_results": _get_export_limit(manager),
+                    "number_of_results": SUBMISSION_EXPORT_LIMIT,
                     "order": "",
                     "sort_field": "date"
     }
@@ -515,7 +510,7 @@ def export_no_zip(request):
 
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
-                    "number_of_results": _get_export_limit(manager),
+                    "number_of_results": SUBMISSION_EXPORT_LIMIT,
                     "order": "",
                     "sort_field": "date"
     }
