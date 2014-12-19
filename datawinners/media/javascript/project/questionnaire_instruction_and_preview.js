@@ -21,19 +21,21 @@ DW.instruction_and_preview.prototype = {
     },
 
     load_preview_content: function () {
-        var post_data = this.get_post_data();
-        var that = this;
-        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
-        $(".shadow-background").removeClass("shadow-background");
-        $(that.preview_navigation_item).addClass("shadow-background");
-
-        $.post(this.preview_url, post_data, function (response_data) {
-            $("#questionnaire_content").html(response_data);
-            $('.errorlist').remove();
-            $("#questionnaire_preview_instruction").show();
-            that.post_callback();
-            $.unblockUI();
-        }, 'html');
+        if ($('#questionnaire_code_validation_message').length == 0) {
+            var post_data = this.get_post_data();
+            var that = this;
+            $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
+            $(".shadow-background").removeClass("shadow-background");
+            $(that.preview_navigation_item).addClass("shadow-background");
+    
+            $.post(this.preview_url, post_data, function (response_data) {
+                $("#questionnaire_content").html(response_data);
+                $('.errorlist').remove();
+                    $("#questionnaire_preview_instruction").show();
+                    that.post_callback();
+                $.unblockUI();
+            }, 'html');
+        }
     },
 
     get_post_data: function () {
