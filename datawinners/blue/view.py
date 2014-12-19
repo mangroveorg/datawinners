@@ -129,6 +129,16 @@ class ProjectUpload(View):
                 'message_suffix': _("Update your XLSForm and upload again.")
             }))
 
+        except UnicodeDecodeError as e:
+            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
+
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [
+                    _("Relevant or Constraint or calculate column has statement missing the required ${ }.") + _(
+                        "Update your XLSForm and upload again.")],
+            }))
+
         except Exception as e:
 
             message = e.message if e.message else _("Errors in excel")
@@ -269,7 +279,6 @@ class ProjectUpdate(View):
                         "all XLSForm features. Please check the list of unsupported features.")]
                 }))
 
-
         except QuestionAlreadyExistsException as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
 
@@ -280,6 +289,15 @@ class ProjectUpdate(View):
                 'message_suffix': _("Update your XLSForm and upload again.")
             }))
 
+        except UnicodeDecodeError as e:
+            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
+
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [
+                    _("Relevant or Constraint or calculate column has statement missing the required ${ }. ") + _(
+                        "Update your XLSForm and upload again.")],
+            }))
 
         except Exception as e:
 
