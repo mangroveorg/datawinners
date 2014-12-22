@@ -458,7 +458,6 @@ def export(request):
     search_filters = json.loads(request.POST.get('search_filters'))
     questionnaire_code = request.POST.get(u'questionnaire_code')
     manager = get_database_manager(request.user)
-    logger.error('Before form model fetch: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
     form_model = get_form_model_by_code(manager, questionnaire_code)
     current_language = get_language()
@@ -479,9 +478,6 @@ def export(request):
     if form_model.xform:
         return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
         .create_excel_response(submission_type, query_params)
-
-    logger.error('View before export flow: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
 
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
         .create_excel_response(submission_type, query_params)
