@@ -20,7 +20,7 @@ from django.template.defaultfilters import slugify
 from pyxform.errors import PyXFormError
 from django.core.mail import EmailMessage
 from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
-    get_generated_xform_id_name
+    get_generated_xform_id_name, XFormImageProcessor
 from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
 from django.utils.translation import ugettext as _
 
@@ -34,7 +34,7 @@ from datawinners.search.submission_index import SubmissionSearchStore
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
-    XlsProjectParser, get_generated_xform_id_name, XFormImageProcessor
+
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, is_project_exist
 from datawinners.project.utils import is_quota_reached
