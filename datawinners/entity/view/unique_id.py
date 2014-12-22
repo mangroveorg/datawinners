@@ -50,7 +50,7 @@ def _hard_delete_unique_ids(unique_ids, dbm, form_model, request):
         entity.delete()
     if unique_ids:
         _refresh_elastic_search_index(dbm)
-        log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (form_model.entity_type.capitalize(), ", ".join(unique_ids)))
+        log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (request.POST['entity_type'], ", ".join(unique_ids)))
 
 
 def _check_if_questionnaire_has_submissions_with_unique_id(manager, project, unique_id):
