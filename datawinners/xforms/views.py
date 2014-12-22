@@ -115,7 +115,7 @@ def submission(request):
                                    TransportInfo(transport=SMART_PHONE,
                                                  source=request_user.email,
                                                  destination=''
-                                   ))
+                                   ), media=request.FILES if len(request.FILES) > 1 else [])
 
         response = player.add_survey_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
         mail_feed_errors(response, manager.database_name)

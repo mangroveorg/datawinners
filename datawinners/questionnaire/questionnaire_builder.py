@@ -1,5 +1,5 @@
 from django.utils.translation import ugettext
-from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, ShortCodeField, FieldSet, ImageField
+from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, ShortCodeField, FieldSet, PhotoField, VideoField, AudioField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, EntityFormModel
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
 from mangrove.form_model.validators import UniqueIdExistsValidator
@@ -59,6 +59,7 @@ class QuestionBuilder(object):
     def __init__(self, dbm):
         self.dbm = dbm
 
+    type_media_dict = {'photo': PhotoField, 'video': VideoField, 'audio': AudioField}
 
     def create_question(self, post_dict, code):
         if post_dict["type"] == "text":
@@ -83,7 +84,7 @@ class QuestionBuilder(object):
             return self._create_short_code_field(post_dict, code)
         if post_dict["type"] == "field_set":
             return self._create_field_set_question( post_dict, code )
-        if post_dict["type"] == "image":
+        if post_dict["type"] == "photo" or post_dict["type"] == "video" or post_dict["type"] == "audio":
             return self._create_media_question( post_dict, code )
 
     def _create_field_set_question(self, post_dict, code):
@@ -175,9 +176,9 @@ class QuestionBuilder(object):
                               label=post_dict["title"], instruction=post_dict.get("instruction"), parent_field_code=post_dict.get('parent_field_code'))
 
     def _create_media_question(self, post_dict, code):
-        return ImageField( name=self._get_name(post_dict), code=code,
-                           label=post_dict["title"], instruction=post_dict.get("instruction"), required=post_dict.get( "required" ),
-                           parent_field_code=post_dict.get('parent_field_code') )
+        media_class = self.type_media_dict[post_dict['type']]
+        return media_class( name=self._get_name(post_dict), code=code,
+                            label=post_dict["title"], instruction=post_dict.get("instruction"), required=post_dict.get( "required" ))
 
 
     def _get_unique_id_type(self, post_dict):

@@ -39,6 +39,7 @@ elasticutils==0.8
 pyelasticsearch
 uWSGI==1.4.9
 djangorestframework==2.3.9
+python-magic==0.4.6
 django-urlmiddleware
 celery
 flower

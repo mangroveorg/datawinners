@@ -13,7 +13,7 @@ from datawinners.project.wizard_view import create_questionnaire
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, associate_account_users_to_project
-from mangrove.form_model.field import FieldSet, GeoCodeField, DateField
+from mangrove.form_model.field import FieldSet, GeoCodeField, DateField, PhotoField, VideoField, AudioField, MediaField
 
 
 # used for edit questionnaire in xls questionnaire flow
@@ -35,6 +35,7 @@ class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE],
                  'auto_filled': ['note', 'today'],
+                 'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply']
     }
     meta_data_types = ["start","end","today","imei","deviceid","subscriberid","phonenumber","simserial"]
@@ -313,7 +314,7 @@ class XlsFormParser():
     def _media(self, field, parent_field_code=None):
         name = self._get_label(field)
         code = field['name']
-        question = {"title": name, "code": code, "type": "image", 'required': self.is_required(field),
+        question = {"title": name, "code": code, "type": field['type'], 'required': self.is_required(field),
                     "parent_field_code": parent_field_code,
                     "is_entity_question": False}
         return question
@@ -428,6 +429,29 @@ class XFormSubmissionProcessor():
         s.update({project_name: d})
         return xmldict.dict_to_xml(s)
 
+
+class XFormImageProcessor():
+
+    media_fields = [PhotoField, VideoField, AudioField]
+
+    def get_media(self, field, value):
+        if type(field) is FieldSet:
+            file_names = []
+            for v in value:
+                for f in field.fields:
+                    if isinstance(f, MediaField) and v.get(f.code, ''):
+                        file_names.append(v.get(f.code, ''))
+            return file_names
+        if isinstance(field, MediaField):
+            return [value]
+
+    def get_media_files_str(self, form_model_fields, submission_values):
+        media_files = []
+        for f in form_model_fields:
+            values = submission_values.get(f.code, '')
+            if values and (isinstance(f, MediaField) or type(f) is FieldSet):
+                media_files.extend(self.get_media(f, values))
+        return ','.join(media_files)
 
 DIR = os.path.dirname(__file__)
 
