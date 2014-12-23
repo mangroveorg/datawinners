@@ -79,6 +79,10 @@ def create_excel_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix, 
     workbook_add_sheets(wb, number_of_sheets, sheet_name_prefix)
     workbook_add_header(wb, headers, number_of_sheets)
     for row_number, row in enumerate(raw_data_list):
+        if row_number == 20000:
+            #export limit set to 20K after performance exercise
+            #since scan & scroll API does not support result set size the workaround is to handle it this way
+            return
         row = formatter.format_row(row['_source'])
         workbook_add_row(wb, row, number_of_sheets, row_number + 1)
 
