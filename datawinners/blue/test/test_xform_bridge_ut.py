@@ -288,6 +288,7 @@ class TestXformBridge(unittest.TestCase):
             self.assertEqual(questions.__len__(), 2)
             self.assertDictEqual(questions[0], {'code': u'table_list_1', 'title': u'Q1', 'required': False,
                                                 'parent_field_code': None,
+                                                'has_other': False,
                                                 'choices': [{'value': {'text': u'Yes', 'val': u'yes'}},
                                                             {'value': {'text': u'No', 'val': u'no'}},
                                                             {'value': {'text': u"Don't Know", 'val': u'dk'}},
@@ -295,6 +296,7 @@ class TestXformBridge(unittest.TestCase):
                                                 'is_entity_question': False, 'type': 'select1'})
             self.assertDictEqual(questions[1], {'code': u'table_list_2', 'title': u'Question 2', 'required': False,
                                                 'parent_field_code': None,
+                                                'has_other': False,
                                                 'choices': [{'value': {'text': u'Yes', 'val': u'yes'}},
                                                             {'value': {'text': u'No', 'val': u'no'}},
                                                             {'value': {'text': u"Don't Know", 'val': u'dk'}},
