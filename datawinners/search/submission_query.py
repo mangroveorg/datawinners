@@ -94,7 +94,7 @@ class SubmissionQueryResponseCreator(object):
         if isinstance(get_field_by_attribute_value(self.form_model, 'code', self._get_key(key)), MediaField):
             value = res.get(key)
             if value:
-                return "<a href='/download/attachment/%s/%s'>%s</a>" % (res._id, value, value)
+                return "<a href='/download/attachment/%s/%s'>%s</a>" % (res._meta.id, value, value)
         else:
             return res.get(ugettext(key))
 
