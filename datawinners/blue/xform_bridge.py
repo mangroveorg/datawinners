@@ -407,6 +407,13 @@ class MangroveService():
         return questionnaire.id, questionnaire.form_code
 
 
+def _is_choice_item_in_choice_list(item, options):
+    for choice_item in options:
+        if choice_item['val'] == item:
+            return True
+    return False
+
+
 class XFormSubmissionProcessor():
     def get_dict(self, field, value):
         if not value:
@@ -432,8 +439,19 @@ class XFormSubmissionProcessor():
         for f in form_model_fields:
             answer = submission_values.get(f.code, '')
             if isinstance(f, SelectField) and f.has_other and isinstance(answer, list) and answer[0] == 'other':
-                d.update({f.code + "_other": answer[1]})
-                d.update({f.code: answer[0]})
+                if f.is_single_select:
+                    d.update({f.code + "_other": answer[1]})
+                    d.update({f.code: answer[0]})
+                else:
+                    other_selection = []
+                    choice_selections = ['other']
+                    for item in answer[1].split(' '):
+                        if _is_choice_item_in_choice_list(item, f.options):
+                            choice_selections.append(item)
+                        else:
+                            other_selection.append(item)
+                    d.update({f.code + "_other": ' '.join(other_selection)})
+                    d.update({f.code: ' '.join(choice_selections)})
             else:
                 d.update(self.get_dict(f, answer))
         s.update({project_name: d})
