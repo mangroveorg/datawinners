@@ -9,7 +9,7 @@ from pages.projectsubjectspage.project_subjects_page import ProjectSubjectsPage
 from pages.reminderpage.reminder_settings_page import ReminderSettingsPage
 from pages.smstesterlightbox.sms_tester_light_box_page import SMSTesterLightBoxPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from tests.testsettings import UI_TEST_TIMEOUT
+
 
 
 class ProjectOverviewPage(Page):
