@@ -54,7 +54,9 @@ from datawinners.project.utils import project_info, is_quota_reached
 from datawinners.project.Header import SubmissionsPageHeader
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
-from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed, is_original_question_changed_from_choice_answer_type, is_original_field_and_latest_field_of_type_choice_answer, convert_choice_options_to_options_text, filter_submission_choice_options_based_on_current_answer_choices
+from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed, \
+    is_original_question_changed_from_choice_answer_type, is_original_field_and_latest_field_of_type_choice_answer, \
+    convert_choice_options_to_options_text, filter_submission_choice_options_based_on_current_answer_choices
 from datawinners.project.submission_form import SurveyResponseForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.transport.contract.survey_response import SurveyResponse
@@ -62,7 +64,6 @@ from mangrove.transport.contract.survey_response import SurveyResponse
 
 websubmission_logger = logging.getLogger("websubmission")
 logger = logging.getLogger("datawinners")
-SUBMISSION_EXPORT_LIMIT = 1
 
 
 @login_required
@@ -93,35 +94,37 @@ def _get_date_fields_info(questionnaire):
 
 
 def _is_unique_id_type_present(fields_array, unique_id_type):
-    return len([item for item in fields_array if item['type'] == 'unique_id' and item['entity_type'] == unique_id_type]) > 0
+    return len(
+        [item for item in fields_array if item['type'] == 'unique_id' and item['entity_type'] == unique_id_type]) > 0
 
 
-def get_filterable_field_details(field,filterable_fields):
-        if isinstance(field, DateField):
+def get_filterable_field_details(field, filterable_fields):
+    if isinstance(field, DateField):
+        return {
+            'type': 'date',
+            'code': field.code,
+            'label': field.label,
+            'is_month_format': field.is_monthly_format,
+            'format': field.date_format
+        }
+    elif isinstance(field, UniqueIdField):
+        if not _is_unique_id_type_present(filterable_fields, field.unique_id_type):
             return {
-                'type': 'date',
+                'type': 'unique_id',
                 'code': field.code,
-                'label': field.label,
-                'is_month_format': field.is_monthly_format,
-                'format': field.date_format
+                'entity_type': field.unique_id_type,
             }
-        elif isinstance(field, UniqueIdField):
-            if not _is_unique_id_type_present(filterable_fields, field.unique_id_type):
-                return {
-                    'type': 'unique_id',
-                    'code': field.code,
-                    'entity_type': field.unique_id_type,
-                }
+
 
 def get_filterable_fields(fields):
-        filterable_fields = []
-        for field in fields:
-          field_detials = get_filterable_field_details(field, filterable_fields)
-          if field_detials:
-              filterable_fields.append(field_detials)
-          if(isinstance(field,FieldSet) and field.is_group()):
+    filterable_fields = []
+    for field in fields:
+        field_detials = get_filterable_field_details(field, filterable_fields)
+        if field_detials:
+            filterable_fields.append(field_detials)
+        if (isinstance(field, FieldSet) and field.is_group()):
             filterable_fields.extend(get_filterable_fields(field.fields))
-        return filterable_fields
+    return filterable_fields
 
 
 @login_required
@@ -146,7 +149,8 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "user_email": request.user.email,
             "tab": tab,
             "xform": xform,
-            "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253, # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
+            "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253,
+            # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "is_account_with_large_number_of_submissions": _is_account_with_large_submissions(manager),
             "first_filterable_field": first_filterable_fields,
@@ -158,9 +162,9 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
                                   context_instance=RequestContext(request))
 
 
-
 def _is_account_with_large_submissions(dbm):
     return dbm.database_name == 'hni_usaid-mikolo_lei526034'
+
 
 @login_required
 @session_not_expired
@@ -181,14 +185,15 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {
-                "xform": questionnaire.xform,
-                "user_email": request.user.email,
-                "is_quota_reached": is_quota_reached(request, org_id=org_id),
-                "first_filterable_field": first_filterable_fields,
-                "filterable_fields": filterable_fields,
-                "is_account_with_large_number_of_submissions": _is_account_with_large_submissions(manager),
-                "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253, # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
-              }
+            "xform": questionnaire.xform,
+            "user_email": request.user.email,
+            "is_quota_reached": is_quota_reached(request, org_id=org_id),
+            "first_filterable_field": first_filterable_fields,
+            "filterable_fields": filterable_fields,
+            "is_account_with_large_number_of_submissions": _is_account_with_large_submissions(manager),
+            "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253,
+            # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
+        }
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/analysis_results.html', result_dict,
                                   context_instance=RequestContext(request))
@@ -217,7 +222,9 @@ def delete(request, project_id):
     received_times = []
     for survey_response_id in survey_response_ids:
         survey_response = SurveyResponse.get(dbm, survey_response_id)
-        received_times.append(datetime.datetime.strftime(convert_utc_to_localized(local_time_delta , survey_response.submitted_on), "%d/%m/%Y %X"))
+        received_times.append(
+            datetime.datetime.strftime(convert_utc_to_localized(local_time_delta, survey_response.submitted_on),
+                                       "%d/%m/%Y %X"))
         feeds_dbm = get_feeds_database(request.user)
         additional_feed_dictionary = get_project_details_dict_for_feed(questionnaire)
         delete_response = WebPlayerV2(dbm, feeds_dbm).delete_survey_response(survey_response,
@@ -246,8 +253,9 @@ def build_static_info_context(manager, survey_response, ui_model=None, questionn
     else:
         static_content = {'Data Sender': (sender_name, sender_id)}
     static_content.update({'Source': capitalize(
-                          survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
-                          'Submission Date': survey_response.submitted_on.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
+        survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
+                           'Submission Date': survey_response.submitted_on.strftime(
+                               SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
 
     form_ui_model.update({'static_content': static_content})
     form_ui_model.update({'is_edit': True})
@@ -255,32 +263,32 @@ def build_static_info_context(manager, survey_response, ui_model=None, questionn
     return form_ui_model
 
 
-
-
 def construct_request_dict(survey_response, questionnaire_form_model, short_code):
     result_dict = {}
     for field in questionnaire_form_model.fields:
         value = survey_response.values.get(field.code) if survey_response.values.get(
             field.code) else survey_response.values.get(field.code.lower())
-        original_field = questionnaire_form_model.get_field_by_code_and_rev(field.code, survey_response.form_model_revision)
+        original_field = questionnaire_form_model.get_field_by_code_and_rev(field.code,
+                                                                            survey_response.form_model_revision)
         if is_original_question_changed_from_choice_answer_type(original_field, field):
             value = convert_choice_options_to_options_text(original_field, value)
         elif is_original_field_and_latest_field_of_type_choice_answer(original_field, field):
             value = filter_submission_choice_options_based_on_current_answer_choices(value, original_field, field)
         if isinstance(field, SelectField) and field.type == 'select':
-            #check if select field answer is present in survey response
+            # check if select field answer is present in survey response
             value = re.findall(r'[1-9]?[a-z]', value) if value else value
         result_dict.update({field.code: value})
     result_dict.update({'form_code': questionnaire_form_model.form_code})
     result_dict.update({'dsid': short_code})
     return result_dict
 
+
 @valid_web_user
 def edit_xform_submission_get(request, project_id, survey_response_id):
-
     survey_request = SurveyWebXformQuestionnaireRequest(request, project_id, XFormSubmissionProcessor())
     if request.method == 'GET':
         return survey_request.response_for_xform_edit_get_request(survey_response_id)
+
 
 @valid_web_user
 @is_project_exist
@@ -300,7 +308,8 @@ def edit(request, project_id, survey_response_id, tab=0):
                         kwargs={"project_id": project_id, "questionnaire_code": questionnaire_form_model.form_code,
                                 "tab": tab})
     form_ui_model = build_static_info_context(manager, survey_response,
-                                              questionnaire_form_model=questionnaire_form_model, reporter_id=reporter_id)
+                                              questionnaire_form_model=questionnaire_form_model,
+                                              reporter_id=reporter_id)
     form_ui_model.update({"back_link": back_link, 'is_datasender': is_data_sender(request)})
     data_sender = get_data_sender(manager, survey_response)
     short_code = data_sender[1]
@@ -308,7 +317,7 @@ def edit(request, project_id, survey_response_id, tab=0):
     if request.method == 'GET':
         form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
         survey_response_form = SurveyResponseForm(questionnaire_form_model, form_initial_values,
-                                                  datasender_name=data_sender[0] , reporter_id=reporter_id,
+                                                  datasender_name=data_sender[0], reporter_id=reporter_id,
                                                   reporter_name=reporter_name,
                                                   enable_datasender_edit=enable_datasender_edit)
 
@@ -324,7 +333,7 @@ def edit(request, project_id, survey_response_id, tab=0):
             form_ui_model.update({'error_message': error_message,
                                   "reporter_id": reporter_id,
                                   "is_linked": is_linked,
-                                  "reporter_name":reporter_name})
+                                  "reporter_name": reporter_name})
         return render_to_response("project/web_questionnaire.html", form_ui_model,
                                   context_instance=RequestContext(request))
 
@@ -343,24 +352,27 @@ def edit(request, project_id, survey_response_id, tab=0):
             survey_response_form = SurveyResponseForm(questionnaire_form_model, survey_response.values)
 
             form_ui_model.update(
-                get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))
+                get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
+                                 disable_link_class))
             form_ui_model.update({
-                                  "reporter_id": reporter_id,
-                                  "is_linked": is_linked,
-                                  "reporter_name": reporter_name})
+                "reporter_id": reporter_id,
+                "is_linked": is_linked,
+                "reporter_name": reporter_name})
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                                       context_instance=RequestContext(request))
         else:
             form_initial_values = construct_request_dict(survey_response, questionnaire_form_model, short_code)
             if not owner_id:
                 submitted_values = submitted_values.copy()
-                submitted_values['dsid'] =form_initial_values['dsid']
+                submitted_values['dsid'] = form_initial_values['dsid']
 
-            survey_response_form = SurveyResponseForm(questionnaire_form_model, submitted_values, initial=form_initial_values,
+            survey_response_form = SurveyResponseForm(questionnaire_form_model, submitted_values,
+                                                      initial=form_initial_values,
                                                       enable_datasender_edit=enable_datasender_edit)
 
         form_ui_model.update(
-            get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class, disable_link_class))
+            get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
+                             disable_link_class))
         form_ui_model.update({
             "reporter_id": reporter_id,
             "is_linked": is_linked})
@@ -376,8 +388,8 @@ def edit(request, project_id, survey_response_id, tab=0):
         form_ui_model.update({'success_message': success_message,
                               "reporter_id": reporter_id,
                               "is_linked": is_linked,
-                              "reporter_name":reporter_name})
-        #if len(survey_response_form.changed_data) or is_errored_before_edit:
+                              "reporter_name": reporter_name})
+        # if len(survey_response_form.changed_data) or is_errored_before_edit:
         created_request = helper.create_request(survey_response_form, request.user.username)
 
         additional_feed_dictionary = get_project_details_dict_for_feed(questionnaire_form_model)
@@ -399,9 +411,9 @@ def edit(request, project_id, survey_response_id, tab=0):
             del form_ui_model["success_message"]
             survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
             form_ui_model.update({
-                              "reporter_id": reporter_id,
-                              "is_linked": is_linked,
-                              "reporter_name": reporter_name})
+                "reporter_id": reporter_id,
+                "is_linked": is_linked,
+                "reporter_name": reporter_name})
         return render_to_response("project/web_questionnaire.html", form_ui_model,
                                   context_instance=RequestContext(request))
 
@@ -414,7 +426,7 @@ def log_edit_action(old_survey_response, new_survey_response, request, project_n
         for key, value in differences.changed_answers.iteritems():
             question_field = form_model.get_field_by_code(key)
             question_label = question_field.label
-            #replacing question code with actual question text
+            # replacing question code with actual question text
             changed_answers[question_label] = changed_answers.pop(key)
             #relace option with value for choice field
             if isinstance(question_field, SelectField):
@@ -441,17 +453,13 @@ def get_option_value_for_field(diff_value, question_field):
     return reslt_dict
 
 
-
-
 @login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
 def export(request):
-
-    if request.method == 'GET': #To handle django error #3480
+    if request.method == 'GET':  # To handle django error #3480
         return HttpResponse(status=405)
-
 
     project_name = request.POST.get(u"project_name")
     submission_type = request.GET.get(u'type')
@@ -464,9 +472,12 @@ def export(request):
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
 
+    #the number_of_results limit will not be used for result-set size since scan-scroll api does not support it.
+    #it is specified since the code-flow requires its value to be present
+
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
-                    "number_of_results": SUBMISSION_EXPORT_LIMIT,
+                    "number_of_results": 4000,
                     "order": "",
                     "sort_field": "date"
     }
@@ -477,50 +488,7 @@ def export(request):
 
     if form_model.xform:
         return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-        .create_excel_response(submission_type, query_params)
-
-    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-        .create_excel_response(submission_type, query_params)
-
-@login_required
-@session_not_expired
-@is_datasender
-@is_not_expired
-def export_no_zip(request):
-
-    if request.method == 'GET': #To handle django error #3480
-        return HttpResponse(status=405)
-
-
-    project_name = request.POST.get(u"project_name")
-    submission_type = request.GET.get(u'type')
-    search_filters = json.loads(request.POST.get('search_filters'))
-    questionnaire_code = request.POST.get(u'questionnaire_code')
-    manager = get_database_manager(request.user)
-    logger.error('Before form model fetch: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-    current_language = get_language()
-    organization = get_organization(request)
-    local_time_delta = get_country_time_delta(organization.country)
-
-    query_params = {"search_filters": search_filters,
-                    "start_result_number": 0,
-                    "number_of_results": SUBMISSION_EXPORT_LIMIT,
-                    "order": "",
-                    "sort_field": "date"
-    }
-
-    search_text = search_filters.get("search_text", '')
-    query_params.update({"search_text": search_text})
-    query_params.update({"filter": submission_type})
-
-    if form_model.xform:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-        .create_excel_response(submission_type, query_params)
-
-    logger.error('View before export flow: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
+            .create_excel_response(submission_type, query_params)
 
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
         .create_excel_response_without_zip(submission_type, query_params)
@@ -538,7 +506,7 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
     headers = header.get_header_field_names()
     meta_fields = ['ds_id', 'entity_short_code']
     for field in meta_fields:
-        #Remove extra meta fields with which ordering in submission values
+        # Remove extra meta fields with which ordering in submission values
         #and submission headers will not match
         try:
             headers.remove(field)
@@ -569,7 +537,8 @@ def get_submissions(request, form_code):
     search_results, query_fields = get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta)
     submission_count_with_filters = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
     submission_count_without_filters = get_submissions_without_user_filters_count(dbm, form_model, search_parameters)
-    submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields, search_results)
+    submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields,
+                                                                                               search_results)
 
     return HttpResponse(
         jsonpickle.encode(
@@ -624,8 +593,9 @@ def get_stats(request, form_code):
     search_parameters.update({"search_text": search_text})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    #total success submission count irrespective of current fields being present or not
-    facet_results, total_submissions = get_facets_for_choice_fields(dbm, form_model, search_parameters, local_time_delta)
+    # total success submission count irrespective of current fields being present or not
+    facet_results, total_submissions = get_facets_for_choice_fields(dbm, form_model, search_parameters,
+                                                                    local_time_delta)
 
     return HttpResponse(json.dumps(
         {'result': create_statistics_response(facet_results, form_model),
