@@ -50,4 +50,4 @@ pyscss
 elasticsearch==0.4.5
 six==1.8.0
 elasticsearch-dsl==0.0.2
--e git+https://github.com/mangroveorg/mangrove.git@17_0_release#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
