@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext
-from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, ShortCodeField, FieldSet, PhotoField, VideoField, AudioField
+from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, \
+    TelephoneNumberField, HierarchyField, UniqueIdField, ShortCodeField, FieldSet, PhotoField, VideoField, AudioField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, EntityFormModel
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
 from mangrove.form_model.validators import UniqueIdExistsValidator
@@ -55,6 +56,7 @@ class QuestionnaireBuilder(object):
     def update_outgoing_sms_enabled_flag(self, is_outgoing_sms_enabled):
         self.form_model.is_outgoing_sms_replies_enabled = is_outgoing_sms_enabled == 'true'
 
+
 class QuestionBuilder(object):
     def __init__(self, dbm):
         self.dbm = dbm
@@ -83,17 +85,19 @@ class QuestionBuilder(object):
         if post_dict["type"] == "short_code":
             return self._create_short_code_field(post_dict, code)
         if post_dict["type"] == "field_set":
-            return self._create_field_set_question( post_dict, code )
+            return self._create_field_set_question(post_dict, code)
         if post_dict["type"] == "photo" or post_dict["type"] == "video" or post_dict["type"] == "audio":
-            return self._create_media_question( post_dict, code )
+            return self._create_media_question(post_dict, code)
 
     def _create_field_set_question(self, post_dict, code):
 
-        fields = post_dict.get( "fields" )
-        sub_form_fields = [self.create_question(f, f['code']) for i,f in enumerate(fields)]
-        return FieldSet( name=self._get_name( post_dict ), code=code, label=post_dict["title"],
-                          instruction=post_dict.get( "instruction" ), required=post_dict.get( "required"), field_set=sub_form_fields,
-                          fieldset_type=post_dict.get("fieldset_type"), parent_field_code=post_dict.get('parent_field_code'))
+        fields = post_dict.get("fields")
+        sub_form_fields = [self.create_question(f, f['code']) for i, f in enumerate(fields)]
+        return FieldSet(name=self._get_name(post_dict), code=code, label=post_dict["title"],
+                        instruction=post_dict.get("instruction"), required=post_dict.get("required"),
+                        field_set=sub_form_fields,
+                        fieldset_type=post_dict.get("fieldset_type"),
+                        parent_field_code=post_dict.get('parent_field_code'))
 
     def create_entity_id_question_for_activity_report(self):
         entity_id_code = "eid"
@@ -149,21 +153,24 @@ class QuestionBuilder(object):
 
     def _create_geo_code_question(self, post_dict, code):
         return GeoCodeField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
-                            instruction=post_dict.get("instruction"), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
+                            instruction=post_dict.get("instruction"), required=post_dict.get("required"),
+                            parent_field_code=post_dict.get('parent_field_code'))
 
 
     def _create_select_question(self, post_dict, single_select_flag, code):
         options = [(choice['value'].get("text"), choice['value'].get("val").lower()) for choice in post_dict["choices"]]
         return SelectField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
                            options=options, single_select_flag=single_select_flag,
-                           instruction=post_dict.get("instruction"), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
+                           instruction=post_dict.get("instruction"), required=post_dict.get("required"),
+                           parent_field_code=post_dict.get('parent_field_code'), has_other=post_dict.get('has_other'))
 
 
     def _create_telephone_number_question(self, post_dict, code):
         return TelephoneNumberField(name=self._get_name(post_dict), code=code,
                                     label=post_dict["title"],
                                     instruction=post_dict.get("instruction"), constraints=(
-                self._create_constraints_for_mobile_number()), required=post_dict.get("required"), parent_field_code=post_dict.get('parent_field_code'))
+                self._create_constraints_for_mobile_number()), required=post_dict.get("required"),
+                                    parent_field_code=post_dict.get('parent_field_code'))
 
     def _create_constraints_for_mobile_number(s_create_short_code_fieldelf):
         mobile_number_length = TextLengthConstraint(max=15)
@@ -173,12 +180,14 @@ class QuestionBuilder(object):
 
     def _create_location_question(self, post_dict, code):
         return HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=code,
-                              label=post_dict["title"], instruction=post_dict.get("instruction"), parent_field_code=post_dict.get('parent_field_code'))
+                              label=post_dict["title"], instruction=post_dict.get("instruction"),
+                              parent_field_code=post_dict.get('parent_field_code'))
 
     def _create_media_question(self, post_dict, code):
         media_class = self.type_media_dict[post_dict['type']]
-        return media_class( name=self._get_name(post_dict), code=code,
-                            label=post_dict["title"], instruction=post_dict.get("instruction"), required=post_dict.get( "required" ))
+        return media_class(name=self._get_name(post_dict), code=code,
+                           label=post_dict["title"], instruction=post_dict.get("instruction"),
+                           required=post_dict.get("required"))
 
 
     def _get_unique_id_type(self, post_dict):
@@ -188,7 +197,9 @@ class QuestionBuilder(object):
         return UniqueIdField(unique_id_type=self._get_unique_id_type(post_dict), name=self._get_name(post_dict),
                              code=code,
                              label=post_dict["title"],
-                             instruction=ugettext("Answer must be the Identification Number of the %s you are reporting on.") % self._get_unique_id_type(post_dict),
+                             instruction=ugettext(
+                                 "Answer must be the Identification Number of the %s you are reporting on.") % self._get_unique_id_type(
+                                 post_dict),
                              parent_field_code=post_dict.get('parent_field_code'))
 
     def _create_short_code_field(self, post_dict, code):

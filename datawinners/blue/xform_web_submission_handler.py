@@ -51,7 +51,7 @@ class XFormWebSubmissionHandler():
 
     def update_submission_response(self, survey_response_id):
 
-        if not is_authorized_for_questionnaire(self.manager, self.request_user, self.form_code):
+        if not is_authorized_for_questionnaire(self.manager, self.request_user, self.request.POST['form_code']):
             return HttpResponse(status=403)
 
         survey_response = get_survey_response_by_id(self.manager, survey_response_id)

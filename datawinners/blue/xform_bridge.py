@@ -13,7 +13,8 @@ from datawinners.project.wizard_view import create_questionnaire
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, associate_account_users_to_project
-from mangrove.form_model.field import FieldSet, GeoCodeField, DateField, PhotoField, VideoField, AudioField, MediaField
+from mangrove.form_model.field import FieldSet, GeoCodeField, DateField, PhotoField, VideoField, AudioField, MediaField, \
+    SelectField
 
 
 # used for edit questionnaire in xls questionnaire flow
@@ -36,9 +37,9 @@ class XlsFormParser():
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE],
                  'auto_filled': ['note', 'today'],
                  'media': ['photo', 'audio', 'video'],
-                 'select': ['select one', 'select all that apply']
+                 'select': ['select one', 'select all that apply', 'select one or specify other', 'select all that apply or specify other']
     }
-    meta_data_types = ["start","end","today","imei","deviceid","subscriberid","phonenumber","simserial"]
+    meta_data_types = ["start", "end", "today", "imei", "deviceid", "subscriberid", "phonenumber", "simserial"]
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
     or_other_data_types = ['select all that apply or specify other', 'select one or specify other']
@@ -117,8 +118,8 @@ class XlsFormParser():
             else:
                 if(field["type"] in self.meta_data_types):
                     errors.append(_("%s as a datatype (metadata)") % _(field['type']))
-                elif(field["type"]) in self.or_other_data_types:
-                    errors.append(_("XLSForm \"or_other\" function for multiple choice or single choice questions"))
+                # elif(field["type"]) in self.or_other_data_types:
+                #     errors.append(_("XLSForm \"or_other\" function for multiple choice or single choice questions"))
                 elif(field["type"]) in self.select_without_list_name:
                     errors.append(_("missing list reference, check your select_one or select multiple question types"))
                 else: errors.append(_("%s as a datatype") % _(field['type']))
@@ -296,8 +297,12 @@ class XlsFormParser():
         question = {"title": name, "code": code, "type": "select", 'required': self.is_required(field),
                     "parent_field_code": parent_field_code,
                     "choices": choices, "is_entity_question": False}
+
+        question.update({"has_other": field['type'] in self.or_other_data_types})
+
         if field['type'] == 'select one':
             question.update({"type": "select1"})
+
         return question
 
     def _get_choice_label(self, choice_field):
@@ -425,7 +430,12 @@ class XFormSubmissionProcessor():
         # todo instead of using form_model fields, use xform to find the fields
         d, s = {'form_code': form_code}, {}
         for f in form_model_fields:
-            d.update(self.get_dict(f, submission_values.get(f.code, '')))
+            answer = submission_values.get(f.code, '')
+            if isinstance(f, SelectField) and f.has_other and isinstance(answer, list) and answer[0] == 'other':
+                d.update({f.code + "_other": answer[1]})
+                d.update({f.code: answer[0]})
+            else:
+                d.update(self.get_dict(f, answer))
         s.update({project_name: d})
         return xmldict.dict_to_xml(s)
 

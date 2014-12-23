@@ -456,7 +456,6 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 @csrf_exempt
 def new_xform_submission_post(request):
     try:
-        send_to_carbon(create_path('submissions.web.advanced'), 1)
         response = XFormWebSubmissionHandler(request=request).create_new_submission_response()
         response['Location'] = request.build_absolute_uri(request.path)
         return response
@@ -472,7 +471,6 @@ def new_xform_submission_post(request):
 @csrf_exempt
 def edit_xform_submission_post(request, survey_response_id):
     try:
-        send_to_carbon(create_path('submissions.web.advanced'), 1)
         return XFormWebSubmissionHandler(request=request). \
             update_submission_response(survey_response_id)
     except Exception as e:
