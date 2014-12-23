@@ -2078,7 +2078,7 @@ var requirejs, require, define;
 define("bower-components/requirejs/require.js", function(){});
 
 /* Modernizr (Custom Build) | MIT & BSD
- * Build: http://modernizr.com/download/#-printshiv-cssclasses-touch-json-opacity-svg-inputtypes
+ * Build: http://modernizr.com/download/#-printshiv-cssclasses-touch-json-svg-inputtypes
  */
 ;
 
@@ -2260,16 +2260,6 @@ window.Modernizr = (function( window, document, undefined ) {
 
         return bool;
     };
-
-
-
-    tests['opacity'] = function() {
-                setCssAll('opacity:.55');
-
-                    return (/^0.55$/).test(mStyle.opacity);
-    };
-
-
     tests['svg'] = function() {
         return !!document.createElementNS && !!document.createElementNS(ns.svg, 'svg').createSVGRect;
     };
@@ -13053,7 +13043,7 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!enketo-config',[],function () { return '{\n    "widgets": [\n        "enketo-widget/note/notewidget",\n        "enketo-widget/select-desktop/selectpicker",\n        "enketo-widget/select-mobile/selectpicker",\n        "enketo-widget/geo/geopicker",\n        "enketo-widget/table/tablewidget",\n        "enketo-widget/radio/radiopicker",\n        "enketo-widget/date/datepicker-extended",\n        "enketo-widget/time/timepicker-extended",\n        "enketo-widget/datetime/datetimepicker-extended",\n        "enketo-widget/mediagrid/mediagridpicker",\n        "enketo-widget/file/filepicker",\n        "enketo-widget/select-likert/likertitem",\n        "enketo-widget/distress/distresspicker",\n        "enketo-widget/trigger/triggerwidget"\n    ],\n    "maps": [ {\n        "tiles": [ "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" ],\n        "name": "streets",\n        "attribution": "Map data © <a href=\\"http://openstreetmap.org\\">OpenStreetMap</a> contributors"\n    } ],\n    "google_api_key": ""\n}\n';});
+define('text!enketo-config',[],function () { return '{\n    "widgets": [\n        "enketo-widget/note/notewidget",\n        "enketo-widget/select-desktop/selectpicker",\n        "enketo-widget/select-mobile/selectpicker",\n        "enketo-widget/geo/geopicker",\n        "enketo-widget/table/tablewidget",\n        "enketo-widget/radio/radiopicker",\n        "enketo-widget/date/datepicker-extended",\n        "enketo-widget/time/timepicker-extended",\n        "enketo-widget/datetime/datetimepicker-extended",\n        "enketo-widget/mediagrid/mediagridpicker",\n        "enketo-widget/file/filepicker",\n        "enketo-widget/select-likert/likertitem",\n        "enketo-widget/distress/distresspicker",\n        "enketo-widget/trigger/triggerwidget"\n    ],\n    "maps": [ {\n        "tiles": [ "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" ],\n        "name": "streets",\n        "attribution": "Map data © <a href=\\"http://openstreetmap.org\\">OpenStreetMap</a> contributors"\n    }, {\n        "tiles": "GOOGLE_SATELLITE",\n        "name": "satellite"\n    } ],\n    "googleApiKey": ""\n}\n';});
 
 define( 'enketo-js/widgets',[ 'text!enketo-config', 'Modernizr', 'jquery' ], function( configStr, Modernizr, $ ) {
     
@@ -15269,7 +15259,7 @@ define( 'enketo-js/widgets',[ 'text!enketo-config', 'Modernizr', 'jquery' ], fun
  * limitations under the License.
  */
 
-define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery', 'enketo-js/plugins', 'enketo-js/extend', 'bootstrap', 'jquery.touchswipe' ],
+define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery', 'enketo-js/plugins', 'enketo-js/extend', 'jquery.touchswipe' ],
     function( FormModel, widgets, $ ) {
         
 
@@ -15597,21 +15587,25 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                 }
 
                 //var profiler = new Profiler('preloads.init()');
-                this.preloads.init( this ); //before widgets.init (as instanceID used in offlineFilepicker widget)
+                // before widgets.init (as instanceID used in offlineFilepicker widget)
+                this.preloads.init( this );
                 //profiler.report();
 
                 this.grosslyViolateStandardComplianceByIgnoringCertainCalcs(); //before calcUpdate!
 
                 //profiler = new Profiler('calcupdate');
-                this.calcUpdate(); //before repeat.init as repeat count may use a calculated item
+                // before repeat.init as repeat count may use a calculated item
+                this.calcUpdate();
                 //profiler.report();
 
                 //profiler = new Profiler('setLangs()');
-                this.langs.init(); //test: before itemsetUpdate
+                // test: before itemsetUpdate
+                this.langs.init();
                 //profiler.report();
 
                 //profiler = new Profiler('repeat.init()');
-                this.repeat.init( this ); //after radio button data-name setting
+                // after radio button data-name setting
+                this.repeat.init( this );
                 //profiler.report();
 
                 //profiler = new Profiler('itemsets initialization');
@@ -15623,7 +15617,8 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                 //profiler.report();
 
                 //profiler = new Profiler('widgets initialization');
-                widgets.init(); //after setAllVals()
+                // after setAllVals()
+                widgets.init();
                 //profiler.report();
 
                 //profiler = new Profiler('bootstrapify');
@@ -15631,7 +15626,8 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                 //profiler.report();
 
                 //profiler = new Profiler('branch.init()');
-                this.branchUpdate(); //after widgets.init()
+                // after widgets.init()
+                this.branchUpdate();
                 //profiler.report();
 
                 this.pages.init(); // after branch.init();
@@ -15640,7 +15636,9 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                 this.outputUpdate();
                 //profiler.report();
 
-                this.setEventHandlers(); //after widgets init to make sure widget handlers are called before
+                // after widgets init to make sure widget handlers are called before
+                // after loading existing instance to not trigger an 'edit' event
+                this.setEventHandlers();
 
                 this.editStatus.set( false );
                 //profiler.report('time taken across all functions to evaluate '+xpathEvalNum+' XPath expressions: '+xpathEvalTime);
@@ -15811,13 +15809,13 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                             this.toggleButtons( newIndex );
                         }
 
-                        //                            this.$current.addClass( 'fade-out' )
-                        //                                .one( 'transitionend', function() {
-                        //                                    that.$current.removeClass( 'current fade-out' ).parentsUntil( '.or', '.or-group, .or-group-data, .or-repeat' ).removeClass( 'contains-current' );
-                        //                                    that.setToCurrent( pageEl );
-                        //                                    that.focusOnFirstQuestion( pageEl );
-                        //                                    that.toggleButtons( newIndex );
-                        //                                } );
+                        // this.$current.addClass( 'fade-out' )
+                        //     .one( 'transitionend', function() {
+                        //         that.$current.removeClass( 'current fade-out' ).parentsUntil( '.or', '.or-group, .or-group-data, .or-repeat' ).removeClass( 'contains-current' );
+                        //         that.setToCurrent( pageEl );
+                        //         that.focusOnFirstQuestion( pageEl );
+                        //         that.toggleButtons( newIndex );
+                        //     } );
                         // }
                     } else {
                         this.setToCurrent( pageEl );
@@ -16120,12 +16118,14 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
 
             FormView.prototype.editStatus = {
                 set: function( status ) {
-                    $form.attr( 'data-edited', Boolean( status ) );
-                    $form.trigger( 'edit', status );
+                    // only trigger edit event once
+                    if ( status && status !== $form.data( 'edited' ) ) {
+                        $form.trigger( 'edited' );
+                    }
+                    $form.data( 'edited', status );
                 },
                 get: function() {
-                    console.log( 'form element', $form );
-                    return ( $form.attr( 'data-edited' ) === 'true' ) ? true : false;
+                    return !!$form.data( 'edited' );
                 }
             };
 
@@ -16176,22 +16176,30 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                     selector = [ filter + '[' + attr + ']' ];
                 } else {
                     updated.nodes.forEach( function( node ) {
-                        // The target node name is ALWAYS at the END of a path inside the expression.
-                        // #1: followed by space
-                        selector.push( filter + '[' + attr + '*="/' + node + ' "]' );
-                        // #2: followed by )
-                        selector.push( filter + '[' + attr + '*="/' + node + ')"]' );
-                        // #3: followed by , if used as first parameter of multiple parameters
-                        selector.push( filter + '[' + attr + '*="/' + node + ',"]' );
-                        // #4: at the end of an expression
-                        selector.push( filter + '[' + attr + '$="/' + node + '"]' );
-                        // #5: followed by ] (used in itemset filters)
-                        selector.push( filter + '[' + attr + '*="/' + node + ']"]' );
+                        selector = selector.concat( that.getQuerySelectorsForLogic( filter, attr, node ) );
                     } );
+                    // add all the paths that use the /* selector at end of path
+                    selector = selector.concat( that.getQuerySelectorsForLogic( filter, attr, '*' ) );
                 }
 
                 //TODO: exclude descendents of disabled elements? .find( ':not(:disabled) span.active' )
                 return $collection.find( selector.join() );
+            };
+
+            FormView.prototype.getQuerySelectorsForLogic = function( filter, attr, nodeName ) {
+                return [
+                    // The target node name is ALWAYS at the END of a path inside the expression.
+                    // #1: followed by space
+                    filter + '[' + attr + '*="/' + nodeName + ' "]',
+                    // #2: followed by )
+                    filter + '[' + attr + '*="/' + nodeName + ')"]',
+                    // #3: followed by , if used as first parameter of multiple parameters
+                    filter + '[' + attr + '*="/' + nodeName + ',"]',
+                    // #4: at the end of an expression
+                    filter + '[' + attr + '$="/' + nodeName + '"]',
+                    // #5: followed by ] (used in itemset filters)
+                    filter + '[' + attr + '*="/' + nodeName + ']"]'
+                ];
             };
 
             /**
@@ -16694,7 +16702,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                             } );
                             dataNode.setVal( newVal, null, props.xmlType );
                         } else {
-                            console.error( 'Preload "' + item + '"" not supported. May or may not be a big deal.' );
+                            console.log( 'Preload "' + item + '" not supported. May or may not be a big deal.' );
                         }
                     } );
                     // In addition the presence of certain meta data in the instance may automatically trigger a preload function
@@ -16894,8 +16902,8 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                     this.formO = formO;
                     $form.find( '.or-repeat' ).prepend( '<span class="repeat-number"></span>' );
                     $form.find( '.or-repeat:not([data-repeat-fixed])' )
-                        .append( '<div class="repeat-buttons"><button type="button" class="btn btn-default repeat"><i class="glyphicon glyphicon-plus"> </i></button>' +
-                            '<button type="button" disabled class="btn btn-default remove"><i class="glyphicon glyphicon-minus"> </i></button></div>' );
+                        .append( '<div class="repeat-buttons"><button type="button" class="btn btn-default repeat"><i class="icon icon-plus"> </i></button>' +
+                            '<button type="button" disabled class="btn btn-default remove"><i class="icon icon-minus"> </i></button></div>' );
 
                     //delegated handlers (strictly speaking not required, but checked for doubling of events -> OK)
                     $form.on( 'click', 'button.repeat:enabled', function() {
@@ -17153,18 +17161,14 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                 } );
 
                 model.$.on( 'dataupdate', function( event, updated ) {
-                    // console.log( 'dataupdate', updated );
                     that.calcUpdate( updated ); //EACH CALCUPDATE THAT CHANGES A VALUE TRIGGERS ANOTHER CALCUPDATE => INEFFICIENT
                     that.branchUpdate( updated );
                     that.outputUpdate( updated );
                     that.itemsetUpdate( updated );
-                } );
-
-                // edit is fired when the form changes due to user input or repeats added/removed
-                // branch update doesn't require detection as it always happens as a result of an event that triggers change or changerepeat.
-                $form.on( 'change addrepeat removerepeat', function( event ) {
+                    // edit is fired when the model changes after the form has been initialized
                     that.editStatus.set( true );
                 } );
+
 
                 $form.on( 'addrepeat', function( event, index ) {
                     var $clone = $( event.target );
@@ -19180,7 +19184,7 @@ define( 'file-manager',[ "q", "jquery" ], function( Q, $ ) {
     
 
     var maxSize,
-        supported = typeof FileReader === 'function',
+        supported = typeof FileReader !== 'undefined',
         notSupportedAdvisoryMsg = '';
 
     /**
@@ -19258,7 +19262,6 @@ define( 'file-manager',[ "q", "jquery" ], function( Q, $ ) {
      */
     function getCurrentFiles() {
         var file,
-            deferred = Q.defer(),
             files = [];
 
         // first get any files inside file input elements
@@ -19320,10 +19323,6 @@ requirejs.config( {
     shim: {
         "xpath": {
             exports: "XPathJS"
-        },
-        "bootstrap": {
-            deps: [ "jquery" ],
-            exports: "jQuery.fn.popover"
         },
         "widget/date/bootstrap3-datepicker/js/bootstrap-datepicker": {
             deps: [ "jquery" ],
@@ -19415,8 +19414,7 @@ function saveXformSubmission(callback) {
 }
 requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form', 'file-manager' ],
     function( $, Modernizr, Form, fileManager ) {
-
-        var loadErrors, form;
+        var loadErrors, form, formStr, modelStr;
 
         //if querystring touch=true is added, override Modernizr
         if ( getURLParameter( 'touch' ) === 'true' ) {
@@ -19440,10 +19438,7 @@ requirejs( [ 'jquery', 'Modernizr', 'enketo-js/Form', 'file-manager' ],
         //validate handler for validate button
         $( '#validate-form' ).on( 'click', function() {
             saveXformSubmission();
-                fileManager.getFiles()
-                    .then( function( files ) {
-                        console.log( 'media files:', files );
-                    } );
+                console.log( 'media files:', fileManager.getCurrentFiles() );
         });
 
         //initialize the form
@@ -19642,7 +19637,7 @@ define( 'enketo-widget/note/notewidget',[ 'enketo-js/Widget', 'jquery', 'enketo-
  * limitations under the License.
  */
 
-define( 'enketo-widget/select-desktop/selectpicker',[ 'jquery', 'enketo-js/Widget', 'bootstrap' ], function( $, Widget ) {
+define( 'enketo-widget/select-desktop/selectpicker',[ 'jquery', 'enketo-js/Widget' ], function( $, Widget ) {
     
 
     var pluginName = 'desktopSelectpicker';
@@ -19787,8 +19782,6 @@ define( 'enketo-widget/select-desktop/selectpicker',[ 'jquery', 'enketo-js/Widge
                 $option = $select.find( 'option[value="' + $input.val() + '"]' ),
                 selectedBefore = $option.is( ':selected' );
 
-            console.log( 'li', $li, 'select', $select, 'option', $option );
-
             if ( !_this.multiple ) {
                 _this.$picker.find( 'li' ).removeClass( 'active' );
                 $option.siblings( 'option' ).prop( 'selected', false );
@@ -19866,6 +19859,151 @@ define( 'enketo-widget/select-desktop/selectpicker',[ 'jquery', 'enketo-js/Widge
             }
         } );
     };
+
+    + function( $ ) {
+        //
+
+        // DROPDOWN CLASS DEFINITION
+        // =========================
+
+        var backdrop = '.dropdown-backdrop';
+        var toggle = '[data-toggle=dropdown]';
+        var Dropdown = function( element ) {
+            $( element ).on( 'click.bs.dropdown', this.toggle );
+        };
+
+        Dropdown.prototype.toggle = function( e ) {
+            var $this = $( this );
+
+            if ( $this.is( '.disabled, :disabled' ) ) return;
+
+            var $parent = getParent( $this );
+            var isActive = $parent.hasClass( 'open' );
+
+            clearMenus();
+
+            if ( !isActive ) {
+                if ( 'ontouchstart' in document.documentElement && !$parent.closest( '.navbar-nav' ).length ) {
+                    // if mobile we use a backdrop because click events don't delegate
+                    $( '<div class="dropdown-backdrop"/>' ).insertAfter( $( this ) ).on( 'click', clearMenus );
+                }
+
+                var relatedTarget = {
+                    relatedTarget: this
+                };
+                $parent.trigger( e = $.Event( 'show.bs.dropdown', relatedTarget ) );
+
+                if ( e.isDefaultPrevented() ) return;
+
+                $parent
+                    .toggleClass( 'open' )
+                    .trigger( 'shown.bs.dropdown', relatedTarget );
+
+                $this.focus();
+            }
+
+            return false;
+        };
+
+        Dropdown.prototype.keydown = function( e ) {
+            if ( !/(38|40|27)/.test( e.keyCode ) ) return;
+
+            var $this = $( this );
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            if ( $this.is( '.disabled, :disabled' ) ) return;
+
+            var $parent = getParent( $this );
+            var isActive = $parent.hasClass( 'open' );
+
+            if ( !isActive || ( isActive && e.keyCode == 27 ) ) {
+                if ( e.which == 27 ) $parent.find( toggle ).focus();
+                return $this.click();
+            }
+
+            var desc = ' li:not(.divider):visible a';
+            var $items = $parent.find( '[role=menu]' + desc + ', [role=listbox]' + desc );
+
+            if ( !$items.length ) return;
+
+            var index = $items.index( $items.filter( ':focus' ) );
+
+            if ( e.keyCode == 38 && index > 0 ) index--; // up
+            if ( e.keyCode == 40 && index < $items.length - 1 ) index++; // down
+            if ( !~index ) index = 0;
+
+            $items.eq( index ).focus();
+        };
+
+        function clearMenus( e ) {
+            $( backdrop ).remove();
+            $( toggle ).each( function() {
+                var $parent = getParent( $( this ) );
+                var relatedTarget = {
+                    relatedTarget: this
+                };
+                if ( !$parent.hasClass( 'open' ) ) return;
+                $parent.trigger( e = $.Event( 'hide.bs.dropdown', relatedTarget ) );
+                if ( e.isDefaultPrevented() ) return;
+                $parent.removeClass( 'open' ).trigger( 'hidden.bs.dropdown', relatedTarget );
+            } );
+        }
+
+        function getParent( $this ) {
+            var selector = $this.attr( 'data-target' );
+
+            if ( !selector ) {
+                selector = $this.attr( 'href' );
+                selector = selector && /#[A-Za-z]/.test( selector ) && selector.replace( /.*(?=#[^\s]*$)/, '' ); //strip for ie7
+            }
+
+            var $parent = selector && $( selector );
+
+            return $parent && $parent.length ? $parent : $this.parent();
+        }
+
+
+        // DROPDOWN PLUGIN DEFINITION
+        // ==========================
+
+        var old = $.fn.dropdown;
+
+        $.fn.dropdown = function( option ) {
+            return this.each( function() {
+                var $this = $( this );
+                var data = $this.data( 'bs.dropdown' );
+
+                if ( !data ) $this.data( 'bs.dropdown', ( data = new Dropdown( this ) ) );
+                if ( typeof option == 'string' ) data[ option ].call( $this );
+            } );
+        };
+
+        $.fn.dropdown.Constructor = Dropdown;
+
+
+        // DROPDOWN NO CONFLICT
+        // ====================
+
+        $.fn.dropdown.noConflict = function() {
+            $.fn.dropdown = old;
+            return this;
+        };
+
+
+        // APPLY TO STANDARD DROPDOWN ELEMENTS
+        // ===================================
+
+        $( document )
+            .on( 'click.bs.dropdown.data-api', clearMenus )
+            .on( 'click.bs.dropdown.data-api', '.dropdown form', function( e ) {
+                e.stopPropagation();
+            } )
+            .on( 'click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle )
+            .on( 'keydown.bs.dropdown.data-api', toggle + ', [role=menu], [role=listbox]', Dropdown.prototype.keydown );
+
+    }( jQuery );
 
 } );
 
@@ -29396,11 +29534,12 @@ define( 'enketo-widget/select-mobile/selectpicker',[ 'jquery', 'enketo-js/Widget
  * limitations under the License.
  */
 
-define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enketo-config', 'leaflet' ],
-    function( $, Widget, configStr, L ) {
+define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enketo-config', 'leaflet', 'q' ],
+    function( $, Widget, configStr, L, Q ) {
         
 
-        var pluginName = 'geopicker',
+        var googleMapsScriptRequested, googleMapsScriptLoaded,
+            pluginName = 'geopicker',
             config = JSON.parse( configStr ),
             defaultZoom = 15,
             // MapBox TileJSON format
@@ -29411,6 +29550,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 "attribution": "Tiles courtesy of <a href=\"http://hot.openstreetmap.se/\" target=\"_blank\">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
             } ],
             searchSource = "https://maps.googleapis.com/maps/api/geocode/json?address={address}&sensor=true&key={api_key}",
+            googleApiKey = config.googleApiKey || config.google_api_key,
             iconSingle = L.divIcon( {
                 iconSize: 24,
                 className: 'enketo-geopoint-marker'
@@ -29475,7 +29615,8 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 } );
             }
 
-            this.$widget.find( 'input:not([name="search"])' ).on( 'change change.bymap change.bysearch', function( event ) {
+            // handle point input changes
+            this.$widget.find( '[name="lat"], [name="long"], [name="alt"], [name="acc"]' ).on( 'change change.bymap change.bysearch', function( event ) {
                 var lat = that.$lat.val() ? Number( that.$lat.val() ) : "",
                     lng = that.$lng.val() ? Number( that.$lng.val() ) : "",
                     // we need to avoid a missing alt in case acc is not empty!
@@ -29501,21 +29642,63 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 }
             } );
 
-            this.$points.on( 'click', '.point', function() {
-                that._setCurrent( that.$points.find( '.point' ).index( $( this ) ) );
+            // handle KML input changes
+            this.$kmlInput.on( 'change', function( event ) {
+                var $addPointBtn = that.$points.find( '.addpoint' ),
+                    $progress = $( this ).prev( '.paste-progress' ).removeClass( 'hide' ),
+                    value = event.target.value,
+                    coords = that._convertKmlCoordinatesToLeafletCoordinates( value );
+
+                // reset textarea 
+                event.target.value = '';
+
+                setTimeout( function() {
+                    // mimic manual input point-by-point
+                    coords.forEach( function( latLng, index ) {
+                        that._updateInputs( latLng );
+                        if ( index < coords.length - 1 ) {
+                            $addPointBtn.click();
+                        }
+                    } );
+                    // remove progress bar;
+                    $progress.remove();
+                    // switch to points input mode
+                    that._switchInputType( 'points' );
+                }, 10 );
+            } );
+
+            // handle input switcher
+            this.$widget.find( '.toggle-input-type-btn' ).on( 'click', function( event ) {
+                var type = that.$inputGroup.hasClass( 'kml-input-mode' ) ? 'points' : 'kml';
+                that._switchInputType( type );
                 return false;
             } );
 
+            // handle original input changes
+            $( this.element ).on( 'change', function() {
+                that.$kmlInput.prop( 'disabled', !!this.value );
+            } );
+
+            // handle point switcher
+            this.$points.on( 'click', '.point', function() {
+                that._setCurrent( that.$points.find( '.point' ).index( $( this ) ) );
+                that._switchInputType( 'points' );
+                return false;
+            } );
+
+            // handle addpoint button click
             this.$points.find( '.addpoint' ).on( 'click', function() {
                 that._addPoint();
                 return false;
             } );
 
+            // handle polygon close button click
             this.$widget.find( '.close-chain-btn' ).on( 'click', function() {
                 that._closePolygon();
                 return false;
             } );
 
+            // handle point remove click
             this.$widget.find( '.btn-remove' ).on( 'click', function() {
                 if ( that.points.length < 2 ) {
                     that._updateInputs( [] );
@@ -29524,6 +29707,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 }
             } );
 
+            // handle fullscreen map button click
             this.$map.find( '.show-map-btn' ).on( 'click', function() {
                 that.$widget.find( '.search-bar' ).removeClass( 'hide-search' );
                 that.$widget.addClass( 'full-screen' );
@@ -29539,7 +29723,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
             // copy hide-input class from question to widget and add show/hide input controller
             this.$widget
                 .toggleClass( 'hide-input', this.$question.hasClass( 'or-appearance-hide-input' ) )
-                .find( '.toggle-input-btn' ).on( 'click', function() {
+                .find( '.toggle-input-visibility-btn' ).on( 'click', function() {
                     that.$widget.toggleClass( 'hide-input' );
                     $( this ).toggleClass( 'open', that.$widget.hasClass( 'hide-input' ) );
                     if ( that.map ) {
@@ -29560,6 +29744,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 return false;
             } );
 
+            // pass blur and focus events back to original input
             this.$widget.on( 'focus blur', 'input', function( event ) {
                 $( that.element ).trigger( event.type );
             } );
@@ -29574,7 +29759,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 this._enableDetection();
             }
 
-            // creating "point buttons"
+            // create "point buttons"
             if ( loadedVal ) {
                 this.points.forEach( function( el, i ) {
                     that._addPointBtn( i + 1 );
@@ -29583,7 +29768,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 this._addPoint();
             }
 
-            // setting map location on load
+            // set map location on load
             if ( !loadedVal ) {
                 // set worldview in case permissions take too long (e.g. in FF);
                 this._updateMap( [ 0, 0 ], 1 );
@@ -29597,6 +29782,14 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 //this._updateMap( L.latLng( this.points[ 0 ][ 0 ], this.points[ 0 ][ 1 ] ) );
                 this._updateMap();
                 this._setCurrent( this.currentIndex );
+            }
+        };
+
+        Geopicker.prototype._switchInputType = function( type ) {
+            if ( type === 'kml' ) {
+                this.$inputGroup.addClass( 'kml-input-mode' );
+            } else if ( type === 'points' ) {
+                this.$inputGroup.removeClass( 'kml-input-mode' );
             }
         };
 
@@ -29624,7 +29817,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 map: map,
                 search: map,
                 appearances: appearances,
-                type: this.element.attributes[ 'data-type-xml' ].textContent,
+                type: this.element.attributes[ 'data-type-xml' ].value,
                 touch: this.options.touch,
                 wide: ( this.$question.width() / this.$question.closest( 'form.or' ).width() > 0.8 )
             };
@@ -29644,26 +29837,32 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
         Geopicker.prototype._addDomElements = function() {
             var map = '<div class="map-canvas-wrapper"><div class=map-canvas id="map' + this.mapId + '"></div></div>',
                 points = '<div class="points"><button type="button" class="addpoint">+</button></div>',
+                kml = '<a href="#" class="toggle-input-type-btn"><span class="kml-input">KML</span><span class="points-input">points</span></a>' +
+                '<label class="geo kml">KML coordinates' +
+                '<progress class="paste-progress hide"></progress>' +
+                '<textarea class="ignore" name="kml" placeholder="paste KML coordinates here"></textarea>' +
+                '<span class="disabled-msg">remove all points to enable</span>' +
+                '</label>',
                 close = '<button type="button" class="close-chain-btn btn btn-default btn-xs">close polygon</button>',
-                mapBtn = '<a href="#" class="show-map-btn btn btn-default">Map</a>';
+                mapBtn = '<button type="button" class="show-map-btn btn btn-default">Map</button>';
 
             this.$widget = $(
                 '<div class="geopicker widget">' +
                 '<div class="search-bar hide-search no-map no-detect">' +
-                '<a href="#" class="hide-map-btn btn btn-default"><span class="glyphicon glyphicon-arrow-left"> </span></a>' +
+                '<button type="button" class="hide-map-btn btn btn-default"><span class="icon icon-arrow-left"> </span></button>' +
                 '<button name="geodetect" type="button" class="btn btn-default" title="detect current location" data-placement="top">' +
-                '<span class="glyphicon glyphicon-screenshot"> </span></button>' +
+                '<span class="icon icon-crosshairs"> </span></button>' +
                 '<div class="input-group">' +
                 '<input class="geo ignore" name="search" type="text" placeholder="search for place or address" disabled="disabled"/>' +
-                '<span class="input-group-btn"><button type="button" class="btn btn-default"><i class="glyphicon glyphicon-search"> </i></button></span>' +
+                '<button type="button" class="btn btn-default search-btn"><i class="icon icon-search"> </i></button>' +
                 '</div>' +
                 '</div>' +
                 '<div class="geo-inputs">' +
-                '<label class="geo">latitude (x.y &deg;)<input class="ignore" name="lat" type="number" step="0.000001" min="-90" max="90"/></label>' +
-                '<label class="geo">longitude (x.y &deg;)<input class="ignore" name="long" type="number" step="0.000001" min="-180" max="180"/></label>' +
-                '<label class="geo">altitude (m)<input class="ignore" name="alt" type="number" step="0.1" /></label>' +
-                '<label class="geo">accuracy (m)<input class="ignore" name="acc" type="number" step="0.1" /></label>' +
-                '<button type="button" class="btn-remove"><span class="glyphicon glyphicon-trash"> </span></button>' +
+                '<label class="geo lat">latitude (x.y &deg;)<input class="ignore" name="lat" type="number" step="0.000001" min="-90" max="90"/></label>' +
+                '<label class="geo long">longitude (x.y &deg;)<input class="ignore" name="long" type="number" step="0.000001" min="-180" max="180"/></label>' +
+                '<label class="geo alt">altitude (m)<input class="ignore" name="alt" type="number" step="0.1" /></label>' +
+                '<label class="geo acc">accuracy (m)<input class="ignore" name="acc" type="number" step="0.1" /></label>' +
+                '<button type="button" class="btn-icon-only btn-remove"><span class="icon icon-trash"> </span></button>' +
                 '</div>' +
                 '</div>'
             );
@@ -29675,13 +29874,14 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
             }
 
             this.$search = this.$widget.find( '[name="search"]' );
+            this.$inputGroup = this.$widget.find( '.geo-inputs' );
 
             // add the map canvas
             if ( this.props.map ) {
                 this.$widget.find( '.search-bar' ).removeClass( 'no-map' ).after( map );
                 this.$map = this.$widget.find( '.map-canvas' );
                 // add the hide/show inputs button
-                this.$map.parent().append( '<button type="button" class="toggle-input-btn"> </button>' );
+                this.$map.parent().append( '<button type="button" class="toggle-input-visibility-btn"> </button>' );
             } else {
                 this.$map = $();
             }
@@ -29691,19 +29891,28 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 this.$map.append( mapBtn );
             }
 
+            // unhide search bar 
+            // TODO: can be done in CSS?
             if ( !this.props.touch ) {
                 this.$widget.find( '.search-bar' ).removeClass( 'hide-search' );
             }
 
-            // if points bar is required
+            // if geoshape or geotrace
             if ( this.props.type !== 'geopoint' ) {
+                // add points bar
                 this.$points = $( points );
-                if ( this.props.type === 'geoshape' ) {
-                    this.$widget.find( '.geo-inputs' ).append( close );
-                }
                 this.$widget.prepend( this.$points );
+                // add polygon 'close' button
+                if ( this.props.type === 'geoshape' ) {
+                    this.$inputGroup.append( close );
+                }
+                // add KML paste textarea;
+                var $kml = $( kml );
+                this.$kmlInput = $kml.find( '[name="kml"]' );
+                this.$inputGroup.prepend( $kml );
             } else {
                 this.$points = $();
+                this.$kmlInput = $();
             }
 
             this.$lat = this.$widget.find( '[name="lat"]' );
@@ -29753,7 +29962,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 }
             } );
 
-            console.log( 'updating value by joining', this.points, 'old value', oldValue, 'new value', newValue );
+            // console.log( 'updating value by joining', this.points, 'old value', oldValue, 'new value', newValue );
 
             if ( oldValue !== newValue ) {
                 $( this.element ).val( newValue ).trigger( 'change' );
@@ -29766,7 +29975,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
         /**
          * Checks an Openrosa geopoint for validity. This function is used to provide more detailed
          * error feedback than provided by the form controller. This can be used to pinpoint the exact
-         * invalid geopoints in a list of geopoint (the form controller only validates the total list).
+         * invalid geopoints in a list of geopoints (the form controller only validates the total list).
          *
          * @param  {string}  geopoint [description]
          * @return {Boolean}          [description]
@@ -29806,7 +30015,6 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
          * @return {Boolean}        Whether latLng is valid or not
          */
         Geopicker.prototype._isValidLatLng = function( latLng ) {
-            console.log( 'checking validity of latLng', latLng );
             var lat, lng;
 
             lat = ( typeof latLng[ 0 ] === 'number' ) ? latLng[ 0 ] : ( typeof latLng.lat === 'number' ) ? latLng.lat : null;
@@ -29838,7 +30046,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
             this.$points.find( '.point' ).removeClass( 'active' ).eq( index ).addClass( 'active' );
             this._updateInputs( this.points[ index ], '' );
             // make sure that the current marker is marked as active
-            if ( !this.props.touch || this._inFullScreenMode() ) {
+            if ( this.map && ( !this.props.touch || this._inFullScreenMode() ) ) {
                 this._updateMarkers();
             }
             // console.debug( 'set current index to ', this.currentIndex );
@@ -29850,7 +30058,8 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
         Geopicker.prototype._enableDetection = function() {
             var that = this,
                 options = {
-                    enableHighAccuracy: true
+                    enableHighAccuracy: true,
+                    maximumAge: 0
                 };
             this.$detect.click( function( event ) {
                 event.preventDefault();
@@ -29885,8 +30094,8 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
         Geopicker.prototype._enableSearch = function() {
             var that = this;
 
-            if ( config[ 'google_api_key' ] ) {
-                searchSource = searchSource.replace( '{api_key}', config[ 'google_api_key' ] );
+            if ( googleApiKey ) {
+                searchSource = searchSource.replace( '{api_key}', googleApiKey );
             } else {
                 searchSource = searchSource.replace( '&key={api_key}', '' );
             }
@@ -29937,18 +30146,22 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
         };
 
         /**
-         * Calls the appropriate map update function.
+         * Updates the map to either show the provided coordinates (in the center), with the provided zoom level
+         * or update any markers, polylines, or polygons.
          *
          * @param  @param  {Array.<number>|{lat: number, lng: number}} latLng  latitude and longitude coordinates
          * @param  {number=} zoom zoom level
          * @return {Function} Returns call to function
          */
         Geopicker.prototype._updateMap = function( latLng, zoom ) {
+            var that = this;
 
+            // check if the widget is supposed to have a map
             if ( !this.props.map ) {
                 return;
             }
 
+            // determine zoom level
             if ( !zoom ) {
                 if ( this.map ) {
                     // note: there are conditions where getZoom returns undefined!
@@ -29958,81 +30171,85 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 }
             }
 
-            // serves to remember last requested map coordinates to initialize map in mobile view
+            // update last requested map coordinates to be used to initialize map in mobile fullscreen view
             if ( latLng ) {
                 this.lastLatLng = latLng;
                 this.lastZoom = zoom;
             }
-            // console.debug( 'stored lastLatLng', this.lastLatLng, this.lastZoom );
 
+            // update the map if it is visible
             if ( !this.props.touch || this._inFullScreenMode() ) {
-                this._updateDynamicMap( latLng, zoom );
+                if ( !this.map ) {
+                    this._addDynamicMap()
+                        .then( function() {
+                            that._updateDynamicMapView( latLng, zoom );
+                        } );
+                } else {
+                    that._updateDynamicMapView( latLng, zoom );
+                }
             }
         };
 
-        /**
-         * Updates the dynamic map to either show the provided coordinates (in the center), with the provided zoom level
-         * or updates any markers, polylines, polygons
-         *
-         * @param  {Array.<number>|{lat: number, lng: number}} latLng  latitude and longitude coordinates
-         * @param  {number} zoom zoom
-         */
-        Geopicker.prototype._updateDynamicMap = function( latLng, zoom ) {
-            var z, layers, options, baseMaps,
-                that = this;
+        Geopicker.prototype._addDynamicMap = function() {
+            var that = this;
 
-            // console.debug( 'dynamic map to be updated with latLng', latLng );
-            if ( !this.map ) {
-                layers = this._getLayers();
-                options = {
-                    layers: this._getDefaultLayer( layers )
-                };
+            return this._getLayers()
+                .then( function( layers ) {
+                    var deferred = Q.defer(),
+                        options = {
+                            layers: that._getDefaultLayer( layers )
+                        };
 
-                this.map = L.map( 'map' + this.mapId, options )
-                    .on( 'click', function( e ) {
-                        var latLng = e.latlng,
-                            indexToPlacePoint = ( that.$lat.val() && that.$lng.val() ) ? that.points.length : that.currentIndex;
+                    that.map = L.map( 'map' + that.mapId, options )
+                        .on( 'click', function( e ) {
+                            var latLng = e.latlng,
+                                indexToPlacePoint = ( that.$lat.val() && that.$lng.val() ) ? that.points.length : that.currentIndex;
 
-                        // reduce precision to 6 decimals
-                        latLng.lat = Math.round( latLng.lat * 1000000 ) / 1000000;
-                        latLng.lng = Math.round( latLng.lng * 1000000 ) / 1000000;
+                            // reduce precision to 6 decimals
+                            latLng.lat = Math.round( latLng.lat * 1000000 ) / 1000000;
+                            latLng.lng = Math.round( latLng.lng * 1000000 ) / 1000000;
 
-                        // Skip intersection check if points contain empties. It will be done later, before the polygon is closed.
-                        if ( that.props.type !== 'geopoint' && !that.containsEmptyPoints( that.points, indexToPlacePoint ) && that.updatedPolylineWouldIntersect( latLng, indexToPlacePoint ) ) {
-                            that._showIntersectError();
-                        } else {
-                            if ( !that.$lat.val() || !that.$lng.val() || that.props.type === 'geopoint' ) {
-                                that._updateInputs( latLng, 'change.bymap' );
-                            } else if ( that.$lat.val() && that.$lng.val() ) {
-                                that._addPoint();
-                                that._updateInputs( latLng, 'change.bymap' );
+                            // Skip intersection check if points contain empties. It will be done later, before the polygon is closed.
+                            if ( that.props.type !== 'geopoint' && !that.containsEmptyPoints( that.points, indexToPlacePoint ) && that.updatedPolylineWouldIntersect( latLng, indexToPlacePoint ) ) {
+                                that._showIntersectError();
                             } else {
-                                // do nothing if the field has a current marker
-                                // instead the user will have to drag to change it by map
+                                if ( !that.$lat.val() || !that.$lng.val() || that.props.type === 'geopoint' ) {
+                                    that._updateInputs( latLng, 'change.bymap' );
+                                } else if ( that.$lat.val() && that.$lng.val() ) {
+                                    that._addPoint();
+                                    that._updateInputs( latLng, 'change.bymap' );
+                                } else {
+                                    // do nothing if the field has a current marker
+                                    // instead the user will have to drag to change it by map
+                                }
                             }
-                        }
+                        } );
+
+                    // watch out, default "Leaflet" link clicks away from page, loosing all data
+                    that.map.attributionControl.setPrefix( '' );
+
+                    // add layer control
+                    if ( layers.length > 1 ) {
+                        L.control.layers( that._getBaseLayers( layers ), null ).addTo( that.map );
+                    }
+
+                    // change default leaflet layer control button
+                    that.$widget.find( '.leaflet-control-layers-toggle' ).append( '<span class="icon icon-globe"></span>' );
+
+                    // Add ignore and option-label class to Leaflet-added input elements and their labels
+                    // something weird seems to happen. It seems the layercontrol is added twice (second replacing first) 
+                    // which means the classes are not present in the final control. 
+                    // Using the baselayerchange event handler is a trick that seems to work.
+                    that.map.on( 'baselayerchange', function() {
+                        that.$widget.find( '.leaflet-control-container input' ).addClass( 'ignore no-unselect' ).next( 'span' ).addClass( 'option-label' );
                     } );
 
-                // watch out, default "Leaflet" link clicks away from page, loosing all data
-                this.map.attributionControl.setPrefix( '' );
-
-                // add layer control
-                if ( layers.length > 1 ) {
-                    L.control.layers( this._getBaseLayers( layers ), null ).addTo( this.map );
-                }
-
-                // change default leaflet layer control button
-                that.$widget.find( '.leaflet-control-layers-toggle' ).append( '<span class="glyphicon glyphicon-globe"></span>' );
-
-                // Add ignore and option-label class to Leaflet-added input elements and their labels
-                // something weird seems to happen. It seems the layercontrol is added twice (second replacing first) 
-                // which means the classes are not present in the final control. 
-                // Using the baselayerchange event handler is a trick that seems to work.
-                this.map.on( 'baselayerchange', function() {
-                    that.$widget.find( '.leaflet-control-container input' ).addClass( 'ignore no-unselect' ).next( 'span' ).addClass( 'option-label' );
+                    deferred.resolve();
+                    return deferred.promise;
                 } );
+        };
 
-            }
+        Geopicker.prototype._updateDynamicMapView = function( latLng, zoom ) {
 
             if ( !latLng ) {
                 this._updatePolyline();
@@ -30050,30 +30267,124 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
         };
 
         Geopicker.prototype._showIntersectError = function() {
-            //this.$map.find( '.intersect-error' ).remove().end().append( '<div class="intersect-error">Cannot intersect border<div>' );
             alert( 'Borders cannot intersect!' );
         };
 
+        /**
+         * Obtains the tile layers according to the definition in the app configuration.
+         *
+         * @return {Promise} [description]
+         */
         Geopicker.prototype._getLayers = function() {
-            var url,
-                iterator = 1,
-                layers = [];
+            var that = this,
+                tasks = [];
 
-            maps.forEach( function( map ) {
-                // randomly pick a tile source from the array and store it in the maps config
-                // so it will be re-used when the form is reset or multiple geo widgets are created
-                map.tileIndex = ( map.tileIndex !== 'undefined' ) ? Math.round( Math.random() * 100 ) % map.tiles.length : map.tileIndex;
-                url = map.tiles[ map.tileIndex ];
-                layers.push( L.tileLayer( url, {
-                    id: map.id || name,
-                    maxZoom: map.maxzoom || 18,
-                    minZoom: map.minzoom || 0,
-                    name: map.name || 'map-' + iterator++,
-                    attribution: map.attribution || ''
-                } ) );
+            maps.forEach( function( map, index ) {
+                if ( typeof map.tiles === 'string' && /^GOOGLE_(SATELLITE|ROADMAP|HYBRID|TERRAIN)/.test( map.tiles ) ) {
+                    tasks.push( that._getGoogleTileLayer( map, index ) );
+                } else
+                if ( map.tiles ) {
+                    tasks.push( that._getLeafletTileLayer( map, index ) );
+                } else {
+                    console.error( 'Configuration error for map tiles. Not a valid tile layer: ', map );
+                }
             } );
 
-            return layers;
+            return Q.all( tasks );
+        };
+
+        /**
+         * Asynchronously (fake) obtains a Leaflet/Mapbox tilelayer
+         *
+         * @param  {{}}     map   map layer as defined in the apps configuration
+         * @param  {number} index the index of the layer
+         * @return {Promise}
+         */
+        Geopicker.prototype._getLeafletTileLayer = function( map, index ) {
+            var url,
+                options = this._getTileOptions( map, index ),
+                deferred = Q.defer();
+
+            // randomly pick a tile source from the array and store it in the maps config
+            // so it will be re-used when the form is reset or multiple geo widgets are created
+            map.tileIndex = ( map.tileIndex === undefined ) ? Math.round( Math.random() * 100 ) % map.tiles.length : map.tileIndex;
+            url = map.tiles[ map.tileIndex ];
+            deferred.resolve( L.tileLayer( url, options ) );
+
+            return deferred.promise;
+        };
+
+        /**
+         * Asynchronously obtains a Google Maps tilelayer
+         *
+         * @param  {{}}     map   map layer as defined in the apps configuration
+         * @param  {number} index the index of the layer
+         * @return {Promise}
+         */
+        Geopicker.prototype._getGoogleTileLayer = function( map, index ) {
+            var deferred = Q.defer(),
+                options = this._getTileOptions( map, index ),
+                type = map.tiles.substring( 7 );
+
+            this._loadGoogleMapsScript()
+                .then( function() {
+                    deferred.resolve( new L.Google( type, options ) );
+                } );
+
+            return deferred.promise;
+        };
+
+        /**
+         * Creates the tile layer options object from the maps configuration and defaults.
+         *
+         * @param  {{}}     map   map layer as defined in the apps configuration
+         * @param  {[type]} index the index of the layer
+         * @return {{id: string, maxZoom: number, minZoom: number, name: string, attribution: string}}   Tilelayer options object
+         */
+        Geopicker.prototype._getTileOptions = function( map, index ) {
+            var name = map.name || 'map-' + ( index + 1 );
+
+            return {
+                id: map.id || name,
+                maxZoom: map.maxzoom || 18,
+                minZoom: map.minzoom || 0,
+                name: name,
+                attribution: map.attribution || ''
+            };
+        };
+
+        /**
+         * Loader for the Google Maps script that can be called multiple times, but will ensure the
+         * script is only requested once.
+         *
+         * @return {Promise} [description]
+         */
+        Geopicker.prototype._loadGoogleMapsScript = function() {
+            var apiKeyQueryParam, loadUrl,
+                that = this;
+
+            // request Google maps script only once, using a variable outside of the scope of the current widget
+            // in case multiple widgets exist in the same form
+            if ( !googleMapsScriptRequested ) {
+                // create deferred object, also outside of the scope of the current widget
+                googleMapsScriptLoaded = Q.defer();
+                // create a global callback to be called by the Google Maps script once this has loaded
+                window.gmapsLoaded = function() {
+                    // clean up the global function
+                    delete window.gmapsLoaded;
+                    // resolve the deferred object
+                    googleMapsScriptLoaded.resolve();
+                };
+                // make the request for the Google Maps script asynchronously
+                apiKeyQueryParam = ( googleApiKey ) ? "&key=" + googleApiKey : "";
+                loadUrl = "http://maps.google.com/maps/api/js?v=3.exp" + apiKeyQueryParam + "&sensor=false&libraries=places&callback=gmapsLoaded";
+                require( [ loadUrl ] );
+                // ensure if won't be requested again
+                googleMapsScriptRequested = true;
+            }
+
+            // return the promise of the deferred object outside of the scope of the current widget
+            return googleMapsScriptLoaded.promise;
         };
 
         Geopicker.prototype._getDefaultLayer = function( layers ) {
@@ -30153,7 +30464,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                         }
                     } ) );
                 } else {
-                    console.log( 'this latLng was not considered valid', latLng );
+                    console.debug( 'this latLng was not considered valid', latLng );
                 }
             } );
 
@@ -30174,7 +30485,8 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
          * Updates the polyline on the dynamic map from the current list of points
          */
         Geopicker.prototype._updatePolyline = function() {
-            var polylinePoints;
+            var polylinePoints,
+                that = this;
 
             if ( this.props.type === 'geopoint' ) {
                 return;
@@ -30212,7 +30524,10 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                 this.polyline.setLatLngs( polylinePoints );
             }
 
-            this.map.fitBounds( this.polyline.getBounds() );
+            // possible bug in Leaflet, using timeout to work around
+            setTimeout( function() {
+                that.map.fitBounds( that.polyline.getBounds() );
+            }, 0 );
         };
 
 
@@ -30245,6 +30560,10 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
             this._updateArea( polygonPoints );
         };
 
+        /**
+         * Updates the area in m2 shown inside a polygon.
+         * @type {[type]}
+         */
         Geopicker.prototype._updateArea = function( points ) {
             var area, readableArea;
 
@@ -30287,6 +30606,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
             if ( changed ) {
                 this._updateMap();
             }
+
             return changed;
         };
 
@@ -30354,6 +30674,41 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
             this.$acc.val( acc || '' ).trigger( ev );
         };
 
+        /** 
+         * Converts the contents of a single KML <coordinates> element (may inlude the coordinates tags as well) to an array
+         * of geopoint coordinates used in the ODK XForm format. Note that the KML format does not allow spaces within a tuple of coordinates
+         * only between. Separator between KML tuples can be newline, space or a combination.
+         * It only extracts the value of the first <coordinates> element or, if <coordinates> are not included from the whole string.
+         *
+         * @param  {string} kmlCoordinates [description]
+         * @return {Array.<Array<Number>>} Array of geopoint coordinates
+         */
+        Geopicker.prototype._convertKmlCoordinatesToLeafletCoordinates = function( kmlCoordinates ) {
+            var coordinates = [],
+                reg = /<\s?coordinates>(([^<]|\n)*)<\/\s?coordinates\s?>/,
+                tags = reg.test( kmlCoordinates );
+
+            kmlCoordinates = ( tags ) ? kmlCoordinates.match( reg )[ 1 ] : kmlCoordinates;
+            kmlCoordinates.trim().split( /\s+/ ).forEach( function( item ) {
+                var coordinate = [];
+
+                item.split( ',' ).forEach( function( c, index ) {
+                    var value = Number( c );
+                    if ( index === 0 ) {
+                        coordinate[ 1 ] = value;
+                    } else if ( index === 1 ) {
+                        coordinate[ 0 ] = value;
+                    } else if ( index === 2 ) {
+                        coordinate[ 2 ] = value;
+                    }
+                } );
+
+                coordinates.push( coordinate );
+            } );
+
+            return coordinates;
+        };
+
         /**
          * Disables the widget
          */
@@ -30371,8 +30726,7 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
         };
 
         /**
-         * Checks whether the array of points contains empty ones, excluding the last point.
-         * Marks points as errors if empty
+         * Checks whether the array of points contains empty ones.
          *
          * @allowedIndex {number=} The index in which an empty value is allowed
          * @return {[type]} [description]
@@ -30565,6 +30919,214 @@ define( 'enketo-widget/geo/geopicker',[ 'jquery', 'enketo-js/Widget', 'text!enke
                     data[ options ]( this );
                 }
             } );
+        };
+
+
+        /*
+         * Google layer using Google Maps API
+         * from https://github.com/shramov/leaflet-plugins/blob/master/layer/tile/Google.js
+         */
+
+        /* global google: true */
+
+        L.Google = L.Class.extend( {
+            includes: L.Mixin.Events,
+
+            options: {
+                minZoom: 0,
+                maxZoom: 18,
+                tileSize: 256,
+                subdomains: 'abc',
+                errorTileUrl: '',
+                attribution: '',
+                opacity: 1,
+                continuousWorld: false,
+                noWrap: false,
+                mapOptions: {
+                    backgroundColor: '#dddddd'
+                }
+            },
+
+            // Possible types: SATELLITE, ROADMAP, HYBRID, TERRAIN
+            initialize: function( type, options ) {
+                L.Util.setOptions( this, options );
+
+                this._ready = google.maps.Map !== undefined;
+                if ( !this._ready ) L.Google.asyncWait.push( this );
+
+                this._type = type || 'SATELLITE';
+            },
+
+            onAdd: function( map, insertAtTheBottom ) {
+                this._map = map;
+                this._insertAtTheBottom = insertAtTheBottom;
+
+                // create a container div for tiles
+                this._initContainer();
+                this._initMapObject();
+
+                // set up events
+                map.on( 'viewreset', this._resetCallback, this );
+
+                this._limitedUpdate = L.Util.limitExecByInterval( this._update, 150, this );
+                map.on( 'move', this._update, this );
+
+                map.on( 'zoomanim', this._handleZoomAnim, this );
+
+                //20px instead of 1em to avoid a slight overlap with google's attribution
+                map._controlCorners.bottomright.style.marginBottom = '20px';
+
+                this._reset();
+                this._update();
+            },
+
+            onRemove: function( map ) {
+                map._container.removeChild( this._container );
+
+                map.off( 'viewreset', this._resetCallback, this );
+
+                map.off( 'move', this._update, this );
+
+                map.off( 'zoomanim', this._handleZoomAnim, this );
+
+                map._controlCorners.bottomright.style.marginBottom = '0em';
+            },
+
+            getAttribution: function() {
+                return this.options.attribution;
+            },
+
+            setOpacity: function( opacity ) {
+                this.options.opacity = opacity;
+                if ( opacity < 1 ) {
+                    L.DomUtil.setOpacity( this._container, opacity );
+                }
+            },
+
+            setElementSize: function( e, size ) {
+                e.style.width = size.x + 'px';
+                e.style.height = size.y + 'px';
+            },
+
+            _initContainer: function() {
+                var tilePane = this._map._container,
+                    first = tilePane.firstChild;
+
+                if ( !this._container ) {
+                    this._container = L.DomUtil.create( 'div', 'leaflet-google-layer leaflet-top leaflet-left' );
+                    this._container.id = '_GMapContainer_' + L.Util.stamp( this );
+                    this._container.style.zIndex = 'auto';
+                }
+
+                tilePane.insertBefore( this._container, first );
+
+                this.setOpacity( this.options.opacity );
+                this.setElementSize( this._container, this._map.getSize() );
+            },
+
+            _initMapObject: function() {
+                if ( !this._ready ) return;
+                this._google_center = new google.maps.LatLng( 0, 0 );
+                var map = new google.maps.Map( this._container, {
+                    center: this._google_center,
+                    zoom: 0,
+                    tilt: 0,
+                    mapTypeId: google.maps.MapTypeId[ this._type ],
+                    disableDefaultUI: true,
+                    keyboardShortcuts: false,
+                    draggable: false,
+                    disableDoubleClickZoom: true,
+                    scrollwheel: false,
+                    streetViewControl: false,
+                    styles: this.options.mapOptions.styles,
+                    backgroundColor: this.options.mapOptions.backgroundColor
+                } );
+
+                var _this = this;
+                this._reposition = google.maps.event.addListenerOnce( map, 'center_changed',
+                    function() {
+                        _this.onReposition();
+                    } );
+                this._google = map;
+
+                google.maps.event.addListenerOnce( map, 'idle',
+                    function() {
+                        _this._checkZoomLevels();
+                    } );
+                //Reporting that map-object was initialized.
+                this.fire( 'MapObjectInitialized', {
+                    mapObject: map
+                } );
+            },
+
+            _checkZoomLevels: function() {
+                //setting the zoom level on the Google map may result in a different zoom level than the one requested
+                //(it won't go beyond the level for which they have data).
+                // verify and make sure the zoom levels on both Leaflet and Google maps are consistent
+                if ( this._google.getZoom() !== this._map.getZoom() ) {
+                    //zoom levels are out of sync. Set the leaflet zoom level to match the google one
+                    this._map.setZoom( this._google.getZoom() );
+                }
+            },
+
+            _resetCallback: function( e ) {
+                this._reset( e.hard );
+            },
+
+            _reset: function( clearOldContainer ) {
+                this._initContainer();
+            },
+
+            _update: function( e ) {
+                if ( !this._google ) return;
+                this._resize();
+
+                var center = this._map.getCenter();
+                var _center = new google.maps.LatLng( center.lat, center.lng );
+
+                this._google.setCenter( _center );
+                this._google.setZoom( Math.round( this._map.getZoom() ) );
+
+                this._checkZoomLevels();
+            },
+
+            _resize: function() {
+                var size = this._map.getSize();
+                if ( this._container.style.width === size.x &&
+                    this._container.style.height === size.y )
+                    return;
+                this.setElementSize( this._container, size );
+                this.onReposition();
+            },
+
+
+            _handleZoomAnim: function( e ) {
+                var center = e.center;
+                var _center = new google.maps.LatLng( center.lat, center.lng );
+
+                this._google.setCenter( _center );
+                this._google.setZoom( Math.round( e.zoom ) );
+            },
+
+
+            onReposition: function() {
+                if ( !this._google ) return;
+                google.maps.event.trigger( this._google, 'resize' );
+            }
+        } );
+
+        L.Google.asyncWait = [];
+        L.Google.asyncInitialize = function() {
+            var i;
+            for ( i = 0; i < L.Google.asyncWait.length; i++ ) {
+                var o = L.Google.asyncWait[ i ];
+                o._ready = true;
+                if ( o._container ) {
+                    o._initMapObject();
+                    o._update();
+                }
+            }
+            L.Google.asyncWait = [];
         };
 
     } );
@@ -32469,8 +33031,6 @@ define( 'enketo-widget/date/datepicker-extended',[ 'enketo-js/Widget', 'Moderniz
             this._setFocusHandler( $fakeDateI );
             this._setResetHandler( $fakeDateI );
 
-            console.log( 'setting picker with settings:', settings );
-
             $fakeDateI.datepicker( {
                 format: settings.format,
                 autoclose: true,
@@ -32481,13 +33041,11 @@ define( 'enketo-widget/date/datepicker-extended',[ 'enketo-js/Widget', 'Moderniz
             } ).on( 'changeDate', function( e ) {
                 // copy changes made by datepicker to original input field
                 var value = $( this ).val();
-                console.log( 'unchanged value', value );
                 if ( settings.startView === 'decade' && value.length === 4 ) {
                     value += '-01-01';
                 } else if ( settings.startView === 'year' && value.length < 8 ) {
                     value += '-01';
                 }
-                console.log( 'datepicker date changed to', value );
                 $( that.element ).val( value ).trigger( 'change' ).blur();
             } );
         };
@@ -32503,7 +33061,7 @@ define( 'enketo-widget/date/datepicker-extended',[ 'enketo-js/Widget', 'Moderniz
                 $fakeDate = $(
                     '<div class="widget date"><input class="ignore input-small" readonly="readonly" type="text" value="' +
                     val + '" placeholder="' + format + '" />' +
-                    '<button class="btn-reset"><i class="glyphicon glyphicon-refresh"> </i></button></div>' ),
+                    '<button class="btn-icon-only btn-reset" type="button"><i class="icon icon-refresh"> </i></button></div>' ),
                 //$fakeDateReset = $fakeDate.find( '.btn-reset' ),
                 $fakeDateI = $fakeDate.find( 'input' );
 
@@ -33759,7 +34317,7 @@ define( 'enketo-widget/time/timepicker-extended',[ 'enketo-js/Widget', 'Moderniz
                 timeVal = $( this.element ).val(),
                 $fakeTime = $( '<div class="widget bootstrap-timepicker">' +
                     '<input class="ignore timepicker-default input-small" readonly="readonly" type="text" value="' + timeVal + '" placeholder="hh:mm" />' +
-                    '<button class="btn-reset"><i class="glyphicon glyphicon-refresh"> </i></button></div>' ),
+                    '<button class="btn-icon-only btn-reset" type="button"><i class="icon icon-refresh"> </i></button></div>' ),
                 $fakeTimeReset = $fakeTime.find( '.btn-reset' ),
                 $fakeTimeI = $fakeTime.find( 'input' );
 
@@ -33779,7 +34337,6 @@ define( 'enketo-widget/time/timepicker-extended',[ 'enketo-js/Widget', 'Moderniz
                     val = ( /^[0-9]:/.test( $this.val() ) ) ? '0' + $this.val() : $this.val();
                 // add 00 minutes if they are missing (probably a bug in bootstrap timepicker)
                 val = ( /^[0-9]{2}:$/.test( val ) ) ? val + '00' : val;
-                console.debug( 'time val to be entered: ', val );
                 $timeI.val( val ).trigger( 'change' ).blur();
                 return false;
             } );
@@ -33961,7 +34518,7 @@ define( 'enketo-widget/datetime/datetimepicker-extended',[ 'enketo-js/Widget', '
                     '<div class="bootstrap-timepicker">' +
                     '<input class="ignore timepicker-default input-small" readonly="readonly" type="text" value="' +
                     timeVal + '" placeholder="hh:mm"/>' +
-                    '<button class="btn-reset"><i class="glyphicon glyphicon-refresh"> </i></button>' +
+                    '<button class="btn-icon-only btn-reset" type="button"><i class="icon icon-refresh"> </i></button>' +
                     '</div>' ),
                 $fakeTimeI = $fakeTime.find( 'input' );
 
@@ -34084,7 +34641,6 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         // show loaded file name regardless of whether widget is supported
         if ( existingFileName ) {
             this._showFileName( existingFileName, this.mediaType );
-            $input.removeAttr( 'data-loaded-file-name' );
         }
 
         if ( !fileManager || !fileManager.isSupported() ) {
@@ -34137,6 +34693,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
 
             // get the file
             file = this.files[ 0 ];
+            $input.removeAttr( 'data-loaded-file-name' );
 
             // process the file
             fileManager.getFileUrl( file )
