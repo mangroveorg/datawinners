@@ -1,9 +1,11 @@
+import uuid
 from nose.plugins.attrib import attr
 
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.testsettings import UI_TEST_TIMEOUT
 from framework.base_test import HeadlessRunnerTest
+from django.test import Client
 from framework.utils.common_utils import by_xpath, by_css
 from pages.loginpage.login_page import login
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT, DATA_WINNER_ALL_DATA_SENDERS_PAGE, \
@@ -21,6 +23,8 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "addtest", GEN_RANDOM: True,
                       DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
                       QUESTIONS: [{QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
                                    DATE_FORMAT: DD_MM_YYYY}]}
+
+MESSAGE = 'message'
 
 class TestAllUsers(HeadlessRunnerTest):
 
@@ -58,6 +62,8 @@ class TestAllUsers(HeadlessRunnerTest):
         self.delete_user(NEW_USER_DATA[USERNAME])
         self.check_sent_submission(project_name)
         self.check_deleted_user_name_on_activity_log_page(project_name)
+        self.driver.go_to(LOGOUT)
+        login(self.driver, VALID_CREDENTIALS)
 
     @attr('functional_test')
     def test_should_update_user_name_when_edited_from_datasender_page(self):
@@ -79,20 +85,13 @@ class TestAllUsers(HeadlessRunnerTest):
         self.assertEquals(EDIT_DETAILS.get("name"),element.text)
 
     def send_submission(self, questionnaire_code):
-        self.driver.execute_script("window.open('%s')" % DATA_WINNER_SMS_TESTER_PAGE)
-        new_tab = self.driver.window_handles[1]
-        first_tab = self.driver.window_handles[0]
-        self.driver.switch_to_window(new_tab)
-        sms_tester_page = SMSTesterPage(self.driver)
-        valid_sms = {SENDER: NEW_USER_DATA[MOBILE_PHONE],
-                     RECEIVER: '919880734937',
-                     SMS: "%s 10.10.2010" % questionnaire_code}
-        sms_tester_page.send_sms_with(valid_sms)
-        response = sms_tester_page.get_response_message()
-        self.assertIn("Thank you", response)
-        # self.assertRegexpMatches(response, THANKS % "Mamy")
-        self.driver.close()
-        self.driver.switch_to_window(first_tab)
+        client = Client()
+        valid_sms = {"from_msisdn": NEW_USER_DATA[MOBILE_PHONE],
+                     "to_msisdn": '919880734937',
+                     MESSAGE: "%s 10.10.2010" % questionnaire_code,
+                     "message_id": uuid.uuid1().hex}
+        resp = client.post('/submission',valid_sms)
+        self.assertIn("Thank you", resp.content)
 
     def create_project(self):
         dashboard_page = DashboardPage(self.driver)
