@@ -237,7 +237,7 @@ ANSWER_FOR_SUMMARY_PROJECT = [
     {QCODE: 'q1', ANSWER: '25.09.1999', TYPE: TEXT}
 ]
 
-regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}\W\S{2}'
+regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}'
 
 SUMMARY_DATA_LOG = {
     SUBMISSION: u"Mickey G\xf6 rep2 " + regex_date_match + " Success 25.09.1999",
