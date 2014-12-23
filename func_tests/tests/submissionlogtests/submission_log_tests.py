@@ -27,7 +27,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 from tests.utils import get_subject_short_code
 
 
-SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M"
+SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M "
 
 
 def send_sms_with(sms):
