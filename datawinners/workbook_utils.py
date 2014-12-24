@@ -31,6 +31,11 @@ def workbook_add_sheets(wb, number_of_sheets, sheet_name_prefix):
         sheet_number += 1
 
 
+def worksheet_add_header(worksheet, headers, header_style):
+    worksheet.set_row(0, 50)
+    for column, header in enumerate(headers):
+        worksheet.write(0, column, header, header_style)
+
 def workbook_add_header(wb, headers, number_of_sheets):
     style = xlwt.easyxf('borders: top double, bottom double, right double')
     algn = xlwt.Alignment()

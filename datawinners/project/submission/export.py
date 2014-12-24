@@ -2,6 +2,7 @@ from tempfile import NamedTemporaryFile
 import tempfile
 import zipfile
 import math
+import xlsxwriter
 
 from django.core.servers.basehttp import FileWrapper
 
@@ -11,6 +12,8 @@ from django.template.defaultfilters import slugify
 
 
 from datawinners.workbook_utils import workbook_add_sheet, workbook_add_sheets, workbook_add_header, workbook_add_row
+from datawinners.workbook_utils import worksheet_add_header
+from mangrove.form_model.field import ExcelDate
 
 
 def add_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix):
@@ -63,6 +66,46 @@ def create_excel_response(headers, raw_data_list, file_name):
     add_sheet_with_data(raw_data_list, headers, wb, 'data_log')
 
     wb.save(response)
+    return response
+
+def get_header_style(workbook):
+    header_style = workbook.add_format({'bold': True})
+    header_style.set_font_name("Helvetica")
+    header_style.set_align('center')
+    header_style.set_align('vcenter')
+    header_style.set_text_wrap('right')
+    return header_style
+
+def export_to_new_excel(headers, raw_data, file_name, formatter):
+    file_name_normalized = slugify(file_name)
+    import io
+    output = io.BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    ws = workbook.add_worksheet()
+    worksheet_add_header(ws, headers, get_header_style(workbook))
+    date_formats = {}
+
+    for row_number, row in enumerate(raw_data):
+        row = formatter.format_row(row['_source'])
+        for column, val in enumerate(row):
+            if isinstance(val, ExcelDate):
+                if not date_formats.has_key(val.date_format):
+                    date_format = {'submission_date': 'mmm d yyyy hh:mm:ss'}.get(val.date_format, val.date_format)
+                    date_formats.update({val.date_format: workbook.add_format({'num_format': date_format})})
+                ws.write(row_number + 1, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
+                    
+            elif isinstance(val, float):
+                ws.write_number(row_number + 1, column, val)
+            else:
+                ws.write(row_number + 1, column, val)
+
+    workbook.close()
+
+    output.seek(0)
+    response = HttpResponse(output.read(), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+    response['Content-Disposition'] = "attachment; filename=%s.xlsx" % file_name_normalized
+
     return response
 
 
