@@ -102,7 +102,7 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
     ws = wb.add_sheet(sheet_name)
 
     for row_number, row in enumerate(raw_data):
-        if(row_number == 0):
+        if row_number == 0:
             row = _clean(row)
             style = xlwt.easyxf('borders: top double, bottom double, right double')
             algn = xlwt.Alignment()
@@ -121,7 +121,8 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
                     ws.write(row_number, col_number, val, _header_style())
 
         else:
-            if row_number > 0 and row_number % MAX_ROWS_IN_MEMORY == 0: ws.flush_row_data()
+            if row_number > 0 and row_number % MAX_ROWS_IN_MEMORY == 0:
+                ws.flush_row_data()
             row = _clean(row)
             write_row_to_worksheet(ws, row, row_number)
     return ws

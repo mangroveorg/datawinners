@@ -6,33 +6,36 @@ from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 import xlwt
 
-from datawinners.project.submission.export import export_filename, add_sheet_with_data, create_zipped_response
+from datawinners.project.submission.export import export_filename, add_sheet_with_data
 from datawinners.project.submission.exporter import SubmissionExporter
-from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from datawinners.project.submission.formatter import SubmissionFormatter
 from mangrove.form_model.field import ExcelDate, DateField
 
 
 class XFormSubmissionExporter(SubmissionExporter):
-
     def _create_zipped_response(self, columns, submission_list, submission_type):
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model, self.local_time_delta).format_tabular_data(submission_list)
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
+                                                             self.local_time_delta).format_tabular_data(submission_list)
         return self._create_excel_response(headers, data_rows_dict, export_filename(submission_type, self.project_name))
 
-    def _create_excel_response(self, headers, data_rows_dict, file_name):
+    def _create_excel_response(self, columns, submission_list, submission_type):
         response = HttpResponse(mimetype="application/vnd.ms-excel")
+        file_name = export_filename(submission_type, self.project_name)
         response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
-
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
+                                                             self.local_time_delta).format_tabular_data(submission_list)
         wb = xlwt.Workbook()
         for sheet_name, header_row in headers.items():
             add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name)
-        return create_zipped_response(wb, file_name)
+        wb.save(response)
+        return response
+
 
 GEODCODE_FIELD_CODE = "geocode"
 FIELD_SET = "field_set"
 
-class AdvanceSubmissionFormatter(SubmissionFormatter):
 
+class AdvanceSubmissionFormatter(SubmissionFormatter):
     def __init__(self, columns, form_model, local_time_delta):
         super(AdvanceSubmissionFormatter, self).__init__(columns, local_time_delta)
         self.form_model = form_model
@@ -51,7 +54,7 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         for i, row_dict in enumerate(values):
             result = self._format_row(row_dict['_source'], i, formatted_repeats)
             if self.form_model.has_nested_fields:
-                result.append(i+1)
+                result.append(i + 1)
             formatted_values.append(result)
 
         if self.form_model.has_nested_fields:
@@ -85,7 +88,7 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         if repeat.get(col_name):
             repeat.get(col_name).extend(row)
         else:
-            repeat.update({col_name:row})
+            repeat.update({col_name: row})
 
     def __format_row(self, row, columns, index, repeat):
         result = []
@@ -93,7 +96,8 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
             try:
                 parsed_value = ""
                 if row.get(field_code):
-                    parsed_value = '; '.join(row.get(field_code)) if isinstance(row.get(field_code), list) else row.get(field_code)
+                    parsed_value = '; '.join(row.get(field_code)) if isinstance(row.get(field_code), list) else row.get(
+                        field_code)
 
                 if columns[field_code].get("type") == "date" or field_code == "date":
                     date_format = columns[field_code].get("format")
@@ -109,8 +113,8 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                         col_val = row.get(field_code) or ""
                     result.append(col_val)
                 elif columns[field_code].get("type") == GEODCODE_FIELD_CODE:
-                        col_val = self._split_gps(parsed_value)
-                        result.extend(col_val)
+                    col_val = self._split_gps(parsed_value)
+                    result.extend(col_val)
                 elif columns[field_code].get("type") == 'integer':
                     col_val_parsed = try_parse(float, parsed_value)
                     result.append(col_val_parsed)
@@ -120,12 +124,13 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                     repeat_fields = columns[field_code].get('fields')
                     for repeat_item in repeat_answers:
                         for question_code, data_value in repeat_item.items():
-                            if repeat_fields[question_code].get('type') == 'field_set': #every field_set in a repeat is a list
+                            if repeat_fields[question_code].get(
+                                    'type') == 'field_set':  # every field_set in a repeat is a list
                                 repeat_item[question_code] = json.dumps(data_value)
                         _result = self.__format_row(repeat_item, repeat_fields, index, repeat)
                         _repeat_row.append(_result)
                         _result.append('')
-                        _result.append(index+1)
+                        _result.append(index + 1)
 
                     self._add_repeat_data(repeat, self._get_repeat_col_name(columns[field_code]['label']), _repeat_row)
                 else:
@@ -146,7 +151,7 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         else:
             coordinates_split = value.split()
             if len(coordinates_split) == 1:
-                return [try_parse(float, value),""]
+                return [try_parse(float, value), ""]
             return [try_parse(float, coordinates_split[0]), try_parse(float, coordinates_split[1])]
 
 

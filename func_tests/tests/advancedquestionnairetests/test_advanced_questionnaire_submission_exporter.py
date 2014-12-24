@@ -110,7 +110,9 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
                                  'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
                                  'questionnaire_code': questionnaire_code})
 
-        xlfile_name = get_xlsfile_from_zipped_response(self.project_name, resp)
+        xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
+        os.write(xlfile_fd, resp.content)
+        os.close(xlfile_fd)
         workbook = xlrd.open_workbook(xlfile_name)
         self.assertEquals(workbook.sheet_names(),
                           [u'main', u'my-repeat-in-a-group', u'my-group-in-a-repeat', u'my-outer-repeat'])
