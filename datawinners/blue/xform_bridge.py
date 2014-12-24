@@ -29,15 +29,18 @@ def get_generated_xform_id_name(xform):
     match = re.search('<model>.* <instance> <(.+?) id="', xform_cleaned)
     return match.group(1)
 
+
 CALCULATE = 'calculate'
 BARCODE = 'barcode'
+
 
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE],
                  'auto_filled': ['note', 'today'],
                  'media': ['photo', 'audio', 'video'],
-                 'select': ['select one', 'select all that apply', 'select one or specify other', 'select all that apply or specify other']
+                 'select': ['select one', 'select all that apply', 'select one or specify other',
+                            'select all that apply or specify other']
     }
     meta_data_types = ["start", "end", "today", "imei", "deviceid", "subscriberid", "phonenumber", "simserial"]
     recognised_types = list(itertools.chain(*type_dict.values()))
@@ -78,7 +81,7 @@ class XlsFormParser():
         questions = []
         errors = []
         for field in fields:
-            if field.get('control', None) and field['control'].get('bodyless', False): #ignore calculate type
+            if field.get('control', None) and field['control'].get('bodyless', False):  # ignore calculate type
                 continue
             if field['type'] in self.supported_types:
                 try:
@@ -86,6 +89,13 @@ class XlsFormParser():
 
                     if not field_errors and question:
                         questions.append(question)
+
+                        if question['type'] in ['select', 'select1'] and question['has_other']:
+                            other_field = {u'type': u'text', u'name': question['code'] + "_other",
+                                           u'label': question['title'] + "_other"}
+                            other_question, other_field_errors = self._create_question(other_field, parent_field_code)
+                            questions.append(other_question)
+
                     else:
                         errors.extend(field_errors)
                 except LabelForChoiceNotPresentException as e:
@@ -113,16 +123,17 @@ class XlsFormParser():
             if field['type'] in self.recognised_types:
                 if field['type'] in self.type_dict['group']:
                     self._validate_group(errors, field)
-                #errors.append(self._validate_for_uppercase_names(field))
+                # errors.append(self._validate_for_uppercase_names(field))
                 errors.append(self._validate_for_prefetch_csv(field))
             else:
-                if(field["type"] in self.meta_data_types):
+                if (field["type"] in self.meta_data_types):
                     errors.append(_("%s as a datatype (metadata)") % _(field['type']))
                 # elif(field["type"]) in self.or_other_data_types:
-                #     errors.append(_("XLSForm \"or_other\" function for multiple choice or single choice questions"))
-                elif(field["type"]) in self.select_without_list_name:
+                # errors.append(_("XLSForm \"or_other\" function for multiple choice or single choice questions"))
+                elif (field["type"]) in self.select_without_list_name:
                     errors.append(_("missing list reference, check your select_one or select multiple question types"))
-                else: errors.append(_("%s as a datatype") % _(field['type']))
+                else:
+                    errors.append(_("%s as a datatype") % _(field['type']))
             if field.get('media'):
                 for media_type in field['media'].keys():
                     errors.append(_("attaching media to fields is not supported %s") % media_type)
@@ -136,14 +147,14 @@ class XlsFormParser():
                 self._validate_for_nested_repeats(f)
 
     def _validate_for_no_language(self, field):
-        for header in ['label','hint']:
+        for header in ['label', 'hint']:
             if self._has_languages(field.get(header)):
                 raise MultipleLanguagesNotSupportedException()
         field.get("choices") and self._validate_for_no_language(field.get("choices")[0])
         if field.get('bind') and self._has_languages(field.get('bind').get('jr:constraintMsg')):
             raise MultipleLanguagesNotSupportedException()
 
-    def _has_languages(self,header):
+    def _has_languages(self, header):
         return header and isinstance(header, dict) and len(header) >= 1
 
     @staticmethod
@@ -199,7 +210,7 @@ class XlsFormParser():
             return errors, None, None
         survey = create_survey_element_from_dict(self.xform_dict)
         xform = survey.to_xml()
-        #encoding is added to support ie8
+        # encoding is added to support ie8
         xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
         return [], updated_xform, questions
@@ -211,7 +222,7 @@ class XlsFormParser():
 
         if 'label' not in field:
             if field['type'] == 'group' and 'control' in field:
-                if field['control']['appearance']=='field-list':
+                if field['control']['appearance'] == 'field-list':
                     return field['name']
             elif field['type'] == 'calculate':
                 return field['name']
@@ -267,19 +278,18 @@ class XlsFormParser():
         question = {'title': name, 'type': xform_dw_type_dict.get(type, type), "is_entity_question": False,
                     "code": code, "name": name, 'required': self.is_required(field),
                     "parent_field_code": parent_field_code,
-                      "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
+                    "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
         if type == 'date':
             format = self._get_date_format(field)
             question.update({'date_format': format, 'event_time_field_flag': False,
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
-
 
         if type == CALCULATE:
             question.update({"is_calculated": True})
 
         return question
 
-    def _get_appearance(self,field):
+    def _get_appearance(self, field):
         if field.get('control') and field['control'].get('appearance'):
             return field['control']['appearance']
 
@@ -291,7 +301,7 @@ class XlsFormParser():
         if field.get('choices'):
             choices = [{'value': {'text': self._get_choice_label(f), 'val': f['name']}} for f in field.get('choices')]
         else:
-            #cascade select
+            # cascade select
             choices = [{'value': {'text': self._get_choice_label(f), 'val': f['name']}} for f in
                        self.xform_dict['choices'].get(field['itemset'])]
         question = {"title": name, "code": code, "type": "select", 'required': self.is_required(field),
@@ -300,7 +310,7 @@ class XlsFormParser():
 
         question.update({"has_other": field['type'] in self.or_other_data_types})
 
-        if field['type'] == 'select one':
+        if field['type'] in ['select one', 'select one or specify other']:
             question.update({"type": "select1"})
 
         return question
@@ -397,7 +407,7 @@ class MangroveService():
                                              xform=self.xform_with_form_code)
 
         if not questionnaire.is_project_name_unique():
-            return None,None
+            return None, None
 
         associate_account_users_to_project(self.manager, questionnaire)
         questionnaire.update_doc_and_save()
@@ -459,7 +469,6 @@ class XFormSubmissionProcessor():
 
 
 class XFormImageProcessor():
-
     media_fields = [PhotoField, VideoField, AudioField]
 
     def get_media(self, field, value):
@@ -480,6 +489,7 @@ class XFormImageProcessor():
             if values and (isinstance(f, MediaField) or type(f) is FieldSet):
                 media_files.extend(self.get_media(f, values))
         return ','.join(media_files)
+
 
 DIR = os.path.dirname(__file__)
 
@@ -506,6 +516,7 @@ class XFormTransformer():
         r.extend(form_tree.getroot())
         return etree.tostring(r)
 
+
 class TypeNotSupportedException(Exception):
     def __init__(self, message):
         self.message = message
@@ -521,6 +532,7 @@ class NestedRepeatsNotSupportedException(Exception):
     def __str__(self):
         return self.message
 
+
 class MultipleLanguagesNotSupportedException(Exception):
     def __init__(self):
         self.message = _("Language specification is not supported")
@@ -528,12 +540,14 @@ class MultipleLanguagesNotSupportedException(Exception):
     def __str__(self):
         return self.message
 
+
 class LabelForChoiceNotPresentException(Exception):
     def __init__(self, choice_name):
         self.message = _("Label mandatory for choice option with name %s") % choice_name
 
     def __str__(self):
         return self.message
+
 
 class PrefetchCSVNotSupportedException(Exception):
     def __init__(self):
@@ -549,6 +563,7 @@ class LabelForFieldNotPresentException(Exception):
 
     def __str__(self):
         return self.message
+
 
 class XlsProjectParser(XlsParser):
     def parse(self, xls_contents):

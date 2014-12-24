@@ -53,10 +53,12 @@ class TestXFormBridge(unittest.TestCase):
         expected_json = [{'code': 'name', 'name': 'What is your name?', 'title': 'What is your name?', 'required': False,
           'is_entity_question': False, 'instruction': 'Answer must be a word', 'parent_field_code': None, 'type': 'text'},
          {'code': 'respondent_district_counties', 'parent_field_code': None, 'title': 'Please select the county', 'required': False,
+          'has_other': False,
           'choices': [{'value': {'text': 'Bomi', 'val': 'bomi'}},
                       {'value': {'text': 'Grand Bassa', 'val': 'grand_bassa'}}], 'is_entity_question': False,
           'type': 'select1'},
          {'code': 'respondent_district', 'parent_field_code': None, 'title': 'Please select the district', 'required': False,
+          'has_other': False,
           'choices': [{'value': {'text': 'Klay', 'val': 'klay'}},
                       {'value': {'text': 'Commonwealth 1', 'val': 'commonwealth_1'}}], 'is_entity_question': False,
           'type': 'select1'}]
@@ -110,12 +112,12 @@ class TestXFormBridge(unittest.TestCase):
                 # end repeat
             {'code': 'age', 'parent_field_code': None, 'name': 'What is your age?', 'title': 'What is your age?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a number', 'type': 'integer'},
              {'code': 'height', 'parent_field_code': None, 'name': 'What is your height?', 'title': 'What is your height?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a decimal or number', 'type': 'integer'},
-             {'code': 'fav_color', 'parent_field_code': None, 'title': 'Which colors you like?', 'required': True,
+             {'code': 'fav_color', 'parent_field_code': None, 'title': 'Which colors you like?', 'required': True, 'has_other': False,
                 'choices': [{'value':{'text': 'Red', 'val': 'a'}}, {'value': {'text': 'Blue', 'val': 'b'}},
                           {'value':{'text': 'Green', 'val': 'c'}}], 'is_entity_question': False, 'type': 'select'},
                 #group
             {'code': u'pizza_test_group', 'parent_field_code': None, 'instruction': 'No answer required', 'name': u'Pizza fan', 'title': u'Pizza fan',
-              'fields': [{'code': u'pizza_fan', 'parent_field_code': u'pizza_test_group', 'title': u'Do you like pizza?', 'required': True,
+              'fields': [{'code': u'pizza_fan', 'parent_field_code': u'pizza_test_group', 'title': u'Do you like pizza?', 'required': True, 'has_other': False,
                           'choices': [{'value': {'text': u'Yes', 'val': u'a'}}, {'value': {'text': u'No', 'val': u'b'}}],
                           'is_entity_question': False, 'type': 'select1'},
                          #group
@@ -130,7 +132,7 @@ class TestXFormBridge(unittest.TestCase):
 
              {'code': 'location', 'parent_field_code': None, 'name': 'Your location?', 'title': 'Your location?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a geopoint', 'type': 'geocode'},
              {'code': 'add_age_height', 'parent_field_code': None, 'name': 'Age and height', 'title': 'Age and height', 'required': False, 'is_calculated': True, 'is_entity_question': False, 'instruction': 'Answer must be a calculated field', 'type': 'text'},
-             {'code': 'ab','parent_field_code': None, 'title': 'A or B?', 'required': True,
+             {'code': 'ab','parent_field_code': None, 'title': 'A or B?', 'required': True, 'has_other': False,
                 'choices': [{'value':{'text': 'A', 'val': 'a'}}, {'value':{'text': 'B', 'val': 'b'}}], 'is_entity_question': False, 'type': 'select1'}]
 
         self.assertEqual(expected_json, json_xform_data)
