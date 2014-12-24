@@ -121,27 +121,30 @@ class TestXformBridge(unittest.TestCase):
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-            self.assertEquals(actual_errors, {"optional labels. Label is a mandatory field for choice option with name [yes]"})
+            self.assertEquals(actual_errors,
+                              {"optional labels. Label is a mandatory field for choice option with name [yes]"})
 
     def test_should_populate_error_when_choice_name_has_spaces_and_unique_name(self):
-            with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
-                fields = {'children': [{u'bind': {u'required': u'yes'}, u'type': u'select one', u'name': u'is_student',
-                                        u'label': u'1. Are you a student?',
-                                        u'choices': [{u'name': u'yes 1',u'label':'yes'}, {u'name': u'yes 1', u'label': u'No'}]},
-                                       {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
-                                           {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
-                                            'type': 'calculate', 'name': 'instanceID'}]}],
-                          'title': 'asdasx',
-                          'name': 'asdasx',
-                          'id_string': 'asdasx',
-                          'default_language': 'default'
-                }
-                get_xform_dict.return_value = fields
-                xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{u'bind': {u'required': u'yes'}, u'type': u'select one', u'name': u'is_student',
+                                    u'label': u'1. Are you a student?',
+                                    u'choices': [{u'name': u'yes 1', u'label': 'yes'},
+                                                 {u'name': u'yes 1', u'label': u'No'}]},
+                                   {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                       {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                        'type': 'calculate', 'name': 'instanceID'}]}],
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'default_language': 'default'
+            }
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
-                actual_errors, updated_xform, questions = xls_form_parser.parse()
+            actual_errors, updated_xform, questions = xls_form_parser.parse()
 
-                self.assertEquals(actual_errors, {"duplicate names within one list (choices sheet)","spaces in name column (choice sheet)"})
+            self.assertEquals(actual_errors, {"duplicate names within one list (choices sheet)",
+                                              "spaces in name column (choice sheet)"})
 
     def test_should_populate_error_when_calculate_field_with_prefetch_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -302,6 +305,31 @@ class TestXformBridge(unittest.TestCase):
                                                             {'value': {'text': u"Don't Know", 'val': u'dk'}},
                                                             {'value': {'text': u'Not Applicable', 'val': u'na'}}],
                                                 'is_entity_question': False, 'type': 'select1'})
+
+    def test_should_create_additional_text_question_for_single_select_or_other_question(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+            fields = [{u'choices': [{u'name': u'male', u'label': u'Male'}, {u'name': u'female', u'label': u'Female'}],
+                       u'type': u'select one or specify other', u'name': u'hh_user_gender', u'label': u'Sex'},
+                      {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                          {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"}, 'type': 'calculate',
+                           'name': 'instanceID'}]}]
+
+            questions, errors = xls_form_parser._create_questions(fields)
+
+            self.assertEqual(questions.__len__(), 2)
+            self.assertDictEqual(questions[0], {'code': u'hh_user_gender', 'title': u'Sex', 'required': False,
+                                                'parent_field_code': None,
+                                                'has_other': True,
+                                                'choices': [{'value': {'text': u'Male', 'val': u'male'}},
+                                                            {'value': {'text': u'Female', 'val': u'female'}}],
+                                                'is_entity_question': False, 'type': 'select1'})
+            self.assertDictEqual(questions[1], {'code': u'hh_user_gender_other', 'title': u'Sex_other', 'required': False,
+                                                'parent_field_code': None,
+                                                'name': u'Sex_other',
+                                                'instruction': 'Answer must be a word',
+                                                'is_entity_question': False, 'type': u'text'})
+
 
     def test_should_return_correct_date_format_for_year_or_monthyear_appearance(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:

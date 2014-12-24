@@ -93,10 +93,6 @@ class TestXFormBridge(unittest.TestCase):
         self.assertIsNotNone(questionnaire_id)
 
 
-    def test_should_create_select_question_without_option_label(self):
-        pass
-
-
     @attr('dcs', 'functional_test')
     def test_all_fields_types_in_xlsform_is_converted_to_json(self):
 
