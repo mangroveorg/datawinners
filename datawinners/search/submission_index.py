@@ -287,7 +287,7 @@ def _get_select_field_answer_from_snapshot(entry, field_for_revision):
 
 def _fetch_single_select_answer(choices, field):
     if choices:
-        choice_text = field.get_value_by_option(choices)
+        choice_text = field.get_value_by_option(choices, default=choices)
     else:
         choice_text = ""
 
@@ -296,7 +296,7 @@ def _fetch_single_select_answer(choices, field):
 
 def _fetch_multi_select_answer(choices, field):
     if choices:
-        choice_text = [field.get_value_by_option(option) for option in choices.split(' ')]
+        choice_text = [field.get_value_by_option(option, default=option) for option in choices.split(' ')]
     else:
         choice_text = []
 
