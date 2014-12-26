@@ -1452,3 +1452,6 @@ msgstr " "
 
 msgid "rd"
 msgstr " "
+
+msgid "Number of Submissions Exceeds Export Limit"
+msgstr "Le nombre de soumissions dépasse la limite d’exportation"

@@ -428,7 +428,7 @@ def log_edit_action(old_survey_response, new_survey_response, request, project_n
             question_label = question_field.label
             # replacing question code with actual question text
             changed_answers[question_label] = changed_answers.pop(key)
-            #relace option with value for choice field
+            # relace option with value for choice field
             if isinstance(question_field, SelectField):
                 changed_answers[question_label] = get_option_value_for_field(value, question_field)
 
@@ -457,6 +457,42 @@ def get_option_value_for_field(diff_value, question_field):
 @session_not_expired
 @is_datasender
 @is_not_expired
+def export_count(request):
+    if request.method == 'GET':
+        return HttpResponse(status=405)
+
+    submission_type = request.GET.get(u'type')
+    post_body = json.loads(request.POST['data'])
+    search_filters = post_body['search_filters']
+    questionnaire_code = post_body['questionnaire_code']
+    manager = get_database_manager(request.user)
+
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+
+    # the number_of_results limit will not be used for result-set size since scan-scroll api does not support it.
+    #it is specified since the code-flow requires its value to be present
+
+    query_params = {"search_filters": search_filters,
+                    "start_result_number": 0,
+                    "number_of_results": 4000,
+                    "order": "",
+                    "sort_field": "date"
+    }
+
+    search_text = search_filters.get("search_text", '')
+    query_params.update({"search_text": search_text})
+    query_params.update({"filter": submission_type})
+
+    submission_count = get_submission_count(manager, form_model, query_params, local_time_delta)
+    return HttpResponse(mimetype='application/json', content=json.dumps({"count": submission_count}))
+
+
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
 def export(request):
     if request.method == 'GET':  # To handle django error #3480
         return HttpResponse(status=405)
@@ -472,7 +508,7 @@ def export(request):
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
 
-    #the number_of_results limit will not be used for result-set size since scan-scroll api does not support it.
+    # the number_of_results limit will not be used for result-set size since scan-scroll api does not support it.
     #it is specified since the code-flow requires its value to be present
 
     query_params = {"search_filters": search_filters,
@@ -507,7 +543,7 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
     meta_fields = ['ds_id', 'entity_short_code']
     for field in meta_fields:
         # Remove extra meta fields with which ordering in submission values
-        #and submission headers will not match
+        # and submission headers will not match
         try:
             headers.remove(field)
         except ValueError:
