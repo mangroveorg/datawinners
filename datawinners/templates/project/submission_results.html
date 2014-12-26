@@ -90,11 +90,6 @@
     {% endblock %}
     <div class="heading_block alpha data_ana border_none">
         <span class="links float_right">
-            {% if is_account_with_large_number_of_submissions %}
-                <div class="warning-message-box large-submission-msg">
-                    <p>{% trans "large submission export" %}</p>
-                </div>
-            {% endif %}
             <a href="javascript:void(0);" class="export_link">{% trans "Export Submissions" %}</a>
             {% if not project.xform %}
                 |
