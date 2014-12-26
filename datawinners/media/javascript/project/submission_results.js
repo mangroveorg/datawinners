@@ -116,6 +116,7 @@ DW.SubmissionLogExport = function () {
                   _updateAndSubmitForm();
                 }
                 else{
+                    DW.trackEvent('export-submissions', 'export-exceeded-limit', user_email + ":" + organization_name);
                     self.limit_dialog.show();
                 }
             });
@@ -138,7 +139,6 @@ DW.SubmissionLogExport = function () {
 
        var limit_info_dialog_options = {
                 successCallBack: function (callback) {
-                    DW.trackEvent('export-submissions', 'export-exceeded-limit', user_email + ":" + organization_name);
                 },
                 title: gettext("Number of Submissions Exceeds Export Limit"),
                 link_selector: ".export_link",
