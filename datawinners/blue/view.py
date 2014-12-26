@@ -104,16 +104,19 @@ class ProjectUpload(View):
 
             message = transform_error_message(e.message)
             if 'name_type_error' in message or 'choice_name_type_error' in message:
-                    if 'choice_name_type_error' in message:
-                        message_prefix = _("On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:")
-                    else:
-                        message_prefix = _("On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
-                    return HttpResponse(content_type='application/json', content=json.dumps({
-                        'success': False,
-                        'error_msg': [_("Columns are missing"), _("Column name is misspelled"), _("Additional space in column name")],
-                        'message_prefix': message_prefix,
-                        'message_suffix': _("Update your XLSForm and upload again.")
-                    }))
+                if 'choice_name_type_error' in message:
+                    message_prefix = _(
+                        "On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:")
+                else:
+                    message_prefix = _(
+                        "On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': False,
+                    'error_msg': [_("Columns are missing"), _("Column name is misspelled"),
+                                  _("Additional space in column name")],
+                    'message_prefix': message_prefix,
+                    'message_suffix': _("Update your XLSForm and upload again.")
+                }))
             else:
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
@@ -137,7 +140,8 @@ class ProjectUpload(View):
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [
-                    _("Check your columns for errors.There are missing symbols (like $ for relevant or calculate) or incorrect characters") + _(
+                    _(
+                        "Check your columns for errors.There are missing symbols (like $ for relevant or calculate) or incorrect characters") + _(
                         "Update your XLSForm and upload again.")],
             }))
 
@@ -257,6 +261,7 @@ class ProjectUpdate(View):
             questionnaire.add_attachments(tmp_file, 'questionnaire.xls')
             self._purge_submissions(manager, questionnaire)
             self._purge_feed_documents(questionnaire, request)
+            self._purge_media_details_documents(manager, questionnaire)
             self.recreate_submissions_mapping(manager, questionnaire)
 
         except PyXFormError as e:
@@ -265,12 +270,15 @@ class ProjectUpdate(View):
             message = transform_error_message(e.message)
             if 'name_type_error' in message or 'choice_name_type_error' in message:
                 if 'choice_name_type_error' in message:
-                    message_prefix = _("On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:")
+                    message_prefix = _(
+                        "On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:")
                 else:
-                    message_prefix = _("On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
+                    message_prefix = _(
+                        "On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
-                    'error_msg': [_("Columns are missing"), _("Column name is misspelled"), _("Additional space in column name")],
+                    'error_msg': [_("Columns are missing"), _("Column name is misspelled"),
+                                  _("Additional space in column name")],
                     'message_prefix': message_prefix,
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
@@ -297,7 +305,8 @@ class ProjectUpdate(View):
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [
-                    _("Check your columns for errors. There are missing symbols (like $ for relevant or calculate) or incorrect characters") + _(
+                    _(
+                        "Check your columns for errors. There are missing symbols (like $ for relevant or calculate) or incorrect characters") + _(
                         "Update your XLSForm and upload again.")],
             }))
 
@@ -329,6 +338,12 @@ class ProjectUpdate(View):
                     # "xls_dict": XlsProjectParser().parse(file_content)
                 }),
             content_type='application/json')
+
+    def _purge_media_details_documents(self, dbm, questionnaire):
+        media_details_docs = dbm.database.iterview("media_attachment/media_attachment", 1000, reduce=False,
+                                                   include_docs=True, key=questionnaire.id)
+        for media_detail_row in media_details_docs:
+            dbm.database.delete(media_detail_row['doc'])
 
 
 @login_required
@@ -447,7 +462,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                 'project_uuid': self.questionnaire.id,
                 'created': py_datetime_to_js_datestring(submission.created),
                 'media_file_names_string': imageProcessor
-                                            .get_media_files_str(self.questionnaire.fields, submission.values),
+                    .get_media_files_str(self.questionnaire.fields, submission.values),
                 'xml': self._model_str_of(submission.id, get_generated_xform_id_name(self.questionnaire.xform)),
                 'data': json.dumps(submission.values)
         }
@@ -478,7 +493,7 @@ def edit_xform_submission_post(request, survey_response_id):
         send_email_on_exception(request.user, "Edit Web Submission", traceback.format_exc(),
                                 additional_details={'survey_response_id': survey_response_id,
                                                     'submitted-data': request.POST['form_data']
-                                                    })
+                                })
         return HttpResponseBadRequest()
 
 
@@ -544,6 +559,7 @@ def _perform_file_validations(request):
         errors.append(_("larger files than 10MB."))
     return errors
 
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -551,6 +567,7 @@ def _perform_file_validations(request):
 def get_attachment(request, document_id, attachment_name):
     manager = get_database_manager(request.user)
     return HttpResponse(manager.get_attachments(document_id, attachment_name=attachment_name))
+
 
 @login_required
 @session_not_expired
