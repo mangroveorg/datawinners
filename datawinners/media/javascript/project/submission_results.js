@@ -95,7 +95,8 @@ DW.SubmissionLogExport = function () {
         self.exportLink = $('.export_link');
         self.exportForm = $('#export_form');
         self.url = '/project/export/log' + '?type=' + currentTabName;
-        _initialize_dialog();
+        self.count_url = '/project/export/log-count' + '?type=' + currentTabName;
+        _initialize_dialogs();
         _initialize_events();
     };
 
@@ -103,12 +104,29 @@ DW.SubmissionLogExport = function () {
         self.exportForm.appendJson({"search_filters": JSON.stringify(filter_as_json())}).attr('action', self.url).submit();
     };
 
-    var _initialize_dialog = function(){
+    var _check_limit_and_export = function(){
+        $.post(self.count_url, {
+                'data': JSON.stringify({"questionnaire_code": $("#questionnaire_code").val(),
+                                        "search_filters": filter_as_json()
+                                        }),
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+            }
+        ).done(function(data){
+                if(data['count'] <= 20000){
+                  _updateAndSubmitForm();
+                }
+                else{
+                    self.limit_dialog.show();
+                }
+            });
+    };
+
+    var _initialize_dialogs = function(){
        var dialogOptions = {
                 successCallBack: function (callback) {
                     DW.trackEvent('export-submissions', 'export-submissions-multiple-sheet', user_email + ":" + organization_name);
                     callback();
-                    _updateAndSubmitForm();
+                    _check_limit_and_export();
                 },
                 title: gettext("Submission Exceeds Number of Supported Columns."),
                 link_selector: ".export_link",
@@ -117,6 +135,18 @@ DW.SubmissionLogExport = function () {
                 width: 580
             };
        self.dialog = new DW.Dialog(dialogOptions).init();
+
+       var limit_info_dialog_options = {
+                successCallBack: function (callback) {
+                    DW.trackEvent('export-submissions', 'export-exceeded-limit', user_email + ":" + organization_name);
+                },
+                title: gettext("Number of Submissions Exceeds Export Limit"),
+                link_selector: ".export_link",
+                dialogDiv: "#export_submission_limit_dialog",
+                cancelLinkSelector: "#cancel_dialog",
+                width: 580
+            };
+       self.limit_dialog = new DW.Dialog(limit_info_dialog_options).init();
     };
 
     var _initialize_events = function () {
@@ -126,7 +156,7 @@ DW.SubmissionLogExport = function () {
            }
            else{
                DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _updateAndSubmitForm();
+               _check_limit_and_export();
            }
         });
 

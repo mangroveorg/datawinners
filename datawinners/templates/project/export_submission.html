@@ -7,6 +7,13 @@
     </div>
 </div>
 
+<div id="export_submission_limit_dialog" style="display: none;">
+    {% trans "The Number of Submissions you are trying to export is exceeding the limit of 20000 in one export.<br/><br/>Use filters (Date filter recommended) to limit the number of Submissions." %}<br/>
+    <div class="text_align_right padding_top_20">
+        <a id="save_changes" class="button yes_button">{% trans "OK, Got it!" %}</a>
+    </div>
+</div>
+
 <form id="export_form" method="POST">
     {% csrf_token %}
     <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
