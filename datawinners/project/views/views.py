@@ -666,8 +666,6 @@ class SurveyWebQuestionnaireRequest():
 
         success_message = None
         error_message = None
-        # if self.is_data_sender:
-        #     questionnaire_form.cleaned_data['eid'] = self.request.user.get_profile().reporter_id
         try:
             created_request = helper.create_request(questionnaire_form, self.request.user.username, is_update=is_update)
             reporter_id = self.request.POST.get('dsid')

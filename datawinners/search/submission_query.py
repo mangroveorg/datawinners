@@ -14,6 +14,7 @@ from datawinners.search.query import QueryBuilder, Query
 from mangrove.form_model.field import FieldSet, SelectField, MediaField
 from mangrove.form_model.form_model import get_field_by_attribute_value
 
+
 class SubmissionQueryResponseCreator(object):
     def __init__(self, form_model, localized_time_delta):
         self.form_model = form_model
@@ -78,7 +79,7 @@ class SubmissionQueryResponseCreator(object):
                         self._populate_error_message(key, language, res, submission)
                     elif key in fieldset_fields.keys():
                         submission.append(
-                            _format_fieldset_values_for_representation(res.get(key), fieldset_fields.get(key)))
+                            _format_fieldset_values_for_representation(res.get(key), fieldset_fields.get(key), res._meta.id))
                     else:
                         submission.append(self.append_if_attachments_are_present(res, key))
             submissions.append(submission)
@@ -92,14 +93,17 @@ class SubmissionQueryResponseCreator(object):
 
     def append_if_attachments_are_present(self, res, key):
         if isinstance(get_field_by_attribute_value(self.form_model, 'code', self._get_key(key)), MediaField):
-            value = res.get(key)
-            if value:
-                return "<a href='/download/attachment/%s/%s'>%s</a>" % (res._meta.id, value, value)
+            return _format_media_value(res._meta.id, res.get(key))
         else:
             return res.get(ugettext(key))
 
 
-def _format_values(field_set, formatted_value, value_list):
+def _format_media_value(submission_id, value):
+    if value:
+        return "<a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, value, value)
+
+
+def _format_values(field_set, formatted_value, value_list, submission_id):
     if not value_list:
         return ''
     value_dict = value_list[0]
@@ -115,7 +119,9 @@ def _format_values(field_set, formatted_value, value_list):
                 value = ''
         elif isinstance(field, FieldSet):
             value = ''
-            value = _format_values(field, value, value_dict.get(field.code))
+            value = _format_values(field, value, value_dict.get(field.code), submission_id)
+        elif isinstance(field, MediaField):
+            value = _format_media_value(submission_id, value_dict.get(field.code))
         else:
             value = value_dict.get(field.code) or ''
         formatted_value += '"' + '<span class="repeat_qtn_label">' + field.label + '</span>' + ': ' + value + '"'
@@ -123,10 +129,10 @@ def _format_values(field_set, formatted_value, value_list):
     return formatted_value
 
 
-def _format_fieldset_values_for_representation(entry, field_set):
+def _format_fieldset_values_for_representation(entry, field_set, submission_id):
     formatted_value = ''
     if entry:
         for value_dict in json.loads(entry):
-            formatted_value = _format_values(field_set, formatted_value, [value_dict])
+            formatted_value = _format_values(field_set, formatted_value, [value_dict], submission_id)
             formatted_value += '<br><br>'
         return '<span class="repeat_ans">' + formatted_value + '</span>'
