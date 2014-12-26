@@ -44,17 +44,23 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         cols.append('_index')
         cols.append('_parent_index')
 
-    def format_tabular_data(self, values):
+    def format_tabular_data(self, submission_list):
 
         repeat_headers = OrderedDict()
         repeat_headers.update({'main': ''})
         headers = self._format_tabular_data(self.columns, repeat_headers)
 
         formatted_values, formatted_repeats = [], {}
-        for i, row_dict in enumerate(values):
-            result = self._format_row(row_dict['_source'], i, formatted_repeats)
+        for row_number, row_dict in enumerate(submission_list):
+
+            if row_number == 20000:
+            #export limit set to 20K after performance exercise
+            #since scan & scroll API does not support result set size the workaround is to handle it this way
+                break
+
+            result = self._format_row(row_dict['_source'], row_number, formatted_repeats)
             if self.form_model.has_nested_fields:
-                result.append(i + 1)
+                result.append(row_number + 1)
             formatted_values.append(result)
 
         if self.form_model.has_nested_fields:
