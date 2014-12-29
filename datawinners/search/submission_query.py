@@ -122,6 +122,7 @@ def _format_values(field_set, formatted_value, value_list, submission_id):
             value = _format_values(field, value, value_dict.get(field.code), submission_id)
         elif isinstance(field, MediaField):
             value = _format_media_value(submission_id, value_dict.get(field.code))
+            value = '' if not value else value
         else:
             value = value_dict.get(field.code) or ''
         formatted_value += '"' + '<span class="repeat_qtn_label">' + field.label + '</span>' + ': ' + value + '"'
