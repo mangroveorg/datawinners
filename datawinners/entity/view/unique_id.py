@@ -26,10 +26,11 @@ def _log_soft_deleted_unique_ids(all_ids, dbm, entity_type):
 
 
 def _soft_delete_unique_ids(all_ids, entity_type, dbm, request):
-    transport_info = TransportInfo("web", request.user.username, "")
-    delete_entity_instance(dbm, all_ids, entity_type, transport_info)
-    _log_soft_deleted_unique_ids(all_ids, dbm, entity_type)
-    log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
+    if all_ids:
+        transport_info = TransportInfo("web", request.user.username, "")
+        delete_entity_instance(dbm, all_ids, entity_type, transport_info)
+        _log_soft_deleted_unique_ids(all_ids, dbm, entity_type)
+        log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
 
 
 def _delete_unique_id_from_elastic_search(dbm, entity_type, document_id):
