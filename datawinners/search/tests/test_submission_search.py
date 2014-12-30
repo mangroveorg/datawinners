@@ -1,13 +1,10 @@
 import unittest
 from elasticsearch_dsl.result import Result, Response
-from elasticsearch_dsl.utils import AttrDict
-
-from elasticutils import DictSearchResults
-from mock import Mock, MagicMock
+from mock import MagicMock, patch
 
 from datawinners.search.submission_query import SubmissionQueryResponseCreator, \
     _format_fieldset_values_for_representation
-from mangrove.form_model.field import UniqueIdField, TextField, IntegerField, SelectField, FieldSet
+from mangrove.form_model.field import UniqueIdField, TextField, IntegerField, SelectField, FieldSet, PhotoField, MediaField
 from mangrove.form_model.form_model import FormModel
 
 
@@ -106,3 +103,40 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
         result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: ";<br><br></span>'
         self.assertEqual(formatted_values, result)
+
+    def test_should_format_repeat_with_media_question(self):
+        field1 = TextField(name='name', code='name', label='wat is ur name')
+        field2 = PhotoField(name='img', code='img', label='wat is ur img')
+        group_field = FieldSet('group', 'group', 'group', field_set=[field1, field2])
+        multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
+                               field_set=[group_field])
+        entry = u'[{"group":[{"name": "messi", "img": "img.png" }]},{"group": [{"name": "ronaldo", "img": "img2.png"}]}]'
+        formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
+        result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur img</span>: <a href=\'/download/attachment/id/img.png\'>img.png</a>";";<br><br>"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur img</span>: <a href=\'/download/attachment/id/img2.png\'>img2.png</a>";";<br><br></span>'
+        self.assertEqual(formatted_values, result)
+
+    def test_should_format_media_questions(self):
+        form_model = MagicMock(spec=FormModel)
+        required_field_names = ['some_question', 'ds_id', 'ds_name', 'form_model_id_q1', 'img']
+        results = Response({"_hits": [
+            Result({'_type': "form_model_id", '_id': 'index_id', '_source': {'ds_id': 'his_id', 'ds_name': 'his_name',
+                                                                             'form_model_id_q1': 'sub_last_name',
+                                                                             'img': 'img2.png',
+                                                                             'some_question': 'answer for it'}})]})
+        form_model.id = 'form_model_id'
+        local_time_delta = ('+', 2, 0)
+        media_field = MediaField("photo", "img", "img", "img")
+        with patch("datawinners.search.submission_query.get_field_by_attribute_value") as get_media_field:
+            get_media_field.return_value = media_field
+
+            def get_media(*args, **kw):
+                return media_field if args[0][2] == "img" else TextField("q1", "q1", "q1")
+
+            get_media_field.side_effect = lambda *args, **kw: get_media(args, kw)
+            submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(
+                required_field_names,
+                results)
+
+        expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"], 'sub_last_name',
+                     "<a href='/download/attachment/index_id/img2.png'>img2.png</a>"]]
+        self.assertEqual(submissions, expected)
