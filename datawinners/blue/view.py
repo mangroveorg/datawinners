@@ -340,7 +340,7 @@ class ProjectUpdate(View):
             content_type='application/json')
 
     def _purge_media_details_documents(self, dbm, questionnaire):
-        media_details_docs = dbm.database.iterview("media_attachment/media_attachment", 1000, reduce=False,
+        media_details_docs = dbm.database.iterview("all_media_details/all_media_details", 1000, reduce=False,
                                                    include_docs=True, key=questionnaire.id)
         for media_detail_row in media_details_docs:
             dbm.database.delete(media_detail_row['doc'])
