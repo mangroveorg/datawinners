@@ -31,5 +31,6 @@ class Command(BaseCommand):
             if os.path.exists(full_log_file_path):
                 print "Sending mail..."
                 _send_email(full_log_file_path)
+        print "Log file path: %s" % full_log_file_path
         print "Done."
 
