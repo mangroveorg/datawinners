@@ -121,6 +121,8 @@ def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_ti
     """
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
     query_dict = search.to_dict()
+    if search_parameters.get('get_only_id', False):
+        query_dict["fields"] = []
     scan_response = helpers.scan(client=Elasticsearch(), index=dbm.database_name, doc_type=form_model.id,
                                  query=query_dict, timeout="3m", size=4000)
     return scan_response, query_fields

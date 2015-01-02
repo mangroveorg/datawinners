@@ -135,6 +135,24 @@ DW.SubmissionLogExport = function () {
                 cancelLinkSelector: "#cancel_dialog",
                 width: 580
             };
+            var export_options = {
+                    link_selector: ".export_link",
+                    title: "Export Options",
+                    dialogDiv: "#export_options_dialog",
+                    successCallBack: function(callback){
+                        _check_limit_and_export();
+                        callback();
+                        return true;
+                    },
+                    open: function(event, ui){
+                        //hide the close button
+                        $(".ui-dialog-titlebar-close", ui.dialog).hide();
+                    },
+                    width:500
+                };
+
+
+       self.dialog_export = new DW.Dialog(export_options).init().initializeLinkBindings();
        self.dialog = new DW.Dialog(dialogOptions).init();
 
        var limit_info_dialog_options = {
@@ -149,15 +167,18 @@ DW.SubmissionLogExport = function () {
        self.limit_dialog = new DW.Dialog(limit_info_dialog_options).init();
     };
 
+
     var _initialize_events = function () {
         self.exportLink.click(function () {
-           if(is_submission_exported_to_multiple_sheets === 'True'){
-                self.dialog.show();
-           }
-           else{
+//            alert("Hi")
+            self.dialog_export.show();
+//           if(is_submission_exported_to_multiple_sheets === 'True'){
+//                self.dialog.show();
+//           }
+//           else{
                DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _check_limit_and_export();
-           }
+//               _check_limit_and_export();
+//           }
         });
 
     };
