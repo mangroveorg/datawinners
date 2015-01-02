@@ -5,6 +5,7 @@ from datawinners.main.couchdb.utils import all_db_names
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from django.core.mail import EmailMessage
 from datawinners.project.media_usage.calculate_media_usage import calculate_usage
+from migration.couch.utils import DWThreadPool
 
 
 def _send_email(log_file_path):
@@ -22,12 +23,13 @@ class Command(BaseCommand):
         log_file_name = "%s" % datetime.datetime.now().strftime('media_usage_%H_%M_%d_%m_%Y.log')
         full_log_file_path = "%s/%s" % (log_folder, log_file_name)
         print "Calculate media usage per account"
-        with open(full_log_file_path, "w") as log_file:
-            for db_name in all_db_names():
-                calculate_usage(db_name, log_file)
-
+        pool = DWThreadPool(3, 3)
+        for db_name in all_db_names():
+            pool.submit(calculate_usage, db_name, full_log_file_path)
+        pool.wait_for_completion()
         if 'send-mail' in args:
-            print "Sending mail..."
-            _send_email(full_log_file_path)
+            if os.path.exists(full_log_file_path):
+                print "Sending mail..."
+                _send_email(full_log_file_path)
         print "Done."
 
