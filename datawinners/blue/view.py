@@ -5,7 +5,6 @@ import os
 import re
 from tempfile import NamedTemporaryFile
 import traceback
-from datawinners import settings
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -19,22 +18,20 @@ from django.views.generic.base import View
 from django.template.defaultfilters import slugify
 from pyxform.errors import PyXFormError
 from django.core.mail import EmailMessage
+from django.utils.translation import ugettext as _
+
+from datawinners import settings
 from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
     get_generated_xform_id_name, XFormImageProcessor
 from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
-from django.utils.translation import ugettext as _
-
 from datawinners.accountmanagement.models import Organization
 from datawinners.blue.error_translation_utils import transform_error_message, translate_odk_message
-from datawinners.monitor.carbon_pusher import send_to_carbon
-from datawinners.monitor.metric_path import create_path
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from datawinners.feeds.database import get_feeds_database
 from datawinners.search.submission_index import SubmissionSearchStore
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
-
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, is_project_exist
 from datawinners.project.utils import is_quota_reached
