@@ -1,34 +1,100 @@
 from collections import OrderedDict
 from datetime import datetime
 import json
+import os
+from tempfile import NamedTemporaryFile, TemporaryFile, mkdtemp
+import zipfile
 
 from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 import xlwt
+from django.core.servers.basehttp import FileWrapper
 
-from datawinners.project.submission.export import export_filename, add_sheet_with_data
+from datawinners.project.submission.export import export_filename, add_sheet_with_data, zip_excel_workbook, export_media_folder_name
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter
+from datawinners.project.submission.submission_search import get_scrolling_submissions_query
+from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import ExcelDate, DateField
 
 
 class XFormSubmissionExporter(SubmissionExporter):
     def _create_zipped_response(self, columns, submission_list, submission_type):
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
-                                                             self.local_time_delta).format_tabular_data(submission_list)
-        return self._create_excel_response(headers, data_rows_dict, export_filename(submission_type, self.project_name))
+        #headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
+        #                                                     self.local_time_delta).format_tabular_data(submission_list)
+        return self._create_excel_response(columns, submission_list,
+                                           export_filename(submission_type, self.project_name))
 
     def _create_excel_response(self, columns, submission_list, submission_type):
+        file_name, wb = self._create_excel_workbook(columns, submission_list, submission_type)
         response = HttpResponse(mimetype="application/vnd.ms-excel")
-        file_name = export_filename(submission_type, self.project_name)
         response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
+        wb.save(response)
+        return response
+
+    def _create_excel_workbook(self, columns, submission_list, submission_type):
+        file_name = export_filename(submission_type, self.project_name)
         headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
                                                              self.local_time_delta).format_tabular_data(submission_list)
         wb = xlwt.Workbook()
         for sheet_name, header_row in headers.items():
             add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name)
-        wb.save(response)
+        return file_name, wb
+
+    def add_files_to_temp_directory_if_present(self, submission_id, folder_name):
+        submission = self.dbm._load_document(submission_id, SurveyResponseDocument)
+        files = submission._data.get('_attachments', {})
+        for name in files.keys():
+            complete_name = os.path.join(folder_name, name)
+            temp_file = open(complete_name, "w")
+            file = self.dbm.get_attachments(submission_id, name)
+            temp_file.write(file)
+            temp_file.close()
+
+    @staticmethod
+    def add_directory_to_archive(archive, folder_name, media_folder):
+        for dir_path, dir_name, file_names in os.walk(media_folder):
+            for file_name in file_names:
+                complete_name = os.path.join(media_folder, file_name)
+                archive.write(complete_name, arcname=folder_name + "/" + file_name, compress_type=zipfile.ZIP_DEFLATED)
+
+    def create_excel_response_with_media(self, submission_type, query_params):
+        columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
+        submission_ids = self.get_submission_ids(query_params)
+        file_name, workbook = self._create_excel_workbook(columns, search_results, submission_type)
+        media_folder = self._create_images_folder(submission_ids)
+        folder_name = export_media_folder_name(submission_type, self.project_name)
+        file_name_normalized, zip_file = self._archive_images_and_workbook(workbook, file_name, folder_name, media_folder)
+        response = HttpResponse(FileWrapper(zip_file, blksize=8192000), content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename="%s.zip"' % file_name_normalized
+        zip_file.seek(0)
         return response
+
+    def get_submission_ids(self, query_params):
+        query_params['get_only_id'] = True
+        search_results, query_fields = get_scrolling_submissions_query(self.dbm, self.form_model, query_params,
+                                                                       self.local_time_delta)
+        return search_results
+
+    def _create_images_folder(self, submission_ids):
+        temp_dir = mkdtemp()
+        for row_number, row_dict in enumerate(submission_ids):
+            self.add_files_to_temp_directory_if_present(row_dict["_id"], temp_dir)
+
+        return temp_dir
+
+    def _archive_images_and_workbook(self, workbook, file_name, folder_name, media_folder):
+        file_name_normalized = slugify(file_name)
+        temporary_excel_file = NamedTemporaryFile(suffix=".xls", delete=False)
+        workbook.save(temporary_excel_file)
+        temporary_excel_file.close()
+        zip_file = TemporaryFile()
+        archive = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED)
+        self.add_directory_to_archive(archive, folder_name, media_folder)
+        archive.write(temporary_excel_file.name, compress_type=zipfile.ZIP_DEFLATED,
+                      arcname="%s.xls" % file_name_normalized)
+        archive.close()
+        return file_name_normalized, zip_file
 
 
 GEODCODE_FIELD_CODE = "geocode"

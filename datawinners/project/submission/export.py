@@ -102,3 +102,8 @@ def export_filename(submission_type, project_name):
     suffix = submission_type + '_log' if submission_type else 'analysis'
     file_name = "%s_%s" % (project_name, suffix)
     return file_name
+
+def export_media_folder_name(submission_type, project_name):
+    suffix = submission_type + '_log' if submission_type else 'analysis'
+    folder_name = "%s_MediaFiles_%s" % (project_name, suffix)
+    return folder_name
