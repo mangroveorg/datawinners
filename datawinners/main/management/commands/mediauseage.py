@@ -7,6 +7,13 @@ from django.core.mail import EmailMessage
 from datawinners.project.media_usage.calculate_media_usage import calculate_usage
 
 
+def _send_email(log_file_path):
+    email = EmailMessage(subject="Space usage for media files - %s" % datetime.datetime.today(),
+                         from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
+    email.attach_file(mimetype='text/plain', path=log_file_path)
+    email.send()
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         log_folder = "/var/tmp/media_usage"
@@ -18,12 +25,9 @@ class Command(BaseCommand):
         with open(full_log_file_path, "w") as log_file:
             for db_name in all_db_names():
                 calculate_usage(db_name, log_file)
-        self.send_email(full_log_file_path)
-        print "Done."
 
-    def send_email(self, log_file_path):
-        email = EmailMessage(subject="Space usage for media files - %s" % datetime.datetime.today(),
-                             from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
-        email.attach_file(mimetype='text/plain', path=log_file_path)
-        email.send()
+        if 'send-mail' in args:
+            print "Sending mail..."
+            _send_email(full_log_file_path)
+        print "Done."
 
