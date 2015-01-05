@@ -161,8 +161,14 @@ DW.SubmissionLogExport = function () {
     var _initialize_events = function () {
 
         $('.with_media').click(function(){
-              self.is_media = true;
-             _check_limit_and_export();
+            if (is_submission_exported_to_multiple_sheets === 'True') {
+                   self.dialog.show();
+             }
+            else {
+               self.is_media = true;
+               DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+               _check_limit_and_export();
+            }
 
          });
 
