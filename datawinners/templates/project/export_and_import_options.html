@@ -1,0 +1,16 @@
+{% load i18n %}
+<span class="links float_right">
+       {% if not project.xform %}
+           <a href="javascript:void(0);" class="export_link">{% trans "Export Submissions" %}</a> |
+           <a href="javascript:void(0);" data-projectname="{{ encoded_project_name }}"
+              data-formcode="{{ questionnaire_code }}" data-projectid="{{ project.id }}"
+              data-filename="{{ import_template_file_name }}"
+              class="import_link">{% trans "Import a List of Submissions" %}</a>
+       {% else %}
+           <a href="javascript:void(0);" class="export_link">{% trans "Export Without Media" %}</a>
+           {% if is_media_field_present %}
+               |
+               <a class="with_media" >{% trans "Export With Media"%}</a>
+           {% endif %}
+       {% endif %}
+</span>

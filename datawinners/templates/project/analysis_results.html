@@ -100,16 +100,7 @@
         {{ block.super }}
     {% endblock %}
     <div class="heading_block alpha data_ana border_none">
-        <span class="links float_right">
-            <a href="javascript:void(0);" class="export_link">{% trans "Export Submissions" %}</a>
-            {% if not project.xform %}
-                |
-                <a href="javascript:void(0);" data-projectname="{{ encoded_project_name }}"
-                   data-formcode="{{ questionnaire_code }}" data-projectid="{{ project.id }}"
-                   data-filename="{{ import_template_file_name }}"
-                   class="import_link">{% trans "Import a List of Submissions" %}</a>
-            {% endif %}
-        </span>
+        {% include "project/export_and_import_options.html" %}
     </div>
     {% include 'project/partials/_page_header.html' with title="Analysis" help_message='place_holder' %}
     <div id="page_hint" class="help_accordion margin_top_15 display_none">

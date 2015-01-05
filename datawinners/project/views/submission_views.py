@@ -192,6 +192,7 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
             "first_filterable_field": first_filterable_fields,
             "filterable_fields": filterable_fields,
             "is_submission_exported_to_multiple_sheets": len(questionnaire.fields) > 253,
+            "is_media_field_present" : questionnaire.is_media_type_fields_present
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
         }
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
