@@ -117,26 +117,21 @@ class TestSubmissionResponseCreator(unittest.TestCase):
 
     def test_should_format_media_questions(self):
         form_model = MagicMock(spec=FormModel)
-        required_field_names = ['some_question', 'ds_id', 'ds_name', 'form_model_id_q1', 'img']
+        form_model.is_media_type_fields_present = True
+        form_model.media_fields = [MediaField("photo", "img", "img", "img")]
+        required_field_names = ['some_question', 'ds_id', 'ds_name', 'form_model_id_img']
         results = Response({"_hits": [
             Result({'_type': "form_model_id", '_id': 'index_id', '_source': {'ds_id': 'his_id', 'ds_name': 'his_name',
                                                                              'form_model_id_q1': 'sub_last_name',
-                                                                             'img': 'img2.png',
+                                                                             'form_model_id_img': 'img2.png',
                                                                              'some_question': 'answer for it'}})]})
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
-        media_field = MediaField("photo", "img", "img", "img")
-        with patch("datawinners.search.submission_query.get_field_by_attribute_value") as get_media_field:
-            get_media_field.return_value = media_field
 
-            def get_media(*args, **kw):
-                return media_field if args[0][2] == "img" else TextField("q1", "q1", "q1")
+        submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(
+            required_field_names,
+            results)
 
-            get_media_field.side_effect = lambda *args, **kw: get_media(args, kw)
-            submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(
-                required_field_names,
-                results)
-
-        expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"], 'sub_last_name',
-                     "<a href='/download/attachment/index_id/img2.png'>img2.png</a>"]]
+        expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
+                     '<a href=\'/download/attachment/index_id/img2.png\'>img2.png</a>']]
         self.assertEqual(submissions, expected)
