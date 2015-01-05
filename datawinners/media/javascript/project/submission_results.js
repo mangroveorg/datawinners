@@ -136,21 +136,13 @@ DW.SubmissionLogExport = function () {
                     _check_limit_and_export();
                 },
                 title: gettext("Submission Exceeds Number of Supported Columns."),
-                link_selector: ".export_link",
+                link_selector: ".   export_link",
                 dialogDiv: "#export_submission_multiple_sheet_dialog",
                 cancelLinkSelector: "#cancel_dialog",
                 width: 580
             };
-       var export_options = {
-               link_selector: ".export_link",
-               title: "Export Options",
-               dialogDiv: "#export_options_dialog",
-               cancelLinkSelector: "#close_export_dialog",
-               width:500
-           };
 
         self.dialog = new DW.Dialog(dialogOptions).init();
-        self.dialog_export = new DW.Dialog(export_options).init();
 
        var limit_info_dialog_options = {
                 successCallBack: function (callback) {
@@ -165,10 +157,6 @@ DW.SubmissionLogExport = function () {
     };
 
     var _initialize_events = function () {
-        $('.without_media').click(function(){
-             _check_limit_and_export();
-
-        });
 
         $('.with_media').click(function(){
               self.is_media = true;
@@ -176,16 +164,7 @@ DW.SubmissionLogExport = function () {
 
          });
 
-        $(".close_export_dialog").bind("click", function () {
-            $("#export_options_dialog").dialog("close");
-        });
-
         self.exportLink.click(function () {
-           if (is_advance_questionnaire == "True"){
-                self.dialog_export.show()
-           }
-           else {
-
                if (is_submission_exported_to_multiple_sheets === 'True') {
                    self.dialog.show();
                }
@@ -193,7 +172,6 @@ DW.SubmissionLogExport = function () {
                    DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
                    _check_limit_and_export();
                }
-           }
         });
 
     };
