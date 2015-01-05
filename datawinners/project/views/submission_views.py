@@ -154,7 +154,8 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
-            "filterable_fields": filterable_fields
+            "filterable_fields": filterable_fields,
+            "is_media_field_present": questionnaire.is_media_type_fields_present
         }
 
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
@@ -466,10 +467,6 @@ def export_count(request):
     questionnaire_code = post_body['questionnaire_code']
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    # if not form_model.xform:
-    #     xform = False
-    # else:
-    #     xform = True
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
 
