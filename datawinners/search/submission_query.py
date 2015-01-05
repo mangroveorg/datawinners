@@ -53,12 +53,18 @@ class SubmissionQueryResponseCreator(object):
         datetime_local = convert_utc_to_localized(self.localized_time_delta, submission_date_time)
         submission.append(datetime_local.strftime("%b. %d, %Y, %H:%M"))
 
+    def _get_media_field_codes(self):
+        return [es_questionnaire_field_name(field.code, self.form_model.id, field.parent_field_code) for
+                field in
+                self.form_model.media_fields] if self.form_model.is_media_type_fields_present else []
+
     def create_response(self, required_field_names, search_results):
         entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id) for field in
                                  self.form_model.entity_questions]
         fieldset_fields = self.get_field_set_fields(self.form_model.fields)
         meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
         meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
+        media_field_codes = self._get_media_field_codes()
 
         submissions = []
         language = get_language()
@@ -79,20 +85,15 @@ class SubmissionQueryResponseCreator(object):
                         self._populate_error_message(key, language, res, submission)
                     elif key in fieldset_fields.keys():
                         submission.append(
-                            _format_fieldset_values_for_representation(res.get(key), fieldset_fields.get(key), res._meta.id))
+                            _format_fieldset_values_for_representation(res.get(key), fieldset_fields.get(key),
+                                                                       res._meta.id))
                     else:
-                        submission.append(self.append_if_attachments_are_present(res, key))
+                        submission.append(self._append_if_attachments_are_present(res, key, media_field_codes))
             submissions.append(submission)
         return submissions
 
-    def _get_key(self, key):
-        if '_' in key:
-            return key[key.index('_') + 1:]
-        else:
-            return key
-
-    def append_if_attachments_are_present(self, res, key):
-        if isinstance(get_field_by_attribute_value(self.form_model, 'code', self._get_key(key)), MediaField):
+    def _append_if_attachments_are_present(self, res, key, media_field_codes):
+        if self.form_model.is_media_type_fields_present and key in media_field_codes:
             return _format_media_value(res._meta.id, res.get(key))
         else:
             return res.get(ugettext(key))
