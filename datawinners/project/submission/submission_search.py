@@ -100,11 +100,18 @@ def _query_for_questionnaire(dbm, form_model):
         dbm.database_name).doctypes(form_model.id)
 
 
+def _add_response_fields(search_parameters, search):
+    if 'response_fields' in search_parameters:
+        search = search.fields(search_parameters['response_fields'])
+    return search
+
+
 def _create_query(dbm, form_model, local_time_delta, search_parameters):
     es = Elasticsearch()
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     search = _add_pagination_criteria(search_parameters, search)
     search = _add_sort_criteria(search_parameters, search)
+    search = _add_response_fields(search_parameters, search)
     query_fields, search = _add_filters(form_model, search_parameters, local_time_delta, search)
     return query_fields, search
 
@@ -121,8 +128,8 @@ def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_ti
     """
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
     query_dict = search.to_dict()
-    if search_parameters.get('get_only_id', False):
-        query_dict["fields"] = []
+    # if search_parameters.get('get_only_id', False):
+    #     query_dict["fields"] = []
     scan_response = helpers.scan(client=Elasticsearch(), index=dbm.database_name, doc_type=form_model.id,
                                  query=query_dict, timeout="3m", size=4000)
     return scan_response, query_fields

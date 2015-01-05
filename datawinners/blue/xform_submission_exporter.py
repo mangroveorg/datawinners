@@ -71,7 +71,7 @@ class XFormSubmissionExporter(SubmissionExporter):
         return response
 
     def get_submission_ids(self, query_params):
-        query_params['get_only_id'] = True
+        query_params['response_fields'] = []
         search_results, query_fields = get_scrolling_submissions_query(self.dbm, self.form_model, query_params,
                                                                        self.local_time_delta)
         return search_results
