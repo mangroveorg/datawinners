@@ -108,6 +108,7 @@ DW.SubmissionLogExport = function () {
                 "is_media":self.is_media
             }
         ).attr('action', self.url).submit();
+        self.is_media = false;
     };
 
     var _check_limit_and_export = function(){
@@ -120,6 +121,7 @@ DW.SubmissionLogExport = function () {
         ).done(function(data){
                 if(data['count'] <= 20000){
                   _updateAndSubmitForm();
+
                 }
                 else{
                     DW.trackEvent('export-submissions', 'export-exceeded-limit', user_email + ":" + organization_name);
