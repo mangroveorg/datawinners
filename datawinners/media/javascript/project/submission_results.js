@@ -96,12 +96,18 @@ DW.SubmissionLogExport = function () {
         self.exportForm = $('#export_form');
         self.url = '/project/export/log' + '?type=' + currentTabName;
         self.count_url = '/project/export/log-count' + '?type=' + currentTabName;
+        self.is_media = false;
         _initialize_dialogs();
         _initialize_events();
     };
 
     var _updateAndSubmitForm = function(){
-        self.exportForm.appendJson({"search_filters": JSON.stringify(filter_as_json())}).attr('action', self.url).submit();
+        self.exportForm.appendJson(
+            {
+                "search_filters": JSON.stringify(filter_as_json()),
+                "is_media":self.is_media
+            }
+        ).attr('action', self.url).submit();
     };
 
     var _check_limit_and_export = function(){
@@ -135,25 +141,16 @@ DW.SubmissionLogExport = function () {
                 cancelLinkSelector: "#cancel_dialog",
                 width: 580
             };
-            var export_options = {
-                    link_selector: ".export_link",
-                    title: "Export Options",
-                    dialogDiv: "#export_options_dialog",
-                    successCallBack: function(callback){
-                        _check_limit_and_export();
-                        callback();
-                        return true;
-                    },
-                    open: function(event, ui){
-                        //hide the close button
-                        $(".ui-dialog-titlebar-close", ui.dialog).hide();
-                    },
-                    width:500
-                };
+       var export_options = {
+               link_selector: ".export_link",
+               title: "Export Options",
+               dialogDiv: "#export_options_dialog",
+               cancelLinkSelector: "#close_export_dialog",
+               width:500
+           };
 
-
-       self.dialog_export = new DW.Dialog(export_options).init().initializeLinkBindings();
-       self.dialog = new DW.Dialog(dialogOptions).init();
+        self.dialog = new DW.Dialog(dialogOptions).init();
+        self.dialog_export = new DW.Dialog(export_options).init();
 
        var limit_info_dialog_options = {
                 successCallBack: function (callback) {
@@ -167,18 +164,36 @@ DW.SubmissionLogExport = function () {
        self.limit_dialog = new DW.Dialog(limit_info_dialog_options).init();
     };
 
-
     var _initialize_events = function () {
+        $('.without_media').click(function(){
+             _check_limit_and_export();
+
+        });
+
+        $('.with_media').click(function(){
+              self.is_media = true;
+             _check_limit_and_export();
+
+         });
+
+        $(".close_export_dialog").bind("click", function () {
+            $("#export_options_dialog").dialog("close");
+        });
+
         self.exportLink.click(function () {
-//            alert("Hi")
-            self.dialog_export.show();
-//           if(is_submission_exported_to_multiple_sheets === 'True'){
-//                self.dialog.show();
-//           }
-//           else{
-               DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-//               _check_limit_and_export();
-//           }
+           if (is_advance_questionnaire == "True"){
+                self.dialog_export.show()
+           }
+           else {
+
+               if (is_submission_exported_to_multiple_sheets === 'True') {
+                   self.dialog.show();
+               }
+               else {
+                   DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+                   _check_limit_and_export();
+               }
+           }
         });
 
     };

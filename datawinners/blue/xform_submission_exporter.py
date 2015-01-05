@@ -83,7 +83,7 @@ class XFormSubmissionExporter(SubmissionExporter):
 
         return temp_dir
 
-    def _archive_images_and_workbook(self, workbook, file_name, folder_name, media_folder):
+    def _archive_images_and_workbook(self, workbook, file_name, folder_name=None, media_folder=None):
         file_name_normalized = slugify(file_name)
         temporary_excel_file = NamedTemporaryFile(suffix=".xls", delete=False)
         workbook.save(temporary_excel_file)

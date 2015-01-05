@@ -17,6 +17,7 @@ from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
 import resource
+from psycopg2._psycopg import Boolean
 
 from datawinners import settings
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
@@ -464,8 +465,11 @@ def export_count(request):
     search_filters = post_body['search_filters']
     questionnaire_code = post_body['questionnaire_code']
     manager = get_database_manager(request.user)
-
     form_model = get_form_model_by_code(manager, questionnaire_code)
+    # if not form_model.xform:
+    #     xform = False
+    # else:
+    #     xform = True
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
 
@@ -519,10 +523,18 @@ def export(request):
     search_text = search_filters.get("search_text", '')
     query_params.update({"search_text": search_text})
     query_params.update({"filter": submission_type})
+    is_media = False
+    if request.POST.get('is_media') == u'true':
+        is_media = True
 
     if form_model.xform:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-            .create_excel_response_with_media(submission_type, query_params)
+        if not is_media:
+            return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+                .create_excel_response_without_zip(submission_type, query_params)
+
+        else:
+            return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+                .create_excel_response_with_media(submission_type, query_params)
 
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
         .create_excel_response_without_zip(submission_type, query_params)
