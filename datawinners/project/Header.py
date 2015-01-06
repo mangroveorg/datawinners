@@ -111,7 +111,7 @@ class SubmissionExcelHeader():
         return result
 
     def get_sub_fields_of(self, field):
-        col = {}
+        col = OrderedDict()
         for field in field.fields:
             details = {"type": field.type, "label": field.label}
             col.update({field.code: details})

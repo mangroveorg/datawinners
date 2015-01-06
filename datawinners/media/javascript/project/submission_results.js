@@ -13,7 +13,7 @@ DW.SubmissionTabs = function () {
 
     self.initialize_tabs = function() {
         var index_of_tab_li = active_tab_index+1;
-        $('#tabs ul>li:nth-child('+index_of_tab_li+')').first().addClass('ui-tabs-selected ui-state-active');
+        $('#tabs').find('ul>li:nth-child('+index_of_tab_li+')').first().addClass('ui-tabs-selected ui-state-active');
     };
 
 
@@ -235,7 +235,7 @@ DW.SubjectFilter = function (postFilterSelectionCallBack) {
 
     self.init = function () {
         self.filters = $(".subject_filter");
-        self.filters.each(function(i,el){$(el).data('value', '');})
+        self.filters.each(function(i,el){$(el).data('value', '');});
         self.initialize_autocomplete();
         self.initialize_events();
     };
@@ -268,7 +268,7 @@ DW.SubjectFilter = function (postFilterSelectionCallBack) {
                 postFilterSelection();
             }
         });
-        })
+        });
 
         self.filters.each(function(i,el){
             $(el).on("blur", function() {
@@ -351,7 +351,7 @@ DW.FilterSection = function(){
         $.each($("#questionnaire_field_filters").find('.help_icon'), function (index, element) {
            _destroyTooltip(element);
         });
-    };
+    }
 
     self.init = function(){
         showFilter = $("#show_filters");
