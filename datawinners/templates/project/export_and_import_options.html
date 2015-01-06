@@ -7,10 +7,12 @@
               data-filename="{{ import_template_file_name }}"
               class="import_link">{% trans "Import a List of Submissions" %}</a>
        {% else %}
-           <a href="javascript:void(0);" class="export_link">{% trans "Export Without Media" %}</a>
            {% if is_media_field_present %}
+               <a href="javascript:void(0);" class="export_link">{% trans "Export Without Media" %}</a>
                |
                <a class="with_media" >{% trans "Export With Media"%}</a>
            {% endif %}
+           {% else %}
+                <a href="javascript:void(0);" class="export_link">{% trans "Export Submissions" %}</a>
        {% endif %}
 </span>
