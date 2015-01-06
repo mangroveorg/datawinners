@@ -32,7 +32,7 @@ function init_warnThenDeleteDialogBox() {
         var entity_type = delete_dialog.data("entity_type");
         post_data = {'ids': allIds.join(';'), 'entity_type': entity_type, 'all_selected': all_selected, 'search_query': $(".dataTables_filter input").val()}
         if ($("#project_name").length)
-            post_data["project_name"] = $("#project_name").val();
+            post_data["project_name"] = $("#project_name").val().toLowerCase();
         if(all_selected)
             post_data["all_selected"] = true;
         DW.loading();
@@ -82,7 +82,7 @@ DW.DataSenderActionHandler = function () {
         table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, selectedIds, all_selected);
         $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
             data: { 'ids':selectedIds.join(';'),
-                    'project_name':$("#project_name").val(),
+                    'project_name':$("#project_name").val().toLowerCase(),
                     'project_id':$("#project_id").val(),
                     'all_selected':all_selected,
                     'search_query':$(".dataTables_filter input").val()
@@ -201,7 +201,7 @@ function usersInSearchedDS() {
         data: {
             'all_selected': true,
             'search_query':$(".dataTables_filter input").val(),
-            'project_name':$("#project_name").val()
+            'project_name':$("#project_name").val().toLowerCase()
         }
 
     }).done(function (json_response) {
