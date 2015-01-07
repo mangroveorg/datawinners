@@ -36,7 +36,7 @@ BARCODE = 'barcode'
 
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
-                 'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE],
+                 'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE, 'time'],
                  'auto_filled': ['note', 'today'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
@@ -260,6 +260,10 @@ class XlsFormParser():
         return question, errors
 
     def _get_date_format(self, field):
+
+        if field['type'] == 'time':
+            return "HH:mm"
+
         appearance = self._get_appearance(field)
         if appearance:
             if 'month-year' in appearance:
@@ -269,7 +273,7 @@ class XlsFormParser():
         return 'dd.mm.yyyy'
 
     def _field(self, field, parent_field_code=None):
-        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text'}
+        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text', 'time': 'date'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field'}
         name = self._get_label(field)
         code = field['name']
@@ -279,7 +283,7 @@ class XlsFormParser():
                     "code": code, "name": name, 'required': self.is_required(field),
                     "parent_field_code": parent_field_code,
                     "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
-        if type == 'date':
+        if type in ['date', 'time']:
             format = self._get_date_format(field)
             question.update({'date_format': format, 'event_time_field_flag': False,
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
