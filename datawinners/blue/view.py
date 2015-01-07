@@ -138,7 +138,7 @@ class ProjectUpload(View):
                 'success': False,
                 'error_msg': [
                     _(
-                        "Check your columns for errors.There are missing symbols (like $ for relevant or calculate) or incorrect characters") + _(
+                        "Check your columns for errors.<br>There are missing symbols (like $ for relevant or calculate) or incorrect characters<br>") + _(
                         "Update your XLSForm and upload again.")],
             }))
 
@@ -302,9 +302,8 @@ class ProjectUpdate(View):
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [
-                    _(
-                        "Check your columns for errors. There are missing symbols (like $ for relevant or calculate) or incorrect characters") + _(
-                        "Update your XLSForm and upload again.")],
+            _(
+                "Check your columns for errors.<br>There are missing symbols (like $ for relevant or calculate) or incorrect characters<br>") + _("Update your XLSForm and upload again.")],
             }))
 
         except Exception as e:
