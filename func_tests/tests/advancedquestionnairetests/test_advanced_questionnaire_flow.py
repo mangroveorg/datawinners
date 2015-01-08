@@ -1,12 +1,15 @@
 import json
 import os
+import tempfile
 import time
+import zipfile
 
 from nose.plugins.attrib import attr
 from django.test import Client
+import xlrd
 
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import random_string, by_css, generate_random_email_id, by_id
+from framework.utils.common_utils import random_string, by_css, generate_random_email_id, by_id, by_xpath
 from pages.advancedwebsubmissionpage.advanced_web_submission_page import AdvancedWebSubmissionPage
 from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
 from pages.datasenderpage.data_sender_page import DataSenderPage
@@ -27,7 +30,7 @@ DIR = os.path.dirname(__file__)
 
 regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}'
 SUBMISSION_DATA = 'Tester Pune rep276 ' + regex_date_match + ' Success 11.09.2014 name multiline 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option b,option c option 5,option 8 option 4 No option 5 neither agree nor disagree option a option c option c   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy The Netherlands Amsterdam Westerpark United States New York City Harlem 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60", "Date within a...\n: 17.09.2014";'
-
+SUBMISSION_DATA_IMAGE = 'Tester Pune rep276 '+ regex_date_match + ' Success 1-locate.png'
 
 class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     def setUp(self):
@@ -64,10 +67,9 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_create_project_when_xlsform_is_uploaded(self):
         self.project_name = random_string()
-
         self.client.login(username=self.admin_email_id, password='tester150411')
-
-        form_code = self._verify_questionnaire_creation(self.project_name)
+        file_name = 'ft_advanced_questionnaire.xls'
+        form_code = self._verify_questionnaire_creation(self.project_name, file_name)
         project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
 
         web_submission_page.navigate_to_datasenders_page()
@@ -79,7 +81,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         DataAnalysisPage(self.driver).navigate_to_web_submission_tab()
 
         web_submission_page = AdvancedWebSubmissionPage(self.driver)
-        self._do_web_submission(project_temp_name, form_code, self.admin_email_id, 'tester150411')
+        self._do_web_submission('submission_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411')
         self._verify_submission_log_page(web_submission_page)
         datasender_rep_id, ds_email = self._register_datasender()
 
@@ -88,7 +90,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         datasender_page = DataSenderPage(self.driver)
         datasender_page.send_in_data()
         verify_advanced_web_submission_page_is_loaded(self.driver)
-        self._do_web_submission(project_temp_name, form_code, ds_email, NEW_PASSWORD)
+        self._do_web_submission('submission_data.xml', project_temp_name, form_code, ds_email, NEW_PASSWORD)
         self.global_navigation_page.sign_out()
 
         self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
@@ -145,8 +147,8 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         activation_page.type_same_password(NEW_PASSWORD)
         activation_page.click_submit()
 
-    def _do_web_submission(self, project_temp_name, form_code, user, password):
-        r = perform_submission('submission_data.xml',project_temp_name,form_code,{'user':user,'password':password})
+    def _do_web_submission(self, xml_file, project_temp_name, form_code, user, password, image_upload=False):
+        r = perform_submission(xml_file, project_temp_name, form_code, {'user': user, 'password': password}, image_upload)
         self.assertEquals(r.status_code, 201)
         self.assertNotEqual(r._container[0].find('submission_uuid'), -1)
 
@@ -155,14 +157,14 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         submission = self.submission_log_page.get_all_data_on_nth_row(1)
         self.assertRegexpMatches(" ".join(submission), SUBMISSION_DATA)
 
-    def _verify_questionnaire_creation(self, project_name):
-        r = self.client.post(
-            path='/xlsform/upload/?pname=' + project_name + '&qqfile=ft_advanced_questionnaire.xls',
-            data=open(os.path.join(self.test_data, 'ft_advanced_questionnaire.xls'), 'r').read(),
+    def _verify_questionnaire_creation(self, project_name, file_name):
+        response = self.client.post(
+            path='/xlsform/upload/?pname=' + project_name + '&qqfile='+file_name,
+            data=open(os.path.join(self.test_data, file_name), 'r').read(),
             content_type='application/octet-stream')
-        self.assertEquals(r.status_code, 200)
-        self.assertNotEqual(r._container[0].find('project_name'), -1)
-        response = json.loads(r._container[0])
+        self.assertEquals(response.status_code, 200)
+        self.assertNotEqual(response._container[0].find('project_name'), -1)
+        response = json.loads(response._container[0])
         self.project_id = response.get('project_id')
         return response['form_code']
 
@@ -175,3 +177,94 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertIn("Registration successful. ID is: ", success_msg)
         self._activate_datasender(email)
         return success_msg.split(": ")[1], email
+
+    def _verify_submission_log_page_images(self, web_submission_page):
+        self.submission_log_page = web_submission_page.navigate_to_submission_log()
+        submission = self.submission_log_page.get_all_data_on_nth_row(1)
+        cell_value = self.submission_log_page.get_data_for_row(1, 5)
+        self.assertEquals(cell_value, "1-locate.png")
+        self.assertRegexpMatches(" ".join(submission), SUBMISSION_DATA_IMAGE)
+
+    def _verify_submission_log_page_image_2(self, web_submission_page):
+        self.submission_log_page = web_submission_page.navigate_to_submission_log()
+        web_submission_1 = self.submission_log_page.get_all_data_on_nth_row(1)
+        web_submission_2 = self.submission_log_page.get_all_data_on_nth_row(2)
+        self.assertTrue([web_submission_1[0], web_submission_2[0]], ['Tester Pune rep276', 'Tester Pune rep276'])
+        self.assertTrue([web_submission_1[2], web_submission_2[2]], ['Success', 'Success'])
+        self.assertTrue([web_submission_1[3], web_submission_2[3]], ['1-locate.png', '2-locate.png'])
+        self.assertRegexpMatches(web_submission_1[1], regex_date_match)
+        self.assertRegexpMatches(web_submission_2[1], regex_date_match)
+
+    def _verify_without_media(self, form_code):
+        response = self.client.post('/project/export/log?type=all',
+                                    {'project_name': self.project_name,
+                                     'is_media': 'false',
+                                     'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
+                                     'questionnaire_code': form_code})
+        xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
+        os.write(xlfile_fd, response.content)
+        os.close(xlfile_fd)
+        workbook = xlrd.open_workbook(xlfile_name)
+        self._verify_workbook_values(workbook)
+
+    def _write_response_to_file(self, response_content):
+        zip_file = tempfile.mkstemp('.zip')[1]
+        file = open(zip_file, "w")
+        file.write(response_content)
+        file.close()
+        return zip_file
+
+    def _verify_workbook_values(self, workbook):
+        self.assertEquals(workbook._sheet_list[0]._cell_values[1][0], u'Tester Pune')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[1][1], u'rep276')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[1][3], u'Success')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[1][4], u'1-locate.png')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[2][0], u'Tester Pune')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[2][1], u'rep276')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[2][3], u'Success')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[2][4], u'2-locate.png')
+
+    def _verify_file_names_in_zip(self, zip_file):
+        file_read = open(zip_file, 'r')
+        zip_file_open = zipfile.ZipFile(file_read.name, 'r')
+        expected_list = [self.project_name + '_MediaFiles_all_log/2-locate.png',
+                         self.project_name + '_MediaFiles_all_log/1-locate.png',
+                         self.project_name + '_all_log.xls']
+        files_in_zip = zip_file_open.namelist()
+        self.assertListEqual(files_in_zip, expected_list)
+        return zip_file_open
+
+    def _write_to_file_from_zip(self, zip_file_open):
+        xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
+        os.write(xlfile_fd, zip_file_open.read(self.project_name + '_all_log.xls'))
+        os.close(xlfile_fd)
+        return xlfile_name
+
+    def _verify_with_media(self, form_code):
+        response_content = self.client.post('/project/export/log?type=all',
+                                    {'project_name': self.project_name,
+                                        'is_media': 'true',
+                                        'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
+                                        'questionnaire_code': form_code}).content
+        zip_file = self._write_response_to_file(response_content)
+        zip_file_open = self._verify_file_names_in_zip(zip_file)
+        xlfile_name = self._write_to_file_from_zip(zip_file_open)
+        workbook = xlrd.open_workbook(xlfile_name)
+        self._verify_workbook_values(workbook)
+
+    @attr('functional_test')
+    def test_should_create_project_media(self):
+        self.project_name = random_string()
+
+        self.client.login(username=self.admin_email_id, password='tester150411')
+
+        form_code = self._verify_questionnaire_creation(self.project_name, 'image.xlsx')
+        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        self._verify_submission_log_page_images(web_submission_page)
+
+        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411',image_upload=True)
+        self._verify_submission_log_page_image_2(web_submission_page)
+
+        self._verify_without_media(form_code)
+        self._verify_with_media(form_code)

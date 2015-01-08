@@ -90,6 +90,13 @@ class SubmissionLogPage(Page):
             row_data.append(self.get_cell_value(row, col))
         return row_data
 
+    def get_cell_value_anchor(self, row, column):
+        return self.driver.find(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td[%s]/a" % ((row +1), column))).text
+
+    def get_data_for_row(self, row, column):
+        time.sleep(2)
+        return self.get_cell_value_anchor(row, column)
+
     def click_on_nth_header(self, index):
         self.driver.find(by_css(HEADER_CELL_CSS_LOCATOR % str(index))).click()
 

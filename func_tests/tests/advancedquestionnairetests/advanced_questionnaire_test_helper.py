@@ -1,7 +1,9 @@
 import os
 import re
+import tempfile
 
 from django.test import Client
+import xlrd
 
 from framework.utils.common_utils import by_css
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -10,7 +12,8 @@ from tests.testsettings import UI_TEST_TIMEOUT
 DIR = os.path.dirname(__file__)
 test_data = os.path.join(DIR, 'testdata')
 
-def navigate_and_verify_web_submission_page_is_loaded(driver, global_navigation_page,project_name):
+
+def navigate_and_verify_web_submission_page_is_loaded(driver, global_navigation_page, project_name):
     all_data_page = global_navigation_page.navigate_to_all_data_page()
     web_submission_page = all_data_page.navigate_to_web_submission_page(project_name)
     form_element = verify_advanced_web_submission_page_is_loaded(driver)
@@ -21,11 +24,15 @@ def verify_advanced_web_submission_page_is_loaded(driver):
     driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".ajax-loader"))
     return form_element
 
-def perform_submission(file_name,project_temp_name,form_code,credentials):
+
+def perform_submission(file_name, project_temp_name, form_code, credentials, image_upload):
     submission_data = open(os.path.join(test_data, file_name), 'r').read()
     submission_data = re.sub("tmpdt7nQf", project_temp_name, submission_data)
     submission_data = re.sub("<form_code>053", "<form_code>" + form_code, submission_data)
     client = Client()
     client.login(username=credentials.get('user'), password=credentials.get('password'))
-    return client.post(path='/xlsform/web_submission/', data={'form_data': submission_data, 'form_code': form_code})
-
+    data = {'form_data': submission_data, 'form_code': form_code}
+    if image_upload:
+           data = {'form_data': submission_data, 'form_code': form_code, 'locate.png': open(DIR+'/testdata/'+'locate.png', 'rb')}
+    return client.post(path='/xlsform/web_submission/',
+                      data=data)
