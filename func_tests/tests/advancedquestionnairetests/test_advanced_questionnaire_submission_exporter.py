@@ -44,55 +44,55 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
 
     def _verify_second_sheet(self, workbook):
         self.assertEqual(
-            "[u'Yes No or both', u'Text in a group', u'Date(DD-MM-YYYY)', u'Yes or No?', u'Date(Month-Year)', u'Date(Year)', u'_index', u'_parent_index']",
+            "[u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'_index', u'_parent_index']",
             str(workbook.sheet_by_index(1).row_values(0)))
         self.assertEqual(
-            "[u'Yes', u'text in group - repeat1', 41907.0, u'Yes', 41640.0, 40544.0, '', 1.0]",
+            "[40544.0, 41640.0, 41907.0, u'text in group - repeat1', u'Yes', u'Yes', '', 1.0]",
             str(workbook.sheet_by_index(1).row_values(1)))
         self.assertEqual(
-            "[u'Yes; No', u'text in group - repeat2', 41901.0, u'No', 41640.0, 40909.0, '', 1.0]",
+            "[40909.0, 41640.0, 41901.0, u'text in group - repeat2', u'No', u'Yes; No', '', 1.0]",
             str(workbook.sheet_by_index(1).row_values(2)))
         self.assertEqual(
-            "[u'Yes', u'text in group - repeat1', 41907.0, u'Yes', 41640.0, 40544.0, '', 2.0]",
+            "[40544.0, 41640.0, 41907.0, u'text in group - repeat1', u'Yes', u'Yes', '', 2.0]",
             str(workbook.sheet_by_index(1).row_values(3)))
         self.assertEqual(
-            "[u'Yes; No', u'text in group - repeat2', 41901.0, u'No', 41640.0, 40909.0, '', 2.0]",
+            "[40909.0, 41640.0, 41901.0, u'text in group - repeat2', u'No', u'Yes; No', '', 2.0]",
             str(workbook.sheet_by_index(1).row_values(4)))
         self.assertEquals(5, workbook.sheet_by_index(1).nrows)
 
     def _verify_third_sheet(self, workbook):
         self.assertEqual(
-            "[u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes No or both', u'Yes or No?', u'_index', u'_parent_index']",
+            "[u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'_index', u'_parent_index']",
             str(workbook.sheet_by_index(2).row_values(0)))
         self.assertEqual(
-            "[40544.0, 41640.0, 41893.0, u'group22', u'Yes', u'No', '', 1.0]",
+            "[40544.0, 41640.0, 41893.0, u'group22', u'No', u'Yes', '', 1.0]",
             str(workbook.sheet_by_index(2).row_values(1)))
         self.assertEqual(
-            "[40544.0, 41640.0, 41894.0, u'group4', u'No', u'Yes', '', 1.0]",
+            "[40544.0, 41640.0, 41894.0, u'group4', u'Yes', u'No', '', 1.0]",
             str(workbook.sheet_by_index(2).row_values(2)))
         self.assertEqual(
-            "[40544.0, 41640.0, 41893.0, u'group22', u'Yes', u'No', '', 2.0]",
+            "[40544.0, 41640.0, 41893.0, u'group22', u'No', u'Yes', '', 2.0]",
             str(workbook.sheet_by_index(2).row_values(3)))
         self.assertEqual(
-            "[40544.0, 41640.0, 41894.0, u'group4', u'No', u'Yes', '', 2.0]",
+            "[40544.0, 41640.0, 41894.0, u'group4', u'Yes', u'No', '', 2.0]",
             str(workbook.sheet_by_index(2).row_values(4)))
         self.assertEquals(5, workbook.sheet_by_index(1).nrows)
 
     def _verify_fourth_sheet(self, workbook):
         self.assertEqual(
-            "[u'Date(DD-MM-YYYY)', u'Yes or No?', u'Date(Month-Year)', u'Text in a group', u'Date(Year)', u'Yes No or both', u'_index', u'_parent_index']",
+            "[u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'_index', u'_parent_index']",
             str(workbook.sheet_by_index(3).row_values(0)))
         self.assertEqual(
-            "[41896.0, u'Yes', 41640.0, u'group', 41640.0, u'Yes', '', 1.0]",
+            "[41640.0, 41640.0, 41896.0, u'group', u'Yes', u'Yes', '', 1.0]",
             str(workbook.sheet_by_index(3).row_values(1)))
         self.assertEqual(
-            "[41892.0, u'No', 41640.0, u'group3', 40179.0, u'Yes; No', '', 1.0]",
+            "[40179.0, 41640.0, 41892.0, u'group3', u'No', u'Yes; No', '', 1.0]",
             str(workbook.sheet_by_index(3).row_values(2)))
         self.assertEqual(
-            "[41896.0, u'Yes', 41640.0, u'group', 41640.0, u'Yes', '', 2.0]",
+            "[41640.0, 41640.0, 41896.0, u'group', u'Yes', u'Yes', '', 2.0]",
             str(workbook.sheet_by_index(3).row_values(3)))
         self.assertEqual(
-            "[41892.0, u'No', 41640.0, u'group3', 40179.0, u'Yes; No', '', 2.0]",
+            "[40179.0, 41640.0, 41892.0, u'group3', u'No', u'Yes; No', '', 2.0]",
             str(workbook.sheet_by_index(3).row_values(4)))
         self.assertEquals(5, workbook.sheet_by_index(1).nrows)
 
