@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext
 from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, \
-    TelephoneNumberField, HierarchyField, UniqueIdField, ShortCodeField, FieldSet, PhotoField, VideoField, AudioField
+    TelephoneNumberField, HierarchyField, UniqueIdField, ShortCodeField, FieldSet, PhotoField, VideoField, AudioField, \
+    TimeField, DateTimeField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, EntityFormModel
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
 from mangrove.form_model.validators import UniqueIdExistsValidator
@@ -66,6 +67,10 @@ class QuestionBuilder(object):
     def create_question(self, post_dict, code):
         if post_dict["type"] == "text":
             return self._create_text_question(post_dict, code)
+        if post_dict["type"] == "time":
+            return self._create_time_question(post_dict, code)
+        if post_dict["type"] == "dateTime":
+            return self._create_date_time_question(post_dict, code)
         if post_dict["type"] == "integer":
             return self._create_integer_question(post_dict, code)
         if post_dict["type"] == "geocode":
@@ -132,6 +137,21 @@ class QuestionBuilder(object):
                          parent_field_code=post_dict.get('parent_field_code'),
                          is_calculated=post_dict.get('is_calculated'))
 
+    def _create_time_question(self, post_dict, code):
+        return TimeField(name=self._get_name(post_dict),
+                         code=code,
+                         label=post_dict["title"],
+                         instruction=post_dict.get("instruction"),
+                         required=post_dict.get("required"),
+                         parent_field_code=post_dict.get('parent_field_code'))
+
+    def _create_date_time_question(self, post_dict, code):
+        return DateTimeField(name=self._get_name(post_dict),
+                         code=code,
+                         label=post_dict["title"],
+                         instruction=post_dict.get("instruction"),
+                         required=post_dict.get("required"),
+                         parent_field_code=post_dict.get('parent_field_code'))
 
     def _create_integer_question(self, post_dict, code):
         max_range_from_post = post_dict.get("range_max")

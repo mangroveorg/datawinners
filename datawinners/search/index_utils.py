@@ -4,7 +4,7 @@ import elasticutils
 from datawinners.search.submission_index_meta_fields import submission_meta_field_names
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import DateField
+from mangrove.form_model.field import DateField, TimeField, DateTimeField
 from mangrove.form_model.project import get_entity_type_fields, tabulate_data
 
 
@@ -34,6 +34,12 @@ def get_field_definition(form_field, field_name=None):
     if isinstance(form_field, DateField):
         field_def.update({"type": "date"})
         field_def.update({"date_format": form_field.date_format})
+    elif isinstance(form_field, TimeField):
+        field_def.update({"type": "date"})
+        field_def.update({"date_format": form_field.format})
+    elif isinstance(form_field, DateTimeField):
+        field_def.update({"type": "date"})
+        field_def.update({"date_format": form_field.format})
     else:
         field_def.update({"type": 'string'})
     return field_def

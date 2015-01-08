@@ -36,7 +36,8 @@ BARCODE = 'barcode'
 
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
-                 'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE, 'time'],
+                 'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
+                           'time', 'dateTime'],
                  'auto_filled': ['note', 'today'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
@@ -273,7 +274,7 @@ class XlsFormParser():
         return 'dd.mm.yyyy'
 
     def _field(self, field, parent_field_code=None):
-        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text', 'time': 'date'}
+        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field'}
         name = self._get_label(field)
         code = field['name']
@@ -283,7 +284,7 @@ class XlsFormParser():
                     "code": code, "name": name, 'required': self.is_required(field),
                     "parent_field_code": parent_field_code,
                     "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
-        if type in ['date', 'time']:
+        if type in ['date']:
             format = self._get_date_format(field)
             question.update({'date_format': format, 'event_time_field_flag': False,
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
