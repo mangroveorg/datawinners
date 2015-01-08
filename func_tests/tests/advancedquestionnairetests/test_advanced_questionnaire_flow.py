@@ -9,7 +9,7 @@ from django.test import Client
 import xlrd
 
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import random_string, by_css, generate_random_email_id, by_id, by_xpath
+from framework.utils.common_utils import random_string, by_css, generate_random_email_id, by_id
 from pages.advancedwebsubmissionpage.advanced_web_submission_page import AdvancedWebSubmissionPage
 from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
 from pages.datasenderpage.data_sender_page import DataSenderPage

@@ -3,6 +3,7 @@
 from framework.utils.common_utils import generateId
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
+from pages.allsubjectspage.all_subjects_locator import SUBJECT_TYPE_LINK
 from pages.page import Page
 from framework.utils.data_fetcher import from_, fetch_
 from pages.addsubjecttypepage.add_subject_type_locator import *
@@ -29,6 +30,16 @@ class AddSubjectTypePage(Page):
         self.driver.wait_until_element_is_not_present(5, by_css("#type_message .ajax_loader"))
         return AllSubjectTypePage(self.driver)
 
+    def check_subject_type_on_page(self, subject):
+        """
+        Function to check the subject type on the all subject page of the website
+
+        Return true or false
+         """
+        if self.driver.is_element_present(by_xpath(SUBJECT_TYPE_LINK % subject)):
+            return True
+        else:
+            return False
     def add_entity_type_with(self, entity_type, wait=True):
         """
         Function to enter entity type in the text box and click on the Add button
