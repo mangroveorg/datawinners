@@ -219,10 +219,13 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][1], u'rep276')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][3], u'Success')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][4], u'1-locate.png')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[1][5], u'name')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][0], u'Tester Pune')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][1], u'rep276')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][3], u'Success')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][4], u'2-locate.png')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[1][5], u'name')
+
 
     def _verify_file_names_in_zip(self, zip_file):
         file_read = open(zip_file, 'r')
