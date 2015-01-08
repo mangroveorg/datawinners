@@ -39,7 +39,7 @@ def get_field_definition(form_field, field_name=None):
         field_def.update({"date_format": form_field.format})
     elif isinstance(form_field, DateTimeField):
         field_def.update({"type": "date"})
-        field_def.update({"date_format": form_field.format})
+        field_def.update({"date_format": "dd.MM.yyyy hh:mm"})
     else:
         field_def.update({"type": 'string'})
     return field_def
