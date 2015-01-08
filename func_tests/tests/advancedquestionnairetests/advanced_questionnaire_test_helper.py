@@ -25,7 +25,7 @@ def verify_advanced_web_submission_page_is_loaded(driver):
     return form_element
 
 
-def perform_submission(file_name, project_temp_name, form_code, credentials, image_upload):
+def perform_submission(file_name, project_temp_name, form_code, credentials, image_upload=False):
     submission_data = open(os.path.join(test_data, file_name), 'r').read()
     submission_data = re.sub("tmpdt7nQf", project_temp_name, submission_data)
     submission_data = re.sub("<form_code>053", "<form_code>" + form_code, submission_data)
