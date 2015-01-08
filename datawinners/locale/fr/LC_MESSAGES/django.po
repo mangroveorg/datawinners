@@ -5650,3 +5650,9 @@ msgstr "Le nombre de Soumissions que vous essayez d’exporter dépasse la limit
 
 msgid "Check your columns for errors.<br>There are missing symbols (like $ for relevant or calculate) or incorrect characters<br>"
 msgstr "Vérifiez vos colonnes pour toutes erreurs.<br>Cela peut être dû à des symboles manquants (comme $ pour relevant ou calculate) ou des caractères incorrects.<br>"
+
+msgid "GMT%s <span class='timezone-text'>  Now it is: %s</span>"
+msgstr "GMT%s <span class='timezone-text'>  Il est: %s</span>"
+
+msgid "Timezone"
+msgstr "Fuseau horaire"
