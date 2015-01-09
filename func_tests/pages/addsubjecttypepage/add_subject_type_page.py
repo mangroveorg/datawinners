@@ -1,5 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import json
 
+from django.test import Client
 from framework.utils.common_utils import generateId
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
@@ -119,3 +121,10 @@ class AddSubjectTypePage(Page):
         self.click_action_button()
         option = self.driver.find_visible_element(by_id(action_to_be_performed))
         option.click()
+
+    def add_subject_type(self, entity_type):
+        client = Client()
+        client.login(username="tester150411@gmail.com", password="tester150411")
+        response = client.post('/entity/type/create', data={'referer': 'subject', 'entity_type_regex': entity_type})
+        response_dict = json.loads(response.content)
+        return response_dict

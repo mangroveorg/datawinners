@@ -189,12 +189,12 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.submission_log_page = web_submission_page.navigate_to_submission_log()
         web_submission_1 = self.submission_log_page.get_all_data_on_nth_row(1)
         web_submission_2 = self.submission_log_page.get_all_data_on_nth_row(2)
-        self.assertTrue([web_submission_1[0], web_submission_2[0]], ['Tester Pune rep276', 'Tester Pune rep276'])
-        self.assertTrue([web_submission_1[2], web_submission_2[2]], ['Success', 'Success'])
-        self.assertTrue([web_submission_1[3], web_submission_2[3]], ['1-locate.png', '2-locate.png'])
+        self.assertListEqual([web_submission_1[0], web_submission_2[0]], ['Tester Pune rep276', 'Tester Pune rep276'])
+        self.assertListEqual([web_submission_1[2], web_submission_2[2]], ['Success', 'Success'])
+        self.assertIn(web_submission_1[3], ['1-locate.png', '2-locate.png'])
+        self.assertIn(web_submission_2[3], ['1-locate.png', '2-locate.png'])
         self.assertRegexpMatches(web_submission_1[1], regex_date_match)
         self.assertRegexpMatches(web_submission_2[1], regex_date_match)
-
     def _verify_without_media(self, form_code):
         response = self.client.post('/project/export/log?type=all',
                                     {'project_name': self.project_name,
@@ -258,8 +258,8 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_create_project_media(self):
         self.project_name = random_string()
-
-        self.client.login(username=self.admin_email_id, password='tester150411')
+        client = Client()
+        client.login(username=self.admin_email_id, password='tester150411')
 
         form_code = self._verify_questionnaire_creation(self.project_name, 'image.xlsx')
         project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
