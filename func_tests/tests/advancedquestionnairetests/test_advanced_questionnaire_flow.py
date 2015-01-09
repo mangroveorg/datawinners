@@ -241,7 +241,9 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
                          self.project_name + '_MediaFiles_all_log/1-locate.png',
                          self.project_name + '_all_log.xls']
         files_in_zip = zip_file_open.namelist()
-        self.assertListEqual(files_in_zip, expected_list)
+        self.assertIn(files_in_zip[0], expected_list)
+        self.assertIn(files_in_zip[1], expected_list)
+        self.assertIn(files_in_zip[2], expected_list)
         return zip_file_open
 
     def _write_to_file_from_zip(self, zip_file_open):
