@@ -35,6 +35,9 @@ class AllSubjectTypePage(Page):
         else:
             return False
 
+    def click_on_add_subject_type(self):
+        return self.driver.find(ADD_SUBJECT_TYPE_LINK).click()
+
     def add_new_subject_type(self, new_type):
         self.driver.find(ADD_SUBJECT_TYPE_LINK).click()
         self.driver.create_screenshot("before_text.png")

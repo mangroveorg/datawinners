@@ -5,6 +5,7 @@ from django.test import Client
 from nose.plugins.attrib import attr
 
 from framework.base_test import teardown_driver, HeadlessRunnerTest
+from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from framework.utils.common_utils import by_id, random_string
 from pages.allsubjectspage.subjects_page import SubjectsPage
@@ -64,11 +65,12 @@ class TestSubjectsPage(HeadlessRunnerTest):
     @attr('functional_test')
     def test_add_duplicate_subjectType(self):
         self.driver.go_to(url("/entity/subjects/"))
+        subjects_page = AddSubjectTypePage(self.driver)
         subject_type_name = SUBJECT_TYPE + random_string(3)
-        response = self.add_subject_type_all(subject_type_name)
+        response = subjects_page.add_subject_type(subject_type_name)
         self.driver.go_to(url("/entity/subjects/"))
         self.validate_subject_type(subject_type_name)
-        response = self.add_subject_type_all(subject_type_name)
+        response = subjects_page.add_subject_type(subject_type_name)
         self.assertEqual(response['message'], subject_type_name+" already exists.")
 
     def validate_error_messages(self,subject_type_name):
@@ -78,17 +80,22 @@ class TestSubjectsPage(HeadlessRunnerTest):
     @attr('functional_test')
     def test_add_invalid_subjectType(self):
         self.driver.go_to(url("/entity/subjects/"))
-        self.add_subject_type(SUBJECT_TYPE_WHITE_SPACES)
-        self.validate_error_messages(ERROR_MSG_INVALID_ENTRY)
-        self.driver.find(by_id("cancel_add_type")).click()
-        self.add_subject_type(SUBJECT_TYPE_SPL_CHARS)
-        self.validate_error_messages(ERROR_MSG_INVALID_ENTRY)
-        self.driver.find(by_id("cancel_add_type")).click()
-        self.add_subject_type(SUBJECT_TYPE_BLANK)
-        self.validate_error_messages(ERROR_MSG_EMPTY_ENTRY)
+        subjects_page = AddSubjectTypePage(self.driver)
+        response = subjects_page.add_subject_type(SUBJECT_TYPE_WHITE_SPACES)
+        self.assertEqual(response['message'], ERROR_MSG_INVALID_ENTRY)
+
+        self.driver.go_to(url("/entity/subjects/"))
+        subjects_page = AddSubjectTypePage(self.driver)
+        response = subjects_page.add_subject_type(SUBJECT_TYPE_SPL_CHARS)
+        self.assertEqual(response['message'], ERROR_MSG_INVALID_ENTRY)
+
+        self.driver.go_to(url("/entity/subjects/"))
+        subjects_page = AddSubjectTypePage(self.driver)
+        response = subjects_page.add_subject_type(SUBJECT_TYPE_BLANK)
+        self.assertEqual(response['message'], ERROR_MSG_EMPTY_ENTRY)
 
     def validate_subject_type(self, subject_type):
         element = self.driver.find_element_by_link_text(subject_type).text
-        self.assertEquals(element.lower() , subject_type.lower())
+        self.assertEquals(element.lower(), subject_type.lower())
 
 
