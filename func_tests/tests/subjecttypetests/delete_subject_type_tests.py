@@ -58,7 +58,6 @@ class TestDeleteSubjectType(HeadlessRunnerTest):
     def test_delete_subject_type(self):
         subject_type = random_string(5)
         subject_type_page = self.page
-        subject_type_page.click_on_accordian_link()
         response = subject_type_page.add_subject_type(subject_type)
         subject_type_page.refresh()
 
