@@ -330,14 +330,6 @@ def _update_repeat_fields_with_choice_values(repeat_entries, repeat_field):
                 _update_choice_value(entry, field)
 
 
-def _format_date_time(entry):
-    if entry:
-        # YYYY-MM-ddhh:mm
-        entry = entry.strftime("%d.%m.%Y %H:%M")
-
-    return entry
-
-
 def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values,
                         parent_field_name=None):
     for field in fields:
@@ -371,8 +363,6 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
             field_for_revision = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
             if isinstance(field_for_revision, SelectField):
                 entry = _get_select_field_answer_from_snapshot(entry, field_for_revision)
-        elif field.type == 'dateTime':
-            entry = _format_date_time(entry)
         elif field.type == "date":
             try:
                 if form_model.revision != submission_doc.form_model_revision:
