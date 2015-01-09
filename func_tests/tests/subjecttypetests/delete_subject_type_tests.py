@@ -59,7 +59,8 @@ class TestDeleteSubjectType(HeadlessRunnerTest):
         subject_type = random_string(5)
         subject_type_page = self.page
         subject_type_page.click_on_accordian_link()
-        subject_type_page.successfully_add_entity_type_with(subject_type)
+        response = subject_type_page.add_subject_type(subject_type)
+        subject_type_page.refresh()
 
         subject_page = subject_type_page.select_subject_type(subject_type)
         subject_page.wait_for_processing()
