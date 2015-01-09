@@ -1,14 +1,18 @@
+import json
 from time import sleep
 import unittest
+from django.test import Client
 from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
+from framework.utils.data_fetcher import fetch_, from_
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from framework.utils.common_utils import by_id, random_string, by_css
 from pages.allsubjectspage.subjects_page import SubjectsPage
 from pages.loginpage.login_page import LoginPage, login
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, url
-from tests.allsubjectstests.all_subjects_data import SUBJECT_TYPE, SUBJECT_TYPE_WHITE_SPACES, ERROR_MSG_INVALID_ENTRY, SUBJECT_TYPE_SPL_CHARS, SUBJECT_TYPE_BLANK, ERROR_MSG_EMPTY_ENTRY
+from tests.allsubjectstests.all_subjects_data import SUBJECT_TYPE, SUBJECT_TYPE_WHITE_SPACES, ERROR_MSG_INVALID_ENTRY, SUBJECT_TYPE_SPL_CHARS, SUBJECT_TYPE_BLANK, ERROR_MSG_EMPTY_ENTRY, \
+    DUPLICATE_ERROR_MSG, DUPLICATE_ERROR
 from tests.logintests.login_data import VALID_CREDENTIALS
 
 class TestSubjectsPage(HeadlessRunnerTest):
@@ -51,14 +55,22 @@ class TestSubjectsPage(HeadlessRunnerTest):
         for row in subjects_page.rows()[1:]:
             self.assertIn("tes", row.text.lower())
 
+    def add_subject_type_all(self, entity_type):
+        client = Client()
+        client.login(username="tester150411@gmail.com", password="tester150411")
+        response = client.post('/entity/type/create', data={'referer': 'subject', 'entity_type_regex': entity_type})
+        response_dict = json.loads(response.content)
+        return response_dict
 
     @attr('functional_test')
     def test_add_duplicate_subjectType(self):
         self.driver.go_to(url("/entity/subjects/"))
         subject_type_name = SUBJECT_TYPE + random_string(3)
-        self.add_subject_type(subject_type_name)
+        response = self.add_subject_type_all(subject_type_name)
+        self.driver.go_to(url("/entity/subjects/"))
         self.validate_subject_type(subject_type_name)
-        self.add_subject_type(subject_type_name)
+        response = self.add_subject_type_all(subject_type_name)
+        self.assertEqual(response['message'], subject_type_name+" already exists.")
 
     def validate_error_messages(self,subject_type_name):
         error_msg = self.driver.find(by_id("type_message")).text
