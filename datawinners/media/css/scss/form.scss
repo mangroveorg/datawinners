@@ -263,6 +263,7 @@ select{
   -webkit-appearance: none; /*Removes default chrome and safari style*/
   -moz-appearance: none; /*Removes default style Firefox*/
   text-indent: 0.01px;
+  text-overflow: '';
   background:#FFFFFF;
   background: url('/media/images/arrow_dd.png') no-repeat scroll right -3px;
   font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
@@ -669,4 +670,56 @@ a.dialog-anchor {
 
 .dropdown .dropdown-menu LI > A, .dropdown .dropdown-menu LABEL {
   white-space: normal !important;
+}
+
+.btn{
+  font-size: 14px;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: linear-gradient(to bottom, #CCDFED, #B0CFD7) repeat-x scroll 0 0 #F5F5F5;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  background-color: #F5F5F5;
+  background-repeat: repeat-x;
+  border-color: #BBBBBB #BBBBBB #A2A2A2;
+  border-image: none;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 20px;
+  margin-bottom: 0;
+  padding: 4px 12px;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  vertical-align: middle;
+}
+
+.btn .caret {
+  margin-left: 0;
+  margin-top: 8px;
+}
+
+.caret {
+  border-left: 4px solid rgba(0, 0, 0, 0);
+  border-right: 4px solid rgba(0, 0, 0, 0);
+  border-top: 4px solid #000000;
+  content: "";
+  display: inline-block;
+  height: 0;
+  vertical-align: top;
+  width: 0;
+}
+
+.btn:hover, .btn:active, .btn.active, .btn.disabled, .btn[disabled] {
+  background-color: #B0CFD7;
+  color: #333333;
+  border-radius: 3px;
+  box-shadow: 0 0 2px 2px rgba(33, 33, 33, 0.3);
+  opacity: 1;
+  text-decoration: none !important;
 }
