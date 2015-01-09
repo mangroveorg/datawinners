@@ -37,8 +37,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     @classmethod
     def setUpClass(cls):
-        browser = settings.DEBUG_BROWSER or "firefox"
-        cls.driver = setup_driver(browser)
+        cls.driver = setup_driver("phantom")
         cls.test_data = os.path.join(DIR, 'testdata')
         cls.admin_email_id = 'tester150411@gmail.com'
         cls.global_navigation_page = login(cls.driver, VALID_CREDENTIALS)
