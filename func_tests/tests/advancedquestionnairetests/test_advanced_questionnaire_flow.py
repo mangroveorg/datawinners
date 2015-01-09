@@ -7,8 +7,9 @@ import zipfile
 from nose.plugins.attrib import attr
 from django.test import Client
 import xlrd
+from datawinners import settings
 
-from framework.base_test import HeadlessRunnerTest
+from framework.base_test import HeadlessRunnerTest, setup_driver
 from framework.utils.common_utils import random_string, by_css, generate_random_email_id, by_id
 from pages.advancedwebsubmissionpage.advanced_web_submission_page import AdvancedWebSubmissionPage
 from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
@@ -33,11 +34,16 @@ SUBMISSION_DATA = 'Tester Pune rep276 ' + regex_date_match + ' Success 11.09.201
 SUBMISSION_DATA_IMAGE = 'Tester Pune rep276 '+ regex_date_match + ' Success 1-locate.png'
 
 class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
-    def setUp(self):
-        self.test_data = os.path.join(DIR, 'testdata')
-        self.admin_email_id = 'tester150411@gmail.com'
-        self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
-        self.client = Client()
+
+    @classmethod
+    def setUpClass(cls):
+        browser = settings.DEBUG_BROWSER or "firefox"
+        cls.driver = setup_driver(browser)
+        cls.test_data = os.path.join(DIR, 'testdata')
+        cls.admin_email_id = 'tester150411@gmail.com'
+        cls.global_navigation_page = login(cls.driver, VALID_CREDENTIALS)
+        cls.client = Client()
+        cls.client.login(username=cls.admin_email_id, password='tester150411')
 
     def _update_submission(self, project_temp_name):
         text_answer_locator = by_css('input[name="/' + project_temp_name + '/text_widgets/my_string"]')
@@ -67,7 +73,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_create_project_when_xlsform_is_uploaded(self):
         self.project_name = random_string()
-        self.client.login(username=self.admin_email_id, password='tester150411')
+
         file_name = 'ft_advanced_questionnaire.xls'
         form_code = self._verify_questionnaire_creation(self.project_name, file_name)
         project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
@@ -75,9 +81,9 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         web_submission_page.navigate_to_datasenders_page()
         datasender_page = ProjectDataSendersPage(self.driver)
         datasender_page.search_with("1234123413"). \
-            select_a_data_sender_by_mobile_number("1234123413").perform_datasender_action(by_css(".remove")) \
-            .navigate_to_analysis_page()
-
+            select_a_data_sender_by_mobile_number("1234123413").perform_datasender_action(by_css(".remove"))
+        datasender_page.refresh()
+        datasender_page.navigate_to_analysis_page()
         DataAnalysisPage(self.driver).navigate_to_web_submission_tab()
 
         web_submission_page = AdvancedWebSubmissionPage(self.driver)
@@ -180,6 +186,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     def _verify_submission_log_page_images(self, web_submission_page):
         self.submission_log_page = web_submission_page.navigate_to_submission_log()
+        self.driver.wait_for_page_load()
         submission = self.submission_log_page.get_all_data_on_nth_row(1)
         cell_value = self.submission_log_page.get_data_for_row(1, 5)
         self.assertEquals(cell_value, "1-locate.png")
@@ -195,6 +202,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertIn(web_submission_2[3], ['1-locate.png', '2-locate.png'])
         self.assertRegexpMatches(web_submission_1[1], regex_date_match)
         self.assertRegexpMatches(web_submission_2[1], regex_date_match)
+
     def _verify_without_media(self, form_code):
         response = self.client.post('/project/export/log?type=all',
                                     {'project_name': self.project_name,
