@@ -18,7 +18,7 @@ VALID_DATA = {SENDER: "1234567890",
 
 TRIAL_SMS_DATA = u"Testcid003 %s Shwetarep1 Mr. Tessy 38 17.01.2012 O- Rapid weight loss, Memory loss, Neurological disorders 27.178057 -78.007789 Hivid" % (current_date_display_format,)
 
-RE_TRIAL_SMS_DATA = '.{23} Shweta rep1 Test cid003 Mr. Tessy 38 17.01.2012 O- Rapid weight loss,Memory loss,Neurological disorders 27.178057 -78.007789 Hivid'
+RE_TRIAL_SMS_DATA = '.{20} Shweta rep1 Test cid003 Mr. Tessy 38 17.01.2012 O- Rapid weight loss,Memory loss,Neurological disorders 27.178057 -78.007789 Hivid'
 
 VALID_PAID_DATA = {SENDER: "1234567890",
               RECEIVER: '919880734937',

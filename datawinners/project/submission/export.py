@@ -16,46 +16,25 @@ from datawinners.workbook_utils import worksheet_add_header
 from mangrove.form_model.field import ExcelDate
 
 
-def add_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix):
-    data_list = [headers] + raw_data_list
-    total_column_count = len(headers)
-    number_of_sheets = math.ceil(total_column_count / 256.0)
-    sheet_number = 1
-    column_number = 1
-    get_sheet_name = lambda: '%s_%d' % (sheet_name_prefix, sheet_number) if number_of_sheets > 1 else sheet_name_prefix
+def add_sheet_with_data(raw_data, headers, workbook, formatter, sheet_name_prefix=None):
+    ws = workbook.add_worksheet(name=sheet_name_prefix)
+    worksheet_add_header(ws, headers, get_header_style(workbook))
+    date_formats = {}
 
-    while sheet_number <= number_of_sheets:
-        data_list_with_max_allowed_columns = [l[column_number - 1: column_number + 255] for l in data_list]
-        workbook_add_sheet(wb, data_list_with_max_allowed_columns, get_sheet_name())
-        column_number += 256
-        sheet_number += 1
+    for row_number, row in enumerate(raw_data):
+        if formatter:
+            row = formatter.format_row(row['_source'])
+        for column, val in enumerate(row):
+            if isinstance(val, ExcelDate):
+                if not date_formats.has_key(val.date_format):
+                    date_format = {'submission_date': 'mmm d yyyy hh:mm:ss'}.get(val.date_format, val.date_format)
+                    date_formats.update({val.date_format: workbook.add_format({'num_format': date_format})})
+                ws.write(row_number + 1, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
 
-
-def _create_zip_file(file_name_normalized, temporary_excel_file):
-    zip_file = tempfile.TemporaryFile()
-    archive = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED)
-    archive.write(temporary_excel_file.name, compress_type=zipfile.ZIP_DEFLATED,
-                  arcname="%s.xls" % file_name_normalized)
-    archive.close()
-    return zip_file
-
-
-def zip_excel_workbook(excel_workbook, file_name):
-    file_name_normalized = slugify(file_name)
-    temporary_excel_file = NamedTemporaryFile(suffix=".xls", delete=False)
-    excel_workbook.save(temporary_excel_file)
-    temporary_excel_file.close()
-    zip_file = _create_zip_file(file_name_normalized, temporary_excel_file)
-    return file_name_normalized, zip_file
-
-
-def create_zipped_response(excel_workbook, file_name):
-    file_name_normalized, zip_file = zip_excel_workbook(excel_workbook, file_name)
-    response = HttpResponse(FileWrapper(zip_file, blksize=8192000), content_type='application/zip')
-    response['Content-Disposition'] = 'attachment; filename="%s.zip"' % file_name_normalized
-    response['Content-Length'] = zip_file.tell()
-    zip_file.seek(0)
-    return response
+            elif isinstance(val, float):
+                ws.write_number(row_number + 1, column, val)
+            else:
+                ws.write(row_number + 1, column, val)
 
 
 def create_excel_response(headers, raw_data_list, file_name):
@@ -76,29 +55,16 @@ def get_header_style(workbook):
     header_style.set_text_wrap('right')
     return header_style
 
-def export_to_new_excel(headers, raw_data, file_name, formatter):
+def export_to_new_excel(headers, raw_data, file_name, formatter=None):
     file_name_normalized = slugify(file_name)
     import io
     output = io.BytesIO()
     workbook = xlsxwriter.Workbook(output)
-    ws = workbook.add_worksheet()
-    worksheet_add_header(ws, headers, get_header_style(workbook))
-    date_formats = {}
-
-    for row_number, row in enumerate(raw_data):
-        row = formatter.format_row(row['_source'])
-        for column, val in enumerate(row):
-            if isinstance(val, ExcelDate):
-                if not date_formats.has_key(val.date_format):
-                    date_format = {'submission_date': 'mmm d yyyy hh:mm:ss'}.get(val.date_format, val.date_format)
-                    date_formats.update({val.date_format: workbook.add_format({'num_format': date_format})})
-                ws.write(row_number + 1, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
-                    
-            elif isinstance(val, float):
-                ws.write_number(row_number + 1, column, val)
-            else:
-                ws.write(row_number + 1, column, val)
-
+    if isinstance(headers, dict):
+        for sheet_name, header_row in headers.items():
+            add_sheet_with_data(raw_data.get(sheet_name, []), header_row, workbook, formatter, sheet_name)
+    else:
+        add_sheet_with_data(raw_data, headers, workbook, formatter)
     workbook.close()
 
     output.seek(0)

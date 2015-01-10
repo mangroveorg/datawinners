@@ -8,7 +8,6 @@ import zipfile
 from django.test import Client
 from nose.plugins.attrib import attr
 import xlrd
-from tests.utils import get_xlsfile_from_zipped_response
 
 
 @attr('functional_test')
@@ -21,10 +20,13 @@ class TestExporter(unittest.TestCase):
 
     def test_export(self):
         resp = self.client.post('/project/export/log?type=all',
-                                {'project_name': 'test-data-sorting',
+                                {'project_name': u'clinic test project1',
                                  'search_filters': "{\"search_text\":\"export18\",\"dateQuestionFilters\":{}}",
                                  'questionnaire_code': 'cli001'})
-        xlfile_name = get_xlsfile_from_zipped_response("test-data-sorting", resp)
+
+        xlfile_fd, xlfile_name = tempfile.mkstemp(".xlsx")
+        os.write(xlfile_fd, resp.content)
+        os.close(xlfile_fd)
         workbook = xlrd.open_workbook(xlfile_name)
         print "file is %s" % xlfile_name
         sheet = workbook.sheet_by_index(0)
