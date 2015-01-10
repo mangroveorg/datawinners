@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 import xlwt
 
-from datawinners.project.submission.export import export_filename, add_sheet_with_data
+from datawinners.project.submission.export import export_filename, add_sheet_with_data, export_to_new_excel
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter
 from mangrove.form_model.field import ExcelDate, DateField
@@ -30,6 +30,10 @@ class XFormSubmissionExporter(SubmissionExporter):
         wb.save(response)
         return response
 
+    def _create_response(self, columns, submission_list, submission_type):
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model, self.local_time_delta).format_tabular_data(submission_list)
+        return export_to_new_excel(headers, data_rows_dict, export_filename(submission_type, self.project_name))
+        
 
 GEODCODE_FIELD_CODE = "geocode"
 FIELD_SET = "field_set"

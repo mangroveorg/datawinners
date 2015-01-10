@@ -10,14 +10,3 @@ def get_subject_short_code(flash_message):
         return message[message.index('successfully') -1]
     except Exception:
         return ''
-
-def get_xlsfile_from_zipped_response(project_name, response):
-    temp_zip_file = tempfile.NamedTemporaryFile()
-    temp_zip_file.write(response.content)
-    temp_zip_file.seek(0)
-    zf = zipfile.ZipFile(temp_zip_file.name)
-    data = zf.read(project_name+"_all_log.xls")
-    xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
-    os.write(xlfile_fd, data)
-    os.close(xlfile_fd)
-    return xlfile_name

@@ -19,10 +19,11 @@ class TestExporter(unittest.TestCase):
 
     def test_export(self):
         resp = self.client.post('/project/export/log?type=all',
-                                {'project_name': 'test-data-sorting',
+                                {'project_name': u'clinic test project1',
                                  'search_filters': "{\"search_text\":\"export18\",\"dateQuestionFilters\":{}}",
                                  'questionnaire_code': 'cli001'})
-        xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
+
+        xlfile_fd, xlfile_name = tempfile.mkstemp(".xlsx")
         os.write(xlfile_fd, resp.content)
         os.close(xlfile_fd)
         workbook = xlrd.open_workbook(xlfile_name)
