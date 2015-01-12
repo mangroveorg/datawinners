@@ -41,7 +41,7 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION = {ORGANIZATION_NAME: u"ÑGÓ 001"
                                                  ORGANIZATION_WEBSITE: u"http://ngo001.com",
                                                  TITLE: u"Mr",
                                                  NAME: u"Mickey Gö",
-                                                 EMAIL: u"nGO",
+                                                 EMAIL: u"ngo",
                                                  ADMIN_MOBILE_NUMBER: "23-45-678-567",
                                                  REGISTRATION_PASSWORD: u"ngo001",
                                                  REGISTRATION_CONFIRM_PASSWORD: u"ngo001",

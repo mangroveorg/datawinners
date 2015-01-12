@@ -33,7 +33,8 @@ from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.warningdialog.warning_dialog import WarningDialog
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from testdata.constants import SUCCESS_MSG
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, LOGOUT, url
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, LOGOUT, \
+    url
 from tests.activateaccounttests.activate_account_data import DS_ACTIVATION_URL, NEW_PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL, VALID_DATA_WITH_EMAIL_FOR_EDIT
 from tests.endtoendtest.end_to_end_data import *
@@ -170,9 +171,11 @@ class TestApplicationEndToEnd(unittest.TestCase):
     def add_subject(self, subject_type, subject_data):
         global_navigation = GlobalNavigationPage(self.driver)
         global_navigation.navigate_to_all_subject_page()
-        all_subject_type_page = AllSubjectTypePage(self.driver)
-        add_subject_page = all_subject_type_page.add_new_subject_type(subject_type).select_subject_type(subject_type) \
-            .navigate_to_register_subject_page()
+        add_subject_page = AddSubjectTypePage(self.driver).add_subject_type(subject_type, username=self.email,
+                                                                            password=REGISTRATION_PASSWORD)
+        add_subject_page = AddSubjectPage(self.driver)
+        add_subject_page.refresh()
+        AllSubjectTypePage(self.driver).select_subject_type(subject_type).navigate_to_register_subject_page()
         add_subject_page.add_subject_with(subject_data)
         add_subject_page.submit_subject()
         flash_message = add_subject_page.get_flash_message()
@@ -314,12 +317,12 @@ class TestApplicationEndToEnd(unittest.TestCase):
     def verify_setting_customized_error_messages_for_languages(self):
         global_navigation = GlobalNavigationPage(self.driver)
         languages_page = global_navigation.navigate_to_languages_page()
-        self.assertEquals("English",languages_page.get_selected_language())
+        self.assertEquals("English", languages_page.get_selected_language())
         appended_message = "ok!"
-        languages_page.append_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR , appended_message)
+        languages_page.append_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR, appended_message)
         languages_page.save_changes()
         self.assertEquals("Changes saved successfully.", languages_page.get_success_message())
-        #Reload english to check if changes saved
+        # Reload english to check if changes saved
         languages_page.select_language("French", wait_for_load=True)
         languages_page.select_language("English", wait_for_load=True)
         self.assertIn(appended_message, languages_page.get_custom_message_for(SUCCESS_SUBMISSION_MESSAGE_LOCATOR))
@@ -334,7 +337,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         organization_sms_tel_number = self.do_org_registartion()
 
         self.create_project_and_verify()
-
 
         self.register_new_subject_of_type('Gaming', VALID_DATA_FOR_SUB_GAMING)
         self.register_new_subject_of_type('School', VALID_DATA_FOR_SUBJECT_SCHOOL)

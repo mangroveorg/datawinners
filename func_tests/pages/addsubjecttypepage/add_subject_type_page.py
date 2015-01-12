@@ -9,6 +9,7 @@ from pages.allsubjectspage.all_subjects_locator import SUBJECT_TYPE_LINK
 from pages.page import Page
 from framework.utils.data_fetcher import from_, fetch_
 from pages.addsubjecttypepage.add_subject_type_locator import *
+from tests.logintests.login_data import USERNAME, VALID_CREDENTIALS, PASSWORD
 from tests.subjecttypetests.add_subject_type_data import *
 from time import sleep
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -122,9 +123,9 @@ class AddSubjectTypePage(Page):
         option = self.driver.find_visible_element(by_id(action_to_be_performed))
         option.click()
 
-    def add_subject_type(self, entity_type):
+    def add_subject_type(self, entity_type, username=VALID_CREDENTIALS[USERNAME], password=VALID_CREDENTIALS[PASSWORD]):
         client = Client()
-        client.login(username="tester150411@gmail.com", password="tester150411")
+        client.login(username=username, password=password)
         response = client.post('/entity/type/create', data={'referer': 'subject', 'entity_type_regex': entity_type})
         response_dict = json.loads(response.content)
         return response_dict
