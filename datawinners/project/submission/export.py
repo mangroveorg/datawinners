@@ -96,10 +96,10 @@ def create_excel_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix, 
         workbook_add_row(wb, row, number_of_sheets, row_number + 1)
 
 
-def export_to_zipped_excel(headers, raw_data, file_name, formatter):
-    wb = xlwt.Workbook()
-    create_excel_sheet_with_data(raw_data, headers, wb, 'data_log', formatter)
-    return create_zipped_response(wb, file_name)
+# def export_to_zipped_excel(headers, raw_data, file_name, formatter):
+#     wb = xlwt.Workbook()
+#     create_excel_sheet_with_data(raw_data, headers, wb, 'data_log', formatter)
+#     return create_zipped_response(wb, file_name)
 
 def export_to_excel_no_zip(headers, raw_data, file_name, formatter):
     wb = xlwt.Workbook()

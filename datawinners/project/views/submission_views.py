@@ -525,6 +525,7 @@ def export(request):
     if request.POST.get('is_media') == u'true':
         is_media = True
 
+
     if form_model.xform:
         if not is_media:
             return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
@@ -534,8 +535,11 @@ def export(request):
             return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
                 .create_excel_response_with_media(submission_type, query_params)
 
+        # return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+        #     .create_excel_response_without_zip(submission_type, query_params)
+        #
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-        .create_excel_response_without_zip(submission_type, query_params)
+        .create_excel_response(submission_type, query_params)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):

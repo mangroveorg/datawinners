@@ -7,6 +7,7 @@ import zipfile
 
 from django.http import HttpResponse
 from django.template.defaultfilters import slugify
+from xlsxwriter import Workbook
 import xlwt
 from django.core.servers.basehttp import FileWrapper
 
@@ -97,8 +98,25 @@ class XFormSubmissionExporter(SubmissionExporter):
         return file_name_normalized, zip_file
 
     def _create_response(self, columns, submission_list, submission_type):
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model, self.local_time_delta).format_tabular_data(submission_list)
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
+                                                             self.local_time_delta).format_tabular_data(submission_list)
         return export_to_new_excel(headers, data_rows_dict, export_filename(submission_type, self.project_name))
+
+    # def _create_excel_response(self, columns, submission_list, submission_type):
+    #     response = HttpResponse(mimetype="application/vnd.ms-excel")
+    #     file_name = export_filename(submission_type, self.project_name)
+    #     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
+    #     headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
+    #                                                          self.local_time_delta).format_tabular_data(submission_list)
+    #     wb = Workbook()
+    #     for sheet_name, header_row in headers.items():
+    #         add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name)
+    #     wb.save(response)
+    #     return response
+    #
+    # def _create_response(self, columns, submission_list, submission_type):
+    #     headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model, self.local_time_delta).format_tabular_data(submission_list)
+    #     return export_to_new_excel(headers, data_rows_dict, export_filename(submission_type, self.project_name))
         
 
 GEODCODE_FIELD_CODE = "geocode"
