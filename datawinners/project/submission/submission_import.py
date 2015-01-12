@@ -13,6 +13,8 @@ from datawinners.project.helper import get_feed_dictionary, get_web_transport_in
 from datawinners.project.submission.validator import SubmissionWorkbookRowValidator
 from mangrove.transport.player.parser import XlsParser
 from mangrove.transport.services.survey_response_service import SurveyResponseService
+from openpyxl import load_workbook
+import StringIO
 
 logger = logging.getLogger("datawinners")
 
@@ -31,10 +33,10 @@ class SubmissionImporter():
         total_submissions = 0
 
         try:
-            file_content = self._get_uploaded_content(request)
+            file_content, parser = self._get_content_and_parser(request)
             is_organization_user = is_org_user(self.user)
 
-            tabular_data = XlsSubmissionParser().parse(file_content)
+            tabular_data = parser().parse(file_content)
             if len(tabular_data) <= 1:
                 raise ImportValidationError(gettext("The imported file is empty."))
             q_answer_dicts = SubmissionWorkbookMapper(tabular_data, self.form_model).process()
@@ -68,13 +70,13 @@ class SubmissionImporter():
                                         message=message,
                                         total_submissions=total_submissions)
 
-    def _get_uploaded_content(self, request):
+    def _get_content_and_parser(self, request):
         file_name, file_content = get_filename_and_contents(request)
         base_name, extension = os.path.splitext(file_name)
-        if extension != '.xls':
+        if extension not in ['.xls', '.xlsx'] :
             raise InvalidFileFormatException()
-
-        return file_content
+        parser_dict = {'.xls':XlsSubmissionParser, '.xlsx':XlsxSubmissionParser}
+        return file_content, parser_dict.get(extension)
 
     def _add_reporter_id_for_datasender(self, parsed_rows, user_profile, is_organization_user):
         for row in parsed_rows:
@@ -194,3 +196,22 @@ class XlsSubmissionParser(XlsParser):
             row = self._clean(row)
             parsedData.append(row)
         return parsedData
+
+class XlsxSubmissionParser(XlsParser):
+    def parse(self, file_contents):
+        assert file_contents is not None
+        xlsx_file = StringIO.StringIO(file_contents)
+        
+        workbook = load_workbook(xlsx_file, use_iterators = True)
+        worksheet = workbook.get_sheet_by_name(name="Import_Submissions")
+        parsedData = []
+        for row in worksheet.iter_rows():
+            row_values = [self._get_value(x.value) for x in row]
+            row_values = self._clean(row_values)
+            parsedData.append(row_values)
+        return parsedData
+
+    def _get_value(self, value):
+        if value is not None:
+            return value
+        return ''

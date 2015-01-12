@@ -10,7 +10,7 @@ from django.template.defaultfilters import slugify
 import xlwt
 from django.core.servers.basehttp import FileWrapper
 
-from datawinners.project.submission.export import export_filename, add_sheet_with_data, zip_excel_workbook, export_media_folder_name
+from datawinners.project.submission.export import export_filename, add_sheet_with_data, export_media_folder_name, export_to_new_excel
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
@@ -96,6 +96,10 @@ class XFormSubmissionExporter(SubmissionExporter):
         archive.close()
         return file_name_normalized, zip_file
 
+    def _create_response(self, columns, submission_list, submission_type):
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model, self.local_time_delta).format_tabular_data(submission_list)
+        return export_to_new_excel(headers, data_rows_dict, export_filename(submission_type, self.project_name))
+        
 
 GEODCODE_FIELD_CODE = "geocode"
 FIELD_SET = "field_set"
