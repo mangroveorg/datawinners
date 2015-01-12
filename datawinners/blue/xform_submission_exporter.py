@@ -8,7 +8,6 @@ import zipfile
 from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 from xlsxwriter import Workbook
-import xlwt
 from django.core.servers.basehttp import FileWrapper
 
 from datawinners.project.submission.export import export_filename, add_sheet_with_data, export_media_folder_name, export_to_new_excel
@@ -37,7 +36,7 @@ class XFormSubmissionExporter(SubmissionExporter):
         file_name = export_filename(submission_type, self.project_name)
         headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
                                                              self.local_time_delta).format_tabular_data(submission_list)
-        wb = xlwt.Workbook()
+        wb = Workbook()
         for sheet_name, header_row in headers.items():
             add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name)
         return file_name, wb
@@ -97,6 +96,9 @@ class XFormSubmissionExporter(SubmissionExporter):
         archive.close()
         return file_name_normalized, zip_file
 
+    def _create_response(self, columns, submission_list, submission_type):
+        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
+                                                             self.local_time_delta).format_tabular_data(submission_list)
     def _create_response(self, columns, submission_list, submission_type):
         headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
                                                              self.local_time_delta).format_tabular_data(submission_list)
