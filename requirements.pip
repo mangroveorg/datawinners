@@ -49,6 +49,6 @@ pyscss
 elasticsearch==0.4.5
 six==1.8.0
 elasticsearch-dsl==0.0.2
--e git+https://github.com/mangroveorg/mangrove.git@17_0_release#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@18_0_release#egg=mangrove
 openpyxl==2.1.3
 XlsxWriter==0.6.4
