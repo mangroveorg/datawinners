@@ -1,5 +1,5 @@
 from datawinners.project.Header import SubmissionExcelHeader
-from datawinners.project.submission.export import export_filename, export_to_zipped_excel, export_to_excel_no_zip, export_to_new_excel
+from datawinners.project.submission.export import export_filename, export_to_excel_no_zip, export_to_new_excel
 from datawinners.project.submission.formatter import SubmissionFormatter
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
 
@@ -17,10 +17,10 @@ class SubmissionExporter:
         header_list = submission_formatter.format_header_data()
         return header_list, submission_formatter
 
-    def _create_zipped_response(self, columns, submission_list, submission_type):
-        header_list, submission_formatter = self._get_header_list(columns)
-        return export_to_zipped_excel(header_list, submission_list,
-                                            export_filename(submission_type, self.project_name), submission_formatter)
+    # def _create_zipped_response(self, columns, submission_list, submission_type):
+    #     header_list, submission_formatter = self._get_header_list(columns)
+    #     return export_to_zipped_excel(header_list, submission_list,
+    #                                         export_filename(submission_type, self.project_name), submission_formatter)
 
     def _create_excel_response(self, columns, submission_list, submission_type):
         header_list, submission_formatter = self._get_header_list(columns)
@@ -35,13 +35,13 @@ class SubmissionExporter:
 
     def create_excel_response(self, submission_type, query_params):
         columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
-        return self._create_zipped_response(columns, search_results, submission_type)
+        return self._create_response(columns, search_results, submission_type)
 
-    def create_excel_response_without_zip(self, submission_type, query_params):
-        columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
-        return self._create_excel_response(columns, search_results, submission_type)
-        # return self._create_response(columns, search_results, submission_type)
-        
+    # def create_excel_response_without_zip(self, submission_type, query_params):
+    #     columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
+    #     return self._create_excel_response(columns, search_results, submission_type)
+    #     # return self._create_response(columns, search_results, submission_type)
+    #
 
     def _create_response(self, columns, submission_list, submission_type):
         header_list, submission_formatter = self._get_header_list(columns)

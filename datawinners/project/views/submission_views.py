@@ -520,12 +520,16 @@ def export(request):
     query_params.update({"search_text": search_text})
     query_params.update({"filter": submission_type})
 
+
     if form_model.xform:
         return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-            .create_excel_response_without_zip(submission_type, query_params)
+            .create_excel_response(submission_type, query_params)
 
+        # return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+        #     .create_excel_response_without_zip(submission_type, query_params)
+        #
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-        .create_excel_response_without_zip(submission_type, query_params)
+        .create_excel_response(submission_type, query_params)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
