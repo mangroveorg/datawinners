@@ -46,7 +46,6 @@ class SubmissionExporter:
         return self._create_excel_response(columns, search_results, submission_type)
         # return self._create_response(columns, search_results, submission_type)
 
-
     def _create_response(self, columns, submission_list, submission_type):
         header_list, submission_formatter = self._get_header_list(columns)
         return export_to_new_excel(header_list, submission_list, export_filename(submission_type, self.project_name),
