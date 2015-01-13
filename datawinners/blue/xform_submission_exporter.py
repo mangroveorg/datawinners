@@ -11,7 +11,8 @@ from django.template.defaultfilters import slugify
 from xlsxwriter import Workbook
 from django.core.servers.basehttp import FileWrapper
 
-from datawinners.project.submission.export import export_filename, add_sheet_with_data, export_media_folder_name, export_to_new_excel, \
+from datawinners.project.submission.export import export_filename, add_sheet_with_data, export_media_folder_name, \
+    export_to_new_excel, \
     create_multi_sheet_excel_headers, create_multi_sheet_entries
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter
@@ -21,14 +22,11 @@ from mangrove.form_model.field import ExcelDate, DateField
 
 
 class XFormSubmissionExporter(SubmissionExporter):
-
     def _create_excel_workbook(self, columns, submission_list, submission_type):
         file_name = export_filename(submission_type, self.project_name)
         workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns,
-                                                             self.local_time_delta).create_excel(submission_list)
+                                                                self.local_time_delta).create_excel(submission_list)
         workbook_file.close()
-        # for sheet_name, header_row in headers.items():
-        #     add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name_prefix=sheet_name)
 
         return file_name, workbook_file
 
@@ -55,7 +53,8 @@ class XFormSubmissionExporter(SubmissionExporter):
         file_name, workbook_file = self._create_excel_workbook(columns, search_results, submission_type)
         media_folder = self._create_images_folder(submission_ids)
         folder_name = export_media_folder_name(submission_type, self.project_name)
-        file_name_normalized, zip_file = self._archive_images_and_workbook(workbook_file, file_name, folder_name, media_folder)
+        file_name_normalized, zip_file = self._archive_images_and_workbook(workbook_file, file_name, folder_name,
+                                                                           media_folder)
         response = HttpResponse(FileWrapper(zip_file, blksize=8192000), content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename="%s.zip"' % file_name_normalized
         zip_file.seek(0)
@@ -87,21 +86,21 @@ class XFormSubmissionExporter(SubmissionExporter):
     def _create_response(self, columns, submission_list, submission_type):
         file_name = slugify(export_filename(submission_type, self.project_name))
         workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns,
-                                                             self.local_time_delta).create_excel(submission_list)
+                                                                self.local_time_delta).create_excel(submission_list)
 
         workbook_file.seek(0)
-        response = HttpResponse(FileWrapper(workbook_file), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response = HttpResponse(FileWrapper(workbook_file),
+                                mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
         response['Content-Disposition'] = "attachment; filename=%s.xlsx" % file_name
         return response
-        # return export_to_new_excel(headers, data_rows_dict, export_filename(submission_type, self.project_name))
 
 
 GEODCODE_FIELD_CODE = "geocode"
 FIELD_SET = "field_set"
 
-class AdvancedQuestionnaireSubmissionExportHeaderCreator():
 
+class AdvancedQuestionnaireSubmissionExportHeaderCreator():
     def __init__(self, columns, form_model):
         self.columns = columns
         self.form_model = form_model
@@ -137,8 +136,8 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
     def _get_repeat_column_name(self, label):
         return slugify(label)[:20]
 
-class AdvancedQuestionnaireSubmissionExporter():
 
+class AdvancedQuestionnaireSubmissionExporter():
     def __init__(self, form_model, columns, local_time_delta):
         self.form_model = form_model
         self.columns = columns
@@ -148,7 +147,8 @@ class AdvancedQuestionnaireSubmissionExporter():
         workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
         workbook = Workbook(workbook_file, options={'constant_memory': True})
 
-        excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns, self.form_model).create_headers()
+        excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns,
+                                                                           self.form_model).create_headers()
         create_multi_sheet_excel_headers(excel_headers, workbook)
 
         sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(excel_headers.iterkeys())])
@@ -160,8 +160,8 @@ class AdvancedQuestionnaireSubmissionExporter():
             formatted_values, formatted_repeats = [], {}
 
             if row_number == 20000:
-            #export limit set to 20K after performance exercise
-            #since scan & scroll API does not support result set size the workaround is to handle it this way
+                # export limit set to 20K after performance exercise
+                #since scan & scroll API does not support result set size the workaround is to handle it this way
                 break
 
             result = formatter.format_row(row_dict['_source'], row_number, formatted_repeats)
@@ -176,7 +176,6 @@ class AdvancedQuestionnaireSubmissionExporter():
 
         workbook.close()
         return workbook_file
-
 
 
 class AdvanceSubmissionFormatter(SubmissionFormatter):

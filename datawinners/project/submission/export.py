@@ -44,6 +44,7 @@ def create_multi_sheet_excel_headers(excel_headers, workbook):
         ws = workbook.add_worksheet(name=sheet_name)
         worksheet_add_header(ws, headers, get_header_style(workbook))
 
+
 def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict):
     date_formats = {}
 
@@ -63,7 +64,6 @@ def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict
                 else:
                     ws.write(row_number + 1, column, val)
             row_count_dict[sheet_name] += 1
-
 
 
 def create_non_zipped_response(excel_workbook, file_name):
@@ -123,11 +123,6 @@ def create_excel_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix, 
         row = formatter.format_row(row['_source'])
         workbook_add_row(wb, row, number_of_sheets, row_number + 1)
 
-
-# def export_to_zipped_excel(headers, raw_data, file_name, formatter):
-#     wb = xlwt.Workbook()
-#     create_excel_sheet_with_data(raw_data, headers, wb, 'data_log', formatter)
-#     return create_zipped_response(wb, file_name)
 
 def export_to_excel_no_zip(headers, raw_data, file_name, formatter):
     wb = xlwt.Workbook()
