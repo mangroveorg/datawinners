@@ -489,6 +489,45 @@ def export_count(request):
     return HttpResponse(mimetype='application/json', content=json.dumps({"count": submission_count}))
 
 
+def _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager, project_name,
+                                   query_params, submission_type):
+    if not is_media:
+        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+            .create_excel_response(submission_type, query_params)
+
+    else:
+        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+            .create_excel_response_with_media(submission_type, query_params)
+
+
+def _create_export_artifact(form_model, manager, request, search_filters):
+    # the number_of_results limit will not be used for result-set size since scan-scroll api does not support it.
+    # it is specified since the code-flow requires its value to be present
+    query_params = {"search_filters": search_filters,
+                    "start_result_number": 0,
+                    "number_of_results": 4000,
+                    "order": "",
+                    "sort_field": "date"
+    }
+    search_text = search_filters.get("search_text", '')
+    submission_type = request.GET.get(u'type')
+    query_params.update({"search_text": search_text})
+    query_params.update({"filter": submission_type})
+    is_media = False
+    if request.POST.get('is_media') == u'true':
+        is_media = True
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+    project_name = request.POST.get(u"project_name")
+    current_language = get_language()
+    if form_model.xform:
+        return _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager,
+                                              project_name, query_params, submission_type)
+
+    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+        .create_excel_response(submission_type, query_params)
+
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -497,48 +536,13 @@ def export(request):
     if request.method == 'GET':  # To handle django error #3480
         return HttpResponse(status=405)
 
-    project_name = request.POST.get(u"project_name")
-    submission_type = request.GET.get(u'type')
     search_filters = json.loads(request.POST.get('search_filters'))
     questionnaire_code = request.POST.get(u'questionnaire_code')
     manager = get_database_manager(request.user)
 
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    current_language = get_language()
-    organization = get_organization(request)
-    local_time_delta = get_country_time_delta(organization.country)
 
-    # the number_of_results limit will not be used for result-set size since scan-scroll api does not support it.
-    #it is specified since the code-flow requires its value to be present
-
-    query_params = {"search_filters": search_filters,
-                    "start_result_number": 0,
-                    "number_of_results": 4000,
-                    "order": "",
-                    "sort_field": "date"
-    }
-
-    search_text = search_filters.get("search_text", '')
-    query_params.update({"search_text": search_text})
-    query_params.update({"filter": submission_type})
-    is_media = False
-    if request.POST.get('is_media') == u'true':
-        is_media = True
-
-
-
-
-    if form_model.xform:
-        if not is_media:
-            return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-                .create_excel_response(submission_type, query_params)
-
-        else:
-            return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-                .create_excel_response_with_media(submission_type, query_params)
-
-    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-        .create_excel_response(submission_type, query_params)
+    return _create_export_artifact(form_model, manager, request, search_filters)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
