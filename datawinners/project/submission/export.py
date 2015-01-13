@@ -64,8 +64,7 @@ def get_header_style(workbook):
 
 def export_to_new_excel(headers, raw_data, file_name, formatter=None):
     file_name_normalized = slugify(file_name)
-    import io
-    output = io.BytesIO()
+    output = tempfile.TemporaryFile()
     workbook = xlsxwriter.Workbook(output, {'constant_memory': True})
     if isinstance(headers, dict):
         for sheet_name, header_row in headers.items():
@@ -73,9 +72,8 @@ def export_to_new_excel(headers, raw_data, file_name, formatter=None):
     else:
         add_sheet_with_data(raw_data, headers, workbook, formatter)
     workbook.close()
-
     output.seek(0)
-    response = HttpResponse(output.read(), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response = HttpResponse(FileWrapper(output), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
     response['Content-Disposition'] = "attachment; filename=%s.xlsx" % file_name_normalized
 
