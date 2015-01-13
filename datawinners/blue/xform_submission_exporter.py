@@ -24,8 +24,8 @@ class XFormSubmissionExporter(SubmissionExporter):
 
     def _create_excel_workbook(self, columns, submission_list, submission_type):
         file_name = export_filename(submission_type, self.project_name)
-        workbook_file = AdvanceSubmissionFormatter(columns, self.form_model,
-                                                             self.local_time_delta).format_tabular_data(submission_list)
+        workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns,
+                                                             self.local_time_delta).create_excel(submission_list)
         workbook_file.close()
         # for sheet_name, header_row in headers.items():
         #     add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name_prefix=sheet_name)
@@ -86,8 +86,8 @@ class XFormSubmissionExporter(SubmissionExporter):
 
     def _create_response(self, columns, submission_list, submission_type):
         file_name = slugify(export_filename(submission_type, self.project_name))
-        workbook_file = AdvanceSubmissionFormatter(columns, self.form_model,
-                                                             self.local_time_delta).format_tabular_data(submission_list)
+        workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns,
+                                                             self.local_time_delta).create_excel(submission_list)
 
         workbook_file.seek(0)
         response = HttpResponse(FileWrapper(workbook_file), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -100,60 +100,25 @@ class XFormSubmissionExporter(SubmissionExporter):
 GEODCODE_FIELD_CODE = "geocode"
 FIELD_SET = "field_set"
 
+class AdvancedQuestionnaireSubmissionExportHeaderCreator():
 
-class AdvanceSubmissionFormatter(SubmissionFormatter):
-    def __init__(self, columns, form_model, local_time_delta):
-        super(AdvanceSubmissionFormatter, self).__init__(columns, local_time_delta)
+    def __init__(self, columns, form_model):
+        self.columns = columns
         self.form_model = form_model
 
-    def append_relating_columns(self, cols):
-        cols.append('_index')
-        cols.append('_parent_index')
-
-    def _create_excel_headers(self, workbook):
+    def create_headers(self):
         repeat_headers = OrderedDict()
         repeat_headers.update({'main': ''})
         headers = self._format_tabular_data(self.columns, repeat_headers)
         if self.form_model.has_nested_fields:
-            self.append_relating_columns(headers)
+            self._append_relating_columns(headers)
         repeat_headers.update({'main': headers})
-        create_multi_sheet_excel_headers(repeat_headers, workbook)
 
         return repeat_headers
 
-    def format_tabular_data(self, submission_list):
-        workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
-        wb = Workbook(workbook_file, options={'constant_memory': True})
-
-        excel_headers = self._create_excel_headers(wb)
-
-        sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(excel_headers.iterkeys())])
-        sheet_name_row_count_map = dict([(sheet_name, 0) for sheet_name in sheet_names_index_map.iterkeys()])
-
-        for row_number, row_dict in enumerate(submission_list):
-            formatted_values, formatted_repeats = [], {}
-
-            if row_number == 20000:
-            #export limit set to 20K after performance exercise
-            #since scan & scroll API does not support result set size the workaround is to handle it this way
-                break
-
-            result = self._format_row(row_dict['_source'], row_number, formatted_repeats)
-
-            if self.form_model.has_nested_fields:
-                result.append(row_number + 1)
-
-            formatted_values.append(result)
-            formatted_repeats.update({'main': formatted_values})
-
-            create_multi_sheet_entries(formatted_repeats, wb, sheet_names_index_map, sheet_name_row_count_map)
-
-        wb.close()
-        return workbook_file
-        # return excel_headers, formatted_repeats
-
-    def _get_repeat_col_name(self, label):
-        return slugify(label)[:20]
+    def _append_relating_columns(self, cols):
+        cols.append('_index')
+        cols.append('_parent_index')
 
     def _format_tabular_data(self, columns, repeat):
         headers = []
@@ -163,14 +128,67 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                 headers.append(col_def['label'] + " Longitude")
             elif col_def.get('type', '') == FIELD_SET:
                 _repeat = self._format_tabular_data(col_def['fields'], repeat)
-                self.append_relating_columns(_repeat)
-                repeat.update({self._get_repeat_col_name(col_def['label']): _repeat})
+                self._append_relating_columns(_repeat)
+                repeat.update({self._get_repeat_column_name(col_def['label']): _repeat})
             else:
                 headers.append(col_def['label'])
         return headers
 
-    def _format_row(self, row, i, formatted_repeats):
-        return self.__format_row(row, self.columns, i, formatted_repeats)
+    def _get_repeat_column_name(self, label):
+        return slugify(label)[:20]
+
+class AdvancedQuestionnaireSubmissionExporter():
+
+    def __init__(self, form_model, columns, local_time_delta):
+        self.form_model = form_model
+        self.columns = columns
+        self.local_time_delta = local_time_delta
+
+    def create_excel(self, submission_list):
+        workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
+        workbook = Workbook(workbook_file, options={'constant_memory': True})
+
+        excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns, self.form_model).create_headers()
+        create_multi_sheet_excel_headers(excel_headers, workbook)
+
+        sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(excel_headers.iterkeys())])
+        sheet_name_row_count_map = dict([(sheet_name, 0) for sheet_name in sheet_names_index_map.iterkeys()])
+
+        formatter = AdvanceSubmissionFormatter(self.columns, self.form_model, self.local_time_delta)
+
+        for row_number, row_dict in enumerate(submission_list):
+            formatted_values, formatted_repeats = [], {}
+
+            if row_number == 20000:
+            #export limit set to 20K after performance exercise
+            #since scan & scroll API does not support result set size the workaround is to handle it this way
+                break
+
+            result = formatter.format_row(row_dict['_source'], row_number, formatted_repeats)
+
+            if self.form_model.has_nested_fields:
+                result.append(row_number + 1)
+
+            formatted_values.append(result)
+            formatted_repeats.update({'main': formatted_values})
+
+            create_multi_sheet_entries(formatted_repeats, workbook, sheet_names_index_map, sheet_name_row_count_map)
+
+        workbook.close()
+        return workbook_file
+
+
+
+class AdvanceSubmissionFormatter(SubmissionFormatter):
+    def __init__(self, columns, form_model, local_time_delta):
+        super(AdvanceSubmissionFormatter, self).__init__(columns, local_time_delta)
+        self.form_model = form_model
+
+    def _get_repeat_col_name(self, label):
+        return slugify(label)[:20]
+
+    def format_row(self, row, index, formatted_repeats):
+        return self.__format_row(row, self.columns, index, formatted_repeats)
 
     def _add_repeat_data(self, repeat, col_name, row):
         if repeat.get(col_name):
@@ -204,7 +222,7 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                     col_val = self._split_gps(parsed_value)
                     result.extend(col_val)
                 elif columns[field_code].get("type") == 'integer':
-                    col_val_parsed = try_parse(float, parsed_value)
+                    col_val_parsed = self._try_parse(float, parsed_value)
                     result.append(col_val_parsed)
                 elif columns[field_code].get("type") == 'field_set':
                     _repeat_row = []
@@ -228,25 +246,3 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                 result.extend(col_val)
 
         return result
-
-    def _split_gps(self, value):
-        if not value:
-            return ['', '']
-        value_stripped = value.replace("  ", " ").strip()
-        if ',' in value_stripped:
-            coordinates_split = value_stripped.split(',')
-            return [try_parse(float, coordinates_split[0]), try_parse(float, coordinates_split[1])]
-        else:
-            coordinates_split = value.split()
-            if len(coordinates_split) == 1:
-                return [try_parse(float, value), ""]
-            return [try_parse(float, coordinates_split[0]), try_parse(float, coordinates_split[1])]
-
-
-def try_parse(type, value):
-    if value is None:
-        return None
-    try:
-        return type(value)
-    except ValueError:
-        return value

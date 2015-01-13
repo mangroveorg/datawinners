@@ -68,7 +68,7 @@ class SubmissionFormatter(object):
                 elif field_type == 'select':
                     result.append(parsed_value)
                 elif field_type == 'integer':
-                    col_val_parsed = try_parse(float, parsed_value)
+                    col_val_parsed = self._try_parse(float, parsed_value)
                     result.append(col_val_parsed)
                 elif field_code == intern(SubmissionIndexConstants.DATASENDER_ID_KEY) and field == 'N/A':
                     col_val = ""
@@ -87,18 +87,18 @@ class SubmissionFormatter(object):
         value_stripped = value.replace("  ", " ").strip()
         if ',' in value_stripped:
             coordinates_split = value_stripped.split(',')
-            return [try_parse(float, coordinates_split[0]), try_parse(float, coordinates_split[1])]
+            return [self._try_parse(float, coordinates_split[0]), self._try_parse(float, coordinates_split[1])]
         else:
             coordinates_split = value.split()
             if len(coordinates_split) == 1:
-                return [try_parse(float, value), ""]
-            return [try_parse(float, coordinates_split[0]), try_parse(float, coordinates_split[1])]
+                return [self._try_parse(float, value), ""]
+            return [self._try_parse(float, coordinates_split[0]), self._try_parse(float, coordinates_split[1])]
 
 
-def try_parse(type, value):
-    if value is None:
-        return None
-    try:
-        return type(value)
-    except ValueError:
-        return value
+    def _try_parse(self, type, value):
+        if value is None:
+            return None
+        try:
+            return type(value)
+        except ValueError:
+            return value
