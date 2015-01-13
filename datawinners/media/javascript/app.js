@@ -34726,7 +34726,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
     Filepicker.prototype._showPreview = function( url, mediaType ) {
         var $el;
 
-        this.$widget.find( '.file-preview' ).empty();
+
 
         switch ( mediaType ) {
             case 'image/*':
@@ -34744,6 +34744,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         }
 
         if ( url ) {
+            this.$widget.find( '.file-preview' ).empty();
             this.$preview.append( $el.attr( 'src', url ) );
         }
     };
