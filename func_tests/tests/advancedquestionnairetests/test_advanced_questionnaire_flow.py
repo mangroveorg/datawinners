@@ -265,7 +265,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self._verify_workbook_values(workbook)
 
     @attr('functional_test')
-    def test_should_create_project_media(self):
+    def test_export(self):
         self.project_name = random_string()
         client = Client()
         client.login(username=self.admin_email_id, password='tester150411')

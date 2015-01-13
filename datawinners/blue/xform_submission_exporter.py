@@ -36,9 +36,9 @@ class XFormSubmissionExporter(SubmissionExporter):
         file_name = export_filename(submission_type, self.project_name)
         headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
                                                              self.local_time_delta).format_tabular_data(submission_list)
-        wb = Workbook()
+        wb = Workbook(options={'constant_memory': True})
         for sheet_name, header_row in headers.items():
-            add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name)
+            add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name_prefix=sheet_name)
         return file_name, wb
 
     def add_files_to_temp_directory_if_present(self, submission_id, folder_name):
@@ -85,13 +85,13 @@ class XFormSubmissionExporter(SubmissionExporter):
 
     def _archive_images_and_workbook(self, workbook, file_name, folder_name=None, media_folder=None):
         file_name_normalized = slugify(file_name)
-        temporary_excel_file = NamedTemporaryFile(suffix=".xls", delete=False)
-        workbook.save(temporary_excel_file)
-        temporary_excel_file.close()
+        # temporary_excel_file = NamedTemporaryFile(suffix=".xls", delete=False)
+        # workbook.save(temporary_excel_file)
+        # temporary_excel_file.close()
         zip_file = TemporaryFile()
         archive = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED)
         self.add_directory_to_archive(archive, folder_name, media_folder)
-        archive.write(temporary_excel_file.name, compress_type=zipfile.ZIP_DEFLATED,
+        archive.write(workbook.filename, compress_type=zipfile.ZIP_DEFLATED,
                       arcname="%s.xls" % file_name_normalized)
         archive.close()
         return file_name_normalized, zip_file

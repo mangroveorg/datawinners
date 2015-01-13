@@ -2,6 +2,7 @@ from tempfile import NamedTemporaryFile
 import tempfile
 import zipfile
 import math
+import io
 import xlsxwriter
 
 from django.core.servers.basehttp import FileWrapper
@@ -16,7 +17,7 @@ from datawinners.workbook_utils import worksheet_add_header
 from mangrove.form_model.field import ExcelDate
 
 
-def add_sheet_with_data(raw_data, headers, workbook, formatter, sheet_name_prefix=None):
+def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_prefix=None):
     ws = workbook.add_worksheet(name=sheet_name_prefix)
     worksheet_add_header(ws, headers, get_header_style(workbook))
     date_formats = {}
@@ -49,7 +50,7 @@ def create_excel_response(headers, raw_data_list, file_name):
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
 
     wb = xlwt.Workbook()
-    add_sheet_with_data(raw_data_list, headers, wb, 'data_log')
+    add_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix='data_log')
 
     wb.save(response)
     return response
@@ -64,9 +65,8 @@ def get_header_style(workbook):
 
 def export_to_new_excel(headers, raw_data, file_name, formatter=None):
     file_name_normalized = slugify(file_name)
-    import io
     output = io.BytesIO()
-    workbook = xlsxwriter.Workbook(output, {'constant_memory': True})
+    workbook = xlsxwriter.Workbook({'constant_memory': True})
     if isinstance(headers, dict):
         for sheet_name, header_row in headers.items():
             add_sheet_with_data(raw_data.get(sheet_name, []), header_row, workbook, formatter, sheet_name)
@@ -75,7 +75,7 @@ def export_to_new_excel(headers, raw_data, file_name, formatter=None):
     workbook.close()
 
     output.seek(0)
-    response = HttpResponse(output.read(), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response = HttpResponse(FileWrapper(output), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
     response['Content-Disposition'] = "attachment; filename=%s.xlsx" % file_name_normalized
 
