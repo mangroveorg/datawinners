@@ -3,6 +3,7 @@ from datetime import datetime
 import json
 import os
 from tempfile import NamedTemporaryFile, TemporaryFile, mkdtemp
+import tempfile
 import zipfile
 
 from django.http import HttpResponse
@@ -19,27 +20,18 @@ from mangrove.form_model.field import ExcelDate, DateField
 
 
 class XFormSubmissionExporter(SubmissionExporter):
-    # def _create_zipped_response(self, columns, submission_list, submission_type):
-    #     #headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
-    #     #                                                     self.local_time_delta).format_tabular_data(submission_list)
-    #     return self._create_excel_response(columns, submission_list,
-    #                                        export_filename(submission_type, self.project_name))
-
-    # def _create_excel_response(self, columns, submission_list, submission_type):
-    #     file_name, wb = self._create_excel_workbook(columns, submission_list, submission_type)
-    #     response = HttpResponse(mimetype="application/vnd.ms-excel")
-    #     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
-    #     wb.save(response)
-    #     return response
 
     def _create_excel_workbook(self, columns, submission_list, submission_type):
         file_name = export_filename(submission_type, self.project_name)
         headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
                                                              self.local_time_delta).format_tabular_data(submission_list)
-        wb = Workbook(options={'constant_memory': True})
+        workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
+        wb = Workbook(workbook_file, options={'constant_memory': True})
         for sheet_name, header_row in headers.items():
             add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name_prefix=sheet_name)
-        return file_name, wb
+        wb.close()
+        workbook_file.close()
+        return file_name, workbook_file
 
     def add_files_to_temp_directory_if_present(self, submission_id, folder_name):
         submission = self.dbm._load_document(submission_id, SurveyResponseDocument)
@@ -61,10 +53,10 @@ class XFormSubmissionExporter(SubmissionExporter):
     def create_excel_response_with_media(self, submission_type, query_params):
         columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
         submission_ids = self.get_submission_ids(query_params)
-        file_name, workbook = self._create_excel_workbook(columns, search_results, submission_type)
+        file_name, workbook_file = self._create_excel_workbook(columns, search_results, submission_type)
         media_folder = self._create_images_folder(submission_ids)
         folder_name = export_media_folder_name(submission_type, self.project_name)
-        file_name_normalized, zip_file = self._archive_images_and_workbook(workbook, file_name, folder_name, media_folder)
+        file_name_normalized, zip_file = self._archive_images_and_workbook(workbook_file, file_name, folder_name, media_folder)
         response = HttpResponse(FileWrapper(zip_file, blksize=8192000), content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename="%s.zip"' % file_name_normalized
         zip_file.seek(0)
@@ -83,43 +75,21 @@ class XFormSubmissionExporter(SubmissionExporter):
 
         return temp_dir
 
-    def _archive_images_and_workbook(self, workbook, file_name, folder_name=None, media_folder=None):
+    def _archive_images_and_workbook(self, workbook_file, file_name, folder_name=None, media_folder=None):
         file_name_normalized = slugify(file_name)
-        # temporary_excel_file = NamedTemporaryFile(suffix=".xls", delete=False)
-        # workbook.save(temporary_excel_file)
-        # temporary_excel_file.close()
         zip_file = TemporaryFile()
         archive = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED)
         self.add_directory_to_archive(archive, folder_name, media_folder)
-        archive.write(workbook.filename, compress_type=zipfile.ZIP_DEFLATED,
-                      arcname="%s.xls" % file_name_normalized)
+        archive.write(workbook_file.name, compress_type=zipfile.ZIP_DEFLATED,
+                      arcname="%s.xlsx" % file_name_normalized)
         archive.close()
         return file_name_normalized, zip_file
 
     def _create_response(self, columns, submission_list, submission_type):
         headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
                                                              self.local_time_delta).format_tabular_data(submission_list)
-    def _create_response(self, columns, submission_list, submission_type):
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
-                                                             self.local_time_delta).format_tabular_data(submission_list)
         return export_to_new_excel(headers, data_rows_dict, export_filename(submission_type, self.project_name))
 
-    # def _create_excel_response(self, columns, submission_list, submission_type):
-    #     response = HttpResponse(mimetype="application/vnd.ms-excel")
-    #     file_name = export_filename(submission_type, self.project_name)
-    #     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
-    #     headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
-    #                                                          self.local_time_delta).format_tabular_data(submission_list)
-    #     wb = Workbook()
-    #     for sheet_name, header_row in headers.items():
-    #         add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name)
-    #     wb.save(response)
-    #     return response
-    #
-    # def _create_response(self, columns, submission_list, submission_type):
-    #     headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model, self.local_time_delta).format_tabular_data(submission_list)
-    #     return export_to_new_excel(headers, data_rows_dict, export_filename(submission_type, self.project_name))
-        
 
 GEODCODE_FIELD_CODE = "geocode"
 FIELD_SET = "field_set"

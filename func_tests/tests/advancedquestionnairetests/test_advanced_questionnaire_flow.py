@@ -239,7 +239,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         zip_file_open = zipfile.ZipFile(file_read.name, 'r')
         expected_list = [self.project_name + '_MediaFiles_all_log/2-locate.png',
                          self.project_name + '_MediaFiles_all_log/1-locate.png',
-                         self.project_name + '_all_log.xls']
+                         self.project_name + '_all_log.xlsx']
         files_in_zip = zip_file_open.namelist()
         self.assertIn(files_in_zip[0], expected_list)
         self.assertIn(files_in_zip[1], expected_list)
@@ -248,7 +248,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     def _write_to_file_from_zip(self, zip_file_open):
         xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
-        os.write(xlfile_fd, zip_file_open.read(self.project_name + '_all_log.xls'))
+        os.write(xlfile_fd, zip_file_open.read(self.project_name + '_all_log.xlsx'))
         os.close(xlfile_fd)
         return xlfile_name
 
