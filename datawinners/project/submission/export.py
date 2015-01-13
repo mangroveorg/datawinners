@@ -37,6 +37,35 @@ def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_
             else:
                 ws.write(row_number + 1, column, val)
 
+
+def create_multi_sheet_excel_headers(excel_headers, workbook):
+
+    for sheet_name, headers in excel_headers.iteritems():
+        ws = workbook.add_worksheet(name=sheet_name)
+        worksheet_add_header(ws, headers, get_header_style(workbook))
+
+def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict):
+    date_formats = {}
+
+    for sheet_name, data in raw_data.iteritems():
+        ws = workbook.worksheets()[excel_headers[sheet_name]]
+        for row in raw_data[sheet_name]:
+            for column, val in enumerate(row):
+                row_number = row_count_dict[sheet_name]
+                if isinstance(val, ExcelDate):
+                    if not date_formats.has_key(val.date_format):
+                        date_format = {'submission_date': 'mmm d yyyy hh:mm:ss'}.get(val.date_format, val.date_format)
+                        date_formats.update({val.date_format: workbook.add_format({'num_format': date_format})})
+                    ws.write(row_number + 1, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
+
+                elif isinstance(val, float):
+                    ws.write_number(row_number + 1, column, val)
+                else:
+                    ws.write(row_number + 1, column, val)
+            row_count_dict[sheet_name] += 1
+
+
+
 def create_non_zipped_response(excel_workbook, file_name):
     file_name_normalized = slugify(file_name)
     response = HttpResponse(mimetype="application/vnd.ms-excel")

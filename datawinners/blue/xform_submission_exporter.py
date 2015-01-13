@@ -11,7 +11,8 @@ from django.template.defaultfilters import slugify
 from xlsxwriter import Workbook
 from django.core.servers.basehttp import FileWrapper
 
-from datawinners.project.submission.export import export_filename, add_sheet_with_data, export_media_folder_name, export_to_new_excel
+from datawinners.project.submission.export import export_filename, add_sheet_with_data, export_media_folder_name, export_to_new_excel, \
+    create_multi_sheet_excel_headers, create_multi_sheet_entries
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
@@ -23,14 +24,12 @@ class XFormSubmissionExporter(SubmissionExporter):
 
     def _create_excel_workbook(self, columns, submission_list, submission_type):
         file_name = export_filename(submission_type, self.project_name)
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
+        workbook_file = AdvanceSubmissionFormatter(columns, self.form_model,
                                                              self.local_time_delta).format_tabular_data(submission_list)
-        workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
-        wb = Workbook(workbook_file, options={'constant_memory': True})
-        for sheet_name, header_row in headers.items():
-            add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name_prefix=sheet_name)
-        wb.close()
         workbook_file.close()
+        # for sheet_name, header_row in headers.items():
+        #     add_sheet_with_data(data_rows_dict.get(sheet_name, []), header_row, wb, sheet_name_prefix=sheet_name)
+
         return file_name, workbook_file
 
     def add_files_to_temp_directory_if_present(self, submission_id, folder_name):
@@ -86,9 +85,16 @@ class XFormSubmissionExporter(SubmissionExporter):
         return file_name_normalized, zip_file
 
     def _create_response(self, columns, submission_list, submission_type):
-        headers, data_rows_dict = AdvanceSubmissionFormatter(columns, self.form_model,
+        file_name = slugify(export_filename(submission_type, self.project_name))
+        workbook_file = AdvanceSubmissionFormatter(columns, self.form_model,
                                                              self.local_time_delta).format_tabular_data(submission_list)
-        return export_to_new_excel(headers, data_rows_dict, export_filename(submission_type, self.project_name))
+
+        workbook_file.seek(0)
+        response = HttpResponse(FileWrapper(workbook_file), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+        response['Content-Disposition'] = "attachment; filename=%s.xlsx" % file_name
+        return response
+        # return export_to_new_excel(headers, data_rows_dict, export_filename(submission_type, self.project_name))
 
 
 GEODCODE_FIELD_CODE = "geocode"
@@ -104,14 +110,28 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         cols.append('_index')
         cols.append('_parent_index')
 
-    def format_tabular_data(self, submission_list):
-
+    def _create_excel_headers(self, workbook):
         repeat_headers = OrderedDict()
         repeat_headers.update({'main': ''})
         headers = self._format_tabular_data(self.columns, repeat_headers)
+        if self.form_model.has_nested_fields:
+            self.append_relating_columns(headers)
+        repeat_headers.update({'main': headers})
+        create_multi_sheet_excel_headers(repeat_headers, workbook)
 
-        formatted_values, formatted_repeats = [], {}
+        return repeat_headers
+
+    def format_tabular_data(self, submission_list):
+        workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
+        wb = Workbook(workbook_file, options={'constant_memory': True})
+
+        excel_headers = self._create_excel_headers(wb)
+
+        sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(excel_headers.iterkeys())])
+        sheet_name_row_count_map = dict([(sheet_name, 0) for sheet_name in sheet_names_index_map.iterkeys()])
+
         for row_number, row_dict in enumerate(submission_list):
+            formatted_values, formatted_repeats = [], {}
 
             if row_number == 20000:
             #export limit set to 20K after performance exercise
@@ -119,16 +139,18 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                 break
 
             result = self._format_row(row_dict['_source'], row_number, formatted_repeats)
+
             if self.form_model.has_nested_fields:
                 result.append(row_number + 1)
+
             formatted_values.append(result)
+            formatted_repeats.update({'main': formatted_values})
 
-        if self.form_model.has_nested_fields:
-            self.append_relating_columns(headers)
+            create_multi_sheet_entries(formatted_repeats, wb, sheet_names_index_map, sheet_name_row_count_map)
 
-        repeat_headers.update({'main': headers})
-        formatted_repeats.update({'main': formatted_values})
-        return repeat_headers, formatted_repeats
+        wb.close()
+        return workbook_file
+        # return excel_headers, formatted_repeats
 
     def _get_repeat_col_name(self, label):
         return slugify(label)[:20]
