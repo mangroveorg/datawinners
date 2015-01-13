@@ -76,9 +76,8 @@ class TestDeleteSubjectType(HeadlessRunnerTest):
 
         self.assertNotIn(subject_type, self.get_all_subjects_types())
         self._verify_entity_action(subject_type)
-
-        subject_type_page.click_on_accordian_link()
-        subject_type_page.successfully_add_entity_type_with(subject_type)
+        response = subject_type_page.add_subject_type(subject_type)
+        subject_type_page.refresh()
         subject_page = subject_type_page.select_subject_type(subject_type)
         subject_page.wait_for_processing()
         self.assertTrue(subject_page.empty_table_text_visible())
