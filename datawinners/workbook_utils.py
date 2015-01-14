@@ -31,10 +31,43 @@ def workbook_add_sheets(wb, number_of_sheets, sheet_name_prefix):
         sheet_number += 1
 
 
-def worksheet_add_header(worksheet, headers, header_style):
-    worksheet.set_row(0, 50)
+def get_header_style(workbook, type=None):
+    header_style = workbook.add_format({'bold':True})
+    header_style.set_font_name("Helvetica")
+    header_style.set_align('center')
+    header_style.set_text_wrap('right')
+    if type is None:
+        return header_style
+
+    header_style.set_text_wrap()
+
+    brown = workbook.add_format({'color':'brown'})
+    brown.set_font_name("Helvetica")
+    brown.set_align('vjustify')
+
+    italic = workbook.add_format({'italic':True, 'color':'gray'})
+
+    gray = workbook.add_format({'color':'gray'})
+    gray.set_font_name("Helvetica")
+    gray.set_align('vcenter')
+    
+    return header_style, brown, italic, gray
+
+def worksheet_add_header(worksheet, headers, workbook):
     for column, header in enumerate(headers):
-        worksheet.write(0, column, header, header_style)
+        if isinstance(header, tuple):
+            header_styles = get_header_style(workbook, "Template")
+            max_width = max([len(item) for item, style_object in header]) + BUFFER_WIDTH
+            max_width = min(max_width, MAX_COLUMN_WIDTH_IN_CHAR)
+            worksheet.set_row(0, 100)
+            wrap_text = workbook.add_format()
+            wrap_text.set_text_wrap()
+            worksheet.set_column(column, column, max_width/1.5, wrap_text)
+            worksheet.write_rich_string(0, column, header_styles[0], header[0][0],
+                                      header_styles[1], header[1][0], header_styles[2], header[2][0])
+        else:
+            worksheet.set_row(0, 50)
+            worksheet.write(0, column, header, get_header_style(workbook))
 
 def workbook_add_header(wb, headers, number_of_sheets):
     style = xlwt.easyxf('borders: top double, bottom double, right double')

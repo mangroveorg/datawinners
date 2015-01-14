@@ -19,7 +19,7 @@ from mangrove.form_model.field import ExcelDate
 
 def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_prefix=None):
     ws = workbook.add_worksheet(name=sheet_name_prefix)
-    worksheet_add_header(ws, headers, get_header_style(workbook))
+    worksheet_add_header(ws, headers, workbook)
     date_formats = {}
 
     for row_number, row in enumerate(raw_data):
