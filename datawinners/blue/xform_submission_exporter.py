@@ -17,6 +17,7 @@ from datawinners.project.submission.export import export_filename, add_sheet_wit
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
+from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import ExcelDate, DateField
 
@@ -195,51 +196,45 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         else:
             repeat.update({col_name: row})
 
+    def _format_field_set(self, columns, field_code, index, repeat, row):
+        _repeat_row = []
+        repeat_answers = json.loads(row.get(field_code))
+        repeat_fields = columns[field_code].get('fields')
+        for repeat_item in repeat_answers:
+            for question_code, data_value in repeat_item.items():
+                if repeat_fields[question_code].get(
+                        'type') == 'field_set':  # every field_set in a repeat is a list
+                    repeat_item[question_code] = json.dumps(data_value)
+            _result = self.__format_row(repeat_item, repeat_fields, index, repeat)
+            _repeat_row.append(_result)
+            _result.append('')
+            _result.append(index + 1)
+        return _repeat_row
+
     def __format_row(self, row, columns, index, repeat):
         result = []
         for field_code in columns.keys():
             try:
-                parsed_value = ""
-                if row.get(field_code):
-                    parsed_value = '; '.join(row.get(field_code)) if isinstance(row.get(field_code), list) else row.get(
-                        field_code)
+                field_value = row.get(field_code)
+                parsed_value = self._parsed_field_value(field_value)
+
+                field_type = self.columns[field_code].get("type")
 
                 if columns[field_code].get("type") == "date" or field_code == "date":
-                    date_format = columns[field_code].get("format")
-                    date_value_str = row.get(field_code, '')
-                    try:
-                        if field_code == 'date':
-                            date_value = self._convert_to_localized_date_time(date_value_str)
-                        else:
-                            date_value = datetime.strptime(date_value_str, DateField.DATE_DICTIONARY.get(date_format))
-
-                        col_val = ExcelDate(date_value, date_format or "submission_date")
-                    except Exception:
-                        col_val = row.get(field_code) or ""
-                    result.append(col_val)
-                elif columns[field_code].get("type") == GEODCODE_FIELD_CODE:
-                    col_val = self._split_gps(parsed_value)
-                    result.extend(col_val)
-                elif columns[field_code].get("type") == 'integer':
-                    col_val_parsed = self._try_parse(float, parsed_value)
-                    result.append(col_val_parsed)
+                    self._format_date_field(field_value, field_code, result, row)
+                elif field_type == GEODCODE_FIELD_CODE:
+                    self._format_gps_field(parsed_value, result)
+                elif field_type == 'select':
+                    self._format_select_field(parsed_value, result)
+                elif field_type == 'integer':
+                    self._format_integer_field(parsed_value, result)
+                elif field_code == SubmissionIndexConstants.DATASENDER_ID_KEY and field_value == 'N/A':
+                    self._format_data_sender_id_field(result)
                 elif columns[field_code].get("type") == 'field_set':
-                    _repeat_row = []
-                    repeat_answers = json.loads(row.get(field_code))
-                    repeat_fields = columns[field_code].get('fields')
-                    for repeat_item in repeat_answers:
-                        for question_code, data_value in repeat_item.items():
-                            if repeat_fields[question_code].get(
-                                    'type') == 'field_set':  # every field_set in a repeat is a list
-                                repeat_item[question_code] = json.dumps(data_value)
-                        _result = self.__format_row(repeat_item, repeat_fields, index, repeat)
-                        _repeat_row.append(_result)
-                        _result.append('')
-                        _result.append(index + 1)
-
+                    _repeat_row = self._format_field_set(columns, field_code, index, repeat, row)
                     self._add_repeat_data(repeat, self._get_repeat_col_name(columns[field_code]['label']), _repeat_row)
                 else:
-                    result.append(parsed_value)
+                    self._default_format(parsed_value, result)
             except Exception:
                 col_val = row.get(field_code) or ""
                 result.extend(col_val)
