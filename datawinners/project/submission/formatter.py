@@ -38,8 +38,8 @@ class SubmissionFormatter(object):
         submission_date_time = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
         return convert_utc_to_localized(self.local_time_delta, submission_date_time)
 
-    def _format_date_field(self, field, field_code, result, row):
-        date_format = self.columns[field_code].get("format")
+    def _format_date_field(self, field, field_code, result, row, columns):
+        date_format = columns[field_code].get("format")
         date_value_str = row[field_code]
         try:
             if field_code == 'date':
@@ -71,10 +71,9 @@ class SubmissionFormatter(object):
             try:
 
                 parsed_value = self._parsed_field_value(field_value)
-
                 field_type = self.columns[field_code].get("type")
                 if field_type == "date" or field_code == "date":
-                    self._format_date_field(field_value, field_code, result, row)
+                    self._format_date_field(field_value, field_code, result, row, self.columns)
                 elif field_type == GEODCODE_FIELD_CODE:
                     self._format_gps_field(parsed_value, result)
                 elif field_type == 'select':

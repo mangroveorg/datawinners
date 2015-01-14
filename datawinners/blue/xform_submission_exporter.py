@@ -215,13 +215,12 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         result = []
         for field_code in columns.keys():
             try:
-                field_value = row.get(field_code)
+                field_value = row.get(field_code, None)
                 parsed_value = self._parsed_field_value(field_value)
+                field_type = columns[field_code].get("type")
 
-                field_type = self.columns[field_code].get("type")
-
-                if columns[field_code].get("type") == "date" or field_code == "date":
-                    self._format_date_field(field_value, field_code, result, row)
+                if field_type == "date" or field_code == "date":
+                    self._format_date_field(field_value, field_code, result, row, columns)
                 elif field_type == GEODCODE_FIELD_CODE:
                     self._format_gps_field(parsed_value, result)
                 elif field_type == 'select':
@@ -230,12 +229,12 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                     self._format_integer_field(parsed_value, result)
                 elif field_code == SubmissionIndexConstants.DATASENDER_ID_KEY and field_value == 'N/A':
                     self._format_data_sender_id_field(result)
-                elif columns[field_code].get("type") == 'field_set':
+                elif field_type == 'field_set':
                     _repeat_row = self._format_field_set(columns, field_code, index, repeat, row)
                     self._add_repeat_data(repeat, self._get_repeat_col_name(columns[field_code]['label']), _repeat_row)
                 else:
                     self._default_format(parsed_value, result)
-            except Exception:
+            except Exception as e:
                 col_val = row.get(field_code) or ""
                 result.extend(col_val)
 

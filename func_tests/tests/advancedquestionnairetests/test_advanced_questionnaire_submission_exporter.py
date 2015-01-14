@@ -44,7 +44,7 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
     def _verify_second_sheet(self, workbook):
         self.assertEqual(
             "[u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'_index', u'_parent_index']",
-            str(workbook.sheet_by_index(1).row_values(0)))
+            str(workbook.sheet_by_index(1).row_values(0, end_colx=8)))
         self.assertEqual(
             "[40544.0, 41640.0, 41907.0, u'text in group - repeat1', u'Yes', u'Yes', '', 1.0]",
             str(workbook.sheet_by_index(1).row_values(1)))
@@ -62,7 +62,7 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
     def _verify_third_sheet(self, workbook):
         self.assertEqual(
             "[u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'_index', u'_parent_index']",
-            str(workbook.sheet_by_index(2).row_values(0)))
+            str(workbook.sheet_by_index(2).row_values(0,end_colx=8)))
         self.assertEqual(
             "[40544.0, 41640.0, 41893.0, u'group22', u'No', u'Yes', '', 1.0]",
             str(workbook.sheet_by_index(2).row_values(1)))
@@ -80,7 +80,7 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
     def _verify_fourth_sheet(self, workbook):
         self.assertEqual(
             "[u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'_index', u'_parent_index']",
-            str(workbook.sheet_by_index(3).row_values(0)))
+            str(workbook.sheet_by_index(3).row_values(0, end_colx=8)))
         self.assertEqual(
             "[41640.0, 41640.0, 41896.0, u'group', u'Yes', u'Yes', '', 1.0]",
             str(workbook.sheet_by_index(3).row_values(1)))
