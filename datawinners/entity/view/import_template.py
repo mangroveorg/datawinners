@@ -9,11 +9,13 @@ from datawinners.entity.views import add_codes_sheet
 from datawinners.main.database import get_database_manager
 from datawinners.workbook_utils import get_excel_sheet
 from mangrove.form_model.form_model import get_form_model_by_code
+from datawinners.project.submission.export import export_to_new_excel
 
 @valid_web_user
 def import_template(request, form_code):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, form_code)
+    filename = unquote(request.GET["filename"])
     if form_model.is_entity_registration_form():
         form_fields = form_model.form_fields
         headers = get_subject_headers(form_fields)
@@ -25,8 +27,8 @@ def import_template(request, form_code):
         headers = get_submission_headers(form_fields, form_model, is_org_user(request.user))
         sheet_name = "Import_Submissions"
 
-    filename = unquote(request.GET["filename"])
-    workbook_response_factory = WorkBookResponseFactory(form_code, filename, sheet_name)
+    workbook_response_factory = WorkBookResponseFactory(form_code, filename, sheet_name,
+                                                        is_entity_registration=form_model.is_entity_registration_form())
     return workbook_response_factory.create_workbook_response([headers], field_codes)
 
 
@@ -34,10 +36,11 @@ def _field_codes(fields):
     return [field['code'] for field in fields]
 
 class WorkBookResponseFactory:
-    def __init__(self, form_code, file_name, sheet_name):
+    def __init__(self, form_code, file_name, sheet_name, is_entity_registration=False):
         self.form_code = form_code
         self.file_name = file_name
         self.sheet_name = sheet_name
+        self.is_entity_registration = is_entity_registration
 
     def _add_styles(self, wb):
         ws = wb.get_sheet(0)
@@ -49,6 +52,9 @@ class WorkBookResponseFactory:
         ws.row(0).height = 256*7
 
     def create_workbook_response(self, data, field_codes):
+        if not self.is_entity_registration:
+            return export_to_new_excel(dict({self.sheet_name: data[0], 'codes':[self.form_code] + field_codes}),
+                {}, self.file_name, hide_codes_sheet=True)
         response = HttpResponse(mimetype='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename="%s.xls"' % slugify(self.file_name)
         wb = get_excel_sheet(data, self.sheet_name)

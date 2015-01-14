@@ -18,7 +18,7 @@ from mangrove.form_model.field import ExcelDate
 
 def add_sheet_with_data(raw_data, headers, workbook, formatter, sheet_name_prefix=None):
     ws = workbook.add_worksheet(name=sheet_name_prefix)
-    worksheet_add_header(ws, headers, get_header_style(workbook))
+    worksheet_add_header(ws, headers, workbook)
     date_formats = {}
 
     for row_number, row in enumerate(raw_data):
@@ -54,15 +54,7 @@ def create_excel_response(headers, raw_data_list, file_name):
     wb.save(response)
     return response
 
-def get_header_style(workbook):
-    header_style = workbook.add_format({'bold': True})
-    header_style.set_font_name("Helvetica")
-    header_style.set_align('center')
-    header_style.set_align('vcenter')
-    header_style.set_text_wrap('right')
-    return header_style
-
-def export_to_new_excel(headers, raw_data, file_name, formatter=None):
+def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes_sheet=False):
     file_name_normalized = slugify(file_name)
     output = tempfile.TemporaryFile()
     workbook = xlsxwriter.Workbook(output, {'constant_memory': True})
@@ -71,6 +63,11 @@ def export_to_new_excel(headers, raw_data, file_name, formatter=None):
             add_sheet_with_data(raw_data.get(sheet_name, []), header_row, workbook, formatter, sheet_name)
     else:
         add_sheet_with_data(raw_data, headers, workbook, formatter)
+    if hide_codes_sheet:
+        codes_sheet = workbook.worksheets()
+        codes_sheet = codes_sheet[1]
+        assert codes_sheet.get_name() == "codes"
+        codes_sheet.hide()
     workbook.close()
     output.seek(0)
     response = HttpResponse(FileWrapper(output), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
