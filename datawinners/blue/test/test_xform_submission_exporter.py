@@ -15,7 +15,7 @@ class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
 
         columns = OrderedDict([('ds_id', {'label': 'Datasender Id'}),
                                ('uuid1_family',
-                                {'fields': family_dict, 'type': 'field_set', 'label': 'Family','fieldset_type':'repeat'}),
+                                {'fields': family_dict, 'type': 'field_set', 'code': 'field_code', 'label': 'Family','fieldset_type':'repeat'}),
                                ('uuid1_city', {'type': 'text', 'label': 'City'}),
                                ('area', {'type': 'text', 'label': 'Area'})])
 
@@ -25,7 +25,7 @@ class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
         headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(columns, form_model_mock).create_headers()
 
         self.assertEqual(expected_header, headers['main'])
-        self.assertEqual(expected_family_header, headers['family'])
+        self.assertEqual(expected_family_header, headers['field_code'])
 
     def test_should_create_header_select_field(self):
         form_model_mock = MagicMock(spec=FormModel)

@@ -95,6 +95,7 @@ class SubmissionExcelHeader():
                         result.get(field_name).update({"format": field.date_format})
                     if field.type == "field_set":
                         result.get(field_name).update({"fields": self.get_sub_fields_of(field),
+                                                       "code": field.code,
                                                        'fieldset_type': field.fieldset_type})
 
     def get_columns(self):
@@ -118,6 +119,7 @@ class SubmissionExcelHeader():
             if field.type == "date":
                 details.update({"format": field.date_format})
             if field.type == "field_set":
+                details.update({"code": field.code})
                 details.update({"fields" : self.get_sub_fields_of(field)})
 
         return col

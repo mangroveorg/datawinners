@@ -114,7 +114,7 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
         os.close(xlfile_fd)
         workbook = xlrd.open_workbook(xlfile_name)
         self.assertEquals(workbook.sheet_names(),
-                          [u'main', u'my-repeat-in-a-group', u'my-group-in-a-repeat', u'my-outer-repeat'])
+                          [u'main', u'rep_group1', u'my_repeat1_group1', u'my_outer_repeat1'])
 
         self._verify_main_sheet(workbook)
         self._verify_second_sheet(workbook)

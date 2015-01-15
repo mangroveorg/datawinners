@@ -109,7 +109,7 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
     def create_headers(self):
         repeat_headers = OrderedDict()
         repeat_headers.update({'main': ''})
-        headers = self._format_tabular_data(self.columns, repeat_headers)
+        headers = self._format_tabular_data({"fields":self.columns}, repeat_headers)
         if self.form_model.has_nested_fields:
             self._append_relating_columns(headers)
         repeat_headers.update({'main': headers})
@@ -120,22 +120,22 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
         cols.append('_index')
         cols.append('_parent_index')
 
-    def _format_tabular_data(self, columns, repeat):
+    def _format_tabular_data(self, fields_dict, repeat):
         headers = []
-        for col_def in columns.values():
+        for col_def in fields_dict["fields"].values():
             if col_def.get('type', '') == GEODCODE_FIELD_CODE:
                 headers.append(col_def['label'] + " Latitude")
                 headers.append(col_def['label'] + " Longitude")
             elif col_def.get('type', '') == FIELD_SET:
-                _repeat = self._format_tabular_data(col_def['fields'], repeat)
+                _repeat = self._format_tabular_data(col_def, repeat)
                 self._append_relating_columns(_repeat)
-                repeat.update({self._get_repeat_column_name(col_def['label']): _repeat})
+                repeat.update({self._get_repeat_column_name(col_def['code']): _repeat})
             else:
                 headers.append(col_def['label'])
         return headers
 
-    def _get_repeat_column_name(self, label):
-        return slugify(label)[:20]
+    def _get_repeat_column_name(self, code):
+        return slugify(code)[:30]
 
 
 class AdvancedQuestionnaireSubmissionExporter():
@@ -185,7 +185,7 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         self.form_model = form_model
 
     def _get_repeat_col_name(self, label):
-        return slugify(label)[:20]
+        return slugify(label)[:30]
 
     def format_row(self, row, index, formatted_repeats):
         return self.__format_row(row, self.columns, index, formatted_repeats)
@@ -231,7 +231,7 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                     self._format_data_sender_id_field(result)
                 elif field_type == 'field_set':
                     _repeat_row = self._format_field_set(columns, field_code, index, repeat, row)
-                    self._add_repeat_data(repeat, self._get_repeat_col_name(columns[field_code]['label']), _repeat_row)
+                    self._add_repeat_data(repeat, self._get_repeat_col_name(columns[field_code]['code']), _repeat_row)
                 else:
                     self._default_format(parsed_value, result)
             except Exception as e:
