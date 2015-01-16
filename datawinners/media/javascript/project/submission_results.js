@@ -123,20 +123,7 @@ DW.SubmissionLogExport = function () {
     };
 
     var _initialize_dialogs = function(){
-       var dialogOptions = {
-                successCallBack: function (callback) {
-                    DW.trackEvent('export-submissions', 'export-submissions-multiple-sheet', user_email + ":" + organization_name);
-                    callback();
-                    _check_limit_and_export();
-                },
-                title: gettext("Submission Exceeds Number of Supported Columns."),
-                link_selector: ".export_link",
-                dialogDiv: "#export_submission_multiple_sheet_dialog",
-                cancelLinkSelector: "#cancel_dialog",
-                width: 580
-            };
-       self.dialog = new DW.Dialog(dialogOptions).init();
-
+        
        var limit_info_dialog_options = {
                 successCallBack: function (callback) {
                 },
@@ -151,13 +138,8 @@ DW.SubmissionLogExport = function () {
 
     var _initialize_events = function () {
         self.exportLink.click(function () {
-           if(is_submission_exported_to_multiple_sheets === 'True'){
-                self.dialog.show();
-           }
-           else{
                DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
                _check_limit_and_export();
-           }
         });
 
     };
