@@ -34,7 +34,7 @@
             {% endif %}
         </li>
     </ul>
-    <div id="edit_ds_popup">
+    <div id="edit_ds_popup" style="display: none">
         <span>{% trans "Which registered Data Sender sent you this Submission?" %}</span></br>
         {% for field in questionnaire_form %}
             {% if not field.is_hidden %}
