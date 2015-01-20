@@ -19289,7 +19289,7 @@ define( 'file-manager',[ "q", "jquery" ], function( Q, $ ) {
      */
     function _getMaxSize() {
         if ( !maxSize ) {
-            maxSize = $( document ).data( 'maxSubmissionSize' ) || 5 * 1024 * 1024;
+            maxSize = $( document ).data( 'maxSubmissionSize' ) || 20 * 1024 * 1024;
         }
         return maxSize;
     }
@@ -34675,7 +34675,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
 
     Filepicker.prototype._getMaxSubmissionSize = function() {
         var maxSize = $( document ).data( 'maxSubmissionSize' );
-        return maxSize || 5 * 1024 * 1024;
+        return maxSize || 20 * 1024 * 1024;
     };
 
     Filepicker.prototype._changeListener = function() {
