@@ -19,7 +19,7 @@ DATABASES = {
 }
 
 API_KEYS = {
-    '184.72.223.168': 'AIzaSyCr4DDqoKgR5MzPci7GHWaXms8bYNprY-g'
+    'uat.datawinners.com': 'AIzaSyCr4DDqoKgR5MzPci7GHWaXms8bYNprY-g'
 }
 
 HNI_SUPPORT_EMAIL_ID = 'datawinnersblr@thoughtworks.com'
