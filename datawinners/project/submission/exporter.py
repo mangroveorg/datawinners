@@ -1,5 +1,5 @@
 from datawinners.project.Header import SubmissionExcelHeader
-from datawinners.project.submission.export import export_filename, export_to_excel_no_zip, export_to_new_excel
+from datawinners.project.submission.export import export_filename, export_to_new_excel
 from datawinners.project.submission.formatter import SubmissionFormatter
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
 
