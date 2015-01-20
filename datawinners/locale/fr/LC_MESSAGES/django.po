@@ -1789,8 +1789,8 @@ msgstr "Les paramètres ont été mis à jour avec succès"
 msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
 msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. Veuillez contacter le Service d’Assistance de DataWinners."
 
-msgid "We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!"
-msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. Veuillez utiliser le fichier modèle d'importation!"
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xlsx) template file!"
+msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. Veuillez utiliser le fichier modèle d'importation Excel (.xlsx)!"
 
 msgid "Register"
 msgstr "S'enregistrer"
@@ -2761,8 +2761,8 @@ msgstr "<br/>Affichez vos données qui ont été reçues pendant une période de
        "Vous pouvez traduire ou modifier cette question, mais essayez de garder le même sens (Exemple : « Pour quel mois et quelle année établissez-vous le rapport ?)"
        "<br/><br/><a class='hide_link' href=\"javascript:void(0);\">Cacher l'aide</a>"
 
-msgid "Upload an Excel file (.xls) with Your Submission list."
-msgstr "Télécharger un fichier excel (.xls) avec votre liste de Soumission."
+msgid "Upload an Excel file (.xlsx) with Your Submission list."
+msgstr "Télécharger un fichier excel (.xlsx) avec votre liste de Soumission."
 
 msgid "Download the template:"
 msgstr "Télécharger le modèle:"

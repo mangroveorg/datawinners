@@ -57,7 +57,7 @@ class SubmissionImporter():
                 message = gettext('%s of %s Submissions imported. Please check below for details.') % (len(saved_entries), total_submissions)
         except InvalidFileFormatException as e:
             message = gettext(
-                u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!")
+                u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xlsx) template file!")
         except ImportValidationError as e:
             message = e.message
         except Exception as e:

@@ -144,7 +144,7 @@ DW.SubmissionLogExport = function () {
                 width: 580
             };
 
-        self.dialog = new DW.Dialog(dialogOptions).init();
+       self.dialog = new DW.Dialog(dialogOptions).init();
 
        var limit_info_dialog_options = {
                 successCallBack: function (callback) {
@@ -159,7 +159,6 @@ DW.SubmissionLogExport = function () {
     };
 
     var _initialize_events = function () {
-
         $('.with_media').click(function(){
             if (is_submission_exported_to_multiple_sheets === 'True') {
                    self.dialog.show();
@@ -173,13 +172,8 @@ DW.SubmissionLogExport = function () {
          });
 
         self.exportLink.click(function () {
-               if (is_submission_exported_to_multiple_sheets === 'True') {
-                   self.dialog.show();
-               }
-               else {
-                   DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-                   _check_limit_and_export();
-               }
+               DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+               _check_limit_and_export();
         });
 
     };

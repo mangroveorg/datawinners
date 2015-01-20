@@ -1723,7 +1723,7 @@ msgstr ""
 msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
 msgstr ""
 
-msgid "We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!"
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xlsx) template file!"
 msgstr ""
 
 msgid "Register"
@@ -2628,7 +2628,7 @@ msgstr "<br/>View your received data by a particular Reporting Period (Example: 
        "You can translate or edit this question, but try to keep the same meaning (Example: “What month and year are you reporting on?”)"
        "<br/><br/><a class='hide_link' href=\"javascript:void(0);\">Hide Help</a>"
 
-msgid "Upload an Excel file (.xls) with Your Submission list."
+msgid "Upload an Excel file (.xlsx) with Your Submission list."
 msgstr ""
 
 msgid "Upload a file"
