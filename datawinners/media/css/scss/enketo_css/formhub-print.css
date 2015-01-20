@@ -110,7 +110,7 @@ label, legend, .trigger, .note {
 .or .or-repeat {
   background: none;
 }
-.or input:not([type="radio"]):not([type="checkbox"]), .or select, .or textarea {
+.or input[type=text], .or input[type=password], .or input[type=url], .or input[type=email], .or input[type=file], .or input[type=date], .or input[type=time], .or input[type=datetime], .or input[type=number], .or select, .or textarea {
   border-radius: 0px;
   box-shadow: none;
   -moz-appearance: none;
