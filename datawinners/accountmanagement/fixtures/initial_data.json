@@ -11,7 +11,7 @@
         "model": "sites.site",
         "pk": 2,
         "fields": {
-            "domain": "184.72.223.168",
+            "domain": "uat.datawinners.com",
             "name": "datawinners-showcase"
         }
     },
