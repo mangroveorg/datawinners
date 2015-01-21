@@ -47,7 +47,7 @@ def start_servers():
 
 def showcase():
     env.user = "mangrover"
-    env.hosts = ["uat.datawinners.com:51986"]
+    env.hosts = ["184.72.223.168:51986"]
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
