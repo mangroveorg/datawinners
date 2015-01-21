@@ -53,18 +53,35 @@ def get_header_style(workbook, type=None):
     
     return header_style, brown, italic, gray
 
-def worksheet_add_header(worksheet, headers, workbook):
+
+def colToExcel(col): # col is 1 based
+    excelCol = str()
+    div = col
+    while div:
+        (div, mod) = divmod(div-1, 26) # will return (x, 0 .. 25)
+        excelCol = chr(mod + 65) + excelCol
+
+    return excelCol
+
+
+def worksheet_add_header(worksheet, headers, workbook, browser=None):
     for column, header in enumerate(headers):
         if isinstance(header, tuple):
             header_styles = get_header_style(workbook, "Template")
             max_width = max([len(item) for item, style_object in header]) + BUFFER_WIDTH
             max_width = min(max_width, MAX_COLUMN_WIDTH_IN_CHAR)
             worksheet.set_row(0, 100)
-            wrap_text = workbook.add_format()
-            wrap_text.set_text_wrap()
-            worksheet.set_column(column, column, max_width/1.5, wrap_text)
-            worksheet.write_rich_string(0, column, header_styles[0], header[0][0],
-                                      header_styles[1], header[1][0], header_styles[2], header[2][0])
+            wrap_text = workbook.add_format({'text_wrap': True})
+            column_in_letter = colToExcel(column+1)
+            worksheet.set_column("%s:%s" % (column_in_letter, column_in_letter), max_width/1.5, wrap_text)
+            if isinstance(browser, str) and "Mac OS" in browser:
+                label, instruction, exemple = header[0][0].replace("\n", "\n\r"), header[1][0].replace("\n", "\n\r"), \
+                                              header[2][0].replace("\n", " \n\r")
+            else:
+                label, instruction, exemple = header[0][0], header[1][0], header[2][0]
+            worksheet.write_rich_string(0, column, header_styles[0], label, header_styles[1], instruction,
+                                        header_styles[2], exemple)
+
         else:
             worksheet.set_row(0, 50)
             worksheet.write(0, column, header, get_header_style(workbook))

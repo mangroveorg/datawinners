@@ -28,6 +28,7 @@ def import_template(request, form_code):
         sheet_name = "Import_Submissions"
 
     workbook_response_factory = WorkBookResponseFactory(form_code, filename, sheet_name,
+                                                        browser=request.META.get('HTTP_USER_AGENT'),
                                                         is_entity_registration=form_model.is_entity_registration_form())
     return workbook_response_factory.create_workbook_response([headers], field_codes)
 
@@ -36,11 +37,12 @@ def _field_codes(fields):
     return [field['code'] for field in fields]
 
 class WorkBookResponseFactory:
-    def __init__(self, form_code, file_name, sheet_name, is_entity_registration=False):
+    def __init__(self, form_code, file_name, sheet_name, is_entity_registration=False, browser=None):
         self.form_code = form_code
         self.file_name = file_name
         self.sheet_name = sheet_name
         self.is_entity_registration = is_entity_registration
+        self.browser = browser
 
     def _add_styles(self, wb):
         ws = wb.get_sheet(0)
@@ -54,7 +56,7 @@ class WorkBookResponseFactory:
     def create_workbook_response(self, data, field_codes):
         if not self.is_entity_registration:
             return export_to_new_excel(dict({self.sheet_name: data[0], 'codes':[self.form_code] + field_codes}),
-                {}, self.file_name, hide_codes_sheet=True)
+                {}, self.file_name, hide_codes_sheet=True, browser=self.browser)
         response = HttpResponse(mimetype='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename="%s.xls"' % slugify(self.file_name)
         wb = get_excel_sheet(data, self.sheet_name)
