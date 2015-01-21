@@ -19359,7 +19359,7 @@ function getFormData(data) {
 
 function addAttachmentData(formData) {
     var retainFiles = [];
-    var mediaInputs = $('form.or input[type="file"]')
+    var mediaInputs = $('form.or input[type="file"]');
     if (!mediaInputs)
         return formData;
 
@@ -34631,11 +34631,12 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
                 '<div class="widget file-picker">' +
                 '<div class="fake-file-input"></div>' +
                 '<div class="file-feedback"></div>' +
-                '<div class="file-preview"></div>' +
                 '</div>' )
             .insertAfter( $input );
+        var $filePreview = $('<div class="file-preview"></div>');
+        $filePreview.insertAfter($input.parent());
         this.$feedback = this.$widget.find( '.file-feedback' );
-        this.$preview = this.$widget.find( '.file-preview' );
+        this.$preview = $filePreview;
         this.$fakeInput = this.$widget.find( '.fake-file-input' );
 
         // show loaded file name regardless of whether widget is supported
