@@ -17,7 +17,7 @@ from datawinners.workbook_utils import worksheet_add_header
 from mangrove.form_model.field import ExcelDate
 
 
-def add_sheet_with_data(raw_data, headers, workbook, formatter, sheet_name_prefix=None, browser=None):
+def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_prefix=None, browser=None):
     ws = workbook.add_worksheet(name=sheet_name_prefix)
     worksheet_add_header(ws, headers, workbook, browser)
     date_formats = {}
@@ -50,7 +50,7 @@ def create_multi_sheet_excel_headers(excel_headers, workbook):
 
     for sheet_name, headers in excel_headers.iteritems():
         ws = workbook.add_worksheet(name=sheet_name)
-        worksheet_add_header(ws, headers, get_header_style(workbook))
+        worksheet_add_header(ws, headers, workbook, get_header_style(workbook))
 
 
 def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict):
