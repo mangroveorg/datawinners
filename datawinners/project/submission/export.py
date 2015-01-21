@@ -16,9 +16,9 @@ from datawinners.workbook_utils import worksheet_add_header
 from mangrove.form_model.field import ExcelDate
 
 
-def add_sheet_with_data(raw_data, headers, workbook, formatter, sheet_name_prefix=None):
+def add_sheet_with_data(raw_data, headers, workbook, formatter, sheet_name_prefix=None, browser=None):
     ws = workbook.add_worksheet(name=sheet_name_prefix)
-    worksheet_add_header(ws, headers, workbook)
+    worksheet_add_header(ws, headers, workbook, browser)
     date_formats = {}
 
     for row_number, row in enumerate(raw_data):
@@ -54,13 +54,13 @@ def create_excel_response(headers, raw_data_list, file_name):
     wb.save(response)
     return response
 
-def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes_sheet=False):
+def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes_sheet=False, browser=None):
     file_name_normalized = slugify(file_name)
     output = tempfile.TemporaryFile()
     workbook = xlsxwriter.Workbook(output, {'constant_memory': True})
     if isinstance(headers, dict):
         for sheet_name, header_row in headers.items():
-            add_sheet_with_data(raw_data.get(sheet_name, []), header_row, workbook, formatter, sheet_name)
+            add_sheet_with_data(raw_data.get(sheet_name, []), header_row, workbook, formatter, sheet_name, browser)
     else:
         add_sheet_with_data(raw_data, headers, workbook, formatter)
     if hide_codes_sheet:

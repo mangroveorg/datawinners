@@ -35,7 +35,7 @@ class TestImportTemplate(TestCase):
 
                         import_template(request, '001')
 
-                        workbook_response_factory.assert_called_with('001','file','file',is_entity_registration=True)
+                        workbook_response_factory.assert_called_with('001','file','file',is_entity_registration=True, browser=None)
                         get_subject_headers.assert_called_with([{'code': 'cli001'}])
                         workbook_response_factory.create_workbook_response.assert_called_with([['What is the subject']],['cli001'])
 
@@ -59,7 +59,8 @@ class TestImportTemplate(TestCase):
 
                             import_template(request, '001')
 
-                            workbook_response_factory.assert_called_with('001','file name','Import_Submissions', is_entity_registration=False)
+                            workbook_response_factory.assert_called_with('001','file name','Import_Submissions',
+                                                                         is_entity_registration=False, browser=None)
                             get_submission_headers.assert_called_with([{'code': 'cli001'}], form_model, True)
                             workbook_response_factory.create_workbook_response.assert_called_with([['What is the submission date']],['cli001'])
 
