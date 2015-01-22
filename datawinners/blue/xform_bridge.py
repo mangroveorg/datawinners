@@ -8,6 +8,8 @@ from pyxform.xls2json import parse_file_to_json, parse_file_to_workbook_dict
 import xlrd
 import xmldict
 from pyxform import create_survey_element_from_dict
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.common.constant import CREATED_QUESTIONNAIRE
 
 from datawinners.project.wizard_view import create_questionnaire
 from datawinners.accountmanagement.models import NGOUserProfile
@@ -403,7 +405,7 @@ class MangroveService():
         self._add_model_sub_element(root, 'form_code', form_code)
         return '<?xml version="1.0"?>%s' % ET.tostring(root)
 
-    def create_project(self):
+    def create_project(self, request):
         project_json = {'questionnaire-code': self.questionnaire_code}
 
         questionnaire = create_questionnaire(post=project_json, manager=self.manager, name=self.name,
@@ -418,8 +420,8 @@ class MangroveService():
         questionnaire.update_media_field_flag()
         questionnaire.update_doc_and_save()
         questionnaire.add_attachments(self.xls_form, 'questionnaire.xls')
-        # UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name,
-        # detail=questionnaire.name)
+        UserActivityLog().log(request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
+        detail=questionnaire.name)
         return questionnaire.id, questionnaire.form_code
 
 

@@ -94,7 +94,7 @@ class ProjectUpload(View):
             mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
                                                questionnaire_code=questionnaire_code, project_name=project_name,
                                                xls_form=tmp_file)
-            questionnaire_id, form_code = mangrove_service.create_project()
+            questionnaire_id, form_code = mangrove_service.create_project(request)
 
         except PyXFormError as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
@@ -254,7 +254,9 @@ class ProjectUpdate(View):
             QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(json_xform_data)
 
             tmp_file.seek(0)
+            questionnaire.update_media_field_flag()
             questionnaire.save(process_post_update=False)
+
             questionnaire.add_attachments(tmp_file, 'questionnaire.xls')
             self._purge_submissions(manager, questionnaire)
             self._purge_feed_documents(questionnaire, request)
