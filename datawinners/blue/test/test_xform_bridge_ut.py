@@ -371,7 +371,7 @@ class TestXformBridge(unittest.TestCase):
                 {u'children': [
                     {u'bind': {u'required': u'yes'},
                      u'type': u'geoshape', u'name': u'timeq', u'label': u'Time q'},
-                    {u'bind': {u'required': u'yes'}, u'type': u'dateTime', u'name': u'datetq',
+                    {u'bind': {u'required': u'yes'}, u'type': u'datetime', u'name': u'datetq',
                      u'label': u'Date time q'}],
                  u'type': u'group', u'name': u'mygroup', u'label': u'My group'
                 }], u'type': u'repeat', u'name': u'myrepeat', u'label': u'My repeat',

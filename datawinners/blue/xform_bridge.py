@@ -39,7 +39,7 @@ BARCODE = 'barcode'
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
-                           'time', 'dateTime'],
+                           'time', 'datetime'],
                  'auto_filled': ['note', 'today'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
@@ -70,13 +70,14 @@ class XlsFormParser():
     def _create_question(self, field, parent_field_code=None):
         question = None
         errors = []
-        if field['type'] in self.type_dict['group']:
+        field_type = field['type'].lower()
+        if field_type in self.type_dict['group']:
             question, errors = self._group(field, parent_field_code)
-        elif field['type'] in self.type_dict['field']:
+        elif field_type in self.type_dict['field']:
             question = self._field(field, parent_field_code)
-        elif field['type'] in self.type_dict['select']:
+        elif field_type in self.type_dict['select']:
             question = self._select(field, parent_field_code)
-        elif field['type'] in self.type_dict['media']:
+        elif field_type in self.type_dict['media']:
             question = self._media(field, parent_field_code)
         return question, errors
 
@@ -86,7 +87,7 @@ class XlsFormParser():
         for field in fields:
             if field.get('control', None) and field['control'].get('bodyless', False):  # ignore calculate type
                 continue
-            if field['type'] in self.supported_types:
+            if field['type'].lower() in self.supported_types:
                 try:
                     question, field_errors = self._create_question(field, parent_field_code)
 
@@ -123,20 +124,21 @@ class XlsFormParser():
                 self._validate_for_no_language(field)
             except MultipleLanguagesNotSupportedException as e:
                 errors.append(e.message)
-            if field['type'] in self.recognised_types:
-                if field['type'] in self.type_dict['group']:
+            field_type = field['type'].lower()
+            if field_type in self.recognised_types:
+                if field_type in self.type_dict['group']:
                     self._validate_group(errors, field)
                 # errors.append(self._validate_for_uppercase_names(field))
                 errors.append(self._validate_for_prefetch_csv(field))
             else:
                 if (field["type"] in self.meta_data_types):
-                    errors.append(_("%s as a datatype (metadata)") % _(field['type']))
+                    errors.append(_("%s as a datatype (metadata)") % _(field_type))
                 # elif(field["type"]) in self.or_other_data_types:
                 # errors.append(_("XLSForm \"or_other\" function for multiple choice or single choice questions"))
                 elif (field["type"]) in self.select_without_list_name:
                     errors.append(_("missing list reference, check your select_one or select multiple question types"))
                 else:
-                    errors.append(_("%s as a datatype") % _(field['type']))
+                    errors.append(_("%s as a datatype") % _(field_type))
             if field.get('media'):
                 for media_type in field['media'].keys():
                     errors.append(_("attaching media to fields is not supported %s") % media_type)
@@ -280,7 +282,7 @@ class XlsFormParser():
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field'}
         name = self._get_label(field)
         code = field['name']
-        type = field['type']
+        type = field['type'].lower()
 
         question = {'title': name, 'type': xform_dw_type_dict.get(type, type), "is_entity_question": False,
                     "code": code, "name": name, 'required': self.is_required(field),

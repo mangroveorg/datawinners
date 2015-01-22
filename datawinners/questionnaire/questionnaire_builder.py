@@ -69,7 +69,7 @@ class QuestionBuilder(object):
             return self._create_text_question(post_dict, code)
         if post_dict["type"] == "time":
             return self._create_time_question(post_dict, code)
-        if post_dict["type"] == "dateTime":
+        if post_dict["type"] == "datetime":
             return self._create_date_time_question(post_dict, code)
         if post_dict["type"] == "integer":
             return self._create_integer_question(post_dict, code)
