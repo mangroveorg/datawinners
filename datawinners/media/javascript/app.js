@@ -34681,20 +34681,33 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
 
     Filepicker.prototype._changeListener = function() {
         var that = this;
+        var old_files;
+        this.element.onclick = function(){
+//            storing the previously selected file to use when upload cancelled
+            old_files = $( this )[0].files;
+            return true;
+        };
 
         $( this.element ).on( 'change.passthrough.' + this.namespace, function( event ) {
             var file,
                 $input = $( this );
+
+            // get the file
+            file = this.files[ 0 ];
+
+            // To handle cancel issue on webkit browsers
+            if (file == undefined) {
+                event.stopPropagation();
+                $( this )[0].files = old_files;
+                event.preventDefault();
+                return false;
+            }
 
             // trigger eventhandler to update instance value
             if ( event.namespace === 'passthrough' ) {
                 $input.trigger( 'change.file' );
                 return false;
             }
-
-            // get the file
-            file = this.files[ 0 ];
-            $input.removeAttr( 'data-loaded-file-name' );
 
             // process the file
             fileManager.getFileUrl( file )
@@ -34745,7 +34758,9 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         }
 
         if ( url ) {
-            this.$widget.find( '.file-preview' ).empty();
+//            Clearing preview before updating
+            this.$preview.empty();
+            $(this).removeAttr( 'data-loaded-file-name' );
             this.$preview.append( $el.attr( 'src', url ) );
         }
     };
