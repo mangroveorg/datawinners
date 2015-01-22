@@ -7,6 +7,7 @@ from xml.etree import ElementTree as ET
 from django.contrib.auth.models import User
 
 from django.test import Client
+from mock import Mock, MagicMock
 from nose.plugins.attrib import attr
 
 from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, TypeNotSupportedException
@@ -35,6 +36,9 @@ class TestXFormBridge(unittest.TestCase):
         self.MANY_FIELD = os.path.join(self.test_data,'many-fields.xls')
         self.NAME_SPACE = os.path.join(self.test_data,'xpath-sample.xml')
         self.user = User.objects.get(username="tester150411@gmail.com")
+        self.mock_request = MagicMock()
+        self.mock_request.user = self.user
+
 
     @attr('functional_test')
     def test_should_throw_error_for_unsupported_valid_field_type(self):
@@ -69,7 +73,7 @@ class TestXFormBridge(unittest.TestCase):
     def test_should_create_project_using_xlsform_file(self):
         errors, xform, json_xform_data = XlsFormParser(self.ALL_FIELDS, u"My questionnairé").parse()
 
-        mangroveService = MangroveService(self.user, xform, json_xform_data)
+        mangroveService = MangroveService(self.mock_request, xform, json_xform_data)
         quesionnaire_id = mangroveService.create_project()
 
         self.assertIsNotNone(quesionnaire_id)
@@ -78,7 +82,7 @@ class TestXFormBridge(unittest.TestCase):
     def test_should_convert_skip_logic_question(self):
         errors, xform_as_string, json_xform_data = XlsFormParser(self.SKIP, u"My questionnairé").parse()
 
-        mangroveService = MangroveService(self.user, xform_as_string, json_xform_data)
+        mangroveService = MangroveService(self.mock_request, xform_as_string, json_xform_data)
         questionnaire_id = mangroveService.create_project()
 
         self.assertIsNotNone(questionnaire_id)
@@ -87,7 +91,7 @@ class TestXFormBridge(unittest.TestCase):
     def test_should_convert_multi_select_question(self):
         errors, xform_as_string, json_xform_data = XlsFormParser(self.MULTI_SELECT, u"My questionnairé").parse()
 
-        mangroveService = MangroveService(self.user, xform_as_string, json_xform_data)
+        mangroveService = MangroveService(self.mock_request, xform_as_string, json_xform_data)
         questionnaire_id = mangroveService.create_project()
 
         self.assertIsNotNone(questionnaire_id)
@@ -171,7 +175,7 @@ class TestXFormBridge(unittest.TestCase):
         xform_as_string = open(self.NAME_SPACE, 'r').read()
         default_namespace_definition_format = 'xmlns="http://www.w3.org/2002/xforms"'
 
-        updated_xform = MangroveService(self.user, xform_as_string, None).add_form_code(xform_as_string, None)
+        updated_xform = MangroveService(self.mock_request, xform_as_string, None).add_form_code(xform_as_string, None)
 
         self.assertTrue(updated_xform.find(default_namespace_definition_format) != -1)
 
@@ -192,7 +196,7 @@ class TestXFormBridge(unittest.TestCase):
         xform_as_string = open(self.NAME_SPACE, 'r').read()
         expected_form_code = '022-somthing-making-it-unique-in-xml'
 
-        updated_xform = MangroveService(self.user, xform_as_string, None)\
+        updated_xform = MangroveService(self.mock_request, xform_as_string, None)\
             .add_form_code(xform_as_string, '%s' % expected_form_code)
 
         form_code = self._find_in_instance(updated_xform, 'form_code')
@@ -207,7 +211,7 @@ class TestXFormBridge(unittest.TestCase):
 
         errors, xform_as_string, json_xform_data = XlsFormParser(self.REPEAT, u"My questionnairé").parse()
 
-        mangroveService = MangroveService(self.user, xform_as_string, json_xform_data, project_name=project_name)
+        mangroveService = MangroveService(self.mock_request, xform_as_string, json_xform_data, project_name=project_name)
         mangroveService.create_project()
 
         questionnaire_code = mangroveService.questionnaire_code
@@ -218,7 +222,7 @@ class TestXFormBridge(unittest.TestCase):
     @attr('functional_test')
     def test_should_verify_repeat_field_added_to_questionnaire(self):
         errors, xform_as_string, json_xform_data = XlsFormParser(self.REPEAT, u"My questionnairé").parse()
-        mangroveService = MangroveService(self.user, xform_as_string, json_xform_data)
+        mangroveService = MangroveService(self.mock_request, xform_as_string, json_xform_data)
         mangroveService.create_project()
 
         questionnaire_code = mangroveService.questionnaire_code

@@ -370,9 +370,10 @@ class XlsFormParser():
 
 
 class MangroveService():
-    def __init__(self, user, xform_as_string, json_xform_data, questionnaire_code=None, project_name=None,
+    def __init__(self, request, xform_as_string, json_xform_data, questionnaire_code=None, project_name=None,
                  xls_form=None):
-        self.user = user
+        self.request = request
+        self.user = request.user
         user_profile = NGOUserProfile.objects.get(user=self.user)
         self.reporter_id = user_profile.reporter_id
         self.manager = get_database_manager(self.user)
@@ -407,7 +408,7 @@ class MangroveService():
         self._add_model_sub_element(root, 'form_code', form_code)
         return '<?xml version="1.0"?>%s' % ET.tostring(root)
 
-    def create_project(self, request):
+    def create_project(self):
         project_json = {'questionnaire-code': self.questionnaire_code}
 
         questionnaire = create_questionnaire(post=project_json, manager=self.manager, name=self.name,
@@ -422,8 +423,8 @@ class MangroveService():
         questionnaire.update_media_field_flag()
         questionnaire.update_doc_and_save()
         questionnaire.add_attachments(self.xls_form, 'questionnaire.xls')
-        UserActivityLog().log(request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
-        detail=questionnaire.name)
+        UserActivityLog().log(self.request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
+                              detail=questionnaire.name)
         return questionnaire.id, questionnaire.form_code
 
 

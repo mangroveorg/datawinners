@@ -91,10 +91,10 @@ class ProjectUpload(View):
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
             tmp_file.seek(0)
-            mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
+            mangrove_service = MangroveService(request, xform_as_string, json_xform_data,
                                                questionnaire_code=questionnaire_code, project_name=project_name,
                                                xls_form=tmp_file)
-            questionnaire_id, form_code = mangrove_service.create_project(request)
+            questionnaire_id, form_code = mangrove_service.create_project()
 
         except PyXFormError as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
@@ -246,7 +246,7 @@ class ProjectUpdate(View):
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
 
-            mangrove_service = MangroveService(request.user, xform_as_string, json_xform_data,
+            mangrove_service = MangroveService(request, xform_as_string, json_xform_data,
                                                questionnaire_code=questionnaire.form_code,
                                                project_name=questionnaire.name)
 
