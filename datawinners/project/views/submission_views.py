@@ -41,7 +41,7 @@ from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQueryResponseCreator
-from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet
+from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet, DateTimeField
 from mangrove.form_model.project import Project
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -107,6 +107,14 @@ def get_filterable_field_details(field, filterable_fields):
             'label': field.label,
             'is_month_format': field.is_monthly_format,
             'format': field.date_format
+        }
+    elif isinstance(field, DateTimeField):
+        return {
+            'type': 'date',
+            'code': field.code,
+            'label': field.label,
+            'is_month_format': field.is_monthly_format,
+            'format': 'dd.mm.yyyy'
         }
     elif isinstance(field, UniqueIdField):
         if not _is_unique_id_type_present(filterable_fields, field.unique_id_type):
