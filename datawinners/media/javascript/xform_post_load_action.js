@@ -19,6 +19,15 @@ $(document).on("postFormLoadAction", function(){
             _initializeWarningDialog();
     });
 
+    if (navigator.userAgent.indexOf('Safari') > -1){
+        $(document).find('input[type=file]').each(function(){
+            if ($(this).attr('accept') == "video/*"){
+                $(this).removeAttr('accept');
+                $(this).attr('data','video/*');
+            }
+        });
+    }
+
     $(document).data('maxSubmissionSize', 20 * 1024 * 1024); // Increase media file size from default 5mb to 20mb
 });
 

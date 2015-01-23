@@ -34621,6 +34621,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             that = this;
 
         this.mediaType = $input.attr( 'accept' );
+        if (! this.mediaType) this.mediaType = $input.attr( 'data' );
 
         $input
             .attr( 'disabled', 'disabled' )
