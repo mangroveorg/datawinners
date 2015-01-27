@@ -16,6 +16,7 @@ XLS_QUESTIONNAIRE_LOG_FILE_NAME = "datawinners_xsl_questionnaire.log"
 PERFORMANCE_LOG_FILE_NAME = "datawinners-performance.log"
 WEB_SUBMISSION_LOG_FILE_NAME = "websubmission.log"
 SP_SUBMISSION_LOG_FILE_NAME = "sp-submission.log"
+MEDIA_LOG_FILE_NAME = "media-submission.log"
 COMMANDS_LOG_FILE = "commands.log"
 
 LOGGING = {
@@ -106,6 +107,16 @@ LOGGING = {
             'maxBytes': MAX_LOG_BYTES,
             'backupCount': BACK_UP_COUNT
         },
+        'media-submission': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, MEDIA_LOG_FILE_NAME),
+            'mode': 'a', #append+create
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
+        }
+        ,
         'commands': {
             'level': 'INFO',
             'class': 'logging.handlers.CompressRotatingFileHandler',
@@ -180,6 +191,11 @@ LOGGING = {
         'spsubmission': {
             'level': 'ERROR',
             'handlers': ['sp-submission'],
+            'propagate': True,
+        },
+        'media-submission': {
+            'level': 'ERROR',
+            'handlers': ['media-submission'],
             'propagate': True,
         },
         'datawinners.main.management.commands': {
