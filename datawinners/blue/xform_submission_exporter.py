@@ -77,7 +77,7 @@ class XFormSubmissionExporter(SubmissionExporter):
     def _archive_images_and_workbook(self, workbook_file, file_name, folder_name=None, media_folder=None):
         file_name_normalized = slugify(file_name)
         zip_file = TemporaryFile()
-        archive = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED)
+        archive = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED, allowZip64=True)
         self.add_directory_to_archive(archive, folder_name, media_folder)
         archive.write(workbook_file.name, compress_type=zipfile.ZIP_DEFLATED,
                       arcname="%s.xlsx" % file_name_normalized)
