@@ -13,6 +13,6 @@ def calculate_usage(db_name, log_file_path):
         usage_per_questionnaire = dbm.view.all_media_details(reduce=True, group=True)
         for row in usage_per_questionnaire:
             project = Project.get(dbm, row['key'])
-            text += "%s (%s): Used: %.2f mb\n\n" % (project.name, project.id, row['value'])
+            text += "%s (%s): Used: %.2f mb\n" % (project.name, project.id, row['value'])
         with open(log_file_path, "a") as log_file:
             log_file.write(text)
