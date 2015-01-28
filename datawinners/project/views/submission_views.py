@@ -562,7 +562,7 @@ def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
 def _get_field_to_sort_on(post_dict, form_model, filter_type):
     order_by = int(post_dict.get('iSortCol_0')) - 1
     header = HeaderFactory(form_model).create_header(filter_type)
-    headers = header.get_header_field_names()
+    headers = header.get_field_names_as_header_name()
     meta_fields = ['ds_id', 'entity_short_code']
     for field in meta_fields:
         # Remove extra meta fields with which ordering in submission values

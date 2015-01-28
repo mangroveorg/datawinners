@@ -46,6 +46,13 @@ class SubmissionHeader():
     def get_header_field_dict(self):
         return self.get_header_dict()
 
+    def get_field_names_as_header_name(self):
+        headers = self.get_header_dict().keys()
+        entity_questions = self.form_model.entity_questions
+        for entity_question in entity_questions:
+            headers.remove(self.form_model.id+'_'+es_unique_id_code_field_name(entity_question.code))
+        return headers
+
     @abstractmethod
     def update_static_header_info(self):
         pass
