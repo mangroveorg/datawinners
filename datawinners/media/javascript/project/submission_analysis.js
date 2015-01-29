@@ -17,8 +17,10 @@ DW.SubmissionAnalysisView = function(){
        _initializeExport();
     };
 
-    var _initializeExport = function(){
-        new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
+    var _initializeExport = function () {
+        var submissionLogExport = new DW.SubmissionLogExport();
+        submissionLogExport.update_tab(submissionTabs.getActiveTabName());
+        submissionLogExport.init();
     };
 
     var _initializeSubmissionTable = function(submissionTabs){

@@ -49,6 +49,10 @@ $(document).ready(function () {
     _initialize_filters();
     $('#page_hint_section').text($('#page_hint').find('>div:first').text());
 
+    var submissionLogExport = new DW.SubmissionLogExport();
+    submissionLogExport.update_tab(submissionTabs.getActiveTabName());
+    submissionLogExport.init();
+
     $("#tabs").tabs().find('>ul>li>a[href$=tab_template]').click(function () {
         var tab_index = $(this).parent().index();
 
@@ -56,7 +60,7 @@ $(document).ready(function () {
             return;
         }
         submissionTabs.setActiveTabIndex(tab_index);
-        new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
+        submissionLogExport.update_tab(submissionTabs.getActiveTabName());
         _activate_tab(submissionTabs);
         return true;
     });
@@ -64,7 +68,7 @@ $(document).ready(function () {
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
 
-    new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
+//    new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
     new DW.FilterSection().init();
 });
 
