@@ -1,19 +1,14 @@
 import json
 import datetime
+import os
+from PIL import Image
 
 from django.utils.translation import ugettext, get_language
-import elasticutils
+
 from datawinners.accountmanagement.localized_time import convert_utc_to_localized
-
-from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
-from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
-from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
-from datawinners.search.query import QueryBuilder, Query
 from mangrove.form_model.field import FieldSet, SelectField, MediaField
-from mangrove.form_model.form_model import get_field_by_attribute_value
-
 
 class SubmissionQueryResponseCreator(object):
     def __init__(self, form_model, localized_time_delta):
@@ -101,8 +96,7 @@ class SubmissionQueryResponseCreator(object):
 
 def _format_media_value(submission_id, value):
     if value:
-        return "<a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, value, value)
-
+        return "<img src='/download/attachment/%s/preview_%s' alt=''/>" % (submission_id, value) + "  <a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, value, value)
 
 def _format_values(field_set, formatted_value, value_list, submission_id):
     if not value_list:
