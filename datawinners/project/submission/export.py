@@ -87,7 +87,9 @@ def create_excel_response(headers, raw_data_list, file_name):
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
 
     wb = xlwt.Workbook()
-    add_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix='data_log')
+    data = [headers]
+    data.extend(raw_data_list)
+    workbook_add_sheet(wb, data, file_name)
 
     wb.save(response)
     return response

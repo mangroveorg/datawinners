@@ -91,14 +91,17 @@ DW.SubmissionLogTable = function (options) {
 DW.SubmissionLogExport = function () {
     var self = this;
 
-    self.init = function (currentTabName) {
+    self.init = function () {
         self.exportLink = $('.export_link');
         self.exportForm = $('#export_form');
-        self.url = '/project/export/log' + '?type=' + currentTabName;
-        self.count_url = '/project/export/log-count' + '?type=' + currentTabName;
         self.is_media = false;
         _initialize_dialogs();
         _initialize_events();
+    };
+
+    self.update_tab = function(currentTabName){
+        self.url = '/project/export/log' + '?type=' + currentTabName;
+        self.count_url = '/project/export/log-count' + '?type=' + currentTabName;
     };
 
     var _updateAndSubmitForm = function(){
@@ -166,7 +169,7 @@ DW.SubmissionLogExport = function () {
             else {
                self.is_media = true;
                DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _check_limit_and_export();
+                _check_limit_and_export();
             }
 
          });

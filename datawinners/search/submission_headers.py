@@ -46,6 +46,14 @@ class SubmissionHeader():
     def get_header_field_dict(self):
         return self.get_header_dict()
 
+    def get_field_names_as_header_name(self):
+        headers = self.get_header_dict().keys()
+        entity_questions = self.form_model.entity_questions
+        for entity_question in entity_questions:
+            headers.remove(
+                es_unique_id_code_field_name(es_questionnaire_field_name(entity_question.code, self.form_model.id)))
+        return headers
+
     @abstractmethod
     def update_static_header_info(self):
         pass
@@ -56,17 +64,20 @@ class SubmissionAnalysisHeader(SubmissionHeader):
         header_dict = OrderedDict()
 
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         return header_dict
 
 
 class AllSubmissionHeader(SubmissionHeader):
-
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         header_dict.update({"status": translate("Status", self.language, ugettext)})
 
@@ -76,10 +87,13 @@ class AllSubmissionHeader(SubmissionHeader):
 class SuccessSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         return header_dict
+
 
 class MobileSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
@@ -88,11 +102,14 @@ class MobileSubmissionHeader(SubmissionHeader):
         header_dict.update({"date": "Submission Date"})
         return header_dict
 
+
 class ErroredSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         header_dict.update({"error_msg": translate("Error Message", self.language, ugettext)})
         return header_dict

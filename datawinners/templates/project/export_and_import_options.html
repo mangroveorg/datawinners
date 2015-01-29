@@ -18,22 +18,13 @@
                            </button>
                        </div>
                    </div>
-                   <div id="action" class="dropdown">
+                   <div id="action" class="dropdown" >
                        <ul class="dropdown-menu">
-                           <li><a id="export_with_media" action-dropdown="export_with_media">{% trans "Export With Media" %}</a></li>
-                           <li><a id="export_with_out_media" action-dropdown="export_with_out_media">{% trans "Export Without Media" %}</a></li>
+                           <li><a id="export_with_out_media" action-dropdown="export_with_out_media" class="export_link">{% trans "Export Excel file only" %}</a></li>
+                           <li><a id="export_with_media" action-dropdown="export_with_media"  class="with_media">{% trans "Export Excel and Media Files(.zip)" %}</a></li>
                        </ul>
                    </div>
                </div>
-               <select class="dropd">Export Actions
-                   <option selected="selected" disabled="disabled" hidden="hidden">Export Submissions</option>
-                   <option>Export Without Media</option>
-                   <option>Export With Media</option>
-               </select>
-
-               <a href="javascript:void(0);" class="export_link">{% trans "Export Without Media" %}</a>
-               |
-               <a class="with_media">{% trans "Export With Media" %}</a>
            {% else %}
                <a href="javascript:void(0);" class="export_link">{% trans "Export Submissions" %}</a>
            {% endif %}

@@ -51,5 +51,7 @@ class Command(BaseCommand):
                     print "Sending mail..."
                     _send_email(full_log_file_path)
             print "Log file path: %s" % full_log_file_path
+        else:
+            print "No media usage across accounts."
         print "Done."
 

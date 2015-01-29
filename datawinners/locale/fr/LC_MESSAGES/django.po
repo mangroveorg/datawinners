@@ -5656,3 +5656,9 @@ msgstr "GMT%s <span class='timezone-text'>  Il est: %s</span>"
 
 msgid "Timezone"
 msgstr "Fuseau horaire"
+
+msgid "Export Excel and Media Files(.zip)"
+msgstr "Exporter les fichiers Excel et Media (.zip)"
+
+msgid "Export Excel file only"
+msgstr "Exporter le fichier Excel uniquement​"
