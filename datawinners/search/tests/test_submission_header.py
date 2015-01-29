@@ -27,6 +27,19 @@ class TestSubmissionHeader(unittest.TestCase):
 
         self.assertDictEqual(expected, result)
 
+    def test_get_field_names_as_header_dict(self):
+        self.form_model.fields = [self.field1, self.field2, self.field3]
+        self.form_model.entity_questions = [self.field3]
+        expected = ['date', 'ds_id', 'ds_name',
+                    'form_model_id_q1',
+                    'form_model_id_q2',
+                    'form_model_id_q3']
+
+        result = SubmissionAnalysisHeader(self.form_model).get_field_names_as_header_name()
+
+        self.assertListEqual(expected, result)
+
+
     def test_get_header_dict_from_form_model_with_single_unique_id_question(self):
         self.form_model.fields = [self.field1, self.field2, self.field3]
         self.form_model.entity_questions = [self.field3]
