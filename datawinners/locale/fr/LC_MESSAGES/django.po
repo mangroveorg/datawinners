@@ -5210,8 +5210,8 @@ msgstr "details_menage.xls"
 msgid "Advanced Form"
 msgstr "Formulaire avancé"
 
-msgid "Repeats, Skip Logic, Cascading selects, Grouping, Answer constraint, Calculations"
-msgstr "Répétitions, Skip Logic, Sélections en cascade, Questions groupées, Contraintes, Calculs"
+msgid "Skip Logic, Media Files (image, video, audio, signature), Repeats, Cascading selects, Grouping, Answer constraint, Calculations"
+msgstr "Skip logic, fichiers media (image, vidéo, audio, signature), répétitions, Contraintes, Calculs"
 
 msgid "Question types, Skip Logic, Repeated set of Questions, Required and Hints"
 msgstr "Types de question, Skip Logic ou branchement conditionnel, Répétition d'une série de questions, Obligatoires et Astuces"
@@ -5315,8 +5315,14 @@ msgstr "Modifier le Questionnaire"
 msgid "Upload a new XLSForm (Excel file) to replace the current Questionnaire"
 msgstr "Téléchargez un nouveau XLSForm (fichier Excel) pour remplacer le Questionnaire actuel"
 
-msgid "Use XLSForms to create a Questionnaire with advanced features (such as skip logic), then upload the XLSForm to DataWinners account"
-msgstr "Utilisez les XLSForms pour créer un Questionnaire incluant les fonctionnalités avancées (tel que Skip Logic), puis téléchargez l'XLSForm dans DataWinners"
+msgid "Use XLSForms to create a Questionnaire with advanced features (such as skip logic and media files), then upload the XLSForm to DataWinners account"
+msgstr "Utilisez les XLSForms pour créer un Questionnaire incluant les fonctionnalités avancées (tel que skip logic et fichiers media), puis téléchargez l'XLSForm dans DataWinners"
+
+msgid "Media Files (data collection using Images, Video and Audio)"
+msgstr "Fichiers media (collecte de données avec Images, Vidéo et Audio)"
+
+msgid "View Video"
+msgstr "Voir la Vidéo"
 
 msgid "XLSForm"
 msgstr "formulaire XLS"

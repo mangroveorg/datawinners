@@ -10,15 +10,15 @@
            {% if is_media_field_present %}
                {#                   action button like look#}
                <div id="action_dropdown">
-                   <div id="action_button" class="action_bar clear-both" style="margin-bottom: 20px">
+                   <div id="action_button" class="action_bar clear-both">
                        <div class="btn-group">
-                           <button class="export_btn dropdown-toggle action" href="#"
+                           <button class="export_btn dropdown-toggle action"
                                    data-dropdown="#action">{% trans "Export Submissions" %}
                                <span class="caret"></span>
                            </button>
                        </div>
                    </div>
-                   <div id="action" class="dropdown" >
+                   <div id="action" class="dropdown margin_top_5" >
                        <ul class="dropdown-menu">
                            <li><a id="export_with_out_media" action-dropdown="export_with_out_media" class="export_link">{% trans "Export Excel file only" %}</a></li>
                            <li><a id="export_with_media" action-dropdown="export_with_media"  class="with_media">{% trans "Export Excel and Media Files(.zip)" %}</a></li>
