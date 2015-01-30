@@ -2,7 +2,7 @@
 
 <div id="xls_learn_more_form" class="none">
     <div class="learn_more_text">
-        {% trans "Use XLSForms to create a Questionnaire with advanced features (such as skip logic), then upload the XLSForm to DataWinners account" %}
+        {% trans "Use XLSForms to create a Questionnaire with advanced features (such as skip logic and media files), then upload the XLSForm to DataWinners account" %}
     </div>
     <hr>
     <div class="learn_more_accordion" id="learn_more_section">
@@ -14,8 +14,9 @@
             {% trans "XLSForm is a tool that allows you to design a Questionnaire with advanced features:"%}
             <br/><br/>
             <ul>
-                <li>{% trans "Repeats (Repeated set of questions)" %} </li>
+                <li>{% trans "Media Files (data collection using Images, Video and Audio)" %} </li>
                 <li>{% trans "Skip logic" %} </li>
+                <li>{% trans "Repeats (Repeated set of questions)" %} </li>
                 <li>{% trans "Grouping questions" %} </li>
                 <li>{% trans "Cascading selects" %} </li>
                 <li>{% trans "Answer Constraints" %} </li>
@@ -27,6 +28,8 @@
 
             <br/>
             {% trans "Read more: " %} <a id="learn-xls-forms-pdf-link" class="dialog-link" target="_blank" href="/media/files/DataWinners - How To Create a Questionnaire with XLSForms.pdf">{% trans "How to create XLSForms in DataWinners" %}</a>
+            <br/><br/>
+            <a class="dialog-link" target="_blank"> {% trans "View Video" %}</a>
             <br/><br/>
             <h4>{%  trans "Sample Forms" %}</h4>
 
@@ -40,7 +43,7 @@
                 <li class="margin_top_10"> {% trans "Advanced Form" %}: <a class="dialog-link"
                                                                            href="/media/files/{% trans "household_details.xls" %}">{% trans "household_details.xls" %}</a>
                     <br>
-                    <span style="font-style: italic">{% trans "Repeats, Skip Logic, Cascading selects, Grouping, Answer constraint, Calculations" %}</span>
+                    <span style="font-style: italic">{% trans "Skip Logic, Media Files (image, video, audio, signature), Repeats, Cascading selects, Grouping, Answer constraint, Calculations" %}</span>
                 </li>
             </ol>
             <br/>
