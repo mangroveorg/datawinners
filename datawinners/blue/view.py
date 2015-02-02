@@ -573,8 +573,11 @@ def get_attachment(request, document_id, attachment_name):
 @is_not_expired
 def attachment_download(request, document_id, attachment_name):
     manager = get_database_manager(request.user)
-    raw_file = manager.get_attachments(document_id, attachment_name=attachment_name)
-    mime_type = mimetypes.guess_type(os.path.basename(attachment_name))[0]
-    response = HttpResponse(raw_file, mimetype=mime_type)
-    response['Content-Disposition'] = 'attachment; filename="%s"' % attachment_name
-    return response
+    try:
+        raw_file = manager.get_attachments(document_id, attachment_name=attachment_name)
+        mime_type = mimetypes.guess_type(os.path.basename(attachment_name))[0]
+        response = HttpResponse(raw_file, mimetype=mime_type)
+        response['Content-Disposition'] = 'attachment; filename="%s"' % attachment_name
+        return response
+    except LookupError:
+        return HttpResponse(status=404)
