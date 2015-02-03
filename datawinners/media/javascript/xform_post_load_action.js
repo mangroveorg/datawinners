@@ -19,7 +19,7 @@ $(document).on("postFormLoadAction", function(){
             _initializeWarningDialog();
     });
 
-    if (navigator.userAgent.indexOf('Safari') > -1){
+    if (Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0){
         $(document).find('input[type=file]').each(function(){
             if ($(this).attr('accept') == "video/*"){
                 $(this).removeAttr('accept');
