@@ -99,11 +99,17 @@ def _is_unique_id_type_present(fields_array, unique_id_type):
         [item for item in fields_array if item['type'] == 'unique_id' and item['entity_type'] == unique_id_type]) > 0
 
 
-def get_filterable_field_details(field, filterable_fields):
+def _field_code(field, parent_code):
+    if parent_code:
+        return parent_code + ':' + field.code
+    return field.code
+
+
+def get_filterable_field_details(field, filterable_fields, parent_code):
     if isinstance(field, DateField):
         return {
             'type': 'date',
-            'code': field.code,
+            'code': _field_code(field, parent_code),
             'label': field.label,
             'is_month_format': field.is_monthly_format,
             'format': field.date_format
@@ -111,7 +117,7 @@ def get_filterable_field_details(field, filterable_fields):
     elif isinstance(field, DateTimeField):
         return {
             'type': 'date',
-            'code': field.code,
+            'code': _field_code(field, parent_code),
             'label': field.label,
             'is_month_format': field.is_monthly_format,
             'format': 'dd.mm.yyyy'
@@ -120,19 +126,19 @@ def get_filterable_field_details(field, filterable_fields):
         if not _is_unique_id_type_present(filterable_fields, field.unique_id_type):
             return {
                 'type': 'unique_id',
-                'code': field.code,
+                'code': _field_code(field, parent_code),
                 'entity_type': field.unique_id_type,
             }
 
 
-def get_filterable_fields(fields):
+def get_filterable_fields(fields, parent_code=None):
     filterable_fields = []
     for field in fields:
-        field_detials = get_filterable_field_details(field, filterable_fields)
+        field_detials = get_filterable_field_details(field, filterable_fields, parent_code)
         if field_detials:
             filterable_fields.append(field_detials)
-        if (isinstance(field, FieldSet) and field.is_group()):
-            filterable_fields.extend(get_filterable_fields(field.fields))
+        if isinstance(field, FieldSet) and field.is_group():
+            filterable_fields.extend(get_filterable_fields(field.fields, field.code))
     return filterable_fields
 
 

@@ -81,7 +81,12 @@ class SubmissionDateRangeFilter(DateRangeFilter):
 
 class DateQuestionRangeFilter(DateRangeFilter):
     def __init__(self, date_range, form_model, date_question_code):
-        self.date_field = form_model.get_field_by_code(date_question_code)
+        if ':' in date_question_code:
+            parent_code = date_question_code.split(':')[0]
+            date_field_code = date_question_code.split(':')[0]
+            self.date_field = form_model.get_field_by_code_in_fieldset(date_field_code, parent_code)
+        else:
+            self.date_field = form_model.get_field_by_code(date_question_code)
         self.form_model = form_model
         DateRangeFilter.__init__(self, date_range)
 
