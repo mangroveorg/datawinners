@@ -1,6 +1,6 @@
 {% load i18n %}
-<span id="export-warning" class="warning_message">
-    {% trans "Your download will begin shortly. Download times will vary based on the amount of data and your Internet connection speed." %} <a id="close-export-msg" class="button">{% trans "dismiss" %}</a>
+<span id="export-warning" class="none information_box">
+    {% trans "Your download will begin shortly. Download times will vary based <br/>on the amount of data and your Internet connection speed." %} <a id="close-export-msg">{% trans "Dismiss" %}</a>
 </span>
 <span class="links float_right">
        {% if not project.xform %}

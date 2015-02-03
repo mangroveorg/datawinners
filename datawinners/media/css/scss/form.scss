@@ -706,7 +706,7 @@ a.dialog-anchor {
   text-decoration: none !important;
 }
 
-.warning_message {
+.information_box {
   padding-left: 27px;
   padding-right: 10px;
   padding-top: 3px;
@@ -722,13 +722,6 @@ a.dialog-anchor {
   top: 63px;
   left: 348px;
   z-index: 1000;
-}
-
-#export-warning{
-  position: absolute;
-  top: 260px;
-  z-index: 1000;
-  left: 500px;
 }
 
 .ie8-warning-fr{

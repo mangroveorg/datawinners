@@ -5668,3 +5668,9 @@ msgstr "Exporter les fichiers Excel et Media (.zip)"
 
 msgid "Export Excel file only"
 msgstr "Exporter le fichier Excel uniquement​"
+
+msgid "Your download will begin shortly. Download times will vary based <br/>on the amount of data and your Internet connection speed."
+msgstr "Le téléchargement débutera dans quelques instants. La durée du  téléchargement dépendra <br/>de la quantité de données et de la vitesse de votre connexion Internet."
+
+msgid "Dismiss"
+msgstr "Annuler"
