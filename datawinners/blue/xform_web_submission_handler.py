@@ -25,7 +25,7 @@ class XFormWebSubmissionHandler():
         self.player = XFormPlayerV2(self.manager, get_feeds_database(self.request_user))
         self.xml_submission_file = request.POST['form_data']
         self.retain_files = request.POST['retain_files'].split(',') if request.POST.get('retain_files') else None
-
+        self.add_preview_files()
         self.user_profile = NGOUserProfile.objects.get(user=self.request_user)
         self.mangrove_request = Request(message=self.xml_submission_file, media=request.FILES,
             retain_files=self.retain_files,
@@ -35,6 +35,13 @@ class XFormWebSubmissionHandler():
                 destination=''
             ))
         self.organization = Organization.objects.get(org_id=self.user_profile.org_id)
+
+    def add_preview_files(self):
+        if self.retain_files and len(self.retain_files) > 0:
+            preview_files = []
+            for file_name in self.retain_files:
+                preview_files.append("preview_"+file_name)
+            self.retain_files += preview_files
 
     def create_new_submission_response(self):
         try:

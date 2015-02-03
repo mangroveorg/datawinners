@@ -1,18 +1,15 @@
 import json
 import datetime
+import os
+from PIL import Image
+from django.db.models.fields.files import ImageField
 
 from django.utils.translation import ugettext, get_language
-import elasticutils
-from datawinners.accountmanagement.localized_time import convert_utc_to_localized
 
-from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
+from datawinners.accountmanagement.localized_time import convert_utc_to_localized
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
-from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
-from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
-from datawinners.search.query import QueryBuilder, Query
-from mangrove.form_model.field import FieldSet, SelectField, MediaField
-from mangrove.form_model.form_model import get_field_by_attribute_value
+from mangrove.form_model.field import FieldSet, SelectField, MediaField, PhotoField
 
 
 class SubmissionQueryResponseCreator(object):
@@ -58,6 +55,13 @@ class SubmissionQueryResponseCreator(object):
                 field in
                 self.form_model.media_fields] if self.form_model.is_media_type_fields_present else []
 
+    def _get_media_field_codes_images(self):
+        media_field_code = []
+        for media_field in self.form_model.media_fields:
+            if isinstance(media_field, PhotoField):
+                media_field_code.append(es_questionnaire_field_name(media_field.code, self.form_model.id, media_field.parent_field_code))
+        return media_field_code
+
     def create_response(self, required_field_names, search_results):
         entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id) for field in
                                  self.form_model.entity_questions]
@@ -65,7 +69,7 @@ class SubmissionQueryResponseCreator(object):
         meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
         meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
         media_field_codes = self._get_media_field_codes()
-
+        image_fields = self._get_media_field_codes_images()
         submissions = []
         language = get_language()
         for res in search_results.hits:
@@ -88,21 +92,27 @@ class SubmissionQueryResponseCreator(object):
                             _format_fieldset_values_for_representation(res.get(key), fieldset_fields.get(key),
                                                                        res._meta.id))
                     else:
-                        submission.append(self._append_if_attachments_are_present(res, key, media_field_codes))
+                        submission.append(self._append_if_attachments_are_present(res, key, media_field_codes, image_fields))
             submissions.append(submission)
         return submissions
 
-    def _append_if_attachments_are_present(self, res, key, media_field_codes):
+    def _append_if_attachments_are_present(self, res, key, media_field_codes, image_fields):
         if self.form_model.is_media_type_fields_present and key in media_field_codes:
-            return _format_media_value(res._meta.id, res.get(key))
+            if key in image_fields:
+                thumbnail_flag = True
+                return _format_media_value(res._meta.id, res.get(key), thumbnail_flag)
+            else:
+                return _format_media_value(res._meta.id, res.get(key))
+
         else:
             return res.get(ugettext(key))
 
-
-def _format_media_value(submission_id, value):
+def _format_media_value(submission_id, value, thumbnail_flag=False):
+    formatted_value = ""
+    if thumbnail_flag:
+        formatted_value = "<img src='/download/attachment/%s/preview_%s' alt=''/>" % (submission_id, value)
     if value:
-        return "<a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, value, value)
-
+        return formatted_value+"  <a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, value, value)
 
 def _format_values(field_set, formatted_value, value_list, submission_id):
     if not value_list:
@@ -122,7 +132,8 @@ def _format_values(field_set, formatted_value, value_list, submission_id):
             value = ''
             value = _format_values(field, value, value_dict.get(field.code), submission_id)
         elif isinstance(field, MediaField):
-            value = _format_media_value(submission_id, value_dict.get(field.code))
+            show_thumbnail = isinstance(field, ImageField)
+            value = _format_media_value(submission_id, value_dict.get(field.code), show_thumbnail)
             value = '' if not value else value
         else:
             value = value_dict.get(field.code) or ''
