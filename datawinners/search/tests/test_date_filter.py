@@ -84,3 +84,16 @@ class TestDateQuestionFilter(unittest.TestCase):
 
         self.assertDictEqual(actual_query.to_dict(),
                              {'range': {'form_id_q1_value': {'gte': u'26.11.2013', 'lte': u'26.11.2013'}}})
+
+    def test_should_call_query_match_for_date_field_inside_fieldset(self):
+        mock_form_model = MagicMock(spec=FormModel)
+        mock_form_model.get_field_by_code_in_fieldset.return_value = DateField(name='q1', code='q1', label='q1',
+                                                                               date_format='dd.mm.yyyy',
+                                                                               parent_field_code='q1_parent')
+        mock_form_model.id = 'form_id'
+        today = "26.11.2013"
+
+        actual_query = DateQuestionRangeFilter(today, mock_form_model, 'q1_parent:q1').build_filter_query()
+
+        self.assertDictEqual(actual_query.to_dict(),
+                             {'range': {'form_id_q1_parent-q1_value': {'gte': u'26.11.2013', 'lte': u'26.11.2013'}}})

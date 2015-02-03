@@ -62,10 +62,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     def _verify_date_filters(self, submission_log_page):
         self.assertEqual(submission_log_page.get_date_filter_count(), 5)  # 4 date filters + 1 submission date filter
         submission_log_page.show_all_filters()
-        submission_log_page.filter_by_date_question(LAST_MONTH, by_id('date-question-filter-my_date_year')) \
+        submission_log_page.filter_by_date_question(LAST_MONTH, by_id('date-question-filter-date_time_widgets:my_date_year')) \
             .wait_for_table_data_to_load()
         self.assertEqual(submission_log_page.get_total_number_of_records(), 0)
-        submission_log_page.filter_by_date_question(ALL_PERIODS, by_id('date-question-filter-my_date_year')) \
+        submission_log_page.filter_by_date_question(ALL_PERIODS, by_id('date-question-filter-date_time_widgets:my_date_year')) \
             .wait_for_table_data_to_load()
         self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
 
