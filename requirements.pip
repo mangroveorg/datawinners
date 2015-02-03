@@ -52,4 +52,4 @@ six==1.8.0
 elasticsearch-dsl==0.0.2
 openpyxl==2.1.3
 XlsxWriter==0.6.4
--e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@excel_upgrade_1#egg=mangrove
