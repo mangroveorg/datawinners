@@ -35,11 +35,10 @@ class XFormSubmissionExporter(SubmissionExporter):
         submission = self.dbm._load_document(submission_id, SurveyResponseDocument)
         files = submission._data.get('_attachments', {})
         for name in files.keys():
-            complete_name = os.path.join(folder_name, name)
-            temp_file = open(complete_name, "w")
-            file = self.dbm.get_attachments(submission_id, name)
-            temp_file.write(file)
-            temp_file.close()
+            if not name.startswith('preview_'):
+                temp_file = open(os.path.join(folder_name, name), "w")
+                temp_file.write(self.dbm.get_attachments(submission_id, name))
+                temp_file.close()
 
     @staticmethod
     def add_directory_to_archive(archive, folder_name, media_folder):
