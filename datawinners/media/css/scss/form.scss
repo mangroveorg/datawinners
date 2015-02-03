@@ -705,3 +705,32 @@ a.dialog-anchor {
   opacity: 1;
   text-decoration: none !important;
 }
+
+.warning_message {
+  padding-left: 27px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  background: url("/media/images/icons.png") no-repeat left -82px;
+  background-color: lightblue;
+  font-size: 15px;
+  margin: 3px;
+  border: 1px solid rgb(85,172,238);
+}
+#ie8-warning{
+  position: absolute;
+  top: 63px;
+  left: 348px;
+  z-index: 1000;
+}
+
+#export-warning{
+  position: absolute;
+  top: 260px;
+  z-index: 1000;
+  left: 500px;
+}
+
+.ie8-warning-fr{
+  left: 175px !important;
+}
