@@ -112,7 +112,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
                                field_set=[group_field])
         entry = u'[{"group":[{"name": "messi", "img": "img.png" }]},{"group": [{"name": "ronaldo", "img": "img2.png"}]}]'
         formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
-        result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur img</span>: <a href=\'/download/attachment/id/img.png\'>img.png</a>";";<br><br>"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur img</span>: <a href=\'/download/attachment/id/img2.png\'>img2.png</a>";";<br><br></span>'
+        result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur img</span>:   <a href=\'/download/attachment/id/img.png\'>img.png</a>";";<br><br>"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur img</span>:   <a href=\'/download/attachment/id/img2.png\'>img2.png</a>";";<br><br></span>'
         self.assertEqual(formatted_values, result)
 
     def test_should_format_media_questions(self):
@@ -133,5 +133,5 @@ class TestSubmissionResponseCreator(unittest.TestCase):
             results)
 
         expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
-                     '<a href=\'/download/attachment/index_id/img2.png\'>img2.png</a>']]
+                     '  <a href=\'/download/attachment/index_id/img2.png\'>img2.png</a>']]
         self.assertEqual(submissions, expected)
