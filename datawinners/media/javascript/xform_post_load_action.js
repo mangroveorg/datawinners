@@ -28,7 +28,7 @@ $(document).on("postFormLoadAction", function(){
         });
     }
 
-    $(document).data('maxSubmissionSize', 20 * 1024 * 1024); // Increase media file size from default 5mb to 20mb
+    $(document).data('maxSubmissionSize', 50 * 1024 * 1024); // Increase media file size from default 5mb to 50mb
 });
 
 
