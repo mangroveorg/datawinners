@@ -78,12 +78,13 @@ class SubmissionDateRangeFilter(DateRangeFilter):
     def get_python_date_format(self, date):
         return '%d.%m.%Y'
 
+PARENT_FIELD_SEPARATOR = '----'
 
 class DateQuestionRangeFilter(DateRangeFilter):
     def __init__(self, date_range, form_model, date_question_code):
-        if ':' in date_question_code:
-            parent_code = date_question_code.split(':')[0]
-            date_field_code = date_question_code.split(':')[1]
+        if PARENT_FIELD_SEPARATOR in date_question_code:
+            parent_code = date_question_code.split(PARENT_FIELD_SEPARATOR)[0]
+            date_field_code = date_question_code.split(PARENT_FIELD_SEPARATOR)[1]
             self.date_field = form_model.get_field_by_code_in_fieldset(date_field_code, parent_code)
         else:
             self.date_field = form_model.get_field_by_code(date_question_code)

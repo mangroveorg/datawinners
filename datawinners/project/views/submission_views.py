@@ -101,7 +101,7 @@ def _is_unique_id_type_present(fields_array, unique_id_type):
 
 def _field_code(field, parent_code):
     if parent_code:
-        return parent_code + ':' + field.code
+        return parent_code + '----' + field.code
     return field.code
 
 
