@@ -227,11 +227,17 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][3], u'Success')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][4], u'1-locate.png')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][5], u'name')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[1][6], u'11.02.2015 10:45:00')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[1][7], u'other')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[1][8], u'newOption')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][0], u'Tester Pune')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][1], u'rep276')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][3], u'Success')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][4], u'2-locate.png')
-        self.assertEquals(workbook._sheet_list[0]._cell_values[1][5], u'name')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[2][5], u'name')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[2][6], u'11.02.2015 10:45:00')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[2][7], u'other')
+        self.assertEquals(workbook._sheet_list[0]._cell_values[2][8], u'newOption')
 
 
     def _verify_file_names_in_zip(self, zip_file):
@@ -244,6 +250,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertIn(files_in_zip[0], expected_list)
         self.assertIn(files_in_zip[1], expected_list)
         self.assertIn(files_in_zip[2], expected_list)
+        self.assertEquals(files_in_zip.__len__(), 3)
         return zip_file_open
 
     def _write_to_file_from_zip(self, zip_file_open):
@@ -273,6 +280,8 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         form_code = self._verify_questionnaire_creation(self.project_name, 'image.xlsx')
         project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
         self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        self.driver.find(by_id('submission_log_link')).click()
+        self.driver.find_visible_element(by_id('ignore_changes')).click()
         self._verify_submission_log_page_images(web_submission_page)
 
         self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411',image_upload=True)
