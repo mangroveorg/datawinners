@@ -35,7 +35,7 @@ class XFormSubmissionExporter(SubmissionExporter):
         submission = self.dbm._load_document(submission_id, SurveyResponseDocument)
         files = submission._data.get('_attachments', {})
         for name in files.keys():
-            if not name.startswith('preview_'):
+            if not name.startswith('preview_'): #Ignoring image preview files in export
                 temp_file = open(os.path.join(folder_name, name), "w")
                 temp_file.write(self.dbm.get_attachments(submission_id, name))
                 temp_file.close()
