@@ -1,5 +1,7 @@
 import json
+import re
 from django.contrib import messages
+from django.core.mail import EmailMessage
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.utils.translation import ugettext
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
@@ -13,7 +15,9 @@ from mangrove.transport import Request, TransportInfo
 from mangrove.errors.MangroveException import ExceedSMSLimitException
 from mangrove.transport.player.new_players import XFormPlayerV2
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
+from mangrove.transport.services.MediaSubmissionService import MediaAttachmentNotFoundException
 from mangrove.utils.dates import py_datetime_to_js_datestring
+from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 
 
 class XFormWebSubmissionHandler():
@@ -49,12 +53,27 @@ class XFormWebSubmissionHandler():
                 return HttpResponse(status=403)
             if self.organization.in_trial_mode:
                 check_quotas_for_trial(self.organization)
+        except MediaAttachmentNotFoundException as me:
+            self._send_media_error_mail(me.message)
+            raise me
         except Exception as e:
             if not isinstance(e, ExceedSMSLimitException):
                 raise e
         player_response = self.player.add_survey_response(self.mangrove_request, self.user_profile.reporter_id,
                                                           logger=sp_submission_logger)
         return self._post_save(player_response)
+
+    def _send_media_error_mail(self, message):
+        email_message = ''
+        email_message += '\nOrganization Details : %s' % self.user_profile.org_id
+        email_message += '\nUser Email Id : %s\n' % self.request_user.username
+        email_message += '\nError: %s' % message
+        email = EmailMessage(subject="[ERROR] Media attachment missing : %s" % self.request_user.email,
+                             body=repr(re.sub("\n", "<br/>", email_message)),
+                             from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
+        email.content_subtype = "html"
+
+        email.send()
 
     def update_submission_response(self, survey_response_id):
 
@@ -65,8 +84,13 @@ class XFormWebSubmissionHandler():
         if not survey_response:
             raise LookupError()
 
-        player_response = self.player.update_survey_response(self.mangrove_request,
-                                                      logger=sp_submission_logger, survey_response=survey_response)
+        try:
+            player_response = self.player.update_survey_response(self.mangrove_request,
+                                                          logger=sp_submission_logger, survey_response=survey_response)
+        except MediaAttachmentNotFoundException as me:
+            self._send_media_error_mail(me.message)
+            raise me
+
         return self._post_save(player_response)
 
     def _post_save(self, response):
