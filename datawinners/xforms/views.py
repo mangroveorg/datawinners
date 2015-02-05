@@ -1,5 +1,7 @@
 import logging
+import re
 import xml
+from django.core.mail import EmailMessage
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
@@ -13,12 +15,14 @@ from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.contract.request import Request
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
+from mangrove.transport.services.MediaSubmissionService import MediaAttachmentNotFoundException
 from mangrove.transport.xforms.xform import list_all_forms, xform_for
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.messageprovider.messages import SMART_PHONE
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
+from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 
 logger = logging.getLogger("datawinners.xform")
 sp_submission_logger = logging.getLogger("sp-submission")
@@ -88,6 +92,19 @@ def __authorized_to_make_submission_on_requested_form(request_user, submission_f
     return is_authorized_for_questionnaire(dbm, request_user, requested_form_code)
 
 
+def _send_media_error_mail(request, user, user_profile, message):
+    email_message = ''
+    email_message += '\nOrganization Details : %s' % user_profile.org_id
+    email_message += '\nUser Email Id : %s\n' % user.username
+    email_message += '\nError: %s' % message
+    email = EmailMessage(subject="[ERROR] Media attachment missing: %s" % user.email,
+                         body=repr(re.sub("\n", "<br/>", email_message)),
+                         from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
+    email.content_subtype = "html"
+
+    email.send()
+
+
 @csrf_exempt
 @httpdigest
 @restrict_request_country
@@ -122,6 +139,10 @@ def submission(request):
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
             return HttpResponseBadRequest()
+
+    except MediaAttachmentNotFoundException as me:
+        _send_media_error_mail(request, request_user, user_profile, me.message)
+        return HttpResponseBadRequest()
 
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)

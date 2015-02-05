@@ -1,8 +1,5 @@
 import json
 import datetime
-import os
-from PIL import Image
-from django.db.models.fields.files import ImageField
 
 from django.utils.translation import ugettext, get_language
 
@@ -55,7 +52,7 @@ class SubmissionQueryResponseCreator(object):
                 field in
                 self.form_model.media_fields] if self.form_model.is_media_type_fields_present else []
 
-    def _get_media_field_codes_images(self):
+    def _get_image_field_codes(self):
         media_field_code = []
         for media_field in self.form_model.media_fields:
             if isinstance(media_field, PhotoField):
@@ -69,7 +66,7 @@ class SubmissionQueryResponseCreator(object):
         meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
         meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
         media_field_codes = self._get_media_field_codes()
-        image_fields = self._get_media_field_codes_images()
+        image_fields = self._get_image_field_codes()
         submissions = []
         language = get_language()
         for res in search_results.hits:
@@ -99,8 +96,7 @@ class SubmissionQueryResponseCreator(object):
     def _append_if_attachments_are_present(self, res, key, media_field_codes, image_fields):
         if self.form_model.is_media_type_fields_present and key in media_field_codes:
             if key in image_fields:
-                thumbnail_flag = True
-                return _format_media_value(res._meta.id, res.get(key), thumbnail_flag)
+                return _format_media_value(res._meta.id, res.get(key), thumbnail_flag=True)
             else:
                 return _format_media_value(res._meta.id, res.get(key))
 
@@ -132,7 +128,7 @@ def _format_values(field_set, formatted_value, value_list, submission_id):
             value = ''
             value = _format_values(field, value, value_dict.get(field.code), submission_id)
         elif isinstance(field, MediaField):
-            show_thumbnail = isinstance(field, ImageField)
+            show_thumbnail = isinstance(field, PhotoField)
             value = _format_media_value(submission_id, value_dict.get(field.code), show_thumbnail)
             value = '' if not value else value
         else:
