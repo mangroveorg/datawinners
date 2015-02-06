@@ -687,8 +687,8 @@ a.dialog-anchor {
   display: inline-block;
   line-height: 20px;
   margin-bottom: 0;
-  padding: 4px 60px 4px 12px;
-  text-align: center;
+  min-width: 230px;
+  text-align: right;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   vertical-align: middle;
 }
