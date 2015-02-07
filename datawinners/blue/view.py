@@ -385,7 +385,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                                         is_update=is_update)
         if self.questionnaire.xform:
             form_context.update(
-                {'xform_xml': re.sub(r"\n", " ", XFormTransformer(self.questionnaire.xform).transform())})
+                {'xform_xml': re.sub(r"\n", " ", XFormTransformer(self.questionnaire.xform_with_unique_ids_substituted()).transform())})
             form_context.update({'is_advance_questionnaire': True})
             form_context.update({'submission_create_url': reverse('new_web_submission')})
         form_context.update({'is_quota_reached': is_quota_reached(self.request)})
