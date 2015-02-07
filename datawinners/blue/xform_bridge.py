@@ -4,7 +4,7 @@ import re
 from xml.etree import ElementTree as ET
 
 from lxml import etree
-from pyxform.xls2json import parse_file_to_json, parse_file_to_workbook_dict
+from pyxform.xls2json import parse_file_to_json
 import xlrd
 import xmldict
 from pyxform import create_survey_element_from_dict
@@ -39,7 +39,7 @@ BARCODE = 'barcode'
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
-                           'time', 'datetime'],
+                           'time', 'datetime', 'unique_id'],
                  'auto_filled': ['note', 'today'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
@@ -213,12 +213,20 @@ class XlsFormParser():
             errors.add("Uploaded file is empty!")
         if errors:
             return errors, None, None
+        self.map_unique_id_question_to_select_one()
         survey = create_survey_element_from_dict(self.xform_dict)
         xform = survey.to_xml()
         # encoding is added to support ie8
         xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
         return [], updated_xform, questions
+
+    def map_unique_id_question_to_select_one(self):
+        for field in self.xform_dict['children']:
+            if field['type'] == "unique_id":
+                field['type'] = 'select one'
+                field[u'choices'] = [{u'name': field['name'], u'label':u'placeholder'}]
+                del field['bind']
 
     def update_xform_with_questionnaire_name(self, xform):
         return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % self.questionnaire_name, xform)
@@ -292,6 +300,9 @@ class XlsFormParser():
             format = self._get_date_format(field)
             question.update({'date_format': format, 'event_time_field_flag': False,
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
+
+        if type == 'unique_id':
+            question.update({'uniqueIdType': field['bind']['constraint']})
 
         if type == CALCULATE:
             question.update({"is_calculated": True})
