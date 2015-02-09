@@ -55,7 +55,8 @@ class WorkBookResponseFactory:
 
     def create_workbook_response(self, data, field_codes):
         if not self.is_entity_registration:
-            return export_to_new_excel(dict({self.sheet_name: data[0], 'codes':[self.form_code] + field_codes}),
+            field_codes.insert(0, self.form_code)
+            return export_to_new_excel(dict({self.sheet_name: data[0], 'codes':field_codes}),
                 {}, self.file_name, hide_codes_sheet=True, browser=self.browser)
         response = HttpResponse(mimetype='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename="%s.xls"' % slugify(self.file_name)
