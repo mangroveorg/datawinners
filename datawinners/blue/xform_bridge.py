@@ -104,6 +104,8 @@ class XlsFormParser():
                         errors.extend(field_errors)
                 except LabelForChoiceNotPresentException as e:
                     errors.append(e.message)
+                except UniqueIdNotFoundException as e:
+                    errors.append(e.message)
                 except LabelForFieldNotPresentException as e:
                     errors.append(e.message)
         return questions, set(errors)
@@ -302,7 +304,10 @@ class XlsFormParser():
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
 
         if type == 'unique_id':
-            question.update({'uniqueIdType': field['bind']['constraint']})
+            try:
+                question.update({'uniqueIdType': field['bind']['constraint']})
+            except KeyError:
+                raise UniqueIdNotFoundException(field['name'])
 
         if type == CALCULATE:
             question.update({"is_calculated": True})
@@ -582,6 +587,13 @@ class PrefetchCSVNotSupportedException(Exception):
 class LabelForFieldNotPresentException(Exception):
     def __init__(self, field_name):
         self.message = _("Label mandatory for question with name [%s]") % field_name
+
+    def __str__(self):
+        return self.message
+
+class UniqueIdNotFoundException(Exception):
+    def __init__(self, field_name):
+        self.message = _("UniqueId type not found in constraint column for field with name [%s]") % field_name
 
     def __str__(self):
         return self.message
