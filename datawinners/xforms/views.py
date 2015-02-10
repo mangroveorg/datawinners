@@ -99,7 +99,7 @@ def _send_media_error_mail(request, user, user_profile, message):
     email_message += '\nUser Agent : %s\n' % request.META.get('HTTP_USER_AGENT', '')
     email_message += '\nError: %s' % message
     email = EmailMessage(subject="[ERROR] Media attachment missing: %s" % user.email,
-                         body=repr(re.sub("\n", "<br/>", email_message)),
+                         body=repr(re.sub('\n', "<br/>", email_message)),
                          from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
 
