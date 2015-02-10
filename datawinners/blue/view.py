@@ -411,8 +411,8 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 
         if self.questionnaire.xform:
             form_context.update({'survey_response_id': survey_response_id})
-            xform_transformer = XFormTransformer(self.questionnaire.xform)
-            form_context.update({'xform_xml': re.sub(r"\n", " ", xform_transformer.transform())})
+            #xform_transformer = XFormTransformer(self.questionnaire.xform)
+            form_context.update({'xform_xml': re.sub(r"\n", " ", XFormTransformer(self.questionnaire.xform_with_unique_ids_substituted()).transform())})
             form_context.update(
                 {'edit_model_str': self._model_str_of(survey_response_id,
                                                       get_generated_xform_id_name(self.questionnaire.xform))})
