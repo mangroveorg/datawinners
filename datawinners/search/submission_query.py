@@ -60,7 +60,7 @@ class SubmissionQueryResponseCreator(object):
         return media_field_code
 
     def create_response(self, required_field_names, search_results):
-        entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id) for field in
+        entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id, field.parent_field_code) for field in
                                  self.form_model.entity_questions]
         fieldset_fields = self.get_field_set_fields(self.form_model.fields)
         meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]

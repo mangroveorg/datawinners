@@ -215,7 +215,7 @@ class XlsFormParser():
             errors.add("Uploaded file is empty!")
         if errors:
             return errors, None, None
-        self.map_unique_id_question_to_select_one()
+        _map_unique_id_question_to_select_one(self.xform_dict)
         survey = create_survey_element_from_dict(self.xform_dict)
         xform = survey.to_xml()
         # encoding is added to support ie8
@@ -223,12 +223,6 @@ class XlsFormParser():
         updated_xform = self.update_xform_with_questionnaire_name(xform)
         return [], updated_xform, questions
 
-    def map_unique_id_question_to_select_one(self):
-        for field in self.xform_dict['children']:
-            if field['type'] == "unique_id":
-                field['type'] = 'select one'
-                field[u'choices'] = [{u'name': field['name'], u'label':u'placeholder'}]
-                del field['bind']
 
     def update_xform_with_questionnaire_name(self, xform):
         return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % self.questionnaire_name, xform)
@@ -384,6 +378,15 @@ class XlsFormParser():
 
         return set(errors)
 
+
+def _map_unique_id_question_to_select_one(xform_dict):
+    for field in xform_dict['children']:
+        if field['type'] == "unique_id":
+            field['type'] = 'select one'
+            field[u'choices'] = [{u'name': field['name'], u'label':u'placeholder'}]
+            del field['bind']
+        elif field['type'] in ['group', 'repeat']:
+            _map_unique_id_question_to_select_one(field)
 
 class MangroveService():
     def __init__(self, request, xform_as_string, json_xform_data, questionnaire_code=None, project_name=None,
