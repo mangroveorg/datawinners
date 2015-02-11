@@ -422,7 +422,10 @@ class MangroveService():
         associate_account_users_to_project(self.manager, questionnaire)
         questionnaire.update_media_field_flag()
         questionnaire.update_doc_and_save()
-        base_name, extension = os.path.splitext(self.xls_form.name)
+        if self.xls_form:
+            base_name, extension = os.path.splitext(self.xls_form.name)
+        else:
+            extension = ".xls"
         questionnaire.add_attachments(self.xls_form, 'questionnaire%s' % extension)
         UserActivityLog().log(self.request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
                               detail=questionnaire.name)
