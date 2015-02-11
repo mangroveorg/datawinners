@@ -44,8 +44,10 @@ class XFormSubmissionExporter(SubmissionExporter):
     def add_directory_to_archive(archive, folder_name, media_folder):
         for dir_path, dir_name, file_names in os.walk(media_folder):
             for file_name in file_names:
+                file_extension = file_name.split('.')[-1]
+                file_name_slugifed = "%s.%s" % (slugify(".".join(file_name.split('.')[:-1])), file_extension)
                 complete_name = os.path.join(media_folder, file_name)
-                archive.write(complete_name, arcname=folder_name + "/" + file_name, compress_type=zipfile.ZIP_DEFLATED)
+                archive.write(complete_name, arcname=folder_name + "/" + file_name_slugifed, compress_type=zipfile.ZIP_DEFLATED)
 
     def create_excel_response_with_media(self, submission_type, query_params):
         columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
