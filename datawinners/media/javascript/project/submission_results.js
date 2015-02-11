@@ -132,7 +132,7 @@ DW.SubmissionLogExport = function () {
                 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
             }
         ).done(function(data){
-                if(data['count'] <= 20000){
+                if(data['count'] <= 10){
                    _updateAndSubmitForm(is_export_with_media);
                 }
                 else{
