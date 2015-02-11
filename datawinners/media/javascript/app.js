@@ -15279,7 +15279,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
          */
 
         function Form( formSelector, dataStr, dataStrToEdit, unsubmitted ) {
-            var model, dataToEdit, cookies, form, $form, $formClone, repeatsPresent, fixExpr,
+            var model, dataToEdit, cookies, form, $form, $formClone, repeatsPresent, fixExpr, _getMaxSize,
                 loadErrors = [];
 
             /**
@@ -15563,6 +15563,10 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                 return expr;
             };
 
+            _getMaxSize = function() {
+                var maxSize = $( document ).data( 'maxSubmissionSize' ) || 5 * 1024 * 1024;
+                return maxSize;
+            }
 
             /**
              * Inner Class dealing with the HTML Form
@@ -17090,7 +17094,10 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                         // if an element is disabled mark it as valid (to undo a previously shown branch with fields marked as invalid)
                         validCons = ( n.enabled && n.inputType !== 'hidden' ) ? model.node( n.path, n.ind ).validate( n.constraint, n.xmlType ) : true;
                     } else {
-                        validCons = model.node( n.path, n.ind ).setVal( n.val, n.constraint, n.xmlType );
+                        if($( this )[ 0 ].files[ 0 ].size <= _getMaxSize())
+                        {
+                            validCons = model.node( n.path, n.ind ).setVal( n.val, n.constraint, n.xmlType );
+                        }
                         // geotrace and geoshape are very complex data types that require various change events
                         // to avoid annoying users, we ignore the INVALID onchange validation result
                         validCons = ( validCons === false && ( n.xmlType === 'geotrace' || n.xmlType === 'geoshape' ) ) ? null : validCons;
