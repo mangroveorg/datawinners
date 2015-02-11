@@ -5211,7 +5211,7 @@ msgid "Advanced Form"
 msgstr "Formulaire avancé"
 
 msgid "Skip Logic, Media Files (image, video, audio, signature), Repeats, Cascading selects, Grouping, Answer constraint, Calculations"
-msgstr "Skip logic, fichiers media (image, vidéo, audio, signature), répétitions, Contraintes, Calculs"
+msgstr "Skip logic, fichiers media (image, vidéo, audio, signature), Répétitions, Sélection en cascade, Groupe de questions, Contraintes, Calculs"
 
 msgid "Question types, Skip Logic, Repeated set of Questions, Required and Hints"
 msgstr "Types de question, Skip Logic ou branchement conditionnel, Répétition d'une série de questions, Obligatoires et Astuces"
