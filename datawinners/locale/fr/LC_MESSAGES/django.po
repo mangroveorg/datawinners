@@ -5674,3 +5674,9 @@ msgstr "Le téléchargement débutera dans quelques instants. La durée du  tél
 
 msgid "Dismiss"
 msgstr "Annuler"
+
+msgid "http://youtu.be/LDSDt9u4R4k"
+msgstr "http://youtu.be/iu_cg2PoI9g"
+
+msgid "How to Collect Media Files With XLSForms"
+msgstr "Comment collecter des fichiers média avec XLSForm"
