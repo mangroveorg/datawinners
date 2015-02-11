@@ -27,6 +27,10 @@ DW.showError = function(errors,message_prefix,message_suffix){
         html("<span>" + error_message_prefix + "</span>"+ error_messages +"<span>" + error_message_suffix + "</span>").show();
 };
 
+DW.updateFilename = function(file_name){
+    $("div.download_xls span.heading_block").text(file_name);
+}
+
 DW.showSuccess = function(message){
     var flash_message = $("#xlx-message");
     flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").

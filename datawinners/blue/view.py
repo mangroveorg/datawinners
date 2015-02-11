@@ -60,10 +60,9 @@ class ProjectUpload(View):
     def post(self, request):
         file_content = None
         try:
-            tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
             file_content = request.raw_post_data
-
-            file_errors = _perform_file_validations(request)
+            file_errors, file_extension = _perform_file_validations(request)
+            tmp_file = NamedTemporaryFile(delete=True, suffix=file_extension)
             if file_errors:
                 logger.info("User: %s. Upload File validation failed: %s. File name: %s, size: %d",
                             request.user.username,
@@ -216,10 +215,11 @@ class ProjectUpdate(View):
         questionnaire = Project.get(manager, project_id)
         file_content = None
         try:
-            tmp_file = NamedTemporaryFile(delete=True, suffix=".xls")
             file_content = request.raw_post_data
 
-            file_errors = _perform_file_validations(request)
+            file_errors, file_extension = _perform_file_validations(request)
+            tmp_file = NamedTemporaryFile(delete=True, suffix=file_extension)
+            
             if file_errors:
                 logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
                             request.user.username,
@@ -257,7 +257,8 @@ class ProjectUpdate(View):
             questionnaire.update_media_field_flag()
             questionnaire.save(process_post_update=False)
 
-            questionnaire.add_attachments(tmp_file, 'questionnaire.xls')
+            base_name, extension = os.path.splitext(tmp_file.name)
+            questionnaire.update_attachments(tmp_file, 'questionnaire%s' % extension)
             self._purge_submissions(manager, questionnaire)
             self._purge_feed_documents(questionnaire, request)
             self._purge_media_details_documents(manager, questionnaire)
@@ -333,6 +334,7 @@ class ProjectUpdate(View):
                     "success": True,
                     "project_name": questionnaire.name,
                     "project_id": questionnaire.id,
+                    "file_name": "%s%s" % (slugify(questionnaire.name), extension),
                     # "xls_dict": XlsProjectParser().parse(file_content)
                 }),
             content_type='application/json')
@@ -505,12 +507,12 @@ def project_download(request):
 
     manager = get_database_manager(request.user)
     questionnaire = get_form_model_by_code(manager, questionnaire_code)
-
+    project = Project.from_form_model(questionnaire)
     try:
-        raw_excel = questionnaire.get_attachments('questionnaire.xls')
+        raw_excel, file_extension = project.has_attachment()[1:]
 
         response = HttpResponse(mimetype="application/vnd.ms-excel", content=raw_excel)
-        response['Content-Disposition'] = 'attachment; filename="%s.xls"' % slugify(project_name)
+        response['Content-Disposition'] = 'attachment; filename="%s.%s"' % (slugify(project_name), file_extension)
 
     except LookupError:
         response = HttpResponse(status=404)
@@ -546,6 +548,7 @@ def send_email_on_exception(user, error_type, stack_trace, additional_details=No
 
 def _perform_file_validations(request):
     errors = []
+    file_extension = ".xls"
     if request.GET and request.GET.get("qqfile"):
         file_extension = os.path.splitext(request.GET["qqfile"])[1]
         if file_extension not in [".xls", ".xlsx"]:
@@ -555,7 +558,7 @@ def _perform_file_validations(request):
     EXCEL_UPLOAD_FILE_SIZE = 10485760  # 10MB
     if request.META.get('CONTENT_LENGTH') and int(request.META.get('CONTENT_LENGTH')) > EXCEL_UPLOAD_FILE_SIZE:
         errors.append(_("larger files than 10MB."))
-    return errors
+    return errors, file_extension
 
 
 @login_required
