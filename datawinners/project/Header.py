@@ -63,7 +63,7 @@ class SubmissionsPageHeader():
         header = HeaderFactory(self._form_model).create_header(self.submission_type)
         header_dict = header.get_header_field_dict()
         header_dict.pop('ds_id', None)
-        unique_question_field_names = [es_unique_id_code_field_name(es_questionnaire_field_name(field.code, self._form_model.id)) for
+        unique_question_field_names = [es_unique_id_code_field_name(es_questionnaire_field_name(field.code, self._form_model.id, field.parent_field_code)) for
                                        field in
                                        self._form_model.entity_questions]
         for field_name in unique_question_field_names:

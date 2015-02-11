@@ -104,7 +104,7 @@ class SubmissionSearchStore():
     def _get_submission_fields(self, fields_definition, fields, parent_field_name=None):
         for field in fields:
             if isinstance(field, UniqueIdField):
-                unique_id_field_name = es_questionnaire_field_name(field.code, self.latest_form_model.id)
+                unique_id_field_name = es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)
                 fields_definition.append(
                     get_field_definition(field, field_name=es_unique_id_code_field_name(unique_id_field_name)))
 
@@ -113,8 +113,7 @@ class SubmissionSearchStore():
                 continue
             fields_definition.append(
                 get_field_definition(field,
-                                     field_name=es_questionnaire_field_name(field.code, self.latest_form_model.id,
-                                                                            parent_field_name)))
+                                     field_name=es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)))
 
     def recreate_elastic_store(self):
         self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
@@ -345,7 +344,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                 entry_code = entry
                 search_dict.update(
                     {es_unique_id_code_field_name(
-                        es_questionnaire_field_name(field.code, form_model.id)): entry_code or UNKNOWN})
+                        es_questionnaire_field_name(field.code, form_model.id, field.parent_field_code)): entry_code or UNKNOWN})
                 entry = entity_name
         elif field.type == "select":
             field = _get_select_field_by_revision(field, form_model, submission_doc)

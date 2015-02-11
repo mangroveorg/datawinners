@@ -22,7 +22,7 @@ class SubmissionHeader():
             return field.code
 
         entity_questions = self.form_model.entity_questions
-        entity_question_dict = dict((field.code, field) for field in entity_questions)
+        entity_question_dict = dict((self._get_entity_question_path(field), field) for field in entity_questions)
         headers = header_fields(self.form_model, key_attribute)
         for field_code, val in headers.items():
             key = es_questionnaire_field_name(field_code, self.form_model.id)
@@ -33,10 +33,13 @@ class SubmissionHeader():
 
         return header_dict
 
+    def _get_entity_question_path(self, field):
+        return "%s-%s" % (field.parent_field_code, field.code) if field.parent_field_code else field.code
+
     def add_unique_id_field(self, unique_id_field, header_dict):
         unique_id_question_code = unique_id_field.code
         subject_title = unique_id_field.unique_id_type
-        unique_id_field_name = es_questionnaire_field_name(unique_id_question_code, self.form_model.id)
+        unique_id_field_name = es_questionnaire_field_name(unique_id_question_code, self.form_model.id, unique_id_field.parent_field_code)
         header_dict.update({unique_id_field_name: unique_id_field.label})
         header_dict.update({es_unique_id_code_field_name(unique_id_field_name): "%s ID" % subject_title})
 
@@ -51,7 +54,7 @@ class SubmissionHeader():
         entity_questions = self.form_model.entity_questions
         for entity_question in entity_questions:
             headers.remove(
-                es_unique_id_code_field_name(es_questionnaire_field_name(entity_question.code, self.form_model.id)))
+                es_unique_id_code_field_name(es_questionnaire_field_name(entity_question.code, self.form_model.id, entity_question.parent_field_code)))
         return headers
 
     @abstractmethod
