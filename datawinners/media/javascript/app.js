@@ -17085,17 +17085,26 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                     // event.stopImmediatePropagation();
 
                     // set file input values to the actual name of file (without c://fakepath or anything like that)
+                    var isValidFile = false;
+
                     if ( n.val.length > 0 && n.inputType === 'file' && $( this )[ 0 ].files[ 0 ] && $( this )[ 0 ].files[ 0 ].size > 0 ) {
                         n.val = $( this )[ 0 ].files[ 0 ].name;
+                        isValidFile = true;
                     }
 
                     if ( event.type === 'validate' ) {
                         // the enabled check serves a purpose only when an input field itself is marked as enabled but its parent fieldset is not
                         // if an element is disabled mark it as valid (to undo a previously shown branch with fields marked as invalid)
                         validCons = ( n.enabled && n.inputType !== 'hidden' ) ? model.node( n.path, n.ind ).validate( n.constraint, n.xmlType ) : true;
-                    } else {
-                        if($( this )[ 0 ].files[ 0 ].size <= _getMaxSize())
-                        {
+                    }
+                    else {
+                        if(isValidFile){
+                            if($( this )[ 0 ].files[ 0 ].size <= _getMaxSize())
+                            {
+                                validCons = model.node( n.path, n.ind ).setVal( n.val, n.constraint, n.xmlType );
+                            }
+                        }
+                        else{
                             validCons = model.node( n.path, n.ind ).setVal( n.val, n.constraint, n.xmlType );
                         }
                         // geotrace and geoshape are very complex data types that require various change events
