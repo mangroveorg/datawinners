@@ -34712,10 +34712,13 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             if (file == undefined) {
                 event.stopPropagation();
                 $( this )[0].files = old_files;
+                if ($input.val()==''){
+                    that.$preview.empty();
+                    $input.trigger( 'change.file' );
+                }
                 event.preventDefault();
                 return false;
             }
-
             // trigger eventhandler to update instance value
             if ( event.namespace === 'passthrough' ) {
                 $input.trigger( 'change.file' );
