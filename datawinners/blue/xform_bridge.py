@@ -384,7 +384,7 @@ def _map_unique_id_question_to_select_one(xform_dict):
         if field['type'] == "unique_id":
             field['type'] = 'select one'
             field[u'choices'] = [{u'name': field['name'], u'label':u'placeholder'}]
-            del field['bind']
+            del field['bind']['constraint']
         elif field['type'] in ['group', 'repeat']:
             _map_unique_id_question_to_select_one(field)
 
