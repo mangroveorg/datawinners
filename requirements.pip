@@ -36,7 +36,7 @@ rednose
 django-debug-toolbar-django13
 requests==1.2.3
 elasticutils==0.8
-pyelasticsearch
+pyelasticsearch==0.7.1
 uWSGI==1.4.9
 djangorestframework==2.3.9
 python-magic==0.4.6
