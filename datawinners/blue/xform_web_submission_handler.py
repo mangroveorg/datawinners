@@ -70,7 +70,7 @@ class XFormWebSubmissionHandler():
         email_message += '\nUser Agent : %s\n' % self.request.META.get('HTTP_USER_AGENT', '')
         email_message += '\nError: %s' % message
         email = EmailMessage(subject="[ERROR] Media attachment missing : %s" % self.request_user.email,
-                             body=repr(re.sub("\n", "<br/>", email_message)),
+                             body=repr(re.sub('\n', "<br/>", email_message)),
                              from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
         email.content_subtype = "html"
 

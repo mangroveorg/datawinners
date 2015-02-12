@@ -5211,7 +5211,7 @@ msgid "Advanced Form"
 msgstr "Formulaire avancé"
 
 msgid "Skip Logic, Media Files (image, video, audio, signature), Repeats, Cascading selects, Grouping, Answer constraint, Calculations"
-msgstr "Skip logic, fichiers media (image, vidéo, audio, signature), répétitions, Contraintes, Calculs"
+msgstr "Skip logic, fichiers media (image, vidéo, audio, signature), Répétitions, Sélection en cascade, Groupe de questions, Contraintes, Calculs"
 
 msgid "Question types, Skip Logic, Repeated set of Questions, Required and Hints"
 msgstr "Types de question, Skip Logic ou branchement conditionnel, Répétition d'une série de questions, Obligatoires et Astuces"
@@ -5673,4 +5673,10 @@ msgid "Your download will begin shortly. Download times will vary based on the a
 msgstr "Le téléchargement débutera dans quelques instants. La durée du  téléchargement dépendra de la quantité de données et de la vitesse de votre connexion Internet."
 
 msgid "Dismiss"
-msgstr "Annuler"
+msgstr "OK"
+
+msgid "http://youtu.be/LDSDt9u4R4k"
+msgstr "http://youtu.be/iu_cg2PoI9g"
+
+msgid "How to Collect Media Files With XLSForms"
+msgstr "Comment collecter des fichiers média avec XLSForm"

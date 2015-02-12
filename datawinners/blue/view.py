@@ -577,7 +577,9 @@ def attachment_download(request, document_id, attachment_name):
         raw_file = manager.get_attachments(document_id, attachment_name=attachment_name)
         mime_type = mimetypes.guess_type(os.path.basename(attachment_name))[0]
         response = HttpResponse(raw_file, mimetype=mime_type)
-        response['Content-Disposition'] = 'attachment; filename="%s"' % attachment_name
+        file_extension = attachment_name.split('.')[-1]
+        file_name_slugifed = "%s.%s" % (slugify(".".join(attachment_name.split('.')[:-1])), file_extension)
+        response['Content-Disposition'] = 'attachment; filename="%s"' % file_name_slugifed
         return response
     except LookupError:
         return HttpResponse(status=404)
