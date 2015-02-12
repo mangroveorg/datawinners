@@ -385,6 +385,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                                             field.code)
                 else:
                     _update_repeat_fields_with_choice_values(entry, field)
+                    _update_name_unique_code(dbm, entry, field)
                     search_dict.update(
                         {es_questionnaire_field_name(field_code, form_model.id, parent_field_name): json.dumps(entry)})
             else:
@@ -392,6 +393,15 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
 
     search_dict.update({'void': submission_doc.void})
     search_dict.update({'is_anonymous': submission_doc.is_anonymous_submission})
+
+def _update_name_unique_code(dbm, repeat_entries, repeat_field):
+    for entry in repeat_entries:
+        for field in repeat_field.fields:
+            if isinstance(field, UniqueIdField):
+                unique_code = entry.get(field.code)
+                identification_number = get_by_short_code_include_voided(dbm, str(unique_code), [field.unique_id_type])
+                entry[field.code+'_name'] = identification_number.data['name']['value']
+
 
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
