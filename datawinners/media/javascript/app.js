@@ -34621,7 +34621,6 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             that = this;
 
         this.mediaType = $input.attr( 'accept' );
-        if (! this.mediaType) this.mediaType = $input.attr( 'data' );
 
         $input
             .attr( 'disabled', 'disabled' )
@@ -34641,8 +34640,21 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         this.$fakeInput = this.$widget.find( '.fake-file-input' );
 
         // show loaded file name regardless of whether widget is supported
+        this.downloadFileOnEdit = function(existingFileName){
+            var submission_id = $('document').context.defaultView.surveyResponseId;
+            this._showFileName( existingFileName, this.mediaType );
+            var location_image = "/download/attachment/"+submission_id+"/";
+            this.$preview.append('<a href="'+location_image+existingFileName+'" class="edit_link">'+existingFileName+'</a>');
+            if (this.mediaType == "image/*"){
+                this.$preview.append("<img src='"+location_image+"preview_"+existingFileName+"'/>");
+            }
+        };
+
+
+        // show loaded file name regardless of whether widget is supported
         if ( existingFileName ) {
             this._showFileName( existingFileName, this.mediaType );
+            this.downloadFileOnEdit(existingFileName);
         }
 
         if ( !fileManager || !fileManager.isSupported() ) {
@@ -34700,17 +34712,18 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             if (file == undefined) {
                 event.stopPropagation();
                 $( this )[0].files = old_files;
+                if ($input.val()==''){
+                    that.$preview.empty();
+                    $input.trigger( 'change.file' );
+                }
                 event.preventDefault();
                 return false;
             }
-
             // trigger eventhandler to update instance value
             if ( event.namespace === 'passthrough' ) {
                 $input.trigger( 'change.file' );
                 return false;
             }
-
-            $(this).removeAttr( 'data-loaded-file-name' );
 
             // process the file
             fileManager.getFileUrl( file )
@@ -34763,6 +34776,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         if ( url ) {
 //            Clearing preview before updating
             this.$preview.empty();
+            $(this).removeAttr( 'data-loaded-file-name' );
             this.$preview.append( $el.attr( 'src', url ) );
         }
     };
