@@ -5673,7 +5673,7 @@ msgid "Your download will begin shortly. Download times will vary based on the a
 msgstr "Le téléchargement débutera dans quelques instants. La durée du  téléchargement dépendra de la quantité de données et de la vitesse de votre connexion Internet."
 
 msgid "Dismiss"
-msgstr "Annuler"
+msgstr "OK"
 
 msgid "http://youtu.be/LDSDt9u4R4k"
 msgstr "http://youtu.be/iu_cg2PoI9g"
