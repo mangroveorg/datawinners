@@ -43,6 +43,7 @@ from datawinners.entity.helper import delete_datasender_for_trial_mode, \
 from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
 from mangrove.form_model.project import Project
+from datawinners.accountmanagement.registration_views import get_previous_page_language
 
 
 def registration_complete(request):
@@ -55,6 +56,7 @@ def registration_activation_complete(request):
 
 
 def custom_login(request, template_name, authentication_form):
+    get_previous_page_language(request)
     if request.user.is_authenticated():
         return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
     else:
