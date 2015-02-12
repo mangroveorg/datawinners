@@ -53,8 +53,9 @@ class SubmissionHeader():
         headers = self.get_header_dict().keys()
         entity_questions = self.form_model.entity_questions
         for entity_question in entity_questions:
-            headers.remove(
-                es_unique_id_code_field_name(es_questionnaire_field_name(entity_question.code, self.form_model.id, entity_question.parent_field_code)))
+            if not self.form_model.is_part_of_repeat_field(entity_question):
+                headers.remove(
+                    es_unique_id_code_field_name(es_questionnaire_field_name(entity_question.code, self.form_model.id, entity_question.parent_field_code)))
         return headers
 
     @abstractmethod
