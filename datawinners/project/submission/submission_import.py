@@ -13,9 +13,7 @@ from datawinners.project.helper import get_feed_dictionary, get_web_transport_in
 from datawinners.project.submission.validator import SubmissionWorkbookRowValidator
 from mangrove.transport.player.parser import XlsParser
 from mangrove.transport.services.survey_response_service import SurveyResponseService
-from openpyxl import load_workbook
-import StringIO
-
+from mangrove.transport.player.parser import XlsxParser
 logger = logging.getLogger("datawinners")
 
 
@@ -75,7 +73,7 @@ class SubmissionImporter():
         base_name, extension = os.path.splitext(file_name)
         if extension not in ['.xls', '.xlsx'] :
             raise InvalidFileFormatException()
-        parser_dict = {'.xls':XlsSubmissionParser, '.xlsx':XlsxSubmissionParser}
+        parser_dict = {'.xls':XlsSubmissionParser, '.xlsx':XlsxParser}
         return file_content, parser_dict.get(extension)
 
     def _add_reporter_id_for_datasender(self, parsed_rows, user_profile, is_organization_user):
@@ -196,22 +194,3 @@ class XlsSubmissionParser(XlsParser):
             row = self._clean(row)
             parsedData.append(row)
         return parsedData
-
-class XlsxSubmissionParser(XlsParser):
-    def parse(self, file_contents):
-        assert file_contents is not None
-        xlsx_file = StringIO.StringIO(file_contents)
-        
-        workbook = load_workbook(xlsx_file, use_iterators = True)
-        worksheet = workbook.get_sheet_by_name(name="Import_Submissions")
-        parsedData = []
-        for row in worksheet.iter_rows():
-            row_values = [self._get_value(x.value) for x in row]
-            row_values = self._clean(row_values)
-            parsedData.append(row_values)
-        return parsedData
-
-    def _get_value(self, value):
-        if value is not None:
-            return value
-        return ''

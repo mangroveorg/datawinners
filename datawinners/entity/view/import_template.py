@@ -54,14 +54,6 @@ class WorkBookResponseFactory:
         ws.row(0).height = 256*7
 
     def create_workbook_response(self, data, field_codes):
-        if not self.is_entity_registration:
-            field_codes.insert(0, self.form_code)
-            return export_to_new_excel(dict({self.sheet_name: data[0], 'codes':field_codes}),
+        field_codes.insert(0, self.form_code)
+        return export_to_new_excel(dict({self.sheet_name: data[0], 'codes':field_codes}),
                 {}, self.file_name, hide_codes_sheet=True, browser=self.browser)
-        response = HttpResponse(mimetype='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="%s.xls"' % slugify(self.file_name)
-        wb = get_excel_sheet(data, self.sheet_name)
-        add_codes_sheet(wb, self.form_code, field_codes)
-        self._add_styles(wb)
-        wb.save(response)
-        return response

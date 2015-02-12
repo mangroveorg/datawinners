@@ -2772,7 +2772,7 @@ msgstr ""
 msgid "To import a list of %(entity_type)s follow these steps"
 msgstr ""
 
-msgid "Download the template %(entity_type)s.xls"
+msgid "Download the template %(entity_type)s.xlsx"
 msgstr ""
 
 msgid "Fill out the template with your %(entity_type)s' information"

@@ -34,7 +34,7 @@ from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_QUESTIONNAIRES, \
     REMOVED_DATA_SENDER_TO_QUESTIONNAIRES, DELETED_DATA_SENDERS
-
+from mangrove.transport.player.parser import XlsxDataSenderParser
 
 class AllDataSendersView(TemplateView):
     template_name = 'entity/all_datasenders.html'
@@ -75,10 +75,19 @@ class AllDataSendersView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        error_message, failure_imports, success_message, successful_imports = import_module.import_data(
+        import os
+        file_extension = os.path.splitext(request.GET["qqfile"])[1]
+        if file_extension == '.xls':
+            error_message, failure_imports, success_message, successful_imports = import_module.import_data(
             request,
             manager,
             default_parser=XlsDatasenderParser)
+        if file_extension == '.xlsx':
+
+            error_message, failure_imports, success_message, successful_imports = import_module.import_data(
+            request,
+            manager,
+            default_parser=XlsxDataSenderParser)
 
         imported_data_senders = parse_successful_imports(successful_imports)
         self._convert_anonymous_submissions_to_registered(imported_data_senders, manager)
