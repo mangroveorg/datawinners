@@ -24,6 +24,7 @@ from mangrove.form_model.field import FieldSet, GeoCodeField, DateField, PhotoFi
 from datawinners.search import *
 from mangrove.transport.player.parser import XlsParser
 from django.utils.translation import ugettext as _
+from xml.sax.saxutils import escape
 
 
 def get_generated_xform_id_name(xform):
@@ -225,7 +226,7 @@ class XlsFormParser():
 
 
     def update_xform_with_questionnaire_name(self, xform):
-        return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % self.questionnaire_name, xform)
+        return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % escape(self.questionnaire_name), xform)
 
     def _get_label(self, field):
 
