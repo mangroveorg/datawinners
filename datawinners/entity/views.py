@@ -40,7 +40,7 @@ from datawinners.location.LocationTree import get_location_tree, get_location_hi
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined
-from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record
+from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
     QuestionAlreadyExistsException
@@ -295,7 +295,7 @@ def __create_web_users(org_id, reporter_details, language_code):
         content = json.dumps({'success': False, 'errors': errors, 'duplicate_entries': duplicate_entries})
     if errors.__len__() == 0 and duplicate_entries.keys().__len__() == 0:
         for reporter_id, email in reporter_details.iteritems():
-            reporter_entity = get_by_short_code(dbm, reporter_id, [REPORTER])
+            reporter_entity = contact_by_short_code(dbm, reporter_id)
             reporter_email = email.lower()
             put_email_information_to_entity(dbm, reporter_entity, email=reporter_email)
             user = User.objects.create_user(reporter_email, reporter_email, 'test123')
