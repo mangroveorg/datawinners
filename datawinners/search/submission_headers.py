@@ -43,6 +43,11 @@ class SubmissionHeader():
         header_dict.update({unique_id_field_name: unique_id_field.label})
         header_dict.update({es_unique_id_code_field_name(unique_id_field_name): "%s ID" % subject_title})
 
+    def add_unique_id_field_in_repeat(self, unique_id_field, header_dict):
+        unique_id_question_code = unique_id_field.code
+        subject_title = unique_id_field.unique_id_type
+        header_dict.update({unique_id_question_code+'_unique_code': {'label': "%s ID" % subject_title}})
+
     def get_header_field_names(self):
         return self.get_header_dict().keys()
 

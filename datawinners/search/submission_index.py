@@ -400,7 +400,8 @@ def _update_name_unique_code(dbm, repeat_entries, repeat_field):
             if isinstance(field, UniqueIdField):
                 unique_code = entry.get(field.code)
                 identification_number = get_by_short_code_include_voided(dbm, str(unique_code), [field.unique_id_type])
-                entry[field.code+'_name'] = identification_number.data['name']['value']
+                entry[field.code+'_unique_code'] = entry[field.code]
+                entry[field.code] = identification_number.data['name']['value']
 
 
 
