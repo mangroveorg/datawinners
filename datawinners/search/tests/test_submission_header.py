@@ -33,7 +33,8 @@ class TestSubmissionHeader(unittest.TestCase):
         expected = ['date', 'ds_id', 'ds_name',
                     'form_model_id_q1',
                     'form_model_id_q2',
-                    'form_model_id_q3']
+                    'form_model_id_q3',
+                    'form_model_id_q3_unique_code']
 
         result = SubmissionAnalysisHeader(self.form_model).get_field_names_as_header_name()
 
