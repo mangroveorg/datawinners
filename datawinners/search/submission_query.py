@@ -6,7 +6,7 @@ from django.utils.translation import ugettext, get_language
 from datawinners.accountmanagement.localized_time import convert_utc_to_localized
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
-from mangrove.form_model.field import FieldSet, SelectField, MediaField, PhotoField
+from mangrove.form_model.field import FieldSet, SelectField, MediaField, PhotoField, UniqueIdField
 
 
 class SubmissionQueryResponseCreator(object):
@@ -131,6 +131,9 @@ def _format_values(field_set, formatted_value, value_list, submission_id):
             show_thumbnail = isinstance(field, PhotoField)
             value = _format_media_value(submission_id, value_dict.get(field.code), show_thumbnail)
             value = '' if not value else value
+        elif isinstance(field, UniqueIdField):
+            value = value_dict.get(field.code+'_name')+' ('+ value_dict.get(field.code) + ')'
+
         else:
             value = value_dict.get(field.code) or ''
         formatted_value += '"' + '<span class="repeat_qtn_label">' + field.label + '</span>' + ': ' + value + '"'
