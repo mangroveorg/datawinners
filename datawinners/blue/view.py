@@ -233,7 +233,7 @@ class ProjectUpdate(View):
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
-            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, questionnaire.name).parse()
+            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
 
             if errors:
                 error_list = list(errors)

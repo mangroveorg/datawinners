@@ -4,6 +4,7 @@ import re
 from xml.etree import ElementTree as ET
 
 from lxml import etree
+from mangrove.datastore.entity_type import entity_type_already_defined
 from pyxform.xls2json import parse_file_to_json
 import xlrd
 import xmldict
@@ -52,8 +53,9 @@ class XlsFormParser():
     or_other_data_types = ['select all that apply or specify other', 'select one or specify other']
     select_without_list_name = ['select_one', 'select_multiple']
 
-    def __init__(self, path_or_file, questionnaire_name):
+    def __init__(self, path_or_file, questionnaire_name, dbm=None):
         self.questionnaire_name = questionnaire_name
+        self.dbm = dbm
         if isinstance(path_or_file, basestring):
             self._file_object = None
             path = path_or_file
@@ -300,7 +302,10 @@ class XlsFormParser():
 
         if type == 'unique_id':
             try:
-                question.update({'uniqueIdType': field['bind']['constraint']})
+                unique_id_type = field['bind']['constraint']
+                if not entity_type_already_defined(self.dbm, [unique_id_type]):
+                    raise UniqueIdNotFoundException(field['name'])
+                question.update({'uniqueIdType': unique_id_type})
             except KeyError:
                 raise UniqueIdNotFoundException(field['name'])
 
@@ -597,7 +602,7 @@ class LabelForFieldNotPresentException(Exception):
 
 class UniqueIdNotFoundException(Exception):
     def __init__(self, field_name):
-        self.message = _("UniqueId type not found in constraint column for field with name [%s]") % field_name
+        self.message = _("Valid UniqueId type not found in constraint column for field with name [%s]") % field_name
 
     def __str__(self):
         return self.message
