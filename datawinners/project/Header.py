@@ -82,10 +82,10 @@ class SubmissionExcelHeader():
             SubmissionIndexConstants.DATASENDER_ID_KEY: {
                 "label": header_dict[SubmissionIndexConstants.DATASENDER_ID_KEY]}})
 
-    def _update_with_field_meta(self, fields, result, parent_field_name=None):
+    def _update_with_field_meta(self, fields, result, header, parent_field_name=None, ):
         for field in fields:
             if isinstance(field, FieldSet) and field.is_group():
-                self._update_with_field_meta(field.fields, result, field.code)
+                self._update_with_field_meta(field.fields, result, header, field.code)
             else:
                 field_name = es_questionnaire_field_name(field.code, self._form_model.id, parent_field_name)
 
@@ -94,7 +94,7 @@ class SubmissionExcelHeader():
                     if field.type == "date":
                         result.get(field_name).update({"format": field.date_format})
                     if field.type == "field_set":
-                        result.get(field_name).update({"fields": self.get_sub_fields_of(field),
+                        result.get(field_name).update({"fields": self.get_sub_fields_of(field, header),
                                                        "code": field.code,
                                                        'fieldset_type': field.fieldset_type})
 
@@ -108,18 +108,20 @@ class SubmissionExcelHeader():
                 if key == SubmissionIndexConstants.DATASENDER_NAME_KEY: #add key column after name
                     self.add_datasender_id_column(header_dict, result)
 
-        self._update_with_field_meta(self._form_model.fields, result)
+        self._update_with_field_meta(self._form_model.fields, result, header=header)
         return result
 
-    def get_sub_fields_of(self, field):
+    def get_sub_fields_of(self, field, header):
         col = OrderedDict()
         for field in field.fields:
             details = {"type": field.type, "label": field.label}
             col.update({field.code: details})
             if field.type == "date":
                 details.update({"format": field.date_format})
+            if field.type == 'unique_id':
+                header.add_unique_id_field_in_repeat(field, col)
             if field.type == "field_set":
                 details.update({"code": field.code})
-                details.update({"fields" : self.get_sub_fields_of(field)})
+                details.update({"fields" : self.get_sub_fields_of(field, header)})
 
         return col

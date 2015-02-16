@@ -132,7 +132,7 @@ def _format_values(field_set, formatted_value, value_list, submission_id):
             value = _format_media_value(submission_id, value_dict.get(field.code), show_thumbnail)
             value = '' if not value else value
         elif isinstance(field, UniqueIdField):
-            value = value_dict.get(field.code+'_name')+' ('+ value_dict.get(field.code) + ')'
+            value = value_dict.get(field.code)+' ('+value_dict.get(field.code+'_unique_code') + ')'
 
         else:
             value = value_dict.get(field.code) or ''
