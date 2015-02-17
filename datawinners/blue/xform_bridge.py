@@ -396,6 +396,7 @@ def _map_unique_id_question_to_select_one(xform_dict):
         elif field['type'] in ['group', 'repeat']:
             _map_unique_id_question_to_select_one(field)
 
+
 class MangroveService():
     def __init__(self, request, xform_as_string, json_xform_data, questionnaire_code=None, project_name=None,
                  xls_form=None):

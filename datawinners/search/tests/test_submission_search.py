@@ -4,7 +4,7 @@ from mock import MagicMock, patch
 
 from datawinners.search.submission_query import SubmissionQueryResponseCreator, \
     _format_fieldset_values_for_representation
-from mangrove.form_model.field import UniqueIdField, TextField, IntegerField, SelectField, FieldSet, PhotoField, MediaField, \
+from mangrove.form_model.field import UniqueIdField, TextField, IntegerField, SelectField, FieldSet, PhotoField, \
     VideoField
 from mangrove.form_model.form_model import FormModel
 
@@ -121,6 +121,21 @@ class TestSubmissionResponseCreator(unittest.TestCase):
                          ' <a href=\'/download/attachment/id/img2.png\'>img2.png</a>", "<span class="repeat_qtn_label">wat is ur video</span>:   <a href=\'/download/attachment/id/video1.mp4\'>video1.mp4</a>";";<br>' \
                          '<br></span>'
         self.assertEqual(actual_formatted_values, expected_value)
+
+    def test_should_format_repeat_with_unique_id_question(self):
+        field1 = TextField(name='name', code='name', label='wat is ur name')
+        field2 = UniqueIdField(name='unique_id', code='unique_id', label='wat is ur unique_id',
+                               unique_id_type='student')
+        repeat_field = FieldSet('group', 'group', 'group', field_set=[field1, field2])
+        multi_field = FieldSet('student_details', 'student_details', 'Enter Student details', field_set=[repeat_field])
+
+        entry = u'[{"group":[{"name": "messi", "unique_id":"messi", "unique_id_unique_code": "stu1" }]},{"group": [{"name": "ronaldo", "unique_id":"ronaldo", "unique_id_unique_code": "stu2" }]}]'
+        actual_formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
+        expected_value = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: messi",' \
+                         ' "<span class="repeat_qtn_label">wat is ur unique_id</span>: messi (stu1)";";<br><br>"<span class="repeat_qtn_label">group</span>:' \
+                         ' "<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur unique_id</span>: ronaldo (stu2)";";<br><br></span>'
+        self.assertEqual(actual_formatted_values, expected_value)
+
 
     def test_should_format_image_question(self):
         form_model = MagicMock(spec=FormModel)
