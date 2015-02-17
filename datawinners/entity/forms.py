@@ -115,6 +115,8 @@ class ReporterRegistrationForm(Form):
             self._errors['geo_code'] = self.error_class([msg])
         if bool(geo_code):
             self._geo_code_validations(geo_code)
+        if not self.cleaned_data.get('project_id'):
+            self.cleaned_data['is_data_sender'] = False
         return self.cleaned_data
 
     def clean_short_code(self):

@@ -141,6 +141,7 @@ def _get_data(form_data, country,reporter_id=None):
     data[mapper['geo_code']] = form_data.get('geo_code')
     data[mapper['Name']] = form_data.get('name')
     data[mapper['email']] = form_data.get('email')
+    data['is_data_sender'] = form_data.get('is_data_sender')
     data['form_code'] = REGISTRATION_FORM_CODE
     data[ENTITY_TYPE_FIELD_CODE] = REPORTER
     data['s'] = reporter_id

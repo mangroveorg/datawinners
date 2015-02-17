@@ -12,6 +12,7 @@ def register_postsave_handlers():
     if _postsave_registered: return
     EntityDocument.register_post_update(entity_search_update)
     ContactDocument.register_post_update(contact_search_update)
+    EntityFormModelDocument.register_post_update(entity_form_model_change_handler)
     FormModelDocument.register_post_update(form_model_change_handler)
     FormModelDocument.register_post_update(update_datasender_for_project_change)
     SurveyResponseDocument.register_post_update(update_submission_search_index)
