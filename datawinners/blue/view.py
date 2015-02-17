@@ -79,7 +79,7 @@ class ProjectUpload(View):
             manager = get_database_manager(request.user)
             questionnaire_code = generate_questionnaire_code(manager)
 
-            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name).parse()
+            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name, manager).parse()
             if errors:
                 error_list = list(errors)
                 logger.info("User: %s. Upload Errors: %s", request.user.username, json.dumps(error_list))

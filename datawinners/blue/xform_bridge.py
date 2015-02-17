@@ -42,7 +42,7 @@ BARCODE = 'barcode'
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
-                           'time', 'datetime', 'unique_id'],
+                           'time', 'datetime', 'dw_idnr'],
                  'auto_filled': ['note', 'today'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
@@ -287,8 +287,8 @@ class XlsFormParser():
         return 'dd.mm.yyyy'
 
     def _field(self, field, parent_field_code=None):
-        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text'}
-        help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field'}
+        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text', 'dw_idnr': 'unique_id'}
+        help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field', 'dw_idnr':'Identification Number'}
         name = self._get_label(field)
         code = field['name']
         type = field['type'].lower()
@@ -302,12 +302,12 @@ class XlsFormParser():
             question.update({'date_format': format, 'event_time_field_flag': False,
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
 
-        if type == 'unique_id':
+        if type == 'dw_idnr':
             try:
                 unique_id_type = field['bind']['constraint']
                 if not entity_type_already_defined(self.dbm, [unique_id_type]):
                     raise UniqueIdNotFoundException(field['name'])
-                question.update({'uniqueIdType': unique_id_type})
+                question.update({'uniqueIdType': unique_id_type, "is_entity_question": True})
             except KeyError:
                 raise UniqueIdNotFoundException(field['name'])
 
@@ -389,7 +389,7 @@ class XlsFormParser():
 
 def _map_unique_id_question_to_select_one(xform_dict):
     for field in xform_dict['children']:
-        if field['type'] == "unique_id":
+        if field['type'] == "dw_idnr":
             field['type'] = 'select one'
             field[u'choices'] = [{u'name': field['name'], u'label':u'placeholder'}]
             del field['bind']['constraint']
