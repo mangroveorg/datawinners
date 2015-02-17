@@ -3,7 +3,8 @@ import unittest
 
 from mock import patch
 
-from datawinners.blue.xform_bridge import XlsFormParser, get_generated_xform_id_name
+from datawinners.blue.xform_bridge import XlsFormParser, get_generated_xform_id_name, \
+    _map_unique_id_question_to_select_one
 
 
 DIR = os.path.dirname(__file__)
@@ -453,6 +454,62 @@ class TestXformBridge(unittest.TestCase):
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
             self.assertEquals(actual_errors, [])
+
+    def test_should_create_entity_question_for_dw_idnr_question(self):
+        with patch('datawinners.blue.xform_bridge.entity_type_already_defined') as is_entity_type_already_defined:
+            with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+                xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+                fields = [{u'name': u'my_unique',
+                           u'bind': {u'constraint': u'clinic'}, u'label': u'mu_uni', u'type': u'dw_idnr'}]
+
+                get_xform_dict.return_value = fields
+                is_entity_type_already_defined.return_value = True
+                questions, errors = xls_form_parser._create_questions(fields)
+
+                self.assertEqual(questions.__len__(), 1)
+                self.assertDictEqual(questions[0], {'instruction': 'Answer must be a Identification Number',
+                                                    'code': u'my_unique', 'title': u'mu_uni', 'required': False,
+                                                    'parent_field_code': None, 'name': u'mu_uni',
+                                                    'is_entity_question': True, 'type': 'unique_id',
+                                                    'uniqueIdType': u'clinic'})
+
+    def test_should_populate_error_when_constraint_not_given_for_dw_idnr_question(self):
+        with patch('datawinners.blue.xform_bridge.entity_type_already_defined') as is_entity_type_already_defined:
+            with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+                xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+                fields = [{u'name': u'my_unique', u'label': u'mu_uni', u'type': u'dw_idnr'}]
+
+                get_xform_dict.return_value = fields
+                is_entity_type_already_defined.return_value = True
+                questions, errors = xls_form_parser._create_questions(fields)
+
+                self.assertEqual(questions.__len__(), 0)
+                self.assertEqual(errors, {
+                    u'Valid UniqueId type not found in constraint column for field with name [my_unique]'})
+
+    def test_should_map_dw_idnr_question_to_select_one(self):
+        # dw_idnr field in parent level, in group, in repeat inside group
+        fields = {u'children': [
+            {u'name': u'my_unique',
+             u'bind': {u'constraint': u'clinic'}, u'label': u'mu_uni', u'type': u'dw_idnr'}, {
+                u'children': [{u'bind': {u'constraint': u'clinic'}, u'type': u'dw_idnr', u'name': u'mm',
+                               u'label': u'mm'}, {u'children': [
+                    {u'bind': {u'constraint': u'clinic'}, u'type': u'dw_idnr', u'name': u'my_group_uni',
+                     u'label': u'my_grou_uni'}, {u'type': u'text', u'name': u'text', u'label': u'ttext'}],
+                                                  u'type': u'repeat', u'name': u'gr', u'label': u'gr'}],
+                u'type': u'group', u'name': u'my_groupi', u'label': u'my_group'}]}
+
+        _map_unique_id_question_to_select_one(fields)
+        expected_fields = {u'children': [
+            {u'bind': {}, u'choices': [{u'name': u'my_unique', u'label': u'placeholder'}], u'type': u'select one',
+             u'name': u'my_unique', u'label': u'mu_uni'}, {u'label': u'my_group', u'type': u'group', u'children': [
+                {u'bind': {}, u'choices': [{u'name': u'mm', u'label': u'placeholder'}], u'type': u'select one',
+                 u'name': u'mm', u'label': u'mm'}, {u'label': u'gr', u'type': u'repeat', u'children': [
+                    {u'bind': {}, u'choices': [{u'name': u'my_group_uni', u'label': u'placeholder'}],
+                     u'type': u'select one', u'name': u'my_group_uni', u'label': u'my_grou_uni'},
+                    {u'type': u'text', u'name': u'text', u'label': u'ttext'}], u'name': u'gr'}],
+                                                           u'name': u'my_groupi'}]}
+        self.assertDictEqual(fields, expected_fields)
 
 
 class TestXformParsing(unittest.TestCase):

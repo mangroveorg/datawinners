@@ -390,7 +390,7 @@ class XlsFormParser():
 def _map_unique_id_question_to_select_one(xform_dict):
     for field in xform_dict['children']:
         if field['type'] == "dw_idnr":
-            field['type'] = 'select one'
+            field['type'] = u'select one'
             field[u'choices'] = [{u'name': field['name'], u'label':u'placeholder'}]
             del field['bind']['constraint']
         elif field['type'] in ['group', 'repeat']:
