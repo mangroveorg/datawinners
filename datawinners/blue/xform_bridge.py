@@ -4,6 +4,7 @@ import re
 from xml.etree import ElementTree as ET
 
 from lxml import etree
+import unicodedata
 from mangrove.datastore.entity_type import entity_type_already_defined
 from pyxform.xls2json import parse_file_to_json
 import xlrd
@@ -228,7 +229,8 @@ class XlsFormParser():
 
 
     def update_xform_with_questionnaire_name(self, xform):
-        return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % escape(self.questionnaire_name), xform)
+        # Escape <, > and & and convert accented characters to equivalent non-accented characters
+        return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % unicodedata.normalize('NFD', escape(self.questionnaire_name)).encode('ascii', 'ignore'), xform)
 
     def _get_label(self, field):
 
