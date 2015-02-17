@@ -34637,6 +34637,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             that = this;
 
         this.mediaType = $input.attr( 'accept' );
+        if (! this.mediaType) this.mediaType = $input.attr( 'data' );
 
         $input
             .attr( 'disabled', 'disabled' )
@@ -34741,6 +34742,8 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
                 return false;
             }
 
+            $(this).removeAttr( 'data-loaded-file-name' );
+
             // process the file
             fileManager.getFileUrl( file )
                 .then( function( url ) {
@@ -34792,7 +34795,6 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         if ( url ) {
 //            Clearing preview before updating
             this.$preview.empty();
-            $(this).removeAttr( 'data-loaded-file-name' );
             this.$preview.append( $el.attr( 'src', url ) );
         }
     };
