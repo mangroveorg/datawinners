@@ -327,7 +327,7 @@ msgstr ""
 "<p><ul class=\"margin_left_10\"><li>Where DataWinners is available</li>"
 "<li>Key details of Monthly Subscription</li>"
 "<li>Our Consulting Service</li></ul></p>"
-"<p>See our <a href='/en/pricing/' target=\"_blank\">Pricing page</a></p>"
+"<p>See our <a href='https://www.datawinners.com/en/pricing/' target=\"_blank\">Pricing page</a></p>"
 
 msgid "Send in your data using:"
 msgstr ""
