@@ -399,9 +399,9 @@ def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
         for field in fieldset_field.fields:
             if isinstance(field, UniqueIdField):
                 unique_code = entry.get(field.code)
-                identification_number = get_by_short_code_include_voided(dbm, str(unique_code), [field.unique_id_type])
-                entry[field.code+'_unique_code'] = entry[field.code]
-                entry[field.code] = identification_number.data['name']['value']
+                unique_id_name = lookup_entity_name(dbm, str(unique_code), [field.unique_id_type])
+                entry[field.code+'_unique_code'] = unique_code if unique_code else ''
+                entry[field.code] = unique_id_name
             elif isinstance(field, FieldSet):
                 _update_name_unique_code(dbm, entry.get(field.code), field)
 
