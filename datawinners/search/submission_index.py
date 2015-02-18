@@ -344,7 +344,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                 entry_code = entry
                 search_dict.update(
                     {es_unique_id_code_field_name(
-                        es_questionnaire_field_name(field.code, form_model.id, field.parent_field_code)): entry_code or UNKNOWN})
+                        es_questionnaire_field_name(field.code, form_model.id, parent_field_name)): entry_code or UNKNOWN})
                 entry = entity_name
         elif field.type == "select":
             field = _get_select_field_by_revision(field, form_model, submission_doc)
