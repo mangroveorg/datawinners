@@ -1,6 +1,7 @@
 import unittest
 
 from mock import Mock, MagicMock
+from mangrove.form_model.field_builder import QuestionBuilder
 
 from mangrove.form_model.validators import UniqueIdExistsValidator
 from mangrove.utils.test_utils.database_utils import safe_define_type, uniq
@@ -9,7 +10,7 @@ from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete
 from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, TelephoneNumberField, UniqueIdField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, get_form_model_by_code
 from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint, NumericRangeConstraint
-from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder, QuestionBuilder
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 
 FORM_CODE_2 = uniq("2")
@@ -113,7 +114,7 @@ class TestQuestionnaireBuilderIT(unittest.TestCase):
 class TestQuestionBuilder(unittest.TestCase):
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
-        self.question_builder = QuestionBuilder(self.dbm)
+        self.question_builder = QuestionBuilder()
 
     def test_creates_questions_from_dict(self):
         post = [{"title": "q1", "description": "desc1", "type": "unique_id", "choices": [],

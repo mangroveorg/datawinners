@@ -449,7 +449,7 @@ class TestXformBridge(unittest.TestCase):
                     {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"}, 'type': 'calculate',
                      'name': 'instanceID'}]}]}
             get_xform_dict.return_value = fields
-            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+            xls_form_parser = XlsFormParser('some_path', u'questionnaire_name')
 
             actual_errors, updated_xform, questions = xls_form_parser.parse()
 
