@@ -372,7 +372,7 @@ function handle_datasender_edit(table, selectedIds) {
         url: '/entity/datasender/edit' + '/' + selectedIds[0].toLowerCase() + '/',
         success: function (response) {
             $("#datasender-popup").html(response) ;
-            $("#datasender-popup").dialog('option','title',gettext('Edit Datasender')).dialog("open");
+            $("#datasender-popup").dialog('option','title', gettext('Edit Datasender')).dialog("open");
             new DW.InitializeEditDataSender().init();
             $.unblockUI();
 
@@ -387,8 +387,8 @@ function register_datasender(table) {
         data:{'project_id':project_id},
         success: function (response) {
             $("#datasender-popup").html(response) ;
-            $("#datasender-popup").dialog('option','title',gettext('Register Datasender')).dialog("open");
-            device_actions();
+            $("#datasender-popup").dialog('option','title', gettext('Register Datasender')).dialog("open");
+//            device_actions();
             reporter_id_generation_action();
             new DW.InitializeEditDataSender().init();
         }

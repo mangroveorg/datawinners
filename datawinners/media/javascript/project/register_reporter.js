@@ -51,7 +51,7 @@ $(document).on("click", "#id_register_button", function () {
             $("#add_data_sender_form").html(response);
             $("#id_location").catcomplete({
                 source: "/places"});
-            device_actions();
+//            device_actions();
             reporter_id_generation_action();
 
             DW.set_focus_on_flash_message();
@@ -60,7 +60,7 @@ $(document).on("click", "#id_register_button", function () {
         error: function (e) {
             $.unblockUI();
             $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
-            device_actions();
+//            device_actions();
             DW.set_focus_on_flash_message();
         }
     });
@@ -83,7 +83,7 @@ $(document).ready(function () {
 function device_actions() {
     sms_device.checked();
     sms_device.disable();
-    email.setVisibility();
+//    email.setVisibility();
 }
 
 function reporter_id_generation_action() {

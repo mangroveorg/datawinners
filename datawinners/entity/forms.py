@@ -160,14 +160,12 @@ class ReporterRegistrationForm(Form):
         site.
 
         """
-        if not self.requires_web_access():
-            return None
+        # if not self.requires_web_access():
+        #     return None
 
         email = self.cleaned_data.get('email')
-        if is_empty(email):
-            msg = _('This field is required.')
-            self._errors['email'] = self.error_class([msg])
-            return None
+        if not email:
+            return email
 
         if User.objects.filter(email__iexact=self.cleaned_data['email']):
             raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
@@ -179,8 +177,7 @@ class ReporterRegistrationForm(Form):
             self.cleaned_data['email'] = email.lower()
 
     def requires_web_access(self):
-        devices = self.cleaned_data.get('devices')
-        return devices.__contains__('web')
+        return self.cleaned_data.get('email')
 
     def update_errors(self, validation_errors):
         mapper = {MOBILE_NUMBER_FIELD_CODE:'telephone_number',

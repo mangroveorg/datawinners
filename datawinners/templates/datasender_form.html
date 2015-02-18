@@ -31,19 +31,19 @@ var sender_registration_link = "{{ registration_link }}";
               {{ form.name }}
               {{ form.name.errors }}
           </li>
-          <li class="{{ form.devices.css_classes }} horizontal_list">
-              <ul>
-                  <li class="device_label">
-                      {{ form.devices.label_tag }}
-                      {{ form.devices }}
-                      {{ form.devices.errors }}
-                  </li>
-                  <li id="user_creation_info" class="italic_grey clear-left margin_left_180 instruction_text">
-                    <br/>{% trans "user_creation_info" %}
-                  </li>
-              </ul>
-              <br/>
-          </li>
+{#          <li class="{{ form.devices.css_classes }} horizontal_list">#}
+{#              <ul>#}
+{#                  <li class="device_label">#}
+{#                      {{ form.devices.label_tag }}#}
+{#                      {{ form.devices }}#}
+{#                      {{ form.devices.errors }}#}
+{#                  </li>#}
+{#                  <li id="user_creation_info" class="italic_grey clear-left margin_left_180 instruction_text">#}
+{#                    <br/>{% trans "user_creation_info" %}#}
+{#                  </li>#}
+{#              </ul>#}
+{#              <br/>#}
+{#          </li>#}
           <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
               {{ form.email.label_tag }}
               {{ form.email }}
