@@ -34652,18 +34652,21 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             .insertAfter( $input );
         var $filePreview = $('<div class="file-preview"></div>');
         $filePreview.insertAfter($input.parent());
+        var $downloadLink = $('<span class="edit_link"></span>');
+        $downloadLink.insertAfter(this.$widget);
         this.$feedback = this.$widget.find( '.file-feedback' );
         this.$preview = $filePreview;
+        this.$downloadLink = $downloadLink;
         this.$fakeInput = this.$widget.find( '.fake-file-input' );
 
         // show loaded file name regardless of whether widget is supported
         this.showDownloadLinkAndPreview = function(existingFileName){
             var submission_id = $('document').context.defaultView.surveyResponseId;
             var location_image = "/download/attachment/"+submission_id+"/";
-            this.$preview.append('<a href="'+location_image+existingFileName+'" class="edit_link">'+existingFileName+'</a>');
             if (this.mediaType == "image/*"){
-                this.$preview.append("<img src='"+location_image+"preview_"+existingFileName+"'/>");
+                this._showPreview(location_image+"preview_"+existingFileName, this.mediaType);
             }
+            this.$downloadLink.append('<a href="'+location_image+existingFileName+'" class="edit_link">'+existingFileName+'</a>');
         };
 
 
@@ -34794,6 +34797,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         if ( url ) {
 //            Clearing preview before updating
             this.$preview.empty();
+            this.$downloadLink.empty();
             this.$preview.append( $el.attr( 'src', url ) );
         }
     };
