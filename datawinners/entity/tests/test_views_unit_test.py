@@ -14,7 +14,7 @@ from datawinners.entity.view.unique_id import _subject_short_codes_to_delete
 from datawinners.entity.views import initialize_values
 from datawinners.entity.views import _format_imported_subjects_datetime_field_to_str
 from mangrove.datastore.database import DatabaseManager
-from mangrove.datastore.entity import Entity
+from mangrove.datastore.entity import Entity, Contact
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.entity.views import create_single_web_user
 from datawinners.entity.import_data import send_email_to_data_sender
@@ -38,7 +38,7 @@ class TestView(TestCase):
         org.account_type = "Basic"
         site = get_current_site(None)
 
-        mock_entity = Mock(spec=Entity)
+        mock_entity = Mock(spec=Contact)
         mock_entity.value.return_value = 'test'
 
         users = User.objects.filter(email=WEB_USER_TEST_EMAIL)
@@ -51,7 +51,7 @@ class TestView(TestCase):
                 get_dbm.return_value = Mock(spec=DatabaseManager)
                 with patch("datawinners.accountmanagement.models.Organization.objects.get") as get_organization_mock:
                     get_organization_mock.return_value = org
-                    with patch("datawinners.entity.views.get_by_short_code") as reporter_entity:
+                    with patch("datawinners.entity.views.contact_by_short_code") as reporter_entity:
                         with patch("datawinners.entity.views.put_email_information_to_entity") as put_email_information_to_entity:
                             put_email_information_to_entity.return_value = None
                             reporter_entity.return_value = mock_entity
