@@ -131,14 +131,14 @@ def get_filterable_field_details(field, filterable_fields, parent_code):
             }
 
 
-def get_filterable_fields(fields, parent_code=None):
-    filterable_fields = []
+def get_filterable_fields(fields, filterable_fields=[], parent_code=None):
+    filterable_fields = filterable_fields
     for field in fields:
         field_detials = get_filterable_field_details(field, filterable_fields, parent_code)
         if field_detials:
             filterable_fields.append(field_detials)
         if isinstance(field, FieldSet) and field.is_group():
-            filterable_fields.extend(get_filterable_fields(field.fields, field.code))
+            filterable_fields = get_filterable_fields(field.fields, filterable_fields, field.code)
     return filterable_fields
 
 
