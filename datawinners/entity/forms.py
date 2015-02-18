@@ -2,7 +2,7 @@ import re
 
 from django import forms
 from django.contrib.auth.models import User
-from django.forms import HiddenInput
+from django.forms import HiddenInput, BooleanField
 from django.forms.fields import RegexField, CharField, FileField, MultipleChoiceField, EmailField
 from django.forms.widgets import CheckboxSelectMultiple, TextInput
 from django.utils.safestring import mark_safe
@@ -50,7 +50,7 @@ class ReporterRegistrationForm(Form):
 
     name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=80,
         error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
-        label=_("Name"))
+        label=_("Name"), required=False)
     telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS Coordinates"))
 
@@ -67,6 +67,7 @@ class ReporterRegistrationForm(Form):
             'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
     short_code = CharField(required=False, max_length=12, label=_("Unique ID"), widget=TextInput(attrs=dict({'class': 'subject_field','disabled':'disabled'})))
+    generated_id = BooleanField(required=False, initial=True)
 
 #    Needed for telephone number validation
     org_id = None
@@ -109,10 +110,14 @@ class ReporterRegistrationForm(Form):
         self.convert_email_to_lowercase()
         location = self.cleaned_data.get("location").strip()
         geo_code = self.cleaned_data.get("geo_code").strip()
-        if not (bool(location) or bool(geo_code)):
-            msg = _("Please fill out at least one location field correctly.")
-            self._errors['location'] = self.error_class([msg])
-            self._errors['geo_code'] = self.error_class([msg])
+        # if not (bool(location) or bool(geo_code)):
+        #     msg = _("Please fill out at least one location field correctly.")
+        #     self._errors['location'] = self.error_class([msg])
+        #     self._errors['geo_code'] = self.error_class([msg])
+        if not self.cleaned_data.get('generated_id') and not self.cleaned_data.get('short_code'):
+            msg = _('This field is required.')
+            self.errors['short_code'] = self.error_class([msg])
+
         if bool(geo_code):
             self._geo_code_validations(geo_code)
         if not self.cleaned_data.get('project_id'):

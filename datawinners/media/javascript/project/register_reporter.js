@@ -87,7 +87,7 @@ function device_actions() {
 }
 
 function reporter_id_generation_action() {
-    $("#generate_id").unbind().click(function () {
+    $("#id_generated_id").on('click', function () {
         if ($(this).is(":checked")) {
             $(".subject_field").attr("disabled", "disabled");
             $(".subject_field").val('');
