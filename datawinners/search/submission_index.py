@@ -394,15 +394,16 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
     search_dict.update({'void': submission_doc.void})
     search_dict.update({'is_anonymous': submission_doc.is_anonymous_submission})
 
-def _update_name_unique_code(dbm, repeat_entries, repeat_field):
+def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
     for entry in repeat_entries:
-        for field in repeat_field.fields:
+        for field in fieldset_field.fields:
             if isinstance(field, UniqueIdField):
                 unique_code = entry.get(field.code)
                 identification_number = get_by_short_code_include_voided(dbm, str(unique_code), [field.unique_id_type])
                 entry[field.code+'_unique_code'] = entry[field.code]
                 entry[field.code] = identification_number.data['name']['value']
-
+            elif isinstance(field, FieldSet):
+                _update_name_unique_code(dbm, entry.get(field.code), field)
 
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
