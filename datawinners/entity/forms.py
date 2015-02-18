@@ -94,11 +94,16 @@ class ReporterRegistrationForm(Form):
             except Exception:
                 self._errors['geo_code'] = self.error_class([msg])
 
-    def _geo_code_validations(self, b):
+    def _geo_code_validations(self):
+        geo_code = self.cleaned_data.get("geo_code").strip()
+
+        if not bool(geo_code):
+            return
+
         msg = _(
             "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315")
 
-        geo_code_string = b.strip()
+        geo_code_string = geo_code.strip()
         geo_code_string = geo_code_string.replace(",", " ")
         geo_code_string = re.sub(' +', ' ', geo_code_string)
         if not is_empty(geo_code_string):
@@ -108,8 +113,7 @@ class ReporterRegistrationForm(Form):
 
     def clean(self):
         self.convert_email_to_lowercase()
-        location = self.cleaned_data.get("location").strip()
-        geo_code = self.cleaned_data.get("geo_code").strip()
+        # location = self.cleaned_data.get("location").strip()
         # if not (bool(location) or bool(geo_code)):
         #     msg = _("Please fill out at least one location field correctly.")
         #     self._errors['location'] = self.error_class([msg])
@@ -118,10 +122,10 @@ class ReporterRegistrationForm(Form):
             msg = _('This field is required.')
             self.errors['short_code'] = self.error_class([msg])
 
-        if bool(geo_code):
-            self._geo_code_validations(geo_code)
+        self._geo_code_validations()
         if not self.cleaned_data.get('project_id'):
             self.cleaned_data['is_data_sender'] = False
+
         return self.cleaned_data
 
     def clean_short_code(self):
@@ -186,6 +190,11 @@ class ReporterRegistrationForm(Form):
             self._errors[mapper.get(field_code)] = self.error_class([error])
 
 
+class EditReporterRegistrationForm(ReporterRegistrationForm):
+
+    def clean(self):
+        self._geo_code_validations()
+        return self.cleaned_data
 
 class SubjectUploadForm(Form):
     error_css_class = 'error'

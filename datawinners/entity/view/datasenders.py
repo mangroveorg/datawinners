@@ -15,7 +15,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SENDER, REGISTERED_DATA_SENDER
 from datawinners.entity.data_sender import get_datasender_user_detail
 from datawinners.entity.datasender_tasks import update_datasender_on_open_submissions
-from datawinners.entity.forms import ReporterRegistrationForm
+from datawinners.entity.forms import ReporterRegistrationForm, EditReporterRegistrationForm
 from datawinners.entity.helper import _get_data, update_data_sender_from_trial_organization, process_create_data_sender_form
 from datawinners.entity.views import create_single_web_user
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
@@ -47,11 +47,12 @@ class EditDataSenderView(TemplateView):
         phone_number = reporter_entity.mobile_number
         location = reporter_entity.location
         geo_code = reporter_entity.geo_code
-        form = ReporterRegistrationForm(initial={
+        form = EditReporterRegistrationForm(initial={
                                                  'name': name,
                                                  'telephone_number': phone_number,
                                                  'location': location,
-                                                 'geo_code': geo_code
+                                                 'geo_code': geo_code,
+                                                 'generated_id': 'no'
                                                 })
         return self.render_to_response(RequestContext(request, {
                                            'reporter_id': reporter_id,
@@ -70,7 +71,7 @@ class EditDataSenderView(TemplateView):
         get_datasender_user_detail(datasender, request.user)
         email = datasender.get('email') if datasender.get('email') != '--' else False
         org_id = request.user.get_profile().org_id
-        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
+        form = EditReporterRegistrationForm(org_id=org_id, data=request.POST)
         message = None
         if form.is_valid():
             try:
