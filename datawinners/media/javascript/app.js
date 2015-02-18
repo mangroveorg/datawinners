@@ -34657,9 +34657,8 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         this.$fakeInput = this.$widget.find( '.fake-file-input' );
 
         // show loaded file name regardless of whether widget is supported
-        this.downloadFileOnEdit = function(existingFileName){
+        this.showDownloadLinkAndPreview = function(existingFileName){
             var submission_id = $('document').context.defaultView.surveyResponseId;
-            this._showFileName( existingFileName, this.mediaType );
             var location_image = "/download/attachment/"+submission_id+"/";
             this.$preview.append('<a href="'+location_image+existingFileName+'" class="edit_link">'+existingFileName+'</a>');
             if (this.mediaType == "image/*"){
@@ -34671,7 +34670,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         // show loaded file name regardless of whether widget is supported
         if ( existingFileName ) {
             this._showFileName( existingFileName, this.mediaType );
-            this.downloadFileOnEdit(existingFileName);
+            this.showDownloadLinkAndPreview(existingFileName);
         }
 
         if ( !fileManager || !fileManager.isSupported() ) {
