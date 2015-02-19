@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, LOCATION_TYPE_FIELD_NAME
+from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, LOCATION_TYPE_FIELD_NAME, EMAIL_FIELD
 
 
 class ReporterEntity(object):
@@ -25,3 +25,7 @@ class ReporterEntity(object):
     @property
     def name(self):
         return self.entity.value(NAME_FIELD)
+
+    @property
+    def email(self):
+        return self.entity.value(EMAIL_FIELD)

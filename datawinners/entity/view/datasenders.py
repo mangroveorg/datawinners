@@ -42,7 +42,8 @@ class EditDataSenderView(TemplateView):
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         datasender = {'short_code': reporter_id}
         get_datasender_user_detail(datasender, request.user)
-        email = datasender.get('email') if datasender.get('email') != '--' else False
+        # email = datasender.get('email') if datasender.get('email') != '--' else False
+        email = reporter_entity.email if reporter_entity.email != '--' else False
         name = reporter_entity.name
         phone_number = reporter_entity.mobile_number
         location = reporter_entity.location
@@ -69,7 +70,8 @@ class EditDataSenderView(TemplateView):
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         datasender = {'short_code': reporter_id}
         get_datasender_user_detail(datasender, request.user)
-        email = datasender.get('email') if datasender.get('email') != '--' else False
+        # email = datasender.get('email') if datasender.get('email') != '--' else False
+        email = reporter_entity.email if reporter_entity.email != '--' else False
         org_id = request.user.get_profile().org_id
         form = EditReporterRegistrationForm(org_id=org_id, data=request.POST)
         message = None

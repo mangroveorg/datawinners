@@ -22,8 +22,8 @@ def get_datasender_user_detail(datasender, user):
         if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
             or "Read Only Users" in datasender_user_groups:
             datasender["is_user"] = True
-        datasender['email'] = user_profile.user.email
-        datasender['devices'] = "SMS,Web,Smartphone"
-    else:
-        datasender['email'] = None
-        datasender['devices'] = "SMS"
+        # datasender['email'] = user_profile.user.email
+        # datasender['devices'] = "SMS,Web,Smartphone"
+    # else:
+    #     datasender['email'] = None
+        # datasender['devices'] = "SMS"

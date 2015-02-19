@@ -193,6 +193,7 @@ class ReporterRegistrationForm(Form):
 class EditReporterRegistrationForm(ReporterRegistrationForm):
 
     def clean(self):
+        self.convert_email_to_lowercase()
         self._geo_code_validations()
         return self.cleaned_data
 

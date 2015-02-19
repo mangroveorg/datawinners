@@ -381,14 +381,15 @@ function handle_datasender_edit(table, selectedIds) {
 }
 function register_datasender(table) {
     var project_id = $('#project_id').val();
+    var modal_header = project_id ? gettext('Register a Datasender') : gettext('Add a Contact');
+
     $.ajax({
         type: 'GET',
         url:  '/entity/datasender/register',
         data:{'project_id':project_id},
         success: function (response) {
             $("#datasender-popup").html(response) ;
-            $("#datasender-popup").dialog('option','title', gettext('Add a Contact')).dialog("open");
-//            device_actions();
+            $("#datasender-popup").dialog('option','title', modal_header).dialog("open");
             reporter_id_generation_action();
             new DW.InitializeEditDataSender().init();
         }
