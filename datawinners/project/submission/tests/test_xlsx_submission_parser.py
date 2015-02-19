@@ -1,4 +1,4 @@
-from datawinners.project.submission.submission_import import XlsxSubmissionParser
+from mangrove.transport.player.parser import XlsxParser
 from unittest import TestCase
 import os
 
@@ -14,5 +14,5 @@ class TestXlsxSubmissionParser(TestCase):
         file_path = os.path.join(abspath, file_name)
         file_contents = open(file_path).read()
         
-        data = XlsxSubmissionParser().parse(file_contents)
+        data = XlsxParser().parse(file_contents)
         self.assertEqual(expected, data)

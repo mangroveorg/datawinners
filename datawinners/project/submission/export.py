@@ -104,9 +104,10 @@ def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes
     else:
         add_sheet_with_data(raw_data, headers, workbook, formatter)
     if hide_codes_sheet:
-        codes_sheet = workbook.worksheets()
-        codes_sheet = codes_sheet[1]
-        assert codes_sheet.get_name() == "codes"
+        worksheets = workbook.worksheets()
+        codes_sheet = worksheets[headers.keys().index("codes")]
+        main_sheet = worksheets[headers.keys().index(file_name)]
+        main_sheet.activate()
         codes_sheet.hide()
     workbook.close()
     output.seek(0)

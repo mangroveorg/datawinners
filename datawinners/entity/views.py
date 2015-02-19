@@ -63,6 +63,7 @@ from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGIST
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
+from datawinners.project.submission.export import export_to_new_excel
 
 
 websubmission_logger = logging.getLogger("websubmission")
@@ -681,16 +682,15 @@ def export_subject(request):
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)
     field_codes = form_model.field_codes()
+    field_codes.insert(0, form_model.form_code)
     labels = get_subject_headers(form_model.form_fields)
-    raw_data = [labels]
+    raw_data = []
+    headers = dict({subject_type:labels, "codes":field_codes})
 
     for subject in subject_list:
         raw_data.append(subject)
 
-    wb = get_excel_sheet(raw_data, subject_type)
-    add_codes_sheet(wb, form_model.form_code, field_codes)
-    wb.save(response)
-    return response
+    return export_to_new_excel(headers, {subject_type:raw_data}, subject_type, hide_codes_sheet=True)
 
 
 def add_codes_sheet(wb, form_code, field_codes):

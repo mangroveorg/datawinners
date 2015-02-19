@@ -58,7 +58,7 @@
                 {% if show_xls_download_link %}
                     <span class="heading_block alpha data_ana border_none">
                         <span class="links">
-                            <a href="javascript:void(0);" class="download_link">{{ project.name|slugify }}.xls</a>
+                            <a href="javascript:void(0);" class="download_link">{{ project.name|slugify }}{{ file_extension }}</a>
                         </span>
                     </span>
                 {% endif %}

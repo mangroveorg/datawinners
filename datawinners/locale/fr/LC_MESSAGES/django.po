@@ -2903,8 +2903,8 @@ msgstr "Définissez quelle information voulez vous collecter concernant chaque e
 msgid "To import a list of %(entity_type)s follow these steps"
 msgstr "Pour importer une liste de %(entity_type)s suivez ces étapes"
 
-msgid "Download the template %(entity_type)s.xls"
-msgstr "Télécharger le modèle %(entity_type)s.xls"
+msgid "Download the template %(entity_type)s.xlsx"
+msgstr "Télécharger le modèle %(entity_type)s.xlsx"
 
 msgid "Fill out the template with your %(entity_type)s' information."
 msgstr "Remplissez le modèle avec les informations sur vos %(entity_type)s."
@@ -5201,11 +5201,11 @@ msgstr "Version Beta"
 msgid "Simple form"
 msgstr "Simple formulaire"
 
-msgid "health_survey.xls"
-msgstr "enquete_sante.xls"
+msgid "health_survey.xlsx"
+msgstr "enquete_sante.xlsx"
 
-msgid "household_details.xls"
-msgstr "details_menage.xls"
+msgid "household_details.xlsx"
+msgstr "details_menage.xlsx"
 
 msgid "Advanced Form"
 msgstr "Formulaire avancé"

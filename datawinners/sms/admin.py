@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.db.models import Q
 
 from mangrove.form_model.field import ExcelDate
-from datawinners.project.submission.export import create_excel_response
+from datawinners.project.submission.export import export_to_new_excel
 from datawinners.sms.models import SMS
 from datawinners.common.admin.utils import get_text_search_filter, get_admin_panel_filter
 
@@ -28,7 +28,7 @@ class SMSAdmin(admin.ModelAdmin):
             list.append([sms.organization_id, sms.status, delivered_date_time, sms.msg_from, sms.msg_to, sms.msg_type, sms.message])
 
         headers = ['Organisation Id', 'Status', 'Delivery Date', 'Message from Number', 'Message to Number', 'Message Type', 'Content']
-        response = create_excel_response(headers, list, 'sms_list')
+        response = export_to_new_excel(headers, list, 'sms_list')
         return response
 
     actions = [export_sms_details_to_excel]

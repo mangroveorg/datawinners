@@ -14,7 +14,7 @@ from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.contrib.admin.views.main import ChangeList
 from datawinners.common.admin.utils import get_text_search_filter, get_admin_panel_filter
-from datawinners.project.submission.export import create_excel_response
+from datawinners.project.submission.export import export_to_new_excel
 
 from datawinners.search.index_utils import get_elasticsearch_handle
 from forms import forms
@@ -167,7 +167,7 @@ class MessageTrackerAdmin(DatawinnerAdmin):
                          modeladmin.sms_submission(messageTracker), messageTracker.incoming_sp_count,
                          messageTracker.incoming_web_count, messageTracker.sms_registration_count])
 
-        response = create_excel_response(headers, list, 'tracker_list')
+        response = export_to_new_excel(headers, list, 'tracker_list')
         return response
 
     actions = [export_message_tracker_details_to_excel]
@@ -487,7 +487,7 @@ def export_user_list_to_excel(a,b,c):
         except Exception:
             continue
     headers = ['Name', 'email', 'Organization Name', 'Status', 'Account language','User Role']
-    response = create_excel_response(headers,list,'user_list')
+    response = export_to_new_excel(headers,list,'user_list')
     return response
 
 class DWUserAdmin(UserAdmin):

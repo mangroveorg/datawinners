@@ -14,6 +14,9 @@ $(function () {
 
             DW.showError(responseJSON['error_msg'],responseJSON.message_prefix, responseJSON.message_suffix);
         },
+        postSuccessSave: function(responseJSON) {
+            DW.updateFilename(responseJSON.file_name);
+        },
         preUploadValidation:function(){
             var editQuestionnaireWarningOptions = {
                 successCallBack: function (callback) {

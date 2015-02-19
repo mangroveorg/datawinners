@@ -40,7 +40,7 @@ from datawinners.utils import get_organization
 from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.questionnaire.helper import get_location_field_code
-
+from mangrove.transport.player.parser import XlsxParser
 
 class FormCodeDoesNotMatchException(Exception):
     def __init__(self, message, form_code=None):
@@ -60,7 +60,7 @@ class FilePlayer(Player):
 
     @classmethod
     def build(cls, manager, extension, default_parser=None, form_code=None):
-        channels = dict({".xls": Channel.XLS, ".csv": Channel.CSV})
+        channels = dict({".xls": Channel.XLS, ".xlsx": Channel.XLSX, ".csv": Channel.CSV})
         try:
             channel = channels[extension]
         except KeyError:
@@ -71,6 +71,8 @@ class FilePlayer(Player):
             parser = CsvParser()
         elif extension == '.xls':
             parser = XlsParser()
+        elif extension == '.xlsx':
+            parser = XlsxParser()
         else:
             raise InvalidFileFormatException()
         player = FilePlayer(manager, parser, channel, location_tree=LocationBridge(get_location_tree(),
