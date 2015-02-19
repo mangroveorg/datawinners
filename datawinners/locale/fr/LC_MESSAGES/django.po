@@ -352,7 +352,7 @@ msgstr ""
 "<p><ul class=\"margin_left_10\"><li>Où trouver DataWinners</li>"
 "<li>Principaux détails sur l’Abonnement Mensuel</li>"
 "<li>Notre Service de Consultance</li></ul></p>"
-"<p>Voir notre <a href='/en/pricing/' target=\"_blank\">Page des Tarifications</a></p>"
+"<p>Voir notre <a href='https://www.datawinners.com/fr/pricing/' target=\"_blank\">Page des Tarifications</a></p>"
 
 msgid "Send in your data using:"
 msgstr "Envoyez vos données via:"
@@ -1963,18 +1963,18 @@ msgid "User has been added successfully"
 msgstr "L'utilisateur a été ajouté avec succès"
 
 msgid "agree-terms"
-msgstr "J'accepte <a href=\"/fr/terms-and-conditions/\" target=\"_blank\" id=\"link-terms-and-conditions\">les termes et conditions</a> de DataWinners"
+msgstr "J'accepte <a href=\"https://www.datawinners.com/fr/terms-and-conditions/\" target=\"_blank\" id=\"link-terms-and-conditions\">les termes et conditions</a> de DataWinners"
 
 
 msgid "I Agree"
 msgstr "J'accepte"
 
 msgid "To sign up for a DataWinners account, you need to agree to our Terms and Conditions"
-msgstr "Vous devez accepter les <a class='terms_and_condition' href=\"/fr/terms-and-conditions/\" target=\"_blank\">termes et conditions</a> avant d'utiliser DataWinners"
+msgstr "Vous devez accepter les <a class='terms_and_condition' href=\"https://www.datawinners.com/fr/terms-and-conditions/\" target=\"_blank\">termes et conditions</a> avant d'utiliser DataWinners"
 
 msgid "learn-about-partners-clients"
-msgstr "En savoir plus sur nos <a href=\"/fr/about-us/partners\">partenaires</a> &amp; nos "
-"<a href=\"/fr/about-us/clients\">clients</a> &raquo;"
+msgstr "En savoir plus sur nos <a href=\"https://www.datawinners.com/fr/about-us/partners\">partenaires</a> &amp; nos "
+"<a href=\"https://www.datawinners.com/fr/about-us/clients\">clients</a> &raquo;"
 
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
 msgstr "Ce/cette %s n'est pas enregistré(e) dans notre système. Vérifiez le numéro ID unique de %s et envoyez "
@@ -5680,3 +5680,4 @@ msgstr "http://youtu.be/iu_cg2PoI9g"
 
 msgid "How to Collect Media Files With XLSForms"
 msgstr "Comment collecter des fichiers média avec XLSForm"
+

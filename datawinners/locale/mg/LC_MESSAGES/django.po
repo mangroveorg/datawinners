@@ -1756,7 +1756,7 @@ msgstr "L'utilisateur a été ajouté avec succès"
 
 
 msgid "agree-terms"
-msgstr "J'accepte <a href=\"/fr/terms-and-conditions/\" target=\"_blank\"  id=\"link-terms-and-conditions\">les termes et conditions</a> de DataWinners"
+msgstr "J'accepte <a href=\"https://www.datawinners.com/fr/terms-and-conditions/\" target=\"_blank\"  id=\"link-terms-and-conditions\">les termes et conditions</a> de DataWinners"
 
 msgid "I Agree"
 msgstr ""
