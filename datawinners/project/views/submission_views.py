@@ -131,8 +131,7 @@ def get_filterable_field_details(field, filterable_fields, parent_code):
             }
 
 
-def get_filterable_fields(fields, filterable_fields=[], parent_code=None):
-    filterable_fields = filterable_fields
+def get_filterable_fields(fields, filterable_fields, parent_code=None):
     for field in fields:
         field_detials = get_filterable_field_details(field, filterable_fields, parent_code)
         if field_detials:
@@ -157,7 +156,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
             return HttpResponseRedirect(dashboard_page)
 
-        filterable_fields = get_filterable_fields(questionnaire.fields)
+        filterable_fields = get_filterable_fields(questionnaire.fields, [])
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
         xform = questionnaire.xform
         result_dict = {
@@ -195,7 +194,7 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
         if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
 
-        filterable_fields = get_filterable_fields(questionnaire.fields)
+        filterable_fields = get_filterable_fields(questionnaire.fields, [])
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
 
         result_dict = {

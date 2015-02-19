@@ -8,7 +8,7 @@ from mock import Mock, patch, MagicMock
 from datawinners.project.views.submission_views import get_filterable_fields
 from mangrove.transport import Response
 from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.field import TextField, DateField, UniqueIdField
+from mangrove.form_model.field import TextField, DateField, UniqueIdField, FieldSet
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.project.models import Reminder, RemindTo, ReminderMode
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
@@ -201,7 +201,7 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
                                 DateField("When did you sell the goat?", "q4", "When did you sell the goat?", "mm.yyyy")
                                ]
 
-        fields_array = get_filterable_fields(fields)
+        fields_array = get_filterable_fields(fields, [])
 
         self.assertEqual(len(fields_array), 3)
         self.assertDictEqual(fields_array[0], {'type': 'unique_id', 'code': 'q2', 'entity_type': 'goats'})
@@ -218,11 +218,29 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
                                 UniqueIdField("goats", "What goat are you reporting on?", "q4", "What goat are you reporting on?"),
                                ]
 
-        fields_array = get_filterable_fields(fields)
-
+        fields_array = get_filterable_fields(fields, [])
+        print [r for r in fields_array]
         self.assertEqual(len(fields_array), 2)
         self.assertDictEqual(fields_array[0], {'type': 'unique_id', 'code': 'q2', 'entity_type': 'goats'})
         self.assertDictEqual(fields_array[1], {'type': 'unique_id', 'code': 'q3', 'entity_type': 'chicken'})
+
+    def test_should_return_unique_entries_when_multiple_unique_id_fields_are_present_in_group(self):
+        group_fields = [
+            UniqueIdField("chicken", "What chicken are you reporting on?", "q3", "What chicken are you reporting on?", parent_field_code='group'),
+            UniqueIdField("goats", "What goat are you reporting on?", "q4", "What goat are you reporting on?", parent_field_code='group'),
+            ]
+        fields = [
+            TextField("Some word question", "q1", "Some word question"),
+            UniqueIdField("goats", "What goat are you reporting on?", "q2", "What goat are you reporting on?"),
+            FieldSet('group','group','animal group', field_set=group_fields)
+            ]
+
+        fields_array = get_filterable_fields(fields, [])
+        print [r for r in fields_array]
+        self.assertEqual(len(fields_array), 2)
+        self.assertDictEqual(fields_array[0], {'type': 'unique_id', 'code': 'q2', 'entity_type': 'goats'})
+        self.assertDictEqual(fields_array[1], {'type': 'unique_id', 'code': 'group----q3', 'entity_type': 'chicken'})
+
 
     class StubSubjectWebQuestionnaireRequest(SubjectWebQuestionnaireRequest):
         def __init__(self, request, project_id, entity_type,form_list):
