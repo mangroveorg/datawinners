@@ -109,7 +109,7 @@ var sender_registration_link = "{{ registration_link }}";
                <label style="width: 165px;">&nbsp;</label>
 {#               <span><input type="checkbox" id="generate_id" name="generate_id" value="checked" {% if not form.short_code.value %}checked="checked"{% endif %} />{% trans "Let us generate an ID for you" %}</span>#}
                <span>
-                   {{ form.generated_id }}{% trans "Let us generate an ID for you" %}
+                   {{ form.generated_id }}{% trans "ID Automatic" %}
                </span>
 
 
@@ -117,7 +117,7 @@ var sender_registration_link = "{{ registration_link }}";
           <li class="button_block">
               <a id="cancel" class="cancel_link" >{% trans "Cancel" %}</a>
               <div style="display: none;"> {% include "warning_section.html" %} </div>
-              <input type="button" id="id_register_button" value="{% trans 'Register' %}" class="button margin_top_20"/>
+              <input type="button" id="id_register_button" value="{% trans 'Add Contact' %}" class="button margin_top_20"/>
           </li>
       </ul>
   </fieldset>

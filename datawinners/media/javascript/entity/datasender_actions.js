@@ -387,7 +387,7 @@ function register_datasender(table) {
         data:{'project_id':project_id},
         success: function (response) {
             $("#datasender-popup").html(response) ;
-            $("#datasender-popup").dialog('option','title', gettext('Register Datasender')).dialog("open");
+            $("#datasender-popup").dialog('option','title', gettext('Add a Contact')).dialog("open");
 //            device_actions();
             reporter_id_generation_action();
             new DW.InitializeEditDataSender().init();

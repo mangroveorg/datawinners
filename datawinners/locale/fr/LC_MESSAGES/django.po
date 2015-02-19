@@ -5680,3 +5680,19 @@ msgstr "http://youtu.be/iu_cg2PoI9g"
 
 msgid "How to Collect Media Files With XLSForms"
 msgstr "Comment collecter des fichiers média avec XLSForm"
+
+msgid "All Contacts"
+msgstr "Tous les Contacts"
+
+msgid "Add a Contact"
+msgstr "Ajouter un Contact"
+
+msgid "Add Contact"
+msgstr "Ajouter des Contacts"
+
+msgid "ID Automatic"
+msgstr "ID automatique"
+
+msgid "Your contact(s) have been added."
+msgstr "Vos contacts ont été ajoutés."
+

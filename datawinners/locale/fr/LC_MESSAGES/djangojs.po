@@ -1455,3 +1455,6 @@ msgstr " "
 
 msgid "Number of Submissions Exceeds Export Limit"
 msgstr "Le nombre de soumissions dépasse la limite d’exportation"
+
+msgid "Add a Contact"
+msgstr "Ajouter un Contact"

@@ -97,7 +97,7 @@ def get_success_msg_for_ds_registration_using(response, source, form_model=None)
                                                                     processed_data=response.processed_data).get_expanded_response()
         return message_with_response_text if len(
             message_with_response_text) <= 160 else thanks + " " + get_subject_info(response, form_model)
-    return _("Registration successful.") + " %s %s" % (_("ID is:"), response.short_code)
+    return _("Your contact(s) have been added.")
 
 def get_success_msg_for_subject_registration_using(dbm,response,form_model=None):
     from datawinners.messageprovider.handlers import success_subject_registration_handler
