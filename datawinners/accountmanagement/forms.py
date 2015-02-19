@@ -93,7 +93,8 @@ class UserProfileForm(forms.Form):
 
 
 class EditUserProfileForm(UserProfileForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, organization=None, *args, **kwargs):
+        self.organization = organization
         forms.Form.__init__(self, *args, **kwargs)
 
     def clean_mobile_phone(self):
@@ -102,6 +103,17 @@ class EditUserProfileForm(UserProfileForm):
     def clean_username(self):
         return self.cleaned_data.get('username')
 
+class ValidateEditUserProfileForm(UserProfileForm):
+    def __init__(self, organization=None, *args, **kwargs):
+        self.organization = organization
+        forms.Form.__init__(self, *args, **kwargs)
+
+    def clean_mobile_phone(self):
+        mobile_number = self.cleaned_data.get('mobile_phone')
+        validator = get_unique_mobile_number_validator(self.organization)
+        if not validator(self.organization, mobile_number):
+            raise ValidationError(_("This phone number is already in use. Please supply a different phone number"))
+        return self.cleaned_data.get('mobile_phone')
 
 class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     required_css_class = 'required'
