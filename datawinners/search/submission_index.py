@@ -19,7 +19,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
     es_unique_id_code_field_name, \
     es_questionnaire_field_name
-from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
+from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.project import Project
 
@@ -228,7 +228,7 @@ def status_message(status):
 # TODO manage_index
 def _get_datasender_info(dbm, submission_doc):
     if submission_doc.owner_uid:
-        datasender_name, datasender_id = lookup_entity_by_uid(dbm, submission_doc.owner_uid)
+        datasender_name, datasender_id = lookup_contact_by_uid(dbm, submission_doc.owner_uid)
     else:
         datasender_name, datasender_id = submission_doc.created_by, UNKNOWN
     return datasender_id, datasender_name
@@ -245,10 +245,10 @@ def _meta_fields(submission_doc, dbm):
     return search_dict
 
 
-def lookup_entity_by_uid(dbm, uid):
+def lookup_contact_by_uid(dbm, uid):
     try:
         if uid:
-            entity = Entity.get(dbm, uid)
+            entity = Contact.get(dbm, uid)
             return entity.value('name'), entity.short_code
     except Exception:
         pass

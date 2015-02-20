@@ -4,7 +4,7 @@ from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import get_all_entities_include_voided
 
-from datawinners.search.datasender_index import _create_datasender_dict
+from datawinners.search.datasender_index import _create_contact_dict
 from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.main.couchdb.utils import all_db_names
@@ -24,7 +24,7 @@ def create_search_indices_for_deleted_datasender(db_name):
             if not entity.data:
                 continue
             if entity.is_void() or entity.short_code == 'test':
-                datasender_dict = _create_datasender_dict(dbm, entity, REPORTER, form_model)
+                datasender_dict = _create_contact_dict(dbm, entity, REPORTER, form_model)
                 datasender_dict.update({'id': entity.id})
                 datasenders.append(datasender_dict)
         if datasenders:

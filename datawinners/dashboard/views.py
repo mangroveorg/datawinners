@@ -10,7 +10,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _, ugettext, get_language
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.datastore.entity import Entity, get_all_entities, by_short_codes
+from mangrove.datastore.entity import Entity, get_all_entities, by_short_codes, Contact
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.main.database import get_database_manager
@@ -24,7 +24,7 @@ from mangrove.utils.types import is_empty
 def _find_reporter_name(dbm, row):
     try:
         if row.value["owner_uid"]:
-            data_sender_entity = Entity.get(dbm, row.value["owner_uid"])
+            data_sender_entity = Contact.get(dbm, row.value["owner_uid"])
             name = data_sender_entity.value('name')
             return name
     except Exception:

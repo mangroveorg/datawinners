@@ -3,7 +3,7 @@ from django.utils.translation import ugettext
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.project.data_sender import DataSender
 from datawinners.project.helper import NOT_AVAILABLE_DS, NOT_AVAILABLE
-from mangrove.datastore.entity import Entity, get_by_short_code_include_voided
+from mangrove.datastore.entity import Entity, get_by_short_code_include_voided, Contact
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
@@ -15,7 +15,7 @@ from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 def get_data_sender(manager, submission):
     if submission.owner_uid:
         try:
-            data_sender_entity = Entity.get(manager, submission.owner_uid)
+            data_sender_entity = Contact.get(manager, submission.owner_uid)
             return data_sender_entity.value("name"), data_sender_entity.short_code, data_sender_entity.id
         except Exception as e:
             pass #ignore and sending unknown datasender for backward compatibility.

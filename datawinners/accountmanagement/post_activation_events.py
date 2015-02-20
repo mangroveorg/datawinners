@@ -93,7 +93,7 @@ def make_user_as_a_datasender(manager, organization, current_user_name, mobile_n
     while not reporter_id:
         reporter_short_code = 'rep' + str(total_entity + offset)
         try:
-            entity = create_contact(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=reporter_short_code,
+            entity = create_contact(dbm=manager, contact_type=REPORTER_ENTITY_TYPE, short_code=reporter_short_code,
                                    location=location)
             reporter_id = entity.short_code
         except DataObjectAlreadyExists:
