@@ -230,7 +230,7 @@ class XlsFormParser():
 
     def update_xform_with_questionnaire_name(self, xform):
         # Escape <, > and & and convert accented characters to equivalent non-accented characters
-        return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % unicodedata.normalize('NFD', escape(self.questionnaire_name)).encode('ascii', 'ignore'), xform)
+        return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % unicodedata.normalize('NFD', escape(unicode(self.questionnaire_name))).encode('ascii', 'ignore'), xform)
 
     def _get_label(self, field):
 
