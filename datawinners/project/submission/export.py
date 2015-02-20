@@ -106,7 +106,10 @@ def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes
     if hide_codes_sheet:
         worksheets = workbook.worksheets()
         codes_sheet = worksheets[headers.keys().index("codes")]
-        main_sheet = worksheets[headers.keys().index(file_name)]
+        for worksheet in worksheets:
+            if worksheet != codes_sheet:
+                main_sheet = worksheet
+                break
         main_sheet.activate()
         codes_sheet.hide()
     workbook.close()
