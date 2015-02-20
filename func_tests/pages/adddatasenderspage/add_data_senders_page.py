@@ -12,8 +12,6 @@ class AddDataSenderPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 
-    def select_web_device(self):
-        self.driver.find(WEB_CB).click()
 
     def enter_email(self, registration_data):
         email_address_prefix = fetch_(EMAIL_ADDRESS, from_(registration_data))
@@ -40,7 +38,6 @@ class AddDataSenderPage(Page):
             fetch_(GPS, from_(registration_data)))
 
         if email is not None:
-            self.driver.find(by_css("#id_devices_1")).click()
             self.driver.find_text_box(EMAIL_TB).enter_text(email)
 
         if unique_id is not None:

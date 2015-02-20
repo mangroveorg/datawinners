@@ -60,15 +60,6 @@ class TestAllDataSenderRegistration(HeadlessRunnerTest):
 
 
     @attr('functional_test')
-    def test_addition_of_data_sender_without_email_address(self):
-        add_data_sender_page = self.current_page
-        add_data_sender_page.select_web_device()
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITHOUT_EMAIL)
-
-        self.assertRegexpMatches(add_data_sender_page.get_error_message(),
-                                 fetch_(ERROR_MSG, from_(VALID_DATA_WITHOUT_EMAIL)))
-
-    @attr('functional_test')
     def test_addition_of_data_sender_without_entering_data(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(BLANK_FIELDS)

@@ -2,7 +2,7 @@ import logging
 from datawinners.main.database import get_db_manager
 from datawinners.project.view_models import ReporterEntity
 from datawinners.tasks import app
-from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity import get_by_short_code, contact_by_short_code
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport.contract.survey_response import SurveyResponse
 
@@ -14,7 +14,7 @@ def update_datasender_on_open_submissions(database_name, reporter_id):
         dbm = get_db_manager(database_name)
         logger.error(reporter_id)
 
-        reporter_entity = ReporterEntity(get_by_short_code(dbm, reporter_id, [REPORTER]))
+        reporter_entity = ReporterEntity(contact_by_short_code(dbm, reporter_id))
         rows = dbm.load_all_rows_in_view("anonymous_submissions", key=reporter_entity.mobile_number)
 
         for row in rows:
