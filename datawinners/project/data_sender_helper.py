@@ -7,9 +7,9 @@ from mangrove.datastore.entity import Entity, get_by_short_code_include_voided
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
-def combine_channels_for_tuple(data_senders_tuple_list):
-    data_senders = [DataSender.from_tuple(data_sender_tuple) for data_sender_tuple in data_senders_tuple_list]
-    return map(lambda d: (d.name, d.reporter_id, d.uid), set(data_senders))
+# def combine_channels_for_tuple(data_senders_tuple_list):
+#     data_senders = [DataSender.from_tuple(data_sender_tuple) for data_sender_tuple in data_senders_tuple_list]
+#     return map(lambda d: (d.name, d.reporter_id, d.uid), set(data_senders))
 
 
 def get_data_sender(manager, submission):
@@ -21,37 +21,37 @@ def get_data_sender(manager, submission):
             pass #ignore and sending unknown datasender for backward compatibility.
     return NOT_AVAILABLE_DS, NOT_AVAILABLE
 
-def get_data_sender_by_reporter_id(dbm, reporter_id):
-    return get_by_short_code_include_voided(dbm, reporter_id, REPORTER_ENTITY_TYPE)
+# def get_data_sender_by_reporter_id(dbm, reporter_id):
+#     return get_by_short_code_include_voided(dbm, reporter_id, REPORTER_ENTITY_TYPE)
 
-def get_data_sender_by_source(manager, org_id, channel, source):
-    if channel == 'sms':
-        return get_data_sender_for_sms(manager, source)
-    else:
-        return get_data_sender_for_not_sms(org_id, email=source)
-
-
-def get_data_sender_for_sms(manager, source):
-    return tuple(data_sender_by_mobile(manager, source))
+# def get_data_sender_by_source(manager, org_id, channel, source):
+#     if channel == 'sms':
+#         return get_data_sender_for_sms(manager, source)
+#     else:
+#         return get_data_sender_for_not_sms(org_id, email=source)
 
 
-def get_data_sender_for_not_sms(org_id, email):
-    try:
-        data_sender = data_sender_by_email(org_id, email)
-    except:
-        data_sender = (ugettext(NOT_AVAILABLE_DS), None, email)
-    return data_sender
+# def get_data_sender_for_sms(manager, source):
+#     return tuple(data_sender_by_mobile(manager, source))
 
 
-def data_sender_by_mobile(manager, mobile):
-    rows = manager.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
-    return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
+# def get_data_sender_for_not_sms(org_id, email):
+#     try:
+#         data_sender = data_sender_by_email(org_id, email)
+#     except:
+#         data_sender = (ugettext(NOT_AVAILABLE_DS), None, email)
+#     return data_sender
 
 
-def data_sender_by_email(org_id, email):
-    data_sender = User.objects.get(email=email)
-    reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
-    return data_sender.get_full_name(), reporter_id, email
+# def data_sender_by_mobile(manager, mobile):
+#     rows = manager.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
+#     return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
+
+
+# def data_sender_by_email(org_id, email):
+#     data_sender = User.objects.get(email=email)
+#     reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
+#     return data_sender.get_full_name(), reporter_id, email
 
 
 def list_data_sender(org_id):
