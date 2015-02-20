@@ -24,17 +24,19 @@ def get_unique_mobile_number_validator(organization):
         return is_mobile_number_unique_for_trial_account
     return is_mobile_number_unique_for_paid_account
 
-def is_mobile_number_unique_for_trial_account(org,mobile_number):
-    return is_empty(get_data_senders_on_trial_account_with_mobile_number(mobile_number)) and\
-           mobile_number not in get_trial_account_user_phone_numbers()
+def is_mobile_number_unique_for_trial_account(org, mobile_number):
+    return is_empty(get_data_senders_on_trial_account_with_mobile_number(org, mobile_number)) and mobile_number in get_trial_account_user_phone_numbers()
 
-def is_mobile_number_unique_for_paid_account(org,mobile_number):
+def is_mobile_number_unique_for_paid_account(org, mobile_number, reporter_id):
     manager = get_database_manager_for_org(org)
+    from mangrove.transport.repository.reporters import find_reporters_by_from_number
     try:
-        find_reporters_by_from_number(manager, mobile_number)
-        return False
+        registered_reporters = find_reporters_by_from_number(manager, mobile_number)
     except NumberNotRegisteredException:
         return True
+    if len(registered_reporters) == 1 and registered_reporters[0].short_code == reporter_id:
+        return True
+    return False
 
 def get_all_registered_phone_numbers_on_trial_account():
     return DataSenderOnTrialAccount.objects.values_list('mobile_number', flat=True)

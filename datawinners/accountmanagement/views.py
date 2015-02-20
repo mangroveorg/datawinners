@@ -31,8 +31,7 @@ from datawinners.accountmanagement.post_activation_events import make_user_as_a_
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.main.database import get_database_manager
 from mangrove.errors.MangroveException import AccountExpiredException
-from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm, UpgradeFormProSms, \
-    ValidateEditUserProfileForm
+from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm, UpgradeFormProSms
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, \
     DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for
 from datawinners.project.models import delete_datasenders_from_project
@@ -204,15 +203,16 @@ def edit_user(request):
         if profile.mobile_phone == 'Not Assigned':
             profile.mobile_phone = ''
         org = get_organization(request)
-        form = EditUserProfileForm(organization=org, data=dict(title=profile.title, full_name=profile.user.first_name,
+        form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=dict(title=profile.title, full_name=profile.user.first_name,
                                                                username=profile.user.username,
                                                                mobile_phone=profile.mobile_phone))
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
+        profile = request.user.get_profile()
         org = get_organization(request)
 
-        form = ValidateEditUserProfileForm(organization=org, data=request.POST)
+        form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=request.POST)
         message = ""
         if form.is_valid():
             _update_user_and_profile(request, form)
@@ -234,7 +234,7 @@ def upgrade(request, token=None, account_type=None):
     if request.method == 'GET':
         form = UpgradeForm() if not account_type else UpgradeFormProSms()
         organization_form = OrganizationForm(instance=organization)
-        profile_form = EditUserProfileForm(organization=organization, data=dict(title=profile.title, full_name=profile.user.first_name,
+        profile_form = EditUserProfileForm(organization=organization, repoter_id=profile.reporter_id,data=dict(title=profile.title, full_name=profile.user.first_name,
                                              username=profile.user.username,
                                              mobile_phone=profile.mobile_phone))
         return render_to_response("registration/upgrade.html", {'organization': organization_form, 'profile': profile_form,
@@ -243,7 +243,7 @@ def upgrade(request, token=None, account_type=None):
         form = UpgradeForm(request.POST)
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance=organization).update()
-        profile_form = EditUserProfileForm(organization=organization, data=request.POST)
+        profile_form = EditUserProfileForm(organization=organization, repoter_id=profile.reporter_id, data=request.POST)
         if form.is_valid() and organization_form.is_valid() and profile_form.is_valid():
             organization.save()
 

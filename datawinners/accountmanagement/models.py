@@ -283,8 +283,10 @@ class Organization(models.Model):
         return  self.account_type == "Pro SMS"
 
 
-def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
-    return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)
+def get_data_senders_on_trial_account_with_mobile_number(org, mobile_number=None):
+    datasenders = DataSenderOnTrialAccount.objects.filter(mobile_number=(mobile_number))
+    datasenders = datasenders.exclude(organization=org)
+    return datasenders
 
 
 class DataSenderOnTrialAccount(models.Model):
