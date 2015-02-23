@@ -25,7 +25,7 @@ def get_unique_mobile_number_validator(organization):
     return is_mobile_number_unique_for_paid_account
 
 def is_mobile_number_unique_for_trial_account(org, mobile_number):
-    return is_empty(get_data_senders_on_trial_account_with_mobile_number(org, mobile_number)) and mobile_number in get_trial_account_user_phone_numbers()
+    return is_empty(get_data_senders_on_trial_account_with_mobile_number(org, mobile_number)) and mobile_number not in get_trial_account_user_phone_numbers()
 
 def is_mobile_number_unique_for_paid_account(org, mobile_number, reporter_id=None):
     manager = get_database_manager_for_org(org)

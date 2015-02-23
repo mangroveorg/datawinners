@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
 from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers, get_unique_mobile_number_validator
+from datawinners.accountmanagement.mobile_number_validater import MobileNumberValidater
 from datawinners.accountmanagement.models import get_data_senders_on_trial_account_with_mobile_number, \
     DataSenderOnTrialAccount
 from datawinners.entity.fields import PhoneNumberField
@@ -74,15 +75,18 @@ class UserProfileForm(forms.Form):
     username = forms.EmailField(max_length=75, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
     mobile_phone = PhoneNumberField(required=True, label=_("Phone Number"))
-    def __init__(self, organization=None, *args, **kwargs):
+    def __init__(self, organization=None, reporter_id=None, *args, **kwargs):
         self.organization = organization
+        self.reporter_id = reporter_id
         forms.Form.__init__(self, *args, **kwargs)
 
     def clean_mobile_phone(self):
         mobile_number = self.cleaned_data.get('mobile_phone')
-        validator = get_unique_mobile_number_validator(self.organization)
-        if not validator(self.organization, mobile_number):
-            raise ValidationError(_("This phone number is already in use. Please supply a different phone number"))
+        validator = MobileNumberValidater(self.organization, mobile_number, self.reporter_id)
+        valid, message = validator.validate()
+        if not valid and message:
+            raise ValidationError(message)
+            # raise ValidationError(_("This phone number is already in use. Please supply a different phone number"))
         return self.cleaned_data.get('mobile_phone')
 
     def clean_username(self):
@@ -97,13 +101,6 @@ class EditUserProfileForm(UserProfileForm):
         self.organization = organization
         self.reporter_id = reporter_id
         forms.Form.__init__(self, *args, **kwargs)
-
-    def clean_mobile_phone(self):
-       mobile_number = self.cleaned_data.get('mobile_phone')
-       validator = get_unique_mobile_number_validator(self.organization)
-       if not validator(self.organization, mobile_number, self.reporter_id):
-           raise ValidationError(_("This phone number is already in use. Please supply a different phone number"))
-       return self.cleaned_data.get('mobile_phone')
 
     def clean_username(self):
         return self.cleaned_data.get('username')
