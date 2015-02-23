@@ -86,7 +86,6 @@ class UserProfileForm(forms.Form):
         valid, message = validator.validate()
         if not valid and message:
             raise ValidationError(message)
-            # raise ValidationError(_("This phone number is already in use. Please supply a different phone number"))
         return self.cleaned_data.get('mobile_phone')
 
     def clean_username(self):
