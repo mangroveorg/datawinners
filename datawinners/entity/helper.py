@@ -186,7 +186,7 @@ def process_create_data_sender_form(dbm, form, org_id):
         except MangroveException as exception:
             message = exception.message
 
-    return data_sender_id,message
+    return data_sender_id, message
 
 
 def question_code_generator():

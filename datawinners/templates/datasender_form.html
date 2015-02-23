@@ -104,7 +104,8 @@ var sender_registration_link = "{{ registration_link }}";
           <li class="button_block">
               <a id="cancel" class="cancel_link" >{% trans "Cancel" %}</a>
               <div style="display: none;"> {% include "warning_section.html" %} </div>
-              <input type="button" id="id_register_button" value="{% trans 'Add Contact' %}" class="button margin_top_20"/>
+{#              <input type="button" id="id_register_button" value="{% trans 'Add Contact' %}" class="button margin_top_20"/>#}
+              <input type="button" id="id_register_button" value="{{ button_text }}" class="button margin_top_20"/>
           </li>
       </ul>
   </fieldset>

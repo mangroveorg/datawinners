@@ -133,21 +133,28 @@ class EditDataSenderView(TemplateView):
 class RegisterDatasenderView(TemplateView):
     template_name = "datasender_form.html"
 
+    def _get_save_button_text(self, project_id):
+        return _("Register") if project_id else _("Add Contact")
+
     def get(self, request,*args, **kwargs):
         if request.GET.get('project_id'):
             form = ReporterRegistrationForm(initial={'project_id': request.GET.get('project_id')})
         else:
             form = ReporterRegistrationForm()
+        save_button_text = self._get_save_button_text(request.GET.get('project_id'))
+
         return self.render_to_response(RequestContext(request, {
                                            'form': form,
                                            'current_language': translation.get_language(),
-                                           'registration_link':'/entity/datasender/register/'
+                                           'registration_link':'/entity/datasender/register/',
+                                           'button_text': save_button_text
                                        }))
 
     def post(self, request, *args, **kwargs):
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         dbm = get_database_manager(request.user)
         org_id = request.user.get_profile().org_id
+        project_id = request.POST.get('project_id')
         form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
         try:
             reporter_id, message = process_create_data_sender_form(dbm, form, org_id)
@@ -169,12 +176,17 @@ class RegisterDatasenderView(TemplateView):
                     update_datasender_index_by_id(data_senders_code, dbm)
 
                 questionnaire = questionnaire.name
+
             else:
                 questionnaire = ""
             if not len(form.errors):
                 UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=questionnaire)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
+
+        save_button_text = self._get_save_button_text(project_id)
+        success_message_text = self._get_success_message_text(message, project_id)
+
         return render_to_response('datasender_form.html',
                                   {
                                       'form': form,
@@ -182,7 +194,9 @@ class RegisterDatasenderView(TemplateView):
                                       'success': reporter_id is not None,
                                       'project_inks': entity_links,
                                       'current_language': translation.get_language(),
-                                     'registration_link':'/entity/datasender/register/',
+                                      'registration_link':'/entity/datasender/register/',
+                                      'button_text': save_button_text
+
                                   },
                                   context_instance=RequestContext(request))
 
@@ -191,6 +205,9 @@ class RegisterDatasenderView(TemplateView):
     @method_decorator(is_datasender)
     def dispatch(self, *args, **kwargs):
         return super(RegisterDatasenderView, self).dispatch(*args, **kwargs)
+
+    def _get_success_message_text(self, message, project_id):
+        return message if project_id else _("Your contact(s) have been added.")
 
 
 
