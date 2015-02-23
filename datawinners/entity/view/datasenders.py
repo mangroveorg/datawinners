@@ -42,7 +42,6 @@ class EditDataSenderView(TemplateView):
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         datasender = {'short_code': reporter_id}
         get_datasender_user_detail(datasender, request.user)
-        # email = datasender.get('email') if datasender.get('email') != '--' else False
         email = reporter_entity.email if reporter_entity.email != '--' else False
         name = reporter_entity.name
         phone_number = reporter_entity.mobile_number
@@ -53,8 +52,10 @@ class EditDataSenderView(TemplateView):
                                                  'telephone_number': phone_number,
                                                  'location': location,
                                                  'geo_code': geo_code,
-                                                 'generated_id': 'no'
+                                                 'generated_id': 'no',
+                                                 'email': email
                                                 })
+
         return self.render_to_response(RequestContext(request, {
                                            'reporter_id': reporter_id,
                                            'form': form,
@@ -70,8 +71,7 @@ class EditDataSenderView(TemplateView):
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         datasender = {'short_code': reporter_id}
         get_datasender_user_detail(datasender, request.user)
-        # email = datasender.get('email') if datasender.get('email') != '--' else False
-        email = reporter_entity.email if reporter_entity.email != '--' else False
+        email = reporter_entity.email
         org_id = request.user.get_profile().org_id
         form = EditReporterRegistrationForm(org_id=org_id, data=request.POST)
         message = None
@@ -89,6 +89,10 @@ class EditDataSenderView(TemplateView):
                             transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
                             is_update=True))
                 if response.success:
+
+                    if form.cleaned_data['email']:
+                        email = form.cleaned_data['email']
+
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
                                                                    form.cleaned_data["telephone_number"], org_id)

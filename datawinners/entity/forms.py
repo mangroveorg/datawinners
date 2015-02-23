@@ -192,6 +192,9 @@ class ReporterRegistrationForm(Form):
 
 class EditReporterRegistrationForm(ReporterRegistrationForm):
 
+    def __init__(self, org_id=None, *args, **kwargs):
+        super(EditReporterRegistrationForm, self).__init__(org_id, *args, **kwargs)
+
     def clean(self):
         self.convert_email_to_lowercase()
         self._geo_code_validations()
