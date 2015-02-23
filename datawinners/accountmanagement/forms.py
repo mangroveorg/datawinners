@@ -101,7 +101,7 @@ class EditUserProfileForm(UserProfileForm):
     def clean_mobile_phone(self):
        mobile_number = self.cleaned_data.get('mobile_phone')
        validator = get_unique_mobile_number_validator(self.organization)
-       if not validator(self.organization, mobile_number):
+       if not validator(self.organization, mobile_number, self.reporter_id):
            raise ValidationError(_("This phone number is already in use. Please supply a different phone number"))
        return self.cleaned_data.get('mobile_phone')
 
