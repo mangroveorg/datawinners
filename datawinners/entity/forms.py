@@ -51,7 +51,7 @@ class ReporterRegistrationForm(Form):
     name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=80,
         error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
         label=_("Name"), required=False)
-    telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
+    telephone_number = PhoneNumberField(required=True, label=_("Mobile Number*"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS Coordinates"))
 
     location = CharField(max_length=500, required=False, label=_("Name"))

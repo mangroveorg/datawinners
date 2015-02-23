@@ -124,8 +124,8 @@ msgid ""
 "Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
 msgstr "Veuillez saisir uniquement des lettres a-z ou A-Z ou les symboles '`-"
 
-msgid "Mobile Number"
-msgstr "Numéro de mobile"
+msgid "Mobile Number*"
+msgstr "Numéro de mobile*"
 
 msgid "Please enter a valid phone number."
 msgstr "Veuillez saisir un numéro de téléphone."
