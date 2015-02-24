@@ -28,11 +28,16 @@ $(document).ready(function () {
     function _activate_tab(submissionTabs) {
 
         $('#search_box .dataTables_filter').remove();
+        $.each($(".repeat_ans").find('.repeat_qtn_label'), function (index, element) {
+
+                $(element).removeData('tooltip').unbind();
+
+        });
         $('.submission_table').dataTable().fnDestroy();
         $('.submission_table').empty();
         DW.loading();
         _initTable(submissionTabs);
-    };
+    }
 
     var _initialize_filters = function(){
         new DW.DateFilter(_postFilterSelection).init();
