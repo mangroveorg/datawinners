@@ -30,7 +30,7 @@
                                             <td width="10"></td>
                                             <td style="text-align: justify; color: #333333; ">
                                                 <p>Bonjour {{ user.first_name.capitalize }},</p>
-                                                <p>{{ creator_user.capitalize }} a créé un compte <a href="https://www.datawinners.com/en/home/">DataWinners</a> pour vous..<br/>
+                                                <p>{{ creator_user.capitalize }} a créé un compte <a href="https://www.datawinners.com/fr/">DataWinners</a> pour vous..<br/>
                                                     <a href="{{ protocol }}://{{ domain }}{% url auth_password_reset_confirm uidb36=uid, token=token %}">Activez votre compte </a>
                                                     dans les 7 prochains jours pour commencer de suite !
                                                 <p>
