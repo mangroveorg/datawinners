@@ -34652,10 +34652,10 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             .insertAfter( $input );
         var $filePreview = $('<div class="file-preview"></div>');
         $filePreview.insertAfter($input.parent());
-        var $downloadLink = $('<span class="edit_link"></span>');
-        $downloadLink.insertAfter(this.$widget);
         this.$feedback = this.$widget.find( '.file-feedback' );
         this.$preview = $filePreview;
+        var $downloadLink = $('<span class="get_image_link"></span>');
+        $downloadLink.insertAfter(this.$preview);
         this.$downloadLink = $downloadLink;
         this.$fakeInput = this.$widget.find( '.fake-file-input' );
 
@@ -34666,7 +34666,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             if (this.mediaType == "image/*"){
                 this._showPreview(location_image+"preview_"+existingFileName, this.mediaType);
             }
-            this.$downloadLink.append('<a href="'+location_image+existingFileName+'" class="edit_link">'+existingFileName+'</a>');
+            this.$downloadLink.append('<a href="'+location_image+existingFileName+'" class="get_image_link">'+'Download file'+'</a>');
         };
 
 
