@@ -234,7 +234,7 @@ def upgrade(request, token=None, account_type=None):
     if request.method == 'GET':
         form = UpgradeForm() if not account_type else UpgradeFormProSms()
         organization_form = OrganizationForm(instance=organization)
-        profile_form = EditUserProfileForm(organization=organization, repoter_id=profile.reporter_id,data=dict(title=profile.title, full_name=profile.user.first_name,
+        profile_form = EditUserProfileForm(organization=organization, reporter_id=profile.reporter_id,data=dict(title=profile.title, full_name=profile.user.first_name,
                                              username=profile.user.username,
                                              mobile_phone=profile.mobile_phone))
         return render_to_response("registration/upgrade.html", {'organization': organization_form, 'profile': profile_form,
@@ -243,7 +243,7 @@ def upgrade(request, token=None, account_type=None):
         form = UpgradeForm(request.POST)
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance=organization).update()
-        profile_form = EditUserProfileForm(organization=organization, repoter_id=profile.reporter_id, data=request.POST)
+        profile_form = EditUserProfileForm(organization=organization, reporter_id=profile.reporter_id, data=request.POST)
         if form.is_valid() and organization_form.is_valid() and profile_form.is_valid():
             organization.save()
 
