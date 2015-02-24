@@ -24,7 +24,10 @@ def update_datasender_index(entity_doc, dbm):
 
 def _create_contact_dict(dbm, entity_doc, form_model):
     contact_dict = _contact_dict(entity_doc, dbm, form_model)
-    contact_dict.update({"projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code)})
+    contact_dict.update({
+                            "projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code),
+                            "groups": entity_doc.groups
+                        })
     return contact_dict
 
 
@@ -66,5 +69,6 @@ def create_ds_mapping(dbm, form_model):
     es = get_elasticsearch_handle()
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects'))
+    fields.append(TextField(name="groups", code='groups', label='My Groups'))
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
 

@@ -16,6 +16,7 @@ class DatasenderQuery(Query):
         fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
         fields.append("devices")
         fields.append('projects')
+        fields.append('groups')
         return fields
 
     def query(self, user, query_text):

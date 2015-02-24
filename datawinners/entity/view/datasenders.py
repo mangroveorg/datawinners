@@ -88,6 +88,7 @@ class EditDataSenderView(TemplateView):
                     Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
                             transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
                             is_update=True))
+
                 if response.success:
 
                     if form.cleaned_data['email']:
