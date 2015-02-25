@@ -366,13 +366,15 @@ function init_dialog_box_for_datasender() {
 }
 
 function handle_datasender_edit(table, selectedIds) {
+    var group = $("input[value=" + selectedIds[0] +"]").parent().parent().children().last().text();
+    var popupHeader = group == 'contact'? gettext("Edit Contact") : gettext('Edit Datasender');
     $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     $.ajax({
         type: 'GET',
         url: '/entity/datasender/edit' + '/' + selectedIds[0].toLowerCase() + '/',
         success: function (response) {
             $("#datasender-popup").html(response) ;
-            $("#datasender-popup").dialog('option','title', gettext('Edit Datasender')).dialog("open");
+            $("#datasender-popup").dialog('option','title', popupHeader).dialog("open");
             new DW.InitializeEditDataSender().init();
             $.unblockUI();
 

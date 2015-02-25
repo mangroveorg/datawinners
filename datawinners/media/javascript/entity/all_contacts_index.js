@@ -23,8 +23,8 @@
                     {"label": "Delete", "handler":action_handler["delete"], "allow_selection": "multiple"}
                 ],
                 "aoColumnDefs":[
-                                {"bSortable": false, "aTargets":[col("devices"),col("projects"), col("groups")]},
-                                {"bVisible": false, "aTargets": [ col("groups") ]}
+                                {"bSortable": false, "aTargets":[col("devices"),col("projects"), col("groups")]}
+//                                {"bVisible": false, "aTargets": [ col("groups") ]}
                                ]
           });
 });
