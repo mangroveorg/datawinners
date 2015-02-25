@@ -13,12 +13,12 @@ def update_datasender_index_by_id(short_code, dbm):
     update_datasender_index(datasender, dbm)
 
 
-def update_datasender_index(entity_doc, dbm):
+def update_datasender_index(contact_doc, dbm):
     es = get_elasticsearch_handle()
-    if entity_doc.data:
+    if contact_doc.data:
         form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
-        datasender_dict = _create_contact_dict(dbm, entity_doc, form_model)
-        es.index(dbm.database_name, REPORTER_ENTITY_TYPE[0], datasender_dict, id=entity_doc.id)
+        datasender_dict = _create_contact_dict(dbm, contact_doc, form_model)
+        es.index(dbm.database_name, REPORTER_ENTITY_TYPE[0], datasender_dict, id=contact_doc.id)
     es.refresh(dbm.database_name)
 
 

@@ -35,3 +35,10 @@ class Command(BaseCommand):
             logger.info('Done')
 
         print 'Completed!'
+
+
+if __name__ == '__main__':
+    es = get_elasticsearch_handle()
+    logger = logging.getLogger('hni_testorg_slx364903')
+    dbm = get_db_manager('hni_testorg_slx364903')
+    recreate_index_for_db('hni_testorg_slx364903', es, logger)
