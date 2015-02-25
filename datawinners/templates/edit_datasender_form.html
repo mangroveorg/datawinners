@@ -26,9 +26,6 @@
         {% csrf_token %}
 
         <ul>
-            <li>
-                <h6>{% trans "You are editing the Data Senderʼs Details" %}</h6>
-            </li>
             <li class="{{ form.name.css_classes }} form-row-10px">
                 {{ form.name.label_tag }}
                 {{ form.name }}
