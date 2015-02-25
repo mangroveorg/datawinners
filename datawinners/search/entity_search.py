@@ -99,6 +99,13 @@ class SubjectQueryResponseCreator():
 
 
 class DatasenderQueryResponseCreator():
+    def _format_contact_groups(self, key, res, result):
+        groups = res.get(key)
+        if groups:
+            result.append(", ".join(groups))
+        else:
+            result.append("")
+
     def create_response(self, required_field_names, query):
         datasenders = []
         for res in query.values_dict(tuple(required_field_names)):
@@ -108,6 +115,8 @@ class DatasenderQueryResponseCreator():
                     self.add_check_symbol_for_row(res, result)
                 elif key is "projects":
                     result.append(", ".join(res.get(key)))
+                elif key is "groups":
+                    self._format_contact_groups(key, res, result)
                 else:
                     result.append(res.get(key))
             datasenders.append(result)
