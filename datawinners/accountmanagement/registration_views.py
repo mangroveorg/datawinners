@@ -8,10 +8,12 @@ def get_previous_page_language(request):
 
         slash_parts = url.split('/')
         language = slash_parts[3]
-        if language in ["en", "fr"]:
-            request.session['django_language'] = language
-            previous_language = activate(language)
-            return previous_language
+        if language not in ["en", "fr"]:
+            language = "en"
+
+        request.session['django_language'] = language
+        previous_language = activate(language)
+        return previous_language
 
 def register_view(request, form_class=None, template_name=None,
                          backend=None):
