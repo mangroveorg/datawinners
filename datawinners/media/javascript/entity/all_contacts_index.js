@@ -3,6 +3,9 @@
             return $('#datasender_table th.' + header_class_name).index('#datasender_table th');
         }
 
+        var action_handler = new DW.DataSenderActionHandler();
+
+
         $("#datasender_table").dwTable({
                 "concept": "Data Sender",
                 "sAjaxSource": datasender_ajax_url,
