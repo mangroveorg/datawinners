@@ -16,15 +16,14 @@ class DatasenderQuery(Query):
         fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
         fields.append("devices")
         fields.append('projects')
-        fields.append('groups')
         return fields
 
     def query(self, user, query_text):
-        subject_headers = self.get_headers(user)
+        contact_headers = self.get_headers(user)
         query = self.query_builder.get_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
         query_all_results = query[:query.count()]
-        query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_all_results, query_text)
-        return self.response_creator.create_response(subject_headers, query_with_criteria)
+        query_with_criteria = self.query_builder.add_query_criteria(contact_headers, query_all_results, query_text)
+        return self.response_creator.create_response(contact_headers, query_with_criteria)
 
 
 class MyDataSenderQuery(Query):
@@ -107,6 +106,8 @@ class DatasenderQueryResponseCreator():
             result.append("")
 
     def create_response(self, required_field_names, query):
+        required_field_names.append("groups")
+
         datasenders = []
         for res in query.values_dict(tuple(required_field_names)):
             result = []
