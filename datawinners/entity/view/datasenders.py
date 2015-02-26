@@ -190,12 +190,12 @@ class RegisterDatasenderView(TemplateView):
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
 
         save_button_text = self._get_save_button_text(project_id)
-        success_message_text = self._get_success_message_text(message, project_id)
+        message_text = self._get_success_message_text(message, project_id)
 
         return render_to_response('datasender_form.html',
                                   {
                                       'form': form,
-                                      'message': message,
+                                      'message': message_text,
                                       'success': reporter_id is not None,
                                       'project_inks': entity_links,
                                       'current_language': translation.get_language(),
