@@ -228,7 +228,7 @@ def status_message(status):
 # TODO manage_index
 def _get_datasender_info(dbm, submission_doc):
     if submission_doc.owner_uid:
-        datasender_name, datasender_id = lookup_contact_by_uid(dbm, submission_doc.owner_uid)
+        datasender_name, datasender_id = _lookup_contact_by_uid(dbm, submission_doc.owner_uid)
     else:
         datasender_name, datasender_id = submission_doc.created_by, UNKNOWN
     return datasender_id, datasender_name
@@ -245,11 +245,13 @@ def _meta_fields(submission_doc, dbm):
     return search_dict
 
 
-def lookup_contact_by_uid(dbm, uid):
+def _lookup_contact_by_uid(dbm, uid):
     try:
         if uid:
             entity = Contact.get(dbm, uid)
-            return entity.value('name'), entity.short_code
+            if entity.value('name'):
+                return entity.value('name'), entity.short_code
+            return entity.value('mobile_number'), entity.short_code
     except Exception:
         pass
     return UNKNOWN, UNKNOWN

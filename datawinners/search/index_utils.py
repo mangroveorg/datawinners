@@ -68,6 +68,7 @@ def _contact_dict(entity_doc, dbm, form_model):
         dictionary.update({fields[index]: data['cols'][index]})
     dictionary.update({"entity_type": REPORTER_ENTITY_TYPE})
     dictionary.update({"void": contact.is_void()})
+
     return dictionary
 
 

@@ -255,7 +255,7 @@ class TestPreviewCreator(unittest.TestCase):
             mock_project_class.get.return_value = mock_project
             with patch("datawinners.project.models.get_all_projects") as all_projects:
                 with patch("datawinners.search.datasender_index.update_datasender_index"):
-                    with patch("datawinners.search.datasender_index._entity_by_short_code"):
+                    with patch("datawinners.search.datasender_index.contact_by_short_code"):
                         all_projects.return_value = [{'value': {'_id': 1}}]
                         dbm = Mock()
                         dbm.database.return_value = ''

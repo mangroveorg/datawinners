@@ -1,14 +1,15 @@
 import unittest
 
 import elasticutils
-from mock import Mock, patch, MagicMock
+from mock import Mock, patch, MagicMock, PropertyMock
 
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.datastore.database import DatabaseManager
+from mangrove.datastore.entity import Contact
 from mangrove.form_model.field import TextField, GeoCodeField, SelectField, DateField, UniqueIdField, FieldSet
 from mangrove.form_model.form_model import FormModel
 from datawinners.search.submission_index import _update_with_form_model_fields, \
-    update_submission_search_for_subject_edition
+    update_submission_search_for_subject_edition, _lookup_contact_by_uid
 from mangrove.datastore.documents import SurveyResponseDocument, FormModelDocument
 
 
@@ -171,3 +172,34 @@ class TestSubmissionIndex(unittest.TestCase):
             self.assertEquals(
                 {'1212_q1': 'N/A', '1212_q1_unique_code': 'option1,option2', 'is_anonymous': False, 'void': False},
                 search_dict)
+
+    def test_should_get_name_and_short_code_of_contact(self):
+        dbm = MagicMock(spec=DatabaseManager)
+        uuid = "ds_short_code"
+        contact = Mock(spec=Contact)
+        contact.value.return_value = "ds_name"
+        contact.short_code = uuid
+
+        with patch('datawinners.search.submission_index.Contact') as contact_mock:
+            contact_mock.get.return_value = contact
+            name, short_code = _lookup_contact_by_uid(dbm, uuid)
+
+            self.assertEqual(name, "ds_name")
+            self.assertEqual(short_code, "ds_short_code")
+
+    def test_should_get_phone_number_and_short_code_of_contact_when_name_does_not_exist(self):
+        dbm = MagicMock(spec=DatabaseManager)
+        uuid = "ds_short_code"
+        mobile_number = "some_number"
+
+        contact = Mock(spec=Contact)
+        contact.value('name').return_value = None
+        contact.value('mobile_number').return_value = 'some_number'
+        contact.short_code = uuid
+
+        with patch('datawinners.search.submission_index.Contact') as contact_mock:
+            contact_mock.get.return_value = contact
+            number, short_code = _lookup_contact_by_uid(dbm, uuid)
+
+            self.assertEqual(mobile_number, "some_number")
+            self.assertEqual(short_code, "ds_short_code")
