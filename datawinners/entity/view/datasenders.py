@@ -1,4 +1,5 @@
 import json
+from django.contrib.auth.models import User
 
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
@@ -93,6 +94,9 @@ class EditDataSenderView(TemplateView):
 
                     if form.cleaned_data['email']:
                         email = form.cleaned_data['email']
+                        user = User.objects.filter(email=email)
+                        if not user:
+                            create_single_web_user(org_id, email, reporter_id, request.LANGUAGE_CODE)
 
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
@@ -167,7 +171,7 @@ class RegisterDatasenderView(TemplateView):
 
         except DataObjectAlreadyExists as e:
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
-        if len(form.errors) == 0 and form.requires_web_access() and reporter_id:
+        if len(form.errors) == 0 and form.requires_web_access() and reporter_id and form.cleaned_data['project_id'] != "":
             email_id = form.cleaned_data['email']
             create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
                                    language_code=request.LANGUAGE_CODE)
