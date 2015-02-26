@@ -11749,7 +11749,7 @@ define( 'enketo-js/extend',['require'],function( window ) {
 
         offset.minstotal = this.getTimezoneOffset();
         offset.direction = ( offset.minstotal < 0 ) ? '+' : '-';
-        offset.hrspart = pad2( Math.abs( Math.floor( offset.minstotal / 60 ) ) );
+        offset.hrspart = pad2( Math.abs( Math.floor( Math.abs(offset.minstotal) / 60 ) ) );
         offset.minspart = pad2( Math.abs( Math.floor( offset.minstotal % 60 ) ) );
 
         return new Date( this.getTime() - ( offset.minstotal * 60 * 1000 ) ).toISOString()
@@ -34769,7 +34769,10 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             var fileName = ( typeof file === 'object' && file.name ) ? file.name : file;
             this.$fakeInput.text( fileName );
         }
-        else {this.$fakeInput.text( '' ); }
+        else {
+
+            this.$fakeInput.text( '' );
+        }
     };
 
     Filepicker.prototype._showFeedback = function( message, status ) {
@@ -34800,6 +34803,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         }
         this.$preview.empty();
         if ( url ) {
+//            Clearing preview before updating
             this.$downloadLink.empty();
             this.$preview.append( $el.attr( 'src', url ) );
         }

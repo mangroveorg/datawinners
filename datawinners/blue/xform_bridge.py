@@ -1,3 +1,4 @@
+from datetime import datetime
 import itertools
 import os
 import re
@@ -18,7 +19,7 @@ from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, associate_account_users_to_project
 from mangrove.form_model.field import FieldSet, GeoCodeField, DateField, PhotoField, VideoField, AudioField, MediaField, \
-    SelectField
+    SelectField, DateTimeField
 
 
 # used for edit questionnaire in xls questionnaire flow
@@ -491,7 +492,10 @@ class XFormSubmissionProcessor():
         d, s = {'form_code': form_code}, {}
         for f in form_model_fields:
             answer = submission_values.get(f.code, '')
-            if isinstance(f, SelectField) and f.has_other and isinstance(answer, list) and answer[0] == 'other':
+            if isinstance(f, DateTimeField):
+                value = datetime.strptime(answer, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
+                d.update(self.get_dict(f, value))
+            elif isinstance(f, SelectField) and f.has_other and isinstance(answer, list) and answer[0] == 'other':
                 if f.is_single_select:
                     d.update({f.code + "_other": answer[1]})
                     d.update({f.code: answer[0]})
