@@ -1963,14 +1963,14 @@ msgid "User has been added successfully"
 msgstr "L'utilisateur a été ajouté avec succès"
 
 msgid "agree-terms"
-msgstr "J'accepte <a href=\"https://www.datawinners.com/fr/terms-and-conditions/\" target=\"_blank\" id=\"link-terms-and-conditions\">les termes et conditions</a> de DataWinners"
+msgstr "J'accepte <a href=\"https://www.datawinners.com/fr/terms-and-conditions\" target=\"_blank\">les termes et conditions</a> de DataWinners"
 
 
 msgid "I Agree"
 msgstr "J'accepte"
 
 msgid "To sign up for a DataWinners account, you need to agree to our Terms and Conditions"
-msgstr "Vous devez accepter les <a class='terms_and_condition' href=\"https://www.datawinners.com/fr/terms-and-conditions/\" target=\"_blank\">termes et conditions</a> avant d'utiliser DataWinners"
+msgstr "Vous devez accepter les <a class='terms_and_condition' href=\"https://www.datawinners.com/fr/terms-and-conditions\" target=\"_blank\">termes et conditions</a> avant d'utiliser DataWinners"
 
 msgid "learn-about-partners-clients"
 msgstr "En savoir plus sur nos <a href=\"https://www.datawinners.com/fr/about-us/partners\">partenaires</a> &amp; nos "

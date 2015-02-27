@@ -1891,14 +1891,14 @@ msgid "User has been added successfully"
 msgstr ""
 
 msgid "agree-terms"
-msgstr "I agree to the DataWinners <a target=\"_blank\" href=\"/en/terms-and-conditions/\"  id=\"link-terms-and-conditions\">Terms and Conditions</a>"
+msgstr "I agree to the DataWinners <a href=\"https://www.datawinners.com/en/terms-and-conditions\">Terms and Conditions</a>"
 
 
 msgid "I Agree"
 msgstr ""
 
 msgid "To sign up for a DataWinners account, you need to agree to our Terms and Conditions"
-msgstr "To sign up for a DataWinners account, you need to agree to our <a class='terms_and_condition' href=\"/en/terms-and-conditions/\" target=\"_blank\">Terms and Conditions</a>"
+msgstr "To sign up for a DataWinners account, you need to agree to our <a class='terms_and_condition' href=\"https://www.datawinners.com/en/terms-and-conditions\" target=\"_blank\">Terms and Conditions</a>"
 
 msgid "learn-about-partners-clients"
 msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp; "

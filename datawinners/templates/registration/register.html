@@ -3,11 +3,6 @@
 {% load field_tags %}
 {% block page_title %}{%  trans "Register"%} {% endblock %}
 {% block section_title %} {%  trans "Sign Up To Start Using DataWinners Now" %} {% endblock %}
-{% block page_js %}
-    {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/registration/register.js"></script>
-{% endblock %}
-
 {% block already_registered_link %}
     {% include "registration/already_registered_link.html" %} 
 {% endblock %}
@@ -199,12 +194,12 @@
             <a href="#" class="button agree_link">{% trans "I Agree" %}</a>
         </div>
     </div>
-    <div id="content_of_terms_and_conditions">
+    <!--<div id="content_of_terms_and_conditions">
         <div class="content" style="">
 
         </div>
             <div class="text_align_right margin_top_15">
         <a id="terms_ok" href="javascript:void(0)" class="button">{% trans "OK, Got it" %}</a>
     </div>
-    </div>
+    </div>--!>
 {% endblock %}
