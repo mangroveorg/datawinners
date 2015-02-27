@@ -29,3 +29,7 @@ class ReporterEntity(object):
     @property
     def email(self):
         return self.entity.value(EMAIL_FIELD)
+
+    @property
+    def is_contact(self):
+        return self.entity.is_contact

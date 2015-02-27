@@ -25,7 +25,7 @@ from datawinners.project.view_models import ReporterEntity
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_index import update_submission_search_for_datasender_edition
 from datawinners.submission.location import LocationBridge
-from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity import get_by_short_code, contact_by_short_code
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import Request, TransportInfo
@@ -68,7 +68,7 @@ class EditDataSenderView(TemplateView):
     def post(self, request, reporter_id, *args, **kwargs):
         reporter_id = reporter_id.lower()
         manager = get_database_manager(request.user)
-        reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
+        reporter_entity = ReporterEntity(contact_by_short_code(manager, reporter_id))
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         datasender = {'short_code': reporter_id}
         get_datasender_user_detail(datasender, request.user)
@@ -94,8 +94,7 @@ class EditDataSenderView(TemplateView):
 
                     if form.cleaned_data['email']:
                         email = form.cleaned_data['email']
-                        user = User.objects.filter(email=email)
-                        if not user:
+                        if not reporter_entity.is_contact and not User.objects.filter(email=email):
                             create_single_web_user(org_id, email, reporter_id, request.LANGUAGE_CODE)
 
                     if organization.in_trial_mode:
