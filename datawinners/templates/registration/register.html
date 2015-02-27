@@ -3,6 +3,11 @@
 {% load field_tags %}
 {% block page_title %}{%  trans "Register"%} {% endblock %}
 {% block section_title %} {%  trans "Sign Up To Start Using DataWinners Now" %} {% endblock %}
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/registration/register.js"></script>
+{% endblock %}
+
 {% block already_registered_link %}
     {% include "registration/already_registered_link.html" %} 
 {% endblock %}
