@@ -126,9 +126,9 @@ class FilePlayer(Player):
 
             response = self.submit(form_model, values, [])
 
-            if response.success:
-                user = self._create_user(email, organization, response)
-                send_email_to_data_sender(user, _("en"))
+            # if response.success:
+            #     user = self._create_user(email, organization, response)
+            #     send_email_to_data_sender(user, _("en"))
 
 
         else:

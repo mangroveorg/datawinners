@@ -5,7 +5,6 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.template.defaultfilters import register, lower
 from django.utils import translation
-from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
@@ -19,6 +18,7 @@ from django.contrib import messages
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, \
     valid_web_user
+from datawinners.accountmanagement.helper import create_web_users
 from datawinners.entity.entity_export_helper import get_subject_headers
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.main.database import get_database_manager
@@ -32,35 +32,32 @@ from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
 from mangrove.form_model.field import field_to_json, DateField
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
-from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, put_email_information_to_entity, \
-    get_organization_telephone_number
+from datawinners.entity.helper import create_registration_form, get_organization_telephone_number
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined
-from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
+from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
     QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, \
-    get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, \
+    get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, SHORT_CODE_FIELD, \
     header_fields, get_field_by_attribute_value
 from mangrove.transport.player.player import WebPlayer
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_organization_country, \
-    get_database_manager_for_org, get_changed_questions
+    get_changed_questions
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGISTERED_IDENTIFICATION_NUMBER, \
     EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER
-from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 
@@ -276,47 +273,13 @@ def log_activity(request, action, detail):
     UserActivityLog().log(request, action=action, detail=detail, project=request.POST.get("project", "").capitalize())
 
 
-def __create_web_users(org_id, reporter_details, language_code):
-    duplicate_entries = {}
-    [duplicate_entries.update({item[0]: item[1]}) for item in reporter_details.items() if
-     [val for val in reporter_details.values()].count(item[1]) > 1]
 
-    errors = []
-    if len(duplicate_entries) > 0:
-        content = json.dumps({'success': False, 'errors': errors, 'duplicate_entries': duplicate_entries})
-
-    organization = Organization.objects.get(org_id=org_id)
-    dbm = get_database_manager_for_org(organization)
-    existent_email_addresses = User.objects.filter(email__in=reporter_details.values()).values('email')
-
-    if len(existent_email_addresses) > 0:
-        for duplicate_email in existent_email_addresses:
-            errors.append("User with email %s already exists" % duplicate_email['email'])
-        content = json.dumps({'success': False, 'errors': errors, 'duplicate_entries': duplicate_entries})
-    if errors.__len__() == 0 and duplicate_entries.keys().__len__() == 0:
-        for reporter_id, email in reporter_details.iteritems():
-            reporter_entity = contact_by_short_code(dbm, reporter_id)
-            reporter_email = email.lower()
-            put_email_information_to_entity(dbm, reporter_entity, email=reporter_email)
-            user = User.objects.create_user(reporter_email, reporter_email, 'test123')
-            group = Group.objects.filter(name="Data Senders")[0]
-            user.groups.add(group)
-            user.first_name = reporter_entity.value(NAME_FIELD)
-            user.save()
-            profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
-                                     reporter_id=reporter_id.lower())
-            profile.save()
-
-            send_email_to_data_sender(user, language_code, organization=organization)
-
-        content = json.dumps({'success': True, 'message': "Users has been created"})
-    return content
 
 
 def create_single_web_user(org_id, email_address, reporter_id, language_code):
     """Create single web user from My Data Senders page"""
     return HttpResponse(
-        __create_web_users(org_id, {reporter_id: email_address}, language_code))
+        create_web_users(org_id, {reporter_id: email_address}, language_code))
 
 
 @login_required
@@ -329,7 +292,7 @@ def create_multiple_web_users(request):
     post_data = {}
     if request.method == 'POST':
         [post_data.update({item['reporter_id']: item['email']}) for item in json.loads(request.POST['post_data'])]
-        content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE)
+        content = create_web_users(org_id, post_data, request.LANGUAGE_CODE)
         return HttpResponse(content)
 
 

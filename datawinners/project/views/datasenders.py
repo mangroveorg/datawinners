@@ -15,6 +15,7 @@ import jsonpickle
 
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired, is_datasender
+from datawinners.accountmanagement.helper import create_web_users
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS
 from datawinners.entity import import_data as import_module
@@ -83,7 +84,7 @@ def parse_successful_imports(successful_imports):
         data_sender['location'] = ",".join(successful_import["l"]) if "l" in successful_import else ""
         data_sender['coordinates'] = ','.join(
             str(coordinate) for coordinate in successful_import["g"]) if 'g' in successful_import else ""
-        data_sender['name'] = successful_import['n']
+        data_sender['name'] = successful_import['n'] if 'n' in successful_import else ""
         data_sender['mobile_number'] = successful_import['m']
         data_sender['id'] = successful_import['s']
         imported_data_senders.append(data_sender)
@@ -132,6 +133,11 @@ def registered_datasenders(request, project_id):
                                                                                                         manager,
                                                                                                         default_parser=XlsDatasenderParser)
         imported_data_senders = parse_successful_imports(successful_imports)
+
+        reporter_id_email_map = dict([(imported_datasender['id'], imported_datasender['email']) for imported_datasender in imported_data_senders])
+        org_id = request.user.get_profile().org_id
+        create_web_users(org_id, reporter_id_email_map, request.LANGUAGE_CODE)
+
         imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
         _add_imported_datasenders_to_project(imported_datasenders_ids, manager, questionnaire)
         convert_open_submissions_to_registered_submissions.delay(manager.database_name, imported_datasenders_ids)

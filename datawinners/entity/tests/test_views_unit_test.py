@@ -47,12 +47,12 @@ class TestView(TestCase):
 
         with patch("django.contrib.auth.tokens.default_token_generator.make_token") as make_token:
             make_token.return_value = "token"
-            with patch("datawinners.entity.views.get_database_manager_for_org") as get_dbm:
+            with patch("datawinners.accountmanagement.helper.get_database_manager_for_org") as get_dbm:
                 get_dbm.return_value = Mock(spec=DatabaseManager)
                 with patch("datawinners.accountmanagement.models.Organization.objects.get") as get_organization_mock:
                     get_organization_mock.return_value = org
-                    with patch("datawinners.entity.views.contact_by_short_code") as reporter_entity:
-                        with patch("datawinners.entity.views.put_email_information_to_entity") as put_email_information_to_entity:
+                    with patch("datawinners.accountmanagement.helper.contact_by_short_code") as reporter_entity:
+                        with patch("datawinners.accountmanagement.helper.put_email_information_to_entity") as put_email_information_to_entity:
                             put_email_information_to_entity.return_value = None
                             reporter_entity.return_value = mock_entity
                             create_single_web_user(org.org_id, WEB_USER_TEST_EMAIL, "test", "en")
