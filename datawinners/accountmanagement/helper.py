@@ -110,3 +110,7 @@ def create_web_users(org_id, reporter_details, language_code):
 
         content = json.dumps({'success': True, 'message': "Users has been created"})
     return content
+
+
+def get_org_id(request):
+    return request.user.get_profile().org_id
