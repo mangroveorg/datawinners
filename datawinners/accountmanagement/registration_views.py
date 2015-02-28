@@ -7,6 +7,10 @@ def get_previous_page_language(request):
         url = request.META.get('HTTP_REFERER')
 
         slash_parts = url.split('/')
+
+        if len(slash_parts) < 4:
+            return
+
         language = slash_parts[3]
         if request.META['HTTP_HOST'] != slash_parts[2]:
             if language not in ["en", "fr"]:
