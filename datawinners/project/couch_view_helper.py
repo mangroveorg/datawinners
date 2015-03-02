@@ -1,3 +1,4 @@
+from collections import OrderedDict
 
 
 def get_all_projects_for_datasender(dbm, data_sender_id):
@@ -13,3 +14,14 @@ def get_all_projects(dbm, data_sender_id=None):
             row.update({'value': row["doc"]})
         return rows
     return dbm.load_all_rows_in_view('all_projects')
+
+
+def get_project_id_name_map(dbm):
+    project_id_name_map = {}
+    rows = dbm.load_all_rows_in_view('project_names')
+    for row in rows:
+        project_id_name_map.update({row['value']['id']:row['value']['name']})
+
+    project_map = sorted(project_id_name_map.items(), key=lambda(project_id, name): name)
+
+    return OrderedDict(project_map)

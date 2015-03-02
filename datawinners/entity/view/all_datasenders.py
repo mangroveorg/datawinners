@@ -12,7 +12,7 @@ from django.views.generic.base import TemplateView, View
 import jsonpickle
 from datawinners.accountmanagement.helper import create_web_users, get_org_id
 from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
-from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.project.couch_view_helper import get_all_projects, get_project_id_name_map
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.transport import TransportInfo
@@ -43,13 +43,13 @@ class AllDataSendersView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        projects = get_all_projects(manager)
+        project_name_id_map = get_project_id_name_map(manager)
         in_trial_mode = utils.get_organization(request).in_trial_mode
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
 
         return self.render_to_response(RequestContext(request, {
             "user_dict": json.dumps(user_rep_id_name_dict),
-            "projects": projects,
+            "projects": project_name_id_map,
             'current_language': translation.get_language(),
             'in_trial_mode': in_trial_mode,
         }))
