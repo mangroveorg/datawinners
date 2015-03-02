@@ -34,9 +34,9 @@ class TestTrialRegistrationPage(HeadlessRunnerTest):
     @attr('functional_test')
     def test_trial_link_from_pricing_page(self):
         self.driver.go_to(DATA_WINNER_EN_PRICING_PAGE)
-        self.driver.find(by_css("a.try_button")).click()
+        self.driver.find(by_css("ul.obox-grid li:first-child.obox-column a.try_button")).click()
         self.driver.wait_for_page_with_title(10, "Register")
-        self.assertEqual(self.driver.current_url, DATA_WINNER_REGISTER_TRIAL_PAGE)
+        self.assertEqual(self.driver.current_url, "https://app.datawinners.com/register/trial/")
 
     @attr('functional_test')
     def test_register_organization_sector_have_the_right_select_options(self):
