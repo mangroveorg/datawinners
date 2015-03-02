@@ -229,8 +229,8 @@ msgstr "à"
 msgid "Import a Data Senders list"
 msgstr "Importer une liste d'expéditeurs"
 
-msgid "Select Questionnaires"
-msgstr "Sélectionnez les Questionnaires"
+msgid "Add to Questionnaire"
+msgstr "Ajouter au Questionnaire"
 
 #: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
