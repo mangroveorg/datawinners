@@ -36,7 +36,8 @@ from testdata.constants import SUCCESS_MSG
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, LOGOUT, \
     url
 from tests.activateaccounttests.activate_account_data import DS_ACTIVATION_URL, NEW_PASSWORD
-from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL, VALID_DATA_WITH_EMAIL_FOR_EDIT
+from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL, VALID_DATA_WITH_EMAIL_FOR_EDIT, \
+    VALID_CONTACT_WITH_EMAIL
 from tests.endtoendtest.end_to_end_data import *
 from tests.projects.questionnairetests.project_questionnaire_data import VALID_SUMMARY_REPORT_DATA
 from tests.registrationtests.registration_tests import register_and_get_email
@@ -198,13 +199,13 @@ class TestApplicationEndToEnd(unittest.TestCase):
         all_data_sender_page = global_navigation.navigate_to_all_data_sender_page()
         add_data_sender_page = all_data_sender_page.navigate_to_add_a_data_sender_page()
         email = generate_random_email_id()
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL, email=email)
+        add_data_sender_page.enter_data_sender_details_from(VALID_CONTACT_WITH_EMAIL, email=email)
         success_msg = add_data_sender_page.get_success_message()
-        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_WITH_EMAIL)), success_msg)
+        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_CONTACT_WITH_EMAIL)), success_msg)
         add_data_sender_page.navigate_to_datasender_page()
         all_data_sender_page = AllDataSendersPage(self.driver)
 
-        rep_id = success_msg.replace(VALID_DATA_WITH_EMAIL[SUCCESS_MESSAGE], '')
+        rep_id = success_msg.replace(VALID_CONTACT_WITH_EMAIL[SUCCESS_MESSAGE], '')
         all_data_sender_page.select_a_data_sender_by_id(rep_id)
 
         all_data_sender_page.select_edit_action()
@@ -348,6 +349,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_submission_via_web(ds_email)
         self.verify_setting_customized_error_messages_for_languages()
-        # self.admin_edit_delete_submissions()
+        self.admin_edit_delete_submissions()
         # time.sleep(2)
         self.delete_project()

@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from mangrove.datastore.database import DatabaseManager
-from mock import Mock, patch
+from mock import Mock, patch, MagicMock
 from datawinners.submission.models import SMSResponse
 from mangrove.form_model.form_model import NAME_FIELD, FormModel, EntityFormModel
 from mangrove.transport.contract.response import Response
