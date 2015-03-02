@@ -29,7 +29,11 @@
                                         <tr>
                                             <td width="10"></td>
                                             <td style="text-align: justify; color: #333333; ">
+                                             {% if user.first_name %}
                                                 <p>Bonjour {{ user.first_name }},</p>
+                                             {% else %}
+                                                <p>Bonjour,</p>
+                                             {% endif %}
                                                 <p>Vous êtes maintenant enregistré en tant qu’Expéditeur de Données.<br />
                                                     <a href="{{ protocol }}://{{ domain }}{% url activate_datasender_account uidb36=uid, token=token %}" style="color: #4379A2;font-weight: normal;text-decoration: none;">
                                                         <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
