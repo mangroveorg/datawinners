@@ -85,7 +85,7 @@ class TestRegistrationPage(HeadlessRunnerTest):
         price_link.click()
         new_tab = self.driver.window_handles[1]
         self.driver.switch_to_window(new_tab)
-        self.driver.wait_for_page_with_title(2, "Pricing")
+        self.driver.wait_for_page_with_title(8, "Pricing")
         self.assertEqual("Pricing", self.driver.get_title())
         self.driver.switch_to_window(self.driver.window_handles[0])
 

@@ -7,11 +7,17 @@ def get_previous_page_language(request):
         url = request.META.get('HTTP_REFERER')
 
         slash_parts = url.split('/')
+
+        if len(slash_parts) < 4:
+            return
+
         language = slash_parts[3]
-        if language in ["en", "fr"]:
+        if request.META['HTTP_HOST'] != slash_parts[2]:
+            if language not in ["en", "fr"]:
+                language = "en"
+
             request.session['django_language'] = language
-            previous_language = activate(language)
-            return previous_language
+            activate(language)
 
 def register_view(request, form_class=None, template_name=None,
                          backend=None):

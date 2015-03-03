@@ -32,7 +32,7 @@ $(document).ready(function() {
         $('#registration_form').submit();
     });
     
-    $("#content_of_terms_and_conditions div.content").load($("#link-terms-and-conditions").attr("href")+" #container_main_content");
+    /*$("#content_of_terms_and_conditions div.content").load($("#link-terms-and-conditions").attr("href")+" #container_main_content");
 
      $("#content_of_terms_and_conditions").dialog({
         autoOpen: false,
@@ -52,7 +52,7 @@ $(document).ready(function() {
     $("#link-terms-and-conditions").bind("click", function(){
         $("#content_of_terms_and_conditions").dialog("open");
         return false;
-    });
+    });*/
 
     $("[name=account_type],[name=invoice_period]").bind("click", function(){
         update_price();

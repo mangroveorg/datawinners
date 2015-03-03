@@ -5,7 +5,7 @@
         <div class="warning-message-box clear-both overflow_hidden">
             {% if user|in_group:"NGO Admins," %}
                 <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your questionnaires." %}</p>
-                <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/" target="blank">{% trans "Learn More" %}</a>
+                <a class="float_left margin_10 padding_top_10" href="https://www.datawinners.com/{{ active_language }}/pricing/" target="blank">{% trans "Learn More" %}</a>
                 <a class="button margin_10 float_left" target="blank"
                href="{% url default_upgrade %}">{% trans "Subscribe Now" %}</a>
             {% else %}
