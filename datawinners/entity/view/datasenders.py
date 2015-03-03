@@ -223,13 +223,15 @@ class RegisterDatasenderView(TemplateView):
             form = ReporterRegistrationForm(initial={'project_id': questionnaire_id})
 
         save_button_text = self._get_save_button_text(project_id)
-        message_text = self._get_success_message_text(message, project_id)
+        is_registration_successful = reporter_id is not None
+
+        message_text = self._get_message_text(message, project_id, is_registration_successful)
 
         return render_to_response('datasender_form.html',
                                   {
                                       'form': form,
                                       'message': message_text,
-                                      'success': reporter_id is not None,
+                                      'success': is_registration_successful,
                                       'project_inks': entity_links,
                                       'current_language': translation.get_language(),
                                       'registration_link':'/entity/datasender/register/',
@@ -243,9 +245,11 @@ class RegisterDatasenderView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(RegisterDatasenderView, self).dispatch(*args, **kwargs)
 
-    def _get_success_message_text(self, message, project_id):
-        return message if project_id else _("Your contact(s) have been added.")
-
+    def _get_message_text(self, message, project_id, is_registration_successful):
+        if is_registration_successful:
+            return message if project_id else _("Your contact(s) have been added.")
+        else:
+            return message
 
 
 

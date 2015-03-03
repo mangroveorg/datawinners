@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
 from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers, get_unique_mobile_number_validator
 from datawinners.accountmanagement.models import get_data_senders_on_trial_account_with_mobile_number
+from datawinners.entity.datasender_search import datasender_count_with
 from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import AccountExpiredException
 from models import  Organization
@@ -87,10 +88,9 @@ class UserProfileForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if User.objects.filter(username__iexact=username).count() > 0:
+        if datasender_count_with(username) > 0:
             raise ValidationError(_("This email address is already in use. Please supply a different email address"))
         return self.cleaned_data.get('username').lower()
-
 
 class EditUserProfileForm(UserProfileForm):
     def __init__(self, *args, **kwargs):

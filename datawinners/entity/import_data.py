@@ -14,6 +14,7 @@ from django.contrib.sites.models import get_current_site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
+from datawinners.entity.datasender_search import datasender_count_with
 from datawinners.entity.subject_template_validator import SubjectTemplateValidator
 from datawinners.entity.helper import get_country_appended_location, entity_type_as_sequence, get_organization_telephone_number
 
@@ -101,8 +102,9 @@ class FilePlayer(Player):
         return user
 
     def _validate_duplicate_email_address(self, email):
-        registered_emails = self._get_registered_emails()
-        if email in registered_emails:
+        # registered_emails = self._get_registered_emails()
+        matching_email_count = datasender_count_with(email)
+        if matching_email_count > 0:
             raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
     def _import_data_sender(self, form_model, organization, values):

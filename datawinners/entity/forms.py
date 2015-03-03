@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
+from datawinners.entity.datasender_search import datasender_count_with
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE, GEO_CODE, GEO_CODE_FIELD_NAME
 from mangrove.utils.types import is_empty
 from datawinners.entity.fields import PhoneNumberField
@@ -171,7 +172,8 @@ class ReporterRegistrationForm(Form):
         if not email:
             return email
 
-        if User.objects.filter(email__iexact=self.cleaned_data['email']):
+        # if User.objects.filter(email__iexact=self.cleaned_data['email']):
+        if datasender_count_with(email) > 0:
             raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
         return self.cleaned_data['email']
 
