@@ -1,9 +1,17 @@
 {% load i18n %}
         <div class="import_subject_form">
-            {% trans "To import a list of Data Senders follow these steps" %}
+            {% if project %}
+                {% trans "To import a list of Data Senders follow these steps" %}
+            {% else %}
+                {% trans "To import a list of Contacts follow these steps" %}
+            {% endif %}
             <ul class="bulleted">
                 <li>{% trans "Download the template" %}.</li>
-                <li>{% trans "Fill out the template with your Data Senders information." %}</li>
+                {% if project %}
+                    <li>{% trans "Fill out the template with your Data Senders information." %}</li>
+                {% else %}
+                    <li>{% trans "Fill out the template with your Contacts information." %}</li>
+                {% endif %}
                 <li>{% trans "Save the template on your computer." %}</li>
                 <li>{% trans "Click the gold Upload a file button and select the saved template." %}</li>
             </ul>
@@ -15,7 +23,12 @@
                 <div id="file_uploader" class="float_left grid_5"></div>
 {#                <div class="clear"></div>#}
             </div>
-            <div id="template-download-section" class="error download-section" class="margin_top_15">{% trans "Use this "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
+            <div id="template-download-section" class="error download-section" class="margin_top_15">{% trans "Use this "%}
+                {% if project %}
+                    <a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
+                {% else %}
+                    <a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportContacts.xls{% else %}DataWinners_ImporterContacts.xls{% endif %}">{% trans "Import Template"%}</a></div>
+                {% endif %}
             <div class="clear"></div>
              <br/>
             <div id="success_import_section" class="import_section">

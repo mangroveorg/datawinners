@@ -1525,9 +1525,6 @@ msgstr "Click the blue 'Add Subjects Manually' button and register subjects indi
 msgid "Enter your Subjects individually"
 msgstr ""
 
-msgid "Import a List"
-msgstr ""
-
 msgid "tooltip_subject_import"
 msgstr ""
 "Add a list of subjects by following these instructions:"

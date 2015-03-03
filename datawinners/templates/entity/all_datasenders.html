@@ -61,13 +61,13 @@
             <a id="register_link" class="add_subject_link" onclick="register_datasender()">
                 {% trans "Add a Contact" %}
             </a> <span class="padding_left_right_10"> | </span>
-            <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
+            <a href="javascript:void(0);" id="import-datasenders">{% trans "Import Contacts" %}</a>
         </div>
         <div style="display: none;">
             <div id="popup-import" class="popup-import">
-                {% with project=None %}
+{#                {% with project=None %}#}
                     {% include "import-datasenders.html" %}
-                {% endwith %}
+{#                {% endwith %}#}
             </div>
         </div>
 
