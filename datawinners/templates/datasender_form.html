@@ -20,7 +20,6 @@ var sender_registration_link = "{{ registration_link }}";
 
   </div>
 <div id="add_data_sender_form" class="">
-<h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>  <br>
 
   <form id="registration_form" class="" action="" method="POST">
   <fieldset>
@@ -30,19 +29,6 @@ var sender_registration_link = "{{ registration_link }}";
               {{ form.name.label_tag }}
               {{ form.name }}
               {{ form.name.errors }}
-          </li>
-          <li class="{{ form.devices.css_classes }} horizontal_list">
-              <ul>
-                  <li class="device_label">
-                      {{ form.devices.label_tag }}
-                      {{ form.devices }}
-                      {{ form.devices.errors }}
-                  </li>
-                  <li id="user_creation_info" class="italic_grey clear-left margin_left_180 instruction_text">
-                    <br/>{% trans "user_creation_info" %}
-                  </li>
-              </ul>
-              <br/>
           </li>
           <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
               {{ form.email.label_tag }}
@@ -107,15 +93,18 @@ var sender_registration_link = "{{ registration_link }}";
 
                <br class="clear"/>
                <label style="width: 165px;">&nbsp;</label>
-               <span><input type="checkbox" id="generate_id" name="generate_id" value="" {% if not form.short_code.value %}checked="checked"{% endif %} />{% trans "Let us generate an ID for you" %}</span>
-
+{#               <span><input type="checkbox" id="generate_id" name="generate_id" value="checked" {% if not form.short_code.value %}checked="checked"{% endif %} />{% trans "Let us generate an ID for you" %}</span>#}
+               <span>
+                   {{ form.generated_id }}{% trans "ID Automatic" %}
+               </span>
 
 
           </li>
           <li class="button_block">
               <a id="cancel" class="cancel_link" >{% trans "Cancel" %}</a>
               <div style="display: none;"> {% include "warning_section.html" %} </div>
-              <input type="button" id="id_register_button" value="{% trans 'Register' %}" class="button margin_top_20"/>
+{#              <input type="button" id="id_register_button" value="{% trans 'Add Contact' %}" class="button margin_top_20"/>#}
+              <input type="button" id="id_register_button" value="{{ button_text }}" class="button margin_top_20"/>
           </li>
       </ul>
   </fieldset>

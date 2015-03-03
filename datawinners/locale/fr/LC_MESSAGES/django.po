@@ -124,8 +124,8 @@ msgid ""
 "Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
 msgstr "Veuillez saisir uniquement des lettres a-z ou A-Z ou les symboles '`-"
 
-msgid "Mobile Number"
-msgstr "Numéro de mobile"
+msgid "Mobile Number*"
+msgstr "Numéro de mobile*"
 
 msgid "Please enter a valid phone number."
 msgstr "Veuillez saisir un numéro de téléphone."
@@ -1577,8 +1577,8 @@ msgstr "Cliquez sur le bouton bleu 'Ajouter des Sujets Manuellement' et inscrive
 msgid "Enter your Subjects individually"
 msgstr "Entrer les sujets un par un"
 
-msgid "Import a List"
-msgstr "Importer une Liste"
+msgid "Import Contacts"
+msgstr "Importer des Contacts"
 
 msgid "tooltip_subject_import"
 msgstr ""
@@ -5680,3 +5680,18 @@ msgstr "http://youtu.be/iu_cg2PoI9g"
 
 msgid "How to Collect Media Files With XLSForms"
 msgstr "Comment collecter des fichiers média avec XLSForm"
+
+msgid "All Contacts"
+msgstr "Tous les Contacts"
+
+msgid "Add a Contact"
+msgstr "Ajouter un Contact"
+
+msgid "Add Contact"
+msgstr "Ajouter des Contacts"
+
+msgid "ID Automatic"
+msgstr "ID automatique"
+
+msgid "Your contact(s) have been added."
+msgstr "Vos contacts ont été ajoutés."

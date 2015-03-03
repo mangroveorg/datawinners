@@ -10,9 +10,11 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 import jsonpickle
+from datawinners.accountmanagement.helper import create_web_users, get_org_id
 from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
-from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.project.couch_view_helper import get_all_projects, get_project_id_name_map
 from datawinners.search.datasender_index import update_datasender_index_by_id
+from mangrove.datastore.entity import contact_by_short_code
 from mangrove.transport import TransportInfo
 
 from datawinners import settings
@@ -41,13 +43,13 @@ class AllDataSendersView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        projects = get_all_projects(manager)
+        project_name_id_map = get_project_id_name_map(manager)
         in_trial_mode = utils.get_organization(request).in_trial_mode
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
 
         return self.render_to_response(RequestContext(request, {
             "user_dict": json.dumps(user_rep_id_name_dict),
-            "projects": projects,
+            "projects": project_name_id_map,
             'current_language': translation.get_language(),
             'in_trial_mode': in_trial_mode,
         }))
@@ -189,6 +191,26 @@ def data_sender_short_codes(request, manager):
 
 
 class AssociateDataSendersView(DataSenderActionView):
+    def _update_activity_log(self, projects_name, request):
+        ids = request.POST["ids"].split(';')
+        if len(ids):
+            UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_QUESTIONNAIRES,
+                                  detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
+                                                     "Projects": "[%s]" % ", ".join(projects_name)}))
+
+    def _convert_contacts_to_datasenders(self, contact_short_codes, manager, request):
+        datasender_id_email_map = {}
+        for contact_short_code in contact_short_codes:
+            datasender = contact_by_short_code(manager, contact_short_code)
+            if datasender.is_contact:
+                datasender.change_status_to_datasender()
+                datasender.save(process_post_update=False)
+                if datasender.email:
+                    datasender_id_email_map.update({datasender.short_code: datasender.email})
+            update_datasender_index_by_id(contact_short_code, manager)
+        org_id = get_org_id(request)
+        create_web_users(org_id, datasender_id_email_map, request.LANGUAGE_CODE)
+
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         questionnaires = self._get_projects(manager, request)
@@ -196,14 +218,9 @@ class AssociateDataSendersView(DataSenderActionView):
         for questionnaire in questionnaires:
             datasenders_to_associate = data_sender_short_codes(request, manager)
             questionnaire.associate_data_sender_to_project(manager, datasenders_to_associate)
-            for data_senders_code in datasenders_to_associate:
-                update_datasender_index_by_id(data_senders_code, manager)
+            self._convert_contacts_to_datasenders(datasenders_to_associate, manager, request)
             projects_name.add(questionnaire.name.capitalize())
-        ids = request.POST["ids"].split(';')
-        if len(ids):
-            UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_QUESTIONNAIRES,
-                                  detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
-                                                     "Projects": "[%s]" % ", ".join(projects_name)}))
+        self._update_activity_log(projects_name, request)
 
         return HttpResponse(
             json.dumps({"success": True, "message": _("The Data Sender(s) are added to Questionnaire(s) successfully")}))

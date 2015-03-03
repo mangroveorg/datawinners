@@ -1,12 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import date
 import unittest
-from django.utils.unittest.case import SkipTest
-from datawinners.project.couch_view_helper import get_all_projects
-from mangrove.datastore.documents import FormModelDocument
 
 from mock import Mock, patch
 
+from datawinners.project.couch_view_helper import get_all_projects
+from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.cache_manager import get_cache_manager
 from mangrove.form_model.project import Project
 from mangrove.utils.test_utils.database_utils import uniq
@@ -14,9 +13,9 @@ from mangrove.bootstrap import initializer
 from datawinners.main.utils import create_views
 from datawinners.project.models import get_simple_project_names
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
-from mangrove.datastore.entity import Entity
+from mangrove.datastore.entity import Entity, Contact
 from mangrove.form_model.field import TextField, UniqueIdField
-from mangrove.form_model.form_model import FormModel, REPORTER
+from mangrove.form_model.form_model import REPORTER
 from mangrove.form_model.validation import TextLengthConstraint
 
 
@@ -52,8 +51,8 @@ class TestProjectModel(unittest.TestCase):
         get_cache_manager().flush_all()
 
     def test_get_associated_data_senders(self):
-        entity = Entity(self.manager, entity_type=["reporter"], short_code="rep1")
-        entity_id = entity.save()
+        contact = Contact(self.manager, entity_type=["reporter"], short_code="rep1")
+        entity_id = contact.save()
         project = Project(dbm=self.manager, name="TestDS", goals="Testing",
                                   devices=['web'], form_code="ds_form",
                                   fields=[])
@@ -61,7 +60,7 @@ class TestProjectModel(unittest.TestCase):
         project.save()
         result = project.get_associated_datasenders(self.manager)
 
-        self.assertEquals(result[0].short_code, entity.short_code)
+        self.assertEquals(result[0].short_code, contact.short_code)
         self.assertEquals(result[0].id, entity_id)
 
     def test_get_all_projects(self):

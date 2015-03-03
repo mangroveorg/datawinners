@@ -107,7 +107,7 @@ function init_add_remove_from_project() {
     var all_project_block = $("#all_project_block").dialog({
         autoOpen: false,
         modal: true,
-        title: gettext('Select Questionnaires'),
+        title: gettext('Add to Questionnaire'),
         zIndex: 1100,
         beforeClose: function () {
             $('#action').at;
@@ -366,13 +366,15 @@ function init_dialog_box_for_datasender() {
 }
 
 function handle_datasender_edit(table, selectedIds) {
+    var group = $("input[value=" + selectedIds[0] +"]").parent().parent().children().last().text();
+    var popupHeader = group == 'contact'? gettext("Edit Contact") : gettext('Edit Datasender');
     $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     $.ajax({
         type: 'GET',
         url: '/entity/datasender/edit' + '/' + selectedIds[0].toLowerCase() + '/',
         success: function (response) {
             $("#datasender-popup").html(response) ;
-            $("#datasender-popup").dialog('option','title',gettext('Edit Datasender')).dialog("open");
+            $("#datasender-popup").dialog('option','title', popupHeader).dialog("open");
             new DW.InitializeEditDataSender().init();
             $.unblockUI();
 
@@ -381,14 +383,15 @@ function handle_datasender_edit(table, selectedIds) {
 }
 function register_datasender(table) {
     var project_id = $('#project_id').val();
+    var modal_header = project_id ? gettext('Register a Datasender') : gettext('Add a Contact');
+
     $.ajax({
         type: 'GET',
         url:  '/entity/datasender/register',
         data:{'project_id':project_id},
         success: function (response) {
             $("#datasender-popup").html(response) ;
-            $("#datasender-popup").dialog('option','title',gettext('Register Datasender')).dialog("open");
-            device_actions();
+            $("#datasender-popup").dialog('option','title', modal_header).dialog("open");
             reporter_id_generation_action();
             new DW.InitializeEditDataSender().init();
         }

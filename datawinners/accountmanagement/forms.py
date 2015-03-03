@@ -7,19 +7,16 @@ from django.forms import ModelForm
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
-from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers, get_unique_mobile_number_validator
+from django_countries.countries import  COUNTRIES
+
+from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers
 from datawinners.accountmanagement.mobile_number_validater import MobileNumberValidater
-from datawinners.accountmanagement.models import get_data_senders_on_trial_account_with_mobile_number, \
-    DataSenderOnTrialAccount
+from datawinners.accountmanagement.models import DataSenderOnTrialAccount
+from datawinners.entity.datasender_search import datasender_count_with
 from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import AccountExpiredException
 from models import  Organization
-from django.contrib.auth.models import User
-from django_countries.countries import  COUNTRIES
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import get_current_site
-from django.template import Context, loader
-from django.utils.http import int_to_base36
+
 
 def get_organization_sectors():
     return (('', _('Please Select...')),
@@ -90,10 +87,9 @@ class UserProfileForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if User.objects.filter(username__iexact=username).count() > 0:
+        if datasender_count_with(username) > 0:
             raise ValidationError(_("This email address is already in use. Please supply a different email address"))
         return self.cleaned_data.get('username').lower()
-
 
 class EditUserProfileForm(UserProfileForm):
     def __init__(self, organization=None, reporter_id=None, *args, **kwargs):

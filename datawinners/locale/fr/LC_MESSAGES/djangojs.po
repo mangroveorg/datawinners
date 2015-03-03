@@ -229,8 +229,8 @@ msgstr "à"
 msgid "Import a Data Senders list"
 msgstr "Importer une liste d'expéditeurs"
 
-msgid "Select Questionnaires"
-msgstr "Sélectionnez les Questionnaires"
+msgid "Add to Questionnaire"
+msgstr "Ajouter au Questionnaire"
 
 #: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
@@ -1032,9 +1032,6 @@ msgstr "Sélectionnez un(e) %(concept)s"
 msgid "Remove from Questionnaire"
 msgstr "Retirer d'un Questionnaire"
 
-msgid "Add to Questionnaire"
-msgstr "Relier à un Questionnaire"
-
 msgid " Record(s) Failed to Import"
 msgstr " Enregistrements n'ont pas pu être importés"
 
@@ -1455,3 +1452,9 @@ msgstr " "
 
 msgid "Number of Submissions Exceeds Export Limit"
 msgstr "Le nombre de soumissions dépasse la limite d’exportation"
+
+msgid "Add a Contact"
+msgstr "Ajouter un Contact"
+
+msgid "Edit Contact"
+msgstr "Modifier le Contact"

@@ -1,6 +1,6 @@
 from django_countries.fields import Country
 from mangrove.datastore.database import DatabaseManager
-from mangrove.datastore.entity import Entity
+from mangrove.datastore.entity import Entity, Contact
 from django.utils import unittest
 from mangrove.form_model.form_model import REPORTER
 from mock import Mock, patch
@@ -37,7 +37,7 @@ class TestPostActivationEvents(unittest.TestCase):
         self.patcher1 = patch('datawinners.accountmanagement.post_activation_events.get_entity_count_for_type')
         self.get_all_entities_mock = self.patcher1.start()
 
-        self.patcher2 = patch('datawinners.accountmanagement.post_activation_events.create_entity')
+        self.patcher2 = patch('datawinners.accountmanagement.post_activation_events.create_contact')
         self.create_entity_mock = self.patcher2.start()
 
     def test_active_organization_with_should_active_date_is_none_save_active_date(self):
@@ -47,7 +47,7 @@ class TestPostActivationEvents(unittest.TestCase):
 
     def test_should_make_datasender_entity_for_paid_account(self):
         mock_manager = Mock(spec=DatabaseManager)
-        entity_mock = Mock(spec=Entity)
+        entity_mock = Mock(spec=Contact)
         entity_mock.type_path = [REPORTER]
         self.get_all_entities_mock.return_value = 1
         self.create_entity_mock = entity_mock

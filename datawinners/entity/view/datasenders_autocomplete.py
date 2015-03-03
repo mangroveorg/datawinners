@@ -15,5 +15,10 @@ class AllDataSenderAutoCompleteView(View):
             .query(or_={'name__match': search_text, 'name_value': search_text, 'short_code__match': search_text,
                         'short_code_value': search_text}) \
             .values_dict()
-        resp = [{"id": r["short_code"], "label": r["name"]} for r in query[:min(query.count(), 50)]]
+        resp = [{"id": r["short_code"], "label": self.get_label(r)} for r in query[:min(query.count(), 50)]]
         return HttpResponse(json.dumps(resp))
+
+    def get_label(self, r):
+        if r['name']:
+            return r['name']
+        return r['mobile_number']

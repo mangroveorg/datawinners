@@ -18,8 +18,8 @@ def create_subject_mapping(dbm, form_model):
 
 def entity_search_update(entity_doc, dbm):
     if entity_doc.aggregation_paths['_type'] == REPORTER_ENTITY_TYPE:
-        update_datasender_index(entity_doc, dbm)
         return
+
     es = get_elasticsearch_handle()
     if entity_doc.data:
         entity_type = entity_doc.aggregation_paths['_type'][0].lower()
@@ -27,3 +27,9 @@ def entity_search_update(entity_doc, dbm):
         es.index(dbm.database_name, entity_type, subject_dict(entity_type, entity_doc, dbm, form_model),
                  id=entity_doc.id)
     es.refresh(dbm.database_name)
+
+
+def contact_search_update(entity_doc, dbm):
+    if entity_doc.aggregation_paths['_type'] == REPORTER_ENTITY_TYPE:
+        update_datasender_index(entity_doc, dbm)
+        return

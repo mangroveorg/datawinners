@@ -1,9 +1,9 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "All Data Senders" %}{% endblock %}
+{% block page_title %}{% trans "All Contacts" %}{% endblock %}
 
 {% block section_title %}
-    {% include "entity/all_data_senders/add_data_sender_title.html" %}
+    {% include "entity/all_data_senders/add_contacts_title.html" %}
 {% endblock %}
 
 {% load dw_tabs %}
@@ -59,22 +59,22 @@
     <div>
         <div class="float_right">
             <a id="register_link" class="add_subject_link" onclick="register_datasender()">
-                {% trans "Register a Data Sender" %}
+                {% trans "Add a Contact" %}
             </a> <span class="padding_left_right_10"> | </span>
-            <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
+            <a href="javascript:void(0);" id="import-datasenders">{% trans "Import Contacts" %}</a>
         </div>
         <div style="display: none;">
             <div id="popup-import" class="popup-import">
-                {% with project=None %}
+{#                {% with project=None %}#}
                     {% include "import-datasenders.html" %}
-                {% endwith %}
+{#                {% endwith %}#}
             </div>
         </div>
 
         <div class="clear-both"></div>
 
         {% include 'entity/all_data_senders/web_submission_access_block.html' %}
-        <h3 class="margin_top_20" hidden="true">{% trans "All Data Senders " %}</h3>
+        <h3 class="margin_top_20" hidden="true">{% trans "All Contacts " %}</h3>
         {% include 'entity/all_datasenders_table.html' %}
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}

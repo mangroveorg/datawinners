@@ -29,7 +29,11 @@
                                         <tr>
                                             <td width="10"></td>
                                             <td style="text-align: justify; color: #333333; ">
+                                            {% if user.first_name %}
                                                 <p>Hello {{ user.first_name }},</p>
+                                            {% else %}
+                                                <p>Hello,</p>
+                                            {% endif %}
                                                 <p>You are now registered as a Data Sender.<br />
                                                     <a href="{{ protocol }}://{{ domain }}{% url activate_datasender_account uidb36=uid, token=token %}" style="color: #4379A2;font-weight: normal;text-decoration: none;">
                                                         <span style="color: #4379A2;font-weight: normal;text-decoration: none;">

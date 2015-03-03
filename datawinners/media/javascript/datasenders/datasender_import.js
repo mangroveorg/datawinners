@@ -10,10 +10,12 @@ var created_datasender_row_markup = "<tr>\
 $.template("created_datasenders", created_datasender_row_markup );
 
 $(document).ready(function () {
+    var project_id = $('#project_id').val();
+    var modal_header = project_id ? gettext('Import a Data Senders list') : gettext('Import a Contacts list');
     $("#popup-import").dialog({
         autoOpen: false,
         modal: true,
-        title: gettext("Import a Data Senders list"),
+        title: modal_header,
         zIndex: 200,
         width: 940,
         close: function () {

@@ -20,7 +20,8 @@ from mangrove.form_model.project import Project
 from mangrove.form_model.validators import UniqueIdExistsValidator
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField, UniqueIdField
-from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code, \
+    EMAIL_FIELD
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
@@ -1411,6 +1412,7 @@ def load_data():
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep11", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234123413"),
+                                                              (EMAIL_FIELD, "tester150411@gmail.com"),
                                                               (NAME_FIELD, "Tester Pune")],
              location=[u'Bangalore', u'Karnatka', u'India', u'Asia'],
              short_code="rep276", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})

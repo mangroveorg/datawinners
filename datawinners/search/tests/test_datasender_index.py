@@ -18,7 +18,7 @@ class TestDatasenderIndex(unittest.TestCase):
 
         with patch("datawinners.search.datasender_index.get_elasticsearch_handle") as es:
             with patch("datawinners.search.datasender_index.get_form_model_by_code") as get_form_model:
-                with patch("datawinners.search.datasender_index._create_datasender_dict") as create_ds_dict:
+                with patch("datawinners.search.datasender_index._create_contact_dict") as create_ds_dict:
                     mock_form_model = Mock(spec=FormModel)
                     mock_ds_dict = {"name": "name"}
                     get_form_model.return_value = mock_form_model

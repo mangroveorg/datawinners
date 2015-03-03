@@ -1,7 +1,9 @@
 import logging
-from datawinners.search import update_submission_search_index, form_model_change_handler, entity_search_update, entity_form_model_change_handler
+from datawinners.main.database import get_db_manager
+from datawinners.search import update_submission_search_index, form_model_change_handler, entity_search_update, entity_form_model_change_handler, \
+    contact_search_update
 from mangrove.datastore.documents import SurveyResponseDocument, FormModelDocument, EntityFormModelDocument
-from mangrove.datastore.entity import Entity
+from mangrove.datastore.entity import Entity, Contact
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 
 
@@ -25,12 +27,23 @@ def populate_submission_index(dbm, form_model_id=None):
 def populate_entity_index(dbm):
     rows = dbm.database.iterview('by_short_codes/by_short_codes', 100, reduce=False, include_docs=True)
     for row in rows:
-        entity = Entity.__document_class__.wrap(row.get('doc'))
-        entity_search_update(entity, dbm)
+        try:
+            entity = Entity.__document_class__.wrap(row.get('doc'))
+            entity_search_update(entity, dbm)
+        except Exception as e:
+            raise e
+
+
+def populate_contact_index(dbm):
+    rows = dbm.database.iterview('datasender_by_mobile/datasender_by_mobile', 100, reduce=False, include_docs=True)
+    for row in rows:
+        contact = Contact.__document_class__.wrap(row.get('doc'))
+        contact_search_update(contact, dbm)
 
 
 def create_all_indices(dbm):
     populate_entity_index(dbm)
+    populate_contact_index(dbm)
     populate_submission_index(dbm)
 
 
@@ -41,3 +54,7 @@ def create_all_mappings(dbm):
         else:
             form_model_change_handler(FormModelDocument.wrap(row["value"]), dbm)
 
+
+if __name__ == '__main__':
+    dbm = get_db_manager('hni_testorg_slx364903')
+    populate_contact_index(dbm)

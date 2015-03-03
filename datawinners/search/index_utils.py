@@ -3,9 +3,10 @@ from string import lower
 import elasticutils
 from datawinners.search.submission_index_meta_fields import submission_meta_field_names
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
-from mangrove.datastore.entity import Entity
+from mangrove.datastore.entity import Entity, Contact
 from mangrove.form_model.field import DateField, TimeField, DateTimeField, field_attributes
 from mangrove.form_model.project import get_entity_type_fields, tabulate_data
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
 def _add_date_field_mapping(mapping_fields, field_def):
@@ -58,15 +59,16 @@ def get_fields_mapping_by_field_def(doc_type, fields_definition):
     return {doc_type: mapping}
 
 
-def _entity_dict(entity_type, entity_doc, dbm, form_model):
-    entity = Entity.get(dbm, entity_doc.id)
+def _contact_dict(entity_doc, dbm, form_model):
+    contact = Contact.get(dbm, entity_doc.id)
     fields, labels, codes = get_entity_type_fields(dbm, form_model.form_code)
-    data = tabulate_data(entity, form_model, codes)
+    data = tabulate_data(contact, form_model, codes)
     dictionary = OrderedDict()
     for index in range(0, len(fields)):
         dictionary.update({fields[index]: data['cols'][index]})
-    dictionary.update({"entity_type": entity_type})
-    dictionary.update({"void": entity.is_void()})
+    dictionary.update({"entity_type": REPORTER_ENTITY_TYPE})
+    dictionary.update({"void": contact.is_void()})
+
     return dictionary
 
 

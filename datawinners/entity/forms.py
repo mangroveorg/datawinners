@@ -2,7 +2,7 @@ import re
 
 from django import forms
 from django.contrib.auth.models import User
-from django.forms import HiddenInput
+from django.forms import HiddenInput, BooleanField
 from django.forms.fields import RegexField, CharField, FileField, MultipleChoiceField, EmailField
 from django.forms.widgets import CheckboxSelectMultiple, TextInput
 from django.utils.safestring import mark_safe
@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
+from datawinners.entity.datasender_search import datasender_count_with
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE, GEO_CODE, GEO_CODE_FIELD_NAME
 from mangrove.utils.types import is_empty
 from datawinners.entity.fields import PhoneNumberField
@@ -50,8 +51,8 @@ class ReporterRegistrationForm(Form):
 
     name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=80,
         error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
-        label=_("Name"))
-    telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
+        label=_("Name"), required=False)
+    telephone_number = PhoneNumberField(required=True, label=_("Mobile Number*"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS Coordinates"))
 
     location = CharField(max_length=500, required=False, label=_("Name"))
@@ -67,6 +68,7 @@ class ReporterRegistrationForm(Form):
             'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
     short_code = CharField(required=False, max_length=12, label=_("Unique ID"), widget=TextInput(attrs=dict({'class': 'subject_field','disabled':'disabled'})))
+    generated_id = BooleanField(required=False, initial=True)
 
 #    Needed for telephone number validation
     org_id = None
@@ -93,11 +95,16 @@ class ReporterRegistrationForm(Form):
             except Exception:
                 self._errors['geo_code'] = self.error_class([msg])
 
-    def _geo_code_validations(self, b):
+    def _geo_code_validations(self):
+        geo_code = self.cleaned_data.get("geo_code").strip()
+
+        if not bool(geo_code):
+            return
+
         msg = _(
             "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315")
 
-        geo_code_string = b.strip()
+        geo_code_string = geo_code.strip()
         geo_code_string = geo_code_string.replace(",", " ")
         geo_code_string = re.sub(' +', ' ', geo_code_string)
         if not is_empty(geo_code_string):
@@ -107,14 +114,19 @@ class ReporterRegistrationForm(Form):
 
     def clean(self):
         self.convert_email_to_lowercase()
-        location = self.cleaned_data.get("location").strip()
-        geo_code = self.cleaned_data.get("geo_code").strip()
-        if not (bool(location) or bool(geo_code)):
-            msg = _("Please fill out at least one location field correctly.")
-            self._errors['location'] = self.error_class([msg])
-            self._errors['geo_code'] = self.error_class([msg])
-        if bool(geo_code):
-            self._geo_code_validations(geo_code)
+        # location = self.cleaned_data.get("location").strip()
+        # if not (bool(location) or bool(geo_code)):
+        #     msg = _("Please fill out at least one location field correctly.")
+        #     self._errors['location'] = self.error_class([msg])
+        #     self._errors['geo_code'] = self.error_class([msg])
+        if not self.cleaned_data.get('generated_id') and not self.cleaned_data.get('short_code'):
+            msg = _('This field is required.')
+            self.errors['short_code'] = self.error_class([msg])
+
+        self._geo_code_validations()
+        if not self.cleaned_data.get('project_id'):
+            self.cleaned_data['is_data_sender'] = False
+
         return self.cleaned_data
 
     def clean_short_code(self):
@@ -153,16 +165,15 @@ class ReporterRegistrationForm(Form):
         site.
 
         """
-        if not self.requires_web_access():
-            return None
+        # if not self.requires_web_access():
+        #     return None
 
         email = self.cleaned_data.get('email')
-        if is_empty(email):
-            msg = _('This field is required.')
-            self._errors['email'] = self.error_class([msg])
-            return None
+        if not email:
+            return email
 
-        if User.objects.filter(email__iexact=self.cleaned_data['email']):
+        # if User.objects.filter(email__iexact=self.cleaned_data['email']):
+        if datasender_count_with(email) > 0:
             raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
         return self.cleaned_data['email']
 
@@ -172,8 +183,7 @@ class ReporterRegistrationForm(Form):
             self.cleaned_data['email'] = email.lower()
 
     def requires_web_access(self):
-        devices = self.cleaned_data.get('devices')
-        return devices.__contains__('web')
+        return self.cleaned_data.get('email')
 
     def update_errors(self, validation_errors):
         mapper = {MOBILE_NUMBER_FIELD_CODE:'telephone_number',
@@ -182,6 +192,15 @@ class ReporterRegistrationForm(Form):
             self._errors[mapper.get(field_code)] = self.error_class([error])
 
 
+class EditReporterRegistrationForm(ReporterRegistrationForm):
+
+    def __init__(self, org_id=None, *args, **kwargs):
+        super(EditReporterRegistrationForm, self).__init__(org_id, *args, **kwargs)
+
+    def clean(self):
+        self.convert_email_to_lowercase()
+        self._geo_code_validations()
+        return self.cleaned_data
 
 class SubjectUploadForm(Form):
     error_css_class = 'error'
