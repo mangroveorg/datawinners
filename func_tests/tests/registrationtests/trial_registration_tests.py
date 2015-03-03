@@ -1,12 +1,12 @@
 from nose.plugins.attrib import attr
-from framework.base_test import BaseTest, HeadlessRunnerTest
-from framework.utils.common_utils import by_css, by_xpath
-from framework.utils.database_manager_postgres import DatabaseManager
+
+from framework.base_test import HeadlessRunnerTest
+from framework.utils.common_utils import by_css
 from pages.registrationpage.registration_page import RegistrationPage
-from testdata.test_data import DATA_WINNER_REGISTER_TRIAL_PAGE, DATA_WINNER_HOMEPAGE, DATA_WINNER_EN_PRICING_PAGE, DATA_WINNER_TRIAL_ACCOUNT_EXPIRED_PAGE
+from testdata.test_data import DATA_WINNER_REGISTER_TRIAL_PAGE, DATA_WINNER_HOMEPAGE, \
+    DATA_WINNER_TRIAL_ACCOUNT_EXPIRED_PAGE
 from tests.registrationtests.registration_data import REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION, REGISTRATION_SUCCESS_MESSAGE, ORGANIZATION_SECTOR_DROP_DOWN_LIST, INVALID_EMAIL_ERROR_MESSAGE, \
     REGISTRATION_DATA_FOR_UNSUCCESSFUL_TRIAL_REGISTRATION
-from tests.testsettings import UI_TEST_TIMEOUT
 
 
 def register_and_get_email_for_trial(driver):
@@ -22,8 +22,6 @@ class TestTrialRegistrationPage(HeadlessRunnerTest):
     def test_register_trial_organization(self):
         registration_confirmation_page, email = register_and_get_email_for_trial(self.driver)
         self.assertEqual(registration_confirmation_page.registration_success_message(), REGISTRATION_SUCCESS_MESSAGE)
-        #dbmanager = DatabaseManager()
-        #dbmanager.delete_organization_all_details(email)
 
     @attr('functional_test')
     def test_trial_link_from_homepage(self):
@@ -31,13 +29,6 @@ class TestTrialRegistrationPage(HeadlessRunnerTest):
         self.driver.find(by_css("a.intro_try_button")).click()
         self.driver.wait_for_page_with_title(10, "Register")
         self.assertEqual(self.driver.current_url, DATA_WINNER_REGISTER_TRIAL_PAGE)
-
-    @attr('functional_test')
-    def test_trial_link_from_pricing_page(self):
-        self.driver.go_to(DATA_WINNER_EN_PRICING_PAGE)
-        self.driver.find(by_xpath("//a[contains(@href,'/register/trial')]")).click()
-        self.driver.wait_for_page_with_title(15, "Register")
-        self.assertEqual(self.driver.current_url, "http://localhost:8000/register/trial/")
 
     @attr('functional_test')
     def test_register_organization_sector_have_the_right_select_options(self):

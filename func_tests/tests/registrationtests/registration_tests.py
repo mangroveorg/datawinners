@@ -78,18 +78,6 @@ class TestRegistrationPage(HeadlessRunnerTest):
         self.assertEqual('Subscription Details', about_datawinners_box[1].text)
 
     @attr('functional_test')
-    def test_price_page_link_in_content_box(self):
-        self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
-        price_link = self.driver.find(
-            by_xpath("//div[@class='grid_7 right_hand_section alpha omega subscription_details']//a"))
-        price_link.click()
-        new_tab = self.driver.window_handles[1]
-        self.driver.switch_to_window(new_tab)
-        self.driver.wait_for_page_with_title(15, "Pricing")
-        self.assertEqual("Pricing", self.driver.get_title())
-        self.driver.switch_to_window(self.driver.window_handles[0])
-
-    @attr('functional_test')
     def test_register_without_preferred_payment(self):
         self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
         registration_page = RegistrationPage(self.driver)
