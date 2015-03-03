@@ -36,7 +36,7 @@ class TestTrialRegistrationPage(HeadlessRunnerTest):
     def test_trial_link_from_pricing_page(self):
         self.driver.go_to(DATA_WINNER_EN_PRICING_PAGE)
         self.driver.find(by_xpath("//a[contains(@href,'/register/trial')]")).click()
-        self.driver.wait_for_page_with_title(10, "Register")
+        self.driver.wait_for_page_with_title(15, "Register")
         self.assertEqual(self.driver.current_url, "http://localhost:8000/register/trial/")
 
     @attr('functional_test')
