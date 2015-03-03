@@ -21,17 +21,19 @@ class TestUserRegistration(TestCase):
         mobile_validater = MobileNumberValidater(trial_organization, '788522', 'no_id')
         mobile_validater.validate = MagicMock(return_value=(True, ''))
         with patch("datawinners.accountmanagement.forms.MobileNumberValidater") as validater:
-            validater.return_value = mobile_validater
-            form = UserProfileForm(organization=trial_organization,
-                                   data={'title': 'manager', 'full_name': 'user one', 'username': 'uSER@User.com',
-                                         'mobile_phone': '7889522'})
+            with patch("datawinners.accountmanagement.forms.datasender_count_with") as datasender_count_with_mock:
+                validater.return_value = mobile_validater
+                form = UserProfileForm(organization=trial_organization,
+                                       data={'title': 'manager', 'full_name': 'user one', 'username': 'uSER@User.com',
+                                             'mobile_phone': '7889522'})
 
-            self.assertFalse(form.is_valid())
-            self.assertEqual(form.errors['username'],['This email address is already in use. Please supply a different email address'])
-            mobile_validater.validate.assert_called_with()
-            form = UserProfileForm(organization=trial_organization,
-                           data={'title': 'manager', 'full_name': 'user one', 'username': 'uSER1@User.com',
-                                 'mobile_phone': '7889522'})
+                self.assertFalse(form.is_valid())
+                self.assertEqual(form.errors['username'],['This email address is already in use. Please supply a different email address'])
+                mobile_validater.validate.assert_called_with()
+                datasender_count_with_mock.return_value = 0
+                form = UserProfileForm(organization=trial_organization,
+                               data={'title': 'manager', 'full_name': 'user one', 'username': 'uSER1@User.com',
+                                     'mobile_phone': '7889522'})
 
-            self.assertTrue(form.is_valid())
-            self.assertEqual(form.clean_username(),'user1@user.com')
+                self.assertTrue(form.is_valid())
+                self.assertEqual(form.clean_username(),'user1@user.com')
