@@ -22,6 +22,6 @@ def get_project_id_name_map(dbm):
     for row in rows:
         project_id_name_map.update({row['value']['id']:row['value']['name']})
 
-    project_map = sorted(project_id_name_map.items(), key=lambda(project_id, name): name)
+    project_map = sorted(project_id_name_map.items(), key=lambda(project_id, name): name.lower())
 
     return OrderedDict(project_map)
