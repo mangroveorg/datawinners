@@ -46,4 +46,4 @@ class MobileNumberValidater:
         return self.is_mobile_number_unique_for_paid_account()
 
     def is_the_datasender_is_current_user(self, datasenders):
-        return len(datasenders) == 1 and datasenders[0]['key'][2] == self.reporter_id
+        return len(datasenders) == 1 and datasenders[0]['key'][1] == self.reporter_id

@@ -37,7 +37,7 @@ class TestMobileNumberValidater(TestCase):
     def test_should_return_true_if_datasender_with_same_number_is_only_the_user_being_edited(self):
         with patch("datawinners.accountmanagement.mobile_number_validater.get_database_manager_for_org") as get_db_manager:
             manager = MagicMock(spec=DatabaseManager)
-            manager.load_all_rows_in_view.return_value = [{'key': ['12345678', 'name', 'reporter_id'], 'value':None}]
+            manager.load_all_rows_in_view.return_value = [{'key': ['12345678', 'reporter_id'], 'value':None}]
             get_db_manager.return_value = manager
             self.assertTrue(self.mobile_number_validator.is_mobile_number_unique_for_the_account())
 
