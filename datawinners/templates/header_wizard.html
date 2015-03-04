@@ -5,7 +5,11 @@
         <div id="header" class="grid_24">
             {% if user.is_authenticated %}
                 <div class="grid_24 omega login text_align_right">
-                    <span class="welcome">{% trans "Welcome" %} {{ user.first_name }}! </span>
+                    {% if user.first_name %}
+                        <span class="welcome">{% trans "Welcome" %} {{ user.first_name }}! </span>
+                    {% else %}
+                        <span class="welcome">{% trans "Welcome" %}!</span>
+                    {% endif %}
                     <span class="{{ hide_link_class }}"><a href="{% url accountmanagement.views.edit_user %}">{% trans "Your Profile" %}</a></span>
                     {% if user.groups.all.0.name == 'NGO Admins' %}
                         <span><a href="{% url accountmanagement.views.settings %}" class="{{ disable_link_class }} account">{% trans "wizard_account" %}</a></span>
