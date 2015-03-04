@@ -57,7 +57,7 @@ def get_all_user_repids_for_org(org_id):
     users = get_all_users_for_organization(org_id)
     return [user.reporter_id for user in users]
 
-def update_user_name_if_exists(email,new_name):
+def update_user_name_if_exists(email, new_name):
     try:
         user = User.objects.get(email=email)
         user.first_name = new_name

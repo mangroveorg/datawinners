@@ -45,7 +45,7 @@ VALID_CONTACT_WITH_EMAIL = {NAME: "a Mickey Duck",
                          COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY,Madagascar",
                          EMAIL_ADDRESS: "mIcKeY",
                          GPS: "-21.7622088847,48.0690991394",
-                         SUCCESS_MSG: "Your contact(s) have been added."}
+                         SUCCESS_MSG: "Your contact(s) have been added. ID is: "}
 
 VALID_DATA_WITH_EMAIL_TO_EDIT_A_DATASENDER = {NAME: "a Mickey Duck",
                          MOBILE_NUMBER: random_number(9),

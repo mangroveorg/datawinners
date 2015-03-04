@@ -17,7 +17,8 @@ from datawinners.common.constant import EDITED_DATA_SENDER, REGISTERED_DATA_SEND
 from datawinners.entity.data_sender import get_datasender_user_detail
 from datawinners.entity.datasender_tasks import update_datasender_on_open_submissions
 from datawinners.entity.forms import ReporterRegistrationForm, EditReporterRegistrationForm
-from datawinners.entity.helper import _get_data, update_data_sender_from_trial_organization, process_create_data_sender_form
+from datawinners.entity.helper import _get_data, update_data_sender_from_trial_organization, \
+    process_create_data_sender_form
 from datawinners.entity.views import create_single_web_user
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
@@ -49,21 +50,21 @@ class EditDataSenderView(TemplateView):
         location = reporter_entity.location
         geo_code = reporter_entity.geo_code
         form = EditReporterRegistrationForm(initial={
-                                                 'name': name,
-                                                 'telephone_number': phone_number,
-                                                 'location': location,
-                                                 'geo_code': geo_code,
-                                                 'generated_id': 'no',
-                                                 'email': email
-                                                })
+            'name': name,
+            'telephone_number': phone_number,
+            'location': location,
+            'geo_code': geo_code,
+            'generated_id': 'no',
+            'email': email
+        })
 
         return self.render_to_response(RequestContext(request, {
-                                           'reporter_id': reporter_id,
-                                           'form': form,
-                                           'project_links': entity_links,
-                                           'email': email,
-                                           'create_data_sender': create_data_sender
-                                       }))
+            'reporter_id': reporter_id,
+            'form': form,
+            'project_links': entity_links,
+            'email': email,
+            'create_data_sender': create_data_sender
+        }))
 
     def _send_email_to_datasender(self, email, form, org_id, reporter_entity, reporter_id, request):
         if not reporter_entity.is_contact and not User.objects.filter(email=email):
@@ -83,11 +84,12 @@ class EditDataSenderView(TemplateView):
             detail_as_string = json.dumps(detail_dict)
             UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string)
 
-    def _update_name_in_postgres_if_exists(self, email, form, reporter_entity):
+    def _update_name_in_postgres_if_exists(self, form, reporter_entity):
         current_name = reporter_entity.name
+        current_email = reporter_entity.email
         data_sender_name = form.cleaned_data["name"]
-        if email and current_name != data_sender_name:
-            update_user_name_if_exists(email, data_sender_name)
+        if current_email and current_name != data_sender_name:
+            update_user_name_if_exists(current_email, data_sender_name)
         return data_sender_name
 
     def _edit_contact(self, form, manager, organization, reporter_id):
@@ -121,11 +123,12 @@ class EditDataSenderView(TemplateView):
                 if response.success:
                     email = form.cleaned_data['email']
                     if email:
-                        email = self._send_email_to_datasender(email, form, org_id, reporter_entity, reporter_id, request)
+                        email = self._send_email_to_datasender(email, form, org_id, reporter_entity, reporter_id,
+                                                               request)
 
                     self._update_mobile_number_if_trial_organization(form, org_id, organization, reporter_entity)
 
-                    data_sender_name = self._update_name_in_postgres_if_exists(email, form, reporter_entity)
+                    data_sender_name = self._update_name_in_postgres_if_exists(form, reporter_entity)
 
                     update_submission_search_for_datasender_edition(manager, reporter_id, data_sender_name)
                     message = _("Your changes have been saved.")
@@ -154,13 +157,14 @@ class EditDataSenderView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(EditDataSenderView, self).dispatch(*args, **kwargs)
 
+
 class RegisterDatasenderView(TemplateView):
     template_name = "datasender_form.html"
 
     def _get_save_button_text(self, project_id):
         return _("Register") if project_id else _("Add Contact")
 
-    def get(self, request,*args, **kwargs):
+    def get(self, request, *args, **kwargs):
         if request.GET.get('project_id'):
             form = ReporterRegistrationForm(initial={'project_id': request.GET.get('project_id')})
         else:
@@ -168,11 +172,11 @@ class RegisterDatasenderView(TemplateView):
         save_button_text = self._get_save_button_text(request.GET.get('project_id'))
 
         return self.render_to_response(RequestContext(request, {
-                                           'form': form,
-                                           'current_language': translation.get_language(),
-                                           'registration_link':'/entity/datasender/register/',
-                                           'button_text': save_button_text
-                                       }))
+            'form': form,
+            'current_language': translation.get_language(),
+            'registration_link': '/entity/datasender/register/',
+            'button_text': save_button_text
+        }))
 
     def _give_web_access_to_successful_datasender_registration(self, form, org_id, reporter_id, request):
         if len(form.errors) == 0 and form.requires_web_access() and reporter_id and \
@@ -223,18 +227,16 @@ class RegisterDatasenderView(TemplateView):
             form = ReporterRegistrationForm(initial={'project_id': questionnaire_id})
 
         save_button_text = self._get_save_button_text(project_id)
-        is_registration_successful = reporter_id is not None
-
-        message_text = self._get_message_text(message, project_id, is_registration_successful)
+        message_text = self._get_message_text(message, project_id, reporter_id)
 
         return render_to_response('datasender_form.html',
                                   {
                                       'form': form,
                                       'message': message_text,
-                                      'success': is_registration_successful,
+                                      'success': (reporter_id is not None),
                                       'project_inks': entity_links,
                                       'current_language': translation.get_language(),
-                                      'registration_link':'/entity/datasender/register/',
+                                      'registration_link': '/entity/datasender/register/',
                                       'button_text': save_button_text
                                   },
                                   context_instance=RequestContext(request))
@@ -245,9 +247,10 @@ class RegisterDatasenderView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(RegisterDatasenderView, self).dispatch(*args, **kwargs)
 
-    def _get_message_text(self, message, project_id, is_registration_successful):
-        if is_registration_successful:
-            return message if project_id else _("Your contact(s) have been added.")
+    def _get_message_text(self, message, project_id, reporter_id):
+        if reporter_id:
+            return message if project_id else "%s %s %s" % (
+                _("Your contact(s) have been added."), _("ID is:"), reporter_id )
         else:
             return message
 
