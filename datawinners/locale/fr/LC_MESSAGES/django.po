@@ -5680,3 +5680,18 @@ msgstr "http://youtu.be/iu_cg2PoI9g"
 
 msgid "How to Collect Media Files With XLSForms"
 msgstr "Comment collecter des fichiers média avec XLSForm"
+
+msgid "The Identification Number %s is not yet added. Please add it <a href='/entity/subjects' "
+                         "target='_blank'>here</a> and upload the XLSForm again."
+msgstr "Le Numéro d’Identification %s n’est pas encore ajouté. Ajoutez <a href='/entity/subjects' "
+                         "target='_blank'>le ici</a> et téléchargez le XLSForm une nouvelle fois."
+
+msgid "You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/'>%s</a>"
+msgstr "Vous n’anex pas encore enregistré un %s. Enregistrez un <a href='/entity/subject/create/%s/?web_view=True'>%s</a>"
+
+msgid "The Identification Number Type (dw_idnr) is missing in the Constraints column. "
+                         "Please add the Identification Number Type and upload again. "
+                         "<a target='_blank'>Learn More</a> about how to manage Identification Numbers with XLSForms. "
+msgstr "Le Type de Numéro d’Identification (dw_idnr) n’existe pas dans la colonne Constraints. "
+                        "Ajoutez le Type de Numéro d’Identification et téléchargez de nouveau. "
+                         "<a target='_blank'>En savoir plus</a> sur comment gérer les Numéros d’Identification avec XLSForms. "

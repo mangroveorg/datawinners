@@ -287,7 +287,7 @@ class TestXformBridge(unittest.TestCase):
                                     {u'name': u'na', u'label': u'Not Applicable'}], u'label': u'Question 2',
                        u'type': u'select one'}, {'control': {'bodyless': True}}]
 
-            questions, errors = xls_form_parser._create_questions(fields)
+            questions, errors, unique_id_errors = xls_form_parser._create_questions(fields)
 
             self.assertEqual(questions.__len__(), 2)
             self.assertDictEqual(questions[0], {'code': u'table_list_1', 'title': u'Q1', 'required': False,
@@ -316,7 +316,7 @@ class TestXformBridge(unittest.TestCase):
                           {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"}, 'type': 'calculate',
                            'name': 'instanceID'}]}]
 
-            questions, errors = xls_form_parser._create_questions(fields)
+            questions, errors, unique_id_errors = xls_form_parser._create_questions(fields)
 
             self.assertEqual(questions.__len__(), 2)
             self.assertDictEqual(questions[0], {'code': u'hh_user_gender', 'title': u'Sex', 'required': False,
@@ -464,7 +464,7 @@ class TestXformBridge(unittest.TestCase):
 
                 get_xform_dict.return_value = fields
                 is_entity_type_already_defined.return_value = True
-                questions, errors = xls_form_parser._create_questions(fields)
+                questions, errors, unique_id_errors = xls_form_parser._create_questions(fields)
 
                 self.assertEqual(questions.__len__(), 1)
                 self.assertDictEqual(questions[0], {'instruction': 'Answer must be a Identification Number',
@@ -481,7 +481,7 @@ class TestXformBridge(unittest.TestCase):
 
                 get_xform_dict.return_value = fields
                 is_entity_type_already_defined.return_value = True
-                questions, errors = xls_form_parser._create_questions(fields)
+                questions, errors, unique_id_errors = xls_form_parser._create_questions(fields)
 
                 self.assertEqual(questions.__len__(), 0)
                 self.assertEqual(errors, {

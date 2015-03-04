@@ -5,6 +5,7 @@ import os
 import re
 from tempfile import NamedTemporaryFile
 import traceback
+from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -78,9 +79,9 @@ class ProjectUpload(View):
             manager = get_database_manager(request.user)
             questionnaire_code = generate_questionnaire_code(manager)
 
-            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name, manager).parse()
-            if errors:
-                error_list = list(errors)
+            xls_parser_response = XlsFormParser(tmp_file, project_name, manager).parse()
+            if xls_parser_response.errors:
+                error_list = list(xls_parser_response.errors)
                 logger.info("User: %s. Upload Errors: %s", request.user.username, json.dumps(error_list))
 
                 return HttpResponse(content_type='application/json', content=json.dumps({
@@ -89,10 +90,13 @@ class ProjectUpload(View):
                     'message_prefix': _("Sorry! Current version of DataWinners does not support"),
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
+            if xls_parser_response.unique_id_errors:
+                for message in xls_parser_response.unique_id_errors:
+                    messages.warning(request, ugettext(message), extra_tags='safe')
             tmp_file.seek(0)
-            mangrove_service = MangroveService(request, xform_as_string, json_xform_data,
-                                               questionnaire_code=questionnaire_code, project_name=project_name,
-                                               xls_form=tmp_file)
+            mangrove_service = MangroveService(request, questionnaire_code=questionnaire_code,
+                                               project_name=project_name, xls_form=tmp_file,
+                                               xls_parser_response=xls_parser_response)
             questionnaire_id, form_code = mangrove_service.create_project()
 
         except PyXFormError as e:
@@ -233,10 +237,10 @@ class ProjectUpdate(View):
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
-            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
+            xls_parser_response = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
 
-            if errors:
-                error_list = list(errors)
+            if xls_parser_response.errors:
+                error_list = list(xls_parser_response.errors)
                 logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(error_list))
 
                 return HttpResponse(content_type='application/json', content=json.dumps({
@@ -246,12 +250,16 @@ class ProjectUpdate(View):
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
 
-            mangrove_service = MangroveService(request, xform_as_string, json_xform_data,
-                                               questionnaire_code=questionnaire.form_code,
-                                               project_name=questionnaire.name)
+            # if xls_parser_response.unique_id_errors:
+            #     for message in xls_parser_response.unique_id_errors:
+            #         messages.warning(request, ugettext(message), extra_tags='safe')
+
+            mangrove_service = MangroveService(request, questionnaire_code=questionnaire.form_code,
+                                               project_name=questionnaire.name, xls_parser_response=xls_parser_response)
 
             questionnaire.xform = mangrove_service.xform_with_form_code
-            QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(json_xform_data)
+            QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(
+                xls_parser_response.json_xform_data)
 
             tmp_file.seek(0)
             questionnaire.update_media_field_flag()
