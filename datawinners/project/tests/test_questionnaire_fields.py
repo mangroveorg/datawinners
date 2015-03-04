@@ -7,7 +7,7 @@ from datawinners.entity.fields import PhoneNumberField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
 from mangrove.form_model.field import SelectField, IntegerField, GeoCodeField, TextField, TelephoneNumberField, HierarchyField, ShortCodeField
-from datawinners.project.questionnaire_fields import TextInputForFloat, FormField, GeoCodeValidator
+from datawinners.project.questionnaire_fields import TextInputForFloat, FormField, GeoCodeValidator, as_choices
 
 
 class TestTextInputForFloat(TestCase):
@@ -136,3 +136,21 @@ class TestGeoCodeValidator(TestCase):
         self.validation_error(',1')
         self.validation_error('')
         self.validation_error('1,1,1,1')
+
+
+class TestWebSubmissionForm(TestCase):
+
+    def test_should_populate_on_behalf_choice_with_name_and_short_code_when_datasender_name_present(self):
+        entities = [{'name': 'name1', 'short_code': 'rep1'}, {'name': 'name2', 'short_code': 'rep2'}]
+
+        actual_list = as_choices(entities)
+
+        self.assertListEqual(actual_list, [('rep1', 'name1  (rep1)'), ('rep2', 'name2  (rep2)')])
+
+
+    def test_should_populate_on_behalf_choice_with_mobile_number_and_short_code_when_datasender_name_not_present(self):
+        entities = [{'name': '', 'short_code': 'rep1', 'mobile_number': '1234'}, {'name': 'name2', 'short_code': 'rep2'}]
+
+        actual_list = as_choices(entities)
+
+        self.assertListEqual(actual_list, [('rep1', '1234  (rep1)'), ('rep2', 'name2  (rep2)')])

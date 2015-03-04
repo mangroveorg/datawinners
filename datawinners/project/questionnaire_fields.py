@@ -17,8 +17,12 @@ from mangrove.utils.types import is_empty
 from datawinners.utils import translate, get_text_language_by_instruction
 
 
+def _get_choice_label_prefix(entity):
+    return entity['mobile_number'] if entity['name'] == '' else entity['name']
+
+
 def as_choices(entities):
-        return [(entity['short_code'], entity['name'] + '  (' + entity['short_code'] + ')') for entity in entities]
+        return [(entity['short_code'], _get_choice_label_prefix(entity) + '  (' + entity['short_code'] + ')') for entity in entities]
 
 
 class FormField(object):
