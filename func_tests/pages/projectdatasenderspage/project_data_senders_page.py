@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from pages.accountpage.account_page import AccountPage
-from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
+from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage, AddContactPage
 from pages.alldatasenderspage.all_data_senders_locator import DATA_SENDER_DEVICES
 from pages.projectdatasenderspage.project_data_senders_locator import *
 from tests.projects.datasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
@@ -8,6 +8,7 @@ from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT, WAIT
 
 DISASSOCIATE = "disassociate"
+
 class ProjectDataSendersPage(Page):
     def __init__(self, driver):
         super(ProjectDataSendersPage, self).__init__(driver)
@@ -22,7 +23,7 @@ class ProjectDataSendersPage(Page):
         self.driver.find(locator).click()
         if wait_for_page_loading:
             self.driver.wait_for_element(20, by_id("id_register_button"))
-        return AddDataSenderPage(self.driver)
+        return AddContactPage(self.driver)
 
     def navigate_to_account_page(self):
         """

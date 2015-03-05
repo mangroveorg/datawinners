@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings as django_settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from datawinners.project.couch_view_helper import get_all_projects
 from mangrove.errors.MangroveException import DataObjectNotFound
@@ -167,3 +167,14 @@ def valid_web_user(f):
 
 def is_sms_api_user(user):
     return user.groups.filter(name="SMS API Users").count() > 0
+
+
+def is_super_admin(f):
+    def wrapper(*args, **kw):
+        request = args[0]
+        user = request.user
+        if not user.is_superuser:
+            return HttpResponse(status='404')
+        return f(*args, **kw)
+
+    return wrapper

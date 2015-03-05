@@ -7,20 +7,18 @@ import zipfile
 from nose.plugins.attrib import attr
 from django.test import Client
 import xlrd
-from datawinners import settings
 
 from framework.base_test import HeadlessRunnerTest, setup_driver
 from framework.utils.common_utils import random_string, by_css, generate_random_email_id, by_id
 from pages.advancedwebsubmissionpage.advanced_web_submission_page import AdvancedWebSubmissionPage
 from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
+from pages.datasenderactivationpage.activate_datasender_page import DataSenderActivationPage
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.loginpage.login_page import login
 from pages.projectdatasenderspage.project_data_senders_page import ProjectDataSendersPage
-from pages.resetpasswordpage.reset_password_page import ResetPasswordPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.submissionlogpage.submission_log_page import LAST_MONTH, ALL_PERIODS
-from testdata.test_data import url
-from tests.activateaccounttests.activate_account_data import DS_ACTIVATION_URL, NEW_PASSWORD
+from tests.activateaccounttests.activate_account_data import NEW_PASSWORD
 from tests.advancedquestionnairetests.advanced_questionnaire_test_helper import perform_submission, navigate_and_verify_web_submission_page_is_loaded, verify_advanced_web_submission_page_is_loaded
 from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL
 from tests.logintests.login_data import VALID_CREDENTIALS
@@ -143,14 +141,8 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.driver.create_screenshot('empty_rows.png')
         self.assertTrue(is_table_empty)
 
-
     def _activate_datasender(self, email):
-        r = self.client.post(path='/admin-apis/datasender/generate_token/', data={'ds_email': email})
-        resp = json.loads(r._container[0])
-        self.driver.go_to(url(DS_ACTIVATION_URL % (resp["user_id"], resp["token"])))
-        activation_page = ResetPasswordPage(self.driver)
-        activation_page.type_same_password(NEW_PASSWORD)
-        activation_page.click_submit()
+        DataSenderActivationPage(self.driver).activate_datasender(email, NEW_PASSWORD)
 
     def _do_web_submission(self, xml_file, project_temp_name, form_code, user, password, image_upload=False):
         r = perform_submission(xml_file, project_temp_name, form_code, {'user': user, 'password': password}, image_upload)

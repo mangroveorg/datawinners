@@ -114,3 +114,9 @@ class AddDataSenderPage(Page):
 
     def close_add_datasender_dialog(self):
         self.driver.find(CANCEL).click()
+
+
+class AddContactPage(AddDataSenderPage):
+
+    def __init__(self, driver):
+        AddDataSenderPage.__init__(self, driver)

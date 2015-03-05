@@ -5,6 +5,7 @@ import pages
 from pages.alldatapage.all_data_locator import *
 from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
 from pages.page import Page
+from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from framework.utils.common_utils import CommonUtilities
@@ -41,3 +42,7 @@ class AllDataPage(Page):
         if comm_util.is_element_present(by_css(ALL_FAILED_SUBMISSION_LINK)):
             return True
         return False
+
+    def navigate_to_my_data_senders_page(self, project_name):
+        self.driver.find(by_xpath("//a[@class='project-id-class' and text()='%s']" % project_name)).click()
+        return ProjectOverviewPage(self.driver).navigate_to_datasenders_page()
