@@ -48,7 +48,7 @@ class TestAllDataSenderRegistration(HeadlessRunnerTest):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
         success_msg = add_data_sender_page.get_success_message()
-        self.assertRegexpMatches(success_msg, fetch_(SUCCESS_MSG, from_(VALID_DATA)))
+        self.assertIn(fetch_(SUCCESS_MSG, from_(VALID_DATA)), success_msg)
         rep_id = self._parse(success_msg)
         all_data_senders_page = AllDataSendersPage(self.driver)
         all_data_senders_page.load()
@@ -66,7 +66,7 @@ class TestAllDataSenderRegistration(HeadlessRunnerTest):
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(BLANK_FIELDS)))
         a = self.driver.switch_to_active_element()
-        self.assertEqual(a.get_attribute("id"), u"id_name")
+        self.assertEqual(a.get_attribute("id"), u"id_telephone_number")
 
     @attr('functional_test')
     def test_addition_of_data_sender_with_existing_data(self):
@@ -80,15 +80,13 @@ class TestAllDataSenderRegistration(HeadlessRunnerTest):
     def test_addition_of_data_sender_without_location_name(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(WITHOUT_LOCATION_NAME)
-        self.assertRegexpMatches(add_data_sender_page.get_success_message(),
-                                 fetch_(SUCCESS_MSG, from_(WITHOUT_LOCATION_NAME)))
+        self.assertIn(fetch_(SUCCESS_MSG, from_(WITHOUT_LOCATION_NAME)), add_data_sender_page.get_success_message())
 
     @attr('functional_test')
     def test_addition_of_data_sender_without_gps(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(WITHOUT_GPS)
-        self.assertRegexpMatches(add_data_sender_page.get_success_message(),
-                                 fetch_(SUCCESS_MSG, from_(WITHOUT_GPS)))
+        self.assertIn(fetch_(SUCCESS_MSG, from_(WITHOUT_GPS)), add_data_sender_page.get_success_message())
 
     @attr('functional_test')
     def test_addition_of_data_sender_with_invalid_gps(self):
@@ -124,7 +122,7 @@ class TestAllDataSenderRegistration(HeadlessRunnerTest):
     @attr('functional_test')
     def test_add_datasender_with_long_uid(self):
         add_data_sender_page = self.current_page
-        self.driver.find(by_css("#generate_id")).click()
+        self.driver.find(by_css("#id_generated_id")).click()
         self.driver.find_text_box(by_css("#id_short_code")).enter_text("rep012345678901234567891")
         short_code = self.driver.find(by_css("#id_short_code")).get_attribute('value')
         self.assertEquals(len(short_code), 12)
@@ -146,8 +144,7 @@ class TestAllDataSenderRegistration(HeadlessRunnerTest):
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL_TO_EDIT_A_DATASENDER)
         success_msg = self.current_page.get_success_message()
         rep_id = self._parse(success_msg)
-        self.assertRegexpMatches(success_msg,
-                                 fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL_TO_EDIT_A_DATASENDER)))
+        self.assertIn(fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL_TO_EDIT_A_DATASENDER)), success_msg)
 
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_datasender_page = AllDataSendersPage(self.driver)

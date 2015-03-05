@@ -22,5 +22,5 @@ VALID_DATASENDER = {
                     COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                     EMAIL_ADDRESS: "mIcKeY",
                     GPS: "-21.7622088847 48.0690991394",
-                    SUCCESS_MSG: "Registration successful. ID is: rep"
+                    SUCCESS_MSG: "Your contact(s) have been added. ID is: rep"
                    }

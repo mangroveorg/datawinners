@@ -73,6 +73,9 @@ class AddDataSenderPage(Page):
         locator = self.driver.wait_for_element(UI_TEST_TIMEOUT, FLASH_MESSAGE_LABEL, want_visible=True)
         return locator.text
 
+    def get_rep_id_from_success_message(self, success_message):
+        return success_message.split(":")[1].strip()
+
     def open_import_lightbox(self):
         if not self.is_in_project_level():
             return False
@@ -81,7 +84,6 @@ class AddDataSenderPage(Page):
         from pages.lightbox.import_datasender_light_box_page import ImportDatasenderLightBox
 
         return ImportDatasenderLightBox(self.driver)
-
 
     def is_in_project_level(self):
         return self.driver.get_title() in [u"Questionnaires - Expéditeurs", u"Questionnaires - Data Senders"]
@@ -109,3 +111,6 @@ class AddDataSenderPage(Page):
 
     def click_submit_button(self):
         self.driver.find(REGISTER_BTN).click()
+
+    def close_add_datasender_dialog(self):
+        self.driver.find(CANCEL).click()
