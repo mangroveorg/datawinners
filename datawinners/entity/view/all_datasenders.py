@@ -223,7 +223,7 @@ class AssociateDataSendersView(DataSenderActionView):
         self._update_activity_log(projects_name, request)
 
         return HttpResponse(
-            json.dumps({"success": True, "message": _("The Data Sender(s) are added to Questionnaire(s) successfully")}))
+            json.dumps({"success": True, "message": _("Your contact(s) have been added as Data Sender. Contacts with an Email address who are added to a Questionnaire for the first time will receive an activation email with instructions.")}))
 
 
 class DisassociateDataSendersView(DataSenderActionView):
