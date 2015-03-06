@@ -300,7 +300,7 @@ class XlsFormParser():
             unique_id_type = field['bind']['constraint']
             if not entity_type_already_defined(self.dbm, [unique_id_type]):
                 raise UniqueIdNotFoundException(unique_id_type)
-            if not get_non_voided_entity_count_for_type(self.dbm, unique_id_type):
+            if not get_non_voided_entity_count_for_type(self.dbm, unique_id_type.lower()):
                 raise UniqueIdNumbersNotFoundException(unique_id_type)
         except KeyError:
             raise UniqueIdNotMentionedException(field.get('name', ''))
@@ -660,7 +660,7 @@ class UniqueIdNotMentionedException(Exception):
 class UniqueIdNumbersNotFoundException(Exception):
     def __init__(self, unique_id_type):
         unique_id_type = unique_id_type.title()
-        self.message = _("You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>") % (unique_id_type, unique_id_type, unique_id_type)
+        self.message = _("You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>") % (unique_id_type, unique_id_type.lower(), unique_id_type)
 
     def __str__(self):
         return self.message
