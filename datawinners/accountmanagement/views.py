@@ -306,8 +306,8 @@ def delete_users(request):
                                 (ngo_admin_user_profile.user.first_name), "error_message")
     else:
         detail = user_activity_log_details(User.objects.filter(id__in=django_ids))
-        delete_entity_instance(manager, all_ids, REPORTER, transport_info)
         delete_datasenders_from_project(manager, all_ids)
+        delete_entity_instance(manager, all_ids, REPORTER, transport_info)
         delete_datasender_users_if_any(all_ids, organization)
 
         if organization.in_trial_mode:

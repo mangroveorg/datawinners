@@ -53,7 +53,7 @@ class TestTrialDataSenders(HeadlessRunnerTest):
 
     def test_should_not_allow_data_senders_register_with_same_phone_number_for_different_accounts(self):
         add_data_sender_page = self.add_trial_organization_with_data_sender()
-        self.assertIn("Registration successful.", add_data_sender_page.get_success_message())
+        self.assertIn("Your contact(s) have been added.", add_data_sender_page.get_success_message())
         self.driver.go_to(LOGOUT)
         add_data_sender_page = self.add_trial_organization_with_data_sender()
         self.assertEqual(
