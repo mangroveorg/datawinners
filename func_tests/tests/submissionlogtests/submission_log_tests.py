@@ -18,7 +18,8 @@ from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage, MONTHLY_DATE_RANGE
-from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, \
+from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE, \
+    DATA_WINNER_DASHBOARD_PAGE, \
     url
 from tests.dataanalysistests.data_analysis_data import DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE
 from tests.submissionlogtests.submission_log_data import *
@@ -31,13 +32,14 @@ SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %H:%M"
 
 
 def send_sms_with(sms):
-    data = {"message": sms[SMS], "from_msisdn": sms[SENDER], "to_msisdn": sms[RECEIVER], "message_id":uuid.uuid1().hex}
+    data = {"message": sms[SMS], "from_msisdn": sms[SENDER], "to_msisdn": sms[RECEIVER], "message_id": uuid.uuid1().hex}
     resp = requests.post(url("/") + "submission", data)
     return resp.content
 
+
 def send_valid_sms_with(sms):
     response = send_sms_with(sms)
-    assert "Thank" in response, " Thank not found in response [%s]"% response
+    assert "Thank" in response, " Thank not found in response [%s]" % response
 
 
 class TestSubmissionLog(HeadlessRunnerTest):
@@ -108,7 +110,8 @@ class TestSubmissionLog(HeadlessRunnerTest):
     def register_datasender(self, datasender_details, all_datasenders_page, id=None):
         add_data_sender_page = all_datasenders_page.navigate_to_add_a_data_sender_page()
         add_data_sender_page.enter_data_sender_details_from(datasender_details, unique_id=id)
-        return add_data_sender_page.get_registered_datasender_id() if id is None else id
+        return add_data_sender_page.get_rep_id_from_success_message(
+            add_data_sender_page.get_success_message()) if id is None else id
 
 
     @attr("functional_test")
@@ -118,7 +121,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
         my_data_sender_page = project_overview_page.navigate_to_datasenders_page()
         add_ds_page = my_data_sender_page.navigate_to_add_a_data_sender_page()
         add_ds_page.enter_data_sender_details_from(DATASENDER_DETAILS)
-        ds_id = add_ds_page.get_registered_datasender_id()
+        ds_id = add_ds_page.get_rep_id_from_success_message(add_ds_page.get_success_message())
 
         send_valid_sms_with(VALID_DATA)
 
@@ -255,7 +258,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
         total_number_of_rows = submission_log_page.get_total_number_of_records()
         self.assertEqual(total_number_of_rows, 4)
 
-        #submission_log_page.filter_by_reporting_date(DAILY_DATE_RANGE)
+        # submission_log_page.filter_by_reporting_date(DAILY_DATE_RANGE)
 
         #submission_log_page.wait_for_table_data_to_load()
         #total_number_of_rows = submission_log_page.get_total_number_of_records()
@@ -311,7 +314,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
             self.reporting_period_project_name = self.populate_data_for_date_range_filters()
         submission_log_page = self.go_to_submission_log_page(project_name=self.reporting_period_project_name)
         submission_log_page.wait_for_table_data_to_load()
-        #default sorting on submission date should be in descending order
+        # default sorting on submission date should be in descending order
         self.verify_sort_data_by_date(submission_log_page, 3, greater_than_equal)
         submission_log_page.click_on_nth_header(5)
         submission_log_page.wait_for_table_data_to_load()

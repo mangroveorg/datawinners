@@ -46,11 +46,11 @@ class AddDataSenderPage(Page):
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css("span.loading"))
         return self
 
-    def get_registered_datasender_id(self):
-        message = self.get_success_message()
-        assert REGISTRATION_SUCCESS_MESSAGE_TEXT in message
-        data_sender_id = self._parse(message)
-        return data_sender_id
+    # def get_registered_datasender_id(self):
+    #     message = self.get_success_message()
+    #     assert REGISTRATION_SUCCESS_MESSAGE_TEXT in message
+    #     data_sender_id = self._parse(message)
+    #     return data_sender_id
 
     def _parse(self, message):
         return message.split(' ')[-1]

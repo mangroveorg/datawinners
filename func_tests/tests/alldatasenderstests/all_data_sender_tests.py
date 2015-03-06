@@ -49,7 +49,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         cls.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         add_data_sender_page = cls.all_datasenders_page.navigate_to_add_a_data_sender_page()
         add_data_sender_page.enter_data_sender_details_from(datasender_details, unique_id=id)
-        return add_data_sender_page.get_registered_datasender_id() if id is None else id
+        return add_data_sender_page.get_rep_id_from_success_message(add_data_sender_page.get_success_message()) if id is None else id
 
     @attr('functional_tests')
     def test_links(self):
@@ -120,16 +120,6 @@ class TestAllDataSenders(HeadlessRunnerTest):
             self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(2)),
             msg="More than expected number of rows present")
         self.assertEqual("1 to 1 of 1 Data Sender(s)", self.all_datasenders_page.get_pagination_text())
-
-    @attr('functional_test')
-    def test_the_datasender_template_file_downloaded(self):
-        import_lightbox = self.all_datasenders_page.open_import_lightbox()
-        self.assertEqual(IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, import_lightbox.get_template_filename())
-        import_lightbox.close_light_box()
-        self.all_datasenders_page.switch_language("fr")
-        self.all_datasenders_page.open_import_lightbox()
-        self.assertEqual(IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR, import_lightbox.get_template_filename())
-
 
     @classmethod
     def add_new_user(cls, user_data):
