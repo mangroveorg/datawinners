@@ -72,9 +72,10 @@ class TestRegisteredDataSenders(HeadlessRunnerTest):
         if registered_ds_page.is_checkall_enabled():
             registered_ds_page.click_checkall_checkbox()
             registered_ds_page.perform_datasender_action_to_dissociate()
-        for try_count in range(1,7):
+        for try_count in range(1, 7):
             check_all_enabled = registered_ds_page.is_checkall_enabled()
-            if not check_all_enabled: break;
+            if not check_all_enabled:
+                break
             time.sleep(2**try_count)  # exponential back-off
         self.assertFalse(check_all_enabled, "Check all was enabled after removing all data senders from the project")
 

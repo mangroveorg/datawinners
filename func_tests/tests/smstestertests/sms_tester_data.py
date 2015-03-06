@@ -67,12 +67,12 @@ REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
 
 REGISTER_NEW_SUBJECT = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
-                        SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur . ",
+                        SMS: "cli clinicf clinicl Jaipur 26.917,75.817 123456",
                         SUCCESS_MESSAGE: "Thank you Shweta"}
 
 REGISTER_NEW_SUBJECT_TO_SOFT_DELETE = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
-                        SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur . ",
+                        SMS: "cli clinicf clinicl Jaipur 26.917,75.817 123456",
                         SUCCESS_MESSAGE: "Thank you Shweta"}
 
 REGISTER_NEW_SUBJECT_TRIAL_ACCOUNT = {SENDER: TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO,
@@ -87,7 +87,7 @@ NEW_SUBMISSION_TRIAL_ACCOUNT = {SENDER: TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO,
 
 REGISTER_EXISTING_SUBJECT_SHORT_CODE = {SENDER: "1234567890",
                                         RECEIVER: "919880734937",
-                                        SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur .S cid001 . ",
+                                        SMS: "cli clinicf clinicl Jaipur 26.917,75.817 123456 cid001",
                                         ERROR_MSG: "Error. cid001 already exists. Register your Clinic with a different Identification Number."}
 
 REGISTER_INVALID_GEO_CODE = {SENDER: "1234567890",
