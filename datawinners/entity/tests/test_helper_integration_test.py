@@ -11,7 +11,7 @@ from mangrove.datastore.entity import Entity
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.utils.types import is_empty
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
-from datawinners.entity.helper import delete_datasender_users_if_any, put_email_information_to_entity
+from datawinners.entity.helper import delete_datasender_users_if_any, set_email_for_contact
 from datawinners.search import datasender_index as unused
 
 
@@ -40,7 +40,7 @@ class TestEntityHelper(unittest.TestCase):
         entity.save()
         delete_and_create_form_model(self.manager, GLOBAL_REGISTRATION_FORM_CODE)
 
-        put_email_information_to_entity(self.manager, entity, email=email)
+        set_email_for_contact(self.manager, entity, email=email)
 
         entity_values = entity.data
         self.assertEquals(entity_values["email"]["value"], email)

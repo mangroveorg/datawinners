@@ -66,7 +66,7 @@ class EditDataSenderView(TemplateView):
             'create_data_sender': create_data_sender
         }))
 
-    def _send_email_to_datasender(self, email, form, org_id, reporter_entity, reporter_id, request):
+    def _send_email_to_datasender(self, email, org_id, reporter_entity, reporter_id, request):
         if not reporter_entity.is_contact and not User.objects.filter(email=email):
             create_single_web_user(org_id, email, reporter_id, request.LANGUAGE_CODE)
         return email
@@ -123,7 +123,7 @@ class EditDataSenderView(TemplateView):
                 if response.success:
                     email = form.cleaned_data['email']
                     if email:
-                        email = self._send_email_to_datasender(email, form, org_id, reporter_entity, reporter_id,
+                        email = self._send_email_to_datasender(email, org_id, reporter_entity, reporter_id,
                                                                request)
 
                     self._update_mobile_number_if_trial_organization(form, org_id, organization, reporter_entity)

@@ -233,12 +233,12 @@ def entity_type_as_sequence(entity_type):
     return entity_type
 
 
-def put_email_information_to_entity(dbm, entity, email):
+def set_email_for_contact(dbm, contact, email):
     email_field_code = "email"
     form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
     email_field_label = form_model.get_field_by_code(email_field_code).name
     data = (email_field_label, email)
-    entity.update_latest_data([data])
+    contact.update_latest_data([data])
 
 def rep_id_name_dict_of_users(manager):
     org_id = get_organization_from_manager(manager).org_id

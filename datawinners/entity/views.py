@@ -33,12 +33,12 @@ from mangrove.form_model.field import field_to_json, DateField
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, get_organization_telephone_number
+from datawinners.entity.helper import create_registration_form, get_organization_telephone_number, set_email_for_contact
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined
-from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record
+from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
     QuestionAlreadyExistsException
@@ -283,6 +283,24 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
         create_web_users(org_id, {reporter_id: email_address}, language_code))
 
 
+def _set_contacts_email_address(dbm, request):
+    contact_id_email_map = {}
+    for item in json.loads(request.POST['post_data']):
+        contact = contact_by_short_code(dbm, item['reporter_id'])
+        if contact.is_contact:
+            set_email_for_contact(dbm, contact, item['email'])
+        else:
+            contact_id_email_map.update({item['reporter_id']: item['email']})
+
+    return contact_id_email_map
+
+
+def _set_email_for_contacts(dbm, org_id, request):
+    contact_id_email_map = _set_contacts_email_address(dbm, request)
+    content = create_web_users(org_id, contact_id_email_map, request.LANGUAGE_CODE)
+    return content
+
+
 @login_required
 @csrf_view_exempt
 @is_not_expired
@@ -290,10 +308,10 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
 def create_multiple_web_users(request):
     """Create multiple web users from All Data Senders page"""
     org_id = request.user.get_profile().org_id
-    post_data = {}
+    dbm = get_database_manager(request.user)
+
     if request.method == 'POST':
-        [post_data.update({item['reporter_id']: item['email']}) for item in json.loads(request.POST['post_data'])]
-        content = create_web_users(org_id, post_data, request.LANGUAGE_CODE)
+        content = _set_email_for_contacts(dbm, org_id, request)
         return HttpResponse(content)
 
 

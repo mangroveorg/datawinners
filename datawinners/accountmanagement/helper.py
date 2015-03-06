@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
-from datawinners.entity.helper import update_data_sender_from_trial_organization, put_email_information_to_entity
+from datawinners.entity.helper import update_data_sender_from_trial_organization, set_email_for_contact
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_by_short_code, contact_by_short_code
@@ -98,7 +98,7 @@ def create_web_users(org_id, reporter_details, language_code):
         for reporter_id, email in reporter_details.iteritems():
             reporter_entity = contact_by_short_code(dbm, reporter_id)
             reporter_email = email.lower()
-            put_email_information_to_entity(dbm, reporter_entity, email=reporter_email)
+            set_email_for_contact(dbm, reporter_entity, email=reporter_email)
             user = User.objects.create_user(reporter_email, reporter_email, 'test123')
             group = Group.objects.filter(name="Data Senders")[0]
             user.groups.add(group)
