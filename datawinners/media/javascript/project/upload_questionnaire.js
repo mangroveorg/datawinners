@@ -28,8 +28,8 @@ DW.showError = function(errors,message_prefix,message_suffix){
 };
 
 DW.updateFilename = function(file_name){
-    $("div.download_xls span.heading_block").text(file_name);
-}
+    $("div.download_xls span.heading_block a").text(file_name);
+};
 
 DW.showSuccess = function(message){
     var flash_message = $("#xlx-message");
