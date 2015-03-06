@@ -500,32 +500,50 @@ class XFormSubmissionProcessor():
         else:
             return {field.code: value}
 
-    def get_model_edit_str(self, form_model_fields, submission_values, project_name, form_code):
-        # todo instead of using form_model fields, use xform to find the fields
-        d, s = {'form_code': form_code}, {}
-        for f in form_model_fields:
-            answer = submission_values.get(f.code, '')
-            if isinstance(f, DateTimeField):
-                value = datetime.strptime(answer, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
-                d.update(self.get_dict(f, value))
-            elif isinstance(f, SelectField) and f.has_other and isinstance(answer, list) and answer[0] == 'other':
-                if f.is_single_select:
-                    d.update({f.code + "_other": answer[1]})
-                    d.update({f.code: answer[0]})
+    def _format_field_answers_for(self, fields, submission_values):
+        answer_dict = {}
+        for field in fields:
+            answer = submission_values.get(field.code, '')
+            if isinstance(field, DateTimeField):
+                self._format_date_time(answer_dict, field, answer)
+            elif isinstance(field, SelectField) and field.has_other and isinstance(answer, list) and answer[0] == 'other':
+                if field.is_single_select:
+                    answer_dict.update({field.code + "_other": answer[1]})
+                    answer_dict.update({field.code: answer[0]})
                 else:
                     other_selection = []
                     choice_selections = ['other']
                     for item in answer[1].split(' '):
-                        if _is_choice_item_in_choice_list(item, f.options):
+                        if _is_choice_item_in_choice_list(item, field.options):
                             choice_selections.append(item)
                         else:
                             other_selection.append(item)
-                    d.update({f.code + "_other": ' '.join(other_selection)})
-                    d.update({f.code: ' '.join(choice_selections)})
+                    answer_dict.update({field.code + "_other": ' '.join(other_selection)})
+                    answer_dict.update({field.code: ' '.join(choice_selections)})
+            elif isinstance(field, FieldSet):
+                answer_dict.update({field.code: self._format_field_set_values(field.fields, answer)})
             else:
-                d.update(self.get_dict(f, answer))
-        s.update({project_name: d})
-        return xmldict.dict_to_xml(s)
+                answer_dict.update(self.get_dict(field, answer))
+        return answer_dict
+
+    def get_model_edit_str(self, form_model_fields, submission_values, project_name, form_code):
+        # todo instead of using form_model fields, use xform to find the fields
+        answer_dict, edit_model_dict = {'form_code': form_code}, {}
+        answer_dict.update(self._format_field_answers_for(form_model_fields, submission_values))
+        edit_model_dict.update({project_name: answer_dict})
+        return xmldict.dict_to_xml(edit_model_dict)
+
+    def _format_date_time(self, answer, field, value):
+        value = datetime.strptime(value, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
+        answer.update(self.get_dict(field, value))
+
+    def _format_field_set_values(self, fields, answers):
+        for answer in answers:
+            for field in fields:
+                value = answer.get(field.code)
+                if isinstance(field, DateTimeField):
+                    self._format_date_time(answer, field, value)
+        return answers
 
 
 class XFormImageProcessor():
