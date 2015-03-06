@@ -74,20 +74,13 @@ class AllDataSendersView(TemplateView):
         convert_open_submissions_to_registered_submissions.delay(manager.database_name, imported_datasenders_ids)
 
     def post(self, request, *args, **kwargs):
+        parser_dict = {'.xls': XlsDatasenderParser, '.xlsx': XlsxDataSenderParser}
         manager = get_database_manager(request.user)
         import os
         file_extension = os.path.splitext(request.GET["qqfile"])[1]
-        if file_extension == '.xls':
-            error_message, failure_imports, success_message, successful_imports = import_module.import_data(
-            request,
-            manager,
-            default_parser=XlsDatasenderParser)
-        if file_extension == '.xlsx':
-
-            error_message, failure_imports, success_message, successful_imports = import_module.import_data(
-            request,
-            manager,
-            default_parser=XlsxDataSenderParser)
+        parser = parser_dict.get(file_extension, None)
+        error_message, failure_imports, success_message, successful_imports = import_module.import_data(
+            request, manager, default_parser=parser)
 
         imported_data_senders = parse_successful_imports(successful_imports)
         self._convert_anonymous_submissions_to_registered(imported_data_senders, manager)
