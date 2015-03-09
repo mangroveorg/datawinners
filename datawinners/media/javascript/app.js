@@ -34733,6 +34733,8 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
                 $( this )[0].files = old_files;
                 if ($input.val()==''){
                     that.$preview.empty();
+                    $(this).removeAttr( 'data-loaded-file-name' );
+                    that._showFileName( null );
                     $input.trigger( 'change.file' );
                 }
                 event.preventDefault();
