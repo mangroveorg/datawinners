@@ -499,6 +499,8 @@ class XFormSubmissionProcessor():
             return {field.code: '-'.join(value.split('.')[::-1])}
         elif type(field) is GeoCodeField:
             return {field.code: value.replace(',', ' ')}
+        elif isinstance(field, DateTimeField):
+            return {field.code: self._format_date_time(value)}
         else:
             return {field.code: value}
 
@@ -506,9 +508,7 @@ class XFormSubmissionProcessor():
         answer_dict = {}
         for field in fields:
             answer = submission_values.get(field.code, '')
-            if isinstance(field, DateTimeField):
-                self._format_date_time(answer_dict, field, answer)
-            elif isinstance(field, SelectField) and field.has_other and isinstance(answer, list) and answer[0] == 'other':
+            if isinstance(field, SelectField) and field.has_other and isinstance(answer, list) and answer[0] == 'other':
                 if field.is_single_select:
                     answer_dict.update({field.code + "_other": answer[1]})
                     answer_dict.update({field.code: answer[0]})
@@ -522,8 +522,6 @@ class XFormSubmissionProcessor():
                             other_selection.append(item)
                     answer_dict.update({field.code + "_other": ' '.join(other_selection)})
                     answer_dict.update({field.code: ' '.join(choice_selections)})
-            elif isinstance(field, FieldSet):
-                answer_dict.update({field.code: self._format_field_set_values(field.fields, answer)})
             else:
                 answer_dict.update(self.get_dict(field, answer))
         return answer_dict
@@ -535,17 +533,9 @@ class XFormSubmissionProcessor():
         edit_model_dict.update({project_name: answer_dict})
         return xmldict.dict_to_xml(edit_model_dict)
 
-    def _format_date_time(self, answer, field, value):
-        value = datetime.strptime(value, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
-        answer.update(self.get_dict(field, value))
+    def _format_date_time(self, value):
+        return datetime.strptime(value, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
 
-    def _format_field_set_values(self, fields, answers):
-        for answer in answers:
-            for field in fields:
-                value = answer.get(field.code)
-                if isinstance(field, DateTimeField):
-                    self._format_date_time(answer, field, value)
-        return answers
 
 
 class XFormImageProcessor():
