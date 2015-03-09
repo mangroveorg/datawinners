@@ -5686,7 +5686,7 @@ msgid "The Identification Number %s is not yet added. Please add it <a href='/en
 msgstr "Le Numéro d’Identification %s n’est pas encore ajouté. Ajoutez <a href='/entity/subjects' "
                          "target='_blank'>le ici</a> et téléchargez le XLSForm une nouvelle fois."
 
-msgid "You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/'>%s</a>"
+msgid "You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>"
 msgstr "Vous n’anex pas encore enregistré un %s. Enregistrez un <a href='/entity/subject/create/%s/?web_view=True'>%s</a>"
 
 msgid "The Identification Number Type (dw_idnr) is missing in the Constraints column. "
