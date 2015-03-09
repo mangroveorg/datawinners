@@ -437,7 +437,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
-        error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!")
+        error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xlsx) template file!")
     except FormCodeDoesNotMatchException as e:
         error_message = e.message
     except Exception:
