@@ -239,6 +239,8 @@ class ProjectUpdate(View):
 
             xls_parser_response = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
 
+            if xls_parser_response.unique_id_errors:
+                xls_parser_response.errors.extend(xls_parser_response.unique_id_errors)
             if xls_parser_response.errors:
                 error_list = list(xls_parser_response.errors)
                 logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(error_list))
@@ -250,9 +252,6 @@ class ProjectUpdate(View):
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
 
-            # if xls_parser_response.unique_id_errors:
-            #     for message in xls_parser_response.unique_id_errors:
-            #         messages.warning(request, ugettext(message), extra_tags='safe')
 
             mangrove_service = MangroveService(request, questionnaire_code=questionnaire.form_code,
                                                project_name=questionnaire.name, xls_parser_response=xls_parser_response)
