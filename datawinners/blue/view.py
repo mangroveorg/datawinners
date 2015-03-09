@@ -239,8 +239,7 @@ class ProjectUpdate(View):
 
             xls_parser_response = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
 
-            if xls_parser_response.unique_id_errors:
-                xls_parser_response.errors.extend(xls_parser_response.unique_id_errors)
+
             if xls_parser_response.errors:
                 error_list = list(xls_parser_response.errors)
                 logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(error_list))
@@ -270,7 +269,15 @@ class ProjectUpdate(View):
             self._purge_feed_documents(questionnaire, request)
             self._purge_media_details_documents(manager, questionnaire)
             self.recreate_submissions_mapping(manager, questionnaire)
-
+            if xls_parser_response.unique_id_errors:
+                error_list = list(xls_parser_response.unique_id_errors)
+                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(error_list))
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': False,
+                    'error_msg': error_list,
+                    'message_prefix': _("Sorry! Current version of DataWinners does not support"),
+                    'message_suffix': _("Update your XLSForm and upload again.")
+                }))
         except PyXFormError as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
 
