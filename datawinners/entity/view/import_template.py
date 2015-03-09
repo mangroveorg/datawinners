@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from urllib import unquote
 from django.http import HttpResponse
 from django.template.defaultfilters import slugify
@@ -55,5 +56,7 @@ class WorkBookResponseFactory:
 
     def create_workbook_response(self, data, field_codes):
         field_codes.insert(0, self.form_code)
-        return export_to_new_excel(dict({self.sheet_name: data[0], 'codes':field_codes}),
-                {}, self.file_name, hide_codes_sheet=True, browser=self.browser)
+        headers = OrderedDict()
+        headers[self.sheet_name] = data[0]
+        headers['codes'] = field_codes
+        return export_to_new_excel(headers, {}, self.file_name, hide_codes_sheet=True, browser=self.browser)
