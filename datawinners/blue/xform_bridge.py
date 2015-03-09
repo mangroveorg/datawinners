@@ -206,6 +206,8 @@ class XlsFormParser():
             if choices:
                 name_list = [choice['name'].lower() for choice in choices]
                 name_list_without_duplicates = list(set(name_list))
+                if field.get('default') and field['default'] not in name_list_without_duplicates:
+                    errors.append(_('Default value not in choices'))
                 if len(name_list) != len(name_list_without_duplicates):
                     errors.append(_("duplicate names within one list (choices sheet)"))
                 if filter(lambda name: " " in unicode(name), name_list):
