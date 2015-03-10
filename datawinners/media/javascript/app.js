@@ -34658,7 +34658,22 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         $downloadLink.insertAfter(this.$preview);
         this.$downloadLink = $downloadLink;
         this.$fakeInput = this.$widget.find( '.fake-file-input' );
+        this.$deleteButton = $('<button class="remove-file"> Remove </button>');
 
+        Filepicker.prototype._showRemoveButton = function( preview, $input) {
+           var that = this;
+           that.$deleteButton.insertAfter(preview);
+           that.$deleteButton.click(function(){
+                $input.val( '' );
+                that._showPreview( null );
+                that._showFileName( null );
+                that.$deleteButton.remove();
+                $input.removeAttr( 'data-loaded-file-name' );
+                $input.trigger( 'change.file' );
+                that.$downloadLink.remove();
+           });
+
+        };
         // show loaded file name regardless of whether widget is supported
         this.showDownloadLinkAndPreview = function(existingFileName){
             var submission_id = $('document').context.defaultView.surveyResponseId;
@@ -34667,6 +34682,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
                 this._showPreview(location_image+"preview_"+existingFileName, this.mediaType);
             }
             this.$downloadLink.append('<a href="'+location_image+existingFileName+'" class="get_image_link">'+'Download file'+'</a>');
+            this._showRemoveButton(this.$preview, $input);
         };
 
 
@@ -34752,6 +34768,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             fileManager.getFileUrl( file )
                 .then( function( url ) {
                     that._showPreview( url, that.mediaType );
+                    that._showRemoveButton(that.$preview, $input);
                     that._showFeedback( '' );
                     that._showFileName( file );
                     $input.trigger( 'change.passthrough' );
