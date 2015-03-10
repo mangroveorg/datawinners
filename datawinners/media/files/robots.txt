@@ -19,3 +19,4 @@ Disallow: /fr/terms-and-conditions*
 Disallow: /fr/what-is-datawinners*
 Disallow: /home/
 Disallow: /home/en
+Disallow: /media*
