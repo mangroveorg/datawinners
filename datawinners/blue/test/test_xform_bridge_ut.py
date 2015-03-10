@@ -171,6 +171,30 @@ class TestXformBridge(unittest.TestCase):
 
             self.assertEquals(xls_parser_response.errors, {"Default value not in choices"})
 
+
+    def test_should_not_populate_error_when_default_choice_for_multi_select_is_present_in_choice_list(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{u'bind': {u'required': u'yes'}, u'type': u'select all that apply or specify other',
+                                    'default': "yes no", u'name': u'is_student',
+                                    u'label': u'1. Are you a student?',
+                                    u'choices': [{u'name': u'yes', u'label': 'yes'},
+                                                 {u'name': u'no', u'label': u'No'}]},
+                                   {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                                       {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
+                                        'type': 'calculate', 'name': 'instanceID'}]}],
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'default_language': 'default'
+            }
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+            errors = xls_form_parser._validate_choice_names(fields['children'])
+
+            self.assertEquals(errors, [])
+
+
+
     def test_should_populate_error_when_calculate_field_with_prefetch_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
             fields = {'children': [
@@ -460,6 +484,9 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors, {"XLSForm media type (image) in choices sheet."})
+
+
+
 
 
     def test_should_not_populate_errors_when_choice_answer_has_no_media_present(self):

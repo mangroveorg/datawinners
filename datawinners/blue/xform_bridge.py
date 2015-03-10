@@ -197,6 +197,14 @@ class XlsFormParser():
                     errors.append(_("attaching media to choice fields not supported %s") % _(media_type))
         return errors
 
+    def _validate_default_value(self, errors, field, name_set):
+        default_value = field.get('default')
+        if default_value:
+            default_values_list = default_value.split(' ')
+            default_values_set = set(default_values_list)
+            if not default_values_set.issubset(name_set):
+                errors.append(_('Default value not in choices'))
+
     def _validate_choice_names(self, fields):
         errors = []
         for field in fields:
@@ -205,9 +213,9 @@ class XlsFormParser():
             choices = field.get('choices')
             if choices:
                 name_list = [choice['name'].lower() for choice in choices]
-                name_list_without_duplicates = list(set(name_list))
-                if field.get('default') and field['default'] not in name_list_without_duplicates:
-                    errors.append(_('Default value not in choices'))
+                name_set = set(name_list)
+                name_list_without_duplicates = list(name_set)
+                self._validate_default_value(errors, field, name_set)
                 if len(name_list) != len(name_list_without_duplicates):
                     errors.append(_("duplicate names within one list (choices sheet)"))
                 if filter(lambda name: " " in unicode(name), name_list):
