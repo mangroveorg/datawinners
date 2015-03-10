@@ -58,7 +58,7 @@
             <div class="float_left full_width">
                 <div class="warning-message-box clear-both overflow_hidden padding_left_right_10 padding_top_10">
                     {% trans "In the Basic account only registered Data Senders can send you data. However, when you upgrade to a Pro SMS  account you have the option to let anyone send in data." %}
-                    <a class="button margin_10 float_right" target="blank" href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
+                    <a class="button margin_10 float_right" target="blank" href="/{{ active_language }}/upgrade/prosms/">{% trans "Subscribe Now" %}</a>
                     <a class="float_right margin_10 padding_top_10" href="https://www.datawinners.com/{{ active_language }}/pricing/" target="blank">{% trans "Learn More" %}</a>
                 </div>
             </div>

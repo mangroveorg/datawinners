@@ -97,4 +97,4 @@ class TestLoginPage(HeadlessRunnerTest):
         self.driver.go_to(TRIAL_EXPIRED_PAGE)
         expired_page = ExpiredTrialPage(self.driver)
         self.assertEqual(expired_page.get_error_message(), TRIAL_EXPIRED_MESSAGE)
-        self.assertRegexpMatches(expired_page.get_subscribe_button(), "/upgrade/")
+        self.assertRegexpMatches(expired_page.get_subscribe_button(), "/en/upgrade/")

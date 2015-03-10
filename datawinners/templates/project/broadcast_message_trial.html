@@ -34,10 +34,10 @@
     <div class="warning-message-box">
         <p>{% trans 'broadcast_trial_warning_message' %}</p>
         {% if user.groups.all.0.name == 'NGO Admins' %}
-            <a href="{% url default_upgrade %}" class="button" target="blank">{% trans "Subscribe Now" %}</a>
-            <a href="https://www.datawinners.com/en/pricing/" class="trial_web_learn_more" target="blank">{% trans "Learn More" %}</a>
+            <a href="/{{ active_language }}/upgrade" class="button" target="blank">{% trans "Subscribe Now" %}</a>
+            <a href="https://www.datawinners.com/{{ active_language }}/pricing/" class="trial_web_learn_more" target="blank">{% trans "Learn More" %}</a>
         {% else %}
-            <a href="https://www.datawinners.com/en/pricing/" class="trial_web_learn_more margin_top_null" target="blank">{% trans "Learn More" %}</a>
+            <a href="https://www.datawinners.com/{{ active_language }}/pricing/" class="trial_web_learn_more margin_top_null" target="blank">{% trans "Learn More" %}</a>
         {% endif %}
 
     </div>

@@ -18,7 +18,7 @@
             <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your questionnaires." %}</p>
             <a class="float_left margin_10 padding_top_10" href="https://www.datawinners.com/{{ active_language }}/pricing/" target="blank">{% trans "Learn More" %}</a>
             <a class="button margin_10 float_left" target="blank"
-               href="{% url default_upgrade %}">{% trans "Subscribe Now" %}</a>
+               href="/{{ active_language }}/register">{% trans "Subscribe Now" %}</a>
         {% else %}
             <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>." %}</p>
         {% endif %}

@@ -22,6 +22,6 @@ BY = "by"
 EMAIL_TB = by_css("input[name=username]")
 PASSWORD_TB = by_css("input[name=password]")
 LOGIN_BTN = by_css("input#id_login")
-CREATE_AN_ACCOUNT_LINK = by_css("a[href='/register']")
+CREATE_AN_ACCOUNT_LINK = by_css("a[href='/en/register']")
 
 ERROR_MESSAGE_LABEL =  by_xpath("//ul[@class='errorlist']/..|//div[@class='warning-message-box clear-both overflow_hidden']/p")

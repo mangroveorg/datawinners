@@ -162,7 +162,7 @@ def project_has_web_device(f):
 
 
 def valid_web_user(f):
-    return login_required(not_api_user(session_not_expired(is_not_expired(f))), login_url="/login")
+    return login_required(not_api_user(session_not_expired(is_not_expired(f))), login_url="/en/login")
 
 
 def is_sms_api_user(user):

@@ -20,8 +20,10 @@ def get_previous_page_language(request):
             activate(language)
 
 def register_view(request, form_class=None, template_name=None,
-                         backend=None):
-    get_previous_page_language(request)
+                         backend=None, language=None):
+    request.session['django_language'] = language
+    activate(language)
+    #get_previous_page_language(request)
     return register(request, backend, form_class=form_class,
              template_name=template_name)
 

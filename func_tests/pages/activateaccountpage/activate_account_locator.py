@@ -20,4 +20,4 @@ BY = "by"
 
 # List of all the locators related to login page
 MESSAGE_LABEL = by_css("div.span-9>p")
-LOGIN_LINK = by_css('a[href="/login/"]')
+LOGIN_LINK = by_css('a[href="/en/login/"]')
