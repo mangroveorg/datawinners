@@ -1,16 +1,15 @@
 from collections import OrderedDict
 from urllib import unquote
-from django.http import HttpResponse
-from django.template.defaultfilters import slugify
+
 import xlwt
+
 from datawinners.accountmanagement.decorators import valid_web_user
 from datawinners.accountmanagement.helper import is_org_user
 from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
-from datawinners.entity.views import add_codes_sheet
 from datawinners.main.database import get_database_manager
-from datawinners.workbook_utils import get_excel_sheet
 from mangrove.form_model.form_model import get_form_model_by_code
 from datawinners.project.submission.export import export_to_new_excel
+
 
 @valid_web_user
 def import_template(request, form_code):
