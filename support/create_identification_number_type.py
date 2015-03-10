@@ -1,5 +1,6 @@
 import sys
-from datawinners.entity.helper import question_code_generator, FIRSTNAME_FIELD
+
+from datawinners.entity.helper import question_code_generator
 from datawinners.main.database import get_db_manager
 from datawinners.search import entity_form_model_change_handler
 from datawinners.utils import random_string
@@ -22,7 +23,8 @@ def _create_registration_form(manager, entity_name, no_of_questions):
     form_code = random_string()
     questions = []
     for a in range(no_of_questions - 2):
-        question = TextField(name=FIRSTNAME_FIELD, code=code_generator.next(),
+        code = code_generator.next()
+        question = TextField(name=code, code=code,
                              label=random_string(15),
                              defaultValue="some default value",
                              instruction="Enter a %(entity_type)s first name" % {'entity_type': entity_name})
@@ -49,6 +51,6 @@ def _create_registration_form(manager, entity_name, no_of_questions):
 
 if __name__ == "__main__":
     args = sys.argv
-    entity_type = args[1]
-    no_of_questions = int(args[2])
+    entity_type = args[1] if len(args) > 1 else random_string(3)
+    no_of_questions = args[2] if len(args) > 2 else 6
     create_identification_number_type('hni_testorg_slx364903', entity_type, no_of_questions)
