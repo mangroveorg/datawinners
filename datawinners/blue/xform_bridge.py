@@ -105,7 +105,8 @@ class XlsFormParser():
                         if question['type'] in ['select', 'select1'] and question['has_other']:
                             other_field = {u'type': u'text', u'name': question['code'] + "_other",
                                            u'label': question['title'] + "_other"}
-                            other_question, other_field_errors, x = self._create_question(other_field, parent_field_code)
+                            other_question, other_field_errors, x = self._create_question(other_field,
+                                                                                          parent_field_code)
                             questions.append(other_question)
 
                         if question['type'] == 'unique_id':
@@ -206,7 +207,8 @@ class XlsFormParser():
             default_values_list = default_value.split(' ')
             default_values_set = set(default_values_list)
             if not default_values_set.issubset(name_set):
-                errors.append(_('Default value not in choices'))
+                errors.append(_(
+                    "Entered default value is not defined in the choices list. Update your XLSForm and upload again."))
 
     def _validate_choice_names(self, fields):
         errors = []
@@ -252,7 +254,9 @@ class XlsFormParser():
 
     def update_xform_with_questionnaire_name(self, xform):
         # Escape <, > and & and convert accented characters to equivalent non-accented characters
-        return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % unicodedata.normalize('NFD', escape(unicode(self.questionnaire_name))).encode('ascii', 'ignore'), xform)
+        return re.sub(r"<h:title>\w+</h:",
+                      "<h:title>%s</h:" % unicodedata.normalize('NFD', escape(unicode(self.questionnaire_name))).encode(
+                          'ascii', 'ignore'), xform)
 
     def _get_label(self, field):
 
@@ -322,8 +326,10 @@ class XlsFormParser():
             raise UniqueIdNumbersNotFoundException(unique_id_type)
 
     def _field(self, field, parent_field_code=None):
-        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text', 'dw_idnr': 'unique_id'}
-        help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field', 'dw_idnr':'Identification Number'}
+        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text',
+                              'dw_idnr': 'unique_id'}
+        help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field',
+                     'dw_idnr': 'Identification Number'}
         name = self._get_label(field)
         code = field['name']
         type = field['type'].lower()
@@ -420,7 +426,7 @@ def _map_unique_id_question_to_select_one(xform_dict):
     for field in xform_dict['children']:
         if field['type'] == "dw_idnr":
             field['type'] = u'select one'
-            field[u'choices'] = [{u'name': field['name'], u'label':u'placeholder'}]
+            field[u'choices'] = [{u'name': field['name'], u'label': u'placeholder'}]
             del field['bind']['constraint']
         elif field['type'] in ['group', 'repeat']:
             _map_unique_id_question_to_select_one(field)
@@ -549,7 +555,6 @@ class XFormSubmissionProcessor():
         return datetime.strptime(value, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
 
 
-
 class XFormImageProcessor():
     media_fields = [PhotoField, VideoField, AudioField]
 
@@ -646,11 +651,13 @@ class LabelForFieldNotPresentException(Exception):
     def __str__(self):
         return self.message
 
+
 class UniqueIdNotFoundException(Exception):
     def __init__(self, unique_id_type):
         unique_id_type = unique_id_type.title()
         self.message = _("The Identification Number %s is not yet added. Please add it <a href='/entity/subjects' "
                          "target='_blank'>here</a> and upload the XLSForm again.") % unique_id_type
+
 
 class UniqueIdNotMentionedException(Exception):
     def __init__(self, field_name):
@@ -661,10 +668,13 @@ class UniqueIdNotMentionedException(Exception):
     def __str__(self):
         return self.message
 
+
 class UniqueIdNumbersNotFoundException(Exception):
     def __init__(self, unique_id_type):
         unique_id_type = unique_id_type.title()
-        self.message = _("You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>") % (unique_id_type, unique_id_type.lower(), unique_id_type)
+        self.message = _(
+            "You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>") % (
+                           unique_id_type, unique_id_type.lower(), unique_id_type)
 
     def __str__(self):
         return self.message

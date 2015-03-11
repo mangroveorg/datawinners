@@ -147,7 +147,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors, {"duplicate names within one list (choices sheet)",
-                                              "spaces in name column (choice sheet)"})
+                                                           "spaces in name column (choice sheet)"})
 
     def test_should_populate_error_when_default_choice_name_not_in_choice_list(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -169,7 +169,8 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"Default value not in choices"})
+            self.assertEquals(xls_parser_response.errors, {
+                'Entered default value is not defined in the choices list. Update your XLSForm and upload again.'})
 
 
     def test_should_not_populate_error_when_default_choice_for_multi_select_is_present_in_choice_list(self):
@@ -192,7 +193,6 @@ class TestXformBridge(unittest.TestCase):
             errors = xls_form_parser._validate_choice_names(fields['children'])
 
             self.assertEquals(errors, [])
-
 
 
     def test_should_populate_error_when_calculate_field_with_prefetch_present(self):
@@ -232,7 +232,8 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"XLSForm settings worksheet and the related values in survey sheet."})
+            self.assertEquals(xls_parser_response.errors,
+                              {"XLSForm settings worksheet and the related values in survey sheet."})
 
 
     def test_should_populate_error_when_settings_sheet_present_with_form_id(self):
@@ -252,7 +253,8 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"XLSForm settings worksheet and the related values in survey sheet."})
+            self.assertEquals(xls_parser_response.errors,
+                              {"XLSForm settings worksheet and the related values in survey sheet."})
 
     def test_should_populate_error_when_settings_sheet_present_with_public_key(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -272,7 +274,8 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"XLSForm settings worksheet and the related values in survey sheet."})
+            self.assertEquals(xls_parser_response.errors,
+                              {"XLSForm settings worksheet and the related values in survey sheet."})
 
     def test_should_populate_error_when_settings_sheet_present_with_default_language(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -291,7 +294,8 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"XLSForm settings worksheet and the related values in survey sheet."})
+            self.assertEquals(xls_parser_response.errors,
+                              {"XLSForm settings worksheet and the related values in survey sheet."})
 
     def test_should_populate_error_when_settings_sheet_present_with_submission_url(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -311,7 +315,8 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"XLSForm settings worksheet and the related values in survey sheet."})
+            self.assertEquals(xls_parser_response.errors,
+                              {"XLSForm settings worksheet and the related values in survey sheet."})
 
     def test_should_not_create_question_for_select_that_are_only_labels(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -373,11 +378,12 @@ class TestXformBridge(unittest.TestCase):
                                                 'choices': [{'value': {'text': u'Male', 'val': u'male'}},
                                                             {'value': {'text': u'Female', 'val': u'female'}}],
                                                 'is_entity_question': False, 'type': 'select1'})
-            self.assertDictEqual(questions[1], {'code': u'hh_user_gender_other', 'title': u'Sex_other', 'required': False,
-                                                'parent_field_code': None,
-                                                'name': u'Sex_other',
-                                                'instruction': 'Answer must be a word',
-                                                'is_entity_question': False, 'type': u'text'})
+            self.assertDictEqual(questions[1],
+                                 {'code': u'hh_user_gender_other', 'title': u'Sex_other', 'required': False,
+                                  'parent_field_code': None,
+                                  'name': u'Sex_other',
+                                  'instruction': 'Answer must be a word',
+                                  'is_entity_question': False, 'type': u'text'})
 
 
     def test_should_return_correct_date_format_for_year_or_monthyear_appearance(self):
@@ -486,9 +492,6 @@ class TestXformBridge(unittest.TestCase):
             self.assertEquals(xls_parser_response.errors, {"XLSForm media type (image) in choices sheet."})
 
 
-
-
-
     def test_should_not_populate_errors_when_choice_answer_has_no_media_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
             fields = {u'name': u'tmpGX1Ud_', u'title': u'tmpGX1Ud_', u'sms_keyword': u'tmpGX1Ud_',
@@ -511,7 +514,8 @@ class TestXformBridge(unittest.TestCase):
             with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
                 manager = Mock(DatabaseManager)
                 manager.view = Mock(View)
-                manager.view.count_non_voided_entities_by_type = Mock(return_value=[Row({'key':['clinic'],'value':10})])
+                manager.view.count_non_voided_entities_by_type = Mock(
+                    return_value=[Row({'key': ['clinic'], 'value': 10})])
                 xls_form_parser = XlsFormParser('some_path', 'questionnaire_name', dbm=manager)
                 fields = [{u'name': u'my_unique',
                            u'bind': {u'constraint': u'clinic'}, u'label': u'mu_uni', u'type': u'dw_idnr'}]

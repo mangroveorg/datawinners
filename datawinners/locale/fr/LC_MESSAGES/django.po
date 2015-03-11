@@ -5695,3 +5695,6 @@ msgid "The Identification Number Type (dw_idnr) is missing in the Constraints co
 msgstr "Le Type de Numéro d’Identification (dw_idnr) n’existe pas dans la colonne Constraints. "
                         "Ajoutez le Type de Numéro d’Identification et téléchargez de nouveau. "
                          "<a target='_blank'>En savoir plus</a> sur comment gérer les Numéros d’Identification avec XLSForms. "
+
+msgid "Entered default value is not defined in the choices list. Update your XLSForm and upload again."
+msgstr "La valeur par défaut saisie n’est pas définie dans la liste de choix. Mettez à jour votre XLSForm et téléchargez de nouveau"
