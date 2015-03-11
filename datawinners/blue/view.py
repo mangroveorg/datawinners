@@ -93,7 +93,7 @@ class ProjectUpload(View):
                 }))
             if xls_parser_response.info:
                 for message in xls_parser_response.info:
-                    messages.warning(request, ugettext(message), extra_tags='safe')
+                    messages.warning(request, ugettext(message), extra_tags='warning')
             tmp_file.seek(0)
             mangrove_service = MangroveService(request, questionnaire_code=questionnaire_code,
                                                project_name=project_name, xls_form=tmp_file,
@@ -275,10 +275,8 @@ class ProjectUpdate(View):
                 info_list = list(xls_parser_response.info)
                 logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
                 return HttpResponse(content_type='application/json', content=json.dumps({
-                    'success': False,
-                    'error_msg': info_list,
-                    'message_prefix': _(""),
-                    'message_suffix': _("")
+                    'success': True,
+                    'information': info_list,
                 }))
         except PyXFormError as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)

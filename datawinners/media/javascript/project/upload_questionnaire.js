@@ -26,7 +26,17 @@ DW.showError = function(errors,message_prefix,message_suffix){
     flash_message.removeClass("none").removeClass("success-message-box").addClass("message-box").
         html("<span>" + error_message_prefix + "</span>"+ error_messages +"<span>" + error_message_suffix + "</span>").show();
 };
+DW.showInfo = function(infos){
+    var info_messages = "<ul>";
 
+    $.each(infos, function(index, info){
+       info_messages += "<li>" + info + "</li>";
+    });
+    info_messages += "</ul>";
+    var flash_message = $("#xlx-message");
+    flash_message.removeClass("none").removeClass("success-message-box").addClass("information_box").
+        html(info_messages).show();
+};
 DW.updateFilename = function(file_name){
     $("div.download_xls span.heading_block a").text(file_name);
 };
@@ -72,6 +82,9 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             uploadButton.removeAttr("disabled");
             if (!responseJSON['success']) {
                 options.postErrorHandler(responseJSON);
+            }
+            else if (responseJSON['information']) {
+                options.postInfoHandler(responseJSON)
             }
             else {
                 (options.onSuccess && options.onSuccess());
