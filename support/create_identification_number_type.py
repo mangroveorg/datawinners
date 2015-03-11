@@ -51,6 +51,6 @@ def _create_registration_form(manager, entity_name, no_of_questions):
 
 if __name__ == "__main__":
     args = sys.argv
-    entity_type = args[1] if len(args) > 1 else random_string(3)
-    no_of_questions = args[2] if len(args) > 2 else 6
+    entity_type = args[1].lower() if len(args) > 1 else random_string(3)
+    no_of_questions = int(args[2]) if len(args) > 2 else 5
     create_identification_number_type('hni_testorg_slx364903', entity_type, no_of_questions)
