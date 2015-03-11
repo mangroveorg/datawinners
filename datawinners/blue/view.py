@@ -91,8 +91,8 @@ class ProjectUpload(View):
                     'message_prefix': _("Sorry! Current version of DataWinners does not support"),
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
-            if xls_parser_response.unique_id_errors:
-                for message in xls_parser_response.unique_id_errors:
+            if xls_parser_response.info:
+                for message in xls_parser_response.info:
                     messages.warning(request, ugettext(message), extra_tags='safe')
             tmp_file.seek(0)
             mangrove_service = MangroveService(request, questionnaire_code=questionnaire_code,
@@ -244,12 +244,12 @@ class ProjectUpdate(View):
             xls_parser_response = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
 
             if xls_parser_response.errors:
-                error_list = list(xls_parser_response.errors)
-                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(error_list))
+                info_list = list(xls_parser_response.errors)
+                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
 
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
-                    'error_msg': error_list,
+                    'error_msg': info_list,
                     'message_prefix': _("Sorry! Current version of DataWinners does not support"),
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
@@ -271,14 +271,14 @@ class ProjectUpdate(View):
             self._purge_feed_documents(questionnaire, request)
             self._purge_media_details_documents(manager, questionnaire)
             self.recreate_submissions_mapping(manager, questionnaire)
-            if xls_parser_response.unique_id_errors:
-                error_list = list(xls_parser_response.unique_id_errors)
-                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(error_list))
+            if xls_parser_response.info:
+                info_list = list(xls_parser_response.info)
+                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
-                    'error_msg': error_list,
-                    'message_prefix': _("Sorry! Current version of DataWinners does not support"),
-                    'message_suffix': _("Update your XLSForm and upload again.")
+                    'error_msg': info_list,
+                    'message_prefix': _(""),
+                    'message_suffix': _("")
                 }))
         except PyXFormError as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)

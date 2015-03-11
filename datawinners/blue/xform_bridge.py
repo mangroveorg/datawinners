@@ -91,13 +91,13 @@ class XlsFormParser():
     def _create_questions(self, fields, parent_field_code=None):
         questions = []
         errors = []
-        unique_id_errors = []
+        info = []
         for field in fields:
             if field.get('control', None) and field['control'].get('bodyless', False):  # ignore calculate type
                 continue
             if field['type'].lower() in self.supported_types:
                 try:
-                    question, field_errors, unique_id_error = self._create_question(field, parent_field_code)
+                    question, field_errors, field_info = self._create_question(field, parent_field_code)
 
                     if not field_errors and question:
                         questions.append(question)
@@ -108,9 +108,12 @@ class XlsFormParser():
                             other_question, other_field_errors, x = self._create_question(other_field, parent_field_code)
                             questions.append(other_question)
 
+                        if question['type'] == 'unique_id':
+                            self.validate_unique_id_type(field)
+
                     else:
                         errors.extend(field_errors)
-                    unique_id_errors.extend(unique_id_error)
+                    info.extend(field_info)
                 except LabelForChoiceNotPresentException as e:
                     errors.append(e.message)
                 except UniqueIdNotFoundException as e:
@@ -118,10 +121,10 @@ class XlsFormParser():
                 except UniqueIdNotMentionedException as e:
                     errors.append(e.message)
                 except UniqueIdNumbersNotFoundException as e:
-                    unique_id_errors.append(e.message)
+                    info.append(e.message)
                 except LabelForFieldNotPresentException as e:
                     errors.append(e.message)
-        return questions, set(errors), set(unique_id_errors)
+        return questions, set(errors), set(info)
 
     def _validate_group(self, errors, field):
         if field['type'] == 'repeat':
@@ -231,7 +234,7 @@ class XlsFormParser():
         [errors.add(choice_error) for choice_error in choice_errors if choice_error]
         choice_name_errors = self._validate_choice_names(fields)
         errors = errors.union(set(choice_name_errors))
-        questions, question_errors, unique_id_errors = self._create_questions(fields)
+        questions, question_errors, info = self._create_questions(fields)
         if question_errors:
             errors = errors.union(question_errors)
         if not errors and not questions:
@@ -244,7 +247,7 @@ class XlsFormParser():
         # encoding is added to support ie8
         xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
-        return XlsParserResponse([], updated_xform, questions, unique_id_errors)
+        return XlsParserResponse([], updated_xform, questions, info)
 
 
     def update_xform_with_questionnaire_name(self, xform):
@@ -305,16 +308,18 @@ class XlsFormParser():
                 return 'yyyy'
         return 'dd.mm.yyyy'
 
-    def validate_unique_id_type(self, field):
+    def _get_unique_id_type(self, field):
         try:
-            unique_id_type = field['bind']['constraint']
-            if not entity_type_already_defined(self.dbm, [unique_id_type]):
-                raise UniqueIdNotFoundException(unique_id_type)
-            if not get_non_voided_entity_count_for_type(self.dbm, unique_id_type.lower()):
-                raise UniqueIdNumbersNotFoundException(unique_id_type)
+            return field['bind']['constraint']
         except KeyError:
             raise UniqueIdNotMentionedException(field.get('name', ''))
-        return unique_id_type
+
+    def validate_unique_id_type(self, field):
+        unique_id_type = self._get_unique_id_type(field)
+        if not entity_type_already_defined(self.dbm, [unique_id_type]):
+            raise UniqueIdNotFoundException(unique_id_type)
+        if not get_non_voided_entity_count_for_type(self.dbm, unique_id_type.lower()):
+            raise UniqueIdNumbersNotFoundException(unique_id_type)
 
     def _field(self, field, parent_field_code=None):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text', 'dw_idnr': 'unique_id'}
@@ -333,8 +338,7 @@ class XlsFormParser():
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
 
         if type == 'dw_idnr':
-            unique_id_type = self.validate_unique_id_type(field)
-            question.update({'uniqueIdType': unique_id_type, "is_entity_question": True})
+            question.update({'uniqueIdType': self._get_unique_id_type(field), "is_entity_question": True})
 
         if type == CALCULATE:
             question.update({"is_calculated": True})
@@ -682,14 +686,14 @@ class XlsProjectParser(XlsParser):
 
 
 class XlsParserResponse():
-    def __init__(self, errors=None, xform_as_string=None, json_xform_data=None, unique_id_errors=None):
+    def __init__(self, errors=None, xform_as_string=None, json_xform_data=None, info=None):
         self.xform_as_string = xform_as_string
         self.json_xform_data = json_xform_data
-        if not unique_id_errors:
-            unique_id_errors = []
+        if not info:
+            info = []
         if not errors:
             errors = []
-        self.unique_id_errors = unique_id_errors
+        self.info = info
         self.errors = errors
 
     @property
@@ -701,5 +705,5 @@ class XlsParserResponse():
         return self.json_xform_data
 
     @property
-    def unique_id_errors(self):
-        return self.unique_id_errors
+    def info(self):
+        return self.info
