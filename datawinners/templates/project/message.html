@@ -10,7 +10,7 @@
     <div class="warning-message-box">
         <p> {% trans "You have used up your 10 Web submissions for the trial account. Sign up for a monthly subscription to continue sending in data to your questionnaires." %} </p>
         <a href="https://www.datawinners.com/{{ active_language }}/pricing/" class="trial_web_learn_more" target="blank">{% trans "Learn More" %}</a><a
-            href="/{{ active_language }}/upgrade" target="blank"
+            href="{% url default_upgrade %}" target="blank"
             class="trial_web_limit_button">{% trans "Subscribe Now" %}</a>
     </div>
 {% endif %}

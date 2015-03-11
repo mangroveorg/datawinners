@@ -2701,7 +2701,7 @@ msgid "Account Activation"
 msgstr "Activation de compte"
 
 msgid "You have already activated your account. Please sign in"
-msgstr "Vous avez déjà activé votre compte. S'il vous plaît, <a href=\"/fr/login\">identifiez-vous</a>"
+msgstr "Vous avez déjà activé votre compte. S'il vous plaît, <a href=\"/login\">identifiez-vous</a>"
 
 msgid "My Subjects"
 msgstr "Mes sujets"

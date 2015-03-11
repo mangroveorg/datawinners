@@ -19,11 +19,11 @@ class TestAccountManagement(TestCase):
         self.assertEqual('registration/password_reset_email_fr.html', template_name)
 
     def test_should_render_register_view(self):
-        response = self.client.post('/en/register/')
+        response = self.client.post('/register/')
         self.assertEquals(response.status_code, 200)
 
     def test_should_render_login_view(self):
-        response = self.client.post('/en/login/')
+        response = self.client.post('/login/')
         self.assertEquals(response.status_code,200)
 
     def test_should_render_password_reset_view(self):

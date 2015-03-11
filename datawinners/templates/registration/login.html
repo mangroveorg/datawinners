@@ -51,7 +51,7 @@
                         </li>
                         <li class="login_button">
                             <div class="login_button_div"><input type="submit"  id="id_login" value="{% trans 'Sign in' %}" class="button"/></div>
-                            <div class='login_links_div'><span>{% trans "Not registered?" %} <a href="/{% trans 'en' %}/register">{% trans "Create an account" %}</a> <br> <a href="{% url django.contrib.auth.views.password_reset %}">{% trans "Reset Password" %}</a></span></div>
+                            <div class='login_links_div'><span>{% trans "Not registered?" %} <a href="/register">{% trans "Create an account" %}</a> <br> <a href="{% url django.contrib.auth.views.password_reset %}">{% trans "Reset Password" %}</a></span></div>
                         </li>
                     </ul>
             </form>

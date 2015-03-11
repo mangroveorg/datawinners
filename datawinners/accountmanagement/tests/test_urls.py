@@ -8,10 +8,10 @@ class TestUrls(unittest.TestCase):
         self.client_stub = Client()
 
     def test_should_render_register_for_subscription_form(self):
-        response = self.client_stub.get("/en/register/", follow = True)
+        response = self.client_stub.get("/register/", follow = True)
         self.assertEquals(response.status_code, 200)
 
     def test_should_render_register_for_trial_form(self):
-        response = self.client_stub.get("/en/register/trial", follow = True)
+        response = self.client_stub.get("/register/trial", follow = True)
         self.assertEquals(response.status_code, 200)
 
