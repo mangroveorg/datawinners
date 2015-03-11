@@ -18,7 +18,7 @@ from tests.endtoendtest.trial_end_to_end_data import REGISTRATION_DATA_FOR_SUCCE
 
 class TestTrialApplicationEndToEnd(HeadlessRunnerTest):
     def register_trial_account(self):
-        self.driver.go_to(url("register/trial"))
+        self.driver.go_to(url("/register/trial"))
         registration_page = RegistrationPage(self.driver)
         registration_confirmation_page, email = registration_page.successful_registration_with(
             REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION)
