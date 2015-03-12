@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.project.models import count_projects
 from mangrove.errors.MangroveException import DataObjectNotFound
 
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
@@ -127,7 +128,7 @@ def is_trial(f):
 def is_new_user(f):
     def wrapper(*args, **kw):
         user = args[0].user
-        if not len(get_all_projects(get_database_manager(args[0].user))) and not user.groups.filter(
+        if not count_projects(get_database_manager(args[0].user), False) and not user.groups.filter(
                 name="Data Senders").count() > 0:
             return HttpResponseRedirect("/start?page=" + args[0].path)
 
