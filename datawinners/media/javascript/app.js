@@ -11624,7 +11624,7 @@ define( 'enketo-js/plugins',[ 'jquery' ], function( $ ) {
             //remove media previews
             $( this ).find( '.file-preview' ).remove();
             $( this ).find( '.remove-file' ).remove();
-            $( this ).find( '.get-image-link' ).remove();
+            $( this ).find( '.get_image_link' ).remove();
             //remove input values
             $( this ).find( 'input, select, textarea' ).each( function() {
                 var type = $( this ).attr( 'type' );
