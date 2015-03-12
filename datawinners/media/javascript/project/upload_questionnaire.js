@@ -33,7 +33,7 @@ DW.showInfo = function(infos){
        info_messages += "<li>" + info + "</li>";
     });
     info_messages += "</ul>";
-    var flash_message = $("#xlx-message");
+    var flash_message = $("#xlx-info");
     flash_message.removeClass("none").removeClass("success-message-box").addClass("information_box").
         html(info_messages).show();
 };
@@ -83,12 +83,12 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             if (!responseJSON['success']) {
                 options.postErrorHandler(responseJSON);
             }
-            else if (responseJSON['information']) {
-                options.postInfoHandler(responseJSON)
-            }
             else {
                 (options.onSuccess && options.onSuccess());
                 options.postSuccessSave && options.postSuccessSave(responseJSON);
+                if (responseJSON['information']) {
+                    options.postInfoHandler(responseJSON)
+                }
             }
         }
     });
