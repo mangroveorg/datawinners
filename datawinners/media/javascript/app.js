@@ -11623,6 +11623,8 @@ define( 'enketo-js/plugins',[ 'jquery' ], function( $ ) {
         return this.each( function() {
             //remove media previews
             $( this ).find( '.file-preview' ).remove();
+            $( this ).find( '.remove-file' ).remove();
+            $( this ).find( '.get-image-link' ).remove();
             //remove input values
             $( this ).find( 'input, select, textarea' ).each( function() {
                 var type = $( this ).attr( 'type' );
@@ -11649,9 +11651,7 @@ define( 'enketo-js/plugins',[ 'jquery' ], function( $ ) {
                         /* falls through */
                     case 'hidden':
                     case 'textarea':
-                        if ( $( this ).val() !== '' ) {
                             $( this ).val( '' ).trigger( ev );
-                        }
                         break;
                     case 'radio':
                     case 'checkbox':
@@ -34750,6 +34750,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
                 if ($input.val()==''){
                     that.$preview.empty();
                     that.$deleteButton.remove();
+                    that.$downloadLink.remove();
                     $(this).removeAttr( 'data-loaded-file-name' );
                     that._showFileName( null );
                     $input.trigger( 'change.file' );
