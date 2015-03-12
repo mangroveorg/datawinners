@@ -208,7 +208,7 @@ class XlsFormParser():
             default_values_set = set(default_values_list)
             if not default_values_set.issubset(name_set):
                 errors.append(_(
-                    "Entered default value is not defined in the choices list. Update your XLSForm and upload again."))
+                    "Entered default value is not defined in the choices list."))
 
     def _validate_choice_names(self, fields):
         errors = []

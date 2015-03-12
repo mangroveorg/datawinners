@@ -170,7 +170,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors, {
-                'Entered default value is not defined in the choices list. Update your XLSForm and upload again.'})
+                'Entered default value is not defined in the choices list.'})
 
 
     def test_should_not_populate_error_when_default_choice_for_multi_select_is_present_in_choice_list(self):
