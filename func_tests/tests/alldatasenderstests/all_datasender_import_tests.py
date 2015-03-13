@@ -59,7 +59,6 @@ class TestAllDataSendersImport(HeadlessRunnerTest):
         file_path = os.path.join(DIR, file_name)
 
         ds_email1, ds_location1, ds_name1, ds_number1, gps_coordinates1 = self._edit_datasender_import_excel(file_path, 1)
-        ds_email2, ds_location2, ds_name2, ds_number2, gps_coordinates2 = self._edit_datasender_import_excel(file_path, 2)
 
         self._upload_imported_datasender(file_name, file_path)
 
@@ -70,7 +69,11 @@ class TestAllDataSendersImport(HeadlessRunnerTest):
         self.assertEqual(ds_number1, all_datasender_page.get_cell_value(1, 6))
         self.assertEqual(ds_email1, all_datasender_page.get_cell_value(1, 7))
 
+        ds_email2, ds_location2, ds_name2, ds_number2, gps_coordinates2 = self._edit_datasender_import_excel(file_path, 2)
+        self._upload_imported_datasender(file_name, file_path)
+
         all_datasender_page.search_with(ds_name2)
+
         self.assertEqual(ds_name2, all_datasender_page.get_cell_value(1, 2))
         self.assertIn(ds_location2, all_datasender_page.get_cell_value(1, 4))
         self.assertEqual(gps_coordinates2, all_datasender_page.get_cell_value(1, 5))
