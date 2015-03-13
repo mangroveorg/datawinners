@@ -50,33 +50,9 @@ class TestAllDataSendersImport(HeadlessRunnerTest):
         self.assertEquals(response.status_code, 200)
 
     @attr('functional_test')
-    def test_should_import_datasenders(self):
-        global_navigation = GlobalNavigationPage(self.driver)
-        all_datasender_page = global_navigation.navigate_to_all_data_sender_page()
-        all_datasender_page.click_on_import_data_senders()
-
-        file_name = 'DataWinners_ImportDataSenders.xls'
-        DIR = os.path.dirname(__file__) + '/'
-        file_path = os.path.join(DIR, file_name)
-
-        ds_email, ds_location, ds_name, ds_number, gps_coordinates = self._edit_datasender_import_excel(file_path, 1)
-
-        self._upload_imported_datasender(file_name, file_path)
-        all_datasender_page.close_import_dialog()
-
-        all_datasender_page.search_with(ds_name)
-
-        self.assertEqual(ds_name, all_datasender_page.get_cell_value(1, 2))
-        self.assertIn(ds_location, all_datasender_page.get_cell_value(1, 4))
-        self.assertEqual(gps_coordinates, all_datasender_page.get_cell_value(1, 5))
-        self.assertEqual(ds_number, all_datasender_page.get_cell_value(1, 6))
-        self.assertEqual(ds_email, all_datasender_page.get_cell_value(1, 7))
-
-    @attr('functional_test')
     def test_should_import_more_than_one_datasender(self):
         global_navigation = GlobalNavigationPage(self.driver)
         all_datasender_page = global_navigation.navigate_to_all_data_sender_page()
-        all_datasender_page.click_on_import_data_senders()
 
         file_name = 'DataWinners_ImportDataSenders.xls'
         DIR = os.path.dirname(__file__) + '/'
@@ -86,7 +62,6 @@ class TestAllDataSendersImport(HeadlessRunnerTest):
         ds_email2, ds_location2, ds_name2, ds_number2, gps_coordinates2 = self._edit_datasender_import_excel(file_path, 2)
 
         self._upload_imported_datasender(file_name, file_path)
-        all_datasender_page.close_import_dialog()
 
         all_datasender_page.search_with(ds_name1)
         self.assertEqual(ds_name1, all_datasender_page.get_cell_value(1, 2))
