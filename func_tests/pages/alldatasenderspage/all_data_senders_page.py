@@ -247,3 +247,9 @@ class AllDataSendersPage(Page):
     def get_cell_value(self, row, column):
         # first row is used to show all rows select message
         return self.driver.find(by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % ((row + 1), column))).text
+
+    def click_on_import_data_senders(self):
+        return self.driver.find(by_css("#import-datasenders")).click()
+
+    def close_import_dialog(self):
+        return self.driver.find(by_css(".close_import_dialog")).click()

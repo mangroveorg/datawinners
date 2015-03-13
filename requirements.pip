@@ -17,6 +17,7 @@ BeautifulSoup
 networkx
 xlwt==0.7.5
 xlrd
+xlutils
 psycopg2==2.4.1
 django-extensions==1.2.2
 apscheduler==2.1.1
