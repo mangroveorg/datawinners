@@ -45,6 +45,7 @@
     <script type="text/javascript" src="/media/javascript/datasender_modified_warning.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send-sms.js"></script>
 
 
 
@@ -62,12 +63,12 @@
                 {% trans "Add a Contact" %}
             </a> <span class="padding_left_right_10"> | </span>
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import Contacts" %}</a>
+            </a> <span class="padding_left_right_10"> | </span>
+            <a id="send_sms">{% trans "Send an SMS" %}</a>
         </div>
         <div style="display: none;">
             <div id="popup-import" class="popup-import">
-{#                {% with project=None %}#}
-                    {% include "import-datasenders.html" %}
-{#                {% endwith %}#}
+                {% include "import-datasenders.html" %}
             </div>
         </div>
 
@@ -80,5 +81,6 @@
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     {% include 'entity/all_data_senders/all_project_blocks.html' %}
      <div id="datasender-popup" style="display:none;"></div>
+    {% include "send-sms.html" %}
 
 {% endblock %}

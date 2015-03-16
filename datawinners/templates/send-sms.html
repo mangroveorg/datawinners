@@ -1,0 +1,19 @@
+{% load i18n %}
+<div id="send-sms-section">
+    <div>{% trans "Instruction about sending a messages." %}</div>
+    <span>{% trans "Text:" %}</span>
+    <textarea maxlength="160" data-bind="value: smsText, valueUpdate: 'keypress'"></textarea>
+    <div data-bind="text: smsCharacterCount" ></div>
+    <span>{% trans "To:" %}</span>
+    <select data-bind="options: smsOptionList, optionsCaption: gettext('Select Recipients'), value: selectedSmsOption"></select>
+    <br/>
+
+    <div data-bind="visible: showOtherContacts">
+        <textarea maxlength="160"></textarea>
+        <div>{% trans "Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers." %}</div>
+    </div>
+
+    <a id="cancel-sms" data-bind="click: closeSmsDialog">{% trans "Cancel" %}</a>
+    <button data-bind="click: sendSms">{% trans "Send" %}</button>
+
+</div>
