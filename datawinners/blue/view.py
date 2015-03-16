@@ -5,6 +5,7 @@ import os
 import re
 from tempfile import NamedTemporaryFile
 import traceback
+from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -59,6 +60,7 @@ class ProjectUpload(View):
 
     def post(self, request):
         file_content = None
+        tmp_file = None
         try:
             file_content = request.raw_post_data
             file_errors, file_extension = _perform_file_validations(request)
@@ -78,9 +80,9 @@ class ProjectUpload(View):
             manager = get_database_manager(request.user)
             questionnaire_code = generate_questionnaire_code(manager)
 
-            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, project_name, manager).parse()
-            if errors:
-                error_list = list(errors)
+            xls_parser_response = XlsFormParser(tmp_file, project_name, manager).parse()
+            if xls_parser_response.errors:
+                error_list = list(xls_parser_response.errors)
                 logger.info("User: %s. Upload Errors: %s", request.user.username, json.dumps(error_list))
 
                 return HttpResponse(content_type='application/json', content=json.dumps({
@@ -89,10 +91,13 @@ class ProjectUpload(View):
                     'message_prefix': _("Sorry! Current version of DataWinners does not support"),
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
+            if xls_parser_response.info:
+                for message in xls_parser_response.info:
+                    messages.warning(request, ugettext(message), extra_tags='warning')
             tmp_file.seek(0)
-            mangrove_service = MangroveService(request, xform_as_string, json_xform_data,
-                                               questionnaire_code=questionnaire_code, project_name=project_name,
-                                               xls_form=tmp_file)
+            mangrove_service = MangroveService(request, questionnaire_code=questionnaire_code,
+                                               project_name=project_name, xls_form=tmp_file,
+                                               xls_parser_response=xls_parser_response)
             questionnaire_id, form_code = mangrove_service.create_project()
 
         except PyXFormError as e:
@@ -160,7 +165,9 @@ class ProjectUpload(View):
             }))
 
         finally:
-            tmp_file.close()
+
+            if tmp_file:
+                tmp_file.close()
 
         if not questionnaire_id:
             return HttpResponse(json.dumps(
@@ -214,12 +221,13 @@ class ProjectUpdate(View):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         file_content = None
+        tmp_file = None
         try:
             file_content = request.raw_post_data
 
             file_errors, file_extension = _perform_file_validations(request)
             tmp_file = NamedTemporaryFile(delete=True, suffix=file_extension)
-            
+
             if file_errors:
                 logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
                             request.user.username,
@@ -233,25 +241,25 @@ class ProjectUpdate(View):
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
-            errors, xform_as_string, json_xform_data = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
+            xls_parser_response = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
 
-            if errors:
-                error_list = list(errors)
-                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(error_list))
+            if xls_parser_response.errors:
+                info_list = list(xls_parser_response.errors)
+                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
 
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
-                    'error_msg': error_list,
+                    'error_msg': info_list,
                     'message_prefix': _("Sorry! Current version of DataWinners does not support"),
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
 
-            mangrove_service = MangroveService(request, xform_as_string, json_xform_data,
-                                               questionnaire_code=questionnaire.form_code,
-                                               project_name=questionnaire.name)
+            mangrove_service = MangroveService(request, questionnaire_code=questionnaire.form_code,
+                                               project_name=questionnaire.name, xls_parser_response=xls_parser_response)
 
             questionnaire.xform = mangrove_service.xform_with_form_code
-            QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(json_xform_data)
+            QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(
+                xls_parser_response.json_xform_data)
 
             tmp_file.seek(0)
             questionnaire.update_media_field_flag()
@@ -263,7 +271,13 @@ class ProjectUpdate(View):
             self._purge_feed_documents(questionnaire, request)
             self._purge_media_details_documents(manager, questionnaire)
             self.recreate_submissions_mapping(manager, questionnaire)
-
+            if xls_parser_response.info:
+                info_list = list(xls_parser_response.info)
+                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': True,
+                    'information': info_list,
+                }))
         except PyXFormError as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
 
@@ -305,8 +319,9 @@ class ProjectUpdate(View):
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [
-            _(
-                "Check your columns for errors.<br>There are missing symbols (like $ for relevant or calculate) or incorrect characters<br>") + _("Update your XLSForm and upload again.")],
+                    _(
+                        "Check your columns for errors.<br>There are missing symbols (like $ for relevant or calculate) or incorrect characters<br>") + _(
+                        "Update your XLSForm and upload again.")],
             }))
 
         except Exception as e:
@@ -326,7 +341,8 @@ class ProjectUpdate(View):
             }))
 
         finally:
-            tmp_file.close()
+            if tmp_file:
+                tmp_file.close()
 
         return HttpResponse(
             json.dumps(
@@ -387,7 +403,8 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                                         is_update=is_update)
         if self.questionnaire.xform:
             form_context.update(
-                {'xform_xml': re.sub(r"\n", " ", XFormTransformer(self.questionnaire.xform_with_unique_ids_substituted()).transform())})
+                {'xform_xml': re.sub(r"\n", " ", XFormTransformer(
+                    self.questionnaire.xform_with_unique_ids_substituted()).transform())})
             form_context.update({'is_advance_questionnaire': True})
             form_context.update({'submission_create_url': reverse('new_web_submission')})
         form_context.update({'is_quota_reached': is_quota_reached(self.request)})
@@ -413,8 +430,9 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
 
         if self.questionnaire.xform:
             form_context.update({'survey_response_id': survey_response_id})
-            #xform_transformer = XFormTransformer(self.questionnaire.xform)
-            form_context.update({'xform_xml': re.sub(r"\n", " ", XFormTransformer(self.questionnaire.xform_with_unique_ids_substituted()).transform())})
+            # xform_transformer = XFormTransformer(self.questionnaire.xform)
+            form_context.update({'xform_xml': re.sub(r"\n", " ", XFormTransformer(
+                self.questionnaire.xform_with_unique_ids_substituted()).transform())})
             form_context.update(
                 {'edit_model_str': self._model_str_of(survey_response_id,
                                                       get_generated_xform_id_name(self.questionnaire.xform))})
@@ -546,6 +564,9 @@ def send_email_on_exception(user, error_type, stack_trace, additional_details=No
     email.send()
 
 
+EXCEL_UPLOAD_FILE_SIZE = 10485760  # 10MB
+
+
 def _perform_file_validations(request):
     errors = []
     file_extension = ".xls"
@@ -553,9 +574,8 @@ def _perform_file_validations(request):
         file_extension = os.path.splitext(request.GET["qqfile"])[1]
         if file_extension not in [".xls", ".xlsx"]:
             errors.append(_("Please upload an excel file"))
-            return errors
+            return errors, file_extension
 
-    EXCEL_UPLOAD_FILE_SIZE = 10485760  # 10MB
     if request.META.get('CONTENT_LENGTH') and int(request.META.get('CONTENT_LENGTH')) > EXCEL_UPLOAD_FILE_SIZE:
         errors.append(_("larger files than 10MB."))
     return errors, file_extension

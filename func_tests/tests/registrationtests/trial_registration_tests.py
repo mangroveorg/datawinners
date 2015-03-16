@@ -24,13 +24,6 @@ class TestTrialRegistrationPage(HeadlessRunnerTest):
         self.assertEqual(registration_confirmation_page.registration_success_message(), REGISTRATION_SUCCESS_MESSAGE)
 
     @attr('functional_test')
-    def test_trial_link_from_homepage(self):
-        self.driver.go_to(DATA_WINNER_HOMEPAGE)
-        self.driver.find(by_css("a.intro_try_button")).click()
-        self.driver.wait_for_page_with_title(10, "Register")
-        self.assertEqual(self.driver.current_url, DATA_WINNER_REGISTER_TRIAL_PAGE)
-
-    @attr('functional_test')
     def test_register_organization_sector_have_the_right_select_options(self):
         self.driver.go_to(DATA_WINNER_REGISTER_TRIAL_PAGE)
         sectors_drop_down = self.driver.find_drop_down(ORGANIZATION_SECTOR_DROP_DOWN_LIST)

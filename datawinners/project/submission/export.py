@@ -1,8 +1,6 @@
-from tempfile import NamedTemporaryFile
 import tempfile
-import zipfile
 import math
-import io
+
 import xlsxwriter
 
 from django.core.servers.basehttp import FileWrapper
@@ -105,12 +103,7 @@ def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes
         add_sheet_with_data(raw_data, headers, workbook, formatter)
     if hide_codes_sheet:
         worksheets = workbook.worksheets()
-        codes_sheet = worksheets[headers.keys().index("codes")]
-        for worksheet in worksheets:
-            if worksheet != codes_sheet:
-                main_sheet = worksheet
-                break
-        main_sheet.activate()
+        codes_sheet = worksheets[workbook._get_sheet_index('codes')]
         codes_sheet.hide()
     workbook.close()
     output.seek(0)

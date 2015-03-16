@@ -7,6 +7,7 @@ from xml.etree import ElementTree as ET
 from lxml import etree
 import unicodedata
 from mangrove.datastore.entity_type import entity_type_already_defined
+from mangrove.datastore.queries import get_non_voided_entity_count_for_type
 from pyxform.xls2json import parse_file_to_json
 import xlrd
 import xmldict
@@ -73,28 +74,30 @@ class XlsFormParser():
         return None
 
     def _create_question(self, field, parent_field_code=None):
+        unique_id_errors = []
         question = None
         errors = []
         field_type = field['type'].lower()
         if field_type in self.type_dict['group']:
-            question, errors = self._group(field, parent_field_code)
+            question, errors, unique_id_errors = self._group(field, parent_field_code)
         elif field_type in self.type_dict['field']:
             question = self._field(field, parent_field_code)
         elif field_type in self.type_dict['select']:
             question = self._select(field, parent_field_code)
         elif field_type in self.type_dict['media']:
             question = self._media(field, parent_field_code)
-        return question, errors
+        return question, errors, unique_id_errors
 
     def _create_questions(self, fields, parent_field_code=None):
         questions = []
         errors = []
+        info = []
         for field in fields:
             if field.get('control', None) and field['control'].get('bodyless', False):  # ignore calculate type
                 continue
             if field['type'].lower() in self.supported_types:
                 try:
-                    question, field_errors = self._create_question(field, parent_field_code)
+                    question, field_errors, field_info = self._create_question(field, parent_field_code)
 
                     if not field_errors and question:
                         questions.append(question)
@@ -102,18 +105,27 @@ class XlsFormParser():
                         if question['type'] in ['select', 'select1'] and question['has_other']:
                             other_field = {u'type': u'text', u'name': question['code'] + "_other",
                                            u'label': question['title'] + "_other"}
-                            other_question, other_field_errors = self._create_question(other_field, parent_field_code)
+                            other_question, other_field_errors, x = self._create_question(other_field,
+                                                                                          parent_field_code)
                             questions.append(other_question)
+
+                        if question['type'] == 'unique_id':
+                            self.validate_unique_id_type(field)
 
                     else:
                         errors.extend(field_errors)
+                    info.extend(field_info)
                 except LabelForChoiceNotPresentException as e:
                     errors.append(e.message)
                 except UniqueIdNotFoundException as e:
                     errors.append(e.message)
+                except UniqueIdNotMentionedException as e:
+                    errors.append(e.message)
+                except UniqueIdNumbersNotFoundException as e:
+                    info.append(e.message)
                 except LabelForFieldNotPresentException as e:
                     errors.append(e.message)
-        return questions, set(errors)
+        return questions, set(errors), set(info)
 
     def _validate_group(self, errors, field):
         if field['type'] == 'repeat':
@@ -189,6 +201,15 @@ class XlsFormParser():
                     errors.append(_("attaching media to choice fields not supported %s") % _(media_type))
         return errors
 
+    def _validate_default_value(self, errors, field, name_set):
+        default_value = field.get('default')
+        if default_value:
+            default_values_list = default_value.split(' ')
+            default_values_set = set(default_values_list)
+            if not default_values_set.issubset(name_set):
+                errors.append(_(
+                    "Entered default value is not defined in the choices list."))
+
     def _validate_choice_names(self, fields):
         errors = []
         for field in fields:
@@ -197,7 +218,9 @@ class XlsFormParser():
             choices = field.get('choices')
             if choices:
                 name_list = [choice['name'].lower() for choice in choices]
-                name_list_without_duplicates = list(set(name_list))
+                name_set = set(name_list)
+                name_list_without_duplicates = list(name_set)
+                self._validate_default_value(errors, field, name_set)
                 if len(name_list) != len(name_list_without_duplicates):
                     errors.append(_("duplicate names within one list (choices sheet)"))
                 if filter(lambda name: " " in unicode(name), name_list):
@@ -213,25 +236,27 @@ class XlsFormParser():
         [errors.add(choice_error) for choice_error in choice_errors if choice_error]
         choice_name_errors = self._validate_choice_names(fields)
         errors = errors.union(set(choice_name_errors))
-        questions, question_errors = self._create_questions(fields)
+        questions, question_errors, info = self._create_questions(fields)
         if question_errors:
             errors = errors.union(question_errors)
         if not errors and not questions:
             errors.add("Uploaded file is empty!")
         if errors:
-            return errors, None, None
+            return XlsParserResponse(errors)
         _map_unique_id_question_to_select_one(self.xform_dict)
         survey = create_survey_element_from_dict(self.xform_dict)
         xform = survey.to_xml()
         # encoding is added to support ie8
         xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
-        return [], updated_xform, questions
+        return XlsParserResponse([], updated_xform, questions, info)
 
 
     def update_xform_with_questionnaire_name(self, xform):
         # Escape <, > and & and convert accented characters to equivalent non-accented characters
-        return re.sub(r"<h:title>\w+</h:", "<h:title>%s</h:" % unicodedata.normalize('NFD', escape(unicode(self.questionnaire_name))).encode('ascii', 'ignore'), xform)
+        return re.sub(r"<h:title>\w+</h:",
+                      "<h:title>%s</h:" % unicodedata.normalize('NFD', escape(unicode(self.questionnaire_name))).encode(
+                          'ascii', 'ignore'), xform)
 
     def _get_label(self, field):
 
@@ -260,7 +285,7 @@ class XlsFormParser():
             fieldset_type = 'group'
 
         name = field['name']
-        questions, errors = self._create_questions(field['children'], field['name'])
+        questions, errors, unique_id_errors = self._create_questions(field['children'], field['name'])
         question = {
             'title': group_label,
             'type': 'field_set',
@@ -272,7 +297,7 @@ class XlsFormParser():
             "fieldset_type": fieldset_type,
             "fields": questions
         }
-        return question, errors
+        return question, errors, unique_id_errors
 
     def _get_date_format(self, field):
 
@@ -287,9 +312,24 @@ class XlsFormParser():
                 return 'yyyy'
         return 'dd.mm.yyyy'
 
+    def _get_unique_id_type(self, field):
+        try:
+            return field['bind']['constraint']
+        except KeyError:
+            raise UniqueIdNotMentionedException(field.get('name', ''))
+
+    def validate_unique_id_type(self, field):
+        unique_id_type = self._get_unique_id_type(field)
+        if not entity_type_already_defined(self.dbm, [unique_id_type]):
+            raise UniqueIdNotFoundException(unique_id_type)
+        if not get_non_voided_entity_count_for_type(self.dbm, unique_id_type.lower()):
+            raise UniqueIdNumbersNotFoundException(unique_id_type)
+
     def _field(self, field, parent_field_code=None):
-        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text', 'dw_idnr': 'unique_id'}
-        help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field', 'dw_idnr':'Identification Number'}
+        xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text',
+                              'dw_idnr': 'unique_id'}
+        help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field',
+                     'dw_idnr': 'Identification Number'}
         name = self._get_label(field)
         code = field['name']
         type = field['type'].lower()
@@ -304,13 +344,7 @@ class XlsFormParser():
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
 
         if type == 'dw_idnr':
-            try:
-                unique_id_type = field['bind']['constraint']
-                if not entity_type_already_defined(self.dbm, [unique_id_type]):
-                    raise UniqueIdNotFoundException(field['name'])
-                question.update({'uniqueIdType': unique_id_type, "is_entity_question": True})
-            except KeyError:
-                raise UniqueIdNotFoundException(field['name'])
+            question.update({'uniqueIdType': self._get_unique_id_type(field), "is_entity_question": True})
 
         if type == CALCULATE:
             question.update({"is_calculated": True})
@@ -392,15 +426,14 @@ def _map_unique_id_question_to_select_one(xform_dict):
     for field in xform_dict['children']:
         if field['type'] == "dw_idnr":
             field['type'] = u'select one'
-            field[u'choices'] = [{u'name': field['name'], u'label':u'placeholder'}]
+            field[u'choices'] = [{u'name': field['name'], u'label': u'placeholder'}]
             del field['bind']['constraint']
         elif field['type'] in ['group', 'repeat']:
             _map_unique_id_question_to_select_one(field)
 
 
 class MangroveService():
-    def __init__(self, request, xform_as_string, json_xform_data, questionnaire_code=None, project_name=None,
-                 xls_form=None):
+    def __init__(self, request, questionnaire_code=None, project_name=None, xls_form=None, xls_parser_response=None):
         self.request = request
         self.user = request.user
         user_profile = NGOUserProfile.objects.get(user=self.user)
@@ -411,9 +444,9 @@ class MangroveService():
             self.manager)
         self.name = 'Xlsform-Project-' + self.questionnaire_code if not project_name else project_name
         self.language = 'en'
-        self.xform = xform_as_string
-        self.xform_with_form_code = self.add_form_code(xform_as_string, self.questionnaire_code)
-        self.json_xform_data = json_xform_data
+        self.xform = xls_parser_response.xform_as_string
+        self.xform_with_form_code = self.add_form_code(self.questionnaire_code)
+        self.json_xform_data = xls_parser_response.json_xform_data
         self.xls_form = xls_form
 
     def _add_model_sub_element(self, root, name, value):
@@ -431,9 +464,9 @@ class MangroveService():
         e.text = value
         return e
 
-    def add_form_code(self, xform, form_code):
+    def add_form_code(self, form_code):
         ET.register_namespace('', 'http://www.w3.org/2002/xforms')
-        root = ET.fromstring(xform.encode('utf-8'))
+        root = ET.fromstring(self.xform.encode('utf-8'))
         self._add_model_sub_element(root, 'form_code', form_code)
         return '<?xml version="1.0"?>%s' % ET.tostring(root)
 
@@ -484,35 +517,42 @@ class XFormSubmissionProcessor():
             return {field.code: '-'.join(value.split('.')[::-1])}
         elif type(field) is GeoCodeField:
             return {field.code: value.replace(',', ' ')}
+        elif isinstance(field, DateTimeField):
+            return {field.code: self._format_date_time(value)}
         else:
             return {field.code: value}
 
-    def get_model_edit_str(self, form_model_fields, submission_values, project_name, form_code):
-        # todo instead of using form_model fields, use xform to find the fields
-        d, s = {'form_code': form_code}, {}
-        for f in form_model_fields:
-            answer = submission_values.get(f.code, '')
-            if isinstance(f, DateTimeField):
-                value = datetime.strptime(answer, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
-                d.update(self.get_dict(f, value))
-            elif isinstance(f, SelectField) and f.has_other and isinstance(answer, list) and answer[0] == 'other':
-                if f.is_single_select:
-                    d.update({f.code + "_other": answer[1]})
-                    d.update({f.code: answer[0]})
+    def _format_field_answers_for(self, fields, submission_values):
+        answer_dict = {}
+        for field in fields:
+            answer = submission_values.get(field.code, '')
+            if isinstance(field, SelectField) and field.has_other and isinstance(answer, list) and answer[0] == 'other':
+                if field.is_single_select:
+                    answer_dict.update({field.code + "_other": answer[1]})
+                    answer_dict.update({field.code: answer[0]})
                 else:
                     other_selection = []
                     choice_selections = ['other']
                     for item in answer[1].split(' '):
-                        if _is_choice_item_in_choice_list(item, f.options):
+                        if _is_choice_item_in_choice_list(item, field.options):
                             choice_selections.append(item)
                         else:
                             other_selection.append(item)
-                    d.update({f.code + "_other": ' '.join(other_selection)})
-                    d.update({f.code: ' '.join(choice_selections)})
+                    answer_dict.update({field.code + "_other": ' '.join(other_selection)})
+                    answer_dict.update({field.code: ' '.join(choice_selections)})
             else:
-                d.update(self.get_dict(f, answer))
-        s.update({project_name: d})
-        return xmldict.dict_to_xml(s)
+                answer_dict.update(self.get_dict(field, answer))
+        return answer_dict
+
+    def get_model_edit_str(self, form_model_fields, submission_values, project_name, form_code):
+        # todo instead of using form_model fields, use xform to find the fields
+        answer_dict, edit_model_dict = {'form_code': form_code}, {}
+        answer_dict.update(self._format_field_answers_for(form_model_fields, submission_values))
+        edit_model_dict.update({project_name: answer_dict})
+        return xmldict.dict_to_xml(edit_model_dict)
+
+    def _format_date_time(self, value):
+        return datetime.strptime(value, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
 
 
 class XFormImageProcessor():
@@ -611,9 +651,30 @@ class LabelForFieldNotPresentException(Exception):
     def __str__(self):
         return self.message
 
+
 class UniqueIdNotFoundException(Exception):
+    def __init__(self, unique_id_type):
+        unique_id_type = unique_id_type.title()
+        self.message = _("The Identification Number %s is not yet added. Please add it <a href='/entity/subjects' "
+                         "target='_blank'>here</a> and upload the XLSForm again.") % unique_id_type
+
+
+class UniqueIdNotMentionedException(Exception):
     def __init__(self, field_name):
-        self.message = _("Valid UniqueId type not found in constraint column for field with name [%s]") % field_name
+        self.message = _("The Identification Number Type (dw_idnr) is missing in the Constraints column. "
+                         "Please add the Identification Number Type and upload again. "
+                         "<a target='_blank'>Learn More</a> about how to manage Identification Numbers with XLSForms. ")
+
+    def __str__(self):
+        return self.message
+
+
+class UniqueIdNumbersNotFoundException(Exception):
+    def __init__(self, unique_id_type):
+        unique_id_type = unique_id_type.title()
+        self.message = _(
+            "You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>") % (
+                           unique_id_type, unique_id_type.lower(), unique_id_type)
 
     def __str__(self):
         return self.message
@@ -632,3 +693,27 @@ class XlsProjectParser(XlsParser):
                 parsedData.append(row)
             xls_dict[worksheet.name] = parsedData
         return xls_dict
+
+
+class XlsParserResponse():
+    def __init__(self, errors=None, xform_as_string=None, json_xform_data=None, info=None):
+        self.xform_as_string = xform_as_string
+        self.json_xform_data = json_xform_data
+        if not info:
+            info = []
+        if not errors:
+            errors = []
+        self.info = info
+        self.errors = errors
+
+    @property
+    def xform_as_string(self):
+        return self.xform_as_string if self.xform_as_string else ''
+
+    @property
+    def json_xform_data(self):
+        return self.json_xform_data
+
+    @property
+    def info(self):
+        return self.info

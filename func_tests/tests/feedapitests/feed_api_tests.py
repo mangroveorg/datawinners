@@ -79,9 +79,9 @@ class TestFeeds(HeadlessRunnerTest):
     def _get_encoded_date(self, add_time_delta=False):
         date = datetime.utcnow()
         if add_time_delta:
-            date = date + timedelta(seconds=1)
+            date = date + timedelta(seconds=3)
         else:
-            date = date + timedelta(seconds=-1)
+            date = date + timedelta(seconds=-3)
         date = urllib2.quote(date.strftime(DATE_FORMAT).encode("utf-8"))
         return date
 

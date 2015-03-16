@@ -55,8 +55,10 @@ def registration_activation_complete(request):
     return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
 
 
-def custom_login(request, template_name, authentication_form):
-    get_previous_page_language(request)
+def custom_login(request, template_name, authentication_form, language=None):
+    if language:
+        request.session['django_language'] = language
+        activate(language)
     if request.user.is_authenticated():
         return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
     else:
@@ -223,12 +225,15 @@ def edit_user(request):
 
 
 def trial_expired(request):
-    return render_to_response("registration/trial_account_expired_message.html")
+    return render_to_response("registration/trial_account_expired_message.html", context_instance=RequestContext(request))
 
 
 @is_admin
 @is_trial
-def upgrade(request, token=None, account_type=None):
+def upgrade(request, token=None, account_type=None, language=None):
+    if language:
+        request.session['django_language'] = language
+        activate(language)
     profile = request.user.get_profile()
     organization = get_organization(request)
     if request.method == 'GET':

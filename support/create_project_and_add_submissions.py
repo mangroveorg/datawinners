@@ -27,8 +27,9 @@ target_qnaire_vs_questions = [(50, 10000), (50, 25000), (50, 50000), (50, 100000
                               (450, 10000), (450, 15000),
                               (500, 10000)]
 
-qnaire_vs_questions = [(100, 10000), (150, 10000), (200, 10000), (250, 10000), (300, 10000), (350, 10000), (400, 10000),
-                       (450, 10000), (500, 10000)]
+# qnaire_vs_questions = [(100, 10000), (150, 10000), (200, 10000), (250, 10000), (300, 10000), (350, 10000), (400, 10000),
+#                        (450, 10000), (500, 10000)]
+qnaire_vs_questions = [(256, 0)]
 try:
 
     question = {"title": "When did you donate", "code": "q3", "type": "date", 'date_format': "dd.mm.yyyy",
@@ -37,7 +38,7 @@ try:
     client.login(username='tester150411@gmail.com', password='tester150411')
 
     for q_count, s_count in qnaire_vs_questions:
-        print q_count.__str__() + "asdasdasd" + s_count.__str__()
+        # print q_count.__str__() + "asdasdasd" + s_count.__str__()
         questions = []
         for i in range(q_count):
             q = question.copy()

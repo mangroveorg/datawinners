@@ -11623,6 +11623,8 @@ define( 'enketo-js/plugins',[ 'jquery' ], function( $ ) {
         return this.each( function() {
             //remove media previews
             $( this ).find( '.file-preview' ).remove();
+            $( this ).find( '.remove-file' ).remove();
+            $( this ).find( '.get_image_link' ).remove();
             //remove input values
             $( this ).find( 'input, select, textarea' ).each( function() {
                 var type = $( this ).attr( 'type' );
@@ -11649,9 +11651,7 @@ define( 'enketo-js/plugins',[ 'jquery' ], function( $ ) {
                         /* falls through */
                     case 'hidden':
                     case 'textarea':
-                        if ( $( this ).val() !== '' ) {
                             $( this ).val( '' ).trigger( ev );
-                        }
                         break;
                     case 'radio':
                     case 'checkbox':
@@ -34658,7 +34658,22 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
         $downloadLink.insertAfter(this.$preview);
         this.$downloadLink = $downloadLink;
         this.$fakeInput = this.$widget.find( '.fake-file-input' );
+        this.$deleteButton = $('<button class="remove-file"> Remove </button>');
 
+        Filepicker.prototype._showRemoveButton = function( preview, $input) {
+           var that = this;
+           that.$deleteButton.insertAfter(preview);
+           that.$deleteButton.click(function(){
+                $input.val( '' );
+                that._showPreview( null );
+                that._showFileName( null );
+                that.$deleteButton.remove();
+                $input.removeAttr( 'data-loaded-file-name' );
+                $input.trigger( 'change.file' );
+                that.$downloadLink.remove();
+           });
+
+        };
         // show loaded file name regardless of whether widget is supported
         this.showDownloadLinkAndPreview = function(existingFileName){
             var submission_id = $('document').context.defaultView.surveyResponseId;
@@ -34667,6 +34682,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
                 this._showPreview(location_image+"preview_"+existingFileName, this.mediaType);
             }
             this.$downloadLink.append('<a href="'+location_image+existingFileName+'" class="get_image_link">'+'Download file'+'</a>');
+            this._showRemoveButton(this.$preview, $input);
         };
 
 
@@ -34733,6 +34749,10 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
                 $( this )[0].files = old_files;
                 if ($input.val()==''){
                     that.$preview.empty();
+                    that.$deleteButton.remove();
+                    that.$downloadLink.remove();
+                    $(this).removeAttr( 'data-loaded-file-name' );
+                    that._showFileName( null );
                     $input.trigger( 'change.file' );
                 }
                 event.preventDefault();
@@ -34750,6 +34770,7 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             fileManager.getFileUrl( file )
                 .then( function( url ) {
                     that._showPreview( url, that.mediaType );
+                    that._showRemoveButton(that.$preview, $input);
                     that._showFeedback( '' );
                     that._showFileName( file );
                     $input.trigger( 'change.passthrough' );

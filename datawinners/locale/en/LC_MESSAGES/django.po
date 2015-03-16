@@ -2568,7 +2568,7 @@ msgid "Account Activation"
 msgstr ""
 
 msgid "You have already activated your account. Please sign in"
-msgstr "You have already activated your account. Please <a href=\"/login\">sign in</a>"
+msgstr "You have already activated your account. Please <a href=\"/en/login\">sign in</a>"
 
 msgid "My Subjects"
 msgstr ""

@@ -4,7 +4,8 @@ import unittest
 from django_digest.test import Client as DigestClient
 from nose.plugins.attrib import attr
 from datawinners.blue.xform_bridge import XFormSubmissionProcessor, XFormImageProcessor
-from mangrove.form_model.field import TextField, FieldSet, DateField, IntegerField, SelectField, GeoCodeField, PhotoField
+from mangrove.form_model.field import TextField, FieldSet, DateField, IntegerField, SelectField, GeoCodeField, PhotoField, \
+    DateTimeField
 
 DIR = os.path.dirname(__file__)
 
@@ -111,6 +112,29 @@ class TestXFromClientSubmission(unittest.TestCase):
         expected_xml = '<project-name-01><city>Bhopal</city><center><centername>Boot</centername><area>New Market</area></center><center><centername>Weene</centername><area>Bgh</area></center><form_code>form_code-01</form_code></project-name-01>'
 
         instance_node_xml = submissionProcessor.get_model_edit_str(form_fields, survey_response_values, 'project-name-01', 'form_code-01')
+
+        self.assertEqual(expected_xml, instance_node_xml)
+
+    def test_should_create_xform_model_for_datetime_field(self):
+        form_fields = [DateTimeField('date_time', 'date_time', 'label')]
+        survey_response_values = {'date_time': '12.12.2212 12:12:12'}
+        submissionProcessor = XFormSubmissionProcessor()
+        expected_xml = '<project-name-01><date_time>2212-12-12T12:12:12</date_time><form_code>form_code-01</form_code></project-name-01>'
+
+        instance_node_xml = submissionProcessor.get_model_edit_str(form_fields, survey_response_values, 'project-name-01', 'form_code-01')
+
+        self.assertEqual(expected_xml, instance_node_xml)
+
+    def test_should_create_xform_for_datetime_field_inside_repeat(self):
+        field_set_fields = [DateTimeField('date_time', 'date_time', 'label', parent_field_code='field_set'), TextField('text','text','label', parent_field_code='field_set')]
+        field_set = FieldSet('field_set', 'field_set', 'field_set', field_set=field_set_fields, fieldset_type='repeat')
+        survey_response_values = {'field_set': [{'date_time': '12.12.2212 12:12:12', 'text': 'text1'}, {'date_time': '12.12.3212 12:12:12', 'text': 'text2'}]}
+        submissionProcessor = XFormSubmissionProcessor()
+        expected_xml = '<project-name-01><field_set><date_time>2212-12-12T12:12:12</date_time><text>text1</text></field_set>' \
+                       '<field_set><date_time>3212-12-12T12:12:12</date_time><text>text2</text></field_set>' \
+                       '<form_code>form_code-01</form_code></project-name-01>'
+
+        instance_node_xml = submissionProcessor.get_model_edit_str([field_set], survey_response_values, 'project-name-01', 'form_code-01')
 
         self.assertEqual(expected_xml, instance_node_xml)
 

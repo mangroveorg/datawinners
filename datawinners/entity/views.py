@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from collections import OrderedDict
 import json
 import logging
 
@@ -666,7 +667,7 @@ def export_subject(request):
     field_codes.insert(0, form_model.form_code)
     labels = get_subject_headers(form_model.form_fields)
     raw_data = []
-    headers = dict({subject_type:labels, "codes":field_codes})
+    headers = OrderedDict([(subject_type,labels), ("codes",field_codes)])
 
     for subject in subject_list:
         raw_data.append(subject)
