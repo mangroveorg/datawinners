@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
-import re
 from datetime import datetime
 
 from babel.dates import format_date
@@ -22,9 +21,7 @@ from mangrove.utils.types import is_sequence, sequence_to_str
 from mangrove.transport.repository.survey_responses import get_survey_responses
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.request import Request
-from datawinners.accountmanagement.models import NGOUserProfile, TEST_REPORTER_MOBILE_NUMBER
-from datawinners.scheduler.smsclient import SMSClient
-from datawinners.sms.models import MSG_TYPE_USER_MSG
+from datawinners.accountmanagement.models import NGOUserProfile
 import models
 from models import Reminder
 
@@ -143,44 +140,7 @@ def get_activity_report_questions(dbm):
     return [activity_report_question]
 
 
-def broadcast_message(data_sender_phone_numbers, message, organization_tel_number, other_numbers, message_tracker,
-                      country_code=None):
-    """
 
-    :param data_sender_phone_numbers:
-    :param message:
-    :param organization_tel_number:
-    :param other_numbers:
-    :param message_tracker:
-    :param country_code:
-    :return:
-    """
-    sms_client = SMSClient()
-    sms_sent = None
-    failed_numbers = []
-    for phone_number in data_sender_phone_numbers:
-        if phone_number is not None and phone_number != TEST_REPORTER_MOBILE_NUMBER:
-            logger.info(("Sending broadcast message to %s from %s") % (phone_number, organization_tel_number))
-            sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message, MSG_TYPE_USER_MSG)
-        if sms_sent:
-            message_tracker.increment_message_count_for(send_message_count=1)
-        else:
-            failed_numbers.append(phone_number)
-
-    for number in other_numbers:
-        number = number.strip()
-        number_with_country_prefix = number
-        if country_code:
-            number_with_country_prefix = "%s%s" % (country_code, re.sub(r"^[ 0]+", "", number))
-
-        logger.info(("Sending broadcast message to %s from %s") % (number_with_country_prefix, organization_tel_number))
-        sms_sent = sms_client.send_sms(organization_tel_number, number_with_country_prefix, message, MSG_TYPE_USER_MSG)
-        if sms_sent:
-            message_tracker.increment_message_count_for(send_message_count=1)
-        else:
-            failed_numbers.append(number)
-
-    return failed_numbers
 
 
 def create_request(questionnaire_form, username, is_update=None):

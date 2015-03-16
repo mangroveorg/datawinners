@@ -6,6 +6,7 @@ from mock import Mock, patch
 
 from datawinners.project import helper
 from datawinners.project.models import delete_datasenders_from_project
+from datawinners.sms.helper import broadcast_message
 from mangrove.datastore.database import DatabaseManager
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field, UniqueIdField
@@ -161,9 +162,9 @@ class TestHelper(unittest.TestCase):
         ONG_TEL_NUMBER = "12354"
         sms_content = "test message"
         with patch.object(SMSClient, "send_sms") as mock_send_sms:
-            helper.broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker, "261")
+            broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker, "261")
             mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "2613312345678", sms_content, MSG_TYPE_USER_MSG)
-            helper.broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker)
+            broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker)
             mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "03312345678", sms_content, MSG_TYPE_USER_MSG)
 
 

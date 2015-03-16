@@ -23,6 +23,7 @@ from datawinners.project.send_message import get_data_sender_phone_numbers
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_index import update_submission_search_for_subject_edition, \
     get_unregistered_datasenders_count, get_non_deleted_submission_count, get_unregistered_datasenders
+from datawinners.sms.helper import broadcast_message
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.datastore.queries import get_entity_count_for_type
@@ -315,7 +316,7 @@ def broadcast_message(request, project_id):
             # other_numbers.extend(unregistered_ds)
             failed_numbers = []
             try:
-                failed_numbers = helper.broadcast_message(data_sender_phone_numbers, form.cleaned_data['text'],
+                failed_numbers = broadcast_message(data_sender_phone_numbers, form.cleaned_data['text'],
                                                           organization_setting.get_organisation_sms_number()[0],
                                                           other_numbers,
                                                           message_tracker,
