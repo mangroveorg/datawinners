@@ -655,8 +655,9 @@ class LabelForFieldNotPresentException(Exception):
 class UniqueIdNotFoundException(Exception):
     def __init__(self, unique_id_type):
         unique_id_type = unique_id_type.title()
-        self.message = _("The Identification Number %s is not yet added. Please add it <a href='/entity/subjects' "
-                         "target='_blank'>here</a> and upload the XLSForm again.") % unique_id_type
+        self.message = _("Creating new Identification Number Types using XLSForms. The Identification Number Type %s is "
+                         "not yet added but you can add it <a href='/entity/subjects' "
+                         "target='_blank'>here</a>.") % unique_id_type
 
 
 class UniqueIdNotMentionedException(Exception):

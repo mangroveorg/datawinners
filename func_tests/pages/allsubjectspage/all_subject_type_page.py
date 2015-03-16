@@ -127,3 +127,14 @@ class AllSubjectTypePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".all_subject_type_table"))
         self.driver.find_element_by_link_text(subject_type).click()
         return AllSubjectsListPage(self.driver)
+
+    def wait_for_table_data_to_load(self):
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("subjects_table_processing"))
+
+    def search_with(self, search_text):
+        self.driver.find_text_box(by_css("div#subjects_table_filter input")).enter_text(search_text)
+        self.wait_for_table_data_to_load()
+
+    def get_cell_value(self, row, column):
+        # first row is used to show all rows select message
+        return self.driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[%s]/td[%s]" % ((row + 1), column))).text
