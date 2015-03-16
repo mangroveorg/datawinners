@@ -11620,7 +11620,11 @@ define( 'enketo-js/plugins',[ 'jquery' ], function( $ ) {
      */
     $.fn.clearInputs = function( ev ) {
         ev = ev || 'edit';
+        var is_clone = false;
         return this.each( function() {
+            if($( this ).find( '.file-preview').length > 0){
+                is_clone = true
+            }
             //remove media previews
             $( this ).find( '.file-preview' ).remove();
             $( this ).find( '.remove-file' ).remove();
@@ -11651,7 +11655,9 @@ define( 'enketo-js/plugins',[ 'jquery' ], function( $ ) {
                         /* falls through */
                     case 'hidden':
                     case 'textarea':
+                        if ( is_clone === false) {
                             $( this ).val( '' ).trigger( ev );
+                        }
                         break;
                     case 'radio':
                     case 'checkbox':
@@ -16988,6 +16994,9 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
 
                     $clone.clearInputs( '' );
 
+                    // Re-initiate widgets in clone after default values have been set
+                    widgets.destroy( $clone );
+                    widgets.init( $clone );
                     // Note: in http://formhub.org/formhub_u/forms/hh_polio_survey_cloned/form.xml a parent group of a repeat
                     // has the same ref attribute as the nodeset attribute of the repeat. This would cause a problem determining 
                     // the proper index if .or-repeat was not included in the selector
@@ -17020,9 +17029,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                     // this will trigger setting default values and other stuff
                     $clone.trigger( 'addrepeat', index + 1 );
 
-                    // Re-initiate widgets in clone after default values have been set
-                    widgets.destroy( $clone );
-                    widgets.init( $clone );
+
 
                     //p.report();
                     return true;
@@ -34746,7 +34753,6 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
             // To handle cancel issue on webkit browsers
             if (file == undefined) {
                 event.stopPropagation();
-                $( this )[0].files = old_files;
                 if ($input.val()==''){
                     that.$preview.empty();
                     that.$deleteButton.remove();
@@ -34754,6 +34760,9 @@ define( 'enketo-widget/file/filepicker',[ 'jquery', 'enketo-js/Widget', 'file-ma
                     $(this).removeAttr( 'data-loaded-file-name' );
                     that._showFileName( null );
                     $input.trigger( 'change.file' );
+                }
+                else {
+                    $( this )[0].files = old_files;
                 }
                 event.preventDefault();
                 return false;
