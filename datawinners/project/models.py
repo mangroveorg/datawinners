@@ -13,7 +13,7 @@ from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_string, is_empty
 
-
+NUMBER_OF_NONPROJECT_FORMMODELS = 2 #DS registration and delete form models
 def get_all_reminder_logs_for_project(project_id, dbm):
     assert isinstance(dbm, DatabaseManager)
     rows = dbm.view.reminder_log(startkey=project_id, endkey=project_id, include_docs=True)
@@ -160,7 +160,7 @@ def count_projects(dbm, include_voided_projects=True):
     else:
         rows = dbm.load_all_rows_in_view('count_projects', reduce=True, group_level=1, key=False)
 
-    return rows[0]['value'] if not is_empty(rows) else 0
+    return rows[0]['value'] - NUMBER_OF_NONPROJECT_FORMMODELS if not is_empty(rows) else 0
 
 
 def delete_datasenders_from_project(manager, data_sender_ids):
