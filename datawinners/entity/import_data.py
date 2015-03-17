@@ -440,8 +440,6 @@ def import_data(request, manager, default_parser=None, form_code=None):
         error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xlsx) template file!")
     except FormCodeDoesNotMatchException as e:
         error_message = e.message
-    except Exception:
-        error_message = _(u"Some unexpected error happened. Please check the excel file or download the latest template and import again.")
 
     return error_message, failure_imports, response_message, imported_entities
 
