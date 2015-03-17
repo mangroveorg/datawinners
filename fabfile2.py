@@ -166,7 +166,7 @@ def _checkout_datawinners_conf(code_dir):
     run('git clone git@github.com:hnidev/%s.git %s' % (conf_project_name, project_dir))
 
 
-def _deploy_datawinners(context):
+def _deploy_datawinners(context, sync_views):
     if context.environment == "prod":
          _checkout_datawinners_conf(context.code_dir)
     deploy_project(context, DATAWINNERS, post_checkout_datawinners)
@@ -177,8 +177,9 @@ def _deploy_datawinners(context):
         activate_and_run(context.virtual_env, "python manage.py migrate")
         activate_and_run(context.virtual_env, "python manage.py compilemessages")
         restart_celery()
-        activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
-        activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
+        if sync_views:
+            activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
+            activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
         activate_and_run(context.virtual_env, "python manage.py compile_css")
 
     with cd(os.path.join(context.code_dir, DATAWINNERS)):
@@ -245,7 +246,8 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
                       branch_name='develop',
                       couch_migration_file=None,
                       couch_migrations_folder=None,
-                      backup=False
+                      backup=False,
+                      sync_views = True
 ):
     stop_servers()
     virtual_env = ENVIRONMENT_VES
@@ -254,7 +256,7 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
 
     _make_sure_code_dir_exists(context)
     take_database_backup(backup)
-    _deploy_datawinners(context)
+    _deploy_datawinners(context, sync_views)
 
     remove_cache(context)
     if context.environment == 'prod':
