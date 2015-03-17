@@ -47,7 +47,7 @@ class SMSClient(object):
                     client = VumiClient(None, None, connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
                     resp = client.send_sms(to_msisdn=to_tel, from_msisdn=from_tel, message=message.encode('utf-8'))
                     response_object = json.loads(resp.content)
-                    if (response_object):
+                    if response_object:
                         log_sms(to_tel, from_tel, message, organization_setting.organization,
                                 response_object[0].get('id'), smsc.vumi_username,message_type)
                     return True

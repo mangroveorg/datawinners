@@ -43,6 +43,10 @@ def index(request):
 def vumi_stub(request):
     message = OutgoingMessage(from_msisdn=request.POST['from_msisdn'], to_msisdn=request.POST['to_msisdn'],
                               message=request.POST['message'])
+
+    if "failed" in request.POST['message']:
+        HttpResponse(status=400)
+
     message.save()
 
     return HttpResponse(status=201, content=json.dumps([{'id': message.id}]), content_type='application/json')
