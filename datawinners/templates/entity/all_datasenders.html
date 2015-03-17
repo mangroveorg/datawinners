@@ -34,6 +34,8 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+
     <script type="text/javascript" src="/media/javascript/datasenders/datasender_import.js"></script>
 
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
@@ -52,6 +54,7 @@
     <script type="text/javascript">
         var user_dict = {{ user_dict|safe }};
         var import_datasenders_link = "{% url all_datasenders%}";
+        var send_sms_url = "{% url send-sms%}";
     </script>
 {% endblock %}
 
@@ -82,5 +85,5 @@
     {% include 'entity/all_data_senders/all_project_blocks.html' %}
      <div id="datasender-popup" style="display:none;"></div>
     {% include "send-sms.html" %}
-
+    {% csrf_token %}
 {% endblock %}

@@ -22,8 +22,7 @@ from datawinners.monitor.metric_path import create_path
 from datawinners.project.send_message import get_data_sender_phone_numbers
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_index import update_submission_search_for_subject_edition, \
-    get_unregistered_datasenders_count, get_non_deleted_submission_count, get_unregistered_datasenders
-from datawinners.sms.helper import broadcast_message
+    get_unregistered_datasenders
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.datastore.queries import get_entity_count_for_type
@@ -39,7 +38,7 @@ from mangrove.transport.contract.transport_info import Channel
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, \
-    is_new_user, project_has_web_device, valid_web_user
+    project_has_web_device, valid_web_user
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -316,7 +315,7 @@ def broadcast_message(request, project_id):
             # other_numbers.extend(unregistered_ds)
             failed_numbers = []
             try:
-                failed_numbers = broadcast_message(data_sender_phone_numbers, form.cleaned_data['text'],
+                failed_numbers = helper.broadcast_message(data_sender_phone_numbers, form.cleaned_data['text'],
                                                           organization_setting.get_organisation_sms_number()[0],
                                                           other_numbers,
                                                           message_tracker,

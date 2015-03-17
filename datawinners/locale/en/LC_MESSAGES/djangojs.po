@@ -1183,3 +1183,7 @@ msgstr ""
 
 msgid "Change Data Sender"
 msgstr ""
+
+msgid "failed numbers message: %(failed_numbers)s."
+msgstr "You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions: %(failed_numbers)s. \
+ We have successfully sent your message to all other numbers. For more information contact support@datawinners.com."

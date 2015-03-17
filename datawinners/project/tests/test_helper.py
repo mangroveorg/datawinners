@@ -5,8 +5,8 @@ import unittest
 from mock import Mock, patch
 
 from datawinners.project import helper
+from datawinners.project.helper import broadcast_message
 from datawinners.project.models import delete_datasenders_from_project
-from datawinners.sms.helper import broadcast_message
 from mangrove.datastore.database import DatabaseManager
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field, UniqueIdField
