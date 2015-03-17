@@ -5719,3 +5719,6 @@ msgstr "Le Type de Numéro d’Identification (dw_idnr) n’existe pas dans la c
 
 msgid "Entered default value is not defined in the choices list."
 msgstr "La valeur par défaut saisie n’est pas définie dans la liste de choix."
+
+msgid "Send an SMS"
+msgstr "Envoyer un SMS"

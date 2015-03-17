@@ -1462,3 +1462,15 @@ msgstr "Modifier le Contact"
 msgid "failed numbers message: %(failed_numbers)s."
 msgstr "Vous ne pouvez pas envoyer des messages au numéro suivant %(failed_numbers)s. Ce numéro est réservé à la réception des Soumissions des Expéditeurs de Données uniquement.  \
         Votre message a été envoyé avec succès vers tous les autres numéros. Pour plus d'information, contactez support@datawinners.com."
+
+msgid "Send an SMS"
+msgstr "Envoyer un SMS"
+
+msgid "Other People"
+msgstr "Autres Personnes"
+
+msgid "Select Recipients"
+msgstr "Sélectionnez des Destinataires"
+
+msgid " of 160 characters used"
+msgstr " caractères utilisés sur les 160"

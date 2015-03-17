@@ -11,7 +11,7 @@
     </div>
     <div data-bind="text: smsCharacterCount" ></div>
     <span>{% trans "To:" %}</span>
-    <select data-bind="options: smsOptionList, optionsCaption: gettext('Select Recipients'), value: selectedSmsOption"></select>
+    <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', optionsCaption: gettext('Select Recipients'), value: selectedSmsOption"></select>
     <br/>
 
     <div data-bind="visible: showOtherContacts">

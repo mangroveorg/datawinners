@@ -32,7 +32,7 @@ $(function(){
             $(this).val(e.target.value.substring(0, maxAllowedSMSCharacters));
         }
 
-        smsViewModel.smsCharacterCount($(this).val().length + " of " + maxAllowedSMSCharacters + " characters used");
+        smsViewModel.smsCharacterCount($(this).val().length + gettext(" of " + maxAllowedSMSCharacters + " characters used"));
     };
 
     var smsTextElement = $("#sms-text");
@@ -71,14 +71,14 @@ function SmsViewModel(){
   }, self);
 
   self.showOtherContacts = ko.computed(function(){
-      return this.selectedSmsOption() == 'Other People';
+      return this.selectedSmsOption() == 'others';
   }, self);
 
   self.smsText = DW.ko.createValidatableObservable({value: ""});
 
-  self.smsCharacterCount = ko.observable("0 of 160 characters used");
+  self.smsCharacterCount = ko.observable("0" + gettext(" of 160 characters used"));
 
-  self.smsOptionList = ko.observableArray(['Other People']);
+  self.smsOptionList = ko.observableArray([{"label":gettext('Other People'), "code": "others"}]);
 
   self.smsSentSuccessful = ko.observable(false);
 
