@@ -26,7 +26,7 @@ class SendSMS(View):
         organization_setting = OrganizationSetting.objects.get(organization=organization)
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = organization._get_message_tracker(current_month)
-        no_smsc = True
+        no_smsc = False
         failed_numbers = []
         try:
             failed_numbers = broadcast_message([], sms_text, organization_setting.get_organisation_sms_number()[0],

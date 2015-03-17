@@ -62,6 +62,8 @@ $(function(){
 function SmsViewModel(){
   var self = this;
 
+  var smsTextArea = $("#sms-text");
+
   self.selectedSmsOption = ko.observable("");
 
   self.enableSendSms = ko.computed(function(){
@@ -84,7 +86,7 @@ function SmsViewModel(){
 
   self.clearSelection = function(){
     self.selectedSmsOption("");
-    self.smsText("");
+    smsTextArea.val("");
     self.othersList([]);
     self._resetSuccessMessage();
     self._resetErrorMessages();
@@ -98,7 +100,7 @@ function SmsViewModel(){
 
   self.validateSmsText = function(){
 
-    if($("#sms-text").val() == ""){
+    if(smsTextArea.val() == ""){
         self.smsText.setError(gettext("This field is required."));
         return false;
     }
@@ -136,7 +138,7 @@ function SmsViewModel(){
   };
 
   function _showFailedNumbersError(response) {
-       if (response.failednumbers) {
+       if (response.failednumbers && !response.nosmsc) {
             $("#failed-numbers").text(interpolate(gettext("failed numbers message: %(failed_numbers)s."), {"failed_numbers": response.failednumbers.join(", ")}, true));
             $("#failed-numbers").removeClass("none");
        }
@@ -159,7 +161,7 @@ function SmsViewModel(){
       self._resetErrorMessages();
 
       $.post(send_sms_url, {
-          'sms-text': $("#sms-text").val(),
+          'sms-text': smsTextArea.val(),
           'others': self.othersList(),
           'recipient': self.selectedSmsOption(),
           'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
