@@ -1474,3 +1474,9 @@ msgstr "Sélectionnez des Destinataires"
 
 msgid " of 160 characters used"
 msgstr " caractères utilisés sur les 160"
+
+msgid "Send"
+msgstr "Envoyer"
+
+msgid "Sending..."
+msgstr "Envoi..."
