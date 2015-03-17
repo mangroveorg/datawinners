@@ -5,7 +5,7 @@
     <div id="no-smsc" class="message-box none">{% trans "Your message could not be sent."%}</div>
     <div id="failed-numbers" class="message-box none"></div>
     <span>{% trans "Text:" %}</span>
-    <textarea maxlength="160" data-bind="value: smsText, valueUpdate: 'keypress'"></textarea>
+    <textarea id="sms-text" ></textarea>
     <div class="validationMessage" data-bind="ifnot: smsText.valid">
             <span class="validationText" data-bind="text: smsText.error"></span>
     </div>
