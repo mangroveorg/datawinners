@@ -13,7 +13,14 @@
     <span>{% trans "To:" %}</span>
     <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', optionsCaption: gettext('Select Recipients'), value: selectedSmsOption"></select>
     <br/>
-
+    <div data-bind="visible: showQuestionnaireSection">
+        <!-- ko foreach: questionnaireItems -->
+            <div>
+                <input type="checkbox" data-bind="checkedValue: value" />
+                <span data-bind="text: label"></span>
+            </div>
+        <!-- /ko -->
+    </div>
     <div data-bind="visible: showOtherContacts">
         <textarea data-bind="value: othersList, valueUpdate: 'keypress'"></textarea>
         <div class="validationMessage" data-bind="ifnot: othersList.valid">

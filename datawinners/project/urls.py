@@ -5,6 +5,7 @@ from datawinners.project.views.change_language import QuestionnaireLanguageView
 from datawinners.project.views.create_questionnaire import create_project
 from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders
 from datawinners.project.views.import_submissions_views import ImportSubmissionView
+from datawinners.project.views.registered_datasenders import registered_ds_count
 
 from datawinners.project.wizard_view import edit_project, reminder_settings, get_templates, get_template_details
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview
@@ -86,5 +87,6 @@ urlpatterns = patterns('',
                        (r'^project/submissions/(?P<form_code>.+?)$', submission_views.get_submissions),
                        url(r'^project/import-submissions/(?P<form_code>.+?)$', ImportSubmissionView.as_view(), name="import_submissions"),
                        url(r'^project/change-group/$', change_ds_group),
+                       url(r'^project/registered-ds-count/$', registered_ds_count, name="registered_ds_count")
                        )
 

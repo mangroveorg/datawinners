@@ -72,7 +72,14 @@ function SmsViewModel(){
 
   self.sendButtonText = ko.observable(gettext("Send"));
 
+  self.showQuestionnaireSection = ko.computed(function(){
+      return this.selectedSmsOption() == 'linked';
+  }, self);
+
   self.enableSendSms = ko.observable(false);
+
+  self.questionnaireItems = ko.observableArray([{'label': 'questionnaire1 12 recipients', 'value': "q1"},
+      {'label': 'questionnaire2 20 recipients', 'value': "q2"}]);
 
   self.showOtherContacts = ko.computed(function(){
       return this.selectedSmsOption() == 'others';
