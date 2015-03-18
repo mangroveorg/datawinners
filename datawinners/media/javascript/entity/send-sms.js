@@ -15,7 +15,7 @@ $(function(){
         autoOpen: false,
         modal: true,
         title: gettext("Send an SMS"),
-        zIndex: 200,
+        zIndex: 700,
         width: 800,
         height: 600,
         close: function () {
@@ -80,7 +80,7 @@ function SmsViewModel(){
 
   self.smsCharacterCount = ko.observable("0" + gettext(" of 160 characters used"));
 
-  self.smsOptionList = ko.observableArray([{"label":gettext('Other People'), "code": "others"}]);
+  self.smsOptionList = ko.observableArray([{"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"}, {"label":gettext('Other People'), "code": "others"}]);
 
   self.smsSentSuccessful = ko.observable(false);
 
