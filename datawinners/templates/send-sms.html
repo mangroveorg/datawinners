@@ -16,7 +16,7 @@
     <div data-bind="visible: showQuestionnaireSection">
         <!-- ko foreach: questionnaireItems -->
             <div>
-                <input type="checkbox" data-bind="checkedValue: value" />
+                <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedQuestionnairesIds" />
                 <span data-bind="text: label"></span>
             </div>
         <!-- /ko -->

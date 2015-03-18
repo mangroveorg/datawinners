@@ -85,9 +85,11 @@ function SmsViewModel(){
             $.get(registered_ds_count_url).done(function(response){
                 var response = $.parseJSON(response);
                 var questionnaireItems = [];
+                var sendToNumbers = [];
 
                 $.each(response, function(index, item){
-                    questionnaireItems.push({value: item.id, label: item.name + " " + item['ds-count'] + " recipients"});
+                    var checkBoxLabel = item.name + " " + item['ds-count'] + " recipients";
+                    questionnaireItems.push({value: item.id, label: checkBoxLabel, name: item.name});
                 });
 
                 self.questionnaireItems(questionnaireItems);
@@ -105,7 +107,10 @@ function SmsViewModel(){
 
   self.smsCharacterCount = ko.observable("0" + gettext(" of 160 characters used"));
 
-  self.smsOptionList = ko.observableArray([{"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"}, {"label":gettext('Other People'), "code": "others"}]);
+  self.selectedQuestionnairesIds = ko.observableArray([]);
+
+  self.smsOptionList = ko.observableArray([{"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"},
+      {"label":gettext('Other People'), "code": "others"}]);
 
   self.smsSentSuccessful = ko.observable(false);
 
@@ -194,6 +199,7 @@ function SmsViewModel(){
           'sms-text': smsTextArea.val(),
           'others': self.othersList(),
           'recipient': self.selectedSmsOption(),
+          'questionnaire-names': self.selectedQuestionnairesIds(),
           'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
       }).done(function(response){
 
