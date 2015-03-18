@@ -78,8 +78,24 @@ function SmsViewModel(){
 
   self.enableSendSms = ko.observable(false);
 
-  self.questionnaireItems = ko.observableArray([{'label': 'questionnaire1 12 recipients', 'value': "q1"},
-      {'label': 'questionnaire2 20 recipients', 'value': "q2"}]);
+  self.selectedSmsOption.subscribe(function(selectedOption){
+
+      if(selectedOption == 'linked' && self.questionnaireItems().length == 0){
+
+            $.get(registered_ds_count_url).done(function(response){
+                var response = $.parseJSON(response);
+                var questionnaireItems = [];
+
+                $.each(response, function(index, item){
+                    questionnaireItems.push({value: item.id, label: item.name + " " + item['ds-count'] + " recipients"});
+                });
+
+                self.questionnaireItems(questionnaireItems);
+            });
+        }
+  });
+
+  self.questionnaireItems = ko.observableArray([]);
 
   self.showOtherContacts = ko.computed(function(){
       return this.selectedSmsOption() == 'others';
