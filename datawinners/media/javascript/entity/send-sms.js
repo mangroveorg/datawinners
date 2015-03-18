@@ -92,7 +92,7 @@ function SmsViewModel(){
 
                 self.questionnaireItems(questionnaireItems);
             });
-        }
+      }
   });
 
   self.questionnaireItems = ko.observableArray([]);
