@@ -66,11 +66,13 @@ function SmsViewModel(){
 
   self.selectedSmsOption = ko.observable("");
 
+  self.selectedSmsOption.subscribe(function(newSelectedSmsOption){
+      self.enableSendSms(newSelectedSmsOption != undefined );
+  });
+
   self.sendButtonText = ko.observable(gettext("Send"));
 
-  self.enableSendSms = ko.computed(function(){
-      return this.selectedSmsOption() != undefined;
-  }, self);
+  self.enableSendSms = ko.observable(false);
 
   self.showOtherContacts = ko.computed(function(){
       return this.selectedSmsOption() == 'others';
@@ -163,6 +165,7 @@ function SmsViewModel(){
       self._resetErrorMessages();
 
       self.sendButtonText(gettext("Sending..."));
+      self.enableSendSms(false);
 
       $.post(send_sms_url, {
           'sms-text': smsTextArea.val(),
@@ -173,6 +176,7 @@ function SmsViewModel(){
 
           var response = $.parseJSON(response);
           self.sendButtonText(gettext("Send"));
+          self.enableSendSms(true);
           if(response.successful){
               $("#sms-success").removeClass("none");
           }
