@@ -186,7 +186,7 @@ function SmsViewModel(){
 
 
   self.sendSms = function(){
-      if(self.disableSendSms){
+      if(self.disableSendSms()){
           return;
       }
       if(!self.validate()){
