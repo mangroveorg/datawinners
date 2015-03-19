@@ -122,8 +122,12 @@ function SmsViewModel(){
 
   self.selectedQuestionnaireNames = ko.observableArray([]);
 
-  self.smsOptionList = ko.observableArray([{"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"},
-      {"label":gettext('Other People'), "code": "others"}]);
+  self.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
+                                            {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"},
+                                            {"label":gettext('Other People'), "code": "others"}]);
+  self.setOptionDisable= function(option, item) {
+            ko.applyBindingsToNode(option, {disable: item.disable}, item);
+    };
 
   self.smsSentSuccessful = ko.observable(false);
 

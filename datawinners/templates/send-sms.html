@@ -22,12 +22,11 @@
 
     <div style="display: table-row" >
         <div style="display: table-cell; vertical-align: top; width: 150px">{% trans "To:" %}</div>
-        <span style="display: table-cell " class="padding_bottom_10">
-            <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', optionsCaption: gettext('Select Recipients'), value: selectedSmsOption"></select>
-        </span>
+        <div style="display: table-cell " class="padding_bottom_10">
+            <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
+        </div>
     </div>
     <div data-bind="visible: showQuestionnaireSection">
-
         <!-- ko foreach: questionnaireItems -->
             <div>
                 <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedQuestionnaireNames" />
