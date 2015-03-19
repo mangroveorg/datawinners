@@ -138,6 +138,7 @@ function SmsViewModel(){
     smsTextArea.val("");
     self.smsCharacterCount("0" + gettext(" of 160 characters used"));
     self.othersList("");
+    self.selectedQuestionnaireNames([]);
     self._resetSuccessMessage();
     self._resetErrorMessages();
   };
@@ -194,6 +195,9 @@ function SmsViewModel(){
   self._resetErrorMessages = function() {
     $("#no-smsc").show().addClass("none");
     $("#failed-numbers").show().addClass("none");
+    self.selectedQuestionnaireNames.clearError();
+    self.smsText.clearError();
+    self.othersList.clearError();
   };
 
   self.validate = function(){

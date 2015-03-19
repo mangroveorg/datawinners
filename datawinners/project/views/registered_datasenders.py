@@ -11,7 +11,7 @@ def registered_ds_count(request):
     for row in dbm.database.view("project_names/project_names"):
         questionnaire_name = row['value']['name']
         result.append({'name': questionnaire_name, 'id': row['value']['id'],
-                       'ds-count': get_registered_datasender_count(dbm, questionnaire_name)})
+                       'ds-count': get_registered_datasender_count(dbm, questionnaire_name.lower())})
 
     return HttpResponse(json.dumps(result))
 

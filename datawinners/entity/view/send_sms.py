@@ -35,7 +35,7 @@ class SendSMS(View):
 
     def _get_mobile_numbers_for_registered_data_senders(self, dbm, request):
         if request.POST['recipient'] == 'linked':
-            questionnaire_names = json.loads(request.POST['questionnaire-names'])
+            questionnaire_names = map(lambda item: item.lower(), json.loads(request.POST['questionnaire-names']))
             mobile_numbers = self.mobile_numbers_for_questionnaire(dbm, questionnaire_names)
             return mobile_numbers
         else:
