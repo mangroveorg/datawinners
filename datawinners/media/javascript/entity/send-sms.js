@@ -74,8 +74,8 @@ function SmsViewModel(){
 
   self.placeHolderText = ko.observable("");
 
-  self.showQuestionnaireSection = ko.computed(function(){
-      return this.selectedSmsOption() == 'linked';
+  self.hideQuestionnaireSection = ko.computed(function(){
+      return this.selectedSmsOption() != 'linked';
   }, self);
 
 

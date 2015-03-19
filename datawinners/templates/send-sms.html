@@ -23,24 +23,25 @@
     <div style="display: table-row" >
         <div style="display: table-cell; vertical-align: top; width: 150px">{% trans "To:" %}</div>
         <div style="display: table-cell " class="padding_bottom_10">
-            <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
+            <select style="width: 205px" data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
         </div>
     </div>
-    <div data-bind="visible: showQuestionnaireSection">
-        <!-- ko if: questionnaireItems -->
+
+    <div style="display: table-row" >
+        <div style="display: table-cell"></div>
+        <div style="display: table-cell" data-bind="css: {'none': hideQuestionnaireSection}">
             <!-- ko foreach: questionnaireItems -->
                 <div>
                     <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedQuestionnaireNames()" />
                     <span data-bind="text: label"></span>
                 </div>
             <!-- /ko -->
-            <div class="validationMessage" data-bind="ifnot: selectedQuestionnaireNames.valid">
-                <span class="validationText" data-bind="text: selectedQuestionnaireNames.error"></span>
-            </div>
-        <!-- /ko -->
+                <div class="validationMessage" data-bind="ifnot: selectedQuestionnaireNames.valid">
+                    <span class="validationText" data-bind="text: selectedQuestionnaireNames.error"></span>
+                </div>
 
-        <span data-bind="text:placeHolderText"></span>
-
+            <span data-bind="text:placeHolderText"></span>
+        </div>
     </div>
     <div style="display: table-row" data-bind="css: {'none': hideOtherContacts}" >
         <div style="display: table-cell"></div>

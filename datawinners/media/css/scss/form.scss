@@ -728,3 +728,21 @@ a.dialog-anchor {
   left: 175px !important;
 }
 
+.validationText {
+    background: none repeat scroll 0 0 #c20303;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    margin-left: 10px !important;
+    padding: 5px 10px;
+    width: auto;
+}
+
+.validationMessage {
+    background: url("/media/images/arrow_error.png") no-repeat scroll left 8px rgba(0, 0, 0, 0);
+    display: inline-block;
+    padding-left: 2px;
+}
