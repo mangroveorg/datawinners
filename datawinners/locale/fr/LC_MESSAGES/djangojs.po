@@ -1480,3 +1480,9 @@ msgstr "Envoyer"
 
 msgid "Sending..."
 msgstr "Envoi..."
+
+msgid "Contacts linked to a Questionnaire"
+msgstr "Contacts liés à un Questionnaire"
+
+msgid " recipients"
+msgstr " destinataires"

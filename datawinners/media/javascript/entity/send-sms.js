@@ -88,7 +88,7 @@ function SmsViewModel(){
                 var sendToNumbers = [];
 
                 $.each(response, function(index, item){
-                    var checkBoxLabel = item.name + " " + item['ds-count'] + " recipients";
+                    var checkBoxLabel = item.name + " " + item['ds-count'] + gettext(" recipients");
                     questionnaireItems.push({value: item.id, label: checkBoxLabel, name: item.name});
                 });
 
@@ -107,7 +107,7 @@ function SmsViewModel(){
 
   self.smsCharacterCount = ko.observable("0" + gettext(" of 160 characters used"));
 
-  self.selectedQuestionnairesIds = ko.observableArray([]);
+  self.selectedQuestionnaireNames = ko.observableArray([]);
 
   self.smsOptionList = ko.observableArray([{"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"},
       {"label":gettext('Other People'), "code": "others"}]);
@@ -199,7 +199,7 @@ function SmsViewModel(){
           'sms-text': smsTextArea.val(),
           'others': self.othersList(),
           'recipient': self.selectedSmsOption(),
-          'questionnaire-names': self.selectedQuestionnairesIds(),
+          'questionnaire-names':  JSON.stringify(smsViewModel.selectedQuestionnaireNames()),
           'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
       }).done(function(response){
 
