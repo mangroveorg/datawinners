@@ -120,7 +120,7 @@ function SmsViewModel(){
 
   self.smsCharacterCount = ko.observable("0" + gettext(" of 160 characters used"));
 
-  self.selectedQuestionnaireNames = ko.observableArray([]);
+  self.selectedQuestionnaireNames =  DW.ko.createValidatableObservable({value: []});
 
   self.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
                                             {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"},
@@ -131,13 +131,13 @@ function SmsViewModel(){
 
   self.smsSentSuccessful = ko.observable(false);
 
-  self.othersList = DW.ko.createValidatableObservable({value: []});
+  self.othersList = DW.ko.createValidatableObservable({value: ""});
 
   self.clearSelection = function(){
     self.selectedSmsOption("");
     smsTextArea.val("");
     self.smsCharacterCount("0" + gettext(" of 160 characters used"));
-    self.othersList([]);
+    self.othersList("");
     self._resetSuccessMessage();
     self._resetErrorMessages();
   };
@@ -163,12 +163,25 @@ function SmsViewModel(){
 
   self.validateOthersList = function(){
 
-    if(self.selectedSmsOption() == 'Other People' && self.othersList() == ""){
+    if(self.selectedSmsOption() == 'others' && self.othersList() == ""){
         self.othersList.setError(gettext("This field is required."));
         return false;
     }
     else{
         self.othersList.clearError();
+        return true;
+    }
+
+  };
+
+  self.validateQuestionnaireSelection = function(){
+
+    if(self.selectedSmsOption() == 'linked' && self.selectedQuestionnaireNames().length == 0){
+        self.selectedQuestionnaireNames.setError(gettext("This field is required."));
+        return false;
+    }
+    else{
+        self.selectedQuestionnaireNames.clearError();
         return true;
     }
 
@@ -184,7 +197,7 @@ function SmsViewModel(){
   };
 
   self.validate = function(){
-    return self.validateSmsText() && self.validateOthersList();
+    return self.validateSmsText() & self.validateOthersList() & self.validateQuestionnaireSelection();
   };
 
   function _showFailedNumbersError(response) {
