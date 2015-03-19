@@ -8,7 +8,7 @@
     <div style="display: table-row">
             <div style="display: table-cell; vertical-align: top; width: 150px">{% trans "Text:" %}</div>
             <span style="display: table-cell">
-                <textarea id="sms-text" style="width: 615px" ></textarea>
+                <textarea id="sms-text" style="width: 615px" placeholder="{% trans 'Enter your SMS text'%}"></textarea>
                 <span class="validationMessage" data-bind="ifnot: smsText.valid">
                     <span class="validationText" data-bind="text: smsText.error"></span>
                 </span>
@@ -27,12 +27,16 @@
         </span>
     </div>
     <div data-bind="visible: showQuestionnaireSection">
+
         <!-- ko foreach: questionnaireItems -->
             <div>
                 <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedQuestionnaireNames" />
                 <span data-bind="text: label"></span>
             </div>
         <!-- /ko -->
+
+        <span data-bind="text:placeHolderText"></span>
+
     </div>
     <div style="display: table-row" data-bind="css: {'none': hideOtherContacts}" >
         <div style="display: table-cell"></div>
@@ -52,6 +56,6 @@
     <br/>
     <div class="right_aligned_button margin_right_4" >
     <a id="cancel-sms" data-bind="click: closeSmsDialog">{% trans "Cancel" %}</a>
-    <button class="button" data-bind="click: sendSms, text: sendButtonText, css: {'ui-state-disabled': disableSendSms}"></button>
+    <button class="button" data-bind="click: sendSms, disable: disableSendSms, text: sendButtonText, css: {'ui-state-disabled': disableSendSms}"></button>
     </div>
 </div>

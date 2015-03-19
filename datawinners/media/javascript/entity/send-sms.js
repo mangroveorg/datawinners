@@ -72,6 +72,8 @@ function SmsViewModel(){
 
   self.sendButtonText = ko.observable(gettext("Send"));
 
+  self.placeHolderText = ko.observable("");
+
   self.showQuestionnaireSection = ko.computed(function(){
       return this.selectedSmsOption() == 'linked';
   }, self);
@@ -81,10 +83,20 @@ function SmsViewModel(){
 
       if(selectedOption == 'linked' && self.questionnaireItems().length == 0){
 
-            $.get(registered_ds_count_url).done(function(response){
+            self.placeHolderText(gettext("Loading..."));
+
+             $.get(registered_ds_count_url).done(function(response){
                 var response = $.parseJSON(response);
                 var questionnaireItems = [];
                 var sendToNumbers = [];
+
+                if(response.length == 0){
+                    self.placeHolderText(gettext("No questionnaires present"));
+                }
+                else{
+                   self.placeHolderText("");
+                }
+
 
                 $.each(response, function(index, item){
                     var checkBoxLabel = item.name + " " + item['ds-count'] + gettext(" recipients");
@@ -186,9 +198,7 @@ function SmsViewModel(){
 
 
   self.sendSms = function(){
-      if(self.disableSendSms()){
-          return;
-      }
+
       if(!self.validate()){
           return;
       }
