@@ -17,7 +17,7 @@ $(function(){
         title: gettext("Send an SMS"),
         zIndex: 700,
         width: 800,
-        height: 600,
+        height: 'auto',
         close: function () {
             smsViewModel.clearSelection();
         }
@@ -67,7 +67,7 @@ function SmsViewModel(){
   self.selectedSmsOption = ko.observable("");
 
   self.selectedSmsOption.subscribe(function(newSelectedSmsOption){
-      self.enableSendSms(newSelectedSmsOption != undefined );
+      self.disableSendSms(newSelectedSmsOption == undefined );
   });
 
   self.sendButtonText = ko.observable(gettext("Send"));
@@ -76,7 +76,6 @@ function SmsViewModel(){
       return this.selectedSmsOption() == 'linked';
   }, self);
 
-  self.enableSendSms = ko.observable(false);
 
   self.selectedSmsOption.subscribe(function(selectedOption){
 
@@ -99,8 +98,10 @@ function SmsViewModel(){
 
   self.questionnaireItems = ko.observableArray([]);
 
-  self.showOtherContacts = ko.computed(function(){
-      return this.selectedSmsOption() == 'others';
+  self.disableSendSms = ko.observable(true);
+
+  self.hideOtherContacts = ko.computed(function(){
+      return this.selectedSmsOption() != 'others';
   }, self);
 
   self.smsText = DW.ko.createValidatableObservable({value: ""});
@@ -119,6 +120,7 @@ function SmsViewModel(){
   self.clearSelection = function(){
     self.selectedSmsOption("");
     smsTextArea.val("");
+    self.smsCharacterCount("0" + gettext(" of 160 characters used"));
     self.othersList([]);
     self._resetSuccessMessage();
     self._resetErrorMessages();
@@ -184,7 +186,9 @@ function SmsViewModel(){
 
 
   self.sendSms = function(){
-
+      if(self.disableSendSms){
+          return;
+      }
       if(!self.validate()){
           return;
       }
@@ -193,7 +197,7 @@ function SmsViewModel(){
       self._resetErrorMessages();
 
       self.sendButtonText(gettext("Sending..."));
-      self.enableSendSms(false);
+      self.disableSendSms(true);
 
       $.post(send_sms_url, {
           'sms-text': smsTextArea.val(),
@@ -205,7 +209,7 @@ function SmsViewModel(){
 
           var response = $.parseJSON(response);
           self.sendButtonText(gettext("Send"));
-          self.enableSendSms(true);
+          self.disableSendSms(false);
           if(response.successful){
               $("#sms-success").removeClass("none");
           }
