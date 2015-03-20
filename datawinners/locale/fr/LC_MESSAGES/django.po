@@ -5722,3 +5722,9 @@ msgstr "La valeur par défaut saisie n’est pas définie dans la liste de choix
 
 msgid "Send an SMS"
 msgstr "Envoyer un SMS"
+
+msgid "This feature is not available to Pro Account users. Sign up for a Pro SMS subscription to send SMS messages from your DataWinners account."
+msgstr "Cette fonctionnalité n’est pas disponible pour les utilisateurs de compte Pro. Enregistrez-vous pour un abonnement Pro SMS pour envoyer des SMS depuis votre compte DataWinners."
+
+msgid "This feature is not available to Basic account users. Sign up for a monthly subscription to send SMS messages from your DataWinners account."
+msgstr "Cette fonctionnalité n’est pas disponible pour les utilisateurs de compte Essai. Enregistrez-vous pour un abonnement mensuel pour envoyer des SMS depuis votre compte DataWinners."

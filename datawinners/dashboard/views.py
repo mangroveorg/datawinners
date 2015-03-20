@@ -114,7 +114,9 @@ def dashboard(request):
                       extra_tags='error')
 
     context = {
-        "projects": questionnaire_list, 'trial_account': organization.in_trial_mode,
+        "projects": questionnaire_list,
+        'in_trial_mode': organization.in_trial_mode,
+        'is_pro_sms': organization.is_pro_sms,
         'has_reached_sms_limit': has_reached_sms_limit,
         'questionnaireDoesNotExist': questionnaire_does_not_exist,
         'has_reached_submission_limit': has_reached_submission_limit, 'language': language,

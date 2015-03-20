@@ -44,7 +44,9 @@ class AllDataSendersView(TemplateView):
     def get(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         project_name_id_map = get_project_id_name_map(manager)
-        in_trial_mode = utils.get_organization(request).in_trial_mode
+        organization = utils.get_organization(request)
+        in_trial_mode = organization.in_trial_mode
+        is_pro_sms = organization.is_pro_sms
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
 
         return self.render_to_response(RequestContext(request, {
@@ -52,6 +54,7 @@ class AllDataSendersView(TemplateView):
             "projects": project_name_id_map,
             'current_language': translation.get_language(),
             'in_trial_mode': in_trial_mode,
+            'is_pro_sms': is_pro_sms,
         }))
 
     def get_imported_data_senders(self, successful_imports):

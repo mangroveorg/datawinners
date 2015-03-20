@@ -175,3 +175,21 @@ table.error_table {
       background: #c20303;
       padding-bottom: 20px!important;
 }
+
+#upgrade_message{
+  margin-left: auto;
+  margin-right: auto;
+  width: 960px;
+  .upgrade{
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    width: 910px;
+    background: none repeat scroll 0 0 #dfedf4;
+    border: 1px solid #cccccc;
+    padding: 20px 25px 10px;
+    clear: both;
+    overflow: auto;
+    color: black;
+  }
+}

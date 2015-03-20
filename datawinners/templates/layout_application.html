@@ -17,7 +17,8 @@
     <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
     <script type="text/javascript" src="/media/javascript/underscore-min-1.4.3.js"></script>
     <script type="text/javascript" src="/media/javascript/underscore.string.min.js"></script>
-    <script type="text/javascript"src="/media/javascript/ie8_warning.js"></script>
+    <script type="text/javascript" src="/media/javascript/show_upgrade_message.js"></script>
+    <script type="text/javascript" src="/media/javascript/ie8_warning.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -38,11 +39,10 @@
                 {% block section_title %}
                 {% endblock %}
             </div>
-            {% block main_message %}
-            {% endblock %}
             <div class="container_24">
 
                 {% block navigation %} {% endblock %}
+                {% block main_message %}{% endblock %}
                 <div class="grid_23 content">
                     {% block content %}
                         {% block secondary_navigation %} {% endblock %}

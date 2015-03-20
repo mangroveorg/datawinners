@@ -1,0 +1,18 @@
+{% load i18n %}
+<div id="upgrade_message" >
+    <div class="upgrade">
+        {% if in_trial_mode %}
+            {% trans "This feature is not available to Basic account users. Sign up for a monthly subscription to send SMS messages from your DataWinners account."%}
+        {%else%}
+            {% trans "This feature is not available to Pro Account users. Sign up for a Pro SMS subscription to send SMS messages from your DataWinners account."%}
+        {% endif %}
+        <div class="margin_10">
+            {% if in_trial_mode %}
+                <a class="button float_right" target="blank" href="{% url default_upgrade %}">{% trans "Subscribe Now" %}</a>
+            {% else %}
+                <a class="button float_right" target="blank" href="{% url default_upgrade %}">{% trans "Upgrade Now" %}</a>
+            {% endif %}
+            <a class="float_right padding_top_10 padding_right_10" href="https://www.datawinners.com/{{ active_language }}/pricing/" target="blank">{% trans "Learn More" %}</a>
+        </div>
+    </div>
+</div>

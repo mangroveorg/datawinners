@@ -58,11 +58,13 @@
         var user_dict = {{ user_dict|safe }};
         var import_datasenders_link = "{% url all_datasenders%}";
         var send_sms_url = "{% url send-sms%}";
-        var send_sms_url = "{% url send-sms%}";
         var registered_ds_count_url = "{% url registered_ds_count %}";
     </script>
 {% endblock %}
-
+{% block main_message %}
+    {% include 'main_message_upgrade.html' %}
+    {{ block.super }}
+{% endblock %}
 {% load i18n %}
 {% block content %}
     <div>
@@ -72,7 +74,12 @@
             </a> <span class="padding_left_right_10"> | </span>
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import Contacts" %}</a>
             </a> <span class="padding_left_right_10"> | </span>
-            <a id="send_sms">{% trans "Send an SMS" %}</a>
+            {% if  is_pro_sms %}
+                <a id="send_sms">{% trans "Send an SMS" %}</a>
+            {% else %}
+                <a id="show_upgrade_message" class="grey" >{% trans "Send an SMS" %}</a>
+            {% endif %}
+
         </div>
         <div style="display: none;">
             <div id="popup-import" class="popup-import">

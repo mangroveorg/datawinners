@@ -39,8 +39,10 @@
         </div>
     </div>
 {% endblock %}
-
-
+{% block main_message %}
+    {% include 'main_message_upgrade.html' %}
+    {{ block.super }}
+{% endblock %}
 {% block content %}
 
     {% for message in messages %}
@@ -63,7 +65,11 @@
             <div class="tableCell sub_section" id="chat_section">
                 <img  class='chat-icon'  src="/media/images/chat-icon.png"/>
                 <p class="explanation">Short explanation of what this is and why this is awesome. </p>
-                <button id="send_sms" class="blue_button margin_bottom_10">Send a Message</button>
+                {% if  is_pro_sms %}
+                    <button id="send_sms" class="blue_button margin_bottom_10">Send a Message</button>
+                {% else %}
+                    <button id="show_upgrade_message" class="blue_button margin_bottom_10">Send a Message</button>
+                {% endif %}
                 <div><a>Learn More</a></div>
             </div>
             <div class="tableCell sub_section"></div>
@@ -86,7 +92,7 @@
         <a class="grid_4  omega alpha view_all_projects" href="{% url alldata_index %}">{% trans "view all Questionnaires"%} »</a>
     </div>
     <div class="grid_5 alpha omega dashboard_right">
-    {% if trial_account and user.groups.all.0.name == 'NGO Admins' %}
+    {% if in_trial_mode and user.groups.all.0.name == 'NGO Admins' %}
         <div class="warning-message-box clear-both overflow_hidden padding_5" id="blue_message_box">
             <b>{% trans "Go Pro" %}</b><br/>
             {% if has_reached_submission_limit %}
