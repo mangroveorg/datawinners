@@ -72,7 +72,7 @@ function SmsViewModel(){
   self.othersList = DW.ko.createValidatableObservable({value: ""});
 
   self.clearSelection = function(){
-    self.selectedSmsOption("");
+    self.selectedSmsOption(undefined);
     smsTextArea.val("");
     self.smsCharacterCount("0" + gettext(" of 160 characters used"));
     self.othersList("");
