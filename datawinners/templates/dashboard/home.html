@@ -12,6 +12,7 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_dashboard.css" rel="stylesheet" />
+    <link href="/media/css/scss/send-sms.css" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
@@ -20,8 +21,15 @@
         var is_first_time_activation = "{{ first_time_activation }}";
         var account_cost = "{{ account_cost }}";
         var account_type = "{{ account_type }}";
+        var send_sms_url = "{% url send-sms%}";
+        var registered_ds_count_url = "{% url registered_ds_count %}";
     </script>
     <script type="text/javascript" src="/media/javascript/home/dashboard.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms_index.js"></script>
+
 {% endblock %}
 
 {% block navigation %}
@@ -48,14 +56,21 @@
         </div>
     {% endif %}
 
-    <div id="how_to" class="none">
-        <h3><span class="title">{% trans "How to use Datawinners" %}</span><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-            <div class="tooltip"><p>{% trans "Click on the triangle to the left of 'How to use DataWinners' to expand or collapse the box." %}</p></div>
-        </h3>
-         <p>
-            {% trans "help_how_to_use_dw" %}
-         </p>
+    <h4 >Get Started</h4>
+    <div class="help_section table">
+        <div class="help_section tableRow">
+            <div class="tableCell sub_section"></div>
+            <div class="tableCell sub_section" id="chat_section">
+                <img  class='chat-icon'  src="/media/images/chat-icon.png"/>
+                <p class="explanation">Short explanation of what this is and why this is awesome. </p>
+                <button id="send_sms" class="blue_button margin_bottom_10">Send a Message</button>
+                <div><a>Learn More</a></div>
+            </div>
+            <div class="tableCell sub_section"></div>
+
+        </div>
     </div>
+    {% include "send-sms.html" %}
 
     <div class="grid_17 margin_left_null dashboard_left">
         <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Questionnaires" %}</h4>
