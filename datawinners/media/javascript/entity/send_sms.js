@@ -173,7 +173,7 @@ function SmsViewModel(){
           'sms-text': smsTextArea.val(),
           'others': self.othersList(),
           'recipient': self.selectedSmsOption(),
-          'questionnaire-names':  JSON.stringify(smsViewModel.selectedQuestionnaireNames()),
+          'questionnaire-names':  JSON.stringify(self.selectedQuestionnaireNames()),
           'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
       }).done(function(response){
 
