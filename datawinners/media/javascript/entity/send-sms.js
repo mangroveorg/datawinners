@@ -99,7 +99,7 @@ function SmsViewModel(){
 
 
                 $.each(response, function(index, item){
-                    var checkBoxLabel = item.name + " " + item['ds-count'] + gettext(" recipients");
+                    var checkBoxLabel = item.name + " <span class='grey italic'>" + item['ds-count'] + gettext(" recipients") + "</span>";
                     questionnaireItems.push({value: item.id, label: checkBoxLabel, name: item.name});
                 });
 

@@ -33,7 +33,7 @@
             <!-- ko foreach: questionnaireItems -->
                 <div>
                     <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedQuestionnaireNames()" />
-                    <span data-bind="text: label"></span>
+                    <span data-bind="html: label"></span>
                 </div>
             <!-- /ko -->
                 <div class="validationMessage" data-bind="ifnot: selectedQuestionnaireNames.valid">
@@ -60,7 +60,7 @@
     </div>
     <br/>
     <div class="right_aligned_button margin_right_4" >
-    <a id="cancel-sms" data-bind="click: closeSmsDialog">{% trans "Cancel" %}</a>
+    <a id="cancel-sms" class="margin_right_20" data-bind="click: closeSmsDialog">{% trans "Cancel" %}</a>
     <button class="button" data-bind="click: sendSms, disable: disableSendSms, text: sendButtonText, css: {'ui-state-disabled': disableSendSms}"></button>
     </div>
 </div>
