@@ -5,31 +5,31 @@
     <div id="sms-success"  class="success-message-box none">{% trans "SMS sent to telephone company. Upon receipt of delivery confirmation, DataWinners will update the counter on the "%} <a href={% url dashboard %}>{%  trans 'Dashboard'%}</a>.</div>
     <div id="no-smsc" class="message-box none">{% trans "Your message could not be sent."%}</div>
     <div id="failed-numbers" class="message-box none"></div>
-    <div style="display: table-row">
-            <div style="display: table-cell; vertical-align: top; width: 150px">{% trans "Text:" %}</div>
-            <span style="display: table-cell">
-                <textarea id="sms-text" style="width: 615px" placeholder="{% trans 'Enter your SMS text'%}"></textarea>
+    <div class = "tableRow" >
+            <div class = "tableCell">{% trans "Text:" %}</div>
+            <span class = "tableCell">
+                <textarea id="sms-text" placeholder="{% trans 'Enter your SMS text'%}"></textarea>
                 <span class="validationMessage" data-bind="ifnot: smsText.valid">
                     <span class="validationText" data-bind="text: smsText.error"></span>
                 </span>
             </span>
     </div>
-    <div style="display: table-row">
-        <div style="display: table-cell"></div>
-        <div style="display: table-cell">
+    <div class = "tableRow">
+        <div class = "tableCell"></div>
+        <div class = "tableCell">
         <span class="grey float_right" data-bind="text: smsCharacterCount" ></span></div></div>
     <br/>
 
-    <div style="display: table-row" >
-        <div style="display: table-cell; vertical-align: top; width: 150px">{% trans "To:" %}</div>
-        <div style="display: table-cell " class="padding_bottom_10">
-            <select style="width: 205px" data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
+    <div class="tableRow">
+        <div class = "tableCell">{% trans "To:" %}</div>
+        <div class = "tableCell padding_bottom_10">
+            <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
         </div>
     </div>
 
-    <div style="display: table-row" >
-        <div style="display: table-cell"></div>
-        <div style="display: table-cell" data-bind="css: {'none': hideQuestionnaireSection}">
+    <div class="tableRow" >
+        <div class = "tableCell"></div>
+        <div class = "tableCell" data-bind="css: {'none': hideQuestionnaireSection}">
             <!-- ko foreach: questionnaireItems -->
                 <div>
                     <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedQuestionnaireNames()" />
@@ -43,18 +43,18 @@
             <span data-bind="text:placeHolderText"></span>
         </div>
     </div>
-    <div style="display: table-row" data-bind="css: {'none': hideOtherContacts}" >
-        <div style="display: table-cell"></div>
-        <div style="display: table-cell">
-            <textarea data-bind="value: othersList, valueUpdate: 'keypress'" style="width: 615px"></textarea>
+    <div class="tableRow" data-bind="css: {'none': hideOtherContacts}" >
+        <div class = "tableCell"></div>
+        <div class = "tableCell">
+            <textarea data-bind="value: othersList, valueUpdate: 'keypress'"></textarea>
             <div class="validationMessage" data-bind="ifnot: othersList.valid">
                 <span class="validationText" data-bind="text: othersList.error"></span>
             </div>
         </div>
     </div>
-    <div style="display: table-row" data-bind="css: {'none': hideOtherContacts}" >
-        <div style="display: table-cell"></div>
-        <div style="display: table-cell">
+    <div class="tableRow" data-bind="css: {'none': hideOtherContacts}" >
+        <div class = "tableCell"></div>
+        <div class = "tableCell">
         <div class="grey italic">{% trans "Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers." %}</div>
             </div>
     </div>

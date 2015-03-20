@@ -1,0 +1,12 @@
+#send-sms-section>.tableRow>.tableCell:first-child {
+  vertical-align: top;
+  width: 150px;
+}
+
+#send-sms-section>.tableRow>.tableCell>textarea{
+   width: 615px;
+}
+
+#send-sms-section>.tableRow>.tableCell>select{
+   width: 205px;
+}
