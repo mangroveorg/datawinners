@@ -49,13 +49,15 @@
     <script type="text/javascript" src="/media/javascript/datasender_modified_warning.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/send-sms.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms_index.js"></script>
 
 
 
     <script type="text/javascript">
         var user_dict = {{ user_dict|safe }};
         var import_datasenders_link = "{% url all_datasenders%}";
+        var send_sms_url = "{% url send-sms%}";
         var send_sms_url = "{% url send-sms%}";
         var registered_ds_count_url = "{% url registered_ds_count %}";
     </script>
