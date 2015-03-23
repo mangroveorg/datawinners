@@ -17,4 +17,4 @@ def migration_to_update_constraints_for_datasender_registration(db_name):
     logger.info('Completed Migration')
 
 
-migrate(all_db_names(), migration_to_update_constraints_for_datasender_registration, version=(21, 0, 2), threads=3)
+migrate(all_db_names(), migration_to_update_constraints_for_datasender_registration, version=(22, 0, 2), threads=3)

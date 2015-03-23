@@ -34,4 +34,4 @@ def seperate_datasender_and_contact_document(db_name):
     mark_as_completed(db_name)
 
 
-migrate(all_db_names(), seperate_datasender_and_contact_document, version=(21, 0, 1), threads=3)
+migrate(all_db_names(), seperate_datasender_and_contact_document, version=(22, 0, 1), threads=3)
