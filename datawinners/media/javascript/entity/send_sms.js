@@ -18,6 +18,8 @@ function SmsViewModel(){
   }, self);
 
 
+  self.showToSection = ko.observable(true);
+
   self.selectedSmsOption.subscribe(function(selectedOption){
 
       if(selectedOption == 'linked' && self.questionnaireItems().length == 0){
@@ -79,6 +81,7 @@ function SmsViewModel(){
     self.selectedQuestionnaireNames([]);
     self._resetSuccessMessage();
     self._resetErrorMessages();
+    self.showToSection(true);
   };
 
   self.closeSmsDialog = function(){

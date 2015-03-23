@@ -15,7 +15,6 @@ from datawinners.scheduler.smsclient import NoSMSCException
 
 
 class SendSMS(View):
-
     def _other_numbers(self, request):
         if request.POST['recipient'] == 'others':
             numbers = map(lambda i: i.strip(), request.POST['others'].split(","))
@@ -28,6 +27,7 @@ class SendSMS(View):
         search = Search(using=es, index=dbm.database_name, doc_type='reporter')
         search = search.fields('mobile_number')
         search = search.query("terms", projects_value=questionnaire_names)
+        search = search.query("term", void=False)
         body = search.to_dict()
         response = es.search(index=dbm.database_name, doc_type='reporter', body=body)
 
@@ -54,11 +54,12 @@ class SendSMS(View):
 
         failed_numbers = []
         try:
-            failed_numbers = broadcast_message(mobile_numbers, sms_text, organization_setting.get_organisation_sms_number()[0],
-                               other_numbers, message_tracker, country_code=organization.get_phone_country_code())
+            failed_numbers = broadcast_message(mobile_numbers, sms_text,
+                                               organization_setting.get_organisation_sms_number()[0],
+                                               other_numbers, message_tracker,
+                                               country_code=organization.get_phone_country_code())
         except NoSMSCException:
             no_smsc = True
-
 
         successful = len(failed_numbers) == 0 and not no_smsc
 
@@ -69,3 +70,20 @@ class SendSMS(View):
     @method_decorator(is_not_expired)
     def dispatch(self, *args, **kwargs):
         return super(SendSMS, self).dispatch(*args, **kwargs)
+
+
+def _get_all_contacts_mobile_numbers(dbm):
+    es = Elasticsearch()
+    search = Search(using=es, index=dbm.database_name, doc_type='reporter')
+    search = search.fields('mobile_number')
+    search = search.query("term", void=False)
+    body = search.to_dict()
+    response = es.search(index=dbm.database_name, doc_type='reporter', body=body)
+
+    return [item['fields']['mobile_number'] for item in response['hits']['hits']]
+
+
+def get_all_mobile_numbers(request):
+    dbm = get_database_manager(request.user)
+    mobile_numbers = _get_all_contacts_mobile_numbers(dbm)
+    return HttpResponse(json.dumps({'mobile_numbers': ", ".join(mobile_numbers)}))

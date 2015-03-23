@@ -74,6 +74,10 @@ DW.DataSenderActionHandler = function () {
     this["disassociate"] = function (table, selected_ids, all_selected) {
         add_remove_from_project('disassociate', table, selected_ids, all_selected);
     };
+    this["sendAMessage"] = function (table, selected_ids, all_selected) {
+        _populateAndShowSmsDialog(selected_ids, all_selected);
+
+    };
     this["mydsedit"] = function (table, selected_ids) {
         handle_datasender_edit(table, selected_ids);
     };
@@ -95,6 +99,31 @@ DW.DataSenderActionHandler = function () {
         );
     };
 };
+
+function _populateAndShowSmsDialog(selected_ids, all_selected){
+    if(!all_selected){
+        var contact_mobile_numbers = [];
+        $.each(selected_ids, function(index, rep_id){
+            var mobile_number = $($("input[value=" + rep_id +"]").closest("tr").children()[5]).text()
+            contact_mobile_numbers.push(mobile_number);
+        });
+        _showSmsDialog(contact_mobile_numbers.join(", "));
+    }
+    else{
+        $.get(all_contacts_mobile_number_url).done(function(response){
+            var response =  $.parseJSON(response);
+            _showSmsDialog(response['mobile_numbers']);
+        });
+    }
+}
+
+function _showSmsDialog(contact_mobile_numbers){
+    var smsViewModel = ko.contextFor($("#send-sms-section")[0]).$root;
+    smsViewModel.showToSection(false);
+    smsViewModel.selectedSmsOption("others");
+    smsViewModel.othersList(contact_mobile_numbers);
+    $("#send-sms-section").dialog('open');
+}
 
 function flash_message(msg, status) {
     $('.flash-message').remove();

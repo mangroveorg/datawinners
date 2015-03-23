@@ -5,7 +5,7 @@ from datawinners.entity.view.datasenders import RegisterDatasenderView
 from datawinners.entity.view.datasenders_autocomplete import AllDataSenderAutoCompleteView
 from datawinners.entity.view.import_template import import_template
 from datawinners.entity.view.questionnaires import get_existing_questionnaires
-from datawinners.entity.view.send_sms import SendSMS
+from datawinners.entity.view.send_sms import SendSMS, get_all_mobile_numbers
 from datawinners.entity.view.unique_id import delete_subjects
 from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax
 from datawinners.entity.views import create_subject, subject_autocomplete
@@ -45,5 +45,6 @@ urlpatterns = patterns('',
                        url(r'subject/delete_types', delete_subject_types),
                        url(r'questionnaires/$', get_existing_questionnaires, name="existing_questionnaires"),
                        url(r'superusersindssearched/$', UsersInSearchedDataSender.as_view(), name="superusers_in_ds_searched"),
-                       url(r'send-sms/$', SendSMS.as_view(), name="send-sms")
+                       url(r'send-sms/$', SendSMS.as_view(), name="send-sms"),
+                       url(r'get-all-mobile-numbers/$', get_all_mobile_numbers, name="get-all-mobile-numbers")
 )
