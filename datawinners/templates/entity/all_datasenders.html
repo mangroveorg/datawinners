@@ -14,9 +14,10 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_all_datasenders.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_all_datasenders.css" rel="stylesheet"/>
     <link href="/media/css/scss/import_popup.css" rel="stylesheet">
+    <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet">
 
 {% endblock %}
 
@@ -39,6 +40,7 @@
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
 
     <script type="text/javascript" src="/media/javascript/datasenders/datasender_import.js"></script>
+    <script type="text/javascript" src="/media/javascript/datasenders/contacts_group_controller.js"></script>
 
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
@@ -59,6 +61,8 @@
         var import_datasenders_link = "{% url all_datasenders%}";
         var send_sms_url = "{% url send-sms%}";
         var registered_ds_count_url = "{% url registered_ds_count %}";
+        var existing_groups = $.parseJSON({{ groups|safe }});
+        var selected_group = 'All Contacts'
     </script>
 {% endblock %}
 {% block main_message %}
@@ -67,31 +71,49 @@
 {% endblock %}
 {% load i18n %}
 {% block content %}
-    <div>
-        <div class="float_right">
-            <a id="register_link" class="add_subject_link" onclick="register_datasender()">
-                {% trans "Add a Contact" %}
-            </a> <span class="padding_left_right_10"> | </span>
-            <a href="javascript:void(0);" id="import-datasenders">{% trans "Import Contacts" %}</a>
-            </a> <span class="padding_left_right_10"> | </span>
-            {% if  is_pro_sms %}
-                <a id="send_sms">{% trans "Send an SMS" %}</a>
-            {% else %}
-                <a id="show_upgrade_message" class="grey" >{% trans "Send an SMS" %}</a>
-            {% endif %}
+    <div class="table">
+        <div class="tableCell"></div>
+        <div class="tableCell">
+            <div class="float_right">
+                <a id="register_link" class="add_subject_link" onclick="register_datasender()">
+                    {% trans "Add a Contact" %}
+                </a> <span class="padding_left_right_10"> | </span>
+                <a href="javascript:void(0);" id="import-datasenders">{% trans "Import Contacts" %}</a>
+                </a> <span class="padding_left_right_10"> | </span>
+                {% if  is_pro_sms %}
+                    <a id="send_sms">{% trans "Send an SMS" %}</a>
+                {% else %}
+                    <a id="show_upgrade_message" class="grey" >{% trans "Send an SMS" %}</a>
+                {% endif %}
 
+            </div>
+            <br/>
         </div>
-        <div style="display: none;">
-            <div id="popup-import" class="popup-import">
-                {% include "import-datasenders.html" %}
+        <div id="contacts_content" class="tableRow">
+            <div id="group_panel" class="tableCell">
+                <ol data-bind="foreach: {data: groups, as: 'group'}">
+                    <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
+                        <a href="javascript:void(0);" data-bind="text: $data.name"></a>
+                        <span class="selected_list_item_arrow"
+                              data-bind="css:{inline:group == $root.selectedGroup()}"></span>
+{#                        <div class="clear"></div>#}
+                    </li>
+                </ol>
+            </div>
+            <div id="contacts_panel" class="tableCell">
+                <div style="display: none;">
+                    <div id="popup-import" class="popup-import">
+                        {% include "import-datasenders.html" %}
+                    </div>
+                </div>
+
+                <div class="clear-both"></div>
+
+                {% include 'entity/all_data_senders/web_submission_access_block.html' %}
+                <h3 class="margin_top_20" hidden="true">{% trans "All Contacts " %}</h3>
+                {% include 'entity/all_datasenders_table.html' %}
             </div>
         </div>
-
-        <div class="clear-both"></div>
-
-        {% include 'entity/all_data_senders/web_submission_access_block.html' %}
-        <h3 class="margin_top_20" hidden="true">{% trans "All Contacts " %}</h3>
-        {% include 'entity/all_datasenders_table.html' %}
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     {% include 'entity/all_data_senders/all_project_blocks.html' %}

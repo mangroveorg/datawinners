@@ -784,3 +784,9 @@ a.dialog-anchor {
     border: 1px solid #b0cfd7;
     color: #333333;
 }
+span.selected_list_item_arrow {
+    background: url("/media/images/questions_hover_arrow.png") no-repeat scroll right top rgba(0, 0, 0, 0);
+    display: none;
+    padding: 16px;
+    position: absolute;
+}
