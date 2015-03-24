@@ -5,7 +5,9 @@
 
         var action_handler = new DW.DataSenderActionHandler();
 
-
+        function filter_as_json(){
+            return {'group_name': selected_group}
+        }
         $("#datasender_table").dwTable({
                 "concept": "Contact",
                 "sAjaxSource": datasender_ajax_url,
@@ -25,7 +27,8 @@
                 ],
                 "aoColumnDefs":[
                                 {"bSortable": false, "aTargets":[col("devices"),col("projects"), col("s-groups")]}
-                               ]
+                               ],
+                "getFilter": filter_as_json
 
           });
 });

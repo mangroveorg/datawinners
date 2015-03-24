@@ -12,9 +12,11 @@ from django.views.generic.base import TemplateView, View
 import jsonpickle
 from datawinners.accountmanagement.helper import create_web_users, get_org_id
 from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
-from datawinners.project.couch_view_helper import get_all_projects, get_project_id_name_map
+from datawinners.entity.group_helper import get_group_details
+from datawinners.project.couch_view_helper import get_project_id_name_map
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.datastore.entity import contact_by_short_code
+from mangrove.form_model.field import field_to_json
 from mangrove.transport import TransportInfo
 
 from datawinners import settings
@@ -38,6 +40,7 @@ from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDER
     REMOVED_DATA_SENDER_TO_QUESTIONNAIRES, DELETED_DATA_SENDERS
 from mangrove.transport.player.parser import XlsxDataSenderParser
 
+
 class AllDataSendersView(TemplateView):
     template_name = 'entity/all_datasenders.html'
 
@@ -48,6 +51,7 @@ class AllDataSendersView(TemplateView):
         in_trial_mode = organization.in_trial_mode
         is_pro_sms = organization.is_pro_sms
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
+        groups = get_group_details(manager)
 
         return self.render_to_response(RequestContext(request, {
             "user_dict": json.dumps(user_rep_id_name_dict),
@@ -55,6 +59,7 @@ class AllDataSendersView(TemplateView):
             'current_language': translation.get_language(),
             'in_trial_mode': in_trial_mode,
             'is_pro_sms': is_pro_sms,
+            'groups': repr(json.dumps(groups, default=field_to_json))
         }))
 
     def get_imported_data_senders(self, successful_imports):
@@ -120,12 +125,13 @@ class AllDataSendersAjaxView(View):
     def post(self, request, *args, **kwargs):
         user = request.user
         search_parameters = {}
+        search_filters = json.loads(request.POST.get('search_filters', ''))
         search_text = request.POST.get('sSearch', '').strip()
         search_parameters.update({"search_text": search_text})
         search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
         search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
         search_parameters.update({"sort_field": self._get_order_field(request.POST, user)})
-        #search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
+        search_parameters.update({"search_filters": search_filters})
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
         query_count, search_count, datasenders = DatasenderQuery(search_parameters).paginated_query(user, REPORTER)
