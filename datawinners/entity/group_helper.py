@@ -9,5 +9,5 @@ def get_group_details(dbm):
     _add_default_group(group_details)
     rows = dbm.load_all_rows_in_view('group_by_name')
     for row in rows:
-        group_details.append({'name':row['key']})
+        group_details.append({'name':row['value']['name']})
     return group_details
