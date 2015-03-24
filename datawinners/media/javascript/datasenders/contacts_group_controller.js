@@ -15,17 +15,6 @@ function ContactsGroupViewModel() {
     var self = this;
     self.groups = ko.observableArray();
 
-    //self.showUniqueIdTypeList = ko.computed(function(){
-    //    return self.uniqueIdTypes().length == 0;
-    //}, self);
-
-
-    //self.selectUniqueIdType = function (uniqueIdType) {
-    //    ProjectQuestionnaireViewModel.prototype.selectedQuestion().uniqueIdType(uniqueIdType);
-    //    self.isUniqueIdTypeVisible(false);
-    //    _clearNewUniqueIdError();
-    //};
-
     //self.newGroup = DW.ko.createValidatableObservable();
     //self.groupButtonText = ko.observable(gettext("Add"));
 
@@ -55,7 +44,7 @@ function ContactsGroupViewModel() {
         //$(this).addClass("group_selected");
     };
     self.selectedGroup.subscribe(function(new_group){
-        selected_group = new_group.name;
+        selected_group = new_group.name; //used to send group name as filter
         $("#datasender_table").dataTable().fnReloadAjax()
     });
 
@@ -64,10 +53,6 @@ function ContactsGroupViewModel() {
     //    self.newGroup.clearError();
     //}
 
-    //function _resetUniqueIdTypeContentState() {
-    //    _clearNewGroupError();
-    //    self.isUniqueIdTypeVisible(false);
-    //}
     self.loadGroup = function (group) {
         self.groups.push(group);
     };
@@ -79,10 +64,12 @@ function _initializeViewModel(){
     $(existing_groups).each(function(index, group){
             groupViewModel.loadGroup(new DW.group(group));
     });
+    //groupViewModel.changeSelectedGroup(groupViewModel.groups()[0]);
 }
 
 $(document).ready(function() {
     _initializeViewModel();
     var groupPanel = $("#group_panel");
     ko.applyBindings(groupViewModel, groupPanel[0]);
+    //groupViewModel.changeSelectedGroup(groupViewModel.groups()[0]);
 });

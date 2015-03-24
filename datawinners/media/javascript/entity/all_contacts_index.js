@@ -13,6 +13,7 @@
                 "sAjaxSource": datasender_ajax_url,
                 "sAjaxDataIdColIndex" : col("short_code"),
                 "bServerSide": true,
+                "iDeferLoading": 0,
                 "oLanguage": {
                     "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
                 },
