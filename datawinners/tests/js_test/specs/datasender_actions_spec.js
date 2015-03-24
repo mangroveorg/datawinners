@@ -4,6 +4,37 @@ describe('datasender actions', function () {
         tableSpy = jasmine.createSpy('table');
     });
 
+    describe('send a message', function(){
+
+        it('should show dialog with mobile numbers for selected contact ids', function(){
+            var selected_ids = ["id1", "id2"];
+            var all_selected = false;
+            var showSmsDialogMock = spyOn(window, "_showSmsDialog");
+
+            _populateAndShowSmsDialog(selected_ids, all_selected);
+
+            expect(showSmsDialogMock).toHaveBeenCalledWith("847308763, 56547658679")
+        });
+
+         it('should show dialog with mobile numbers for all contact ids', function(){
+            var selected_ids = ["id1", "id2"];
+            var all_selected = true;
+            var showSmsDialogMock = spyOn(window, "_showSmsDialog");
+
+            spyOn(jQuery, "ajax").andCallFake(function(){
+                var d = $.Deferred();
+                d.resolve('{"mobile_numbers": "1234, 4567"}');
+                return d.promise();
+            });
+
+            _populateAndShowSmsDialog(selected_ids, all_selected);
+
+            expect($.ajax.mostRecentCall.args[0]['url']).toEqual("all_contacts_mobile_number_url");
+            expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("get");
+            expect(showSmsDialogMock).toHaveBeenCalledWith("1234, 4567")
+        });
+    });
+
     describe('datasender action delete', function () {
 
         it('should call warning popup on deleting superusers', function () {

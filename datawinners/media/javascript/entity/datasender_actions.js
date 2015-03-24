@@ -104,7 +104,7 @@ function _populateAndShowSmsDialog(selected_ids, all_selected){
     if(!all_selected){
         var contact_mobile_numbers = [];
         $.each(selected_ids, function(index, rep_id){
-            var mobile_number = $($("input[value=" + rep_id +"]").closest("tr").children()[5]).text()
+            var mobile_number = $($("input[value=" + rep_id +"]").closest("tr").children()[5]).text();
             contact_mobile_numbers.push(mobile_number);
         });
         _showSmsDialog(contact_mobile_numbers.join(", "));
