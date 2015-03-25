@@ -26,7 +26,8 @@ def _create_contact_dict(dbm, entity_doc, form_model):
     contact_dict = _contact_dict(entity_doc, dbm, form_model)
     contact_dict.update({
                             "projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code),
-                            "groups": entity_doc.groups
+                            "groups": entity_doc.groups,
+                            "customgroups": entity_doc.custom_groups
                         })
     return contact_dict
 
@@ -70,5 +71,6 @@ def create_ds_mapping(dbm, form_model):
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects'))
     fields.append(TextField(name="groups", code='groups', label='My Groups'))
+    fields.append(TextField(name="customgroups", code='customgroups', label='Custom groups'))
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
 
