@@ -132,6 +132,20 @@ def _is_smart_phone_upgrade_info_flag_present(request):
     return request.GET.get('show-sp-upgrade-info', None) == '1'
 
 
+def _get_entity_types_with_no_registered_entities(dbm, entity_types):
+    if not entity_types:
+        return []
+
+    entity_types_with_no_registered_entities = []
+
+    for entity_type in entity_types:
+        count = get_entity_count_for_type(dbm, entity_type)
+        if count == 0:
+            entity_types_with_no_registered_entities.append(entity_type)
+
+    return entity_types_with_no_registered_entities
+
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -167,6 +181,7 @@ def project_overview(request, project_id):
             "Register %s to see them on this map") % questionnaire.entity_type[0] if get_entity_count_for_type(manager,
                                                                                                                questionnaire.entity_type[
                                                                                                                    0]) == 0 else ""
+
     entity_type = ""
     has_multiple_unique_id = False
     in_trial_mode = _in_trial_mode(request)
@@ -177,6 +192,8 @@ def project_overview(request, project_id):
     if len(questionnaire.entity_type) > 1:
         has_multiple_unique_id = True
         unique_id_header_text = "%s &" % ugettext("My Identification Numbers")
+
+    entity_types_with_no_registered_entities = _get_entity_types_with_no_registered_entities(manager, questionnaire.entity_type)
 
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': questionnaire,
@@ -194,6 +211,7 @@ def project_overview(request, project_id):
         'has_multiple_unique_id': has_multiple_unique_id,
         'show_sp_upgrade_info': _is_smart_phone_upgrade_info_flag_present(request),
         'entity_type': json.dumps(entity_type),
+        'entity_types_with_no_registered_entities': entity_types_with_no_registered_entities,
         'unique_id_header_text': unique_id_header_text,
         'org_number': get_organization_telephone_number(request),
         'open_survey_questionnaire': open_survey_questionnaire,
