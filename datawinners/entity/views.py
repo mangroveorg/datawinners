@@ -21,6 +21,7 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
     valid_web_user
 from datawinners.accountmanagement.helper import create_web_users
 from datawinners.entity.entity_export_helper import get_subject_headers
+from datawinners.entity.group_helper import create_new_group
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.main.database import get_database_manager
 from datawinners.main.utils import get_database_name
@@ -67,6 +68,20 @@ from datawinners.project.submission.export import export_to_new_excel
 websubmission_logger = logging.getLogger("websubmission")
 datawinners_logger = logging.getLogger("datawinners")
 
+
+@login_required
+@is_not_expired
+def create_group(request):
+    manager = get_database_manager(request.user)
+    new_group_name = request.POST.get('group_name')
+    try:
+        create_new_group(manager, new_group_name)
+        message = 'success'
+        success = True
+    except Exception as e:
+        message = 'Failed'
+        success = False
+    return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
 
 @login_required
 @is_not_expired

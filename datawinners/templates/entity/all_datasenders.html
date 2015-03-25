@@ -100,7 +100,17 @@
                     </li>
                 </ol>
                 <div class="add_group">
-                    <a class="add_link"  href="javascript:void(0);">Add a Group</a>
+                    <a class="add_link" data-bind="click:open" href="javascript:void(0);">Add a Group</a>
+                </div>
+                <div class="add_group_dialog" data-bind="dialog: {autoOpen: false,
+                                                        title:'Add Group' },
+                                               dialogVisible: isOpen,
+                                               dialogContent:addGroupDialogContent">
+                </div>
+                <div id="add_group_dialog_content" class="none">
+                    <span>Name</span>
+                    <input data-bind="value: newGroupName, valueUpdate: 'keypress'">
+                    <button data-bind="click: addNewGroup, text:$root.groupButtonText" class="button_blue">Add</button>
                 </div>
             </div>
             <div id="contacts_panel" class="tableCell">
@@ -120,7 +130,7 @@
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     {% include 'entity/all_data_senders/all_project_blocks.html' %}
-     <div id="datasender-popup" style="display:none;"></div>
+    <div id="datasender-popup" style="display:none;"></div>
     {% include "send-sms.html" %}
     {% csrf_token %}
 {% endblock %}

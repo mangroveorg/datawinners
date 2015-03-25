@@ -1,3 +1,4 @@
+from mangrove.datastore.group import Group
 
 
 def _add_default_group(group_details):
@@ -11,3 +12,8 @@ def get_group_details(dbm):
     for row in rows:
         group_details.append({'name':row['value']['name']})
     return group_details
+
+
+def create_new_group(dbm, group_name):
+    new_group = Group(dbm, group_name)
+    new_group.save()
