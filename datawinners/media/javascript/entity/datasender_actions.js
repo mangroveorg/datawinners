@@ -81,6 +81,22 @@ DW.DataSenderActionHandler = function () {
     this["mydsedit"] = function (table, selected_ids) {
         handle_datasender_edit(table, selected_ids);
     };
+    this["addtogroups"] = function(table, selected_ids){
+//        var group_names = ['group1', 'group2'];
+        $.get(all_groups_url).done(function(response) {
+            $.each(response['group_names'], function(index, group_item){
+                var group_name = group_item.name;
+                $("#all_groups").append($("<li><input type='checkbox' value=" + group_name + ">"+ group_name +"</input></li>"));
+            });
+            init_dialog_box_for_group();
+            $('#all_groups_block').dialog("open");
+         }
+        );
+
+
+
+    };
+
     this["remove_from_project"] = function(table, selectedIds, all_selected) {
         DW.loading();
         table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, selectedIds, all_selected);
@@ -392,6 +408,21 @@ function init_dialog_box_for_datasender() {
         }
     });
 
+}
+
+function init_dialog_box_for_group(){
+    $("#all_groups_block").dialog({
+        autoOpen: false,
+        modal: true,
+        zIndex: 1100,
+        width: 900,
+        beforeClose: function () {
+            $('#action').removeAttr("data-selected-action");
+        },
+        close:function(){
+            $("#datasender_table").dataTable().fnReloadAjax();
+        }
+    });
 }
 
 function handle_datasender_edit(table, selectedIds) {
