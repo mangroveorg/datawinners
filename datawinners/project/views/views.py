@@ -22,10 +22,10 @@ from datawinners.monitor.metric_path import create_path
 from datawinners.project.send_message import get_data_sender_phone_numbers
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_index import update_submission_search_for_subject_edition, \
-    get_unregistered_datasenders_count, get_non_deleted_submission_count, get_unregistered_datasenders
+    get_unregistered_datasenders
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
-from mangrove.datastore.queries import get_entity_count_for_type
+from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
@@ -38,7 +38,7 @@ from mangrove.transport.contract.transport_info import Channel
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, \
-    is_new_user, project_has_web_device, valid_web_user
+    project_has_web_device, valid_web_user
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -139,7 +139,7 @@ def _get_entity_types_with_no_registered_entities(dbm, entity_types):
     entity_types_with_no_registered_entities = []
 
     for entity_type in entity_types:
-        count = get_entity_count_for_type(dbm, entity_type)
+        count = get_non_voided_entity_count_for_type(dbm, entity_type)
         if count == 0:
             entity_types_with_no_registered_entities.append(entity_type)
 
@@ -157,7 +157,7 @@ def project_overview(request, project_id):
     open_survey_questionnaire= questionnaire.is_open_survey
     is_pro_sms = _is_pro_sms(request)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-
+    entity_types_with_no_registered_entities =[]
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
 
@@ -192,8 +192,8 @@ def project_overview(request, project_id):
     if len(questionnaire.entity_type) > 1:
         has_multiple_unique_id = True
         unique_id_header_text = "%s &" % ugettext("My Identification Numbers")
-
-    entity_types_with_no_registered_entities = _get_entity_types_with_no_registered_entities(manager, questionnaire.entity_type)
+    if questionnaire.xform:
+        entity_types_with_no_registered_entities = _get_entity_types_with_no_registered_entities(manager, questionnaire.entity_type)
 
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': questionnaire,
@@ -433,6 +433,7 @@ def questionnaire(request, project_id):
         project_has_submissions = (success + error > 0)
         in_trial_mode = _in_trial_mode(request)
         is_success = False
+        entity_types_with_no_registered_entities = _get_entity_types_with_no_registered_entities(manager, questionnaire.entity_type)
         active_language = request.LANGUAGE_CODE
         if "success" in [m.message for m in messages.get_messages(request)]:
             is_success = True
@@ -449,6 +450,7 @@ def questionnaire(request, project_id):
                                    'in_trial_mode': in_trial_mode,
                                    'show_xls_download_link': show_xls_download_link,
                                    'file_extension':file_extension,
+                                   'entity_types_with_no_registered_entities': entity_types_with_no_registered_entities,
                                    'post_url': reverse(edit_project, args=[project_id]),
                                    'preview_links': get_preview_and_instruction_links()},
                                   context_instance=RequestContext(request))

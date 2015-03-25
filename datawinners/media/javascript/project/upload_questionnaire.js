@@ -59,12 +59,14 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     var cancelUploadLink = $("#cancel-xlx-upload");
     var warningMessageBox = $(".warning-message-box");
     var flash_message = $("#xlx-message");
+    var existing_info = $('.information_box');
     new qq.FileUploader({
         element: document.getElementById('file_uploader'),
         action: options.postUrl(),
         params: {},
         buttonText: options.buttonText,
         onSubmit: function () {
+            existing_info.addClass('none');
             cancelUploadLink.removeClass("none");
             spinner.removeClass("none");
             flash_message.addClass("none");

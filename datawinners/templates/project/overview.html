@@ -54,17 +54,13 @@
     {% if entity_types_with_no_registered_entities %}
        {% for type in entity_types_with_no_registered_entities %}
             <div id="add_link" class="information_box clear-left">
-                <p class="instructions italic">
-                    {% blocktrans %}You have not registered a {{ type }} yet.{% endblocktrans %}
-                </p>
-                {% if project.id %}
-                    <a href={% url subject_questionnaire project.id, type %}?web_view=True>{% blocktrans %}Register a {{ type }}{% endblocktrans %}</a>
-                {% else %}
-                    <a class = "inactive_link ui-state-disabled">{% blocktrans %}Register a {{ type }}{% endblocktrans %}</a>
-                {% endif %}
+                    {% blocktrans %}You have not registered a {{ type }} yet. Making submission via Smartphone will not be possible.{% endblocktrans %}
+                    {% trans "Register a" %} <a target="_blank" href="{% url create_subject type %}?web_view=True">{{ type }}</a>.
             </div>
        {% endfor %}
+        <br/>
     {% endif %}
+
     <div class="span-18 box">
         <!--Success Message div-->
         {% include 'project/success_message.html' %}
