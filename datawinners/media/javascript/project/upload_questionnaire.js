@@ -36,7 +36,7 @@ DW.showInfo = function(infos){
     var flash_message = $("#xlx-info");
     flash_message.removeClass("none").removeClass("success-message-box").
         html(info_messages).show();
-    flash_message.delay(5000).fadeOut();
+    //flash_message.delay(5000).fadeOut();
 };
 DW.updateFilename = function(file_name){
     $("div.download_xls span.heading_block a").text(file_name);
