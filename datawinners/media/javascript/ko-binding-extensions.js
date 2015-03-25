@@ -188,6 +188,8 @@ ko.bindingHandlers.messageEditor = {
 ko.bindingHandlers.dialog = {
         init: function(element, valueAccessor, allBindingsAccessor) {
             var options = ko.utils.unwrapObservable(valueAccessor()) || {};
+            var dialog_content = ko.utils.unwrapObservable(allBindingsAccessor().dialogContent)||" ";
+            $(element).html(dialog_content);
             setTimeout(function() {
                 options.close = function() {
                     allBindingsAccessor().dialogVisible(false);
@@ -203,12 +205,10 @@ ko.bindingHandlers.dialog = {
         },
         update: function(element, valueAccessor, allBindingsAccessor) {
             var shouldBeOpen = ko.utils.unwrapObservable(allBindingsAccessor().dialogVisible),
-                dialog_content = ko.utils.unwrapObservable(allBindingsAccessor().dialogContent)||" ",
                 $el = $(element),
                 dialog = $el.data("uiDialog") || $el.data("dialog");
 
             if (dialog) {
-                $el.html(dialog_content);
                 $el.dialog(shouldBeOpen ? "open" : "close");
             }
         }

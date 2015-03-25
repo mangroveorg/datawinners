@@ -7,7 +7,8 @@ from datawinners.entity.view.import_template import import_template
 from datawinners.entity.view.questionnaires import get_existing_questionnaires
 from datawinners.entity.view.send_sms import SendSMS
 from datawinners.entity.view.unique_id import delete_subjects
-from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax
+from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax, \
+    create_group
 from datawinners.entity.views import create_subject, subject_autocomplete
 from datawinners.entity.views import create_type
 from datawinners.entity.views import all_subject_types, all_subjects, all_subjects_ajax
@@ -23,6 +24,7 @@ urlpatterns = patterns('',
                        url(r'subject/edit/(?P<entity_type>.+?)/(?P<entity_id>.+?)/$', edit_subject,
                            name="edit_subject"),
                        (r'type/create', create_type),
+                       (r'group/create', create_group),
                        (r'subjects/delete/$', delete_subjects),
                        (r'subjects/(?P<subject_type>.+?)/ajax/$', all_subjects_ajax),
                        url(r'subjects/(?P<subject_type>.+?)/$', all_subjects, name="all_subjects"),
