@@ -67,27 +67,20 @@
 }
 
 #contacts_panel {
-  float: left;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  //  width: 725px;
-  //  width: 1422px;
-  //  width: 80%;
-  height: auto;
-  background: #ffffff;
-  margin: 20px 15px 20px 0;
-  box-shadow: -5px -1px 10px #888888;;
+    float: left;
+  width: 80%;
+
+  .contacts_div {
+    height: auto;
+    background: #ffffff;
+    box-shadow: -5px -1px 10px #888888;
+    padding: 20px;
+  }
 }
 
 #group_panel {
-  background: none repeat scroll 0 0 #F0F0F0;
   width: 20%;
-  vertical-align: top;
-  //  background: url("/media/images/questions_bg.gif") repeat-y scroll right top #F2F2F2;
-  margin-right: 0;
-  min-height: 760px;
-  padding: 20px 0 0;
+  float:left;
   ol li {
     padding: 10px 15px;
     list-style: none;
@@ -101,6 +94,13 @@
     font-weight: normal;
     margin: 17px 0 0 15px;
   }
+  .group_div {
+    background: none repeat scroll 0 0 #F0F0F0;
+    vertical-align: top;
+    margin-right: 0;
+    min-height: 760px;
+    padding: 20px 0 0;
+  }
 }
 
 .selected {
@@ -108,19 +108,21 @@
 }
 
 #contacts_content {
-  margin-bottom: 20px;
-  min-height: 500px;
   background-color: #F0F0F0;
+  min-height: 500px;
   height: auto;
   border: 1px solid #CCBF97 !important;
-  padding-right: 17px;
-  margin-top: 10px;
   width: 100%;
+  .contacts_content_div {
+    margin-bottom: 20px;
+    padding-right: 17px;
+    margin-top: 10px;
+  }
 }
 
 
 span.selected_list_item_arrow{
-  left: 284px;
+  left: 271px;
 }
 #group-success {
   width:60%;
@@ -128,4 +130,8 @@ span.selected_list_item_arrow{
 
 .no-close .ui-dialog-titlebar-close {
   visibility: hidden;
+}
+
+.clearfix{
+  clear: both;
 }

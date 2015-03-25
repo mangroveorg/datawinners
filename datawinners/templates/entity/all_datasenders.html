@@ -30,10 +30,10 @@
     <link href="/media/css/scss/section_datasender_import.css" media="screen" rel="stylesheet"/>
     <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet" />
     <link href="/media/css/scss/send-sms.css" rel="stylesheet" />
+    <link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
 
 {% endblock %}
 
-{#{% load compress %}#}
 
 {% block page_js %}
     {{ block.super }}
@@ -85,9 +85,8 @@
 {% endblock %}
 {% load i18n %}
 {% block content %}
-    <div class="table">
-        <div class="tableCell"></div>
-        <div class="tableCell">
+    <div>
+        <div>
             <div class="float_right">
                 <a id="register_link" class="add_subject_link" onclick="register_datasender()">
                     {% trans "Add a Contact" %}
@@ -104,47 +103,54 @@
         <br/>
         <div id="group-success"  class="success-message-box none"></div>
         </div>
-        <div id="contacts_content" class="tableRow">
-            <div id="group_panel" class="tableCell">
-                <ol data-bind="foreach: {data: groups, as: 'group'}">
-                    <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
-                        <b class="padding_left_10" data-bind="text: $data.name"></b>
-                        <span class="selected_list_item_arrow"
-                              data-bind="css:{inline:group == $root.selectedGroup()}"></span>
-                    </li>
-                </ol>
-                <div class="add_group">
-                    <a class="add_link" data-bind="click:open" href="javascript:void(0);">{% trans "Add a Group" %}</a>
-                </div>
-                <div class="add_group_dialog" data-bind="dialog: {autoOpen: false, width: 475, height: 190,
-                                                        title:'Add Group', dialogClass:'no-close'},
-                                               dialogVisible: isOpen,
-                                               dialogContent:addGroupDialogContent">
-                </div>
-                <div id="add_group_dialog_content" class="none">
-                    <div>{% trans 'Name' %}</div>
-                    <input data-bind="value: newGroupName, valueUpdate: 'keypress'" type="text">
-                    <div class="validationMessage" data-bind="ifnot: newGroupValid">
-                        <span class="validationText" data-bind="text: newGroupError"></span>
-                    </div>
-                    <div class="float_right margin_top_40">
-                        <a data-bind="click: close_popup">{% trans 'Cancel' %}</a>
-                        <button data-bind="click: addNewGroup, text:$root.groupButtonText" class="button">{% trans 'Add' %}</button>
-                    </div>
-                </div>
-            </div>
-            <div id="contacts_panel" class="tableCell">
-                <div style="display: none;">
-                    <div id="popup-import" class="popup-import">
-                        {% include "import-datasenders.html" %}
+        <div id="contacts_content" >
+            <div class="contacts_content_div">
+                <div id="group_panel">
+                    <div class="group_div">
+                        <ol data-bind="foreach: {data: groups, as: 'group'}">
+                            <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
+                                <b class="padding_left_10" data-bind="text: $data.name"></b>
+                                <span class="selected_list_item_arrow"
+                                      data-bind="css:{inline:group == $root.selectedGroup()}"></span>
+                            </li>
+                        </ol>
+                        <div class="add_group">
+                            <a class="add_link" data-bind="click:open" href="javascript:void(0);">{% trans "Add a Group" %}</a>
+                        </div>
+                        <div class="add_group_dialog" data-bind="dialog: {autoOpen: false, width: 475, height: 190,
+                                                                title:'Add Group', dialogClass:'no-close'},
+                                                       dialogVisible: isOpen,
+                                                       dialogContent:addGroupDialogContent">
+                        </div>
+                        <div id="add_group_dialog_content" class="none">
+                            <div>{% trans 'Name' %}</div>
+                            <input data-bind="value: newGroupName, valueUpdate: 'keypress'" type="text">
+                            <div class="validationMessage" data-bind="ifnot: newGroupValid">
+                                <span class="validationText" data-bind="text: newGroupError"></span>
+                            </div>
+                            <div class="float_right margin_top_40">
+                                <a data-bind="click: close_popup">{% trans 'Cancel' %}</a>
+                                <button data-bind="click: addNewGroup, text:$root.groupButtonText" class="button">{% trans 'Add' %}</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div id="contacts_panel" class="">
+                    <div class="contacts_div">
+                        <div style="display: none;">
+                            <div id="popup-import" class="popup-import">
+                                {% include "import-datasenders.html" %}
+                            </div>
+                        </div>
 
-                <div class="clear-both"></div>
+                        <div class="clear-both"></div>
 
-                {% include 'entity/all_data_senders/web_submission_access_block.html' %}
-                <h3 class="margin_top_20" hidden="true">{% trans "All Contacts " %}</h3>
-                {% include 'entity/all_datasenders_table.html' %}
+                        {% include 'entity/all_data_senders/web_submission_access_block.html' %}
+                        <h3 class="margin_top_20" hidden="true">{% trans "All Contacts " %}</h3>
+                        {% include 'entity/all_datasenders_table.html' %}
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
