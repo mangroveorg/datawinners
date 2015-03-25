@@ -74,13 +74,7 @@ datawinners_logger = logging.getLogger("datawinners")
 def create_group(request):
     manager = get_database_manager(request.user)
     new_group_name = request.POST.get('group_name')
-    try:
-        create_new_group(manager, new_group_name)
-        message = 'success'
-        success = True
-    except Exception as e:
-        message = 'Failed'
-        success = False
+    success, message = create_new_group(manager, new_group_name)
     return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
 
 @login_required
