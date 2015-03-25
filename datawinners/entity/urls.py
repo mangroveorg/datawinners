@@ -3,6 +3,7 @@ from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataS
 from datawinners.entity.view.datasenders import EditDataSenderView
 from datawinners.entity.view.datasenders import RegisterDatasenderView
 from datawinners.entity.view.datasenders_autocomplete import AllDataSenderAutoCompleteView
+from datawinners.entity.view.groups import get_group_names
 from datawinners.entity.view.import_template import import_template
 from datawinners.entity.view.questionnaires import get_existing_questionnaires
 from datawinners.entity.view.send_sms import SendSMS
@@ -47,5 +48,6 @@ urlpatterns = patterns('',
                        url(r'subject/delete_types', delete_subject_types),
                        url(r'questionnaires/$', get_existing_questionnaires, name="existing_questionnaires"),
                        url(r'superusersindssearched/$', UsersInSearchedDataSender.as_view(), name="superusers_in_ds_searched"),
-                       url(r'send-sms/$', SendSMS.as_view(), name="send-sms")
+                       url(r'send-sms/$', SendSMS.as_view(), name="send-sms"),
+                       url(r'all-groups/$', get_group_names, name="all_groups")
 )

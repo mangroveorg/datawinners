@@ -62,7 +62,8 @@
         var send_sms_url = "{% url send-sms%}";
         var registered_ds_count_url = "{% url registered_ds_count %}";
         var existing_groups = $.parseJSON({{ groups|safe }});
-        var selected_group = 'All Contacts'
+        var selected_group = 'All Contacts';
+        var all_groups_url = "{% url all_groups%}";
     </script>
 {% endblock %}
 {% block main_message %}
@@ -129,6 +130,7 @@
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     {% include 'entity/all_data_senders/all_project_blocks.html' %}
+    {% include 'entity/all_data_senders/all_groups_blocks.html' %}
     <div id="datasender-popup" style="display:none;"></div>
     {% include "send-sms.html" %}
     {% csrf_token %}

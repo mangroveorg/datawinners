@@ -22,6 +22,7 @@
                     {"label":"Add to Questionnaire", handler:action_handler.associate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
                     {"label":"Remove from Questionnaire", handler:action_handler.disassociate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
                     {"label":"Give Web Submission Access", handler:action_handler.makewebuser, "allow_selection": "multiple"},
+                    {"label":"Add to Groups", handler:action_handler.addtogroups, "allow_selection": "multiple"},
                     {"label":"Edit", handler:action_handler.edit, "allow_selection": "single"},
                     {"label": "Delete", "handler":action_handler["delete"], "allow_selection": "multiple"}
                 ],
