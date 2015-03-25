@@ -44,7 +44,7 @@ function ContactsGroupViewModel() {
         //$(this).addClass("group_selected");
     };
     self.selectedGroup.subscribe(function (new_group) {
-        selected_group = new_group.name; //used to send group name as filter
+        selected_group = new_group.name(); //used to send group name as filter
         $("#datasender_table").dataTable().fnReloadAjax()
     });
 
