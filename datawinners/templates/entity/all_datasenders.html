@@ -53,6 +53,7 @@
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/send_sms_index.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/groups.js"></script>
 
 
 
@@ -64,6 +65,7 @@
         var existing_groups = $.parseJSON({{ groups|safe }});
         var selected_group = 'All Contacts';
         var all_groups_url = "{% url all_groups%}";
+        var assign_contact_to_groups_url = "{% url assign_contact_to_groups%}";
     </script>
 {% endblock %}
 {% block main_message %}

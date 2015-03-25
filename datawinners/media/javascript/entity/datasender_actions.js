@@ -77,19 +77,22 @@ DW.DataSenderActionHandler = function () {
     this["mydsedit"] = function (table, selected_ids) {
         handle_datasender_edit(table, selected_ids);
     };
-    this["addtogroups"] = function(table, selected_ids){
-//        var group_names = ['group1', 'group2'];
+    this["addtogroups"] = function(table, selected_ids, all_selected){
+
         $.get(all_groups_url).done(function(response) {
-            $.each(response['group_names'], function(index, group_item){
-                var group_name = group_item.name;
-                $("#all_groups").append($("<li><input type='checkbox' value=" + group_name + ">"+ group_name +"</input></li>"));
-            });
-            init_dialog_box_for_group();
-            $('#all_groups_block').dialog("open");
-         }
+                var allGroupsSection = $("#all_groups");
+                allGroupsSection.html("");
+                $.each(response['group_names'], function(index, group_item){
+                    var group_name = group_item.name;
+                    allGroupsSection.append($("<li><input type='checkbox' value=" + group_name + ">"+ group_name +"</input></li>"));
+                    allGroupsSection.data("selected_ids", selected_ids);
+                    allGroupsSection.data("all_selected", all_selected);
+                    allGroupsSection.data("current_group_name", selected_group);
+                });
+                init_dialog_box_for_group();
+                $('#all_groups_block').dialog("open");
+           }
         );
-
-
 
     };
 
@@ -382,7 +385,9 @@ function init_dialog_box_for_datasender() {
 }
 
 function init_dialog_box_for_group(){
-    $("#all_groups_block").dialog({
+    var allGroupsBlock = $("#all_groups_block");
+    allGroupsBlock.dialog("destroy");
+    allGroupsBlock.dialog({
         autoOpen: false,
         modal: true,
         zIndex: 1100,
