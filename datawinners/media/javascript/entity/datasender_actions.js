@@ -422,6 +422,7 @@ function register_datasender(table) {
             $("#datasender-popup").html(response) ;
             $("#datasender-popup").dialog('option','title', modal_header).dialog("open");
             reporter_id_generation_action();
+            updateShortCodeDisabledState();
             new DW.InitializeEditDataSender().init();
         }
     });

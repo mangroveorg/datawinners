@@ -15,7 +15,7 @@ $(document).on("click", "#id_register_button", function () {
             $("#id_location").catcomplete({
                 source: "/places"});
             reporter_id_generation_action();
-
+            updateShortCodeDisabledState();
             DW.set_focus_on_flash_message();
             new DW.InitializeEditDataSender().init();
         },
@@ -35,6 +35,14 @@ $(document).ready(function () {
     new DW.UniqueIdField("#registration_form");
 });
 
+function updateShortCodeDisabledState(){
+    if ($("#id_generated_id").is(":checked")) {
+        $(".subject_field").attr("disabled", "disabled");
+        $(".subject_field").val('');
+    } else {
+        $(".subject_field").removeAttr("disabled");
+    }
+}
 
 function reporter_id_generation_action() {
     $("#id_generated_id").on('click', function () {

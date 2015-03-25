@@ -45,7 +45,7 @@
             </li>
             {% if email %}
                 <li class="{{ form.name.css_classes }} form-row-10px" id="email-li">
-                    <label>{% trans "Email address" %}</label>
+                    <label>{% trans "E-Mail" %}</label>
                     {{ email }}
                 </li>
             {% else %}
@@ -58,9 +58,6 @@
             <li class="{{ form.location.css_classes }} form-row-10px">
                 <label>{% trans "Location" %}</label>
                 <ul class="location_section">
-                    <li class="italic_grey" style="margin-bottom: 5px">
-                        {% trans "location_example" %}
-                    </li>
                     <li>
                         {{ form.location.label_tag }}
                         {{ form.location }}

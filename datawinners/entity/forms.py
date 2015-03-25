@@ -63,11 +63,11 @@ class ReporterRegistrationForm(Form):
         initial=['sms'], required=False,)
     email = EmailField(required=False, widget=TextInput(attrs=dict({'class': 'required'},
         maxlength=75)),
-        label=_("Email address"),
+        label=_("E-Mail"),
         error_messages={
             'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
-    short_code = CharField(required=False, max_length=12, label=_("Unique ID"), widget=TextInput(attrs=dict({'class': 'subject_field','disabled':'disabled'})))
+    short_code = CharField(required=False, max_length=12, label=_("ID"), widget=TextInput(attrs=dict({'class': 'subject_field'})))
     generated_id = BooleanField(required=False, initial=True)
 
 #    Needed for telephone number validation

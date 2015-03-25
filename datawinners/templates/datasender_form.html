@@ -30,14 +30,6 @@ var sender_registration_link = "{{ registration_link }}";
               {{ form.name }}
               {{ form.name.errors }}
           </li>
-          <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
-              {{ form.email.label_tag }}
-              {{ form.email }}
-              {{ form.email.errors }}
-          </li>
-          <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text" id="email_field_help_text">
-                  {% trans "email_example" %}
-          </li>
 
           <li class="{{ form.telephone_number.css_classes }} form-row-10px">
               {{ form.telephone_number.label_tag }}
@@ -47,12 +39,16 @@ var sender_registration_link = "{{ registration_link }}";
           <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text">
                   {% trans "phone_number_example" %}
           </li>
+
+          <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
+              {{ form.email.label_tag }}
+              {{ form.email }}
+              {{ form.email.errors }}
+          </li>
+
           <li class="{{ form.location.css_classes }} form-row-10px">
               <label>{% trans "Location" %}</label>
               <ul class="location_section">
-                  <li class="italic_grey" style="margin-bottom: 5px">
-                      {% trans "location_example" %}
-                  </li>
                   <li>
                       {{ form.location.label_tag }}
                       {{ form.location }}

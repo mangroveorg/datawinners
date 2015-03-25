@@ -3879,17 +3879,11 @@ msgstr "CSR Magasin"
 msgid "CSR Warehouse description"
 msgstr "Commodity Status Report – Au Niveau du Magasin"
 
-msgid "email_example"
-msgstr "Entrez l’adresse e-mail de la personne à qui donner un accès Web et Smartphone"
-
 msgid "user_creation_info"
 msgstr "Cette personne recevra un e-mail comportant les instructions"
 
 msgid "location_name_example"
 msgstr "Réponse doit être un nom de lieu. Exemple: Nairobi"
-
-msgid "location_example"
-msgstr "Entrez un nom de lieu ou les coordonnées GPS."
 
 msgid "location_coordinate_example"
 msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude). Exemple: -18.1324,27.6547"
