@@ -157,3 +157,7 @@ def get_map_key(host):
 
 def random_string(length=6):
     return ''.join(random.sample('abcdefghijklmnopqrs', length))
+
+
+def is_empty_string(value):
+    return value is None or value.strip() == ''

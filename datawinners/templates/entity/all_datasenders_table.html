@@ -1,18 +1,5 @@
 {% load i18n %}
 <link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
-{% load compress %}
-{% compress js %}
-    <script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
-    <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
-    <script src="/media/javascript/data_tables/js/dwtable.js"></script>
-    <script src="/media/javascript/entity/datasender_actions.js"></script>
-    <script>
-        var datasender_ajax_url = "{% url all_datasenders_ajax %}";
-        var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
-        var number_of_projects = {{ projects|length }};
-    </script>
-    <script src="/media/javascript/entity/all_contacts_index.js"></script>
-{% endcompress %}
 <div>
     <table id='datasender_table' >
         <thead>

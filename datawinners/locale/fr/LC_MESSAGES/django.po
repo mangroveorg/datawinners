@@ -5722,3 +5722,15 @@ msgstr "Cette fonctionnalité n’est pas disponible pour les utilisateurs de co
 
 msgid "This feature is not available to Basic account users. Sign up for a monthly subscription to send SMS messages from your DataWinners account."
 msgstr "Cette fonctionnalité n’est pas disponible pour les utilisateurs de compte Essai. Enregistrez-vous pour un abonnement mensuel pour envoyer des SMS depuis votre compte DataWinners."
+
+msgid "Add a Group"
+msgstr "Ajouter un Groupe"
+
+msgid "Groups"
+msgstr "Groupes"
+
+msgid "Group with same name already exists."
+msgstr "Un Groupe du même nom existe déjà."
+
+msgid "Group %s has been added successfully."
+msgstr "Le Groupe %s a été ajouté avec succès."

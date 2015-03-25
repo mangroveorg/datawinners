@@ -14,9 +14,14 @@ DW.group.prototype = {
 function ContactsGroupViewModel() {
     var self = this;
     self.groups = ko.observableArray();
-
     self.groupButtonText = ko.observable(gettext("Add"));
     self.newGroupName = ko.observable('');
+    self.newGroupError = ko.observable('');
+    self.newGroupValid = ko.observable(true);
+    self.selectedGroup = ko.observable();
+    self.isOpen = ko.observable(false);
+    self.addGroupDialogContent = ko.observable($('#add_group_dialog_content').html());
+
     self.addNewGroup = function () {
         var newGroup = new DW.group({'name': self.newGroupName()});
         self.groupButtonText(gettext("Adding..."));
@@ -29,52 +34,52 @@ function ContactsGroupViewModel() {
                 var response = $.parseJSON(responseString);
                 if (response.success) {
                     self.groups().push(newGroup);
-                    self.newGroupName('');
-                    //self.newGroup.clearError();
+                    self.newGroupValid(true);
+                    self.show_success_message(response.message);
                     self.groups.valueHasMutated();
+                    self.close_popup();
                 }
                 else {
-                    //self.newGroup.setError(response.message);
+                    self.newGroupValid(false);
+                    self.newGroupError(response.message)
                 }
             });
     };
-    self.selectedGroup = ko.observable();
+    self.close_popup = function () {
+        self.newGroupName('');
+        self.newGroupValid(true);
+        self.newGroupError('');
+        self.isOpen(false);
+    };
+    self.show_success_message = function (message) {
+        $('#group-success').removeClass('none');
+        $('#group-success').html(message);
+    };
+
     self.changeSelectedGroup = function (group) {
         self.selectedGroup(group);
-        //$(this).addClass("group_selected");
     };
+
     self.selectedGroup.subscribe(function (new_group) {
         selected_group = new_group.name(); //used to send group name as filter
         $("#datasender_table").dataTable().fnReloadAjax()
     });
 
-    //function _clearNewGroupError() {
-    //    self.newGroup("");
-    //    self.newGroup.clearError();
-    //}
 
     self.loadGroup = function (group) {
         self.groups.push(group);
     };
-    self.isOpen = ko.observable(false);
+
     self.open = function () {
         self.isOpen(true);
     };
-    self.addGroupDialogContent = ko.observable($('#add_group_dialog_content').html());
-
 
 }
-function _initializeViewModel() {
+function initializeContactGroupViewModel() {
     window.groupViewModel = new ContactsGroupViewModel();
+    var default_group = new DW.group({'name':'All Contacts'});
+    groupViewModel.loadGroup(default_group);
     $(existing_groups).each(function (index, group) {
         groupViewModel.loadGroup(new DW.group(group));
     });
-    //groupViewModel.changeSelectedGroup(groupViewModel.groups()[0]);
 }
-
-$(document).ready(function () {
-    _initializeViewModel();
-    var groupPanel = $("#group_panel");
-    ko.applyBindings(groupViewModel, groupPanel[0]);
-    //groupViewModel.changeSelectedGroup(groupViewModel.groups()[0]);
-});

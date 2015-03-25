@@ -33,8 +33,15 @@
 
 {% endblock %}
 
+{#{% load compress %}#}
+
 {% block page_js %}
     {{ block.super }}
+    <script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+    <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+    <script src="/media/javascript/data_tables/js/dwtable.js"></script>
+    <script src="/media/javascript/entity/datasender_actions.js"></script>
+
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
@@ -55,6 +62,7 @@
     <script type="text/javascript" src="/media/javascript/entity/send_sms_index.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/groups.js"></script>
 
+    <script src="/media/javascript/entity/all_contacts_index.js"></script>
 
 
     <script type="text/javascript">
@@ -64,9 +72,12 @@
         var registered_ds_count_url = "{% url registered_ds_count %}";
         var all_contacts_mobile_number_url = "{% url get-all-mobile-numbers %}";
         var existing_groups = $.parseJSON({{ groups|safe }});
-        var selected_group = 'All Contacts';
         var all_groups_url = "{% url all_groups%}";
         var assign_contact_to_groups_url = "{% url assign_contact_to_groups%}";
+        var selected_group = 'All Contacts'
+        var datasender_ajax_url = "{% url all_datasenders_ajax %}";
+        var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
+        var number_of_projects = {{ projects|length }};
     </script>
 {% endblock %}
 {% block main_message %}
@@ -91,29 +102,36 @@
                 {% endif %}
 
             </div>
-            <br/>
+        <br/>
+        <div id="group-success"  class="success-message-box none"></div>
         </div>
         <div id="contacts_content" class="tableRow">
             <div id="group_panel" class="tableCell">
                 <ol data-bind="foreach: {data: groups, as: 'group'}">
                     <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
-                        <a href="javascript:void(0);" data-bind="text: $data.name"></a>
+                        <b class="padding_left_10" data-bind="text: $data.name"></b>
                         <span class="selected_list_item_arrow"
                               data-bind="css:{inline:group == $root.selectedGroup()}"></span>
                     </li>
                 </ol>
                 <div class="add_group">
-                    <a class="add_link" data-bind="click:open" href="javascript:void(0);">Add a Group</a>
+                    <a class="add_link" data-bind="click:open" href="javascript:void(0);">{% trans "Add a Group" %}</a>
                 </div>
-                <div class="add_group_dialog" data-bind="dialog: {autoOpen: false,
-                                                        title:'Add Group' },
+                <div class="add_group_dialog" data-bind="dialog: {autoOpen: false, width: 475, height: 190,
+                                                        title:'Add Group', dialogClass:'no-close'},
                                                dialogVisible: isOpen,
                                                dialogContent:addGroupDialogContent">
                 </div>
                 <div id="add_group_dialog_content" class="none">
-                    <span>Name</span>
-                    <input data-bind="value: newGroupName, valueUpdate: 'keypress'">
-                    <button data-bind="click: addNewGroup, text:$root.groupButtonText" class="button_blue">Add</button>
+                    <div>{% trans 'Name' %}</div>
+                    <input data-bind="value: newGroupName, valueUpdate: 'keypress'" type="text">
+                    <div class="validationMessage" data-bind="ifnot: newGroupValid">
+                        <span class="validationText" data-bind="text: newGroupError"></span>
+                    </div>
+                    <div class="float_right margin_top_40">
+                        <a data-bind="click: close_popup">{% trans 'Cancel' %}</a>
+                        <button data-bind="click: addNewGroup, text:$root.groupButtonText" class="button">{% trans 'Add' %}</button>
+                    </div>
                 </div>
             </div>
             <div id="contacts_panel" class="tableCell">

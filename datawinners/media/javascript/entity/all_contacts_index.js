@@ -33,4 +33,8 @@
                 "getFilter": filter_as_json
 
           });
+        initializeContactGroupViewModel();
+        var groupPanel = $("#group_panel");
+        ko.applyBindings(groupViewModel, groupPanel[0]);
+        groupViewModel.changeSelectedGroup(groupViewModel.groups()[0]);
 });
