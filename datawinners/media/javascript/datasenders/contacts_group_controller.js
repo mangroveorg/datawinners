@@ -1,6 +1,7 @@
 DW.group = function (group) {
     var defaults = {
-        name: ''
+        name: '',
+        code:''
     };
     this.options = $.extend(true, defaults, group);
     this._init();
@@ -9,6 +10,7 @@ DW.group.prototype = {
     _init: function () {
         var g = this.options;
         this.name = ko.observable(g.name);
+        this.code = ko.observable(g.name);
     }
 };
 function ContactsGroupViewModel() {
@@ -61,7 +63,7 @@ function ContactsGroupViewModel() {
     };
 
     self.selectedGroup.subscribe(function (new_group) {
-        selected_group = new_group.name(); //used to send group name as filter
+        selected_group = new_group.code(); //used to send group name as filter
         $("#datasender_table").dataTable().fnReloadAjax()
     });
 
@@ -78,6 +80,7 @@ function ContactsGroupViewModel() {
 function initializeContactGroupViewModel() {
     window.groupViewModel = new ContactsGroupViewModel();
     var default_group = new DW.group({'name':'All Contacts'});
+    default_group.code('');
     groupViewModel.loadGroup(default_group);
     $(existing_groups).each(function (index, group) {
         groupViewModel.loadGroup(new DW.group(group));
