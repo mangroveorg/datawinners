@@ -105,11 +105,11 @@ class DatasenderQueryResponseCreator():
         else:
             result.append("")
 
-    def create_response(self, required_field_names, query):
+    def create_response(self, required_field_names, search_results):
         required_field_names.append("groups")
 
         datasenders = []
-        for res in query.values_dict(tuple(required_field_names)):
+        for res in search_results.hits:
             result = []
             for key in required_field_names:
                 if key is "devices":
@@ -125,16 +125,17 @@ class DatasenderQueryResponseCreator():
 
     def add_check_symbol_for_row(self, datasender, result):
         check_img = '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">'
-        if "email" in datasender.keys() and datasender["email"]:
+        if datasender.get("email"):
             result.extend([check_img + check_img + check_img])
         else:
             result.extend([check_img])
 
 
 class MyDatasenderQueryResponseCreator(DatasenderQueryResponseCreator):
-    def create_response(self, required_field_names, query):
+    def create_response(self, required_field_names, search_results):
+        required_field_names.append("groups")
         datasenders = []
-        for res in query.values_dict(tuple(required_field_names)):
+        for res in search_results.hits:
             result = []
             for key in required_field_names:
                 if key is "devices":

@@ -14,6 +14,8 @@ from datawinners.accountmanagement.helper import create_web_users, get_org_id
 from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
 from datawinners.entity.group_helper import get_group_details
 from datawinners.project.couch_view_helper import get_project_id_name_map
+from datawinners.search.all_datasender_search import get_datasenders, get_data_sender_count, \
+    get_data_sender_without_group_filters_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.form_model.field import field_to_json
@@ -29,7 +31,7 @@ from datawinners.entity.helper import delete_entity_instance, delete_datasender_
 from datawinners.project.models import delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports
-from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
+from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery, DatasenderQueryResponseCreator
 from mangrove.form_model.form_model import REPORTER, header_fields, get_form_model_by_code
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
@@ -124,6 +126,7 @@ class AllDataSendersAjaxView(View):
 
     def post(self, request, *args, **kwargs):
         user = request.user
+        manager = get_database_manager(user)
         search_parameters = {}
         search_filters = json.loads(request.POST.get('search_filters', ''))
         search_text = request.POST.get('sSearch', '').strip()
@@ -134,15 +137,19 @@ class AllDataSendersAjaxView(View):
         search_parameters.update({"search_filters": search_filters})
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
-        query_count, search_count, datasenders = DatasenderQuery(search_parameters).paginated_query(user, REPORTER)
+        query_fields, datasenders = get_datasenders(manager, search_parameters)
+        total_count = get_data_sender_without_group_filters_count(manager)
+        filtered_count = get_data_sender_count(manager, search_parameters)
+        datasenders = DatasenderQueryResponseCreator().create_response(query_fields, datasenders)
+        # total_count, filtered_count, datasenders = DatasenderQuery(search_parameters).paginated_query(user, REPORTER)
 
         return HttpResponse(
             jsonpickle.encode(
                 {
                     'data': datasenders,
-                    'iTotalDisplayRecords': query_count,
+                    'iTotalDisplayRecords': total_count,
                     'iDisplayStart': int(request.POST.get('iDisplayStart')),
-                    "iTotalRecords": search_count,
+                    "iTotalRecords": filtered_count,
                     'iDisplayLength': int(request.POST.get('iDisplayLength'))
                 }, unpicklable=False), content_type='application/json')
 
