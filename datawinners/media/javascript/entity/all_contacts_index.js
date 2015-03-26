@@ -37,6 +37,5 @@
         var groupPanel = $("#group_panel");
         ko.applyBindings(groupViewModel, groupPanel[0]);
         groupViewModel.changeSelectedGroup(groupViewModel.groups()[0]);
-
         DW.GroupManager({'assign_contact_to_groups_url': assign_contact_to_groups_url});
 });
