@@ -1486,3 +1486,6 @@ msgstr "Contacts liés à un Questionnaire"
 
 msgid " recipients"
 msgstr " destinataires"
+
+msgid "Add to Groups"
+msgstr "Ajouter aux Groupes"

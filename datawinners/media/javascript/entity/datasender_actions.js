@@ -419,6 +419,7 @@ function init_dialog_box_for_group(){
     allGroupsBlock.dialog({
         autoOpen: false,
         modal: true,
+        title: gettext("Add to Groups"),
         zIndex: 1100,
         width: 900,
         beforeClose: function () {
