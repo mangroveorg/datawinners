@@ -32,4 +32,4 @@ def add_custom_group_field_to_data_sender_mapping(db_name):
     mark_as_completed(db_name)
 
 
-migrate(all_db_names(), add_custom_group_field_to_data_sender_mapping, version=(22, 0, 1), threads=3)
+migrate(all_db_names(), add_custom_group_field_to_data_sender_mapping, version=(22, 0, 3), threads=3)
