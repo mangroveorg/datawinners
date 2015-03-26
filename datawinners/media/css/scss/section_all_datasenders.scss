@@ -74,7 +74,7 @@
     height: auto;
     background: #ffffff;
     box-shadow: -5px -1px 10px #888888;
-    padding: 20px;
+    padding: 20px 20px 40px;
   }
 }
 
@@ -130,8 +130,4 @@ span.selected_list_item_arrow{
 
 .no-close .ui-dialog-titlebar-close {
   visibility: hidden;
-}
-
-.clearfix{
-  clear: both;
 }
