@@ -22,7 +22,9 @@ DW.GroupManager = function(options){
                 'all_selected' : all_selected,
                 'current_group_name': current_group_name
         }}).done(function(response){
-            console.log(response.success);
+            flash_message(response.message, response.success);
+            $("#datasender_table").dataTable().fnReloadAjax();
+            $("#all_groups_block").dialog("close");
         });
 
     });

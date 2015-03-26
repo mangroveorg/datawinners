@@ -45,11 +45,12 @@ def assign_contact_to_groups(request):
         else:
             contact_ids = _get_reporter_ids_for_group_name(dbm, current_group_name)
             _update_group_for_contacts(contact_ids, dbm, group_names)
+        message = ugettext('The Contact(s) are added to Group(s) successfully.')
     except Exception:
         # log exception
+        message = ugettext('Failed to add in to group.')
         success = False
-
-    return HttpResponse(content=json.dumps({'success': success}), content_type='application/json')
+    return HttpResponse(content=json.dumps({'success': success, 'message':message}), content_type='application/json')
 
 def _get_reporter_ids_for_group_name(dbm, group_name):
         es = Elasticsearch()

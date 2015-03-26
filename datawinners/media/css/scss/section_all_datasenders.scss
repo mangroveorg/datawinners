@@ -131,3 +131,14 @@ span.selected_list_item_arrow{
 .no-close .ui-dialog-titlebar-close {
   visibility: hidden;
 }
+
+#all_groups_block {
+  ul li label{
+    display: inline;
+  }
+}
+
+.all_groups_dialog {
+  min-width: 300px;
+  width: auto;
+}

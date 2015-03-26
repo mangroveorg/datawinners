@@ -14,7 +14,7 @@ from datawinners.accountmanagement.helper import create_web_users, get_org_id
 from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
 from datawinners.entity.group_helper import get_group_details
 from datawinners.project.couch_view_helper import get_project_id_name_map
-from datawinners.search.all_datasender_search import get_datasenders, get_data_sender_count, \
+from datawinners.search.all_datasender_search import get_data_sender_search_results, get_data_sender_count, \
     get_data_sender_without_group_filters_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.datastore.entity import contact_by_short_code
@@ -137,7 +137,7 @@ class AllDataSendersAjaxView(View):
         search_parameters.update({"search_filters": search_filters})
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
-        query_fields, datasenders = get_datasenders(manager, search_parameters)
+        query_fields, datasenders = get_data_sender_search_results(manager, search_parameters)
         total_count = get_data_sender_without_group_filters_count(manager)
         filtered_count = get_data_sender_count(manager, search_parameters)
         datasenders = DatasenderQueryResponseCreator().create_response(query_fields, datasenders)

@@ -25,7 +25,7 @@ from datawinners.entity.helper import rep_id_name_dict_of_users
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import is_project_exist
 from datawinners.project.views.views import get_project_link, _in_trial_mode, _is_pro_sms
-from datawinners.search.all_datasender_search import get_datasenders, get_data_sender_without_group_filters_count, \
+from datawinners.search.all_datasender_search import get_data_sender_search_results, get_data_sender_without_group_filters_count, \
     get_data_sender_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.entity_search import MyDataSenderQuery, MyDatasenderQueryResponseCreator, \
@@ -54,7 +54,7 @@ class MyDataSendersAjaxView(View):
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
         search_parameters.update({"project_name": project_name_unquoted})
 
-        query_fields, search_results = get_datasenders(manager, search_parameters)
+        query_fields, search_results = get_data_sender_search_results(manager, search_parameters)
         total_count = get_data_sender_without_group_filters_count(manager)
         filtered_count = get_data_sender_count(manager, search_parameters)
         query_fields.remove('projects')

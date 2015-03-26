@@ -48,10 +48,14 @@ def _add_search_filters(search_filter_param, query_fields, search):
 
     group_name = search_filter_param.get('group_name')
     if group_name:
-        search = search.query("term", customgroup_value=group_name.lower())
+        search = search.query("term", customgroups_value=group_name.lower())
     project_name = search_filter_param.get('project_name')
     if project_name:
         search = search.query("term", projects_value=project_name.lower())
+
+    projects_name = search_filter_param.get('projects')
+    if projects_name:
+        search = search.query("terms", projects_value=projects_name)
     return search
 
 
@@ -77,7 +81,7 @@ def get_data_sender_count(dbm, search_parameters):
     return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits']['total']
 
 
-def get_datasenders(dbm, search_parameters):
+def get_data_sender_search_results(dbm, search_parameters):
     es = Elasticsearch()
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
     search = _add_pagination_criteria(search_parameters, search)

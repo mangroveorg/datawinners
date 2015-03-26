@@ -5734,3 +5734,6 @@ msgstr "Un Groupe du même nom existe déjà."
 
 msgid "Group %s has been added successfully."
 msgstr "Le Groupe %s a été ajouté avec succès."
+
+msgid "The Contact(s) are added to Group(s) successfully."
+msgstr "Le(s) Contact(s) ont été ajouté(s) au(x) Groupe(s) avec succès."
