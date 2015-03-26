@@ -5702,4 +5702,4 @@ msgid "Entered default value is not defined in the choices list."
 msgstr "La valeur par défaut saisie n’est pas définie dans la liste de choix."
 
 msgid "You have not registered a %(type)s yet. Making submission via Smartphone will not be possible."
-msgstr "Vous n’avez pas encore enregistré un Region. Collecter des données à partir de Smartphone ne sera pas possible."
+msgstr "Vous n’avez pas encore enregistré un %(type)s. Collecter des données à partir de Smartphone ne sera pas possible."
