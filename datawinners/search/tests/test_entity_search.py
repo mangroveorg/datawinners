@@ -26,25 +26,11 @@ class TestSubjectQueryResponseCreator(TestCase):
 
 
 class TestDatasenderQueryResponseCreator(TestCase):
-    def test_should_return_datasender_with_field_values_specified(self):
-        required_field_names = ['field_name1', 'field_name2']
-        query = Mock()
-        query.values_dict.return_value = [{
-                                              "field_name1": "field_value11",
-                                              "field_name2": "field_value12"
-                                          }, {
-                                              "field_name1": "field_value21",
-                                              "field_name2": "field_value22"
-                                          }]
-
-        datasenders = DatasenderQueryResponseCreator().create_response(required_field_names, query)
-        query.values_dict.assert_called_with(("field_name1", "field_name2", "groups"))
-        self.assertEquals(datasenders, [["field_value11", "field_value12", ""], ["field_value21", "field_value22", ""]])
 
     def test_should_return_datasender_with_space_seperated_projects(self):
         required_field_names = ['field_name1', 'projects']
-        query = Mock()
-        query.values_dict.return_value = [{
+        query = MagicMock()
+        query.hits = [{
                                               "field_name1": "field_value11",
                                               "projects": ["p1", "p2"]
                                           }, {
@@ -53,7 +39,7 @@ class TestDatasenderQueryResponseCreator(TestCase):
                                           }]
 
         datasenders = DatasenderQueryResponseCreator().create_response(required_field_names, query)
-        query.values_dict.assert_called_with(("field_name1", "projects", "groups"))
+        # query.values_dict.assert_called_with(("field_name1", "projects", "groups"))
         self.assertEquals(datasenders, [["field_value11", "p1, p2", ""], ["field_value21", "p1, p2, p3", ""]])
 
     def test_add_check_symbol_for_datasender_row(self):
