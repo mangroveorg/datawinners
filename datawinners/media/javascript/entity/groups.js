@@ -1,4 +1,7 @@
-$(function(){
+DW.GroupManager = function(options){
+
+    var all_groups_list = $('#all_groups');
+    var cancel_dialog_link = $("#cancel_group_dialog");
 
     $("#add_contacts_to_group").on('click', function(){
         var group_names = [];
@@ -6,11 +9,11 @@ $(function(){
             group_names.push(item.value);
         });
 
-        var contacts = $('#all_groups').data()['selected_ids'];
-        var current_group_name = $('#all_groups').data()['current_group_name'];
-        var all_selected = $('#all_groups').data()['all_selected'];
+        var contacts = all_groups_list.data()['selected_ids'];
+        var current_group_name = all_groups_list.data()['current_group_name'];
+        var all_selected = all_groups_list.data()['all_selected'];
         $.ajax({
-            url: assign_contact_to_groups_url,
+            url: options.assign_contact_to_groups_url,
             type: "POST",
             headers: { "X-CSRFToken": $.cookie('csrftoken') },
             'data': {
@@ -24,9 +27,8 @@ $(function(){
 
     });
 
-    $("#cancel_group_dialog").on('click', function(){
+    cancel_dialog_link.on('click', function(){
         $("#all_groups_block").dialog("close");
     });
 
-
-});
+};
