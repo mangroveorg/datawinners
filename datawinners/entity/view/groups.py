@@ -55,7 +55,7 @@ def _get_reporter_ids_for_group_name(dbm, group_name):
         es = Elasticsearch()
         search = Search(using=es, index=dbm.database_name, doc_type='reporter')
         search = search.fields('short_code')
-        if group_name != ugettext('All Contacts'):
+        if group_name:
             search = search.query("term", custom_groups_value=group_name.lower())
         search = search.query("term", void=False)
         body = search.to_dict()
