@@ -17,6 +17,7 @@
         }
         }
         var DW = {};
+        var selected_group = 'group'
     </script>
     <!-- lib files goes first; Change the order at your own risk -->
     <link href="../../../media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
@@ -24,6 +25,7 @@
     <link href="../js_libs/jasmine_reporters/jasmine.css" rel="stylesheet"/>
 
     <script src="../../../media/javascript/jquery.js"></script>
+    <script src="../../../media/javascript/jquery.cookie.js"></script>
     <script src="../../../media/javascript/jquery.blockUI.js"></script>
     <script src="../../../media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../../../media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
@@ -43,6 +45,9 @@
 </head>
 
 <body>
+    <div class="dataTables_filter">
+        <input value="dummy_search" type="text">
+    </div>
     <table>
         <th><td></td><td></td><td></td><td></td><td></td></th>
         <tr>

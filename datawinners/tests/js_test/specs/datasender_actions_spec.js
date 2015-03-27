@@ -30,7 +30,10 @@ describe('datasender actions', function () {
             _populateAndShowSmsDialog(selected_ids, all_selected);
 
             expect($.ajax.mostRecentCall.args[0]['url']).toEqual("all_contacts_mobile_number_url");
-            expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("get");
+            expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("POST");
+            var requestBody = $.ajax.mostRecentCall.args[0].data;
+            expect(requestBody['group_name']).toEqual("group");
+            expect(requestBody['search_query']).toEqual("dummy_search");
             expect(showSmsDialogMock).toHaveBeenCalledWith("1234, 4567")
         });
     });
