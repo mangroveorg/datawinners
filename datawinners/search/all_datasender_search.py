@@ -1,5 +1,5 @@
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search
+from elasticsearch_dsl import Search, Q
 
 from datawinners.search.query import ElasticUtilsHelper
 from mangrove.form_model.project import get_entity_type_fields
@@ -62,6 +62,11 @@ def _add_free_text_search_query(query_fields, search, search_filter_param):
     return search
 
 
+def _restrict_test_ds_query(search):
+    search = search.query(~Q('term', short_code_value='test'))
+    return search
+
+
 def _add_search_filters(search_filter_param, query_fields, search):
     if not search_filter_param:
         return search
@@ -69,6 +74,7 @@ def _add_search_filters(search_filter_param, query_fields, search):
     search = _add_free_text_search_query(query_fields, search, search_filter_param)
     search = _add_group_query(search, search_filter_param)
     search = _add_project_query(search, search_filter_param)
+    search = _restrict_test_ds_query(search)
     return search
 
 
@@ -83,6 +89,7 @@ def get_data_sender_without_search_filters_count(dbm, search_parameters):
     es = Elasticsearch()
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
     search = _add_group_query(search, search_parameters.get('search_filters', {}))
+    search = _restrict_test_ds_query(search)
     body = search.to_dict()
     return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits']['total']
 
