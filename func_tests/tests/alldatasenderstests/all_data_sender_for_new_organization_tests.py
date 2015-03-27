@@ -1,12 +1,8 @@
-import unittest
-import time
-
 from nose.plugins.attrib import attr
 
-from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
+from framework.base_test import HeadlessRunnerTest
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
-from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.registrationtests.registration_data import REGISTRATION_SUCCESS_MESSAGE
 from tests.registrationtests.registration_tests import register_and_get_email

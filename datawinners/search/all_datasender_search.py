@@ -82,7 +82,7 @@ def _add_filters(dbm, search_parameters, search):
 def get_data_sender_without_search_filters_count(dbm, search_parameters):
     es = Elasticsearch()
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
-    search = _add_group_query(search, search_parameters.get('search_filters'))
+    search = _add_group_query(search, search_parameters.get('search_filters', {}))
     body = search.to_dict()
     return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits']['total']
 
