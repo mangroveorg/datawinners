@@ -37,25 +37,38 @@ def _get_query_fields(dbm):
     return fields
 
 
-def _add_search_filters(search_filter_param, query_fields, search):
-    if not search_filter_param:
-        return search
+def _add_project_query(search, search_filter_param):
+    project_name = search_filter_param.get('project_name')
+    if project_name:
+        search = search.query("term", projects_value=project_name.lower())
+    projects_name = search_filter_param.get('projects')
+    if projects_name:
+        search = search.query("terms", projects_value=projects_name)
+    return search
 
+
+def _add_group_query(search, search_filter_param):
+    group_name = search_filter_param.get('group_name')
+    if group_name:
+        search = search.query("term", customgroups_value=group_name.lower())
+    return search
+
+
+def _add_free_text_search_query(query_fields, search, search_filter_param):
     query_text = search_filter_param.get("search_text")
     if query_text:
         query_text_escaped = ElasticUtilsHelper().replace_special_chars(query_text)
         search = search.query("query_string", query=query_text_escaped, fields=query_fields)
+    return search
 
-    group_name = search_filter_param.get('group_name')
-    if group_name:
-        search = search.query("term", customgroups_value=group_name.lower())
-    project_name = search_filter_param.get('project_name')
-    if project_name:
-        search = search.query("term", projects_value=project_name.lower())
 
-    projects_name = search_filter_param.get('projects')
-    if projects_name:
-        search = search.query("terms", projects_value=projects_name)
+def _add_search_filters(search_filter_param, query_fields, search):
+    if not search_filter_param:
+        return search
+
+    search = _add_free_text_search_query(query_fields, search, search_filter_param)
+    search = _add_group_query(search, search_filter_param)
+    search = _add_project_query(search, search_filter_param)
     return search
 
 
@@ -66,9 +79,10 @@ def _add_filters(dbm, search_parameters, search):
     return query_fields, search
 
 
-def get_data_sender_without_group_filters_count(dbm):
+def get_data_sender_without_search_filters_count(dbm, search_parameters):
     es = Elasticsearch()
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
+    search = _add_group_query(search, search_parameters.get('search_filters'))
     body = search.to_dict()
     return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits']['total']
 
