@@ -138,7 +138,7 @@ class AllDataSendersAjaxView(View):
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
         query_fields, datasenders = get_data_sender_search_results(manager, search_parameters)
-        # total_count = get_data_sender_without_search_filters_count(manager, search_parameters)
+        total_count = get_data_sender_without_search_filters_count(manager, search_parameters)
         filtered_count = get_data_sender_count(manager, search_parameters)
         datasenders = DatasenderQueryResponseCreator().create_response(query_fields, datasenders)
 
@@ -148,7 +148,7 @@ class AllDataSendersAjaxView(View):
                     'data': datasenders,
                     'iTotalDisplayRecords': filtered_count,
                     'iDisplayStart': int(request.POST.get('iDisplayStart')),
-                    "iTotalRecords": filtered_count,
+                    "iTotalRecords": total_count,
                     'iDisplayLength': int(request.POST.get('iDisplayLength'))
                 }, unpicklable=False), content_type='application/json')
 

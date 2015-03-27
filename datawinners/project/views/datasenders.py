@@ -49,22 +49,18 @@ class MyDataSendersAjaxView(View):
         search_filters = {}
         search_text = lower(request.POST.get('sSearch', '').strip())
         search_filters.update({"search_text": search_text})
-        search_parameters.update({"search_filters": search_filters})
         search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
         search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
         search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
-        search_parameters.update({"project_name": project_name_unquoted})
+        search_filters.update({"project_name": project_name_unquoted})
+        search_parameters.update({"search_filters": search_filters})
 
         query_fields, search_results = get_data_sender_search_results(manager, search_parameters)
-        # total_count = get_data_sender_without_search_filters_count(manager, search_parameters)
+        total_count = get_data_sender_without_search_filters_count(manager, search_parameters)
         filtered_count = get_data_sender_count(manager, search_parameters)
         query_fields.remove('projects')
         datasenders = DatasenderQueryResponseCreator().create_response(query_fields, search_results)
-        # query_count, search_count, datasenders = MyDataSenderQuery(search_parameters).filtered_query(user,
-        #                                                                                              self.strip_accents(
-        #                                                                                                  project_name_unquoted),
-        #                                                                                              search_parameters)
 
         return HttpResponse(
             jsonpickle.encode(
@@ -72,7 +68,7 @@ class MyDataSendersAjaxView(View):
                     'data': datasenders,
                     'iTotalDisplayRecords': filtered_count,
                     'iDisplayStart': int(request.POST.get('iDisplayStart')),
-                    "iTotalRecords": filtered_count,
+                    "iTotalRecords": total_count,
                     'iDisplayLength': int(request.POST.get('iDisplayLength'))
                 }, unpicklable=False), content_type='application/json')
 
