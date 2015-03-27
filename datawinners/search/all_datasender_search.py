@@ -73,14 +73,14 @@ def _add_non_deleted_ds_query(search):
 
 
 def _add_search_filters(search_filter_param, query_fields, search):
+    search = _restrict_test_ds_query(search)
+    search = _add_non_deleted_ds_query(search)
     if not search_filter_param:
         return search
-
     search = _add_free_text_search_query(query_fields, search, search_filter_param)
     search = _add_group_query(search, search_filter_param)
     search = _add_project_query(search, search_filter_param)
-    search = _restrict_test_ds_query(search)
-    search = _add_non_deleted_ds_query(search)
+
     return search
 
 
@@ -120,3 +120,11 @@ def get_data_sender_search_results(dbm, search_parameters):
     query_fields, search = _add_filters(dbm, search_parameters, search)
     datasenders = search.execute()
     return query_fields, datasenders
+
+
+def get_all_datasenders_search_results(dbm, search_parameters):
+    required_count = get_data_sender_count(dbm, search_parameters)
+    search_parameters["number_of_results"] = required_count
+    search_parameters["start_result_number"] = 0
+    fields, search_results = get_data_sender_search_results(dbm, search_parameters)
+    return search_results

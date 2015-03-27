@@ -7,6 +7,7 @@ from elasticsearch_dsl import Search
 from datawinners.accountmanagement.decorators import session_not_expired, is_datasender, is_not_expired
 from datawinners.entity.group_helper import get_group_details
 from datawinners.main.database import get_database_manager
+from datawinners.search.all_datasender_search import get_data_sender_search_results, get_all_datasenders_search_results
 from mangrove.datastore.entity import contact_by_short_code
 
 
@@ -43,7 +44,8 @@ def assign_contact_to_groups(request):
         if not all_selected:
             _update_group_for_contacts(contact_ids, dbm, group_names)
         else:
-            contact_ids = _get_reporter_ids_for_group_name(dbm, current_group_name)
+            search_query= request.POST['search_query']
+            contact_ids = _get_reporter_ids_for_group_name(dbm, current_group_name, search_query)
             _update_group_for_contacts(contact_ids, dbm, group_names)
         message = ugettext('The Contact(s) are added to Group(s) successfully.')
     except Exception:
@@ -52,14 +54,13 @@ def assign_contact_to_groups(request):
         success = False
     return HttpResponse(content=json.dumps({'success': success, 'message':message}), content_type='application/json')
 
-def _get_reporter_ids_for_group_name(dbm, group_name):
-        es = Elasticsearch()
-        search = Search(using=es, index=dbm.database_name, doc_type='reporter')
-        search = search.fields('short_code')
-        if group_name:
-            search = search.query("term", custom_groups_value=group_name.lower())
-        search = search.query("term", void=False)
-        body = search.to_dict()
-        response = es.search(index=dbm.database_name, doc_type='reporter', body=body)
 
-        return [item['fields']['short_code'] for item in response['hits']['hits']]
+def _get_all_datasenders_short_codes(dbm,search_parameters):
+    search_parameters['response_fields'] = ['short_code']
+    search_results = get_all_datasenders_search_results(dbm, search_parameters)
+    return [item['short_code'] for item in search_results.hits]
+
+
+def _get_reporter_ids_for_group_name(dbm, group_name, search_query):
+        search_parameters = {'search_filter': {'group_name': group_name, 'search_text': search_query}}
+        return _get_all_datasenders_short_codes(dbm, search_parameters)

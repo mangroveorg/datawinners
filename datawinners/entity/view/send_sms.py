@@ -12,7 +12,8 @@ from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import broadcast_message
 from datawinners.scheduler.smsclient import NoSMSCException
-from datawinners.search.all_datasender_search import get_data_sender_count, get_data_sender_search_results
+from datawinners.search.all_datasender_search import get_data_sender_count, get_data_sender_search_results, \
+    get_all_datasenders_search_results
 
 
 class SendSMS(View):
@@ -67,11 +68,8 @@ class SendSMS(View):
 
 
 def _get_all_contacts_mobile_numbers(dbm, search_parameters):
-    required_count = get_data_sender_count(dbm, search_parameters)
-    search_parameters["number_of_results"] = required_count
-    search_parameters["start_result_number"] = 0
-    search_parameters["response_fields"] = ['mobile_number']
-    fields, search_results = get_data_sender_search_results(dbm, search_parameters)
+    search_parameters['response_fields']= ['mobile_number']
+    search_results = get_all_datasenders_search_results(dbm, search_parameters)
 
     return [item['mobile_number'] for item in search_results.hits]
 

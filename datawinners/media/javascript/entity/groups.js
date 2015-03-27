@@ -26,7 +26,8 @@ DW.GroupManager = function(options){
                 'group-names': JSON.stringify(group_names),
                 'contact_ids':JSON.stringify(contacts),
                 'all_selected' : all_selected,
-                'current_group_name': current_group_name
+                'current_group_name': current_group_name,
+                'search_query': $(".dataTables_filter input").val()
         }}).done(function(response){
             flash_message(response.message, response.success);
             $("#datasender_table").dataTable().fnReloadAjax();
