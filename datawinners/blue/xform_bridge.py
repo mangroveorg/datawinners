@@ -674,7 +674,7 @@ class UniqueIdNumbersNotFoundException(Exception):
     def __init__(self, unique_id_type):
         unique_id_type = unique_id_type.title()
         self.message = _(
-            "You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>") % (
+            "You have not registered a %s yet. Making submission via Smartphone will not be possible. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>") % (
                            unique_id_type, unique_id_type.lower(), unique_id_type)
 
     def __str__(self):

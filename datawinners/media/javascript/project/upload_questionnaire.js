@@ -36,7 +36,7 @@ DW.showInfo = function(infos){
     var flash_message = $("#xlx-info");
     flash_message.removeClass("none").removeClass("success-message-box").
         html(info_messages).show();
-    flash_message.delay(5000).fadeOut();
+    //flash_message.delay(5000).fadeOut();
 };
 DW.updateFilename = function(file_name){
     $("div.download_xls span.heading_block a").text(file_name);
@@ -65,6 +65,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
         params: {},
         buttonText: options.buttonText,
         onSubmit: function () {
+            $('.information_box').remove();
             cancelUploadLink.removeClass("none");
             spinner.removeClass("none");
             flash_message.addClass("none");

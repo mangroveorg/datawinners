@@ -25,7 +25,7 @@ from datawinners.search.submission_index import update_submission_search_for_sub
     get_unregistered_datasenders
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_type import get_unique_id_types
-from mangrove.datastore.queries import get_entity_count_for_type
+from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
@@ -132,6 +132,20 @@ def _is_smart_phone_upgrade_info_flag_present(request):
     return request.GET.get('show-sp-upgrade-info', None) == '1'
 
 
+def _get_entity_types_with_no_registered_entities(dbm, entity_types):
+    if not entity_types:
+        return []
+
+    entity_types_with_no_registered_entities = []
+
+    for entity_type in entity_types:
+        count = get_non_voided_entity_count_for_type(dbm, entity_type)
+        if count == 0:
+            entity_types_with_no_registered_entities.append(entity_type)
+
+    return entity_types_with_no_registered_entities
+
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -143,7 +157,7 @@ def project_overview(request, project_id):
     open_survey_questionnaire= questionnaire.is_open_survey
     is_pro_sms = _is_pro_sms(request)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-
+    entity_types_with_no_registered_entities =[]
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
 
@@ -167,6 +181,7 @@ def project_overview(request, project_id):
             "Register %s to see them on this map") % questionnaire.entity_type[0] if get_entity_count_for_type(manager,
                                                                                                                questionnaire.entity_type[
                                                                                                                    0]) == 0 else ""
+
     entity_type = ""
     has_multiple_unique_id = False
     in_trial_mode = _in_trial_mode(request)
@@ -177,6 +192,8 @@ def project_overview(request, project_id):
     if len(questionnaire.entity_type) > 1:
         has_multiple_unique_id = True
         unique_id_header_text = "%s &" % ugettext("My Identification Numbers")
+    if questionnaire.xform:
+        entity_types_with_no_registered_entities = _get_entity_types_with_no_registered_entities(manager, questionnaire.entity_type)
 
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': questionnaire,
@@ -194,6 +211,7 @@ def project_overview(request, project_id):
         'has_multiple_unique_id': has_multiple_unique_id,
         'show_sp_upgrade_info': _is_smart_phone_upgrade_info_flag_present(request),
         'entity_type': json.dumps(entity_type),
+        'entity_types_with_no_registered_entities': entity_types_with_no_registered_entities,
         'unique_id_header_text': unique_id_header_text,
         'org_number': get_organization_telephone_number(request),
         'open_survey_questionnaire': open_survey_questionnaire,
@@ -415,6 +433,7 @@ def questionnaire(request, project_id):
         project_has_submissions = (success + error > 0)
         in_trial_mode = _in_trial_mode(request)
         is_success = False
+        entity_types_with_no_registered_entities = _get_entity_types_with_no_registered_entities(manager, questionnaire.entity_type)
         active_language = request.LANGUAGE_CODE
         if "success" in [m.message for m in messages.get_messages(request)]:
             is_success = True
@@ -431,6 +450,7 @@ def questionnaire(request, project_id):
                                    'in_trial_mode': in_trial_mode,
                                    'show_xls_download_link': show_xls_download_link,
                                    'file_extension':file_extension,
+                                   'entity_types_with_no_registered_entities': entity_types_with_no_registered_entities,
                                    'post_url': reverse(edit_project, args=[project_id]),
                                    'preview_links': get_preview_and_instruction_links()},
                                   context_instance=RequestContext(request))
