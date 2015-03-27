@@ -94,6 +94,7 @@ DW.DataSenderActionHandler = function () {
                     allGroupsSection.data("current_group_name", selected_group);
                 });
                 init_dialog_box_for_group();
+                $('#no_group_selected_message').addClass('none');
                 $('#all_groups_block').dialog("open");
            }
         );

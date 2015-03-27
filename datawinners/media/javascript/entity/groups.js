@@ -8,7 +8,13 @@ DW.GroupManager = function(options){
         $("#all_groups input:checked").each(function(index, item){
             group_names.push(item.value);
         });
-
+        if (!group_names.length > 0) {
+            $('#no_group_selected_message').removeClass('none');
+            return;
+        }
+        else{
+            $('#no_group_selected_message').addClass('none');
+        }
         var contacts = all_groups_list.data()['selected_ids'];
         var current_group_name = all_groups_list.data()['current_group_name'];
         var all_selected = all_groups_list.data()['all_selected'];
