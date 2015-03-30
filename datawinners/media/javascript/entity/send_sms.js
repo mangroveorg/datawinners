@@ -6,6 +6,7 @@ function SmsViewModel(){
   self.selectedSmsOption = ko.observable("");
 
   self.selectedSmsOption.subscribe(function(newSelectedSmsOption){
+      self._resetErrorMessages();
       self.disableSendSms(newSelectedSmsOption == undefined );
   });
 
