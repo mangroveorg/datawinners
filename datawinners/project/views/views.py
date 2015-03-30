@@ -908,6 +908,7 @@ def create_data_sender_and_web_user(request, project_id):
             'form': form,
             'in_trial_mode': in_trial_mode,
             'questionnaire_code': questionnaire.form_code,
+            'button_text': ugettext('Register'),
             'current_language': translation.get_language()
         }, context_instance=RequestContext(request))
 
@@ -935,7 +936,8 @@ def create_data_sender_and_web_user(request, project_id):
                                   detail=json.dumps(dict({"Unique ID": reporter_id})), project=questionnaire.name)
         if message is not None and reporter_id:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
-        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'success': reporter_id is not None}
+        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'success': reporter_id is not None,
+                   'button_text': ugettext('Register')}
         return render_to_response('datasender_form.html',
                                   context,
                                   context_instance=RequestContext(request))
