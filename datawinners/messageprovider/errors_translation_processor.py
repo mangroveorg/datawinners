@@ -17,7 +17,8 @@ def invalid_answer_formatter(exception, message):
     return message % (exception.data[1], exception.data[0])
 
 def datasender_not_linked_formatter(exception, message):
-    return message % (exception.data[0].capitalize(), exception.data[1])
+    name = exception.data[0].capitalize() if exception.data[0] else ""
+    return message % (name, exception.data[1])
 
 
 messages_and_formatters = {
