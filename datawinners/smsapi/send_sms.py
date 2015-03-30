@@ -8,16 +8,26 @@ from datawinners.utils import get_organization
 from datawinners.scheduler.smsclient import SMSClient
 
 
+NUMBERS = 'numbers'
+MESSAGE = 'message'
+
 @csrf_exempt
 @api_http_basic
 def send_sms(request):
-    input_request = jsonpickle.decode(request.raw_post_data)
+
+    try:
+        input_request = jsonpickle.decode(request.raw_post_data)
+        if not (input_request.get(NUMBERS) and input_request.get(MESSAGE)):
+            raise ValueError
+    except ValueError:
+        return HttpResponse(status=400)
+
     organization = get_organization(request)
     client = SMSClient()
     result = {}
     org_tel_number = organization.tel_number()
-    for number in input_request['numbers']:
-        if client.send_sms(org_tel_number, number, unicode(input_request['message']), MSG_TYPE_API):
+    for number in input_request[NUMBERS]:
+        if client.send_sms(org_tel_number, number, unicode(input_request[MESSAGE]), MSG_TYPE_API):
             result.update({number: "success"})
             organization.increment_sms_api_usage_count()
         else:
