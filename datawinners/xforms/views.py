@@ -5,16 +5,18 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
+from datawinners.entity.views import create_subject
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
-from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel
 from mangrove.transport.contract.request import Request
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
+from mangrove.transport.player.parser import XFormParser
 from mangrove.transport.services.MediaSubmissionService import MediaAttachmentNotFoundException
 from mangrove.transport.xforms.xform import list_all_forms, xform_for
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
@@ -134,8 +136,15 @@ def submission(request):
                                                  source=request_user.email,
                                                  destination=''
                                    ), media=request.FILES if len(request.FILES) > 1 else [])
+        form_code, values = XFormParser(manager).parse(mangrove_request.message)
+        form_model = get_form_model_by_code(manager, form_code)
 
-        response = player.add_survey_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
+        if isinstance(form_model, EntityFormModel) and form_model.is_entity_registration_form:
+            pass
+            # go to subject_registration
+        else:
+            response = player.add_survey_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
+
         mail_feed_errors(response, manager.database_name)
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))

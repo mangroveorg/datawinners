@@ -13,7 +13,7 @@ def get_all_projects(dbm, data_sender_id=None):
         for row in rows:
             row.update({'value': row["doc"]})
         return rows
-    return dbm.load_all_rows_in_view('all_projects')
+    return dbm.load_all_rows_in_view('all_questionnaire')
 
 
 def get_project_id_name_map(dbm):
