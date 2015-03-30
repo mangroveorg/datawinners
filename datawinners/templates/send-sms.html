@@ -20,9 +20,9 @@
         <span class="grey float_right" data-bind="text: smsCharacterCount" ></span></div></div>
     <br/>
 
-    <div class="tableRow" data-bind="visible: showToSection">
+    <div class="tableRow">
         <div class = "tableCell">{% trans "To:" %}</div>
-        <div class = "tableCell padding_bottom_10">
+        <div class = "tableCell padding_bottom_10" data-bind="visible: showToSection">
             <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
         </div>
     </div>
