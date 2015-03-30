@@ -3,7 +3,21 @@ DW.GroupManager = function(options){
     var all_groups_list = $('#all_groups');
     var cancel_dialog_link = $("#cancel_group_dialog");
 
+    function disable_add_button() {
+        var add_button = $('#add_contacts_to_group');
+        add_button.text(gettext('Adding...'));
+        add_button.addClass('ui-state-disabled');
+    }
+
+    function enable_add_button() {
+        var add_button = $('#add_contacts_to_group');
+        add_button.text(gettext('Add'));
+        add_button.removeClass('ui-state-disabled');
+    }
+
     $("#add_contacts_to_group").on('click', function(){
+        DW.loading();
+        disable_add_button();
         var group_names = [];
         $("#all_groups input:checked").each(function(index, item){
             group_names.push(item.value);
@@ -29,7 +43,9 @@ DW.GroupManager = function(options){
                 'current_group_name': current_group_name,
                 'search_query': $(".dataTables_filter input").val()
         }}).done(function(response){
+            enable_add_button();
             flash_message(response.message, response.success);
+            window.scrollTo(0,0);
             $("#datasender_table").dataTable().fnReloadAjax();
             $("#all_groups_block").dialog("close");
         });

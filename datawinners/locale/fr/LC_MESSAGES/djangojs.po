@@ -1489,3 +1489,6 @@ msgstr " destinataires"
 
 msgid "Add to Groups"
 msgstr "Ajouter aux Groupes"
+
+msgid "All Contacts"
+msgstr "Tous les Contacts"

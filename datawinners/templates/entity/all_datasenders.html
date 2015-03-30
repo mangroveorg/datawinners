@@ -119,7 +119,7 @@
                             <a class="add_link" data-bind="click:open" href="javascript:void(0);">{% trans "Add a Group" %}</a>
                         </div>
                         <div class="add_group_dialog" data-bind="dialog: {autoOpen: false, width: 475, height: 190,
-                                                                title:'Add Group', dialogClass:'no-close'},
+                                                                title:'Add a Group', dialogClass:'no-close'},
                                                        dialogVisible: isOpen,
                                                        dialogContent:addGroupDialogContent">
                         </div>
@@ -131,7 +131,7 @@
                             </div>
                             <div class="float_right margin_top_40">
                                 <a data-bind="click: close_popup">{% trans 'Cancel' %}</a>
-                                <button data-bind="click: addNewGroup, text:$root.groupButtonText" class="button">{% trans 'Add' %}</button>
+                                <button data-bind="click: addNewGroup, text:$root.groupButtonText, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}" class="button" >{% trans 'Add' %}</button>
                             </div>
                         </div>
                     </div>
