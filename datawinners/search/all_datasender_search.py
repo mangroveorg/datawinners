@@ -33,7 +33,7 @@ def get_query_fields(dbm):
     fields, old_labels, codes = get_entity_type_fields(dbm)
     fields.append("devices")
     fields.append('projects')
-    # fields.append('groups')
+    fields.append('customgroups')
     return fields
 
 

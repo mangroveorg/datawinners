@@ -49,6 +49,7 @@ class DatasenderQueryResponseCreator():
             result.append("")
 
     def create_response(self, required_field_names, search_results):
+        required_field_names.append("customgroups")
         required_field_names.append("groups")
 
         datasenders = []

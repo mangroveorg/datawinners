@@ -19,7 +19,7 @@
             "onMenuLoad":new Function("var groups_li =$($('.groups').parent()); if(groupViewModel.groups().length<=1){ groups_li.addClass(function(i){return 'disabled'});}else{groups_li.removeClass(function(i){return 'disabled'});}"),
             "iDeferLoading": 0,
             "oLanguage": {
-                "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
+                "sEmptyTable": $('#no_datasenders_message').clone(true, true).html()
             },
             "aaSorting": [ [ col("name"), "asc"] ] ,
             "actionItems" : [
