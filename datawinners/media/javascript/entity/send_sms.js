@@ -111,6 +111,7 @@ function SmsViewModel(){
     smsTextArea.val("");
     self.smsCharacterCount("0" + gettext(" of 160 characters used"));
     self.othersList("");
+    self.selectedGroupNames([]);
     self.selectedQuestionnaireNames([]);
     self._resetSuccessMessage();
     self._resetErrorMessages();

@@ -51,6 +51,10 @@ def _add_group_query(search, search_filter_param):
     group_name = search_filter_param.get('group_name')
     if group_name:
         search = search.query("term", customgroups_value=group_name.lower())
+
+    group_names = search_filter_param.get('group_names')
+    if group_names:
+        search = search.query("terms", customgroups_value=group_names)
     return search
 
 
