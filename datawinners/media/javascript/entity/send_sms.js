@@ -12,44 +12,73 @@ function SmsViewModel(){
 
   self.sendButtonText = ko.observable(gettext("Send"));
 
-  self.placeHolderText = ko.observable("");
+  self.questionnairePlaceHolderText = ko.observable("");
+
+  self.groupPlaceHolderText = ko.observable("");
 
   self.hideQuestionnaireSection = ko.computed(function(){
       return this.selectedSmsOption() != 'linked';
   }, self);
 
+  self.hideGroupSection = ko.computed(function(){
+      return this.selectedSmsOption() != 'group';
+  }, self);
+
 
   self.showToSection = ko.observable(true);
 
+  var questionnaireDetailsResponseHandler = function(response){
+    var response = $.parseJSON(response);
+    var questionnaireItems = [];
+
+    if(response.length == 0){
+        self.questionnairePlaceHolderText(gettext("No questionnaires present"));
+    }
+    else{
+       self.questionnairePlaceHolderText("");
+    }
+
+    $.each(response, function(index, item){
+        var checkBoxLabel = item.name + " <span class='grey italic'>" + item['ds-count'] + gettext(" recipients") + "</span>";
+        questionnaireItems.push({value: item.id, label: checkBoxLabel, name: item.name});
+    });
+
+    self.questionnaireItems(questionnaireItems);
+  };
+
+  var groupDetailsResponseHandler = function(response){
+    var groupItems = [];
+
+    if(response.groups.length == 0){
+        self.groupPlaceHolderText(gettext("No groups present"));
+    }
+    else{
+       self.groupPlaceHolderText("");
+    }
+
+    $.each(response.groups, function(index, item){
+        var checkBoxLabel = item.name + " <span class='grey italic'>" + item['count'] + gettext(" recipients") + "</span>";
+        groupItems.push({value: item.name, label: checkBoxLabel, name: item.name});
+    });
+
+    self.groupItems(groupItems);
+  };
+
   self.selectedSmsOption.subscribe(function(selectedOption){
 
-      if(selectedOption == 'linked' && self.questionnaireItems().length == 0){
-
-            self.placeHolderText(gettext("Loading..."));
-
-             $.get(registered_ds_count_url).done(function(response){
-                var response = $.parseJSON(response);
-                var questionnaireItems = [];
-                var sendToNumbers = [];
-
-                if(response.length == 0){
-                    self.placeHolderText(gettext("No questionnaires present"));
-                }
-                else{
-                   self.placeHolderText("");
-                }
-
-                $.each(response, function(index, item){
-                    var checkBoxLabel = item.name + " <span class='grey italic'>" + item['ds-count'] + gettext(" recipients") + "</span>";
-                    questionnaireItems.push({value: item.id, label: checkBoxLabel, name: item.name});
-                });
-
-                self.questionnaireItems(questionnaireItems);
-            });
-      }
+    if(selectedOption == 'linked' && self.questionnaireItems().length == 0){
+        self.questionnairePlaceHolderText(gettext("Loading..."));
+        $.get(registered_ds_count_url).done(questionnaireDetailsResponseHandler);
+    }
+    else if(selectedOption == 'group' && self.groupItems().length == 0){
+        self.groupPlaceHolderText(gettext("Loading..."));
+        $.get(group_ds_count_url).done(groupDetailsResponseHandler);
+    }
   });
 
   self.questionnaireItems = ko.observableArray([]);
+
+  self.groupItems = ko.observableArray([]);
 
   self.disableSendSms = ko.observable(true);
 
@@ -63,7 +92,10 @@ function SmsViewModel(){
 
   self.selectedQuestionnaireNames =  DW.ko.createValidatableObservable({value: []});
 
+  self.selectedGroupNames =  DW.ko.createValidatableObservable({value: []});
+
   self.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
+                                            {"label":gettext('Group'), "code": "group"},
                                             {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"},
                                             {"label":gettext('Other People'), "code": "others"}]);
   self.setOptionDisable= function(option, item) {
@@ -177,6 +209,7 @@ function SmsViewModel(){
           'others': self.othersList(),
           'recipient': self.selectedSmsOption(),
           'questionnaire-names':  JSON.stringify(self.selectedQuestionnaireNames()),
+          'group-names':  JSON.stringify(self.selectedGroupNames()),
           'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
       }).done(function(response){
 

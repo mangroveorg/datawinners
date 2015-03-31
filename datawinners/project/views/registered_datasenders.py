@@ -20,5 +20,6 @@ def get_registered_datasender_count(dbm, questionnaire_name):
     es = Elasticsearch()
     search = Search(using=es, index=dbm.database_name, doc_type='reporter')
     search = search.query("term", projects_value=questionnaire_name)
+    search = search.query("term", void=False)
     body = search.to_dict()
     return es.search(index=dbm.database_name, doc_type='reporter', body=body, search_type='count')['hits']['total']

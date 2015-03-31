@@ -40,9 +40,27 @@
                     <span class="validationText" data-bind="text: selectedQuestionnaireNames.error"></span>
                 </div>
 
-            <span data-bind="text:placeHolderText"></span>
+            <span data-bind="text:questionnairePlaceHolderText"></span>
         </div>
     </div>
+
+    <div class="tableRow" >
+        <div class = "tableCell"></div>
+        <div class = "tableCell" data-bind="css: {'none': hideGroupSection}">
+            <!-- ko foreach: groupItems -->
+                <div>
+                    <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedGroupNames()" />
+                    <span data-bind="html: label"></span>
+                </div>
+            <!-- /ko -->
+                <div class="validationMessage" data-bind="ifnot: selectedQuestionnaireNames.valid">
+                    <span class="validationText" data-bind="text: selectedQuestionnaireNames.error"></span>
+                </div>
+
+            <span data-bind="text:groupPlaceHolderText"></span>
+        </div>
+    </div>
+
     <div class="tableRow" data-bind="css: {'none': hideOtherContacts}" >
         <div class = "tableCell"></div>
         <div class = "tableCell">

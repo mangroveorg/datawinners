@@ -68,7 +68,7 @@ class SendSMS(View):
 
 
 def _get_all_contacts_mobile_numbers(dbm, search_parameters):
-    search_parameters['response_fields']= ['mobile_number']
+    search_parameters['response_fields'] = ['mobile_number']
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
 
     return [item['mobile_number'] for item in search_results.hits]
