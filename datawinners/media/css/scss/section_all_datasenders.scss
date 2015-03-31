@@ -58,7 +58,8 @@
   margin-top: 6px;
 }
 
-#datasender_table td:nth-child(10){
+//hiding system groups
+#datasender_table td:nth-child(11){
   display: none;
 }
 
