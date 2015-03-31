@@ -48,7 +48,7 @@ class DatasenderQueryResponseCreator():
         else:
             result.append("")
 
-    def create_response(self, required_field_names, search_results):
+    def create_response(self, search_results):
         required_field_names = ['name', 'mobile_number', 'email', 'location', 'geo_code', 'short_code', 'projects',
                                 'devices', 'customgroups', 'groups']
 
@@ -63,7 +63,7 @@ class DatasenderQueryResponseCreator():
                 elif key is "groups":
                     self._format_contact_groups(key, res, result)
                 else:
-                    result.append(res.get(key))
+                    result.append(res.get(key, ''))
             datasenders.append(result)
         return datasenders
 
