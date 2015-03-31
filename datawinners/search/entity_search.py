@@ -59,7 +59,7 @@ class DatasenderQueryResponseCreator():
                 if key is "devices":
                     self.add_check_symbol_for_row(res, result)
                 elif key in ["projects", "customgroups"]:
-                    result.append(", ".join(res.get(key)))
+                    result.append(", ".join(res.get(key, [])))
                 elif key is "groups":
                     self._format_contact_groups(key, res, result)
                 else:
