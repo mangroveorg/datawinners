@@ -154,7 +154,7 @@ describe("Send A Message", function(){
     it("should populate questionnaire name and contact count via ajax call", function(){
 
         spyOn(jQuery, "ajax").andCallFake(function() {
-            expect(model.placeHolderText()).toBe("Loading...");
+            expect(model.questionnairePlaceHolderText()).toBe("Loading...");
             var d = $.Deferred();
             d.resolve('[{"ds-count": 10, "name": "questionnaire_name", "id": "questionnaire1_id"}]');
             return d.promise();
@@ -165,7 +165,7 @@ describe("Send A Message", function(){
 
         expect($.ajax.mostRecentCall.args[0]["url"]).toEqual("http://example.com");
         expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("get");
-        expect(model.placeHolderText()).toBe("");
+        expect(model.questionnairePlaceHolderText()).toBe("");
         expect(model.questionnaireItems()).toEqual([{'value': 'questionnaire1_id',
             label: "questionnaire_name <span class='grey italic'>10 recipients</span>", name: "questionnaire_name"}]);
 
@@ -175,7 +175,7 @@ describe("Send A Message", function(){
     it("should show message when no questionnaires defined", function(){
 
         spyOn(jQuery, "ajax").andCallFake(function() {
-            expect(model.placeHolderText()).toBe("Loading...");
+            expect(model.questionnairePlaceHolderText()).toBe("Loading...");
             var d = $.Deferred();
             d.resolve('[]');
             return d.promise();
@@ -186,7 +186,7 @@ describe("Send A Message", function(){
 
         expect($.ajax.mostRecentCall.args[0]["url"]).toEqual("http://example.com");
         expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("get");
-        expect(model.placeHolderText()).toBe("No questionnaires present");
+        expect(model.questionnairePlaceHolderText()).toBe("No questionnaires present");
         expect(model.questionnaireItems()).toEqual([]);
 
     });
