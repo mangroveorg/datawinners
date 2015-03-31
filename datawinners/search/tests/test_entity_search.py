@@ -27,20 +27,22 @@ class TestSubjectQueryResponseCreator(TestCase):
 
 class TestDatasenderQueryResponseCreator(TestCase):
 
-    def test_should_return_datasender_with_space_seperated_projects(self):
+    def test_should_return_datasender_with_space_seperated_projects_and_groups(self):
         required_field_names = ['field_name1', 'projects']
         query = MagicMock()
         query.hits = [{
                                               "field_name1": "field_value11",
-                                              "projects": ["p1", "p2"]
+                                              "projects": ["p1", "p2"],
+                                              "customgroups":["g1", "g2"]
                                           }, {
                                               "field_name1": "field_value21",
-                                              "projects": ["p1", "p2", "p3"]
+                                              "projects": ["p1", "p2", "p3"],
+                                              "customgroups":["g2"]
                                           }]
 
         datasenders = DatasenderQueryResponseCreator().create_response(required_field_names, query)
         # query.values_dict.assert_called_with(("field_name1", "projects", "groups"))
-        self.assertEquals(datasenders, [["field_value11", "p1, p2", ""], ["field_value21", "p1, p2, p3", ""]])
+        self.assertEquals(datasenders, [["field_value11", "p1, p2", "g1, g2", ""], ["field_value21", "p1, p2, p3", "g2", ""]])
 
     def test_add_check_symbol_for_datasender_row(self):
         result = []
