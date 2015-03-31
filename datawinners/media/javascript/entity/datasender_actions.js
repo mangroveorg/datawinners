@@ -222,6 +222,10 @@ function add_remove_from_project(action, table, selected_ids, all_selected) {
     all_project_block.data("all_selected", all_selected);
     all_project_block.data("action", action);
     all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
+    if(action == 'associate')
+        all_project_block.dialog('option','title',gettext('Add to Questionnaire'));
+    else
+        all_project_block.dialog('option','title',gettext('Remove from Questionnaire'));
     all_project_block.dialog("open");
 }
 function get_user_names_from_selected_datasenders(table, selected_ids, all_selected) {

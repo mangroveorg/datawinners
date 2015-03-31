@@ -29,7 +29,7 @@ def _add_sort_criteria(search_parameters, search):
     return search.sort(order_by_criteria)
 
 
-def _get_query_fields(dbm):
+def get_query_fields(dbm):
     fields, old_labels, codes = get_entity_type_fields(dbm)
     fields.append("devices")
     fields.append('projects')
@@ -85,7 +85,7 @@ def _add_search_filters(search_filter_param, query_fields, search):
 
 
 def _add_filters(dbm, search_parameters, search):
-    query_fields = _get_query_fields(dbm)
+    query_fields = get_query_fields(dbm)
     search = _add_search_filters(search_parameters.get('search_filters'), query_fields,
                                  search)
     return query_fields, search
@@ -128,3 +128,9 @@ def get_all_datasenders_search_results(dbm, search_parameters):
     search_parameters["start_result_number"] = 0
     fields, search_results = get_data_sender_search_results(dbm, search_parameters)
     return search_results
+
+
+def get_all_datasenders_short_codes(dbm,search_parameters):
+    search_parameters['response_fields'] = ['short_code']
+    search_results = get_all_datasenders_search_results(dbm, search_parameters)
+    return [item['short_code'] for item in search_results.hits]

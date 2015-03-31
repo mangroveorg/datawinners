@@ -8,63 +8,6 @@ from datawinners.search.query import Query, QueryBuilder
 from mangrove.form_model.project import get_entity_type_fields
 
 
-class DatasenderQuery(Query):
-    def __init__(self, query_params=None):
-        Query.__init__(self, DatasenderQueryResponseCreator(), DataSenderQueryBuilder(), query_params)
-
-    def get_headers(self, user, entity_type=None):
-        fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
-        fields.append("devices")
-        fields.append('projects')
-        return fields
-
-    def query(self, user, query_text):
-        contact_headers = self.get_headers(user)
-        query = self.query_builder.get_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
-        query_all_results = query[:query.count()]
-        query_with_criteria = self.query_builder.add_query_criteria(contact_headers, query_all_results, query_text)
-        return self.response_creator.create_response(contact_headers, query_with_criteria)
-
-
-class MyDataSenderQuery(Query):
-    def __init__(self, query_params=None):
-        Query.__init__(self, MyDatasenderQueryResponseCreator(), DataSenderQueryBuilder(), query_params)
-
-    def get_headers(self, user, entity_type=None):
-        fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
-        fields.append("devices")
-        return fields
-
-    def filtered_query(self, user, project_name, query_params):
-        entity_headers = self.get_headers(user, REPORTER)
-        query = self.query_builder.get_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
-        paginated_query = self.query_builder.create_paginated_query(query, {
-            "start_result_number": query_params["start_result_number"],
-            "number_of_results": query_params["number_of_results"],
-            "sort_field": entity_headers[query_params["order_by"]],
-            "order": query_params["order"]
-        })
-        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, paginated_query, query_params["search_text"],
-                                                                    ).filter(projects_value=project_name)
-
-        entities = self.response_creator.create_response(entity_headers, query_with_criteria)
-        return query_with_criteria.count(), paginated_query.count(), entities
-
-    def query_by_project_name(self, user, project_name, search_text):
-        entity_headers = self.get_headers(user)
-        query = self.query_builder.get_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
-        query = query[:query.count()]
-        query = self.query_builder.add_query_criteria(entity_headers, query, search_text).filter(
-            projects_value=project_name)
-        return self.response_creator.create_response(entity_headers, query)
-
-
-class DataSenderQueryBuilder(QueryBuilder):
-    def get_query(self, database_name, doc_type=REPORTER):
-        query = QueryBuilder().get_query(database_name=database_name, doc_type=doc_type)
-        return query.filter(~ elasticutils.F(short_code_value='test'))
-
-
 class SubjectQuery(Query):
     def __init__(self, query_params=None):
         Query.__init__(self, SubjectQueryResponseCreator(), QueryBuilder(), query_params)

@@ -19,8 +19,7 @@ from datawinners.accountmanagement.helper import create_web_users
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS
 from datawinners.entity import import_data as import_module
-from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions, \
-    update_datasender_on_open_submissions
+from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
 from datawinners.entity.helper import rep_id_name_dict_of_users
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import is_project_exist
@@ -28,8 +27,7 @@ from datawinners.project.views.views import get_project_link, _in_trial_mode, _i
 from datawinners.search.all_datasender_search import get_data_sender_search_results, get_data_sender_without_search_filters_count, \
     get_data_sender_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
-from datawinners.search.entity_search import MyDataSenderQuery, MyDatasenderQueryResponseCreator, \
-    DatasenderQueryResponseCreator
+from datawinners.search.entity_search import DatasenderQueryResponseCreator
 from mangrove.form_model.project import Project
 from mangrove.transport.player.parser import XlsDatasenderParser
 from mangrove.utils.types import is_empty

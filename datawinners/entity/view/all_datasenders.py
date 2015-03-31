@@ -10,17 +10,17 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 import jsonpickle
+
 from datawinners.accountmanagement.helper import create_web_users, get_org_id
 from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
 from datawinners.entity.group_helper import get_group_details
 from datawinners.project.couch_view_helper import get_project_id_name_map
 from datawinners.search.all_datasender_search import get_data_sender_search_results, get_data_sender_count, \
-    get_data_sender_without_search_filters_count
+    get_data_sender_without_search_filters_count, get_all_datasenders_short_codes, get_query_fields
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import TransportInfo
-
 from datawinners import settings
 from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user
@@ -31,8 +31,7 @@ from datawinners.entity.helper import delete_entity_instance, delete_datasender_
 from datawinners.project.models import delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports
-from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery, DatasenderQueryResponseCreator
-from mangrove.form_model.form_model import REPORTER, header_fields, get_form_model_by_code
+from datawinners.search.entity_search import DatasenderQueryResponseCreator
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization
@@ -119,9 +118,9 @@ class AllDataSendersView(TemplateView):
 
 
 class AllDataSendersAjaxView(View):
-    def _get_order_field(self, post_dict, user):
+    def _get_order_field(self, post_dict, dbm):
         order_by = int(post_dict.get('iSortCol_0')) - 1
-        headers = DatasenderQuery().get_headers(user)
+        headers = get_query_fields(dbm)
         return headers[order_by]
 
     def post(self, request, *args, **kwargs):
@@ -133,7 +132,7 @@ class AllDataSendersAjaxView(View):
         search_filters.update({"search_text": search_text})
         search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
         search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
-        search_parameters.update({"sort_field": self._get_order_field(request.POST, user)})
+        search_parameters.update({"sort_field": self._get_order_field(request.POST, manager)})
         search_parameters.update({"search_filters": search_filters})
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
@@ -182,18 +181,9 @@ class DataSenderActionView(View):
 
 def data_sender_short_codes(request, manager):
     if request.POST.get("all_selected") == 'true':
-        search_text = request.POST.get('search_query')
-        datasender_list = []
-        project_name = request.POST.get("project_name", None)
-        if project_name:
-            datasender_list = MyDataSenderQuery().query_by_project_name(request.user, project_name, search_text)
-        else:
-            datasender_list = DatasenderQuery().query(request.user, search_text)
-        form_model = get_form_model_by_code(manager, 'reg')
-        fields = header_fields(form_model).keys()
-        fields.remove("entity_type")
-        short_code_index = fields.index("short_code")
-        return [ds[short_code_index].lower() for ds in datasender_list]
+        search_parameters = {'search_text': request.POST.get('search_query'),
+                             'project_name': request.POST.get("project_name", None)}
+        return get_all_datasenders_short_codes(manager, search_parameters)
 
     return request.POST['ids'].lower().split(';')
 

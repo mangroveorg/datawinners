@@ -1,6 +1,6 @@
 from unittest import TestCase
 from mock import patch, Mock, MagicMock
-from datawinners.search.entity_search import SubjectQueryResponseCreator, SubjectQuery, DataSenderQueryBuilder
+from datawinners.search.entity_search import SubjectQueryResponseCreator, SubjectQuery
 from datawinners.search.entity_search import DatasenderQueryResponseCreator
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
@@ -148,15 +148,3 @@ class TestSubjectQuery(TestCase):
 
                     expected = ['form_id_code1','form_id_code2']
                     self.assertEquals(header_dict,expected)
-
-class TestDataSenderQueryBuilder(TestCase):
-    def test_should_add_not_filter_to_query(self):
-        with patch("datawinners.search.entity_search.QueryBuilder") as query_builder:
-            with patch("datawinners.search.query.elasticutils") as elasticUtilsMock:
-                with patch("datawinners.search.entity_search.elasticutils.F") as mock_filter:
-                    query_builder.return_value = query_builder
-                    query_builder.get_query.return_value = elasticUtilsMock
-                    mock_filter.return_value = mock_filter
-                    DataSenderQueryBuilder().get_query("dbm")
-                    query_builder.get_query.assert_called_with(database_name="dbm", doc_type="reporter")
-                    elasticUtilsMock.filter.assert_called_with(~mock_filter)
