@@ -162,6 +162,20 @@ function SmsViewModel(){
 
   };
 
+  self.validateGroupSelection = function(){
+
+    if(self.selectedSmsOption() == 'group' && self.selectedGroupNames().length == 0){
+        self.selectedGroupNames.setError(gettext("This field is required."));
+        return false;
+    }
+    else{
+        self.selectedGroupNames.clearError();
+        return true;
+    }
+
+  };
+
+
   self._resetSuccessMessage = function() {
     $("#sms-success").show().addClass("none");
   };
@@ -175,7 +189,7 @@ function SmsViewModel(){
   };
 
   self.validate = function(){
-    return self.validateSmsText() & self.validateOthersList() & self.validateQuestionnaireSelection();
+    return self.validateSmsText() & self.validateOthersList() & self.validateQuestionnaireSelection() & self.validateGroupSelection();
   };
 
   function _showFailedNumbersError(response) {
