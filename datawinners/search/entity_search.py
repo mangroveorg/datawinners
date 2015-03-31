@@ -74,19 +74,3 @@ class DatasenderQueryResponseCreator():
         else:
             result.extend([check_img])
 
-
-class MyDatasenderQueryResponseCreator(DatasenderQueryResponseCreator):
-    def create_response(self, required_field_names, search_results):
-        required_field_names.append("groups")
-        datasenders = []
-        for res in search_results.hits:
-            result = []
-            for key in required_field_names:
-                if key is "devices":
-                    self.add_check_symbol_for_row(res, result)
-                elif key is "projects":
-                    continue
-                else:
-                    result.append(res.get(key))
-            datasenders.append(result)
-        return datasenders
