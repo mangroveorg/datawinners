@@ -73,7 +73,7 @@
         var all_contacts_mobile_number_url = "{% url get-all-mobile-numbers %}";
         var existing_groups = $.parseJSON({{ groups|safe }});
         var all_groups_url = "{% url all_groups%}";
-        var assign_contact_to_groups_url = "{% url assign_contact_to_groups%}";
+        var update_groups_url = "{% url add_or_remove_contact_from_groups %}";
         var selected_group = 'All Contacts'
         var datasender_ajax_url = "{% url all_datasenders_ajax %}";
         var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";

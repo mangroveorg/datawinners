@@ -32,8 +32,9 @@ DW.GroupManager = function(options){
         var contacts = all_groups_list.data()['selected_ids'];
         var current_group_name = all_groups_list.data()['current_group_name'];
         var all_selected = all_groups_list.data()['all_selected'];
+        var action = all_groups_list.data()['action'];
         $.ajax({
-            url: options.assign_contact_to_groups_url,
+            url: options.update_groups_url,
             type: "POST",
             headers: { "X-CSRFToken": $.cookie('csrftoken') },
             'data': {
@@ -41,6 +42,7 @@ DW.GroupManager = function(options){
                 'contact_ids':JSON.stringify(contacts),
                 'all_selected' : all_selected,
                 'current_group_name': current_group_name,
+                'action': action,
                 'search_query': $(".dataTables_filter input").val()
         }}).done(function(response){
             enable_add_button();
