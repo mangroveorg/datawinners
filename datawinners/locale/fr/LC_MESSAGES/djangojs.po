@@ -1492,3 +1492,6 @@ msgstr "Ajouter aux Groupes"
 
 msgid "All Contacts"
 msgstr "Tous les Contacts"
+
+msgid "Group"
+msgstr "Groupe"
