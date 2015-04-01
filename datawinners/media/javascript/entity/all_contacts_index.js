@@ -33,7 +33,7 @@
                 {"label": "Delete", "handler":action_handler["delete"], "allow_selection": "multiple"}
             ],
             "aoColumnDefs":[
-                            {"bSortable": false, "aTargets":[col("devices"),col("projects"), col("s-groups")]}
+                            {"bSortable": false, "aTargets":[col("devices"),col("projects"), col("s-groups"), col('groups')]}
                            ],
             "getFilter": filter_as_json
 

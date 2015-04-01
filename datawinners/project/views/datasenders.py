@@ -58,7 +58,7 @@ class MyDataSendersAjaxView(View):
         total_count = get_data_sender_without_search_filters_count(manager, search_parameters)
         filtered_count = get_data_sender_count(manager, search_parameters)
         query_fields.remove('projects')
-        datasenders = DatasenderQueryResponseCreator().create_response(search_results)
+        datasenders = DatasenderQueryResponseCreator().create_response(search_results, show_projects = False)
 
         return HttpResponse(
             jsonpickle.encode(

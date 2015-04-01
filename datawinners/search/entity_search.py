@@ -48,9 +48,12 @@ class DatasenderQueryResponseCreator():
         else:
             result.append("")
 
-    def create_response(self, search_results):
+    def create_response(self, search_results, show_projects=True):
         required_field_names = ['name', 'mobile_number', 'email', 'location', 'geo_code', 'short_code', 'projects',
                                 'devices', 'customgroups', 'groups']
+
+        if not show_projects:
+            required_field_names.remove('projects')
 
         datasenders = []
         for res in search_results.hits:
