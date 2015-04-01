@@ -126,6 +126,33 @@ describe("Send A Message", function(){
 
     });
 
+    describe("Validations for group contacts selection", function(){
+
+        it("should give a mandatory warning when group contact list is empty", function() {
+
+            model.selectedSmsOption("group");
+            model.selectedGroupNames([]);
+
+            expect(model.validateGroupSelection()).toBe(false);
+
+            expect(model.selectedGroupNames.valid()).toBe(false);
+            expect(model.selectedGroupNames.error()).toBe("This field is required.");
+        });
+
+        it("should not give a warning when group contact list is not empty", function() {
+
+            model.selectedSmsOption("group");
+            model.selectedGroupNames(['group1']);
+
+            expect(model.validateGroupSelection()).toBe(true);
+
+            expect(model.selectedGroupNames.valid()).toBe(true);
+            expect(model.selectedGroupNames.error()).toBe("");
+        });
+
+    });
+
+
 
     describe("Successful validations for SMS sending", function(){
 
@@ -161,6 +188,7 @@ describe("Send A Message", function(){
         });
 
         model.questionnaireItems([]);
+
         model.selectedSmsOption("linked");
 
         expect($.ajax.mostRecentCall.args[0]["url"]).toEqual("http://example.com");
@@ -170,6 +198,30 @@ describe("Send A Message", function(){
             label: "questionnaire_name <span class='grey italic'>10 recipients</span>", name: "questionnaire_name"}]);
 
     });
+
+    it("should populate group name and contact count via ajax call", function(){
+
+        spyOn(jQuery, "ajax").andCallFake(function() {
+            expect(model.groupPlaceHolderText()).toBe("Loading...");
+            var d = $.Deferred();
+            d.resolve({"groups":[{"count": 10, "name": "group1"}, {"count": 20, "name": "group2"}]});
+            return d.promise();
+        });
+
+        model.groupItems([]);
+
+        model.selectedSmsOption("group");
+
+        expect($.ajax.mostRecentCall.args[0]["url"]).toEqual("http://group-url.com");
+        expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("get");
+        expect(model.groupPlaceHolderText()).toBe("");
+        expect(model.groupItems()).toEqual([{'value': 'group1',
+            label: "group1 <span class='grey italic'>10 recipients</span>", name: "group1"},
+        {'value': 'group2',
+            label: "group2 <span class='grey italic'>20 recipients</span>", name: "group2"}]);
+
+    });
+
 
 
     it("should show message when no questionnaires defined", function(){
@@ -190,6 +242,27 @@ describe("Send A Message", function(){
         expect(model.questionnaireItems()).toEqual([]);
 
     });
+
+
+    it("should show message when no groups defined", function(){
+
+        spyOn(jQuery, "ajax").andCallFake(function() {
+            expect(model.groupPlaceHolderText()).toBe("Loading...");
+            var d = $.Deferred();
+            d.resolve({"groups": []});
+            return d.promise();
+        });
+
+        model.groupItems([]);
+        model.selectedSmsOption("group");
+
+        expect($.ajax.mostRecentCall.args[0]["url"]).toEqual("http://group-url.com");
+        expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("get");
+        expect(model.groupPlaceHolderText()).toBe("Once you have created groups, a list of your groups will appear here.");
+        expect(model.groupItems()).toEqual([]);
+
+    });
+
 
 
     it("should post to server with correct sms data and show success flash message", function() {
