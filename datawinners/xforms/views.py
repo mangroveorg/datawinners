@@ -140,8 +140,7 @@ def submission(request):
         form_model = get_form_model_by_code(manager, form_code)
 
         if isinstance(form_model, EntityFormModel) and form_model.is_entity_registration_form:
-            pass
-            # go to subject_registration
+            response = player.add_subject_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
         else:
             response = player.add_survey_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
 
