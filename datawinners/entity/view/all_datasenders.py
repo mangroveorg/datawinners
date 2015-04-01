@@ -1,4 +1,5 @@
 import json
+import os
 from sets import Set
 
 from django.contrib.auth.decorators import login_required
@@ -87,7 +88,6 @@ class AllDataSendersView(TemplateView):
     def post(self, request, *args, **kwargs):
         parser_dict = {'.xls': XlsDatasenderParser, '.xlsx': XlsxDataSenderParser}
         manager = get_database_manager(request.user)
-        import os
         file_extension = os.path.splitext(request.GET["qqfile"])[1]
         parser = parser_dict.get(file_extension, None)
         error_message, failure_imports, success_message, successful_imports = import_module.import_data(

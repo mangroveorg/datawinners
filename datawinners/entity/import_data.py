@@ -16,14 +16,17 @@ from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
 from datawinners.entity.datasender_search import datasender_count_with
 from datawinners.entity.subject_template_validator import SubjectTemplateValidator
-from datawinners.entity.helper import get_country_appended_location, entity_type_as_sequence, get_organization_telephone_number
+from datawinners.entity.helper import get_country_appended_location, entity_type_as_sequence, \
+    get_organization_telephone_number
 
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, Entity
-from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, EmptyRowException, MultipleReportersForANumberException
-from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
+from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, EmptyRowException, \
+    MultipleReportersForANumberException
+from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, \
+    XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, \
     NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD
@@ -43,6 +46,7 @@ from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.questionnaire.helper import get_location_field_code
 from mangrove.transport.player.parser import XlsxParser
 
+
 class FormCodeDoesNotMatchException(Exception):
     def __init__(self, message, form_code=None):
         self.message = message
@@ -53,14 +57,15 @@ class FormCodeDoesNotMatchException(Exception):
 
 
 class FilePlayer(Player):
-    def __init__(self, dbm, parser, channel_name, location_tree=None):
+    def __init__(self, dbm, parser, channel_name, location_tree=None, is_datasender=False):
         Player.__init__(self, dbm, location_tree)
         self.parser = parser
         self.channel_name = channel_name
         self.form_code = None
+        self.is_datasender = is_datasender
 
     @classmethod
-    def build(cls, manager, extension, default_parser=None, form_code=None):
+    def build(cls, manager, extension, default_parser=None, form_code=None, is_datasender=False):
         channels = dict({".xls": Channel.XLS, ".xlsx": Channel.XLSX, ".csv": Channel.CSV})
         try:
             channel = channels[extension]
@@ -76,8 +81,8 @@ class FilePlayer(Player):
             parser = XlsxParser()
         else:
             raise InvalidFileFormatException()
-        player = FilePlayer(manager, parser, channel, location_tree=LocationBridge(get_location_tree(),
-                                                                                   get_loc_hierarchy=get_location_hierarchy))
+        location_bridge = LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy)
+        player = FilePlayer(manager, parser, channel, location_tree=location_bridge, is_datasender=is_datasender)
         player.form_code = form_code
         return player
 
@@ -113,7 +118,8 @@ class FilePlayer(Player):
         try:
             if organization.in_trial_mode:
                 mobile_number = case_insensitive_lookup(values, "m")
-                data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number, organization=organization)
+                data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
+                                                                     organization=organization)
                 data_sender.save(force_insert=True)
         except IntegrityError:
             raise MultipleReportersForANumberException(mobile_number)
@@ -130,11 +136,6 @@ class FilePlayer(Player):
 
             response = self.submit(form_model, values, [])
 
-            # if response.success:
-            #     user = self._create_user(email, organization, response)
-            #     send_email_to_data_sender(user, _("en"))
-
-
         else:
             response = self.submit(form_model, values, [])
 
@@ -145,7 +146,8 @@ class FilePlayer(Player):
         if location_field_code is None:
             return values
         if location_field_code in values and values[location_field_code]:
-            values[location_field_code] = get_country_appended_location(values[location_field_code], organization.country_name())
+            values[location_field_code] = get_country_appended_location(values[location_field_code],
+                                                                        organization.country_name())
         return values
 
     def _import_submission(self, organization, values, form_model=None):
@@ -156,6 +158,7 @@ class FilePlayer(Player):
             values = self._process(form_model, values)
             is_reporter = case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER
             if is_reporter:
+                values['is_data_sender'] = 'True' if self.is_datasender else 'False'
                 response = self._import_data_sender(form_model, organization, values)
             else:
                 SubjectTemplateValidator(form_model).validate(values)
@@ -171,11 +174,12 @@ class FilePlayer(Player):
                     if e.data[0] == 'Unique ID Number' \
                     else _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1])
             else:
-                msg = _("%s with ID Number '%s' already exists or has previously collected data.") % (e.data[2], e.data[1])\
+                msg = _("%s with ID Number '%s' already exists or has previously collected data.") % (
+                    e.data[2], e.data[1]) \
                     if e.data[0] == 'Unique ID Number' \
                     else _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1])
             return self._appendFailedResponse(msg,
-                                                values=values)
+                                              values=values)
         except EmptyRowException as e:
             return self._appendFailedResponse(e.message)
         except (InvalidEmailException, MangroveException, NameNotFoundException, ValidationError) as e:
@@ -196,7 +200,8 @@ class FilePlayer(Player):
             if self.form_code is not None and form_code != self.form_code:
                 form_model = get_form_model_by_code(self.dbm, self.form_code)
                 raise FormCodeDoesNotMatchException(
-                    ugettext('Some unexpected error happened. Please check the excel file or download the latest template and import again.') %
+                    ugettext(
+                        'Some unexpected error happened. Please check the excel file or download the latest template and import again.') %
                     form_model.entity_type[0], form_code=form_code)
         return form_model
 
@@ -213,7 +218,8 @@ class FilePlayer(Player):
                 self._import_submission(organization, values, form_model))
         return responses
 
-#TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
+
+# TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
 def translate_errors(items, question_dict={}, question_answer_dict={}):
     errors = []
     for key, value in items:
@@ -226,13 +232,16 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
             errors.append(_('Answer for question %s is required.') % (question_label, ))
 
         elif 'Expected date in mm.yyyy format' in value:
-            errors.append(_('Answer %s for question %s is invalid. Expected date in %s format') % (answer, question_label, ' mm.yyyy'))
+            errors.append(_('Answer %s for question %s is invalid. Expected date in %s format') % (
+                answer, question_label, ' mm.yyyy'))
 
         elif 'Expected date in dd.mm.yyyy format' in value:
-            errors.append(_('Answer %s for question %s is invalid. Expected date in %s format') % (answer, question_label, 'dd.mm.yyyy'))
+            errors.append(_('Answer %s for question %s is invalid. Expected date in %s format') % (
+                answer, question_label, 'dd.mm.yyyy'))
 
         elif 'Expected date in mm.dd.yyyy format' in value:
-            errors.append(_('Answer %s for question %s is invalid. Expected date in %s format') % (answer, question_label, 'mm.dd.yyyy'))
+            errors.append(_('Answer %s for question %s is invalid. Expected date in %s format') % (
+                answer, question_label, 'mm.dd.yyyy'))
 
         elif 'smaller than allowed' in value:
             errors.append(_('Answer %s for question %s is smaller than allowed.') % (answer, question_label))
@@ -247,7 +256,8 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
             errors.append(_('Answer %s for question %s contains more than one value.') % (answer, question_label))
 
         elif 'not present in the allowed options' in value:
-            errors.append(_('Answer %s for question %s is not present in the allowed options.') % (answer, question_label))
+            errors.append(
+                _('Answer %s for question %s is not present in the allowed options.') % (answer, question_label))
 
         elif 'xx.xxxx yy.yyyy' in value:
             errors.append(_(
@@ -259,16 +269,20 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
         elif re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", value):
             re_match = re.match(r"([A-Za-z0-9 ]+) with Unique Identification Number \(ID\) = (\w+) not found", value)
             unique_id_type = re_match.group(1)
-            errors.append(_("The unique ID %s of the %s does not match with any existing Identification number. Please correct and import again.") % (answer, unique_id_type))
+            errors.append(_(
+                "The unique ID %s of the %s does not match with any existing Identification number. Please correct and import again.") % (
+                              answer, unique_id_type))
 
         elif 'Data Sender ID not matched' in value:
-            errors.append(_("The unique ID %s of the Data Sender does not match with any existing Data Sender ID. Please correct and import again.") % (answer))
+            errors.append(_(
+                "The unique ID %s of the Data Sender does not match with any existing Data Sender ID. Please correct and import again.") % (
+                              answer))
 
         elif 'shorter' in value:
             errors.append(_("Answer %s for question %s is shorter than allowed.") % (answer, question_label))
 
         elif 'Sorry, the telephone number' in value:
-            errors.append(_("Sorry, the telephone number %s has already been registered.") %(answer))
+            errors.append(_("Sorry, the telephone number %s has already been registered.") % (answer))
 
         elif 'must be between' in value:
             # todo check the usage and remove the split
@@ -280,15 +294,17 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
             errors.append(_(value))
     return errors
 
+
 def _get_answer_and_question_label(question_answer_dict, question_dict, question_code):
     return question_answer_dict.get(question_code), question_dict.get(question_code, question_code)
 
 
 def _get_form_model_questions(manager, row):
-    return {'n':'&#39;Name&#39;', 'm':'&#39;Mobile Number&#39;'} if 'reporter' in row[1].entity_type else\
+    return {'n': '&#39;Name&#39;', 'm': '&#39;Mobile Number&#39;'} if 'reporter' in row[1].entity_type else \
         get_form_model_by_code(manager, row[1].form_code).get_field_code_label_dict()
 
-def tabulate_failures(rows,manager):
+
+def tabulate_failures(rows, manager):
     tabulated_data = []
     form_model = None
     questions_dict = {}
@@ -297,12 +313,13 @@ def tabulate_failures(rows,manager):
         if not row[1].errors["row"]:
             continue
         if form_model is None and row[1].form_code:
-            questions_dict = _get_form_model_questions(manager,row)
+            questions_dict = _get_form_model_questions(manager, row)
         row[1].errors['row_num'] = row[0] + 2
 
         if isinstance(row[1].errors['error'], dict):
 
-            errors = translate_errors(items=row[1].errors['error'].items(),question_dict=questions_dict, question_answer_dict=row[1].errors['row'])
+            errors = translate_errors(items=row[1].errors['error'].items(), question_dict=questions_dict,
+                                      question_answer_dict=row[1].errors['row'])
         else:
             errors = [_(row[1].errors['error'])]
 
@@ -311,6 +328,7 @@ def tabulate_failures(rows,manager):
         row[1].errors.pop('row')
         tabulated_data.append(row[1].errors)
     return tabulated_data
+
 
 def tabulate_success(success_responses):
     tabulated_data = []
@@ -383,9 +401,10 @@ def load_all_entities_of_type(manager, type=REPORTER):
     return load_entity_registration_data(manager, type)
 
 
-def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None):
+def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None, is_datasender=False):
     base_name, extension = os.path.splitext(file_name)
-    player = FilePlayer.build(manager, extension, default_parser=default_parser, form_code=form_code)
+    player = FilePlayer.build(manager, extension, default_parser=default_parser, form_code=form_code,
+                              is_datasender=is_datasender)
     responses = player.accept(file)
     return responses
 
@@ -396,26 +415,29 @@ def _get_imported_entities(responses):
     for response in responses:
         if response.success:
             datarecords_id.append(response.datarecord_id)
-            imported_entities.update({response.short_code:response.processed_data})
+            imported_entities.update({response.short_code: response.processed_data})
     return {"imported_entities": imported_entities, "datarecords_id": datarecords_id}
 
 
 def _get_failed_responses(responses):
     return [i for i in enumerate(responses) if not i[1].success]
 
+
 def _get_successful_responses(responses):
     return [response for response in responses if response.success]
 
-def import_data(request, manager, default_parser=None, form_code=None):
+
+def import_data(request, manager, default_parser=None, form_code=None, is_datasender=False):
     response_message = ''
     error_message = None
     failure_imports = None
     imported_entities = []
     try:
-        #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
+        # IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
         file_name, file = get_filename_and_contents(request)
         responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager,
-                                          default_parser=default_parser, form_code=form_code)
+                                          default_parser=default_parser, form_code=form_code,
+                                          is_datasender=is_datasender)
 
         imported_entities_dict = _get_imported_entities(responses)
 
@@ -433,13 +455,14 @@ def import_data(request, manager, default_parser=None, form_code=None):
         if total == 0:
             error_message = _("The imported file is empty.")
         failures = _get_failed_responses(responses)
-        failure_imports = tabulate_failures(failures,manager)
-        total = len(failure_imports)+successful_import_count
+        failure_imports = tabulate_failures(failures, manager)
+        total = len(failure_imports) + successful_import_count
         response_message = ugettext_lazy('%s of %s records uploaded') % (successful_import_count, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
-        error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xlsx) template file!")
+        error_message = _(
+            u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xlsx) template file!")
     except FormCodeDoesNotMatchException as e:
         error_message = e.message
 
@@ -464,7 +487,7 @@ def get_datasenders_mobile(manager):
     return [ds["cols"][index] for ds in all_data_senders]
 
 
-def send_email_to_data_sender(user, language_code, request=None, type="activation",organization=None):
+def send_email_to_data_sender(user, language_code, request=None, type="activation", organization=None):
     site = get_current_site(request)
     account_type = organization.account_type if organization else 'Pro SMS'
     ctx_dict = {
@@ -495,7 +518,7 @@ def send_email_to_data_sender(user, language_code, request=None, type="activatio
     if request is not None:
         ctx_dict.update({"creator_user": request.user.first_name})
         if organization:
-            ctx_dict.update({"org_number":get_organization_telephone_number(request)})
+            ctx_dict.update({"org_number": get_organization_telephone_number(request)})
     message = render_to_string(action.get("template") + language_code + '.html', ctx_dict)
     email = EmailMessage(subject, message, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"

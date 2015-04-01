@@ -24,7 +24,8 @@ from datawinners.entity.helper import rep_id_name_dict_of_users
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import is_project_exist
 from datawinners.project.views.views import get_project_link, _in_trial_mode, _is_pro_sms
-from datawinners.search.all_datasender_search import get_data_sender_search_results, get_data_sender_without_search_filters_count, \
+from datawinners.search.all_datasender_search import get_data_sender_search_results, \
+    get_data_sender_without_search_filters_count, \
     get_data_sender_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.entity_search import DatasenderQueryResponseCreator
@@ -58,7 +59,7 @@ class MyDataSendersAjaxView(View):
         total_count = get_data_sender_without_search_filters_count(manager, search_parameters)
         filtered_count = get_data_sender_count(manager, search_parameters)
         query_fields.remove('projects')
-        datasenders = DatasenderQueryResponseCreator().create_response(search_results, show_projects = False)
+        datasenders = DatasenderQueryResponseCreator().create_response(search_results, show_projects=False)
 
         return HttpResponse(
             jsonpickle.encode(
@@ -105,8 +106,6 @@ def _add_imported_datasenders_to_project(imported_datasenders_id, manager, proje
         update_datasender_index_by_id(datasender_id, manager)
 
 
-
-
 @login_required
 @csrf_exempt
 @is_not_expired
@@ -138,10 +137,13 @@ def registered_datasenders(request, project_id):
     if request.method == 'POST':
         error_message, failure_imports, success_message, successful_imports = import_module.import_data(request,
                                                                                                         manager,
-                                                                                                        default_parser=XlsDatasenderParser)
+                                                                                                        default_parser=XlsDatasenderParser,
+                                                                                                        is_datasender=True)
         imported_data_senders = parse_successful_imports(successful_imports)
 
-        reporter_id_email_map = dict([(imported_datasender['id'], imported_datasender['email']) for imported_datasender in imported_data_senders])
+        reporter_id_email_map = dict(
+            [(imported_datasender['id'], imported_datasender['email']) for imported_datasender in
+             imported_data_senders])
         org_id = request.user.get_profile().org_id
         create_web_users(org_id, reporter_id_email_map, request.LANGUAGE_CODE)
 
