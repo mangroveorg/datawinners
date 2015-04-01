@@ -5,9 +5,11 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
-from datawinners.entity.views import create_subject
+from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
+from datawinners.project.couch_view_helper import get_all_form_models
+from datawinners.submission.location import LocationBridge
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
@@ -20,7 +22,6 @@ from mangrove.transport.player.parser import XFormParser
 from mangrove.transport.services.MediaSubmissionService import MediaAttachmentNotFoundException
 from mangrove.transport.xforms.xform import list_all_forms, xform_for
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
-from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.messageprovider.messages import SMART_PHONE
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
@@ -62,7 +63,7 @@ def restrict_request_country(f):
 @httpdigest
 @restrict_request_country
 def formList(request):
-    rows = get_all_project_for_user(request.user)
+    rows = get_all_form_models(get_database_manager(request.user))
     form_tuples = [(row['value']['name'], row['id']) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
     response = HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
@@ -140,7 +141,8 @@ def submission(request):
         form_model = get_form_model_by_code(manager, form_code)
 
         if isinstance(form_model, EntityFormModel) and form_model.is_entity_registration_form:
-            response = player.add_subject_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
+            location_tree = LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy)
+            response = player.add_subject(form_model, values, location_tree)
         else:
             response = player.add_survey_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
 
