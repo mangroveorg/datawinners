@@ -32,7 +32,7 @@ function SmsViewModel(){
     var questionnaireItems = [];
 
     if(response.length == 0){
-        self.questionnairePlaceHolderText(gettext("No questionnaires present"));
+        self.questionnairePlaceHolderText(gettext("Once you have created Questionnaires, a list of your Questionnaires will appear here."));
     }
     else{
        self.questionnairePlaceHolderText("");
@@ -50,7 +50,7 @@ function SmsViewModel(){
     var groupItems = [];
 
     if(response.groups.length == 0){
-        self.groupPlaceHolderText(gettext("No groups present"));
+        self.groupPlaceHolderText(gettext("Once you have created groups, a list of your groups will appear here."));
     }
     else{
        self.groupPlaceHolderText("");

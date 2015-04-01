@@ -1495,3 +1495,6 @@ msgstr "Tous les Contacts"
 
 msgid "Group"
 msgstr "Groupe"
+
+msgid "Once you have created questionnaires, a list of your questionnaires will appear here."
+msgstr "Une fois que vous avez créé des questionnaires, la liste de vos questionnaires apparaitront à cet endroit."
