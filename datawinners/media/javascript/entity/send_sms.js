@@ -109,6 +109,8 @@ function SmsViewModel(){
   self.clearSelection = function(){
     self.selectedSmsOption(undefined);
     smsTextArea.val("");
+    self.questionnaireItems([]);
+    self.groupItems([]);
     self.smsCharacterCount("0" + gettext(" of 160 characters used"));
     self.othersList("");
     self.selectedGroupNames([]);
