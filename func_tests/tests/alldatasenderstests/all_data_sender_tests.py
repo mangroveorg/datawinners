@@ -33,7 +33,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         cls.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         cls.all_datasenders_page.wait_for_table_to_load()
         cls.all_datasenders_page.search_with(cls.user_mobile_number)
-        cls.user_ID = cls.all_datasenders_page.get_cell_value(1, 3)
+        cls.user_ID = cls.all_datasenders_page.get_cell_value(1, 7)
 
     def setUp(self):
         self.all_datasenders_page.load()
@@ -113,7 +113,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         self.assertEqual("0 to 0 of 0 Contact", self.all_datasenders_page.get_pagination_text())
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.assertEqual(self.datasender_id_without_web_access,
-                         self.all_datasenders_page.get_cell_value(row=1, column=3),
+                         self.all_datasenders_page.get_cell_value(row=1, column=7),
                          msg="matching row does not have specified ID")
         self.assertFalse(
             self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(2)),
@@ -221,11 +221,11 @@ class TestAllDataSenders(HeadlessRunnerTest):
         self.all_datasenders_page.wait_for_table_to_load()
         self.all_datasenders_page.search_with(self.datasender_id_with_web_access)
         self.assertEqual(fetch_(NAME, EDITED_DATA_SENDER), self.all_datasenders_page.get_cell_value(1, 2))
-        self.assertEqual(self.datasender_id_with_web_access, self.all_datasenders_page.get_cell_value(1, 3))
+        self.assertEqual(self.datasender_id_with_web_access, self.all_datasenders_page.get_cell_value(1, 7))
         location_appended_with_account_location = fetch_(COMMUNE, EDITED_DATA_SENDER) + ",Madagascar"
-        self.assertEqual(location_appended_with_account_location, self.all_datasenders_page.get_cell_value(1, 4))
-        self.assertEqual(fetch_(GPS, EDITED_DATA_SENDER), self.all_datasenders_page.get_cell_value(1, 5))
-        self.assertEqual(fetch_(MOBILE_NUMBER, EDITED_DATA_SENDER), self.all_datasenders_page.get_cell_value(1, 6))
+        self.assertEqual(location_appended_with_account_location, self.all_datasenders_page.get_cell_value(1, 5))
+        self.assertEqual(fetch_(GPS, EDITED_DATA_SENDER), self.all_datasenders_page.get_cell_value(1, 6))
+        self.assertEqual(fetch_(MOBILE_NUMBER, EDITED_DATA_SENDER), self.all_datasenders_page.get_cell_value(1, 3))
 
 
     @attr("functional_test")
@@ -242,7 +242,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.assertTrue(self.all_datasenders_page.is_web_and_smartphone_device_checkmarks_present(
             self.datasender_id_without_web_access))
-        self.assertEqual(email_address, self.all_datasenders_page.get_cell_value(1, 7))
+        self.assertEqual(email_address, self.all_datasenders_page.get_cell_value(1, 4))
 
     @attr('functional_test')
     def test_should_not_able_to_use_other_datasender_mobile_number(self):

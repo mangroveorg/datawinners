@@ -20,9 +20,9 @@
         <span class="grey float_right" data-bind="text: smsCharacterCount" ></span></div></div>
     <br/>
 
-    <div class="tableRow" data-bind="visible: showToSection">
+    <div class="tableRow">
         <div class = "tableCell">{% trans "To:" %}</div>
-        <div class = "tableCell padding_bottom_10">
+        <div class = "tableCell padding_bottom_10" data-bind="visible: showToSection">
             <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
         </div>
     </div>
@@ -40,9 +40,27 @@
                     <span class="validationText" data-bind="text: selectedQuestionnaireNames.error"></span>
                 </div>
 
-            <span data-bind="text:placeHolderText"></span>
+            <span data-bind="text:questionnairePlaceHolderText"></span>
         </div>
     </div>
+
+    <div class="tableRow" >
+        <div class = "tableCell"></div>
+        <div class = "tableCell" data-bind="css: {'none': hideGroupSection}">
+            <!-- ko foreach: groupItems -->
+                <div>
+                    <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedGroupNames()" />
+                    <span data-bind="html: label"></span>
+                </div>
+            <!-- /ko -->
+                <div class="validationMessage" data-bind="ifnot: selectedGroupNames.valid">
+                    <span class="validationText" data-bind="text: selectedGroupNames.error"></span>
+                </div>
+
+            <span data-bind="text:groupPlaceHolderText"></span>
+        </div>
+    </div>
+
     <div class="tableRow" data-bind="css: {'none': hideOtherContacts}" >
         <div class = "tableCell"></div>
         <div class = "tableCell">
@@ -60,7 +78,7 @@
     </div>
     <br/>
     <div class="right_aligned_button margin_right_4" >
-    <a id="cancel-sms" class="margin_right_20" data-bind="click: closeSmsDialog">{% trans "Cancel" %}</a>
+    <a id="cancel-sms" class="margin_right_20 dialog-anchor" data-bind="click: closeSmsDialog">{% trans "Cancel" %}</a>
     <button class="button" data-bind="click: sendSms, disable: disableSendSms, text: sendButtonText, css: {'ui-state-disabled': disableSendSms}"></button>
     </div>
 </div>

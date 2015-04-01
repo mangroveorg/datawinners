@@ -45,6 +45,14 @@
         </div>
         <div class="clear-both"></div>
     </div>
+    {% if entity_types_with_no_registered_entities %}
+       {% for type in entity_types_with_no_registered_entities %}
+            <div class="information_box clear-left">
+                    {% blocktrans %}You have not registered a {{ type }} yet. Making submission via Smartphone will not be possible.{% endblocktrans %}
+                    {% trans "Register a" %} <a target="_blank" href="{% url create_subject type %}?web_view=True">{{ type }}</a>.
+            </div>
+       {% endfor %}
+    {% endif %}
 
     <div id="xlx-message"></div>
     <div id="xlx-info"></div>

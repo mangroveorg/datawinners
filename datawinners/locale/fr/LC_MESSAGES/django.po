@@ -5701,8 +5701,8 @@ msgstr "Créer de nouveaux Types de Numéro d’Identification en utilisant XLSF
                          " n’a pas encore été créé mais vous pouvez l’ajouter <a href='/entity/subjects' "
                          "target='_blank'>ici</a>."
 
-msgid "You have not registered a %s yet. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>"
-msgstr "Vous n’anex pas encore enregistré un %s. Enregistrez un <a href='/entity/subject/create/%s/?web_view=True'>%s</a>"
+msgid "You have not registered a %s yet. Making submission via Smartphone will not be possible. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>"
+msgstr "Vous n’avez pas encore enregistré un %s. Collecter des données à partir de Smartphone ne sera pas possible. Enregistrez un <a href='/entity/subject/create/%s/?web_view=True'>%s</a>"
 
 msgid "The Identification Number Type (dw_idnr) is missing in the Constraints column. "
                          "Please add the Identification Number Type and upload again. "
@@ -5734,3 +5734,9 @@ msgstr "Un Groupe du même nom existe déjà."
 
 msgid "Group %s has been added successfully."
 msgstr "Le Groupe %s a été ajouté avec succès."
+
+msgid "The Contact(s) are added to Group(s) successfully."
+msgstr "Le(s) Contact(s) ont été ajouté(s) au(x) Groupe(s) avec succès."
+
+msgid "You have not registered a %(type)s yet. Making submission via Smartphone will not be possible."
+msgstr "Vous n’avez pas encore enregistré un %(type)s. Collecter des données à partir de Smartphone ne sera pas possible."

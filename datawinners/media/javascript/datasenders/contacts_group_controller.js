@@ -22,17 +22,31 @@ function ContactsGroupViewModel() {
     self.newGroupValid = ko.observable(true);
     self.selectedGroup = ko.observable();
     self.isOpen = ko.observable(false);
+    self.disable_button = ko.observable(false);
+    self.disable_attr = ko.observable(null);
     self.addGroupDialogContent = ko.observable($('#add_group_dialog_content').html());
+
+    self.disable_add_button = function() {
+        self.groupButtonText(gettext("Adding..."));
+        self.disable_attr('disabled');
+        self.disable_button(true);
+    };
+    self.enable_add_button = function() {
+        self.groupButtonText(gettext("Add"));
+        self.disable_attr(null);
+        self.disable_button(false);
+    };
 
     self.addNewGroup = function () {
         var newGroup = new DW.group({'name': self.newGroupName()});
-        self.groupButtonText(gettext("Adding..."));
+        DW.loading();
+        self.disable_add_button();
         $.post('/entity/group/create/', {
             group_name: newGroup.name(),
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         })
             .done(function (responseString) {
-                self.groupButtonText(gettext('Add'));
+                self.enable_add_button();
                 var response = $.parseJSON(responseString);
                 if (response.success) {
                     self.groups().push(newGroup);
@@ -59,12 +73,15 @@ function ContactsGroupViewModel() {
     };
 
     self.changeSelectedGroup = function (group) {
+        $('.flash-message').remove();
         self.selectedGroup(group);
     };
 
     self.selectedGroup.subscribe(function (new_group) {
         selected_group = new_group.code(); //used to send group name as filter
-        $("#datasender_table").dataTable().fnReloadAjax()
+        var table = $("#datasender_table").dataTable();
+        table.fnSettings()._iDisplayStart = 0;
+        table.fnReloadAjax()
     });
 
 
@@ -79,7 +96,7 @@ function ContactsGroupViewModel() {
 }
 function initializeContactGroupViewModel() {
     window.groupViewModel = new ContactsGroupViewModel();
-    var default_group = new DW.group({'name':'All Contacts'});
+    var default_group = new DW.group({'name':gettext('All Contacts')});
     default_group.code('');
     groupViewModel.loadGroup(default_group);
     $(existing_groups).each(function (index, group) {

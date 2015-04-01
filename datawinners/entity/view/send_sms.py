@@ -12,6 +12,8 @@ from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import broadcast_message
 from datawinners.scheduler.smsclient import NoSMSCException
+from datawinners.search.all_datasender_search import get_data_sender_count, get_data_sender_search_results, \
+    get_all_datasenders_search_results
 
 
 class SendSMS(View):
@@ -22,24 +24,31 @@ class SendSMS(View):
 
         return []
 
-    def mobile_numbers_for_questionnaire(self, dbm, questionnaire_names):
-        es = Elasticsearch()
-        search = Search(using=es, index=dbm.database_name, doc_type='reporter')
-        search = search.fields('mobile_number')
-        search = search.query("terms", projects_value=questionnaire_names)
-        search = search.query("term", void=False)
-        body = search.to_dict()
-        response = es.search(index=dbm.database_name, doc_type='reporter', body=body)
+    def _mobile_numbers_for_questionnaire(self, dbm, questionnaire_names):
+        search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}
+        return _get_all_contacts_mobile_numbers(dbm, search_parameters)
 
-        return [item['fields']['mobile_number'] for item in response['hits']['hits']]
+    def _mobile_numbers_for_groups(self, dbm, group_names):
+        search_parameters = {'void': False, 'search_filters': {'group_names': group_names}}
+        return _get_all_contacts_mobile_numbers(dbm, search_parameters)
+
 
     def _get_mobile_numbers_for_registered_data_senders(self, dbm, request):
         if request.POST['recipient'] == 'linked':
             questionnaire_names = map(lambda item: item.lower(), json.loads(request.POST['questionnaire-names']))
-            mobile_numbers = self.mobile_numbers_for_questionnaire(dbm, questionnaire_names)
+            mobile_numbers = self._mobile_numbers_for_questionnaire(dbm, questionnaire_names)
             return mobile_numbers
         else:
             return []
+
+    def _get_mobile_numbers_for_groups(self, dbm, request):
+        if request.POST['recipient'] == 'group':
+            group_names = map(lambda item: item.lower(), json.loads(request.POST['group-names']))
+            mobile_numbers = self._mobile_numbers_for_groups(dbm, group_names)
+            return mobile_numbers
+        else:
+            return []
+
 
     def post(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)
@@ -50,7 +59,9 @@ class SendSMS(View):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = organization._get_message_tracker(current_month)
         no_smsc = False
-        mobile_numbers = self._get_mobile_numbers_for_registered_data_senders(dbm, request)
+        mobile_numbers_for_ds_linked_to_questionnaire = self._get_mobile_numbers_for_registered_data_senders(dbm, request)
+        mobile_numbers_for_ds_linked_to_group = self._get_mobile_numbers_for_groups(dbm, request)
+        mobile_numbers = mobile_numbers_for_ds_linked_to_questionnaire + mobile_numbers_for_ds_linked_to_group
 
         failed_numbers = []
         try:
@@ -72,18 +83,15 @@ class SendSMS(View):
         return super(SendSMS, self).dispatch(*args, **kwargs)
 
 
-def _get_all_contacts_mobile_numbers(dbm):
-    es = Elasticsearch()
-    search = Search(using=es, index=dbm.database_name, doc_type='reporter')
-    search = search.fields('mobile_number')
-    search = search.query("term", void=False)
-    body = search.to_dict()
-    response = es.search(index=dbm.database_name, doc_type='reporter', body=body)
+def _get_all_contacts_mobile_numbers(dbm, search_parameters):
+    search_parameters['response_fields'] = ['mobile_number']
+    search_results = get_all_datasenders_search_results(dbm, search_parameters)
 
-    return [item['fields']['mobile_number'] for item in response['hits']['hits']]
+    return [item['mobile_number'] for item in search_results.hits]
 
 
 def get_all_mobile_numbers(request):
     dbm = get_database_manager(request.user)
-    mobile_numbers = _get_all_contacts_mobile_numbers(dbm)
+    search_parameters = {'group_name': request.POST.get('group_name'), 'query_string': request.POST.get('search_query')}
+    mobile_numbers = _get_all_contacts_mobile_numbers(dbm, search_parameters)
     return HttpResponse(json.dumps({'mobile_numbers': ", ".join(mobile_numbers)}))

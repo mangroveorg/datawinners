@@ -1,6 +1,6 @@
 from unittest import TestCase
 from mock import patch, Mock, MagicMock
-from datawinners.search.entity_search import SubjectQueryResponseCreator, SubjectQuery, DataSenderQueryBuilder
+from datawinners.search.entity_search import SubjectQueryResponseCreator, SubjectQuery
 from datawinners.search.entity_search import DatasenderQueryResponseCreator
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
@@ -27,20 +27,20 @@ class TestSubjectQueryResponseCreator(TestCase):
 
 class TestDatasenderQueryResponseCreator(TestCase):
 
-    def test_should_return_datasender_with_space_seperated_projects(self):
-        required_field_names = ['field_name1', 'projects']
+    def test_should_return_datasender_with_space_seperated_projects_and_groups(self):
+        # required_field_names = ['field_name1', 'projects']
         query = MagicMock()
         query.hits = [{
-                                              "field_name1": "field_value11",
-                                              "projects": ["p1", "p2"]
-                                          }, {
-                                              "field_name1": "field_value21",
-                                              "projects": ["p1", "p2", "p3"]
-                                          }]
+                          "projects": ["p1", "p2"],
+                          "customgroups":["g1", "g2"]
+                      }, {
+                          "projects": ["p1", "p2", "p3"],
+                          "customgroups":["g2"]
+                      }]
 
-        datasenders = DatasenderQueryResponseCreator().create_response(required_field_names, query)
-        # query.values_dict.assert_called_with(("field_name1", "projects", "groups"))
-        self.assertEquals(datasenders, [["field_value11", "p1, p2", ""], ["field_value21", "p1, p2, p3", ""]])
+        datasenders = DatasenderQueryResponseCreator().create_response(query)
+        self.assertEquals(datasenders, [["", "", "", "", "", "", "p1, p2", '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">', "g1, g2", ""], ["", "", "", "", "", "", "p1, p2, p3", '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">', "g2", ""]])
+
 
     def test_add_check_symbol_for_datasender_row(self):
         result = []
@@ -148,15 +148,3 @@ class TestSubjectQuery(TestCase):
 
                     expected = ['form_id_code1','form_id_code2']
                     self.assertEquals(header_dict,expected)
-
-class TestDataSenderQueryBuilder(TestCase):
-    def test_should_add_not_filter_to_query(self):
-        with patch("datawinners.search.entity_search.QueryBuilder") as query_builder:
-            with patch("datawinners.search.query.elasticutils") as elasticUtilsMock:
-                with patch("datawinners.search.entity_search.elasticutils.F") as mock_filter:
-                    query_builder.return_value = query_builder
-                    query_builder.get_query.return_value = elasticUtilsMock
-                    mock_filter.return_value = mock_filter
-                    DataSenderQueryBuilder().get_query("dbm")
-                    query_builder.get_query.assert_called_with(database_name="dbm", doc_type="reporter")
-                    elasticUtilsMock.filter.assert_called_with(~mock_filter)

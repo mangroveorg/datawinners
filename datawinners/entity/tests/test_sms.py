@@ -19,7 +19,7 @@ class TestSMS(TestCase):
         request = MagicMock()
         request.POST = {'recipient': "linked", 'questionnaire-names': '["questionnaire1", "questionnaire2"]'}
 
-        with patch("datawinners.entity.view.send_sms.SendSMS.mobile_numbers_for_questionnaire") as mock_mobile_numbers_for_questionnaire:
+        with patch("datawinners.entity.view.send_sms.SendSMS._mobile_numbers_for_questionnaire") as mock_mobile_numbers_for_questionnaire:
             mock_mobile_numbers_for_questionnaire.return_value = ["72465823", "4837539"]
 
             mobile_numbers = SendSMS()._get_mobile_numbers_for_registered_data_senders(dbm, request)

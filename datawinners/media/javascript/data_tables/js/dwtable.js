@@ -10,6 +10,7 @@
                 "bResetDisplay": true,
                 "sAjaxDataProp": "data",
                 "sPaginationType": "dw_pagination",
+                "onMenuLoad":new Function(''),
                 "searchPlaceholderText": '',
                 'getFilter': function () {
                 },
@@ -128,7 +129,7 @@
 
                         $(this).parents(".dataTables_wrapper").find('.action').click(function () {
                             var all_selected = $(dataTableObject).find(".select_all_message").data('all_selected');
-                            var selected_count = $(this).parents('.dataTables_wrapper').find('input:checked').not(".checkall-checkbox").length
+                            var selected_count = $(this).parents('.dataTables_wrapper').find('input:checked').not(".checkall-checkbox").length;
                             if (selected_count == 0) {
                                 $("#" + dropdown_id + ">.dropdown-menu li").hide();
                                 $("#" + dropdown_id + ">.dropdown-menu li.none-selected").show();
@@ -140,6 +141,7 @@
                                 else
                                     $("#" + dropdown_id + ">.dropdown-menu li.single").removeClass('disabled')
                             }
+                            defaults['onMenuLoad']();
                         });
                     }
 

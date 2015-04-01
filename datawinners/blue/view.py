@@ -91,9 +91,6 @@ class ProjectUpload(View):
                     'message_prefix': _("Sorry! Current version of DataWinners does not support"),
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
-            if xls_parser_response.info:
-                for message in xls_parser_response.info:
-                    messages.warning(request, ugettext(message), extra_tags='warning')
             tmp_file.seek(0)
             mangrove_service = MangroveService(request, questionnaire_code=questionnaire_code,
                                                project_name=project_name, xls_form=tmp_file,

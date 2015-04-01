@@ -82,22 +82,11 @@ DW.DataSenderActionHandler = function () {
         handle_datasender_edit(table, selected_ids);
     };
     this["addtogroups"] = function(table, selected_ids, all_selected){
+        _add_remove_from_group('add', selected_ids, all_selected);
+    };
 
-        $.get(all_groups_url).done(function(response) {
-                var allGroupsSection = $("#all_groups");
-                allGroupsSection.html("");
-                $.each(response['group_names'], function(index, group_item){
-                    var group_name = group_item.name;
-                    allGroupsSection.append($("<li><input type='checkbox' value=" + group_name + ">"+ group_name +"</input></li>"));
-                    allGroupsSection.data("selected_ids", selected_ids);
-                    allGroupsSection.data("all_selected", all_selected);
-                    allGroupsSection.data("current_group_name", selected_group);
-                });
-                init_dialog_box_for_group();
-                $('#all_groups_block').dialog("open");
-           }
-        );
-
+    this["removefromgroups"] = function(table, selected_ids, all_selected){
+        _add_remove_from_group('remove', selected_ids, all_selected);
     };
 
     this["remove_from_project"] = function(table, selectedIds, all_selected) {
@@ -119,18 +108,49 @@ DW.DataSenderActionHandler = function () {
     };
 };
 
+function _add_remove_from_group(action, selected_ids, all_selected) {
+    DW.loading();
+    $.get(all_groups_url).done(function (response) {
+            var allGroupsSection = $("#all_groups");
+            allGroupsSection.html("");
+            $.each(response['group_names'], function (index, group_item) {
+                var group_name = group_item.name;
+                allGroupsSection.append($("<li><label><input type='checkbox' value=" + group_name + ">" + group_name + "</label></li>"));
+                allGroupsSection.data("selected_ids", selected_ids);
+                allGroupsSection.data("all_selected", all_selected);
+                allGroupsSection.data("action", action);
+                allGroupsSection.data("current_group_name", selected_group);
+            });
+            init_dialog_box_for_group();
+            $('#no_group_selected_message').addClass('none');
+            var title = action == 'add' ? 'Add to Groups' : 'Remove from Groups';
+            $('#all_groups_block').dialog("option", "title", title);
+            $('#all_groups_block').dialog("open");
+        }
+    );
+}
+
 function _populateAndShowSmsDialog(selected_ids, all_selected){
     if(!all_selected){
         var contact_mobile_numbers = [];
         $.each(selected_ids, function(index, rep_id){
-            var mobile_number = $($("input[value=" + rep_id +"]").closest("tr").children()[5]).text();
+            var mobile_number = $($("input[value=" + rep_id +"]").closest("tr").children()[2]).text();
             contact_mobile_numbers.push(mobile_number);
         });
         _showSmsDialog(contact_mobile_numbers.join(", "));
     }
     else{
-        $.get(all_contacts_mobile_number_url).done(function(response){
-            var response =  $.parseJSON(response);
+        $.ajax({
+            url: all_contacts_mobile_number_url,
+            type: "POST",
+            headers: { "X-CSRFToken": $.cookie('csrftoken') },
+            data: {
+                'group_name':selected_group,
+                'search_query':$(".dataTables_filter input").val()
+            }
+
+        }).done(function (json_response) {
+            var response =  $.parseJSON(json_response);
             _showSmsDialog(response['mobile_numbers']);
         });
     }
@@ -212,6 +232,10 @@ function add_remove_from_project(action, table, selected_ids, all_selected) {
     all_project_block.data("all_selected", all_selected);
     all_project_block.data("action", action);
     all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
+    if(action == 'associate')
+        all_project_block.dialog('option','title',gettext('Add to Questionnaire'));
+    else
+        all_project_block.dialog('option','title',gettext('Remove from Questionnaire'));
     all_project_block.dialog("open");
 }
 function get_user_names_from_selected_datasenders(table, selected_ids, all_selected) {
@@ -419,8 +443,10 @@ function init_dialog_box_for_group(){
     allGroupsBlock.dialog({
         autoOpen: false,
         modal: true,
+        title: gettext("Add to Groups"),
         zIndex: 1100,
-        width: 900,
+        width: 'auto',
+        dialogClass: 'all_groups_dialog',
         beforeClose: function () {
             $('#action').removeAttr("data-selected-action");
         },
@@ -480,10 +506,10 @@ function populate_dialog_box_for_web_users(table, all_selected) {
     $(table).find("input.row_checkbox:checked").each(function () {
         var row = $(this).parent().parent();
         var data_sender = {};
-        data_sender.short_name = $($(row).children()[2]).html();
+        data_sender.short_name = $($(row).children()[6]).html();
         data_sender.name = $($(row).children()[1]).html();
         data_sender.location = $($(row).children()[4]).html();
-        data_sender.email = $($(row).children()[6]).html();
+        data_sender.email = $($(row).children()[3]).html();
         data_sender.input_field_disabled = "disabled";
         if (!$.trim(data_sender.email)) {
             data_sender.input_field_disabled = "";

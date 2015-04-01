@@ -58,7 +58,8 @@
   margin-top: 6px;
 }
 
-#datasender_table td:nth-child(10){
+//hiding system groups
+#datasender_table td:nth-child(11){
   display: none;
 }
 
@@ -123,6 +124,7 @@
 
 span.selected_list_item_arrow{
   left: 19%;
+  padding-left: 17px;
 }
 #group-success {
   width:60%;
@@ -130,4 +132,15 @@ span.selected_list_item_arrow{
 
 .no-close .ui-dialog-titlebar-close {
   visibility: hidden;
+}
+
+#all_groups_block {
+  ul li label{
+    display: inline;
+  }
+}
+
+.all_groups_dialog {
+  min-width: 300px;
+  width: auto;
 }
