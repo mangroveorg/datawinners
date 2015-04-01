@@ -48,17 +48,17 @@ class TestAllDataSendersImport(HeadlessRunnerTest):
     def _assert_datasender_uploaded(self, all_datasender_page, workbook):
         all_datasender_page.search_with(workbook['ds_name'])
         self.assertEqual(workbook['ds_name'], all_datasender_page.get_cell_value(1, 2))
-        self.assertIn(workbook['ds_location'], all_datasender_page.get_cell_value(1, 4))
-        self.assertEqual(workbook['gps_coordinates'], all_datasender_page.get_cell_value(1, 5))
-        self.assertEqual(workbook['ds_number'], all_datasender_page.get_cell_value(1, 6))
-        self.assertEqual(workbook['ds_email'], all_datasender_page.get_cell_value(1, 7))
+        self.assertIn(workbook['ds_location'], all_datasender_page.get_cell_value(1, 5))
+        self.assertEqual(workbook['gps_coordinates'], all_datasender_page.get_cell_value(1, 6))
+        self.assertEqual(workbook['ds_number'], all_datasender_page.get_cell_value(1, 3))
+        self.assertEqual(workbook['ds_email'], all_datasender_page.get_cell_value(1, 4))
 
     def _prepare_workbook(self):
-        file_name = 'DataWinners_ImportDataSenders.xlsx'
+        file_name = 'DataWinners_ImportContacts.xlsx'
         DIR = os.path.dirname(__file__) + '/'
         file_path = os.path.join(DIR, file_name)
         workbook = load_workbook(file_path)
-        worksheet = workbook.get_sheet_by_name('Import Data Senders')
+        worksheet = workbook.get_sheet_by_name('Import Contacts')
         worksheet['A2'] = workbook_row1['ds_name']
         worksheet['B2'] = workbook_row1['ds_number']
         worksheet['C2'] = workbook_row1['ds_location']
