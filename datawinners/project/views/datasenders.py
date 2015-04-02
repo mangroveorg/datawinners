@@ -91,7 +91,7 @@ def parse_successful_imports(successful_imports):
         data_sender['email'] = successful_import["email"] if "email" in successful_import else ""
         data_sender['location'] = ",".join(successful_import["l"]) if "l" in successful_import else ""
         data_sender['coordinates'] = ','.join(
-            str(coordinate) for coordinate in successful_import["g"]) if 'g' in successful_import else ""
+            str(coordinate) for coordinate in successful_import["g"]) if successful_imports.get('g') else ""
         data_sender['name'] = successful_import['n'] if 'n' in successful_import else ""
         data_sender['mobile_number'] = successful_import['m']
         data_sender['id'] = successful_import['s']
