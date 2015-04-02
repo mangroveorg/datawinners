@@ -282,7 +282,7 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
             errors.append(_("Answer %s for question %s is shorter than allowed.") % (answer, question_label))
 
         elif 'Sorry, the telephone number' in value:
-            errors.append(_("Sorry, the telephone number %s has already been registered.") % (answer))
+            errors.append(_("Sorry, the telephone number %s has already been registered.") % (answer).rstrip(".0"))
 
         elif 'must be between' in value:
             # todo check the usage and remove the split
