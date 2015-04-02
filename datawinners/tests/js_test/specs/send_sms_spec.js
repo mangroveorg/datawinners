@@ -98,6 +98,32 @@ describe("Send A Message", function(){
 
         });
 
+
+        it("should give an error when there is are mobile numbers with invalid mobile format", function() {
+
+            model.othersList("4785214, +3838494000, string_which_should_fail");
+            model.selectedSmsOption("others");
+
+            expect(model.validateOthersList()).toBe(false);
+
+            expect(model.othersList.valid()).toBe(false);
+            expect(model.othersList.error()).toBe("Please enter a valid phone number.");
+
+        });
+
+         it("should not give an error when there is are mobile numbers with valid mobile format", function() {
+
+            model.othersList("4785214, +3838494000, +9876543210, +012345678901234,  00000000000");
+            model.selectedSmsOption("others");
+
+            expect(model.validateOthersList()).toBe(true);
+
+            expect(model.othersList.valid()).toBe(true);
+            expect(model.othersList.error()).toBe("");
+
+        });
+
+
     });
 
     describe("Validations for linked contacts selection", function(){

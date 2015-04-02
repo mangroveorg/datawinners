@@ -139,6 +139,32 @@ function SmsViewModel(){
 
   };
 
+  var mobileNumberRegex = new RegExp('^\\+?[0-9]+$');
+
+  self.validateOtherMobileNumbers = function(){
+
+      if(self.selectedSmsOption() != 'others')
+      {
+          return true;
+      }
+
+      var successful = true;
+      ko.utils.arrayForEach(self.othersList().split(","), function(item){
+        if(!mobileNumberRegex.test(item.trim())){
+            successful = false;
+        }
+      });
+
+      if(!successful){
+          self.othersList.setError(gettext("Please enter a valid phone number."));
+          return false;
+      }
+      else{
+          self.othersList.clearError();
+          return true;
+      }
+  }
+
   self.validateOthersList = function(){
 
     if(self.selectedSmsOption() == 'others' && self.othersList() == ""){
@@ -147,7 +173,7 @@ function SmsViewModel(){
     }
     else{
         self.othersList.clearError();
-        return true;
+        return self.validateOtherMobileNumbers();
     }
 
   };
