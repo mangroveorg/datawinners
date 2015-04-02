@@ -164,14 +164,10 @@ class ReporterRegistrationForm(Form):
         site.
 
         """
-        # if not self.requires_web_access():
-        #     return None
-
         email = self.cleaned_data.get('email')
         if not email:
             return email
 
-        # if User.objects.filter(email__iexact=self.cleaned_data['email']):
         if datasender_count_with(email) > 0:
             raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
         return self.cleaned_data['email']
@@ -193,13 +189,21 @@ class ReporterRegistrationForm(Form):
 
 class EditReporterRegistrationForm(ReporterRegistrationForm):
 
-    def __init__(self, org_id=None, *args, **kwargs):
+    def __init__(self, org_id=None, existing_email=None, *args, **kwargs):
         super(EditReporterRegistrationForm, self).__init__(org_id, *args, **kwargs)
+        self.existing_email = existing_email
 
     def clean(self):
         self.convert_email_to_lowercase()
         self._geo_code_validations()
         return self.cleaned_data
+
+    def clean_email(self):
+        new_email = self.cleaned_data.get('email')
+        if new_email != self.existing_email:
+            return super(EditReporterRegistrationForm, self).clean_email()
+
+        return self.existing_email
 
 class SubjectUploadForm(Form):
     error_css_class = 'error'

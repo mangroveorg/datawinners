@@ -113,7 +113,7 @@ class EditDataSenderView(TemplateView):
         reporter_entity = ReporterEntity(contact_by_short_code(manager, reporter_id))
         email = reporter_entity.email
         org_id = request.user.get_profile().org_id
-        form = EditReporterRegistrationForm(org_id=org_id, data=request.POST)
+        form = EditReporterRegistrationForm(org_id=org_id, existing_email=email,  data=request.POST)
         message = None
         if form.is_valid():
             try:
