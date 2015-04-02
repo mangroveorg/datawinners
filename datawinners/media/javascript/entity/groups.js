@@ -16,8 +16,6 @@ DW.GroupManager = function(options){
     }
 
     $("#add_contacts_to_group").on('click', function(){
-        DW.loading();
-        disable_add_button();
         var group_names = [];
         $("#all_groups input:checked").each(function(index, item){
             group_names.push(item.value);
@@ -29,6 +27,8 @@ DW.GroupManager = function(options){
         else{
             $('#no_group_selected_message').addClass('none');
         }
+        DW.loading();
+        disable_add_button();
         var contacts = all_groups_list.data()['selected_ids'];
         var current_group_name = all_groups_list.data()['current_group_name'];
         var all_selected = all_groups_list.data()['all_selected'];

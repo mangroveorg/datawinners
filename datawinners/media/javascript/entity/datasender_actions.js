@@ -454,6 +454,8 @@ function init_dialog_box_for_group(){
             $("#datasender_table").dataTable().fnReloadAjax();
         }
     });
+    // Since the dialog is initialized on click of the menu item, we are hiding the dialog body.
+    allGroupsBlock.removeClass("none");
 }
 
 function handle_datasender_edit(table, selectedIds) {
