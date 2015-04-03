@@ -33,13 +33,6 @@
 
 {% endblock %}
 
-{% block navigation %}
-    <div class="grid_24">
-        <div class="grid_11 margin_left_null margin_bottom_20 create_proj_button">
-            <a id="create_project_link" href="{% url create_project %}?prev=dash" class="button">{% trans "Create a New Questionnaire" %}</a>
-        </div>
-    </div>
-{% endblock %}
 {% block main_message %}
     {% include 'main_message_upgrade.html' %}
     {{ block.super }}
@@ -62,17 +55,22 @@
     <h4 >Get Started</h4>
     <div class="help_section table">
         <div class="help_section tableRow">
-            <div class="tableCell sub_section"></div>
+
             <div class="tableCell sub_section" id="chat_section">
-                <img  class='chat-icon'  src="/media/images/chat-icon.png"/>
-                <p class="explanation">Short explanation of what this is and why this is awesome. </p>
+                <img  class='dashboard_icon'  src="/media/images/chat-icon.png"/><br/>
+                <p class="explanation ">Communicate </p>
                 {% if  is_pro_sms %}
-                    <button id="send_sms" class="blue_button margin_bottom_10">Send a Message</button>
+                    <a id="send_sms" class="margin_bottom_10">Send an SMS</a>
                 {% else %}
-                    <button id="show_upgrade_message" class="blue_button margin_bottom_10">Send a Message</button>
+                    <a id="show_upgrade_message" class="margin_bottom_10">Send an SMS</a>
                 {% endif %}
-                <div><a>Learn More</a></div>
             </div>
+            <div class="tableCell sub_section" id="questionnaire_section">
+                <img  class='dashboard_icon'  src="/media/images/collect_data.png"/><br/>
+                <p class="explanation">Collect Data</p>
+                <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">Create a Questionnaire</a>
+            </div>
+            <div class="tableCell sub_section"></div>
             <div class="tableCell sub_section"></div>
 
         </div>

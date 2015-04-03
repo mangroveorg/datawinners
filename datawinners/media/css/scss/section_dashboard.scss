@@ -148,7 +148,7 @@ table.no-border{
 }
 
 .sub_section{
-  width: 33%;
+  width: 25%;
   text-align: center;
 }
 
@@ -156,10 +156,12 @@ table.no-border{
   width:150px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
-.chat-icon {
-  width: 75px;
-  height: 75px;
-  padding-bottom: 7px;
+.dashboard_icon {
+  width: 60px;
+  height: 60px;
+  padding-bottom: 15px;
 }
