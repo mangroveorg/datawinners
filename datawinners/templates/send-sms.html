@@ -1,6 +1,5 @@
 {% load i18n %}
 <div id="send-sms-section">
-    <div class="italic">{% trans "Instruction about sending a messages." %}</div>
     <br/>
     <div id="sms-success"  class="success-message-box none">{% trans "SMS sent to telephone company. Upon receipt of delivery confirmation, DataWinners will update the counter on the "%} <a href={% url dashboard %}>{%  trans 'Dashboard'%}</a>.</div>
     <div id="no-smsc" class="message-box none">{% trans "Your message could not be sent."%}</div>
@@ -57,7 +56,7 @@
                     <span class="validationText" data-bind="text: selectedGroupNames.error"></span>
                 </div>
 
-            <span data-bind="text:groupPlaceHolderText"></span>
+            <span class="grey italic" data-bind="text:groupPlaceHolderText"></span>
         </div>
     </div>
 
