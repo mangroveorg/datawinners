@@ -1,5 +1,5 @@
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search, Q
+from elasticsearch_dsl import Search, Q, F
 
 from datawinners.search.query import ElasticUtilsHelper
 from mangrove.form_model.project import get_entity_type_fields
@@ -37,24 +37,24 @@ def get_query_fields(dbm):
     return fields
 
 
-def _add_project_query(search, search_filter_param):
+def _add_project_filter(search, search_filter_param):
     project_name = search_filter_param.get('project_name')
     if project_name:
-        search = search.query("term", projects_value=project_name.lower())
+        search = search.filter("term", projects_value=project_name.lower())
     projects_name = search_filter_param.get('projects')
     if projects_name:
-        search = search.query("terms", projects_value=projects_name)
+        search = search.filter("terms", projects_value=projects_name)
     return search
 
 
-def _add_group_query(search, search_filter_param):
+def _add_group_filter(search, search_filter_param):
     group_name = search_filter_param.get('group_name')
     if group_name:
-        search = search.query("term", customgroups_value=group_name.lower())
+        search = search.filter("term", customgroups_value=group_name.lower())
 
     group_names = search_filter_param.get('group_names')
     if group_names:
-        search = search.query("terms", customgroups_value=group_names)
+        search = search.filter("terms", customgroups_value=group_names)
     return search
 
 
@@ -66,24 +66,24 @@ def _add_free_text_search_query(query_fields, search, search_filter_param):
     return search
 
 
-def _restrict_test_ds_query(search):
-    search = search.query(~Q('term', short_code_value='test'))
+def _restrict_test_ds_filter(search):
+    search = search.filter(~F('term', short_code_value='test'))
     return search
 
 
-def _add_non_deleted_ds_query(search):
-    search = search.query('term', void=False)
+def _add_non_deleted_ds_filter(search):
+    search = search.filter('term', void=False)
     return search
 
 
 def _add_search_filters(search_filter_param, query_fields, search):
-    search = _restrict_test_ds_query(search)
-    search = _add_non_deleted_ds_query(search)
+    search = _restrict_test_ds_filter(search)
+    search = _add_non_deleted_ds_filter(search)
     if not search_filter_param:
         return search
     search = _add_free_text_search_query(query_fields, search, search_filter_param)
-    search = _add_group_query(search, search_filter_param)
-    search = _add_project_query(search, search_filter_param)
+    search = _add_group_filter(search, search_filter_param)
+    search = _add_project_filter(search, search_filter_param)
 
     return search
 
@@ -99,10 +99,10 @@ def get_data_sender_without_search_filters_count(dbm, search_parameters):
     es = Elasticsearch()
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
     search_filter_param = search_parameters.get('search_filters', {})
-    search = _add_group_query(search, search_filter_param)
-    search = _restrict_test_ds_query(search)
-    search = _add_project_query(search, search_filter_param)
-    search = _add_non_deleted_ds_query(search)
+    search = _add_group_filter(search, search_filter_param)
+    search = _restrict_test_ds_filter(search)
+    search = _add_project_filter(search, search_filter_param)
+    search = _add_non_deleted_ds_filter(search)
     body = search.to_dict()
     return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits']['total']
 
