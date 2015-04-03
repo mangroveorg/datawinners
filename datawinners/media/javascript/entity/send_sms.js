@@ -213,6 +213,7 @@ function SmsViewModel(){
     $("#no-smsc").show().addClass("none");
     $("#failed-numbers").show().addClass("none");
     self.selectedQuestionnaireNames.clearError();
+    self.selectedGroupNames.clearError();
     self.smsText.clearError();
     self.othersList.clearError();
   };

@@ -50,11 +50,11 @@ def _add_project_filter(search, search_filter_param):
 def _add_group_filter(search, search_filter_param):
     group_name = search_filter_param.get('group_name')
     if group_name:
-        search = search.filter("term", customgroups_value=group_name.lower())
+        search = search.filter("term", customgroups_exact=group_name.lower())
 
     group_names = search_filter_param.get('group_names')
     if group_names:
-        search = search.filter("terms", customgroups_value=group_names)
+        search = search.filter("terms", customgroups_exact=group_names)
     return search
 
 

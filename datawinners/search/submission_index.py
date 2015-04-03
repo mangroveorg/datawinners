@@ -18,7 +18,7 @@ from datawinners.search.submission_index_helper import SubmissionIndexUpdateHand
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
     es_unique_id_code_field_name, \
-    es_questionnaire_field_name
+    es_questionnaire_field_name, _add_text_field_mapping
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.project import Project
@@ -125,14 +125,14 @@ class SubmissionSearchStore():
 
         async_populate_submission_index.delay(self.dbm.database_name, self.latest_form_model.id)
 
-    def _add_text_field_mapping_for_submission(self, mapping_fields, field_def):
-        name = field_def["name"]
-        mapping_fields.update(
-            {name: {"type": "multi_field", "fields": {
-                name: {"type": "string"},
-                name + "_value": {"type": "string", "index_analyzer": "sort_analyzer", "include_in_all": False},
-                name + "_exact": {"type": "string", "index": "not_analyzed", "include_in_all": False},
-            }}})
+    # def _add_text_field_mapping_for_submission(self, mapping_fields, field_def):
+    #     name = field_def["name"]
+    #     mapping_fields.update(
+    #         {name: {"type": "multi_field", "fields": {
+    #             name: {"type": "string"},
+    #             name + "_value": {"type": "string", "index_analyzer": "sort_analyzer", "include_in_all": False},
+    #             name + "_exact": {"type": "string", "index": "not_analyzed", "include_in_all": False},
+    #         }}})
 
     def get_fields_mapping_by_field_def(self, doc_type, fields_definition):
         """
@@ -144,7 +144,7 @@ class SubmissionSearchStore():
             if field_def.get("type") is "date":
                 _add_date_field_mapping(mapping_fields, field_def)
             else:
-                self._add_text_field_mapping_for_submission(mapping_fields, field_def)
+                _add_text_field_mapping(mapping_fields, field_def)
         return {doc_type: mapping}
 
     def _verify_unique_id_change(self):
