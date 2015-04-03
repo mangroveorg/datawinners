@@ -43,7 +43,7 @@ class SendSMS(View):
 
     def _get_mobile_numbers_for_groups(self, dbm, request):
         if request.POST['recipient'] == 'group':
-            group_names = map(lambda item: item.lower(), json.loads(request.POST['group-names']))
+            group_names = json.loads(request.POST['group-names'])
             mobile_numbers = self._mobile_numbers_for_groups(dbm, group_names)
             return mobile_numbers
         else:

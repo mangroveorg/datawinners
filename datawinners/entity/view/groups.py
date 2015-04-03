@@ -143,7 +143,7 @@ def group_ds_count(request):
 def _get_data_sender_count_for_groups(dbm, group_name):
     es = Elasticsearch()
     search = Search(using=es, index=dbm.database_name, doc_type='reporter')
-    search = search.query("term", customgroups_value=group_name.lower())
+    search = search.query("term", customgroups_exact=group_name)
     search = search.query("term", void=False)
     body = search.to_dict()
     return es.search(index=dbm.database_name, doc_type='reporter', body=body, search_type='count')['hits']['total']
