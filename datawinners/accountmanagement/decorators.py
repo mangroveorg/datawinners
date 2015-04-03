@@ -113,12 +113,12 @@ def is_allowed_to_view_reports(f, redirect_to='/questionnaire'):
     return wrapper
 
 
-def is_trial(f):
+def is_pro_sms(f):
     def wrapper(*args, **kw):
         user = args[0].user
         profile = user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
-        if not organization.in_trial_mode:
+        if organization.is_pro_sms:
             return HttpResponseRedirect(django_settings.HOME_PAGE)
         return f(*args, **kw)
 

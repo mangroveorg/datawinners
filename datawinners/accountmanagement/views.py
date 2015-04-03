@@ -26,7 +26,7 @@ from datawinners.accountmanagement.localized_time import get_country_time_delta,
 from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.transport import TransportInfo
-from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_trial, valid_web_user, is_sms_api_user, is_datasender
+from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_pro_sms, valid_web_user, is_sms_api_user, is_datasender
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.main.database import get_database_manager
@@ -229,7 +229,7 @@ def trial_expired(request):
 
 
 @is_admin
-@is_trial
+@is_pro_sms
 def upgrade(request, token=None, account_type=None, language=None):
     if language:
         request.session['django_language'] = language
