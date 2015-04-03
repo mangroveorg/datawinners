@@ -15,13 +15,20 @@ DW.group = function (group) {
 
     };
 
+    this.updateName = function(newName){
+      self.name(newName);
+      self.code(newName);
+    };
+
     this._init();
 };
 DW.group.prototype = {
     _init: function () {
         var g = this.options;
         this.name = ko.observable(g.name);
+        this.newName = ko.observable(g.name);
         this.code = ko.observable(g.name);
+        this.isEditMode = ko.observable(false);
     }
 };
 function ContactsGroupViewModel() {
@@ -46,6 +53,27 @@ function ContactsGroupViewModel() {
         self.groupButtonText(gettext("Add"));
         self.disable_attr(null);
         self.disable_button(false);
+    };
+
+    self.renameGroup = function(group){
+        group.isEditMode(true);
+    };
+
+    self.undoEdit = function(group){
+        group.isEditMode(false);
+    };
+
+    self.confirmGroupRename = function(group){
+        DW.loading();
+        $.post(group_rename_url, {
+            group_name: group.name(),
+            new_group_name: group.newName(),
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+        }).done(function (response){
+            group.updateName(group.newName());
+            self.changeSelectedGroup(group);
+            group.isEditMode(false);
+        });
     };
 
     self.addNewGroup = function () {

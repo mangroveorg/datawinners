@@ -15,7 +15,7 @@ def get_group_details(dbm):
     return group_details
 
 
-def _check_uniqueness_of_group(dbm, group_name):
+def check_uniqueness_of_group(dbm, group_name):
     rows = dbm.load_all_rows_in_view('group_by_name', key=lower(group_name))
     if len(rows) > 0:
         return False
@@ -30,7 +30,7 @@ def get_group_by_name(dbm, group_name):
 
 
 def create_new_group(dbm, group_name):
-    is_unique = _check_uniqueness_of_group(dbm, group_name)
+    is_unique = check_uniqueness_of_group(dbm, group_name)
     if is_empty_string(group_name):
         return False, _('Group name is empty')
     if is_unique and not is_empty_string(group_name):
