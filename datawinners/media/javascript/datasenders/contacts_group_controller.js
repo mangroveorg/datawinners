@@ -70,9 +70,16 @@ function ContactsGroupViewModel() {
             new_group_name: group.newName(),
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         }).done(function (response){
-            group.updateName(group.newName());
-            self.changeSelectedGroup(group);
-            group.isEditMode(false);
+            if(response.success){
+                group.updateName(group.newName());
+                self.changeSelectedGroup(group);
+                group.isEditMode(false);
+            }
+            else{
+                alert("Rename failed");
+            }
+        }).error(function(){
+            console.log("Rename threw an exception");
         });
     };
 
@@ -83,22 +90,21 @@ function ContactsGroupViewModel() {
         $.post('/entity/group/create/', {
             group_name: newGroup.name(),
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
-        })
-            .done(function (responseString) {
-                self.enable_add_button();
-                var response = $.parseJSON(responseString);
-                if (response.success) {
-                    self.groups().push(newGroup);
-                    self.newGroupValid(true);
-                    self.show_success_message(response.message);
-                    self.groups.valueHasMutated();
-                    self.close_popup();
-                }
-                else {
-                    self.newGroupValid(false);
-                    self.newGroupError(response.message)
-                }
-            });
+        }).done(function (responseString) {
+            self.enable_add_button();
+            var response = $.parseJSON(responseString);
+            if (response.success) {
+                self.groups().push(newGroup);
+                self.newGroupValid(true);
+                self.show_success_message(response.message);
+                self.groups.valueHasMutated();
+                self.close_popup();
+            }
+            else {
+                self.newGroupValid(false);
+                self.newGroupError(response.message)
+            }
+        });
     };
 
     self.close_popup = function () {
