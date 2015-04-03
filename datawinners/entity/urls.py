@@ -3,7 +3,7 @@ from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataS
 from datawinners.entity.view.datasenders import EditDataSenderView
 from datawinners.entity.view.datasenders import RegisterDatasenderView
 from datawinners.entity.view.datasenders_autocomplete import AllDataSenderAutoCompleteView
-from datawinners.entity.view.groups import add_or_remove_contact_from_groups
+from datawinners.entity.view.groups import add_or_remove_contact_from_groups, delete_group
 from datawinners.entity.view.groups import get_group_names, group_ds_count
 from datawinners.entity.view.import_template import import_template
 from datawinners.entity.view.questionnaires import get_existing_questionnaires
@@ -53,5 +53,6 @@ urlpatterns = patterns('',
                        url(r'get-all-mobile-numbers/$', get_all_mobile_numbers, name="get-all-mobile-numbers"),
                        url(r'all-groups/$', get_group_names, name="all_groups"),
                        url(r'update-contact-group/$', add_or_remove_contact_from_groups, name="add_or_remove_contact_from_groups"),
-                       url(r'group-ds-count/$', group_ds_count, name="group_ds_count")
+                       url(r'group-ds-count/$', group_ds_count, name="group_ds_count"),
+                       url(r'delete-group/$', delete_group, name="group_delete")
 )

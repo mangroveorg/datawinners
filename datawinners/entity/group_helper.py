@@ -1,7 +1,10 @@
 from string import lower
 from datawinners.utils import is_empty_string
 from django.utils.translation import ugettext as _
+from mangrove.datastore.documents import GroupDocument
 from mangrove.datastore.group import Group
+from mangrove.errors.MangroveException import DataObjectNotFound
+from mangrove.utils.types import is_empty
 
 
 def get_group_details(dbm):
@@ -17,6 +20,13 @@ def _check_uniqueness_of_group(dbm, group_name):
     if len(rows) > 0:
         return False
     return True
+
+def get_group_by_name(dbm, group_name):
+    rows = dbm.load_all_rows_in_view('group_by_name', key=lower(group_name))
+    if is_empty(rows):
+        raise DataObjectNotFound('group', "Group not found")
+    doc = GroupDocument.wrap(rows[0]['value'])
+    return Group.new_from_doc(dbm, doc)
 
 
 def create_new_group(dbm, group_name):

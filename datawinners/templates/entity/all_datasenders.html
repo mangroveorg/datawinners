@@ -79,6 +79,7 @@
         var datasender_ajax_url = "{% url all_datasenders_ajax %}";
         var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
         var number_of_projects = {{ projects|length }};
+        var delete_group_url = "{% url group_delete %}";
     </script>
 {% endblock %}
 {% block main_message %}
@@ -112,6 +113,7 @@
                         <ol data-bind="foreach: {data: groups, as: 'group'}">
                             <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
                                 <b class="padding_left_10" data-bind="text: $data.name"></b>
+                                <span data-bind="click: $root.deleteGroup">Delete</span>
                                 <span class="selected_list_item_arrow"
                                       data-bind="css:{inline:group == $root.selectedGroup()}"></span>
                             </li>

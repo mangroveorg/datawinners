@@ -7,10 +7,11 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
 
 from datawinners.accountmanagement.decorators import session_not_expired, is_datasender, is_not_expired
-from datawinners.entity.group_helper import get_group_details
+from datawinners.entity.group_helper import get_group_details, get_group_by_name
 from datawinners.main.database import get_database_manager
 from datawinners.search.all_datasender_search import get_all_datasenders_short_codes, get_all_datasenders_search_results
 from mangrove.datastore.entity import contact_by_short_code
+from mangrove.errors.MangroveException import DataObjectNotFound
 
 
 @login_required
@@ -58,10 +59,27 @@ def add_or_remove_contact_from_groups(request):
         success = False
     return HttpResponse(content=json.dumps({'success': success, 'message': ugettext(message)}), content_type='application/json')
 
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
+def delete_group(request):
+    dbm = get_database_manager(request.user)
+    group_name_to_delete = request.POST['group_name']
+    contact_ids = _get_reporter_ids_for_group_name(dbm, group_name_to_delete, None)
+    _update_group_for_contacts(contact_ids, dbm, [group_name_to_delete], None)
+    try:
+        group = get_group_by_name(dbm, group_name_to_delete)
+        group.delete()
+        return HttpResponse(status=200)
+
+    except DataObjectNotFound:
+        return HttpResponse(status=400)
 
 def _get_reporter_ids_for_group_name(dbm, group_name, search_query):
     search_parameters = {'search_filter': {'group_name': group_name, 'search_text': search_query}}
     return get_all_datasenders_short_codes(dbm, search_parameters)
+
 
 
 def _get_all_data_senders_short_codes(dbm, search_parameters):

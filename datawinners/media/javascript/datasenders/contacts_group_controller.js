@@ -1,9 +1,20 @@
 DW.group = function (group) {
+    var self = this;
+
     var defaults = {
         name: '',
         code:''
     };
     this.options = $.extend(true, defaults, group);
+    this.deleteGroup = function(){
+        DW.loading();
+        return $.post(delete_group_url, {
+            'group_name': self.name(),
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+        });
+
+    };
+
     this._init();
 };
 DW.group.prototype = {
@@ -61,6 +72,7 @@ function ContactsGroupViewModel() {
                 }
             });
     };
+
     self.close_popup = function () {
         self.newGroupName('');
         self.newGroupValid(true);
@@ -75,6 +87,13 @@ function ContactsGroupViewModel() {
     self.changeSelectedGroup = function (group) {
         $('.flash-message').remove();
         self.selectedGroup(group);
+    };
+
+    self.deleteGroup = function(group){
+        group.deleteGroup().done(function(){
+            self.groups.remove(group);
+        });
+
     };
 
     self.selectedGroup.subscribe(function (new_group) {
