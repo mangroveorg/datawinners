@@ -5,13 +5,18 @@ DW.GroupManager = function(options){
 
     function disable_add_button() {
         var add_button = $('#add_contacts_to_group');
-        add_button.text(gettext('Saving...'));
+        if($('.add_or_remove').text() == "Add"){
+            add_button.text(gettext('Adding...'));
+        }
+        else {
+            add_button.text(gettext('Removing...'));
+        }
         add_button.addClass('ui-state-disabled');
     }
 
     function enable_add_button() {
         var add_button = $('#add_contacts_to_group');
-        add_button.text(gettext('Save'));
+        add_button.text(gettext('Add'));
         add_button.removeClass('ui-state-disabled');
     }
 

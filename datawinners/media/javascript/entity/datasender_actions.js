@@ -123,7 +123,16 @@ function _add_remove_from_group(action, selected_ids, all_selected) {
             });
             init_dialog_box_for_group();
             $('#no_group_selected_message').addClass('none');
-            var title = action == 'add' ? 'Add to Groups' : 'Remove from Groups';
+
+            var title = '';
+            if(action == 'add') {
+                $('.add_or_remove').text(gettext("Add"));
+                title = gettext('Add to Groups');
+            }
+            else {
+                $('.add_or_remove').text(gettext("Remove"));
+                title = gettext('Remove from Groups');
+            }
             $('#all_groups_block').dialog("option", "title", title);
             $('#all_groups_block').dialog("open");
         }
@@ -233,10 +242,14 @@ function add_remove_from_project(action, table, selected_ids, all_selected) {
     all_project_block.data("all_selected", all_selected);
     all_project_block.data("action", action);
     all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
-    if(action == 'associate')
-        all_project_block.dialog('option','title',gettext('Add to Questionnaire'));
-    else
-        all_project_block.dialog('option','title',gettext('Remove from Questionnaire'));
+    if(action == 'associate') {
+        $('#action_for_project').text(gettext("Add"));
+        all_project_block.dialog('option', 'title', gettext('Add to Questionnaire'));
+    }
+    else {
+        $('#action_for_project').text(gettext("Remove"));
+        all_project_block.dialog('option', 'title', gettext('Remove from Questionnaire'));
+    }
     all_project_block.dialog("open");
 }
 function get_user_names_from_selected_datasenders(table, selected_ids, all_selected) {

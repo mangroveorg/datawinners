@@ -1032,6 +1032,9 @@ msgstr "Sélectionnez un(e) %(concept)s"
 msgid "Remove from Questionnaire"
 msgstr "Retirer d'un Questionnaire"
 
+msgid "Remove"
+msgstr "Retirer"
+
 msgid " Record(s) Failed to Import"
 msgstr " Enregistrements n'ont pas pu être importés"
 
