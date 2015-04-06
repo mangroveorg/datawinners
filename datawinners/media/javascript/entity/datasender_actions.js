@@ -439,7 +439,7 @@ function init_dialog_box_for_datasender() {
         autoOpen: false,
         modal: true,
         zIndex: 1100,
-        width: 900,
+        width: 700,
         beforeClose: function () {
             $('#action').removeAttr("data-selected-action");
             $('#web_user_error').hide();
