@@ -42,15 +42,23 @@
     DW.GroupManager({'update_groups_url': update_groups_url});
 
     var groupDeleteDialog = $("#group-delete-confirmation-section");
-
     groupDeleteDialog.dialog({
         autoOpen: false,
         modal: true,
         title: gettext("Warning!"),
         zIndex: 700,
         width: 800,
-        height: 'auto',
-        close: function () {
-        }
+        height: 'auto'
     });
+
+     var groupRenameDialog = $('#group-rename-confirmation-section');
+     groupRenameDialog.dialog({
+         autoOpen: false,
+         modal: true,
+         title: gettext("Rename Group"),
+         zIndex: 700,
+         width: 470,
+         height: 'auto'
+     });
+
 });

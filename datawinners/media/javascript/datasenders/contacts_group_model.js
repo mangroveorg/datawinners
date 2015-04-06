@@ -27,9 +27,7 @@ DW.group.prototype = {
     _init: function () {
         var g = this.options;
         this.name = ko.observable(g.name);
-        this.newName = ko.observable(g.name);
         this.code = ko.observable(g.name);
-        this.isEditMode = ko.observable(false);
         this.isEditable = ko.observable(g.isEditable);
     }
 };
@@ -67,15 +65,16 @@ function ContactsGroupViewModel() {
 
     self.confirmGroupRename = function(group){
         DW.loading();
+        var newGroupName = $('#new_group_name').val();
         $.post(group_rename_url, {
             group_name: group.name(),
-            new_group_name: group.newName(),
+            new_group_name: newGroupName,
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         }).done(function (response){
+            var response = $.parseJSON(response);
             if(response.success){
-                group.updateName(group.newName());
+                group.updateName(newGroupName);
                 self.changeSelectedGroup(group);
-                group.isEditMode(false);
             }
             else{
                 alert("Rename failed");
@@ -96,10 +95,9 @@ function ContactsGroupViewModel() {
             self.enable_add_button();
             var response = $.parseJSON(responseString);
             if (response.success) {
-                self.groups().push(newGroup);
+                self.groups.push(newGroup);
                 self.newGroupValid(true);
                 self.show_success_message(response.message);
-                self.groups.valueHasMutated();
                 self.close_popup();
             }
             else {
@@ -117,9 +115,27 @@ function ContactsGroupViewModel() {
         groupDeleteDialog.find("#ok_button").unbind('click').on('click', function(){
             self.deleteGroup(groupToDelete);
             groupDeleteDialog.dialog("close");
+            self.setSelectedGroupToDefault();
+
         });
 
         groupDeleteDialog.dialog("open");
+    };
+
+    self.showRenameGroupConfirmation = function(groupToRename){
+        var groupRenameDialog = $("#group-rename-confirmation-section");
+        groupRenameDialog.find(".cancel_link").unbind('click').on('click', function(){
+                groupRenameDialog.dialog("close");
+            });
+
+        groupRenameDialog.find("#ok_button").unbind('click').on('click', function() {
+                self.confirmGroupRename(groupToRename);
+                groupRenameDialog.dialog("close");
+        });
+        $('#new_group_name').val(groupToRename.name());
+
+        groupRenameDialog.dialog("open");
+
     };
 
     self.close_popup = function () {
@@ -137,6 +153,10 @@ function ContactsGroupViewModel() {
     self.changeSelectedGroup = function (group) {
         $('.flash-message').remove();
         self.selectedGroup(group);
+    };
+
+    self.setSelectedGroupToDefault = function(){
+        self.selectedGroup(self.groups()[0]);
     };
 
     self.deleteGroup = function(group){

@@ -115,17 +115,15 @@
                         <ol data-bind="foreach: {data: groups, as: 'group'}">
                             <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
                                 <!-- ko if: group.isEditable -->
-                                    <!-- ko ifnot: group.isEditMode -->
-                                        <b class="padding_left_10" data-bind="text: $data.name"></b>
+
+                                    <b class="padding_left_10" data-bind="text: $data.name"></b>
+                                    <!-- ko if: group == $root.selectedGroup() -->
                                         <span><img src="/media/images/delete_icon.png" class="group_icon" data-bind="click: $root.showDeleteGroupConfirmation, clickBubble: false"/></span>
-                                        <span><img src="/media/images/edit_icon.png" data-bind="click: $root.renameGroup, clickBubble: false" class="group_icon"/></span>
-                                        <span class="selected_list_item_arrow"
-                                              data-bind="css:{inline:group == $root.selectedGroup()}"></span>
-                                    <!-- /ko -->
-                                    <!-- ko if: group.isEditMode -->
-                                        <input type="text" data-bind="value: $data.newName">
-                                        <div data-bind="click: $root.undoEdit">Cancel</div><div data-bind="click: $root.confirmGroupRename">Save</div>
-                                    <!-- /ko -->
+                                        <span><img src="/media/images/edit_icon.png" data-bind="click: $root.showRenameGroupConfirmation, clickBubble: false" class="group_icon"/></span>
+                                    <!--/ko -->
+
+                                    <span class="selected_list_item_arrow" data-bind="css:{inline:group == $root.selectedGroup()}"></span>
+
                                 <!--/ko -->
                                 <!-- ko ifnot: group.isEditable -->
                                     <b class="padding_left_10" data-bind="text: $data.name"></b>
@@ -183,5 +181,6 @@
     <div id="datasender-popup" style="display:none;"></div>
     {% include "send-sms.html" %}
     {% include "entity/delete_group_warning_dialog.html" %}
+    {% include "entity/rename_group_warning_dialog.html" %}
     {% csrf_token %}
 {% endblock %}

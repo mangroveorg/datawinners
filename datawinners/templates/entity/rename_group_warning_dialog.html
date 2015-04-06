@@ -1,0 +1,11 @@
+{% load i18n %}
+    <div id="group-rename-confirmation-section" style="display:none;">
+        <div id="new-group-name-text">
+            <p> {% trans "Name" %}</p>
+            <input type="text" id="new_group_name">
+        </div>
+        <div class="text_align_right">
+            <a href="javascript:void(0);" class="cancel_link" >{% trans "Cancel" %}</a>
+            <a href="javascript:void(0);" class="button" id="ok_button">{% trans "Yes, Rename" %}</a>
+        </div>
+    </div>
