@@ -89,6 +89,9 @@
   }
   ol li:hover{
     background: url("/media/images/question_hover_bg.gif") repeat-x scroll left bottom #D8E4EC;
+    .group_actions {
+      visibility: visible;
+    }
   }
   .add_group {
     font-size: 14px;
@@ -149,9 +152,13 @@ span.selected_list_item_arrow{
   height: 15px;
   width: 15px;
   float: right;
-  padding-right: 5px;
+  padding-right: 10px;
 }
 
 #new-group-name-text{
   margin-bottom: 13px;
+}
+
+.group_actions {
+  visibility: hidden;
 }

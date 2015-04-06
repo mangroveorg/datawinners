@@ -5,13 +5,13 @@
             <!-- ko if: group.isEditable -->
 
             <b class="padding_left_10" data-bind="text: $data.name"></b>
-            <!-- ko if: group == $root.selectedGroup() -->
-            <span><img src="/media/images/delete_icon.png" class="group_icon"
-                       data-bind="click: $root.showDeleteGroupConfirmation, clickBubble: false"/></span>
-            <span><img src="/media/images/edit_icon.png"
-                       data-bind="click: $root.showRenameGroupConfirmation, clickBubble: false"
-                       class="group_icon"/></span>
-            <!--/ko -->
+            <span class="group_actions" data-bind="css:{visible: group == $root.selectedGroup()}">
+                <span><img src="/media/images/delete_icon.png" class="group_icon"
+                           data-bind="click: $root.showDeleteGroupConfirmation, clickBubble: false" alt="{% trans "delete" %}"/></span>
+                <span><img src="/media/images/edit_icon.png"
+                           data-bind="click: $root.showRenameGroupConfirmation, clickBubble: false"
+                           class="group_icon" alt="{% trans "rename" %}"/></span>
+            </span>
 
             <span class="selected_list_item_arrow" data-bind="css:{inline:group == $root.selectedGroup()}"></span>
 
