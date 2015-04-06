@@ -3,7 +3,8 @@ DW.group = function (group) {
 
     var defaults = {
         name: '',
-        code:''
+        code:'',
+        isEditable: true
     };
     this.options = $.extend(true, defaults, group);
     this.deleteGroup = function(){
@@ -29,6 +30,7 @@ DW.group.prototype = {
         this.newName = ko.observable(g.name);
         this.code = ko.observable(g.name);
         this.isEditMode = ko.observable(false);
+        this.isEditable = ko.observable(g.isEditable);
     }
 };
 function ContactsGroupViewModel() {
@@ -151,7 +153,7 @@ function ContactsGroupViewModel() {
 }
 function initializeContactGroupViewModel() {
     window.groupViewModel = new ContactsGroupViewModel();
-    var default_group = new DW.group({'name':gettext('All Contacts')});
+    var default_group = new DW.group({'name':gettext('All Contacts'), 'isEditable': false});
     default_group.code('');
     groupViewModel.loadGroup(default_group);
     $(existing_groups).each(function (index, group) {

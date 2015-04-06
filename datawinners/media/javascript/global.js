@@ -26,7 +26,6 @@ DW.trackEvent = function(category, action, label, value){
 
 };
 
-
 $(document).ready(function() {
 
     DW.flash_message = function() {

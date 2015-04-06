@@ -114,17 +114,22 @@
                     <div class="group_div">
                         <ol data-bind="foreach: {data: groups, as: 'group'}">
                             <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
-                                <!-- ko ifnot: group.isEditMode -->
+                                <!-- ko if: group.isEditable -->
+                                    <!-- ko ifnot: group.isEditMode -->
+                                        <b class="padding_left_10" data-bind="text: $data.name"></b>
+                                        <span data-bind="click: $root.deleteGroup"><img src="/media/images/delete_icon.png" class="group_icon"/></span>
+                                        <span data-bind="click: $root.renameGroup"><img src="/media/images/edit_icon.png" class="group_icon"/></span>
+                                        <span class="selected_list_item_arrow"
+                                              data-bind="css:{inline:group == $root.selectedGroup()}"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: group.isEditMode -->
+                                        <input type="text" data-bind="value: $data.newName">
+                                        <div data-bind="click: $root.undoEdit">Cancel</div><div data-bind="click: $root.confirmGroupRename">Save</div>
+                                    <!-- /ko -->
+                                <!--/ko -->
+                                <!-- ko ifnot: group.isEditable -->
                                     <b class="padding_left_10" data-bind="text: $data.name"></b>
-                                    <span data-bind="click: $root.deleteGroup"><img src="/media/images/delete_icon.png" class="group_icon"/></span>
-                                    <span data-bind="click: $root.renameGroup"><img src="/media/images/edit_icon.png" class="group_icon"/></span>
-                                    <span class="selected_list_item_arrow"
-                                          data-bind="css:{inline:group == $root.selectedGroup()}"></span>
-                                <!-- /ko -->
-                                <!-- ko if: group.isEditMode -->
-                                    <input type="text" data-bind="value: $data.newName">
-                                    <div data-bind="click: $root.undoEdit">Cancel</div><div data-bind="click: $root.confirmGroupRename">Save</div>
-                                <!-- /ko -->
+                                <!--/ko -->
                             </li>
                         </ol>
                         <div class="add_group">
