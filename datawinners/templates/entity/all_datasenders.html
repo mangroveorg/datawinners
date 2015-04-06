@@ -129,6 +129,8 @@
                                 <!--/ko -->
                                 <!-- ko ifnot: group.isEditable -->
                                     <b class="padding_left_10" data-bind="text: $data.name"></b>
+                                    <span class="selected_list_item_arrow"
+                                              data-bind="css:{inline:group == $root.selectedGroup()}"></span>
                                 <!--/ko -->
                             </li>
                         </ol>
