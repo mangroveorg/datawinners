@@ -116,8 +116,8 @@
                             <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
                                 <!-- ko ifnot: group.isEditMode -->
                                     <b class="padding_left_10" data-bind="text: $data.name"></b>
-                                    <span data-bind="click: $root.deleteGroup">Delete</span>
-                                    <span data-bind="click: $root.renameGroup">Rename</span>
+                                    <span data-bind="click: $root.deleteGroup"><img src="/media/images/delete_icon.png" class="group_icon"/></span>
+                                    <span data-bind="click: $root.renameGroup"><img src="/media/images/edit_icon.png" class="group_icon"/></span>
                                     <span class="selected_list_item_arrow"
                                           data-bind="css:{inline:group == $root.selectedGroup()}"></span>
                                 <!-- /ko -->
