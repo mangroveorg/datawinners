@@ -116,6 +116,7 @@ function ContactsGroupViewModel() {
     self.show_success_message = function (message) {
         $('#group-success').removeClass('none');
         $('#group-success').html(message);
+        $('#group-success').show();
     };
 
     self.changeSelectedGroup = function (group) {
@@ -132,6 +133,7 @@ function ContactsGroupViewModel() {
 
     self.selectedGroup.subscribe(function (new_group) {
         selected_group = new_group.code(); //used to send group name as filter
+        $('#group-success').addClass('none');
         var table = $("#datasender_table").dataTable();
         table.fnSettings()._iDisplayStart = 0;
         table.fnReloadAjax()
