@@ -63,7 +63,7 @@
     <div class="tableRow" data-bind="css: {'none': hideOtherContacts}" >
         <div class = "tableCell"></div>
         <div class = "tableCell">
-            <textarea data-bind="value: othersList, valueUpdate: 'keypress'"></textarea>
+            <textarea data-bind="value: othersList, valueUpdate: 'keypress', disable: disableOtherContacts"></textarea>
             <div class="validationMessage" data-bind="ifnot: othersList.valid">
                 <span class="validationText" data-bind="text: othersList.error"></span>
             </div>

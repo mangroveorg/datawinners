@@ -157,4 +157,7 @@ function initializeContactGroupViewModel() {
     $(existing_groups).each(function (index, group) {
         groupViewModel.loadGroup(new DW.group(group));
     });
+
+    var groupPanel = $("#group_panel");
+    ko.applyBindings(groupViewModel, groupPanel[0]);
 }

@@ -159,6 +159,7 @@ function _populateAndShowSmsDialog(selected_ids, all_selected){
 function _showSmsDialog(contact_mobile_numbers){
     var smsViewModel = ko.contextFor($("#send-sms-section")[0]).$root;
     smsViewModel.showToSection(false);
+    smsViewModel.disableOtherContacts(true);
     smsViewModel.selectedSmsOption("others");
     smsViewModel.othersList(contact_mobile_numbers);
     $("#send-sms-section").dialog('open');

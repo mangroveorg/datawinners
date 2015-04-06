@@ -16,6 +16,8 @@ function SmsViewModel(){
 
   self.groupPlaceHolderText = ko.observable("");
 
+  self.disableOtherContacts = ko.observable(false);
+
   self.hideQuestionnaireSection = ko.computed(function(){
       return this.selectedSmsOption() != 'linked';
   }, self);
@@ -110,6 +112,7 @@ function SmsViewModel(){
     self.selectedSmsOption(undefined);
     smsTextArea.val("");
     self.questionnaireItems([]);
+    self.disableOtherContacts(false);
     self.groupItems([]);
     self.smsCharacterCount("0" + gettext(" of 160 characters used"));
     self.othersList("");

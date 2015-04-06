@@ -8,9 +8,9 @@
     function filter_as_json(){
         return {'group_name': selected_group}
     }
+
     initializeContactGroupViewModel();
-    var groupPanel = $("#group_panel");
-    ko.applyBindings(groupViewModel, groupPanel[0]);
+
     $("#datasender_table").dwTable({
             "concept": "Contact",
             "sAjaxSource": datasender_ajax_url,
