@@ -15,22 +15,22 @@
                 <li>{% trans "Save the template on your computer." %}</li>
                 <li>{% trans "Click the gold Upload a file button and select the saved template." %}</li>
             </ul>
-            <div id="file-uploader" class="grid">
+            <div id="file-uploader" class="grid file_import">
                 <noscript>
                     <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
                     <!-- or put a simple form for upload here -->
                 </noscript>
-                <div id="file_uploader" class="float_left grid_5"></div>
-{#                <div class="clear"></div>#}
-            </div>
-            <div id="template-download-section" class="error download-section" class="margin_top_15">{% trans "Use this "%}
-                {% if project %}
-                    <a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xlsx{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xlsx{% endif %}">{% trans "Import Template"%}</a></div>
-                {% else %}
-                    <a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportContacts.xlsx{% else %}DataWinners_ImporterContacts.xlsx{% endif %}">{% trans "Import Template"%}</a></div>
-                {% endif %}
-            <div class="clear"></div>
-             <br/>
+                <div id="file_uploader" class="float_left grid_5 tableCell margin_top_10 "></div>
+
+                    <div id="template-download-section" class="error download_template download-section tableCell margin_top_10">{% trans "Download the import template: "%}
+                            {% if project %}
+                                <a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xlsx{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xlsx{% endif %}">{% trans "DataWinners_ImportDataSenders.xlsx"%}</a></div>
+                            {% else %}
+                                <a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportContacts.xlsx{% else %}DataWinners_ImportContacts.xlsx{% endif %}">{% trans "DataWinners_ImportContacts.xlsx"%}</a></div>
+                            {% endif %}
+                        </div>
+                <div class="clear"></div>
+            <br/>
             <div id="success_import_section" class="import_section">
                 <div id="success_table_message" class="import_message"></div>
                 <div class="import_table">
@@ -54,7 +54,11 @@
 
                 <div>
                     <span id="error_table_message" class="import_message"></span>
-                    <span class="error_import_template_link">{% trans "- Please use the latest "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></span>
+                     {% if project %}
+                        <span class="error_import_template_link">{% trans "- Please use the latest "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xlsx{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xlsx{% endif %}">{% trans "DataWinners_ImportDataSenders.xlsx"%}</a></span>
+                     {% else %}
+                        <span class="error_import_template_link">{% trans "- Please use the latest "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportContacts.xlsx{% else %}DataWinners_ImportContacts.xlsx{% endif %}">{% trans "DataWinners_ImportContacts.xlsx"%}</a></span>
+                    {% endif %}
                 </div>
                 <div class="import_table">
                     <table class="styled_table error_body">
@@ -72,5 +76,5 @@
             <div class="float_right">
                 <a href="javascript:void(0);" class="button close_import_dialog">{% trans "Close" %}</a>
             </div>
-            
+
         </div>

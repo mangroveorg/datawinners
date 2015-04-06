@@ -449,8 +449,8 @@ msgid "Drop files here to upload"
 msgstr "Glisser les fichiers à télécharger ici"
 
 #: media/javascript/file_uploader/fileuploader.js:481
-msgid "Upload a file"
-msgstr "Télécharger un fichier"
+msgid "Upload a File"
+msgstr "Télécharger un Fichier"
 
 #: media/javascript/file_uploader/fileuploader.js:490
 msgid "Failed"
