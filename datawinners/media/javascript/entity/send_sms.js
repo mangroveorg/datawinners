@@ -82,6 +82,10 @@ function SmsViewModel(){
 
   self.groupItems = ko.observableArray([]);
 
+  self.hideSpecifiedContacts = ko.observable(true);
+
+  self.specifiedList = ko.observableArray([]);
+
   self.disableSendSms = ko.observable(true);
 
   self.hideOtherContacts = ko.computed(function(){
@@ -108,12 +112,17 @@ function SmsViewModel(){
 
   self.othersList = DW.ko.createValidatableObservable({value: ""});
 
+  self.specifiedListLengthText = ko.computed(function(){
+      return this.othersList().split(", ").length + gettext(" Selected Contacts:");
+  }, self);
+
   self.clearSelection = function(){
     self.selectedSmsOption(undefined);
     smsTextArea.val("");
     self.questionnaireItems([]);
     self.disableOtherContacts(false);
     self.groupItems([]);
+    self.hideSpecifiedContacts(true);
     self.smsCharacterCount("0" + gettext(" of 160 characters used"));
     self.othersList("");
     self.selectedGroupNames([]);
@@ -254,6 +263,7 @@ function SmsViewModel(){
       $.post(send_sms_url, {
           'sms-text': smsTextArea.val(),
           'others': self.othersList(),
+
           'recipient': self.selectedSmsOption(),
           'questionnaire-names':  JSON.stringify(self.selectedQuestionnaireNames()),
           'group-names':  JSON.stringify(self.selectedGroupNames()),
