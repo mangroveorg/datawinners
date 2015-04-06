@@ -164,11 +164,11 @@ function ContactsGroupViewModel() {
     self.deleteGroup = function(group){
         DW.loading();
         $.post(delete_group_url, {
-            'group_name': self.name(),
+            'group_name': group.name(),
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         }).done(function(){
             self.groups.remove(group);
-            DW.flashMessage(gettext("Group removed successfully"), response.success);
+            DW.flashMessage(gettext("Group removed successfully"));
         });
 
     };
