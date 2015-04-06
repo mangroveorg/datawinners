@@ -10,6 +10,7 @@ function SmsViewModel(){
       self.disableSendSms(newSelectedSmsOption == undefined );
   });
 
+
   self.sendButtonText = ko.observable(gettext("Send"));
 
   self.questionnairePlaceHolderText = ko.observable("");
@@ -114,6 +115,11 @@ function SmsViewModel(){
 
   self.specifiedListLengthText = ko.computed(function(){
       return this.othersList().split(", ").length + gettext(" Selected Contacts:");
+  }, self);
+
+
+  self.hideOtherSection = ko.computed(function(){
+      return this.hideOtherContacts() || !this.hideSpecifiedContacts();
   }, self);
 
   self.clearSelection = function(){

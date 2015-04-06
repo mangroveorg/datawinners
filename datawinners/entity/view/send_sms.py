@@ -7,7 +7,7 @@ from django.views.generic import View
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
 from datawinners import utils
-from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired
+from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import broadcast_message
@@ -86,12 +86,28 @@ class SendSMS(View):
 def _get_all_contacts_mobile_numbers(dbm, search_parameters):
     search_parameters['response_fields'] = ['mobile_number']
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
-
     return [item['mobile_number'] for item in search_results.hits]
 
 
+def _get_all_contacts_details(dbm, search_parameters):
+    search_parameters['response_fields'] = ['short_code', 'name', 'mobile_number']
+    search_results = get_all_datasenders_search_results(dbm, search_parameters)
+    mobile_numbers, contact_display_list = [], []
+
+    for entry in search_results.hits:
+        mobile_numbers.append(entry['mobile_number'])
+        display_prefix = entry['name'] if entry.get('name') else entry['mobile_number']
+        contact_display_list.append("%s (%s)" % (display_prefix, entry['short_code']))
+
+    return mobile_numbers, contact_display_list
+
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
 def get_all_mobile_numbers(request):
     dbm = get_database_manager(request.user)
     search_parameters = {'group_name': request.POST.get('group_name'), 'query_string': request.POST.get('search_query')}
-    mobile_numbers = _get_all_contacts_mobile_numbers(dbm, search_parameters)
-    return HttpResponse(json.dumps({'mobile_numbers': ", ".join(mobile_numbers)}))
+    mobile_numbers, contact_display_list = _get_all_contacts_details(dbm, search_parameters)
+    response = {'mobile_numbers': ", ".join(mobile_numbers), 'contact_display_list': ", ".join(contact_display_list)}
+    return HttpResponse(json.dumps(response))
