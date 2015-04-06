@@ -39,7 +39,7 @@ function init_warnThenDeleteDialogBox() {
         $.post("/entity/delete/", post_data,
             function (json_response) {
                 var response = $.parseJSON(json_response);
-                flash_message(response.message, response.success);
+                DW.flashMessage(response.message, response.success);
                 if (response.success) {
                     var table = $("#datasender_table").dataTable();
                     table.fnSettings()._iDisplayStart = delete_dialog.data("pageToGo");
@@ -102,7 +102,7 @@ DW.DataSenderActionHandler = function () {
         }).done(function (json_response) {
                 table.fnReloadAjax();
                 var response = $.parseJSON(json_response);
-                flash_message(response.message, response.success);
+                DW.flashMessage(response.message, response.success);
             }
         );
     };
@@ -175,10 +175,7 @@ function _showSmsDialog(contact_mobile_numbers){
 }
 
 function flash_message(msg, status) {
-    $('.flash-message').remove();
-
-    $(".dataTables_wrapper").prepend('<div class="clear-left flash-message">' + gettext(msg) + (msg.match("[.]$") ? '' : '.') + '</div>');
-    $('.flash-message').addClass((status === false) ? "message-box" : "success-message-box");
+    DW.flashMessage(msg, status);
 }
 
 function init_add_remove_from_project() {
@@ -228,7 +225,7 @@ function init_add_remove_from_project() {
                     $("#all_project_block").dialog('close');
                     table.fnReloadAjax();
                     var response = $.parseJSON(json_response);
-                    flash_message(response.message, response.success);
+                    DW.flashMessage(response.message, response.success);
                 });
         }
     });
@@ -403,7 +400,7 @@ function init_dialog_box_for_web_users() {
                 if (json_data.success) {
                     $("#web_user_block").dialog("close");
                     $("#datasender_table").dataTable().fnReloadAjax();
-                    flash_message("Access to Web Submission has been given to your DataSenders");
+                    DW.flashMessage("Access to Web Submission has been given to your DataSenders")
                 } else {
                     var html = "";
                     var i = 0;

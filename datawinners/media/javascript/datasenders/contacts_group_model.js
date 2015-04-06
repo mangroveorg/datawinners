@@ -7,14 +7,6 @@ DW.group = function (group) {
         isEditable: true
     };
     this.options = $.extend(true, defaults, group);
-    this.deleteGroup = function(){
-        DW.loading();
-        return $.post(delete_group_url, {
-            'group_name': self.name(),
-            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
-        });
-
-    };
 
     this.updateName = function(newName){
       self.name(newName);
@@ -64,8 +56,17 @@ function ContactsGroupViewModel() {
     };
 
     self.confirmGroupRename = function(group){
-        DW.loading();
         var newGroupName = $('#new_group_name').val();
+
+        if(newGroupName){
+            $("#new_group_mandatory_error").addClass("none");
+        }
+        else{
+            $("#new_group_mandatory_error").removeClass("none");
+            return;
+        }
+
+        DW.loading();
         $.post(group_rename_url, {
             group_name: group.name(),
             new_group_name: newGroupName,
@@ -75,12 +76,14 @@ function ContactsGroupViewModel() {
             if(response.success){
                 group.updateName(newGroupName);
                 self.changeSelectedGroup(group);
+                DW.flashMessage(gettext("Group renamed successfully"), response.success);
+                $("#group-rename-confirmation-section").dialog('close');
             }
             else{
                 alert("Rename failed");
             }
         }).error(function(){
-            console.log("Rename threw an exception");
+            alert("Rename threw an exception");
         });
     };
 
@@ -129,8 +132,7 @@ function ContactsGroupViewModel() {
             });
 
         groupRenameDialog.find("#ok_button").unbind('click').on('click', function() {
-                self.confirmGroupRename(groupToRename);
-                groupRenameDialog.dialog("close");
+            self.confirmGroupRename(groupToRename);
         });
         $('#new_group_name').val(groupToRename.name());
 
@@ -160,8 +162,13 @@ function ContactsGroupViewModel() {
     };
 
     self.deleteGroup = function(group){
-        group.deleteGroup().done(function(){
+        DW.loading();
+        $.post(delete_group_url, {
+            'group_name': self.name(),
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+        }).done(function(){
             self.groups.remove(group);
+            DW.flashMessage(gettext("Group removed successfully"), response.success);
         });
 
     };

@@ -3,6 +3,9 @@
         <div id="new-group-name-text">
             <p> {% trans "Name" %}</p>
             <input type="text" id="new_group_name">
+            <div class="validationMessage none" id="new_group_mandatory_error">
+                <span class="validationText">{% trans "This field is required" %}</span>
+            </div>
         </div>
         <div class="text_align_right">
             <a href="javascript:void(0);" class="cancel_link" >{% trans "Cancel" %}</a>
