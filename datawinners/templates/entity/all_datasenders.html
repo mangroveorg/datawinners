@@ -112,47 +112,7 @@
         <div id="contacts_content" >
             <div class="contacts_content_div">
                 <div id="group_panel">
-                    <div class="group_div">
-                        <ol data-bind="foreach: {data: groups, as: 'group'}">
-                            <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
-                                <!-- ko if: group.isEditable -->
-
-                                    <b class="padding_left_10" data-bind="text: $data.name"></b>
-                                    <!-- ko if: group == $root.selectedGroup() -->
-                                        <span><img src="/media/images/delete_icon.png" class="group_icon" data-bind="click: $root.showDeleteGroupConfirmation, clickBubble: false"/></span>
-                                        <span><img src="/media/images/edit_icon.png" data-bind="click: $root.showRenameGroupConfirmation, clickBubble: false" class="group_icon"/></span>
-                                    <!--/ko -->
-
-                                    <span class="selected_list_item_arrow" data-bind="css:{inline:group == $root.selectedGroup()}"></span>
-
-                                <!--/ko -->
-                                <!-- ko ifnot: group.isEditable -->
-                                    <b class="padding_left_10" data-bind="text: $data.name"></b>
-                                    <span class="selected_list_item_arrow"
-                                              data-bind="css:{inline:group == $root.selectedGroup()}"></span>
-                                <!--/ko -->
-                            </li>
-                        </ol>
-                        <div class="add_group">
-                            <a class="add_link" data-bind="click:open" href="javascript:void(0);">{% trans "Add a Group" %}</a>
-                        </div>
-                        <div class="add_group_dialog" data-bind="dialog: {autoOpen: false, width: 475, height: 190,
-                                                                title:'Add a Group', dialogClass:'no-close'},
-                                                       dialogVisible: isOpen,
-                                                       dialogContent:addGroupDialogContent">
-                        </div>
-                        <div id="add_group_dialog_content" class="none">
-                            <div>{% trans 'Name' %}</div>
-                            <input data-bind="value: newGroupName, valueUpdate: 'keypress'" type="text">
-                            <div class="validationMessage" data-bind="ifnot: newGroupValid">
-                                <span class="validationText" data-bind="text: newGroupError"></span>
-                            </div>
-                            <div class="float_right margin_top_40">
-                                <a data-bind="click: close_popup">{% trans 'Cancel' %}</a>
-                                <button data-bind="click: addNewGroup, text:$root.groupButtonText, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}" class="button" >{% trans 'Add' %}</button>
-                            </div>
-                        </div>
-                    </div>
+                    {% include "entity/group_panel.html" %}
                 </div>
                 <div id="contacts_panel" class="">
                     <div class="contacts_div">
