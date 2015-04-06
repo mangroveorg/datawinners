@@ -114,11 +114,6 @@ class ReporterRegistrationForm(Form):
 
     def clean(self):
         self.convert_email_to_lowercase()
-        # location = self.cleaned_data.get("location").strip()
-        # if not (bool(location) or bool(geo_code)):
-        #     msg = _("Please fill out at least one location field correctly.")
-        #     self._errors['location'] = self.error_class([msg])
-        #     self._errors['geo_code'] = self.error_class([msg])
         if not self.cleaned_data.get('generated_id') and not self.cleaned_data.get('short_code'):
             msg = _('This field is required.')
             self.errors['short_code'] = self.error_class([msg])
@@ -126,6 +121,9 @@ class ReporterRegistrationForm(Form):
         self._geo_code_validations()
         if not self.cleaned_data.get('project_id'):
             self.cleaned_data['is_data_sender'] = False
+        else:
+            self.cleaned_data['is_data_sender'] = 'True'
+
 
         return self.cleaned_data
 
