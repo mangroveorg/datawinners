@@ -109,6 +109,19 @@ function ContactsGroupViewModel() {
         });
     };
 
+    self.showDeleteGroupConfirmation = function(groupToDelete){
+        var groupDeleteDialog = $("#group-delete-confirmation-section");
+        groupDeleteDialog.find(".cancel_link").unbind('click').on('click', function(){
+            groupDeleteDialog.dialog("close");
+        });
+        groupDeleteDialog.find("#ok_button").unbind('click').on('click', function(){
+            self.deleteGroup(groupToDelete);
+            groupDeleteDialog.dialog("close");
+        });
+
+        groupDeleteDialog.dialog("open");
+    };
+
     self.close_popup = function () {
         self.newGroupName('');
         self.newGroupValid(true);

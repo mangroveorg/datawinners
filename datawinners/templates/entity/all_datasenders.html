@@ -47,7 +47,7 @@
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
 
     <script type="text/javascript" src="/media/javascript/datasenders/datasender_import.js"></script>
-    <script type="text/javascript" src="/media/javascript/datasenders/contacts_group_controller.js"></script>
+    <script type="text/javascript" src="/media/javascript/datasenders/contacts_group_model.js"></script>
 
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
@@ -117,7 +117,7 @@
                                 <!-- ko if: group.isEditable -->
                                     <!-- ko ifnot: group.isEditMode -->
                                         <b class="padding_left_10" data-bind="text: $data.name"></b>
-                                        <span><img src="/media/images/delete_icon.png" class="group_icon" data-bind="click: $root.deleteGroup, clickBubble: false"/></span>
+                                        <span><img src="/media/images/delete_icon.png" class="group_icon" data-bind="click: $root.showDeleteGroupConfirmation, clickBubble: false"/></span>
                                         <span><img src="/media/images/edit_icon.png" data-bind="click: $root.renameGroup, clickBubble: false" class="group_icon"/></span>
                                         <span class="selected_list_item_arrow"
                                               data-bind="css:{inline:group == $root.selectedGroup()}"></span>
@@ -182,5 +182,6 @@
     {% include 'entity/all_data_senders/all_groups_blocks.html' %}
     <div id="datasender-popup" style="display:none;"></div>
     {% include "send-sms.html" %}
+    {% include "entity/delete_group_warning_dialog.html" %}
     {% csrf_token %}
 {% endblock %}

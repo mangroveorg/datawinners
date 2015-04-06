@@ -40,4 +40,17 @@
       });
     groupViewModel.changeSelectedGroup(groupViewModel.groups()[0]);
     DW.GroupManager({'update_groups_url': update_groups_url});
+
+    var groupDeleteDialog = $("#group-delete-confirmation-section");
+
+    groupDeleteDialog.dialog({
+        autoOpen: false,
+        modal: true,
+        title: gettext("Warning!"),
+        zIndex: 700,
+        width: 800,
+        height: 'auto',
+        close: function () {
+        }
+    });
 });
