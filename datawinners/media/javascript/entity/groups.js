@@ -53,7 +53,6 @@ DW.GroupManager = function(options){
             enable_add_button();
             flash_message(response.message, response.success);
             window.scrollTo(0,0);
-            $("#datasender_table").dataTable().fnReloadAjax();
             $("#all_groups_block").dialog("close");
         });
 

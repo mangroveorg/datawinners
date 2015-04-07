@@ -82,11 +82,11 @@ DW.DataSenderActionHandler = function () {
         handle_datasender_edit(table, selected_ids);
     };
     this["addtogroups"] = function(table, selected_ids, all_selected){
-        _add_contact_to_group('add', selected_ids, all_selected);
+        _add_contact_to_group(selected_ids, all_selected);
     };
 
     this["removefromgroups"] = function(table, selected_ids, all_selected){
-        _add_remove_from_group('remove', selected_ids, all_selected);
+        _remove_from_group(selected_ids, all_selected);
     };
 
     this["remove_from_project"] = function(table, selectedIds, all_selected) {
@@ -108,85 +108,84 @@ DW.DataSenderActionHandler = function () {
     };
 };
 
-function _add_contact_to_group(action, selected_ids, all_selected) {
+function _add_contact_to_group(selected_ids, all_selected) {
     DW.loading();
     $.get(all_groups_url).done(function (response) {
             var allGroupsSection = $("#all_groups");
             allGroupsSection.html("");
-            $.each(response.group_names, function (index, group_item) {
-                var group_name = group_item.name;
-                allGroupsSection.append($("<li><label><input type='checkbox' value=" + group_name + ">" + group_name + "</label></li>"));
-            });
+            var groupNames = _.map(response.group_details, function(groupItem){ return groupItem.name;});
+            _populate_group_dialog(groupNames);
             allGroupsSection.data("selected_ids", selected_ids);
             allGroupsSection.data("all_selected", all_selected);
-            allGroupsSection.data("action", action);
+            allGroupsSection.data("action", "add");
             allGroupsSection.data("current_group_name", selected_group);
 
             init_dialog_box_for_group();
             $('#no_group_selected_message').addClass('none');
 
-            var title = '';
-            if(action == 'add') {
-                $('.add_or_remove').text(gettext("Add"));
-                title = gettext('Add to Groups');
-            }
-            else {
-                $('.add_or_remove').text(gettext("Remove"));
-                title = gettext('Remove from Groups');
-            }
-            $('#all_groups_block').dialog("option", "title", title);
-            $('#all_groups_block').dialog("open");
-        }
-    );
-    }
-
-function _add_remove_from_group(action, selected_ids, all_selected) {
-    DW.loading();
-    $.get(all_groups_url).done(function (response) {
-            var allGroupsSection = $("#all_groups");
-            allGroupsSection.html("");
-            $.each(response.group_names, function (index, group_item) {
-                var group_name = group_item.name;
-                allGroupsSection.append($("<li><label><input type='checkbox' value=" + group_name + ">" + group_name + "</label></li>"));
-            });
-            allGroupsSection.data("selected_ids", selected_ids);
-            allGroupsSection.data("all_selected", all_selected);
-            allGroupsSection.data("action", action);
-            allGroupsSection.data("current_group_name", selected_group);
-
-            init_dialog_box_for_group();
-            $('#no_group_selected_message').addClass('none');
-
-            var title = '';
-            if(action == 'add') {
-                $('.add_or_remove').text(gettext("Add"));
-                title = gettext('Add to Groups');
-            }
-            else {
-                $('.add_or_remove').text(gettext("Remove"));
-                title = gettext('Remove from Groups');
-            }
-            $('#all_groups_block').dialog("option", "title", title);
+            $('.add_or_remove').text(gettext("Add"));
+            $('#all_groups_block').dialog("option", "title", gettext('Add to Groups'));
             $('#all_groups_block').dialog("open");
         }
     );
 }
 
-function _populateAndShowSmsDialog(selected_ids, all_selected){
-    if(!all_selected){
-        var contact_mobile_numbers = [];
-        var contact_display_list = [];
-        $.each(selected_ids, function(index, rep_id){
-            var children = $("input[value=" + rep_id + "]").closest("tr").children();
-            var mobile_number = $(children[2]).text();
-            var contact_name = $(children[1]).text();
-            var display_text = contact_name == "" ? mobile_number : contact_name
-            contact_display_list.push(display_text + " ("+ rep_id +")");
-            contact_mobile_numbers.push(mobile_number);
-        });
-        _showSmsDialog(contact_mobile_numbers.join(", "), contact_display_list.join(", "));
+function _post_populating_of_remove_group_list(selected_ids, all_selected){
+    var allGroupsSection = $("#all_groups");
+    allGroupsSection.data("selected_ids", selected_ids);
+    allGroupsSection.data("all_selected", all_selected);
+    allGroupsSection.data("action", 'remove');
+    allGroupsSection.data("current_group_name", selected_group);
+
+    init_dialog_box_for_group();
+    $('#no_group_selected_message').addClass('none');
+
+    $('.add_or_remove').text(gettext("Remove"));
+    $('#all_groups_block').dialog("option", "title", gettext('Remove from Groups'));
+    $('#all_groups_block').dialog("open");
+}
+
+function _populate_group_dialog(groupNames){
+    var allGroupsSection = $("#all_groups");
+    $.each(groupNames, function (index, group_name) {
+        allGroupsSection.append($("<li><label><input type='checkbox' value='" + group_name + "'>" + group_name + "</label></li>"));
+    });
+}
+
+function _remove_from_group(selected_ids, all_selected) {
+    if(all_selected){
+            DW.loading();
+            $.get(all_groups_url).done(function (response) {
+                var allGroupsSection = $("#all_groups");
+                allGroupsSection.html("");
+                var groupNames = _.map(response.group_details, function(groupItem){ return groupItem.name;});
+                _populate_group_dialog(groupNames);
+                _post_populating_of_remove_group_list(selected_ids, all_selected);
+            }
+        );
     }
     else{
+        var all_selected_groups = []
+         $.each(selected_ids, function(index, rep_id){
+            var children = $("input[value=" + rep_id + "]").closest("tr").children();
+            var group_names = $(children[9]).text().split(", ");
+             $.each(group_names, function(index, group_name){
+                 if(group_name != ""){
+                     all_selected_groups.push(group_name);
+                 }
+             });
+         });
+        var sorted_unique_group_names = _.sortBy(_.union(all_selected_groups), function(group_name){return group_name.toLowerCase(); });
+        var allGroupsSection = $("#all_groups");
+        allGroupsSection.html("");
+        _populate_group_dialog(sorted_unique_group_names);
+        _post_populating_of_remove_group_list(selected_ids, all_selected);
+    }
+}
+
+function _populateAndShowSmsDialog(selected_ids, all_selected){
+    if(all_selected){
+
         $.ajax({
             url: all_contacts_mobile_number_url,
             type: "POST",
@@ -200,6 +199,20 @@ function _populateAndShowSmsDialog(selected_ids, all_selected){
             var response =  $.parseJSON(json_response);
             _showSmsDialog(response['mobile_numbers'], response["contact_display_list"]);
         });
+
+    }
+    else{
+        var contact_mobile_numbers = [];
+        var contact_display_list = [];
+        $.each(selected_ids, function(index, rep_id){
+            var children = $("input[value=" + rep_id + "]").closest("tr").children();
+            var mobile_number = $(children[2]).text();
+            var contact_name = $(children[1]).text();
+            var display_text = contact_name == "" ? mobile_number : contact_name
+            contact_display_list.push(display_text + " ("+ rep_id +")");
+            contact_mobile_numbers.push(mobile_number);
+        });
+        _showSmsDialog(contact_mobile_numbers.join(", "), contact_display_list.join(", "));
     }
 }
 

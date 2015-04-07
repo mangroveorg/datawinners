@@ -235,11 +235,11 @@ describe('datasender actions', function () {
 
             spyOn(jQuery, "ajax").andCallFake(function(){
             var d = $.Deferred();
-            d.resolve({"group_names": [{name:"group1"}, {name:"group2"}, {name:"group3"}]});
+            d.resolve({"group_details": [{name:"group1"}, {name:"group2"}, {name:"group3"}]});
             return d.promise();
             });
 
-            _add_contact_to_group("add", selectedIds, true);
+            _add_contact_to_group(selectedIds, true);
 
             expect($("#all_groups li").length).toEqual(3);
             expect($("#all_groups li")[0]).toContainText('group1');

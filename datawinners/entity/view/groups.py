@@ -21,7 +21,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 def get_group_names(request):
     dbm = get_database_manager(request.user)
     group_names = get_group_details(dbm)
-    return HttpResponse(json.dumps({'group_names': group_names}), content_type="application/json")
+    return HttpResponse(json.dumps({'group_details': group_names}), content_type="application/json")
 
 
 def _update_group_for_contacts(contact_ids, dbm, group_names, action):
