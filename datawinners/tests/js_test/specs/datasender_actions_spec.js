@@ -13,7 +13,7 @@ describe('datasender actions', function () {
 
             _populateAndShowSmsDialog(selected_ids, all_selected);
 
-            expect(showSmsDialogMock).toHaveBeenCalledWith("847308763, 56547658679", '847308763, 56547658679', '847308763 (id1), DSName (id2)')
+            expect(showSmsDialogMock).toHaveBeenCalledWith("847308763, 56547658679", '847308763 (id1), DSName (id2)')
         });
 
          it('should show dialog with mobile numbers for all contact ids', function(){
@@ -23,7 +23,7 @@ describe('datasender actions', function () {
 
             spyOn(jQuery, "ajax").andCallFake(function(){
                 var d = $.Deferred();
-                d.resolve('{"mobile_numbers": "1234, 4567"}');
+                d.resolve('{"mobile_numbers": "1234, 4567", "contact_display_list": "dsname1 (rep1), 4567 (rep2)"}');
                 return d.promise();
             });
 
@@ -34,7 +34,7 @@ describe('datasender actions', function () {
             var requestBody = $.ajax.mostRecentCall.args[0].data;
             expect(requestBody['group_name']).toEqual("group");
             expect(requestBody['search_query']).toEqual("dummy_search");
-            expect(showSmsDialogMock).toHaveBeenCalledWith("1234, 4567", )
+            expect(showSmsDialogMock).toHaveBeenCalledWith("1234, 4567", "dsname1 (rep1), 4567 (rep2)")
         });
     });
 
