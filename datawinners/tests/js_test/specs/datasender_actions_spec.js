@@ -4,22 +4,27 @@ describe('datasender actions', function () {
         tableSpy = jasmine.createSpy('table');
     });
 
-    xdescribe('send a message', function(){
+    describe('send a message', function(){
 
-        it('should show dialog with mobile numbers for selected contact ids', function(){
+        xit('should show dialog with mobile numbers for selected contact ids', function(){
             var selected_ids = ["id1", "id2"];
             var all_selected = false;
-            var showSmsDialogMock = spyOn(window, "_showSmsDialog");
+            var contextMock = jasmine.createSpyObj('ko', ["contextFor"]);
+            var viewModelMock = spyOn(contextMock)
+            contextMock.contextFor.andCallFake(function(){
+                return jasmine.createSpyObj('context', ["$root"]);
+            });
 
-            _populateAndShowSmsDialog(selected_ids, all_selected);
+            DW.populateAndShowSmsDialog(selected_ids, all_selected);
 
-            expect(showSmsDialogMock).toHaveBeenCalledWith("847308763, 56547658679", '847308763 (id1), DSName (id2)')
+            expect(viewModelMock.othersList).toHaveBeenCalledWith("847308763, 56547658679")
+            expect(viewModelMock.specifiedList).toHaveBeenCalledWith('847308763 (id1), DSName (id2)')
         });
 
-         it('should show dialog with mobile numbers for all contact ids', function(){
+         xit('should show dialog with mobile numbers for all contact ids', function(){
             var selected_ids = ["id1", "id2"];
             var all_selected = true;
-            var showSmsDialogMock = spyOn(window, "_showSmsDialog");
+            var showSmsDialogMock = spyOn(DW, "_showSmsDialog");
 
             spyOn(jQuery, "ajax").andCallFake(function(){
                 var d = $.Deferred();
@@ -27,7 +32,7 @@ describe('datasender actions', function () {
                 return d.promise();
             });
 
-            _populateAndShowSmsDialog(selected_ids, all_selected);
+            DW.populateAndShowSmsDialog(selected_ids, all_selected);
 
             expect($.ajax.mostRecentCall.args[0]['url']).toEqual("all_contacts_mobile_number_url");
             expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("POST");
@@ -38,7 +43,7 @@ describe('datasender actions', function () {
         });
     });
 
-    xdescribe('delete', function () {
+    describe('delete', function () {
 
         it('should call warning popup on deleting superusers', function () {
             var superusers_selected = spyOn(window, "get_user_names_from_selected_datasenders");
@@ -166,7 +171,7 @@ describe('datasender actions', function () {
         });
     });
 
-    xdescribe("edit", function () {
+    describe("edit", function () {
 
         it("should fire ajax edit with right parameters", function () {
             var jquery_ajax = spyOn($, "ajax");

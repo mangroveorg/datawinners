@@ -18,7 +18,8 @@
         }
         var DW = {'loading': function(){}};
         var all_groups_url="dummy"
-        var selected_group = 'group'
+        var selected_group = 'group';
+        var ko = {contextFor: function(){}};
     </script>
     <!-- lib files goes first; Change the order at your own risk -->
     <link href="../../../media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
@@ -39,6 +40,7 @@
 
     <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine_init.js"></script>
     <!-- custom files goes next -->
+    <script type="text/javascript" src="../../../media/javascript/entity/contact_sms_actions.js"></script>
     <script type="text/javascript" src="../../../media/javascript/entity/contact_group_actions.js"></script>
     <script type="text/javascript" src="../../../media/javascript/entity/datasender_actions.js"></script>
     <script type="text/javascript" src="../../../media/javascript/data_tables/js/dwtable.js"></script>

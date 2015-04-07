@@ -37,6 +37,26 @@
 
 {% block page_js %}
     {{ block.super }}
+
+    <script type="text/javascript">
+        var user_dict = {{ user_dict|safe }};
+        var import_datasenders_link = "{% url all_datasenders%}";
+        var send_sms_url = "{% url send-sms%}";
+        var registered_ds_count_url = "{% url registered_ds_count %}";
+        var group_ds_count_url = "{% url group_ds_count %}";
+        var all_contacts_mobile_number_url = "{% url get-all-mobile-numbers %}";
+        var existing_groups = $.parseJSON({{ groups|safe }});
+        var all_groups_url = "{% url all_groups%}";
+        var update_groups_url = "{% url add_or_remove_contact_from_groups %}";
+        var selected_group = 'All Contacts'
+        var datasender_ajax_url = "{% url all_datasenders_ajax %}";
+        var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
+        var number_of_projects = {{ projects|length }};
+        var delete_group_url = "{% url group_delete %}";
+        var group_rename_url = "{% url group_rename %}";
+
+    </script>
+
     <script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
     <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
     <script src="/media/javascript/data_tables/js/dwtable.js"></script>
@@ -57,6 +77,7 @@
     <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
     <script type="text/javascript" src="/media/javascript/datasender_modified_warning.js"></script>
 
+    <script type="text/javascript" src="/media/javascript/entity/contact_sms_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/contact_group_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
@@ -68,24 +89,7 @@
     <script src="/media/javascript/entity/all_contacts_index.js"></script>
 
 
-    <script type="text/javascript">
-        var user_dict = {{ user_dict|safe }};
-        var import_datasenders_link = "{% url all_datasenders%}";
-        var send_sms_url = "{% url send-sms%}";
-        var registered_ds_count_url = "{% url registered_ds_count %}";
-        var group_ds_count_url = "{% url group_ds_count %}";
-        var all_contacts_mobile_number_url = "{% url get-all-mobile-numbers %}";
-        var existing_groups = $.parseJSON({{ groups|safe }});
-        var all_groups_url = "{% url all_groups%}";
-        var update_groups_url = "{% url add_or_remove_contact_from_groups %}";
-        var selected_group = 'All Contacts'
-        var datasender_ajax_url = "{% url all_datasenders_ajax %}";
-        var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
-        var number_of_projects = {{ projects|length }};
-        var delete_group_url = "{% url group_delete %}";
-        var group_rename_url = "{% url group_rename %}";
 
-    </script>
 {% endblock %}
 {% block main_message %}
     {% include 'main_message_upgrade.html' %}
