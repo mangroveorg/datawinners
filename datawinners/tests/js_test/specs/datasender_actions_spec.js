@@ -6,14 +6,11 @@ describe('datasender actions', function () {
 
     describe('send a message', function(){
 
-        xit('should show dialog with mobile numbers for selected contact ids', function(){
+        it('should show dialog with mobile numbers for selected contact ids', function(){
             var selected_ids = ["id1", "id2"];
             var all_selected = false;
-            var contextMock = jasmine.createSpyObj('ko', ["contextFor"]);
-            var viewModelMock = spyOn(contextMock)
-            contextMock.contextFor.andCallFake(function(){
-                return jasmine.createSpyObj('context', ["$root"]);
-            });
+            var viewModelMock = jasmine.createSpyObj('viewModel', ['othersList', 'specifiedList', 'showToSection', 'hideSpecifiedContacts', 'selectedSmsOption']);
+            spyOn(ko, 'contextFor').andReturn({$root: viewModelMock});
 
             DW.populateAndShowSmsDialog(selected_ids, all_selected);
 
@@ -21,10 +18,11 @@ describe('datasender actions', function () {
             expect(viewModelMock.specifiedList).toHaveBeenCalledWith('847308763 (id1), DSName (id2)')
         });
 
-         xit('should show dialog with mobile numbers for all contact ids', function(){
+         it('should show dialog with mobile numbers for all contact ids', function(){
             var selected_ids = ["id1", "id2"];
             var all_selected = true;
-            var showSmsDialogMock = spyOn(DW, "_showSmsDialog");
+            var viewModelMock = jasmine.createSpyObj('viewModel', ['othersList', 'specifiedList', 'showToSection', 'hideSpecifiedContacts', 'selectedSmsOption']);
+            spyOn(ko, 'contextFor').andReturn({$root: viewModelMock})
 
             spyOn(jQuery, "ajax").andCallFake(function(){
                 var d = $.Deferred();
@@ -39,7 +37,8 @@ describe('datasender actions', function () {
             var requestBody = $.ajax.mostRecentCall.args[0].data;
             expect(requestBody['group_name']).toEqual("group");
             expect(requestBody['search_query']).toEqual("dummy_search");
-            expect(showSmsDialogMock).toHaveBeenCalledWith("1234, 4567", "dsname1 (rep1), 4567 (rep2)")
+            expect(viewModelMock.othersList).toHaveBeenCalledWith("1234, 4567");
+            expect(viewModelMock.specifiedList).toHaveBeenCalledWith("dsname1 (rep1), 4567 (rep2)");
         });
     });
 
