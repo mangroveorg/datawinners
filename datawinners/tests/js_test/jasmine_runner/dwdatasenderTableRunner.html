@@ -16,7 +16,8 @@
         return fmt.replace(/%s/g, function(match){return String(obj.shift())});
         }
         }
-        var DW = {};
+        var DW = {'loading': function(){}};
+        var all_groups_url="dummy"
         var selected_group = 'group'
     </script>
     <!-- lib files goes first; Change the order at your own risk -->
@@ -71,5 +72,9 @@
             <td></td>
         </tr>
     </table>
+    <ul id="all_groups">
+        <li>Dummy entry - to be removed</li>
+    </ul>
+
 </body>
 </html>
