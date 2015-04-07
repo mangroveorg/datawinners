@@ -82,7 +82,7 @@ DW.DataSenderActionHandler = function () {
         handle_datasender_edit(table, selected_ids);
     };
     this["addtogroups"] = function(table, selected_ids, all_selected){
-        _add_remove_from_group('add', selected_ids, all_selected);
+        _add_contact_to_group('add', selected_ids, all_selected);
     };
 
     this["removefromgroups"] = function(table, selected_ids, all_selected){
@@ -107,6 +107,38 @@ DW.DataSenderActionHandler = function () {
         );
     };
 };
+
+function _add_contact_to_group(action, selected_ids, all_selected) {
+    DW.loading();
+    $.get(all_groups_url).done(function (response) {
+            var allGroupsSection = $("#all_groups");
+            allGroupsSection.html("");
+            $.each(response.group_names, function (index, group_item) {
+                var group_name = group_item.name;
+                allGroupsSection.append($("<li><label><input type='checkbox' value=" + group_name + ">" + group_name + "</label></li>"));
+            });
+            allGroupsSection.data("selected_ids", selected_ids);
+            allGroupsSection.data("all_selected", all_selected);
+            allGroupsSection.data("action", action);
+            allGroupsSection.data("current_group_name", selected_group);
+
+            init_dialog_box_for_group();
+            $('#no_group_selected_message').addClass('none');
+
+            var title = '';
+            if(action == 'add') {
+                $('.add_or_remove').text(gettext("Add"));
+                title = gettext('Add to Groups');
+            }
+            else {
+                $('.add_or_remove').text(gettext("Remove"));
+                title = gettext('Remove from Groups');
+            }
+            $('#all_groups_block').dialog("option", "title", title);
+            $('#all_groups_block').dialog("open");
+        }
+    );
+    }
 
 function _add_remove_from_group(action, selected_ids, all_selected) {
     DW.loading();

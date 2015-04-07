@@ -239,7 +239,7 @@ describe('datasender actions', function () {
             return d.promise();
             });
 
-            _add_remove_from_group("add", selectedIds, true);
+            _add_contact_to_group("add", selectedIds, true);
 
             expect($("#all_groups li").length).toEqual(3);
             expect($("#all_groups li")[0]).toContainText('group1');
