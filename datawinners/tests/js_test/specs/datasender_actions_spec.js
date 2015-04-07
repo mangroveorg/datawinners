@@ -13,7 +13,7 @@ describe('datasender actions', function () {
 
             _populateAndShowSmsDialog(selected_ids, all_selected);
 
-            expect(showSmsDialogMock).toHaveBeenCalledWith("847308763, 56547658679")
+            expect(showSmsDialogMock).toHaveBeenCalledWith("847308763, 56547658679", '847308763, 56547658679', '847308763 (id1), DSName (id2)')
         });
 
          it('should show dialog with mobile numbers for all contact ids', function(){
@@ -34,7 +34,7 @@ describe('datasender actions', function () {
             var requestBody = $.ajax.mostRecentCall.args[0].data;
             expect(requestBody['group_name']).toEqual("group");
             expect(requestBody['search_query']).toEqual("dummy_search");
-            expect(showSmsDialogMock).toHaveBeenCalledWith("1234, 4567")
+            expect(showSmsDialogMock).toHaveBeenCalledWith("1234, 4567", )
         });
     });
 
