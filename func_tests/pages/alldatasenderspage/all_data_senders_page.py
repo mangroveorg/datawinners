@@ -48,6 +48,15 @@ class AllDataSendersPage(Page):
         if wait:
             self.driver.wait_until_modal_dismissed()
 
+    def click_remove(self, wait=False):
+        """
+        Function to confirm the association/dissociation with projects on all data sender page
+         """
+        self.driver.find(REMOVE_BUTTON).click()
+        if wait:
+            self.driver.wait_until_modal_dismissed()
+
+
     def click_cancel(self):
         """
         Function to cancel the association/dissociation with projects on all data sender page
@@ -146,7 +155,7 @@ class AllDataSendersPage(Page):
         self.select_a_data_sender_by_id(datasender_id)
         self.perform_datasender_action(DISSOCIATE)
         self.select_project(project_name)
-        self.click_confirm(wait=True)
+        self.click_remove(wait=True)
 
     def get_datasenders_count(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ALL_DS_ROWS, True)

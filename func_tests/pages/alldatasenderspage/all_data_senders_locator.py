@@ -30,6 +30,7 @@ GIVE_ACCESS_LINK = by_id('web_user_button')
 
 CANCEL_LINK = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[@id='cancel_link']")
 CONFIRM_BUTTON = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[text()='Add']")
+REMOVE_BUTTON = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[text()='Remove']")
 DELETE_BUTTON = by_css("a#ok_button")
 
 ERROR_MESSAGE_LABEL = by_css("div#error.message-box")
