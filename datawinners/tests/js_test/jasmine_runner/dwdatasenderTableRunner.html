@@ -20,6 +20,7 @@
         var all_groups_url="dummy"
         var selected_group = 'group';
         var ko = {contextFor: function(){}};
+        var groupViewModel = {isCustomGroupsPresent: function(){}};
     </script>
     <!-- lib files goes first; Change the order at your own risk -->
     <link href="../../../media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
@@ -42,16 +43,25 @@
     <!-- custom files goes next -->
     <script type="text/javascript" src="../../../media/javascript/entity/contact_sms_actions.js"></script>
     <script type="text/javascript" src="../../../media/javascript/entity/contact_group_actions.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/entity/contact_table_menu_handlers.js"></script>
     <script type="text/javascript" src="../../../media/javascript/entity/datasender_actions.js"></script>
     <script type="text/javascript" src="../../../media/javascript/data_tables/js/dwtable.js"></script>
     <script type="text/javascript" src="../../../media/javascript/data_modified_warning.js"></script>
     <script type="text/javascript" src="../../../media/javascript/datasender_modified_warning.js"></script>
     <script type="text/javascript" src="../specs/datasender_actions_spec.js"></script>
+    <script type="text/javascript" src="../specs/contact_table_menu_handlers_spec.js"></script>
 </head>
 
 <body>
     <div class="dataTables_filter">
         <input value="dummy_search" type="text">
+    </div>
+    <div>
+        <ul>
+            <li id="remove-from-group-parent">
+                <a id="remove-from-group">Menu1</a>
+            </li>
+        </ul>
     </div>
     <table>
         <th><td></td><td></td><td></td><td></td><td></td></th>
@@ -64,6 +74,9 @@
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
+            <td></td>
+            <td>Group1</td>
         </tr>
         <tr>
             <td>

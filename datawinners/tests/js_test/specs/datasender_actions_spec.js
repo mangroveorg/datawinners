@@ -251,8 +251,5 @@ describe('datasender actions', function () {
             expect($("#all_groups li")[2]).toContainText('group3');
         });
 
-
-
-
     });
 });
