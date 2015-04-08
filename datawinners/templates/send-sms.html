@@ -35,11 +35,11 @@
                     <span data-bind="html: label"></span>
                 </div>
             <!-- /ko -->
-                <div class="validationMessage" data-bind="ifnot: selectedQuestionnaireNames.valid">
+                <div class="validationMessage" data-bind="hidden: selectedQuestionnaireNames.valid">
                     <span class="validationText" data-bind="text: selectedQuestionnaireNames.error"></span>
                 </div>
 
-            <span data-bind="text:questionnairePlaceHolderText"></span>
+            <span data-bind="text:questionnairePlaceHolderText" class="italic grey"></span>
         </div>
     </div>
 
