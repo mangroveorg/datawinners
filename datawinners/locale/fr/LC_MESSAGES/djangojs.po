@@ -1523,3 +1523,6 @@ msgstr "En cours ..."
 
 msgid "Rename"
 msgstr "Renommer"
+
+msgid "Import a Contacts List"
+msgstr "Importer une liste de contacts"
