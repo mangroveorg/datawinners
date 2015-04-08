@@ -43,6 +43,7 @@
             "onMenuLoad":function(){
                 DW.allContactTableMenu.disableGroupMenuItemsWhenNoGroupsPresent();
                 DW.allContactTableMenu.disableMenuItemWhenSelectedContactsHaveNoGroup();
+                DW.allContactTableMenu.disableMenuItemWhenSelectedContactHaveNoQuestionnaire();
             },
             "iDeferLoading": 0,
             "oLanguage": {
@@ -51,7 +52,7 @@
             "aaSorting": [ [ col("name"), "asc"] ] ,
             "actionItems" : [
                 {"label":"Add to Questionnaire", handler:action_handler.associate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
-                {"label":"Remove from Questionnaire", handler:action_handler.disassociate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
+                {"label":"Remove from Questionnaire", "id":"remove-from-questionnaire", handler:action_handler.disassociate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
                 {"label":"Send an SMS", handler:action_handler.sendAMessage, "allow_selection":"multiple"},
                 {"label":"Give Web Submission Access", handler:action_handler.makewebuser, "allow_selection": "multiple"},
                 {"label":"Add to Groups", handler:action_handler.addtogroups, "allow_selection":"multiple"},
