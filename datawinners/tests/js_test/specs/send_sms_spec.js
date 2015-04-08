@@ -264,7 +264,7 @@ describe("Send A Message", function(){
 
         expect($.ajax.mostRecentCall.args[0]["url"]).toEqual("http://example.com");
         expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("get");
-        expect(model.questionnairePlaceHolderText()).toBe("Once you have created Questionnaires, a list of your Questionnaires will appear here.");
+        expect(model.questionnairePlaceHolderText()).toBe("Once you have created questionnaires, a list of your questionnaires will appear here.");
         expect(model.questionnaireItems()).toEqual([]);
 
     });
