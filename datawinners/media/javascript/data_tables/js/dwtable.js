@@ -10,7 +10,7 @@
                 "bResetDisplay": true,
                 "sAjaxDataProp": "data",
                 "sPaginationType": "dw_pagination",
-                "onMenuLoad":new Function(''),
+                "onMenuLoad": function(){},
                 "searchPlaceholderText": '',
                 'getFilter': function () {
                 },
@@ -123,6 +123,9 @@
                                 };
                             };
                             var menu_item = $('<li class="' + actionItems[item].allow_selection + '"><a class="' + actionItems[item].label.toLowerCase() + '">' + gettext(actionItems[item].label) + '</a></li>');
+                            if(typeof(actionItems[item].id) != undefined){
+                                menu_item.find("a").attr('id', actionItems[item].id);
+                            }
                             var a = $("#" + dropdown_id + ">.dropdown-menu").append(menu_item);
                             $(menu_item, 'a').click(item_handler(actionItems[item].handler));
                         }

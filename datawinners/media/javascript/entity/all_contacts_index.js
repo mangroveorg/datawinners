@@ -11,12 +11,39 @@
 
     initializeContactGroupViewModel();
 
+    var _disableGroupMenuItemsWhenNoGroupsPresent = function(){
+        var removeGroupMenuItem = $($('#remove-from-group').parent());
+        if(groupViewModel.isCustomGroupsPresent()){
+            removeGroupMenuItem.removeClass('disabled');
+        }
+        else{
+            removeGroupMenuItem.addClass('disabled');
+        }
+    };
+
+    var _disableMenuItemWhenSelectedContactsHaveNoGroup = function(){
+        var selectedContacts = $("#datasender_table").find("input.row_checkbox:checked");
+        var contactRowWithGroup = _.find(selectedContacts, function(item){
+                return $($(item).closest("tr").children()[9]).text() != "";
+            });
+        var removeGroupMenuItem = $($('#remove-from-group').parent());
+        if(contactRowWithGroup){
+            removeGroupMenuItem.removeClass('disabled');
+        }
+        else{
+            removeGroupMenuItem.addClass('disabled');
+        }
+    };
+
     $("#datasender_table").dwTable({
             "concept": "Contact",
             "sAjaxSource": datasender_ajax_url,
             "sAjaxDataIdColIndex" : col("short_code"),
             "bServerSide": true,
-            "onMenuLoad":new Function("var groups_li =$($('.groups').parent()); if(groupViewModel.groups().length<=1){ groups_li.addClass(function(i){return 'disabled'});}else{groups_li.removeClass(function(i){return 'disabled'});}"),
+            "onMenuLoad":function(){
+                _disableGroupMenuItemsWhenNoGroupsPresent();
+                _disableMenuItemWhenSelectedContactsHaveNoGroup();
+            },
             "iDeferLoading": 0,
             "oLanguage": {
                 "sEmptyTable": $('#no_datasenders_message').clone(true, true).html()
@@ -28,7 +55,7 @@
                 {"label":"Send an SMS", handler:action_handler.sendAMessage, "allow_selection":"multiple"},
                 {"label":"Give Web Submission Access", handler:action_handler.makewebuser, "allow_selection": "multiple"},
                 {"label":"Add to Groups", handler:action_handler.addtogroups, "allow_selection":"multiple"},
-                {"label":"Remove from Groups", handler:action_handler.removefromgroups, "allow_selection":"multiple"},
+                {"label":"Remove from Groups", "id": "remove-from-group", handler:action_handler.removefromgroups, "allow_selection":"multiple"},
                 {"label":"Edit", handler:action_handler.edit, "allow_selection": "single"},
                 {"label": "Delete", "handler":action_handler["delete"], "allow_selection": "multiple"}
             ],

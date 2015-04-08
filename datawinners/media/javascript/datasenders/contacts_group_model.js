@@ -36,6 +36,12 @@ function ContactsGroupViewModel() {
     self.disable_attr = ko.observable(null);
     self.addGroupDialogContent = ko.observable($('#add_group_dialog_content').html());
 
+    self.isCustomGroupsPresent = function(){
+        // by default 'All Contacts' is present in the group, hence > 1
+
+        return self.groups().length > 1;
+    }
+
     self.disable_add_button = function() {
         self.groupButtonText(gettext("Adding..."));
         self.disable_attr('disabled');
