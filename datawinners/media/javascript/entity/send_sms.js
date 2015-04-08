@@ -35,7 +35,7 @@ function SmsViewModel(){
     var questionnaireItems = [];
 
     if(response.length == 0){
-        self.questionnairePlaceHolderText(gettext("Once you have created Questionnaires, a list of your Questionnaires will appear here."));
+        self.questionnairePlaceHolderText(gettext("Once you have created questionnaires, a list of your questionnaires will appear here."));
     }
     else{
        self.questionnairePlaceHolderText("");
