@@ -5752,3 +5752,6 @@ msgstr "DataWinners_ImporterLesEnvoyeursDeDonnees.xlsx"
 
 msgid "Rename"
 msgstr "Renommer"
+
+msgid "Upgrade Now"
+msgstr "Abonnez-vous maintenant"
