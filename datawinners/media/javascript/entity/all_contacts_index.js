@@ -47,7 +47,7 @@
         modal: true,
         title: gettext("Warning!"),
         zIndex: 700,
-        width: 800,
+        width: 500,
         height: 'auto'
     });
 
@@ -58,7 +58,8 @@
          title: gettext("Rename Group"),
          zIndex: 700,
          width: 470,
-         height: 'auto'
+         height: 'auto',
+         close: function(){ $("#new_group_mandatory_error").addClass("none");}
      });
 
 });

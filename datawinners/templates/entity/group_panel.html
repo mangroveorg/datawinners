@@ -4,7 +4,7 @@
         <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
             <!-- ko if: group.isEditable -->
 
-            <b class="padding_left_10" data-bind="text: $data.name"></b>
+            <b class="padding_left_10 break_word" data-bind="text: $data.name"></b>
             <span class="group_actions" data-bind="css:{visible: group == $root.selectedGroup()}">
                 <span><img src="/media/images/delete_icon.png" class="group_icon"
                            data-bind="click: $root.showDeleteGroupConfirmation, clickBubble: false" alt="{% trans "delete" %}"/></span>
@@ -17,7 +17,7 @@
 
             <!--/ko -->
             <!-- ko ifnot: group.isEditable -->
-            <b class="padding_left_10" data-bind="text: $data.name"></b>
+            <b class="padding_left_10 break_word" data-bind="text: $data.name"></b>
                                     <span class="selected_list_item_arrow"
                                           data-bind="css:{inline:group == $root.selectedGroup()}"></span>
             <!--/ko -->

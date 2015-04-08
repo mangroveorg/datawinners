@@ -5746,3 +5746,6 @@ msgstr "Télécharger le modèle d'importation: "
 
 msgid "DataWinners_ImportDataSenders.xlsx"
 msgstr "DataWinners_ImporterLesEnvoyeursDeDonnees.xlsx"
+
+msgid "Rename"
+msgstr "Renommer"

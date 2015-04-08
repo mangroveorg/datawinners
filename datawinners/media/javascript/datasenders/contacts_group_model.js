@@ -56,39 +56,59 @@ function ContactsGroupViewModel() {
     };
 
     self.confirmGroupRename = function(group){
-        var newGroupName = $('#new_group_name').val();
+        var newGroupName = $('#new_group_name').val().trim();
 
         if(newGroupName){
             $("#new_group_mandatory_error").addClass("none");
         }
         else{
+            $("#new_group_mandatory_error").find(".validationText").text(gettext('This field is required.'));
             $("#new_group_mandatory_error").removeClass("none");
             return;
         }
-
-        DW.loading();
-        $.post(group_rename_url, {
-            group_name: group.name(),
-            new_group_name: newGroupName,
-            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
-        }).done(function (response){
-            var response = $.parseJSON(response);
-            if(response.success){
-                group.updateName(newGroupName);
-                self.changeSelectedGroup(group);
-                DW.flashMessage(gettext("Group renamed successfully"), response.success);
-                $("#group-rename-confirmation-section").dialog('close');
-            }
-            else{
-                alert("Rename failed");
-            }
-        }).error(function(){
-            alert("Rename threw an exception");
-        });
+        if (newGroupName == group.name()){
+            self.show_success_message(gettext("Your changes have been saved."));
+            $("#group-rename-confirmation-section").dialog('close');
+        }
+        else {
+            DW.loading();
+            self.disable_rename_button()
+            $.post(group_rename_url, {
+                group_name: group.name(),
+                new_group_name: newGroupName,
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+            }).done(function (response){
+                var response = $.parseJSON(response);
+                if(response.success){
+                    group.updateName(newGroupName);
+                    self.changeSelectedGroup(group);
+                    self.show_success_message(gettext("Your changes have been saved."));
+                    $("#group-rename-confirmation-section").dialog('close');
+                }
+                else{
+                    $("#new_group_mandatory_error").find(".validationText").text(response.message);
+                    $("#new_group_mandatory_error").removeClass("none");
+                }
+                self.enable_rename_button();
+            }).error(function(){
+                alert("Rename threw an exception");
+            });
+        }
+    };
+    self.disable_rename_button = function() {
+            var rename_button = $("#group-rename-confirmation-section").find("#ok_button");
+            rename_button.text(gettext('Renaming...'));
+            rename_button.addClass('ui-state-disabled');
+    };
+    self.enable_rename_button = function(){
+            var rename_button = $("#group-rename-confirmation-section").find("#ok_button");
+            rename_button.text(gettext('Rename'));
+            rename_button.removeClass('ui-state-disabled');
     };
 
+
     self.addNewGroup = function () {
-        var newGroup = new DW.group({'name': self.newGroupName()});
+        var newGroup = new DW.group({'name': self.newGroupName().trim()});
         DW.loading();
         self.disable_add_button();
         $.post('/entity/group/create/', {
@@ -168,7 +188,7 @@ function ContactsGroupViewModel() {
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         }).done(function(){
             self.groups.remove(group);
-            DW.flashMessage(gettext("Group removed successfully"));
+            self.show_success_message(gettext("Group(s) successfully deleted."));
         });
 
     };

@@ -1493,6 +1493,13 @@ msgstr " destinataires"
 msgid "Add to Groups"
 msgstr "Ajouter aux Groupes"
 
+
+msgid "Remove from Groups"
+msgstr "Retirer des Groupes"
+
+msgid "Group(s) successfully deleted."
+msgstr "Groupe(s) supprimé(s) avec succès."
+
 msgid "All Contacts"
 msgstr "Tous les Contacts"
 
@@ -1504,3 +1511,15 @@ msgstr "Une fois que vous avez créé des questionnaires, la liste de vos questi
 
 msgid "Once you have created groups, a list of your groups will appear here."
 msgstr "Une fois que vous avez créé des groupe, une liste de vos groupe sera affichée ici."
+
+msgid "Rename Group"
+msgstr "Renommer le Groupe"
+
+msgid "Removing..."
+msgstr "En cours ..."
+
+msgid "Renaming..."
+msgstr "En cours ..."
+
+msgid "Rename"
+msgstr "Renommer"
