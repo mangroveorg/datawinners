@@ -8,8 +8,8 @@
             <div class = "tableCell">{% trans "Text:" %}</div>
             <span class = "tableCell">
                 <textarea id="sms-text" placeholder="{% trans 'Enter your SMS text'%}"></textarea>
-                <span class="validationMessage" data-bind="ifnot: smsText.valid">
-                    <span class="validationText" data-bind="text: smsText.error"></span>
+                <span class="validationMessage" data-bind="hidden: smsText.valid">
+                    <span class="validationText" data-bind="text: smsText.error">asd</span>
                 </span>
             </span>
     </div>
@@ -52,7 +52,7 @@
                     <span data-bind="html: label"></span>
                 </div>
             <!-- /ko -->
-                <div class="validationMessage" data-bind="ifnot: selectedGroupNames.valid">
+                <div class="validationMessage" data-bind="hidden: selectedGroupNames.valid">
                     <span class="validationText" data-bind="text: selectedGroupNames.error"></span>
                 </div>
 
@@ -64,7 +64,7 @@
         <div class = "tableCell"></div>
         <div class = "tableCell">
             <textarea data-bind="value: othersList, valueUpdate: 'keypress'"></textarea>
-            <div class="validationMessage" data-bind="ifnot: othersList.valid">
+            <div class="validationMessage" data-bind="hidden: othersList.valid">
                 <span class="validationText" data-bind="text: othersList.error"></span>
             </div>
         </div>
@@ -81,7 +81,7 @@
     <div class="tableRow" data-bind="css: {'none': hideOtherContacts}" >
         <div class = "tableCell"></div>
         <div class = "tableCell">
-        <div class="grey italic">{% trans "Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers." %}</div>
+        <div class="grey italic" data-bind="hidden:hideOtherSection">{% trans "Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers." %}</div>
             </div>
     </div>
     <br/>
