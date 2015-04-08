@@ -67,6 +67,21 @@ class XlsFormParser():
             path = path_or_file.name
 
         self.xform_dict = parse_file_to_json(path, file_object=path_or_file)
+        if self.xform_dict['default_language'] == u'default':
+            from openpyxl import load_workbook
+            try:
+                workbook = load_workbook(path)
+            except Exception as e:
+                raise e
+            worksheet = workbook.get_sheet_by_name('survey')
+
+            for row in worksheet.iter_rows():
+                for cell in row:
+                    if re.match('label::.', cell.value):
+                        language = cell.value.split("::")[1]
+                        self.xform_dict['default_language'] = language
+                        break
+                break
 
     def _validate_for_uppercase_names(self, field):
         if filter(lambda x: x.isupper(), field['name']):
@@ -171,9 +186,9 @@ class XlsFormParser():
                 self._validate_for_nested_repeats(f)
 
     def _validate_for_no_language(self, field):
-        for header in ['label', 'hint']:
-            if self._has_languages(field.get(header)):
-                raise MultipleLanguagesNotSupportedException()
+        #for header in ['label', 'hint']:
+        #    if self._has_languages(field.get(header)):
+        #        raise MultipleLanguagesNotSupportedException()
         field.get("choices") and self._validate_for_no_language(field.get("choices")[0])
         if field.get('bind') and self._has_languages(field.get('bind').get('jr:constraintMsg')):
             raise MultipleLanguagesNotSupportedException()
@@ -270,7 +285,9 @@ class XlsFormParser():
                 raise LabelForFieldNotPresentException(field_name=field['name'])
 
         if isinstance(field['label'], dict):
-            return field['label'].values()[0]
+            if field['label'].get(self.xform_dict['default_language'], None):
+                return field['label'].get(self.xform_dict['default_language'])
+            return field['label'].values()[-1]
         else:
             return field['label']
 
@@ -381,7 +398,11 @@ class XlsFormParser():
         if not choice_field.get('label', None):
             raise LabelForChoiceNotPresentException(choice_field.get('name', ''))
 
-        return choice_field.get('label')
+        choice_label = choice_field.get('label')
+        if not isinstance(choice_label, dict):
+            return choice_label
+
+        return choice_label.get(self.xform_dict.get('default_language'), '')
 
     def is_required(self, field):
         if field.get('bind') and 'yes' == str(field['bind'].get('required')).lower():
@@ -410,8 +431,8 @@ class XlsFormParser():
         if xform_dict['id_string'] != xform_dict['name']:
             errors.append(setting_page_error)
 
-        if xform_dict['default_language'] != 'default':
-            errors.append(setting_page_error)
+        #if xform_dict['default_language'] != 'default':
+        #    errors.append(setting_page_error)
 
         if 'public_key' in xform_dict:
             errors.append(setting_page_error)
