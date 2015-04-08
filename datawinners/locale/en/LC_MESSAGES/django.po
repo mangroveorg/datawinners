@@ -2585,7 +2585,8 @@ msgstr ""
 msgid "Example: Program Director"
 msgstr ""
 
-msgid "phone_number_example"
+msgid "
+"
 msgstr "Enter the country code and telephone number. Example: 261333745269"
 
 msgid "Example: Minimum	of 6 characters in length"
@@ -3613,7 +3614,7 @@ msgid "Data Sender(s) successfully deleted."
 msgstr ""
 
 msgid "data sender delete error text"
-msgstr "If you delete Data Senders, they can no longer send in data.<br/>"
+msgstr "If you delete contacts linked to a Questionnaire, they can no longer send in data.<br/>"
        "However, you can still view their previous Data Submissions on the Data pages."
 
 
@@ -3956,7 +3957,7 @@ msgstr ""
 msgid "Deleted User(s)"
 msgstr ""
 
-msgid "Note, the following Data Senders will not be deleted as they are DataWinners users:"
+msgid "Note, the following Contacts will not be deleted as they are DataWinners users:"
 msgstr ""
 
 msgid "You cannot delete the following Data Senders as they are DataWinners users:"

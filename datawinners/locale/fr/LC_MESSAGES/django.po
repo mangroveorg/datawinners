@@ -68,6 +68,9 @@ msgstr "Cette adresse email est déja utilisée. Veuillez saisir une adresse dif
 msgid "Email address"
 msgstr "Adresse email"
 
+msgid "Email Address"
+msgstr "Adresse Email"
+
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -4081,11 +4084,11 @@ msgstr "Etes-vous sûr de vouloir supprimer?"
 msgid "Deleted User(s)"
 msgstr "A supprimé un/des utilisateur(s)"
 
-msgid "Note, the following Data Senders will not be deleted as they are DataWinners users:"
-msgstr "Remarque, les expéditeurs suivants ne seront pas supprimés car ils sont utilisateurs de DataWinners:"
+msgid "Note, the following Contacts will not be deleted as they are DataWinners users:"
+msgstr "Remarque, les Contacts suivants ne seront pas supprimés car ils sont utilisateurs de DataWinners:"
 
-msgid "You cannot delete the following Data Senders as they are DataWinners users:"
-msgstr "Vous ne pouvez pas supprimer ces expéditeurs car ils sont des utilisateurs de DataWinners:"
+msgid "You cannot delete the following Contacts as they are DataWinners users:"
+msgstr "Vous ne pouvez pas supprimer ces Contacts car ils sont des utilisateurs de DataWinners:"
 
 msgid "Deleted User"
 msgstr "Utilisateur supprimé"
@@ -5690,7 +5693,7 @@ msgstr "ID automatique"
 msgid "Your contact(s) have been added."
 msgstr "Vos contacts ont été ajoutés."
 
-msgid "Your contact(s) have been added as Data Sender. Contacts with an Email address who are added to a Questionnaire for the first time will receive an activation email with instructions."
+msgid "Your Contact(s) have been added successfully. Contacts with an Email address added to a Questionnaire for the first time will receive an activation email with instructions."
 msgstr "Vos contacts ont été ajoutés en tant qu’Expéditeur de Données. Les contacts ayant des adresses email ajoutés à un Questionnaire pour la première fois recevront un email d’activation avec des instructions."
 
 
