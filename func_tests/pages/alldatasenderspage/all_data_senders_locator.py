@@ -27,7 +27,7 @@ UID_LABEL_BY_MOBILE_XPATH = "//tr/td[3][text()='%s']/../td[7]"
 DATA_SENDER_DEVICES = "//input[@value='%s']/../../td[9]/img"
 WEB_USER_BLOCK_EMAIL = by_css("div#web_user_block input.ds-email")
 GIVE_ACCESS_LINK = by_id('web_user_button')
-
+FLASH_MESSAGE_LABEL = by_css("#flash-message")
 CANCEL_LINK = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[@id='cancel_link']")
 CONFIRM_BUTTON = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[text()='Add']")
 REMOVE_BUTTON = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[text()='Remove']")

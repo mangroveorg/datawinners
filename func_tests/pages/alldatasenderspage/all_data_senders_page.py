@@ -1,6 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import time
+from pages.adddatasenderspage.add_data_senders_locator import ADD_GROUP_DIALOG, CANCEL_POP, RENAME_GROUP_DIALOG, \
+    RENAME_GROUP_BUTTON, DELETE_GROUP_BUTTON
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
+from pages.addgrouppage.add_group_page import AddGroupPage
 from pages.alldatasenderspage.all_data_senders_locator import *
 from pages.page import Page
 from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE
@@ -78,8 +81,17 @@ class AllDataSendersPage(Page):
         option = self.driver.find_visible_element(by_xpath(ACTION_LOCATOR % action_to_be_performed))
         option.click()
 
+    def get_group_table_empty_text(self):
+        locator = self.driver.wait_for_element(30, by_css('.dataTables_empty'))
+        self.wait_for_table_to_load()
+        return locator.text
+
     def get_success_message(self):
-        locator = self.driver.wait_for_element(20, SUCCESS_MESSAGE_LABEL)
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MESSAGE_LABEL, want_visible=True)
+        return locator.text
+
+    def get_flash_message(self):
+        locator = self.driver.wait_for_element(30, by_css(".clear-left.flash-message.success-message-box"), want_visible=True)
         return locator.text
 
     def get_delete_success_message(self):
@@ -262,3 +274,21 @@ class AllDataSendersPage(Page):
 
     def close_import_dialog(self):
         return self.driver.find(by_css(".close_import_dialog")).click()
+
+    def go_to_add_group_page(self):
+        self.driver.find(by_css('.add_link')).click()
+        return AddGroupPage(self.driver)
+
+    def click_checkbox_selector_for_datasender_row(self, row_number):
+        # first row is used to show all rows select message
+        return by_xpath(".//*[@id='datasender_table']/tbody/tr[2]/td[1]/input" % (row_number + 1)).click()
+
+    def select_group_by_name(self, group_name):
+        self.driver.find(by_xpath(".//*[@id='group_panel']/div/ol/li[contains(.,'"+group_name +"')]")).click()
+        self.wait_for_table_to_load()
+
+    def select_group_rename_icon(self, group_name):
+        self.driver.find(by_xpath(".//*[@id='group_panel']/div/ol/li[contains(.,'"+group_name +"')]/span[1]/span[2]/img")).click()
+
+    def click_delete_group_icon(self, group_name):
+         self.driver.find(by_xpath(".//*[@id='group_panel']/div/ol/li[contains(.,'"+group_name +"')]/span[1]/span[1]/img")).click()

@@ -6,7 +6,7 @@
 
             <b class="padding_left_10 break_word" data-bind="text: $data.name"></b>
             <span class="group_actions" data-bind="css:{visible: group == $root.selectedGroup()}">
-                <span><img src="/media/images/delete_icon.png" class="group_icon"
+                <span id="delete_icon"><img src="/media/images/delete_icon.png" class="group_icon"
                            data-bind="click: $root.showDeleteGroupConfirmation, clickBubble: false" alt="{% trans "delete" %}"/></span>
                 <span><img src="/media/images/edit_icon.png"
                            data-bind="click: $root.showRenameGroupConfirmation, clickBubble: false"
@@ -39,9 +39,9 @@
             <span class="validationText" data-bind="text: newGroupError"></span>
         </div>
         <div class="float_right margin_top_40">
-            <a data-bind="click: close_popup">{% trans 'Cancel' %}</a>
+            <a id='close_pop' data-bind="click: close_popup">{% trans 'Cancel' %}</a>
             <button data-bind="click: addNewGroup, text:$root.groupButtonText, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"
-                    class="button">{% trans 'Add' %}</button>
+                    class="button adding_new_group">{% trans 'Add' %}</button>
         </div>
     </div>
 </div>

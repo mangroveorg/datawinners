@@ -46,6 +46,20 @@ class AddDataSenderPage(Page):
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css("span.loading"))
         return self
 
+    def enter_data_sender_with_mobile_number(self, registration_data, unique_id=None, email=None):
+
+        self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(
+            fetch_(MOBILE_NUMBER, from_(registration_data)))
+
+        if email is not None:
+            self.driver.find_text_box(EMAIL_TB).enter_text(email)
+
+        if unique_id is not None:
+            self.set_unique_id(unique_id)
+        self.driver.find(REGISTER_BTN).click()
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css("span.loading"))
+        return self
+
     # def get_registered_datasender_id(self):
     #     message = self.get_success_message()
     #     assert REGISTRATION_SUCCESS_MESSAGE_TEXT in message
@@ -115,8 +129,21 @@ class AddDataSenderPage(Page):
     def close_add_datasender_dialog(self):
         self.driver.find(CANCEL).click()
 
-
 class AddContactPage(AddDataSenderPage):
 
     def __init__(self, driver):
         AddDataSenderPage.__init__(self, driver)
+
+    # def enter_data_sender_with_mobile_number(self, registration_data, unique_id=None, email=None):
+    #
+    #     self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(
+    #         fetch_(MOBILE_NUMBER, from_(registration_data)))
+    #
+    #     if email is not None:
+    #         self.driver.find_text_box(EMAIL_TB).enter_text(email)
+    #
+    #     if unique_id is not None:
+    #         self.set_unique_id(unique_id)
+    #     self.driver.find(REGISTER_BTN).click()
+    #     self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css("span.loading"))
+    #     return self
