@@ -69,10 +69,10 @@ DW.DataSenderActionHandler = function () {
         populate_dialog_box_for_web_users(table, all_selected);
     };
     this["associate"] = function (table, selected_ids, all_selected){
-       add_remove_from_project('associate', table, selected_ids, all_selected);
+       add_to_questionnaire(table, selected_ids, all_selected);
     };
     this["disassociate"] = function (table, selected_ids, all_selected) {
-        add_remove_from_project('disassociate', table, selected_ids, all_selected);
+        remove_from_questionnaire(table, selected_ids, all_selected);
     };
     this["sendAMessage"] = function (table, selected_ids, all_selected) {
         DW.populateAndShowSmsDialog(selected_ids, all_selected);
@@ -165,22 +165,36 @@ function init_add_remove_from_project() {
     });
 }
 
-function add_remove_from_project(action, table, selected_ids, all_selected) {
+function add_to_questionnaire(table, selected_ids, all_selected) {
     var all_project_block = $("#all_project_block");
     all_project_block.find('#error').remove();
+
     $('#all_project_block :checked').attr("checked", false);
+
+
     all_project_block.data("selected_ids", selected_ids);
     all_project_block.data("all_selected", all_selected);
-    all_project_block.data("action", action);
+    all_project_block.data("action", "associate");
     all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
-    if(action == 'associate') {
-        $('#action_for_project').text(gettext("Add"));
-        all_project_block.dialog('option', 'title', gettext('Add to Questionnaire'));
-    }
-    else {
-        $('#action_for_project').text(gettext("Remove"));
-        all_project_block.dialog('option', 'title', gettext('Remove from Questionnaire'));
-    }
+
+    $('#action_for_project').text(gettext("Add"));
+    all_project_block.dialog('option', 'title', gettext('Add to Questionnaire'));
+    all_project_block.dialog("open");
+}
+
+function remove_from_questionnaire(table, selected_ids, all_selected) {
+    var all_project_block = $("#all_project_block");
+    all_project_block.find('#error').remove();
+
+    $('#all_project_block :checked').attr("checked", false);
+
+    all_project_block.data("selected_ids", selected_ids);
+    all_project_block.data("all_selected", all_selected);
+    all_project_block.data("action", "disassociate");
+    all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
+
+    $('#action_for_project').text(gettext("Remove"));
+    all_project_block.dialog('option', 'title', gettext('Remove from Questionnaire'));
     all_project_block.dialog("open");
 }
 function get_user_names_from_selected_datasenders(table, selected_ids, all_selected) {
