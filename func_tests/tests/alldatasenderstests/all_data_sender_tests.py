@@ -75,14 +75,6 @@ class TestAllDataSenders(HeadlessRunnerTest):
         self.assertEqual("", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
 
     @attr('functional_test')
-    def test_dissociate_ds_without_selecting_project(self):
-        self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
-        self.all_datasenders_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
-        self.all_datasenders_page.perform_datasender_action(DISSOCIATE)
-        self.all_datasenders_page.click_remove()
-        self.assertEqual(self.all_datasenders_page.get_error_message(), ERROR_MSG_FOR_NOT_SELECTING_PROJECT)
-
-    @attr('functional_test')
     def test_associate_ds_without_selecting_project(self):
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.all_datasenders_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
