@@ -91,7 +91,7 @@ class AllDataSendersPage(Page):
         return locator.text
 
     def get_flash_message(self):
-        locator = self.driver.wait_for_element(30, by_css(".clear-left.flash-message.success-message-box"), want_visible=True)
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".flash-message"), want_visible=True)
         return locator.text
 
     def get_delete_success_message(self):
