@@ -2,11 +2,14 @@
     dw.allContactTableMenu = {};
     dw.allContactTableMenu.disableGroupMenuItemsWhenNoGroupsPresent = function(){
         var removeGroupMenuItem = $($('#remove-from-group').parent());
+        var addGroupMenuItem = $($('#add-to-group').parent());
         if(groupViewModel.isCustomGroupsPresent()){
             removeGroupMenuItem.removeClass('disabled');
+            addGroupMenuItem.removeClass('disabled');
         }
         else{
             removeGroupMenuItem.addClass('disabled');
+            addGroupMenuItem.addClass('disabled');
         }
     };
 

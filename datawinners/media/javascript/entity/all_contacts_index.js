@@ -55,7 +55,7 @@
                 {"label":"Remove from Questionnaire", "id":"remove-from-questionnaire", handler:action_handler.disassociate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
                 {"label":"Send an SMS", handler:action_handler.sendAMessage, "allow_selection":"multiple"},
                 {"label":"Give Web Submission Access", handler:action_handler.makewebuser, "allow_selection": "multiple"},
-                {"label":"Add to Groups", handler:action_handler.addtogroups, "allow_selection":"multiple"},
+                {"label":"Add to Groups", "id": "add-to-group", handler:action_handler.addtogroups, "allow_selection":"multiple"},
                 {"label":"Remove from Groups", "id": "remove-from-group", handler:action_handler.removefromgroups, "allow_selection":"multiple"},
                 {"label":"Edit", handler:action_handler.edit, "allow_selection": "single"},
                 {"label": "Delete", "handler":action_handler["delete"], "allow_selection": "multiple"}
