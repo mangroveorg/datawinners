@@ -5747,8 +5747,8 @@ msgstr "Le(s) Contact(s) ont été retiré(s) de(s) Groupe(s) avec succès."
 msgid "You have not registered a %(type)s yet. Making submission via Smartphone will not be possible."
 msgstr "Vous n’avez pas encore enregistré un %(type)s. Collecter des données à partir de Smartphone ne sera pas possible."
 
-msgid "Download the import template: "
-msgstr "Télécharger le modèle d'importation: "
+msgid "Download the template: "
+msgstr "Télécharger le modèle: "
 
 msgid "DataWinners_ImportDataSenders.xlsx"
 msgstr "DataWinners_ImporterLesEnvoyeursDeDonnees.xlsx"
