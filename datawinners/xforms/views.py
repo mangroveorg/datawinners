@@ -5,20 +5,23 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
+from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
+from datawinners.project.couch_view_helper import get_all_form_models
+from datawinners.submission.location import LocationBridge
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
-from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel
 from mangrove.transport.contract.request import Request
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
+from mangrove.transport.player.parser import XFormParser
 from mangrove.transport.services.MediaSubmissionService import MediaAttachmentNotFoundException
 from mangrove.transport.xforms.xform import list_all_forms, xform_for
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
-from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.messageprovider.messages import SMART_PHONE
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
@@ -60,7 +63,7 @@ def restrict_request_country(f):
 @httpdigest
 @restrict_request_country
 def formList(request):
-    rows = get_all_project_for_user(request.user)
+    rows = get_all_form_models(get_database_manager(request.user))
     form_tuples = [(row['value']['name'], row['id']) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
     response = HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
@@ -134,8 +137,15 @@ def submission(request):
                                                  source=request_user.email,
                                                  destination=''
                                    ), media=request.FILES if len(request.FILES) > 1 else [])
+        form_code, values = XFormParser(manager).parse(mangrove_request.message)
+        form_model = get_form_model_by_code(manager, form_code)
 
-        response = player.add_survey_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
+        if isinstance(form_model, EntityFormModel) and form_model.is_entity_registration_form:
+            location_tree = LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy)
+            response = player.add_subject(form_model, values, location_tree)
+        else:
+            response = player.add_survey_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
+
         mail_feed_errors(response, manager.database_name)
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
