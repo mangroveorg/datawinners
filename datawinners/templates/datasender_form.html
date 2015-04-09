@@ -2,7 +2,10 @@
 <script type="text/javascript">
 var sender_registration_link = "{{ registration_link }}";
 </script>
-    <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet" />
+
+{% compress css %}
+    <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet"/>
+{% endcompress %}
 
   {% block messages %}
       <div id="message-label" class="message-box none">
@@ -31,7 +34,7 @@ var sender_registration_link = "{{ registration_link }}";
               {{ form.name.errors }}
           </li>
 
-          <li class="{{ form.telephone_number.css_classes }} form-row-10px">
+          <li class="{{ form.telephone_number.css_classes }} form-row-10px margin_bottom_10">
               {{ form.telephone_number.label_tag }}
               {{ form.telephone_number }}
               {{ form.telephone_number.errors }}

@@ -7,8 +7,9 @@
 <script type="text/javascript">
     var sender_registration_link = "/entity/datasender/edit/{{ reporter_id }}/";
 </script>
-<link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet"/>
-
+{% compress css %}
+    <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet"/>
+{% endcompress %}
 
 <input id='post_url' type="hidden" value="{{ post_url }}"/>
 <div id="add_data_sender_form" class="">
@@ -35,12 +36,12 @@
                 <label>ID</label>
                 {{ reporter_id }}
             </li>
-            <li class="{{ form.telephone_number.css_classes }} form-row-10px">
+            <li class="{{ form.telephone_number.css_classes }} form-row-10px margin_bottom_10">
                 {{ form.telephone_number.label_tag }}
                 {{ form.telephone_number }}
                 {{ form.telephone_number.errors }}
             </li>
-            <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text">
+            <li class="margin_left_180 italic_grey clear-left instruction_text">
                 {% trans "phone_number_example" %}
             </li>
             {% if email %}

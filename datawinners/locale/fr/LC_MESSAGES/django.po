@@ -5761,3 +5761,6 @@ msgstr "Renommer"
 
 msgid "Upgrade Now"
 msgstr "Abonnez-vous maintenant"
+
+msgid "Warning!"
+msgstr "Attention"

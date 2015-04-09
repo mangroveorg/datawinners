@@ -260,11 +260,12 @@ function init_dialog_box_for_web_users() {
         "<label style='font-weight:inherit'>${email}</label>" +
         "</td></tr>";
     $.template("webUserTemplate", markup);
-
+    var project_id = $('#project_id').val();
+    var modal_header = project_id ? gettext('Give Web Submission Access') : gettext('Add E-mail address');
     $("#web_user_block").dialog({
         autoOpen: false,
         modal: true,
-        title: gettext('Give Web Submission Access'),
+        title: modal_header,
         zIndex: 1100,
         width: 900,
         beforeClose: function () {

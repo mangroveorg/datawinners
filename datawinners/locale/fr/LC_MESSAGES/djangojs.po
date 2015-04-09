@@ -1497,8 +1497,8 @@ msgstr "Ajouter aux Groupes"
 msgid "Remove from Groups"
 msgstr "Retirer des Groupes"
 
-msgid "Group(s) successfully deleted."
-msgstr "Groupe(s) supprimé(s) avec succès."
+msgid "Group successfully deleted."
+msgstr "Groupe supprimé(s) avec succès."
 
 msgid "All Contacts"
 msgstr "Tous les Contacts"
@@ -1526,3 +1526,9 @@ msgstr "Renommer"
 
 msgid "Import a Contacts List"
 msgstr "Importer une liste de contacts"
+
+msgid "Add E-mail address"
+msgstr "Ajouter une adresse email"
+
+msgid "Warning!"
+msgstr "Attention"
