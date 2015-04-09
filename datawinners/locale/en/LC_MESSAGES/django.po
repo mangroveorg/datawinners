@@ -2585,8 +2585,7 @@ msgstr ""
 msgid "Example: Program Director"
 msgstr ""
 
-msgid "
-"
+msgid "phone_number_example"
 msgstr "Enter the country code and telephone number. Example: 261333745269"
 
 msgid "Example: Minimum	of 6 characters in length"
