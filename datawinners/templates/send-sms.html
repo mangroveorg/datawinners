@@ -21,7 +21,7 @@
 
     <div class="tableRow">
         <div class = "tableCell">{% trans "To:" %}</div>
-        <div class = "tableCell padding_bottom_10" data-bind="visible: showToSection">
+        <div class = "tableCell" data-bind="visible: showToSection">
             <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
         </div>
     </div>
@@ -62,7 +62,7 @@
 
     <div class="tableRow" data-bind="css: {'none': hideOtherSection}" >
         <div class = "tableCell"></div>
-        <div class = "tableCell">
+        <div class = "tableCell padding_top_10">
             <textarea data-bind="value: othersList, valueUpdate: 'keypress'"></textarea>
             <div class="validationMessage" data-bind="hidden: othersList.valid">
                 <span class="validationText" data-bind="text: othersList.error"></span>
