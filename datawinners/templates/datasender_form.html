@@ -2,7 +2,10 @@
 <script type="text/javascript">
 var sender_registration_link = "{{ registration_link }}";
 </script>
-    <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet" />
+
+{% compress css %}
+    <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet"/>
+{% endcompress %}
 
   {% block messages %}
       <div id="message-label" class="message-box none">

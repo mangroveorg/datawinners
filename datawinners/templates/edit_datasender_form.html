@@ -7,8 +7,9 @@
 <script type="text/javascript">
     var sender_registration_link = "/entity/datasender/edit/{{ reporter_id }}/";
 </script>
-<link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet"/>
-
+{% compress css %}
+    <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet"/>
+{% endcompress %}
 
 <input id='post_url' type="hidden" value="{{ post_url }}"/>
 <div id="add_data_sender_form" class="">
