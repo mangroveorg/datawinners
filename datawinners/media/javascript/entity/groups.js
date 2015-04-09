@@ -51,8 +51,7 @@ DW.GroupManager = function(options){
                 'search_query': $(".dataTables_filter input").val()
         }}).done(function(response){
             enable_add_button();
-            flash_message(response.message, response.success);
-            window.scrollTo(0,0);
+            DW.flashMessage(response.message, response.success);
             $("#all_groups_block").dialog("close");
         });
 

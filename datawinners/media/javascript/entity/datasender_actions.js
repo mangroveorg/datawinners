@@ -108,10 +108,6 @@ DW.DataSenderActionHandler = function () {
     };
 };
 
-function flash_message(msg, status) {
-    DW.flashMessage(msg, status);
-}
-
 function init_add_remove_from_project() {
     var all_project_block = $("#all_project_block").dialog({
         autoOpen: false,
