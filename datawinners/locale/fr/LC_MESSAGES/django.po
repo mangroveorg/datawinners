@@ -2867,6 +2867,9 @@ msgstr "Personnalisez le fomulaire d'enregistrement de %(entity_type)s"
 msgid "Import a list of %(entity_type)s"
 msgstr "Importer une liste de %(entity_type)s"
 
+msgid "Import a List"
+msgstr "Importer une Liste"
+
 msgid "View each of your registered %(entity_type)s in detail."
 msgstr "Voir en detail chacun(e) de vos %(entity_type)s enregistré(e)s"
 
@@ -5764,3 +5767,6 @@ msgstr "Abonnez-vous maintenant"
 
 msgid "Warning!"
 msgstr "Attention"
+
+msgid "Answer for question 'Mobile Number' is required"
+msgstr "Réponse pour la question 'Numéro de téléphone' est obligatoire."
