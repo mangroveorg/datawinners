@@ -269,7 +269,6 @@ function SmsViewModel(){
       $.post(send_sms_url, {
           'sms-text': smsTextArea.val(),
           'others': self.othersList(),
-
           'recipient': self.selectedSmsOption(),
           'questionnaire-names':  JSON.stringify(self.selectedQuestionnaireNames()),
           'group-names':  JSON.stringify(self.selectedGroupNames()),
@@ -281,6 +280,7 @@ function SmsViewModel(){
           self.disableSendSms(false);
           if(response.successful){
               $("#sms-success").removeClass("none");
+              DW.trackEvent('send-sms-popup', 'send-sms-' + sms_popup_page, self.selectedSmsOption());
           }
           else {
               _showNoSMSCError(response);

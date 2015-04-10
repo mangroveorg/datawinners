@@ -110,7 +110,7 @@ def rename_group(request):
 
 
 def _get_reporter_ids_for_group_name(dbm, group_name, search_query):
-    search_parameters = {'search_filter': {'group_name': group_name, 'search_text': search_query}}
+    search_parameters = {'search_filters': {'group_name': group_name, 'search_text': search_query}}
     return get_all_datasenders_short_codes(dbm, search_parameters)
 
 
@@ -121,7 +121,7 @@ def _get_all_data_senders_short_codes(dbm, search_parameters):
 
 
 def _get_reporter_ids_for_group_name(dbm, group_name, search_query):
-    search_parameters = {'search_filter': {'group_name': group_name, 'search_text': search_query}}
+    search_parameters = {'search_filters': {'group_name': group_name, 'search_text': search_query}}
     return _get_all_data_senders_short_codes(dbm, search_parameters)
 
 

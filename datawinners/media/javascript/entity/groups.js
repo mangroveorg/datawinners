@@ -51,8 +51,11 @@ DW.GroupManager = function(options){
                 'search_query': $(".dataTables_filter input").val()
         }}).done(function(response){
             enable_add_button();
+            $("#datasender_table").dataTable().fnReloadAjax();
             DW.flashMessage(response.message, response.success);
             $("#all_groups_block").dialog("close");
+            var groupAction = action == 'add' ? 'add-contacts': 'remove-contacts';
+            DW.trackEvent('groups', groupAction);
         });
 
     });

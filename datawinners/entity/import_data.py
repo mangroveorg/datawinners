@@ -24,7 +24,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, Entity
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, EmptyRowException, \
-    MultipleReportersForANumberException
+    MultipleReportersForANumberException, MobileNumberMandatoryException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, \
     XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import get_form_model_by_entity_type
@@ -116,8 +116,11 @@ class FilePlayer(Player):
 
     def _import_data_sender(self, form_model, organization, values):
         try:
+            mobile_number = case_insensitive_lookup(values, "m")
+
+            if not mobile_number:
+                raise MobileNumberMandatoryException()
             if organization.in_trial_mode:
-                mobile_number = case_insensitive_lookup(values, "m")
                 data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
                                                                      organization=organization)
                 data_sender.save(force_insert=True)

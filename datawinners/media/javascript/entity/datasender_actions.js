@@ -373,9 +373,6 @@ function init_dialog_box_for_group(){
         dialogClass: 'all_groups_dialog',
         beforeClose: function () {
             $('#action').removeAttr("data-selected-action");
-        },
-        close:function(){
-            $("#datasender_table").dataTable().fnReloadAjax();
         }
     });
     // Since the dialog is initialized on click of the menu item, we are hiding the dialog body.
@@ -467,7 +464,7 @@ $(document).ready(function(){
    );
     
    $("#change_ds_setting #cancel_ds_setting").on("click", function() {
-       DW.trackEvent('datsender-group', 'cancel-datasender-group-dialog');
+       DW.trackEvent('datasender-group', 'cancel-datasender-group-dialog');
        $("#change_ds_setting").dialog("close");
        DW.vm.is_open_survey(initial_is_open_survey);
        return false;
