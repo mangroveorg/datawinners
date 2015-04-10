@@ -163,9 +163,9 @@ class TestHelper(unittest.TestCase):
         sms_content = "test message"
         with patch.object(SMSClient, "send_sms") as mock_send_sms:
             broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker, "261")
-            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "2613312345678", sms_content, MSG_TYPE_USER_MSG)
+            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "2613312345678", sms_content, MSG_TYPE_USER_MSG, message_tracker)
             broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker)
-            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "03312345678", sms_content, MSG_TYPE_USER_MSG)
+            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "03312345678", sms_content, MSG_TYPE_USER_MSG, message_tracker)
 
 
 class TestPreviewCreator(unittest.TestCase):

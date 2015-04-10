@@ -256,10 +256,9 @@ def broadcast_message(data_sender_phone_numbers, message, organization_tel_numbe
             number_with_country_prefix = "%s%s" % (country_code, re.sub(r"^[ 0]+", "", number))
 
         logger.info(("Sending broadcast message to %s from %s") % (number_with_country_prefix, organization_tel_number))
-        sms_sent = sms_client.send_sms(organization_tel_number, number_with_country_prefix, message, MSG_TYPE_USER_MSG)
-        if sms_sent:
-            message_tracker.increment_message_count_for(send_message_count=1)
-        else:
+        sms_sent = sms_client.send_sms(organization_tel_number, number_with_country_prefix, message, MSG_TYPE_USER_MSG,
+                                       message_tracker)
+        if not sms_sent:
             failed_numbers.append(number)
 
     return failed_numbers

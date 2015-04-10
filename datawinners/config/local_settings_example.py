@@ -58,4 +58,5 @@ DEBUG_BROWSER="firefox" # firefox | chrome | phantom | ie | htmlunit
 GRAPHITE_MONITORING_ENABLED = False
 ENVIRONMENT = 'dev'
 CARBON_HOST = '127.0.0.1'
+SMSC_WITHOUT_STATUS_REPORT = ["telma"]
 CARBON_PORT = 2003
