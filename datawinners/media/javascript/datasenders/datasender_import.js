@@ -87,15 +87,15 @@ $(document).ready(function () {
             else {
                 refresh_success_table(responseJSON);
                 if (responseJSON.success == true) {
-                    $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#template-download-section'));
+                    $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
                 }
                 else {
 
                     if (responseJSON.error_message) {
-                        $('<div id="message" class="error_message message-box clear-left">' + responseJSON.error_message + '</div>').insertAfter($('#template-download-section'));
+                        $('<div id="message" class="error_message message-box clear-left">' + responseJSON.error_message + '</div>').insertAfter($('#file-uploader'));
                     }
                     else {
-                        $('<div id="message" class="error_message message-box clear-left">' + responseJSON.message + '</div>').insertAfter($('#template-download-section'));
+                        $('<div id="message" class="error_message message-box clear-left">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
                     }
                     refresh_error_table(responseJSON);
                 }
