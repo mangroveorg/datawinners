@@ -373,9 +373,6 @@ function init_dialog_box_for_group(){
         dialogClass: 'all_groups_dialog',
         beforeClose: function () {
             $('#action').removeAttr("data-selected-action");
-        },
-        close:function(){
-            $("#datasender_table").dataTable().fnReloadAjax();
         }
     });
     // Since the dialog is initialized on click of the menu item, we are hiding the dialog body.
