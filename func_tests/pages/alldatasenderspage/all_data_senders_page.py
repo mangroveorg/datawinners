@@ -206,7 +206,7 @@ class AllDataSendersPage(Page):
         return class_name.find('disabled') > 0
 
     def is_make_web_user_disabled(self):
-        class_name = self.driver.find(by_xpath(ACTION_LI_LOCATOR % WEB_ACCESS)).get_attribute("class")
+        class_name = self.driver.find(by_id("add-email")).get_attribute("class")
         return class_name.find('disabled') > 0
 
     def is_checkall_checked(self):
