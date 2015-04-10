@@ -90,6 +90,7 @@ function ContactsGroupViewModel() {
                     self.changeSelectedGroup(group);
                     self.show_success_message(gettext("Your changes have been saved."));
                     $("#group-rename-confirmation-section").dialog('close');
+                    DW.trackEvent('groups', 'rename');
                 }
                 else{
                     $("#new_group_mandatory_error").find(".validationText").text(response.message);
@@ -128,6 +129,7 @@ function ContactsGroupViewModel() {
                 self.newGroupValid(true);
                 self.show_success_message(response.message);
                 self.close_popup();
+                DW.trackEvent('groups', 'new-group-created');
             }
             else {
                 self.newGroupValid(false);

@@ -464,7 +464,7 @@ $(document).ready(function(){
    );
     
    $("#change_ds_setting #cancel_ds_setting").on("click", function() {
-       DW.trackEvent('datsender-group', 'cancel-datasender-group-dialog');
+       DW.trackEvent('datasender-group', 'cancel-datasender-group-dialog');
        $("#change_ds_setting").dialog("close");
        DW.vm.is_open_survey(initial_is_open_survey);
        return false;

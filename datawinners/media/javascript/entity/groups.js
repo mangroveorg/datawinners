@@ -54,6 +54,8 @@ DW.GroupManager = function(options){
             $("#datasender_table").dataTable().fnReloadAjax();
             DW.flashMessage(response.message, response.success);
             $("#all_groups_block").dialog("close");
+            var groupAction = action == 'add' ? 'add-contacts': 'remove-contacts';
+            DW.trackEvent('groups', groupAction);
         });
 
     });
