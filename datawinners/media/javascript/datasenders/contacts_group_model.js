@@ -27,9 +27,7 @@ function ContactsGroupViewModel() {
     var self = this;
     self.groups = ko.observableArray();
     self.groupButtonText = ko.observable(gettext("Add"));
-    self.newGroupName = ko.observable('');
-    self.newGroupError = ko.observable('');
-    self.newGroupValid = ko.observable(true);
+    self.newGroupName = DW.ko.createValidatableObservable({value: ""});
     self.selectedGroup = ko.observable();
     self.isOpen = ko.observable(false);
     self.disable_button = ko.observable(false);
@@ -115,6 +113,15 @@ function ContactsGroupViewModel() {
 
 
     self.addNewGroup = function () {
+
+        if(self.newGroupName().trim() == ""){
+            self.newGroupName.setError(gettext("This field is required."));
+            return;
+        }
+        else{
+            self.newGroupName.clearError();
+        }
+
         var newGroup = new DW.group({'name': self.newGroupName().trim()});
         DW.loading();
         self.disable_add_button();
@@ -132,8 +139,7 @@ function ContactsGroupViewModel() {
                 DW.trackEvent('groups', 'new-group-created');
             }
             else {
-                self.newGroupValid(false);
-                self.newGroupError(response.message)
+                self.newGroupName.setError(response.message);
             }
         });
     };
@@ -170,8 +176,7 @@ function ContactsGroupViewModel() {
 
     self.close_popup = function () {
         self.newGroupName('');
-        self.newGroupValid(true);
-        self.newGroupError('');
+        self.newGroupName.clearError();
         self.isOpen(false);
     };
     self.show_success_message = function (message) {

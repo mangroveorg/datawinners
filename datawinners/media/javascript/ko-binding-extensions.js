@@ -196,6 +196,7 @@ ko.bindingHandlers.dialog = {
                 };
                 options.title = gettext(options.title);
                 options.modal = true;
+                options.closeOnEscape = false;
                 $(element).dialog(options);
             }, 0);
 
