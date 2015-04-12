@@ -15,11 +15,19 @@
 
     dw.allContactTableMenu.disableMenuItemWhenSelectedContactsHaveNoGroup = function(){
 
-        var selectedContacts = $("#datasender_table").find("input.row_checkbox:checked");
+        var $datasenderTable = $("#datasender_table");
+        var selectedContacts = $datasenderTable.find("input.row_checkbox:checked");
+        var isContactsAcrossPagesSelected = $datasenderTable.find(".select_all_message").data('all_selected');
+        var removeGroupMenuItem = $($('#remove-from-group').parent());
+
+        if(isContactsAcrossPagesSelected){
+            removeGroupMenuItem.removeClass('disabled');
+            return;
+        }
+
         var contactRowWithGroup = _.find(selectedContacts, function(item){
                 return $($(item).closest("tr").children()[9]).text() != "";
         });
-        var removeGroupMenuItem = $($('#remove-from-group').parent());
 
         if(contactRowWithGroup){
             removeGroupMenuItem.removeClass('disabled');
@@ -30,11 +38,20 @@
     };
 
     dw.allContactTableMenu.disableMenuItemWhenSelectedContactHaveNoQuestionnaire = function(){
-        var selectedContacts = $("#datasender_table").find("input.row_checkbox:checked");
+        var $datasenderTable = $("#datasender_table");
+        var selectedContacts = $datasenderTable.find("input.row_checkbox:checked");
+        var isContactsAcrossPagesSelected = $datasenderTable.find(".select_all_message").data('all_selected');
+        var removeQuestionnaireMenuItem = $($('#remove-from-questionnaire').parent());
+
+
+        if(isContactsAcrossPagesSelected){
+            removeQuestionnaireMenuItem.removeClass('disabled');
+            return;
+        }
+
         var contactRowWithQuestionnaire = _.find(selectedContacts, function(item){
                 return $($(item).closest("tr").children()[7]).text() != "";
         });
-        var removeQuestionnaireMenuItem = $($('#remove-from-questionnaire').parent());
 
         if(contactRowWithQuestionnaire){
             removeQuestionnaireMenuItem.removeClass('disabled');
