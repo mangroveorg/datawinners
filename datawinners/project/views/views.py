@@ -20,6 +20,7 @@ from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.send_message import get_data_sender_phone_numbers
+from datawinners.search.all_datasender_search import get_all_data_senders_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_index import update_submission_search_for_subject_edition, \
     get_unregistered_datasenders
@@ -299,7 +300,7 @@ def broadcast_message(request, project_id):
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     number_associated_ds = len(questionnaire.data_senders)
-    number_of_ds = len(import_module.load_all_entities_of_type(dbm, type=REPORTER)[0]) - 1
+    number_of_ds = get_all_data_senders_count(dbm)
     organization = utils.get_organization(request)
     unregistered_ds = get_unregistered_datasenders(dbm, questionnaire.id)
     unregistered_with_linked = len(unregistered_ds) + number_associated_ds
@@ -324,13 +325,11 @@ def broadcast_message(request, project_id):
                           unregistered_ds=unregistered_with_linked, data=request.POST)
         if form.is_valid():
             no_smsc = False
-            # data_senders = _get_data_senders(dbm, for m, questionnaire)
             data_sender_phone_numbers = get_data_sender_phone_numbers(dbm, questionnaire, form)
             organization_setting = OrganizationSetting.objects.get(organization=organization)
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
-            # other_numbers.extend(unregistered_ds)
             failed_numbers = []
             try:
                 failed_numbers = helper.broadcast_message(data_sender_phone_numbers, form.cleaned_data['text'],

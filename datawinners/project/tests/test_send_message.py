@@ -9,8 +9,8 @@ class TestSendMessage(unittest.TestCase):
         dbm = MagicMock()
         form = MagicMock()
         form.cleaned_data = {'to': 'All'}
-        with patch('datawinners.project.send_message.load_all_entities_of_type') as load_all_entities_mock:
-            load_all_entities_mock.return_value = [{'cols': ['100']}, {'cols': ['200']}], ['mobile_number'], None
+        with patch('datawinners.project.send_message.get_all_data_sender_mobile_numbers') as get_all_data_sender_mobile_numbers_mock:
+            get_all_data_sender_mobile_numbers_mock.return_value = ['100', '200']
 
             all_data_sender_numbers = get_data_sender_phone_numbers(dbm, None, form)
 

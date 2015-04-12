@@ -1,19 +1,18 @@
 import json
 import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import View
-from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search
+
 from datawinners import utils
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import broadcast_message
 from datawinners.scheduler.smsclient import NoSMSCException
-from datawinners.search.all_datasender_search import get_data_sender_count, get_data_sender_search_results, \
-    get_all_datasenders_search_results
+from datawinners.search.all_datasender_search import get_all_datasenders_search_results
 
 
 class SendSMS(View):

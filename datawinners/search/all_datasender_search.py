@@ -7,6 +7,7 @@ from mangrove.form_model.project import get_entity_type_fields
 
 REPORTER_DOC_TYPE = 'reporter'
 
+
 def _add_pagination_criteria(search_parameters, search):
     start_result_number = search_parameters.get("start_result_number")
     number_of_results = search_parameters.get("number_of_results")
@@ -76,6 +77,10 @@ def _add_non_deleted_ds_filter(search):
     return search
 
 
+def _add_non_contact_filter(search):
+    return search.filter(~F('term', groups_exact='contact'))
+
+
 def _add_search_filters(search_filter_param, query_fields, search):
     search = _restrict_test_ds_filter(search)
     search = _add_non_deleted_ds_filter(search)
@@ -104,7 +109,8 @@ def get_data_sender_without_search_filters_count(dbm, search_parameters):
     search = _add_project_filter(search, search_filter_param)
     search = _add_non_deleted_ds_filter(search)
     body = search.to_dict()
-    return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits']['total']
+    return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits'][
+        'total']
 
 
 def get_data_sender_count(dbm, search_parameters):
@@ -112,7 +118,8 @@ def get_data_sender_count(dbm, search_parameters):
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
     query_fields, search = _add_filters(dbm, search_parameters, search)
     body = search.to_dict()
-    return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits']['total']
+    return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits'][
+        'total']
 
 
 def get_data_sender_search_results(dbm, search_parameters):
@@ -134,7 +141,36 @@ def get_all_datasenders_search_results(dbm, search_parameters):
     return search_results
 
 
-def get_all_datasenders_short_codes(dbm,search_parameters):
+def get_all_datasenders_short_codes(dbm, search_parameters):
     search_parameters['response_fields'] = ['short_code']
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
     return [item['short_code'] for item in search_results.hits]
+
+
+def get_all_data_senders_count(dbm):
+    es = Elasticsearch()
+    search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
+    search = _add_non_contact_filter(search)
+    search = _add_non_deleted_ds_filter(search)
+    search = _restrict_test_ds_filter(search)
+    body = search.to_dict()
+    return es.search(index=dbm.database_name, doc_type=REPORTER_DOC_TYPE, body=body, search_type='count')['hits'][
+        'total']
+
+
+def get_all_data_sender_mobile_numbers(dbm):
+    all_data_senders_count = get_all_data_senders_count(dbm)
+    search_parameters = {
+        "response_fields": ['mobile_number'],
+        "number_of_results": all_data_senders_count,
+        "start_result_number": 0
+    }
+    es = Elasticsearch()
+    search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
+    search = _add_non_contact_filter(search)
+    search = _add_non_deleted_ds_filter(search)
+    search = _restrict_test_ds_filter(search)
+    search = _add_pagination_criteria(search_parameters, search)
+    search = _add_response_fields(search_parameters, search)
+    search_results = search.execute()
+    return [item['mobile_number'] for item in search_results.hits]
