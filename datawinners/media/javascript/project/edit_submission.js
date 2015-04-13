@@ -87,6 +87,10 @@ $(document).ready(function(){
     change_ds_dropdown.on('change', function(){
        DW.trackEvent('edit-submission', 'choose-datasender-from-list');
     });
+
+    $("#submit-other").on('click', function(){
+        DW.trackEvent('submission', 'edit');
+    });
     
 
 });
