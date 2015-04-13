@@ -36,5 +36,5 @@ def create_new_group(dbm, group_name):
     if is_unique and not is_empty_string(group_name):
         new_group = Group(dbm, group_name)
         new_group.save()
-        return True, _("Group %s has been added successfully.") % group_name
+        return True, _("Group %s successfully added.") % group_name
     return False, _("Group with same name already exists.")

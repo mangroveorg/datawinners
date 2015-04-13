@@ -5738,11 +5738,11 @@ msgstr "Groupes"
 msgid "Group with same name already exists."
 msgstr "Un Groupe du même nom existe déjà."
 
-msgid "Group %s has been added successfully."
+msgid "Group %s successfully added."
 msgstr "Le Groupe %s a été ajouté avec succès."
 
-msgid "The Contact(s) are added to Group(s) successfully."
-msgstr "Le(s) Contact(s) ont été ajouté(s) au(x) Groupe(s) avec succès."
+msgid "Contact(s) successfully added to Group(s)."
+msgstr "Contact(s) ajouté(s) au(x) Groupe(s) avec succès."
 
 msgid "The Contact(s) are removed from Group(s) successfully."
 msgstr "Le(s) Contact(s) ont été retiré(s) de(s) Groupe(s) avec succès."
@@ -5770,3 +5770,16 @@ msgstr "Attention"
 
 msgid "Answer for question 'Mobile Number' is required"
 msgstr "Réponse pour la question 'Numéro de téléphone' est obligatoire."
+
+msgid "Communicate"
+msgstr "Communiquer"
+
+msgid "Collect Data"
+msgstr "Collecter des Données"
+
+msgid "Get Started"
+msgstr "Commencer"
+
+msgid "Create a Questionnaire"
+msgstr "Créer un Questionnaire"
+

@@ -24,7 +24,7 @@ class TestAllContacts(HeadlessRunnerTest):
         self.add_group_page.enter_group_name(group_name)
         self.add_group_page.click_on_add_group_button()
         self.assertEquals(self.all_contacts_page.get_success_message(),
-                          "Group %s has been added successfully." % group_name)
+                          "Group %s successfully added." % group_name)
         return group_name
 
     def _verify_adding_contact_to_a_group(self, group_name):
@@ -34,7 +34,7 @@ class TestAllContacts(HeadlessRunnerTest):
         self.add_group_page.add_or_remove_contact_to_group(group_name)
         self.add_group_page.click_on_contact_to_group_button()
         self.assertEquals(self.all_contacts_page.get_flash_message(),
-                          "The Contact(s) are added to Group(s) successfully.")
+                          "Contact(s) successfully added to Group(s).")
         self.add_group_page.wait_for_table_to_load()
         self.assertEquals(self.all_contacts_page.get_cell_value(1, 10), group_name)
 
@@ -62,7 +62,7 @@ class TestAllContacts(HeadlessRunnerTest):
     def verify_deleting_a_group(self, new_group_name):
         self.all_contacts_page.click_delete_group_icon(new_group_name)
         self.add_group_page.click_on_confirm_delete_group()
-        self.assertEquals(self.all_contacts_page.get_success_message(), "Group successfully deleted.")
+        self.assertEquals(self.all_contacts_page.get_success_message(), "Group %s successfully deleted.", new_group_name)
 
     def _creating_a_contact(self):
         self.add_contact_page = self.all_contacts_page.navigate_to_add_a_data_sender_page()

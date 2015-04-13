@@ -53,23 +53,23 @@
         </div>
     {% endif %}
 
-    <h4 >Get Started</h4>
+    <h4>{% trans "Get Started" %}</h4>
     <div class="help_section table">
         <div class="help_section tableRow">
 
             <div class="tableCell sub_section" id="chat_section">
                 <img  class='dashboard_icon'  src="/media/images/chat-icon.png"/><br/>
-                <p class="explanation ">Communicate </p>
+                <p class="explanation ">{% trans "Communicate" %}</p>
                 {% if  is_pro_sms %}
-                    <a id="send_sms" class="margin_bottom_10">Send an SMS</a>
+                    <a id="send_sms" class="margin_bottom_10">{% trans "Send an SMS" %}</a>
                 {% else %}
-                    <a id="show_upgrade_message" class="margin_bottom_10">Send an SMS</a>
+                    <a id="show_upgrade_message" class="margin_bottom_10">{% trans "Send an SMS" %}</a>
                 {% endif %}
             </div>
             <div class="tableCell sub_section" id="questionnaire_section">
                 <img  class='dashboard_icon'  src="/media/images/collect_data.png"/><br/>
-                <p class="explanation">Collect Data</p>
-                <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">Create a Questionnaire</a>
+                <p class="explanation">{% trans "Collect Data" %}</p>
+                <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create a Questionnaire" %}</a>
             </div>
             <div class="tableCell sub_section"></div>
             <div class="tableCell sub_section"></div>

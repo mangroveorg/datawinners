@@ -60,7 +60,7 @@ def add_or_remove_contact_from_groups(request):
             search_query = request.POST['search_query']
             contact_ids = _get_reporter_ids_for_group_name(dbm, current_group_name, search_query)
             _update_group_for_contacts(contact_ids, dbm, group_names, action)
-        message = 'The Contact(s) are added to Group(s) successfully.' if action == 'add' else 'The Contact(s) are removed from Group(s) successfully.'
+        message = 'Contact(s) successfully added to Group(s).' if action == 'add' else 'The Contact(s) are removed from Group(s) successfully.'
     except Exception as e:
         # log exception
         message = ugettext('Failed to add in to group.')
