@@ -20,7 +20,7 @@
         var isContactsAcrossPagesSelected = $datasenderTable.find(".select_all_message").data('all_selected');
         var removeGroupMenuItem = $($('#remove-from-group').parent());
 
-        if(isContactsAcrossPagesSelected){
+        if(isContactsAcrossPagesSelected && groupViewModel.isCustomGroupsPresent()){
             removeGroupMenuItem.removeClass('disabled');
             return;
         }

@@ -48,7 +48,7 @@
     <script type="text/javascript" src="../../../media/javascript/data_tables/js/dwtable.js"></script>
     <script type="text/javascript" src="../../../media/javascript/data_modified_warning.js"></script>
     <script type="text/javascript" src="../../../media/javascript/datasender_modified_warning.js"></script>
-    <script type="text/javascript" src="../specs/datasender_actions_spec.js"></script>
+    <!--<script type="text/javascript" src="../specs/datasender_actions_spec.js"></script> -->
     <script type="text/javascript" src="../specs/contact_table_menu_handlers_spec.js"></script>
 </head>
 
@@ -70,7 +70,10 @@
         </ul>
     </div>
     <table id="datasender_table">
-        <th><td></td><td></td><td></td><td></td><td></td></th>
+        <th class=""><td></td><td></td><td></td><td></td><td></td></th>
+        <tr>
+            <td id="all_selected_element" class="select_all_message"></td>
+        </tr>
         <tr>
             <td>
                 <input type="checkbox" value="id1">

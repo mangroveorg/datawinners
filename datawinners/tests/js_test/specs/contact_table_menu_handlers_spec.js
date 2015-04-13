@@ -8,6 +8,7 @@ describe('contact table menu items', function () {
         $removeFromGroupParent = $('#remove-from-group-parent');
         $addToGroupParent = $('#add-to-group-parent');
         $removeFromQuestionnaireParent = $('#remove-from-questionnaire-parent');
+        $('input:checkbox').removeAttr('checked');
     });
 
     describe("remove from group", function() {
@@ -49,6 +50,29 @@ describe('contact table menu items', function () {
 
         });
 
+        it("should enable menu item when select all all selected and custom group present", function (){
+            $removeFromGroupParent.addClass('disabled');
+            $("#all_selected_element").data('all_selected', true);
+            spyOn(groupViewModel, "isCustomGroupsPresent").andReturn(true);
+
+            DW.allContactTableMenu.disableMenuItemWhenSelectedContactsHaveNoGroup();
+
+            expect($removeFromGroupParent).not.toHaveClass('disabled');
+
+        });
+
+        it("should disable menu item when select all all selected and no custom groups present", function (){
+            $removeFromGroupParent.removeClass('disabled');
+            $("#all_selected_element").data('all_selected', true);
+            spyOn(groupViewModel, "isCustomGroupsPresent").andReturn(false);
+
+            DW.allContactTableMenu.disableMenuItemWhenSelectedContactsHaveNoGroup();
+
+            expect($removeFromGroupParent).toHaveClass('disabled');
+
+        });
+
+
     });
 
     describe("add to group", function() {
@@ -84,6 +108,7 @@ describe('contact table menu items', function () {
 
         it('should be disabled when no contacts are not linked to questionnaires', function(){
             $removeFromQuestionnaireParent.removeClass('disabled');
+            $("#all_selected_element").data('all_selected', false);
             $("#id5").click();
 
             DW.allContactTableMenu.disableMenuItemWhenSelectedContactHaveNoQuestionnaire();
@@ -93,7 +118,8 @@ describe('contact table menu items', function () {
         });
 
         it('should not be disabled when contacts are linked to questionnaires', function(){
-            $removeFromQuestionnaireParent.removeClass('disabled');
+            $removeFromQuestionnaireParent.addClass('disabled');
+
             $("#id6").click();
 
             DW.allContactTableMenu.disableMenuItemWhenSelectedContactHaveNoQuestionnaire();
