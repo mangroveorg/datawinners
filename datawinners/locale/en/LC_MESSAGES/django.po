@@ -3956,7 +3956,7 @@ msgstr ""
 msgid "Deleted User(s)"
 msgstr ""
 
-msgid "Note, the following Contacts will not be deleted as they are DataWinners users:"
+msgid "Note, the following Contacts will not be deleted as they are DataWinners administrators:"
 msgstr ""
 
 msgid "You cannot delete the following Data Senders as they are DataWinners users:"
