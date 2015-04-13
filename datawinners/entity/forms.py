@@ -46,31 +46,35 @@ class SubjectForm(Form):
 def smartphone_icon():
     return ' + <img src="/media/images/smart_phone.png" /><span>Smartphone</span>'
 
+
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
     name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=80,
-        error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
-        label=_("Name"), required=False)
-    telephone_number = PhoneNumberField(required=True, label=_("Mobile Number*"))
+                      error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
+                      label=_("Name"), required=False)
+    telephone_number = PhoneNumberField(required=True, label=_("Mobile Number*"),
+                                        error_message=_("Please enter a valid phone number."))
     geo_code = CharField(max_length=30, required=False, label=_("GPS Coordinates"))
 
     location = CharField(max_length=500, required=False, label=_("Name"))
     project_id = CharField(required=False, widget=HiddenInput())
 
-    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span>' + smartphone_icon())))
+    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), (
+        'web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span>' + smartphone_icon())))
     devices = MultipleChoiceField(label=_('Device'), widget=CheckboxSelectMultiple(), choices=DEVICE_CHOICES,
-        initial=['sms'], required=False,)
+                                  initial=['sms'], required=False, )
     email = EmailField(required=False, widget=TextInput(attrs=dict({'class': 'required'},
-        maxlength=75)),
-        label=_("E-Mail"),
-        error_messages={
-            'invalid': _('Enter a valid email address. Example:name@organization.com')})
+                                                                   maxlength=75)),
+                       label=_("E-Mail"),
+                       error_messages={
+                           'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
-    short_code = CharField(required=False, max_length=12, label=_("ID"), widget=TextInput(attrs=dict({'class': 'subject_field'})))
+    short_code = CharField(required=False, max_length=12, label=_("ID"),
+                           widget=TextInput(attrs=dict({'class': 'subject_field'})))
     generated_id = BooleanField(required=False, initial=True)
 
-#    Needed for telephone number validation
+    # Needed for telephone number validation
     org_id = None
 
     def __init__(self, org_id=None, *args, **kwargs):
@@ -124,7 +128,6 @@ class ReporterRegistrationForm(Form):
         else:
             self.cleaned_data['is_data_sender'] = 'True'
 
-
         return self.cleaned_data
 
     def clean_short_code(self):
@@ -167,7 +170,8 @@ class ReporterRegistrationForm(Form):
             return email
 
         if datasender_count_with(email) > 0:
-            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
+            raise forms.ValidationError(
+                _("This email address is already in use. Please supply a different email address."))
         return self.cleaned_data['email']
 
     def convert_email_to_lowercase(self):
@@ -179,14 +183,13 @@ class ReporterRegistrationForm(Form):
         return self.cleaned_data.get('email')
 
     def update_errors(self, validation_errors):
-        mapper = {MOBILE_NUMBER_FIELD_CODE:'telephone_number',
-                  GEO_CODE:GEO_CODE_FIELD_NAME}
+        mapper = {MOBILE_NUMBER_FIELD_CODE: 'telephone_number',
+                  GEO_CODE: GEO_CODE_FIELD_NAME}
         for field_code, error in validation_errors.iteritems():
             self._errors[mapper.get(field_code)] = self.error_class([error])
 
 
 class EditReporterRegistrationForm(ReporterRegistrationForm):
-
     def __init__(self, org_id=None, existing_email=None, *args, **kwargs):
         super(EditReporterRegistrationForm, self).__init__(org_id, *args, **kwargs)
         self.existing_email = existing_email
@@ -202,6 +205,7 @@ class EditReporterRegistrationForm(ReporterRegistrationForm):
             return super(EditReporterRegistrationForm, self).clean_email()
 
         return self.existing_email
+
 
 class SubjectUploadForm(Form):
     error_css_class = 'error'
