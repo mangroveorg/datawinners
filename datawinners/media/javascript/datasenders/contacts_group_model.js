@@ -221,6 +221,8 @@ function ContactsGroupViewModel() {
 
     self.open = function () {
         self.isOpen(true);
+        self.newGroupName('');
+        self.newGroupName.clearError();
     };
 
 }
