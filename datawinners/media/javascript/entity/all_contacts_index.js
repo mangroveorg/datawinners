@@ -41,9 +41,9 @@
             "sAjaxDataIdColIndex" : col("short_code"),
             "bServerSide": true,
             "onMenuLoad":function(){
-                DW.allContactTableMenu.disableGroupMenuItemsWhenNoGroupsPresent();
                 DW.allContactTableMenu.disableMenuItemWhenSelectedContactsHaveNoGroup();
                 DW.allContactTableMenu.disableMenuItemWhenSelectedContactHaveNoQuestionnaire();
+                DW.allContactTableMenu.disableGroupMenuItemsWhenNoGroupsPresent();
             },
             "iDeferLoading": 0,
             "oLanguage": {

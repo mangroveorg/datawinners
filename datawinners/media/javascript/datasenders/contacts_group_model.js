@@ -133,7 +133,6 @@ function ContactsGroupViewModel() {
             var response = $.parseJSON(responseString);
             if (response.success) {
                 self.groups.push(newGroup);
-                self.newGroupValid(true);
                 self.show_success_message(response.message);
                 self.close_popup();
                 DW.trackEvent('groups', 'new-group-created');
