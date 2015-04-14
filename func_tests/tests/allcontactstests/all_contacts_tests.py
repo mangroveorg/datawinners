@@ -23,7 +23,7 @@ class TestAllContacts(HeadlessRunnerTest):
         self.add_group_page.enter_group_name(group_name)
         self.add_group_page.click_on_add_group_button()
         self.assertEquals(self.all_contacts_page.get_success_message(),
-                          "Group %s has been added successfully." % group_name)
+                          "Group %s successfully added." % group_name)
         return group_name
 
     def _verify_adding_contact_to_a_group(self, group_name):
@@ -33,7 +33,7 @@ class TestAllContacts(HeadlessRunnerTest):
         self.add_group_page.add_or_remove_contact_to_group(group_name)
         self.add_group_page.click_on_contact_to_group_button()
         self.assertEquals(self.all_contacts_page.get_flash_message(),
-                          "The Contact(s) are added to Group(s) successfully.")
+                          "Contact(s) successfully added to Group(s).")
         self.add_group_page.wait_for_table_to_load()
         self.assertEquals(self.all_contacts_page.get_cell_value(1, 10), group_name)
 
