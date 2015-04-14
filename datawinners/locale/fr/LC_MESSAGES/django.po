@@ -5710,6 +5710,9 @@ msgstr "Créer de nouveaux Types de Numéro d’Identification en utilisant XLSF
 msgid "You have not registered a %s yet. Making submission via Smartphone will not be possible. Register a <a href='/entity/subject/create/%s/?web_view=True'>%s</a>"
 msgstr "Vous n’avez pas encore enregistré un %s. Collecter des données à partir de Smartphone ne sera pas possible. Enregistrez un <a href='/entity/subject/create/%s/?web_view=True'>%s</a>"
 
+msgid "Making submission via Smartphone will not be possible."
+msgstr "Collecter des données à partir de Smartphone ne sera pas possible."
+
 msgid "The Identification Number Type (dw_idnr) is missing in the Constraints column. "
                          "Please add the Identification Number Type and upload again. "
                          "<a target='_blank'>Learn More</a> about how to manage Identification Numbers with XLSForms. "
