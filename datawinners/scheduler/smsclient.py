@@ -26,12 +26,12 @@ class SMSClient(object):
 
     def send_sms(self,from_tel, to_tel, message, message_type="Unknown", message_tracker=None):
         message = strip_accents(message)
+        result = False
         if is_not_empty(from_tel):
             organization_setting = OrganizationFinder().find_organization_setting(from_tel)
             is_there_orgnization_with_to_number = OrganizationFinder().find_organization_setting(to_tel) != None
             if (is_there_orgnization_with_to_number): return False
             smsc = None
-            result = False
             if organization_setting is not None and organization_setting.outgoing_number is not None:
                 smsc = organization_setting.outgoing_number.smsc
             if smsc is None:
