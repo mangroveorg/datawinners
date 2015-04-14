@@ -47,6 +47,7 @@ class AllDataSendersView(TemplateView):
     template_name = 'entity/all_datasenders.html'
 
     def get(self, request, *args, **kwargs):
+        user_group = request.groups.all()[0].name
         manager = get_database_manager(request.user)
         project_name_id_map = get_project_id_name_map(manager)
         organization = utils.get_organization(request)
@@ -61,7 +62,8 @@ class AllDataSendersView(TemplateView):
             'current_language': translation.get_language(),
             'in_trial_mode': in_trial_mode,
             'is_pro_sms': is_pro_sms,
-            'groups': repr(json.dumps(groups, default=field_to_json))
+            'groups': repr(json.dumps(groups, default=field_to_json)),
+            'user_group': user_group
         }))
 
     def get_imported_data_senders(self, successful_imports):

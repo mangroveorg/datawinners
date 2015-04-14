@@ -97,6 +97,8 @@ def _fetch_amount(organization):
 def dashboard(request):
     manager = get_database_manager(request.user)
     user_profile = NGOUserProfile.objects.get(user=request.user)
+    user_group = request.user.groups.all()[0].name
+
     organization = Organization.objects.get(org_id=user_profile.org_id)
     questionnaire_list = []
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=8)
@@ -124,6 +126,7 @@ def dashboard(request):
         'first_time_activation': False,
         'account_cost': 0,
         'account_type': organization.account_type,
+        'user_group': user_group
     }
 
     if request.session.get('activation_successful'):

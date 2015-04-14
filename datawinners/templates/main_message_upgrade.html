@@ -7,10 +7,12 @@
             {% trans "This feature is not available to Pro Account users. Sign up for a Pro SMS subscription to send SMS messages from your DataWinners account."%}
         {% endif %}
         <div class="margin_10">
-            {% if in_trial_mode %}
-                <a class="button float_right" target="blank" href="{% url default_upgrade %}prosms">{% trans "Subscribe Now" %}</a>
-            {% else %}
-                <a class="button float_right" target="blank" href="{% url default_upgrade %}prosms">{% trans "Upgrade Now" %}</a>
+            {% if user_group == 'NGO Admins' %}
+                {% if in_trial_mode %}
+                    <a class="button float_right" target="blank" href="{% url default_upgrade %}prosms">{% trans "Subscribe Now" %}</a>
+                {% else %}
+                    <a class="button float_right" target="blank" href="{% url default_upgrade %}prosms">{% trans "Upgrade Now" %}</a>
+                {% endif %}
             {% endif %}
             <a class="float_right padding_top_10 padding_right_10" href="https://www.datawinners.com/{{ active_language }}/pricing/" target="blank">{% trans "Learn More" %}</a>
         </div>
