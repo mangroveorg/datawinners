@@ -1532,3 +1532,6 @@ msgstr "Ajouter une adresse email"
 
 msgid "Warning!"
 msgstr "Attention"
+
+msgid "Add a Group"
+msgstr "Ajouter un Groupe"

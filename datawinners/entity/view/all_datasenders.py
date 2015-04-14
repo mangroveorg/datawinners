@@ -47,7 +47,7 @@ class AllDataSendersView(TemplateView):
     template_name = 'entity/all_datasenders.html'
 
     def get(self, request, *args, **kwargs):
-        user_group = request.groups.all()[0].name
+        user_group = request.user.groups.all()[0].name
         manager = get_database_manager(request.user)
         project_name_id_map = get_project_id_name_map(manager)
         organization = utils.get_organization(request)
