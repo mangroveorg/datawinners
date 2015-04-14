@@ -10,7 +10,7 @@ from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.couch_view_helper import get_all_form_models
 from datawinners.submission.location import LocationBridge
-from mangrove.errors.MangroveException import FormModelDoesNotExistsException
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException, DataObjectAlreadyExists
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -43,7 +43,7 @@ def restrict_request_country(f):
         # org = Organization.objects.get(org_id=user.get_profile().org_id)
         # try:
         # remote_address = request.META.get('REMOTE_ADDR')
-        #     if is_not_local_address(remote_address):
+        # if is_not_local_address(remote_address):
         #         country_code = GeoIP().country_code(remote_address)
         #         log_message = 'User: %s, IP: %s resolved in %s, for Oragnization id: %s located in country: %s ' %\
         #               (user, request.META.get('REMOTE_ADDR'), country_code, org.org_id, org.country)
@@ -144,7 +144,8 @@ def submission(request):
             location_tree = LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy)
             response = player.add_subject(form_model, values, location_tree)
         else:
-            response = player.add_survey_response(mangrove_request, user_profile.reporter_id, logger=sp_submission_logger)
+            response = player.add_survey_response(mangrove_request, user_profile.reporter_id,
+                                                  logger=sp_submission_logger)
 
         mail_feed_errors(response, manager.database_name)
         if response.errors:
@@ -154,6 +155,9 @@ def submission(request):
     except MediaAttachmentNotFoundException as me:
         _send_media_error_mail(request, request_user, user_profile, me.message)
         return HttpResponseBadRequest()
+
+    except DataObjectAlreadyExists as doe:
+        send_email_for_duplicate_unique_id_registration(request, doe.data[2], doe.data[1])
 
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
@@ -174,3 +178,17 @@ def xform(request, questionnaire_code=None):
     request_user = request.user
     form = xform_for(get_database_manager(request_user), questionnaire_code, request_user.get_profile().reporter_id)
     return HttpResponse(content=form, mimetype="text/xml")
+
+
+def send_email_for_duplicate_unique_id_registration(request, unique_id_type, unique_id_code):
+    user = request.user
+    email_message = "User '%s' has tried registering a unique id type '%s' with a duplicate code '%s'." % (
+        user.email, unique_id_type, unique_id_code)
+    profile = user.get_profile()
+    organization = Organization.objects.get(org_id=profile.org_id)
+    email = EmailMessage(subject="[INFO - Duplicate unique-id reg. from smart-phone] : %s" % organization.name,
+                         body=re.sub("\n", "<br/>", email_message),
+                         from_email=EMAIL_HOST_USER, to=[HNI_SUPPORT_EMAIL_ID])
+    email.content_subtype = "html"
+
+    email.send()
