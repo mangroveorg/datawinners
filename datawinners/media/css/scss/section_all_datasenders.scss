@@ -76,6 +76,7 @@
     background: #ffffff;
     box-shadow: -5px -1px 10px #888888;
     padding: 20px 20px 40px;
+    position: relative;
   }
 }
 
@@ -83,9 +84,12 @@
   width: 20%;
   float:left;
   ol li {
-    padding: 10px 15px;
     list-style: none;
     cursor: pointer;
+    span{
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
   }
   ol li:hover{
     background: url("/media/images/question_hover_bg.gif") repeat-x scroll left bottom #D8E4EC;
@@ -98,6 +102,28 @@
     font-weight: normal;
     margin: 17px 0 0 15px;
   }
+
+  .contact_group {
+    position: relative;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .contact_group_name {
+    width: 60%;
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  .group_actions {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    z-index: 10;
+    transform: translateY(-50%);
+  }
+
   .group_div {
     background: none repeat scroll 0 0 #F0F0F0;
     vertical-align: top;
@@ -147,9 +173,9 @@ span.selected_list_item_arrow{
 
 .group_icon {
   height: 15px;
-  width: 15px;
-  float: right;
-  padding-right: 10px;
+//  width: 15px;
+//  float: right;
+  padding-right: 4px;
 }
 
 #new-group-name-text{

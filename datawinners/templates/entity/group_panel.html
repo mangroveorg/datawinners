@@ -1,25 +1,33 @@
 {% load i18n %}
-<div class="group_div">
-    <ol data-bind="foreach: {data: groups, as: 'group'}">
-        <li data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()} ">
+<div class="group_div clear_both" style="width: 100%">
+    <ol data-bind="foreach: {data: groups, as: 'group'}" style="width: 100%">
+        <li class="contact_group" data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()}">
             <!-- ko if: group.isEditable -->
 
-            <b class="padding_left_10 break_word" data-bind="text: $data.name"></b>
-            <span class="group_actions" data-bind="css:{visible: group == $root.selectedGroup()}">
-                <span id="delete_icon"><img src="/media/images/delete_icon.png" class="group_icon"
-                           data-bind="click: $root.showDeleteGroupConfirmation, clickBubble: false" alt="{% trans "delete" %}"/></span>
-                <span><img src="/media/images/edit_icon.png"
-                           data-bind="click: $root.showRenameGroupConfirmation, clickBubble: false"
-                           class="group_icon" alt="{% trans "rename" %}"/></span>
-            </span>
+            <div class="contact_group_name"><b class="padding_left_10 break_word" data-bind="text: $data.name"></b></div>
+            <div class="group_actions" data-bind="css:{visible: group == $root.selectedGroup()}">
 
-            <span class="selected_list_item_arrow" data-bind="css:{inline:group == $root.selectedGroup()}"></span>
+                <span>
+                    <img src="/media/images/edit_icon.png" data-bind="click: $root.showRenameGroupConfirmation, clickBubble: false" class="group_icon" alt="{% trans "rename" %}"/>
+                </span>
+                <span id="delete_icon">
+                    <img src="/media/images/delete_icon.png" class="group_icon" data-bind="click: $root.showDeleteGroupConfirmation, clickBubble: false" alt="{% trans "delete" %}"/>
+                </span>
+                <span style="visibility: hidden;" data-bind="css:{visible:group == $root.selectedGroup()}">
+                    <img src="/media/images/questions_hover_arrow.png">
+                </span>
+            </div>
+
 
             <!--/ko -->
             <!-- ko ifnot: group.isEditable -->
-            <b class="padding_left_10 break_word" data-bind="text: $data.name"></b>
-                                    <span class="selected_list_item_arrow"
-                                          data-bind="css:{inline:group == $root.selectedGroup()}"></span>
+            <div class="contact_group_name"><b class="padding_left_10 break_word" data-bind="text: $data.name"></b></div>
+            <div class="group_actions" data-bind="css:{visible: group == $root.selectedGroup()}">
+                <span style="visibility: hidden;" data-bind="css:{visible:group == $root.selectedGroup()}">
+                    <img src="/media/images/questions_hover_arrow.png">
+                </span>
+            </div>
+
             <!--/ko -->
         </li>
     </ol>

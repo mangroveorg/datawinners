@@ -114,17 +114,6 @@ def _get_reporter_ids_for_group_name(dbm, group_name, search_query):
     return get_all_datasenders_short_codes(dbm, search_parameters)
 
 
-def _get_all_data_senders_short_codes(dbm, search_parameters):
-    search_parameters['response_fields'] = ['short_code']
-    search_results = get_all_datasenders_search_results(dbm, search_parameters)
-    return [item['short_code'] for item in search_results.hits]
-
-
-def _get_reporter_ids_for_group_name(dbm, group_name, search_query):
-    search_parameters = {'search_filters': {'group_name': group_name, 'search_text': search_query}}
-    return _get_all_data_senders_short_codes(dbm, search_parameters)
-
-
 @login_required
 @session_not_expired
 @is_datasender
