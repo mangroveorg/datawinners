@@ -43,17 +43,20 @@ DEVICEID = 'deviceid'
 SUBSCRIBERID = 'subscriberid'
 IMEI_ID = 'imei'
 PHONE_NUMBER = 'phonenumber'
+TODAY = 'today'
+START = 'start'
+END = 'end'
 
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
-                           'time', 'datetime', 'dw_idnr', DEVICEID, SUBSCRIBERID, IMEI_ID, PHONE_NUMBER],
-                 'auto_filled': ['note', 'today'],
+                           'time', 'datetime', 'dw_idnr', DEVICEID, SUBSCRIBERID, IMEI_ID, PHONE_NUMBER, TODAY, START, END],
+                 'auto_filled': ['note'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
                             'select all that apply or specify other']
     }
-    meta_data_types = ["start", "end", "today", "imei", "phonenumber", "simserial"]
+    meta_data_types = ["simserial"]
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
     or_other_data_types = ['select all that apply or specify other', 'select one or specify other']
@@ -267,7 +270,7 @@ class XlsFormParser():
             if field['type'] == 'group' and 'control' in field:
                 if field['control']['appearance'] == 'field-list':
                     return field['name']
-            elif field['type'] in ['calculate', DEVICEID, SUBSCRIBERID, IMEI_ID, PHONE_NUMBER]:
+            elif field['type'] in ['calculate', DEVICEID, SUBSCRIBERID, IMEI_ID, PHONE_NUMBER, TODAY, START, END]:
                 return field['name']
             else:
                 raise LabelForFieldNotPresentException(field_name=field['name'])
@@ -331,7 +334,7 @@ class XlsFormParser():
     def _field(self, field, parent_field_code=None):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text',
                               'dw_idnr': 'unique_id', DEVICEID: 'text', SUBSCRIBERID: 'text', IMEI_ID: 'text',
-                              PHONE_NUMBER: 'text'}
+                              PHONE_NUMBER: 'text', START: 'text', END: 'text', TODAY: 'text'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field',
                      'dw_idnr': 'Identification Number'}
         name = self._get_label(field)
