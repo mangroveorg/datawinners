@@ -41,12 +41,13 @@ CALCULATE = 'calculate'
 BARCODE = 'barcode'
 DEVICEID = 'deviceid'
 SUBSCRIBERID = 'subscriberid'
+IMEI_ID = 'imei'
 
 
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
-                           'time', 'datetime', 'dw_idnr', DEVICEID, SUBSCRIBERID],
+                           'time', 'datetime', 'dw_idnr', DEVICEID, SUBSCRIBERID, IMEI_ID],
                  'auto_filled': ['note', 'today'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
@@ -266,7 +267,7 @@ class XlsFormParser():
             if field['type'] == 'group' and 'control' in field:
                 if field['control']['appearance'] == 'field-list':
                     return field['name']
-            elif field['type'] in ['calculate', DEVICEID, SUBSCRIBERID]:
+            elif field['type'] in ['calculate', DEVICEID, SUBSCRIBERID, IMEI_ID]:
                 return field['name']
             else:
                 raise LabelForFieldNotPresentException(field_name=field['name'])
@@ -329,7 +330,7 @@ class XlsFormParser():
 
     def _field(self, field, parent_field_code=None):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text',
-                              'dw_idnr': 'unique_id', DEVICEID: 'text', SUBSCRIBERID: 'text'}
+                              'dw_idnr': 'unique_id', DEVICEID: 'text', SUBSCRIBERID: 'text', IMEI_ID: 'text'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field',
                      'dw_idnr': 'Identification Number'}
         name = self._get_label(field)
