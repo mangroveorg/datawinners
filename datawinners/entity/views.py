@@ -291,7 +291,7 @@ def log_activity(request, action, detail):
 def create_single_web_user(org_id, email_address, reporter_id, language_code):
     """Create single web user from My Data Senders page"""
     return HttpResponse(
-        validate_and_create_web_users(org_id, {reporter_id: email_address}, language_code))
+        create_web_users(org_id, {reporter_id: email_address}, language_code))
 
 
 def _set_contacts_email_address(dbm, request):
