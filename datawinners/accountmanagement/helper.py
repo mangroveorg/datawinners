@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
+from datawinners.entity.datasender_search import datasender_count_with
 from datawinners.entity.helper import update_data_sender_from_trial_organization, set_email_for_contact
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.main.database import get_database_manager
@@ -77,40 +78,62 @@ def update_corresponding_datasender_details(user,ngo_user_profile,old_phone_numb
                                                    current_phone_number, organization.org_id)
 
 
-def create_web_users(org_id, reporter_details, language_code):
+def _check_uniqueness_of_email_addresses(reporter_details):
+    errors = []
+    success = True
+    for existent_email_address in reporter_details.values():
+        count = datasender_count_with(existent_email_address)
+        if count > 0:
+            success = False
+            errors.append("User with email %s already exists" % existent_email_address)
+    return success, errors
+
+
+def _check_for_duplicate_entries(reporter_details):
     duplicate_entries = {}
     [duplicate_entries.update({item[0]: item[1]}) for item in reporter_details.items() if
      [val for val in reporter_details.values()].count(item[1]) > 1]
-
-    errors = []
+    content = ''
     if len(duplicate_entries) > 0:
-        content = json.dumps({'success': False, 'errors': errors, 'duplicate_entries': duplicate_entries})
+        content = json.dumps({'success': False, 'errors': [], 'duplicate_entries': duplicate_entries})
+    return content, duplicate_entries
 
+
+def validate_email_addresses(reporter_details):
+    errors = []
+    content, duplicate_entries = _check_for_duplicate_entries(reporter_details)
+    is_unique, uniqueness_errors = _check_uniqueness_of_email_addresses(reporter_details)
+    if not is_unique:
+        errors.extend(uniqueness_errors)
+        content = json.dumps(
+            {'success': False, 'errors': errors, 'duplicate_entries': duplicate_entries})
+    return content, duplicate_entries, errors
+
+
+def create_web_users(org_id, reporter_details, language_code):
     organization = Organization.objects.get(org_id=org_id)
     dbm = get_database_manager_for_org(organization)
-    existent_email_addresses = User.objects.filter(email__in=reporter_details.values()).values('email')
+    for reporter_id, email in reporter_details.iteritems():
+        reporter_entity = contact_by_short_code(dbm, reporter_id)
+        reporter_email = email.lower()
+        set_email_for_contact(dbm, reporter_entity, email=reporter_email)
+        user = User.objects.create_user(reporter_email, reporter_email, 'test123')
+        group = Group.objects.filter(name="Data Senders")[0]
+        user.groups.add(group)
+        user.first_name = reporter_entity.value(NAME_FIELD)
+        user.save()
+        profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
+                                 reporter_id=reporter_id.lower())
+        profile.save()
 
-    if len(existent_email_addresses) > 0:
-        for duplicate_email in existent_email_addresses:
-            errors.append("User with email %s already exists" % duplicate_email['email'])
-        content = json.dumps({'success': False, 'errors': errors, 'duplicate_entries': duplicate_entries})
+        send_email_to_data_sender(user, language_code, organization=organization)
+    return json.dumps({'success': True, 'message': "Users has been created"})
+
+
+def validate_and_create_web_users(org_id, reporter_details, language_code):
+    content, duplicate_entries, errors = validate_email_addresses(reporter_details)
     if errors.__len__() == 0 and duplicate_entries.keys().__len__() == 0:
-        for reporter_id, email in reporter_details.iteritems():
-            reporter_entity = contact_by_short_code(dbm, reporter_id)
-            reporter_email = email.lower()
-            set_email_for_contact(dbm, reporter_entity, email=reporter_email)
-            user = User.objects.create_user(reporter_email, reporter_email, 'test123')
-            group = Group.objects.filter(name="Data Senders")[0]
-            user.groups.add(group)
-            user.first_name = reporter_entity.value(NAME_FIELD)
-            user.save()
-            profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
-                                     reporter_id=reporter_id.lower())
-            profile.save()
-
-            send_email_to_data_sender(user, language_code, organization=organization)
-
-        content = json.dumps({'success': True, 'message': "Users has been created"})
+        content = create_web_users(org_id, reporter_details, language_code)
     return content
 
 

@@ -12,7 +12,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 import jsonpickle
 
-from datawinners.accountmanagement.helper import create_web_users, get_org_id
+from datawinners.accountmanagement.helper import  get_org_id, validate_and_create_web_users
 from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
 from datawinners.entity.group_helper import get_group_details
 from datawinners.project.couch_view_helper import get_project_id_name_map
@@ -209,7 +209,7 @@ class AssociateDataSendersView(DataSenderActionView):
                     datasender_id_email_map.update({datasender.short_code: datasender.email})
             update_datasender_index_by_id(contact_short_code, manager)
         org_id = get_org_id(request)
-        create_web_users(org_id, datasender_id_email_map, request.LANGUAGE_CODE)
+        validate_and_create_web_users(org_id, datasender_id_email_map, request.LANGUAGE_CODE)
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)

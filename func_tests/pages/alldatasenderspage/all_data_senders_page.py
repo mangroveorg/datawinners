@@ -288,7 +288,7 @@ class AllDataSendersPage(Page):
         self.wait_for_table_to_load()
 
     def select_group_rename_icon(self, group_name):
-        self.driver.find(by_xpath(".//*[@id='group_panel']/div/ol/li[contains(.,'"+group_name +"')]/span[1]/span[2]/img")).click()
+        self.driver.find(by_xpath(".//*[@id='group_panel']/div/ol/li[contains(.,'"+group_name +"')]/div[2]/span[1]/img")).click()
 
     def click_delete_group_icon(self, group_name):
-         self.driver.find(by_xpath(".//*[@id='group_panel']/div/ol/li[contains(.,'"+group_name +"')]/span[1]/span[1]/img")).click()
+         self.driver.find(by_xpath(".//*[@id='group_panel']/div/ol/li[contains(.,'"+group_name +"')]/div[2]/span[2]/img")).click()

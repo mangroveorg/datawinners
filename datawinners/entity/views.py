@@ -19,7 +19,8 @@ from django.contrib import messages
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, \
     valid_web_user
-from datawinners.accountmanagement.helper import create_web_users
+from datawinners.accountmanagement.helper import create_web_users, validate_email_addresses, \
+    validate_and_create_web_users
 from datawinners.entity.entity_export_helper import get_subject_headers
 from datawinners.entity.group_helper import create_new_group
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
@@ -290,24 +291,34 @@ def log_activity(request, action, detail):
 def create_single_web_user(org_id, email_address, reporter_id, language_code):
     """Create single web user from My Data Senders page"""
     return HttpResponse(
-        create_web_users(org_id, {reporter_id: email_address}, language_code))
+        validate_and_create_web_users(org_id, {reporter_id: email_address}, language_code))
 
 
 def _set_contacts_email_address(dbm, request):
-    contact_id_email_map = {}
+    web_user_id_email_map = {}
     for item in json.loads(request.POST['post_data']):
         contact = contact_by_short_code(dbm, item['reporter_id'])
         if contact.is_contact:
             set_email_for_contact(dbm, contact, item['email'])
         else:
-            contact_id_email_map.update({item['reporter_id']: item['email']})
+            web_user_id_email_map.update({item['reporter_id']: item['email']})
 
+    return web_user_id_email_map
+
+
+def create_contact_id_email_map(request):
+    contact_id_email_map = {}
+    for item in json.loads(request.POST['post_data']):
+        contact_id_email_map.update({item['reporter_id']: item['email']})
     return contact_id_email_map
 
 
 def _set_email_for_contacts(dbm, org_id, request):
-    contact_id_email_map = _set_contacts_email_address(dbm, request)
-    content = create_web_users(org_id, contact_id_email_map, request.LANGUAGE_CODE)
+    contact_id_email_map = create_contact_id_email_map(request)
+    content, duplicate_entries, errors = validate_email_addresses(contact_id_email_map)
+    if errors.__len__() == 0 and duplicate_entries.keys().__len__() == 0:
+        web_user_id_email_map = _set_contacts_email_address(dbm, request)
+        content = create_web_users(org_id, web_user_id_email_map, request.LANGUAGE_CODE)
     return content
 
 
