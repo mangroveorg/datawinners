@@ -82,7 +82,8 @@ class ProjectUpload(View):
 
             xls_parser_response = XlsFormParser(tmp_file, project_name, manager).parse()
 
-            send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request, project_name)
+            send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
+                                                                               project_name)
 
             if xls_parser_response.errors:
                 error_list = list(xls_parser_response.errors)
@@ -243,7 +244,8 @@ class ProjectUpdate(View):
 
             xls_parser_response = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
 
-            send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request, questionnaire.name)
+            send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
+                                                                               questionnaire.name)
 
             if xls_parser_response.errors:
                 info_list = list(xls_parser_response.errors)
@@ -567,7 +569,8 @@ def send_email_on_exception(user, error_type, stack_trace, additional_details=No
 
 
 def send_no_registered_unique_id_for_type_email(user, questionnaire_name):
-    email_message = "Questionnaire '%s' created by '%s' has one or more unique-id question(s) with no registered unique-ids." % (questionnaire_name, user.email)
+    email_message = "Questionnaire '%s' created by '%s' has one or more unique-id question(s) with no registered unique-ids." % (
+        questionnaire_name, user.email)
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     email = EmailMessage(subject="[INFO - No regd. unique-ids] : %s" % organization.name,
@@ -604,13 +607,18 @@ def get_attachment(request, document_id, attachment_name):
     return HttpResponse(manager.get_attachments(document_id, attachment_name=attachment_name))
 
 
-def send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request, questionnaire_name):
+def send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
+                                                                       questionnaire_name):
+    if not xls_parser_response.info:
+        # no info present
+        return
 
-    if xls_parser_response.info and ugettext('Making submission via Smartphone will not be possible.') not in list(xls_parser_response.info)[0]:
+    if xls_parser_response.info and ugettext('Making submission via Smartphone will not be possible.') not in \
+            list(xls_parser_response.info)[0]:
+        # 'unique id number not preset' info not present
         return
 
     send_no_registered_unique_id_for_type_email(request.user, questionnaire_name)
-
 
 
 @login_required
