@@ -39,12 +39,13 @@ def get_generated_xform_id_name(xform):
 
 CALCULATE = 'calculate'
 BARCODE = 'barcode'
+DEVICEID = 'deviceid'
 
 
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
-                           'time', 'datetime', 'dw_idnr'],
+                           'time', 'datetime', 'dw_idnr', DEVICEID],
                  'auto_filled': ['note', 'today'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
@@ -264,7 +265,7 @@ class XlsFormParser():
             if field['type'] == 'group' and 'control' in field:
                 if field['control']['appearance'] == 'field-list':
                     return field['name']
-            elif field['type'] == 'calculate':
+            elif field['type'] in ['calculate', DEVICEID]:
                 return field['name']
             else:
                 raise LabelForFieldNotPresentException(field_name=field['name'])
@@ -327,7 +328,7 @@ class XlsFormParser():
 
     def _field(self, field, parent_field_code=None):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text',
-                              'dw_idnr': 'unique_id'}
+                              'dw_idnr': 'unique_id', DEVICEID: 'text'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field',
                      'dw_idnr': 'Identification Number'}
         name = self._get_label(field)
