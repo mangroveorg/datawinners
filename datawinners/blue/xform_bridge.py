@@ -316,6 +316,11 @@ class XlsFormParser():
                 return 'mm.yyyy'
             if 'year' in appearance:
                 return 'yyyy'
+
+
+        if field['name'] == 'today':
+            return 'dd.mm.yyyy'
+
         return 'dd.mm.yyyy'
 
     def _get_unique_id_type(self, field):
@@ -334,7 +339,7 @@ class XlsFormParser():
     def _field(self, field, parent_field_code=None):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text',
                               'dw_idnr': 'unique_id', DEVICEID: 'text', SUBSCRIBERID: 'text', IMEI_ID: 'text',
-                              PHONE_NUMBER: 'text', START: 'text', END: 'text', TODAY: 'text'}
+                              PHONE_NUMBER: 'text', START: 'datetime', END: 'datetime', TODAY: 'date'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field',
                      'dw_idnr': 'Identification Number'}
         name = self._get_label(field)
@@ -345,7 +350,8 @@ class XlsFormParser():
                     "code": code, "name": name, 'required': self.is_required(field),
                     "parent_field_code": parent_field_code,
                     "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
-        if type in ['date']:
+
+        if type in ['date', TODAY]:
             format = self._get_date_format(field)
             question.update({'date_format': format, 'event_time_field_flag': False,
                              "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011"})
