@@ -182,8 +182,8 @@ class DataSenderActionView(View):
 
 
 def data_sender_short_codes(request, manager):
-    if request.POST.get("all_selected") == 'true':
-        search_parameters = {'search_text': request.POST.get('search_query'),
+    if request.POST.get("all_selected", False) == 'true':
+        search_parameters = {'search_text': request.POST.get('search_query', ''),
                              'project_name': request.POST.get("project_name", None)}
         return get_all_datasenders_short_codes(manager, search_parameters)
 
