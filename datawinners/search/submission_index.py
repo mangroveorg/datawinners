@@ -169,9 +169,10 @@ def get_submission_meta_fields():
     return submission_meta_fields
 
 
-def update_submission_search_for_datasender_edition(dbm, short_code, ds_name):
+def update_submission_search_for_datasender_edition(dbm, short_code, datasender_dict):
     kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): short_code}
-    fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: ds_name}
+    name = datasender_dict['name'] if datasender_dict['name'] else datasender_dict['mobile_number']
+    fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: name}
     project_form_model_ids = [project.id for project in get_all_projects(dbm, short_code)]
 
     query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name).doctypes(*project_form_model_ids)

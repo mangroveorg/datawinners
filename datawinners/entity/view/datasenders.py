@@ -130,7 +130,8 @@ class EditDataSenderView(TemplateView):
 
                     data_sender_name = self._update_name_in_postgres_if_exists(form, reporter_entity)
 
-                    update_submission_search_for_datasender_edition(manager, reporter_id, data_sender_name)
+                    datasender_dict = {'name': data_sender_name, 'mobile_number': form.cleaned_data['telephone_number']}
+                    update_submission_search_for_datasender_edition(manager, reporter_id, datasender_dict)
                     message = _("Your changes have been saved.")
 
                     self._update_user_activity_log(form, reporter_entity, reporter_id, request)
