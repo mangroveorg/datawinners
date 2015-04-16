@@ -12,7 +12,7 @@ from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES
 class TestSubmissionImport(unittest.TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.login(username="chinatwu2@gmail.com", password="chinatwu")
+        self.client.login(username="chinatwu4@gmail.com", password="chinatwu")
 
     def test_import_template(self):
 
