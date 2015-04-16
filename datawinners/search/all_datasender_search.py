@@ -41,10 +41,10 @@ def get_query_fields(dbm):
 def _add_project_filter(search, search_filter_param):
     project_name = search_filter_param.get('project_name')
     if project_name:
-        search = search.filter("term", projects_value=project_name.lower())
+        search = search.filter("term", projects_exact=project_name)
     projects_name = search_filter_param.get('projects')
     if projects_name:
-        search = search.filter("terms", projects_value=projects_name)
+        search = search.filter("terms", projects_exact=projects_name)
     return search
 
 

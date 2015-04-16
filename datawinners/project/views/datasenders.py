@@ -42,7 +42,7 @@ class MyDataSendersAjaxView(View):
     def post(self, request, project_name, *args, **kwargs):
         user = request.user
         manager = get_database_manager(user)
-        project_name_unquoted = lower(unquote(project_name))
+        project_name_unquoted = unquote(project_name)
 
         search_parameters = {}
         search_filters = {}
