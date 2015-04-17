@@ -551,7 +551,7 @@ DW.questionnaire_has_submission = function () {
     var subject_questionnaire = (typeof(is_edit) == "undefined");
     if (subject_questionnaire) {
         var entity_type = $("#entity-type").val();
-        var url_get = $.sprintf("/alldata/entities/%s/", entity_type);
+        var url_get = $.sprintf("/questionnaire/entities/%s/", entity_type);
     } else {
         var form_code = $("#saved-questionnaire-code").val();
         var url_get = $.sprintf("/project/has_submission/%s/", form_code);
