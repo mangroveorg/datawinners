@@ -215,6 +215,28 @@ class ProjectUpdate(View):
 
             survey_response.delete()
 
+    def _is_changes_incompatible(self, old_fields, new_fields):
+        return self._compare_fields(old_fields, new_fields) == False
+
+    def _compare_fields(self, old_fields, new_fields):
+        if not new_fields:
+            return True
+        for field in old_fields:
+            matching_new_field = self._find_field(new_fields, field.code)
+            if matching_new_field and matching_new_field.type != field.type:
+                return False
+            if field.is_field_set:
+                child_compare_result = self._compare_fields(field.fields, matching_new_field)
+                if not child_compare_result:
+                    return False
+        return True
+
+    def _find_field(self, fields, name):
+        for field in fields:
+            if field.code == name:
+                return field
+        return None
+
     def recreate_submissions_mapping(self, manager, questionnaire):
         SubmissionSearchStore(manager, questionnaire, None).recreate_elastic_store()
 
@@ -262,6 +284,7 @@ class ProjectUpdate(View):
                                                project_name=questionnaire.name, xls_parser_response=xls_parser_response)
 
             questionnaire.xform = mangrove_service.xform_with_form_code
+            old_form_model_fields = questionnaire.fields
             QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(
                 xls_parser_response.json_xform_data)
 
@@ -271,10 +294,11 @@ class ProjectUpdate(View):
 
             base_name, extension = os.path.splitext(tmp_file.name)
             questionnaire.update_attachments(tmp_file, 'questionnaire%s' % extension)
-            self._purge_submissions(manager, questionnaire)
-            self._purge_feed_documents(questionnaire, request)
-            self._purge_media_details_documents(manager, questionnaire)
-            self.recreate_submissions_mapping(manager, questionnaire)
+            if self._is_changes_incompatible(old_form_model_fields, questionnaire.fields):
+                self._purge_submissions(manager, questionnaire)
+                self._purge_feed_documents(questionnaire, request)
+                self._purge_media_details_documents(manager, questionnaire)
+                self.recreate_submissions_mapping(manager, questionnaire)
             if xls_parser_response.info:
                 info_list = list(xls_parser_response.info)
                 logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
