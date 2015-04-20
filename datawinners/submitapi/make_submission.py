@@ -51,13 +51,13 @@ class ApiPlayer(object):
     def __init__(self, dbm):
         self.dbm = dbm
 
-    def _create_survey_response(self, form_code, reporter_entity_names, reporter_id, values):
+    def _create_survey_response(self, form_code, reporter_id, values):
         service = SurveyResponseService(self.dbm)
         transport_info = TransportInfo(transport='api', source=reporter_id, destination='')
         # ds-registered
         # ds-linked
         # no of answers
-        response = service.save_survey(form_code, values, reporter_entity_names, transport_info, reporter_id)
+        response = service.save_survey(form_code, values, [], transport_info, reporter_id)
         return response
 
     def submit(self, submission, reporter_id, location_tree):
@@ -65,17 +65,15 @@ class ApiPlayer(object):
             form_code, values, extra_data = SMSParserFactory().getSMSParser(submission, self.dbm).parse(submission)
             form_model = get_form_model_by_code(self.dbm, form_code)
 
-            reporter_entity = contact_by_short_code(self.dbm, reporter_id)
-            reporter_entity_names = [{'name': reporter_entity.value('name')}]
             if isinstance(form_model, EntityFormModel):
-                response = self._create_identification_number(form_code, reporter_entity_names, reporter_id, values, location_tree)
+                response = self._create_identification_number(form_code, values, location_tree)
             else:
-                response = self._create_survey_response(form_code, reporter_entity_names, reporter_id, values)
+                response = self._create_survey_response(form_code, reporter_id, values)
         except MangroveException as e:
             return False, e.message
         return response.success, 'submitted successfully'
 
-    def _create_identification_number(self,form_code, reporter_entity_names, reporter_id, values, location_tree):
+    def _create_identification_number(self,form_code, values, location_tree):
         service = IdentificationNumberService(self.dbm)
-        response = service.save_identification_number(form_code, reporter_entity_names, reporter_id, values, location_tree)
+        response = service.save_identification_number(form_code, values, location_tree)
         return response
