@@ -200,7 +200,7 @@ function ContactsGroupViewModel() {
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         }).done(function(){
             self.groups.remove(group);
-            self.show_success_message(interpolate(gettext("Group %s successfully deleted."), [group.name()]));
+            self.show_success_message(interpolate(gettext("Group <b>%s</b> successfully deleted."), [group.name()]));
         });
 
     };
