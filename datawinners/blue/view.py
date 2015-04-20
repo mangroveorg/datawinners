@@ -221,8 +221,12 @@ class ProjectUpdate(View):
     def _compare_fields(self, old_fields, new_fields):
         if not new_fields:
             return True
+        if len(old_fields) != len(new_fields):
+            return False
         for field in old_fields:
             matching_new_field = self._find_field(new_fields, field.code)
+            if not matching_new_field:
+                return False
             if matching_new_field and matching_new_field.type != field.type:
                 return False
             if field.is_field_set:
