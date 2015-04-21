@@ -9,7 +9,7 @@ from datawinners import settings
 
 TIMEOUT_IN_SECONDS = 120 * 60
 View_pah = "%s/_design/%s/_view/%s?limit=1"
-views = ['by_short_codes', 'count_entity_type', 'datasender_by_mobile', 'entity_by_short_code']
+views = ['by_short_codes', 'count_entity_type', 'datasender_by_mobile', 'entity_by_short_code', 'all_questionnaire']
 
 
 def _get_response_for_view(db_name, view_name):
