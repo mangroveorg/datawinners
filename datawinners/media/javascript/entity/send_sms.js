@@ -89,6 +89,8 @@ function SmsViewModel(){
 
   self.disableSendSms = ko.observable(true);
 
+  self.sendToSpecificContacts = false;
+
   self.hideOtherContacts = ko.computed(function(){
       return this.selectedSmsOption() != 'others';
   }, self);
@@ -136,6 +138,7 @@ function SmsViewModel(){
     self._resetSuccessMessage();
     self._resetErrorMessages();
     self.showToSection(true);
+    self.sendToSpecificContacts = false;
   };
 
   self.closeSmsDialog = function(){
@@ -253,6 +256,14 @@ function SmsViewModel(){
         }
   }
 
+  function _getReceipent(){
+      if(self.sendToSpecificContacts && self.selectedSmsOption() == 'others'){
+          return "specific-contacts";
+      }
+      else{
+          return self.selectedSmsOption();
+      }
+  }
 
   self.sendSms = function(){
 
@@ -269,7 +280,7 @@ function SmsViewModel(){
       $.post(send_sms_url, {
           'sms-text': smsTextArea.val(),
           'others': self.othersList(),
-          'recipient': self.selectedSmsOption(),
+          'recipient': _getReceipent(),
           'questionnaire-names':  JSON.stringify(self.selectedQuestionnaireNames()),
           'group-names':  JSON.stringify(self.selectedGroupNames()),
           'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()

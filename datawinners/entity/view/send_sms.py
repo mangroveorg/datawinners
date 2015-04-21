@@ -35,11 +35,20 @@ class SendSMS(View):
 
     def _get_mobile_numbers_for_registered_data_senders(self, dbm, request):
         if request.POST['recipient'] == 'linked':
-            questionnaire_names = map(lambda item: lowercase_and_strip_accents(item), json.loads(request.POST['questionnaire-names']))
+            questionnaire_names = map(lambda item: lowercase_and_strip_accents(item),
+                                      json.loads(request.POST['questionnaire-names']))
             mobile_numbers = self._mobile_numbers_for_questionnaire(dbm, questionnaire_names)
             return mobile_numbers
         else:
             return []
+
+    def _get_mobile_numbers_for_specific_contacts(self, dbm, request):
+        if request.POST['recipient'] == 'specific-contacts':
+            numbers = map(lambda i: i.strip(), request.POST['others'].split(","))
+            return numbers
+        else:
+            return []
+
 
     def _get_mobile_numbers_for_groups(self, dbm, request):
         if request.POST['recipient'] == 'group':
@@ -59,9 +68,11 @@ class SendSMS(View):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = organization._get_message_tracker(current_month)
         no_smsc = False
-        mobile_numbers_for_ds_linked_to_questionnaire = self._get_mobile_numbers_for_registered_data_senders(dbm, request)
+        mobile_numbers_for_ds_linked_to_questionnaire = self._get_mobile_numbers_for_registered_data_senders(dbm,
+                                                                                                             request)
+        mobile_numbers_for_specifc_contacts = self._get_mobile_numbers_for_specific_contacts(dbm, request)
         mobile_numbers_for_ds_linked_to_group = self._get_mobile_numbers_for_groups(dbm, request)
-        mobile_numbers = mobile_numbers_for_ds_linked_to_questionnaire + mobile_numbers_for_ds_linked_to_group
+        mobile_numbers = mobile_numbers_for_ds_linked_to_questionnaire + mobile_numbers_for_ds_linked_to_group + mobile_numbers_for_specifc_contacts
 
         failed_numbers = []
         try:
@@ -100,6 +111,7 @@ def _get_all_contacts_details(dbm, search_parameters):
         contact_display_list.append("%s (%s)" % (display_prefix, entry['short_code']))
 
     return mobile_numbers, contact_display_list
+
 
 @login_required
 @session_not_expired
