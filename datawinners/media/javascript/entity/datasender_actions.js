@@ -320,7 +320,7 @@ function init_dialog_box_for_web_users() {
                     for (i; i < json_data.errors.length; i = i + 1) {
                         var email_in_error = json_data.errors[i].split(' ')[3];
                         var error_message = gettext('User with email ') + email_in_error + gettext(' already exists');
-                        html += "<tr><td>" + error_message + "</td></tr>";
+                        html += error_message;
                     }
 
                     var duplicate_entries = json_data.duplicate_entries;
@@ -330,10 +330,7 @@ function init_dialog_box_for_web_users() {
                     });
                     if (duplicate_emails.length != 0) {
                         error_message = gettext("You cannot use the same email address for multiple Data Senders. Revise the email address for the following users: ")+rep_ids.join(", ");
-                        html += "<tr><td>" + error_message + "</td></tr>";
-                    }
-                    if (html != "") {
-                        html = '<table cellpadding="0" cellspacing="0" border="0">' + html + '</table>';
+                        html += error_message;
                     }
                     $('#web_user_error').removeClass('none');
                     $('#web_user_error').html(html);
