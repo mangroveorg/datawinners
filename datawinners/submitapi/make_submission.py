@@ -55,9 +55,6 @@ class ApiPlayer(object):
 
     def _create_survey_response(self, form_model, reporter_id, values, extra_data):
         transport_info = TransportInfo(transport='api', source=reporter_id, destination='')
-        # ds-registered - done
-        # ds-linked - done
-        # no of answers - done
         response = self._is_request_valid(form_model, reporter_id, values, extra_data)
         if response.success:
             service = SurveyResponseService(self.dbm)
@@ -75,6 +72,10 @@ class ApiPlayer(object):
                 response = self._create_identification_number(form_code, values, location_tree)
             else:
                 response = self._create_survey_response(form_model, reporter_id, values, extra_data)
+
+        except FormModelDoesNotExistsException:
+            return False, "Form Code is not valid."
+
         except MangroveException as e:
             return False, e.message
 
