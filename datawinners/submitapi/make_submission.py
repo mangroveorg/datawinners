@@ -10,8 +10,10 @@ from datawinners.main.database import get_database_manager
 from datawinners.submission.location import LocationBridge
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.errors import MangroveException
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException, DataObjectNotFound
 from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel
-from mangrove.transport import TransportInfo
+from mangrove.form_model.project import Project
+from mangrove.transport import TransportInfo, Response
 from mangrove.transport.player.parser import SMSParserFactory
 from mangrove.transport.services.identification_number_service import IdentificationNumberService
 from mangrove.transport.services.survey_response_service import SurveyResponseService
@@ -51,14 +53,18 @@ class ApiPlayer(object):
     def __init__(self, dbm):
         self.dbm = dbm
 
-    def _create_survey_response(self, form_code, reporter_id, values):
-        service = SurveyResponseService(self.dbm)
+    def _create_survey_response(self, form_model, reporter_id, values, extra_data):
         transport_info = TransportInfo(transport='api', source=reporter_id, destination='')
-        # ds-registered
-        # ds-linked
-        # no of answers
-        response = service.save_survey(form_code, values, [], transport_info, reporter_id)
-        return response
+        # ds-registered - done
+        # ds-linked - done
+        # no of answers - done
+        response = self._is_request_valid(form_model, reporter_id, values, extra_data)
+        if response.success:
+            service = SurveyResponseService(self.dbm)
+            response = service.save_survey(form_model.form_code, values, [], transport_info, reporter_id)
+            return response
+        else:
+            return response
 
     def submit(self, submission, reporter_id, location_tree):
         try:
@@ -68,12 +74,41 @@ class ApiPlayer(object):
             if isinstance(form_model, EntityFormModel):
                 response = self._create_identification_number(form_code, values, location_tree)
             else:
-                response = self._create_survey_response(form_code, reporter_id, values)
+                response = self._create_survey_response(form_model, reporter_id, values, extra_data)
         except MangroveException as e:
             return False, e.message
-        return response.success, 'submitted successfully'
+
+        if response.success:
+            return True, 'submitted successfully'
+        else:
+            return False, response.errors.values()[0]
 
     def _create_identification_number(self,form_code, values, location_tree):
         service = IdentificationNumberService(self.dbm)
         response = service.save_identification_number(form_code, values, location_tree)
         return response
+
+    def _is_request_valid(self, form_model, reporter_id, values, extra_data):
+
+        try:
+            contact = contact_by_short_code(self.dbm, reporter_id)
+            project = Project.from_form_model(form_model=form_model)
+
+            if not project.is_open_survey and reporter_id not in project.data_senders:
+                return Response(success=False, errors=["reporter not linked to questionnaire"])
+
+            if form_model.xform:
+                return Response(success=False, errors=["advanced questionnaire not supported"])
+
+            if extra_data:
+                return Response(success=False, errors=["Wrong number of answers"])
+
+            return Response(success=True)
+
+        except FormModelDoesNotExistsException:
+            return Response(success=False, errors=["form_code not valid"])
+        except DataObjectNotFound:
+            return Response(success=False, errors=["reporter id not valid"])
+
+
+
