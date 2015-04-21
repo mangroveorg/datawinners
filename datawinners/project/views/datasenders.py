@@ -29,6 +29,7 @@ from datawinners.search.all_datasender_search import get_data_sender_search_resu
     get_data_sender_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.entity_search import DatasenderQueryResponseCreator
+from datawinners.utils import strip_accents, lowercase_and_strip_accents
 from mangrove.form_model.project import Project
 from mangrove.transport.player.parser import XlsDatasenderParser
 from mangrove.utils.types import is_empty
@@ -36,13 +37,11 @@ from datawinners.project.utils import is_quota_reached
 
 
 class MyDataSendersAjaxView(View):
-    def strip_accents(self, s):
-        return ''.join((c for c in unicodedata.normalize('NFD', unicode(s)) if unicodedata.category(c) != 'Mn'))
 
     def post(self, request, project_name, *args, **kwargs):
         user = request.user
         manager = get_database_manager(user)
-        project_name_unquoted = lower(unquote(project_name))
+        project_name_unquoted = lowercase_and_strip_accents(unquote(project_name))
 
         search_parameters = {}
         search_filters = {}

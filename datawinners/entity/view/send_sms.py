@@ -13,6 +13,7 @@ from datawinners.main.database import get_database_manager
 from datawinners.project.helper import broadcast_message
 from datawinners.scheduler.smsclient import NoSMSCException
 from datawinners.search.all_datasender_search import get_all_datasenders_search_results
+from datawinners.utils import strip_accents, lowercase_and_strip_accents
 
 
 class SendSMS(View):
@@ -34,7 +35,7 @@ class SendSMS(View):
 
     def _get_mobile_numbers_for_registered_data_senders(self, dbm, request):
         if request.POST['recipient'] == 'linked':
-            questionnaire_names = map(lambda item: item.lower(), json.loads(request.POST['questionnaire-names']))
+            questionnaire_names = map(lambda item: lowercase_and_strip_accents(item), json.loads(request.POST['questionnaire-names']))
             mobile_numbers = self._mobile_numbers_for_questionnaire(dbm, questionnaire_names)
             return mobile_numbers
         else:

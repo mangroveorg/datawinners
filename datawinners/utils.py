@@ -149,6 +149,9 @@ def strip_accents(s):
    return ''.join(c for c in unicodedata.normalize('NFD', s)
                   if unicodedata.category(c) != 'Mn')
 
+def lowercase_and_strip_accents(s):
+    return strip_accents(unicode(s.lower()))
+
 def get_map_key(host):
     try:
         return settings.API_KEYS.get(host)
