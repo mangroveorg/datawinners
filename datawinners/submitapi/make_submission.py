@@ -48,6 +48,10 @@ def post_submission(request):
     return HttpResponse(content_type='application/json', content=json.dumps(submission_reply))
 
 
+def _create_error(error_message):
+    return {"error": error_message}
+
+
 class ApiPlayer(object):
 
     def __init__(self, dbm):
@@ -69,7 +73,7 @@ class ApiPlayer(object):
             form_model = get_form_model_by_code(self.dbm, form_code)
 
             if isinstance(form_model, EntityFormModel):
-                response = self._create_identification_number(form_code, values, location_tree)
+                response = self._create_identification_number(form_code, values, extra_data, location_tree)
             else:
                 response = self._create_survey_response(form_model, reporter_id, values, extra_data)
 
@@ -84,7 +88,11 @@ class ApiPlayer(object):
         else:
             return False, response.errors.values()[0]
 
-    def _create_identification_number(self,form_code, values, location_tree):
+    def _create_identification_number(self,form_code, values, extra_data, location_tree):
+
+        if extra_data:
+            return Response(success=False, errors=_create_error("Wrong number of answers"))
+
         service = IdentificationNumberService(self.dbm)
         response = service.save_identification_number(form_code, values, location_tree)
         return response
@@ -96,20 +104,18 @@ class ApiPlayer(object):
             project = Project.from_form_model(form_model=form_model)
 
             if not project.is_open_survey and reporter_id not in project.data_senders:
-                return Response(success=False, errors=["reporter not linked to questionnaire"])
+                return Response(success=False, errors=_create_error("reporter not linked to questionnaire"))
 
             if form_model.xform:
-                return Response(success=False, errors=["advanced questionnaire not supported"])
+                return Response(success=False, errors=_create_error("advanced questionnaire not supported"))
 
             if extra_data:
-                return Response(success=False, errors=["Wrong number of answers"])
+                return Response(success=False, errors=_create_error("Wrong number of answers"))
 
             return Response(success=True)
 
         except FormModelDoesNotExistsException:
-            return Response(success=False, errors=["form_code not valid"])
+            return Response(success=False, errors=_create_error("form_code not valid"))
         except DataObjectNotFound:
-            return Response(success=False, errors=["reporter id not valid"])
-
-
+            return Response(success=False, errors= _create_error("reporter id not valid"))
 
