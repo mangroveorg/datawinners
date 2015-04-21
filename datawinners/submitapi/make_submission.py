@@ -4,10 +4,12 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
 import jsonpickle
+from datawinners.accountmanagement.models import NGOUserProfile, Organization
 
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
 from datawinners.submission.location import LocationBridge
+from datawinners.submission.views import check_quotas_and_update_users
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.errors import MangroveException
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, DataObjectNotFound
@@ -31,7 +33,7 @@ def post_submission(request):
     except ValueError:
         return HttpResponse(status=400)
     manager = get_database_manager(request.user)
-    player = ApiPlayer(manager)
+    player = ApiPlayer(manager, request)
     submission_reply = []
 
     if not isinstance(input_request, list):
@@ -54,8 +56,11 @@ def _create_error(error_message):
 
 class ApiPlayer(object):
 
-    def __init__(self, dbm):
+    def __init__(self, dbm, request):
         self.dbm = dbm
+        self.request = request
+        self.organization = self._get_organization()
+
 
     def _create_survey_response(self, form_model, reporter_id, values, extra_data):
         transport_info = TransportInfo(transport='api', source=reporter_id, destination='')
@@ -63,6 +68,9 @@ class ApiPlayer(object):
         if response.success:
             service = SurveyResponseService(self.dbm)
             response = service.save_survey(form_model.form_code, values, [], transport_info, reporter_id)
+
+            if response.success:
+                self._increment_web_counter()
             return response
         else:
             return response
@@ -71,6 +79,9 @@ class ApiPlayer(object):
         try:
             form_code, values, extra_data = SMSParserFactory().getSMSParser(submission, self.dbm).parse(submission)
             form_model = get_form_model_by_code(self.dbm, form_code)
+
+            if self.organization.has_exceeded_message_limit():
+                return False, "Exceeded Submission Limit"
 
             if isinstance(form_model, EntityFormModel):
                 response = self._create_identification_number(form_code, values, extra_data, location_tree)
@@ -95,7 +106,21 @@ class ApiPlayer(object):
 
         service = IdentificationNumberService(self.dbm)
         response = service.save_identification_number(form_code, values, location_tree)
+
+        if response.success:
+            self._increment_web_counter()
+
         return response
+
+    def _get_organization(self):
+        user_profile = NGOUserProfile.objects.get(user=self.request.user)
+        organization = Organization.objects.get(org_id=user_profile.org_id)
+        return organization
+
+    def _increment_web_counter(self):
+        self.organization.increment_message_count_for(incoming_web_count=1)
+        check_quotas_and_update_users(self.organization)
+
 
     def _is_request_valid(self, form_model, reporter_id, values, extra_data):
 
