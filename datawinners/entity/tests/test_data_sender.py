@@ -17,7 +17,7 @@ class TestContactRegistration(TestCase):
         reporter_id = "short_code"
         actual_text = RegisterDatasenderView()._get_message_text(message, project_id, reporter_id)
 
-        self.assertEqual(actual_text, "Your contact(s) have been added. ID is: short_code")
+        self.assertEqual(actual_text, "Your contact have been added. ID is: short_code")
 
     def test_should_return_error_message_as_is_for_unsuccessful_contact_registration(self):
         project_id = None

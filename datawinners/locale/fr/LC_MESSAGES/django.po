@@ -5705,8 +5705,8 @@ msgstr "Ajouter des Contacts"
 msgid "ID Automatic"
 msgstr "ID automatique"
 
-msgid "Your contact(s) have been added."
-msgstr "Vos contacts ont été ajoutés."
+msgid "Your contact have been added."
+msgstr "Vos contact ont été ajoutés."
 
 msgid "Your Contact(s) have been added successfully. Contacts with an Email address added to a Questionnaire for the first time will receive an activation email with instructions."
 msgstr "Vos Contact(s) ont été ajouté(s) avec succès. Les Contacts ayant des adresses email, liés à un Questionnaire pour la première fois recevront un email d’activation avec les instructions."

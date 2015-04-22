@@ -35,7 +35,7 @@ class DataSenderActivationEmailTest(unittest.TestCase):
         response = self.client.post(
             path='/entity/datasender/register/',
             data=data_sender_data)
-        self.assertTrue('Your contact(s) have been added. ID is: ' + short_code in response.content)
+        self.assertTrue('Your contact have been added. ID is: ' + short_code in response.content)
 
         response = self.client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
                                     data={'ds_email': email})
@@ -49,7 +49,7 @@ class DataSenderActivationEmailTest(unittest.TestCase):
         response = self.client.post(
             path='/entity/datasender/register/',
             data=data_sender_data)
-        self.assertTrue('Your contact(s) have been added. ID is: ' + short_code in response.content)
+        self.assertTrue('Your contact have been added. ID is: ' + short_code in response.content)
         web_access_data = {'post_data': ['[{"email":"' + email + '","reporter_id":"' + short_code + '"}]']}
         response = self.client.post(path='/entity/webuser/create',
                                     data=web_access_data)
@@ -84,7 +84,7 @@ class DataSenderActivationEmailTest(unittest.TestCase):
         response = self.client.post(
             path='/entity/datasender/register/',
             data=data_sender_data)
-        self.assertTrue('Your contact(s) have been added. ID is: ' + short_code in response.content)
+        self.assertTrue('Your contact have been added. ID is: ' + short_code in response.content)
 
         associate_data = {'project_id': [self.project_id],
                           'ids': [short_code]}
@@ -108,7 +108,7 @@ class DataSenderActivationEmailTest(unittest.TestCase):
         response = self.client.post(
             path='/entity/datasender/register/',
             data=data_sender_data)
-        self.assertTrue('Your contact(s) have been added. ID is: ' + short_code in response.content)
+        self.assertTrue('Your contact have been added. ID is: ' + short_code in response.content)
 
         associate_data = {'project_id': [self.project_id],
                           'ids': [short_code]}
@@ -140,7 +140,7 @@ class DataSenderActivationEmailTest(unittest.TestCase):
         response = self.client.post(
             path='/entity/datasender/register/',
             data=data_sender_data)
-        self.assertTrue('Your contact(s) have been added. ID is: ' + short_code in response.content)
+        self.assertTrue('Your contact have been added. ID is: ' + short_code in response.content)
 
         associate_data = {'project_id': [self.project_id],
                           'ids': [short_code]}

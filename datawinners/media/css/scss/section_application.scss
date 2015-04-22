@@ -7,6 +7,11 @@
   background: url('/media/images/application_header_bg.gif') repeat top left;
 }
 
+.ui-widget{
+  font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif !important;
+  background:#E8EFF6;
+}
+
 #container_header_application {
   height: 74px;
   overflow: hidden;
