@@ -73,13 +73,14 @@ class EditDataSenderView(TemplateView):
 
     def _update_user_activity_log(self, form, reporter_entity, reporter_id, request):
         detail_dict = {"Unique ID": reporter_id}
+        current_language = get_language()
         activate("en")
         field_mapping = dict(mobile_number="telephone_number")
         for field in ["geo_code", "location", "mobile_number", "name"]:
             if getattr(reporter_entity, field) != form.cleaned_data.get(field_mapping.get(field, field)):
                 label = u"%s" % form.fields[field_mapping.get(field, field)].label
                 detail_dict.update({label: form.cleaned_data.get(field_mapping.get(field, field))})
-        activate(get_language())
+        activate(current_language)
         if len(detail_dict) > 1:
             detail_as_string = json.dumps(detail_dict)
             UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string)
