@@ -298,6 +298,7 @@ function SmsViewModel(){
               _showFailedNumbersError(response);
           }
       });
+      $('html, body').animate({scrollTop: '0px'}, 0);
   };
 
 }
