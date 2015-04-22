@@ -131,10 +131,10 @@ msgid "Mobile Number*"
 msgstr "Numéro de mobile*"
 
 msgid "Mobile Number"
-msgstr "Numéro de mobile"
+msgstr "Numéro de téléphone"
 
-msgid "Group is empty"
-msgstr "Le groupe est vide"
+msgid "Once you have added Contacts to your Group, they will appear here."
+msgstr "Une fois que vous aurez ajouté des Contacts au Groupe, ils apparaitront ici."
 
 msgid "Please enter a valid phone number."
 msgstr "Veuillez saisir un numéro de téléphone."
