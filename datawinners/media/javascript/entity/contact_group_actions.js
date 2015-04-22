@@ -3,7 +3,7 @@
 function _populate_group_dialog(groupNames){
     var allGroupsSection = $("#all_groups");
     $.each(groupNames, function (index, group_name) {
-        allGroupsSection.append($("<li><label><input type='checkbox' value='" + group_name + "'>" + group_name + "</label></li>"));
+        allGroupsSection.append($("<li><label><input type='checkbox' value='" + _.escape(group_name) + "'>" + _.escape(group_name) + "</label></li>"));
     });
 }
 

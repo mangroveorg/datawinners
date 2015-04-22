@@ -1,3 +1,4 @@
+import cgi
 from string import lower
 from datawinners.utils import is_empty_string
 from django.utils.translation import ugettext as _
@@ -11,7 +12,7 @@ def get_group_details(dbm):
     group_details = []
     rows = dbm.load_all_rows_in_view('group_by_name')
     for row in rows:
-        group_details.append({'name': row['value']['name']})
+        group_details.append({'name': cgi.escape(row['value']['name'])})
     return group_details
 
 

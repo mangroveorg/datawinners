@@ -18,8 +18,9 @@ DW.group = function (group) {
 DW.group.prototype = {
     _init: function () {
         var g = this.options;
-        this.name = ko.observable(g.name);
-        this.code = ko.observable(g.name);
+        var nameUnescaped = _.unescape(g.name);
+        this.name = ko.observable(nameUnescaped);
+        this.code = ko.observable(nameUnescaped);
         this.isEditable = ko.observable(g.isEditable);
     }
 };
@@ -180,7 +181,7 @@ function ContactsGroupViewModel() {
     };
     self.show_success_message = function (message) {
         $('#group-success').removeClass('none');
-        $('#group-success').html(message);
+        $('#group-success').html(_.escape(message));
         $('#group-success').show();
     };
 
