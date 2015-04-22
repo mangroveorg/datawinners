@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
 import jsonpickle
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
+from datawinners.common.authorization import httpbasic
 
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
@@ -26,8 +27,8 @@ def _validate_request_format(request_message):
 
 
 @csrf_exempt
-@httpdigest
-def post_submission(request):
+@httpbasic
+def post_data(request):
     try:
         input_request = jsonpickle.decode(request.raw_post_data)
     except ValueError:
@@ -44,8 +45,7 @@ def post_submission(request):
             return HttpResponse(status=400)
         reporter_id = request_message['reporter_id']
         submission_message = request_message['message']
-        location_tree = LocationBridge(get_location_tree(), get_location_hierarchy)
-        success, message = player.submit(submission_message, reporter_id, location_tree)
+        success, message = player.submit(submission_message, reporter_id)
         submission_reply.append({"success": success, 'message': message})
     return HttpResponse(content_type='application/json', content=json.dumps(submission_reply))
 
@@ -64,7 +64,7 @@ class ApiPlayer(object):
 
     def _create_survey_response(self, form_model, reporter_id, values, extra_data):
         transport_info = TransportInfo(transport='api', source=reporter_id, destination='')
-        response = self._is_request_valid(form_model, reporter_id, values, extra_data)
+        response = self._is_request_valid(form_model, reporter_id, extra_data)
         if response.success:
             service = SurveyResponseService(self.dbm)
             response = service.save_survey(form_model.form_code, values, [], transport_info, reporter_id)
@@ -75,16 +75,17 @@ class ApiPlayer(object):
         else:
             return response
 
-    def submit(self, submission, reporter_id, location_tree):
+    def submit(self, submission, reporter_id):
         try:
+
             form_code, values, extra_data = SMSParserFactory().getSMSParser(submission, self.dbm).parse(submission)
             form_model = get_form_model_by_code(self.dbm, form_code)
 
-            if self.organization.has_exceeded_message_limit():
+            if self.organization.has_exceeded_quota_and_notify_users():
                 return False, "Exceeded Submission Limit"
 
             if isinstance(form_model, EntityFormModel):
-                response = self._create_identification_number(form_code, values, extra_data, location_tree)
+                response = self._create_identification_number(form_code, values, extra_data)
             else:
                 response = self._create_survey_response(form_model, reporter_id, values, extra_data)
 
@@ -99,12 +100,13 @@ class ApiPlayer(object):
         else:
             return False, response.errors.values()[0]
 
-    def _create_identification_number(self,form_code, values, extra_data, location_tree):
+    def _create_identification_number(self,form_code, values, extra_data):
 
         if extra_data:
             return Response(success=False, errors=_create_error("Wrong number of answers"))
 
         service = IdentificationNumberService(self.dbm)
+        location_tree = LocationBridge(get_location_tree(), get_location_hierarchy)
         response = service.save_identification_number(form_code, values, location_tree)
 
         if response.success:
@@ -121,8 +123,7 @@ class ApiPlayer(object):
         self.organization.increment_message_count_for(incoming_web_count=1)
         check_quotas_and_update_users(self.organization)
 
-
-    def _is_request_valid(self, form_model, reporter_id, values, extra_data):
+    def _is_request_valid(self, form_model, reporter_id, extra_data):
 
         try:
             contact = contact_by_short_code(self.dbm, reporter_id)
