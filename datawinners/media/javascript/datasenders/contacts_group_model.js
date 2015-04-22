@@ -62,7 +62,6 @@ function ContactsGroupViewModel() {
 
     self.confirmGroupRename = function(group){
         var newGroupName = $('#new_group_name').val().trim();
-        newGroupName = _.escape(newGroupName)
         if(newGroupName){
             $("#new_group_mandatory_error").addClass("none");
         }

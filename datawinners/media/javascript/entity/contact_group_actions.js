@@ -3,7 +3,7 @@
 function _populate_group_dialog(groupNames){
     var allGroupsSection = $("#all_groups");
     $.each(groupNames, function (index, group_name) {
-        allGroupsSection.append($("<li><label><input type='checkbox' value='" + _.escape(group_name) + "'>" + _.escape(group_name) + "</label></li>"));
+        allGroupsSection.append($("<li><label><input type='checkbox' value='" + _.escape(group_name) + "'>" + group_name + "</label></li>"));
     });
 }
 
@@ -64,7 +64,7 @@ dw.removeFromGroup = function (selected_ids, all_selected) {
             var group_names = $(children[9]).text().split(", ");
              $.each(group_names, function(index, group_name){
                  if(group_name != ""){
-                     all_selected_groups.push(group_name);
+                     all_selected_groups.push(_.escape(group_name));
                  }
              });
          });

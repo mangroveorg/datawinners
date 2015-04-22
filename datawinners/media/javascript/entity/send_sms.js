@@ -60,7 +60,8 @@ function SmsViewModel(){
     }
 
     $.each(response.groups, function(index, item){
-        var checkBoxLabel = item.name + " <span class='grey italic'>" + item['count'] + gettext(" recipients") + "</span>";
+        var itemNameEscaped = _.escape(item.name)
+        var checkBoxLabel = itemNameEscaped + " <span class='grey italic'>" + item['count'] + gettext(" recipients") + "</span>";
         groupItems.push({value: item.name, label: checkBoxLabel, name: item.name});
     });
 
