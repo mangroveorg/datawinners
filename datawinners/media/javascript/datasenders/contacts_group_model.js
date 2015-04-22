@@ -60,7 +60,7 @@ function ContactsGroupViewModel() {
     };
 
     self.confirmGroupRename = function(group){
-        var newGroupName = $('#new_group_name').val().trim();
+        var newGroupName = $('#new_group_name').text().trim();
 
         if(newGroupName){
             $("#new_group_mandatory_error").addClass("none");
@@ -122,7 +122,7 @@ function ContactsGroupViewModel() {
             self.newGroupName.clearError();
         }
 
-        var newGroup = new DW.group({'name': self.newGroupName().trim()});
+        var newGroup = new DW.group({'name': _.escape(self.newGroupName().trim())});
         DW.loading();
         self.disable_add_button();
         $.post('/entity/group/create/', {
