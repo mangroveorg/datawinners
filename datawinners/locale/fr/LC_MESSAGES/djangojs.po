@@ -1083,6 +1083,9 @@ msgstr "Visualiser les graphes de vos questions à choix multiples."
 msgid "Register Datasender"
 msgstr "Enregistrer un Expéditeur de Données"
 
+msgid "Register a Data Sender"
+msgstr "Enregistrer un Expéditeur de Données"
+
 msgid "Warning: Empty questionnaire"
 msgstr "Attention: Questionnaire vide"
 

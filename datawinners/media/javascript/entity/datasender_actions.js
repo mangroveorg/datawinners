@@ -397,7 +397,7 @@ function handle_datasender_edit(table, selectedIds) {
 }
 function register_datasender(table) {
     var project_id = $('#project_id').val();
-    var modal_header = project_id ? gettext('Register a Datasender') : gettext('Add a Contact');
+    var modal_header = project_id ? gettext('Register a Data Sender') : gettext('Add a Contact');
 
     $.ajax({
         type: 'GET',
