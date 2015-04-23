@@ -194,6 +194,7 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     'celery',
     'datawinners.smstester',
+    'datawinners.preferences',
 )
 
 WAYBILL_SENT_QUESTIONNAIRE_CODE = 'way1'

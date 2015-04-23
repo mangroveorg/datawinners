@@ -702,3 +702,24 @@ div.border_top_bottom{
 .inline {
     display: inline !important;
 }
+#div_iframe{
+  background-color: #ffffff;
+  scrolling:no;
+  position:absolute;
+  width: 882px;
+  height: 470px;
+  z-index: 10;
+  margin-top: 11px;
+  margin-left: 47px;
+  border: #CCCCCC solid 1px;
+}
+.close_help_button{
+  padding-right: 5px;
+  padding-top: 5px;
+}
+#help_iframe{
+  top:173px;
+  left:160px;
+  display: none;
+  padding: 5px;
+}

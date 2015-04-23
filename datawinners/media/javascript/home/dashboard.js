@@ -43,4 +43,30 @@ $(document).ready(function() {
         project.showSubmissionBreakup($(this).html());
     });
     _trackConversion();
+
+    $( ".close_help_element" ).click(function() {
+        $("#welcome_area").css("display", "none");
+        $("#help_area").css("display", "none");
+        $('#help_message').toggle();
+        $("#help_message_arrow").css("display", "block");
+
+        var data = {
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/dashboard/hide_help_element/',
+            data: data,
+            success: function(response){
+                if(response.success){
+                    window.location.reload();
+                }
+            }
+      });
+            });
+    $( "#help_message_dialog_close" ).click(function() {
+        $("#help_message").css("display", "none");
+        $("#help_message_arrow").css("display", "none");
+        });
 });

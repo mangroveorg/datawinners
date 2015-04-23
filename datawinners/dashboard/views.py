@@ -19,7 +19,7 @@ from datawinners.accountmanagement.models import NGOUserProfile, Organization, P
 from datawinners.utils import get_map_key
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
-
+from datawinners.preferences.models import UserPreferences
 
 def _find_reporter_name(dbm, row):
     try:
@@ -112,8 +112,12 @@ def dashboard(request):
     if "deleted" in request.GET.keys():
         messages.info(request, ugettext('Sorry. The Questionnaire you are looking for has been deleted'),
                       extra_tags='error')
+    user = request.user.id
+    show_help = False if (UserPreferences.objects.filter(user=user)).count() > 0 else True
+    
 
     context = {
+        "show_help":show_help,
         "projects": questionnaire_list,
         'in_trial_mode': organization.in_trial_mode,
         'is_pro_sms': organization.is_pro_sms,
@@ -136,6 +140,13 @@ def dashboard(request):
     return render_to_response('dashboard/home.html',
                               context, context_instance=RequestContext(request))
 
+def hide_help_element(request):
+    user_id = request.user.id
+    preference_name = "hide_help_element"
+    preference_value = "True"
+    help_element_preference = UserPreferences(user_id=user_id, preference_name=preference_name, preference_value=preference_value)
+    help_element_preference.save()
+    return render_to_response('dashboard/home.html')
 
 @valid_web_user
 def start(request):
