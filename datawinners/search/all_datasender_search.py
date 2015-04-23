@@ -2,6 +2,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Q, F
 
 from datawinners.search.query import ElasticUtilsHelper
+from datawinners.utils import strip_accents, lowercase_and_strip_accents
 from mangrove.form_model.project import get_entity_type_fields
 
 
@@ -41,10 +42,10 @@ def get_query_fields(dbm):
 def _add_project_filter(search, search_filter_param):
     project_name = search_filter_param.get('project_name')
     if project_name:
-        search = search.filter("term", projects_exact=project_name)
+        search = search.filter("term", projects_value=lowercase_and_strip_accents(project_name))
     projects_name = search_filter_param.get('projects')
     if projects_name:
-        search = search.filter("terms", projects_exact=projects_name)
+        search = search.filter("terms", projects_value=projects_name)
     return search
 
 

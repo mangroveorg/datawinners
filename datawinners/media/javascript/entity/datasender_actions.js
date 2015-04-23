@@ -380,8 +380,8 @@ function init_dialog_box_for_group(){
 }
 
 function handle_datasender_edit(table, selectedIds) {
-    var group = $("input[value=" + selectedIds[0] +"]").parent().parent().children().last().text();
-    var popupHeader = group == 'contact'? gettext("Edit Contact") : gettext('Edit Datasender');
+    var project_id = $('#project_id').val()
+    var popupHeader = project_id ? gettext('Edit Datasender'): gettext("Edit Contact");
     $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     $.ajax({
         type: 'GET',
@@ -397,7 +397,7 @@ function handle_datasender_edit(table, selectedIds) {
 }
 function register_datasender(table) {
     var project_id = $('#project_id').val();
-    var modal_header = project_id ? gettext('Register a Datasender') : gettext('Add a Contact');
+    var modal_header = project_id ? gettext('Register a Data Sender') : gettext('Add a Contact');
 
     $.ajax({
         type: 'GET',

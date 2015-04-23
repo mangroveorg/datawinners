@@ -158,7 +158,7 @@ def submission(request):
 
     except DataObjectAlreadyExists as doe:
         send_email_for_duplicate_unique_id_registration(request, doe.data[2], doe.data[1])
-        raise doe
+        return HttpResponseBadRequest()
 
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)

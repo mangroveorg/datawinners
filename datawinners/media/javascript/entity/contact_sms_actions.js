@@ -38,6 +38,7 @@
         smsViewModel.showToSection(false);
         smsViewModel.hideSpecifiedContacts(false);
         smsViewModel.selectedSmsOption("others");
+        smsViewModel.sendToSpecificContacts = true;
         smsViewModel.othersList(contact_mobile_numbers);
         smsViewModel.specifiedList(contact_display_list);
         $("#send-sms-section").dialog('open');

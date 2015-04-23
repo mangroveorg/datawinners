@@ -48,7 +48,7 @@ class TestAllContacts(HeadlessRunnerTest):
         self.assertEquals(self.all_contacts_page.get_flash_message(),
                           "The Contact(s) are removed from Group(s) successfully.")
         self.all_contacts_page.select_group_by_name(group_name)
-        self.assertEquals(self.all_contacts_page.get_group_table_empty_text(), "Group is empty")
+        self.assertEquals(self.all_contacts_page.get_group_table_empty_text(), "Once you have added Contacts to your Group, they will appear here.")
 
     def _verify_renaming_group(self, group_name):
         self.all_contacts_page.select_group_rename_icon(group_name)

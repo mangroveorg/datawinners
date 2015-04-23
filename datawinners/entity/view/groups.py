@@ -1,5 +1,6 @@
+import HTMLParser
 import json
-
+from xml.sax.saxutils import unescape
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.translation import ugettext
@@ -9,7 +10,7 @@ from elasticsearch_dsl import Search
 from datawinners.accountmanagement.decorators import session_not_expired, is_datasender, is_not_expired
 from datawinners.entity.group_helper import get_group_details, get_group_by_name, check_uniqueness_of_group
 from datawinners.main.database import get_database_manager
-from datawinners.search.all_datasender_search import get_all_datasenders_short_codes, get_all_datasenders_search_results
+from datawinners.search.all_datasender_search import get_all_datasenders_short_codes
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound
 
@@ -123,7 +124,7 @@ def group_ds_count(request):
     groups = []
     group_details = get_group_details(dbm)
     for group_detail in group_details:
-        name = group_detail['name']
+        name = unescape(group_detail['name'])
         group_count = _get_data_sender_count_for_groups(dbm, name)
         groups.append({'count': group_count, 'name': name})
     return HttpResponse(content_type='application/json', content=json.dumps({'groups': groups}))

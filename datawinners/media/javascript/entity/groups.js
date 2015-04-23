@@ -23,7 +23,7 @@ DW.GroupManager = function(options){
     $("#add_contacts_to_group").on('click', function(){
         var group_names = [];
         $("#all_groups input:checked").each(function(index, item){
-            group_names.push(item.value);
+            group_names.push(_.unescape(item.value));
         });
         if (!group_names.length > 0) {
             $('#no_group_selected_message').removeClass('none');

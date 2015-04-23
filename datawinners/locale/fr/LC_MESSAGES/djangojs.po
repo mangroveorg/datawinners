@@ -229,8 +229,8 @@ msgstr "à"
 msgid "Import a Data Senders list"
 msgstr "Importer une liste d'expéditeurs"
 
-msgid "Add to Questionnaire"
-msgstr "Ajouter au Questionnaire"
+msgid "Add to Questionnaires"
+msgstr "Ajouter au Questionnaires"
 
 #: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
@@ -1029,8 +1029,8 @@ msgstr "Exemple: %(day)s de la même semaine"
 msgid "Select a %(concept)s"
 msgstr "Sélectionnez un(e) %(concept)s"
 
-msgid "Remove from Questionnaire"
-msgstr "Retirer d'un Questionnaire"
+msgid "Remove from Questionnaires"
+msgstr "Retirer des Questionnaires"
 
 msgid "Remove"
 msgstr "Retirer"
@@ -1081,6 +1081,9 @@ msgid "View charts of your multiple choice questions."
 msgstr "Visualiser les graphes de vos questions à choix multiples."
 
 msgid "Register Datasender"
+msgstr "Enregistrer un Expéditeur de Données"
+
+msgid "Register a Data Sender"
 msgstr "Enregistrer un Expéditeur de Données"
 
 msgid "Warning: Empty questionnaire"

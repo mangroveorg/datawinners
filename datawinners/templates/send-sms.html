@@ -20,7 +20,7 @@
     <br/>
 
     <div class="tableRow">
-        <div class = "tableCell">{% trans "To:" %}</div>
+        <div class = "tableCell" data-bind="visible: showToSection">{% trans "To:" %}</div>
         <div class = "tableCell" data-bind="visible: showToSection">
             <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
         </div>
@@ -71,10 +71,11 @@
     </div>
 
     <div class="tableRow" data-bind="css: {'none': hideSpecifiedContacts}" >
-        <div class = "tableCell"></div>
+        <div class = "tableCell">{% trans "To:" %}</div>
         <div class = "tableCell">
             <div data-bind="text: specifiedListLengthText"></div>
-            <textarea data-bind="value: specifiedList, valueUpdate: 'keypress'" disabled></textarea>
+{#            <textarea data-bind="value: specifiedList, valueUpdate: 'keypress'" disabled></textarea>#}
+            <span data-bind="text: specifiedList" class="grey italic"></span>
         </div>
     </div>
 
