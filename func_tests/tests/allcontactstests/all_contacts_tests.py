@@ -23,7 +23,7 @@ class TestAllContacts(HeadlessRunnerTest):
         self.add_group_page.enter_group_name(group_name)
         self.add_group_page.click_on_add_group_button()
         self.assertEquals(self.all_contacts_page.get_success_message(),
-                          "Group %s successfully added." % group_name)
+                          "Group <b>%s</b> successfully added." % group_name)
         return group_name
 
     def _verify_adding_contact_to_a_group(self, group_name):
