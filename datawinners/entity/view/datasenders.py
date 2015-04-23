@@ -252,7 +252,7 @@ class RegisterDatasenderView(TemplateView):
     def _get_message_text(self, message, project_id, reporter_id):
         if reporter_id:
             return message if project_id else "%s %s %s" % (
-                _("Your contact have been added."), _("ID is:"), reporter_id )
+                _("Your Contact has been successfully added."), _("ID is:"), reporter_id )
         else:
             return message
 

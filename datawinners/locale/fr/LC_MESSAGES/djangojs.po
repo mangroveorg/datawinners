@@ -1030,7 +1030,7 @@ msgid "Select a %(concept)s"
 msgstr "Sélectionnez un(e) %(concept)s"
 
 msgid "Remove from Questionnaires"
-msgstr "Retirer d'un Questionnaires"
+msgstr "Retirer des Questionnaires"
 
 msgid "Remove"
 msgstr "Retirer"
