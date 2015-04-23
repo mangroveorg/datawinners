@@ -315,8 +315,12 @@ function init_dialog_box_for_web_users() {
                     $("#datasender_table").dataTable().fnReloadAjax();
                     DW.flashMessage("Access to Web Submission has been given to your DataSenders")
                 } else {
-                    var emails_in_error = "[" + json_data.errors.join(", ") + "]";
-                    var html = gettext('User with email ') + emails_in_error + gettext(' already exists') + "<br/>";
+                    var error_messages = "";
+                    var i = 0;
+                    for (i; i < json_data.errors.length; i = i + 1) {
+                        var email_in_error = json_data.errors[i].split(' ')[3];
+                        error_messages += gettext('User with email ') + email_in_error + gettext(' already exists');
+                    }
 
                     var duplicate_entries = json_data.duplicate_entries;
                     var rep_ids = Object.keys(duplicate_entries);
@@ -324,10 +328,10 @@ function init_dialog_box_for_web_users() {
                         return json_data.duplicate_entries[key];
                     });
                     if (duplicate_emails.length != 0) {
-                        html += gettext("You cannot use the same email address for multiple Data Senders. Revise the email address for the following users: ")+rep_ids.join(", ");
+                        error_messages += gettext("You cannot use the same email address for multiple Data Senders. Revise the email address for the following users: ")+rep_ids.join(", ");
                     }
                     $('#web_user_error').removeClass('none');
-                    $('#web_user_error').html(html);
+                    $('#web_user_error').html(error_messages);
                     $('#web_user_error').show();
                 }
             });
