@@ -9,6 +9,7 @@ from datawinners.common.authorization import httpbasic
 
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
+from datawinners.messageprovider.handlers import create_failure_log
 from datawinners.submission.location import LocationBridge
 from datawinners.submission.views import check_quotas_and_update_users
 from mangrove.datastore.entity import contact_by_short_code
@@ -77,8 +78,8 @@ class ApiPlayer(object):
 
     def submit(self, submission, reporter_id):
         try:
-
             form_code, values, extra_data = SMSParserFactory().getSMSParser(submission, self.dbm).parse(submission)
+
             form_model = get_form_model_by_code(self.dbm, form_code)
 
             if self.organization.has_exceeded_quota_and_notify_users():
@@ -89,7 +90,12 @@ class ApiPlayer(object):
             else:
                 response = self._create_survey_response(form_model, reporter_id, values, extra_data)
 
-        except FormModelDoesNotExistsException:
+        except FormModelDoesNotExistsException as e:
+            request = {"form_code": e.data[0],
+                       "incoming_message": submission,
+                       "organization": self.organization,
+                       "transport_info": TransportInfo("api", "", "")}
+            create_failure_log("Form Code is not valid.", request)
             return False, "Form Code is not valid."
 
         except MangroveException as e:
