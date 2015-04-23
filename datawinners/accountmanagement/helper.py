@@ -85,7 +85,7 @@ def _check_uniqueness_of_email_addresses(reporter_details):
         count = datasender_count_with(existent_email_address)
         if count > 0:
             success = False
-            errors.append("User with email %s already exists", existent_email_address)
+            errors.append("User with email %s already exists" %existent_email_address)
     return success, errors
 
 
