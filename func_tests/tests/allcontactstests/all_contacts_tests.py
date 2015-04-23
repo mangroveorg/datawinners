@@ -62,7 +62,7 @@ class TestAllContacts(HeadlessRunnerTest):
         self.all_contacts_page.click_delete_group_icon(new_group_name)
         self.add_group_page.click_on_confirm_delete_group()
         self.assertEquals(self.all_contacts_page.get_success_message(),
-                          "Group %s successfully deleted." % new_group_name)
+                          "Group <b>%s</b> successfully deleted." % new_group_name)
 
     def _creating_a_contact(self):
         self.add_contact_page = self.all_contacts_page.navigate_to_add_a_data_sender_page()
