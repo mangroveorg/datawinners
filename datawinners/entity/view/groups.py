@@ -11,6 +11,7 @@ from datawinners.accountmanagement.decorators import session_not_expired, is_dat
 from datawinners.entity.group_helper import get_group_details, get_group_by_name, check_uniqueness_of_group
 from datawinners.main.database import get_database_manager
 from datawinners.search.all_datasender_search import get_all_datasenders_short_codes
+from datawinners.settings import ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound
 
@@ -131,7 +132,7 @@ def group_ds_count(request):
 
 
 def _get_data_sender_count_for_groups(dbm, group_name):
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type='reporter')
     search = search.query("term", customgroups_exact=group_name)
     search = search.query("term", void=False)
