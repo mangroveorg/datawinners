@@ -322,6 +322,8 @@ function init_dialog_box_for_web_users() {
                         error_messages += gettext('User with email ') + email_in_error + gettext(' already exists');
                     }
 
+                    error_messages += "<br/>";
+
                     var duplicate_entries = json_data.duplicate_entries;
                     var rep_ids = Object.keys(duplicate_entries);
                     var duplicate_emails = rep_ids.map(function (key) {
