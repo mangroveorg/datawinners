@@ -90,6 +90,20 @@ class XlsFormParser():
             self.default_language = 'default'
             return
 
+        if self.path.endswith('.xls'):
+            self._identify_language_from_xls_file()
+        else:
+            self._identify_language_from_xlsx_file()
+
+    def _identify_language_from_xls_file(self):
+        headers = xlrd.open_workbook(filename=self.path).sheet_by_name('survey').row(0)
+        for header_cell in headers:
+            if re.match('^label::', header_cell.value):
+                language = header_cell.value.split("::")[1]
+                self.default_language = language
+                return
+
+    def _identify_language_from_xlsx_file(self):
         try:
             workbook = load_workbook(self.path)
         except Exception as e:
