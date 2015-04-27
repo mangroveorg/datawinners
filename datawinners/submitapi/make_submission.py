@@ -14,7 +14,8 @@ from datawinners.submission.location import LocationBridge
 from datawinners.submission.views import check_quotas_and_update_users
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.errors import MangroveException
-from mangrove.errors.MangroveException import FormModelDoesNotExistsException, DataObjectNotFound
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException, DataObjectNotFound, \
+    DataObjectAlreadyExists, SMSParserWrongNumberOfAnswersException, SMSParserInvalidFormatException
 from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel
 from mangrove.form_model.project import Project
 from mangrove.transport import TransportInfo, Response
@@ -97,6 +98,12 @@ class ApiPlayer(object):
                        "transport_info": TransportInfo("api", "", "")}
             create_failure_log("Form Code is not valid.", request)
             return False, "Form Code is not valid."
+
+        except DataObjectAlreadyExists:
+            return False, "Duplicate unique id"
+
+        except SMSParserInvalidFormatException:
+            return False, "Wrong number of answers"
 
         except MangroveException as e:
             return False, e.message
