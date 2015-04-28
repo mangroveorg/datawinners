@@ -52,8 +52,7 @@ class SubmissionFormatter(object):
         result.append(col_val)
 
     def _format_data_sender_id_field(self, result):
-        col_val = ""
-        result.append(col_val)
+        result.append("")
 
     def _default_format(self, parsed_value, result):
         result.append(parsed_value)
@@ -64,16 +63,32 @@ class SubmissionFormatter(object):
             parsed_value = '; '.join(field_value) if isinstance(field_value, list) else field_value
         return parsed_value
 
+    def _format_reporter_and_unique_id_values(self, row):
+        updated_row = {}
+        for key, val in row.iteritems():
+            if isinstance(val, dict):
+                for val_key, val_val in val.iteritems():
+                    updated_row[key+'.'+val_key] = val_val
+                    if '_q2' in val_key:
+                        updated_row[key] = val_val
+                    elif val_key == 'name':
+                        updated_row['ds_name'] = val_val
+            else:
+                updated_row[key] = val
+        # updated_row['ds_name'] = updated_row[]
+        return updated_row
+
+
     def format_row(self, row):
         result = []
+        updated_row = self._format_reporter_and_unique_id_values(row)
         for field_code in self.columns.keys():
-            field_value = row.get(field_code)
+            field_value = updated_row.get(field_code)
             try:
-
                 parsed_value = self._parsed_field_value(field_value)
                 field_type = self.columns[field_code].get("type")
                 if field_type == "date" or field_code == "date":
-                    self._format_date_field(field_value, field_code, result, row, self.columns)
+                    self._format_date_field(field_value, field_code, result, updated_row, self.columns)
                 elif field_type == GEODCODE_FIELD_CODE:
                     self._format_gps_field(parsed_value, result)
                 elif field_type == 'select':

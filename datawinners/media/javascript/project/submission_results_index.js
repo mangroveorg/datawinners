@@ -20,7 +20,7 @@ $(document).ready(function () {
             row_check_box_visible: submissionTabs.isTableEntriesCheckable(),
             actions_menu: _getTableActionsMenu(submissionTabs),
             tabName: submissionTabs.getActiveTabName(),
-            sortCol : 2
+            sortCol : 1
         };
         new DW.SubmissionLogTable(submission_table_options);
     };

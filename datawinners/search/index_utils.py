@@ -29,6 +29,15 @@ def _add_text_field_mapping(mapping_fields, field_def):
         }}})
 
 
+def _add_subject_field_mapping(mapping_fields, field_def):
+    for key, val in field_def['Subject'].iteritems():
+        mapping_fields[key] = {"properties": val['properties']}
+
+
+def _add_reporter_field_mapping(mapping_fields, field_def, form_model_id):
+    rep_type = REPORTER_ENTITY_TYPE[0]
+    mapping_fields.update(
+        {form_model_id+'_'+rep_type: {"properties": field_def['reporter']}})
 
 
 def get_field_definition(form_field, field_name=None):
@@ -60,7 +69,7 @@ def get_fields_mapping_by_field_def(doc_type, fields_definition):
     return {doc_type: mapping}
 
 
-def _contact_dict(entity_doc, dbm, form_model):
+def contact_dict(entity_doc, dbm, form_model):
     contact = Contact.get(dbm, entity_doc.id)
     fields, labels, codes = get_entity_type_fields(dbm, form_model.form_code)
     data = tabulate_data(contact, form_model, codes)

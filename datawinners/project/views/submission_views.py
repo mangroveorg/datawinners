@@ -75,7 +75,7 @@ def headers(request, form_code):
     manager = get_database_manager(request.user)
     submission_type = request.GET.get('type', 'all')
     form_model = get_form_model_by_code(manager, form_code)
-    headers = SubmissionsPageHeader(form_model, submission_type).get_column_title()
+    headers = SubmissionsPageHeader(manager, form_model, submission_type).get_column_title()
     response = []
     for header in headers:
         response.append({"sTitle": ugettext(header)})
@@ -562,18 +562,10 @@ def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
         form_model_ui['status'] = ugettext('Success')
 
 
-def _get_field_to_sort_on(post_dict, form_model, filter_type):
+def _get_field_to_sort_on(post_dict, dbm, form_model, filter_type):
     order_by = int(post_dict.get('iSortCol_0')) - 1
-    header = HeaderFactory(form_model).create_header(filter_type)
+    header = HeaderFactory(dbm, form_model).create_header(filter_type)
     headers = header.get_field_names_as_header_name()
-    meta_fields = ['ds_id', 'entity_short_code']
-    for field in meta_fields:
-        # Remove extra meta fields with which ordering in submission values
-        # and submission headers will not match
-        try:
-            headers.remove(field)
-        except ValueError:
-            pass
     return headers[order_by]
 
 
@@ -588,7 +580,7 @@ def get_submissions(request, form_code):
     filter_type = request.GET['type']
     search_parameters.update({"filter": filter_type})
 
-    search_parameters.update({"sort_field": _get_field_to_sort_on(request.POST, form_model, filter_type)})
+    search_parameters.update({"sort_field": _get_field_to_sort_on(request.POST, dbm, form_model, filter_type)})
     search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
     search_filters = json.loads(request.POST.get('search_filters'))
     search_parameters.update({"search_filters": search_filters})
@@ -599,8 +591,8 @@ def get_submissions(request, form_code):
     search_results, query_fields = get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta)
     submission_count_with_filters = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
     submission_count_without_filters = get_submissions_without_user_filters_count(dbm, form_model, search_parameters)
-    submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields,
-                                                                                               search_results)
+    submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(query_fields,
+                                                                                                    search_results)
 
     return HttpResponse(
         jsonpickle.encode(

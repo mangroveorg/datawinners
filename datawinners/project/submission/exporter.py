@@ -13,7 +13,8 @@ class SubmissionExporter:
         self.local_time_delta = local_time_delta
 
     def _get_header_list(self, columns):
-        submission_formatter = SubmissionFormatter(columns, self.local_time_delta)
+        submission_formatter = \
+            SubmissionFormatter(columns, self.local_time_delta)
         header_list = submission_formatter.format_header_data()
         return header_list, submission_formatter
 
@@ -28,7 +29,7 @@ class SubmissionExporter:
     #                                   export_filename(submission_type, self.project_name), submission_formatter)
 
     def get_columns_and_search_results(self, query_params, submission_type):
-        columns = SubmissionExcelHeader(self.form_model, submission_type, self.language).get_columns()
+        columns = SubmissionExcelHeader(self.dbm, self.form_model, submission_type, self.language).get_columns()
         search_results, query_fields = get_scrolling_submissions_query(self.dbm, self.form_model, query_params,
                                                                        self.local_time_delta)
         return columns, search_results

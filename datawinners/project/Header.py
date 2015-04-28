@@ -55,12 +55,13 @@ class Header(object):
 
 
 class SubmissionsPageHeader():
-    def __init__(self, form_model, submission_type):
+    def __init__(self, dbm, form_model, submission_type):
+        self.dbm = dbm
         self._form_model = form_model
         self.submission_type = submission_type
 
     def get_column_title(self):
-        header = HeaderFactory(self._form_model).create_header(self.submission_type)
+        header = HeaderFactory(self.dbm, self._form_model).create_header(self.submission_type)
         header_dict = header.get_header_field_dict()
         header_dict.pop('ds_id', None)
         unique_question_field_names = [es_unique_id_code_field_name(es_questionnaire_field_name(field.code, self._form_model.id, field.parent_field_code)) for
@@ -72,10 +73,11 @@ class SubmissionsPageHeader():
 
 
 class SubmissionExcelHeader():
-    def __init__(self, form_model, submission_type, language='en'):
+    def __init__(self, dbm, form_model, submission_type, language='en'):
         self._form_model = form_model
         self.submission_type = submission_type
         self.language = language
+        self.dbm = dbm
 
     def add_datasender_id_column(self, header_dict, result):
         result.update({
@@ -99,14 +101,14 @@ class SubmissionExcelHeader():
                                                        'fieldset_type': field.fieldset_type})
 
     def get_columns(self):
-        header = HeaderFactory(self._form_model, self.language).create_header(self.submission_type)
+        header = HeaderFactory(self.dbm, self._form_model, self.language).create_header(self.submission_type)
         header_dict = header.get_header_field_dict()
         result = OrderedDict()
         for key in header_dict:
-            if key != SubmissionIndexConstants.DATASENDER_ID_KEY:
-                result.update({key: {"label": header_dict[key]}})
-                if key == SubmissionIndexConstants.DATASENDER_NAME_KEY: #add key column after name
-                    self.add_datasender_id_column(header_dict, result)
+            # if key != SubmissionIndexConstants.DATASENDER_ID_KEY:
+            result.update({key: {"label": header_dict[key]}})
+                # if key == SubmissionIndexConstants.DATASENDER_NAME_KEY: #add key column after name
+                #     self.add_datasender_id_column(header_dict, result)
 
         self._update_with_field_meta(self._form_model.fields, result, header=header)
         return result

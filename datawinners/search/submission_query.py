@@ -7,12 +7,15 @@ from datawinners.accountmanagement.localized_time import convert_utc_to_localize
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.form_model.field import FieldSet, SelectField, MediaField, PhotoField, UniqueIdField
+from mangrove.form_model.form_model import get_form_model_by_entity_type, header_fields
+from mangrove.form_model.project import get_entity_type_fields
 
 
 class SubmissionQueryResponseCreator(object):
-    def __init__(self, form_model, localized_time_delta):
+    def __init__(self, dbm, form_model, localized_time_delta):
         self.form_model = form_model
         self.localized_time_delta = localized_time_delta
+        self.dbm = dbm
 
     def combine_name_and_id(self, short_code, entity_name, submission):
         return submission.append(
@@ -33,8 +36,15 @@ class SubmissionQueryResponseCreator(object):
         if res.get(SubmissionIndexConstants.DATASENDER_ID_KEY) == u'N/A':
             submission.append(res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY))
         else:
-            self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
-                                     res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY), submission)
+            display_field = 'name' if res[self.form_model.id+'_reporter']['name'] else 'mobile_number'
+            self.combine_name_and_id(res[self.form_model.id+'_reporter']['short_code'],
+                                     res[self.form_model.id+'_reporter'][display_field], submission)
+            submission.append(res[self.form_model.id+'_reporter']['name'])
+            submission.append(res[self.form_model.id+'_reporter']['short_code'])
+            submission.append(res[self.form_model.id+'_reporter']['location'])
+            submission.append(res[self.form_model.id+'_reporter']['geo_code'])
+            submission.append(res[self.form_model.id+'_reporter']['mobile_number'])
+            submission.append(res[self.form_model.id+'_reporter']['email'])
 
     def _populate_error_message(self, key, language, res, submission):
         error_msg = res.get(key)
@@ -59,12 +69,30 @@ class SubmissionQueryResponseCreator(object):
                 media_field_code.append(es_questionnaire_field_name(media_field.code, self.form_model.id, media_field.parent_field_code))
         return media_field_code
 
-    def create_response(self, required_field_names, search_results):
-        entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id, field.parent_field_code) for field in
-                                 self.form_model.entity_questions]
-        fieldset_fields = self.get_field_set_fields(self.form_model.fields)
-        meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
+    def _get_meta_field_details(self, entity_question_codes):
+        questionnaire_id = self.form_model.id
+        entity_question_form_model_map = {}
+        # meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
+        meta_fields = []
         meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
+        for field in self.form_model.entity_questions:
+            efm = get_form_model_by_entity_type(self.dbm, [field.unique_id_type])
+            unique_id_field_name = es_questionnaire_field_name(field.code, questionnaire_id, field.parent_field_code)
+            entity_question_form_model_map[unique_id_field_name] = efm
+            unique_id_headers = header_fields(efm, key_attribute='code')
+            for key in unique_id_headers.iterkeys():
+                meta_fields.append(unique_id_field_name+'.'+efm.id+'_'+key)
+        ds_field_names, labels, codes = get_entity_type_fields(self.dbm)
+        for field in ds_field_names:
+            meta_fields.append(questionnaire_id + '_reporter.' + field)
+        return entity_question_form_model_map, meta_fields
+
+    def create_response(self, required_field_names, search_results):
+        questionnaire_id = self.form_model.id
+        entity_question_codes = [es_questionnaire_field_name(field.code, questionnaire_id, field.parent_field_code) for field in
+                                 self.form_model.entity_questions]
+        entity_question_form_model_map, meta_fields = self._get_meta_field_details(entity_question_codes)
+        fieldset_fields = self.get_field_set_fields(self.form_model.fields)
         media_field_codes = self._get_media_field_codes()
         image_fields = self._get_image_field_codes()
         submissions = []
@@ -74,8 +102,11 @@ class SubmissionQueryResponseCreator(object):
             for key in required_field_names:
                 if not key in meta_fields:
                     if key in entity_question_codes:
-                        self.combine_name_and_id(short_code=res.get(es_unique_id_code_field_name(key)),
-                                                 entity_name=res.get(key), submission=submission)
+                        efm = entity_question_form_model_map[key]
+                        self.combine_name_and_id(short_code=res.get(key).get(efm.id+'_q6'),
+                                                 entity_name=res.get(key).get(efm.id+'_q2'), submission=submission)
+                        for field in efm.fields:
+                            submission.append(res.get(key).get(efm.id+"_"+field.code))
                     elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
                         self._populate_datasender(res, submission)
                     elif key == 'status':

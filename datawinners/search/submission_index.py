@@ -9,6 +9,8 @@ from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundErro
 from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, \
     convert_choice_options_to_options_text
+from datawinners.search.datasender_index import get_ds_fields_mapping
+from datawinners.search.subject_index import get_subject_fields_mapping
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
@@ -18,9 +20,11 @@ from datawinners.search.submission_index_helper import SubmissionIndexUpdateHand
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
     es_unique_id_code_field_name, \
-    es_questionnaire_field_name, _add_text_field_mapping
-from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
-from mangrove.form_model.form_model import FormModel
+    es_questionnaire_field_name, _add_text_field_mapping, _add_subject_field_mapping, get_fields_mapping_by_field_def, \
+    _add_reporter_field_mapping, subject_dict, contact_dict
+from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact, by_short_code, \
+    contact_by_short_code
+from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type, get_form_model_by_code, REPORTER
 from mangrove.form_model.project import Project
 
 
@@ -49,11 +53,12 @@ class SubmissionSearchStore():
         mapping = self.get_mappings()
         try:
             mapping_old = self.get_old_mappings()
-            if mapping_old:
-                self._verify_change_involving_date_field(mapping, mapping_old)
-                self._verify_unique_id_change()
-            if not mapping_old or self._has_fields_changed(mapping, mapping_old):
-                self.es.put_mapping(self.dbm.database_name, self.latest_form_model.id, mapping)
+            # if mapping_old:
+                # self._verify_change_involving_date_field(mapping, mapping_old)
+                # self._verify_unique_id_change()
+
+            # if not mapping_old or self._has_fields_changed(mapping, mapping_old):
+            self.es.put_mapping(self.dbm.database_name, self.latest_form_model.id, mapping)
 
         except (ElasticHttpError, FieldTypeChangeException) as e:
             if isinstance(e, FieldTypeChangeException) or e[1].startswith('MergeMappingException'):
@@ -102,18 +107,27 @@ class SubmissionSearchStore():
         return mapping
 
     def _get_submission_fields(self, fields_definition, fields, parent_field_name=None):
+        subject_dict = {}
         for field in fields:
             if isinstance(field, UniqueIdField):
-                unique_id_field_name = es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)
-                fields_definition.append(
-                    get_field_definition(field, field_name=es_unique_id_code_field_name(unique_id_field_name)))
-
+                # unique_id_field_name = es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)
+                # fields_definition.append(
+                #     get_field_definition(field, field_name=es_unique_id_code_field_name(unique_id_field_name)))
+                unique_id_model = get_form_model_by_entity_type(self.dbm, [field.unique_id_type])
+                unique_id_mapping = get_subject_fields_mapping(unique_id_model)
+                subject_dict[es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)] = unique_id_mapping[unique_id_model.id]
             if isinstance(field, FieldSet) and field.is_group():
                 self._get_submission_fields(fields_definition, field.fields, field.code)
                 continue
             fields_definition.append(
                 get_field_definition(field,
                                      field_name=es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)))
+        datasender_model = get_form_model_by_code(self.dbm, "reg")
+        datasender_mapping = get_ds_fields_mapping(datasender_model)
+        datasender_dict = {'reporter': datasender_mapping['reg']['properties']}
+        fields_definition.append({'Subject': subject_dict})
+        fields_definition.append(datasender_dict)
+
 
     def recreate_elastic_store(self):
         self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
@@ -134,6 +148,8 @@ class SubmissionSearchStore():
     #             name + "_exact": {"type": "string", "index": "not_analyzed", "include_in_all": False},
     #         }}})
 
+
+
     def get_fields_mapping_by_field_def(self, doc_type, fields_definition):
         """
         fields_definition   = [{"name":form_model_id_q1, "type":"date", "date_format":"MM-yyyy"},{"name":form_model_id_q1, "type":"string"}]
@@ -143,6 +159,12 @@ class SubmissionSearchStore():
         for field_def in fields_definition:
             if field_def.get("type") is "date":
                 _add_date_field_mapping(mapping_fields, field_def)
+            elif "Subject" in field_def:
+                _add_subject_field_mapping(mapping_fields, field_def)
+
+            elif 'reporter' in field_def:
+                _add_reporter_field_mapping(mapping_fields, field_def, self.latest_form_model.id)
+
             else:
                 _add_text_field_mapping(mapping_fields, field_def)
         return {doc_type: mapping}
@@ -228,19 +250,29 @@ def status_message(status):
 # TODO manage_index
 def _get_datasender_info(dbm, submission_doc):
     if submission_doc.owner_uid:
-        datasender_name, datasender_id = _lookup_contact_by_uid(dbm, submission_doc.owner_uid)
+        datasender = _lookup_contact_by_uid(dbm, submission_doc.owner_uid)
+        return contact_dict(datasender._doc, dbm, get_form_model_by_code(dbm, 'reg'))
     else:
-        datasender_name, datasender_id = submission_doc.created_by, UNKNOWN
-    return datasender_id, datasender_name
+        # TODO:make ds-dict for open ds
+        return OrderedDict([('name', ''),
+                     ('short_code', UNKNOWN),
+                     ('location', ''),
+                     ('geo_code', ''),
+                     ('mobile_number', submission_doc.created_by),
+                     ('email', ''),
+                     ('entity_type', ['reporter']),
+                     ('void', False)])
+
+
 
 
 def _meta_fields(submission_doc, dbm):
     search_dict = {}
-    datasender_id, datasender_name = _get_datasender_info(dbm, submission_doc)
     search_dict.update({"status": status_message(submission_doc.status)})
     search_dict.update({"date": format_datetime(submission_doc.submitted_on, "MMM. dd, yyyy, hh:mm a", locale="en")})
-    search_dict.update({"ds_id": datasender_id})
-    search_dict.update({"ds_name": datasender_name})
+
+    ds_info = _get_datasender_info(dbm, submission_doc)
+    search_dict.update({submission_doc.form_model_id+'_'+'reporter': ds_info})
     search_dict.update({"error_msg": submission_doc.error_message})
     return search_dict
 
@@ -248,10 +280,10 @@ def _meta_fields(submission_doc, dbm):
 def _lookup_contact_by_uid(dbm, uid):
     try:
         if uid:
-            entity = Contact.get(dbm, uid)
-            if entity.value('name'):
-                return entity.value('name'), entity.short_code
-            return entity.value('mobile_number'), entity.short_code
+            return Contact.get(dbm, uid)
+            # if entity.value('name'):
+            #     return entity.value('name'), entity.short_code
+            # return entity.value('mobile_number'), entity.short_code
     except Exception:
         pass
     return UNKNOWN, UNKNOWN
@@ -343,12 +375,17 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
 
                 if is_original_question_changed_from_choice_answer_type(original_field, field):
                     entry = convert_choice_options_to_options_text(original_field, entry)
-                entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
+                # entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
                 entry_code = entry
-                search_dict.update(
-                    {es_unique_id_code_field_name(
-                        es_questionnaire_field_name(field.code, form_model.id, parent_field_name)): entry_code or UNKNOWN})
-                entry = entity_name
+                # search_dict.update(
+                #     {es_unique_id_code_field_name(
+                #         es_questionnaire_field_name(field.code, form_model.id, parent_field_name)): entry_code or UNKNOWN})
+                subject_doc = by_short_code(dbm, entry_code, [field.unique_id_type])._doc
+                subject_model = get_form_model_by_entity_type(dbm, [field.unique_id_type])
+                subject_info = subject_dict(field.unique_id_type, subject_doc, dbm, subject_model)
+                search_dict.update({es_questionnaire_field_name(field.code, form_model.id, parent_field_name):  subject_info})
+
+                entry = None
         elif field.type == "select":
             field = _get_select_field_by_revision(field, form_model, submission_doc)
             if field.type == "select":

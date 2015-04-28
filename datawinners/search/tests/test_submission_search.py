@@ -7,11 +7,13 @@ from datawinners.search.submission_query import SubmissionQueryResponseCreator, 
 from mangrove.form_model.field import UniqueIdField, TextField, IntegerField, SelectField, FieldSet, PhotoField, \
     VideoField
 from mangrove.form_model.form_model import FormModel
+from src.mangrove.mangrove.datastore.database import DatabaseManager
 
 
 class TestSubmissionResponseCreator(unittest.TestCase):
     def test_should_give_back_entries_according_to_header_order(self):
         form_model = MagicMock(spec=FormModel)
+        dbm = MagicMock(spec=DatabaseManager)
         required_field_names = ['some_question', 'ds_id', 'ds_name', 'form_model_id_q1', 'form_model_id_q1_unique_code']
         results = Response({"_hits": [
             Result({'_type': "form_model_id", '_id': 'index_id', '_source': {'ds_id': 'his_id', 'ds_name': 'his_name',
@@ -21,7 +23,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         form_model.entity_questions = [UniqueIdField('Test subject', 'name', 'q1', 'which subject')]
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
-        submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(required_field_names,
+        submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(required_field_names,
                                                                                                    results)
 
         expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
@@ -30,6 +32,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
 
     def test_should_give_create_response_with_no_unique_id_fields(self):
         form_model = MagicMock(spec=FormModel)
+        dbm = MagicMock(spec=DatabaseManager)
         required_field_names = ['ds_id', 'ds_name', 'some_question']
         results = Response({"_hits": [
             Result({'_type': "form_model_id", '_id': 'index_id', '_source': {'ds_id': 'his_id', 'ds_name': 'his_name',
@@ -39,7 +42,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
 
-        submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(required_field_names,
+        submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(required_field_names,
                                                                                                    results)
 
         expected = [['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer']]
@@ -138,6 +141,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
 
 
     def test_should_format_image_question(self):
+        dbm = MagicMock(spec=DatabaseManager)
         form_model = MagicMock(spec=FormModel)
         form_model.is_media_type_fields_present = True
         form_model.media_fields = [PhotoField("photo", "img", "img")]
@@ -150,7 +154,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
 
-        submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(
+        submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(
             required_field_names,
             results)
 
@@ -160,6 +164,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
 
     def test_should_format_non_image_media_question(self):
         form_model = MagicMock(spec=FormModel)
+        dbm = MagicMock(spec=DatabaseManager)
         form_model.is_media_type_fields_present = True
         form_model.media_fields = [VideoField("video", "mp4", "mp4")]
         required_field_names = ['some_question', 'ds_id', 'ds_name', 'form_model_id_mp4']
@@ -171,7 +176,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
 
-        submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(
+        submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(
             required_field_names,
             results)
 

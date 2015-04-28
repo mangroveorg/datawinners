@@ -6,6 +6,7 @@ from datawinners.search.index_utils import es_unique_id_code_field_name, es_ques
 from datawinners.search.query import ElasticUtilsHelper
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
+from mangrove.form_model.form_model import get_form_model_by_entity_type
 
 
 def _add_sort_criteria(search_parameters, search):
@@ -37,8 +38,8 @@ def _query_by_submission_type(submission_type_filter, search):
     return search.query('term', void=False)
 
 
-def _get_query_fields(form_model, submission_type):
-    header = HeaderFactory(form_model).create_header(submission_type)
+def _get_query_fields(dbm, form_model, submission_type):
+    header = HeaderFactory(dbm, form_model).create_header(submission_type)
     return header.get_header_field_names()
 
 
@@ -52,22 +53,25 @@ def _add_date_range_filters(date_filters, form_model, search):
     return search
 
 
-def _add_unique_id_filters(form_model, unique_id_filters, search):
+def _add_unique_id_filters(dbm, form_model, unique_id_filters, search):
     if unique_id_filters:
         for uniqueIdType, uniqueIdFilter in unique_id_filters.iteritems():
+            entity_form_model = get_form_model_by_entity_type(dbm, [uniqueIdType])
             if uniqueIdFilter:
                 unique_id_filters = []
 
                 for question in [question for question in form_model.entity_questions if
                                  question.unique_id_type == uniqueIdType]:
-                    es_field_code = es_unique_id_code_field_name(
-                        es_questionnaire_field_name(question.code, form_model.id, parent_field_code=question.parent_field_code)) + "_exact"
+                    es_field_code = es_questionnaire_field_name(question.code, form_model.id, parent_field_code=question.parent_field_code) + \
+                                    "." + entity_form_model.id + "_q6" + "." + entity_form_model.id + "_q6" + "_exact"
+                    # es_field_code = es_unique_id_code_field_name(
+                    #     es_questionnaire_field_name(question.code, form_model.id, parent_field_code=question.parent_field_code)) + "_exact"
                     unique_id_filters.append(F("term", **{es_field_code: uniqueIdFilter}))
                 search = search.filter(F('or', unique_id_filters))
     return search
 
 
-def _add_search_filters(search_filter_param, form_model, local_time_delta, query_fields, search):
+def _add_search_filters(dbm, search_filter_param, form_model, local_time_delta, query_fields, search):
     if not search_filter_param:
         return
 
@@ -82,15 +86,15 @@ def _add_search_filters(search_filter_param, form_model, local_time_delta, query
     search = _add_date_range_filters(search_filter_param.get("dateQuestionFilters"), form_model, search)
     datasender_filter = search_filter_param.get("datasenderFilter")
     if datasender_filter:
-        search = search.query("term", ds_id_exact=datasender_filter)
-    search = _add_unique_id_filters(form_model, search_filter_param.get("uniqueIdFilters"), search)
+        search = search.query("term", **{form_model.id+'_reporter.short_code.short_code_exact': datasender_filter})
+    search = _add_unique_id_filters(dbm, form_model, search_filter_param.get("uniqueIdFilters"), search)
     return search
 
 
-def _add_filters(form_model, search_parameters, local_time_delta, search):
+def _add_filters(dbm, form_model, search_parameters, local_time_delta, search):
     search = _query_by_submission_type(search_parameters.get('filter'), search)
-    query_fields = _get_query_fields(form_model, search_parameters.get('filter'))
-    search = _add_search_filters(search_parameters.get('search_filters'), form_model, local_time_delta, query_fields,
+    query_fields = _get_query_fields(dbm, form_model, search_parameters.get('filter'))
+    search = _add_search_filters(dbm, search_parameters.get('search_filters'), form_model, local_time_delta, query_fields,
                                  search)
     return query_fields, search
 
@@ -112,7 +116,7 @@ def _create_query(dbm, form_model, local_time_delta, search_parameters):
     search = _add_pagination_criteria(search_parameters, search)
     search = _add_sort_criteria(search_parameters, search)
     search = _add_response_fields(search_parameters, search)
-    query_fields, search = _add_filters(form_model, search_parameters, local_time_delta, search)
+    query_fields, search = _add_filters(dbm, form_model, search_parameters, local_time_delta, search)
     return query_fields, search
 
 
@@ -146,7 +150,7 @@ def get_submissions_without_user_filters_count(dbm, form_model, search_parameter
 def get_submission_count(dbm, form_model, search_parameters, local_time_delta):
     es = Elasticsearch()
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
-    query_fields, search = _add_filters(form_model, search_parameters, local_time_delta, search)
+    query_fields, search = _add_filters(dbm, form_model, search_parameters, local_time_delta, search)
     body = search.to_dict()
     return es.search(index=dbm.database_name, doc_type=form_model.id, body=body, search_type='count')['hits']['total']
 

@@ -1,6 +1,6 @@
 from datawinners.main.database import get_db_manager
 from datawinners.project.couch_view_helper import get_all_projects_for_datasender
-from datawinners.search.index_utils import _contact_dict, get_fields_mapping, get_elasticsearch_handle
+from datawinners.search.index_utils import contact_dict, get_fields_mapping, get_elasticsearch_handle
 from mangrove.datastore.entity import get_all_entities, _entity_by_short_code, contact_by_short_code
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE
@@ -23,13 +23,13 @@ def update_datasender_index(contact_doc, dbm):
 
 
 def _create_contact_dict(dbm, entity_doc, form_model):
-    contact_dict = _contact_dict(entity_doc, dbm, form_model)
-    contact_dict.update({
+    contact_info = contact_dict(entity_doc, dbm, form_model)
+    contact_info.update({
                             "projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code),
                             "groups": entity_doc.groups,
                             "customgroups": entity_doc.custom_groups
                         })
-    return contact_dict
+    return contact_info
 
 
 def _get_project_names_by_datasender_id(dbm, entity_id):
@@ -66,11 +66,17 @@ def _create_datasender_mapping(dbm):
     create_datasender_mapping(dbm, form_model)
 
 
-def create_ds_mapping(dbm, form_model):
-    es = get_elasticsearch_handle()
+def get_ds_fields_mapping(form_model):
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects'))
     fields.append(TextField(name="groups", code='groups', label='My Groups'))
     fields.append(TextField(name="customgroups", code='customgroups', label='Custom groups'))
-    es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
+    fields_mapping = get_fields_mapping(form_model.form_code, fields)
+    return fields_mapping
+
+
+def create_ds_mapping(dbm, form_model):
+    es = get_elasticsearch_handle()
+    fields_mapping = get_ds_fields_mapping(form_model)
+    es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], fields_mapping)
 

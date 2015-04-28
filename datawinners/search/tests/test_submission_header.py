@@ -3,6 +3,7 @@ import unittest
 from mock import MagicMock, Mock
 
 from datawinners.search.submission_headers import SubmissionAnalysisHeader, AllSubmissionHeader, SuccessSubmissionHeader, ErroredSubmissionHeader, HeaderFactory
+from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField, IntegerField, UniqueIdField, FieldSet
 from mangrove.form_model.form_model import FormModel
 
@@ -97,7 +98,8 @@ class TestSubmissionHeader(unittest.TestCase):
 class TestHeaderFactory(unittest.TestCase):
     def test_should_return_header_instance_based_on_submission_type(self):
         form_model = Mock(spec=FormModel)
-        self.assertIsInstance(HeaderFactory(form_model).create_header("all"), AllSubmissionHeader)
-        self.assertIsInstance(HeaderFactory(form_model).create_header("success"), SuccessSubmissionHeader)
-        self.assertIsInstance(HeaderFactory(form_model).create_header("error"), ErroredSubmissionHeader)
-        self.assertIsInstance(HeaderFactory(form_model).create_header("analysis"), SubmissionAnalysisHeader)
+        dbm = Mock(spec=DatabaseManager)
+        self.assertIsInstance(HeaderFactory(dbm, form_model).create_header("all"), AllSubmissionHeader)
+        self.assertIsInstance(HeaderFactory(dbm, form_model).create_header("success"), SuccessSubmissionHeader)
+        self.assertIsInstance(HeaderFactory(dbm, form_model).create_header("error"), ErroredSubmissionHeader)
+        self.assertIsInstance(HeaderFactory(dbm, form_model).create_header("analysis"), SubmissionAnalysisHeader)
