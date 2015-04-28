@@ -122,9 +122,6 @@ class ApiPlayer(object):
         location_tree = LocationBridge(get_location_tree(), get_location_hierarchy)
         response = service.save_identification_number(form_code, values, location_tree)
 
-        if response.success:
-            self._increment_web_counter()
-
         return response
 
     def _get_organization(self):
