@@ -319,10 +319,10 @@ function init_dialog_box_for_web_users() {
                     var i = 0;
                     for (i; i < json_data.errors.length; i = i + 1) {
                         var email_in_error = json_data.errors[i].split(' ')[3];
-                        error_messages += gettext('User with email ') + email_in_error + gettext(' already exists');
+                        error_messages += gettext('User with email ') + email_in_error + gettext(' already exists') + "<br/>";
                     }
 
-                    error_messages += "<br/>";
+                    //error_messages += "<br/>";
 
                     var duplicate_entries = json_data.duplicate_entries;
                     var rep_ids = Object.keys(duplicate_entries);
