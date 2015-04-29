@@ -9,6 +9,8 @@ from datawinners.search.query import Query, QueryBuilder
 from mangrove.form_model.project import get_entity_type_fields
 
 
+DATASENDER_DISPLAY_FIELD_ORDER = ['name', 'mobile_number', 'email', 'location', 'geo_code', 'short_code', 'projects',
+                                'devices', 'customgroups', 'groups']
 class SubjectQuery(Query):
     def __init__(self, query_params=None):
         Query.__init__(self, SubjectQueryResponseCreator(), QueryBuilder(), query_params)
@@ -50,8 +52,7 @@ class DatasenderQueryResponseCreator():
             result.append("")
 
     def create_response(self, search_results, show_projects=True):
-        required_field_names = ['name', 'mobile_number', 'email', 'location', 'geo_code', 'short_code', 'projects',
-                                'devices', 'customgroups', 'groups']
+        required_field_names = DATASENDER_DISPLAY_FIELD_ORDER
 
         if not show_projects:
             required_field_names.remove('projects')
