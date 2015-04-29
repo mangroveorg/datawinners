@@ -28,7 +28,7 @@ from datawinners.search.all_datasender_search import get_data_sender_search_resu
     get_data_sender_without_search_filters_count, \
     get_data_sender_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
-from datawinners.search.entity_search import DatasenderQueryResponseCreator
+from datawinners.search.entity_search import DatasenderQueryResponseCreator, DATASENDER_DISPLAY_FIELD_ORDER
 from datawinners.utils import strip_accents, lowercase_and_strip_accents
 from mangrove.form_model.project import Project
 from mangrove.transport.player.parser import XlsDatasenderParser
@@ -49,7 +49,7 @@ class MyDataSendersAjaxView(View):
         search_filters.update({"search_text": search_text})
         search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
         search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
-        search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
+        search_parameters.update({"sort_field": DATASENDER_DISPLAY_FIELD_ORDER[int(request.POST.get('iSortCol_0')) - 1]})
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
         search_filters.update({"project_name": project_name_unquoted})
         search_parameters.update({"search_filters": search_filters})
