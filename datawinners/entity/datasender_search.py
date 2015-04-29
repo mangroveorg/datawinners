@@ -6,6 +6,7 @@ def datasender_count_with(email):
     es = Elasticsearch()
 
     search = Search(using=es, doc_type='reporter').filter("term", email_value=email.lower(), cache=False)
+    search = search.filter("term", void=False)
     search = search.extra(from_=0, size=1)
     body = search.to_dict()
 
