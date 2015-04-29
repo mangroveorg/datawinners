@@ -39,7 +39,6 @@ COUCHDBFEED_CREDENTIALS = (COUCHDBFEED_USERNAME,COUCHDBFEED_PASSWORD)
 
 HNI_BLOG_FEED = 'http://hni.org/blog/category/datawinners-data-collection-for-development/feed/'
 
-VUMI_API_URL = "https://localhost/smstester/vumi-stub"
 
 
 CRS_ORG_ID = 'TVZ184210'
@@ -52,6 +51,7 @@ LIMIT_TRIAL_ORG_MESSAGE_COUNT = 10
 NEAR_SUBMISSION_LIMIT_TRIGGER = 20
 NEAR_SMS_LIMIT_TRIGGER = 5
 VUMI_API_URL = "http://localhost:2020"
+VUMI_API_URL = "https://localhost/smstester/vumi-stub"
 
 DEBUG_BROWSER="firefox" # firefox | chrome | phantom | ie | htmlunit
 

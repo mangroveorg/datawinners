@@ -35,6 +35,6 @@ CRS_ORG_ID = 'TVZ184210'
 
 FEEDS_ENABLED=True
 MAX_FEED_ENTRIES=10000
-
+VUMI_API_URL = "https://localhost:9000/smstester/vumi-stub"
 
 TEST_SERVER_PORT=9000

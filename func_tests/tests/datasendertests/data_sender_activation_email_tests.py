@@ -6,13 +6,16 @@ from django.test import Client
 from nose.plugins.attrib import attr
 from framework.utils.common_utils import random_number
 from tests.datasendertests.data_sender_activation_email_helper import create_questionnaire
+from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 
 
 class DataSenderActivationEmailTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.client = Client()
-        cls.client.login(username='tester150411@gmail.com', password='tester150411')
+        cls.client.login(username=VALID_CREDENTIALS[USERNAME], password=VALID_CREDENTIALS[PASSWORD])
+        cls.admin_client = Client()
+        cls.admin_client.login(username='datawinner', password='d@t@winner')
         cls.project_id = create_questionnaire(cls.client)
 
     def _get_data_sender_data(self, with_email=False, with_project_id=False):
@@ -37,7 +40,10 @@ class DataSenderActivationEmailTest(unittest.TestCase):
             data=data_sender_data)
         self.assertTrue('Your Contact has been successfully added. ID is: ' + short_code in response.content)
 
-        response = self.client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
+        self._verify_email_is_not_present_in_postgres(email)
+
+    def _verify_email_is_not_present_in_postgres(self, email):
+        response = self.admin_client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
                                     data={'ds_email': email})
         self.assertEqual(response.content, '{"found": false}')
 
@@ -57,9 +63,12 @@ class DataSenderActivationEmailTest(unittest.TestCase):
         self.assertEquals(response_dict['message'], 'Users has been created')
         self.assertTrue(response_dict['success'])
 
-        response = self.client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
+        self._verify_email_is_not_present_in_postgres(email)
+
+    def _verify_email_is_present_in_postgres(self, email):
+        response = self.admin_client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
                                     data={'ds_email': email})
-        self.assertEqual(response.content, '{"found": false}')
+        self.assertEqual(response.content, '{"found": true}')
 
     @attr("functional_test")
     def test_should_make_entry_in_postgres_when_ds_registered(self):
@@ -71,9 +80,7 @@ class DataSenderActivationEmailTest(unittest.TestCase):
             data=data_sender_data)
         self.assertTrue('Registration successful. ID is: ' + short_code in response.content)
 
-        response = self.client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
-                                    data={'ds_email': email})
-        self.assertEqual(response.content, '{"found": true}')
+        self._verify_email_is_present_in_postgres(email)
 
     @attr("functional_test")
     def test_should_make_entry_in_postgres_when_contact_with_email_associated_to_questionnaire(self):
@@ -96,9 +103,7 @@ class DataSenderActivationEmailTest(unittest.TestCase):
                          'Your Contact(s) have been added successfully. Contacts with an Email address added to a Questionnaire for the first time will receive an activation email with instructions.')
         self.assertTrue(response_dict['success'])
 
-        response = self.client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
-                                    data={'ds_email': email})
-        self.assertEqual(response.content, '{"found": true}')
+        self._verify_email_is_present_in_postgres(email)
 
     @attr("functional_test")
     def test_should_make_entry_in_postgres_when_ds_is_given_web_access(self):
@@ -127,9 +132,7 @@ class DataSenderActivationEmailTest(unittest.TestCase):
         self.assertEquals(response_dict['message'], 'Users has been created')
         self.assertTrue(response_dict['success'])
 
-        response = self.client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
-                                    data={'ds_email': email})
-        self.assertEqual(response.content, '{"found": true}')
+        self._verify_email_is_present_in_postgres(email)
 
     @attr("functional_test")
     def test_should_make_entry_in_postgres_when_ds_edited_with_email(self):
@@ -158,9 +161,7 @@ class DataSenderActivationEmailTest(unittest.TestCase):
 
         self.assertTrue('Your changes have been saved.' in response.content)
 
-        response = self.client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
-                                    data={'ds_email': email})
-        self.assertEqual(response.content, '{"found": true}')
+        self._verify_email_is_present_in_postgres(email)
 
     @attr("functional_test")
     def test_should_make_entry_in_postgres_when_ds_edited_with_email(self):
@@ -178,6 +179,4 @@ class DataSenderActivationEmailTest(unittest.TestCase):
 
         self.assertTrue('Your changes have been saved.' in response.content)
 
-        response = self.client.post(path='/admin-apis/datasender/check_if_entry_made_in_postgres/',
-                                    data={'ds_email': email})
-        self.assertEqual(response.content, '{"found": true}')
+        self._verify_email_is_present_in_postgres(email)

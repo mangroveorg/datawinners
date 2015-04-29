@@ -5,7 +5,7 @@
             "username": "tester150411@gmail.com",
             "first_name": "Tester Pune",
             "is_active": true,
-            "is_superuser": true,
+            "is_superuser": false,
             "is_staff": false,
             "last_login": "2011-04-17 04:46:57",
             "groups": [
@@ -400,7 +400,8 @@
         "fields": {
             "organization": "SLX364903",
             "document_store": "hni_testorg_slx364903",
-            "sms_tel_number": "919880734937"
+            "sms_tel_number": "919880734937",
+            "outgoing_number": "1"
         }
     },
     {
@@ -552,7 +553,7 @@
             "username": "mamytest@mailinator.com",
             "first_name": "mamy rasamoel",
             "is_active": true,
-            "is_superuser": true,
+            "is_superuser": false,
             "is_staff": true,
             "last_login": "2012-11-08 17:00:48",
             "groups": [
@@ -843,6 +844,21 @@
         "model": "accountmanagement.datasenderontrialaccount",
         "fields":{
             "organization" : "COJ00001"
+        }
+    },
+    {
+        "pk": "1",
+        "model": "accountmanagement.smsc",
+        "fields":{
+            "vumi_username" : "vumi_user"
+        }
+    },
+    {
+        "pk": "1",
+        "model": "accountmanagement.outgoingnumbersetting",
+        "fields":{
+            "phone_number" : "24123234",
+            "smsc" : "1"
         }
     }
 ]
