@@ -112,6 +112,7 @@ class EditDataSenderView(TemplateView):
         manager = get_database_manager(request.user)
         reporter_entity = ReporterEntity(contact_by_short_code(manager, reporter_id))
         email = reporter_entity.email
+        short_code = reporter_entity.entity.short_code
         org_id = request.user.get_profile().org_id
         form = EditReporterRegistrationForm(org_id=org_id, existing_email=email,  data=request.POST)
         message = None
@@ -130,7 +131,14 @@ class EditDataSenderView(TemplateView):
 
                     data_sender_name = self._update_name_in_postgres_if_exists(form, reporter_entity)
 
-                    datasender_dict = {'name': data_sender_name, 'mobile_number': form.cleaned_data['telephone_number']}
+                    datasender_dict = {
+                                        'name': data_sender_name,
+                                        'mobile_number': form.cleaned_data['telephone_number'],
+                                        'geo_code': form.cleaned_data['geo_code'],
+                                        'location': form.cleaned_data['location'],
+                                        'short_code': short_code,
+                                        'email': form.cleaned_data['email']
+                    }
                     update_submission_search_for_datasender_edition(manager, reporter_id, datasender_dict)
                     message = _("Your changes have been saved.")
 

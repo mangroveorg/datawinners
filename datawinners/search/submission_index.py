@@ -192,17 +192,18 @@ def get_submission_meta_fields():
 
 
 def update_submission_search_for_datasender_edition(dbm, short_code, datasender_dict):
-    kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): short_code}
-    name = datasender_dict['name'] if datasender_dict['name'] else datasender_dict['mobile_number']
-    fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: name}
+    fields_mapping = {}
     project_form_model_ids = [project.id for project in get_all_projects(dbm, short_code)]
 
-    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name).doctypes(*project_form_model_ids)
-    query = query[:query.count()].filter(**kwargs)
+    for project_form_model_id in project_form_model_ids:
+        kwargs = {"%s%s" % (project_form_model_id+"_reporter.short_code.short_code", "_value"): short_code}
+        fields_mapping[project_form_model_id+"_reporter"] = datasender_dict
 
-    for survey_response in query.values_dict('void'):
-        SubmissionIndexUpdateHandler(dbm.database_name, survey_response._type).update_field_in_submission_index(
-            survey_response._id, fields_mapping)
+        query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name).doctypes(*project_form_model_ids)
+        query = query[:query.count()].filter(**kwargs)
+
+        for survey_response in query.values_dict('void'):
+            SubmissionIndexUpdateHandler(dbm.database_name, survey_response._type).update_field_in_submission_index(survey_response._id, fields_mapping)
 
 
 def _get_submissions_for_unique_id_entry(args, dbm, project):

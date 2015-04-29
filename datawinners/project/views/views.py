@@ -571,6 +571,9 @@ class SubjectWebQuestionnaireRequest():
             if response.success:
                 ReportRouter().route(organization.org_id, response)
                 #assumption q6 - unique_id code and q2 - lastname codes cannot be changed
+                for subject_fields in response.processes_data:
+
+
                 update_submission_search_for_subject_edition(self.manager, self.form_model.entity_type, response.processed_data['q6'], response.processed_data['q2'])
                 success_message = _("Your changes have been saved.") if is_update else self.success_message(
                     response.short_code)
