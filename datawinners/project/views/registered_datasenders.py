@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
 from datawinners.main.database import get_database_manager
+from datawinners.settings import ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
 from datawinners.utils import strip_accents, lowercase_and_strip_accents
 
 
@@ -18,7 +19,7 @@ def registered_ds_count(request):
 
 
 def get_registered_datasender_count(dbm, questionnaire_name):
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type='reporter')
     search = search.query("term", projects_value=lowercase_and_strip_accents(questionnaire_name))
     search = search.query("term", void=False)
