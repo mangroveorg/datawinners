@@ -1,4 +1,5 @@
 import cgi
+from copy import copy
 import elasticutils
 
 from datawinners.search.index_utils import es_questionnaire_field_name
@@ -52,7 +53,7 @@ class DatasenderQueryResponseCreator():
             result.append("")
 
     def create_response(self, search_results, show_projects=True):
-        required_field_names = DATASENDER_DISPLAY_FIELD_ORDER
+        required_field_names = copy(DATASENDER_DISPLAY_FIELD_ORDER)
 
         if not show_projects:
             required_field_names.remove('projects')
