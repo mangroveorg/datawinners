@@ -203,3 +203,20 @@ class TestScheduler(unittest.TestCase):
             send_reminders_for_an_organization(org_mock, date.today(), self.sms_client,
                                                self.FROM_NUMBER, dbm)
             org_mock.increment_message_count_for.assert_called_once_with(sent_reminders_count=4)
+
+    def test_should_increment_charged_reminders_count_on_sending_reminders_for_organization(self):
+        org_mock = Mock(spec=Organization)
+        org_mock.org_id = 'test'
+        dbm = Mock()
+        dbm._load_document.return_value = self.project
+        message_tracker_mock = Mock(spec=MessageTracker)
+        org_mock._get_message_tracker.return_value = message_tracker_mock
+        with patch("datawinners.scheduler.scheduler.get_reminder_repository") as get_reminder_repository_mock:
+            reminder_repository_mock = Mock(spec=ReminderRepository)
+            self.reminder1.project_id = 'test_project'
+            reminder_repository_mock.get_all_reminders_for.return_value = [self.reminder1]
+            get_reminder_repository_mock.return_value = reminder_repository_mock
+            send_reminders_for_an_organization(org_mock, date.today(), self.sms_client,
+                                               self.FROM_NUMBER, dbm, True)
+            org_mock.increment_message_count_for.assert_called_once_with(sent_reminders_count=4,
+                                                                         sent_reminders_charged_count=4)

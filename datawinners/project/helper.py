@@ -243,7 +243,8 @@ def broadcast_message(data_sender_phone_numbers, message, organization_tel_numbe
     for phone_number in data_sender_phone_numbers:
         if phone_number is not None and phone_number != TEST_REPORTER_MOBILE_NUMBER:
             logger.info(("Sending broadcast message to %s from %s") % (phone_number, organization_tel_number))
-            sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message, MSG_TYPE_USER_MSG)
+            sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message, MSG_TYPE_USER_MSG,
+                                           message_tracker)
         if sms_sent:
             message_tracker.increment_message_count_for(send_message_count=1)
         else:
