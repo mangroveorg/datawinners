@@ -213,8 +213,9 @@ def _get_submissions_for_unique_id_entry(args, dbm, project):
     return query
 
 
-def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code, last_name):
+def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code, last_name, subject_fields):
     projects = []
+    fields_mapping = {}
     for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=unique_id_type[0], include_docs=True):
         projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc'])))
     for project in projects:
@@ -225,9 +226,17 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
 
         if entity_field_code:
             unique_id_field_name = es_questionnaire_field_name(entity_field_code, project.id)
+            subject_form_model = get_form_model_by_entity_type(dbm, unique_id_type)
+            fields_mapping[]
+            for key, val in subject_fields:
+                value = subject_fields[key+val]
+                if isinstance(value, (tuple,list, float, int)):
+                    fields_mapping[unique_id_field_name+"."+subject_form_model.id+"_"+key+val] = unicode(','.join(str(val) for val in value), "utf-8")
+                else:
+                    fields_mapping[unique_id_field_name+"."+subject_form_model.id+"_"+key+val] = value
 
-            fields_mapping = {unique_id_field_name: last_name}
-            args = {es_unique_id_code_field_name(unique_id_field_name): short_code}
+            # fields_mapping = {unique_id_field_name: last_name}
+            args = {unique_id_field_name+"."+subject_form_model.id+"_q6."+subject_form_model.id+"_q6_exact": short_code}
 
             query = _get_submissions_for_unique_id_entry(args, dbm, project)
 
@@ -240,7 +249,7 @@ def update_submission_search_index(submission_doc, dbm, refresh_index=True):
     es = get_elasticsearch_handle()
     form_model = FormModel.get(dbm, submission_doc.form_model_id)
     search_dict = _meta_fields(submission_doc, dbm)
-    _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
+    _update_wfields_mappingith_form_model_fields(dbm, submission_doc, search_dict, form_model)
     es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
 
 
