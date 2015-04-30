@@ -24,7 +24,7 @@ class NoSMSCException(Exception):
 
 class SMSClient(object):
 
-    def send_sms(self,from_tel, to_tel, message, message_type="Unknown", message_tracker=None):
+    def send_sms(self, from_tel, to_tel, message, message_type="Unknown", message_tracker=None):
         message = strip_accents(message)
         result = False
         if is_not_empty(from_tel):
@@ -35,7 +35,6 @@ class SMSClient(object):
             if organization_setting is not None and organization_setting.outgoing_number is not None:
                 smsc = organization_setting.outgoing_number.smsc
             if smsc is None:
-                logger.error("No SMSC configured for %s" % organization_setting.organization.org_id)
                 raise NoSMSCException()
             socket.setdefaulttimeout(120)
             logger.debug("Posting sms to %s" % settings.VUMI_API_URL)
