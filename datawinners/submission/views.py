@@ -33,7 +33,7 @@ from datawinners.submission.submission_utils import PostSMSProcessorLanguageActi
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsLinkedToProject
 from datawinners.submission.submission_utils import PostSMSProcessorCheckLimits
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsRegistered
-from datawinners.utils import get_database_manager_for_org
+from datawinners.utils import get_database_manager_for_org, strip_accents
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.feeds.database import get_feeds_db_for_org
 from datawinners.feeds.mail_client import mail_feed_errors
@@ -88,7 +88,7 @@ def sms(request):
     message = Responder().respond(request)
     if not message:
         return HttpResponse(status=403)
-    response = HttpResponse(message[:160])
+    response = HttpResponse(strip_accents(unicode(message[:160])))
     response['X-Vumi-HTTPRelay-Reply'] = 'true'
     response['Content-Length'] = len(response.content)
     return response
