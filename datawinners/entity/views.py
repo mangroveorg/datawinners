@@ -28,11 +28,12 @@ from datawinners.main.database import get_database_manager
 from datawinners.main.utils import get_database_name
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import delete_mapping, es_questionnaire_field_name
-from datawinners.search.submission_index import update_submission_search_for_subject_edition
+from datawinners.search.submission_index import update_submission_search_for_subject_edition, SubmissionSearchStore
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from datawinners.workbook_utils import workbook_add_sheet, get_excel_sheet
-from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
+from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE, ProjectDocument
 from mangrove.form_model.field import field_to_json, DateField
+from mangrove.form_model.project import Project
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -619,6 +620,7 @@ def save_questionnaire(request):
 
         form_model = get_form_model_by_code(manager, saved_short_code)
         detail_dict = dict()
+        projects = []
         if new_short_code != saved_short_code:
             try:
                 form_model.form_code = new_short_code
@@ -631,6 +633,8 @@ def save_questionnaire(request):
                                                         "Questionnaire with same code already exists.")}))
                 return HttpResponseServerError(e.message)
 
+
+
         json_string = request.POST['question-set']
         question_set = json.loads(json_string)
         try:
@@ -640,6 +644,12 @@ def save_questionnaire(request):
             changed = get_changed_questions(saved_fields, form_model.fields)
             changed.update(dict(entity_type=form_model.entity_type[0].capitalize()))
             detail_dict.update(changed)
+            for row in manager.load_all_rows_in_view('projects_by_subject_type', key=request.POST['entity-type'], include_docs=True):
+                projects.append(Project.new_from_doc(manager, ProjectDocument.wrap(row['doc'])))
+
+            for project in projects:
+                SubmissionSearchStore(manager, project, project).recreate_and_populate_elastic_store()
+
             kwargs = dict()
             if request.POST.get("project-name") is not None:
                 kwargs.update(dict(project=request.POST.get("project-name").capitalize()))

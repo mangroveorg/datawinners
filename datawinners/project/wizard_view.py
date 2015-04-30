@@ -137,7 +137,7 @@ def edit_project(request, project_id):
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
-        detail = _get_changed_data(questionnaire , project_info)
+        detail = _get_changed_data(questionnaire, project_info)
         if detail.get("Name"):
             detail.pop("Name")
         try:
