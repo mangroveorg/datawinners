@@ -144,7 +144,6 @@ table.no-border{
 .table{
   width: 100%;
   margin-bottom: 40px;
-  margin-top: 20px;
 }
 
 .sub_section{
@@ -161,7 +160,51 @@ table.no-border{
 }
 
 .dashboard_icon {
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   padding-bottom: 15px;
+}
+
+.dashboard_top_icon {
+  width: 85px;
+  height: 85px;
+  padding-bottom: 15px;
+}
+
+.help_background{
+ background-color: #E8EFF6;
+}
+
+#help_message_content{
+  background:-moz-linear-gradient(top, #ffffff, #FEEA89);
+  background:-webkit-linear-gradient(top, #ffffff, #FEEA89);
+  background:-o-linear-gradient(top, #ffffff, #FEEA89);
+  position: absolute; margin-top: -60px;
+}
+
+.external_icon{
+  height: 10px;
+  width: 10px;
+}
+
+.play_icon{
+  height: 12px;
+  width: 12px;
+}
+
+#help_message_arrow{
+  position: absolute;
+  display: none;
+  margin-left: 20px;
+  width: 30px;
+  height: 10px;
+  margin-top: -12px;
+}
+
+#help_message_dialog_close{
+  position: absolute;
+  float: right;
+  margin-top: -18px;
+  margin-left: 240px;
+  z-index: 12;
 }

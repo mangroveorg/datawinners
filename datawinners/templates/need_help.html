@@ -1,0 +1,31 @@
+{% block page_js %}
+    <script type="text/javascript">
+       $(document).ready(function(){
+           $( "#need_help_link" ).click(function() {
+               $('#div_iframe').removeClass("none");
+               $("#help_iframe").attr("src", "https://datawinners.staging.wpengine.com/knowledge-base/category/account/?template=help");
+               $("#need_help_link").addClass("active_button");
+               $("#help_iframe").addClass("block");
+           });
+           $( ".close_help_button" ).click(function() {
+               $("#div_iframe").addClass("none");
+               $("#help_iframe").attr("src", "");
+               $("#need_help_link").removeClass("active_button")
+           });
+       });
+    </script>
+{% endblock %}
+
+{% block help_button %}
+
+        <a href="javascript:void(0);" target="myFrame" class="float_right" id="need_help_link">
+        <img src="/media/images/help_button.png" border="2">
+            </a>
+
+        <div class="padding_left_right_10 none" id="div_iframe">
+            <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">Close Window</span></a>
+            <iframe src="" width="860" name="myFrame" scrolling="no" id="help_iframe" class="float_right"></iframe>
+            <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">Close Window</span></a>
+        </div>
+    
+{% endblock %}

@@ -4,7 +4,7 @@
 {% load dw_tabs %}
 
 {% block page_title %}{% trans page_heading %} {% endblock %}
-{% block section_title %}{% trans page_heading %} {% endblock %}
+{% block section_title %}{% trans page_heading %} {% include "need_help.html" %} {% endblock %}
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_alldata.css" rel="stylesheet"/>

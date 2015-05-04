@@ -19,6 +19,25 @@
     <script type="text/javascript" src="/media/javascript/underscore.string.min.js"></script>
     <script type="text/javascript" src="/media/javascript/show_upgrade_message.js"></script>
     <script type="text/javascript" src="/media/javascript/ie8_warning.js"></script>
+    <script type="text/javascript">
+       $(document).ready(function(){
+           $( "#need_help_link" ).click(function() {
+               $('#div_iframe').toggle();
+               $("#help_iframe").attr("src", "http://datawinners.staging.wpengine.com/knowledge-base/category/general-information/?template=help");
+               $("#need_help_link").css("background", "#fff");
+               $("#help_iframe").css("display", "block");
+           });
+           $( ".close_help_button" ).click(function() {
+               $("#help_iframe").css("display", "none");
+               $("#div_iframe").css("display", "none");
+               $("#help_iframe").attr("src", "");
+               $("#need_help_link").css("background", "");
+           });
+           if (($("#section_title").html()) == "Dashboard"){
+               $( "#need_help_link" ).css("display", "none");
+           }
+       });
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -36,8 +55,10 @@
         <div id="container_content">
 
             <div id="page_title">
-                {% block section_title %}
-                {% endblock %}
+                    {% block section_title %}
+                    {% endblock %}
+                    {% block section_help %}
+                    {% endblock %}
             </div>
             <div class="container_24">
 

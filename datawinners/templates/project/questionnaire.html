@@ -1,4 +1,8 @@
+
 {% extends 'project/tab_navigation.html' %}
+{% block section_help %}
+    {% include 'need_help.html' %}
+{% endblock %}
 {% load i18n %}
 
 {% block page_title %}{% trans "Questionnaire" %} {% endblock %}
