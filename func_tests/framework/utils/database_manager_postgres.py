@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
 from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSetting, Organization
+from datawinners.accountmanagement.models import SMSC, OutgoingNumberSetting
 
 try:
     from resources.local_settings import DATABASES
@@ -46,8 +47,12 @@ class DatabaseManager(object):
         """
         ngo_user_profile = NGOUserProfile.objects.get(user__email=email)
         org_setting = OrganizationSetting.objects.get(organization__org_id=ngo_user_profile.org_id)
-
+        smsc = SMSC(vumi_username="smsc")
+        smsc.save()
+        outgoing_number = OutgoingNumberSetting(phone_number=telephone_number, smsc=smsc)
+        outgoing_number.save()
         org_setting.sms_tel_number = telephone_number
+        org_setting.outgoing_number = outgoing_number
         org_setting.save()
 
     def delete_organization_all_details(self, email):
@@ -64,6 +69,9 @@ class DatabaseManager(object):
         ngo_user_profile = NGOUserProfile.objects.get(user=user)
         org = Organization.objects.get(org_id = ngo_user_profile.org_id)
         org_setting = OrganizationSetting.objects.get(organization=org)
+        if org_setting.outgoing_number.smsc is not None and org_setting.outgoing_number.vumi_username == "smsc":
+            org_setting.outgoing_number.smsc.delete()
+            org_setting.outgoing_number.delete()
 
         document_store = org_setting.document_store
 
