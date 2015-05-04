@@ -1,5 +1,5 @@
 from datawinners.search.mapping import form_model_change_handler, entity_form_model_change_handler
-from datawinners.search.submission_index import update_submission_search_index
+from datawinners.search.submission_index import update_submission_search_index, update_ds_info_in_submission
 from datawinners.search.subject_index import entity_search_update, contact_search_update
 from mangrove.datastore.documents import EntityDocument, FormModelDocument, SurveyResponseDocument, EntityFormModelDocument, \
     ContactDocument
@@ -16,6 +16,8 @@ def register_postsave_handlers():
     FormModelDocument.register_post_update(form_model_change_handler)
     FormModelDocument.register_post_update(update_datasender_for_project_change)
     SurveyResponseDocument.register_post_update(update_submission_search_index)
+    ContactDocument.register_post_update(update_ds_info_in_submission)
+
     _postsave_registered = True
 
 register_postsave_handlers()

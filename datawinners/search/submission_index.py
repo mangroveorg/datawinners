@@ -191,20 +191,6 @@ def get_submission_meta_fields():
     return submission_meta_fields
 
 
-def update_submission_search_for_datasender_edition(dbm, short_code, datasender_dict):
-    fields_mapping = {}
-    project_form_model_ids = [project.id for project in get_all_projects(dbm, short_code)]
-
-    for project_form_model_id in project_form_model_ids:
-        kwargs = {"%s%s" % (project_form_model_id+"_reporter.short_code.short_code", "_value"): short_code}
-        fields_mapping[project_form_model_id+"_reporter"] = datasender_dict
-
-        query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name).doctypes(*project_form_model_ids)
-        query = query[:query.count()].filter(**kwargs)
-
-        for survey_response in query.values_dict('void'):
-            SubmissionIndexUpdateHandler(dbm.database_name, survey_response._type).update_field_in_submission_index(survey_response._id, fields_mapping)
-
 
 def _get_submissions_for_unique_id_entry(args, dbm, project):
     query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(
@@ -248,6 +234,25 @@ def update_submission_search_index(submission_doc, dbm, refresh_index=True):
     search_dict = _meta_fields(submission_doc, dbm)
     _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
     es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
+
+def update_ds_info_in_submission(entity_doc, dbm):
+    fields_mapping = {}
+    project_form_model_ids = [project.id for project in get_all_projects(dbm, "rep1")]
+
+    # datasender_dict = {}
+    # for datasender_info in entity_doc.data:
+    #     datasender_dict.update({datasender_info: entity_doc.data[datasender_info]['value']})
+    datasender_dict = contact_dict(entity_doc, dbm, get_form_model_by_code(dbm, 'reg'))
+
+    for project_form_model_id in project_form_model_ids:
+        kwargs = {"%s%s" % (project_form_model_id+"_reporter.short_code.short_code", "_value"): entity_doc.data['short_code']['value']}
+        fields_mapping[project_form_model_id+"_reporter"] = datasender_dict
+
+        query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name).doctypes(*project_form_model_ids)
+        query = query[:query.count()].filter(**kwargs)
+
+        for survey_response in query.values_dict('void'):
+            SubmissionIndexUpdateHandler(dbm.database_name, survey_response._type).update_field_in_submission_index(survey_response._id, fields_mapping)
 
 
 def status_message(status):

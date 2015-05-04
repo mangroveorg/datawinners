@@ -38,3 +38,8 @@ def contact_search_update(entity_doc, dbm):
     if entity_doc.aggregation_paths['_type'] == REPORTER_ENTITY_TYPE:
         update_datasender_index(entity_doc, dbm)
         return
+
+def update_ds_info_in_submission(entity_doc, dbm):
+    if entity_doc.aggregation_paths['_type'] == REPORTER_ENTITY_TYPE:
+        update_datasender_index(entity_doc, dbm)
+        return

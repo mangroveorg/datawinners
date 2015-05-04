@@ -620,7 +620,8 @@ def save_questionnaire(request):
 
         form_model = get_form_model_by_code(manager, saved_short_code)
         detail_dict = dict()
-        projects = []
+        old_projects = []
+        new_projects = []
         if new_short_code != saved_short_code:
             try:
                 form_model.form_code = new_short_code
@@ -644,15 +645,20 @@ def save_questionnaire(request):
             changed = get_changed_questions(saved_fields, form_model.fields)
             changed.update(dict(entity_type=form_model.entity_type[0].capitalize()))
             detail_dict.update(changed)
-            for row in manager.load_all_rows_in_view('projects_by_subject_type', key=request.POST['entity-type'], include_docs=True):
-                projects.append(Project.new_from_doc(manager, ProjectDocument.wrap(row['doc'])))
 
-            for project in projects:
-                SubmissionSearchStore(manager, project, project).recreate_and_populate_elastic_store()
+            # for row in manager.load_all_rows_in_view('projects_by_subject_type', key=request.POST['entity-type'], include_docs=True):
+            #     old_projects.append(Project.new_from_doc(manager, ProjectDocument.wrap(row['doc'])))
 
             kwargs = dict()
             if request.POST.get("project-name") is not None:
                 kwargs.update(dict(project=request.POST.get("project-name").capitalize()))
+
+            for row in manager.load_all_rows_in_view('projects_by_subject_type', key=request.POST['entity-type'], include_docs=True):
+                new_projects.append(Project.new_from_doc(manager, ProjectDocument.wrap(row['doc'])))
+
+            for project in new_projects:
+                SubmissionSearchStore(manager, project, project).recreate_and_populate_elastic_store()
+
             UserActivityLog().log(request, action=EDITED_REGISTRATION_FORM, detail=json.dumps(detail_dict), **kwargs)
             return HttpResponse(json.dumps({'success': True, 'form_code': form_model.form_code}))
         except QuestionCodeAlreadyExistsException as e:
