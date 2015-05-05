@@ -69,7 +69,8 @@ class DatabaseManager(object):
         ngo_user_profile = NGOUserProfile.objects.get(user=user)
         org = Organization.objects.get(org_id = ngo_user_profile.org_id)
         org_setting = OrganizationSetting.objects.get(organization=org)
-        if org_setting.outgoing_number.smsc is not None and org_setting.outgoing_number.smsc.vumi_username == "smsc":
+        if org_setting.outgoing_number is not None and org_setting.outgoing_number.smsc is not None and \
+           org_setting.outgoing_number.smsc.vumi_username == "smsc":
             org_setting.outgoing_number.smsc.delete()
             org_setting.outgoing_number.delete()
 
