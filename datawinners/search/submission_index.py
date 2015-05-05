@@ -116,7 +116,7 @@ class SubmissionSearchStore():
                 unique_id_model = get_form_model_by_entity_type(self.dbm, [field.unique_id_type])
                 unique_id_mapping = get_subject_fields_mapping(unique_id_model)
                 subject_dict[es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)] = unique_id_mapping[unique_id_model.id]
-            if isinstance(field, FieldSet) and field.is_group():
+            if isinstance(field, FieldSet) and (field.is_group() or field.is_repeat()):
                 self._get_submission_fields(fields_definition, field.fields, field.code)
                 continue
             fields_definition.append(
