@@ -103,10 +103,17 @@ class SubmissionQueryResponseCreator(object):
                 if not key in meta_fields:
                     if key in entity_question_codes:
                         efm = entity_question_form_model_map[key]
-                        self.combine_name_and_id(short_code=res.get(key).get(efm.id+'_q6'),
+                        if res.get(key):
+                            self.combine_name_and_id(short_code=res.get(key).get(efm.id+'_q6'),
                                                  entity_name=res.get(key).get(efm.id+'_q2'), submission=submission)
-                        for field in efm.fields:
-                            submission.append(res.get(key).get(efm.id+"_"+field.code))
+                            for field in efm.fields:
+                                submission.append(res.get(key).get(efm.id+"_"+field.code))
+                        else:
+                            #Adding blank value for name of the entity type without a submission
+                            submission.append("")
+                            for field in efm.fields:
+                                submission.append("")
+
                     elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
                         self._populate_datasender(res, submission)
                     elif key == 'status':
