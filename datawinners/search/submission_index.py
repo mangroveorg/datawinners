@@ -116,7 +116,7 @@ class SubmissionSearchStore():
                 unique_id_model = get_form_model_by_entity_type(self.dbm, [field.unique_id_type])
                 unique_id_mapping = get_subject_fields_mapping(unique_id_model)
                 subject_dict[es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)] = unique_id_mapping[unique_id_model.id]
-            if isinstance(field, FieldSet) and (field.is_group() or field.is_repeat()):
+            if isinstance(field, FieldSet) and field.is_group():
                 self._get_submission_fields(fields_definition, field.fields, field.code)
                 continue
             fields_definition.append(
@@ -301,10 +301,10 @@ def _lookup_contact_by_uid(dbm, uid):
     return UNKNOWN, UNKNOWN
 
 
-def lookup_entity_name(dbm, id, entity_type):
+def lookup_entity_data(dbm, id, entity_type):
     try:
         if id:
-            return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
+            return get_by_short_code_include_voided(dbm, id, entity_type).data
     except DataObjectNotFound:
         pass
     return " "
@@ -447,13 +447,21 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
     search_dict.update({'is_anonymous': submission_doc.is_anonymous_submission})
 
 def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
+    uni_id_data = {}
     for entry in repeat_entries:
         for field in fieldset_field.fields:
             if isinstance(field, UniqueIdField):
                 unique_code = entry.get(field.code)
-                unique_id_name = lookup_entity_name(dbm, str(unique_code), [field.unique_id_type])
+                unique_id_data = lookup_entity_data(dbm, str(unique_code), [field.unique_id_type])
                 entry[field.code+'_unique_code'] = unique_code if unique_code else ''
-                entry[field.code] = unique_id_name
+                # entry[field.code] = unique_id_data.get('name')
+                for key, value in unique_id_data.iteritems():
+                    if isinstance(unique_id_data[key]["value"], list):
+                        value = ",  ".join(map(str, unique_id_data[key]["value"]))
+                        uni_id_data.update({key: value})
+                    else:
+                        uni_id_data.update({key: unique_id_data[key]["value"]})
+                entry[field.code] = str(uni_id_data)
             elif isinstance(field, FieldSet):
                 _update_name_unique_code(dbm, entry.get(field.code), field)
 
