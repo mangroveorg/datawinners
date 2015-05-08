@@ -1,13 +1,14 @@
 import unittest
-from elasticsearch_dsl.result import Result, Response
-from mock import MagicMock, patch
 
-from datawinners.search.submission_query import SubmissionQueryResponseCreator, \
+from elasticsearch_dsl.result import Result, Response
+from mock import MagicMock
+
+from datawinners.search.submission_response_creator import SubmissionQueryResponseCreator, \
     _format_fieldset_values_for_representation
+from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import UniqueIdField, TextField, IntegerField, SelectField, FieldSet, PhotoField, \
     VideoField
 from mangrove.form_model.form_model import FormModel
-from src.mangrove.mangrove.datastore.database import DatabaseManager
 
 
 class TestSubmissionResponseCreator(unittest.TestCase):
@@ -23,8 +24,9 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         form_model.entity_questions = [UniqueIdField('Test subject', 'name', 'q1', 'which subject')]
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
-        submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(required_field_names,
-                                                                                                   results)
+        submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(
+            required_field_names,
+            results)
 
         expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
                      ["sub_last_name<span class='small_grey'>  subject_id</span>"]]]
@@ -42,8 +44,9 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
 
-        submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(required_field_names,
-                                                                                                   results)
+        submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(
+            required_field_names,
+            results)
 
         expected = [['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer']]
         self.assertEqual(submissions, expected)

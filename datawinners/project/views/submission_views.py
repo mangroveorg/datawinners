@@ -16,8 +16,6 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
-import resource
-from psycopg2._psycopg import Boolean
 
 from datawinners import settings
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
@@ -40,7 +38,7 @@ from datawinners.project.submission.submission_search import get_submissions_pag
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
-from datawinners.search.submission_query import SubmissionQueryResponseCreator
+from datawinners.search.submission_response_creator import SubmissionQueryResponseCreator
 from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet, DateTimeField
 from mangrove.form_model.project import Project
 from mangrove.transport.player.new_players import WebPlayerV2

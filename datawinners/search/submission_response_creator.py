@@ -1,14 +1,15 @@
 import json
 import datetime
-
 from django.utils.translation import ugettext, get_language
-
 from datawinners.accountmanagement.localized_time import convert_utc_to_localized
-from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
+from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.form_model.field import FieldSet, SelectField, MediaField, PhotoField, UniqueIdField
 from mangrove.form_model.form_model import get_form_model_by_entity_type, header_fields
 from mangrove.form_model.project import get_entity_type_fields
+
+UNIQUE_ID_FIELD_CODE = 'q6'
+LAST_NAME_FIELD_CODE = 'q2'
 
 
 class SubmissionQueryResponseCreator(object):
@@ -17,10 +18,8 @@ class SubmissionQueryResponseCreator(object):
         self.localized_time_delta = localized_time_delta
         self.dbm = dbm
 
-    def combine_name_and_id(self, short_code, entity_name, submission):
-        return submission.append(
-            ["%s<span class='small_grey'>  %s</span>" % (
-                entity_name, short_code)]) if entity_name else submission.append(entity_name)
+    def combine_name_and_id(self, short_code, entity_name):
+        return "%s<span class='small_grey'>  %s</span>" % (entity_name, short_code) if entity_name else entity_name
 
     def get_field_set_fields(self, fields, parent_field_code=None):
         field_set_field_dict = {}
@@ -36,15 +35,15 @@ class SubmissionQueryResponseCreator(object):
         if res.get(SubmissionIndexConstants.DATASENDER_ID_KEY) == u'N/A':
             submission.append(res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY))
         else:
-            display_field = 'name' if res[self.form_model.id+'_reporter']['name'] else 'mobile_number'
-            self.combine_name_and_id(res[self.form_model.id+'_reporter']['short_code'],
-                                     res[self.form_model.id+'_reporter'][display_field], submission)
-            submission.append(res[self.form_model.id+'_reporter']['name'])
-            submission.append(res[self.form_model.id+'_reporter']['short_code'])
-            submission.append(res[self.form_model.id+'_reporter']['location'])
-            submission.append(res[self.form_model.id+'_reporter']['geo_code'])
-            submission.append(res[self.form_model.id+'_reporter']['mobile_number'])
-            submission.append(res[self.form_model.id+'_reporter']['email'])
+            display_field = 'name' if res[self.form_model.id + '_reporter']['name'] else 'mobile_number'
+            submission.append(self.combine_name_and_id(res[self.form_model.id + '_reporter']['short_code'],
+                                                       res[self.form_model.id + '_reporter'][display_field]))
+            submission.append(res[self.form_model.id + '_reporter']['name'])
+            submission.append(res[self.form_model.id + '_reporter']['short_code'])
+            submission.append(res[self.form_model.id + '_reporter']['location'])
+            submission.append(res[self.form_model.id + '_reporter']['geo_code'])
+            submission.append(res[self.form_model.id + '_reporter']['mobile_number'])
+            submission.append(res[self.form_model.id + '_reporter']['email'])
 
     def _populate_error_message(self, key, language, res, submission):
         error_msg = res.get(key)
@@ -66,53 +65,61 @@ class SubmissionQueryResponseCreator(object):
         media_field_code = []
         for media_field in self.form_model.media_fields:
             if isinstance(media_field, PhotoField):
-                media_field_code.append(es_questionnaire_field_name(media_field.code, self.form_model.id, media_field.parent_field_code))
+                media_field_code.append(
+                    es_questionnaire_field_name(media_field.code, self.form_model.id, media_field.parent_field_code))
         return media_field_code
 
-    def _get_meta_field_details(self, entity_question_codes):
+    def _get_meta_field_details(self):
         questionnaire_id = self.form_model.id
         entity_question_form_model_map = {}
-        # meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
         meta_fields = []
-        meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
         for field in self.form_model.entity_questions:
             efm = get_form_model_by_entity_type(self.dbm, [field.unique_id_type])
             unique_id_field_name = es_questionnaire_field_name(field.code, questionnaire_id, field.parent_field_code)
             entity_question_form_model_map[unique_id_field_name] = efm
             unique_id_headers = header_fields(efm, key_attribute='code')
             for key in unique_id_headers.iterkeys():
-                meta_fields.append(unique_id_field_name+'.'+efm.id+'_'+key)
+                meta_fields.append(unique_id_field_name + '.' + efm.id + '_' + key)
         ds_field_names, labels, codes = get_entity_type_fields(self.dbm)
         for field in ds_field_names:
             meta_fields.append(questionnaire_id + '_reporter.' + field)
         return entity_question_form_model_map, meta_fields
 
+    def _format_unique_id_values_for_representation(self, value, efm):
+        submission = []
+        if value:
+            submission.append(self.combine_name_and_id(
+                short_code=value.get(efm.id + '_' + UNIQUE_ID_FIELD_CODE),
+                entity_name=value.get(efm.id + '_' + LAST_NAME_FIELD_CODE)))
+            for field in efm.fields:
+                submission.append(value.get(efm.id + "_" + field.code))
+        else:
+            # Adding blank value for name of the entity type without a submission
+            submission.append("")
+            for field in efm.fields:
+                submission.append("")
+        return submission
+
     def create_response(self, required_field_names, search_results):
-        questionnaire_id = self.form_model.id
-        entity_question_codes = [es_questionnaire_field_name(field.code, questionnaire_id, field.parent_field_code) for field in
-                                 self.form_model.entity_questions]
-        entity_question_form_model_map, meta_fields = self._get_meta_field_details(entity_question_codes)
-        fieldset_fields = self.get_field_set_fields(self.form_model.fields)
+        entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id, field.parent_field_code)
+                                 for
+                                 field in self.form_model.entity_questions]
+        entity_question_form_model_map, meta_fields = self._get_meta_field_details()
+        field_set_fields = self.get_field_set_fields(self.form_model.fields)
         media_field_codes = self._get_media_field_codes()
         image_fields = self._get_image_field_codes()
         submissions = []
         language = get_language()
         for res in search_results.hits:
-            submission = [res._meta.id]
+            submission_id = res._meta.id
+            submission = [submission_id]
             for key in required_field_names:
-                if not key in meta_fields:
+                if key not in meta_fields:
                     if key in entity_question_codes:
-                        efm = entity_question_form_model_map[key]
-                        if res.get(key):
-                            self.combine_name_and_id(short_code=res.get(key).get(efm.id+'_q6'),
-                                                 entity_name=res.get(key).get(efm.id+'_q2'), submission=submission)
-                            for field in efm.fields:
-                                submission.append(res.get(key).get(efm.id+"_"+field.code))
-                        else:
-                            #Adding blank value for name of the entity type without a submission
-                            submission.append("")
-                            for field in efm.fields:
-                                submission.append("")
+                        value = res.get(key, None)
+                        submission.extend(
+                            self._format_unique_id_values_for_representation(value,
+                                                                             entity_question_form_model_map.get(key)))
 
                     elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
                         self._populate_datasender(res, submission)
@@ -122,12 +129,13 @@ class SubmissionQueryResponseCreator(object):
                         self._convert_to_localized_date_time(key, res, submission)
                     elif key == 'error_msg':
                         self._populate_error_message(key, language, res, submission)
-                    elif key in fieldset_fields.keys():
+                    elif key in field_set_fields.keys():
                         submission.append(
-                            _format_fieldset_values_for_representation(res.get(key), fieldset_fields.get(key),
-                                                                       res._meta.id))
+                            _format_fieldset_values_for_representation(res.get(key), field_set_fields.get(key),
+                                                                       submission_id))
                     else:
-                        submission.append(self._append_if_attachments_are_present(res, key, media_field_codes, image_fields))
+                        submission.append(
+                            self._append_if_attachments_are_present(res, key, media_field_codes, image_fields))
             submissions.append(submission)
         return submissions
 
@@ -141,12 +149,14 @@ class SubmissionQueryResponseCreator(object):
         else:
             return res.get(ugettext(key))
 
+
 def _format_media_value(submission_id, value, thumbnail_flag=False):
     formatted_value = ""
     if thumbnail_flag:
         formatted_value = "<img src='/download/attachment/%s/preview_%s' alt=''/>" % (submission_id, value)
     if value:
-        return formatted_value+"  <a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, value, value)
+        return formatted_value + "  <a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, value, value)
+
 
 def _format_values(field_set, formatted_value, value_list, submission_id):
     if not value_list:
@@ -170,7 +180,7 @@ def _format_values(field_set, formatted_value, value_list, submission_id):
             value = _format_media_value(submission_id, value_dict.get(field.code), show_thumbnail)
             value = '' if not value else value
         elif isinstance(field, UniqueIdField):
-            value = value_dict.get(field.code)+' ('+value_dict.get(field.code+'_unique_code') + ')'
+            value = value_dict.get(field.code) + ' (' + value_dict.get(field.code + '_unique_code') + ')'
 
         else:
             value = value_dict.get(field.code) or ''

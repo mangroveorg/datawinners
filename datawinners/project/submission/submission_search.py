@@ -2,7 +2,7 @@ from elasticsearch import Elasticsearch, helpers
 from elasticsearch_dsl import Search, Q, F
 import elasticutils
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
-from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
+from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.query import ElasticUtilsHelper
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT

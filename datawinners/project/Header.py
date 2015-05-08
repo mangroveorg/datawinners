@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 from django.utils.translation import ugettext
 
-from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
+from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.form_model.field import DateField, GeoCodeField, FieldSet
@@ -64,11 +64,6 @@ class SubmissionsPageHeader():
         header = HeaderFactory(self.dbm, self._form_model).create_header(self.submission_type)
         header_dict = header.get_header_field_dict()
         header_dict.pop('ds_id', None)
-        unique_question_field_names = [es_unique_id_code_field_name(es_questionnaire_field_name(field.code, self._form_model.id, field.parent_field_code)) for
-                                       field in
-                                       self._form_model.entity_questions]
-        for field_name in unique_question_field_names:
-            header_dict.pop(field_name, None)
         return header_dict.values()
 
 

@@ -15,16 +15,13 @@ from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
 from mangrove.form_model.field import DateField, UniqueIdField, SelectField, FieldSet
-from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
-from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
-    es_unique_id_code_field_name, \
-    es_questionnaire_field_name, _add_text_field_mapping, _add_subject_field_mapping, get_fields_mapping_by_field_def, \
-    _add_reporter_field_mapping, subject_dict, contact_dict
-from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact, by_short_code, \
-    contact_by_short_code
-from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type, get_form_model_by_code, REPORTER
+from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, add_date_field_mapping, \
+    es_questionnaire_field_name, add_text_field_mapping, add_subject_field_mapping, add_reporter_field_mapping, \
+    subject_dict, contact_dict
+from mangrove.datastore.entity import get_by_short_code_include_voided, Contact, by_short_code
+from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type, get_form_model_by_code
 from mangrove.form_model.project import Project
 
 
@@ -54,8 +51,8 @@ class SubmissionSearchStore():
         try:
             mapping_old = self.get_old_mappings()
             # if mapping_old:
-                # self._verify_change_involving_date_field(mapping, mapping_old)
-                # self._verify_unique_id_change()
+            # self._verify_change_involving_date_field(mapping, mapping_old)
+            # self._verify_unique_id_change()
 
             # if not mapping_old or self._has_fields_changed(mapping, mapping_old):
             self.es.put_mapping(self.dbm.database_name, self.latest_form_model.id, mapping)
@@ -110,18 +107,17 @@ class SubmissionSearchStore():
         subject_dict = {}
         for field in fields:
             if isinstance(field, UniqueIdField):
-                # unique_id_field_name = es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)
-                # fields_definition.append(
-                #     get_field_definition(field, field_name=es_unique_id_code_field_name(unique_id_field_name)))
                 unique_id_model = get_form_model_by_entity_type(self.dbm, [field.unique_id_type])
                 unique_id_mapping = get_subject_fields_mapping(unique_id_model)
-                subject_dict[es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)] = unique_id_mapping[unique_id_model.id]
+                subject_dict[es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)] = \
+                    unique_id_mapping[unique_id_model.id]
             if isinstance(field, FieldSet) and field.is_group():
                 self._get_submission_fields(fields_definition, field.fields, field.code)
                 continue
             fields_definition.append(
                 get_field_definition(field,
-                                     field_name=es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)))
+                                     field_name=es_questionnaire_field_name(field.code, self.latest_form_model.id,
+                                                                            parent_field_name)))
         datasender_model = get_form_model_by_code(self.dbm, "reg")
         datasender_mapping = get_ds_fields_mapping(datasender_model)
         datasender_dict = {'reporter': datasender_mapping['reg']['properties']}
@@ -140,7 +136,7 @@ class SubmissionSearchStore():
         async_populate_submission_index.delay(self.dbm.database_name, self.latest_form_model.id)
 
     # def _add_text_field_mapping_for_submission(self, mapping_fields, field_def):
-    #     name = field_def["name"]
+    # name = field_def["name"]
     #     mapping_fields.update(
     #         {name: {"type": "multi_field", "fields": {
     #             name: {"type": "string"},
@@ -158,15 +154,15 @@ class SubmissionSearchStore():
         mapping = {"date_detection": False, "properties": mapping_fields}
         for field_def in fields_definition:
             if field_def.get("type") is "date":
-                _add_date_field_mapping(mapping_fields, field_def)
+                add_date_field_mapping(mapping_fields, field_def)
             elif "Subject" in field_def:
-                _add_subject_field_mapping(mapping_fields, field_def)
+                add_subject_field_mapping(mapping_fields, field_def)
 
             elif 'reporter' in field_def:
-                _add_reporter_field_mapping(mapping_fields, field_def, self.latest_form_model.id)
+                add_reporter_field_mapping(mapping_fields, field_def, self.latest_form_model.id)
 
             else:
-                _add_text_field_mapping(mapping_fields, field_def)
+                add_text_field_mapping(mapping_fields, field_def)
         return {doc_type: mapping}
 
     def _verify_unique_id_change(self):
@@ -189,7 +185,6 @@ class FieldTypeChangeException(Exception):
 
 def get_submission_meta_fields():
     return submission_meta_fields
-
 
 
 def _get_submissions_for_unique_id_entry(args, dbm, project):
@@ -216,10 +211,11 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
             subject_form_model = get_form_model_by_entity_type(dbm, unique_id_type)
             fields_mapping[unique_id_field_name] = subject_fields
             for key, val in subject_fields:
-                subject_dict[subject_form_model.id+"_"+key+val] = subject_fields[key+val]
+                subject_dict[subject_form_model.id + "_" + key + val] = subject_fields[key + val]
 
             fields_mapping = {unique_id_field_name: subject_dict}
-            args = {unique_id_field_name+"."+subject_form_model.id+"_q6."+subject_form_model.id+"_q6_exact": short_code}
+            args = {
+                unique_id_field_name + "." + subject_form_model.id + "_q6." + subject_form_model.id + "_q6_exact": short_code}
 
             query = _get_submissions_for_unique_id_entry(args, dbm, project)
 
@@ -235,24 +231,29 @@ def update_submission_search_index(submission_doc, dbm, refresh_index=True):
     _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
     es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
 
+
 def update_ds_info_in_submission(entity_doc, dbm):
     fields_mapping = {}
     project_form_model_ids = [project.id for project in get_all_projects(dbm, "rep1")]
 
     # datasender_dict = {}
     # for datasender_info in entity_doc.data:
-    #     datasender_dict.update({datasender_info: entity_doc.data[datasender_info]['value']})
+    # datasender_dict.update({datasender_info: entity_doc.data[datasender_info]['value']})
     datasender_dict = contact_dict(entity_doc, dbm, get_form_model_by_code(dbm, 'reg'))
 
     for project_form_model_id in project_form_model_ids:
-        kwargs = {"%s%s" % (project_form_model_id+"_reporter.short_code.short_code", "_value"): entity_doc.data['short_code']['value']}
-        fields_mapping[project_form_model_id+"_reporter"] = datasender_dict
+        kwargs = {
+            "%s%s" % (project_form_model_id + "_reporter.short_code.short_code", "_value"): entity_doc.data['short_code'][
+                'value']}
+        fields_mapping[project_form_model_id + "_reporter"] = datasender_dict
 
-        query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(dbm.database_name).doctypes(*project_form_model_ids)
+        query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(
+            dbm.database_name).doctypes(*project_form_model_ids)
         query = query[:query.count()].filter(**kwargs)
 
         for survey_response in query.values_dict('void'):
-            SubmissionIndexUpdateHandler(dbm.database_name, survey_response._type).update_field_in_submission_index(survey_response._id, fields_mapping)
+            SubmissionIndexUpdateHandler(dbm.database_name, survey_response._type).update_field_in_submission_index(
+                survey_response._id, fields_mapping)
 
 
 def status_message(status):
@@ -267,15 +268,13 @@ def _get_datasender_info(dbm, submission_doc):
     else:
         # TODO:make ds-dict for open ds
         return OrderedDict([('name', ''),
-                     ('short_code', UNKNOWN),
-                     ('location', ''),
-                     ('geo_code', ''),
-                     ('mobile_number', submission_doc.created_by),
-                     ('email', ''),
-                     ('entity_type', ['reporter']),
-                     ('void', False)])
-
-
+                            ('short_code', UNKNOWN),
+                            ('location', ''),
+                            ('geo_code', ''),
+                            ('mobile_number', submission_doc.created_by),
+                            ('email', ''),
+                            ('entity_type', ['reporter']),
+                            ('void', False)])
 
 
 def _meta_fields(submission_doc, dbm):
@@ -284,7 +283,7 @@ def _meta_fields(submission_doc, dbm):
     search_dict.update({"date": format_datetime(submission_doc.submitted_on, "MMM. dd, yyyy, hh:mm a", locale="en")})
 
     ds_info = _get_datasender_info(dbm, submission_doc)
-    search_dict.update({submission_doc.form_model_id+'_'+'reporter': ds_info})
+    search_dict.update({submission_doc.form_model_id + '_' + 'reporter': ds_info})
     search_dict.update({"error_msg": submission_doc.error_message})
     return search_dict
 
@@ -294,7 +293,7 @@ def _lookup_contact_by_uid(dbm, uid):
         if uid:
             return Contact.get(dbm, uid)
             # if entity.value('name'):
-            #     return entity.value('name'), entity.short_code
+            # return entity.value('name'), entity.short_code
             # return entity.value('mobile_number'), entity.short_code
     except Exception:
         pass
@@ -390,12 +389,13 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                 # entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
                 entry_code = entry
                 # search_dict.update(
-                #     {es_unique_id_code_field_name(
+                # {es_unique_id_code_field_name(
                 #         es_questionnaire_field_name(field.code, form_model.id, parent_field_name)): entry_code or UNKNOWN})
                 subject_doc = by_short_code(dbm, entry_code, [field.unique_id_type])._doc
                 subject_model = get_form_model_by_entity_type(dbm, [field.unique_id_type])
                 subject_info = subject_dict(field.unique_id_type, subject_doc, dbm, subject_model)
-                search_dict.update({es_questionnaire_field_name(field.code, form_model.id, parent_field_name):  subject_info})
+                search_dict.update(
+                    {es_questionnaire_field_name(field.code, form_model.id, parent_field_name): subject_info})
 
                 entry = None
         elif field.type == "select":
@@ -446,6 +446,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
     search_dict.update({'void': submission_doc.void})
     search_dict.update({'is_anonymous': submission_doc.is_anonymous_submission})
 
+
 def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
     uni_id_data = {}
     for entry in repeat_entries:
@@ -453,7 +454,7 @@ def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
             if isinstance(field, UniqueIdField):
                 unique_code = entry.get(field.code)
                 unique_id_data = lookup_entity_data(dbm, str(unique_code), [field.unique_id_type])
-                entry[field.code+'_unique_code'] = unique_code if unique_code else ''
+                entry[field.code + '_unique_code'] = unique_code if unique_code else ''
                 # entry[field.code] = unique_id_data.get('name')
                 for key, value in unique_id_data.iteritems():
                     if isinstance(unique_id_data[key]["value"], list):

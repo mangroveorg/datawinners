@@ -9,7 +9,7 @@ from mangrove.form_model.project import get_entity_type_fields, tabulate_data
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
-def _add_date_field_mapping(mapping_fields, field_def):
+def add_date_field_mapping(mapping_fields, field_def):
     name = field_def["name"]
     mapping_fields.update(
         {name: {"type": "multi_field", "fields": {
@@ -19,7 +19,7 @@ def _add_date_field_mapping(mapping_fields, field_def):
         }}})
 
 
-def _add_text_field_mapping(mapping_fields, field_def):
+def add_text_field_mapping(mapping_fields, field_def):
     name = field_def["name"]
     mapping_fields.update(
         {name: {"type": "multi_field", "fields": {
@@ -29,12 +29,12 @@ def _add_text_field_mapping(mapping_fields, field_def):
         }}})
 
 
-def _add_subject_field_mapping(mapping_fields, field_def):
+def add_subject_field_mapping(mapping_fields, field_def):
     for key, val in field_def['Subject'].iteritems():
         mapping_fields[key] = {"properties": val['properties']}
 
 
-def _add_reporter_field_mapping(mapping_fields, field_def, form_model_id):
+def add_reporter_field_mapping(mapping_fields, field_def, form_model_id):
     rep_type = REPORTER_ENTITY_TYPE[0]
     mapping_fields.update(
         {form_model_id+'_'+rep_type: {"properties": field_def['reporter']}})
@@ -63,9 +63,9 @@ def get_fields_mapping_by_field_def(doc_type, fields_definition):
     mapping = {"date_detection": False, "properties": mapping_fields}
     for field_def in fields_definition:
         if field_def.get("type") is "date":
-            _add_date_field_mapping(mapping_fields, field_def)
+            add_date_field_mapping(mapping_fields, field_def)
         else:
-            _add_text_field_mapping(mapping_fields, field_def)
+            add_text_field_mapping(mapping_fields, field_def)
     return {doc_type: mapping}
 
 
@@ -122,9 +122,6 @@ def es_questionnaire_field_name(field_code, form_model_id, parent_field_code=Non
     """
     code = "%s-%s" % (parent_field_code, field_code) if parent_field_code else field_code
     return "%s_%s" % (form_model_id, code)
-
-def es_unique_id_code_field_name(es_field_name):
-    return es_field_name+'_unique_code'
 
 def is_submission_meta_field(field_name):
     return submission_meta_field_names.has_key(field_name)

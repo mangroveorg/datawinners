@@ -3,10 +3,10 @@ from collections import OrderedDict
 
 from django.utils.translation import ugettext
 
-from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
+from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.utils import translate
-from mangrove.form_model.form_model import header_fields, get_form_model_by_entity_type, get_form_model_by_code
+from mangrove.form_model.form_model import header_fields, get_form_model_by_entity_type
 from mangrove.form_model.project import get_entity_type_fields
 
 
