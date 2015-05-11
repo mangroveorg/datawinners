@@ -505,7 +505,7 @@ class TestXformBridge(unittest.TestCase):
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', u'questionnaire_name')
 
-            xls_parser_response = xls_form_parser.parse()
+            xls_parser_response, is_multiple_language = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors, [])
 

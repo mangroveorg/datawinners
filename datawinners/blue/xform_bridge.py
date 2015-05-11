@@ -80,20 +80,23 @@ class XlsFormParser():
             return _("Uppercase in names not supported")
         return None
 
+    def _is_multi_language(self):
+        return len(self.xform_dict['children'][0]['label']) > 1
+
     def _identify_default_language(self):
         if self.xform_dict['default_language'] != u'default':
             self.default_language = self.xform_dict['default_language']
-            return
+            return self._is_multi_language()
 
         if not self._has_explicit_language_specified(self.xform_dict['children']):
             # avoid loading excel again if not multi language questionnaire
             self.default_language = 'default'
-            return
+            return self._is_multi_language()
 
         if self.path.endswith('.xls'):
-            self._identify_language_from_xls_file()
+            return self._identify_language_from_xls_file()
         else:
-            self._identify_language_from_xlsx_file()
+            return self._identify_language_from_xlsx_file()
 
     def _identify_language_from_xls_file(self):
         headers = xlrd.open_workbook(filename=self.path).sheet_by_name('survey').row(0)
@@ -101,7 +104,7 @@ class XlsFormParser():
             if re.match('^label::', header_cell.value):
                 language = header_cell.value.split("::")[1]
                 self.default_language = language
-                return
+                return self._is_multi_language()
 
     def _identify_language_from_xlsx_file(self):
         try:
@@ -118,7 +121,7 @@ class XlsFormParser():
                 if re.match('^label::', cell.value):
                     language = cell.value.split("::")[1]
                     self.default_language = language
-                    return
+                    return self._is_multi_language()
 
     def _create_question(self, field, parent_field_code=None):
         unique_id_errors = []
@@ -283,7 +286,7 @@ class XlsFormParser():
         [errors.add(choice_error) for choice_error in choice_errors if choice_error]
         choice_name_errors = self._validate_choice_names(fields)
         errors = errors.union(set(choice_name_errors))
-        self._identify_default_language()
+        is_multiple_languages = self._identify_default_language()
         questions, question_errors, info = self._create_questions(fields)
         if question_errors:
             errors = errors.union(question_errors)
@@ -297,7 +300,7 @@ class XlsFormParser():
         # encoding is added to support ie8
         xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
-        return XlsParserResponse([], updated_xform, questions, info)
+        return XlsParserResponse([], updated_xform, questions, info), is_multiple_languages
 
 
     def update_xform_with_questionnaire_name(self, xform):

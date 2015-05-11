@@ -80,10 +80,16 @@ class ProjectUpload(View):
             manager = get_database_manager(request.user)
             questionnaire_code = generate_questionnaire_code(manager)
 
-            xls_parser_response = XlsFormParser(tmp_file, project_name, manager).parse()
+            xls_parser_response, is_multiple_languages = XlsFormParser(tmp_file, project_name, manager).parse()
 
             send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
                                                                                project_name)
+
+            profile = request.user.get_profile()
+            organization = Organization.objects.get(org_id=profile.org_id)
+            if is_multiple_languages:
+                logger.info("Creating Questionnaire %s with Multi Language support for organization : %s(%s) and email: %s", project_name, organization.name, profile.org_id, profile.user.email)
+
 
             if xls_parser_response.errors:
                 error_list = list(xls_parser_response.errors)
@@ -219,6 +225,7 @@ class ProjectUpdate(View):
         SubmissionSearchStore(manager, questionnaire, None).recreate_elastic_store()
 
     def post(self, request, project_id):
+
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         file_content = None
@@ -242,10 +249,17 @@ class ProjectUpdate(View):
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
-            xls_parser_response = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
+            xls_parser_response, is_multiple_languages = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
+
+
 
             send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
                                                                                questionnaire.name)
+
+            profile = request.user.get_profile()
+            organization = Organization.objects.get(org_id=profile.org_id)
+            if is_multiple_languages:
+                logger.info("Edit Questionnaire %s with Multi Language support for organization : %s(%s) and email: %s", questionnaire.name, organization.name, profile.org_id, profile.user.email)
 
             if xls_parser_response.errors:
                 info_list = list(xls_parser_response.errors)
