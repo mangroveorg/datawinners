@@ -4,7 +4,7 @@
 {% load dw_tabs %}
 
 {% block page_title %}{% trans page_heading %} {% endblock %}
-{% block section_title %}{% trans page_heading %} {% include "need_help.html" %} {% endblock %}
+{% block section_title %}{% trans page_heading %}{% endblock %}
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_alldata.css" rel="stylesheet"/>
@@ -17,6 +17,13 @@
      {{ block.super }}
     <link href="/media/css/scss/data_submission.css" rel="stylesheet"/>
     <link href="/media/css/scss/import_submission.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        var help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/proj/?template=help";
+    </script>
 {% endblock %}
 
 {% block navigation %}

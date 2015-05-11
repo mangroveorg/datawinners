@@ -29,6 +29,7 @@
     border: 1px solid #cccccc;
     padding: 25px;
     overflow: auto;
+    margin: 0 auto;
   }
   .wizard_content {
     margin-top: 50px;
@@ -47,7 +48,7 @@
   #page_title {
     min-height: 40px;
     padding: 15px 0 0px 0;
-    width: 950px;
+    width: 960px;
     border-radius: 1px solid red;
     margin: 0 auto;
     font-size: 22px;

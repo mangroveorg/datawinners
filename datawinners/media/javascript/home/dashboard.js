@@ -45,7 +45,7 @@ $(document).ready(function() {
     _trackConversion();
 
     $( ".close_help_element" ).click(function() {
-        $("#welcome_area, #help_area").addClass("none");
+        $("#welcome_area, #help_element").addClass("none");
         $("#help_message, #help_message_arrow").removeClass("none");
 
         var data = {

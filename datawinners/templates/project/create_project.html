@@ -2,7 +2,9 @@
 {% load i18n %}
 {% block page_title %} {% trans "Create Questionnaire" %}{% endblock %}
 {% block section_title %}
-    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Create a New Questionnaire" %}{% include 'need_help.html' %}</h2>
+    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Create a New Questionnaire" %}
+        {% include 'need_help.html' %}
+    </h2>
 {% endblock %}
 
 {% load dw_tabs %}
@@ -24,6 +26,10 @@
         var existing_questionnaires_url = "{% url existing_questionnaires %}";
         var uniqueIdTypes = {{ unique_id_types|safe }};
         var active_language = "{{ active_language }}";
+        var help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/";
+        $(document).ready(function() {
+           $("#div_iframe").addClass("margin_top_null");
+        });
     </script>
 
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>

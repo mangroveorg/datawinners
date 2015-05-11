@@ -2,7 +2,11 @@
 {% load field_tags %}
 {% load i18n %}
 {% block page_title %} {% trans "Account" %} {% endblock %}
-
+{% block page_js %}
+    <script type="text/javascript">
+        var help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/acc/?template=help";
+    </script>
+{% endblock %}
 {% load dw_tabs %}
 {% block navigation %}
 {% activetab "tab_nav" "settings" %}
@@ -12,11 +16,6 @@
 {% include 'application_scss.html' %}
 <link href="/media/css/scss/section_registration.css" rel="stylesheet" />
 {% endblock %}
-
-{% block section_help %}
-     {% include 'need_help.html' %}
-{% endblock %}
-
 {% block content%}
 <div class="span-18 box">
   <div class = "form-5px">

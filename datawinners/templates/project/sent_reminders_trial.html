@@ -24,6 +24,13 @@
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        var help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/messrems/?template=help";
+    </script>
+{% endblock %}
+
 {% block content %}
     {% block secondary_navigation_data %}
         {% activetab "secondary_tab_nav" "sent_reminders" %}

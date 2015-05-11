@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block page_title %}{% trans "Identification Numbers" %}{% endblock %}
 
-{% block section_title %}{% trans "Identification Numbers" %}{% include 'need_help.html' %}
+{% block section_title %}{% trans "Identification Numbers" %}
 {% endblock %}
 
 {% load dw_tabs %}
@@ -38,6 +38,7 @@
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript">
         var upload_url = window.location.pathname;
+        var help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/idnos/?template=help";
     </script>
 {% endblock %}
 

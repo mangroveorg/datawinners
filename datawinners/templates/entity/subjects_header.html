@@ -4,7 +4,7 @@
 {% load i18n %}
 {% block page_title %}{{ entity_type|capfirst }}{% endblock %}
 
-{% block section_title %}{{ entity_type|capfirst }}{% include "need_help.html" %}
+{% block section_title %}{{ entity_type|capfirst }}
 {% endblock %}
 
 {% load dw_tabs %}
@@ -37,6 +37,7 @@
     <script type="text/javascript">
         var upload_url = "{% url import_subjects form_code %}";
         var subject_type = "{{ entity_type|capfirst }}";
+        var help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/idnos/?template=help";
     </script>
 {% endblock %}
 

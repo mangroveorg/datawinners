@@ -155,20 +155,22 @@ table.no-border{
   width:150px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px;
   font-weight: bold;
+  font-size: 15px;
 }
 
 .dashboard_icon {
   width: 70px;
   height: 70px;
   padding-bottom: 15px;
+  margin-bottom: -5px;
 }
 
 .dashboard_top_icon {
   width: 85px;
   height: 85px;
   padding-bottom: 15px;
+  margin-bottom: -5px;  
 }
 
 .help_background{
@@ -180,21 +182,25 @@ table.no-border{
   background:-webkit-linear-gradient(top, #ffffff, #FEEA89);
   background:-o-linear-gradient(top, #ffffff, #FEEA89);
   position: absolute; margin-top: -60px;
+  box-shadow: 3px 3px 5px #808080, -3px 3px 5px #808080;
 }
 
 .external_icon{
   height: 10px;
   width: 10px;
+  margin-bottom: 3px;
+  margin-left: 5px
 }
 
 .play_icon{
   height: 12px;
   width: 12px;
+  margin-bottom: 3px;
+  margin-left: 5px
 }
 
 #help_message_arrow{
   position: absolute;
-  display: none;
   margin-left: 20px;
   width: 30px;
   height: 10px;
@@ -205,6 +211,18 @@ table.no-border{
   position: absolute;
   float: right;
   margin-top: -18px;
-  margin-left: 240px;
+  margin-left: 235px;
   z-index: 12;
+}
+
+#help_area{
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+#help_icon{
+ margin-bottom: 10px;
+ font-weight: bold;
+ font-size: 13px;
+ 
 }

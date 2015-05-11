@@ -3,7 +3,7 @@
 {% block page_title %}{% trans "Contacts" %}{% endblock %}
 
 {% block section_title %}
-    {% include "entity/all_data_senders/add_contacts_title.html" %}{% include 'need_help.html' %}
+    {% include "entity/all_data_senders/add_contacts_title.html" %}
 {% endblock %}
 
 {% load dw_tabs %}
@@ -56,6 +56,14 @@
         var group_rename_url = "{% url group_rename %}";
         var sms_popup_page = "all-contacts";
         var user_group = "{{ user_group }}";
+        var help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/allds/?template=help";
+        
+        $(document).ready(function() {
+            $("#div_iframe").addClass("margin_top_45");
+            $("#page_title").addClass("full_width");
+            $("#need_help_link").addClass("margin_right_20");
+            $("#div_iframe").addClass("div_iframe_contact_page");
+        });
 
     </script>
 

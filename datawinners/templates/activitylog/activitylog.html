@@ -2,6 +2,10 @@
 {% load i18n %}
 {% block page_title %} {% trans "Activity Log" %} {% endblock %}
 
+{% block section_help %}
+     &nbsp;
+{% endblock %}
+
 {% block page_css %}
     {{ block.super }}
     <link rel="stylesheet" href="/media/css/scss/section_log.css" />
@@ -23,6 +27,7 @@
     <script type="text/javascript" src="/media/javascript/useractivity/log.js"></script>
     <script type="text/javascript">
         var log_data = JSON.parse({{log_data|safe}});
+        va
     </script>
 {% endblock %}
 
