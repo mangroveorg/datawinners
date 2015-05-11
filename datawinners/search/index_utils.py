@@ -5,7 +5,7 @@ from datawinners.search.submission_index_meta_fields import submission_meta_fiel
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.entity import Entity, Contact
 from mangrove.form_model.field import DateField, TimeField, DateTimeField, field_attributes
-from mangrove.form_model.project import get_entity_type_fields, tabulate_data
+from mangrove.form_model.project import get_entity_type_fields, tabulate_data, get_empty_data
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
@@ -83,14 +83,17 @@ def contact_dict(entity_doc, dbm, form_model):
 
 
 def subject_dict(entity_type, entity_doc, dbm, form_model):
-    entity = Entity.get(dbm, entity_doc.id)
     field_names, labels, codes = get_entity_type_fields(dbm, form_model.form_code)
-    data = tabulate_data(entity, form_model, codes)
     dictionary = OrderedDict()
+    if entity_doc:
+        entity = Entity.get(dbm, entity_doc.id)
+        data = tabulate_data(entity, form_model, codes)
+        dictionary.update({"void": entity.is_void()})
+    else:
+        data = get_empty_data(form_model, codes)
     for index in range(0, len(field_names)):
         dictionary.update({es_questionnaire_field_name(codes[index],form_model.id): data['cols'][index]})
     dictionary.update({"entity_type": entity_type})
-    dictionary.update({"void": entity.is_void()})
     return dictionary
 
 

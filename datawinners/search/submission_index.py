@@ -133,7 +133,7 @@ class SubmissionSearchStore():
         self.recreate_elastic_store()
         from datawinners.search.submission_index_task import async_populate_submission_index
 
-        async_populate_submission_index.delay(self.dbm.database_name, self.latest_form_model.id)
+        async_populate_submission_index(self.dbm.database_name, self.latest_form_model.id)
 
     # def _add_text_field_mapping_for_submission(self, mapping_fields, field_def):
     # name = field_def["name"]
@@ -388,10 +388,10 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                     entry = convert_choice_options_to_options_text(original_field, entry)
                 # entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
                 entry_code = entry
-                # search_dict.update(
-                # {es_unique_id_code_field_name(
-                #         es_questionnaire_field_name(field.code, form_model.id, parent_field_name)): entry_code or UNKNOWN})
-                subject_doc = by_short_code(dbm, entry_code, [field.unique_id_type])._doc
+                try:
+                    subject_doc = by_short_code(dbm, entry_code, [field.unique_id_type])._doc
+                except DataObjectNotFound as e:
+                    subject_doc = None
                 subject_model = get_form_model_by_entity_type(dbm, [field.unique_id_type])
                 subject_info = subject_dict(field.unique_id_type, subject_doc, dbm, subject_model)
                 search_dict.update(
@@ -454,8 +454,6 @@ def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
             if isinstance(field, UniqueIdField):
                 unique_code = entry.get(field.code)
                 unique_id_data = lookup_entity_data(dbm, str(unique_code), [field.unique_id_type])
-                entry[field.code + '_unique_code'] = unique_code if unique_code else ''
-                # entry[field.code] = unique_id_data.get('name')
                 for key, value in unique_id_data.iteritems():
                     if isinstance(unique_id_data[key]["value"], list):
                         value = ",  ".join(map(str, unique_id_data[key]["value"]))
