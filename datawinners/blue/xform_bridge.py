@@ -104,6 +104,7 @@ class XlsFormParser():
             if re.match('^label::', header_cell.value):
                 language = header_cell.value.split("::")[1]
                 self.default_language = language
+                return
 
     def _identify_language_from_xlsx_file(self):
         try:
@@ -120,6 +121,7 @@ class XlsFormParser():
                 if cell.value and re.match('^label::', cell.value):
                     language = cell.value.split("::")[1]
                     self.default_language = language
+                    return
 
     def _create_question(self, field, parent_field_code=None):
         unique_id_errors = []
