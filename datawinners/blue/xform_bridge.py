@@ -86,10 +86,12 @@ class XlsFormParser():
     def _identify_default_language(self):
         if self.xform_dict['default_language'] != u'default':
             self.default_language = self.xform_dict['default_language']
+            return
 
         if not self._has_explicit_language_specified(self.xform_dict['children']):
             # avoid loading excel again if not multi language questionnaire
             self.default_language = 'default'
+            return
 
         if self.path.endswith('.xls'):
             self._identify_language_from_xls_file()
@@ -115,7 +117,7 @@ class XlsFormParser():
                 break
 
             for cell in row:
-                if re.match('^label::', cell.value):
+                if cell.value and re.match('^label::', cell.value):
                     language = cell.value.split("::")[1]
                     self.default_language = language
 
@@ -319,7 +321,7 @@ class XlsFormParser():
         if isinstance(field['label'], dict):
             if field['label'].get(self.default_language):
                 return field['label'].get(self.default_language)
-            return field['label'].values()[-1]
+            raise LabelForFieldNotPresentException(field_name=field['name'])
         else:
             return field['label']
 
