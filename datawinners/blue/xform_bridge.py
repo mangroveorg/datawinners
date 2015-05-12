@@ -445,7 +445,11 @@ class XlsFormParser():
         if not isinstance(choice_label, dict):
             return choice_label
 
-        return choice_label.get(self.default_language, '')
+        choice_label = choice_label.get(self.default_language)
+        if choice_label:
+            return choice_label
+        else:
+            raise LabelForChoiceNotPresentException(choice_field.get('name', ''))
 
     def is_required(self, field):
         if field.get('bind') and 'yes' == str(field['bind'].get('required')).lower():
