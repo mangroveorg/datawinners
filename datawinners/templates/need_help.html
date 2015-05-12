@@ -2,10 +2,8 @@
 {% block page_js %}
     <script type="text/javascript">
         $(document).ready(function(){
-            var help_url = "https://datawinners.staging.wpengine.com/";
-            
             $.ajax({
-                url: help_url,
+                url: DW.help_url,
                 data: {},
                 global: false,
                 error: function(r){
@@ -14,7 +12,7 @@
                 },
                 complete: function(xhr, statusText){
                     if (xhr.status == 200){
-                        $("#help_iframe").attr("src", help_url);
+                        $("#help_iframe").attr("src", DW.help_url);
                         $("#help_iframe").addClass("block");
                     } else {
                         $('#help_iframe').addClass("none");
@@ -25,7 +23,7 @@
 
             $("#need_help_link").click(function() {
                 $('#div_iframe').removeClass("none");
-                $('#help_iframe').attr("src", help_url);
+                //$('#help_iframe').attr("src", help_url);
                 $("#help_iframe").addClass("block");
                 $("#need_help_button").addClass("none");
                 $('#need_help_active_button').removeClass("none");

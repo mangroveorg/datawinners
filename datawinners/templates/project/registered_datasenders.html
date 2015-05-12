@@ -48,7 +48,7 @@
         var user_dict = {{ user_dict|safe }};
         var initial_is_open_survey = "{{ is_open_survey }}";
         var import_datasenders_link = "{% url registered_datasenders project.id %}"
-        var help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/myds/?template=help";
+        DW.help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/myds/?template=help";
     </script>
 {% endblock %}
 

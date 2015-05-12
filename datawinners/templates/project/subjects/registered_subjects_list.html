@@ -31,7 +31,7 @@
         var edit_url_template = "{% url edit_my_subject project_id entity_type "entity_id_placeholder" %}";
         var upload_url = "{% url import_subjects form_code %}";
         var default_url = "{% url registered_subjects_default project_id%}";
-        var help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/myidno/?template=help";
+        DW.help_url = "http://datawinners.staging.wpengine.com/en/help-center/find-answers/category/myidno/?template=help";
     </script>
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
