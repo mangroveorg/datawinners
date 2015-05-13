@@ -26,11 +26,13 @@ def get_all_form_models(dbm, data_sender_id=None):
         for row in rows:
             row.update({'value': row["doc"]})
             subject_docs = get_subject_form_model_docs_of_questionnaire(dbm, FormModelDocument.wrap(row['doc']))
+            duplicate_docs = []
             for subject_doc in subject_docs:
                 for questionnaire in idnr_questionnaires:
                     if subject_doc.id == questionnaire.id:
-                        subject_docs.remove(subject_doc)
-                        break
+                        duplicate_docs.append(subject_doc)
+            for duplicate_doc in duplicate_docs:
+                subject_docs.remove(duplicate_doc)
             idnr_questionnaires.extend(subject_docs)
         rows.extend(idnr_questionnaires)
         return rows
@@ -39,12 +41,13 @@ def get_all_form_models(dbm, data_sender_id=None):
 
 def get_subject_form_model_docs_of_questionnaire(dbm, questionnaire_doc):
     questionnaire = FormModel.new_from_doc(dbm, questionnaire_doc)
-    rows = []
+    subject_form_model_docs = []
     for entity_question in questionnaire.entity_questions:
         rows = dbm.view.registration_form_model_by_entity_type(key=[entity_question.unique_id_type], include_docs=True)
         for row in rows:
             row.update({'value': row["doc"]})
-    return rows
+        subject_form_model_docs.extend(rows)
+    return subject_form_model_docs
 
 
 def get_project_id_name_map(dbm):
