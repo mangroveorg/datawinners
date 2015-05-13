@@ -81,7 +81,11 @@ class XlsFormParser():
         return None
 
     def _is_multi_language(self):
-        return len(self.xform_dict['children'][0]['label']) > 1
+        for child in self.xform_dict['children']:
+            if isinstance(child.get('label'), dict) and len(child.get('label', {})) > 1:
+                return True
+        return False
+        # return len(self.xform_dict['children'][0]['label']) > 1
 
     def _identify_default_language(self):
         if self.xform_dict['default_language'] != u'default':
