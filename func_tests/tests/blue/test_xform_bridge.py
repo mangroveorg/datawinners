@@ -52,7 +52,7 @@ class TestXFormBridge(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_convert_cascaded_select_field(self):
-        xls_parser_response, is_multiple_language = XlsFormParser(self.CASCADE, "My questionnaire").parse()
+        xls_parser_response  = XlsFormParser(self.CASCADE, "My questionnaire").parse()
 
         expected_json = [{'code': 'name', 'name': 'What is your name?', 'title': 'What is your name?', 'required': False,
           'is_entity_question': False, 'instruction': 'Answer must be a word', 'parent_field_code': None, 'type': 'text'},
@@ -71,7 +71,7 @@ class TestXFormBridge(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_create_project_using_xlsform_file(self):
-        xls_parser_response, is_multiple_language = XlsFormParser(self.ALL_FIELDS, u"My questionnairé").parse()
+        xls_parser_response = XlsFormParser(self.ALL_FIELDS, u"My questionnairé").parse()
 
         mangroveService = MangroveService(self.mock_request, xls_parser_response=xls_parser_response)
         quesionnaire_id = mangroveService.create_project()
@@ -80,7 +80,7 @@ class TestXFormBridge(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_convert_skip_logic_question(self):
-        xls_parser_response, is_multiple_language = XlsFormParser(self.SKIP, u"My questionnairé").parse()
+        xls_parser_response = XlsFormParser(self.SKIP, u"My questionnairé").parse()
 
         mangroveService = MangroveService(self.mock_request, xls_parser_response=xls_parser_response)
         questionnaire_id = mangroveService.create_project()
@@ -89,7 +89,7 @@ class TestXFormBridge(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_convert_multi_select_question(self):
-        xls_parser_response, is_multiple_language = XlsFormParser(self.MULTI_SELECT, u"My questionnairé").parse()
+        xls_parser_response = XlsFormParser(self.MULTI_SELECT, u"My questionnairé").parse()
 
         mangroveService = MangroveService(self.mock_request, xls_parser_response=xls_parser_response)
         questionnaire_id = mangroveService.create_project()
@@ -100,7 +100,7 @@ class TestXFormBridge(unittest.TestCase):
     @attr('functional_test')
     def test_all_fields_types_in_xlsform_is_converted_to_json(self):
 
-        xls_parser_response, is_multiple_language = XlsFormParser(self.ALL_FIELDS, "My questionnaire").parse()
+        xls_parser_response = XlsFormParser(self.ALL_FIELDS, "My questionnaire").parse()
 
         expected_json = \
             [{'code': 'name', 'parent_field_code': None, 'name': 'What is your name?', 'title': 'What is your name?', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': 'text'},
@@ -141,7 +141,7 @@ class TestXFormBridge(unittest.TestCase):
     @attr('functional_test')
     def test_sequence_of_the_fields_in_form_model_should_be_same_as_in_xlsform(self):
 
-        xls_parser_response, is_multiple_language = XlsFormParser(self.MANY_FIELD, "My questionnaire").parse()
+        xls_parser_response = XlsFormParser(self.MANY_FIELD, "My questionnaire").parse()
 
         self.assertIsNotNone(xls_parser_response.xform_as_string)
         names = [f['code'] for f in xls_parser_response.json_xform_data]
@@ -160,7 +160,7 @@ class TestXFormBridge(unittest.TestCase):
     def test_sequence_of_the_mixed_type_fields_in_from_model_should_be_same_as_xlsform(self):
         parser = XlsFormParser(self.REPEAT, "My questionnaire")
 
-        xls_parser_response, is_multiple_language = parser.parse()
+        xls_parser_response = parser.parse()
 
         names = [f['code'] if f['type'] != 'field_set' else self._repeat_codes(f) for f in xls_parser_response.json_xform_data]
         expected_names = ['familyname',
@@ -213,7 +213,7 @@ class TestXFormBridge(unittest.TestCase):
         questionnaire_code = generate_questionnaire_code(manager)
         project_name = 'xform-' + questionnaire_code
 
-        xls_parser_response, is_multiple_language = XlsFormParser(self.REPEAT, u"My questionnairé").parse()
+        xls_parser_response = XlsFormParser(self.REPEAT, u"My questionnairé").parse()
 
         mangrove_service = MangroveService(self.mock_request, project_name=project_name, xls_parser_response=xls_parser_response)
         mangrove_service.create_project()
@@ -225,7 +225,7 @@ class TestXFormBridge(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_verify_repeat_field_added_to_questionnaire(self):
-        xls_parser_response, is_multiple_language = XlsFormParser(self.REPEAT, u"My questionnairé").parse()
+        xls_parser_response = XlsFormParser(self.REPEAT, u"My questionnairé").parse()
         mangroveService = MangroveService(self.mock_request, xls_parser_response=xls_parser_response)
         mangroveService.create_project()
 
@@ -237,7 +237,7 @@ class TestXFormBridge(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_verify_field_is_not_mandatory_when_required_is_not_specified(self):
-        xls_parser_response, is_multiple_language = XlsFormParser(self.REQUIRED, "My questionnaire").parse()
+        xls_parser_response = XlsFormParser(self.REQUIRED, "My questionnaire").parse()
 
         root = ET.fromstring(xls_parser_response.xform_as_string)
         ET.register_namespace('', 'http://www.w3.org/2002/xforms')
