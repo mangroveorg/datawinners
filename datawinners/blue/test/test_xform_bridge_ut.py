@@ -8,6 +8,7 @@ from datawinners.blue.xform_bridge import XlsFormParser, get_generated_xform_id_
     _map_unique_id_question_to_select_one
 from mangrove.datastore.database import View, DatabaseManager
 
+SETTINGS_ERROR = "Sorry! The current version of DataWinners does not support columns other than Default_Language in the Settings Sheet.` Update your XLSForm and upload again."
 
 DIR = os.path.dirname(__file__)
 
@@ -233,7 +234,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {"XLSForm settings worksheet and the related values in survey sheet."})
+                              {("%s" % SETTINGS_ERROR)})
 
 
     def test_should_populate_error_when_settings_sheet_present_with_form_id(self):
@@ -254,7 +255,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {"XLSForm settings worksheet and the related values in survey sheet."})
+                              {SETTINGS_ERROR})
 
     def test_should_populate_error_when_settings_sheet_present_with_public_key(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -275,7 +276,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {"XLSForm settings worksheet and the related values in survey sheet."})
+                              {SETTINGS_ERROR})
 
     # def test_should_populate_error_when_settings_sheet_present_with_default_language(self):
     #     with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -316,7 +317,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {"XLSForm settings worksheet and the related values in survey sheet."})
+                              {SETTINGS_ERROR})
 
     def test_should_not_create_question_for_select_that_are_only_labels(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
