@@ -32,7 +32,7 @@ from datawinners.entity.helper import delete_entity_instance, delete_datasender_
 from datawinners.project.models import delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports
-from datawinners.search.entity_search import DatasenderQueryResponseCreator, DATASENDER_DISPLAY_FIELD_ORDER
+from datawinners.search.entity_search import DatasenderQueryResponseCreator
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization
@@ -122,7 +122,8 @@ class AllDataSendersView(TemplateView):
 class AllDataSendersAjaxView(View):
     def _get_order_field(self, post_dict, dbm):
         order_by = int(post_dict.get('iSortCol_0')) - 1
-        return DATASENDER_DISPLAY_FIELD_ORDER[order_by]
+        headers = get_query_fields(dbm)
+        return headers[order_by]
 
     def post(self, request, *args, **kwargs):
         user = request.user
