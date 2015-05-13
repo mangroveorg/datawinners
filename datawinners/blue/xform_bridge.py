@@ -475,7 +475,8 @@ class XlsFormParser():
 
     def _validate_settings_page_is_not_present(self, xform_dict):
         errors = []
-        setting_page_error = _("XLSForm settings worksheet and the related values in survey sheet.")
+        setting_page_error = _(
+            "Sorry! The current version of DataWinners does not support columns other than Default_Language in the Settings Sheet.` Update your XLSForm and upload again.")
         if xform_dict['title'] != xform_dict['name']:
             errors.append(setting_page_error)
 

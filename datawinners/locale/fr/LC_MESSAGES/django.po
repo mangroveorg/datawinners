@@ -5186,8 +5186,8 @@ msgstr "préchargement des données CSV (fonction PullData())"
 msgid "Cancel Upload"
 msgstr "Annuler le téléchargement"
 
-msgid "XLSForm settings worksheet and the related values in survey sheet."
-msgstr "la Feuille de paramétrage XLSForm et les valeurs y afférentes dans la feuille survey"
+msgid "Sorry! The current version of DataWinners does not support columns other than Default_Language in the Settings Sheet. Update your XLSForm and upload again."
+msgstr "Désolé ! La version actuelle de DataWinners ne prend pas en charge d’autres colonnes à part le colonne Default_Language sur la feuille Settings. Mettez à jour votre formulaire XLS et téléchargez une nouvelle fois."
 
 msgid "Export Submissions"
 msgstr "Exporter les Soumissions"
