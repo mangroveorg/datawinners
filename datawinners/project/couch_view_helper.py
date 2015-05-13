@@ -32,7 +32,8 @@ def get_all_form_models(dbm, data_sender_id=None):
                     if subject_doc.id == questionnaire.id:
                         duplicate_docs.append(subject_doc)
             for duplicate_doc in duplicate_docs:
-                subject_docs.remove(duplicate_doc)
+                if duplicate_doc in subject_docs:
+                    subject_docs.remove(duplicate_doc)
             idnr_questionnaires.extend(subject_docs)
         rows.extend(idnr_questionnaires)
         return rows

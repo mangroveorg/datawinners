@@ -10,11 +10,12 @@ from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.couch_view_helper import get_all_form_models
 from datawinners.submission.location import LocationBridge
+from mangrove.datastore.documents import FormModelDocument
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, DataObjectAlreadyExists
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
-from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel
+from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel, FormModel
 from mangrove.transport.contract.request import Request
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
@@ -82,6 +83,12 @@ def is_authorized_for_questionnaire(dbm, request_user, form_code):
         if not user_profile.reporter:
             return True
         questionnaire = get_form_model_by_code(dbm, form_code)
+        if isinstance(questionnaire, EntityFormModel):
+            rows = dbm.view.projects_by_subject_type(include_docs=True)
+            for row in rows:
+                fm = FormModel.new_from_doc(dbm, FormModelDocument.wrap(row['doc']))
+                if not fm.is_void() and user_profile.reporter_id in fm.data_senders:
+                    return True
         if questionnaire.is_void() or user_profile.reporter_id not in questionnaire.data_senders:
             return False
     except FormModelDoesNotExistsException as e:
