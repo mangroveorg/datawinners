@@ -63,8 +63,7 @@ def restrict_request_country(f):
 @httpdigest
 @restrict_request_country
 def formList(request):
-    user = request.user
-    rows = get_all_form_models(get_database_manager(user), user.get_profile().reporter_id)
+    rows = get_all_form_models(get_database_manager(request.user))
     form_tuples = [(row['value']['name'], row['id']) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
     response = HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
