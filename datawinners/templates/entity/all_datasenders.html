@@ -56,8 +56,7 @@
         var group_rename_url = "{% url group_rename %}";
         var sms_popup_page = "all-contacts";
         var user_group = "{{ user_group }}";
-        DW.help_url = "https://datawinners.staging.wpengine.com/en/help-center/find-answers/category/allds/?template=help";
-        
+        DW.help_url = "https://datawinners.staging.wpengine.com/{{ current_language }}/help-center/find-answers/category/allds/?template=help";}
         $(document).ready(function() {
             $("#div_iframe").addClass("margin_top_45");
             $("#page_title").addClass("full_width");

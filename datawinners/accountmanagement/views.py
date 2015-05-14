@@ -96,7 +96,8 @@ def settings(request):
         return render_to_response("accountmanagement/account/org_settings.html",
                                   {
                                       'organization_form': organization_form,
-                                      'timezone_information': _get_timezone_information(organization)
+                                      'timezone_information': _get_timezone_information(organization),
+                                      'current_lang': get_language()
                                   }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -122,7 +123,8 @@ def settings(request):
                                   {
                                    'organization_form': organization_form,
                                    'message': message,
-                                   'timezone_information':  _get_timezone_information(organization)
+                                   'timezone_information':  _get_timezone_information(organization),
+                                   'current_lang': get_language()
                                   },
                                   context_instance=RequestContext(request))
 
@@ -147,7 +149,8 @@ def new_user(request):
     add_user_success = False
     if request.method == 'GET':
         profile_form = UserProfileForm()
-        return render_to_response("accountmanagement/account/add_user.html", {'profile_form': profile_form},
+        return render_to_response("accountmanagement/account/add_user.html", {'profile_form': profile_form,
+                                                                              'current_lang': get_language()},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -183,7 +186,8 @@ def new_user(request):
                     UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
 
         return render_to_response("accountmanagement/account/add_user.html",
-                                  {'profile_form': form, 'add_user_success': add_user_success},
+                                  {'profile_form': form, 'add_user_success': add_user_success,
+                                   'current_lang': get_language()},
                                   context_instance=RequestContext(request))
 
 
@@ -193,7 +197,8 @@ def users(request):
     if request.method == 'GET':
         org_id = request.user.get_profile().org_id
         users = get_all_users_for_organization(org_id)
-        return render_to_response("accountmanagement/account/users_list.html", {'users': users},
+        return render_to_response("accountmanagement/account/users_list.html", {'users': users,
+                                                                                'current_lang': get_language()},
                                   context_instance=RequestContext(request))
 
 
