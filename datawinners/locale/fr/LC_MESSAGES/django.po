@@ -163,6 +163,12 @@ msgstr "Veuillez remplir correctement au moins un champ de localisation."
 msgid "Please add subject type and then add a subject"
 msgstr "Veuillez ajouter le type puis le sujet"
 
+msgid "Data Sender with ID Number '%s' already exists."
+msgstr "L'Expéditeur de Données portant le code '%s' existe déjà."
+
+msgid "Contact with ID Number '%s' already exists."
+msgstr  "Le Contact portant le code '%s' existe déjà."
+
 msgid "Unique identification number(ID) is:"
 msgstr "Le numéro d'identification unique (ID) est :"
 
