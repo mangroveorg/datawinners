@@ -48,9 +48,7 @@
                 <p>{% trans "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data." %}</p>
             </div>
         {% endif %}
-        {% for message in messages %}
-            <div class="{{ message.tags }}-message-box message-box clear-left">{{ message }}</div>
-        {% endfor %}
+        {% include "flash_message.html" %}
     </div>
     {% include "project/_xform_web_submission.html" %}
 
