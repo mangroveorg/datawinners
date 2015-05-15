@@ -15,7 +15,7 @@ import jsonpickle
 
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired, is_datasender
-from datawinners.accountmanagement.helper import validate_and_create_web_users
+from datawinners.accountmanagement.helper import validate_and_create_web_users, create_web_users
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS
 from datawinners.entity import import_data as import_module
@@ -144,7 +144,7 @@ def registered_datasenders(request, project_id):
             [(imported_datasender['id'], imported_datasender['email']) for imported_datasender in
              imported_data_senders])
         org_id = request.user.get_profile().org_id
-        validate_and_create_web_users(org_id, reporter_id_email_map, request.LANGUAGE_CODE)
+        create_web_users(org_id, reporter_id_email_map, request.LANGUAGE_CODE)
 
         imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
         _add_imported_datasenders_to_project(imported_datasenders_ids, manager, questionnaire)
