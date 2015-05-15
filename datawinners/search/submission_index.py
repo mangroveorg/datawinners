@@ -266,7 +266,6 @@ def _get_datasender_info(dbm, submission_doc):
         datasender = _lookup_contact_by_uid(dbm, submission_doc.owner_uid)
         return contact_dict(datasender._doc, dbm, get_form_model_by_code(dbm, 'reg'))
     else:
-        # TODO:make ds-dict for open ds
         return OrderedDict([('name', ''),
                             ('short_code', UNKNOWN),
                             ('location', ''),
