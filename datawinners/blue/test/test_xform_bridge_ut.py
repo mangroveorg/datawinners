@@ -8,7 +8,7 @@ from datawinners.blue.xform_bridge import XlsFormParser, get_generated_xform_id_
     _map_unique_id_question_to_select_one
 from mangrove.datastore.database import View, DatabaseManager
 
-SETTINGS_ERROR = "Sorry! The current version of DataWinners does not support columns other than Default_Language in the Settings Sheet.` Update your XLSForm and upload again."
+SETTINGS_ERROR = "columns other than Default_Language in the Settings Sheet."
 
 DIR = os.path.dirname(__file__)
 
