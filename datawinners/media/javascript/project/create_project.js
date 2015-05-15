@@ -77,6 +77,7 @@ DW.controllers = {
                 questionnaireViewModel.showQuestionnaireForm(true);
                 questionnaireViewModel.isOpenSurvey(true);
                 questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+                questionnaireViewModel.showPollQuestionnaireForm(false);
                 DW.trackEvent('questionnaire-creation-method', 'copy-from-template');
             });
     },
@@ -90,10 +91,11 @@ DW.controllers = {
             questionnaireViewModel.loadQuestion(questions);
         };
         questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+        questionnaireViewModel.showPollQuestionnaireForm(false);
         questionnaireViewModel.showQuestionnaireForm(true);
         questionnaireViewModel.enableQuestionnaireTitleFocus(true);
         questionnaireViewModel.questionnaireCode(questionnaire_code);
-        questionnaireViewModel.isOpenSurvey(questionnaireData.is_open_survey)
+        questionnaireViewModel.isOpenSurvey(questionnaireData.is_open_survey);
         DW.trackEvent('questionnaire-creation-method', 'copy-questionnaire');
     },
     "blankQuestionnaire": function () {
@@ -103,6 +105,7 @@ DW.controllers = {
             questionnaireViewModel.questionnaireCode(questionnaire_code);
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
             questionnaireViewModel.isOpenSurvey(true);
+            questionnaireViewModel.showPollQuestionnaireForm(false);
             DW.trackEvent('questionnaire-creation-method', 'blank-questionnaire');
     },
     "uploadQuestionnaire": function(){
@@ -112,6 +115,7 @@ DW.controllers = {
         questionnaireViewModel.enableQuestionnaireTitleFocus(true);
         questionnaireViewModel.isXLSUploadQuestionnaire(true);
         questionnaireViewModel.isOpenSurvey(false);
+        questionnaireViewModel.showPollQuestionnaireForm(false);
         DW.trackEvent('questionnaire-creation-method', 'advanced-questionnaire');
     },
     "questionnaireCreationOptions": function () {
@@ -120,11 +124,23 @@ DW.controllers = {
             questionnaireViewModel.showQuestionnaireForm(false);
             questionnaireViewModel.isXLSUploadQuestionnaire(false);
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(true);
+            questionnaireViewModel.showPollQuestionnaireForm(false);
+    },
+    "pollQuestionnaire": function () {
+            questionnaireViewModel.clearQuestionnaire();
+            questionnaireViewModel.showQuestionnaireForm(false);
+            questionnaireViewModel.showPollQuestionnaireForm(true);
+            questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+            questionnaireViewModel.questionnaireCode(questionnaire_code);
+            questionnaireViewModel.enableQuestionnaireTitleFocus(true);
+            questionnaireViewModel.isOpenSurvey(true);
+            DW.trackEvent('questionnaire-creation-method', 'poll-questionnaire');
     }
 };
 
 
 DW.projectRouter = Sammy(function () {
+        this.get('#questionnaire/poll', DW.controllers.pollQuestionnaire);
         this.get('#questionnaire/new', DW.controllers.blankQuestionnaire);
         this.get('#questionnaire/load/:template_id', DW.controllers.templateQuestionnaire);
         this.get('#questionnaire/copy/:questionnaire_id', DW.controllers.copyQuestionnaire);
@@ -134,9 +150,12 @@ DW.projectRouter = Sammy(function () {
 
 function _initializeViewModel() {
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
+    window.smsViewModel = new SmsViewModel();
     window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
     ko.applyBindings(questionnaireViewModel, $('#create_questionnaire')[0]);
+    ko.applyBindings(smsViewModel, $('#poll_sms_section')[0]);
     ko.applyBindings(questionnaireCreationOptionsViewModel, $('#project_profile')[0]);
+    $("#send_sms_button").hide();
 }
 
 function _save_questionnaire(callback) {
@@ -169,13 +188,19 @@ $(document).ready(function () {
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
 
     $("#save_and_create").on("click", function () {
-            _save_questionnaire(function (response) {
+            create_questionnaire();
+    });
+
+    var create_questionnaire = function(){
+        _save_questionnaire(function (response) {
                 var redirect_url = '/project/overview/' + response.project_id;
                 DW.trackEvent('questionnaire-creation-method', 'simple-qns-success');
                 window.location.replace(redirect_url);
                 return true;
             });
-    });
+    };
+
+
 
     new DW.UploadQuestionnaire({
         buttonText: "Upload XLSForm and Create Questionnaire",

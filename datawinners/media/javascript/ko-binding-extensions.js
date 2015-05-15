@@ -213,3 +213,9 @@ ko.bindingHandlers.dialog = {
             }
         }
 };
+
+ko.bindingHandlers.stopBinding = {
+    init: function() {
+        return { controlsDescendantBindings: true };
+    }
+};

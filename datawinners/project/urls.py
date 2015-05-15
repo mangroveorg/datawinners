@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
 from datawinners.entity.view.all_datasenders import DisassociateDataSendersView
+from datawinners.project import create_poll
 from datawinners.project.views.change_language import QuestionnaireLanguageView
 from datawinners.project.views.create_questionnaire import create_project
 from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders
@@ -87,6 +88,7 @@ urlpatterns = patterns('',
                        (r'^project/submissions/(?P<form_code>.+?)$', submission_views.get_submissions),
                        url(r'^project/import-submissions/(?P<form_code>.+?)$', ImportSubmissionView.as_view(), name="import_submissions"),
                        url(r'^project/change-group/$', change_ds_group),
-                       url(r'^project/registered-ds-count/$', registered_ds_count, name="registered_ds_count")
+                       url(r'^project/registered-ds-count/$', registered_ds_count, name="registered_ds_count"),
+                       url(r'^project/create-poll$', create_poll.create_poll, name="create_poll"),
                        )
 

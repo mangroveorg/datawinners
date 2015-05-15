@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block page_title %} {% trans "Create Questionnaire" %}{% endblock %}
 {% block section_title %}
-    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Create a New Questionnaire" %}</h2>
+    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Collect Data" %}</h2>
 {% endblock %}
 
 {% load dw_tabs %}
@@ -15,6 +15,10 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
+        var group_ds_count_url = "{% url group_ds_count %}";
+        var registered_ds_count_url = "{% url registered_ds_count %}";
+        var send_sms_url = "{% url send-sms%}";
+        var sms_popup_page = "create_questionnaire";
         var sms_preview_link = "{{ preview_links.sms_preview }}";
         var questionnaire_code = '{{ questionnaire_code}}';
         var web_preview_link = "{{ preview_links.web_preview }}";
@@ -24,12 +28,14 @@
         var existing_questionnaires_url = "{% url existing_questionnaires %}";
         var uniqueIdTypes = {{ unique_id_types|safe }};
         var active_language = "{{ active_language }}";
+        var create_poll_url = "{% url create_poll %}";
     </script>
 
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
 
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/project_questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_fetcher.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_creation_options_view_model.js"></script>
@@ -40,6 +46,7 @@
     <script type="text/javascript" src="/media/javascript/project/upload_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/project/create_project.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/entity/send_sms_index.js"></script>#}
     <script type="text/javascript" src="/media/javascript/project/new_questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
@@ -59,5 +66,5 @@
 
 {% block content %}
     {% include 'project/questionnaire_creation_options.html' %}
-    {% include 'project/quesitionnaire_builder.html' %}
+    {% include 'project/questionnaire_builder.html' %}
 {% endblock %}

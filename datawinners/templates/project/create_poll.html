@@ -1,0 +1,77 @@
+{% load i18n %}
+
+<div data-bind="visible: showPollQuestionnaireForm">
+    <form id="poll_form">
+        {% csrf_token %}
+        <div class="questionnaire_form_header clearfix">
+            {% include 'project/questionnaire_info_indicator.html' %}
+        </div>
+        <input id= 'questionnaire_title' data-bind="inputValue: projectName, value: projectName"/>
+
+        <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectNameAlreadyExists, scrollToElement: projectNameAlreadyExists, visible: show_error"></span>
+        <div class="validationMessage" data-bind="ifnot: projectName.valid">
+               <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error, scrollToElement: projectName.error"></span>
+            </div>
+
+        <label>2. How Do You Want to Broadcast this Poll?</label>
+            <br>
+        <div>
+            <input type="radio"  name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms, click: show_send_sms_block"/>
+            <span class="margin_left_10">{% trans "I want to send this Poll Question via SMS" %}</span></br>
+            <label class="subtitle_helper">This is where we explain that only the Poll recipients will be able to send in data.</label>
+        </div>
+        <br>
+
+        <div data-bind="visible: send_poll_sms">
+            <label>SMS text</label>
+            <i>Be sure to include your question, answer options and  instructions on how to reply in SMS text.
+            Example: Did you receive your nutrition package? Reply to this SMS with either “yes” or “no”.</i><br>
+
+
+            <div data-bind="stopBinding: true">
+                <div id="poll_sms_section">
+                    {% include 'send-sms.html' %}
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div>
+            <input type="radio" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms, click: show_send_sms_block" />
+            <span class="margin_left_10">{% trans "I will use other means" %}</span></br>
+            <label class="subtitle_helper"> (Example: Radio, TV Billboards) This is where we explain that anyone can send in data.</label>
+        </div>
+        <br>
+        <div data-bind="visible: send_broadcast">
+            <h1>Broadcast</h1>
+        </div>
+
+        <br>
+        <div>
+            <label>3. How Long Do Should People be Able to Send in Their Answer?</label>
+            <label class="subtitle_helper">Short explanation and why we suggest to have a fixed activation period</label>
+            <a href="#">Learn more</a>
+            <br>
+            <select data-bind="options: days_active" class="dropdown_style"></select> <span>  Days</span>
+        </div>
+        <br>
+        <div class="create_project">
+                <div class="grid_5">
+                    <a href="{% url create_project %}?prev=dash" id="back_to_create_options">{% trans "Back" %} </a>
+                </div>
+{#                <div data-bind="stopBinding: true">#}
+                    <div class="grid_15 float_right" id="send_sms_section">
+                        <div class="right_aligned_button">
+                            <a href="{{ cancel_link }}" class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
+                            <input type="button" class="button_wizard_next" id="save_and_create"
+                               data-bind="click: create_poll, disable: disableSendPoll, css: {'ui-state-disabled': disableSendPoll}"
+                               value="{% trans "Save & Create Poll" %}"/>
+                        </div>
+{#                    </div>#}
+                    <div class="clear-both"></div>
+                </div>
+        </div>
+
+    </form>
+
+</div>

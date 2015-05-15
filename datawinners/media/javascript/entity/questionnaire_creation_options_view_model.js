@@ -65,15 +65,19 @@ var questionnaireCreationOptionsViewModel = {
             var that = questionnaireCreationOptionsViewModel;
             var selectedOption = that.selectedCreationOption();
             if (selectedOption == 0) {
+                location.hash = 'questionnaire/poll';
+            }
+            if (selectedOption == 1) {
                 location.hash = 'questionnaire/new';
             }
-            else if (selectedOption == 2) {
-                location.hash = 'questionnaire/load/' + that.selectedTemplateId();
-            }
-            else if(selectedOption == 1){
+            if(selectedOption == 2){
                 location.hash = 'questionnaire/copy/' + that.selectedQuestionnaireId();
             }
-            else if(selectedOption == 3){
+            if (selectedOption == 3) {
+                location.hash = 'questionnaire/load/' + that.selectedTemplateId();
+            }
+
+            if(selectedOption == 4){
                 location.hash = 'questionnaire/xlsupload/';
             }
         }
@@ -85,11 +89,13 @@ var questionnaireCreationOptionsViewModel = {
             return false;
         if(creationOption == 0)
             return true;
-        if(creationOption == 1 && this.selectedQuestionnaireId())
+        if(creationOption == 1)
             return true;
-        if(creationOption == 2 && this.selectedTemplateId())
+        if(creationOption == 2 && this.selectedQuestionnaireId())
             return true;
-        if(creationOption == 3)
+        if(creationOption == 3 && this.selectedTemplateId())
+            return true;
+        if(creationOption == 4)
             return true;
         return false;
     }, questionnaireCreationOptionsViewModel);

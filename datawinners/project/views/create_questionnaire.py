@@ -42,7 +42,7 @@ def create_project(request):
         return HttpResponse(json.dumps(response_dict))
 
 
-def _validate_questionnaire_name_and_code(questionnaire):
+def validate_questionnaire_name_and_code(questionnaire):
     code_has_errors, name_has_errors = False, False
     error_message = {}
     if not questionnaire.is_form_code_unique():
@@ -71,7 +71,7 @@ def _create_project_post_response(request, manager):
             EntityQuestionAlreadyExistsException) as ex:
         return {'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}
 
-    code_has_errors, error_message, name_has_errors = _validate_questionnaire_name_and_code(questionnaire)
+    code_has_errors, error_message, name_has_errors = validate_questionnaire_name_and_code(questionnaire)
 
     if not code_has_errors and not name_has_errors:
         associate_account_users_to_project(manager, questionnaire)

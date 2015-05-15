@@ -3,6 +3,80 @@ function ProjectQuestionnaireViewModel() {
 
     self.uniqueIdTypes = ko.observableArray(uniqueIdTypes);
     self.isXLSUploadQuestionnaire = ko.observable(false);
+    self.showPollQuestionnaireForm = ko.observable(false);
+    self.show_sms = ko.observable();
+    self.days_active = ko.observableArray(_.range(1,6));
+    self.above = ko.observable('above');
+    self.below = ko.observable('below');
+    self.send_poll_sms = ko.observable(false);
+    self.send_broadcast = ko.observable(false);
+    self.show_error = ko.observable(false);
+    self.projectNameAlreadyExists = ko.observable();
+    self.show_send_sms_block = function(){
+      if (self.show_sms() == "poll_via_sms"){
+          self.send_poll_sms(true);
+          self.send_broadcast(false);
+           window.smsViewModel.clearSelection();
+      }
+      else if(self.show_sms() == "poll_broadcast"){
+          self.send_broadcast(true);
+          self.send_poll_sms(false);
+      }
+    };
+
+    self.disableSendPoll = ko.computed(function(){
+        if(window.smsViewModel.disableSendSms() ){
+            if(!(DW.ko.mandatoryValidator(self.projectName) && self.send_broadcast())) {
+
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        return false;
+    });
+
+    self.validateCreatePoll = function(){
+        return ((window.smsViewModel.validate() == 1) || self.send_broadcast() == true) && (DW.ko.mandatoryValidator(self.projectName));
+    };
+
+    self.create_poll = function(){
+        if(self.validateCreatePoll()) {
+
+            data = {
+                'poll_name': self.projectName().trim(),
+                'active_days': self.days_active,
+                'question': $("#sms-text").val(),
+                'csrfmiddlewaretoken': $("#poll_form input[name=csrfmiddlewaretoken]").val()
+            };
+
+            $.post(create_poll_url, data).done(function (response) {
+
+                var responseJson = $.parseJSON(response);
+                if(responseJson['success']) {
+                    var redirect_url = '/project/overview/' + responseJson.project_id;
+                    DW.trackEvent('poll-creation-method', 'poll-qns-success');
+                    window.location.replace(redirect_url);
+                    window.smsViewModel.sendSms();
+                }
+                else{
+                    self.show_error(true);
+                    self.projectNameAlreadyExists(responseJson['error_message']['name'])
+                }
+
+                $('#sms-success').hide();
+                window.smsViewModel.clearSelection();
+            });
+        }
+        else {if(window.questionnaireViewModel.projectName().trim() == ""){
+            self.show_error(true);
+            self.projectNameAlreadyExists('This field is required');
+
+        }}
+    };
+
+
 
     self.showUniqueIdTypeList = ko.computed(function(){
         return self.uniqueIdTypes().length == 0;
