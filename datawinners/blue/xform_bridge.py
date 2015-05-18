@@ -284,7 +284,7 @@ class XlsFormParser():
     def parse(self):
         fields = self.xform_dict['children']
         errors = self._validate_fields_are_recognised(fields)
-        settings_page_errors = self._validate_settings_page_is_not_present(self.xform_dict)
+        settings_page_errors = self._validate_settings_page_is_not_present()
         errors = errors.union(settings_page_errors)
         choice_errors = self._validate_media_in_choices(fields)
         [errors.add(choice_error) for choice_error in choice_errors if choice_error]
@@ -473,25 +473,21 @@ class XlsFormParser():
             return _("Prefetch of csv not supported")
         return None
 
-    def _validate_settings_page_is_not_present(self, xform_dict):
+    def _validate_settings_page_is_not_present(self):
         errors = []
+        not_allowed_settings = ['public_key', 'submission_url', 'instance_name', 'style']
         setting_page_error = _(
             "columns other than Default_Language in the Settings Sheet.")
-        if xform_dict['title'] != xform_dict['name']:
+        if self.xform_dict['title'] != self.xform_dict['name']:
             errors.append(setting_page_error)
 
-        if xform_dict['id_string'] != xform_dict['name']:
+        if self.xform_dict['id_string'] != self.xform_dict['name']:
             errors.append(setting_page_error)
 
-        #if xform_dict['default_language'] != 'default':
-        #    errors.append(setting_page_error)
-
-        if 'public_key' in xform_dict:
-            errors.append(setting_page_error)
-
-        if 'submission_url' in xform_dict:
-            errors.append(setting_page_error)
-
+        for setting in not_allowed_settings:
+            if setting in self.xform_dict:
+                errors.append(setting_page_error)
+                break
         return set(errors)
 
 
