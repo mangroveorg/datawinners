@@ -62,6 +62,6 @@ def create_search_indices_for_submissions(db_name):
 
 
 es = get_elasticsearch_handle(timeout=600)
-migrate(all_db_names(), create_search_indices_for_submissions, version=(10, 0, 5), threads=1)
+migrate(all_db_names(), create_search_indices_for_submissions, version=(25, 0, 1), threads=1)
 
 
