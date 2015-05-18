@@ -9,24 +9,24 @@
             <span class="questionnaire_subtitles">{% trans "Create a Poll " %}<span class="subtitle_helper ">SMS</span> </span>
         </div>
         <div class="questionnaire_type_header">
-            <span class="header">{% trans "Short explanation on what polls are." %}</span>
+            <span class="header" id="create_poll">{% trans "Short explanation on what polls are." %}</span>
         </div>
         <div>
             <h6 class="create_questionnaire_help">{% trans "Text waiting" %}</h6>
         </div>
 
         <div class="advanced_questionnaire_section_header">
-            <span class="questionnaire_subtitles">{% trans "Create a Basic Questionnaire" %}</span>
+            <span class="questionnaire_subtitles" >{% trans "Create a Basic Questionnaire" %}</span>
             <span class="subtitle_helper ">SMS, Web, Smartphone, Tablet</span>
         </div>
 
         <div class="questionnaire_type_header">
-            <span class="header">{% trans "Create a New Questionnaire" %}</span>
+            <span class="header" id="create_blank">{% trans "Create a New Questionnaire" %}</span>
         </div>
         <h6 class="create_questionnaire_help">{% trans "Start with a blank Questionnaire and add your list of questions" %}</h6>
 
         <div id="copy_existing_questionnaire" class="questionnaire_type_header" data-bind="click: getExistingQuestionnaireList">
-            <span class="header">{% trans "Copy an Existing Questionnaire" %}</span>
+            <span class="header" id="copy_existing">{% trans "Copy an Existing Questionnaire" %}</span>
         </div>
 
         <div>
@@ -34,7 +34,7 @@
         </div>
 
         <div class="questionnaire_type_header" data-bind="click: getTemplates">
-            <span class="header">{% trans "Use a Template" %}</span>
+            <span class="header" id="create_template">{% trans "Use a Template" %}</span>
         </div>
 
         <div>
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="questionnaire_type_header">
-            <span class="header">{% trans "Upload an XLSForm" %}</span>
+            <span class="header" id="adv_questionnaire">{% trans "Upload an XLSForm" %}</span>
         </div>
         <div>
             <h6 class="create_questionnaire_help">{% trans "Choose this option to create a Questionnaire with advanced features by uploading an XLSForm (Excel file)" %} <a class="dialog-anchor xls_learn_more">{% trans "Learn More" %}</a></h6>

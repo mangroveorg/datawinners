@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from string import lower
+from time import sleep
 from pages.createprojectpage.questionnaire_creation_options_page import QuestionnaireCreationOptionsPage
 from pages.lightbox.light_box_page import LightBox
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
@@ -18,6 +19,7 @@ class ProjectsPage(Page):
 
         Return create project page
          """
+        sleep(60)
         self.driver.find(CREATE_A_NEW_PROJECT_LINK).click()
         return QuestionnaireCreationOptionsPage(self.driver)
 

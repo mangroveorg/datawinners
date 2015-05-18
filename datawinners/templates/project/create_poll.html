@@ -6,7 +6,7 @@
         <div class="questionnaire_form_header clearfix">
             {% include 'project/questionnaire_info_indicator.html' %}
         </div>
-        <input id= 'questionnaire_title' data-bind="inputValue: projectName, value: projectName"/>
+        <input id= 'poll_title' data-bind="inputValue: projectName, value: projectName"/>
 
         <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectNameAlreadyExists, scrollToElement: projectNameAlreadyExists, visible: show_error"></span>
         <div class="validationMessage" data-bind="ifnot: projectName.valid">
@@ -59,7 +59,6 @@
                 <div class="grid_5">
                     <a href="{% url create_project %}?prev=dash" id="back_to_create_options">{% trans "Back" %} </a>
                 </div>
-{#                <div data-bind="stopBinding: true">#}
                     <div class="grid_15 float_right" id="send_sms_section">
                         <div class="right_aligned_button">
                             <a href="{{ cancel_link }}" class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
@@ -67,7 +66,6 @@
                                data-bind="click: create_poll, disable: disableSendPoll, css: {'ui-state-disabled': disableSendPoll}"
                                value="{% trans "Save & Create Poll" %}"/>
                         </div>
-{#                    </div>#}
                     <div class="clear-both"></div>
                 </div>
         </div>
