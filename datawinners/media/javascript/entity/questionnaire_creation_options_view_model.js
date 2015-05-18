@@ -80,6 +80,7 @@ var questionnaireCreationOptionsViewModel = {
             if(selectedOption == 4){
                 location.hash = 'questionnaire/xlsupload/';
             }
+            location.reload();
         }
     };
 

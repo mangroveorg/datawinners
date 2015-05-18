@@ -135,6 +135,7 @@ DW.controllers = {
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
             questionnaireViewModel.isOpenSurvey(true);
             DW.trackEvent('questionnaire-creation-method', 'poll-questionnaire');
+
     }
 };
 
