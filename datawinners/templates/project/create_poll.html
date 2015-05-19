@@ -16,13 +16,13 @@
         <label>2. How Do You Want to Broadcast this Poll?</label>
             <br>
         <div>
-            <input type="radio"  name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms, click: show_send_sms_block"/>
+            <input type="radio"  name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
             <span class="margin_left_10">{% trans "I want to send this Poll Question via SMS" %}</span></br>
             <label class="subtitle_helper">This is where we explain that only the Poll recipients will be able to send in data.</label>
         </div>
         <br>
 
-        <div data-bind="visible: send_poll_sms">
+        <div data-bind="visible: show_sms() === 'poll_via_sms'">
             <label>SMS text</label>
             <i>Be sure to include your question, answer options and  instructions on how to reply in SMS text.
             Example: Did you receive your nutrition package? Reply to this SMS with either “yes” or “no”.</i><br>
@@ -37,12 +37,12 @@
         </div>
         <br>
         <div>
-            <input type="radio" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms, click: show_send_sms_block" />
+            <input type="radio" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms" />
             <span class="margin_left_10">{% trans "I will use other means" %}</span></br>
             <label class="subtitle_helper"> (Example: Radio, TV Billboards) This is where we explain that anyone can send in data.</label>
         </div>
         <br>
-        <div data-bind="visible: send_broadcast">
+        <div data-bind="visible: show_sms() === 'poll_broadcast'">
             <h1>Broadcast</h1>
         </div>
 
