@@ -17,7 +17,6 @@ from framework.utils.common_utils import *
 LOCATOR = "locator"
 BY = "by"
 
-DATA_TAB = by_id("data_tab")
 DATASENDERS_TAB = by_id("data_senders_tab")
 SUBJECTS_TAB = by_id("subjects_tab")
 REMINDERS_TAB = by_id("reminders_tab")
