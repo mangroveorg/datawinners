@@ -5798,3 +5798,11 @@ msgstr "Commencer"
 msgid "Create a Questionnaire"
 msgstr "Créer un Questionnaire"
 
+msgid "https://www.youtube.com/embed/pjr-Fn3Q7aw?autoplay=1"
+msgstr "https://www.youtube.com/embed/hDUGgoYEH4Y?autoplay=1"
+
+msgid "https://www.youtube.com/embed/4QmTmcr56wU?autoplay=1"
+msgstr "https://www.youtube.com/embed/UWZPWQIuXUU?autoplay=1"
+
+msgid "https://www.datawinners.com/dwcdt"
+msgstr "https://www.datawinners.com/fr/dwcdt"

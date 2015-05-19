@@ -60,5 +60,22 @@ $(document).ready(function() {
             });
     $( "#help_message_dialog_close" ).click(function() {
         $("#help_message, #help_message_arrow").addClass("none");
-        });
+    });
+
+    $("#video-lightbox").dialog({
+        modal: true,
+        autoOpen: false,
+        height: 'auto',
+        width: 'auto',
+        closeText: 'hide',
+        close: function(){
+            $("#video-lightbox iframe").attr("src", "");
+        }
+    });
+
+    $("a.open_video").bind("click", function(){
+        $("#video-lightbox iframe").attr("src", $(this).attr("href"));
+        $("#video-lightbox").dialog("open");
+        return false;
+    });
 });
