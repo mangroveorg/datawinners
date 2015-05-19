@@ -5,6 +5,7 @@ from datawinners.project.views.change_language import QuestionnaireLanguageView
 from datawinners.project.views.create_questionnaire import create_project
 from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders
 from datawinners.project.views.import_submissions_views import ImportSubmissionView
+from datawinners.project.views.preferences_views import hide_submission_log_column
 from datawinners.project.views.registered_datasenders import registered_ds_count
 
 from datawinners.project.wizard_view import edit_project, reminder_settings, get_templates, get_template_details
@@ -61,6 +62,7 @@ urlpatterns = patterns('',
                        url(r'^project/delete/(?P<project_id>.+?)/$', delete_project, name="delete_project"),
                        (r'^project/rename/(?P<project_id>.+?)$', rename_project),
                        (r'^project/undelete/(?P<project_id>.+?)/$', undelete_project),
+                       (r'^project/hide_submission_log_column/$', hide_submission_log_column),
                        url(r'^project/edit_subjects/(?P<project_id>.+?)/entity/(?P<entity_type>.+?)/$', edit_my_subject_questionnaire,
                            name="edit_my_subject_questionnaire"),
                        url(r'^project/sms_preview$', sms_preview, name="sms_preview"),

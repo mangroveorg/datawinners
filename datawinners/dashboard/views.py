@@ -143,6 +143,9 @@ def dashboard(request):
     return render_to_response('dashboard/home.html',
                               context, context_instance=RequestContext(request))
 
+
+@valid_web_user
+@is_datasender
 def hide_help_element(request):
     user_id = request.user.id
     preference_name = "hide_help_element"
@@ -150,6 +153,7 @@ def hide_help_element(request):
     help_element_preference = UserPreferences(user_id=user_id, preference_name=preference_name, preference_value=preference_value)
     help_element_preference.save()
     return HttpResponse(json.dumps({'success': True}))
+
 
 @valid_web_user
 def start(request):

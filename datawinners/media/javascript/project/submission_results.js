@@ -85,7 +85,17 @@ DW.SubmissionLogTable = function (options) {
             }
         );
         $(".submission_table").dataTable().fnSetColumnVis(0, options.row_check_box_visible);
-        var colvis = new $.fn.dataTable.ColVis( $(".submission_table").dataTable().fnSettings(),{aiExclude:[0]});
+        var colvis = new $.fn.dataTable.ColVis( $(".submission_table").dataTable().fnSettings(),
+                                                {
+                                                    aiExclude:[0],
+                                                    "fnStateChange": function ( iColumn, bVisible ) {
+                                                        $.post("/project/hide_submission_log_column/", {
+                                                                'data': JSON.stringify({"questionnaire_code": $("#questionnaire_code").val(),
+                                                                                        "hide_column":iColumn}),
+                                                                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+                                                            })
+                                                    }
+                                                });
         $( colvis.button() ).insertAfter('div.dataTables_processing');
     }
 };
