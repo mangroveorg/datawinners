@@ -12,17 +12,7 @@ function ProjectQuestionnaireViewModel() {
     self.send_broadcast = ko.observable(false);
     self.show_error = ko.observable(false);
     self.projectNameAlreadyExists = ko.observable();
-    self.show_send_sms_block = function(){
-      if (self.show_sms() == "poll_via_sms"){
-          self.send_poll_sms(true);
-          self.send_broadcast(false);
-           window.smsViewModel.clearSelection();
-      }
-      else if(self.show_sms() == "poll_broadcast"){
-          self.send_broadcast(true);
-          self.send_poll_sms(false);
-      }
-    };
+    self.show_send_sms_block_ex = ko.observable();
 
     self.disableSendPoll = ko.computed(function(){
         if(window.smsViewModel.disableSendSms() ){
