@@ -195,6 +195,7 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     'celery',
     'datawinners.smstester',
+    'datawinners.preferences',
 )
 
 WAYBILL_SENT_QUESTIONNAIRE_CODE = 'way1'
@@ -265,6 +266,8 @@ TRIAL_REGISTRATION_ENABLED = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 ELASTIC_SEARCH_URL = 'http://localhost:9200/'
+ELASTIC_SEARCH_HOST = 'localhost'
+ELASTIC_SEARCH_PORT = 9200
 ELASTIC_SEARCH_TIMEOUT = 180
 
 QUESTIONNAIRE_TEMPLATE_DB_NAME = "questionnaire_library"

@@ -16,7 +16,7 @@ $(function(){
         modal: true,
         title: gettext("Send an SMS"),
         zIndex: 700,
-        width: 800,
+        width: 720,
         height: 'auto',
         close: function () {
             smsViewModel.clearSelection();

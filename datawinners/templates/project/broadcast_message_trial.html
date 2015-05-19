@@ -22,6 +22,12 @@
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        DW.help_url = "https://datawinners.staging.wpengine.com/{{ active_language }}/help-center/find-answers/category/messrems/?template=help";
+    </script>
+{% endblock %}
 
 {% block content %}
 

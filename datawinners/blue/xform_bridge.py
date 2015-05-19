@@ -6,6 +6,7 @@ from xml.etree import ElementTree as ET
 
 from lxml import etree
 import unicodedata
+from openpyxl import load_workbook
 from mangrove.datastore.entity_type import entity_type_already_defined
 from mangrove.datastore.queries import get_non_voided_entity_count_for_type
 from pyxform.xls2json import parse_file_to_json
@@ -67,17 +68,57 @@ class XlsFormParser():
         self.dbm = dbm
         if isinstance(path_or_file, basestring):
             self._file_object = None
-            path = path_or_file
+            self.path = path_or_file
         else:
             self._file_object = path_or_file
-            path = path_or_file.name
+            self.path = path_or_file.name
 
-        self.xform_dict = parse_file_to_json(path, file_object=path_or_file)
+        self.xform_dict = parse_file_to_json(self.path, file_object=path_or_file)
 
     def _validate_for_uppercase_names(self, field):
         if filter(lambda x: x.isupper(), field['name']):
             return _("Uppercase in names not supported")
         return None
+
+    def _identify_default_language(self):
+        if self.xform_dict['default_language'] != u'default':
+            self.default_language = self.xform_dict['default_language']
+            return
+
+        if not self._has_explicit_language_specified(self.xform_dict['children']):
+            # avoid loading excel again if not multi language questionnaire
+            self.default_language = 'default'
+            return
+
+        if self.path.endswith('.xls'):
+            self._identify_language_from_xls_file()
+        else:
+            self._identify_language_from_xlsx_file()
+
+    def _identify_language_from_xls_file(self):
+        headers = xlrd.open_workbook(filename=self.path).sheet_by_name('survey').row(0)
+        for header_cell in headers:
+            if re.match('^label::', header_cell.value):
+                language = header_cell.value.split("::")[1]
+                self.default_language = language
+                return
+
+    def _identify_language_from_xlsx_file(self):
+        try:
+            workbook = load_workbook(self.path)
+        except Exception as e:
+            raise e
+        worksheet = workbook.get_sheet_by_name('survey')
+
+        for counter, row in enumerate(worksheet.iter_rows()):
+            if counter > 0:
+                break
+
+            for cell in row:
+                if re.match('^label::', cell.value):
+                    language = cell.value.split("::")[1]
+                    self.default_language = language
+                    return
 
     def _create_question(self, field, parent_field_code=None):
         unique_id_errors = []
@@ -145,21 +186,18 @@ class XlsFormParser():
     def _validate_fields_are_recognised(self, fields):
         errors = []
         for field in fields:
-            try:
-                self._validate_for_no_language(field)
-            except MultipleLanguagesNotSupportedException as e:
-                errors.append(e.message)
+            # try:
+            #     self._validate_for_no_language(field)
+            # except MultipleLanguagesNotSupportedException as e:
+            #     errors.append(e.message)
             field_type = field['type'].lower()
             if field_type in self.recognised_types:
                 if field_type in self.type_dict['group']:
                     self._validate_group(errors, field)
-                # errors.append(self._validate_for_uppercase_names(field))
                 errors.append(self._validate_for_prefetch_csv(field))
             else:
-                if (field["type"] in self.meta_data_types):
+                if field["type"] in self.meta_data_types:
                     errors.append(_("%s as a datatype (metadata)") % _(field_type))
-                # elif(field["type"]) in self.or_other_data_types:
-                # errors.append(_("XLSForm \"or_other\" function for multiple choice or single choice questions"))
                 elif (field["type"]) in self.select_without_list_name:
                     errors.append(_("missing list reference, check your select_one or select multiple question types"))
                 else:
@@ -176,13 +214,16 @@ class XlsFormParser():
             if f["type"] == "group":
                 self._validate_for_nested_repeats(f)
 
-    def _validate_for_no_language(self, field):
-        for header in ['label', 'hint']:
-            if self._has_languages(field.get(header)):
-                raise MultipleLanguagesNotSupportedException()
-        field.get("choices") and self._validate_for_no_language(field.get("choices")[0])
-        if field.get('bind') and self._has_languages(field.get('bind').get('jr:constraintMsg')):
-            raise MultipleLanguagesNotSupportedException()
+    def _has_explicit_language_specified(self, fields):
+        for field in fields:
+            if self._has_languages(field.get('label')):
+                return True
+        return False
+        #    if self._has_languages(field.get(header)):
+        #        raise MultipleLanguagesNotSupportedException()
+        # field.get("choices") and self._validate_for_no_language(field.get("choices")[0])
+        # if field.get('bind') and self._has_languages(field.get('bind').get('jr:constraintMsg')):
+        #     raise MultipleLanguagesNotSupportedException()
 
     def _has_languages(self, header):
         return header and isinstance(header, dict) and len(header) >= 1
@@ -242,6 +283,7 @@ class XlsFormParser():
         [errors.add(choice_error) for choice_error in choice_errors if choice_error]
         choice_name_errors = self._validate_choice_names(fields)
         errors = errors.union(set(choice_name_errors))
+        self._identify_default_language()
         questions, question_errors, info = self._create_questions(fields)
         if question_errors:
             errors = errors.union(question_errors)
@@ -276,7 +318,9 @@ class XlsFormParser():
                 raise LabelForFieldNotPresentException(field_name=field['name'])
 
         if isinstance(field['label'], dict):
-            return field['label'].values()[0]
+            if field['label'].get(self.default_language):
+                return field['label'].get(self.default_language)
+            return field['label'].values()[-1]
         else:
             return field['label']
 
@@ -394,7 +438,11 @@ class XlsFormParser():
         if not choice_field.get('label', None):
             raise LabelForChoiceNotPresentException(choice_field.get('name', ''))
 
-        return choice_field.get('label')
+        choice_label = choice_field.get('label')
+        if not isinstance(choice_label, dict):
+            return choice_label
+
+        return choice_label.get(self.default_language, '')
 
     def is_required(self, field):
         if field.get('bind') and 'yes' == str(field['bind'].get('required')).lower():
@@ -423,8 +471,8 @@ class XlsFormParser():
         if xform_dict['id_string'] != xform_dict['name']:
             errors.append(setting_page_error)
 
-        if xform_dict['default_language'] != 'default':
-            errors.append(setting_page_error)
+        #if xform_dict['default_language'] != 'default':
+        #    errors.append(setting_page_error)
 
         if 'public_key' in xform_dict:
             errors.append(setting_page_error)

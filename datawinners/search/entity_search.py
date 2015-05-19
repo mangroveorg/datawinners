@@ -1,3 +1,5 @@
+import cgi
+from copy import copy
 import elasticutils
 
 from datawinners.search.index_utils import es_questionnaire_field_name
@@ -8,6 +10,8 @@ from datawinners.search.query import Query, QueryBuilder
 from mangrove.form_model.project import get_entity_type_fields
 
 
+DATASENDER_DISPLAY_FIELD_ORDER = ['name', 'mobile_number', 'email', 'location', 'geo_code', 'short_code', 'projects',
+                                'devices', 'customgroups', 'groups']
 class SubjectQuery(Query):
     def __init__(self, query_params=None):
         Query.__init__(self, SubjectQueryResponseCreator(), QueryBuilder(), query_params)
@@ -49,8 +53,7 @@ class DatasenderQueryResponseCreator():
             result.append("")
 
     def create_response(self, search_results, show_projects=True):
-        required_field_names = ['name', 'mobile_number', 'email', 'location', 'geo_code', 'short_code', 'projects',
-                                'devices', 'customgroups', 'groups']
+        required_field_names = copy(DATASENDER_DISPLAY_FIELD_ORDER)
 
         if not show_projects:
             required_field_names.remove('projects')
@@ -62,7 +65,8 @@ class DatasenderQueryResponseCreator():
                 if key is "devices":
                     self.add_check_symbol_for_row(res, result)
                 elif key in ["projects", "customgroups"]:
-                    result.append(", ".join(res.get(key, [])))
+                    values_joined = ", ".join(res.get(key, []))
+                    result.append(cgi.escape(values_joined))
                 elif key is "groups":
                     self._format_contact_groups(key, res, result)
                 else:

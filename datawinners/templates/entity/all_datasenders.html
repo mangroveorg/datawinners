@@ -56,6 +56,13 @@
         var group_rename_url = "{% url group_rename %}";
         var sms_popup_page = "all-contacts";
         var user_group = "{{ user_group }}";
+        DW.help_url = "https://datawinners.staging.wpengine.com/{{ current_language }}/help-center/find-answers/category/allds/?template=help";}
+        $(document).ready(function() {
+            $("#div_iframe").addClass("margin_top_45");
+            $("#page_title").addClass("full_width");
+            $("#need_help_link").addClass("margin_right_20");
+            $("#div_iframe").addClass("div_iframe_contact_page");
+        });
 
     </script>
 
@@ -144,7 +151,7 @@
         </div>
     </div>
     <div id="no_datasenders_message" class="none">
-        {% trans "Group is empty" %}
+        {% trans "Once you have added Contacts to your Group, they will appear here." %}
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     {% include 'entity/all_data_senders/all_project_blocks.html' %}

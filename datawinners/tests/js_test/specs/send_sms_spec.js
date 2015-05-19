@@ -323,6 +323,40 @@ describe("Send A Message", function(){
 
     });
 
+
+    it("should set recepient as specific contacts when sending sms to selected contacts", function() {
+
+        spyOn(jQuery, "ajax").andCallFake(function() {
+            var d = $.Deferred();
+            d.resolve('{"successful": true}');
+            return d.promise();
+        });
+
+        successFlashMessage.addClass("success-message-box none");
+
+        smsTextArea.val("some text");
+        model.othersList("56363,2434");
+        model.selectedSmsOption("others");
+        model.sendToSpecificContacts = true;
+        model.selectedQuestionnaireNames([]);
+
+        model.sendSms();
+
+
+        expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("post");
+        var requestBody = $.ajax.mostRecentCall.args[0].data;
+        expect(requestBody.others).toEqual("56363,2434");
+        expect(requestBody['sms-text']).toEqual("some text");
+        expect(requestBody.recipient).toEqual("specific-contacts");
+        expect(requestBody['questionnaire-names']).toEqual('[]');
+        expect(requestBody['csrfmiddlewaretoken']).toEqual('csrf1234');
+
+        expect(successFlashMessage.attr('class')).toEqual("success-message-box");
+        expect(noSmscErrorMessage.attr('class')).toEqual("message-box none");
+        expect(failedNumbersErrorMessage.attr('class')).toEqual("message-box none");
+
+    })
+
     it("should show no smsc error when server sends 'no smsc' configured error ", function() {
 
         spyOn(jQuery, "ajax").andCallFake(function() {

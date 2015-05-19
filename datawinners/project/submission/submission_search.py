@@ -5,8 +5,8 @@ from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRa
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.query import ElasticUtilsHelper
 from datawinners.search.submission_headers import HeaderFactory
-from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.form_model.form_model import get_form_model_by_entity_type
+from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT, ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
 
 
 def _add_sort_criteria(search_parameters, search):
@@ -111,7 +111,7 @@ def _add_response_fields(search_parameters, search):
 
 
 def _create_query(dbm, form_model, local_time_delta, search_parameters):
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     search = _add_pagination_criteria(search_parameters, search)
     search = _add_sort_criteria(search_parameters, search)
@@ -134,13 +134,13 @@ def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_ti
     query_dict = search.to_dict()
     # if search_parameters.get('get_only_id', False):
     #     query_dict["fields"] = []
-    scan_response = helpers.scan(client=Elasticsearch(), index=dbm.database_name, doc_type=form_model.id,
+    scan_response = helpers.scan(client=Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}]), index=dbm.database_name, doc_type=form_model.id,
                                  query=query_dict, timeout="3m", size=4000)
     return scan_response, query_fields
 
 
 def get_submissions_without_user_filters_count(dbm, form_model, search_parameters):
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     search = _query_by_submission_type(search_parameters.get('filter'), search)
     body = search.to_dict()
@@ -148,7 +148,7 @@ def get_submissions_without_user_filters_count(dbm, form_model, search_parameter
 
 
 def get_submission_count(dbm, form_model, search_parameters, local_time_delta):
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     query_fields, search = _add_filters(dbm, form_model, search_parameters, local_time_delta, search)
     body = search.to_dict()
@@ -181,7 +181,7 @@ def _create_facet_request_body(field_name, query_body):
 def get_facets_for_choice_fields(dbm, form_model, search_parameters, local_time_delta):
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
     query_body = search.to_dict()
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     total_submission_count = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
     facet_results = []
     for field in form_model.choice_fields:
@@ -196,7 +196,7 @@ def get_facets_for_choice_fields(dbm, form_model, search_parameters, local_time_
 
 def get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters, local_time_delta):
     total_submission_count = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
     search = search.extra(size=total_submission_count, fields=[])
     body = search.to_dict()

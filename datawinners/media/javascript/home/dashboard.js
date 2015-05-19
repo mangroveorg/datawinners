@@ -43,4 +43,22 @@ $(document).ready(function() {
         project.showSubmissionBreakup($(this).html());
     });
     _trackConversion();
+
+    $( ".close_help_element" ).click(function() {
+        $("#welcome_area, #help_element").addClass("none");
+        $("#help_message, #help_message_arrow").removeClass("none");
+
+        var data = {
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/dashboard/hide_help_element/',
+            data: data
+      });
+            });
+    $( "#help_message_dialog_close" ).click(function() {
+        $("#help_message, #help_message_arrow").addClass("none");
+        });
 });

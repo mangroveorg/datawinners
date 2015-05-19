@@ -1,6 +1,8 @@
 from string import lower
-from datawinners.utils import is_empty_string
+from xml.sax.saxutils import escape
 from django.utils.translation import ugettext as _
+
+from datawinners.utils import is_empty_string
 from mangrove.datastore.documents import GroupDocument
 from mangrove.datastore.group import Group
 from mangrove.errors.MangroveException import DataObjectNotFound
@@ -11,7 +13,7 @@ def get_group_details(dbm):
     group_details = []
     rows = dbm.load_all_rows_in_view('group_by_name')
     for row in rows:
-        group_details.append({'name': row['value']['name']})
+        group_details.append({'name': escape(row['value']['name'])})
     return group_details
 
 

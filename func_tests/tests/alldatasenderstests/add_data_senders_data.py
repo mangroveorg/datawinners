@@ -25,7 +25,7 @@ VALID_DATA = {NAME: "ab Mickey Duck",
               MOBILE_NUMBER_WITHOUT_HYPHENS: "98765432101",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
               GPS: "-21.7622088847 48.0690991394",
-              SUCCESS_MSG: "Your contact(s) have been added. ID is: rep"}
+              SUCCESS_MSG: "Your Contact has been successfully added. ID is: rep"}
 
 VALID_EDIT_DATA = {NAME: "EDIT Mickey Duck",
                    MOBILE_NUMBER: random_number(9),
@@ -45,14 +45,14 @@ VALID_CONTACT_WITH_EMAIL = {NAME: "a Mickey Duck",
                          COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY,Madagascar",
                          EMAIL_ADDRESS: "mIcKeY",
                          GPS: "-21.7622088847,48.0690991394",
-                         SUCCESS_MSG: "Your contact(s) have been added. ID is: "}
+                         SUCCESS_MSG: "Your Contact has been successfully added. ID is: "}
 
 VALID_DATA_WITH_EMAIL_TO_EDIT_A_DATASENDER = {NAME: "a Mickey Duck",
                          MOBILE_NUMBER: random_number(9),
                          COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY,Madagascar",
                          EMAIL_ADDRESS: "mIcKeY",
                          GPS: "-21.7622088847,48.0690991394",
-                         SUCCESS_MSG: "Your contact(s) have been added. ID is: rep"}
+                         SUCCESS_MSG: "Your Contact has been successfully added. ID is: rep"}
 
 VALID_DATA_WITH_EMAIL_OF_A_DATASENDER_EDITED = {NAME: "a Mickey Duck",
                          MOBILE_NUMBER: random_number(9),
@@ -92,13 +92,13 @@ WITHOUT_LOCATION_NAME = {NAME: "a Mini Mouse",
                          MOBILE_NUMBER: random_number(),
                          COMMUNE: "",
                          GPS: "-20.676646 47.197266",
-                         SUCCESS_MSG: "Your contact(s) have been added. ID is: rep"}
+                         SUCCESS_MSG: "Your Contact has been successfully added. ID is: rep"}
 
 WITHOUT_GPS = {NAME: "Alladin",
                MOBILE_NUMBER: random_number(),
                COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                GPS: "",
-               SUCCESS_MSG: "Your contact(s) have been added. ID is: rep"}
+               SUCCESS_MSG: "Your Contact has been successfully added. ID is: rep"}
 
 INVALID_LATITUDE_GPS = {NAME: "Invalid Latitude GPS",
                         MOBILE_NUMBER: "+673-4568-345",

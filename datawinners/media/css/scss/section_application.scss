@@ -7,6 +7,10 @@
   background: url('/media/images/application_header_bg.gif') repeat top left;
 }
 
+.ui-widget{
+  font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif !important;
+}
+
 #container_header_application {
   height: 74px;
   overflow: hidden;
@@ -25,6 +29,7 @@
     border: 1px solid #cccccc;
     padding: 25px;
     overflow: auto;
+    margin: 0 auto;
   }
   .wizard_content {
     margin-top: 50px;
@@ -43,7 +48,7 @@
   #page_title {
     min-height: 40px;
     padding: 15px 0 0px 0;
-    width: 950px;
+    width: 960px;
     border-radius: 1px solid red;
     margin: 0 auto;
     font-size: 22px;

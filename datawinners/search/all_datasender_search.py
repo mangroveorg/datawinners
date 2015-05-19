@@ -2,6 +2,8 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Q, F
 
 from datawinners.search.query import ElasticUtilsHelper
+from datawinners.settings import ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
+from datawinners.utils import strip_accents, lowercase_and_strip_accents
 from mangrove.form_model.project import get_entity_type_fields
 
 
@@ -41,10 +43,10 @@ def get_query_fields(dbm):
 def _add_project_filter(search, search_filter_param):
     project_name = search_filter_param.get('project_name')
     if project_name:
-        search = search.filter("term", projects_exact=project_name)
+        search = search.filter("term", projects_value=lowercase_and_strip_accents(project_name))
     projects_name = search_filter_param.get('projects')
     if projects_name:
-        search = search.filter("terms", projects_exact=projects_name)
+        search = search.filter("terms", projects_value=projects_name)
     return search
 
 
@@ -101,7 +103,7 @@ def _add_filters(dbm, search_parameters, search):
 
 
 def get_data_sender_without_search_filters_count(dbm, search_parameters):
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
     search_filter_param = search_parameters.get('search_filters', {})
     search = _add_group_filter(search, search_filter_param)
@@ -114,7 +116,7 @@ def get_data_sender_without_search_filters_count(dbm, search_parameters):
 
 
 def get_data_sender_count(dbm, search_parameters):
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
     query_fields, search = _add_filters(dbm, search_parameters, search)
     body = search.to_dict()
@@ -123,7 +125,7 @@ def get_data_sender_count(dbm, search_parameters):
 
 
 def get_data_sender_search_results(dbm, search_parameters):
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
     search = _add_pagination_criteria(search_parameters, search)
     search = _add_sort_criteria(search_parameters, search)
@@ -148,7 +150,7 @@ def get_all_datasenders_short_codes(dbm, search_parameters):
 
 
 def get_all_data_senders_count(dbm):
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
     search = _add_non_contact_filter(search)
     search = _add_non_deleted_ds_filter(search)
@@ -165,7 +167,7 @@ def get_all_data_sender_mobile_numbers(dbm):
         "number_of_results": all_data_senders_count,
         "start_result_number": 0
     }
-    es = Elasticsearch()
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=REPORTER_DOC_TYPE)
     search = _add_non_contact_filter(search)
     search = _add_non_deleted_ds_filter(search)

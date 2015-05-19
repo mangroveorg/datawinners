@@ -315,13 +315,14 @@ function init_dialog_box_for_web_users() {
                     $("#datasender_table").dataTable().fnReloadAjax();
                     DW.flashMessage("Access to Web Submission has been given to your DataSenders")
                 } else {
-                    var html = "";
+                    var error_messages = "";
                     var i = 0;
                     for (i; i < json_data.errors.length; i = i + 1) {
                         var email_in_error = json_data.errors[i].split(' ')[3];
-                        var error_message = gettext('User with email ') + email_in_error + gettext(' already exists');
-                        html += "<tr><td>" + error_message + "</td></tr>";
+                        error_messages += gettext('User with email ') + email_in_error + gettext(' already exists') + "<br/>";
                     }
+
+                    //error_messages += "<br/>";
 
                     var duplicate_entries = json_data.duplicate_entries;
                     var rep_ids = Object.keys(duplicate_entries);
@@ -329,14 +330,10 @@ function init_dialog_box_for_web_users() {
                         return json_data.duplicate_entries[key];
                     });
                     if (duplicate_emails.length != 0) {
-                        error_message = gettext("You cannot use the same email address for multiple Data Senders. Revise the email address for the following users: ")+rep_ids.join(", ");
-                        html += "<tr><td>" + error_message + "</td></tr>";
-                    }
-                    if (html != "") {
-                        html = '<table cellpadding="0" cellspacing="0" border="0">' + html + '</table>';
+                        error_messages += gettext("You cannot use the same email address for multiple Data Senders. Revise the email address for the following users: ")+rep_ids.join(", ");
                     }
                     $('#web_user_error').removeClass('none');
-                    $('#web_user_error').html(html);
+                    $('#web_user_error').html(error_messages);
                     $('#web_user_error').show();
                 }
             });
@@ -380,8 +377,8 @@ function init_dialog_box_for_group(){
 }
 
 function handle_datasender_edit(table, selectedIds) {
-    var group = $("input[value=" + selectedIds[0] +"]").parent().parent().children().last().text();
-    var popupHeader = group == 'contact'? gettext("Edit Contact") : gettext('Edit Datasender');
+    var project_id = $('#project_id').val()
+    var popupHeader = project_id ? gettext('Edit Datasender'): gettext("Edit Contact");
     $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     $.ajax({
         type: 'GET',
@@ -397,7 +394,7 @@ function handle_datasender_edit(table, selectedIds) {
 }
 function register_datasender(table) {
     var project_id = $('#project_id').val();
-    var modal_header = project_id ? gettext('Register a Datasender') : gettext('Add a Contact');
+    var modal_header = project_id ? gettext('Register a Data Sender') : gettext('Add a Contact');
 
     $.ajax({
         type: 'GET',

@@ -18,7 +18,7 @@
         $('#action_for_project').text(gettext("Add"));
         all_project_block.dialog('option', 'title', gettext('Add to Questionnaire'));
         all_project_block.dialog("open");
-    }
+    };
 
     function _matchingQuestionnaireNames(selectedIds) {
         var all_matching_questionnaires = [];
@@ -41,7 +41,7 @@
         $('#all_project_block :checked').attr("checked", false);
 
         if (!all_selected) {
-            var unique_questionnaire_names = _matchingQuestionnaireNames(selected_ids)
+            var unique_questionnaire_names = _matchingQuestionnaireNames(selected_ids);
             $.each($("#all_projects li"), function (index, item) {
                 var $item = $(item);
                 if (unique_questionnaire_names.indexOf($item.text()) > -1) {
@@ -59,8 +59,9 @@
         all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
 
         $('#action_for_project').text(gettext("Remove"));
-        all_project_block.dialog('option', 'title', gettext('Remove from Questionnaire'));
+        all_project_block.dialog('option', 'title', gettext('Remove from Questionnaires'));
         all_project_block.dialog("open");
+        all_project_block.dialog( "option", "width", 350 );
     }
 
 }(DW, jQuery));

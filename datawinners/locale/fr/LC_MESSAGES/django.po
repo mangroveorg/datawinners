@@ -130,6 +130,12 @@ msgstr "Veuillez saisir uniquement des lettres a-z ou A-Z ou les symboles '`-"
 msgid "Mobile Number*"
 msgstr "Numéro de mobile*"
 
+msgid "Mobile Number"
+msgstr "Numéro de téléphone"
+
+msgid "Once you have added Contacts to your Group, they will appear here."
+msgstr "Une fois que vous aurez ajouté des Contacts au Groupe, ils apparaitront ici."
+
 msgid "Please enter a valid phone number."
 msgstr "Veuillez saisir un numéro de téléphone."
 
@@ -2966,11 +2972,17 @@ msgstr "Edition formulaire d'enregistrement de %(entity_type)s"
 msgid "To import a list of Data Senders follow these steps"
 msgstr "Pour importer une liste d'expéditeurs, suivez ces étapes"
 
+msgid "To import a list of Contacts follow these steps"
+msgstr "Pour importer une Contacts suivez ces étapes"
+
 msgid "Download the template"
 msgstr "Téléchargez le modèle"
 
 msgid "Fill out the template with your Data Senders information."
 msgstr "Remplissez le modèle avec les informations sur vos expéditeurs."
+
+msgid "Fill out the template with your Contacts information."
+msgstr "Remplissez le modèle avec les informations sur vos contacts."
 
 msgid "Make a Submission"
 msgstr "Faire une Soumission"
@@ -5693,8 +5705,8 @@ msgstr "Ajouter des Contacts"
 msgid "ID Automatic"
 msgstr "ID automatique"
 
-msgid "Your contact(s) have been added."
-msgstr "Vos contacts ont été ajoutés."
+msgid "Your Contact has been successfully added."
+msgstr "Votre Contact a été ajouté avec succès."
 
 msgid "Your Contact(s) have been added successfully. Contacts with an Email address added to a Questionnaire for the first time will receive an activation email with instructions."
 msgstr "Vos Contact(s) ont été ajouté(s) avec succès. Les Contacts ayant des adresses email, liés à un Questionnaire pour la première fois recevront un email d’activation avec les instructions."

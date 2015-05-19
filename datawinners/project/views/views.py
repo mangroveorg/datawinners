@@ -329,7 +329,7 @@ def broadcast_message(request, project_id):
             organization_setting = OrganizationSetting.objects.get(organization=organization)
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
-            other_numbers = form.cleaned_data['others']
+            other_numbers = set(form.cleaned_data['others'])
             failed_numbers = []
             try:
                 failed_numbers = helper.broadcast_message(data_sender_phone_numbers, form.cleaned_data['text'],
