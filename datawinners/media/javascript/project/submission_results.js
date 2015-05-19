@@ -85,6 +85,8 @@ DW.SubmissionLogTable = function (options) {
             }
         );
         $(".submission_table").dataTable().fnSetColumnVis(0, options.row_check_box_visible);
+        var colvis = new $.fn.dataTable.ColVis( $(".submission_table").dataTable().fnSettings(),{aiExclude:[0]});
+        $( colvis.button() ).insertAfter('div.dataTables_processing');
     }
 };
 
