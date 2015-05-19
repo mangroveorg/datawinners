@@ -42,12 +42,18 @@ function ProjectQuestionnaireViewModel() {
     };
 
     self.create_poll = function(){
+        var question = $("#sms-text").val();
+        if (self.send_broadcast()){
+            question = "BroadCast"
+        }
+
+
         if(self.validateCreatePoll()) {
 
-            data = {
+            var data = {
                 'poll_name': self.projectName().trim(),
                 'active_days': self.days_active,
-                'question': $("#sms-text").val(),
+                'question': question,
                 'csrfmiddlewaretoken': $("#poll_form input[name=csrfmiddlewaretoken]").val()
             };
 
@@ -55,7 +61,7 @@ function ProjectQuestionnaireViewModel() {
 
                 var responseJson = $.parseJSON(response);
                 if(responseJson['success']) {
-                    var redirect_url = '/project/overview/' + responseJson.project_id;
+                    var redirect_url = '/project/'+ responseJson.project_id + '/results/' + responseJson.project_code ;
                     DW.trackEvent('poll-creation-method', 'poll-qns-success');
                     window.location.replace(redirect_url);
                     window.smsViewModel.sendSms();

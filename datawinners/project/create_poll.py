@@ -43,7 +43,7 @@ def create_poll_questionnaire(request):
     project_name_unique = _is_project_name_unique(error_message, project_name_unique, questionnaire)
     if not project_name_unique:
         _create_poll(manager, questionnaire, request)
-        return HttpResponse(json.dumps({'success': True, 'project_id': questionnaire.id}))
+        return HttpResponse(json.dumps({'success': True, 'project_id': questionnaire.id, 'project_code': questionnaire.form_code}))
     return HttpResponse(json.dumps({'success': False,
                                     'error_message': error_message,
                                     'project_name_unique': project_name_unique}))
