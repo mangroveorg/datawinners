@@ -11,9 +11,9 @@ from migration.couch.utils import migrate, mark_as_completed
 
 
 def create_index(dbm, form_model, logger):
-    form_code = form_model.form_code
-    start_key = [form_code]
-    end_key = [form_code, {}]
+    form_model_id = form_model.id
+    start_key = [form_model_id]
+    end_key = [form_model_id, {}]
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                  startkey=start_key, endkey=end_key)
     es = get_elasticsearch_handle(timeout=600)
@@ -33,7 +33,7 @@ def create_index(dbm, form_model, logger):
 
 def create_submission_index(database_name, logger):
     dbm = get_db_manager(database_name)
-    for row in dbm.load_all_rows_in_view('questionnaire'): #TODO:change the view
+    for row in dbm.load_all_rows_in_view('all_projects'):
         try:
             form_model = FormModel.new_from_doc(dbm, FormModelDocument.wrap(row["value"]))
         except FormModelDoesNotExistsException as e:

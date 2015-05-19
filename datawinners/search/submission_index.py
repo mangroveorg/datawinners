@@ -264,16 +264,25 @@ def status_message(status):
 def _get_datasender_info(dbm, submission_doc):
     if submission_doc.owner_uid:
         datasender = _lookup_contact_by_uid(dbm, submission_doc.owner_uid)
-        return contact_dict(datasender._doc, dbm, get_form_model_by_code(dbm, 'reg'))
-    else:
-        return OrderedDict([('name', ''),
-                            ('short_code', UNKNOWN),
-                            ('location', ''),
-                            ('geo_code', ''),
-                            ('mobile_number', submission_doc.created_by),
-                            ('email', ''),
-                            ('entity_type', ['reporter']),
-                            ('void', False)])
+        if datasender:
+            return contact_dict(datasender._doc, dbm, get_form_model_by_code(dbm, 'reg'))
+        else:
+            return OrderedDict([('name', UNKNOWN),
+                                ('short_code', submission_doc.created_by),
+                                ('location', ''),
+                                ('geo_code', ''),
+                                ('mobile_number', ''),
+                                ('email', ''),
+                                ('entity_type', ['reporter']),
+                                ('void', False)])
+    return OrderedDict([('name', ''),
+                        ('short_code', UNKNOWN),
+                        ('location', ''),
+                        ('geo_code', ''),
+                        ('mobile_number', submission_doc.created_by),
+                        ('email', ''),
+                        ('entity_type', ['reporter']),
+                        ('void', False)])
 
 
 def _meta_fields(submission_doc, dbm):
@@ -296,7 +305,7 @@ def _lookup_contact_by_uid(dbm, uid):
             # return entity.value('mobile_number'), entity.short_code
     except Exception:
         pass
-    return UNKNOWN, UNKNOWN
+    return None
 
 
 def lookup_entity_data(dbm, id, entity_type):
