@@ -11,30 +11,6 @@
 
     initializeContactGroupViewModel();
 
-    var _disableGroupMenuItemsWhenNoGroupsPresent = function(){
-        var removeGroupMenuItem = $($('#remove-from-group').parent());
-        if(groupViewModel.isCustomGroupsPresent()){
-            removeGroupMenuItem.removeClass('disabled');
-        }
-        else{
-            removeGroupMenuItem.addClass('disabled');
-        }
-    };
-
-    var _disableMenuItemWhenSelectedContactsHaveNoGroup = function(){
-        var selectedContacts = $("#datasender_table").find("input.row_checkbox:checked");
-        var contactRowWithGroup = _.find(selectedContacts, function(item){
-                return $($(item).closest("tr").children()[9]).text() != "";
-            });
-        var removeGroupMenuItem = $($('#remove-from-group').parent());
-        if(contactRowWithGroup){
-            removeGroupMenuItem.removeClass('disabled');
-        }
-        else{
-            removeGroupMenuItem.addClass('disabled');
-        }
-    };
-
     $("#datasender_table").dwTable({
             "concept": "Contact",
             "sAjaxSource": datasender_ajax_url,
@@ -44,6 +20,7 @@
                 DW.allContactTableMenu.disableGroupMenuItemsWhenNoGroupsPresent();
                 DW.allContactTableMenu.disableMenuItemWhenSelectedContactsHaveNoGroup();
                 DW.allContactTableMenu.disableMenuItemWhenSelectedContactHaveNoQuestionnaire();
+                DW.allContactTableMenu.disableMenuItemWhenAccountIsNotProSMS();
             },
             "iDeferLoading": 0,
             "oLanguage": {
@@ -53,7 +30,7 @@
             "actionItems" : [
                 {"label":"Add to Questionnaires", handler:action_handler.associate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
                 {"label":"Remove from Questionnaires", "id":"remove-from-questionnaire", handler:action_handler.disassociate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
-                {"label":"Send an SMS", handler:action_handler.sendAMessage, "allow_selection":"multiple"},
+                {"label":"Send an SMS", "id":"send-an-sms",handler:action_handler.sendAMessage, "allow_selection":"multiple"},
                 {"label":"Add E-mail address", "id": "add-email", handler:action_handler.makewebuser, "allow_selection": "multiple"},
                 {"label":"Add to Groups", "id": "add-to-group", handler:action_handler.addtogroups, "allow_selection":"multiple"},
                 {"label":"Remove from Groups", "id": "remove-from-group", handler:action_handler.removefromgroups, "allow_selection":"multiple"},
