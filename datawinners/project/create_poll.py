@@ -5,8 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired
 from datawinners.main.database import get_database_manager
 from datawinners.project import helper
-from datawinners.project.helper import associate_account_users_to_project
-from datawinners.project.views.create_questionnaire import validate_questionnaire_name_and_code
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.all_datasender_search import get_all_datasenders_short_codes
 from mangrove.form_model.project import Project
@@ -20,33 +18,35 @@ def _is_project_name_unique(error_message, name_has_errors, questionnaire):
     return name_has_errors
 
 
-def get_datasenders_ids(manager, questionnaire_names):
+def get_datasenders_ids_by_questionnaire_names(manager, questionnaire_names):
     datasender_ids = []
     for questionnaire_name in questionnaire_names:
         search_parameters = {'response_fields': 'short_code',
                              'project_name': questionnaire_name}
 
         datasender_ids.extend(get_all_datasenders_short_codes(manager, search_parameters))
-    return set(datasender_ids)
+    return list(set(datasender_ids))
 
 
-def get_datasender_ids_by_group_name(manger, group_names):
+def get_datasender_ids_by_group_names(manger, group_names):
     data_sender_ids = []
     for group_name in group_names:
         search_parameters = {'search_filters': {'group_name': group_name}}
         data_sender_ids = get_all_datasenders_short_codes(manger, search_parameters)
 
-    return set(data_sender_ids)
+    return list(set(data_sender_ids))
 
 
-def _associate_data_senders_to_questionnaire(data_senders_list, manager, questionnaire, selected_option):
+def _associate_data_senders_to_questionnaire(manager, questionnaire, selected_option):
+    data_senders_list = []
     if selected_option.get('option') == 'questionnaire_linked':
         questionnaire_names = selected_option.get('questionnaire_names')
-        data_senders_list = get_datasenders_ids(manager, questionnaire_names)
+        data_senders_list = get_datasenders_ids_by_questionnaire_names(manager, questionnaire_names)
 
     elif selected_option.get('option') == 'group':
         group_names = selected_option.get('group_names')
-        data_senders_list = get_datasender_ids_by_group_name(manager, group_names)
+        data_senders_list = get_datasender_ids_by_group_names(manager, group_names)
+
     questionnaire.associate_data_sender_to_project(manager, data_senders_list)
 
 
@@ -59,7 +59,7 @@ def _create_questionnaire(manager, questionnaire, question):
 
 
 def _create_poll(manager, questionnaire, selected_option, question):
-    data_senders_list = []
+    # data_senders_list = []
     _create_questionnaire(manager, questionnaire, question)
     _associate_data_senders_to_questionnaire(data_senders_list, manager, questionnaire, selected_option)
     questionnaire.update_doc_and_save()

@@ -51,6 +51,12 @@ function ProjectQuestionnaireViewModel() {
 
     }
 
+    function _send_sms_() {
+        if (self.show_sms() == 'poll_via_sms') {
+            window.smsViewModel.sendSms()
+        }
+    }
+
     self.create_poll = function(){
         if(self.validateCreatePoll()) {
             var selected_option = {};
@@ -71,9 +77,6 @@ function ProjectQuestionnaireViewModel() {
                 'question': question,
                 'selected_option' : JSON.stringify(selected_option),
                 'csrfmiddlewaretoken': $("#poll_form input[name=csrfmiddlewaretoken]").val()
-
-
-
             };
 
             $.post(create_poll_url, data).done(function (response) {
@@ -83,7 +86,7 @@ function ProjectQuestionnaireViewModel() {
                     var redirect_url = '/project/'+ responseJson.project_id + '/results/' + responseJson.project_code ;
                     DW.trackEvent('poll-creation-method', 'poll-qns-success');
                     window.location.replace(redirect_url);
-                    window.smsViewModel.sendSms()
+                    _send_sms_();
                 }
                 else{
                     self.show_error(true);
