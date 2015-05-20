@@ -16,7 +16,7 @@ from datawinners.project.submission.export import export_filename, add_sheet_wit
     create_multi_sheet_excel_headers, create_multi_sheet_entries
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter
-from datawinners.project.submission.submission_search import get_scrolling_submissions_query
+from datawinners.project.submission.submission_search import SubmissionSearch
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import ExcelDate, DateField
@@ -64,8 +64,8 @@ class XFormSubmissionExporter(SubmissionExporter):
 
     def get_submission_ids(self, query_params):
         query_params['response_fields'] = []
-        search_results, query_fields = get_scrolling_submissions_query(self.dbm, self.form_model, query_params,
-                                                                       self.local_time_delta)
+        submission_search = SubmissionSearch(self.dbm, self.form_model, query_params, self.local_time_delta)
+        search_results, query_fields = submission_search.get_scrolling_submissions_query()
         return search_results
 
     def _create_images_folder(self, submission_ids):

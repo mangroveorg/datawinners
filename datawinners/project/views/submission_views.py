@@ -32,9 +32,7 @@ from datawinners.main.database import get_database_manager
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
-from datawinners.project.submission.submission_search import get_submissions_paginated, \
-    get_all_submissions_ids_by_criteria, get_facets_for_choice_fields, get_submission_count, \
-    get_submissions_without_user_filters_count
+from datawinners.project.submission.submission_search import SubmissionSearch
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
@@ -215,7 +213,8 @@ def get_survey_response_ids_from_request(dbm, request, form_model, local_time_de
         submission_type = request.POST.get("submission_type")
         search_parameters = {'filter': submission_type}
         search_parameters.update({'search_filters': search_filters})
-        return get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters, local_time_delta)
+        submission_search = SubmissionSearch(dbm, form_model, search_parameters, local_time_delta)
+        return submission_search.get_all_submissions_ids_by_criteria()
     return json.loads(request.POST.get('id_list'))
 
 
@@ -494,7 +493,8 @@ def export_count(request):
     query_params.update({"search_text": search_text})
     query_params.update({"filter": submission_type})
 
-    submission_count = get_submission_count(manager, form_model, query_params, local_time_delta)
+    submission_search = SubmissionSearch(manager, form_model, query_params, local_time_delta=local_time_delta)
+    submission_count = submission_search.get_submission_count()
     return HttpResponse(mimetype='application/json', content=json.dumps({"count": submission_count}))
 
 
@@ -586,9 +586,10 @@ def get_submissions(request, form_code):
     search_parameters.update({"search_text": search_text})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    search_results, query_fields = get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta)
-    submission_count_with_filters = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
-    submission_count_without_filters = get_submissions_without_user_filters_count(dbm, form_model, search_parameters)
+    submission_search = SubmissionSearch(dbm, form_model, search_parameters,local_time_delta=local_time_delta)
+    search_results, query_fields = submission_search.get_submissions_paginated()
+    submission_count_with_filters = submission_search.get_submission_count()
+    submission_count_without_filters = submission_search.get_submissions_without_user_filters_count()
     submissions = SubmissionQueryResponseCreator(dbm, form_model, local_time_delta).create_response(query_fields,
                                                                                                     search_results)
 
@@ -646,8 +647,8 @@ def get_stats(request, form_code):
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
     # total success submission count irrespective of current fields being present or not
-    facet_results, total_submissions = get_facets_for_choice_fields(dbm, form_model, search_parameters,
-                                                                    local_time_delta)
+    submission_search = SubmissionSearch(dbm, form_model, search_parameters, local_time_delta=local_time_delta)
+    facet_results, total_submissions = submission_search.get_facets_for_choice_fields()
 
     return HttpResponse(json.dumps(
         {'result': create_statistics_response(facet_results, form_model),
