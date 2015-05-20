@@ -59,9 +59,8 @@ def _create_questionnaire(manager, questionnaire, question):
 
 
 def _create_poll(manager, questionnaire, selected_option, question):
-    # data_senders_list = []
     _create_questionnaire(manager, questionnaire, question)
-    _associate_data_senders_to_questionnaire(data_senders_list, manager, questionnaire, selected_option)
+    _associate_data_senders_to_questionnaire(manager, questionnaire, selected_option)
     questionnaire.update_doc_and_save()
 
 

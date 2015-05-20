@@ -11,15 +11,13 @@ from tests.projects.questionnairetests.project_questionnaire_data import TYPE, G
     POLL, POLL_RECIPIENTS
 from tests.testsettings import UI_TEST_TIMEOUT
 
-
 class PollQuestionnairePage(Page):
 
     def __init__(self, driver):
         Page.__init__(self, driver)
         self.SELECT_FUNC = {
-                                GROUP: self.configure_group_recipient,
-                                CONTACTS_LINKED: self.configure_linked_contacts,
-                                # OTHERS: self.configure_other_receipients,
+                                GROUP: self._configure_group_recipient,
+                                CONTACTS_LINKED: self._configure_linked_contacts,
                             }
 
     def select_sms_option(self):
@@ -52,7 +50,7 @@ class PollQuestionnairePage(Page):
         return data_tab & data_senders_tab & overview_tab
 
 
-    def configure_group_recipient(self, recipient_name):
+    def _configure_group_recipient(self, recipient_name):
         """
         Function to select Group option To whom to send
         return self
@@ -63,7 +61,7 @@ class PollQuestionnairePage(Page):
         return self
 
 
-    def configure_linked_contacts(self, recipient_name):
+    def _configure_linked_contacts(self, recipient_name):
         """
         Function to select Group option To whom to send
         return self
@@ -73,15 +71,12 @@ class PollQuestionnairePage(Page):
         self.driver.find(by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name)).click()
         return self
 
-    # def configure_other_receipients(self, receipient_type, receipient_name):
-    #     """
-    #     Function to select Group option To whom to send
-    #     return self
-    #     """
-    #     self.driver.find_drop_down(POLL_SMS_DROPDOWN).set_selected(GROUP)
-    #     self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath("//*[@id='send-sms-section']/div[6]/div[2]/select" % receipient_type),
-    #                                  True)
-    #     self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath("//*[@id='send-sms-section']/div[6]/div[2]/select" % receipient_type)).click()
-    #
-    #     return self
+    def select_tab(self,tab_name):
+        self.driver.find(tab_name).click()
 
+    def get_cell_value(self, column, row):
+        return self.driver.find(
+            by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % ((row + 1), column + 1))).text
+
+    def isDataSenderAssociated(self,ds_name,row,column):
+        return ds_name == self.get_cell_value(column, row)

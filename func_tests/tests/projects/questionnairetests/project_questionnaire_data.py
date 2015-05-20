@@ -51,6 +51,9 @@ DATA_TAB = "Data tab"
 POLL_RECIPIENTS = "My Poll Recipients"
 POLL = "Poll"
 CLINIC_ALL_DS = "Clinic All DS (Following)"
+FIRST_ROW  = 1
+FIRST_COLUMN = 6
+
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 
