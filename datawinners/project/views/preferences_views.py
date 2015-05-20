@@ -33,6 +33,15 @@ def hide_submission_log_column(request):
     return HttpResponse(json.dumps({'success': True}))
 
 
+def _get_columns_to_hide(user, preference_name='', questionnaire_id=''):
+    preferences = ProjectPreferences.objects.filter(user=user, project_id=questionnaire_id,
+                                                    preference_name=preference_name)
+    hide_columns = []
+    for preference in preferences:
+        hide_columns.append(int(preference.preference_value))
+    return hide_columns
+
+
 # @valid_web_user
 # @is_datasender
 # @csrf_exempt
@@ -43,9 +52,5 @@ def get_hidden_columns(request):
     form_code = post_data.get('questionnaire_code')
     manager = get_database_manager(request.user)
     questionnaire = get_form_model_by_code(manager, form_code)
-    preferences = ProjectPreferences.objects.filter(user=user, project_id=questionnaire.id,
-                                                    preference_name=preference_name)
-    hide_columns = []
-    for preference in preferences:
-            hide_columns.append(int(preference.preference_value))
+    hide_columns = _get_columns_to_hide(user, preference_name, questionnaire.id)
     return HttpResponse(mimetype='application/json', content=json.dumps({"hide_columns": hide_columns}))
