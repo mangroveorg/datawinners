@@ -56,6 +56,41 @@ DW.SubmissionLogTable = function (options) {
         "deleted": gettext("No deleted Submissions.")
     };
 
+    function _update_table_columns() {
+        var table = $(".submission_table").dataTable();
+        table.fnSetColumnVis(0, options.row_check_box_visible);
+        var colvis = new $.fn.dataTable.ColVis(table.fnSettings(),
+            {
+                aiExclude: [0],
+                "fnStateChange": function (iColumn, bVisible) {
+                    $.post("/project/hide_submission_log_column/", {
+                        'data': JSON.stringify({
+                            "questionnaire_code": $("#questionnaire_code").val(),
+                            "column": iColumn,
+                            "visible": bVisible,
+                            "tab": options.tabName
+                        }),
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+                    })
+                }
+            });
+        $.post("/project/get_hidden_columns/", {
+            'data': JSON.stringify({
+                "questionnaire_code": $("#questionnaire_code").val(),
+                "tab": options.tabName
+            }),
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+        }).done(function (data) {
+            var skip_columns = data['hide_columns'];
+            for (var i = 0; i < skip_columns.length; i++) {
+                table.fnSetColumnVis(skip_columns[i], false);
+            }
+            colvis.rebuild()
+        });
+
+        $(colvis.button()).insertAfter('div.dataTables_processing');
+    }
+
     function _init_submission_log_table(cols) {
         $(".submission_table").dwTable({
                 aoColumns: cols,
@@ -84,19 +119,7 @@ DW.SubmissionLogTable = function (options) {
                 "getFilter": filter_as_json
             }
         );
-        $(".submission_table").dataTable().fnSetColumnVis(0, options.row_check_box_visible);
-        var colvis = new $.fn.dataTable.ColVis( $(".submission_table").dataTable().fnSettings(),
-                                                {
-                                                    aiExclude:[0],
-                                                    "fnStateChange": function ( iColumn, bVisible ) {
-                                                        $.post("/project/hide_submission_log_column/", {
-                                                                'data': JSON.stringify({"questionnaire_code": $("#questionnaire_code").val(),
-                                                                                        "hide_column":iColumn}),
-                                                                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
-                                                            })
-                                                    }
-                                                });
-        $( colvis.button() ).insertAfter('div.dataTables_processing');
+        _update_table_columns();
     }
 };
 
