@@ -44,6 +44,13 @@ SUBJECT = "subject"
 DEVICES = "devices"
 NEW_UNIQUE_ID_TYPE = "new_unique_id_type"
 EXISTING_UNIQUE_ID_TYPE = "existing_unique_id_type"
+GROUP = "group"
+CONTACTS_LINKED = "linked"
+OTHERS = "others"
+DATA_TAB = "Data tab"
+POLL_RECIPIENTS = "My Poll Recipients"
+POLL = "Poll"
+CLINIC_ALL_DS = "Clinic All DS (Following)"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 
@@ -258,3 +265,8 @@ COPY_PROJECT_QUESTIONNAIRE_DATA = {
                       CHARACTER_REMAINING: "69 / 160 characters used (1 SMS)",
                       PAGE_TITLE: "Data Senders"
                      }
+RECEIPIENT = [
+    {TYPE : GROUP},
+    {TYPE : CONTACTS_LINKED},
+    {TYPE : OTHERS}
+]

@@ -21,7 +21,7 @@
 
     <div class="tableRow">
         <div class = "tableCell" data-bind="visible: showToSection">{% trans "To:" %}</div>
-        <div class = "tableCell" data-bind="visible: showToSection">
+        <div class = "tableCell sms_dropdown"  data-bind="visible: showToSection">
             <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
         </div>
     </div>
