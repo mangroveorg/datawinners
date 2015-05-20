@@ -50,6 +50,7 @@ OTHERS = "others"
 DATA_TAB = "Data tab"
 POLL_RECIPIENTS = "My Poll Recipients"
 POLL = "Poll"
+CLINIC_ALL_DS = "Clinic All DS (Following)"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 

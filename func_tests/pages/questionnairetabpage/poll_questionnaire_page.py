@@ -17,7 +17,7 @@ class PollQuestionnairePage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
         self.SELECT_FUNC = {
-                                GROUP: self.configure_group_receipient,
+                                GROUP: self.configure_group_recipient,
                                 CONTACTS_LINKED: self.configure_linked_contacts,
                                 # OTHERS: self.configure_other_receipients,
                             }
@@ -28,10 +28,13 @@ class PollQuestionnairePage(Page):
     def enter_sms_text(self):
         self.driver.find_text_box(SMS_TEXTBOX).enter_text("what?")
 
-
     def select_receipient(self,receipient, receipient_name):
-        self.SELECT_FUNC[fetch_(TYPE, from_(receipient))](fetch_(TYPE, from_(receipient)), receipient_name)
+        recipient_type = fetch_(TYPE, from_(receipient))
+        self.select_recipient_type(recipient_type)
+        self.SELECT_FUNC[recipient_type](receipient_name)
 
+    def select_recipient_type(self,recipient_type):
+        self.driver.find_drop_down(POLL_SMS_DROPDOWN).set_selected(recipient_type)
 
     def click_create_poll(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT,CREATE_POLL_BUTTON,True)
@@ -48,26 +51,26 @@ class PollQuestionnairePage(Page):
         overview_tab = self.driver.find(OVERVIEW_TAB).text == POLL
         return data_tab & data_senders_tab & overview_tab
 
-    def configure_group_receipient(self, receipient_type, receipient_name):
+
+    def configure_group_recipient(self, recipient_name):
         """
         Function to select Group option To whom to send
         return self
         """
-        self.driver.find_drop_down(POLL_SMS_DROPDOWN).set_selected(GROUP)
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath("//input[@type='checkbox' and @value='%s']" % receipient_name),
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name),
                                      True)                 # For waiting to load the element
-        self.driver.find(by_xpath("//input[@type='checkbox' and @value='%s']" % receipient_name)).click()
+        self.driver.find(by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name)).click()
         return self
 
-    def configure_linked_contacts(self, receipient_type, receipient_name):
+
+    def configure_linked_contacts(self, recipient_name):
         """
         Function to select Group option To whom to send
         return self
         """
-        self.driver.find_drop_down(POLL_SMS_DROPDOWN).set_selected(receipient_type)
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath("//input[@type='checkbox' and @value='%s']" % receipient_name),
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name),
                                      True)
-        self.driver.find(by_xpath("//input[@type='checkbox' and @value='%s']" % receipient_name)).click()
+        self.driver.find(by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name)).click()
         return self
 
     # def configure_other_receipients(self, receipient_type, receipient_name):
