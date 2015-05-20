@@ -189,11 +189,11 @@ class TestSubmissionIndex(unittest.TestCase):
         self.form_model.fields = [UniqueIdField('clinic', 'my_unique_id', 'my_unique_id', 'My Unique ID')]
         value = {'my_unique_id': 'cli001'}
         submission = SurveyResponseDocument(values=value, status='success')
-        with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
-            lookup_entity_name.return_value = 'my_clinic'
-            _update_with_form_model_fields(Mock(spec=DatabaseManager), submission, search_dict, self.form_model)
-            self.assertEqual(search_dict, {'1212_my_unique_id': 'my_clinic', '1212_my_unique_id_unique_code': 'cli001',
-                                           'is_anonymous': False, 'void': False})
+        # with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
+        #     lookup_entity_name.return_value = 'my_clinic'
+        _update_with_form_model_fields(Mock(spec=DatabaseManager), submission, search_dict, self.form_model)
+        self.assertEqual(search_dict, {'1212_my_unique_id': 'my_clinic', '1212_my_unique_id_unique_code': 'cli001',
+                                       'is_anonymous': False, 'void': False})
 
     def test_generate_elastic_index_for_a_unique_id_field_within_group(self):
         search_dict = {}

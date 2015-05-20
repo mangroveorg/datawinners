@@ -1,6 +1,6 @@
 import unittest
 
-from mock import MagicMock, Mock
+from mock import MagicMock, Mock, patch
 
 from datawinners.search.submission_headers import SubmissionAnalysisHeader, AllSubmissionHeader, SuccessSubmissionHeader, ErroredSubmissionHeader, HeaderFactory
 from mangrove.datastore.database import DatabaseManager
@@ -17,6 +17,7 @@ class TestSubmissionHeader(unittest.TestCase):
         self.repeat_field = FieldSet('repeat','repeat', 'repeat label', field_set=[self.field1, self.field4])
         self.form_model = MagicMock(spec=FormModel)
         self.form_model.id = 'form_model_id'
+        self.dbm = MagicMock(spec=DatabaseManager)
 
     def test_get_header_dict_from_form_model_without_unique_id_question(self):
         self.form_model.fields = [self.field1, self.field2]
@@ -37,11 +38,11 @@ class TestSubmissionHeader(unittest.TestCase):
                     'form_model_id_q2',
                     'form_model_id_q3',
                     'form_model_id_q3_unique_code']
+        with patch("datawinners.search.submission_headers.get_entity_type_fields") as entity_type_fields_mock:
+            entity_type_fields_mock.return_value = (['ds_id', 'ds_name'], [], [])
+            result = SubmissionAnalysisHeader(self.dbm, self.form_model).get_field_names_as_header_name()
 
-        result = SubmissionAnalysisHeader(self.form_model).get_field_names_as_header_name()
-
-        self.assertListEqual(expected, result)
-
+            self.assertListEqual(expected, result)
 
     def test_get_header_dict_from_form_model_with_single_unique_id_question(self):
         self.form_model.fields = [self.field1, self.field2, self.field3]
@@ -51,7 +52,7 @@ class TestSubmissionHeader(unittest.TestCase):
                     'form_model_id_q2': 'Enter a Number', 'form_model_id_q3': 'Which clinic are you reporting on',
                     'form_model_id_q3_unique_code': 'clinic ID'}
 
-        result = SubmissionAnalysisHeader(self.form_model).get_header_dict()
+        result = SubmissionAnalysisHeader(self.dbm, self.form_model).get_header_dict()
 
         self.assertDictEqual(expected, result)
 
@@ -62,14 +63,14 @@ class TestSubmissionHeader(unittest.TestCase):
                     'form_model_id_q1': 'Enter Text',
                     'form_model_id_q2': 'Enter a Number',  'form_model_id_repeat-q1': 'Enter Text',
                     'form_model_id_repeat-q4': 'Which school are you reporting on'}
-        result = SubmissionAnalysisHeader(self.form_model).get_header_dict()
+        result = SubmissionAnalysisHeader(self.dbm, self.form_model).get_header_dict()
         self.assertDictEqual(expected, result)
 
     def test_should_return_submission_log_specific_header_fields(self):
         self.form_model.fields = [self.field1, self.field2, self.field3, self.field4]
         self.form_model.entity_questions = [self.field3, self.field4]
 
-        headers = AllSubmissionHeader(self.form_model).get_header_field_names()
+        headers = AllSubmissionHeader(self.dbm, self.form_model).get_header_field_names()
 
         expected = ["ds_id", "ds_name", "date", "status", "form_model_id_q1", "form_model_id_q2", "form_model_id_q3", "form_model_id_q3_unique_code", "form_model_id_q4", "form_model_id_q4_unique_code"]
         self.assertListEqual(expected, headers)
@@ -79,7 +80,7 @@ class TestSubmissionHeader(unittest.TestCase):
         self.form_model.fields = [self.field1, self.field2, self.field3, self.field4]
         self.form_model.entity_questions = [self.field3, self.field4]
 
-        headers = SuccessSubmissionHeader(self.form_model).get_header_field_names()
+        headers = SuccessSubmissionHeader(self.dbm, self.form_model).get_header_field_names()
 
         expected = ["ds_id", "ds_name", "date", "form_model_id_q1", "form_model_id_q2", "form_model_id_q3", "form_model_id_q3_unique_code", "form_model_id_q4", "form_model_id_q4_unique_code"]
         self.assertListEqual(expected, headers)
@@ -88,7 +89,7 @@ class TestSubmissionHeader(unittest.TestCase):
         self.form_model.fields = [self.field1, self.field2, self.field3, self.field4]
         self.form_model.entity_questions = [self.field3, self.field4]
 
-        headers = ErroredSubmissionHeader(self.form_model).get_header_field_names()
+        headers = ErroredSubmissionHeader(self.dbm, self.form_model).get_header_field_names()
 
         expected = ["ds_id", "ds_name", "date","error_msg", "form_model_id_q1", "form_model_id_q2", "form_model_id_q3", "form_model_id_q3_unique_code", "form_model_id_q4", "form_model_id_q4_unique_code"]
 

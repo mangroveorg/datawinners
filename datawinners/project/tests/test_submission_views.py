@@ -8,6 +8,7 @@ from mock import Mock, patch, call, PropertyMock, MagicMock
 
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SUBMISSION
+from datawinners.project.submission.submission_search import SubmissionSearch
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, DateField
@@ -246,12 +247,13 @@ class TestSubmissionViews(unittest.TestCase):
         post_params = {"search_filters": json.dumps([]), "submission_type":"all",'all_selected': "true"}
         type(request).POST = PropertyMock(return_value=post_params)
         form_model = Mock(spec=FormModel)
-        with patch('datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
-            get_all_submissions_ids_by_criteria_mock.return_value = []
-
+        submission_search = MagicMock(spec=SubmissionSearch)
+        submission_search.get_all_submissions_ids_by_criteria.return_value = []
+        with patch('datawinners.project.views.submission_views.SubmissionSearch') as SubmissionSearch_mock:
+            SubmissionSearch_mock.return_value = submission_search
             get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
-
-            get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'all', 'search_filters': []}, ('+', 0, 0))
+            SubmissionSearch_mock.assert_called_with(dbm, form_model, {'filter':'all', 'search_filters': []}, ('+', 0, 0))
+            submission_search.get_all_submissions_ids_by_criteria.assert_called()
 
     def test_get_submission_ids_to_delete_should_call_submission_query_with_submission_type_if_select_all_flag_is_true(self):
         dbm = MagicMock(spec=DatabaseManager)
@@ -260,12 +262,12 @@ class TestSubmissionViews(unittest.TestCase):
         post_params = {"search_filters": json.dumps([]), "submission_type": "success", 'all_selected': "true"}
         type(request).POST = PropertyMock(return_value=post_params)
         form_model = Mock(spec=FormModel)
-        with patch('datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
-             get_all_submissions_ids_by_criteria_mock.return_value = []
-
-             get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
-
-             get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'success', 'search_filters': []}, ('+', 0, 0))
+        submission_search = MagicMock(spec=SubmissionSearch)
+        submission_search.get_all_submissions_ids_by_criteria.return_value = []
+        with patch('datawinners.project.views.submission_views.SubmissionSearch') as SubmissionSearch_mock:
+            SubmissionSearch_mock.return_value = submission_search
+            get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
+            SubmissionSearch_mock.assert_called_with(dbm, form_model, {'filter':'success', 'search_filters': []}, ('+', 0, 0))
 
 
 

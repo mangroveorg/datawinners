@@ -56,6 +56,7 @@ class TestSubmissionsPageHeader(TestCase):
     def test_remove_meta_fields_from_header(self):
         form_model = MagicMock(spec=FormModel, id='form_id')
         form_model.entity_questions = [UniqueIdField('clinic', 'name', 'q1', 'which clinic')]
+        dbm = MagicMock(spec=DatabaseManager)
 
         with patch.object(HeaderFactory, 'create_header') as create_header:
             all_submission_header = Mock(spec=AllSubmissionHeader)
@@ -64,7 +65,7 @@ class TestSubmissionsPageHeader(TestCase):
                                                                         'form_id_q1': 'which clinic',
                                                                         'form_id_q1_unique_code': 'cli001',
                                                                         'form_id_q2': 'Age?'}
-            headers = SubmissionsPageHeader(form_model, 'all').get_column_title()
+            headers = SubmissionsPageHeader(dbm, form_model, 'all').get_column_title()
 
             self.assertListEqual(['tester', 'which clinic', 'Age?'], headers)
 
