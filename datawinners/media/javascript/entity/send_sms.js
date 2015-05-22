@@ -104,7 +104,7 @@ function SmsViewModel(){
 
   self.selectedGroupNames =  DW.ko.createValidatableObservable({value: []});
 
-  self.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
+      self.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
                                             {"label":gettext('Group'), "code": "group"},
                                             {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"},
                                             {"label":gettext('Other People'), "code": "others"}]);

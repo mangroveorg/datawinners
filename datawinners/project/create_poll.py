@@ -1,14 +1,16 @@
 import json
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.translation import ugettext as _
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired
 from datawinners.main.database import get_database_manager
 from datawinners.project import helper
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from datawinners.search.all_datasender_search import get_all_datasenders_short_codes
+from datawinners.search.all_datasender_search import get_datasenders_ids_by_questionnaire_names, get_datasender_ids_by_group_names
+from datawinners.utils import lowercase_and_strip_accents
 from mangrove.form_model.project import Project
-from django.utils.translation import ugettext as _
 
 
 def _is_project_name_unique(error_message, name_has_errors, questionnaire):
@@ -17,30 +19,10 @@ def _is_project_name_unique(error_message, name_has_errors, questionnaire):
         error_message["name"] = _("Questionnaire with same name already exists.")
     return name_has_errors
 
-
-def get_datasenders_ids_by_questionnaire_names(manager, questionnaire_names):
-    datasender_ids = []
-    for questionnaire_name in questionnaire_names:
-        search_parameters = {'response_fields': 'short_code',
-                             'project_name': questionnaire_name}
-
-        datasender_ids.extend(get_all_datasenders_short_codes(manager, search_parameters))
-    return list(set(datasender_ids))
-
-
-def get_datasender_ids_by_group_names(manger, group_names):
-    data_sender_ids = []
-    for group_name in group_names:
-        search_parameters = {'search_filters': {'group_name': group_name}}
-        data_sender_ids = get_all_datasenders_short_codes(manger, search_parameters)
-
-    return list(set(data_sender_ids))
-
-
 def _associate_data_senders_to_questionnaire(manager, questionnaire, selected_option):
     data_senders_list = []
     if selected_option.get('option') == 'questionnaire_linked':
-        questionnaire_names = selected_option.get('questionnaire_names')
+        questionnaire_names = map(lambda item: lowercase_and_strip_accents(item), selected_option.get('questionnaire_names'))
         data_senders_list = get_datasenders_ids_by_questionnaire_names(manager, questionnaire_names)
 
     elif selected_option.get('option') == 'group':
@@ -65,11 +47,15 @@ def _create_poll(manager, questionnaire, selected_option, question):
 
 
 def _construct_questionnaire(request):
+    from datetime import datetime
     manager = get_database_manager(request.user)
+    end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%dT%H:%M:%S')
+
     questionnaire_code = helper.generate_questionnaire_code(manager)
     questionnaire = Project(manager, name=request.POST.get('poll_name'),
                             fields=[], form_code=questionnaire_code, language=request.LANGUAGE_CODE,
-                            devices=[u'sms', u'web', u'smartPhone'], is_poll=True)
+                            devices=[u'sms', u'web', u'smartPhone'], is_poll=True, end_date=end_date, active="active")
+
     return manager, questionnaire
 
 

@@ -151,9 +151,13 @@ DW.projectRouter = Sammy(function () {
 
 function _initializeViewModel() {
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
+
     window.smsViewModel = new SmsViewModel();
-    window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
+     window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
+    window.pollViewModel = new PollViewModel();
+
     ko.applyBindings(questionnaireViewModel, $('#create_questionnaire')[0]);
+    ko.applyBindings(pollViewModel, $('#poll_questionnaire')[0]);
     ko.applyBindings(smsViewModel, $('#poll_sms_section')[0]);
     ko.applyBindings(questionnaireCreationOptionsViewModel, $('#project_profile')[0]);
     $("#send_sms_button").hide();
