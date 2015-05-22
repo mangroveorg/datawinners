@@ -153,7 +153,7 @@ function _initializeViewModel() {
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
 
     window.smsViewModel = new SmsViewModel();
-     window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
+    window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
     window.pollViewModel = new PollViewModel();
 
     ko.applyBindings(questionnaireViewModel, $('#create_questionnaire')[0]);

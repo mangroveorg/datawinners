@@ -31,7 +31,6 @@
         var sms_questionnaire_preview_link = "{{ project_links.sms_questionnaire_preview_link }}";
         var is_advance_questionnaire = '{{ is_advance_questionnaire }}';
         var is_outgoing_sms_replies_enabled = "{{ project.is_outgoing_sms_replies_enabled }}";
-
     </script>
     {% endcompress %}
 {% endblock %}
@@ -80,11 +79,10 @@
                 <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link}}"
                    class="{{ disable_link_class }}">{% trans "My Poll Recipients" %}</a>
             </li>
-            <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
-                <a id="overview_tab" href="{{ project_links.overview_link }}" class="{{ disable_link_class }}">{% trans "Poll" %}</a>
+            <li class="{% ifactivetab 'tab_nav' 'poll' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="poll_tab" href="{{ project_links.poll}}"
+                   class="{{ disable_link_class }}">{% trans "Poll" %}</a>
             </li>
-
-
        </ul>
     {% else %}
 

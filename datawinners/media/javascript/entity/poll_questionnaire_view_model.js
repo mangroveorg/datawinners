@@ -2,9 +2,7 @@ function PollViewModel() {
     var self = this;
 
     self.show_sms = ko.observable();
-    self.projectNameAlreadyExists = ko.observable();
     self.number_of_days = ko.observable();
-    self.show_error = ko.observable(false);
     var active_poll_days = [1,2,3,4,5] ;
     var current_date = new Date();
     var month_name_map = {0:gettext('January') ,
@@ -44,7 +42,7 @@ function PollViewModel() {
 
     self.disableSendPoll = ko.computed(function(){
         if(window.smsViewModel.disableSendSms() ){
-            if(!(DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName)) && (self.show_sms() != 'poll_broadcast')) {
+            if(self.show_sms() != 'poll_broadcast' || window.smsViewModel.validate() == 1) {
 
                 return true;
             }
@@ -118,8 +116,7 @@ function PollViewModel() {
                     _send_sms_();
                 }
                 else{
-                    self.show_error(true);
-                    self.projectNameAlreadyExists(responseJson['error_message']['name'])
+                    window.questionnaireViewModel.projectName.setError(responseJson['error_message']['name']);
                 }
 
                 $('#sms-success').hide();
@@ -127,8 +124,8 @@ function PollViewModel() {
             });
         }
         else {if(window.questionnaireViewModel.projectName().trim() == ""){
-            self.show_error(true);
-            self.projectNameAlreadyExists('This field is required');
+
+            window.questionnaireViewModel.projectName.setError('This field is required');
 
         }}
     };

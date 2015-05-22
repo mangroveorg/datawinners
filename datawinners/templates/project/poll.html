@@ -1,0 +1,54 @@
+{% extends 'project/tab_navigation.html' %}
+{% load i18n %}
+{% block page_title %} {% trans "Questionnaires - Poll" %} {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+    {% activetab "tab_nav" "poll" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "questionnaires" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
+{% endblock %}
+
+{% block page_scss %}
+    <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+
+     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+     <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="poll_options">
+{#        <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">#}
+{#        <div class="questionnaire_type_header">#}
+{#                <span class="header" id="create_poll">{% trans "Short explanation on what polls are." %}</span>#}
+{#            </div>#}
+{#            <div>#}
+{#                <h6 class="create_questionnaire_help">{% trans "Text waiting" %}</h6>#}
+{#            </div>#}
+{#        </div>#}
+
+        <label> Poll </label>
+        <p class="italic_grey"> View, edit & send your Survey. </p>
+
+
+
+    </div>
+{% endblock %}
+

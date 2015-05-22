@@ -10,15 +10,14 @@
         <input id= 'poll_title' data-bind="inputValue: projectName, value: projectName"/>
 
         <div class="validationMessage" data-bind="ifnot: projectName.valid">
-               <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error, scrollToElement: projectName.error"></span>
+               <div id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error, scrollToElement: projectName.error"></div>
             </div>
 
-        <label>2. How Do You Want to Broadcast this Poll?</label>
-            <br>
+
         <div data-bind="stopBinding: true">
             <div id="poll_questionnaire">
-                <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectNameAlreadyExists, scrollToElement: projectNameAlreadyExists, visible: show_error"></span>
-
+                <label>2. How Do You Want to Broadcast this Poll?</label>
+            <br>
                 <div>
 
                     <input type="radio"  name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
