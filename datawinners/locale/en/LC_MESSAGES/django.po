@@ -4778,7 +4778,10 @@ msgstr "  on  "
 msgid "large submission export"
 msgstr "Exports are limited to a maximum of 10,000 submissions at a time.</br> Use filters to manage the number of submissions to export."
 
-msgid "https://www.youtube.com/embed/pjr-Fn3Q7aw?autoplay=1"
+msgid "https://www.youtube.com/embed/0YIGgbGF3wI?autoplay=1"
+msgstr ""
+
+msgid "https://www.youtube.com/embed/4QmTmcr56wU?autoplay=1"
 msgstr ""
 
 msgid "https://www.datawinners.com/dwcdt"
