@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from celery.task import current
+from datawinners.project.preferences import remove_all_hidden_columns
 
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, \
     EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
@@ -122,7 +123,8 @@ def _get_changed_data(project, project_info):
 @is_not_expired
 @is_project_exist
 def edit_project(request, project_id):
-    manager = get_database_manager(request.user)
+    user = request.user
+    manager = get_database_manager(user)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     questionnaire = Project.get(manager, project_id)
     if questionnaire.is_void():
@@ -155,6 +157,7 @@ def edit_project(request, project_id):
             update_associated_submissions.delay(manager.database_name,
                                                 questionnaire.id,
                                                 deleted_question_codes)
+            remove_all_hidden_columns(user, questionnaire.id)
             UserActivityLog().log(request, project=questionnaire.name, action=EDITED_QUESTIONNAIRE, detail=json.dumps(detail))
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:

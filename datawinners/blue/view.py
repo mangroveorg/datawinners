@@ -17,6 +17,7 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
 from django.template.defaultfilters import slugify
+from datawinners.project.preferences import remove_all_hidden_columns
 from pyxform.errors import PyXFormError
 from django.core.mail import EmailMessage
 from django.utils.translation import ugettext as _
@@ -219,7 +220,8 @@ class ProjectUpdate(View):
         SubmissionSearchStore(manager, questionnaire, None).recreate_elastic_store()
 
     def post(self, request, project_id):
-        manager = get_database_manager(request.user)
+        user = request.user
+        manager = get_database_manager(user)
         questionnaire = Project.get(manager, project_id)
         file_content = None
         tmp_file = None
@@ -231,7 +233,7 @@ class ProjectUpdate(View):
 
             if file_errors:
                 logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
-                            request.user.username,
+                            user.username,
                             json.dumps(file_errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
 
                 return HttpResponse(content_type='application/json', content=json.dumps({
@@ -249,7 +251,7 @@ class ProjectUpdate(View):
 
             if xls_parser_response.errors:
                 info_list = list(xls_parser_response.errors)
-                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
+                logger.info("User: %s. Edit upload Errors: %s", user.username, json.dumps(info_list))
 
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
@@ -275,15 +277,16 @@ class ProjectUpdate(View):
             self._purge_feed_documents(questionnaire, request)
             self._purge_media_details_documents(manager, questionnaire)
             self.recreate_submissions_mapping(manager, questionnaire)
+            remove_all_hidden_columns(user, questionnaire.id)
             if xls_parser_response.info:
                 info_list = list(xls_parser_response.info)
-                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
+                logger.info("User: %s. Edit upload Errors: %s", user.username, json.dumps(info_list))
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': True,
                     'information': info_list,
                 }))
         except PyXFormError as e:
-            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
+            logger.info("User: %s. Upload Error: %s", user.username, e.message)
 
             message = transform_error_message(e.message)
             if 'name_type_error' in message or 'choice_name_type_error' in message:
@@ -308,7 +311,7 @@ class ProjectUpdate(View):
                 }))
 
         except QuestionAlreadyExistsException as e:
-            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
+            logger.info("User: %s. Upload Error: %s", user.username, e.message)
 
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
@@ -318,7 +321,7 @@ class ProjectUpdate(View):
             }))
 
         except UnicodeDecodeError as e:
-            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
+            logger.info("User: %s. Upload Error: %s", user.username, e.message)
 
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
@@ -330,12 +333,12 @@ class ProjectUpdate(View):
 
         except Exception as e:
 
-            logger.info("User: %s. Edit Upload Exception message: %s", request.user.username, e.message)
+            logger.info("User: %s. Edit Upload Exception message: %s", user.username, e.message)
 
             message = e.message if e.message else _("Some error in excel")
             odk_message = ''
             if not 'ODK Validate Errors:' in e.message:
-                send_email_on_exception(request.user, "Questionnaire Edit", traceback.format_exc(),
+                send_email_on_exception(user, "Questionnaire Edit", traceback.format_exc(),
                                         additional_details={'file_contents': file_content})
             else:
                 odk_message = translate_odk_message(e.message)
