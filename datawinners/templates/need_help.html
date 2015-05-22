@@ -2,6 +2,10 @@
 {% block page_js %}
     <script type="text/javascript">
         $(document).ready(function(){
+            function resize_iframe(event) {
+                $("#help_iframe").height(event.data);
+            }
+            
             $.ajax({
                 url: DW.help_url,
                 data: {},
@@ -22,17 +26,23 @@
             });
 
             $("#need_help_link").click(function() {
-                $('#div_iframe').removeClass("none");
-                //$('#help_iframe').attr("src", help_url);
+                $("#div_iframe").removeClass("none");
                 $("#help_iframe").addClass("block");
                 $("#need_help_button").addClass("none");
                 $('#need_help_active_button').removeClass("none");
                 return false;
             });
+
+            $("#help_iframe").load(function(){
+                if (window.addEventListener) {
+                    window.addEventListener("message", resize_iframe, false);
+                }else if (window.attachEvent) {
+                    window.attachEvent("onmessage", resize_iframe);
+                }
+            });
             
             $(".close_help_button").click(function() {
                 $("#div_iframe").addClass("none");
-                $('#help_iframe').attr("src", "");
                 $("#need_help_active_button").addClass("none");
                 $('#need_help_button').removeClass("none");
                 return false;
