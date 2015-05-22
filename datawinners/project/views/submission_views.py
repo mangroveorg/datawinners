@@ -31,6 +31,7 @@ from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
+from datawinners.project.preferences import get_columns_to_hide
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import SubmissionSearch
 from datawinners.search.index_utils import es_questionnaire_field_name
@@ -213,7 +214,8 @@ def get_survey_response_ids_from_request(dbm, request, form_model, local_time_de
         submission_type = request.POST.get("submission_type")
         search_parameters = {'filter': submission_type}
         search_parameters.update({'search_filters': search_filters})
-        submission_search = SubmissionSearch(dbm, form_model, search_parameters, local_time_delta)
+        skip_fields = get_columns_to_hide(request.user, search_parameters.get('filter'), form_model.id)
+        submission_search = SubmissionSearch(dbm, form_model, search_parameters, local_time_delta, skip_fields)
         return submission_search.get_all_submissions_ids_by_criteria()
     return json.loads(request.POST.get('id_list'))
 
@@ -570,7 +572,8 @@ def _get_field_to_sort_on(post_dict, dbm, form_model, filter_type):
 @csrf_view_exempt
 @valid_web_user
 def get_submissions(request, form_code):
-    dbm = get_database_manager(request.user)
+    user = request.user
+    dbm = get_database_manager(user)
     form_model = get_form_model_by_code(dbm, form_code)
     search_parameters = {}
     search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
@@ -586,7 +589,8 @@ def get_submissions(request, form_code):
     search_parameters.update({"search_text": search_text})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    submission_search = SubmissionSearch(dbm, form_model, search_parameters,local_time_delta=local_time_delta)
+    skip_fields = get_columns_to_hide(user, search_parameters.get('filter'), form_model.id)
+    submission_search = SubmissionSearch(dbm, form_model, search_parameters, local_time_delta, skip_fields)
     search_results, query_fields = submission_search.get_submissions_paginated()
     submission_count_with_filters = submission_search.get_submission_count()
     submission_count_without_filters = submission_search.get_submissions_without_user_filters_count()

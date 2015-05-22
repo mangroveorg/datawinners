@@ -11,7 +11,8 @@ from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT, ELA
 
 
 class SubmissionSearch():
-    def __init__(self, dbm, form_model, search_parameters, local_time_delta):
+    def __init__(self, dbm, form_model, search_parameters, local_time_delta, skip_fields=[]):
+        self.skip_fields = skip_fields
         self.local_time_delta = local_time_delta
         self.search_parameters = search_parameters
         self.form_model = form_model
@@ -153,8 +154,14 @@ class SubmissionSearch():
         header = HeaderFactory(self.dbm, self.form_model).create_header(submission_type)
         return header.get_header_field_names()
 
+    def _remove_hidden_fields(self, query_fields):
+        if self.skip_fields:
+            return [query_fields.remove(query_fields[index-1]) for index in self.skip_fields]
+        return query_fields
+
     def _add_search_filters(self, search):
         query_fields = self._get_query_fields()
+        query_fields = self._remove_hidden_fields(query_fields)
         search_filter_param = self.search_parameters.get('search_filters')
         if not search_filter_param:
             return

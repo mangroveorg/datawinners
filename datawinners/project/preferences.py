@@ -2,8 +2,9 @@ from datawinners.preferences.models import ProjectPreferences
 
 
 def get_columns_to_hide(user, tab, questionnaire_id=''):
+    preference_name = tab + "_hide_column"
     preferences = ProjectPreferences.objects.filter(user=user, project_id=questionnaire_id,
-                                                    preference_name=tab)
+                                                    preference_name=preference_name)
     hide_columns = []
     for preference in preferences:
         hide_columns.append(int(preference.preference_value))

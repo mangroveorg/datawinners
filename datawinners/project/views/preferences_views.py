@@ -42,9 +42,8 @@ def hide_submission_log_column(request):
 def get_hidden_columns(request):
     user = request.user
     post_data = json.loads(request.POST.get('data'))
-    preference_name = post_data.get('tab') + "_hide_column"
     form_code = post_data.get('questionnaire_code')
     manager = get_database_manager(request.user)
     questionnaire = get_form_model_by_code(manager, form_code)
-    hide_columns = get_columns_to_hide(user, preference_name, questionnaire.id)
+    hide_columns = get_columns_to_hide(user, post_data.get('tab') , questionnaire.id)
     return HttpResponse(mimetype='application/json', content=json.dumps({"hide_columns": hide_columns}))
