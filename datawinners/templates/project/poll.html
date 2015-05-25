@@ -25,13 +25,20 @@
     <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet"/>
 {% endblock %}
 
+
+
 {% block page_js %}
     {{ block.super }}
-
+    <script type="text/javascript">
+        var is_active = "{{ is_active }}";
+    </script>
      <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
      <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
      <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
 {% endblock %}
+
+
+
 
 {% block content %}
     <div id="poll_options">
@@ -47,6 +54,10 @@
         <label> Poll </label>
         <p class="italic_grey"> View, edit & send your Survey. </p>
 
+        <div class="deactivate_section">
+        <p>This poll is active: <a data-bind="click: deactivate_poll, disable: disableDeactivate, css: {'ui-state-disabled': disableDeactivate}"> Deactivate </a></p>
+
+        </div>
 
 
     </div>

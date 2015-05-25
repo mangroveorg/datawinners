@@ -40,7 +40,8 @@ def make_project_links(project, entity_type=None):
                      'reminders_link': reverse('reminder_settings', args=[project_id]),
                      'xform_link': reverse("xform_web_questionnaire", args=[project_id]),
                      'automatic_sms_link': reverse('project-language', args=[project_id]),
-                     'poll': reverse("poll", args=[project_id])
+                     'poll': reverse("poll", args=[project_id]),
+                     'deactivate_poll': reverse("deactivate_poll", args=[project_id])
                     }
 
     project_links.update(make_subject_links(project_id, entity_type))
