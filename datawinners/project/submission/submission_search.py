@@ -156,7 +156,7 @@ class SubmissionSearch():
 
     def _remove_hidden_fields(self, query_fields):
         if self.skip_fields:
-            return [query_fields.remove(query_fields[index-1]) for index in self.skip_fields]
+            return [i for j, i in enumerate(query_fields) if j not in self.skip_fields]
         return query_fields
 
     def _add_search_filters(self, search):

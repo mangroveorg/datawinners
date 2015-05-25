@@ -129,6 +129,8 @@ DW.SubmissionLogExport = function () {
     self.init = function () {
         self.exportLink = $('.export_link');
         self.exportForm = $('#export_form');
+        self.export_media = false;
+        self.export_visible = false;
         _initialize_dialogs();
         _initialize_events();
     };
@@ -154,9 +156,13 @@ DW.SubmissionLogExport = function () {
         self.exportForm.appendJson(
             {
                 "search_filters": JSON.stringify(filter_as_json()),
-                "is_media":is_export_with_media
+                "is_media":self.export_media,
+                "only_visible": self.export_visible
+                //"is_media":is_export_with_media
             }
         ).attr('action', self.url).submit();
+        self.export_visible = false;
+        self.export_media = false;
     };
 
     var _check_limit_and_export = function(is_export_with_media){
@@ -192,15 +198,47 @@ DW.SubmissionLogExport = function () {
     };
 
     var _initialize_events = function () {
-        $('.with_media').click(function(){
-               DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _check_limit_and_export(true);
-         });
+        //$('.with_media').click(function () {
+        //    self.export_media = true;
+        //    self.export_visible = true;
+        //    DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+        //    _check_limit_and_export(true);
+        //});
 
-        self.exportLink.click(function () {
-               DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _check_limit_and_export(false);
+        $('#export_all_columns').click(function () {
+            self.export_media = false;
+            self.export_visible = false;
+            DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+            _check_limit_and_export(true);
         });
+
+        $('#export_visible_columns').click(function () {
+            self.export_media = false;
+            self.export_visible = true;
+            DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+            _check_limit_and_export(true);
+        });
+
+        $('#export_all_columns_with_media').click(function () {
+            self.export_media = true;
+            self.export_visible = false;
+            DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+            _check_limit_and_export(true);
+        });
+
+        $('#export_visible_columns_with_media').click(function () {
+            self.export_media = true;
+            self.export_visible = true;
+            DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+            _check_limit_and_export(true);
+        });
+
+        //self.exportLink.click(function () {
+        //    self.export_media = false;
+        //    self.export_visible = false;
+        //    DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
+        //    _check_limit_and_export(false);
+        //});
 
     };
 };

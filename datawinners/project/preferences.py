@@ -10,6 +10,9 @@ def get_columns_to_hide(user, tab, questionnaire_id=''):
         hide_columns.append(int(preference.preference_value))
     return hide_columns
 
+def get_zero_indexed_columns_to_hide(user, tab, questionnaire_id=''):
+    columns = get_columns_to_hide(user, tab, questionnaire_id)
+    return [i-1 for i in columns]
 
 def remove_hidden_columns_for_tab(user, tab, questionnaire_id=''):
     preference_name = tab+'_hide_column'

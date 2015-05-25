@@ -31,7 +31,7 @@ from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
-from datawinners.project.preferences import get_columns_to_hide
+from datawinners.project.preferences import get_columns_to_hide, get_zero_indexed_columns_to_hide
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import SubmissionSearch
 from datawinners.search.index_utils import es_questionnaire_field_name
@@ -214,7 +214,7 @@ def get_survey_response_ids_from_request(dbm, request, form_model, local_time_de
         submission_type = request.POST.get("submission_type")
         search_parameters = {'filter': submission_type}
         search_parameters.update({'search_filters': search_filters})
-        skip_fields = get_columns_to_hide(request.user, search_parameters.get('filter'), form_model.id)
+        skip_fields = get_zero_indexed_columns_to_hide(request.user, search_parameters.get('filter'), form_model.id)
         submission_search = SubmissionSearch(dbm, form_model, search_parameters, local_time_delta, skip_fields)
         return submission_search.get_all_submissions_ids_by_criteria()
     return json.loads(request.POST.get('id_list'))
@@ -511,15 +511,16 @@ def _advanced_questionnaire_export(current_language, form_model, is_media, local
             .create_excel_response_with_media(submission_type, query_params)
 
 
-def _create_export_artifact(form_model, manager, request, search_filters):
+def _create_export_artifact(form_model, manager, request):
     # the number_of_results limit will not be used for result-set size since scan-scroll api does not support it.
     # it is specified since the code-flow requires its value to be present
+    search_filters = json.loads(request.POST.get('search_filters'))
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
                     "number_of_results": 4000,
                     "order": "",
                     "sort_field": "date"
-    }
+                    }
     search_text = search_filters.get("search_text", '')
     submission_type = request.GET.get(u'type')
     query_params.update({"search_text": search_text})
@@ -527,6 +528,9 @@ def _create_export_artifact(form_model, manager, request, search_filters):
     is_media = False
     if request.POST.get('is_media') == u'true':
         is_media = True
+    only_visible = False
+    if request.POST.get('only_visible') == u'true':
+        only_visible = True
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
     project_name = request.POST.get(u"project_name")
@@ -535,7 +539,7 @@ def _create_export_artifact(form_model, manager, request, search_filters):
         return _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager,
                                               project_name, query_params, submission_type)
 
-    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+    return SubmissionExporter(form_model, project_name, manager, local_time_delta, request.user, current_language, only_visible) \
         .create_excel_response(submission_type, query_params)
 
 
@@ -547,13 +551,12 @@ def export(request):
     if request.method == 'GET':  # To handle django error #3480
         return HttpResponse(status=405)
 
-    search_filters = json.loads(request.POST.get('search_filters'))
     questionnaire_code = request.POST.get(u'questionnaire_code')
     manager = get_database_manager(request.user)
 
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    return _create_export_artifact(form_model, manager, request, search_filters)
+    return _create_export_artifact(form_model, manager, request)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
@@ -589,7 +592,7 @@ def get_submissions(request, form_code):
     search_parameters.update({"search_text": search_text})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    skip_fields = get_columns_to_hide(user, search_parameters.get('filter'), form_model.id)
+    skip_fields = get_zero_indexed_columns_to_hide(user, search_parameters.get('filter'), form_model.id)
     submission_search = SubmissionSearch(dbm, form_model, search_parameters, local_time_delta, skip_fields)
     search_results, query_fields = submission_search.get_submissions_paginated()
     submission_count_with_filters = submission_search.get_submission_count()

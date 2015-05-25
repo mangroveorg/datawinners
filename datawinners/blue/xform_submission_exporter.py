@@ -1,8 +1,7 @@
 from collections import OrderedDict
-from datetime import datetime
 import json
 import os
-from tempfile import NamedTemporaryFile, TemporaryFile, mkdtemp
+from tempfile import TemporaryFile, mkdtemp
 import tempfile
 import zipfile
 
@@ -11,15 +10,13 @@ from django.template.defaultfilters import slugify
 from xlsxwriter import Workbook
 from django.core.servers.basehttp import FileWrapper
 
-from datawinners.project.submission.export import export_filename, add_sheet_with_data, export_media_folder_name, \
-    export_to_new_excel, \
+from datawinners.project.submission.export import export_filename, export_media_folder_name, \
     create_multi_sheet_excel_headers, create_multi_sheet_entries
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter
 from datawinners.project.submission.submission_search import SubmissionSearch
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.datastore.documents import SurveyResponseDocument
-from mangrove.form_model.field import ExcelDate, DateField
 
 
 class XFormSubmissionExporter(SubmissionExporter):
@@ -50,7 +47,7 @@ class XFormSubmissionExporter(SubmissionExporter):
                 archive.write(complete_name, arcname=folder_name + "/" + file_name_slugifed, compress_type=zipfile.ZIP_DEFLATED)
 
     def create_excel_response_with_media(self, submission_type, query_params):
-        columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
+        columns, search_results = self.get_export_data(query_params, submission_type)
         submission_ids = self.get_submission_ids(query_params)
         file_name, workbook_file = self._create_excel_workbook(columns, search_results, submission_type)
         media_folder = self._create_images_folder(submission_ids)
