@@ -1,3 +1,4 @@
+import json
 from unittest import TestCase
 from django.contrib.auth.models import User
 from mock import MagicMock, patch, Mock, PropertyMock
@@ -23,11 +24,14 @@ class TestCreatePoll(TestCase):
         request.POST = {
             'poll_name': project_name,
             'active_days': days_active,
-            'question': question
+            'question': question,
+            'selected_option': '{"option":"broadcast"}'
         }
+        selected_option = {"option": "broadcast"}
 
         questionnaire = MagicMock(spec=Project)
         questionnaire.id = 'some_id'
+        questionnaire.form_code = "some_code"
 
         with patch('datawinners.project.create_poll.get_database_manager') as get_database_manager_mock:
             with patch('datawinners.project.create_poll.helper.generate_questionnaire_code') as generate_questionnaire_code_mock:
@@ -42,9 +46,9 @@ class TestCreatePoll(TestCase):
                                 _is_project_name_unique_mock.return_value = False
 
                                 response = create_poll_questionnaire(request)
-                                self.assertEquals(response.content, '{"project_id": "some_id", "success": true}')
+                                self.assertDictEqual(json.loads(response.content), {"project_id": "some_id", "success": True, "project_code": "some_code"})
 
-                                _create_poll_mock.assert_called_with(manager, questionnaire, request)
+                                _create_poll_mock.assert_called_with(manager, questionnaire, selected_option, question)
 
     def test_should_construct_questionnaire(self):
         project_name = 'test_poll'
@@ -57,7 +61,8 @@ class TestCreatePoll(TestCase):
         request.POST = {
                     'poll_name': project_name,
                     'active_days': days_active,
-                    'question': question
+                    'question': question,
+                    'end_date': "2015-4-28T9:45:31"
                 }
 
         manager = MagicMock(spec=DatabaseManager)

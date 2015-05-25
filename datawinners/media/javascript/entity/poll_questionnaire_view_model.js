@@ -5,6 +5,10 @@ function PollViewModel() {
     self.number_of_days = ko.observable();
     var active_poll_days = [1,2,3,4,5] ;
     var current_date = new Date();
+    window.smsViewModel.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
+                                            {"label":gettext('Group'), "code": "group"},
+                                            {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"}
+                                            ]);
     var month_name_map = {0:gettext('January') ,
                       1: gettext('February') ,
                       2: gettext('March') ,
