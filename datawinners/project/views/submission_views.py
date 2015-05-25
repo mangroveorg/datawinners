@@ -501,14 +501,13 @@ def export_count(request):
 
 
 def _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager, project_name,
-                                   query_params, submission_type):
+                                   query_params, submission_type, only_visible, user):
+    exporter = XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, user, current_language,
+                                       only_visible)
     if not is_media:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-            .create_excel_response(submission_type, query_params)
-
+        return exporter.create_excel_response(submission_type, query_params)
     else:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
-            .create_excel_response_with_media(submission_type, query_params)
+        return exporter.create_excel_response_with_media(submission_type, query_params)
 
 
 def _create_export_artifact(form_model, manager, request):
@@ -537,7 +536,7 @@ def _create_export_artifact(form_model, manager, request):
     current_language = get_language()
     if form_model.xform:
         return _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager,
-                                              project_name, query_params, submission_type)
+                                              project_name, query_params, submission_type, only_visible, request.user)
 
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, request.user, current_language, only_visible) \
         .create_excel_response(submission_type, query_params)
