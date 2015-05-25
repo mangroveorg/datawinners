@@ -597,6 +597,7 @@ class QuestionnaireTabPage(Page):
 
     def set_poll_questionnaire_title(self, title, generate_random=False):
         poll_title = title + generateId() if generate_random else title
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("poll_title"), True)
         self.driver.find_text_box(by_id("poll_title")).enter_text(poll_title)
         return poll_title
 
