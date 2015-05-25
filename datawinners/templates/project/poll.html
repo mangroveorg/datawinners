@@ -55,7 +55,9 @@
         <p class="italic_grey"> View, edit & send your Survey. </p>
 
         <div class="deactivate_section">
-        <p>This poll is active: <a data-bind="click: deactivate_poll, disable: disableDeactivate, css: {'ui-state-disabled': disableDeactivate}"> Deactivate </a></p>
+        <p>This poll is -
+            <label data-bind="text:status"> :: </label>
+            <a data-bind="text:change_status, click: deactivate_poll, disable: disableDeactivate, css: {'ui-state-disabled': disableDeactivate}">  </a></p>
 
         </div>
 

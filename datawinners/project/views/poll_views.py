@@ -15,7 +15,7 @@ from django.core.urlresolvers import reverse
 
 def _is_active(questionnaire):
     is_active = False
-    if questionnaire.active == "activated":
+    if questionnaire.active == "active":
         is_active = True
     return is_active
 
@@ -39,8 +39,8 @@ def poll(request, project_id):
     }))
 
 
-def _deactivate_questionnaire(questionnaire):
-    questionnaire.active = "deactivated"
+def _change_questionnaire_status(questionnaire, active_status):
+    questionnaire.active = active_status
     questionnaire.save()
 
 
@@ -52,7 +52,21 @@ def deactivate_poll(request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         if questionnaire:
-            _deactivate_questionnaire(questionnaire)
+            _change_questionnaire_status(questionnaire, "deactivated")
+            return HttpResponse(
+                    json.dumps({'success': True}))
+        return HttpResponse(
+                    json.dumps({'success': False}))
+
+@login_required
+@csrf_exempt
+@is_not_expired
+def activate_poll(request, project_id):
+    if request.method == 'POST':
+        manager = get_database_manager(request.user)
+        questionnaire = Project.get(manager, project_id)
+        if questionnaire:
+            _change_questionnaire_status(questionnaire, "active")
             return HttpResponse(
                     json.dumps({'success': True}))
         return HttpResponse(

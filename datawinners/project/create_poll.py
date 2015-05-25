@@ -24,12 +24,16 @@ def _associate_data_senders_to_questionnaire(manager, questionnaire, selected_op
     if selected_option.get('option') == 'questionnaire_linked':
         questionnaire_names = map(lambda item: lowercase_and_strip_accents(item), selected_option.get('questionnaire_names'))
         data_senders_list = get_datasenders_ids_by_questionnaire_names(manager, questionnaire_names)
+        questionnaire.associate_data_sender_to_project(manager, data_senders_list)
 
     elif selected_option.get('option') == 'group':
         group_names = selected_option.get('group_names')
         data_senders_list = get_datasender_ids_by_group_names(manager, group_names)
+        questionnaire.associate_data_sender_to_project(manager, data_senders_list)
 
-    questionnaire.associate_data_sender_to_project(manager, data_senders_list)
+    elif selected_option.get('option') == 'broadcast':
+        questionnaire.is_open_survey = True
+
 
 
 def _create_questionnaire(manager, questionnaire, question):
