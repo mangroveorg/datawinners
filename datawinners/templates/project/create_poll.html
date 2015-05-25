@@ -20,7 +20,7 @@
             <br>
                 <div>
 
-                    <input type="radio"  name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
+                    <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
                     <span class="margin_left_10">{% trans "I want to send this Poll Question via SMS" %}</span></br>
                     <label class="subtitle_helper">This is where we explain that only the Poll recipients will be able to send in data.</label>
                 </div>
@@ -41,7 +41,7 @@
                 </div>
                 <br>
                 <div>
-                    <input type="radio" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms" />
+                    <input type="radio" id="poll_via_broadcast" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms" />
                     <span class="margin_left_10">{% trans "I will use other means" %}</span></br>
                     <label class="subtitle_helper"> (Example: Radio, TV Billboards) This is where we explain that anyone can send in data.</label>
                 </div>
