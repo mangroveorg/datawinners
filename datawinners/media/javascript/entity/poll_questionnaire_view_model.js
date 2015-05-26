@@ -107,7 +107,7 @@ function PollViewModel() {
                 'question': question,
                 'selected_option' : JSON.stringify(selected_option),
                 'csrfmiddlewaretoken': $("#poll_form input[name=csrfmiddlewaretoken]").val(),
-                'end_date' : end_date.getFullYear() +"-"+ end_date.getMonth()+"-" + end_date.getDate()+"T" + end_date.getHours() +":"+ end_date.getMinutes() +":"+ end_date.getSeconds()
+                'end_date' : end_date.getFullYear() +"-"+ (end_date.getMonth()+1)+"-" + end_date.getDate()+"T" + end_date.getHours() +":"+ end_date.getMinutes() +":"+ end_date.getSeconds()
             };
 
             $.post(create_poll_url, data).done(function (response) {

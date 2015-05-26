@@ -3,6 +3,9 @@ var PollOptionsViewModel = function(){
     self.selectedPollOption = ko.observableArray([1,3,4]);
     self.change_status = ko.observable();
     self.status = ko.observable();
+    //self.fromDate = ko.observable();
+    //self.toDate = ko.observable();
+
     if (is_active == 'True'){
         //self.disableDeactivate = ko.observable(false);
         self.change_status('Deactivate');

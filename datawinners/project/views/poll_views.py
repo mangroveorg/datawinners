@@ -30,12 +30,15 @@ def poll(request, project_id):
     questionnaire = Project.get(manager, project_id)
     project_links = get_project_link(questionnaire)
     is_active = _is_active(questionnaire)
+    from_date = questionnaire.modified.date()
+    to_date = questionnaire.end_date.date()
 
     return render_to_response('project/poll.html', RequestContext(request, {
         'project': questionnaire,
         'project_links': project_links,
-        'is_active': is_active
-
+        'is_active': is_active,
+        'from_date': from_date,
+        'to_date': to_date
     }))
 
 
