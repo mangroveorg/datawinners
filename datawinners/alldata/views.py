@@ -10,11 +10,13 @@ from django.utils.http import urlquote
 from django.utils.translation import ugettext as _
 from django.http import Http404
 
-from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user
+from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, \
+    is_new_user, valid_web_user
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.dataextraction.helper import convert_to_json_response
-from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
+from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, \
+    get_reports_list
 from datawinners.settings import CRS_ORG_ID
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_all_entities
@@ -31,7 +33,7 @@ def get_alldata_project_links():
     project_links = {'projects_link': reverse(index),
                      'reports_link': reverse(reports),
                      'failed_submissions_link': reverse(failed_submissions)
-    }
+                     }
     return project_links
 
 
@@ -60,20 +62,25 @@ def get_project_info(manager, project):
         create_subjects_links.update(
             {entity_type: append_query_strings_to_url(reverse("subject_questionnaire", args=[project_id, entity_type]),
                                                       web_view=True)})
+    if questionnaire.is_poll:
+        project_link = reverse("submissions", args=[project_id, questionnaire_code])
+    else:
+        project_link = reverse('project-overview', args=[project_id])
 
     project_info = dict(project_id=project_id,
                         name=project['value']['name'],
                         qid=questionnaire_code,
                         created=project['value']['created'],
                         is_advanced_questionnaire=bool(project['value'].get('xform')),
-                        link=(reverse('project-overview', args=[project_id])),
+                        link=project_link,
                         log=log, analysis=analysis, disabled=disabled,
                         web_submission_link=web_submission_link,
                         web_submission_link_disabled=web_submission_link_disabled,
                         create_subjects_link=create_subjects_links,
                         entity_type=questionnaire.entity_type,
                         encoded_name=urlquote(project['value']['name']),
-                        import_template_file_name=slugify(project['value']['name']))
+                        import_template_file_name=slugify(project['value']['name']),
+                        is_poll=bool(questionnaire.is_poll))
     return project_info
 
 
@@ -127,8 +134,9 @@ def index(request):
                        entity_type=project['entity_type'],
                        encoded_name=project['encoded_name'],
                        import_template_file_name=project['import_template_file_name'],
-                       is_advanced_questionnaire=bool(project['is_advanced_questionnaire'])
-        )
+                       is_advanced_questionnaire=bool(project['is_advanced_questionnaire']),
+                       is_poll=project['is_poll']
+                       )
 
         project_list.append(project)
     activation_success = request.GET.get('activation', False)

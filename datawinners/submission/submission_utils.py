@@ -23,7 +23,7 @@ class PostSMSProcessorLanguageActivator(object):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
         except FormModelDoesNotExistsException:
-            form_model = get_active_form_model(self.dbm)
+            form_model = get_active_form_model(self.dbm, form_code)
         if not isinstance(form_model, EntityFormModel):
             translation.activate(form_model.activeLanguages[0])
         else:
@@ -43,7 +43,7 @@ class PostSMSProcessorCheckDSIsRegistered(object):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
         except FormModelDoesNotExistsException:
-            form_model = get_active_form_model(self.dbm)
+            form_model = get_active_form_model(self.dbm, form_code)
         exception = self.request.get('exception')
         if exception and isinstance(exception, NumberNotRegisteredException) and not form_model.is_open_survey:
            return self._get_response()
@@ -58,7 +58,7 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
         except FormModelDoesNotExistsException:
-            form_model = get_active_form_model(self.dbm)
+            form_model = get_active_form_model(self.dbm, form_code)
 
         processor_func = self._get_handlers(form_model)
         response = processor_func(form_model, submission_values)
@@ -124,7 +124,7 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
         except FormModelDoesNotExistsException:
-            form_model = get_active_form_model(self.dbm)
+            form_model = get_active_form_model(self.dbm, form_code)
         project = Project.from_form_model(form_model=form_model)
         reporter_entity = self.request.get('reporter_entity')
 
