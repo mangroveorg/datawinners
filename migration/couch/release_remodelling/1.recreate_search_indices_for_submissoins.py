@@ -16,7 +16,7 @@ def create_index(dbm, form_model, logger):
     end_key = [form_model_id, {}]
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                  startkey=start_key, endkey=end_key)
-    es = get_elasticsearch_handle(timeout=6000)
+    es = get_elasticsearch_handle(timeout=2400)
 
     survey_response_docs = []
     for row in rows:
