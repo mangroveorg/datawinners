@@ -46,8 +46,11 @@ def create_submission_index(database_name, logger):
         except Exception as ignore:
             logger.info("Error while deleting index %s"%ignore.message)
 
-        create_submission_mapping(dbm, form_model, form_model)
-        create_index(dbm, form_model, logger)
+        try:
+            create_submission_mapping(dbm, form_model, form_model)
+            create_index(dbm, form_model, logger)
+        except Exception as e:
+            logger.exception(e.message)
 
 
 def create_search_indices_for_submissions(db_name):
