@@ -26,6 +26,7 @@ from datawinners.entity.group_helper import create_new_group
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.main.database import get_database_manager
 from datawinners.main.utils import get_database_name
+from datawinners.project.preferences import remove_hidden_columns_for_all_users
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import delete_mapping, es_questionnaire_field_name
 from datawinners.search.submission_index import update_submission_search_for_subject_edition, SubmissionSearchStore
@@ -658,6 +659,7 @@ def save_questionnaire(request):
 
             for project in new_projects:
                 SubmissionSearchStore(manager, project, project).recreate_and_populate_elastic_store()
+                remove_hidden_columns_for_all_users(project.id)
 
             UserActivityLog().log(request, action=EDITED_REGISTRATION_FORM, detail=json.dumps(detail_dict), **kwargs)
             return HttpResponse(json.dumps({'success': True, 'form_code': form_model.form_code}))
