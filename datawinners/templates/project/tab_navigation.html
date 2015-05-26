@@ -76,15 +76,19 @@
                 <a id="data_tab" href="{{ project_links.submission_log_link }}"
                 class="{{ disable_link_class }}">{% trans "Data tab" %}</a>
             </li>
-
+             {% if project.is_open_survey %}
+             {% else %}
             <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link}}"
                    class="{{ disable_link_class }}">{% trans "My Poll Recipients" %}</a>
             </li>
-            <li class="{% ifactivetab 'tab_nav' 'poll' %}active{% else %}inactive{% endifactivetab %}">
-                <a id="poll_tab" href="{{ project_links.poll}}"
-                   class="{{ disable_link_class }}">{% trans "Poll" %}</a>
-            </li>
+           {% endif %}
+
+                <li class="{% ifactivetab 'tab_nav' 'poll' %}active{% else %}inactive{% endifactivetab %}">
+                    <a id="poll_tab" href="{{ project_links.poll}}"
+                       class="{{ disable_link_class }}">{% trans "Poll" %}</a>
+                </li>
+
        </ul>
     {% else %}
 

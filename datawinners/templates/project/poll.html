@@ -51,13 +51,15 @@
 {#            </div>#}
 {#        </div>#}
 
+        
+
         <label> Poll </label>
         <p class="italic_grey"> View, edit & send your Survey. </p>
 
         <div class="deactivate_section">
-        <p>This poll is
-            <strong><span data-bind="text:status"> :: </span> -
-            <a data-bind="text:change_status, click: deactivate_poll, disable: disableDeactivate, css: {'ui-state-disabled': disableDeactivate}">  </a></strong></p>
+        <p>Poll is
+            <strong><span data-bind="text:status"> </span> </strong>now ::
+            <a data-bind="text:change_status, click: deactivate_poll, disable: disableDeactivate, css: {'ui-state-disabled': disableDeactivate}">  </a></p>
 
         </div>
 
