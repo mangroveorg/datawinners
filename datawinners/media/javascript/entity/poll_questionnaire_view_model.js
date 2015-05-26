@@ -42,7 +42,17 @@ function PollViewModel() {
         return active_poll_days
     });
 
-    self.from_date_poll = ko.observable(item_map_week[current_date.getDay()]+", "+ current_date.getDate()+ " "+ month_name_map[current_date.getMonth()] +" "+ current_date.getFullYear());
+    function get_current_time() {
+        return item_map_week[current_date.getDay()] + ", " +
+                            current_date.getDate() + " " +
+                            month_name_map[current_date.getMonth()] + " " +
+                            current_date.getFullYear() + " " +
+                            current_date.getHours() + ":" +
+                            current_date.getMinutes() + ":" +
+                            current_date.getSeconds();
+    }
+
+    self.from_date_poll = ko.observable(get_current_time());
 
     self.disableSendPoll = ko.computed(function(){
         if(window.smsViewModel.disableSendSms() ){

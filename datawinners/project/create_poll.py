@@ -10,7 +10,7 @@ from datawinners.project import helper
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.all_datasender_search import get_datasenders_ids_by_questionnaire_names, get_datasender_ids_by_group_names
 from datawinners.utils import lowercase_and_strip_accents
-from mangrove.form_model.project import Project
+from mangrove.form_model.project import Project, is_active_form_model
 
 
 def _is_project_name_unique(error_message, name_has_errors, questionnaire):

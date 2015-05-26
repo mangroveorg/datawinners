@@ -8,7 +8,7 @@ from datawinners.main.database import get_database_manager
 from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import make_project_links
 from datawinners.project.views.views import get_project_link
-from mangrove.form_model.project import Project
+from mangrove.form_model.project import Project, is_active_form_model
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 
@@ -69,8 +69,12 @@ def activate_poll(request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         if questionnaire:
-            _change_questionnaire_status(questionnaire, "active")
-            return HttpResponse(
+            is_active = is_active_form_model(manager)
+            if not is_active:
+                _change_questionnaire_status(questionnaire, "active")
+                return HttpResponse(
                     json.dumps({'success': True}))
+            return HttpResponse(
+                    json.dumps({'success': False, 'message': "Another poll is already active."}))
         return HttpResponse(
-                    json.dumps({'success': False}))
+                    json.dumps({'success': False, 'message': "No Such questionnaire"}))

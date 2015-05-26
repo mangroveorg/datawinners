@@ -17,6 +17,7 @@ from datawinners.project.wizard_view import get_preview_and_instruction_links, c
 from datawinners.utils import get_organization
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException
+from mangrove.form_model.project import is_active_form_model
 
 
 @login_required
@@ -25,6 +26,7 @@ from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException
 @is_not_expired
 def create_project(request):
     manager = get_database_manager(request.user)
+    is_active = is_active_form_model(manager)
     if request.method == 'GET':
         cancel_link = reverse('dashboard') if request.GET.get('prev', None) == 'dash' else reverse('alldata_index')
         return render_to_response('project/create_project.html',
@@ -35,7 +37,7 @@ def create_project(request):
                                    'post_url': reverse(create_project),
                                    'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in
                                                                   get_unique_id_types(manager)]),
-                                   'cancel_link': cancel_link}, context_instance=RequestContext(request))
+                                   'cancel_link': cancel_link, 'is_active': is_active}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         response_dict = _create_project_post_response(request, manager)

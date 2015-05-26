@@ -46,16 +46,21 @@
     <div id="poll_options">
         <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
         <div class="questionnaire_type_header">
-                <span class="header" id="create_poll">{% trans "Poll is active from"%} {{ from_date}} to {{ to_date }} </span>
+                <span class="header" id="create_poll">{% trans "Poll"%}
+                    <span data-bind="text:fromDate"></span>
+                    <span data-bind="text:toDate"></span>
+                </span>
             </div>
             <div>
-                <label> Poll </label>
+
+                <span id="poll_success"> </span>
+
                 <p class="italic_grey"> View, edit & send your Survey. </p>
 
                 <div class="deactivate_section">
                 <p>Poll is
                     <strong><span data-bind="text:status"> </span> </strong>now ::
-                    <a data-bind="text:change_status, click: deactivate_poll, disable: disableDeactivate, css: {'ui-state-disabled': disableDeactivate}">  </a></p>
+                    <a data-bind="text:change_status, click: deactivate_poll">  </a></p>
 
                 </div>
             </div>

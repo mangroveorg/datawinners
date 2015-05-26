@@ -142,7 +142,7 @@ def deactivate_poll_questionnaire():
                 project_doc = ProjectDocument.wrap(project_row.get('value'))
                 project = Project.new_from_doc(dbm, project_doc)
                 if project.end_date:
-                    if project.end_date.date() == (now - timedelta(days=1)).date():
+                    if project.end_date.date() == now.date():
                         project.active = "deactivated"
                         project.save()
     except Exception:

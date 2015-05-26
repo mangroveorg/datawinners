@@ -3,18 +3,20 @@ var PollOptionsViewModel = function(){
     self.selectedPollOption = ko.observableArray([1,3,4]);
     self.change_status = ko.observable();
     self.status = ko.observable();
-    //self.fromDate = ko.observable();
-    //self.toDate = ko.observable();
+    self.fromDate = ko.observable();
+    self.toDate = ko.observable();
 
     if (is_active == 'True'){
-        //self.disableDeactivate = ko.observable(false);
         self.change_status('Deactivate');
-        self.status('Active')
+        self.status('Active');
+        self.fromDate("From "+from_date);
+        self.toDate("To "+to_date);
     }
     else {
-        //self.disableDeactivate = ko.observable(true);
          self.change_status('Activate');
-        self.status('Deactivated')
+        self.status('Deactivated');
+         self.fromDate("");
+        self.toDate("");
     }
     self.deactivate_poll = function(){
         data = {};
@@ -23,10 +25,14 @@ var PollOptionsViewModel = function(){
 
                 var responseJson = $.parseJSON(response);
                 if (responseJson['success']) {
-                    //self.disableDeactivate(true);
                     self.status('Deactivated');
                     self.change_status('Activate');
+                    self.fromDate("");
+                    self.toDate("");
                     DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
+                }
+                else{
+                    $('<div id="message" class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
                 }
             });
         }
@@ -35,10 +41,14 @@ var PollOptionsViewModel = function(){
 
                 var responseJson = $.parseJSON(response);
                 if (responseJson['success']) {
-                    //self.disableDeactivate(true);
                     self.status('Active');
                     self.change_status('Deactivate');
+                    self.fromDate("From "+from_date);
+                    self.toDate("To "+to_date);
                     DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
+                }
+                else{
+                    $('<div id="message" class="error_message message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
                 }
             });
         }
