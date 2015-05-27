@@ -213,7 +213,10 @@ class RegisterDatasenderView(TemplateView):
             update_datasender_on_open_submissions.delay(dbm.database_name, reporter_id)
 
         except DataObjectAlreadyExists as e:
-            message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
+            if project_id:
+                message = _("Data Sender with ID Number '%s' already exists.") % e.data[1]
+            else:
+                message = _("Contact with ID Number '%s' already exists.") % e.data[1]
 
         self._give_web_access_to_successful_datasender_registration(form, org_id, reporter_id, request)
 

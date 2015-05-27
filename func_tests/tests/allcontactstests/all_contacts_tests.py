@@ -23,7 +23,7 @@ class TestAllContacts(HeadlessRunnerTest):
         self.add_group_page.enter_group_name(group_name)
         self.add_group_page.click_on_add_group_button()
         self.assertEquals(self.all_contacts_page.get_success_message(),
-                          "Group <b>%s</b> successfully added." % group_name)
+                          "Group %s successfully added." % group_name)
         return group_name
 
     def _verify_adding_contact_to_a_group(self, group_name):
@@ -62,7 +62,7 @@ class TestAllContacts(HeadlessRunnerTest):
         self.all_contacts_page.click_delete_group_icon(new_group_name)
         self.add_group_page.click_on_confirm_delete_group()
         self.assertEquals(self.all_contacts_page.get_success_message(),
-                          "Group <b>%s</b> successfully deleted." % new_group_name)
+                          "Group %s successfully deleted." % new_group_name)
 
     def _creating_a_contact(self):
         self.add_contact_page = self.all_contacts_page.navigate_to_add_a_data_sender_page()
