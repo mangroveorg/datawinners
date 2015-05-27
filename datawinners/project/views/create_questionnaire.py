@@ -34,7 +34,7 @@ def create_project(request):
                                   {'preview_links': get_preview_and_instruction_links(),
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
-                                   'in_trial_mode': org.in_trial_mode,
+                                   'is_pro_sms': org.is_pro_sms,
                                    'active_language': request.LANGUAGE_CODE,
                                    'post_url': reverse(create_project),
                                    'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in

@@ -170,11 +170,11 @@ function _save_questionnaire(callback) {
     $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     DW.post_project_data(callback);
 }
-function _if_trial_mode_hide_poll_option() {
-        if (in_trial_mode == "True")
-            $('.create_poll_section').hide();
-        else
+function _if_pro_sms_mode_show_poll_option() {
+        if (is_pro_sms == "True")
             $('.create_poll_section').show();
+        else
+            $('.create_poll_section').hide();
     }
 
 
@@ -190,7 +190,7 @@ function _is_another_poll_is_active() {
 }
 $(document).ready(function () {
     _initializeViewModel();
-    _if_trial_mode_hide_poll_option();
+    _if_pro_sms_mode_show_poll_option();
     _is_another_poll_is_active();
     DW.option_warning_dialog.init();
     new DW.UniqueIdHelpSection().init();
