@@ -59,5 +59,12 @@
         else{
             removeQuestionnaireMenuItem.addClass('disabled');
         }
+    };
+
+    dw.allContactTableMenu.disableMenuItemWhenAccountIsNotProSMS = function(){
+        var sendSmsMenuItem = $($('#send-an-sms').parent());
+        if(is_pro_sms == 'False'){
+            sendSmsMenuItem.remove();
+        }
     }
 }(DW, jQuery));

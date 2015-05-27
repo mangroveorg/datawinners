@@ -52,7 +52,7 @@ class TestXFormBridge(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_convert_cascaded_select_field(self):
-        xls_parser_response = XlsFormParser(self.CASCADE, "My questionnaire").parse()
+        xls_parser_response  = XlsFormParser(self.CASCADE, "My questionnaire").parse()
 
         expected_json = [{'code': 'name', 'name': 'What is your name?', 'title': 'What is your name?', 'required': False,
           'is_entity_question': False, 'instruction': 'Answer must be a word', 'parent_field_code': None, 'type': 'text'},
