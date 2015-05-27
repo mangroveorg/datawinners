@@ -18,6 +18,7 @@ LOCATOR = "locator"
 BY = "by"
 
 DATASENDERS_TAB = by_id("data_senders_tab")
+DATA_TAB = by_id("data_tab")
 SUBJECTS_TAB = by_id("subjects_tab")
 REMINDERS_TAB = by_id("reminders_tab")
 PROJECT_EDIT_LINK = by_id("edit_project")
