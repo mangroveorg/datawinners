@@ -26,6 +26,7 @@ from mangrove.form_model.project import is_active_form_model
 @is_not_expired
 def create_project(request):
     manager = get_database_manager(request.user)
+    org = get_organization(request)
     is_active = is_active_form_model(manager)
     if request.method == 'GET':
         cancel_link = reverse('dashboard') if request.GET.get('prev', None) == 'dash' else reverse('alldata_index')
@@ -33,6 +34,7 @@ def create_project(request):
                                   {'preview_links': get_preview_and_instruction_links(),
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
+                                   'in_trial_mode': org.in_trial_mode,
                                    'active_language': request.LANGUAGE_CODE,
                                    'post_url': reverse(create_project),
                                    'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in

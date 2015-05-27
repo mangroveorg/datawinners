@@ -32,7 +32,7 @@ var PollOptionsViewModel = function(){
                     DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 }
                 else{
-                    $('<div id="message" class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
+                    $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
                 }
             });
         }
@@ -48,7 +48,7 @@ var PollOptionsViewModel = function(){
                     DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 }
                 else{
-                    $('<div id="message" class="error_message message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
+                    $('<div class="warning-message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
                 }
             });
         }

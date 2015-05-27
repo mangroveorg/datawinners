@@ -170,8 +170,28 @@ function _save_questionnaire(callback) {
     $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     DW.post_project_data(callback);
 }
+function _if_trial_mode_hide_poll_option() {
+        if (in_trial_mode == "True")
+            $('.create_poll_section').hide();
+        else
+            $('.create_poll_section').show();
+    }
+
+
+function _is_another_poll_is_active() {
+    if (is_active == "True") {
+        $('.poll_active').show();
+        $('.poll_deactivated').hide();
+    }
+    else {
+        $('.poll_active').hide();
+        $('.poll_deactivated').show();
+    }
+}
 $(document).ready(function () {
     _initializeViewModel();
+    _if_trial_mode_hide_poll_option();
+    _is_another_poll_is_active();
     DW.option_warning_dialog.init();
     new DW.UniqueIdHelpSection().init();
     DW.init_delete_periodicity_question_warning();

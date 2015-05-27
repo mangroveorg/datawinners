@@ -69,7 +69,11 @@
             <div class="tableCell sub_section" id="questionnaire_section">
                 <img  class='dashboard_icon'  src="/media/images/collect_data.png"/><br/>
                 <p class="explanation">{% trans "Collect Data" %}</p>
-                <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires & Polls" %}</a>
+                {% if  in_trial_mode %}
+                    <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires" %}</a>
+                {% else %}
+                    <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires & Polls" %}</a>
+                {% endif %}
             </div>
 
             <div class="tableCell sub_section"></div>
