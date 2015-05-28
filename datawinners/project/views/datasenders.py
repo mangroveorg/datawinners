@@ -142,7 +142,7 @@ def registered_datasenders(request, project_id):
 
         reporter_id_email_map = dict(
             [(imported_datasender['id'], imported_datasender['email']) for imported_datasender in
-             imported_data_senders])
+             imported_data_senders if imported_datasender['email']])
         org_id = request.user.get_profile().org_id
         create_web_users(org_id, reporter_id_email_map, request.LANGUAGE_CODE)
 

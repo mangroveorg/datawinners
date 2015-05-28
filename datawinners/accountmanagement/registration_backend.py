@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import logging
 
 from django.conf import settings
 from django.contrib.sites.models import RequestSite
@@ -100,25 +99,21 @@ class RegistrationBackend(object):
         class of this backend as the sender.
 
         """
-        datawinners_logger = logging.getLogger("datawinners")
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
 
-        datawinners_logger.debug("started processing")
         organization = self.create_respective_organization(kwargs)
         organization.save()
 
         organization.organization_setting.save()
 
-        datawinners_logger.debug("organization created")
         new_user = self._create_user(site, kwargs)
 
         registration_processor = self.get_registration_processor(organization)
         registration_processor.process(new_user, site, request.LANGUAGE_CODE, kwargs)
         new_user.save()
-        datawinners_logger.debug("user saved")
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,
