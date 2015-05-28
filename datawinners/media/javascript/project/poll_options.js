@@ -5,6 +5,8 @@ var PollOptionsViewModel = function(){
     self.status = ko.observable();
     self.fromDate = ko.observable();
     self.toDate = ko.observable();
+    self.isOpen = ko.observable(false);
+    self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
 
     if (is_active == 'True'){
         self.change_status('Deactivate');
@@ -13,9 +15,9 @@ var PollOptionsViewModel = function(){
         self.toDate("To "+to_date);
     }
     else {
-         self.change_status('Activate');
+        self.change_status('Activate');
         self.status('Deactivated');
-         self.fromDate("");
+        self.fromDate("");
         self.toDate("");
     }
     self.deactivate_poll = function(){
@@ -52,12 +54,20 @@ var PollOptionsViewModel = function(){
                 }
             });
         }
-    }
+        self.close_popup();
+    };
 
+    self.open = function () {
+        self.isOpen(true);
+    };
+
+    self.close_popup = function () {
+        self.isOpen(false);
+    };
 };
-
 
 $(document).ready(function () {
     window.poll_options = new PollOptionsViewModel();
     ko.applyBindings(window.poll_options, $('#poll_options')[0]);
+
 });

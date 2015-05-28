@@ -41,7 +41,6 @@
 
 
 
-
 {% block content %}
     <div id="poll_options">
         <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
@@ -52,20 +51,36 @@
                 </span>
             </div>
             <div>
-
                 <span id="poll_success"> </span>
-
                 <p class="italic_grey"> View, edit & send your Survey. </p>
 
-                <div class="deactivate_section">
+                <div>
                 <p>Poll is
-                    <strong><span data-bind="text:status"> </span> </strong>now ::
-                    <a data-bind="text:change_status, click: deactivate_poll">  </a></p>
-
+                    <strong><span data-bind="text:status"> </span> </strong>now :
+                    <a data-bind="text:change_status, click:open" href="javascript:void(0);" style="color:#0070ac;" >  </a></p>
+                </p>
                 </div>
-            </div>
+
+                <div data-bind="dialog: {autoOpen: false, width: 475, height: 190,
+                                                                title:'Deactivate Poll',
+                                                                dialogClass:'no-close'},
+                                                                dialogVisible: isOpen,
+                                                                open: open,
+                                                                dialogContent: deactivatePollDialog">
+                </div>
+
+
+                <div id="deactivate_poll_dialog" class="none">
+                    <p>Are you sure want to deactivate?</p>
+                    <div class="float_right margin_top_40">
+                        <button id='close_pop' data-bind="click: close_popup"> {%trans 'No' %}</button>
+                        <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Yes' %} </button>
+                    </div>
+                </div>
+
         </div>
 
+
+        </div>
     </div>
 {% endblock %}
-
