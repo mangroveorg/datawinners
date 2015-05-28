@@ -390,6 +390,12 @@ msgstr "Ajouter un Nouveau Projet"
 msgid "Are you sure you want to cancel this project?"
 msgstr "Etes-vous sûr de vouloir annuler ce projet ?"
 
+msgid "How Do You Want to Broadcast this Poll?"
+msgstr "Comment vous voulez diffuser ce sondage ?"
+
+msgid "Create a Poll "
+msgstr "Créer un vote rapide "
+
 msgid "Confirm"
 msgstr "Valider"
 
@@ -1126,6 +1132,12 @@ msgstr "Continuer"
 msgid "Save & Create Questionnaire"
 msgstr "Enregistrer & créer le Questionnaire"
 
+msgid "Save & Create Poll"
+msgstr "Enregistrer & créer le Poll"
+
+msgid "Short explanation on what polls are."
+msgstr "Brève explication sur ce que sont les sondages."
+
 msgid "Create Questionnaire"
 msgstr "Créez Questionnaire"
 
@@ -1774,6 +1786,10 @@ msgstr "Ny lohahevitra manana ny kaody (ID) = %s dia efa misy."
 msgid "answer"
 msgstr "réponse"
 
+
+msgid "Are you sure want to deactivate?"
+msgstr "Êtes-vous sûr de vouloir désactiver ?"
+
 msgid "Answer for question %s is required."
 msgstr "Réponse pour la question %s est obligatoire."
 
@@ -2074,6 +2090,40 @@ msgstr "Créez votre projet en quelques étapes faciles."
 
 msgid "Name your project and provide basic information about it."
 msgstr "Nommez votre projet et fournissez des informations élémentaires."
+
+msgid "Create a Basic Questionnaire"
+msgstr "Créez un questionnaire de base"
+
+msgid "I want to send this Poll Question via SMS"
+msgstr "Je veux envoyer ce sondage question par SMS"
+
+msgid "This is where we explain that only the Poll recipients will be able to send in data."
+msgstr "Voilà où nous expliquons que seuls les destinataires du sondage seront en mesure d'envoyer des données ."
+
+msgid "I will use other means"
+msgstr "Je vais utiliser d'autres moyens"
+
+msgid "From date:"
+msgstr "partir de la date:"
+
+msgid "To date:"
+msgstr "À ce jour:"
+
+
+msgid "Create an Advanced Questionnaire"
+msgstr "Créer un questionnaire avancée"
+
+msgid "(Example: Radio, TV Billboards)  This is where we explain that anyone can send in data."
+msgstr "(Exemple: radio, affichage TV) Voilà où nous expliquons que tout le monde peut envoyer des données."
+
+msgid "How Long Do Should People be Able to Send in Their Answer?"
+msgstr "Combien de temps les gens devraient être en mesure d'envoyer leur réponse?"
+
+msgid "Short explanation and why we suggest to have a fixed activation period"
+msgstr "Brève explication et pourquoi nous suggérons d'avoir une période d'activation fixe"
+
+msgid "Days"
+msgstr "journées"
 
 msgid "Write and Edit Your Questions"
 msgstr "Saisissez et éditez vos Questions"

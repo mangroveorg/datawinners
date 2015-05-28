@@ -71,7 +71,7 @@
 
 
                 <div id="deactivate_poll_dialog" class="none">
-                    <p>Are you sure want to deactivate?</p>
+                    <p> {% trans 'Are you sure want to deactivate?' %}</p>
                     <div class="float_right margin_top_40">
                         <button id='close_pop' data-bind="click: close_popup"> {%trans 'No' %}</button>
                         <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Yes' %} </button>

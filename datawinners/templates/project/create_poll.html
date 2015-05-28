@@ -16,13 +16,13 @@
 
         <div data-bind="stopBinding: true">
             <div id="poll_questionnaire">
-                <label>2. How Do You Want to Broadcast this Poll?</label>
+                <label>2. {%trans 'How Do You Want to Broadcast this Poll?'%}</label>
             <br>
                 <div>
 
                     <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
                     <span class="margin_left_10">{% trans "I want to send this Poll Question via SMS" %}</span></br>
-                    <label class="subtitle_helper">This is where we explain that only the Poll recipients will be able to send in data.</label>
+                    <label class="subtitle_helper">{%trans 'This is where we explain that only the Poll recipients will be able to send in data.'%}</label>
                 </div>
                 <br>
 
@@ -43,7 +43,7 @@
                 <div>
                     <input type="radio" id="poll_via_broadcast" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms" />
                     <span class="margin_left_10">{% trans "I will use other means" %}</span></br>
-                    <label class="subtitle_helper"> (Example: Radio, TV Billboards) This is where we explain that anyone can send in data.</label>
+                    <label class="subtitle_helper"> {% trans '(Example: Radio, TV Billboards)  This is where we explain that anyone can send in data.'%}</label>
                 </div>
                 <br>
 {#                <div data-bind="visible: show_sms() === 'poll_broadcast'">#}
@@ -52,16 +52,16 @@
 
                 <br>
                 <div>
-                    <label>3. How Long Do Should People be Able to Send in Their Answer?</label>
-                    <label class="subtitle_helper">Short explanation and why we suggest to have a fixed activation period</label>
+                    <label>3. {%trans 'How Long Do Should People be Able to Send in Their Answer?'%}</label>
+                    <label class="subtitle_helper">{% trans 'Short explanation and why we suggest to have a fixed activation period' %}</label>
                     <a>Learn more</a>
                     <br>
-                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select> <span>  Days</span><br>
+                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select> <span> {% trans 'Days' %} </span><br>
                     <br><br>
-                    <label>From date: </label>
+                    <label>{% trans 'From date:'%} </label>
                     <div id="from_date_poll"
                                      data-bind="text:from_date_poll"></div>
-                    <label>To date: </label>
+                    <label>{% trans 'To date:'%} </label>
                     <div id="to_date_poll"
                                      data-bind="text:to_date_poll"></div>
 
