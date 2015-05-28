@@ -104,9 +104,9 @@ class RegistrationBackend(object):
         else:
             site = RequestSite(request)
 
-
         organization = self.create_respective_organization(kwargs)
         organization.save()
+
         organization.organization_setting.save()
 
         new_user = self._create_user(site, kwargs)
@@ -114,7 +114,6 @@ class RegistrationBackend(object):
         registration_processor = self.get_registration_processor(organization)
         registration_processor.process(new_user, site, request.LANGUAGE_CODE, kwargs)
         new_user.save()
-
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,

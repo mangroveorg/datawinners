@@ -47,17 +47,17 @@ PHONE_NUMBER = 'phonenumber'
 TODAY = 'today'
 START = 'start'
 END = 'end'
+SIMSERIAL = 'simserial'
 
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
-                           'time', 'datetime', 'dw_idnr', DEVICEID, SUBSCRIBERID, IMEI_ID, PHONE_NUMBER, TODAY, START, END],
+                           'time', 'datetime', 'dw_idnr', DEVICEID, SUBSCRIBERID, IMEI_ID, PHONE_NUMBER, TODAY, START, END, SIMSERIAL],
                  'auto_filled': ['note'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
                             'select all that apply or specify other']
     }
-    meta_data_types = ["simserial"]
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
     or_other_data_types = ['select all that apply or specify other', 'select one or specify other']
@@ -79,6 +79,13 @@ class XlsFormParser():
         if filter(lambda x: x.isupper(), field['name']):
             return _("Uppercase in names not supported")
         return None
+
+    def _is_multi_language(self):
+        for child in self.xform_dict['children']:
+            if isinstance(child.get('label'), dict) and len(child.get('label', {})) > 1:
+                return True
+        return False
+        # return len(self.xform_dict['children'][0]['label']) > 1
 
     def _identify_default_language(self):
         if self.xform_dict['default_language'] != u'default':
@@ -115,7 +122,7 @@ class XlsFormParser():
                 break
 
             for cell in row:
-                if re.match('^label::', cell.value):
+                if cell.value and re.match('^label::', cell.value):
                     language = cell.value.split("::")[1]
                     self.default_language = language
                     return
@@ -196,9 +203,7 @@ class XlsFormParser():
                     self._validate_group(errors, field)
                 errors.append(self._validate_for_prefetch_csv(field))
             else:
-                if field["type"] in self.meta_data_types:
-                    errors.append(_("%s as a datatype (metadata)") % _(field_type))
-                elif (field["type"]) in self.select_without_list_name:
+                if (field["type"]) in self.select_without_list_name:
                     errors.append(_("missing list reference, check your select_one or select multiple question types"))
                 else:
                     errors.append(_("%s as a datatype") % _(field_type))
@@ -277,7 +282,7 @@ class XlsFormParser():
     def parse(self):
         fields = self.xform_dict['children']
         errors = self._validate_fields_are_recognised(fields)
-        settings_page_errors = self._validate_settings_page_is_not_present(self.xform_dict)
+        settings_page_errors = self._validate_settings_page_is_not_present()
         errors = errors.union(settings_page_errors)
         choice_errors = self._validate_media_in_choices(fields)
         [errors.add(choice_error) for choice_error in choice_errors if choice_error]
@@ -297,7 +302,7 @@ class XlsFormParser():
         # encoding is added to support ie8
         xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
-        return XlsParserResponse([], updated_xform, questions, info)
+        return XlsParserResponse([], updated_xform, questions, info, self._is_multi_language())
 
 
     def update_xform_with_questionnaire_name(self, xform):
@@ -312,7 +317,7 @@ class XlsFormParser():
             if field['type'] == 'group' and 'control' in field:
                 if field['control']['appearance'] == 'field-list':
                     return field['name']
-            elif field['type'] in ['calculate', DEVICEID, SUBSCRIBERID, IMEI_ID, PHONE_NUMBER, TODAY, START, END]:
+            elif field['type'] in ['calculate', DEVICEID, SUBSCRIBERID, IMEI_ID, PHONE_NUMBER, TODAY, START, END, SIMSERIAL]:
                 return field['name']
             else:
                 raise LabelForFieldNotPresentException(field_name=field['name'])
@@ -320,7 +325,7 @@ class XlsFormParser():
         if isinstance(field['label'], dict):
             if field['label'].get(self.default_language):
                 return field['label'].get(self.default_language)
-            return field['label'].values()[-1]
+            raise LabelForFieldNotPresentException(field_name=field['name'])
         else:
             return field['label']
 
@@ -383,7 +388,7 @@ class XlsFormParser():
     def _field(self, field, parent_field_code=None):
         xform_dw_type_dict = {'geopoint': 'geocode', 'decimal': 'integer', CALCULATE: 'text', BARCODE: 'text',
                               'dw_idnr': 'unique_id', DEVICEID: 'text', SUBSCRIBERID: 'text', IMEI_ID: 'text',
-                              PHONE_NUMBER: 'text', START: 'datetime', END: 'datetime', TODAY: 'date'}
+                              PHONE_NUMBER: 'text', SIMSERIAL: 'text', START: 'datetime', END: 'datetime', TODAY: 'date'}
         help_dict = {'text': 'word', 'integer': 'number', 'decimal': 'decimal or number', CALCULATE: 'calculated field',
                      'dw_idnr': 'Identification Number'}
         name = self._get_label(field)
@@ -442,7 +447,11 @@ class XlsFormParser():
         if not isinstance(choice_label, dict):
             return choice_label
 
-        return choice_label.get(self.default_language, '')
+        choice_label = choice_label.get(self.default_language)
+        if choice_label:
+            return choice_label
+        else:
+            raise LabelForChoiceNotPresentException(choice_field.get('name', ''))
 
     def is_required(self, field):
         if field.get('bind') and 'yes' == str(field['bind'].get('required')).lower():
@@ -462,24 +471,21 @@ class XlsFormParser():
             return _("Prefetch of csv not supported")
         return None
 
-    def _validate_settings_page_is_not_present(self, xform_dict):
+    def _validate_settings_page_is_not_present(self):
         errors = []
-        setting_page_error = _("XLSForm settings worksheet and the related values in survey sheet.")
-        if xform_dict['title'] != xform_dict['name']:
+        not_allowed_settings = ['public_key', 'submission_url', 'instance_name', 'style']
+        setting_page_error = _(
+            "columns other than Default_Language in the Settings Sheet.")
+        if self.xform_dict['title'] != self.xform_dict['name']:
             errors.append(setting_page_error)
 
-        if xform_dict['id_string'] != xform_dict['name']:
+        if self.xform_dict['id_string'] != self.xform_dict['name']:
             errors.append(setting_page_error)
 
-        #if xform_dict['default_language'] != 'default':
-        #    errors.append(setting_page_error)
-
-        if 'public_key' in xform_dict:
-            errors.append(setting_page_error)
-
-        if 'submission_url' in xform_dict:
-            errors.append(setting_page_error)
-
+        for setting in not_allowed_settings:
+            if setting in self.xform_dict:
+                errors.append(setting_page_error)
+                break
         return set(errors)
 
 
@@ -758,7 +764,8 @@ class XlsProjectParser(XlsParser):
 
 
 class XlsParserResponse():
-    def __init__(self, errors=None, xform_as_string=None, json_xform_data=None, info=None):
+    def __init__(self, errors=None, xform_as_string=None, json_xform_data=None, info=None, is_multiple_languages=False):
+        self.is_multiple_languages = is_multiple_languages
         self.xform_as_string = xform_as_string
         self.json_xform_data = json_xform_data
         if not info:
@@ -775,6 +782,10 @@ class XlsParserResponse():
     @property
     def json_xform_data(self):
         return self.json_xform_data
+
+    @property
+    def is_multiple_languages(self):
+        return self.is_multiple_languages
 
     @property
     def info(self):

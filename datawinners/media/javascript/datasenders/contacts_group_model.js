@@ -133,7 +133,7 @@ function ContactsGroupViewModel() {
             var response = $.parseJSON(responseString);
             if (response.success) {
                 self.groups.push(newGroup);
-                self.show_success_message(response.message);
+                self.show_html_success_message(response.message);
                 self.close_popup();
                 DW.trackEvent('groups', 'new-group-created');
             }
@@ -184,6 +184,12 @@ function ContactsGroupViewModel() {
         $('#group-success').show();
     };
 
+    self.show_html_success_message = function (message) {
+        $('#group-success').removeClass('none');
+        $('#group-success').html(message);
+        $('#group-success').show();
+    };
+
     self.changeSelectedGroup = function (group) {
         $('.flash-message').remove();
         self.selectedGroup(group);
@@ -200,7 +206,7 @@ function ContactsGroupViewModel() {
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         }).done(function(){
             self.groups.remove(group);
-            self.show_success_message(interpolate(gettext("Group <b>%s</b> successfully deleted."), [group.name()]));
+            self.show_html_success_message(interpolate(gettext("Group <b>%s</b> successfully deleted."), [_.escape(group.name())]));
         });
 
     };

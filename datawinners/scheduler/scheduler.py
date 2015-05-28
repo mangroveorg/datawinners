@@ -10,6 +10,7 @@ from datawinners.main.database import get_db_manager
 from dateutil.relativedelta import relativedelta
 from datawinners.accountmanagement.utils import RELATIVE_DELTA_BY_EMAIL_TYPE
 from mangrove.form_model.project import Project
+from django.conf import settings
 
 
 logger = logging.getLogger("datawinners.reminders")
@@ -40,9 +41,11 @@ def send_reminders_scheduled_on(on_date, sms_client):
             try:
                 logger.info("Organization %s" % org.name)
                 org_setting = OrganizationSetting.objects.filter(organization=org)[0]
+                smsc = org_setting.outgoing_number.smsc
+                charged_sms = smsc.vumi_username in settings.SMSC_WITHOUT_STATUS_REPORT
                 manager = get_db_manager(org_setting.document_store)
                 send_reminders_for_an_organization(org, on_date, sms_client, from_number=org_setting.sms_tel_number,
-                                               dbm=manager)
+                                               dbm=manager, charged_sms=charged_sms)
                 logger.info("Successfully sent reminders for Org: %s.", org.name)
             except Exception as e:
                 logger.exception("Error while sending reminders for organization : %s" % org.name)
@@ -51,7 +54,7 @@ def send_reminders_scheduled_on(on_date, sms_client):
         logger.exception("Exception while sending reminders")
 
 
-def send_reminders_for_an_organization(org, on_date, sms_client, from_number, dbm):
+def send_reminders_for_an_organization(org, on_date, sms_client, from_number, dbm, charged_sms=False):
     """
     Sends out all reminders for an organization, scheduled for the given date.
     """
@@ -64,7 +67,12 @@ def send_reminders_for_an_organization(org, on_date, sms_client, from_number, db
                 continue
             #send reminders to next projects in the queue if their is any error while sending reminders to previous project
             _, total_sms_sent = send_reminders_on(project, reminders, on_date, sms_client, from_number, dbm)
-            org.increment_message_count_for(sent_reminders_count=total_sms_sent)
+
+            increment_dict = {'sent_reminders_count':total_sms_sent}
+            if charged_sms:
+                increment_dict.update({'sent_reminders_charged_count': total_sms_sent})
+            org.increment_message_count_for(**increment_dict)
+
         except Exception:
             logger.exception("Exception while sending reminders for this project")
 

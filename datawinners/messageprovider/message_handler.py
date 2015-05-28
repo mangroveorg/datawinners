@@ -101,7 +101,8 @@ def get_success_msg_for_ds_registration_using(response, source, form_model=None)
 
 def get_success_msg_for_subject_registration_using(dbm,response,form_model=None):
     from datawinners.messageprovider.handlers import success_subject_registration_handler
-    datasender_name = response.reporters[0].get('name').split()[0].capitalize()
+    ds_name = response.reporters[0].get('name')
+    datasender_name = ds_name.split()[0].capitalize() if ds_name else ''
     answers_response_text = ResponseBuilder(form_model=form_model,
                                     processed_data=response.processed_data).get_response_for_sms_subject_registration()
     message = success_subject_registration_handler(dbm, datasender_name, answers_response_text)

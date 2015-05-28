@@ -39,7 +39,11 @@ function init_warnThenDeleteDialogBox() {
         $.post("/entity/delete/", post_data,
             function (json_response) {
                 var response = $.parseJSON(json_response);
-                DW.flashMessage(response.message, response.success);
+                var message = response.message;
+                if (response.success){
+                    message = ($("#project_name").length)?'Data Sender(s) successfully deleted.':'Contact(s) successfully deleted.';
+                }
+                DW.flashMessage(gettext(message), response.success);
                 if (response.success) {
                     var table = $("#datasender_table").dataTable();
                     table.fnSettings()._iDisplayStart = delete_dialog.data("pageToGo");
@@ -149,13 +153,15 @@ function init_add_remove_from_project() {
 
             }).done(function (json_response) {
                     var table = $("#datasender_table").dataTable();
+                    var message = gettext("Your Contact(s) have been added successfully. Contacts with an Email address added to a Questionnaire for the first time will receive an activation email with instructions.");
                     if (action == "disassociate") {
                         table.fnSettings()._iDisplayStart = all_project_block.data("pageToGo");
+                        message = gettext('The Contact(s) are removed from Questionnaire(s) successfully');
                     }
                     $("#all_project_block").dialog('close');
                     table.fnReloadAjax();
                     var response = $.parseJSON(json_response);
-                    DW.flashMessage(response.message, response.success);
+                    DW.flashMessage(message, response.success);
                 });
         }
     });
@@ -313,7 +319,8 @@ function init_dialog_box_for_web_users() {
                 if (json_data.success) {
                     $("#web_user_block").dialog("close");
                     $("#datasender_table").dataTable().fnReloadAjax();
-                    DW.flashMessage("Access to Web Submission has been given to your DataSenders")
+                    var message =($("#project_name").length) ?"Access to Web Submission has been given to your DataSenders":"Access to Web Submission has been given to your Contacts";
+                    DW.flashMessage(message)
                 } else {
                     var error_messages = "";
                     var i = 0;

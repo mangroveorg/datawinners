@@ -33,7 +33,7 @@ from datawinners.submission.submission_utils import PostSMSProcessorLanguageActi
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsLinkedToProject
 from datawinners.submission.submission_utils import PostSMSProcessorCheckLimits
 from datawinners.submission.submission_utils import PostSMSProcessorCheckDSIsRegistered
-from datawinners.utils import get_database_manager_for_org
+from datawinners.utils import get_database_manager_for_org, strip_accents
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.feeds.database import get_feeds_db_for_org
 from datawinners.feeds.mail_client import mail_feed_errors
@@ -44,6 +44,8 @@ from datawinners.project.utils import is_quota_reached
 from datawinners.sms.models import SMS, MSG_TYPE_SUBMISSION_REPLY, MSG_TYPE_USER_MSG, MSG_TYPE_REMINDER, MSG_TYPE_API
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
 from datawinners.messageprovider.errors_translation_processor import TranslationProcessor
+from django.conf import settings
+from datawinners.accountmanagement.models import OrganizationSetting
 
 logger = logging.getLogger("django")
 
@@ -86,7 +88,7 @@ def sms(request):
     message = Responder().respond(request)
     if not message:
         return HttpResponse(status=403)
-    response = HttpResponse(message[:160])
+    response = HttpResponse(strip_accents(unicode(message[:160])))
     response['X-Vumi-HTTPRelay-Reply'] = 'true'
     response['Content-Length'] = len(response.content)
     return response
@@ -210,7 +212,12 @@ def post_player_handler(incoming_request, message):
 
     if not incoming_request.get('test_sms_questionnaire', False):
         if is_outgoing_reply_sms_enabled:
-            organization.increment_message_count_for(outgoing_sms_count=1)
+            increment_dict = {'outgoing_sms_count':1}
+            org_setting = OrganizationSetting.objects.filter(organization=organization)[0]
+            smsc = org_setting.outgoing_number.smsc
+            if smsc.vumi_username in settings.SMSC_WITHOUT_STATUS_REPORT:
+                increment_dict.update({'outgoing_sms_charged_count':1})
+            organization.increment_message_count_for(**increment_dict)
         log_sms(message=message,
                 message_id=incoming_request['message_id'],
                 organization=incoming_request['organization'],

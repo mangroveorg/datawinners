@@ -42,7 +42,7 @@ function SmsViewModel(){
     }
 
     $.each(response, function(index, item){
-        var checkBoxLabel = item.name + " <span class='grey italic'>" + item['ds-count'] + gettext(" recipients") + "</span>";
+        var checkBoxLabel = _.escape(item.name) + " <span class='grey italic'>" + item['ds-count'] + gettext(" recipients") + "</span>";
         questionnaireItems.push({value: item.id, label: checkBoxLabel, name: item.name});
     });
 
@@ -60,7 +60,7 @@ function SmsViewModel(){
     }
 
     $.each(response.groups, function(index, item){
-        var itemNameEscaped = _.escape(item.name)
+        var itemNameEscaped = _.escape(item.name);
         var checkBoxLabel = itemNameEscaped + " <span class='grey italic'>" + item['count'] + gettext(" recipients") + "</span>";
         groupItems.push({value: item.name, label: checkBoxLabel, name: item.name});
     });
