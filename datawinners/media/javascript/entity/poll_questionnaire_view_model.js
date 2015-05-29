@@ -1,9 +1,8 @@
 function PollViewModel() {
     var self = this;
-
     self.show_sms = ko.observable();
     self.number_of_days = ko.observable();
-    var active_poll_days = [1,2,3,4,5] ;
+    var active_poll_days = [1,2,3,4,5];
     var current_date = new Date();
     window.smsViewModel.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
                                             {"label":gettext('Group'), "code": "group"},
@@ -56,39 +55,27 @@ function PollViewModel() {
 
     self.disableSendPoll = ko.computed(function(){
         if(window.smsViewModel.disableSendSms() ){
-            if(self.show_sms() != 'poll_broadcast' || window.smsViewModel.validate() == 1) {
-
-                return true;
-            }
-            else{
-                return false;
-            }
+            return (self.show_sms() != 'poll_broadcast' || window.smsViewModel.validate() == 1)
         }
         return false;
     });
 
     self.validateCreatePoll = function(){
-        return ( (DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && ((window.smsViewModel.validate() == 1) || self.show_sms() == 'poll_broadcast') ));
+        return (DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && ((window.smsViewModel.validate() == 1) || self.show_sms() == 'poll_broadcast'));
     };
 
     function get_questionnaire_or_group_names() {
-        if (window.smsViewModel.selectedSmsOption() == 'linked') {
-
+        if (window.smsViewModel.selectedSmsOption() == 'linked')
             return {
                 'option': 'questionnaire_linked',
                 'questionnaire_names': window.smsViewModel.selectedQuestionnaireNames()
             };
 
-        }
-        else if (window.smsViewModel.selectedSmsOption() == 'group') {
-
+        else if (window.smsViewModel.selectedSmsOption() == 'group')
             return {
                 'option': 'group',
                 'group_names': window.smsViewModel.selectedGroupNames()
             };
-
-        }
-
     }
 
     function _send_sms_() {

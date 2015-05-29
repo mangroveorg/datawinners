@@ -26,19 +26,20 @@
 {% endblock %}
 
 
-
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
         var is_active = "{{ is_active }}";
         var from_date = "{{ from_date }}";
         var to_date = "{{ to_date }}";
+        var days_active = "{{ days_active }}";
+        var number_of_days = "{{ number_of_days }}";
     </script>
      <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
      <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
      <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
+{#     <script type="text/javascript" src="/media/javascript/entity/poll_questionnaire_view_model.js"></script>#}
 {% endblock %}
-
 
 
 {% block content %}
@@ -53,13 +54,12 @@
             <div>
                 <span id="poll_success"> </span>
                 <p class="italic_grey"> View, edit & send your Survey. </p>
-
                 <div>
                 <p>Poll is
                     <strong><span data-bind="text:status"> </span> </strong>now :
-                    <a data-bind="text:change_status, click:open" href="javascript:void(0);" style="color:#0070ac;" >  </a></p>
-                </p>
+                    <a data-bind="text:change_status, click:open" href="javascript:void(0);" style="color:#0070ac;" > </a></p>
                 </div>
+
 
                 <div data-bind="dialog: {autoOpen: false, width: 475, height: 190,
                                                                 title:'Deactivate Poll',
@@ -68,19 +68,41 @@
                                                                 open: open,
                                                                 dialogContent: deactivatePollDialog">
                 </div>
-
+                <div data-bind="dialog: {autoOpen: false, width: 475, height: 260,
+                                                                title:'Activate Poll',
+                                                                dialogClass:'no-close'},
+                                                                dialogVisible: isDeactivated,
+                                                                open: open,
+                                                                dialogContent: activatePollDialog">
+                </div>
 
                 <div id="deactivate_poll_dialog" class="none">
                     <p> {% trans 'Are you sure want to deactivate?' %}</p>
                     <div class="float_right margin_top_40">
                         <button id='close_pop' data-bind="click: close_popup"> {%trans 'No' %}</button>
-                        <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Yes' %} </button>
+                        <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button},
+                        attr:{disabled:$root.disable_attr}"> {% trans 'Yes' %} </button>
                     </div>
                 </div>
 
+
+                <div id="activate_poll_dialog" class="none">
+                    <p> {% trans 'Select the number of days for the poll to be active:' %}</p>
+                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select>
+                    <span> {% trans 'Days' %} </span><br><br>
+
+                    <label>{% trans 'From date:'%} </label>
+                    <div id="from_date_poll" data-bind="text:from_date"></div>
+                    <label>{% trans 'To date:'%} </label>
+                    <div id="to_date_poll" data-bind="text:to_date"></div>
+                    <div class="float_right margin_top_40">
+                        <button id='close_pop' data-bind="click: close_popup"> {%trans 'Cancel' %}</button>
+                        <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Save' %} </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-
-        </div>
     </div>
+
 {% endblock %}
