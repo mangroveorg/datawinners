@@ -20,6 +20,14 @@ def _is_active(questionnaire):
     return is_active
 
 
+def _is_same_questionnaire(question_id_active, questionnaire):
+    if questionnaire.id == question_id_active:
+        is_active = True
+    else:
+        is_active = False
+    return is_active
+
+
 @login_required
 @csrf_exempt
 @is_not_expired
@@ -30,6 +38,7 @@ def poll(request, project_id):
     questionnaire = Project.get(manager, project_id)
     project_links = get_project_link(questionnaire)
     is_active = _is_active(questionnaire)
+    questionnaire_active, question_id_active, question_name_active = is_active_form_model(manager)
     from_date = questionnaire.modified.date()
     to_date = questionnaire.end_date.date()
 
@@ -38,7 +47,9 @@ def poll(request, project_id):
         'project_links': project_links,
         'is_active': is_active,
         'from_date': from_date,
-        'to_date': to_date
+        'to_date': to_date,
+        'questionnaire_id': question_id_active,
+        'questionnaire_name': question_name_active
     }))
 
 
@@ -69,12 +80,13 @@ def activate_poll(request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         if questionnaire:
-            is_active = is_active_form_model(manager)
-            if not is_active:
+            is_active, question_id_active, question_name_active = is_active_form_model(manager)
+            is_current_active = _is_same_questionnaire(question_id_active, questionnaire)
+            if not is_active and not is_current_active:
                 _change_questionnaire_status(questionnaire, "active")
                 return HttpResponse(
                     json.dumps({'success': True}))
             return HttpResponse(
-                    json.dumps({'success': False, 'message': "Another poll is already active."}))
+                    json.dumps({'success': False, 'message': "Another poll is already active.", 'question_id_active': question_id_active, 'question_name_active': question_name_active}))
         return HttpResponse(
                     json.dumps({'success': False, 'message': "No Such questionnaire"}))
