@@ -30,6 +30,9 @@ def poll(request, project_id):
     questionnaire = Project.get(manager, project_id)
     project_links = get_project_link(questionnaire)
     is_active = _is_active(questionnaire)
+    questionnaire_active, question_id_active, question_name_active = is_active_form_model(manager)
+    if questionnaire.id == question_id_active:
+        is_active = False
     from_date = questionnaire.modified.date()
     to_date = questionnaire.end_date.date()
 
@@ -38,7 +41,9 @@ def poll(request, project_id):
         'project_links': project_links,
         'is_active': is_active,
         'from_date': from_date,
-        'to_date': to_date
+        'to_date': to_date,
+        'questionnaire_id': question_id_active,
+        'questionnaire_name': question_name_active
     }))
 
 
@@ -69,7 +74,10 @@ def activate_poll(request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         if questionnaire:
-            is_active = is_active_form_model(manager)
+            is_active, question_id_active, question_name_active = is_active_form_model(manager)
+
+            if questionnaire.id == question_id_active:
+                is_active = False
             if not is_active:
                 _change_questionnaire_status(questionnaire, "active")
                 return HttpResponse(

@@ -50,7 +50,7 @@ var PollOptionsViewModel = function(){
                     DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 }
                 else{
-                    $('<div class="warning-message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
+                    $('<div class="message-box">' + responseJson['message'] + '<a href="/project/poll/' + questionnaire_id + '">' + questionnaire_name + '</a></div>').insertBefore($("#poll_success"))
                 }
             });
         }

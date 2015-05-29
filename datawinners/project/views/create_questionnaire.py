@@ -27,7 +27,7 @@ from mangrove.form_model.project import is_active_form_model
 def create_project(request):
     manager = get_database_manager(request.user)
     org = get_organization(request)
-    is_active = is_active_form_model(manager)
+    is_active, project_active_id, project_active_name = is_active_form_model(manager)
     if request.method == 'GET':
         cancel_link = reverse('dashboard') if request.GET.get('prev', None) == 'dash' else reverse('alldata_index')
         return render_to_response('project/create_project.html',
@@ -39,7 +39,7 @@ def create_project(request):
                                    'post_url': reverse(create_project),
                                    'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in
                                                                   get_unique_id_types(manager)]),
-                                   'cancel_link': cancel_link, 'is_active': is_active}, context_instance=RequestContext(request))
+                                   'cancel_link': cancel_link, 'is_active': is_active, 'project_active_id': project_active_id, 'project_active_name': project_active_name}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         response_dict = _create_project_post_response(request, manager)
