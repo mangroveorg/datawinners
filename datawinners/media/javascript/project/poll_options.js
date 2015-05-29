@@ -68,8 +68,6 @@ var PollOptionsViewModel = function(){
 };
 
 $(document).ready(function () {
-//    window.pollViewModel = new PollViewModel();
     window.poll_options = new PollOptionsViewModel();
     ko.applyBindings(window.poll_options, $('#poll_options')[0]);
-//    ko.applyBindings(window.pollViewModel, $('#poll_options')[0]);
 });
