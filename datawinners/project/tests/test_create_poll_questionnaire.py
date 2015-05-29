@@ -121,19 +121,19 @@ class TestCreatePoll(TestCase):
         questionnaire.id = 'current_active_questionnaire_id'
         question_id_active = 'current_active_questionnaire_id'
 
-        is_active = _is_same_questionnaire(is_active, question_id_active, questionnaire)
+        is_active = _is_same_questionnaire(question_id_active, questionnaire)
 
-        self.assertEquals(False, is_active)
+        self.assertEquals(True, is_active)
 
     def test_should_validate_when_current_questionnaire_is_active_and_trying_to_activate_another_questionnaire(self):
-        is_active = True
+        is_active = False
         questionnaire = MagicMock(spec=Project)
         questionnaire.id = 'active_questionnaire_id'
         question_id_active = 'current_active_questionnaire_id'
 
-        is_active = _is_same_questionnaire(is_active, question_id_active, questionnaire)
+        is_active = _is_same_questionnaire(question_id_active, questionnaire)
 
-        self.assertEquals(True, is_active)
+        self.assertEquals(False, is_active)
 
 
 

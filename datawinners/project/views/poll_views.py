@@ -20,8 +20,10 @@ def _is_active(questionnaire):
     return is_active
 
 
-def _is_same_questionnaire(is_active, question_id_active, questionnaire):
+def _is_same_questionnaire(question_id_active, questionnaire):
     if questionnaire.id == question_id_active:
+        is_active = True
+    else:
         is_active = False
     return is_active
 
@@ -37,7 +39,7 @@ def poll(request, project_id):
     project_links = get_project_link(questionnaire)
     is_active = _is_active(questionnaire)
     questionnaire_active, question_id_active, question_name_active = is_active_form_model(manager)
-    is_active = _is_same_questionnaire(is_active, question_id_active, questionnaire)
+    is_active = _is_same_questionnaire(question_id_active, questionnaire)
     from_date = questionnaire.modified.date()
     to_date = questionnaire.end_date.date()
 
@@ -80,7 +82,7 @@ def activate_poll(request, project_id):
         questionnaire = Project.get(manager, project_id)
         if questionnaire:
             is_active, question_id_active, question_name_active = is_active_form_model(manager)
-            is_active = _is_same_questionnaire(is_active, question_id_active, questionnaire)
+            is_active = _is_same_questionnaire(question_id_active, questionnaire)
             if not is_active:
                 _change_questionnaire_status(questionnaire, "active")
                 return HttpResponse(
