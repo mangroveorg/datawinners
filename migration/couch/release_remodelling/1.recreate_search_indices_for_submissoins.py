@@ -50,7 +50,7 @@ def create_submission_index(database_name, logger):
             create_submission_mapping(dbm, form_model, form_model)
             create_index(dbm, form_model, logger)
         except Exception as e:
-            logger.exception(e.message)
+            logger.exception(e.message+'project_id:'+form_model.id)
 
 
 def create_search_indices_for_submissions(db_name):
@@ -65,6 +65,6 @@ def create_search_indices_for_submissions(db_name):
 
 
 es = get_elasticsearch_handle(timeout=600)
-migrate(all_db_names(), create_search_indices_for_submissions, version=(25, 0, 1), threads=1)
+migrate(all_db_names(), create_search_indices_for_submissions, version=(25, 0, 1), threads=3)
 
 
