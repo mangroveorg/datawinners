@@ -87,6 +87,6 @@ def activate_poll(request, project_id):
                 return HttpResponse(
                     json.dumps({'success': True}))
             return HttpResponse(
-                    json.dumps({'success': False, 'message': "Another poll is already active."}))
+                    json.dumps({'success': False, 'message': "Another poll is already active.", 'question_id_active': question_id_active, 'question_name_active': question_name_active}))
         return HttpResponse(
                     json.dumps({'success': False, 'message': "No Such questionnaire"}))
