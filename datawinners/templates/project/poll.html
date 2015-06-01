@@ -1,4 +1,5 @@
 {% extends 'project/tab_navigation.html' %}
+{% load compress %}
 {% load i18n %}
 {% block page_title %} {% trans "Questionnaires - Poll" %} {% endblock %}
 
@@ -33,6 +34,11 @@
         var from_date = "{{ from_date }}";
         var to_date = "{{ to_date }}";
         var questionnaire_id = "{{ questionnaire_id }}";
+        var languages_list = {{ languages_list|safe }};
+        var current_project_language = '{{ current_project_language|safe }}';
+        var post_url = '{{ post_url }}';
+        var language_page_link = '{{ languages_link }}';
+        var is_outgoing_reply_messages_enabled = '{{ project.is_outgoing_sms_replies_enabled }}';
         var questionnaire_name = "{{ questionnaire_name }}"
         var days_active = "{{ days_active }}";
         var number_of_days = "{{ number_of_days }}";
@@ -40,6 +46,8 @@
      <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
      <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
      <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
+     <script type="text/javascript" src="/media/javascript/project/project_language.js"></script>
+     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
 {% endblock %}
 
 
@@ -86,6 +94,16 @@
                     </div>
                 </div>
 
+        </div>
+         <div class="questionnaire_type_header">
+             <span class="header" >{% trans "Automatic Reply Sms"%}</span>
+
+         </div>
+        <div>
+            {% include 'project/language.html' %}
+        </div>
+
+    </div>
 
                 <div id="activate_poll_dialog" class="none">
                     <p> {% trans 'Select the number of days for the poll to be active:' %}</p>
