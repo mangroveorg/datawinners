@@ -106,7 +106,7 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         self.global_navigation.navigate_to_all_data_page()
         self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
         modified_warning_dialog.cancel()
-        self.assertEqual(create_questionnaire_page.get_page_title(), "Create a New Questionnaire",
+        self.assertEqual(create_questionnaire_page.get_page_title(), "Collect Data",
                          "Should continue to stay on questionnaire page")
 
     def _verify_edit_dialog_ignore_changes(self, modified_warning_dialog, project_name):
