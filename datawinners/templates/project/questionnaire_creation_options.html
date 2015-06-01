@@ -4,13 +4,33 @@
     <h5>1. {% trans "Choose How To Start" %}</h5>
 
     <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedCreationOption}">
+          <div class="create_poll_section">
+             <div class="advanced_questionnaire_section_header">
+                <span class="questionnaire_subtitles">{% trans "Create a Poll " %}<span class="subtitle_helper ">SMS</span> </span>
+            </div>
+                <div class="italic_grey margin_left_30 padding_top_10 poll_active" style="width: 200px">{% trans "Another poll is already active." %}
+                </div>
+                <div class="poll_deactivated">
+                    <div class="questionnaire_type_header">
+                        <span class="header" id="create_poll">{% trans "Short explanation on what polls are." %}</span>
+                    </div>
+                    <div>
+                        <h6 class="create_questionnaire_help">{% trans "Text waiting" %}</h6>
+                    </div>
+                </div>
+          </div>
+        <div class="advanced_questionnaire_section_header">
+            <span class="questionnaire_subtitles" >{% trans "Create a Basic Questionnaire" %}</span>
+            <span class="subtitle_helper ">SMS, Web, Smartphone, Tablet</span>
+        </div>
+
         <div class="questionnaire_type_header">
-            <span class="header">{% trans "Create a New Questionnaire" %}</span>
+            <span class="header" id="create_blank">{% trans "Create a New Questionnaire" %}</span>
         </div>
         <h6 class="create_questionnaire_help">{% trans "Start with a blank Questionnaire and add your list of questions" %}</h6>
 
         <div id="copy_existing_questionnaire" class="questionnaire_type_header" data-bind="click: getExistingQuestionnaireList">
-            <span class="header">{% trans "Copy an Existing Questionnaire" %}</span>
+            <span class="header" id="copy_existing">{% trans "Copy an Existing Questionnaire" %}</span>
         </div>
 
         <div>
@@ -18,14 +38,16 @@
         </div>
 
         <div class="questionnaire_type_header" data-bind="click: getTemplates">
-            <span class="header">{% trans "Use a Template" %}</span>
+            <span class="header" id="create_template">{% trans "Use a Template" %}</span>
         </div>
 
         <div>
             {% include 'project/questionnaire_template.html' %}
         </div>
         <div class="advanced_questionnaire_section_header">
-            <span>{% trans "Advanced Option (Beta Version)" %}</span>
+            <span class="questionnaire_subtitles">{% trans "Create an Advanced Questionnaire" %}</span>
+
+             <span class="subtitle_helper ">  Web, Smartphone, Tablet</span>
             <img class="help_icon submission_date_help_icon" src="/media/images/help_icon.png">
             <div class="tooltip">
                 <p>
@@ -37,11 +59,12 @@
             </div>
         </div>
         <div class="questionnaire_type_header">
-            <span class="header">{% trans "Upload an XLSForm" %}</span>
+            <span class="header" id="adv_questionnaire">{% trans "Upload an XLSForm" %}</span>
         </div>
         <div>
             <h6 class="create_questionnaire_help">{% trans "Choose this option to create a Questionnaire with advanced features by uploading an XLSForm (Excel file)" %} <a class="dialog-anchor xls_learn_more">{% trans "Learn More" %}</a></h6>
         </div>
+
     </div>
     <div class="right_aligned_button create_project">
         <a href="{{ cancel_link }}" class="cancel_project">{% trans "Cancel" %} </a>

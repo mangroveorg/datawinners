@@ -13,7 +13,7 @@ from datawinners.scheduler.scheduler import send_reminders_on, send_reminders_fo
 #TODO: exception scenarios
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.database import DatabaseManager
-from datawinners.scheduler.scheduler import _get_active_paid_organization
+from datawinners.scheduler.scheduler import _get_active_paid_organizations
 from datawinners.sms.models import MSG_TYPE_REMINDER
 from mangrove.form_model.project import Project
 
@@ -123,7 +123,7 @@ class TestScheduler(unittest.TestCase):
         }
         self.organization = Organization.create_trial_organization(TRIAL_ORGANIZATION_PARAMS)
         self.organization.save()
-        organizations = _get_active_paid_organization()
+        organizations = _get_active_paid_organizations()
         self.assertNotIn(self.organization, organizations)
 
     def test_get_active_paid_org_should_not_return_deactivate_org(self):
@@ -148,7 +148,7 @@ class TestScheduler(unittest.TestCase):
          activated_organization.status = 'Activated'
          activated_organization.save()
 
-         organizations = _get_active_paid_organization()
+         organizations = _get_active_paid_organizations()
 
          self.assertNotIn(deactivated_organization, organizations)
          self.assertIn(activated_organization, organizations)

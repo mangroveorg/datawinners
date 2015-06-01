@@ -11,6 +11,8 @@ function basic_project_info() {
 }
 
 $(document).ready(function () {
+    window.smsViewModel = new SmsViewModel();
+    window.pollViewModel = new PollViewModel();
     window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
     DW.init_inform_datasender_about_changes();
     DW.init_empty_questionnaire_warning();

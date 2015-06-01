@@ -1,3 +1,4 @@
+from framework.utils.common_utils import random_number
 from pages.adddatasenderspage.add_data_senders_locator import *
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -43,6 +44,10 @@ class AddGroupPage(Page):
     def click_on_confirm_delete_group(self):
         self.driver.find(DELETE_GROUP_BUTTON).click()
         self.wait_for_table_to_load()
+
+    def create_a_group(self, group_name):
+        self.enter_group_name(group_name)
+        self.click_on_add_group_button()
 
 class AddContactPage(AddGroupPage):
 

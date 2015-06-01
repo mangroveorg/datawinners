@@ -1,0 +1,88 @@
+{% load i18n %}
+
+<div data-bind="visible: showPollQuestionnaireForm">
+
+    <form id="poll_form">
+        {% csrf_token %}
+        <div class="questionnaire_form_header clearfix">
+            {% include 'project/questionnaire_info_indicator.html' %}
+        </div>
+        <input id= 'poll_title' data-bind="inputValue: projectName, value: projectName"/>
+
+        <div class="validationMessage" data-bind="ifnot: projectName.valid">
+               <div id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error, scrollToElement: projectName.error"></div>
+            </div>
+
+
+        <div data-bind="stopBinding: true">
+            <div id="poll_questionnaire">
+                <label>2. {%trans 'How Do You Want to Broadcast this Poll?'%}</label>
+            <br>
+                <div>
+
+                    <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
+                    <span class="margin_left_10">{% trans "I want to send this Poll Question via SMS" %}</span></br>
+                    <label class="subtitle_helper">{%trans 'This is where we explain that only the Poll recipients will be able to send in data.'%}</label>
+                </div>
+                <br>
+
+                <div data-bind="visible: show_sms() === 'poll_via_sms'">
+                    <label>SMS text</label>
+                    <i>Be sure to include your question, answer options and  instructions on how to reply in SMS text.
+                    Example: Did you receive your nutrition package? Reply to this SMS with either “yes” or “no”.</i><br>
+
+
+                    <div data-bind="stopBinding: true">
+                        <div id="poll_sms_section">
+                            {% include 'send-sms.html' %}
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+                <div>
+                    <input type="radio" id="poll_via_broadcast" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms" />
+                    <span class="margin_left_10">{% trans "I will use other means" %}</span></br>
+                    <label class="subtitle_helper"> {% trans '(Example: Radio, TV Billboards)  This is where we explain that anyone can send in data.'%}</label>
+                </div>
+                <br>
+                <div data-bind="visible: show_sms() === 'poll_broadcast'">
+                    <h1>Broadcast</h1>
+                </div>
+
+                <br>
+                <div>
+                    <label>3. {%trans 'How Long Do Should People be Able to Send in Their Answer?'%}</label>
+                    <label class="subtitle_helper">{% trans 'Short explanation and why we suggest to have a fixed activation period' %}</label>
+                    <a>Learn more</a>
+                    <br>
+                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select> <span> {% trans 'Days' %} </span><br>
+                    <br><br>
+                    <label>{% trans 'From date:'%} </label>
+                    <div id="from_date_poll"
+                                     data-bind="text:from_date_poll"></div>
+                    <label>{% trans 'To date:'%} </label>
+                    <div id="to_date_poll"
+                                     data-bind="text:to_date_poll"></div>
+
+                </div>
+                <br>
+                <div class="create_project">
+                        <div class="grid_5">
+                            <a href="{% url create_project %}?prev=dash" id="back_to_create_options">{% trans "Back" %} </a>
+                        </div>
+                            <div class="grid_15 float_right" id="send_sms_section">
+                                <div class="right_aligned_button">
+                                    <a href="{{ cancel_link }}" class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
+                                    <input type="button" class="button_wizard_next create_poll_button" id="save_and_create"
+                                       data-bind="click: create_poll, disable: disableSendPoll, css: {'ui-state-disabled': disableSendPoll}"
+                                       value="{% trans "Save & Create Poll" %}"/>
+                                </div>
+                            <div class="clear-both"></div>
+                        </div>
+                </div>
+             </div>
+         </div>
+    </form>
+
+</div>

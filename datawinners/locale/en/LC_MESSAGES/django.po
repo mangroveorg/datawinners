@@ -1686,6 +1686,8 @@ msgstr ""
 msgid "%s already registered as a subject type."
 msgstr ""
 
+msgid "Are you sure want to deactivate?"
+msgstr ""
 
 msgid "answer"
 msgstr ""

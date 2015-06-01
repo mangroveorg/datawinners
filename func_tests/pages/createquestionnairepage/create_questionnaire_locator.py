@@ -23,6 +23,15 @@ QUESTION_TB = by_xpath("//input[@id='question_title']")
 CODE_TB = by_css("input#code")
 
 ANSWER_TYPE_DROPDOWN = by_css(".dropdown select")
+POLL_SMS_DROPDOWN = by_css(".sms_dropdown select")
+POLL_VIA_SMS_RD_BUTTON = by_id('poll_via_sms')
+POLL_VIA_BROADCAST_RD_BUTTON = by_id('poll_via_broadcast')
+SMS_TEXTBOX = by_id('sms-text')
+POLL_TITLE = by_css(".project_title")
+CREATE_POLL_BUTTON = by_css('.create_poll_button')
+DATA_TAB_BTN = by_id("data_tab")
+DATA_SENDER_TAB = by_id("data_senders_tab")
+POLL_TAB = by_id("poll_tab")
 WORD_OR_PHRASE_RB = by_css("input[value='text']")
 WORD_OR_PHRASE = 'text'
 NUMBER_OPTION = 'integer'
@@ -30,6 +39,9 @@ DATE_OPTION = 'date'
 LIST_OF_CHOICES_OPTION = 'choice'
 GPS_COORDINATES = 'geocode'
 UNIQUE_ID_OPTION = 'unique_id'
+GROUP_OPTION = 'group'
+LINKED_CONTACTS = 'linked'
+OTHERS = 'others'
 NEW_UNIQUE_ID_TEXT = by_css('.newUniqueIdName')
 UNIQUE_ID_CHOICE_BOX = by_css('.uniqueIdType')
 UNIQUE_ID_COMBO_BOX = by_css('.uniqueIdTypeContents')

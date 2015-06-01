@@ -31,12 +31,14 @@
         var sms_questionnaire_preview_link = "{{ project_links.sms_questionnaire_preview_link }}";
         var is_advance_questionnaire = '{{ is_advance_questionnaire }}';
         var is_outgoing_sms_replies_enabled = "{{ project.is_outgoing_sms_replies_enabled }}";
-
+        var deactivate_poll_url = "{{ project_links.deactivate_poll }}";
+        var activate_poll_url = "{{ project_links.activate_poll }}";
     </script>
     {% endcompress %}
 {% endblock %}
 
 {% block section_title %}
+
     <div class="project_detail_header" id="img_need_help">
         <div class="project_title_div">
             <span class="editableSingle project_title" pid="{{ project.id }}">{{ project.name }}</span>
@@ -66,64 +68,90 @@
 
 {% block navigation %}
 <div class="grid_24 tab_navigation">
-    <ul>
-        <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="overview_tab" href="{{ project_links.overview_link }}" class="{{ disable_link_class }}">{% trans "Overview" %}</a>
-        </li>
-        <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="questionnaire_tab" href="{{ project_links.questionnaire_link }}"
-               class="{{ disable_link_class }}">{% trans "Questionnaire" %}</a>
-        </li>
-        <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link}}"
-               class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
-        </li>
-        {% with project.entity_type as entity_types %}
-        {% if entity_types %}
-            <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-                <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">
-                    {% if entity_types|length > 1 %}
-                        {% trans "My Identification Numbers" %}
-                    {% else %}
-                        {% blocktrans with entity_types.0|capfirst as entity_type %}My {{ entity_type }}{% endblocktrans %}
-                    {% endif %}
-                </a>
+    {% if project.is_poll %}
+
+       <ul>
+            <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
+
+                <a id="data_tab" href="{{ project_links.submission_log_link }}"
+                class="{{ disable_link_class }}">{% trans "Data" %}</a>
             </li>
-        {% endif %}
-        {% endwith %}
-{#        <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">#}
-{#            <a id="reminders_tab" href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>#}
-{#        </li>#}
-        <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="data_tab" href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Data" %}</a>
-        </li>
-{#        <li class="{% ifactivetab 'tab_nav' 'send_a_message' %}active{% else %}inactive{% endifactivetab %}">#}
-{#            <a id="send_message_tab" href="{{ project_links.broadcast_message_link }}" class="{{ disable_link_class }}">{% trans "Send a Message" %}</a>#}
-{#        </li>#}
-        <li class="{% ifactivetab 'tab_nav' 'messages_and_reminders' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="messages_and_reminders_tab" href="{{ project_links.broadcast_message_link }}" class="{{ disable_link_class }}">{% trans "Messages & Reminders" %}</a>
-        </li>
-    </ul>
+
+            <li class="{% ifactivetab 'tab_nav' 'poll' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="poll_tab" href="{{ project_links.poll}}"
+                   class="{{ disable_link_class }}">{% trans "Poll" %}</a>
+            </li>
+            {% if project.is_open_survey %}
+             {% else %}
+            <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link}}"
+                   class="{{ disable_link_class }}">{% trans "My Poll Recipients" %}</a>
+            </li>
+           {% endif %}
+
+       </ul>
+    {% else %}
+
+        <ul>
+            <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="overview_tab" href="{{ project_links.overview_link }}" class="{{ disable_link_class }}">{% trans "Overview" %}</a>
+            </li>
+            <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="questionnaire_tab" href="{{ project_links.questionnaire_link }}"
+                   class="{{ disable_link_class }}">{% trans "Questionnaire" %}</a>
+            </li>
+            <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link}}"
+                   class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
+            </li>
+            {% with project.entity_type as entity_types %}
+            {% if entity_types %}
+                <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
+                    <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">
+                        {% if entity_types|length > 1 %}
+                            {% trans "My Identification Numbers" %}
+                        {% else %}
+                            {% blocktrans with entity_types.0|capfirst as entity_type %}My {{ entity_type }}{% endblocktrans %}
+                        {% endif %}
+                    </a>
+                </li>
+            {% endif %}
+            {% endwith %}
+            <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="data_tab" href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Data" %}</a>
+            </li>
+            <li class="{% ifactivetab 'tab_nav' 'messages_and_reminders' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="messages_and_reminders_tab" href="{{ project_links.broadcast_message_link }}" class="{{ disable_link_class }}">{% trans "Messages & Reminders" %}</a>
+            </li>
+        </ul>
+
+    {% endif %}
 </div>
 {% endblock %}
 
 {% block secondary_navigation_data %}
-<ul class="secondary_tab">
-    <li>
-    </li>
-    <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Analysis" %}</a>
-    </li>
-    <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
-        <a id="submission_log_link" href="{{ project_links.submission_log_link }}"
-           class="{{ disable_link_class }}">{% trans "Submission Log" %}</a>
-    </li>
-    {% if project_links.test_questionnaire_link != "" %}
-    <li class="{% ifactivetab 'secondary_tab_nav' 'web_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.test_questionnaire_link }}">{% trans "Web Submission" %}</a>
-    </li>
-    {% endif %}
-</ul>
+     {% if project.is_poll %}
+
+
+     {% else %}
+
+        <ul class="secondary_tab">
+            <li>
+            </li>
+            <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">
+                <a href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Analysis" %}</a>
+            </li>
+            <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="submission_log_link" href="{{ project_links.submission_log_link }}"
+                   class="{{ disable_link_class }}">{% trans "Submission Log" %}</a>
+            </li>
+            {% if project_links.test_questionnaire_link != "" %}
+            <li class="{% ifactivetab 'secondary_tab_nav' 'web_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
+                <a href="{{ project_links.test_questionnaire_link }}">{% trans "Web Submission" %}</a>
+            </li>
+            {% endif %}
+        </ul>
+     {% endif %}
 {% endblock %}
 
 {% block secodary_navigation_subject_types %}

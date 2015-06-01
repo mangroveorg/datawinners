@@ -1,3 +1,4 @@
+from time import sleep
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.select import Select
 
@@ -594,6 +595,12 @@ class QuestionnaireTabPage(Page):
         self.driver.find_text_box(by_id("questionnaire_title")).enter_text(questionnaire_title)
         return questionnaire_title
 
+    def set_poll_questionnaire_title(self, title, generate_random=False):
+        poll_title = title + generateId() if generate_random else title
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("poll_title"), True)
+        self.driver.find_text_box(by_id("poll_title")).enter_text(poll_title)
+        return poll_title
+
     def set_question_title(self, title):
         self.driver.find_text_box(by_id("question_title")).enter_text(title)
 
@@ -669,10 +676,6 @@ class QuestionnaireTabPage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(".//*[@id='project_profile']/h5"), True)
         return QuestionnaireCreationOptionsPage(self.driver)
 
-    def set_questionnaire_title(self, title, generate_random=False):
-        questionnaire_title = title + generateId() if generate_random else title
-        self.driver.find_text_box(by_id("questionnaire_title")).enter_text(questionnaire_title)
-        return questionnaire_title
 
     def save_and_create_project_successfully(self, click_ok=True):
         self.driver.find(SAVE_AND_CREATE_BTN).click()
