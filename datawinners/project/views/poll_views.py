@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.decorators import is_not_expired, is_datasender
+from datawinners.common.lang.utils import get_available_project_languages
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import make_project_links
@@ -41,6 +42,9 @@ def poll(request, project_id):
     questionnaire_active, question_id_active, question_name_active = is_active_form_model(manager)
     from_date = questionnaire.modified.date()
     to_date = questionnaire.end_date.date()
+    languages_list = get_available_project_languages(manager)
+    current_project_language = questionnaire.language
+
 
     return render_to_response('project/poll.html', RequestContext(request, {
         'project': questionnaire,
@@ -49,7 +53,12 @@ def poll(request, project_id):
         'from_date': from_date,
         'to_date': to_date,
         'questionnaire_id': question_id_active,
-        'questionnaire_name': question_name_active
+        'questionnaire_name': question_name_active,
+        'languages_list':  json.dumps(languages_list),
+        'languages_link': reverse('languages'),
+        'current_project_language': current_project_language,
+        'post_url': reverse("project-language", args=[questionnaire.id]),
+        'questionnaire_code': questionnaire.form_code
     }))
 
 

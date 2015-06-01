@@ -32,7 +32,7 @@ class QuestionnaireLanguageView(TemplateView):
                                 'languages_link': reverse('languages'),
                                 'current_project_language': current_project_language,
                                 'post_url': reverse("project-language", args=[project_id]),
-                                'questionnaire_code':questionnaire.form_code
+                                'questionnaire_code': questionnaire.form_code
                               }))
 
 
