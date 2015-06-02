@@ -119,7 +119,7 @@
                     <span> {% trans 'Days' %} </span><br><br>
 
                     <label>{% trans 'From date:'%} </label>
-                    <div data-bind="text:from_date_poll"></div>
+                    <div> <span data-bind="text:from_date_poll"> </span> <span data-bind="text: from_time_poll"></span></div>
                     <label>{% trans 'To date:'%} </label>
                     <div data-bind="text:to_date_poll"></div>
                     <div class="float_right margin_top_40">

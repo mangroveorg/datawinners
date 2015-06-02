@@ -40,7 +40,8 @@ var PollOptionsViewModel = function() {
     self.toDate = ko.observable();
 
     self.to_date_poll = ko.observable();
-    self.from_date_poll = ko.observable(get_current_time());
+    self.from_date_poll = ko.observable(get_current_date());
+    self.from_time_poll = ko.observable(get_current_time());
 
     self.isOpen = ko.observable(false);
 
@@ -57,16 +58,19 @@ var PollOptionsViewModel = function() {
         return self.active_poll_days
     });
 
-    function get_current_time() {
+    function get_current_date() {
         return item_map_week[current_date.getDay()] + ", " +
             current_date.getDate() + " " +
             month_name_map[current_date.getMonth()] + " " +
-            current_date.getFullYear() + " " +
-            current_date.getHours() + ":" +
+            current_date.getFullYear();
+    }
+
+
+    function get_current_time() {
+        return current_date.getHours() + ":" +
             current_date.getMinutes() + ":" +
             current_date.getSeconds();
     }
-
 
     if (is_active == 'True') {
         self.change_status('Deactivate');
