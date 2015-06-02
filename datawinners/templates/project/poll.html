@@ -39,7 +39,7 @@
         var post_url = '{{ post_url }}';
         var language_page_link = '{{ languages_link }}';
         var is_outgoing_reply_messages_enabled = '{{ project.is_outgoing_sms_replies_enabled }}';
-        var questionnaire_name = "{{ questionnaire_name }}"
+        var questionnaire_name = "{{ questionnaire_name }}";
         var days_active = "{{ days_active }}";
         var number_of_days = "{{ number_of_days }}";
     </script>
@@ -101,6 +101,14 @@
          </div>
         <div>
             {% include 'project/language.html' %}
+        </div>
+
+         <div class="questionnaire_type_header">
+             <span class="header" >{% trans "Automatic"%}</span>
+
+         </div>
+        <div>
+           sent messages info section
         </div>
 
     </div>
