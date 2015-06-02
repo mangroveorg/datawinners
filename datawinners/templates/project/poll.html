@@ -39,7 +39,7 @@
         var post_url = '{{ post_url }}';
         var language_page_link = '{{ languages_link }}';
         var is_outgoing_reply_messages_enabled = '{{ project.is_outgoing_sms_replies_enabled }}';
-        var questionnaire_name = "{{ questionnaire_name }}"
+        var questionnaire_name = "{{ questionnaire_name }}";
         var days_active = "{{ days_active }}";
         var number_of_days = "{{ number_of_days }}";
     </script>
@@ -107,13 +107,13 @@
 
                 <div id="activate_poll_dialog" class="none">
                     <p> {% trans 'Select the number of days for the poll to be active:' %}</p>
-                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select>
+                    <select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style"></select>
                     <span> {% trans 'Days' %} </span><br><br>
 
                     <label>{% trans 'From date:'%} </label>
-                    <div id="from_date_poll" data-bind="text:from_date"></div>
+                    <div data-bind="text:from_date_poll"></div>
                     <label>{% trans 'To date:'%} </label>
-                    <div id="to_date_poll" data-bind="text:to_date"></div>
+                    <div data-bind="text:to_date_poll"></div>
                     <div class="float_right margin_top_40">
                         <button id='close_pop' data-bind="click: close_popup"> {%trans 'Cancel' %}</button>
                         <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Save' %} </button>
