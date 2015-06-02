@@ -13,6 +13,7 @@ from datawinners.main.database import get_database_manager
 from datawinners.project.helper import broadcast_message
 from datawinners.scheduler.smsclient import NoSMSCException
 from datawinners.search.all_datasender_search import get_all_datasenders_search_results
+from datawinners.sent_message.models import PollInfo
 from datawinners.utils import strip_accents, lowercase_and_strip_accents
 
 
@@ -68,6 +69,8 @@ class SendSMS(View):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = organization._get_message_tracker(current_month)
         no_smsc = False
+        questionnaire_names = map(lambda item: lowercase_and_strip_accents(item),
+                                      json.loads(request.POST['questionnaire-names']))
         mobile_numbers_for_ds_linked_to_questionnaire = self._get_mobile_numbers_for_registered_data_senders(dbm,
                                                                                                              request)
         mobile_numbers_for_specifc_contacts = self._get_mobile_numbers_for_specific_contacts(dbm, request)
@@ -80,6 +83,9 @@ class SendSMS(View):
                                                organization_setting.get_organisation_sms_number()[0],
                                                other_numbers, message_tracker,
                                                country_code=organization.get_phone_country_code())
+            for questionnaire_name in questionnaire_names:
+
+                self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, mobile_numbers, organization_setting.get_organisation_sms_number()[0], questionnaire_name)
         except NoSMSCException:
             no_smsc = True
 
@@ -93,6 +99,10 @@ class SendSMS(View):
     def dispatch(self, *args, **kwargs):
         return super(SendSMS, self).dispatch(*args, **kwargs)
 
+    def _save_sent_message_info(self, org_id, sent_on, sms_text, to_mobile_numbers, from_mobile_numbers, questionnaire_name):
+        poll_info_message = PollInfo(org_id=org_id, sent_on=sent_on, message=sms_text,
+                                             recipients=str(to_mobile_numbers), sender=str(from_mobile_numbers),  questionnaire_id=questionnaire_name)
+        poll_info_message.save()
 
 def _get_all_contacts_mobile_numbers(dbm, search_parameters):
     search_parameters['response_fields'] = ['mobile_number']

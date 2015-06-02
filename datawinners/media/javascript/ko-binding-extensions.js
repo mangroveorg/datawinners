@@ -68,7 +68,7 @@ ko.bindingHandlers.accordion = {
             header: options.header,
             change: function(event, ui){
                 var activatedSection = $(event.target).accordion('option', 'active');
-                var activeObservable = accessor.active
+                var activeObservable = accessor.active;
                 activeObservable && activeObservable(activatedSection);
             }
         });
@@ -86,7 +86,8 @@ ko.bindingHandlers.accordion = {
             header: options.header,
             change: function(event, ui){
                 var activatedSection = $(event.target).accordion('option', 'active');
-                var activeObservable = accessor.active
+                $("#accordion").show();
+                var activeObservable = accessor.active;
                 activeObservable && activeObservable(activatedSection);
             }
         });

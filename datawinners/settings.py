@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     'datawinners.accountmanagement',
     'datawinners.sms',
     'datawinners.activitylog',
+    'datawinners.sent_message',
     'registration',
     'django.contrib.admin',
     'compressor',
