@@ -46,7 +46,8 @@ $(document).ready(function() {
 
     $( ".close_help_element" ).click(function() {
         $("#welcome_area, #help_element").addClass("none");
-        $("#help_message, #help_message_arrow").removeClass("none");
+        $("#help_message").removeClass("none");
+        $("#container_content .container_24").addClass("position_relative");
 
         var data = {
         'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
@@ -74,7 +75,8 @@ $(document).ready(function() {
 
     
     $( "#help_message_dialog_close" ).click(function() {
-        $("#help_message, #help_message_arrow").addClass("none");
+        $("#help_message").addClass("none");
+        $("#container_content .container_24").removeClass("position_relative");
     });
 
     $("#video-lightbox").dialog({
