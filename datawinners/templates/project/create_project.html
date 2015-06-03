@@ -26,13 +26,7 @@
         var existing_questionnaires_url = "{% url existing_questionnaires %}";
         var uniqueIdTypes = {{ unique_id_types|safe }};
         var active_language = "{{ active_language }}";
-        DW.help_url = "https://datawinners.staging.wpengine.com/{{ active_language }}find-answers-app/category/createq/?template=help";
-        $(document).ready(function() {
-            $("#div_iframe").addClass("margin_top_null");
-            $("#need_help_link img, #need_help_active_button img ").css("position", "absolute");
-            $("#need_help_link img, #need_help_active_button img ").css("right", "110px");
-            $("#div_iframe").addClass("margin_left_99");
-        });
+        DW.help_url = "https://www.datawinners.com/{{ active_language }}find-answers-app/category/createq/?template=help";
     </script>
 
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
