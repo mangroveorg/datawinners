@@ -39,9 +39,6 @@ var PollOptionsViewModel = function() {
     self.status = ko.observable();
     self.change_days = ko.observable();
 
-    self.fromDate = ko.observable();
-    self.toDate = ko.observable();
-
     self.to_date_poll = ko.observable();
     self.from_date_poll = ko.observable(get_current_date());
 
@@ -73,8 +70,6 @@ var PollOptionsViewModel = function() {
         self.deactivation('Deactivate');
         self.duration('From ' + from_date + ' To ' + to_date +': ');
         self.change_days('Change');
-        self.fromDate('From ' + from_date);
-        self.toDate('To ' + to_date);
     }
     else {
         self.status('Deactivated');
@@ -82,8 +77,6 @@ var PollOptionsViewModel = function() {
         self.activation('Activate');
         self.duration('');
         self.change_days('');
-        self.fromDate('');
-        self.toDate('');
     }
 
     self.deactivate = function(){
@@ -114,8 +107,6 @@ var PollOptionsViewModel = function() {
                 self.deactivation('');
                 self.duration('');
                 self.change_days('');
-                self.fromDate('');
-                self.toDate('');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
             }
             else {
@@ -137,8 +128,6 @@ var PollOptionsViewModel = function() {
                 self.activation('');
                 self.duration('From ' + self.from_date_poll() + ' To ' + self.to_date_poll() +': ');
                 self.change_days('Change');
-                self.fromDate('From ' + self.from_date_poll());
-                self.toDate('To ' + self.to_date_poll());
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
             }
             else {
