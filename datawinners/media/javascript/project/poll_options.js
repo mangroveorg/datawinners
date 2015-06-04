@@ -102,8 +102,12 @@ var PollOptionsViewModel = function() {
         self.activationDialogVisible(true);
         self.deactivationDialogVisible(false);
     };
-    self.close_popup = function () {
+
+    self.close_activation_popup = function () {
         self.activationDialogVisible(false);
+    };
+
+    self.close_deactivation_popup = function () {
         self.deactivationDialogVisible(false);
     };
 
@@ -125,7 +129,7 @@ var PollOptionsViewModel = function() {
                 $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
             }
         });
-        self.close_popup();
+        self.close_deactivation_popup();
     };
 
     self.activate_poll = function() {
@@ -148,7 +152,7 @@ var PollOptionsViewModel = function() {
                 $('<div class="message-box">' + responseJson['message'] + '<a href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))
             }
         });
-        self.close_popup();
+        self.close_activation_popup();
     };
 };
 
