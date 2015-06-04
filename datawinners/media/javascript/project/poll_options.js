@@ -1,8 +1,8 @@
 var PollOptionsViewModel = function() {
     var self = this;
 
+    var start_date = new Date();
     var end_date;
-    var current_date = new Date();
 
     var month_name_map = {
         0: gettext('January'),
@@ -33,8 +33,10 @@ var PollOptionsViewModel = function() {
     self.active_poll_days = ko.observable([1, 2, 3, 4, 5]);
     self.number_of_days = ko.observable();
 
-    self.change_status = ko.observable();
+    self.activation = ko.observable();
+    self.deactivation = ko.observable();
     self.status = ko.observable();
+    self.change_days = ko.observable();
 
     self.fromDate = ko.observable();
     self.toDate = ko.observable();
@@ -43,11 +45,9 @@ var PollOptionsViewModel = function() {
     self.from_date_poll = ko.observable(get_current_date());
     self.from_time_poll = ko.observable(get_current_time());
 
-    self.isOpen = ko.observable(false);
-
-    self.isDeactivated = ko.observable(false);
+    self.activationDialogVisible = ko.observable(false);
+    self.deactivationDialogVisible = ko.observable(false);
     self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
-
     self.activatePollDialog = ko.observable($('#activate_poll_dialog').html());
 
     self.days_active = ko.computed(function () {
@@ -59,73 +59,89 @@ var PollOptionsViewModel = function() {
     });
 
     function get_current_date() {
-        return item_map_week[current_date.getDay()] + ", " +
-            current_date.getDate() + " " +
-            month_name_map[current_date.getMonth()] + " " +
-            current_date.getFullYear();
+        return item_map_week[start_date.getDay()] + ", " +
+            start_date.getDate() + " " +
+            month_name_map[start_date.getMonth()] + " " +
+            start_date.getFullYear();
     }
 
-
     function get_current_time() {
-        return current_date.getHours() + ":" +
-            current_date.getMinutes() + ":" +
-            current_date.getSeconds();
+        return start_date.getHours() + ":" +
+            start_date.getMinutes() + ":" +
+            start_date.getSeconds();
     }
 
     if (is_active == 'True') {
-        self.change_status('Deactivate');
         self.status('Active');
-        self.fromDate("From " + from_date);
-        self.toDate("To " + to_date);
+        self.activation('');
+        self.deactivation('Deactivate');
+        self.change_days('Change');
+        self.fromDate('From ' + from_date);
+        self.toDate('To ' + to_date);
     }
     else {
-        self.change_status('Activate');
         self.status('Deactivated');
-        self.fromDate("");
-        self.toDate("");
+        self.deactivation('');
+        self.activation('Activate');
+        self.change_days('');
+        self.fromDate('');
+        self.toDate('');
     }
 
-    self.open = function () {
-        (self.change_status() == 'Deactivate') ? self.isOpen(true) : self.isDeactivated(true);
+    self.deactivate = function(){
+        self.deactivationDialogVisible(true);
+        self.activationDialogVisible(false);
     };
 
+    self.activate = function () {
+        self.activationDialogVisible(true);
+        self.deactivationDialogVisible(false);
+    };
     self.close_popup = function () {
-        self.isOpen(false);
-        self.isDeactivated(false);
+        self.activationDialogVisible(false);
+        self.deactivationDialogVisible(false);
     };
 
     self.deactivate_poll = function () {
         data = {};
-        if (self.change_status() == 'Deactivate') {
-            $.post(deactivate_poll_url, data).done(function (response) {
-                var responseJson = $.parseJSON(response);
-                if (responseJson['success']) {
-                    self.status('Deactivated');
-                    self.change_status('Activate');
-                    self.fromDate("");
-                    self.toDate("");
-                    DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
-                }
-                else {
-                    $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
-                }
-            });
-        }
-        else if (self.change_status() == 'Activate') {
-            $.post(activate_poll_url, data).done(function (response) {
-                var responseJson = $.parseJSON(response);
-                if (responseJson['success']) {
-                    self.status('Active');
-                    self.change_status('Deactivate');
-                    self.fromDate("From " + self.from_date_poll());
-                    self.toDate("To " + self.to_date_poll());
-                    DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
-                }
-                else {
-                    $('<div class="message-box">' + responseJson['message'] + '<a href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))
-                }
-            });
-        }
+        $.post(deactivate_poll_url, data).done(function (response) {
+            var responseJson = $.parseJSON(response);
+            if (responseJson['success']) {
+                self.status('Deactivated');
+                self.activation('Activate');
+                self.deactivation('');
+                self.change_days('');
+                self.fromDate('');
+                self.toDate('');
+                DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
+            }
+            else {
+                $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
+            }
+        });
+        self.close_popup();
+    };
+
+    self.activate_poll = function() {
+        data = {
+            'change_days': self.change_days(),
+            'end_date': self.to_date_poll() + "T:23:59:00"
+        };
+        $.post(activate_poll_url, data).done(function (response) {
+            var responseJson = $.parseJSON(response);
+            if (responseJson['success']) {
+                self.status('Active');
+                self.deactivation('Deactivate');
+                self.activation('');
+                self.change_days('Change');
+                self.fromDate('From ' + self.from_date_poll());
+                self.toDate('To ' + self.to_date_poll());
+                DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
+            }
+            else {
+                $('<div class="message-box">' + responseJson['message'] + '<a href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))
+            }
+        });
         self.close_popup();
     };
 };

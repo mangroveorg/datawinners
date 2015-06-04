@@ -66,23 +66,17 @@
                 <div>
                 <p>Poll is
                     <strong><span data-bind="text:status"> </span> </strong>now :
-                    <a data-bind="text:change_status, click:open" href="javascript:void(0);" style="color:#0070ac;" > </a></p>
+                    <a data-bind="text:deactivation, click:deactivate" style="color:#0070ac;" > </a>
+                    <a data-bind="text:activation, click:activate" style="color:#0070ac;"> </a>
+                    <a data-bind="text:change_days, click:activate" style="color:#0070ac;"> </a>
+                </p>
                 </div>
 
-
-                <div data-bind="dialog: {autoOpen: false, width: 475, height: 190,
-                                                                title:'Deactivate Poll',
-                                                                dialogClass:'no-close'},
-                                                                dialogVisible: isOpen,
-                                                                open: open,
-                                                                dialogContent: deactivatePollDialog">
+                <div data-bind="dialog: {autoOpen: false, width: 475, height: 190, title:'Deactivate Poll', dialogClass:'no-close'},
+                        dialogVisible: deactivationDialogVisible, open: deactivate, dialogContent: deactivatePollDialog">
                 </div>
-                <div data-bind="dialog: {autoOpen: false, width: 475, height: 260,
-                                                                title:'Activate Poll',
-                                                                dialogClass:'no-close'},
-                                                                dialogVisible: isDeactivated,
-                                                                open: open,
-                                                                dialogContent: activatePollDialog">
+                <div data-bind="dialog: {autoOpen: false, width: 475, height: 260, title:'Activate Poll', dialogClass:'no-close'},
+                        dialogVisible: activationDialogVisible, open: activate, dialogContent: activatePollDialog">
                 </div>
 
                 <div id="deactivate_poll_dialog" class="none">
@@ -124,7 +118,7 @@
                     <div data-bind="text:to_date_poll"></div>
                     <div class="float_right margin_top_40">
                         <button id='close_pop' data-bind="click: close_popup"> {%trans 'Cancel' %}</button>
-                        <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Save' %} </button>
+                        <button data-bind="click: activate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Save' %} </button>
                     </div>
                 </div>
             </div>

@@ -66,6 +66,10 @@ def _change_questionnaire_status(questionnaire, active_status):
     questionnaire.active = active_status
     questionnaire.save()
 
+def _change_questionnaire_end_date(questionnaire, end_date):
+    questionnaire.end_date = end_date
+    questionnaire.save()
+
 
 @login_required
 @csrf_exempt
@@ -91,8 +95,9 @@ def activate_poll(request, project_id):
         if questionnaire:
             is_active, question_id_active, question_name_active = is_active_form_model(manager)
             is_current_active = _is_same_questionnaire(question_id_active, questionnaire)
-            if not is_active and not is_current_active:
+            if request.POST['change_days'] == "Change" or not(is_active and is_current_active):
                 _change_questionnaire_status(questionnaire, "active")
+                _change_questionnaire_status(questionnaire, request.POST['end_date'])
                 return HttpResponse(
                     json.dumps({'success': True}))
             return HttpResponse(
