@@ -1,4 +1,4 @@
-function PollViewModel() {
+    function PollViewModel() {
     var self = this;
     self.show_sms = ko.observable();
     self.number_of_days = ko.observable();
@@ -78,9 +78,9 @@ function PollViewModel() {
             };
     }
 
-    function _send_sms_() {
+    function _send_sms_(project_id) {
         if (self.show_sms() == 'poll_via_sms') {
-            window.smsViewModel.sendSms()
+            window.smsViewModel.sendSms(project_id)
         }
     }
 
@@ -114,7 +114,7 @@ function PollViewModel() {
                     var redirect_url = '/project/'+ responseJson.project_id + '/results/' + responseJson.project_code ;
                     DW.trackEvent('poll-creation-method', 'poll-qns-success');
                     window.location.replace(redirect_url);
-                    _send_sms_();
+                    _send_sms_(responseJson.project_id);
                 }
                 else{
                     window.questionnaireViewModel.projectName.setError(responseJson['error_message']['name']);

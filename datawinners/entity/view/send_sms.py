@@ -8,7 +8,7 @@ from django.views.generic import View
 
 from datawinners import utils
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender
-from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.accountmanagement.models import OrganizationSetting, NGOUserProfile
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import broadcast_message
 from datawinners.scheduler.smsclient import NoSMSCException
@@ -28,6 +28,13 @@ class SendSMS(View):
     def _mobile_numbers_for_questionnaire(self, dbm, questionnaire_names):
         search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}
         return _get_all_contacts_mobile_numbers(dbm, search_parameters)
+
+    def get_contact_details(self, dbm, request):
+        questionnaire_names = map(lambda item: lowercase_and_strip_accents(item),
+                                      json.loads(request.POST['questionnaire-names']))
+        search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}
+        mobile_numbers, contact_display_list = _get_all_contacts_details(dbm, search_parameters)
+        return mobile_numbers, contact_display_list
 
     def _mobile_numbers_for_groups(self, dbm, group_names):
         search_parameters = {'void': False, 'search_filters': {'group_names': group_names}}
@@ -60,6 +67,19 @@ class SendSMS(View):
             return []
 
 
+    def _get_sender_details(self, organization_setting):
+        return NGOUserProfile.objects.filter(org_id=organization_setting.organization.org_id)[
+                   0].user.first_name + " ("+ \
+               NGOUserProfile.objects.filter(org_id=organization_setting.organization.org_id)[0].reporter_id + ")"
+
+    def _log_poll_questionnaire_sent_messages(self, dbm, organization, organization_setting, request, sms_text, current_project_id):
+        mobile_numbers, contact_dict = self.get_contact_details(dbm, request)
+        user_profile = self._get_sender_details(organization_setting)
+        # current_questionnaire = json.loads(request.POST['current_questionnaire'])
+
+        self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, contact_dict,
+                                     user_profile, current_project_id)
+
     def post(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)
         sms_text = request.POST['sms-text']
@@ -69,8 +89,6 @@ class SendSMS(View):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = organization._get_message_tracker(current_month)
         no_smsc = False
-        questionnaire_names = map(lambda item: lowercase_and_strip_accents(item),
-                                      json.loads(request.POST['questionnaire-names']))
         mobile_numbers_for_ds_linked_to_questionnaire = self._get_mobile_numbers_for_registered_data_senders(dbm,
                                                                                                              request)
         mobile_numbers_for_specifc_contacts = self._get_mobile_numbers_for_specific_contacts(dbm, request)
@@ -83,9 +101,10 @@ class SendSMS(View):
                                                organization_setting.get_organisation_sms_number()[0],
                                                other_numbers, message_tracker,
                                                country_code=organization.get_phone_country_code())
-
-            self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, mobile_numbers,
-                                         organization_setting.get_organisation_sms_number()[0], json.loads(request.POST['current_questionnaire']))
+            # log sent messages only for poll questionnaire
+            current_project_id = json.loads(request.POST['project_id'])
+            if current_project_id != "":
+                self._log_poll_questionnaire_sent_messages(dbm, organization, organization_setting, request, sms_text, current_project_id)
 
         except NoSMSCException:
             no_smsc = True

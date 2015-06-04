@@ -9,7 +9,7 @@
                 headers: { "X-CSRFToken": $.cookie('csrftoken') },
                 data: {
                     'group_name':selected_group,
-                    'search_query':$(".dataTables_filter input").val()
+                        'search_query':$(".dataTables_filter input").val()
                 }
 
             }).done(function (json_response) {

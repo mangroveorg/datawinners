@@ -306,7 +306,7 @@ describe("Send A Message", function(){
         model.selectedSmsOption("others");
         model.selectedQuestionnaireNames(['random question']);
 
-        model.sendSms();
+        model.sendSms("");
 
 
         expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("post");
@@ -340,7 +340,7 @@ describe("Send A Message", function(){
         model.sendToSpecificContacts = true;
         model.selectedQuestionnaireNames([]);
 
-        model.sendSms();
+        model.sendSms("");
 
 
         expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("post");
@@ -372,7 +372,7 @@ describe("Send A Message", function(){
         model.selectedSmsOption("others");
         model.selectedQuestionnaireNames(['random question']);
 
-        model.sendSms();
+        model.sendSms("");
 
         expect(noSmscErrorMessage.attr('class')).toEqual("message-box");
         expect(successFlashMessage.attr('class')).toEqual("success-message-box none");
@@ -394,7 +394,7 @@ describe("Send A Message", function(){
         model.selectedSmsOption("others");
         model.selectedQuestionnaireNames(['random question']);
 
-        model.sendSms();
+        model.sendSms("");
 
         expect(failedNumbersErrorMessage.attr('class')).toEqual("message-box");
         expect(failedNumbersErrorMessage.text()).toEqual("failed numbers message: 8979878, 98798798.");
@@ -417,7 +417,7 @@ describe("Send A Message", function(){
         model.selectedSmsOption("others");
         model.selectedQuestionnaireNames(['random question']);
 
-        model.sendSms();
+        model.sendSms("");
 
         expect(model.disableSendSms()).toBe(false);
     });
@@ -438,7 +438,7 @@ describe("Send A Message", function(){
         model.selectedSmsOption("others");
         model.selectedQuestionnaireNames(['random question']);
 
-        model.sendSms();
+        model.sendSms("");
 
         expect(model.sendButtonText()).toBe("Send");
     });

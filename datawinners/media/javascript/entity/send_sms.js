@@ -266,8 +266,11 @@ function SmsViewModel(){
       }
   }
 
-  self.sendSms = function(){
-
+  self.sendSms = function(project_id){
+      var project_id_type = typeof project_id;
+      if (project_id_type != 'string') {
+          project_id = "";
+      }
       if(!self.validate()){
           return;
       }
@@ -282,6 +285,7 @@ function SmsViewModel(){
           'sms-text': smsTextArea.val(),
           'others': self.othersList(),
           'recipient': _getReceipent(),
+          'project_id': JSON.stringify(project_id),
           'questionnaire-names':  JSON.stringify(self.selectedQuestionnaireNames()),
           'group-names':  JSON.stringify(self.selectedGroupNames()),
           'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
