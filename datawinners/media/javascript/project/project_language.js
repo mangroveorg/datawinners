@@ -61,12 +61,6 @@ function ProjectLanguageViewModel(){
       });
 
   };
-  if ($('.questionnaire_type_header')[1].textContent.trim() == 'Automatic Reply Sms'){
-      $('.questionnaire_type_header')[1].click();
-  }
-  else if($('.questionnaire_type_header')[0].textContent.trim()  == 'Poll'){
-      $('.questionnaire_type_header')[0].click();
-  }
 
 }
 

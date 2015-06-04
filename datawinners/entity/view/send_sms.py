@@ -83,9 +83,10 @@ class SendSMS(View):
                                                organization_setting.get_organisation_sms_number()[0],
                                                other_numbers, message_tracker,
                                                country_code=organization.get_phone_country_code())
-            for questionnaire_name in questionnaire_names:
 
-                self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, mobile_numbers, organization_setting.get_organisation_sms_number()[0], questionnaire_name)
+            self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, mobile_numbers,
+                                         organization_setting.get_organisation_sms_number()[0], json.loads(request.POST['current_questionnaire']))
+
         except NoSMSCException:
             no_smsc = True
 
