@@ -44,7 +44,6 @@ var PollOptionsViewModel = function() {
 
     self.to_date_poll = ko.observable();
     self.from_date_poll = ko.observable(get_current_date());
-    self.from_time_poll = ko.observable(get_current_time());
 
     self.duration = ko.observable();
 
@@ -66,12 +65,6 @@ var PollOptionsViewModel = function() {
             start_date.getDate() + " " +
             month_name_map[start_date.getMonth()] + " " +
             start_date.getFullYear();
-    }
-
-    function get_current_time() {
-        return start_date.getHours() + ":" +
-            start_date.getMinutes() + ":" +
-            start_date.getSeconds();
     }
 
     if (is_active == 'True') {
