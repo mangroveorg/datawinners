@@ -3,6 +3,7 @@ var PollOptionsViewModel = function() {
 
     var start_date = new Date();
     var end_date;
+    var END_TIME = "T23:59:00";
 
     var month_name_map = {
         0: gettext('January'),
@@ -45,6 +46,8 @@ var PollOptionsViewModel = function() {
     self.from_date_poll = ko.observable(get_current_date());
     self.from_time_poll = ko.observable(get_current_time());
 
+    self.duration = ko.observable();
+
     self.activationDialogVisible = ko.observable(false);
     self.deactivationDialogVisible = ko.observable(false);
     self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
@@ -75,6 +78,7 @@ var PollOptionsViewModel = function() {
         self.status('Active');
         self.activation('');
         self.deactivation('Deactivate');
+        self.duration('From ' + from_date + ' To ' + to_date +': ');
         self.change_days('Change');
         self.fromDate('From ' + from_date);
         self.toDate('To ' + to_date);
@@ -83,6 +87,7 @@ var PollOptionsViewModel = function() {
         self.status('Deactivated');
         self.deactivation('');
         self.activation('Activate');
+        self.duration('');
         self.change_days('');
         self.fromDate('');
         self.toDate('');
@@ -110,6 +115,7 @@ var PollOptionsViewModel = function() {
                 self.status('Deactivated');
                 self.activation('Activate');
                 self.deactivation('');
+                self.duration('');
                 self.change_days('');
                 self.fromDate('');
                 self.toDate('');
@@ -124,8 +130,7 @@ var PollOptionsViewModel = function() {
 
     self.activate_poll = function() {
         data = {
-            'change_days': self.change_days(),
-            'end_date': self.to_date_poll() + "T:23:59:00"
+            'end_date': end_date.getYear() + "-" + end_date.getMonth() + "-" + end_date.getDate() + END_TIME
         };
         $.post(activate_poll_url, data).done(function (response) {
             var responseJson = $.parseJSON(response);
@@ -133,6 +138,7 @@ var PollOptionsViewModel = function() {
                 self.status('Active');
                 self.deactivation('Deactivate');
                 self.activation('');
+                self.duration('From ' + self.from_date_poll() + ' To ' + self.to_date_poll() +': ');
                 self.change_days('Change');
                 self.fromDate('From ' + self.from_date_poll());
                 self.toDate('To ' + self.to_date_poll());
