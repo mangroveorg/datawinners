@@ -45,6 +45,9 @@
 {% block secondary_navigation_data %}
         {% activetab "secondary_tab_nav" "project_language" %}
         {% include 'project/messages_and_reminders_tabs.html' %}
+        <div id="flash-message-section">
+            {% include "flash_message.html" %}
+        </div>
 {% endblock %}
 
 {% include 'project/language.html' %}
