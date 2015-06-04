@@ -48,11 +48,12 @@
   #page_title {
     min-height: 40px;
     padding: 15px 0 0px 0;
-    width: 960px;
+    width: 961px;
     border-radius: 1px solid red;
     margin: 0 auto;
     font-size: 22px;
     font-weight: bold;
+    position: relative;
     span.project_title {
       font-size: 22px;
       width: 500px;
