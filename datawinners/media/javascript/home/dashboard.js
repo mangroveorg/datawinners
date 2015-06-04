@@ -92,7 +92,7 @@ $(document).ready(function() {
 
     $("a.open_video").bind("click", function(){
         $("#video-lightbox iframe").attr("src", $(this).attr("href"));
-        $("#video-lightbox").dialog("option", "title", $(this).find("span").html());
+        $("#video-lightbox").dialog("option", "title", $(this).text());
         $("#video-lightbox").dialog("open");
         return false;
     });
