@@ -53,53 +53,52 @@
 
 {% block content %}
     <div id="flash-message-section">
-            {% include "flash_message.html" %}
-        </div>
+        {% include "flash_message.html" %}
+    </div>
     <div id="poll_options">
         <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
         <div class="questionnaire_type_header">
-                <span class="header" id="create_poll">{% trans "Poll"%}
-                    <span data-bind="text:fromDate"></span>
-                    <span data-bind="text:toDate"></span>
-                </span>
-            </div>
+            <span class="header" id="create_poll">{% trans "Poll"%}
+                    <span data-bind="text:duration"> </span>
+            </span>
+        </div>
+        <div>
+            <span id="poll_success"> </span>
+            <p class="italic_grey"> View, edit & send your Survey. </p>
             <div>
-                <span id="poll_success"> </span>
-                <p class="italic_grey"> View, edit & send your Survey. </p>
-                <div>
-                <p>Poll is
-                    <strong><span data-bind="text:status"> </span> </strong>now :
-                    <a data-bind="text:change_status, click:open" href="javascript:void(0);" style="color:#0070ac;" > </a></p>
-                </div>
+                <p>
+                    Poll is <strong><span data-bind="text:status"> </span> </strong>now :
+                    <a data-bind="text:deactivation, click:deactivate" style="color:#0070ac;" > </a>
+                    <a data-bind="text:activation, click:activate" style="color:#0070ac;"> </a>
+                </p>
+                <p>
+                    <br/>
+                    <span data-bind="text:duration"> </span>
+                    <span>
+                        <a data-bind="text:change_days, click:activate" style="color:#0070ac;"> </a>
+                    </span>
+                </p>
+            </div>
 
+            <div data-bind="dialog: {autoOpen: false, width: 475, height: 190, title:'Deactivate Poll', dialogClass:'no-close'},
+                    dialogVisible: deactivationDialogVisible, open: deactivate, dialogContent: deactivatePollDialog">
+            </div>
+            <div data-bind="dialog: {autoOpen: false, width: 475, height: 260, title:'Activate Poll', dialogClass:'no-close'},
+                    dialogVisible: activationDialogVisible, open: activate, dialogContent: activatePollDialog">
+            </div>
 
-                <div data-bind="dialog: {autoOpen: false, width: 475, height: 190,
-                                                                title:'Deactivate Poll',
-                                                                dialogClass:'no-close'},
-                                                                dialogVisible: isOpen,
-                                                                open: open,
-                                                                dialogContent: deactivatePollDialog">
+            <div id="deactivate_poll_dialog" class="none">
+                <p> {% trans 'Are you sure want to deactivate?' %}</p>
+                <div class="float_right margin_top_40">
+                    <button id='close_pop' data-bind="click: close_deactivation_popup"> {%trans 'No' %}</button>
+                    <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button},
+                    attr:{disabled:$root.disable_attr}"> {% trans 'Yes' %} </button>
                 </div>
-                <div data-bind="dialog: {autoOpen: false, width: 475, height: 260,
-                                                                title:'Activate Poll',
-                                                                dialogClass:'no-close'},
-                                                                dialogVisible: isDeactivated,
-                                                                open: open,
-                                                                dialogContent: activatePollDialog">
-                </div>
-
-                <div id="deactivate_poll_dialog" class="none">
-                    <p> {% trans 'Are you sure want to deactivate?' %}</p>
-                    <div class="float_right margin_top_40">
-                        <button id='close_pop' data-bind="click: close_popup"> {%trans 'No' %}</button>
-                        <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button},
-                        attr:{disabled:$root.disable_attr}"> {% trans 'Yes' %} </button>
-                    </div>
-                </div>
+            </div>
 
         </div>
          <div class="questionnaire_type_header">
-             <span class="header" >{% trans "Automfghfghfghfghatic Reply Sms"%}</span>
+             <span class="header" >{% trans "Automatic Reply Sms"%}</span>
 
          </div>
         <div>
@@ -113,26 +112,20 @@
         <div>
            sent messages info section
         </div>
-
     </div>
 
-                <div id="activate_poll_dialog" class="none">
-                    <p> {% trans 'Select the number of days for the poll to be active:' %}</p>
-                    <select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style"></select>
-                    <span> {% trans 'Days' %} </span><br><br>
-
-                    <label>{% trans 'From date:'%} </label>
-                    <div> <span data-bind="text:from_date_poll"> </span> <span data-bind="text: from_time_poll"></span></div>
-                    <label>{% trans 'To date:'%} </label>
-                    <div data-bind="text:to_date_poll"></div>
-                    <div class="float_right margin_top_40">
-                        <button id='close_pop' data-bind="click: close_popup"> {%trans 'Cancel' %}</button>
-                        <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Save' %} </button>
-                    </div>
-                </div>
-            </div>
+    <div id="activate_poll_dialog" class="none">
+        <p> {% trans 'Select the number of days for the poll to be active:' %}</p>
+        <select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style"></select>
+        <span> {% trans 'Days' %} </span><br><br>
+        <label>{% trans 'From date:'%} </label>
+        <div> <span data-bind="text:from_date_poll"> </span></div>
+        <label>{% trans 'To date:'%} </label>
+        <div data-bind="text:to_date_poll"></div>
+        <div class="float_right margin_top_40">
+            <button id='close_pop' data-bind="click: close_activation_popup"> {%trans 'Cancel' %}</button>
+            <button data-bind="click: activate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Save' %} </button>
         </div>
-
     </div>
-
+    </div>
 {% endblock %}
