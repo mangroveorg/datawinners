@@ -3,6 +3,9 @@
     <script type="text/javascript">
         $(document).ready(function(){
             function resize_iframe(event) {
+                if ($("#container_content").height() < event.data + 150) {
+                    $("#container_content").height(event.data + 150);
+                }
                 $("#help_iframe").height(event.data);
             }
             
@@ -15,7 +18,7 @@
                     $("#help_unavailable").removeClass("none");
                 },
                 complete: function(xhr, statusText){
-                    if (xhr.status == 200){
+                    if (xhr.status == 200) {
                         $("#help_iframe").attr("src", DW.help_url);
                         $("#help_iframe").addClass("block");
                     } else {
@@ -26,10 +29,9 @@
             });
 
             $("#need_help_button").click(function() {
-                    $("#div_iframe").removeClass("none");
-                    $("#help_iframe").addClass("block");
-                    $("#need_help_button").addClass("none");
-                    $('#need_help_active_button').removeClass("none");
+                $("#div_iframe").css("visibility", "visible");
+                $("#need_help_button").addClass("none");
+                $('#need_help_active_button').removeClass("none");
                 return false;
             });
 
@@ -42,7 +44,7 @@
             });
 
             $(".close_help_button, #need_help_active_button").click(function() {
-                $("#div_iframe").addClass("none");
+                $("#div_iframe").css("visibility", "hidden");
                 $("#need_help_active_button").addClass("none");
                 $('#need_help_button').removeClass("none");
             });
@@ -58,7 +60,7 @@
         <img src="/media/images/help_button_active.png" id="need_help_active_button" class="none">
     </a>
 
-    <div class="padding_left_right_10 none" id="div_iframe">
+    <div class="padding_left_right_10" id="div_iframe">
         <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">Close</span></a>
         <iframe src="" width="860" name="myFrame" scrolling="no" id="help_iframe" class="float_right"></iframe>
         <div id="help_unavailable" class="none clear_both text_align_center">
