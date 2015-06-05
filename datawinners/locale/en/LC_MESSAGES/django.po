@@ -4786,3 +4786,39 @@ msgstr ""
 
 msgid "https://www.datawinners.com/dwcdt"
 msgstr ""
+
+msgid "Welcome to DataWinners!"
+msgstr ""
+
+msgid "https://www.datawinners.com/en/help-center"
+msgstr ""
+
+msgid "Here are three resources to get you started. For more tips, support, and tutorials, visit our"
+msgstr ""
+
+msgid "Help Center"
+msgstr ""
+
+msgid "Take a Tour"
+msgstr ""
+
+msgid "Create Your 1<sup>st</sup> Questionnaire </br> in 5 minutes"
+msgstr ""
+
+msgid "Tips for Successfull Data </br> Collection"
+msgstr ""
+
+msgid "Get Help"
+msgstr ""
+
+msgid "Go to Help Center"
+msgstr ""
+
+msgid "Remove this getting started help once you don't need it anymore"
+msgstr ""
+
+msgid "Don’t worry, you can always find the Get Started information in the Help Center."
+msgstr ""
+
+msgid "The help is unavailable for a moment!"
+msgstr ""

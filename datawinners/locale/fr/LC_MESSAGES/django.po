@@ -5812,3 +5812,39 @@ msgstr "https://www.youtube.com/embed/UWZPWQIuXUU?autoplay=1"
 
 msgid "https://www.datawinners.com/dwcdt"
 msgstr "https://www.datawinners.com/fr/dwcdt"
+
+msgid "Welcome to DataWinners!"
+msgstr "Bienvenue sur DataWinners !"
+
+msgid "https://www.datawinners.com/en/help-center/"
+msgstr "https://www.datawinners.com/fr/centre-d-aide/"
+
+msgid "Here are three resources to get you started. For more tips, support, and tutorials, visit our"
+msgstr "Ci-dessous trois ressources pour vous aider à démarrer. Pour plus de conseils, support et tutoriels, visitez notre"
+
+msgid "Help Center"
+msgstr "Centre d’aide"
+
+msgid "Take a Tour"
+msgstr "Faire un tour"
+
+msgid "Create Your 1<sup>st</sup> Questionnaire </br> in 5 minutes"
+msgstr "Créez votre 1<sup>er</sup> Questionnaire </br> en 5 minutes"
+
+msgid "Tips for Successfull Data </br> Collection"
+msgstr "Conseils pour une Collecte </br> de Données réussies"
+
+msgid "Get Help"
+msgstr "Obtenir de l’aide"
+
+msgid "Go to Help Center"
+msgstr "Se rendre au Centre d’aide"
+
+msgid "Remove this getting started help once you don't need it anymore"
+msgstr "Retirez cette aide au démarrage lorsque vous n’en avez plus besoin"
+
+msgid "Don’t worry, you can always find the Get Started information in the Help Center."
+msgstr "Ne vous inquiétez pas, vous pouvez toujours trouver les informations sur le démarrage dans le Centre d’aide."
+
+msgid "The help is unavailable for a moment!"
+msgstr "L’aide est indisponible pour l’instant !"
