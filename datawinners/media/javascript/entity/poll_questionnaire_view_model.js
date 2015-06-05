@@ -97,7 +97,7 @@ function PollViewModel() {
 
             var data = {
                 'poll_name': window.questionnaireViewModel.projectName().trim(),
-                'active_days': self.days_active,
+                'active_days': self.to_date_poll,
                 'question': question,
                 'selected_option' : JSON.stringify(selected_option),
                 'csrfmiddlewaretoken': $("#poll_form input[name=csrfmiddlewaretoken]").val(),

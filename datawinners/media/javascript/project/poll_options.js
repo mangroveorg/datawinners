@@ -4,6 +4,7 @@ var PollOptionsViewModel = function() {
     var start_date = new Date();
     var end_date;
     var END_TIME = "T23:59:00";
+    var data = {};
 
     var month_name_map = {
         0: gettext('January'),
@@ -39,22 +40,18 @@ var PollOptionsViewModel = function() {
     self.status = ko.observable();
     self.change_days = ko.observable();
 
-    self.to_date_poll = ko.observable();
     self.from_date_poll = ko.observable(get_current_date());
 
     self.duration = ko.observable();
-
     self.activationDialogVisible = ko.observable(false);
     self.deactivationDialogVisible = ko.observable(false);
     self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
     self.activatePollDialog = ko.observable($('#activate_poll_dialog').html());
 
-    self.days_active = ko.computed(function () {
-        var dat = new Date();
-        dat.setDate(dat.getDate() + self.number_of_days());
-        end_date = dat;
-        self.to_date_poll(item_map_week[dat.getDay()] + ", " + dat.getDate() + " " + month_name_map[dat.getMonth()] + " " + dat.getFullYear());
-        return self.active_poll_days
+    self.to_date_poll = ko.computed(function () {
+        end_date = new Date();
+        end_date.setDate(end_date.getDate() + self.number_of_days());
+        return item_map_week[end_date.getDay()] + ", " + end_date.getDate() + " " + month_name_map[end_date.getMonth()] + " " + end_date.getFullYear();
     });
 
     function get_current_date() {
@@ -98,7 +95,6 @@ var PollOptionsViewModel = function() {
     };
 
     self.deactivate_poll = function () {
-        data = {};
         $.post(deactivate_poll_url, data).done(function (response) {
             var responseJson = $.parseJSON(response);
             if (responseJson['success']) {
@@ -117,9 +113,11 @@ var PollOptionsViewModel = function() {
     };
 
     self.activate_poll = function() {
+
         data = {
             'end_date': end_date.getYear() + "-" + end_date.getMonth() + "-" + end_date.getDate() + END_TIME
         };
+
         $.post(activate_poll_url, data).done(function (response) {
             var responseJson = $.parseJSON(response);
             if (responseJson['success']) {
@@ -134,6 +132,7 @@ var PollOptionsViewModel = function() {
                 $('<div class="message-box">' + responseJson['message'] + '<a href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))
             }
         });
+        data = {};
         self.close_activation_popup();
     };
 };
