@@ -5848,3 +5848,6 @@ msgstr "Ne vous inquiétez pas, vous pouvez toujours trouver les informations su
 
 msgid "The help is unavailable for a moment!"
 msgstr "L’aide est indisponible pour l’instant !"
+
+msgid "wp_language"
+msgstr "fr/en"

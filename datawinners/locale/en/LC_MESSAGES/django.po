@@ -4822,3 +4822,6 @@ msgstr ""
 
 msgid "The help is unavailable for a moment!"
 msgstr ""
+
+msgid "wp_language"
+msgstr "en"
