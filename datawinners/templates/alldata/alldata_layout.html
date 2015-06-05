@@ -22,7 +22,7 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
-        DW.help_url = "https://www.datawinners.com/{{ current_lang }}/find-answers-app/category/proj/?template=help";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/proj/?template=help";
     </script>
 {% endblock %}
 

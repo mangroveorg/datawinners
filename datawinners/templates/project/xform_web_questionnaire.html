@@ -45,7 +45,7 @@
         var dataStrToEdit = $('<div/>').html("{{ edit_model_str }}").text();
         var isQuotaReached = '{{ is_quota_reached }}';
         var questionnaire_code = '{{ questionnaire_code }}';
-        DW.help_url = "https://www.datawinners.com/{{ active_language }}/find-answers-app/category/analysis/?template=help";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/analysis/?template=help";
     </script>
 
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>

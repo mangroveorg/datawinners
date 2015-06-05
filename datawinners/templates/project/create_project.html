@@ -26,7 +26,7 @@
         var existing_questionnaires_url = "{% url existing_questionnaires %}";
         var uniqueIdTypes = {{ unique_id_types|safe }};
         var active_language = "{{ active_language }}";
-        DW.help_url = "https://www.datawinners.com/{{ active_language }}/find-answers-app/category/createq/?template=help";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/createq/?template=help";
     </script>
 
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>

@@ -80,7 +80,7 @@
             var project_id = '{{ project.id }}';
             var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
             var import_submission_url = "{% url import_submissions 'form_code'%}";
-            DW.help_url = "https://www.datawinners.com/{{ active_language }}/find-answers-app/category/sublog/?template=help";
+            DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/sublog/?template=help";
             $(document).ready(function() {
                 $("#page_title").addClass("full_width");
                 $("#need_help_link").addClass("margin_right_20");

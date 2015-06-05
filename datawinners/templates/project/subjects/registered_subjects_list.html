@@ -31,7 +31,7 @@
         var edit_url_template = "{% url edit_my_subject project_id entity_type "entity_id_placeholder" %}";
         var upload_url = "{% url import_subjects form_code %}";
         var default_url = "{% url registered_subjects_default project_id%}";
-        DW.help_url = "https://www.datawinners.com/{{ active_language }}/find-answers-app/category/myidno/?template=help";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/myidno/?template=help";
     </script>
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
