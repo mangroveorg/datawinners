@@ -6,7 +6,7 @@ from datawinners.project.views.change_language import QuestionnaireLanguageView
 from datawinners.project.views.create_questionnaire import create_project
 from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders
 from datawinners.project.views.import_submissions_views import ImportSubmissionView
-from datawinners.project.views.poll_views import poll, deactivate_poll, activate_poll
+from datawinners.project.views.poll_views import poll, deactivate_poll, activate_poll, get_poll_info
 from datawinners.project.views.registered_datasenders import registered_ds_count
 
 from datawinners.project.wizard_view import edit_project, reminder_settings, get_templates, get_template_details
@@ -93,6 +93,7 @@ urlpatterns = patterns('',
                        url(r'^project/registered-ds-count/$', registered_ds_count, name="registered_ds_count"),
                        url(r'^project/deactivate/(?P<project_id>\w+?)/$', deactivate_poll, name='deactivate_poll'),
                        url(r'^project/activate/(?P<project_id>\w+?)/$', activate_poll, name='activate_poll'),
+                       url(r'^project/get_poll_info/(?P<project_id>\w+?)/$',  get_poll_info, name="get_poll_info"),
                        url(r'^project/create-poll$', create_poll.create_poll, name="create_poll"),
                        )
 

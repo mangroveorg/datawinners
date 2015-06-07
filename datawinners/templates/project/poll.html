@@ -41,7 +41,8 @@
         var is_outgoing_reply_messages_enabled = '{{ project.is_outgoing_sms_replies_enabled }}';
         var questionnaire_name = "{{ questionnaire_name }}";
         var days_active = "{{ days_active }}";
-        var number_of_days = "{{ number_of_days }}";
+        var number_of_days = '{{ number_of_days }}';
+        var get_poll_info_url = "{{ get_poll_info }}";
     </script>
      <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
      <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
@@ -104,14 +105,17 @@
         <div>
             {% include 'project/language.html' %}
         </div>
-
-         <div class="questionnaire_type_header">
-             <span class="header" >{% trans "Poll sent to"%}</span>
-
-         </div>
-        <div>
-           sent messages info section
-        </div>
+        {% if project.is_open_survey %}
+        {% else %}
+             <div class="questionnaire_type_header">
+                 <div data-bind="click: show_poll_info()">
+                 <span class="header" >{% trans "Poll sent to "%} {{ num_of_recipients }}{% trans " people" %}</span>
+                  </div>
+             </div>
+            <div data-bind="visible:show_poll_table">
+               {% include 'project/poll_info_table.html' %}
+            </div>
+        {% endif %}
     </div>
 
     <div id="activate_poll_dialog" class="none">

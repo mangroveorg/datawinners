@@ -39,7 +39,9 @@ var PollOptionsViewModel = function() {
     self.deactivation = ko.observable();
     self.status = ko.observable();
     self.change_days = ko.observable();
-
+    self.number_of_people = ko.observable();
+    self.show_poll_table = ko.observable(false);
+    self.poll_messages = ko.observableArray();
     self.from_date_poll = ko.observable(get_current_date());
 
     self.duration = ko.observable();
@@ -110,6 +112,19 @@ var PollOptionsViewModel = function() {
             }
         });
         self.close_deactivation_popup();
+    };
+
+    self.show_poll_info = function(){
+        //$.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
+       $.post(get_poll_info_url, data).done(function (response) {
+           var responseJson = $.parseJSON(response);
+           if (responseJson['success']) {
+               var poll_me = responseJson['poll_messages'];
+
+                self.poll_messages(poll_me);
+                self.show_poll_table(true);
+           }
+       });
     };
 
     self.activate_poll = function() {

@@ -73,10 +73,8 @@ class SendSMS(View):
                NGOUserProfile.objects.filter(org_id=organization_setting.organization.org_id)[0].reporter_id + ")"
 
     def _log_poll_questionnaire_sent_messages(self, dbm, organization, organization_setting, request, sms_text, current_project_id):
-        mobile_numbers, contact_dict = self.get_contact_details(dbm, request)
+        mobile_numbers, contact_dict = get_contact_details(dbm, request)
         user_profile = self._get_sender_details(organization_setting)
-        # current_questionnaire = json.loads(request.POST['current_questionnaire'])
-
         self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, contact_dict,
                                      user_profile, current_project_id)
 
@@ -91,9 +89,9 @@ class SendSMS(View):
         no_smsc = False
         mobile_numbers_for_ds_linked_to_questionnaire = self._get_mobile_numbers_for_registered_data_senders(dbm,
                                                                                                              request)
-        mobile_numbers_for_specifc_contacts = self._get_mobile_numbers_for_specific_contacts(dbm, request)
+        mobile_numbers_for_specific_contacts = self._get_mobile_numbers_for_specific_contacts(dbm, request)
         mobile_numbers_for_ds_linked_to_group = self._get_mobile_numbers_for_groups(dbm, request)
-        mobile_numbers = mobile_numbers_for_ds_linked_to_questionnaire + mobile_numbers_for_ds_linked_to_group + mobile_numbers_for_specifc_contacts
+        mobile_numbers = mobile_numbers_for_ds_linked_to_questionnaire + mobile_numbers_for_ds_linked_to_group + mobile_numbers_for_specific_contacts
 
         failed_numbers = []
         try:
@@ -128,6 +126,17 @@ def _get_all_contacts_mobile_numbers(dbm, search_parameters):
     search_parameters['response_fields'] = ['mobile_number']
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
     return [item['mobile_number'] for item in search_results.hits]
+
+def get_contact_details(dbm, request):
+        if request.POST['recipient'] == 'linked':
+            questionnaire_names = map(lambda item: lowercase_and_strip_accents(item),
+                                      json.loads(request.POST['questionnaire-names']))
+            search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}
+        else:
+            group_names = json.loads(request.POST['group-names'])
+            search_parameters = {'void': False, 'search_filters': {'group_name': group_names}}
+        mobile_numbers, contact_display_list = _get_all_contacts_details(dbm, search_parameters)
+        return mobile_numbers, contact_display_list
 
 
 def _get_all_contacts_details(dbm, search_parameters):
