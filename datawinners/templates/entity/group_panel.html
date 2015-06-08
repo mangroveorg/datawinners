@@ -4,7 +4,7 @@
         <li class="contact_group" data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()}">
             <!-- ko if: group.isEditable -->
 
-            <div class="contact_group_name"><b class="padding_left_10 break_word" data-bind="text: $data.name"></b></div>
+            <div class="contact_group_name"><b class="padding_left_10 " style="word-wrap: break-word;" data-bind="text: $data.name"></b></div>
             <div class="group_actions" data-bind="css:{visible: group == $root.selectedGroup()}">
 
                 <span>

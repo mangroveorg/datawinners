@@ -7,10 +7,11 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.sent_message.models import PollInfo
+from mangrove.datastore.entity import contact_by_short_code
 from mangrove.form_model.project import Project, is_active_form_model
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
-from datawinners.accountmanagement.decorators import is_not_expired, is_datasender
+from datawinners.accountmanagement.decorators import is_not_expired, is_datasender, session_not_expired
 from datawinners.common.lang.utils import get_available_project_languages
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import is_project_exist
@@ -150,3 +151,20 @@ def activate_poll(request, project_id):
                 _change_questionnaire_end_date(questionnaire, end_date)
                 return HttpResponse(json.dumps({'success': True}))
         return HttpResponse(json.dumps({'success': False, 'message': "No Such questionnaire"}))
+
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
+def my_poll_recipients_count(request, project_id):
+    dbm = get_database_manager(request.user)
+    questionnaire = Project.get(dbm, project_id)
+    datasender_ids = questionnaire.data_senders
+    contact_dict = {}
+    for datasender_id in datasender_ids:
+        contact = contact_by_short_code(dbm, datasender_id)
+        if contact.name != '':
+            contact_dict[contact.name] = contact.short_code
+        else:
+             contact_dict[contact.data.get('mobile_number')['value']] = contact.short_code
+    return HttpResponse(content_type='application/json', content=json.dumps({'my_poll_recipients': contact_dict}))

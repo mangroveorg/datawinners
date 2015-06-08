@@ -30,6 +30,9 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
+        var group_ds_count_url = "{% url group_ds_count %}";
+        var registered_ds_count_url = "{% url registered_ds_count %}";
+        var send_sms_url = "{% url send-sms%}";
         var is_active = "{{ is_active }}";
         var from_date = "{{ from_date }}";
         var to_date = "{{ to_date }}";
@@ -44,11 +47,12 @@
         var number_of_days = '{{ number_of_days }}';
         var get_poll_info_url = "{{ get_poll_info }}";
     </script>
-     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
-     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
-     <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
-     <script type="text/javascript" src="/media/javascript/project/project_language.js"></script>
-     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/project_language.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
 {% endblock %}
 
 
@@ -56,7 +60,22 @@
     <div id="flash-message-section">
         {% include "flash_message.html" %}
     </div>
+
+
     <div id="poll_options">
+        <div class="margin_left_700">
+             <a data-bind="text:send_poll_text, click:send_sms_to_people" > </a>
+                <div data-bind="dialog: {autoOpen: false, width: 800, height: 'auto', title:'Send Sms to More People', dialogClass:'no-close'},
+                        dialogVisible: show_sms_option, open: send_sms_to_people, dialogContent: show_poll_sms_content">
+                </div>
+                <div id="show_poll_sms" class="none">
+                    <div data-bind="stopBinding: true">
+                        <div id="poll_sms">
+                            {% include 'send-sms.html' %}
+                        </div>
+                    </div>
+                </div>
+    </div>
         <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
         <div class="questionnaire_type_header">
             <span class="header" id="create_poll">{% trans "Poll"%}

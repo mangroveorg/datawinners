@@ -37,18 +37,28 @@ var PollOptionsViewModel = function() {
 
     self.activation = ko.observable();
     self.deactivation = ko.observable();
+    self.send_poll_text = ko.observable("Send Sms to More People");
     self.status = ko.observable();
     self.change_days = ko.observable();
     self.number_of_people = ko.observable();
     self.show_poll_table = ko.observable(false);
     self.poll_messages = ko.observableArray();
     self.from_date_poll = ko.observable(get_current_date());
+    self.show_sms_option = ko.observable(false);
 
     self.duration = ko.observable();
     self.activationDialogVisible = ko.observable(false);
     self.deactivationDialogVisible = ko.observable(false);
+    self.show_poll_sms_content = ko.observable($('#show_poll_sms').html());
     self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
     self.activatePollDialog = ko.observable($('#activate_poll_dialog').html());
+
+    window.smsViewModel.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
+                                            {"label":gettext('My Poll Recipients'), "code": "poll_recipients"},
+                                            {"label":gettext('Group'), "code": "group"},
+                                            {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"}
+                                            ]);
+
 
     self.to_date_poll = ko.computed(function () {
         end_date = new Date();
@@ -150,9 +160,15 @@ var PollOptionsViewModel = function() {
         data = {};
         self.close_activation_popup();
     };
+
+    self.send_sms_to_people = function(){
+        self.show_sms_option(true);
+    }
 };
 
 $(document).ready(function () {
+    window.smsViewModel = new SmsViewModel();
     window.poll_options = new PollOptionsViewModel();
     ko.applyBindings(window.poll_options, $('#poll_options')[0]);
+    ko.applyBindings(window.smsViewModel, $('#poll_sms')[0]);
 });

@@ -42,6 +42,7 @@ def make_project_links(project, entity_type=None):
                      'automatic_sms_link': reverse('project-language', args=[project_id]),
                      'poll': reverse("poll", args=[project_id]),
                      'deactivate_poll': reverse("deactivate_poll", args=[project_id]),
+                     'my_poll_recipients_count': reverse("my_poll_recipients_count", args=[project_id]),
                      'activate_poll': reverse("activate_poll", args=[project_id]),
                      'get_poll_info': reverse("get_poll_info", args=[project_id])
                     }

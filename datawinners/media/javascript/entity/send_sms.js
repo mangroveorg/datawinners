@@ -16,6 +16,7 @@ function SmsViewModel(){
   self.questionnairePlaceHolderText = ko.observable("");
 
   self.groupPlaceHolderText = ko.observable("");
+  self.myPollRecipientsPlaceHolderText = ko.observable("");
 
   self.disableOtherContacts = ko.observable(false);
 
@@ -25,6 +26,10 @@ function SmsViewModel(){
 
   self.hideGroupSection = ko.computed(function(){
       return this.selectedSmsOption() != 'group';
+  }, self);
+
+  self.hideMyPollRecipientsSection = ko.computed(function(){
+      return this.selectedSmsOption() != 'poll_recipients';
   }, self);
 
 
@@ -68,6 +73,26 @@ function SmsViewModel(){
     self.groupItems(groupItems);
   };
 
+  var myRecipientsDetailsResponseHandler = function(response){
+    var myRecipientsItems = [];
+
+    if(response.my_poll_recipients.length == 0){
+        self.myPollRecipientsPlaceHolderText(gettext("Once you have my_poll_recipients, a list of your recipients will appear here."));
+    }
+    else{
+       self.myPollRecipientsPlaceHolderText("");
+    }
+
+    $.each(Object.keys(response.my_poll_recipients), function(index, item){
+
+        var itemNameEscaped = _.escape(item);
+        var checkBoxLabel = itemNameEscaped + " <span class='grey italic'>" + response.my_poll_recipients[item] + "</span>";
+        myRecipientsItems.push({value: response.my_poll_recipients[item], label: checkBoxLabel, name: item});
+    });
+
+    self.myPollRecipientsItems(myRecipientsItems);
+  };
+
   self.selectedSmsOption.subscribe(function(selectedOption){
 
     if(selectedOption == 'linked' && self.questionnaireItems().length == 0){
@@ -78,11 +103,17 @@ function SmsViewModel(){
         self.groupPlaceHolderText(gettext("Loading..."));
         $.get(group_ds_count_url).done(groupDetailsResponseHandler);
     }
+
+    else if(selectedOption == 'poll_recipients'){
+        self.myPollRecipientsPlaceHolderText(gettext("Loading..."));
+        $.get(my_poll_recipients_count_url).done(myRecipientsDetailsResponseHandler);
+    }
   });
 
   self.questionnaireItems = ko.observableArray([]);
 
   self.groupItems = ko.observableArray([]);
+  self.myPollRecipientsItems = ko.observableArray([]);
 
   self.hideSpecifiedContacts = ko.observable(true);
 
@@ -103,8 +134,9 @@ function SmsViewModel(){
   self.selectedQuestionnaireNames =  DW.ko.createValidatableObservable({value: []});
 
   self.selectedGroupNames =  DW.ko.createValidatableObservable({value: []});
+  self.selectedMyPollRecipientsNames =  DW.ko.createValidatableObservable({value: []});
 
-      self.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
+  self.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
                                             {"label":gettext('Group'), "code": "group"},
                                             {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"},
                                             {"label":gettext('Other People'), "code": "others"}]);

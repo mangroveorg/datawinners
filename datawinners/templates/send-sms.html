@@ -45,6 +45,23 @@
 
     <div class="tableRow" >
         <div class = "tableCell"></div>
+        <div class = "tableCell" data-bind="css: {'none': hideMyPollRecipientsSection}">
+            <!-- ko foreach: myPollRecipientsItems -->
+                <div>
+                    <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedMyPollRecipientsNames()" />
+                    <span data-bind="html: label"></span>
+                </div>
+            <!-- /ko -->
+                <div class="validationMessage" data-bind="hidden: selectedMyPollRecipientsNames.valid">
+                    <span class="validationText" data-bind="text: selectedMyPollRecipientsNames.error"></span>
+                </div>
+
+            <span class="grey italic" data-bind="text:myPollRecipientsPlaceHolderText"></span>
+        </div>
+    </div>
+
+    <div class="tableRow" >
+        <div class = "tableCell"></div>
         <div class = "tableCell" data-bind="css: {'none': hideGroupSection}">
             <!-- ko foreach: groupItems -->
                 <div>
