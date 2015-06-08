@@ -51,10 +51,11 @@ def _construct_poll_recipients(poll_submission):
 
 
 def _get_poll_sent_messages_info(project_id):
-    messages = {}
+
     messages_poll_info_array = []
     poll_submissions = PollInfo.objects.filter(questionnaire_id=project_id)
     for poll_submission in poll_submissions:
+        messages = {}
         messages['sent_on'] = poll_submission.sent_on
         messages['message'] = poll_submission.message
         poll_recipient_map = _construct_poll_recipients(poll_submission)
@@ -167,4 +168,4 @@ def my_poll_recipients_count(request, project_id):
             contact_dict[contact.name] = contact.short_code
         else:
              contact_dict[contact.data.get('mobile_number')['value']] = contact.short_code
-    return HttpResponse(content_type='application/json', content=json.dumps({'my_poll_recipients': contact_dict}))
+    return HttpResponse(content_type='application/json', content=json.dumps({'my_poll_recipients': contact_dict, 'project_id': questionnaire.id}))

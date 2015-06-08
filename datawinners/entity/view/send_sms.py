@@ -1,3 +1,4 @@
+import ast
 import json
 import datetime
 
@@ -15,6 +16,7 @@ from datawinners.scheduler.smsclient import NoSMSCException
 from datawinners.search.all_datasender_search import get_all_datasenders_search_results
 from datawinners.sent_message.models import PollInfo
 from datawinners.utils import strip_accents, lowercase_and_strip_accents
+from mangrove.datastore.entity import contact_by_short_code
 
 
 class SendSMS(View):
@@ -39,6 +41,16 @@ class SendSMS(View):
     def _mobile_numbers_for_groups(self, dbm, group_names):
         search_parameters = {'void': False, 'search_filters': {'group_names': group_names}}
         return _get_all_contacts_mobile_numbers(dbm, search_parameters)
+
+    def _get_mobile_number_for_contacts(self, dbm, poll_recipients):
+        poll_recipients = ast.literal_eval(poll_recipients)
+        mobile_numbers = []
+        for poll_recipient in poll_recipients:
+            contact = contact_by_short_code(dbm, poll_recipient)
+            mobile_numbers.append(contact.data.get('mobile_number')['value'])
+        return mobile_numbers
+
+
 
 
     def _get_mobile_numbers_for_registered_data_senders(self, dbm, request):
@@ -92,7 +104,8 @@ class SendSMS(View):
                                                                                                              request)
         mobile_numbers_for_specific_contacts = self._get_mobile_numbers_for_specific_contacts(dbm, request)
         mobile_numbers_for_ds_linked_to_group = self._get_mobile_numbers_for_groups(dbm, request)
-        mobile_numbers = mobile_numbers_for_ds_linked_to_questionnaire + mobile_numbers_for_ds_linked_to_group + mobile_numbers_for_specific_contacts
+        mobile_numbers_for_ds = self._get_mobile_number_for_contacts(dbm, request.POST['my_poll_recipients'])
+        mobile_numbers = mobile_numbers_for_ds_linked_to_questionnaire + mobile_numbers_for_ds_linked_to_group + mobile_numbers_for_specific_contacts + mobile_numbers_for_ds
 
         failed_numbers = []
         try:
@@ -128,17 +141,36 @@ def _get_all_contacts_mobile_numbers(dbm, search_parameters):
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
     return [item['mobile_number'] for item in search_results.hits]
 
+def get_name_short_code_mobile_numbers_for_contacts(dbm, poll_recipients):
+    poll_recipients = ast.literal_eval(poll_recipients)
+    mobile_numbers = []
+    contact_dict_list = []
+    for poll_recipient in poll_recipients:
+        contact = contact_by_short_code(dbm, poll_recipient)
+        mobile_numbers.append(contact.data.get('mobile_number')['value'])
+        if contact.name != "":
+             contact_dict_list.append("%s (%s)" % (contact.name, contact.short_code))
+        else:
+            contact_dict_list.append("%s (%s)" % (contact.data['mobile_number']['value'], contact.short_code))
+    return mobile_numbers, contact_dict_list
+
 def get_contact_details(dbm, request, failed_numbers):
+        mobile_numbers = []
+        contact_display_list = []
         search_parameters = {}
         if request.POST['recipient'] == 'linked':
             questionnaire_names = map(lambda item: lowercase_and_strip_accents(item),
                                       json.loads(request.POST['questionnaire-names']))
             search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}
+            mobile_numbers, contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
         elif request.POST['recipient'] == 'group':
             group_names = json.loads(request.POST['group-names'])
             search_parameters = {'void': False, 'search_filters': {'group_name': group_names}}
+            mobile_numbers, contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
 
-        mobile_numbers, contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
+        elif request.POST['recipient'] == 'poll_recipients':
+            mobile_numbers, contact_display_list = get_name_short_code_mobile_numbers_for_contacts(dbm, request.POST['my_poll_recipients'])
+
         return mobile_numbers, contact_display_list
 
 

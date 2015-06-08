@@ -169,6 +169,6 @@ var PollOptionsViewModel = function() {
 $(document).ready(function () {
     window.smsViewModel = new SmsViewModel();
     window.poll_options = new PollOptionsViewModel();
-    ko.applyBindings(window.poll_options, $('#poll_options')[0]);
-    ko.applyBindings(window.smsViewModel, $('#poll_sms')[0]);
+    ko.applyBindings(poll_options, $('#poll_options')[0]);
+    ko.applyBindings(smsViewModel, $('#poll_sms')[0]);
 });

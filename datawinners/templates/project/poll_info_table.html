@@ -7,16 +7,18 @@
         <th> {% trans "Recipients" %}</th>
         <th> {% trans "Sender" %} </th>
         </thead>
-        <tr data-bind="foreach:poll_messages">
-           <td> <span data-bind='text: $data.sent_on' ></span></td>
-           <td> <span data-bind='text: $data.message' ></span></td>
-           <td data-bind="keyvalue: $data.poll_recipient_map">
-               <span  class="capitalize" data-bind='text: $data.key'  ></span>
-               (<span class="small_grey" data-bind='text: $data.value' ></span>)
-           </td>
-           <td> <span data-bind='text: $data.sender' ></span></td>
+        <tbody data-bind="foreach: poll_messages">
+        <tr>
+               <td> <span data-bind='text: $data.sent_on' ></span></td>
+               <td> <span data-bind='text: $data.message' ></span></td>
+               <td data-bind="keyvalue: $data.poll_recipient_map">
+                   <span  class="capitalize" data-bind='text: $data.key'  ></span>
+                   (<span class="small_grey" data-bind='text: $data.value' ></span>)
+               </td>
+               <td> <span data-bind='text: $data.sender' ></span></td>
 
-        </tr>
+            </tr>
+        </tbody>
     </table>
 
 </div>

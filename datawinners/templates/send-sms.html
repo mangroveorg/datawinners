@@ -40,6 +40,7 @@
                 </div>
 
             <span data-bind="text:questionnairePlaceHolderText" class="italic grey"></span>
+            <span data-bind="text:questionnairePlaceHolderText" class="italic grey"></span>
         </div>
     </div>
 
@@ -48,7 +49,7 @@
         <div class = "tableCell" data-bind="css: {'none': hideMyPollRecipientsSection}">
             <!-- ko foreach: myPollRecipientsItems -->
                 <div>
-                    <input type="checkbox" data-bind="checkedValue: name, checked: $root.selectedMyPollRecipientsNames()" />
+                    <input type="checkbox" data-bind="checkedValue: value, checked: $root.selectedMyPollRecipientsNames()" />
                     <span data-bind="html: label"></span>
                 </div>
             <!-- /ko -->

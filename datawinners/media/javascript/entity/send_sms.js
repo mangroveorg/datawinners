@@ -3,6 +3,7 @@ function SmsViewModel(){
 
   var smsTextArea = $("#sms-text");
 
+  var project_id_name = "";
   self.selectedSmsOption = ko.observable("");
 
   self.selectedSmsOption.subscribe(function(newSelectedSmsOption){
@@ -89,7 +90,7 @@ function SmsViewModel(){
         var checkBoxLabel = itemNameEscaped + " <span class='grey italic'>" + response.my_poll_recipients[item] + "</span>";
         myRecipientsItems.push({value: response.my_poll_recipients[item], label: checkBoxLabel, name: item});
     });
-
+    project_id_name = response.project_id;
     self.myPollRecipientsItems(myRecipientsItems);
   };
 
@@ -168,6 +169,7 @@ function SmsViewModel(){
     self.othersList("");
     self.selectedGroupNames([]);
     self.selectedQuestionnaireNames([]);
+    self.selectedMyPollRecipientsNames([]);
     self._resetSuccessMessage();
     self._resetErrorMessages();
     self.showToSection(true);
@@ -245,6 +247,20 @@ function SmsViewModel(){
 
   };
 
+
+  self.validateMyPollRecipientsSelection = function(){
+
+    if(self.selectedSmsOption() == 'poll_recipients' && self.selectedMyPollRecipientsNames().length == 0){
+        self.selectedMyPollRecipientsNames.setError(gettext("This field is required."));
+        return false;
+    }
+    else{
+        self.selectedMyPollRecipientsNames.clearError();
+        return true;
+    }
+
+  };
+
   self.validateGroupSelection = function(){
 
     if(self.selectedSmsOption() == 'group' && self.selectedGroupNames().length == 0){
@@ -267,13 +283,14 @@ function SmsViewModel(){
     $("#no-smsc").show().addClass("none");
     $("#failed-numbers").show().addClass("none");
     self.selectedQuestionnaireNames.clearError();
+    self.selectedMyPollRecipientsNames.clearError();
     self.selectedGroupNames.clearError();
     self.smsText.clearError();
     self.othersList.clearError();
   };
 
   self.validate = function(){
-    return self.validateSmsText() & self.validateOthersList() & self.validateQuestionnaireSelection() & self.validateGroupSelection();
+    return self.validateSmsText() & self.validateOthersList() & self.validateQuestionnaireSelection() & self.validateGroupSelection()  & self.validateMyPollRecipientsSelection();
   };
 
   function _showFailedNumbersError(response) {
@@ -307,6 +324,9 @@ function SmsViewModel(){
           return;
       }
 
+      if (project_id == "" && project_id_name != ""){
+          project_id = project_id_name;
+      }
       self._resetSuccessMessage();
       self._resetErrorMessages();
 
@@ -320,6 +340,7 @@ function SmsViewModel(){
           'project_id': JSON.stringify(project_id),
           'questionnaire-names':  JSON.stringify(self.selectedQuestionnaireNames()),
           'group-names':  JSON.stringify(self.selectedGroupNames()),
+          'my_poll_recipients':  JSON.stringify(self.selectedMyPollRecipientsNames()),
           'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
       }).done(function(response){
 
@@ -335,6 +356,7 @@ function SmsViewModel(){
               _showFailedNumbersError(response);
           }
       });
+      window.location.reload();
       $('html, body').animate({scrollTop: '0px'}, 0);
   };
 
