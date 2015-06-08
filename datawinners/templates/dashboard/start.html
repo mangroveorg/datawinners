@@ -13,6 +13,13 @@
     <link href="/media/css/scss/section_dashboard.css" rel="stylesheet" />
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script language="javascript">
+        DW.help_url = "{{ help_url }}";
+    </script>
+{% endblock %}
+
 
 
 {% block content %}
