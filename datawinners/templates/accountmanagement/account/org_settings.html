@@ -3,6 +3,7 @@
 {% load i18n %}
 {% block page_title %} {% trans "Account" %} {% endblock %}
 {% block page_js %}
+    {{ block.super }}
     <script type="text/javascript">
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/acc/?template=help";
     </script>
