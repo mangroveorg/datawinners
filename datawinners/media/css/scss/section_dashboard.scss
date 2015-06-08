@@ -184,6 +184,9 @@ table.no-border{
   position: relative;
   box-shadow: 3px 3px 5px #808080, -3px 3px 5px #808080;
   width: 250px;
+  &.fr_bubble{
+    width: 324px;
+  }
 }
 
 .external_icon{
@@ -206,6 +209,9 @@ table.no-border{
   width: 30px;
   height: 10px;
   right: 66px;
+}
+.fr_bubble #help_message_arrow{
+  right: 140px;
 }
 
 #help_message_dialog_close{
