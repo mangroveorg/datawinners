@@ -72,10 +72,11 @@ class SendSMS(View):
                    0].user.first_name + " ("+ \
                NGOUserProfile.objects.filter(org_id=organization_setting.organization.org_id)[0].reporter_id + ")"
 
-    def _log_poll_questionnaire_sent_messages(self, dbm, organization, organization_setting, request, sms_text, current_project_id):
-        mobile_numbers, contact_dict = get_contact_details(dbm, request)
+    def _log_poll_questionnaire_sent_messages(self, dbm, organization, organization_setting, request, sms_text, current_project_id, failed_numbers):
+        mobile_numbers, contact_dict = get_contact_details(dbm, request, failed_numbers)
         user_profile = self._get_sender_details(organization_setting)
-        self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, contact_dict,
+        if mobile_numbers:
+            self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, contact_dict,
                                      user_profile, current_project_id)
 
     def post(self, request, *args, **kwargs):
@@ -102,7 +103,7 @@ class SendSMS(View):
             # log sent messages only for poll questionnaire
             current_project_id = json.loads(request.POST['project_id'])
             if current_project_id != "":
-                self._log_poll_questionnaire_sent_messages(dbm, organization, organization_setting, request, sms_text, current_project_id)
+                self._log_poll_questionnaire_sent_messages(dbm, organization, organization_setting, request, sms_text, current_project_id, failed_numbers)
 
         except NoSMSCException:
             no_smsc = True
@@ -127,15 +128,17 @@ def _get_all_contacts_mobile_numbers(dbm, search_parameters):
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
     return [item['mobile_number'] for item in search_results.hits]
 
-def get_contact_details(dbm, request):
+def get_contact_details(dbm, request, failed_numbers):
+        search_parameters = {}
         if request.POST['recipient'] == 'linked':
             questionnaire_names = map(lambda item: lowercase_and_strip_accents(item),
                                       json.loads(request.POST['questionnaire-names']))
             search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}
-        else:
+        elif request.POST['recipient'] == 'group':
             group_names = json.loads(request.POST['group-names'])
             search_parameters = {'void': False, 'search_filters': {'group_name': group_names}}
-        mobile_numbers, contact_display_list = _get_all_contacts_details(dbm, search_parameters)
+
+        mobile_numbers, contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
         return mobile_numbers, contact_display_list
 
 
@@ -148,6 +151,19 @@ def _get_all_contacts_details(dbm, search_parameters):
         mobile_numbers.append(entry['mobile_number'])
         display_prefix = entry['name'] if entry.get('name') else entry['mobile_number']
         contact_display_list.append("%s (%s)" % (display_prefix, entry['short_code']))
+
+    return mobile_numbers, contact_display_list
+
+def _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers):
+    search_parameters['response_fields'] = ['short_code', 'name', 'mobile_number']
+    search_results = get_all_datasenders_search_results(dbm, search_parameters)
+    mobile_numbers, contact_display_list = [], []
+
+    for entry in search_results.hits:
+        if entry['mobile_number'] not in failed_numbers:
+            mobile_numbers.append(entry['mobile_number'])
+            display_prefix = entry['name'] if entry.get('name') else entry['mobile_number']
+            contact_display_list.append("%s (%s)" % (display_prefix, entry['short_code']))
 
     return mobile_numbers, contact_display_list
 
