@@ -4805,7 +4805,7 @@ msgstr ""
 msgid "Create Your 1<sup>st</sup> Questionnaire </br> in 5 minutes"
 msgstr ""
 
-msgid "Tips for Successfull Data </br> Collection"
+msgid "Tips for Successful Data </br> Collection"
 msgstr ""
 
 msgid "Get Help"

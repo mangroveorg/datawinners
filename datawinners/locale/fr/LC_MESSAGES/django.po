@@ -5831,7 +5831,7 @@ msgstr "Faire un tour"
 msgid "Create Your 1<sup>st</sup> Questionnaire </br> in 5 minutes"
 msgstr "Créez votre 1<sup>er</sup> Questionnaire </br> en 5 minutes"
 
-msgid "Tips for Successfull Data </br> Collection"
+msgid "Tips for Successful Data </br> Collection"
 msgstr "Conseils pour une Collecte </br> de Données réussies"
 
 msgid "Get Help"
