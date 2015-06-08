@@ -130,7 +130,7 @@ var PollOptionsViewModel = function() {
     self.activate_poll = function() {
 
         data = {
-            'end_date': end_date.getYear() + "-" + end_date.getMonth() + "-" + end_date.getDate() + END_TIME
+            'end_date': end_date.getFullYear() + "-" + end_date.getMonth() + "-" + end_date.getDate() + END_TIME
         };
 
         $.post(activate_poll_url, data).done(function (response) {
