@@ -211,6 +211,7 @@ ko.bindingHandlers.dialog = {
             setTimeout(function() {
                 options.close = function() {
                     allBindingsAccessor().dialogVisible(false);
+                    window.location.reload();
                 };
                 options.title = gettext(options.title);
                 options.modal = true;

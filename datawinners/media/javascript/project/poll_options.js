@@ -30,7 +30,7 @@ var PollOptionsViewModel = function() {
         6: gettext('Saturday'),
         0: gettext('Sunday')
     };
-
+    var smsTextArea = $("#sms-text");
     self.selectedPollOption = ko.observableArray([1, 3, 4]);
     self.active_poll_days = ko.observable([1, 2, 3, 4, 5]);
     self.number_of_days = ko.observable();
@@ -126,7 +126,7 @@ var PollOptionsViewModel = function() {
 
     self.show_poll_info = function(){
         //$.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
-       $.post(get_poll_info_url, data).done(function (response) {
+       $.get(get_poll_info_url, data).done(function (response) {
            var responseJson = $.parseJSON(response);
            if (responseJson['success']) {
                var poll_me = responseJson['poll_messages'];

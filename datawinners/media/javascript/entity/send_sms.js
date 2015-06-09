@@ -3,7 +3,7 @@ function SmsViewModel(){
 
   var smsTextArea = $("#sms-text");
 
-  var project_id_name = "";
+  var project_id_to_send_sms = "";
   self.selectedSmsOption = ko.observable("");
 
   self.selectedSmsOption.subscribe(function(newSelectedSmsOption){
@@ -37,17 +37,17 @@ function SmsViewModel(){
   self.showToSection = ko.observable(true);
 
   var questionnaireDetailsResponseHandler = function(response){
-    var response = $.parseJSON(response);
+    var responseJson = $.parseJSON(response);
     var questionnaireItems = [];
 
-    if(response.length == 0){
+    if(responseJson.length == 0){
         self.questionnairePlaceHolderText(gettext("Once you have created questionnaires, a list of your questionnaires will appear here."));
     }
     else{
        self.questionnairePlaceHolderText("");
     }
 
-    $.each(response, function(index, item){
+    $.each(responseJson, function(index, item){
         var checkBoxLabel = _.escape(item.name) + " <span class='grey italic'>" + item['ds-count'] + gettext(" recipients") + "</span>";
         questionnaireItems.push({value: item.id, label: checkBoxLabel, name: item.name});
     });
@@ -90,7 +90,7 @@ function SmsViewModel(){
         var checkBoxLabel = itemNameEscaped + " <span class='grey italic'>" + response.my_poll_recipients[item] + "</span>";
         myRecipientsItems.push({value: response.my_poll_recipients[item], label: checkBoxLabel, name: item});
     });
-    project_id_name = response.project_id;
+    project_id_to_send_sms = response.project_id;
     self.myPollRecipientsItems(myRecipientsItems);
   };
 
@@ -324,8 +324,8 @@ function SmsViewModel(){
           return;
       }
 
-      if (project_id == "" && project_id_name != ""){
-          project_id = project_id_name;
+      if (project_id == "" && project_id_to_send_sms != ""){
+          project_id = project_id_to_send_sms;
       }
       self._resetSuccessMessage();
       self._resetErrorMessages();
@@ -344,19 +344,19 @@ function SmsViewModel(){
           'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
       }).done(function(response){
 
-          var response = $.parseJSON(response);
+          var responseJson = $.parseJSON(response);
           self.sendButtonText(gettext("Send"));
           self.disableSendSms(false);
-          if(response.successful){
+          if(responseJson.successful){
               $("#sms-success").removeClass("none");
               DW.trackEvent('send-sms-popup', 'send-sms-' + sms_popup_page, self.selectedSmsOption());
           }
           else {
-              _showNoSMSCError(response);
-              _showFailedNumbersError(response);
+              _showNoSMSCError(responseJson);
+              _showFailedNumbersError(responseJson);
           }
       });
-      window.location.reload();
+      //window.location.reload();
       $('html, body').animate({scrollTop: '0px'}, 0);
   };
 

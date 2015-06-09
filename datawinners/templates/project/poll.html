@@ -24,6 +24,7 @@
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet"/>
+    <link href="/media/css/scss/send-sms.css" rel="stylesheet" />
 {% endblock %}
 
 
@@ -127,7 +128,7 @@
         {% if project.is_open_survey %}
         {% else %}
              <div class="questionnaire_type_header">
-                 <div data-bind="click: show_poll_info()">
+                 <div data-bind="click: show_poll_info">
                  <span class="header" >{% trans "Poll sent to "%} {{ num_of_recipients }}{% trans " people" %}</span>
                   </div>
              </div>

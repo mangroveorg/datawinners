@@ -88,7 +88,7 @@ class SendSMS(View):
         mobile_numbers, contact_dict = get_contact_details(dbm, request, failed_numbers)
         user_profile = self._get_sender_details(organization_setting)
         if mobile_numbers:
-            self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, contact_dict,
+                self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, contact_dict,
                                      user_profile, current_project_id)
 
     def post(self, request, *args, **kwargs):
@@ -141,17 +141,19 @@ def _get_all_contacts_mobile_numbers(dbm, search_parameters):
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
     return [item['mobile_number'] for item in search_results.hits]
 
-def get_name_short_code_mobile_numbers_for_contacts(dbm, poll_recipients):
+def get_name_short_code_mobile_numbers_for_contacts(dbm, poll_recipients, failed_numbers):
     poll_recipients = ast.literal_eval(poll_recipients)
     mobile_numbers = []
     contact_dict_list = []
     for poll_recipient in poll_recipients:
         contact = contact_by_short_code(dbm, poll_recipient)
-        mobile_numbers.append(contact.data.get('mobile_number')['value'])
-        if contact.name != "":
-             contact_dict_list.append("%s (%s)" % (contact.name, contact.short_code))
-        else:
-            contact_dict_list.append("%s (%s)" % (contact.data['mobile_number']['value'], contact.short_code))
+        contact_mobile_number = contact.data.get('mobile_number')['value']
+        if contact_mobile_number not in failed_numbers:
+            mobile_numbers.append(contact.data.get('mobile_number')['value'])
+            if contact.name != "":
+                 contact_dict_list.append("%s (%s)" % (contact.name, contact.short_code))
+            else:
+                contact_dict_list.append("%s (%s)" % (contact.data['mobile_number']['value'], contact.short_code))
     return mobile_numbers, contact_dict_list
 
 def get_contact_details(dbm, request, failed_numbers):
@@ -169,7 +171,7 @@ def get_contact_details(dbm, request, failed_numbers):
             mobile_numbers, contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
 
         elif request.POST['recipient'] == 'poll_recipients':
-            mobile_numbers, contact_display_list = get_name_short_code_mobile_numbers_for_contacts(dbm, request.POST['my_poll_recipients'])
+            mobile_numbers, contact_display_list = get_name_short_code_mobile_numbers_for_contacts(dbm, request.POST['my_poll_recipients'], failed_numbers)
 
         return mobile_numbers, contact_display_list
 
