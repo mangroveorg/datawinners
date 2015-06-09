@@ -2,16 +2,16 @@
 
 {% block help_button %}
     <a href="javascript:void(0);" target="myFrame" class="float_right" id="need_help_link">
-        <img src="/media/images/help_button.png" id="need_help_button">
-        <img src="/media/images/help_button_active.png" id="need_help_active_button" class="none">
+        <img src="/media/images/help_button_{% trans "en" %}.png" id="need_help_button">
+        <img src="/media/images/help_button_active_{% trans "en" %}.png" id="need_help_active_button" class="none">
     </a>
 
     <div class="padding_left_right_10" id="div_iframe">
-        <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">Close</span></a>
+        <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">{% trans "Close" %}</span></a>
         <iframe src="" width="860" name="myFrame" scrolling="no" id="help_iframe" class="float_right"></iframe>
         <div id="help_unavailable" class="none clear_both text_align_center">
                 {% trans "The help is unavailable for a moment!" %}
             </div>
-        <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">Close</span></a>
+        <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">{% trans "Close" %}</span></a>
     </div>
 {% endblock %}
