@@ -45,6 +45,7 @@ $(document).ready(function(){
         $("#div_iframe").css("visibility", "hidden");
         $("#need_help_active_button").addClass("none");
         $('#need_help_button').removeClass("none");
+        return false;
     });
 
 
