@@ -105,7 +105,7 @@ function SmsViewModel(){
         $.get(group_ds_count_url).done(groupDetailsResponseHandler);
     }
 
-    else if(selectedOption == 'poll_recipients'){
+    else if(selectedOption == 'poll_recipients' && self.myPollRecipientsItems().length == 0){
         self.myPollRecipientsPlaceHolderText(gettext("Loading..."));
         $.get(my_poll_recipients_count_url).done(myRecipientsDetailsResponseHandler);
     }
