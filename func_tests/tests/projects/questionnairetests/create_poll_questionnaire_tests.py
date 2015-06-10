@@ -36,8 +36,8 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page.click_create_poll()
         self.assertEquals(poll_Questionnaire_page.is_closed_poll_created(poll_title), True)
         self.assertEquals(poll_Questionnaire_page.is_broadcast_poll_created(poll_title), True)
-        self.assertEquals(poll_Questionnaire_page.are_all_accordians_present(), True)
-
+        self.assertEquals(poll_Questionnaire_page.are_all_three_accordians_present(), True)
+        self.assertEquals(poll_Questionnaire_page.is_send_sms_to_more_people_visible(), True)
 
     def test_should_create_a_poll_questionnaire_with_linked_contacts(self):
         poll_title = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
@@ -48,6 +48,7 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page.click_create_poll()
         self.assertEquals(poll_Questionnaire_page.is_closed_poll_created(poll_title), True)
         self.assertEquals(poll_Questionnaire_page.are_all_three_accordians_present(), True)
+        self.assertEquals(poll_Questionnaire_page.is_send_sms_to_more_people_visible(), True)
 
     def test_poll_should_have_data_senders_of_group_as_poll_recipient(self):
         self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
@@ -78,4 +79,6 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page.select_broadcast_option()
         poll_Questionnaire_page.click_create_poll()
         self.assertEquals(poll_Questionnaire_page.is_broadcast_poll_created(poll_title), True)
-        self.assertEquals(poll_Questionnaire_page.are_broadcast_poll_accordians_present(),True)
+        self.assertEquals(poll_Questionnaire_page.are_broadcast_poll_accordians_present(), True)
+        self.assertEquals(poll_Questionnaire_page.are_all_three_accordians_present(), False)
+        self.assertEquals(poll_Questionnaire_page.is_send_sms_to_more_people_visible(), False)
