@@ -1,0 +1,213 @@
+{% extends 'layout_application.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Dashboard" %}{% endblock %}
+{% block section_title %}{% trans "Dashboard" %}
+    {% block section_help %}
+     &nbsp;
+    {% endblock %}
+{% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "dashboard" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_dashboard.css" rel="stylesheet" />
+    <link href="/media/css/scss/send-sms.css" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        var is_first_time_activation = "{{ first_time_activation }}";
+        var account_cost = "{{ account_cost }}";
+        var account_type = "{{ account_type }}";
+        var send_sms_url = "{% url send-sms%}";
+        var registered_ds_count_url = "{% url registered_ds_count %}";
+        var group_ds_count_url = "{% url group_ds_count %}";
+    </script>
+    <script type="text/javascript" src="/media/javascript/home/dashboard.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms_index.js"></script>
+
+{% endblock %}
+
+{% block main_message %}
+    {% include 'main_message_upgrade.html' %}
+    {{ block.super }}
+{% endblock %}
+{% block help_button %}
+    &nbsp;
+{% endblock %}
+
+{% block content %}
+
+    {% for message in messages %}
+            <div class="{{ message.tags }}-message-box message-box clear-left">{{ message }}</div>
+    {% endfor %}
+    {% if questionnaireDoesNotExist %}
+        <div class="warning-message-box clear-left">
+            <p>
+                {% trans 'We made our Questionnaire Building process simpler and easier for you. '%} <a target="_blank" href="http://datawinners.wordpress.com/2014/05/15/data-collection-just-got-easier/">{% trans 'Read more »'%}</a>
+                <br/>
+                {%trans 'With this update we changed the webpage address you are trying to access. Sorry for the inconvenience.' %}
+            </p>
+        </div>
+    {% endif %}
+
+    {% if show_help %}
+    <div class="help_background padding_5 margin_top_5" id="welcome_area">
+    <a class="close_help_element padding_5 float_right"><img src="/media/images/close_button.png"></a>
+        <div class="tooltip">
+            <p>
+                {% trans "The Get Started section can be removed when you no longer need it." %}
+            </p>
+        </div>
+        <h4>{{ user.first_name }}, {% trans 'Get Started with DataWinners!' %}</h4>
+            <div class="help_accordion">
+                {% trans 'For more tips, support, and tutorials, visit our' %}
+                <a href="{% trans "https://www.datawinners.com/en/help-center/" %}" target="_blank" class="margin_bottom_10">{% trans 'Help Center' %}</a>
+                <img src="/media/images/external_link.png" class="external_icon">
+            </div>
+    </div>
+
+    <div class="help_section table" id="help_element">
+        <div class="help_section tableRow help_background">
+            <div class="tableCell sub_section padding_bottom_10 padding_top_20">
+                <img  class='dashboard_top_icon' src="/media/images/take_a_tour.png"><br/>
+
+                    <a href="{% trans "https://www.youtube.com/embed/0YIGgbGF3wI?autoplay=1" %}" class="open_video margin_bottom_10 bold font_size_13">
+                        {% trans "Take a Tour" %}<img src="/media/images/play_symbol.png" class="play_icon margin_left_10">
+                    </a>
+
+            </div>
+            <div class="tableCell sub_section padding_bottom_10 padding_top_20">
+                <img  class='dashboard_top_icon'  src="/media/images/create_questionnaire.png"/><br/>
+
+                    <a href="{% trans "https://www.youtube.com/embed/4QmTmcr56wU?autoplay=1" %}" class="open_video margin_bottom_10 bold font_size_13">
+                        {% trans "Create Your Questionnaire </br> in 5 minutes" %}
+                        <img src="/media/images/play_symbol.png" class="play_icon margin_left_10">
+                    </a>
+
+            </div>
+            <div class="tableCell sub_section padding_bottom_10 padding_top_20">
+                <img  class='dashboard_top_icon'  src="/media/images/bulb.png"/><br/>
+                <a href="{% trans "https://www.datawinners.com/dwcdt" %}" class="margin_bottom_10 bold font_size_13" target="_blank">{% trans "Tips for Successful Data </br> Collection" %}</a>
+                <img src="/media/images/external_link.png" class="external_icon">
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="help_section table" id="help_area">
+        <div class="help_section tableRow">
+
+            <div class="tableCell sub_section" id="chat_section">
+                <img  class='dashboard_icon'  src="/media/images/advertising.png"/><br/>
+                <span class="explanation ">{% trans 'Communicate' %}</span><br/>
+                {% if  is_pro_sms %}
+                    <a id="send_sms" class="margin_bottom_10">{% trans 'Send an SMS' %}</a>
+                {% else %}
+                    <a id="show_upgrade_message" class="margin_bottom_10">{% trans 'Send an SMS' %}</a>
+                {% endif %}
+            </div>
+            <div class="tableCell sub_section" id="questionnaire_section">
+                <img  class='dashboard_icon'  src="/media/images/analysis_business_check_checklist.png"/><br/>
+                <span class="explanation">{% trans 'Collect Data' %}</span><br/>
+                <a id="create_project_link" href="/project/wizard/create/?prev=dash" class="margin_bottom_10">{% trans 'Create a Questionnaire' %}</a>
+            </div>
+            <!--<div class="tableCell sub_section">
+                <img  class='dashboard_icon'  src="/media/images/magnidier.png"/><br/>
+                <p class="explanation">Submission Statistics</p>
+                <a id="submissio    n_stat_link" href="" class="margin_bottom_10">View Statistics</a>
+            </div>!-->
+            <div class="tableCell sub_section">
+                <div style="" id="help_message" class="none">
+                    <div class="padding_5 {% trans "en" %}_bubble" id="help_message_content">
+                        <a><img src="/media/images/dw_dialog_close.png" id="help_message_dialog_close"></a>
+                        <span>
+                        {% trans 'The Get Started information is always available in our Help Center.' %}
+                        </span>
+                        <img src="/media/images/Pricing_05.png" id="help_message_arrow">
+                    </div>
+                </div>
+                <img  class='dashboard_icon' src="/media/images/get_help.png"/><br/>
+                <span class="explanation">{% trans 'Get Help' %}</span><br/>
+                <a id="get_help_link" href="{% trans "https://www.datawinners.com/en/help-center/" %}" target="_blank" class="margin_bottom_10">
+                    {% trans 'Go to Help Center' %}
+                    <img src="/media/images/external_link.png" class="external_icon margin_left_10">
+                </a>
+            </div>
+
+        </div>
+    </div>
+    {% include "send-sms.html" %}
+    <div id="video-lightbox">
+        <iframe width="700" height="500" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="grid_17 margin_left_null dashboard_left">
+        <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Questionnaires" %}</h4>
+        <div id="projects">
+        {% for project in projects %}
+            <div class="project_header">
+                <a href="{{ project.link }}">{{ project.name }} </a>
+                <span id="submission_success_breakup_{{ project.id }}" class="success_error"></span>
+                <span class="project_id none">{{ project.id }}</span>
+            </div>
+        {% endfor %}
+        </div>
+        <a class="grid_4  omega alpha view_all_projects" href="{% url alldata_index %}">{% trans "view all Questionnaires"%} »</a>
+    </div>
+    <div class="grid_5 alpha omega dashboard_right">
+    {% if in_trial_mode and user.groups.all.0.name == 'NGO Admins' %}
+        <div class="warning-message-box clear-both overflow_hidden padding_5" id="blue_message_box">
+            <b>{% trans "Go Pro" %}</b><br/>
+            {% if has_reached_submission_limit %}
+                {% trans "You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your questionnaires." %}
+
+            {% else %}
+                {% if has_reached_sms_limit %}
+                    {% trans "You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your questionnaires." %}
+
+                {% else %}
+                    {% trans "For unlimited data collection and advanced features, consider a Pro Account upgrade!" %}
+                {% endif %}
+            {% endif %}
+            <br/><br/>
+            <div style="width: 100%">
+                <a href="https://www.datawinners.com/{{ language }}/pricing/" class="float_left margin_top_5 margin_right_4" target="_blank">{% trans "Learn More" %}</a>
+                <a href="/upgrade/" target="blank" class="button float_right button_{% trans "en" %}">{% trans "Subscribe Now" %}</a>
+                <br/>
+                <br class="clear_both"/>
+            </div>
+            </div>
+    {% endif %}
+        <h4 class="margin_bottom_10">{% trans "Statistics" %}</h4>
+        <h6>{% trans "Submissions Received" %}</h6>
+        <table class="no-border">
+            <tr><td width="55%">&nbsp;</td><td width="30%" class="italic grey font_size_10">{% trans "This Month" %}</td><td width="15%" class="italic grey font_size_10">{% trans "Total" %}</td></tr>
+            <tr><td>{% trans "SMS" %}</td><td>{{ counters.sms_submission_current_month }}</td><td>{{ counters.total_sms_submission }}</td></tr>
+            <tr><td>{% trans "Smartphone" %}</td><td>{{ counters.sp_submission_current_month }}</td><td>{{ counters.total_sp_submission }}</td></tr>
+            <tr><td>{% trans "Web" %}</td><td>{{ counters.web_submission_current_month }}</td><td>{{ counters.total_web_submission }}</td></tr>
+            <tr><td><b>{% trans "Total" %}</b></td><td><b>{{ counters.total_submission_current_month }}</b></td><td><b>{{ counters.combined_total_submissions }}</b></td></tr>
+            <tr><td colspan="3">&nbsp;</td></tr>
+            <tr><td colspan="3"><h6>{% trans "Your SMS Usage This Month" %}</h6></td></tr>
+            <tr><td>{% trans "Reply SMS" %}</td><td>{{ counters.sms_reply}}</td><td>&nbsp;</td></tr>
+            <tr><td>{% trans "Reminders" %}</td><td>{{ counters.reminders }}</td><td>&nbsp;</td></tr>
+            <tr><td>{% trans "Send a message" %}</td><td>{{ counters.send_a_msg_current_month }}</td><td>&nbsp;</td></tr>
+            <tr><td>{% trans "API" %}</td><td>{{ counters.sent_via_api_current_month }}</td><td>&nbsp;</td></tr>
+            <tr><td><b>{% trans "Total SMS Sent" %}</b></td><td><b>{{ counters.total_sent_sms }}</b></td><td>&nbsp;</td></tr>
+            <tr><td colspan="3">&nbsp;</td></tr>
+            <tr><td><b>{% trans "Total SMS" %}</b></td><td style="vertical-align:top;"><b>{{ counters.total_sms_current_month }}</b></td><td>&nbsp;</td></tr>
+            <tr><td><span class="small font_size_10">({% trans "sent & received" %})</span></td><td colspan="2">&nbsp;</td> </tr>
+        </table>
+    </div>
+    {% csrf_token %}
+{% endblock %}
