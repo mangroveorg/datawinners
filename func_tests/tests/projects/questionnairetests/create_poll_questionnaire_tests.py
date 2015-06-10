@@ -23,34 +23,38 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         all_contacts_page.add_contact_to_group(cls.unique_id, cls.group_name)
 
         dashboard_page = cls.global_navigation.navigate_to_dashboard_page()
-
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
         cls.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
+
 
     def test_should_create_a_poll_questionnaire_with_sms_option_with_group(self):
         poll_title = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
         poll_Questionnaire_page.enter_sms_text()
-        poll_Questionnaire_page.select_receipient(RECEIPIENT[0],self.group_name)
+        poll_Questionnaire_page.select_receipient(RECEIPIENT[0], self.group_name)
         poll_Questionnaire_page.click_create_poll()
-        self.assertEquals(poll_Questionnaire_page.is_poll_created(poll_title), True)
+        self.assertEquals(poll_Questionnaire_page.is_closed_poll_created(poll_title), True)
+        self.assertEquals(poll_Questionnaire_page.is_broadcast_poll_created(poll_title), True)
+        self.assertEquals(poll_Questionnaire_page.are_all_accordians_present(), True)
+
 
     def test_should_create_a_poll_questionnaire_with_linked_contacts(self):
         poll_title = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
         poll_Questionnaire_page.enter_sms_text()
-        poll_Questionnaire_page.select_receipient(RECEIPIENT[1],CLINIC_ALL_DS)
+        poll_Questionnaire_page.select_receipient(RECEIPIENT[1], CLINIC_ALL_DS)
         poll_Questionnaire_page.click_create_poll()
-        self.assertEquals(poll_Questionnaire_page.is_poll_created(poll_title), True)
+        self.assertEquals(poll_Questionnaire_page.is_closed_poll_created(poll_title), True)
+        self.assertEquals(poll_Questionnaire_page.are_all_three_accordians_present(), True)
 
-    def test_poll_should_have_data_sender_of_group_as_poll_recipient(self):
+    def test_poll_should_have_data_senders_of_group_as_poll_recipient(self):
         self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
         poll_Questionnaire_page.enter_sms_text()
-        poll_Questionnaire_page.select_receipient(RECEIPIENT[0],self.group_name)
+        poll_Questionnaire_page.select_receipient(RECEIPIENT[0], self.group_name)
         poll_Questionnaire_page.click_create_poll()
         poll_Questionnaire_page.select_tab(DATA_SENDER_TAB)
         self.assertEquals(poll_Questionnaire_page.isDataSenderAssociated(self.unique_id, FIRST_ROW, SIXTH_COLUMN), True)
@@ -73,4 +77,5 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_broadcast_option()
         poll_Questionnaire_page.click_create_poll()
-        self.assertEquals(poll_Questionnaire_page.is_poll_created(poll_title), True)
+        self.assertEquals(poll_Questionnaire_page.is_broadcast_poll_created(poll_title), True)
+        self.assertEquals(poll_Questionnaire_page.are_broadcast_poll_accordians_present(),True)
