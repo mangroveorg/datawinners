@@ -158,7 +158,7 @@ function _initializeViewModel() {
 
     ko.applyBindings(questionnaireViewModel, $('#create_questionnaire')[0]);
     ko.applyBindings(pollViewModel, $('#poll_questionnaire')[0]);
-    ko.applyBindings(smsViewModel, $('#poll_sms_section')[0]);
+    ko.applyBindings(smsViewModel, $('#send-sms-section')[0]);
     ko.applyBindings(questionnaireCreationOptionsViewModel, $('#project_profile')[0]);
     $("#send_sms_button").hide();
 }

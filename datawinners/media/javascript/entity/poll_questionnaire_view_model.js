@@ -114,7 +114,10 @@
                     _send_sms_(responseJson.project_id);
                 }
                 else{
-                    window.questionnaireViewModel.projectName.setError(responseJson['error_message']['name']);
+                    if(responseJson['error_message']['name']){
+                        window.questionnaireViewModel.projectName.setError(responseJson['error_message']['name']);}
+                    else{
+                        window.questionnaireViewModel.info_message_poll(responseJson['error_message']);}
                 }
 
                 $('#sms-success').hide();

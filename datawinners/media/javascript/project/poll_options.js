@@ -30,7 +30,6 @@ var PollOptionsViewModel = function() {
         6: gettext('Saturday'),
         0: gettext('Sunday')
     };
-    var smsTextArea = $("#sms-text");
     self.selectedPollOption = ko.observableArray([1, 3, 4]);
     self.active_poll_days = ko.observable([1, 2, 3, 4, 5]);
     self.number_of_days = ko.observable();
@@ -170,5 +169,5 @@ $(document).ready(function () {
     window.smsViewModel = new SmsViewModel();
     window.poll_options = new PollOptionsViewModel();
     ko.applyBindings(poll_options, $('#poll_options')[0]);
-    ko.applyBindings(smsViewModel, $('#poll_sms')[0]);
+    ko.applyBindings(smsViewModel, $('#send-sms-section')[0]);
 });

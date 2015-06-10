@@ -2,8 +2,10 @@
 
 <div data-bind="visible: showPollQuestionnaireForm">
 
+
     <form id="poll_form">
         {% csrf_token %}
+        <div id="message_box" data-bind="text:info_message_poll"></div>
         <div class="questionnaire_form_header clearfix">
             {% include 'project/questionnaire_info_indicator.html' %}
         </div>
@@ -16,6 +18,7 @@
 
         <div data-bind="stopBinding: true">
             <div id="poll_questionnaire">
+
                 <label>2. {%trans 'How Do You Want to Broadcast this Poll?'%}</label>
             <br>
                 <div>
@@ -33,9 +36,7 @@
 
 
                     <div data-bind="stopBinding: true">
-                        <div id="poll_sms_section">
                             {% include 'send-sms.html' %}
-                        </div>
                     </div>
 
                 </div>
