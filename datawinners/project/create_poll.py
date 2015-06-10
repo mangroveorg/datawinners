@@ -85,4 +85,11 @@ def create_poll_questionnaire(request):
 @is_not_expired
 def create_poll(request):
     if request.method == 'POST':
-        return create_poll_questionnaire(request)
+        manager = get_database_manager(request.user)
+        is_active, project_id, project_name = is_active_form_model(manager)
+        if not is_active:
+            return create_poll_questionnaire(request)
+        else:
+            return HttpResponse(json.dumps({'success': False,
+                                    'error_message': 'Another poll is active',
+                                    'project_name_unique': project_name}))

@@ -156,19 +156,31 @@ def get_name_short_code_mobile_numbers_for_contacts(dbm, poll_recipients, failed
                 contact_dict_list.append("%s (%s)" % (contact.data['mobile_number']['value'], contact.short_code))
     return mobile_numbers, contact_dict_list
 
+
+def _get_contact_details_for_questionnaire(dbm, failed_numbers, request):
+    questionnaire_names = map(lambda item: lowercase_and_strip_accents(item),
+                              json.loads(request.POST['questionnaire-names']))
+    search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}
+    mobile_numbers, contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters,
+                                                                                        failed_numbers)
+    return contact_display_list, mobile_numbers
+
+
+def _get_contact_details_for_group_names(dbm, failed_numbers, request):
+    group_names = json.loads(request.POST['group-names'])
+    search_parameters = {'void': False, 'search_filters': {'group_name': group_names}}
+    mobile_numbers, contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters,
+                                                                                        failed_numbers)
+    return contact_display_list, mobile_numbers
+
+
 def get_contact_details(dbm, request, failed_numbers):
         mobile_numbers = []
         contact_display_list = []
-        search_parameters = {}
         if request.POST['recipient'] == 'linked':
-            questionnaire_names = map(lambda item: lowercase_and_strip_accents(item),
-                                      json.loads(request.POST['questionnaire-names']))
-            search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}
-            mobile_numbers, contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
+            contact_display_list, mobile_numbers = _get_contact_details_for_questionnaire(dbm, failed_numbers, request)
         elif request.POST['recipient'] == 'group':
-            group_names = json.loads(request.POST['group-names'])
-            search_parameters = {'void': False, 'search_filters': {'group_name': group_names}}
-            mobile_numbers, contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
+            contact_display_list, mobile_numbers = _get_contact_details_for_group_names(dbm, failed_numbers, request)
 
         elif request.POST['recipient'] == 'poll_recipients':
             mobile_numbers, contact_display_list = get_name_short_code_mobile_numbers_for_contacts(dbm, request.POST['my_poll_recipients'], failed_numbers)

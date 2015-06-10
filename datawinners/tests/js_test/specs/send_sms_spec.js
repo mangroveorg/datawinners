@@ -152,6 +152,32 @@ describe("Send A Message", function(){
 
     });
 
+    describe("Validations for my poll recipients selection", function(){
+
+        it("should give a mandatory warning when my poll recipients is empty", function() {
+
+            model.selectedSmsOption("poll_recipients");
+            model.selectedMyPollRecipientsNames([]);
+
+            expect(model.validateMyPollRecipientsSelection()).toBe(false);
+
+            expect(model.selectedMyPollRecipientsNames.valid()).toBe(false);
+            expect(model.selectedMyPollRecipientsNames.error()).toBe("This field is required.");
+        });
+
+        it("should not give a warning when linked contact list is not empty", function() {
+
+            model.selectedSmsOption("poll_recipient");
+            model.selectedMyPollRecipientsNames(['some questionnaire']);
+
+            expect(model.validateMyPollRecipientsSelection()).toBe(true);
+
+            expect(model.selectedMyPollRecipientsNames.valid()).toBe(true);
+            expect(model.selectedMyPollRecipientsNames.error()).toBe("");
+        });
+
+    });
+
     describe("Validations for group contacts selection", function(){
 
         it("should give a mandatory warning when group contact list is empty", function() {
@@ -222,6 +248,27 @@ describe("Send A Message", function(){
         expect(model.questionnairePlaceHolderText()).toBe("");
         expect(model.questionnaireItems()).toEqual([{'value': 'questionnaire1_id',
             label: "questionnaire_name <span class='grey italic'>10 recipients</span>", name: "questionnaire_name"}]);
+
+    });
+
+    it("should populate my poll recipients name and contact count via ajax call", function(){
+
+        spyOn(jQuery, "ajax").andCallFake(function() {
+            expect(model.myPollRecipientsPlaceHolderText()).toBe("Loading...");
+            var d = $.Deferred();
+            //'{"project_id": "c62be02a0e8611e5a366001c42376ad8", "my_poll_recipients": {"AkshaY": "rep7", "Ritesh": "rep5", "RiteshY": "rep6"}}'
+            d.resolve({"project_id": "project_id", "my_poll_recipients": {"poll_recipient_name": "poll_recipient_id"}});
+            return d.promise();
+        });
+
+        model.myPollRecipientsItems([]);
+
+        model.selectedSmsOption("poll_recipients");
+
+        expect($.ajax.mostRecentCall.args[0]["url"]).toEqual("http://my_poll_recipients_count_url.com");
+        expect($.ajax.mostRecentCall.args[0]["type"]).toEqual("get");
+        expect(model.myPollRecipientsPlaceHolderText()).toBe("");
+        expect(model.myPollRecipientsItems()).toEqual([ { value : 'poll_recipient_id', label : "poll_recipient_name <span class='grey italic'>poll_recipient_id</span>", name : 'poll_recipient_name' } ]);
 
     });
 
