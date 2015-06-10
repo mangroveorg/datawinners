@@ -52,6 +52,10 @@ function SmsViewModel(){
         questionnaireItems.push({value: item.id, label: checkBoxLabel, name: item.name});
     });
 
+    if (is_poll){
+        project_id_to_send_sms = project_id;
+    }
+
     self.questionnaireItems(questionnaireItems);
   };
 
@@ -70,7 +74,9 @@ function SmsViewModel(){
         var checkBoxLabel = itemNameEscaped + " <span class='grey italic'>" + item['count'] + gettext(" recipients") + "</span>";
         groupItems.push({value: item.name, label: checkBoxLabel, name: item.name});
     });
-
+    if (is_poll){
+        project_id_to_send_sms = project_id;
+    }
     self.groupItems(groupItems);
   };
 
@@ -90,7 +96,9 @@ function SmsViewModel(){
         var checkBoxLabel = itemNameEscaped + " <span class='grey italic'>" + response.my_poll_recipients[item] + "</span>";
         myRecipientsItems.push({value: response.my_poll_recipients[item], label: checkBoxLabel, name: item});
     });
-    project_id_to_send_sms = response.project_id;
+    if (is_poll){
+        project_id_to_send_sms = project_id;
+    }
     self.myPollRecipientsItems(myRecipientsItems);
   };
 

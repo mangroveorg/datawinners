@@ -36,6 +36,7 @@
         var registered_ds_count_url = "{% url registered_ds_count %}";
         var send_sms_url = "{% url send-sms%}";
         var is_active = "{{ is_active }}";
+        var sms_popup_page = "poll_questionnaire";
         var from_date = "{{ from_date }}";
         var to_date = "{{ to_date }}";
         var questionnaire_id = "{{ questionnaire_id }}";
@@ -47,6 +48,8 @@
         var questionnaire_name = "{{ questionnaire_name }}";
         var days_active = "{{ days_active }}";
         var number_of_days = '{{ number_of_days }}';
+        var is_poll ='{{ project.is_poll }}';
+        var project_id = '{{ project.id }}';
         var get_poll_info_url = "{{ get_poll_info }}";
     </script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
@@ -66,18 +69,19 @@
 
     <div id="poll_options">
         <div class="margin_left_700">
-             <a data-bind="text:send_poll_text, click:send_sms_to_people" > </a>
+            {% if project.is_open_survey %}
+            {% else %}
+                <a data-bind="text:send_poll_text, click:send_sms_to_people" > </a>
                 <div data-bind="dialog: {autoOpen: false, width: 800, height: 'auto', title:'Send Sms to More People', dialogClass:'no-close'},
                         dialogVisible: show_sms_option, open: send_sms_to_people, dialogContent: show_poll_sms_content">
                 </div>
                 <div id="show_poll_sms" class="none">
                     <div data-bind="stopBinding: true">
-{#                        <div id="poll_section">#}
-                            {% include 'send-sms.html' %}
-{#                        </div>#}
+                        {% include 'send-sms.html' %}
                     </div>
                 </div>
-    </div>
+            {% endif %}
+        </div>
         <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
         <div id="poll_status_info" class="questionnaire_type_header">
             <span class="header">{% trans "Poll"%}
@@ -125,7 +129,7 @@
         <div>
             {% include 'project/language.html' %}
         </div>
-        {% if project.is_open_survey %}
+            {% if project.is_open_survey %}
         {% else %}
              <div id="poll_sms_info" class="questionnaire_type_header">
                  <div data-bind="click: show_poll_info">
