@@ -33,6 +33,16 @@ DATA_TAB_BTN = by_id("data_tab")
 DATA_SENDER_TAB = by_id("data_senders_tab")
 POLL_TAB = by_id("poll_tab")
 WORD_OR_PHRASE_RB = by_css("input[value='text']")
+POLL_STATUS_INFO = by_id("poll_status_info")
+AUTOMATIC_REPLY_ACCORDIAN = by_id("automatic_reply")
+AUTOMATIC_REPLY_SECTION = by_id("automatic_reply_section")
+POLL_SMS_ACCORDIAN = by_id("poll_sms_info")
+ITALIC_GREY_COMMENT = by_css(".italic_grey")
+VIEW_EDIT_SEND = "View, edit & send your Survey."
+POLL_SMS_TABLE = by_css(".styled_table")
+
+AUTOMATIC_REPLY_SMS_TEXT = "Automatic Reply SMS\n" +\
+                      "DataWinners analyzes each SMS Submission and automatically sends back an SMS reply."
 WORD_OR_PHRASE = 'text'
 NUMBER_OPTION = 'integer'
 DATE_OPTION = 'date'
@@ -42,6 +52,10 @@ UNIQUE_ID_OPTION = 'unique_id'
 GROUP_OPTION = 'group'
 LINKED_CONTACTS = 'linked'
 OTHERS = 'others'
+active_poll_link = by_id('active_poll_name')
+poll_info_accordian = by_id('poll_info')
+deactivate_link = by_id('deactivate_link')
+YES_BUTTON = by_id("yes_button")
 NEW_UNIQUE_ID_TEXT = by_css('.newUniqueIdName')
 UNIQUE_ID_CHOICE_BOX = by_css('.uniqueIdType')
 UNIQUE_ID_COMBO_BOX = by_css('.uniqueIdTypeContents')

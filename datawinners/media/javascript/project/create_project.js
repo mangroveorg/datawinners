@@ -181,7 +181,7 @@ function _if_pro_sms_mode_show_poll_option() {
 function _is_another_poll_is_active() {
     if (is_active == "True") {
         $('.poll_active').show();
-        $('<div style="margin-left: 30px"><a href="/project/poll/' + project_active_id + '">' + project_active_name + '</a></div>').insertAfter($(".poll_active"));
+        $('<div id="active_poll_name" style="margin-left: 30px"><a href="/project/poll/' + project_active_id + '">' + project_active_name + '</a></div>').insertAfter($(".poll_active"));
         $('.poll_deactivated').hide();
     }
     else {

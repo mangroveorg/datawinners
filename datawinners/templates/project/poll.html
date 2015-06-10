@@ -78,8 +78,8 @@
                 </div>
     </div>
         <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
-        <div class="questionnaire_type_header">
-            <span class="header" id="create_poll">{% trans "Poll"%}
+        <div id="poll_status_info" class="questionnaire_type_header">
+            <span class="header">{% trans "Poll"%}
                     <span data-bind="text:duration"> </span>
             </span>
         </div>
@@ -89,7 +89,7 @@
             <div>
                 <p>
                     Poll is <strong><span data-bind="text:status"> </span> </strong>now :
-                    <a data-bind="text:deactivation, click:deactivate" style="color:#0070ac;" > </a>
+                    <a id="deactivate_link" data-bind="text:deactivation, click:deactivate" style="color:#0070ac;" > </a>
                     <a data-bind="text:activation, click:activate" style="color:#0070ac;"> </a>
                 </p>
                 <p>
@@ -112,13 +112,12 @@
                 <p> {% trans 'Are you sure want to deactivate?' %}</p>
                 <div class="float_right margin_top_40">
                     <button id='close_pop' data-bind="click: close_deactivation_popup"> {%trans 'No' %}</button>
-                    <button data-bind="click: deactivate_poll, css:{'ui-state-disabled': $root.disable_button},
-                    attr:{disabled:$root.disable_attr}"> {% trans 'Yes' %} </button>
+                    <button id="yes_button" data-bind="click: deactivate_poll"> {% trans 'Yes' %} </button>
                 </div>
             </div>
 
         </div>
-         <div class="questionnaire_type_header">
+         <div id="automatic_reply"class="questionnaire_type_header">
              <span class="header" >{% trans "Automatic Reply Sms"%}</span>
 
          </div>
@@ -127,7 +126,7 @@
         </div>
         {% if project.is_open_survey %}
         {% else %}
-             <div class="questionnaire_type_header">
+             <div id="poll_sms_info" class="questionnaire_type_header">
                  <div data-bind="click: show_poll_info">
                  <span class="header" >{% trans "Poll sent to "%} {{ num_of_recipients }}{% trans " people" %}</span>
                   </div>
