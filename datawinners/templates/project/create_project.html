@@ -2,7 +2,9 @@
 {% load i18n %}
 {% block page_title %} {% trans "Create Questionnaire" %}{% endblock %}
 {% block section_title %}
-    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Create a New Questionnaire" %}</h2>
+    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Create a New Questionnaire" %}
+        {% include 'need_help.html' %}
+    </h2>
 {% endblock %}
 
 {% load dw_tabs %}
@@ -24,6 +26,7 @@
         var existing_questionnaires_url = "{% url existing_questionnaires %}";
         var uniqueIdTypes = {{ unique_id_types|safe }};
         var active_language = "{{ active_language }}";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/createq/?template=help";
     </script>
 
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
@@ -48,6 +51,7 @@
             src="/media/javascript/project/questionnaire_instruction_and_preview_wizard.js"></script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw_university.js"></script>
 {% endblock %}
 
 {% block page_scss %}

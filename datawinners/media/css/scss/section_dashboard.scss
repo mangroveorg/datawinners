@@ -144,7 +144,6 @@ table.no-border{
 .table{
   width: 100%;
   margin-bottom: 40px;
-  margin-top: 20px;
 }
 
 .sub_section{
@@ -156,12 +155,86 @@ table.no-border{
   width:150px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px;
   font-weight: bold;
+  font-size: 15px;
 }
 
 .dashboard_icon {
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   padding-bottom: 15px;
+  margin-bottom: -5px;
+}
+
+.dashboard_top_icon {
+  width: 85px;
+  height: 85px;
+  padding-bottom: 15px;
+  margin-bottom: -5px;  
+}
+
+.help_background{
+ background-color: #E8EFF6;
+}
+
+#help_message_content{
+  background:-moz-linear-gradient(top, #ffffff, #FEEA89);
+  background:-webkit-linear-gradient(top, #ffffff, #FEEA89);
+  background:-o-linear-gradient(top, #ffffff, #FEEA89);
+  position: relative;
+  box-shadow: 3px 3px 5px #808080, -3px 3px 5px #808080;
+  width: 250px;
+  &.fr_bubble{
+    width: 324px;
+  }
+}
+
+.external_icon{
+  height: 10px;
+  width: 10px;
+  margin-bottom: 3px;
+  margin-left: 5px
+}
+
+.play_icon{
+  height: 12px;
+  width: 12px;
+  margin-bottom: 3px;
+  margin-left: 5px
+}
+
+#help_message_arrow{
+  position: absolute;
+  bottom: -10px;
+  width: 30px;
+  height: 10px;
+  right: 66px;
+}
+.fr_bubble #help_message_arrow{
+  right: 140px;
+}
+
+#help_message_dialog_close{
+  position: absolute;
+  right: -15px;
+  top: -15px;
+}
+
+#help_area{
+    margin-bottom: 50px;
+}
+
+#help_icon{
+ margin-bottom: 10px;
+ font-weight: bold;
+ font-size: 13px;
+ 
+}
+
+#help_message{
+  position: absolute;
+  right: 128px;
+  top:-38px;
+  width: 230px;
+  border: 1px solid #CCCCCC;
 }

@@ -1,3 +1,4 @@
+
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
 
@@ -40,6 +41,7 @@
         var uniqueIdTypes = {{ unique_id_types|safe }}
         var is_success = "{{ is_success }}"
         var active_language = "{{ active_language }}"
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/qrs/?template=help";
     </script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>

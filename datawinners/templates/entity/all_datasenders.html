@@ -57,6 +57,11 @@
         var sms_popup_page = "all-contacts";
         var is_pro_sms = "{{ is_pro_sms }}"
         var user_group = "{{ user_group }}";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/allds/?template=help";
+        $(document).ready(function() {
+            $("#page_title").addClass("full_width");
+            $("#need_help_link").addClass("margin_right_20");
+        });
 
     </script>
 
