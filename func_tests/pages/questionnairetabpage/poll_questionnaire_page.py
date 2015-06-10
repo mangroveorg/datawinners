@@ -8,7 +8,7 @@ from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_
     POLL_VIA_SMS_RD_BUTTON, SMS_TEXTBOX, CREATE_POLL_BUTTON, POLL_TITLE, DATA_SENDER_TAB, POLL_TAB, DATA_TAB_BTN, \
     POLL_VIA_BROADCAST_RD_BUTTON, active_poll_link, poll_info_accordian, deactivate_link, YES_BUTTON, POLL_STATUS_INFO, \
     AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, AUTOMATIC_REPLY_SECTION, ITALIC_GREY_COMMENT, \
-    VIEW_EDIT_SEND, POLL_SMS_TABLE
+    VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_MORE_LINK
 from pages.page import Page
 from tests.projects.questionnairetests.project_questionnaire_data import TYPE, GROUP, OTHERS, CONTACTS_LINKED, DATA_TAB, \
     POLL, POLL_RECIPIENTS
@@ -73,23 +73,31 @@ class PollQuestionnairePage(Page):
         return self.driver.find(ITALIC_GREY_COMMENT).text == VIEW_EDIT_SEND
 
     def is_sent_poll_sms_table(self):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_SMS_ACCORDIAN, True)
         self.driver.find(POLL_SMS_ACCORDIAN).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_SMS_TABLE, True)
         return self.driver.find(POLL_SMS_TABLE) != None
 
     def are_all_three_accordians_present(self):
-        self.driver.find(POLL_TAB).click()
-        poll_info = self.is_poll_status_accordian_present()
-        automatic_reply_sms = self.is_automatic_reply_sms_option_present()
-        poll_sent_sms = self.is_sent_poll_sms_table()
-        return poll_info & automatic_reply_sms & poll_sent_sms
+        try:
+            self.driver.find(POLL_TAB).click()
+            poll_info = self.is_poll_status_accordian_present()
+            automatic_reply_sms = self.is_automatic_reply_sms_option_present()
+            poll_sent_sms = self.is_sent_poll_sms_table()
+            return poll_info & automatic_reply_sms & poll_sent_sms
+        except:
+            return False
 
     def are_broadcast_poll_accordians_present(self):
         self.driver.find(POLL_TAB).click()
         poll_info = self.is_poll_status_accordian_present()
         automatic_reply_sms = self.is_automatic_reply_sms_option_present()
         return poll_info & automatic_reply_sms
+
+    def is_send_sms_to_more_people_visible(self):
+        try:
+            return self.driver.find(SEND_MORE_LINK).text == "Send Sms to More People"
+        except:
+            return False
 
 
     # def deactivate_poll(self):
