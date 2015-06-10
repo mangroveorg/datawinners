@@ -144,13 +144,17 @@ def activate_poll(request, project_id):
             is_active, question_id_active, question_name_active = is_active_form_model(manager)
             is_current_active = _is_same_questionnaire(question_id_active, questionnaire)
             end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%dT%H:%M:%S')
-            if not is_active and not is_current_active:
+            if is_current_active:
+                _change_questionnaire_end_date(questionnaire, end_date)
+                return HttpResponse(json.dumps({'success': True}))
+            elif not is_active and not is_current_active:
                 _change_questionnaire_status(questionnaire, "active")
                 _change_questionnaire_end_date(questionnaire, end_date)
                 return HttpResponse(json.dumps({'success': True}))
-            elif is_current_active:
-                _change_questionnaire_end_date(questionnaire, end_date)
-                return HttpResponse(json.dumps({'success': True}))
+            return HttpResponse(
+                json.dumps({'success': False, 'message': "Another poll is already active ",
+                            'question_id_active': question_id_active,
+                            'question_name_active': question_name_active}))
         return HttpResponse(json.dumps({'success': False, 'message': "No Such questionnaire"}))
 
 @login_required
