@@ -72,7 +72,7 @@
         <div class="margin_left_700">
             {% if project.is_open_survey %}
             {% else %}
-                <a id="send_sms_to_more_people" data-bind="text:send_poll_text, click:send_sms_to_people" > </a>
+                <a data-bind="text:send_poll_text, click:send_sms_to_people" > </a>
                 <div data-bind="dialog: {autoOpen: false, width: 800, height: 'auto', title:'Send Sms to More People', dialogClass:'no-close'},
                         dialogVisible: show_sms_option, open: send_sms_to_people, dialogContent: show_poll_sms_content">
                 </div>
