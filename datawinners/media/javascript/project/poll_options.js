@@ -52,6 +52,8 @@ var PollOptionsViewModel = function() {
     self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
     self.activatePollDialog = ko.observable($('#activate_poll_dialog').html());
 
+    $('#sms-text').val(message_text);
+
     window.smsViewModel.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
                                             {"label":gettext('My Poll Recipients'), "code": "poll_recipients"},
                                             {"label":gettext('Group'), "code": "group"},
@@ -161,6 +163,7 @@ var PollOptionsViewModel = function() {
     };
 
     self.send_sms_to_people = function(){
+
         self.show_sms_option(true);
     }
 };
@@ -168,6 +171,6 @@ var PollOptionsViewModel = function() {
 $(document).ready(function () {
     window.smsViewModel = new SmsViewModel();
     window.poll_options = new PollOptionsViewModel();
-    ko.applyBindings(poll_options, $('#poll_options')[0]);
     ko.applyBindings(smsViewModel, $('#send-sms-section')[0]);
+    ko.applyBindings(poll_options, $('#poll_options')[0]);
 });

@@ -93,6 +93,7 @@ def poll(request, project_id):
     messages_poll_info_array = _get_poll_sent_messages_info(project_id)
     return render_to_response('project/poll.html', RequestContext(request, {
         'project': questionnaire,
+        'message_text': questionnaire.form_fields[0]['label'],
         'project_links': project_links,
         'is_active': is_active,
         'from_date': from_date,
