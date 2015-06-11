@@ -59,6 +59,7 @@
     <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
      <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms_index.js"></script>
 {% endblock %}
 
 
@@ -67,21 +68,14 @@
         {% include "flash_message.html" %}
     </div>
 
-
+{% include 'send-sms.html' %}
     <div id="poll_options">
         <div class="margin_left_700">
+
             {% if project.is_open_survey %}
                 <div></div>
             {% else %}
-                <a data-bind="text:send_poll_text, click:send_sms_to_people" > </a>
-                <div data-bind="dialog: {autoOpen: false, width: 800, height: 'auto', title:'Send Sms to More People', dialogClass:'no-close'},
-                        dialogVisible: show_sms_option, open: send_sms_to_people, dialogContent: show_poll_sms_content">
-                </div>
-                <div id="show_poll_sms" class="none">
-                    <div data-bind="stopBinding: true">
-                        {% include 'send-sms.html' %}
-                    </div>
-                </div>
+                <a id="send_sms" class="margin_bottom_10">{% trans "Send Sms to More People" %}</a>
             {% endif %}
         </div>
         <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">

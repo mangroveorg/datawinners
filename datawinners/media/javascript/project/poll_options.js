@@ -48,7 +48,6 @@ var PollOptionsViewModel = function() {
     self.duration = ko.observable();
     self.activationDialogVisible = ko.observable(false);
     self.deactivationDialogVisible = ko.observable(false);
-    self.show_poll_sms_content = ko.observable($('#show_poll_sms').html());
     self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
     self.activatePollDialog = ko.observable($('#activate_poll_dialog').html());
 
@@ -126,7 +125,7 @@ var PollOptionsViewModel = function() {
     };
 
     self.show_poll_info = function(){
-        //$.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
+       $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
        $.get(get_poll_info_url, data).done(function (response) {
            var responseJson = $.parseJSON(response);
            if (responseJson['success']) {
@@ -161,11 +160,6 @@ var PollOptionsViewModel = function() {
         data = {};
         self.close_activation_popup();
     };
-
-    self.send_sms_to_people = function(){
-
-        self.show_sms_option(true);
-    }
 };
 
 $(document).ready(function () {
