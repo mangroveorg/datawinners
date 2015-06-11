@@ -51,13 +51,13 @@
         var is_poll ='{{ project.is_poll }}';
         var project_id = '{{ project.id }}';
         var get_poll_info_url = "{{ get_poll_info }}";
-        var message_text = "{{ message_text }}"
+        var message_text = "{{ message_text }}";
     </script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
     <script type="text/javascript" src="/media/javascript/project/project_language.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
+     <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
 {% endblock %}
 
@@ -71,6 +71,7 @@
     <div id="poll_options">
         <div class="margin_left_700">
             {% if project.is_open_survey %}
+                <div></div>
             {% else %}
                 <a data-bind="text:send_poll_text, click:send_sms_to_people" > </a>
                 <div data-bind="dialog: {autoOpen: false, width: 800, height: 'auto', title:'Send Sms to More People', dialogClass:'no-close'},
@@ -123,7 +124,7 @@
             </div>
 
         </div>
-         <div id="automatic_reply"class="questionnaire_type_header">
+         <div id="automatic_reply" class="questionnaire_type_header">
              <span class="header" >{% trans "Automatic Reply Sms"%}</span>
 
          </div>
