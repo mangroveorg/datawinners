@@ -6047,7 +6047,7 @@ msgstr "Désolé …<br>Ce menu d’aide n’est actuellement pas disponible.<br
 
 
 msgid "Help Center"
-msgstr "Centre d’assistance"
+msgstr "Centre d'aide"
 
 msgid "or contact"
 msgstr "ou contactez le"
