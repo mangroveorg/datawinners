@@ -103,7 +103,7 @@
                 'csrfmiddlewaretoken': $("#poll_form input[name=csrfmiddlewaretoken]").val(),
                 'end_date' : end_date.getFullYear() +"-"+ (end_date.getMonth()+1)+"-" + end_date.getDate()+"T" + end_date.getHours() +":"+ end_date.getMinutes() +":"+ end_date.getSeconds()
             };
-
+            $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
             $.post(create_poll_url, data).done(function (response) {
 
                 var responseJson = $.parseJSON(response);
