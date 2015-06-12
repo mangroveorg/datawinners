@@ -6,9 +6,10 @@ from framework.utils.common_utils import by_css, by_id, generateId, CommonUtilit
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_DROPDOWN, \
     POLL_VIA_SMS_RD_BUTTON, SMS_TEXTBOX, CREATE_POLL_BUTTON, POLL_TITLE, DATA_SENDER_TAB, POLL_TAB, DATA_TAB_BTN, \
-    POLL_VIA_BROADCAST_RD_BUTTON, active_poll_link, poll_info_accordian, deactivate_link, YES_BUTTON, POLL_STATUS_INFO, \
+    POLL_VIA_BROADCAST_RD_BUTTON, active_poll_link, poll_info_accordian, deactivate_link, POLL_STATUS_INFO, \
     AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, AUTOMATIC_REPLY_SECTION, ITALIC_GREY_COMMENT, \
-    VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_SMS_TO_MORE_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX
+    VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_SMS_TO_MORE_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
+    DEACTIVATE_BTN
 from pages.page import Page
 from tests.projects.questionnairetests.project_questionnaire_data import TYPE, GROUP, CONTACTS_LINKED, DATA_TAB, \
     POLL, POLL_RECIPIENTS
@@ -116,12 +117,12 @@ class PollQuestionnairePage(Page):
             by_xpath(".//*[@id='poll_sms_table']/tbody/tr[%s]/td[%s]" % (row, column))).text
         return recipent in recipient_name
 
-    # def deactivate_poll(self):
-    #     self.driver.find(POLL_TAB).click()
-    #     self.driver.find(poll_info_accordian).click()
-    #     self.driver.find(deactivate_link).click()
-    #     self.driver.wait_for_element(UI_TEST_TIMEOUT, YES_BUTTON, True)
-    #     self.driver.find(YES_BUTTON).click()
+    def deactivate_poll(self):
+        self.driver.find(POLL_TAB).click()
+        self.select_element(poll_info_accordian)
+        self.driver.find(deactivate_link).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DEACTIVATE_BTN, True)
+        self.driver.find(DEACTIVATE_BTN).click()
 
     def _configure_group_recipient(self, recipient_name):
         """

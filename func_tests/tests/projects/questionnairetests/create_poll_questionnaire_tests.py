@@ -4,7 +4,7 @@ from pages.createquestionnairepage.create_questionnaire_locator import DATA_SEND
 from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
 from tests.projects.questionnairetests.project_questionnaire_data import RECEIPIENT, CLINIC_ALL_DS, FIRST_ROW, SIXTH_COLUMN, \
-    SECOND_ROW, THIRD_ROW, THIRD_COLUMN
+    SECOND_ROW, THIRD_ROW, THIRD_COLUMN, REP6, REP5, REP7
 
 
 class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
@@ -69,9 +69,9 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page.select_receipient(RECEIPIENT[1], CLINIC_ALL_DS)
         poll_Questionnaire_page.click_create_poll()
         poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
-        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated('rep7', FIRST_ROW, SIXTH_COLUMN), True)
-        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated('rep5', SECOND_ROW, SIXTH_COLUMN), True)
-        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated('rep6', THIRD_ROW, SIXTH_COLUMN), True)
+        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP7, FIRST_ROW, SIXTH_COLUMN), True)
+        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP5, SECOND_ROW, SIXTH_COLUMN), True)
+        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP6, THIRD_ROW, SIXTH_COLUMN), True)
         # self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page().select_poll_questionnaire_option()
 
     def test_should_create_poll_with_broadcast_option(self):
@@ -84,8 +84,7 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         self.assertEquals(poll_Questionnaire_page.are_all_three_accordians_present(), False)
         self.assertEquals(poll_Questionnaire_page.is_send_sms_to_more_people_visible(), False)
 
-
-    def test_after_poll_creation_with_group_the_group_should_receive_sms_and_apperar_in_sent_sms_table(self):
+    def test_after_poll_creation_with_group_the_group_should_receive_sms_and_appear_in_sent_sms_table(self):
         poll_title = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
@@ -94,7 +93,7 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page.click_create_poll()
         self.assertEquals(poll_Questionnaire_page.has_DS_received_sms(self.unique_id, FIRST_ROW, THIRD_COLUMN), True)
 
-    def test_after_poll_creation_with_linked_contacts__the_recipents_should_receive_sms_and_appear_in_sent_sms_table(self):
+    def test_after_poll_creation_with_linked_contacts_the_recipients_should_receive_sms_and_appear_in_sent_sms_table(self):
         self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
@@ -102,6 +101,6 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page.select_receipient(RECEIPIENT[1], CLINIC_ALL_DS)
         poll_Questionnaire_page.click_create_poll()
         poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
-        self.assertEquals(poll_Questionnaire_page.has_DS_received_sms('rep7', FIRST_ROW, THIRD_COLUMN), True)
-        self.assertEquals(poll_Questionnaire_page.has_DS_received_sms('rep5', FIRST_ROW, THIRD_COLUMN), True)
-        self.assertEquals(poll_Questionnaire_page.has_DS_received_sms('rep6', FIRST_ROW, THIRD_COLUMN), True)
+        self.assertEquals(poll_Questionnaire_page.has_DS_received_sms(REP7, FIRST_ROW, THIRD_COLUMN), True)
+        self.assertEquals(poll_Questionnaire_page.has_DS_received_sms(REP5, FIRST_ROW, THIRD_COLUMN), True)
+        self.assertEquals(poll_Questionnaire_page.has_DS_received_sms(REP6, FIRST_ROW, THIRD_COLUMN), True)

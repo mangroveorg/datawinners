@@ -90,8 +90,8 @@
             <div>
                 <p>
                     Poll is <strong><span data-bind="text:status"> </span> </strong>now :
-                    <a id="deactivate_link" data-bind="text:deactivation, click:deactivate" style="color:#0070ac;" > </a>
-                    <a data-bind="text:activation, click:activate" style="color:#0070ac;"> </a>
+                    <a id="deactivate_link" data-bind="text:deactivation, click:deactivate" class="cancel_link" > </a>
+                    <a data-bind="text:activation, click:activate" class="cancel_link"> </a>
                 </p>
                 <p>
                     <br/>
@@ -102,7 +102,7 @@
                 </p>
             </div>
 
-            <div data-bind="dialog: {autoOpen: false, width: 475, height: 190, title:'Deactivate Poll', dialogClass:'no-close'},
+            <div data-bind="dialog: {autoOpen: false, width: 450, height: 170, title:'Deactivate Poll', dialogClass:'no-close'},
                     dialogVisible: deactivationDialogVisible, open: deactivate, dialogContent: deactivatePollDialog">
             </div>
             <div data-bind="dialog: {autoOpen: false, width: 475, height: 260, title:'Activate Poll', dialogClass:'no-close'},
@@ -112,8 +112,8 @@
             <div id="deactivate_poll_dialog" class="none">
                 <p> {% trans 'Are you sure want to deactivate?' %}</p>
                 <div class="float_right margin_top_40">
-                    <button id='close_pop' data-bind="click: close_deactivation_popup"> {%trans 'No' %}</button>
-                    <button id="yes_button" data-bind="click: deactivate_poll"> {% trans 'Yes' %} </button>
+                    <a id="close_deactivate_link" class="cancel_link" data-bind="click: close_deactivation_popup">{%trans "Cancel"%}</a>
+                    <input id="deactivate_button" class="button" type="button" data-bind="click: deactivate_poll" value={%trans "Save"%}>
                 </div>
             </div>
 
@@ -146,9 +146,9 @@
         <div> <span data-bind="text:from_date_poll"> </span></div>
         <label>{% trans 'To date:'%} </label>
         <div data-bind="text:to_date_poll"></div>
-        <div class="float_right margin_top_40">
-            <button id='close_pop' data-bind="click: close_activation_popup"> {%trans 'Cancel' %}</button>
-            <button data-bind="click: activate_poll, css:{'ui-state-disabled': $root.disable_button}, attr:{disabled:$root.disable_attr}"> {% trans 'Save' %} </button>
+        <div class="float_right margin_top_20">
+              <a id="close_activate_link" class="cancel_link" data-bind="click: close_activation_popup">{%trans "Cancel"%}</a>
+              <input id="activate_button" class="button" type="button" data-bind="click: activate_poll" value={%trans "Save"%}>
         </div>
     </div>
     </div>
