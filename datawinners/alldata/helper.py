@@ -4,6 +4,7 @@ from datawinners.settings import CRS_ORG_ID
 from datawinners.project import models
 from django.utils.translation import ugettext_lazy as _
 from datawinners.main.database import get_database_manager
+from datawinners.utils import get_organization
 
 
 def get_all_project_for_user(user):
@@ -18,10 +19,14 @@ def get_visibility_settings_for(user):
     return "", ""
 
 
-def get_page_heading(user):
-    if user.get_profile().reporter:
+def get_page_heading(request):
+    organization = get_organization(request)
+    if request.user.get_profile().reporter:
         return "Data Submission"
-    return "Questionnaires"
+    if organization.is_pro_sms:
+        return "Questionnaires & Polls"
+    else:
+        return "Questionnaires"
 
 
 def link(report_name, language):
