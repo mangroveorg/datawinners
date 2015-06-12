@@ -92,7 +92,7 @@ def get_project_list(request):
 
 def projects_index(request):
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
-    page_heading = get_page_heading(request.user)
+    page_heading = get_page_heading(request)
 
     return disable_link_class, hide_link_class, page_heading
 
@@ -153,6 +153,7 @@ def index(request):
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached': is_quota_reached(request),
                                    'error_messages': error_messages,
+                                   'is_pro_sms': organization.is_pro_sms,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
     else:
@@ -164,6 +165,7 @@ def index(request):
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached': is_quota_reached(request),
                                    'error_messages': error_messages,
+                                   'is_pro_sms':organization.is_pro_sms,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
 
