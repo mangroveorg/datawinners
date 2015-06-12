@@ -131,18 +131,20 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         if project.is_open_survey or (reporter_entity.short_code == "test" or \
                 isinstance(form_model, EntityFormModel) or \
                         reporter_entity.short_code in Project.from_form_model(form_model).data_senders):
-            self.check_answers_numbers()
+            self.check_answers_numbers(is_poll=project.is_poll, submission_values=submission_values)
             return None
 
-        self.check_answers_numbers(linked_datasender=False)
+        self.check_answers_numbers(is_poll=project.is_poll, submission_values=submission_values, linked_datasender=False)
         return self._get_response(form_code)
 
-    def check_answers_numbers(self, linked_datasender=True):
+    def check_answers_numbers(self, is_poll, submission_values, linked_datasender=True):
         exception = self.request.get('exception', False)
         if exception and isinstance(exception, SMSParserWrongNumberOfAnswersException):
             if linked_datasender:
                 raise exception
             raise self._get_exception()
+        elif not linked_datasender and is_poll:
+            raise FormModelDoesNotExistsException(submission_values['q1'])
 
     def _get_exception(self):
         datasender = self.request.get('reporter_entity')
