@@ -46,12 +46,14 @@ NEW_UNIQUE_ID_TYPE = "new_unique_id_type"
 EXISTING_UNIQUE_ID_TYPE = "existing_unique_id_type"
 GROUP = "group"
 CONTACTS_LINKED = "linked"
-OTHERS = "others"
 DATA_TAB = "Data"
 POLL_RECIPIENTS = "My Poll Recipients"
 POLL = "Poll"
 CLINIC_ALL_DS = "Clinic All DS (Following)"
 FIRST_ROW  = 1
+SECOND_ROW  = 2
+THIRD_ROW  = 3
+THIRD_COLUMN  = 3
 SIXTH_COLUMN = 6
 
 
@@ -269,7 +271,13 @@ COPY_PROJECT_QUESTIONNAIRE_DATA = {
                       PAGE_TITLE: "Data Senders"
                      }
 RECEIPIENT = [
-    {TYPE : GROUP},
-    {TYPE : CONTACTS_LINKED},
-    {TYPE : OTHERS}
+    {TYPE: GROUP},
+    {TYPE: CONTACTS_LINKED}
 ]
+
+LANGUAGES = {
+    'en': "English",
+    'fr': "French",
+    'mg':"Malagasy",
+    'pt':"Portuguese"
+}

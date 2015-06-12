@@ -8,9 +8,9 @@ from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_
     POLL_VIA_SMS_RD_BUTTON, SMS_TEXTBOX, CREATE_POLL_BUTTON, POLL_TITLE, DATA_SENDER_TAB, POLL_TAB, DATA_TAB_BTN, \
     POLL_VIA_BROADCAST_RD_BUTTON, active_poll_link, poll_info_accordian, deactivate_link, YES_BUTTON, POLL_STATUS_INFO, \
     AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, AUTOMATIC_REPLY_SECTION, ITALIC_GREY_COMMENT, \
-    VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_MORE_LINK
+    VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_SMS_TO_MORE_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX
 from pages.page import Page
-from tests.projects.questionnairetests.project_questionnaire_data import TYPE, GROUP, OTHERS, CONTACTS_LINKED, DATA_TAB, \
+from tests.projects.questionnairetests.project_questionnaire_data import TYPE, GROUP, CONTACTS_LINKED, DATA_TAB, \
     POLL, POLL_RECIPIENTS
 from tests.testsettings import UI_TEST_TIMEOUT
 
@@ -30,7 +30,7 @@ class PollQuestionnairePage(Page):
         self.driver.find_radio_button(POLL_VIA_BROADCAST_RD_BUTTON).click()
 
     def enter_sms_text(self):
-        self.driver.find_text_box(SMS_TEXTBOX).enter_text("what?")
+        self.driver.find_text_box(SMS_TEXTBOX).enter_text("what"+generateId()+"?")
 
     def select_receipient(self,receipient, receipient_name):
         recipient_type = fetch_(TYPE, from_(receipient))
@@ -44,7 +44,7 @@ class PollQuestionnairePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT,CREATE_POLL_BUTTON,True)
         self.driver.find(CREATE_POLL_BUTTON).click()
 
-    def is_closed_poll_created(self,poll_title):
+    def is_poll_created(self,poll_title):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_TITLE, True)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDER_TAB, True)
         return (self.driver.find(POLL_TITLE).text == poll_title) & self.are_all_tabs_loaded()
@@ -55,16 +55,10 @@ class PollQuestionnairePage(Page):
         poll_tab = self.driver.find(POLL_TAB).text == POLL
         return data_tab & data_senders_tab & poll_tab
 
-    def is_broadcast_poll_created(self, poll_title):
+    def does_poll_has_broacast_accordians(self, poll_title):
         data_tab = self.driver.find(DATA_TAB_BTN).text == DATA_TAB
         poll_tab = self.driver.find(POLL_TAB).text == POLL
         return (self.driver.find(POLL_TITLE).text == poll_title) & data_tab & poll_tab
-
-    def is_automatic_reply_sms_option_present(self):
-        accordian = self.driver.find(AUTOMATIC_REPLY_ACCORDIAN)
-        accordian.click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, AUTOMATIC_REPLY_SECTION, True)
-        return self.driver.find(AUTOMATIC_REPLY_SECTION).text.__eq__(AUTOMATIC_REPLY_SMS_TEXT)
 
     def is_poll_status_accordian_present(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_STATUS_INFO, True)
@@ -72,10 +66,25 @@ class PollQuestionnairePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ITALIC_GREY_COMMENT, True)
         return self.driver.find(ITALIC_GREY_COMMENT).text == VIEW_EDIT_SEND
 
+    def is_automatic_reply_sms_option_present(self):
+        self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, AUTOMATIC_REPLY_SECTION, True)
+        return self.driver.find(AUTOMATIC_REPLY_SECTION).text.__eq__(AUTOMATIC_REPLY_SMS_TEXT)
+
     def is_sent_poll_sms_table(self):
-        self.driver.find(POLL_SMS_ACCORDIAN).click()
+        self.select_element(POLL_SMS_ACCORDIAN)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_SMS_TABLE, True)
-        return self.driver.find(POLL_SMS_TABLE) != None
+        return self.driver.find(POLL_SMS_TABLE) is not None
+
+    def change_automatic_reply_sms_language(self, language):
+        self.select_element(POLL_TAB)
+        self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
+        self.driver.find_drop_down(PROJECT_LANGUAGE).set_selected(language)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, SAVE_LANG_BTN, True)
+        self.driver.find_text_box(SAVE_LANG_BTN).click()
+
+    def is_reply_sms_language_updated(self):
+        return self.driver.find(SUCCESS_MSG_BOX) is not None
 
     def are_all_three_accordians_present(self):
         try:
@@ -88,17 +97,24 @@ class PollQuestionnairePage(Page):
             return False
 
     def are_broadcast_poll_accordians_present(self):
-        self.driver.find(POLL_TAB).click()
+        self.select_element(POLL_TAB)
         poll_info = self.is_poll_status_accordian_present()
         automatic_reply_sms = self.is_automatic_reply_sms_option_present()
         return poll_info & automatic_reply_sms
 
     def is_send_sms_to_more_people_visible(self):
         try:
-            return self.driver.find(SEND_MORE_LINK).text == "Send Sms to More People"
+            return self.driver.find(SEND_SMS_TO_MORE_LINK).text == "Send Sms to More People"
         except:
             return False
 
+    def has_DS_received_sms(self, recipent, row, column):
+        self.select_element(POLL_TAB)
+        self.select_element(POLL_SMS_ACCORDIAN)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("poll_sms_table"), True)
+        recipient_name = self.driver.find(
+            by_xpath(".//*[@id='poll_sms_table']/tbody/tr[%s]/td[%s]" % (row, column))).text
+        return recipent in recipient_name
 
     # def deactivate_poll(self):
     #     self.driver.find(POLL_TAB).click()
@@ -128,12 +144,12 @@ class PollQuestionnairePage(Page):
         self.driver.find(by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name)).click()
         return self
 
-    def select_tab(self,tab_name):
-        self.driver.find(tab_name).click()
+    def select_element(self, element):
+        self.driver.find(element).click()
 
     def get_cell_value(self, column, row):
         return self.driver.find(
             by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % ((row + 1), column + 1))).text
 
-    def isDataSenderAssociated(self, ds_name, row, column):
+    def isRecipientAssociated(self, ds_name, row, column):
         return ds_name == self.get_cell_value(column, row)
