@@ -13,21 +13,22 @@
 
         <div class="validationMessage" data-bind="ifnot: projectName.valid">
                <div id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error, scrollToElement: projectName.error"></div>
-            </div>
-
+        </div>
+        <br><br>
 
         <div data-bind="stopBinding: true">
             <div id="poll_questionnaire">
-
-                <label>2. {%trans 'How Do You Want to Broadcast this Poll?'%}</label>
+                <label>{%trans 'How Do You Want to Broadcast this Poll?'%}</label>
             <br>
                 <div>
+                        <div>
+                            <span> <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
+                            {% trans "I want to send this Poll Question via SMS" %}</span>
+                        </div>
+                        <div class="margin_left_30 italic_grey">
+                            <span>{%trans 'This is where we explain that only the Poll recipients will be able to send in data.'%}</span>
+                        </div>
 
-                    <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
-                    <span class="margin_left_10">{% trans "I want to send this Poll Question via SMS" %}</span></br>
-                    <label class="subtitle_helper">{%trans 'This is where we explain that only the Poll recipients will be able to send in data.'%}</label>
-                </div>
-                <br>
 
                 <div data-bind="visible: show_sms() === 'poll_via_sms'">
                     <label>SMS text</label>
@@ -42,25 +43,29 @@
                 </div>
                 <br>
                 <div>
-                    <input type="radio" id="poll_via_broadcast" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms" />
-                    <span class="margin_left_10">{% trans "I will use other means" %}</span></br>
-                    <label class="subtitle_helper"> {% trans '(Example: Radio, TV Billboards)  This is where we explain that anyone can send in data.'%}</label>
+                     <div>
+                            <span> <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
+                            {% trans "I will use other means" %}</span>
+                        </div>
+                        <div class="margin_left_30 italic_grey">
+                            <span class="italic_grey">{% trans '(Example: Radio, TV Billboards)  This is where we explain that anyone can send in data.'%}</span>
+                        </div>
                 </div>
                 <br>
 
-                <div>
-                    <label>3. {%trans 'How Long Do Should People be Able to Send in Their Answer?'%}</label>
-                    <label class="subtitle_helper">{% trans 'Short explanation and why we suggest to have a fixed activation period' %}</label>
-                    <a>Learn more</a>
-                    <br>
+                <div><br>
+                    <label> {%trans 'How Long Do Should People be Able to Send in Their Answer?'%}</label><br>
+                    <span class="italic_grey">{% trans 'Short explanation and why we suggest to have a fixed activation period.' %}</span>
+                    <a>{% trans " Learn More" %} </a>
+                    <br><br>
                     <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select> <span> {% trans 'Days' %} </span><br>
                     <br><br>
-                    <label>{% trans 'From date:'%} </label>
-                    <div id="from_date_poll"
-                                     data-bind="text:from_date_poll"></div>
-                    <label>{% trans 'To date:'%} </label>
-                    <div id="to_date_poll"
-                                     data-bind="text:to_date_poll"></div>
+                    <span class="bold-text">{% trans 'From '%} </span>
+                    <span id="from_date_poll"
+                                     data-bind="text:from_date_poll"></span>
+                        <span class="bold-text">{% trans ' To '%} </span>
+                    <span id="to_date_poll"
+                                     data-bind="text:to_date_poll"></span>
 
                 </div>
                 <br>
