@@ -85,8 +85,8 @@
                     <td class="{{ hide_link_class }}" style="width: 90px">{{ project.created|date:"DATE_FORMAT" }}</td>
                     <td>
                         <span class="report_links">
-                            |<a href="{{ project.log }}"
-                                class="{{ project.disabled}} {{ disable_link_class}}">{% trans "View Submissions" %}</a>
+                            <a href="{{ project.log }}"
+                                class="{{ project.disabled}} {{ disable_link_class}}">{% trans "Analyze Data" %}</a>
                             <span class="{{ hide_link_class }}">
                                 |<a href="{{ project.delete_links }}" class="delete_project">{% trans "Delete Questionnaire" %}</a>
                             </span>
