@@ -28,3 +28,7 @@ div .main {
     align-self: center;
     width: 150px;
 }
+
+#container_content .container_24 * {
+    -webkit-box-sizing: initial !important;
+}

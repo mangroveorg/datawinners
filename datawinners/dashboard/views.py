@@ -165,13 +165,21 @@ def start(request):
 
     tabs_dict = {'project': 'questionnaires', 'datasenders': 'data_senders',
                  'subjects': 'subjects', 'alldata': 'questionnaires'}
+
+    help_url_dict = {'projet': 'https://www.datawinners.com/%s/find-answers-app/category/proj/?template=help',
+                     'datasenders': 'https://www.datawinners.com/%s/find-answers-app/category/allds/?template=help',
+                     'subjects': 'https://www.datawinners.com/%s/find-answers-app/category/idnos/?template=help',
+                     'alldata': 'https://www.datawinners.com/%s/find-answers-app/category/proj/?template=help'}
+    
     page = request.GET['page']
     page = page.split('/')
     url_tokens = [each for each in page if each != '']
     text = text_dict[url_tokens[-1]]
     title = title_dict[url_tokens[-1]]
+    help_url = help_url_dict[url_tokens[-1]] % _("wp_language")
     return render_to_response('dashboard/start.html',
-                              {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]]},
+                              {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]],
+                               'help_url': help_url},
                               context_instance=RequestContext(request))
 
 

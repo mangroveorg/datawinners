@@ -1,60 +1,22 @@
 {% load i18n %}
-{% block page_js %}
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $.ajax({
-                url: DW.help_url,
-                data: {},
-                global: false,
-                error: function(r){
-                    $('#help_iframe').addClass("none");
-                    $("#help_unavailable").removeClass("none");
-                },
-                complete: function(xhr, statusText){
-                    if (xhr.status == 200){
-                        $("#help_iframe").attr("src", DW.help_url);
-                        $("#help_iframe").addClass("block");
-                    } else {
-                        $('#help_iframe').addClass("none");
-                        $("#help_unavailable").removeClass("none");
-                    }
-                }
-            });
-
-            $("#need_help_link").click(function() {
-                $('#div_iframe').removeClass("none");
-                //$('#help_iframe').attr("src", help_url);
-                $("#help_iframe").addClass("block");
-                $("#need_help_button").addClass("none");
-                $('#need_help_active_button').removeClass("none");
-                return false;
-            });
-            
-            $(".close_help_button").click(function() {
-                $("#div_iframe").addClass("none");
-                $('#help_iframe').attr("src", "");
-                $("#need_help_active_button").addClass("none");
-                $('#need_help_button').removeClass("none");
-                return false;
-            });
-
-
-       });
-    </script>
-{% endblock %}
 
 {% block help_button %}
     <a href="javascript:void(0);" target="myFrame" class="float_right" id="need_help_link">
-        <img src="/media/images/help_button.png" id="need_help_button">
-        <img src="/media/images/help_button_active.png" id="need_help_active_button" class="none">
+        <img src="/media/images/help_button_{% trans "en" %}.png" id="need_help_button">
+        <img src="/media/images/help_button_active_{% trans "en" %}.png" id="need_help_active_button" class="none">
     </a>
 
-    <div class="padding_left_right_10 none" id="div_iframe">
-        <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">Close Window</span></a>
-        <iframe src="" width="860" height="380" name="myFrame" scrolling="yes" id="help_iframe" class="float_right"></iframe>
+    <div class="padding_left_right_10" id="div_iframe">
+        <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">{% trans "Close" %}</span></a>
+        <iframe src="" width="920" name="myFrame" scrolling="no" id="help_iframe" class="float_right"></iframe>
         <div id="help_unavailable" class="none clear_both text_align_center">
-                {% trans "The help is unavailable for a moment." %}
+{#                {% trans "The help is unavailable for a moment!" %}#}
+                {% trans "Sorry...<br>This Help Menu is currently not available.<br>Please visit our " %}
+                <a href="https://www.datawinners.com/{% trans "en" %}/help-center/" target="_blank" >{% trans "Help Center" %}</a>
+                <br>
+                {% trans 'or contact'%}
+                <a href="https://www.datawinners.com/{% trans "en" %}/help-center/ask-us/" target="_blank" > {% trans 'Datawinners Support.' %}</a>
             </div>
-        <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">Close Window</span></a>
+        <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">{% trans "Close" %}</span></a>
     </div>
 {% endblock %}

@@ -727,13 +727,14 @@ div.border_top_bottom{
   background-color: #ffffff;
   scrolling:no;
   position:absolute;
-  width: 882px;
+  width: 940px;
   height: auto;
-  z-index: 10;
-  margin-top: 12px;
-  margin-left: 57px;
+  top: 59px;
+  right: -1px;
   border: #CCCCCC solid 1px;
   box-shadow: 3px 3px 5px #808080, -3px 3px 5px #808080;
+  z-index: 1004;
+  visibility: hidden;
 }
 .close_help_button{
   padding-right: 5px;
@@ -750,11 +751,6 @@ div.border_top_bottom{
   margin-top: 45px!important;
 }
 
-.div_iframe_contact_page{
-   top: 85px!important;
-   left: 306px!important;
-}
-
 .margin_top_minus_106{
   margin-top: -106px!important;
 }
@@ -763,3 +759,17 @@ div.border_top_bottom{
   position: relative;
   z-index: 11;
 }
+
+.margin_left_99{
+  margin-left: 99px!important;
+}
+
+.position_relative{
+  position: relative;
+}
+
+.margin_right_10{
+  margin-right: 10px;
+}
+
+

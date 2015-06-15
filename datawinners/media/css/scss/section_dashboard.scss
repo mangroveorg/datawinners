@@ -181,8 +181,12 @@ table.no-border{
   background:-moz-linear-gradient(top, #ffffff, #FEEA89);
   background:-webkit-linear-gradient(top, #ffffff, #FEEA89);
   background:-o-linear-gradient(top, #ffffff, #FEEA89);
-  position: absolute; margin-top: -60px;
+  position: relative;
   box-shadow: 3px 3px 5px #808080, -3px 3px 5px #808080;
+  width: 250px;
+  &.fr_bubble{
+    width: 324px;
+  }
 }
 
 .external_icon{
@@ -201,22 +205,22 @@ table.no-border{
 
 #help_message_arrow{
   position: absolute;
-  margin-left: 20px;
+  bottom: -10px;
   width: 30px;
   height: 10px;
-  margin-top: -12px;
+  right: 66px;
+}
+.fr_bubble #help_message_arrow{
+  right: 140px;
 }
 
 #help_message_dialog_close{
   position: absolute;
-  float: right;
-  margin-top: -18px;
-  margin-left: 235px;
-  z-index: 12;
+  right: -15px;
+  top: -15px;
 }
 
 #help_area{
-    margin-top: 40px;
     margin-bottom: 50px;
 }
 
@@ -225,4 +229,12 @@ table.no-border{
  font-weight: bold;
  font-size: 13px;
  
+}
+
+#help_message{
+  position: absolute;
+  right: 128px;
+  top:-38px;
+  width: 230px;
+  border: 1px solid #CCCCCC;
 }

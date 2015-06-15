@@ -26,10 +26,7 @@
         var existing_questionnaires_url = "{% url existing_questionnaires %}";
         var uniqueIdTypes = {{ unique_id_types|safe }};
         var active_language = "{{ active_language }}";
-        DW.help_url = "https://datawinners.staging.wpengine.com/{{ active_language }}/help-center/find-answers/";
-        $(document).ready(function() {
-           $("#div_iframe").addClass("margin_top_null");
-        });
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/createq/?template=help";
     </script>
 
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
@@ -54,6 +51,7 @@
             src="/media/javascript/project/questionnaire_instruction_and_preview_wizard.js"></script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw_university.js"></script>
 {% endblock %}
 
 {% block page_scss %}

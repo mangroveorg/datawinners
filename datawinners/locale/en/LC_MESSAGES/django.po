@@ -4777,3 +4777,54 @@ msgstr "  on  "
 
 msgid "large submission export"
 msgstr "Exports are limited to a maximum of 10,000 submissions at a time.</br> Use filters to manage the number of submissions to export."
+
+msgid "https://www.youtube.com/embed/0YIGgbGF3wI?autoplay=1"
+msgstr ""
+
+msgid "https://www.youtube.com/embed/4QmTmcr56wU?autoplay=1"
+msgstr ""
+
+msgid "https://www.datawinners.com/dwcdt"
+msgstr ""
+
+msgid "Get Started with DataWinners!"
+msgstr ""
+
+msgid "https://www.datawinners.com/en/help-center"
+msgstr ""
+
+msgid "For more tips, support, and tutorials, visit our"
+msgstr ""
+
+msgid "Help Center"
+msgstr ""
+
+msgid "Take a Tour"
+msgstr ""
+
+msgid "Create Your Questionnaire </br> in 5 minutes"
+msgstr ""
+
+msgid "Tips for Successful Data </br> Collection"
+msgstr ""
+
+msgid "Get Help"
+msgstr ""
+
+msgid "Go to Help Center"
+msgstr ""
+
+msgid "The Get Started section can be removed when you no longer need it."
+msgstr ""
+
+msgid "The Get Started information is always available in our Help Center."
+msgstr ""
+
+msgid "The help is unavailable for a moment!"
+msgstr ""
+
+msgid "Sorry...<br>This Help Menu is currently not available.<br>Please visit our "
+msgstr ""
+
+msgid "wp_language"
+msgstr "en"
