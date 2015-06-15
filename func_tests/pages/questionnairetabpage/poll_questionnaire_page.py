@@ -8,21 +8,17 @@ from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_
     POLL_VIA_SMS_RD_BUTTON, SMS_TEXTBOX, CREATE_POLL_BUTTON, POLL_TITLE, DATA_SENDER_TAB, POLL_TAB, DATA_TAB_BTN, \
     POLL_VIA_BROADCAST_RD_BUTTON, active_poll_link, poll_info_accordian, deactivate_link, POLL_STATUS_INFO, \
     AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, AUTOMATIC_REPLY_SECTION, ITALIC_GREY_COMMENT, \
-    VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_SMS_TO_MORE_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
-    DEACTIVATE_BTN
+    VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_SMS_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
+    DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS
 from pages.page import Page
 from tests.projects.questionnairetests.project_questionnaire_data import TYPE, GROUP, CONTACTS_LINKED, DATA_TAB, \
-    POLL, POLL_RECIPIENTS
+    POLL, POLL_RECIPIENTS, MY_POLL_RECIPIENTS
 from tests.testsettings import UI_TEST_TIMEOUT
 
 class PollQuestionnairePage(Page):
 
     def __init__(self, driver):
         Page.__init__(self, driver)
-        self.SELECT_FUNC = {
-                                GROUP: self._configure_group_recipient,
-                                CONTACTS_LINKED: self._configure_linked_contacts,
-                            }
 
     def select_sms_option(self):
         self.driver.find_radio_button(POLL_VIA_SMS_RD_BUTTON).click()
@@ -33,19 +29,18 @@ class PollQuestionnairePage(Page):
     def enter_sms_text(self):
         self.driver.find_text_box(SMS_TEXTBOX).enter_text("what"+generateId()+"?")
 
-    def select_receipient(self,receipient, receipient_name):
-        recipient_type = fetch_(TYPE, from_(receipient))
-        self.select_recipient_type(recipient_type)
-        self.SELECT_FUNC[recipient_type](receipient_name)
+    def select_receipient(self, recipient_type, receipient_name):
+        self.select_recipient_type(POLL_SMS_DROPDOWN, recipient_type)
+        self._configure_given_contacts(receipient_name)
 
-    def select_recipient_type(self,recipient_type):
-        self.driver.find_drop_down(POLL_SMS_DROPDOWN).set_selected(recipient_type)
+    def select_recipient_type(self, dropdown, recipient_type):
+        self.driver.find_drop_down(dropdown).set_selected(recipient_type)
 
     def click_create_poll(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT,CREATE_POLL_BUTTON,True)
         self.driver.find(CREATE_POLL_BUTTON).click()
 
-    def is_poll_created(self,poll_title):
+    def is_poll_created(self, poll_title):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_TITLE, True)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDER_TAB, True)
         return (self.driver.find(POLL_TITLE).text == poll_title) & self.are_all_tabs_loaded()
@@ -78,14 +73,30 @@ class PollQuestionnairePage(Page):
         return self.driver.find(POLL_SMS_TABLE) is not None
 
     def change_automatic_reply_sms_language(self, language):
-        self.select_element(POLL_TAB)
-        self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
-        self.driver.find_drop_down(PROJECT_LANGUAGE).set_selected(language)
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, SAVE_LANG_BTN, True)
-        self.driver.find_text_box(SAVE_LANG_BTN).click()
+        try:
+            self.select_element(POLL_TAB)
+            self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
+            self.driver.find(ON_SWITCH)
+            self.driver.find_drop_down(PROJECT_LANGUAGE).set_selected(language)
+            self.driver.find_text_box(SAVE_LANG_BTN).click()
+            return True
+        except:
+            return False
+
+    def get_automatic_reply_status(self):
+        automatic_reply_status = self.driver.find(AUTOMATIC_REPLY_ACCORDIAN).text
+        reply_status_list = automatic_reply_status.split()
+        status = reply_status_list[len(reply_status_list) - 1]
+        return status
 
     def is_reply_sms_language_updated(self):
         return self.driver.find(SUCCESS_MSG_BOX) is not None
+
+    def change_autoamtic_reply_sms_status(self):
+        self.select_element(POLL_TAB)
+        self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
+        self.driver.find(by_css(".onoffswitch-label")).click()
+        self.select_element(SAVE_LANG_BTN)
 
     def are_all_three_accordians_present(self):
         try:
@@ -105,7 +116,7 @@ class PollQuestionnairePage(Page):
 
     def is_send_sms_to_more_people_visible(self):
         try:
-            return self.driver.find(SEND_SMS_TO_MORE_LINK).text == "Send Sms to More People"
+            return self.driver.find(SEND_SMS_LINK).text == "Send Sms to More People"
         except:
             return False
 
@@ -124,18 +135,23 @@ class PollQuestionnairePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DEACTIVATE_BTN, True)
         self.driver.find(DEACTIVATE_BTN).click()
 
-    def _configure_group_recipient(self, recipient_name):
-        """
-        Function to select Group option To whom to send
-        return self
-        """
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name),
-                                     True)                 # For waiting to load the element
-        self.driver.find(by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name)).click()
-        return self
+    def select_send_sms(self):
+        self.select_element(POLL_TAB)
+        self.click_send_sms_link()
 
+    def click_send_sms_link(self):
+        self.select_element(SEND_SMS_LINK)
 
-    def _configure_linked_contacts(self, recipient_name):
+    def send_sms_to(self, recipient_type, recipient_name):
+        self.select_recipient_type(RECIPIENT_DROPDOWN, recipient_type)
+        self._configure_given_contacts(recipient_name)
+        self.select_element(SEND_BUTTON)
+        self.select_element(CANCEL_SMS)
+
+    def send_sms_to_my_poll_recipients(self):
+        self.select_recipient_type(RECIPIENT_DROPDOWN, MY_POLL_RECIPIENTS)
+
+    def _configure_given_contacts(self, recipient_name):
         """
         Function to select Group option To whom to send
         return self

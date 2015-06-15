@@ -46,16 +46,19 @@ NEW_UNIQUE_ID_TYPE = "new_unique_id_type"
 EXISTING_UNIQUE_ID_TYPE = "existing_unique_id_type"
 GROUP = "group"
 CONTACTS_LINKED = "linked"
+MY_POLL_RECIPIENTS = "poll_recipients"
 DATA_TAB = "Data"
 POLL_RECIPIENTS = "My Poll Recipients"
 POLL = "Poll"
 CLINIC_ALL_DS = "Clinic All DS (Following)"
-FIRST_ROW  = 1
-SECOND_ROW  = 2
-THIRD_ROW  = 3
-THIRD_COLUMN  = 3
+FIRST_ROW = 1
+SECOND_ROW = 2
+THIRD_ROW = 3
+THIRD_COLUMN = 3
 SIXTH_COLUMN = 6
-
+REP7 = 'rep7'
+REP5 = 'rep5'
+REP6 = 'rep6'
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 
@@ -269,15 +272,16 @@ COPY_PROJECT_QUESTIONNAIRE_DATA = {
                       QUESTIONS: [{QUESTION: u"Some dummy question", CODE: u"q1", TYPE: NUMBER, MIN: u"1", MAX: u"1000"}],
                       CHARACTER_REMAINING: "69 / 160 characters used (1 SMS)",
                       PAGE_TITLE: "Data Senders"
-                     }
-RECEIPIENT = [
-    {TYPE: GROUP},
-    {TYPE: CONTACTS_LINKED}
-]
+}
+
+EN = "en"
+FR = "fr"
+MG = "mg"
+PT = "pt"
 
 LANGUAGES = {
-    'en': "English",
-    'fr': "French",
-    'mg':"Malagasy",
-    'pt':"Portuguese"
+    EN: "English",
+    FR: "French",
+    MG:"Malagasy",
+    PT:"Portuguese"
 }

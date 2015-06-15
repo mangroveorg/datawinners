@@ -1,10 +1,10 @@
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import random_number
-from pages.createquestionnairepage.create_questionnaire_locator import DATA_SENDER_TAB
+from pages.createquestionnairepage.create_questionnaire_locator import DATA_SENDER_TAB, POLL_TAB
 from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
-from tests.projects.questionnairetests.project_questionnaire_data import RECEIPIENT, CLINIC_ALL_DS, FIRST_ROW, SIXTH_COLUMN, \
-    SECOND_ROW, THIRD_ROW, THIRD_COLUMN, REP6, REP5, REP7
+from tests.projects.questionnairetests.project_questionnaire_data import CLINIC_ALL_DS, FIRST_ROW, SIXTH_COLUMN, \
+    THIRD_COLUMN, REP6, REP5, REP7, CONTACTS_LINKED, GROUP, SECOND_ROW, THIRD_ROW
 
 
 class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
@@ -33,30 +33,32 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
         poll_Questionnaire_page.enter_sms_text()
-        poll_Questionnaire_page.select_receipient(RECEIPIENT[0], self.group_name)
+        poll_Questionnaire_page.select_receipient(GROUP, self.group_name)
         poll_Questionnaire_page.click_create_poll()
         self.assertEquals(poll_Questionnaire_page.is_poll_created(poll_title), True)
         self.assertEquals(poll_Questionnaire_page.does_poll_has_broacast_accordians(poll_title), True)
         self.assertEquals(poll_Questionnaire_page.are_all_three_accordians_present(), True)
         self.assertEquals(poll_Questionnaire_page.is_send_sms_to_more_people_visible(), True)
+        self.assertEquals(poll_Questionnaire_page.get_automatic_reply_status(), "On")
 
     def test_should_create_a_poll_questionnaire_with_linked_contacts(self):
         poll_title = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
         poll_Questionnaire_page.enter_sms_text()
-        poll_Questionnaire_page.select_receipient(RECEIPIENT[1], CLINIC_ALL_DS)
+        poll_Questionnaire_page.select_receipient(CONTACTS_LINKED, CLINIC_ALL_DS)
         poll_Questionnaire_page.click_create_poll()
         self.assertEquals(poll_Questionnaire_page.is_poll_created(poll_title), True)
         self.assertEquals(poll_Questionnaire_page.are_all_three_accordians_present(), True)
         self.assertEquals(poll_Questionnaire_page.is_send_sms_to_more_people_visible(), True)
+        self.assertEquals(poll_Questionnaire_page.get_automatic_reply_status(), "On")
 
     def test_poll_should_have_data_senders_of_group_as_poll_recipient(self):
         self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
         poll_Questionnaire_page.enter_sms_text()
-        poll_Questionnaire_page.select_receipient(RECEIPIENT[0], self.group_name)
+        poll_Questionnaire_page.select_receipient(GROUP, self.group_name)
         poll_Questionnaire_page.click_create_poll()
         poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
         self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(self.unique_id, FIRST_ROW, SIXTH_COLUMN), True)
@@ -66,7 +68,7 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
         poll_Questionnaire_page.enter_sms_text()
-        poll_Questionnaire_page.select_receipient(RECEIPIENT[1], CLINIC_ALL_DS)
+        poll_Questionnaire_page.select_receipient(CONTACTS_LINKED, CLINIC_ALL_DS)
         poll_Questionnaire_page.click_create_poll()
         poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
         self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP7, FIRST_ROW, SIXTH_COLUMN), True)
@@ -83,14 +85,16 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         self.assertEquals(poll_Questionnaire_page.are_broadcast_poll_accordians_present(), True)
         self.assertEquals(poll_Questionnaire_page.are_all_three_accordians_present(), False)
         self.assertEquals(poll_Questionnaire_page.is_send_sms_to_more_people_visible(), False)
+        self.assertEquals(poll_Questionnaire_page.get_automatic_reply_status(), "On")
 
     def test_after_poll_creation_with_group_the_group_should_receive_sms_and_appear_in_sent_sms_table(self):
-        poll_title = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
+        self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
         poll_Questionnaire_page.enter_sms_text()
-        poll_Questionnaire_page.select_receipient(RECEIPIENT[0], self.group_name)
+        poll_Questionnaire_page.select_receipient(GROUP, self.group_name)
         poll_Questionnaire_page.click_create_poll()
+        self.driver.find(POLL_TAB).click()
         self.assertEquals(poll_Questionnaire_page.has_DS_received_sms(self.unique_id, FIRST_ROW, THIRD_COLUMN), True)
 
     def test_after_poll_creation_with_linked_contacts_the_recipients_should_receive_sms_and_appear_in_sent_sms_table(self):
@@ -98,7 +102,7 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
         poll_Questionnaire_page.select_sms_option()
         poll_Questionnaire_page.enter_sms_text()
-        poll_Questionnaire_page.select_receipient(RECEIPIENT[1], CLINIC_ALL_DS)
+        poll_Questionnaire_page.select_receipient(CONTACTS_LINKED, CLINIC_ALL_DS)
         poll_Questionnaire_page.click_create_poll()
         poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
         self.assertEquals(poll_Questionnaire_page.has_DS_received_sms(REP7, FIRST_ROW, THIRD_COLUMN), True)

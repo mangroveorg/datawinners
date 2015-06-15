@@ -40,10 +40,14 @@ POLL_SMS_ACCORDIAN = by_id("poll_sms_info")
 ITALIC_GREY_COMMENT = by_css(".italic_grey")
 VIEW_EDIT_SEND = "View, edit & send your Survey."
 POLL_SMS_TABLE = by_id("poll_sms_table")
-SEND_SMS_TO_MORE_LINK = by_id("send_sms")
+SEND_SMS_LINK = by_id("send_sms")
+SEND_BUTTON = by_id("send_button")
+CANCEL_SMS = by_id("cancel-sms")
 PROJECT_LANGUAGE = by_id("project_language")
+ON_SWITCH = by_css(".onoffswitch-checked")
 SAVE_LANG_BTN = by_id("save_lang")
 SUCCESS_MSG_BOX = by_css(".success-message-box")
+RECIPIENT_DROPDOWN = by_id("recipient-dropdown")
 AUTOMATIC_REPLY_SMS_TEXT = "Automatic Reply SMS\n" +\
                       "DataWinners analyzes each SMS Submission and automatically sends back an SMS reply."
 WORD_OR_PHRASE = 'text'
