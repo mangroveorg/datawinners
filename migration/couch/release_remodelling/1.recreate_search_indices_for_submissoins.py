@@ -21,10 +21,13 @@ def create_index(dbm, form_model, logger):
     survey_response_docs = []
     for row in rows:
         survey_response = SurveyResponseDocument._wrap_row(row)
-        search_dict = _meta_fields(survey_response, dbm)
-        _update_with_form_model_fields(dbm, survey_response, search_dict, form_model)
-        search_dict.update({'id': survey_response.id})
-        survey_response_docs.append(search_dict)
+        try:
+            search_dict = _meta_fields(survey_response, dbm)
+            _update_with_form_model_fields(dbm, survey_response, search_dict, form_model)
+            search_dict.update({'id': survey_response.id})
+            survey_response_docs.append(search_dict)
+        except Exception as e:
+            logger.exception(e.message+'project_id:'+form_model.id+'| survey_response_id: '+survey_response.id)
 
     if survey_response_docs:
         es_handle.bulk_index(dbm.database_name, form_model.id, survey_response_docs)
