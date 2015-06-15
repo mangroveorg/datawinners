@@ -77,7 +77,7 @@ var PollOptionsViewModel = function() {
         self.status('Active');
         self.activation('');
         self.deactivation('Deactivate');
-        self.duration('From ' + from_date + ' To ' + to_date +': ');
+        self.duration('From ' + from_date + ' To ' + to_date);
         self.change_days('Change');
     }
     else {
@@ -149,7 +149,7 @@ var PollOptionsViewModel = function() {
                 self.status('Active');
                 self.deactivation('Deactivate');
                 self.activation('');
-                self.duration('From ' + self.from_date_poll() + ' To ' + self.to_date_poll() +': ');
+                self.duration('From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
                 self.change_days('Change');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
             }

@@ -5854,3 +5854,60 @@ msgstr "Commencer"
 msgid "Create a Questionnaire"
 msgstr "Créer un Questionnaire"
 
+msgid "https://www.youtube.com/embed/0YIGgbGF3wI?autoplay=1"
+msgstr "https://www.youtube.com/embed/imobK5Gk4wU?autoplay=1"
+
+msgid "https://www.youtube.com/embed/4QmTmcr56wU?autoplay=1"
+msgstr "https://www.youtube.com/embed/UWZPWQIuXUU?autoplay=1"
+
+msgid "https://www.datawinners.com/dwcdt"
+msgstr "https://www.datawinners.com/fr/dwcdt"
+
+msgid "Get Started with DataWinners!"
+msgstr "Démarrez avec DataWinners!"
+
+msgid "https://www.datawinners.com/en/help-center/"
+msgstr "https://www.datawinners.com/fr/centre-d-aide/"
+
+msgid "For more tips, support, and tutorials, visit our"
+msgstr "Pour plus de conseils, support et tutoriels, visitez notre"
+
+msgid "Take a Tour"
+msgstr "Faire un tour"
+
+msgid "Create Your Questionnaire </br> in 5 minutes"
+msgstr "Créez votre Questionnaire </br> en 5 minutes"
+
+msgid "Tips for Successful Data </br> Collection"
+msgstr "Conseils pour une Collecte </br> de Données réussie"
+
+msgid "Get Help"
+msgstr "Obtenir de l’aide"
+
+msgid "Go to Help Center"
+msgstr "Se rendre au Centre d’aide"
+
+msgid "The Get Started section can be removed when you no longer need it."
+msgstr "La section Démarrer peut être retirée lorsque vous n’en avez plus besoin."
+
+msgid "The Get Started information is always available in our Help Center."
+msgstr "Les informations sur le démarrage sont toujours disponible sur notre Centre d'aide."
+
+msgid "The help is unavailable for a moment!"
+msgstr "L’aide est indisponible pour l’instant !"
+
+msgid "Sorry...<br>This Help Menu is currently not available.<br>Please visit our "
+msgstr "Désolé …<br>Ce menu d’aide n’est actuellement pas disponible.<br>Veuillez visiter notre  "
+
+
+msgid "Help Center"
+msgstr "Centre d’assistance"
+
+msgid "or contact"
+msgstr "ou contactez le"
+
+msgid "Datawinners Support."
+msgstr "Support de DataWinners."
+
+msgid "wp_language"
+msgstr "fr/en"

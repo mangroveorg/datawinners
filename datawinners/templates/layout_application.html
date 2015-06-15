@@ -19,6 +19,7 @@
     <script type="text/javascript" src="/media/javascript/underscore.string.min.js"></script>
     <script type="text/javascript" src="/media/javascript/show_upgrade_message.js"></script>
     <script type="text/javascript" src="/media/javascript/ie8_warning.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw_university.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -36,8 +37,12 @@
         <div id="container_content">
 
             <div id="page_title">
-                {% block section_title %}
-                {% endblock %}
+                    {% block section_title %}
+                    {% endblock %}
+
+                    {% block section_help %}
+                        {% include 'need_help.html' %}
+                    {% endblock %}
             </div>
             <div class="container_24">
 

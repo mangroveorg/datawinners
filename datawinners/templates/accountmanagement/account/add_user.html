@@ -13,6 +13,13 @@
 {% include 'application_scss.html' %}
 <link href="/media/css/scss/section_registration.css" rel="stylesheet" />
 {% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+            DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/usrs/?template=help;
+    </script>
+{% endblock %}
 {% block content %}
 <div class="text_align_right margin_bottom_20">
   <a href= "/account/users" >{% trans "All Users" %}</a>

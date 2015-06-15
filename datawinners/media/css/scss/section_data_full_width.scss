@@ -39,7 +39,11 @@ table{
 }
 #page_title{
     /*float:left;*/
-    margin: 0 0 0 15px !important;
+  margin: 0 0 0 15px !important;
+  #div_iframe{
+    right: 19px !important;
+    visibility: hidden;
+  }
 }
 #header_application{
     width:auto;

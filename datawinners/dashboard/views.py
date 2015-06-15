@@ -19,7 +19,7 @@ from datawinners.accountmanagement.models import NGOUserProfile, Organization, P
 from datawinners.utils import get_map_key
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
-
+from datawinners.preferences.models import UserPreferences
 
 def _find_reporter_name(dbm, row):
     try:
@@ -114,8 +114,12 @@ def dashboard(request):
     if "deleted" in request.GET.keys():
         messages.info(request, ugettext('Sorry. The Questionnaire you are looking for has been deleted'),
                       extra_tags='error')
+    user = request.user.id
+    show_help = False if (UserPreferences.objects.filter(user=user)).count() > 0 else True
+    
 
     context = {
+        "show_help":show_help,
         "projects": questionnaire_list,
         'in_trial_mode': organization.in_trial_mode,
         'is_pro_sms': organization.is_pro_sms,
@@ -139,6 +143,13 @@ def dashboard(request):
     return render_to_response('dashboard/home.html',
                               context, context_instance=RequestContext(request))
 
+def hide_help_element(request):
+    user_id = request.user.id
+    preference_name = "hide_help_element"
+    preference_value = "True"
+    help_element_preference = UserPreferences(user_id=user_id, preference_name=preference_name, preference_value=preference_value)
+    help_element_preference.save()
+    return HttpResponse(json.dumps({'success': True}))
 
 @valid_web_user
 def start(request):
@@ -150,13 +161,21 @@ def start(request):
 
     tabs_dict = {'project': 'questionnaires', 'datasenders': 'data_senders',
                  'subjects': 'subjects', 'alldata': 'questionnaires'}
+
+    help_url_dict = {'projet': 'https://www.datawinners.com/%s/find-answers-app/category/proj/?template=help',
+                     'datasenders': 'https://www.datawinners.com/%s/find-answers-app/category/allds/?template=help',
+                     'subjects': 'https://www.datawinners.com/%s/find-answers-app/category/idnos/?template=help',
+                     'alldata': 'https://www.datawinners.com/%s/find-answers-app/category/proj/?template=help'}
+    
     page = request.GET['page']
     page = page.split('/')
     url_tokens = [each for each in page if each != '']
     text = text_dict[url_tokens[-1]]
     title = title_dict[url_tokens[-1]]
+    help_url = help_url_dict[url_tokens[-1]] % _("wp_language")
     return render_to_response('dashboard/start.html',
-                              {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]]},
+                              {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]],
+                               'help_url': help_url},
                               context_instance=RequestContext(request))
 
 
