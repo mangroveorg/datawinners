@@ -8,7 +8,7 @@
         <div class="questionnaire_form_header clearfix">
             {% include 'project/questionnaire_info_indicator.html' %}
         </div>
-        <input id= 'poll_title' data-bind="inputValue: projectName, value: projectName"/>
+        <input id='poll_title' data-bind="inputValue: projectName, value: projectName"/>
 
         <div class="validationMessage" data-bind="ifnot: projectName.valid">
                <div id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error, scrollToElement: projectName.error"></div>
