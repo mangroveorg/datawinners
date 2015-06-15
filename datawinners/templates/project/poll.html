@@ -43,6 +43,7 @@
         var send_sms_url = "{% url send-sms%}";
         var is_active = "{{ is_active }}";
         var sms_popup_page = "poll_questionnaire";
+        var project = "{{ project }}";
         var from_date = "{{ from_date }}";
         var to_date = "{{ to_date }}";
         var questionnaire_id = "{{ questionnaire_id }}";
@@ -125,7 +126,15 @@
 
         </div>
          <div id="automatic_reply" class="questionnaire_type_header">
-             <span class="header" >{% trans "Automatic Success Message"%}</span>
+
+             <span class="header" >{% trans "Automatic Success Message"%}
+             {% if  project.is_outgoing_sms_replies_enabled %}
+                 <b>On</b>
+             {% else %}
+                 <b>Off</b>
+             {% endif %}
+             </span>
+
 
          </div>
         <div>
