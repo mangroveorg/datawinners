@@ -5,7 +5,6 @@
 
     <form id="poll_form">
         {% csrf_token %}
-        <div id="message_box" data-bind="text:info_message_poll"></div>
         <div class="questionnaire_form_header clearfix">
             {% include 'project/questionnaire_info_indicator.html' %}
         </div>
@@ -19,7 +18,7 @@
         <div data-bind="stopBinding: true">
             <div id="poll_questionnaire">
                 <label>{%trans 'How Do You Want to Broadcast this Poll?'%}</label>
-            <br>
+                <br>
                 <div>
                         <div>
                             <span> <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
@@ -28,8 +27,8 @@
                         <div class="margin_left_30 italic_grey">
                             <span>{%trans 'This is where we explain that only the Poll recipients will be able to send in data.'%}</span>
                         </div>
-
-
+                <br>
+                </div>
                 <div data-bind="visible: show_sms() === 'poll_via_sms'">
                     <label>SMS text</label>
                     <i>Be sure to include your question, answer options and  instructions on how to reply in SMS text.
@@ -45,22 +44,23 @@
                 <div>
                      <div>
                             <span> <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms"/>
-                            {% trans "I will use other means" %}</span>
+                            {% trans "I will use other means" %} <i>{% trans "(Example: Radio, TV Billboards)"%}</i></span>
                         </div>
                         <div class="margin_left_30 italic_grey">
-                            <span class="italic_grey">{% trans '(Example: Radio, TV Billboards)  This is where we explain that anyone can send in data.'%}</span>
+
+                            <span class="italic_grey">{% trans ' This is where we explain that anyone can send in data.'%}</span>
                         </div>
 
                 </div>
                 <br>
 
                 <div><br>
-                    <label> {%trans 'How Long Do Should People be Able to Send in Their Answer?'%}</label><br>
+                    <label> {%trans 'How Long Do Should People be Able to Send in Their Answer?'%}</label>
                     <span class="italic_grey">{% trans 'Short explanation and why we suggest to have a fixed activation period.' %}</span>
                     <a>{% trans " Learn More" %} </a>
                     <br><br>
-                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select> <span> {% trans 'Days' %} </span><br>
-                    <br><br>
+                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select> <span> {% trans 'Days' %} </span><br><br>
+
                     <span class="bold-text">{% trans 'From '%} </span>
                     <span id="from_date_poll"
                                      data-bind="text:from_date_poll"></span>

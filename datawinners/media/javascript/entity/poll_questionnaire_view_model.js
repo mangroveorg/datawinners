@@ -117,7 +117,9 @@
                     if(responseJson['error_message']['name']){
                         window.questionnaireViewModel.projectName.setError(responseJson['error_message']['name']);}
                     else{
-                        window.questionnaireViewModel.info_message_poll(responseJson['error_message']);}
+                        $('<div class="message-error  margin-left-right-null">' + responseJson['error_message'] + '</a></span></div>').insertBefore($("#poll_title"));
+                    }
+
                 }
 
                 $('#sms-success').hide();

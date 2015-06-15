@@ -2,9 +2,8 @@
 {% load i18n %}
 {% block page_title %} {% trans "Create Questionnaire" %}{% endblock %}
 {% block section_title %}
+    {% include 'need_help.html' %}
     <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Collect Data" %}</h2>
-        {% include 'need_help.html' %}
-    </h2>
 {% endblock %}
 
 {% load dw_tabs %}
