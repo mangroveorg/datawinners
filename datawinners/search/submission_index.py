@@ -334,7 +334,7 @@ def _get_select_field_answer_from_snapshot(entry, field_for_revision):
     options = field_for_revision.get_options_map()
     value_list = []
     for answer_value in list(entry):
-        value_list.append(options[answer_value])
+        value_list.append(options[answer_value.lower()])
     return ",".join(value_list)
 
 
