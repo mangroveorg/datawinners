@@ -62,6 +62,8 @@ DW.SubmissionLogTable = function (options) {
         var colvis = new $.fn.dataTable.ColVis(table.fnSettings(),
             {
                 aiExclude: [0],
+                showAll: "Show all",
+                showNone: "Show none",
                 "fnStateChange": function (iColumn, bVisible) {
                     $.post("/project/hide_submission_log_column/", {
                         'data': JSON.stringify({

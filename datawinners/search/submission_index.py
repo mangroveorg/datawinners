@@ -314,7 +314,7 @@ def lookup_entity_data(dbm, id, entity_type):
             return get_by_short_code_include_voided(dbm, id, entity_type).data
     except DataObjectNotFound:
         pass
-    return " "
+    return {}
 
 
 # TODO:This is required only for the migration for creating submission indexes.To be removed following release10
@@ -463,11 +463,11 @@ def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
                 unique_code = entry.get(field.code)
                 unique_id_data = lookup_entity_data(dbm, str(unique_code), [field.unique_id_type])
                 for key, value in unique_id_data.iteritems():
-                    if isinstance(unique_id_data[key]["value"], list):
-                        value = ",  ".join(map(str, unique_id_data[key]["value"]))
+                    if isinstance(value["value"], list):
+                        value = ",  ".join(map(str, value["value"]))
                         uni_id_data.update({key: value})
                     else:
-                        uni_id_data.update({key: unique_id_data[key]["value"]})
+                        uni_id_data.update({key: value["value"]})
                 entry[field.code] = str(uni_id_data)
             elif isinstance(field, FieldSet):
                 _update_name_unique_code(dbm, entry.get(field.code), field)
