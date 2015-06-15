@@ -1044,6 +1044,9 @@ msgstr " Enregistrements ont été importés avec succès"
 msgid "Access to Web Submission has been given to your DataSenders"
 msgstr "Un accès à la page d'envoi web a été donné à vos expéditeurs de données"
 
+msgid "Access to Web Submission has been given to your Contacts"
+msgstr "Un accès à la page d'envoi web a été donné à vos Contacts"
+
 msgid "all_selected_message %(total_records)s %(current_page_size)s"
 msgstr "Nous avons limité votre sélection à %(total_records)s Expéditeurs de Données sur %(current_page_size)s Expédteurs de Données sur la page courante. Après avoir donné accès à ces %(current_page_size)s Expéditeurs de Données, vous pouvez continuer à la page suivante."
 
@@ -1500,8 +1503,8 @@ msgstr "Ajouter aux Groupes"
 msgid "Remove from Groups"
 msgstr "Retirer des Groupes"
 
-msgid "Group %s successfully deleted."
-msgstr "Le Groupe %s a été supprimé avec succès."
+msgid "Group <b>%s</b> successfully deleted."
+msgstr "Le Groupe <b>%s</b> a été supprimé avec succès."
 
 msgid "All Contacts"
 msgstr "Tous les Contacts"
@@ -1538,3 +1541,15 @@ msgstr "Attention"
 
 msgid "Add a Group"
 msgstr "Ajouter un Groupe"
+
+msgid "Your Contact(s) have been added successfully. Contacts with an Email address added to a Questionnaire for the first time will receive an activation email with instructions."
+msgstr "Vos Contact(s) ont été ajouté(s) avec succès. Les Contacts ayant des adresses email, liés à un Questionnaire pour la première fois recevront un email d’activation avec les instructions."
+
+msgid "The Contact(s) are removed from Questionnaire(s) successfully"
+msgstr "Le(s) Contact(s) a (ont) été retiré(s) du Questionnaire avec succès"
+
+msgid "Data Sender(s) successfully deleted."
+msgstr "Expéditeur(s) supprimé(s) avec succès."
+
+msgid "Contact(s) successfully deleted."
+msgstr "Contact(s) supprimé(s) avec succès."

@@ -86,6 +86,12 @@ class ProjectUpload(View):
             send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
                                                                                project_name)
 
+            profile = request.user.get_profile()
+            organization = Organization.objects.get(org_id=profile.org_id)
+            if xls_parser_response.is_multiple_languages:
+                logger.info("Creating Questionnaire %s with Multi Language support for organization : %s(%s) and email: %s", project_name, organization.name, profile.org_id, profile.user.email)
+
+
             if xls_parser_response.errors:
                 error_list = list(xls_parser_response.errors)
                 logger.info("User: %s. Upload Errors: %s", request.user.username, json.dumps(error_list))
@@ -248,6 +254,11 @@ class ProjectUpdate(View):
 
             send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
                                                                                questionnaire.name)
+
+            profile = request.user.get_profile()
+            organization = Organization.objects.get(org_id=profile.org_id)
+            if xls_parser_response.is_multiple_languages:
+                logger.info("Edit Questionnaire %s with Multi Language support for organization : %s(%s) and email: %s", questionnaire.name, organization.name, profile.org_id, profile.user.email)
 
             if xls_parser_response.errors:
                 info_list = list(xls_parser_response.errors)

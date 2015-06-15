@@ -186,7 +186,7 @@ class ReporterRegistrationForm(Form):
         mapper = {MOBILE_NUMBER_FIELD_CODE: 'telephone_number',
                   GEO_CODE: GEO_CODE_FIELD_NAME}
         for field_code, error in validation_errors.iteritems():
-            self._errors[mapper.get(field_code)] = self.error_class([error])
+            self._errors[mapper.get(field_code)] = self.error_class([_(error)])
 
 
 class EditReporterRegistrationForm(ReporterRegistrationForm):

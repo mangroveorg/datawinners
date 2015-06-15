@@ -31,10 +31,9 @@ class TestSendSMSApi(TestCase):
                     self.assertEqual(200, response.status_code)
                     self.assertDictEqual({"34334": "failure", "1212": "success"},
                                          jsonpickle.decode(response.content))
-                    calls = [call("2222", '1212', "Hello world!", MSG_TYPE_API),
-                             call("2222", '34334', "Hello world!", MSG_TYPE_API)]
+                    calls = [call("2222", '1212', "Hello world!", MSG_TYPE_API, mock_org._get_message_tracker()),
+                             call("2222", '34334', "Hello world!", MSG_TYPE_API, mock_org._get_message_tracker())]
                     self.assertEqual(send_sms_patch.call_args_list, calls)
-                    mock_org.increment_sms_api_usage_count.assert_called_once_with()
 
 
     def test_should_return_bad_request_when_request_format_in_not_valid(self):

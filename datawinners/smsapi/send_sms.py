@@ -6,6 +6,8 @@ from datawinners.common.authorization import api_http_basic
 from datawinners.sms.models import MSG_TYPE_API
 from datawinners.utils import get_organization
 from datawinners.scheduler.smsclient import SMSClient
+from django.conf import settings
+import datetime
 
 
 NUMBERS = 'numbers'
@@ -23,13 +25,14 @@ def send_sms(request):
         return HttpResponse(status=400)
 
     organization = get_organization(request)
+    current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
+    message_tracker = organization._get_message_tracker(current_month)
     client = SMSClient()
     result = {}
     org_tel_number = organization.tel_number()
     for number in input_request[NUMBERS]:
-        if client.send_sms(org_tel_number, number, unicode(input_request[MESSAGE]), MSG_TYPE_API):
+        if client.send_sms(org_tel_number, number, unicode(input_request[MESSAGE]), MSG_TYPE_API, message_tracker):
             result.update({number: "success"})
-            organization.increment_sms_api_usage_count()
         else:
             result.update({number: "failure"})
     return HttpResponse(jsonpickle.encode(result, unpicklable=False), content_type="application/javascript")
