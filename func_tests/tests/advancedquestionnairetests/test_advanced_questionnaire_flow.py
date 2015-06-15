@@ -14,7 +14,7 @@ from pages.advancedwebsubmissionpage.advanced_web_submission_page import Advance
 from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
 from pages.datasenderactivationpage.activate_datasender_page import DataSenderActivationPage
 from pages.datasenderpage.data_sender_page import DataSenderPage
-from pages.loginpage.login_page import login
+from pages.loginpage.login_page import login, Page
 from pages.projectdatasenderspage.project_data_senders_page import ProjectDataSendersPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.submissionlogpage.submission_log_page import LAST_MONTH, ALL_PERIODS
@@ -74,31 +74,37 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         file_name = 'ft_advanced_questionnaire.xls'
         form_code = self._verify_questionnaire_creation(self.project_name, file_name)
         project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        self._verify_datawinners_university()
 
         web_submission_page.navigate_to_datasenders_page()
+        self._verify_datawinners_university()
         datasender_page = ProjectDataSendersPage(self.driver)
         datasender_page.search_with("1234123413"). \
             select_a_data_sender_by_mobile_number("1234123413").perform_datasender_action(by_css(".remove"))
         datasender_page.refresh()
         datasender_page.navigate_to_analysis_page()
+        self._verify_datawinners_university()
         DataAnalysisPage(self.driver).navigate_to_web_submission_tab()
 
         web_submission_page = AdvancedWebSubmissionPage(self.driver)
         self._do_web_submission('submission_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411')
         self._verify_submission_log_page(web_submission_page)
         datasender_rep_id, ds_email = self._register_datasender()
+        self._verify_datawinners_university()
 
         self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Submission")
 
         datasender_page = DataSenderPage(self.driver)
         datasender_page.send_in_data()
         verify_advanced_web_submission_page_is_loaded(self.driver)
+        self._verify_datawinners_university()
         self._do_web_submission('submission_data.xml', project_temp_name, form_code, ds_email, NEW_PASSWORD)
         self.global_navigation_page.sign_out()
 
         self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
         submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
             self.project_name).wait_for_table_data_to_load()
+        self._verify_datawinners_university()
 
         self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
 
@@ -111,6 +117,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self._edit_and_verify_submission(datasender_rep_id, project_temp_name)
 
         self._verify_edit_of_questionnaire()
+        self._verify_datawinners_university()
 
     def _wait_for_table_to_be_empty(self, submission_log_page):
         count = 0
@@ -281,3 +288,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         self._verify_without_media(form_code)
         self._verify_with_media(form_code)
+
+
+
+    def _verify_datawinners_university(self):
+        dw_university_page = Page(self.driver)
+        self.assertTrue(dw_university_page.is_help_content_available())
+        dw_university_page.close_help()
