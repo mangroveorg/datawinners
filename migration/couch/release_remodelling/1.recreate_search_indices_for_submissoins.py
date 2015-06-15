@@ -16,7 +16,7 @@ def create_index(dbm, form_model, logger):
     end_key = [form_model_id, {}]
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                  startkey=start_key, endkey=end_key)
-    es = get_elasticsearch_handle(timeout=2400)
+    es_handle = get_elasticsearch_handle(timeout=2400)
 
     survey_response_docs = []
     for row in rows:
@@ -27,7 +27,7 @@ def create_index(dbm, form_model, logger):
         survey_response_docs.append(search_dict)
 
     if survey_response_docs:
-        es.bulk_index(dbm.database_name, form_model.id, survey_response_docs)
+        es_handle.bulk_index(dbm.database_name, form_model.id, survey_response_docs)
         logger.info('Created index for survey response docs '+str([doc.get('id') for doc in survey_response_docs]))
 
 
@@ -64,7 +64,7 @@ def create_search_indices_for_submissions(db_name):
         logger.exception(e.message)
 
 
-es = get_elasticsearch_handle(timeout=600)
+es = get_elasticsearch_handle()
 migrate(all_db_names(), create_search_indices_for_submissions, version=(25, 0, 1), threads=3)
 
 
