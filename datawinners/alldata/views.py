@@ -7,7 +7,7 @@ from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.utils.http import urlquote
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, get_language
 from django.http import Http404
 
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, \
@@ -154,7 +154,8 @@ def index(request):
                                    'is_quota_reached': is_quota_reached(request),
                                    'error_messages': error_messages,
                                    'is_pro_sms': organization.is_pro_sms,
-                                   'activation_success': activation_success},
+                                   'activation_success': activation_success,
+                                   'current_lang': get_language()},
                                   context_instance=RequestContext(request))
     else:
         return render_to_response('alldata/index.html',
@@ -166,7 +167,8 @@ def index(request):
                                    'is_quota_reached': is_quota_reached(request),
                                    'error_messages': error_messages,
                                    'is_pro_sms':organization.is_pro_sms,
-                                   'activation_success': activation_success},
+                                   'activation_success': activation_success,
+                                   'current_lang': get_language()},
                                   context_instance=RequestContext(request))
 
 

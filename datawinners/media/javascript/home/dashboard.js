@@ -43,4 +43,57 @@ $(document).ready(function() {
         project.showSubmissionBreakup($(this).html());
     });
     _trackConversion();
+
+    $( ".close_help_element" ).click(function() {
+        $("#welcome_area, #help_element").addClass("none");
+        $("#help_message").removeClass("none");
+        $("#container_content .container_24").addClass("position_relative");
+
+        var data = {
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/dashboard/hide_help_element/',
+            data: data
+        });
+    });
+
+    $(".close_help_element").tooltip({
+        position: "top right",
+        relative: true,
+        opacity: 0.8,
+        events: {
+            def: "mouseover,mouseout",
+            input: "focus,blur",
+            widget: "focus mouseover,blur mouseout",
+            tooltip: "click,click"
+        }
+
+    }).dynamic({ bottom: { direction: 'down', bounce: true } });
+
+    
+    $( "#help_message_dialog_close" ).click(function() {
+        $("#help_message").addClass("none");
+        $("#container_content .container_24").removeClass("position_relative");
+    });
+
+    $("#video-lightbox").dialog({
+        modal: true,
+        autoOpen: false,
+        height: 'auto',
+        width: 'auto',
+        closeText: 'hide',
+        close: function(){
+            $("#video-lightbox iframe").attr("src", "");
+        }
+    });
+
+    $("a.open_video").bind("click", function(){
+        $("#video-lightbox iframe").attr("src", $(this).attr("href"));
+        $("#video-lightbox").dialog("option", "title", $(this).text());
+        $("#video-lightbox").dialog("open");
+        return false;
+    });
 });

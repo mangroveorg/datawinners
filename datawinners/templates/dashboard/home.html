@@ -1,7 +1,11 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
 {% block page_title %}{% trans "Dashboard" %}{% endblock %}
-{% block section_title %}{% trans "Dashboard" %}{% endblock %}
+{% block section_title %}{% trans "Dashboard" %}
+    {% block section_help %}
+     &nbsp;
+    {% endblock %}
+{% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -24,8 +28,6 @@
         var send_sms_url = "{% url send-sms%}";
         var registered_ds_count_url = "{% url registered_ds_count %}";
         var group_ds_count_url = "{% url group_ds_count %}";
-        var sms_popup_page = "dashboard";
-        var user_group = "{{ user_group }}";
     </script>
     <script type="text/javascript" src="/media/javascript/home/dashboard.js"></script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
@@ -39,6 +41,10 @@
     {% include 'main_message_upgrade.html' %}
     {{ block.super }}
 {% endblock %}
+{% block help_button %}
+    &nbsp;
+{% endblock %}
+
 {% block content %}
 
     {% for message in messages %}
@@ -54,16 +60,61 @@
         </div>
     {% endif %}
 
-    <div class="help_section table">
+    {% if show_help %}
+    <div class="help_background padding_5 margin_top_5" id="welcome_area">
+    <a class="close_help_element padding_5 float_right"><img src="/media/images/close_button.png"></a>
+        <div class="tooltip">
+            <p>
+                {% trans "The Get Started section can be removed when you no longer need it." %}
+            </p>
+        </div>
+        <h4>{{ user.first_name }}, {% trans 'Get Started with DataWinners!' %}</h4>
+            <div class="help_accordion">
+                {% trans 'For more tips, support, and tutorials, visit our' %}
+                <a href="{% trans "https://www.datawinners.com/en/help-center/" %}" target="_blank" class="margin_bottom_10">{% trans 'Help Center' %}</a>
+                <img src="/media/images/external_link.png" class="external_icon">
+            </div>
+    </div>
+
+    <div class="help_section table" id="help_element">
+        <div class="help_section tableRow help_background">
+            <div class="tableCell sub_section padding_bottom_10 padding_top_20">
+                <img  class='dashboard_top_icon' src="/media/images/take_a_tour.png"><br/>
+
+                    <a href="{% trans "https://www.youtube.com/embed/0YIGgbGF3wI?autoplay=1" %}" class="open_video margin_bottom_10 bold font_size_13">
+                        {% trans "Take a Tour" %}<img src="/media/images/play_symbol.png" class="play_icon margin_left_10">
+                    </a>
+
+            </div>
+            <div class="tableCell sub_section padding_bottom_10 padding_top_20">
+                <img  class='dashboard_top_icon'  src="/media/images/create_questionnaire.png"/><br/>
+
+                    <a href="{% trans "https://www.youtube.com/embed/4QmTmcr56wU?autoplay=1" %}" class="open_video margin_bottom_10 bold font_size_13">
+                        {% trans "Create Your Questionnaire </br> in 5 minutes" %}
+                        <img src="/media/images/play_symbol.png" class="play_icon margin_left_10">
+                    </a>
+
+            </div>
+            <div class="tableCell sub_section padding_bottom_10 padding_top_20">
+                <img  class='dashboard_top_icon'  src="/media/images/bulb.png"/><br/>
+                <a href="{% trans "https://www.datawinners.com/dwcdt" %}" class="margin_bottom_10 bold font_size_13" target="_blank">{% trans "Tips for Successful Data </br> Collection" %}</a>
+                <img src="/media/images/external_link.png" class="external_icon">
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="help_section table" id="help_area">
         <div class="help_section tableRow">
-            <div class="tableCell sub_section"></div>
+
             <div class="tableCell sub_section" id="chat_section">
-                <img  class='dashboard_icon'  src="/media/images/chat-icon.png"/><br/>
-                <p class="explanation ">{% trans "Communicate" %}</p>
+                <img  class='dashboard_icon'  src="/media/images/advertising.png"/><br/>
+                <span class="explanation ">{% trans 'Communicate' %}</span><br/>
                 {% if  is_pro_sms %}
-                    <a id="send_sms" class="margin_bottom_10">{% trans "Send an SMS" %}</a>
+                    <a id="send_sms" class="margin_bottom_10">{% trans 'Send an SMS' %}</a>
                 {% else %}
-                    <a id="show_upgrade_message" class="margin_bottom_10">{% trans "Send an SMS" %}</a>
+                    <a id="show_upgrade_message" class="margin_bottom_10">{% trans 'Send an SMS' %}</a>
                 {% endif %}
             </div>
             <div class="tableCell sub_section" id="questionnaire_section">
@@ -74,13 +125,39 @@
                 {% else %}
                     <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires & Polls" %}</a>
                 {% endif %}
+                <img  class='dashboard_icon'  src="/media/images/analysis_business_check_checklist.png"/><br/>
+                <span class="explanation">{% trans 'Collect Data' %}</span><br/>
+                <a id="create_project_link" href="/project/wizard/create/?prev=dash" class="margin_bottom_10">{% trans 'Create a Questionnaire' %}</a>
             </div>
-
-            <div class="tableCell sub_section"></div>
+            <!--<div class="tableCell sub_section">
+                <img  class='dashboard_icon'  src="/media/images/magnidier.png"/><br/>
+                <p class="explanation">Submission Statistics</p>
+                <a id="submissio    n_stat_link" href="" class="margin_bottom_10">View Statistics</a>
+            </div>!-->
+            <div class="tableCell sub_section">
+                <div style="" id="help_message" class="none">
+                    <div class="padding_5 {% trans "en" %}_bubble" id="help_message_content">
+                        <a><img src="/media/images/dw_dialog_close.png" id="help_message_dialog_close"></a>
+                        <span>
+                        {% trans 'The Get Started information is always available in our Help Center.' %}
+                        </span>
+                        <img src="/media/images/Pricing_05.png" id="help_message_arrow">
+                    </div>
+                </div>
+                <img  class='dashboard_icon' src="/media/images/get_help.png"/><br/>
+                <span class="explanation">{% trans 'Get Help' %}</span><br/>
+                <a id="get_help_link" href="{% trans "https://www.datawinners.com/en/help-center/" %}" target="_blank" class="margin_bottom_10">
+                    {% trans 'Go to Help Center' %}
+                    <img src="/media/images/external_link.png" class="external_icon margin_left_10">
+                </a>
+            </div>
 
         </div>
     </div>
     {% include "send-sms.html" %}
+    <div id="video-lightbox">
+        <iframe width="700" height="500" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
 
     <div class="grid_17 margin_left_null dashboard_left">
         <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Questionnaires" %}</h4>
@@ -105,7 +182,7 @@
             {% else %}
                 {% if has_reached_sms_limit %}
                     {% trans "You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your questionnaires." %}
-                
+
                 {% else %}
                     {% trans "For unlimited data collection and advanced features, consider a Pro Account upgrade!" %}
                 {% endif %}
