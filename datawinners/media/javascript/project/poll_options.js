@@ -63,12 +63,11 @@ var PollOptionsViewModel = function() {
     self.to_date_poll = ko.computed(function () {
         end_date = new Date();
         end_date.setDate(end_date.getDate() + self.number_of_days());
-        return item_map_week[end_date.getDay()] + ", " + end_date.getDate() + " " + month_name_map[end_date.getMonth()] + " " + end_date.getFullYear();
+        return end_date.getDate() + " " + month_name_map[end_date.getMonth()] + " " + end_date.getFullYear();
     });
 
     function get_current_date() {
-        return item_map_week[start_date.getDay()] + ", " +
-            start_date.getDate() + " " +
+        return start_date.getDate() + " " +
             month_name_map[start_date.getMonth()] + " " +
             start_date.getFullYear();
     }
@@ -77,14 +76,14 @@ var PollOptionsViewModel = function() {
         self.status('Active');
         self.activation('');
         self.deactivation('Deactivate');
-        self.duration('From ' + from_date + ' To ' + to_date);
+        self.duration('is active : ' + from_date + ' To ' + to_date);
         self.change_days('Change');
     }
     else {
         self.status('Deactivated');
         self.deactivation('');
         self.activation('Activate');
-        self.duration('');
+        self.duration('is inactive');
         self.change_days('');
     }
 
@@ -150,7 +149,7 @@ var PollOptionsViewModel = function() {
                 self.status('Active');
                 self.deactivation('Deactivate');
                 self.activation('');
-                self.duration('From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
+                self.duration('is active : From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
                 self.change_days('Change');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
