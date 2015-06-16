@@ -22,18 +22,17 @@
                             <span> <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_via_sms" data-bind="checked: show_sms"/>
                             {% trans "I want to send this Poll Question via SMS" %}</span>
                         </div>
-                        <div class="margin_left_30 italic_grey">
+                        <div class="margin_left_25 italic_grey">
                             <span>{%trans 'This is where we explain that only the Poll recipients will be able to send in data.'%}</span>
                         </div>
                 <br>
                 </div>
-                <div data-bind="visible: show_sms() === 'poll_via_sms'">
+                <div data-bind="visible: show_sms() === 'poll_via_sms'" class="margin_left_25">
                     <label>SMS text</label>
                     <i>Be sure to include your question, answer options and  instructions on how to reply in SMS text.
                     Example: Did you receive your nutrition package? Reply to this SMS with either “yes” or “no”.</i><br>
+                    <div data-bind="stopBinding: true" >
 
-
-                    <div data-bind="stopBinding: true">
                             {% include 'send-sms.html' %}
                     </div>
 
@@ -44,9 +43,9 @@
                             <span> <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms"/>
                             {% trans "I will use other means" %} <i>{% trans "(Example: Radio, TV Billboards)"%}</i></span>
                         </div>
-                        <div class="margin_left_30 italic_grey">
+                        <div class="margin_left_25">
 
-                            <span class="italic_grey">{% trans ' This is where we explain that anyone can send in data.'%}</span>
+                            <span class="italic_grey">{% trans 'This is where we explain that anyone can send in data.'%}</span>
                         </div>
 
                 </div>

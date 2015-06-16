@@ -116,6 +116,7 @@ var PollOptionsViewModel = function() {
                 self.duration('');
                 self.change_days('');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
+                $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
@@ -152,6 +153,7 @@ var PollOptionsViewModel = function() {
                 self.duration('From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
                 self.change_days('Change');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
+                $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '<a href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))
