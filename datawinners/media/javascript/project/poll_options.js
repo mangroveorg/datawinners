@@ -77,11 +77,12 @@ var PollOptionsViewModel = function() {
         self.status('Active');
         self.activation('');
         self.deactivation('Deactivate');
-        self.duration('is active : ' + from_date + ' To ' + to_date);
+        self.duration('is active From ' + from_date + ' To ' + to_date);
         self.change_days('Change');
         self.active_dates_poll('<b>From</b> '+ from_date + ' <b>To</b> ' + to_date);
     }
     else {
+        $('#send_sms').addClass('link_color disable_link');
         self.status('Deactivated');
         self.deactivation('');
         self.activation('Activate');
@@ -119,6 +120,7 @@ var PollOptionsViewModel = function() {
                 self.change_days('');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
+                $('#send_sms').addClass('link_color disable_link');
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
@@ -152,11 +154,12 @@ var PollOptionsViewModel = function() {
                 self.status('Active');
                 self.deactivation('Deactivate');
                 self.activation('');
-                self.duration('is active : From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
+                self.duration('is active From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
                 self.active_dates_poll('<b>From</b> '  + self.from_date_poll() + ' <b>To</b> ' + self.to_date_poll());
                 self.change_days('Change');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
+                $('#send_sms').removeClass('link_color disable_link');
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '<a href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))

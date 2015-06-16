@@ -43,6 +43,7 @@
         var send_sms_url = "{% url send-sms%}";
         var is_active = "{{ is_active }}";
         var sms_popup_page = "poll_questionnaire";
+        var is_open_survey = "{{ project.is_open_survey }}";
         var project = "{{ project }}";
         var from_date = "{{ from_date }}";
         var to_date = "{{ to_date }}";
@@ -80,7 +81,6 @@
         <div class="margin_left_700">
 
             {% if project.is_open_survey %}
-                <div></div>
             {% else %}
                 <a id="send_sms" class="margin_bottom_10">{% trans "Send Sms to More People" %}</a>
             {% endif %}
