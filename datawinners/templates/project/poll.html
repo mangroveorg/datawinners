@@ -121,10 +121,11 @@
             </div>
 
             <div id="deactivate_poll_dialog" class="none">
-                <p> {% trans 'Are you sure want to deactivate?' %}</p>
+                <br>
+                <p> {% trans 'Are you sure want to deactivate this poll?' %}</p>
                 <div class="float_right margin_top_40">
                     <a id="close_deactivate_link" class="cancel_link" data-bind="click: close_deactivation_popup">{%trans "Cancel"%}</a>
-                    <input id="deactivate_button" class="button" type="button" data-bind="click: deactivate_poll" value={%trans "Save"%}>
+                    <input id="deactivate_button" class="button" type="button" data-bind="click: deactivate_poll" value="Yes, Deactivate">
                 </div>
             </div>
 
@@ -169,7 +170,7 @@
         <span data-bind="text:to_date_poll"></span>
         <div class="float_right margin_top_20">
               <a id="close_activate_link" class="cancel_link" data-bind="click: close_activation_popup">{%trans "Cancel"%}</a>
-              <input id="activate_button" class="button" type="button" data-bind="click: activate_poll" value={%trans "Save"%}>
+              <input id="activate_button" class="button" type="button" data-bind="click: activate_poll" value="Yes, Activate">
         </div>
     </div>
     </div>
