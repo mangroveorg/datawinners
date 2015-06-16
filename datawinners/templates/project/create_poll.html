@@ -1,8 +1,6 @@
 {% load i18n %}
 
 <div data-bind="visible: showPollQuestionnaireForm">
-
-
     <form id="poll_form">
         {% csrf_token %}
         <div class="questionnaire_form_header clearfix">
@@ -17,7 +15,7 @@
 
         <div data-bind="stopBinding: true">
             <div id="poll_questionnaire">
-                <label>{%trans 'How Do You Want to Broadcast this Poll?'%}</label>
+                <label>2. {%trans 'How Do You Want to Broadcast this Poll?'%}</label>
                 <br>
                 <div>
                         <div>
@@ -40,7 +38,7 @@
                     </div>
 
                 </div>
-                <br>
+
                 <div>
                      <div>
                             <span> <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms"/>
@@ -55,10 +53,11 @@
                 <br>
 
                 <div><br>
-                    <label> {%trans 'How Long Do Should People be Able to Send in Their Answer?'%}</label>
+                    <label>3. {%trans 'How Long Should People be Able to Send in Their Answer?'%}</label>
                     <span class="italic_grey">{% trans 'Short explanation and why we suggest to have a fixed activation period.' %}</span>
                     <a>{% trans " Learn More" %} </a>
                     <br><br>
+                    <span>{% trans 'Active for' %}</span>
                     <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select> <span> {% trans 'Days' %} </span><br><br>
 
                     <span class="bold-text">{% trans 'From '%} </span>
