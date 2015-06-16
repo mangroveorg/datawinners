@@ -46,6 +46,7 @@ var PollOptionsViewModel = function() {
     self.show_sms_option = ko.observable(false);
 
     self.duration = ko.observable();
+    self.active_dates_poll = ko.observable();
     self.activationDialogVisible = ko.observable(false);
     self.deactivationDialogVisible = ko.observable(false);
     self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
@@ -78,6 +79,7 @@ var PollOptionsViewModel = function() {
         self.deactivation('Deactivate');
         self.duration('is active : ' + from_date + ' To ' + to_date);
         self.change_days('Change');
+        self.active_dates_poll('<b>From</b> '+ from_date + ' <b>To</b> ' + to_date);
     }
     else {
         self.status('Deactivated');
@@ -112,7 +114,8 @@ var PollOptionsViewModel = function() {
                 self.status('Deactivated');
                 self.activation('Activate');
                 self.deactivation('');
-                self.duration('');
+                self.duration('is inactive');
+                self.active_dates_poll('');
                 self.change_days('');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
@@ -150,6 +153,7 @@ var PollOptionsViewModel = function() {
                 self.deactivation('Deactivate');
                 self.activation('');
                 self.duration('is active : From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
+                self.active_dates_poll('<b>From</b> '  + self.from_date_poll() + ' <b>To</b> ' + self.to_date_poll());
                 self.change_days('Change');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))

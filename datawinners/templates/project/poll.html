@@ -106,7 +106,7 @@
                 </p>
                 <p>
                     <br/>
-                    <span data-bind="text:duration"> </span>
+                    <span data-bind="html:active_dates_poll"> </span>
                     <span>
                         <a data-bind="text:change_days, click:activate" style="color:#0070ac;"> </a>
                     </span>
@@ -116,7 +116,7 @@
             <div data-bind="dialog: {autoOpen: false, width: 450, height: 170, title:'Deactivate Poll', dialogClass:'no-close'},
                     dialogVisible: deactivationDialogVisible, open: deactivate, dialogContent: deactivatePollDialog">
             </div>
-            <div data-bind="dialog: {autoOpen: false, width: 475, height: 260, title:'Activate Poll', dialogClass:'no-close'},
+            <div data-bind="dialog: {autoOpen: false, width: 475, height: 'auto', title:'Activate Poll', dialogClass:'no-close'},
                     dialogVisible: activationDialogVisible, open: activate, dialogContent: activatePollDialog">
             </div>
 
@@ -158,13 +158,15 @@
     </div>
 
     <div id="activate_poll_dialog" class="none">
-        <p> {% trans 'Select the number of days for the poll to be active:' %}</p>
+        <br>
+        <span>{% trans 'Active for' %}</span>
         <select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style"></select>
         <span> {% trans 'Days' %} </span><br><br>
-        <label>{% trans 'From date:'%} </label>
-        <div> <span data-bind="text:from_date_poll"> </span></div>
-        <label>{% trans 'To date:'%} </label>
-        <div data-bind="text:to_date_poll"></div>
+        <span><b>{% trans 'From '%} </b></span>
+        <span data-bind="text:from_date_poll"> </span>&nbsp;&nbsp;
+
+        <span> <b>{% trans 'To '%}</b> </span>
+        <span data-bind="text:to_date_poll"></span>
         <div class="float_right margin_top_20">
               <a id="close_activate_link" class="cancel_link" data-bind="click: close_activation_popup">{%trans "Cancel"%}</a>
               <input id="activate_button" class="button" type="button" data-bind="click: activate_poll" value={%trans "Save"%}>
