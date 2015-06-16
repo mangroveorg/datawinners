@@ -50,7 +50,9 @@
         <div class="project_detail">
             {% if not project.xform %}
                 {% include 'project/sms_tester_form.html' %}
-                <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>&nbsp&nbsp|&nbsp
+                {% if not project.is_poll %}
+                    <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>&nbsp&nbsp|&nbsp
+                {% endif %}
             {% endif %}
         {% if user|in_group:"NGO Admins,Project Managers" %}
             <a href="{{ project_links.delete_project_link }}"
