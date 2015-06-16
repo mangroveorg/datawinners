@@ -54,7 +54,14 @@
             {% endif %}
         {% if user|in_group:"NGO Admins,Project Managers" %}
             <a href="{{ project_links.delete_project_link }}"
-               class="delete_project">{% trans "Delete this Questionnaire" %}</a>
+               class="delete_project">
+               {% if project.is_poll %}
+                   {% trans "Delete this Poll" %}
+               {% else %}
+                    {% trans "Delete this Questionnaire" %}
+               {% endif %}
+               </a>
+
         {% endif %}
         </div>
     </div>
