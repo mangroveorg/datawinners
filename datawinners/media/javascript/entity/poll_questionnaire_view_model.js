@@ -57,7 +57,6 @@
     });
 
     self.validateCreatePoll = function(){
-        window.smsViewModel.clearSelection();
         return (DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && ((window.smsViewModel.validate() == 1) || self.show_sms() == 'poll_broadcast'));
     };
 
