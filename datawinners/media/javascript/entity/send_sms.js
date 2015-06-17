@@ -187,6 +187,8 @@ function SmsViewModel(){
   self.closeSmsDialog = function(){
     $("#send-sms-section").dialog('close');
     self.clearSelection();
+    $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
+    window.location.reload();
   };
 
 

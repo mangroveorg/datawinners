@@ -52,7 +52,7 @@ var PollOptionsViewModel = function() {
     self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
     self.activatePollDialog = ko.observable($('#activate_poll_dialog').html());
 
-    $('#sms-text').val(message_text);
+
     window.smsViewModel.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
                                             {"label":gettext('My Poll Recipients'), "code": "poll_recipients"},
                                             {"label":gettext('Group'), "code": "group"},
