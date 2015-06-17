@@ -37,13 +37,12 @@
         var dat = new Date();
         dat.setDate(dat.getDate() + self.number_of_days());
         end_date = dat;
-        self.to_date_poll(item_map_week[dat.getDay()]+", "+ dat.getDate()+ " "+ month_name_map[dat.getMonth()] +" "+ dat.getFullYear());
+        self.to_date_poll(dat.getDate()+ " "+ month_name_map[dat.getMonth()] +" "+ dat.getFullYear());
         return active_poll_days
     });
 
     function get_current_date() {
-        return item_map_week[current_date.getDay()] + ", " +
-                            current_date.getDate() + " " +
+        return current_date.getDate() + " " +
                             month_name_map[current_date.getMonth()] + " " +
                             current_date.getFullYear();
     }

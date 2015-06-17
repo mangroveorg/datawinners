@@ -46,6 +46,7 @@ var PollOptionsViewModel = function() {
     self.show_sms_option = ko.observable(false);
 
     self.duration = ko.observable();
+    self.active_dates_poll = ko.observable();
     self.activationDialogVisible = ko.observable(false);
     self.deactivationDialogVisible = ko.observable(false);
     self.deactivatePollDialog = ko.observable($('#deactivate_poll_dialog').html());
@@ -63,12 +64,11 @@ var PollOptionsViewModel = function() {
     self.to_date_poll = ko.computed(function () {
         end_date = new Date();
         end_date.setDate(end_date.getDate() + self.number_of_days());
-        return item_map_week[end_date.getDay()] + ", " + end_date.getDate() + " " + month_name_map[end_date.getMonth()] + " " + end_date.getFullYear();
+        return end_date.getDate() + " " + month_name_map[end_date.getMonth()] + " " + end_date.getFullYear();
     });
 
     function get_current_date() {
-        return item_map_week[start_date.getDay()] + ", " +
-            start_date.getDate() + " " +
+        return start_date.getDate() + " " +
             month_name_map[start_date.getMonth()] + " " +
             start_date.getFullYear();
     }
@@ -77,14 +77,16 @@ var PollOptionsViewModel = function() {
         self.status('Active');
         self.activation('');
         self.deactivation('Deactivate');
-        self.duration('From ' + from_date + ' To ' + to_date);
+        self.duration('is active From ' + from_date + ' To ' + to_date);
         self.change_days('Change');
+        self.active_dates_poll('<b>From</b> '+ from_date + ' <b>To</b> ' + to_date);
     }
     else {
+        $('#send_sms').addClass('link_color disable_link');
         self.status('Deactivated');
         self.deactivation('');
         self.activation('Activate');
-        self.duration('');
+        self.duration('is inactive');
         self.change_days('');
     }
 
@@ -113,9 +115,12 @@ var PollOptionsViewModel = function() {
                 self.status('Deactivated');
                 self.activation('Activate');
                 self.deactivation('');
-                self.duration('');
+                self.duration('is inactive');
+                self.active_dates_poll('');
                 self.change_days('');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
+                $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
+                $('#send_sms').addClass('link_color disable_link');
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
@@ -149,9 +154,12 @@ var PollOptionsViewModel = function() {
                 self.status('Active');
                 self.deactivation('Deactivate');
                 self.activation('');
-                self.duration('From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
+                self.duration('is active From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
+                self.active_dates_poll('<b>From</b> '  + self.from_date_poll() + ' <b>To</b> ' + self.to_date_poll());
                 self.change_days('Change');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
+                $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
+                $('#send_sms').removeClass('link_color disable_link');
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '<a href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))

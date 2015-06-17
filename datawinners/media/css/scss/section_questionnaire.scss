@@ -345,7 +345,7 @@ div.margin_top_20 input {
   }
 
   .questionnaire_form_header {
-    //    height: 58px;
+    height: 30px;
     position: relative;
     .questionnaire_code {
       //float: left;
@@ -580,4 +580,9 @@ div.margin_top_20 input {
 
 .xls_learn_more, #sample_forms_link{
   font-style: normal !important;
+}
+
+.remove_border{
+  border-left: 0 ;
+  border-right:0 ;
 }

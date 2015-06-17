@@ -1,8 +1,8 @@
 {% load i18n %}
 <div>
     <div class="form-row-10px" id="questionnaire_name_section" data-bind="hidden: isEditMode">
-        <div data-bind="visible: showPollQuestionnaireForm()">
-            <label>{% trans 'Poll Name' %}</label>
+        <div id= 'questionnaire_title'  data-bind="visible: showPollQuestionnaireForm()">
+            <label>1. {% trans 'Poll Name' %}</label>
         </div>
         <div data-bind="visible: showQuestionnaireForm() || isXLSUploadQuestionnaire()">
             <label>{% trans 'Questionnaire Name:' %}</label>
