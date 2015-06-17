@@ -138,7 +138,7 @@ function SmsViewModel(){
 
   self.smsText = DW.ko.createValidatableObservable({value: ""});
 
-  self.smsCharacterCount = ko.observable("0" + gettext(" of 160 characters used"));
+  self.smsCharacterCount = ko.observable(message_text.length + gettext(" of 160 characters used"));
 
   self.selectedQuestionnaireNames =  DW.ko.createValidatableObservable({value: []});
 

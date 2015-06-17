@@ -4,6 +4,20 @@
     self.number_of_days = ko.observable();
     var active_poll_days = [1,2,3,4,5];
     var current_date = new Date();
+    var maxAllowedSMSCharacters = 160;
+        
+    var smsTextElement = $("#sms-text");
+    var smsTextLengthCheck = function (e) {
+        if (e.target.value.length > maxAllowedSMSCharacters) {
+            $(this).val(e.target.value.substring(0, maxAllowedSMSCharacters));
+        }
+
+        smsViewModel.smsCharacterCount($(this).val().length + gettext(" of " + maxAllowedSMSCharacters + " characters used"));
+    };
+
+    smsTextElement.keyup(smsTextLengthCheck);
+    smsTextElement.keydown(smsTextLengthCheck);
+
     window.smsViewModel.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
                                             {"label":gettext('Group'), "code": "group"},
                                             {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"}
