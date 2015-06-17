@@ -80,7 +80,7 @@ describe("Create a Poll Questionnaire", function(){
         expected_date = new Date();
         expected_date.setDate(current_date.getDate() + 5);
 
-        expect(pollViewModel.to_date_poll()).toBe(item_map_week[expected_date.getDay()]+", "+ expected_date.getDate()+ " "+ month_name_map[expected_date.getMonth()] +" "+ expected_date.getFullYear())
+        expect(pollViewModel.to_date_poll()).toBe(expected_date.getDate()+ " "+ month_name_map[expected_date.getMonth()] +" "+ expected_date.getFullYear())
 
 
     });
