@@ -9,6 +9,9 @@ from datawinners.utils import translate
 from mangrove.form_model.form_model import header_fields, get_form_model_by_entity_type
 from mangrove.form_model.project import get_entity_type_fields
 
+IDNR_SHORTCODE_FIELD_CODE = 'q6'
+IDNR_LAST_NAME_FIELD_CODE = 'q2'
+
 
 class SubmissionHeader():
     def __init__(self, dbm, form_model, language='en'):
@@ -17,8 +20,6 @@ class SubmissionHeader():
         self.language = language
 
     def update_datasender_header(self, header_dict):
-        header_dict.update(
-            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         ds_field_names, labels, codes = get_entity_type_fields(self.dbm)
         ds_dict = OrderedDict()
         for field in ds_field_names:
@@ -26,7 +27,6 @@ class SubmissionHeader():
         header_dict.update(ds_dict)
 
     def update_datasender_header_for_sort(self, header_list):
-        header_list.append(self.form_model.id + '_reporter.name.name')
         ds_field_names, labels, codes = get_entity_type_fields(self.dbm)
         ds_dict = OrderedDict()
         for field in ds_field_names:
@@ -34,7 +34,7 @@ class SubmissionHeader():
         header_list.extend(ds_dict.keys())
 
     def key_attribute(self, field):
-            return field.code
+        return field.code
 
     def get_header_dict(self):
         header_dict = OrderedDict()
@@ -81,35 +81,45 @@ class SubmissionHeader():
     def _update_unique_id_submission_headers(self, header_dict, unique_id_field, unique_id_field_name, unique_id_model):
         unique_id_headers = header_fields(unique_id_model, key_attribute='code')
         unique_id_submission_headers = OrderedDict()
+        unique_id_submission_headers.update(
+            {unique_id_field_name + '.' + unique_id_model.id + '_' + IDNR_LAST_NAME_FIELD_CODE: unique_id_field.label})
+        unique_id_submission_headers.update({
+            unique_id_field_name + '.' + unique_id_model.id + '_' + IDNR_SHORTCODE_FIELD_CODE: unique_id_field.unique_id_type + ':id'})
         for key, val in unique_id_headers.iteritems():
-            unique_id_submission_headers[
-                unique_id_field_name + '.' + unique_id_model.id + '_' + key] = unique_id_field.unique_id_type + ':' + val
+            if key not in [IDNR_LAST_NAME_FIELD_CODE, IDNR_SHORTCODE_FIELD_CODE]:
+                unique_id_submission_headers[
+                    unique_id_field_name + '.' + unique_id_model.id + '_' + key] = unique_id_field.unique_id_type + ':' + val
         header_dict.update(unique_id_submission_headers)
 
-    def _update_unique_id_submission_headers_for_sort(self, header_dict, unique_id_field, unique_id_field_name, unique_id_model):
+    def _update_unique_id_submission_headers_for_sort(self, header_dict, unique_id_field, unique_id_field_name,
+                                                      unique_id_model):
         unique_id_headers = header_fields(unique_id_model, key_attribute='code')
         unique_id_submission_headers = OrderedDict()
+        unique_id_submission_headers.update({
+            unique_id_field_name + '.' + unique_id_model.id + '_' + IDNR_LAST_NAME_FIELD_CODE + '.' + unique_id_model.id + '_' + IDNR_LAST_NAME_FIELD_CODE: unique_id_field.label})
+        unique_id_submission_headers.update({
+            unique_id_field_name + '.' + unique_id_model.id + '_' + IDNR_SHORTCODE_FIELD_CODE + '.' + unique_id_model.id + '_' + IDNR_SHORTCODE_FIELD_CODE: unique_id_field.unique_id_type + ':id'})
         for key, val in unique_id_headers.iteritems():
-            unique_id_submission_headers[
-                unique_id_field_name + '.' + unique_id_model.id + '_' + key + '.' + unique_id_model.id + '_' + key] = unique_id_field.unique_id_type + ':' + val
+            if key not in [IDNR_LAST_NAME_FIELD_CODE, IDNR_SHORTCODE_FIELD_CODE]:
+                unique_id_submission_headers[
+                    unique_id_field_name + '.' + unique_id_model.id + '_' + key + '.' + unique_id_model.id + '_' + key] = unique_id_field.unique_id_type + ':' + val
         header_dict.extend(unique_id_submission_headers.keys())
 
     def add_unique_id_field(self, unique_id_field, header_dict):
         unique_id_field_name, unique_id_model = self._get_unique_id_details(unique_id_field)
-        header_dict.update({unique_id_field_name: unique_id_field.label})
-        #headers of id nr
+        # headers of id nr
         self._update_unique_id_submission_headers(header_dict, unique_id_field, unique_id_field_name, unique_id_model)
 
     def add_unique_id_field_for_sort(self, unique_id_field, header_list):
         unique_id_field_name, unique_id_model = self._get_unique_id_details(unique_id_field)
-        header_list.append(unique_id_field_name+'.'+unique_id_model.id+'_q2'+'.'+unique_id_model.id+'_q2')
-        #headers of id nr
-        self._update_unique_id_submission_headers_for_sort(header_list, unique_id_field, unique_id_field_name, unique_id_model)
+        # headers of id nr
+        self._update_unique_id_submission_headers_for_sort(header_list, unique_id_field, unique_id_field_name,
+                                                           unique_id_model)
 
     def add_unique_id_field_in_repeat(self, unique_id_field, header_dict):
         unique_id_question_code = unique_id_field.code
         subject_title = unique_id_field.unique_id_type
-        header_dict.update({unique_id_question_code+'_unique_code': {'label': "%s ID" % subject_title}})
+        header_dict.update({unique_id_question_code + '_unique_code': {'label': "%s ID" % subject_title}})
 
     def get_header_field_names(self):
         return self.get_header_dict().keys()
@@ -129,18 +139,14 @@ class SubmissionAnalysisHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
-        # self.update_datasender_header(header_dict)
         return header_dict
 
 
 class AllSubmissionHeader(SubmissionHeader):
-
-
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         header_dict.update({"status": translate("Status", self.language, ugettext)})
-        # self.update_datasender_header(header_dict)
         return header_dict
 
 
@@ -148,7 +154,6 @@ class SuccessSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
-        # self.update_datasender_header(header_dict)
         return header_dict
 
 
@@ -165,7 +170,6 @@ class ErroredSubmissionHeader(SubmissionHeader):
         header_dict = OrderedDict()
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         header_dict.update({"error_msg": translate("Error Message", self.language, ugettext)})
-        # self.update_datasender_header(header_dict)
         return header_dict
 
 

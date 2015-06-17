@@ -104,12 +104,12 @@ class SubmissionSearchStore():
         return mapping
 
     def _get_submission_fields(self, fields_definition, fields, parent_field_name=None):
-        subject_dict = {}
+        subject_field_definition = {}
         for field in fields:
             if isinstance(field, UniqueIdField):
                 unique_id_model = get_form_model_by_entity_type(self.dbm, [field.unique_id_type])
                 unique_id_mapping = get_subject_fields_mapping(unique_id_model)
-                subject_dict[es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)] = \
+                subject_field_definition[es_questionnaire_field_name(field.code, self.latest_form_model.id, parent_field_name)] = \
                     unique_id_mapping[unique_id_model.id]
             if isinstance(field, FieldSet) and field.is_group():
                 self._get_submission_fields(fields_definition, field.fields, field.code)
@@ -121,7 +121,7 @@ class SubmissionSearchStore():
         datasender_model = get_form_model_by_code(self.dbm, "reg")
         datasender_mapping = get_ds_fields_mapping(datasender_model)
         datasender_dict = {'reporter': datasender_mapping['reg']['properties']}
-        fields_definition.append({'Subject': subject_dict})
+        fields_definition.append({'Subject': subject_field_definition})
         fields_definition.append(datasender_dict)
 
 
@@ -134,17 +134,6 @@ class SubmissionSearchStore():
         from datawinners.search.submission_index_task import async_populate_submission_index
 
         async_populate_submission_index(self.dbm.database_name, self.latest_form_model.id)
-
-    # def _add_text_field_mapping_for_submission(self, mapping_fields, field_def):
-    # name = field_def["name"]
-    #     mapping_fields.update(
-    #         {name: {"type": "multi_field", "fields": {
-    #             name: {"type": "string"},
-    #             name + "_value": {"type": "string", "index_analyzer": "sort_analyzer", "include_in_all": False},
-    #             name + "_exact": {"type": "string", "index": "not_analyzed", "include_in_all": False},
-    #         }}})
-
-
 
     def get_fields_mapping_by_field_def(self, doc_type, fields_definition):
         """
