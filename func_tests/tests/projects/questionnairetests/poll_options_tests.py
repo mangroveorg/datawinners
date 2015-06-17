@@ -1,10 +1,12 @@
+from time import sleep
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import random_number
-from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS
+from framework.utils.common_utils import random_number, by_css
+from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS, DATA_SENDER_TAB
 from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
 from tests.projects.questionnairetests.project_questionnaire_data import LANGUAGES, CLINIC_ALL_DS, PT, FR, \
-    REP7, REP5, REP6, THIRD_COLUMN, SECOND_ROW, GROUP, THIRD_ROW, POLL_RECIPIENTS
+    REP7, REP5, REP6, THIRD_COLUMN, SECOND_ROW, GROUP, THIRD_ROW, MY_POLL_RECIPIENTS, CLINIC_TEST_PROJECT, REP8, REP3, \
+    REP1, SIXTH_COLUMN
 
 
 class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
@@ -59,11 +61,14 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_receipient(LINKED_CONTACTS, CLINIC_ALL_DS)
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.select_send_sms()
-        self.poll_questionnaire_page.send_sms_to(LINKED_CONTACTS, CLINIC_ALL_DS)
+        self.poll_questionnaire_page.send_sms_to(LINKED_CONTACTS, CLINIC_TEST_PROJECT)
 
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP8, SECOND_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP3, SECOND_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP1, SECOND_ROW, THIRD_COLUMN))
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP5, SECOND_ROW, THIRD_COLUMN))
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP6, SECOND_ROW, THIRD_COLUMN))
+
 
     def test_should_send_sms_to_people_from_selected_groups(self):
         all_contacts_page = self.global_navigation.navigate_to_all_data_sender_page()
@@ -79,7 +84,6 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
         self.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
         self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_questionnaire_page = PollQuestionnairePage(driver=self.driver)
-
         self.poll_questionnaire_page.select_sms_option()
         self.poll_questionnaire_page.enter_sms_text()
         self.poll_questionnaire_page.select_receipient(GROUP, group_name)
@@ -92,11 +96,35 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, THIRD_ROW, THIRD_COLUMN))
 
-
     def test_should_send_sms_to_own_poll_recipients(self):
         self.poll_questionnaire_page.select_sms_option()
         self.poll_questionnaire_page.enter_sms_text()
         self.poll_questionnaire_page.select_receipient(LINKED_CONTACTS, CLINIC_ALL_DS)
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.select_send_sms()
-        # self.poll_questionnaire_page.send_sms_to(POLL_RECIPIENTS, REP7)
+        self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7)
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN))
+
+    # #
+    # def test_should_deactivate_the_poll(self):
+    #     self.poll_questionnaire_page.select_broadcast_option()
+    #     self.poll_questionnaire_page.click_create_poll()
+    #     self.poll_questionnaire_page.deactivate_poll()
+
+    def test_send_sms_to_people_should_add_sms_recipients_to_my_data_senders_of_poll(self):
+        self.poll_questionnaire_page.select_sms_option()
+        self.poll_questionnaire_page.enter_sms_text()
+        self.poll_questionnaire_page.select_receipient(LINKED_CONTACTS, CLINIC_ALL_DS)
+        self.poll_questionnaire_page.click_create_poll()
+        self.poll_questionnaire_page.select_send_sms()
+        self.poll_questionnaire_page.send_sms_to(LINKED_CONTACTS, CLINIC_TEST_PROJECT)
+
+        self.poll_questionnaire_page.select_element(DATA_SENDER_TAB)
+        self.poll_questionnaire_page.select_element(by_css('.short_code'))
+        sleep(5)
+        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(REP1, 1, SIXTH_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(REP3, 2, SIXTH_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(REP5, 3, SIXTH_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(REP6, 4, SIXTH_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(REP7, 5, SIXTH_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(REP8, 6, SIXTH_COLUMN))

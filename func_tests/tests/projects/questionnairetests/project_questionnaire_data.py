@@ -51,6 +51,8 @@ DATA_TAB = "Data"
 POLL_RECIPIENTS = "My Poll Recipients"
 POLL = "Poll"
 CLINIC_ALL_DS = "Clinic All DS (Following)"
+CLINIC_TEST_PROJECT = "clinic test project1"
+
 FIRST_ROW = 1
 SECOND_ROW = 2
 THIRD_ROW = 3
@@ -59,6 +61,9 @@ SIXTH_COLUMN = 6
 REP7 = 'rep7'
 REP5 = 'rep5'
 REP6 = 'rep6'
+REP8 = 'rep8'
+REP3 = 'rep3'
+REP1 = 'rep1'
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 

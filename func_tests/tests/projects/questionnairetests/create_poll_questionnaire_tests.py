@@ -1,5 +1,6 @@
+from time import sleep
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import random_number
+from framework.utils.common_utils import random_number, by_css
 from pages.createquestionnairepage.create_questionnaire_locator import DATA_SENDER_TAB, POLL_TAB
 from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
@@ -71,9 +72,11 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_Questionnaire_page.select_receipient(CONTACTS_LINKED, CLINIC_ALL_DS)
         poll_Questionnaire_page.click_create_poll()
         poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
-        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP7, FIRST_ROW, SIXTH_COLUMN), True)
-        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP5, SECOND_ROW, SIXTH_COLUMN), True)
-        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP6, THIRD_ROW, SIXTH_COLUMN), True)
+        poll_Questionnaire_page.select_element(by_css('.short_code'))
+        sleep(3)
+        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP5, FIRST_ROW, SIXTH_COLUMN), True)
+        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP6, SECOND_ROW, SIXTH_COLUMN), True)
+        self.assertEquals(poll_Questionnaire_page.isRecipientAssociated(REP7, THIRD_ROW, SIXTH_COLUMN), True)
         # self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page().select_poll_questionnaire_option()
 
     def test_should_create_poll_with_broadcast_option(self):

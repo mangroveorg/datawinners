@@ -3,7 +3,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.select import Select
 
 from framework.utils.common_utils import by_css, by_id, generateId, CommonUtilities, by_xpath, by_name
-from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_DROPDOWN, \
     POLL_VIA_SMS_RD_BUTTON, SMS_TEXTBOX, CREATE_POLL_BUTTON, POLL_TITLE, DATA_SENDER_TAB, POLL_TAB, DATA_TAB_BTN, \
     POLL_VIA_BROADCAST_RD_BUTTON, active_poll_link, poll_info_accordian, deactivate_link, POLL_STATUS_INFO, \
@@ -133,7 +132,7 @@ class PollQuestionnairePage(Page):
         self.select_element(poll_info_accordian)
         self.driver.find(deactivate_link).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DEACTIVATE_BTN, True)
-        self.driver.find(DEACTIVATE_BTN).click()
+        self.driver.find_text_box(DEACTIVATE_BTN).click()
 
     def select_send_sms(self):
         self.select_element(POLL_TAB)
@@ -166,7 +165,7 @@ class PollQuestionnairePage(Page):
 
     def get_cell_value(self, column, row):
         return self.driver.find(
-            by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % ((row + 1), column + 1))).text
+            by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % (row+1, column+1))).text
 
     def isRecipientAssociated(self, ds_name, row, column):
         return ds_name == self.get_cell_value(column, row)
