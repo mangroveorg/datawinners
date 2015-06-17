@@ -103,7 +103,10 @@ def dashboard(request):
     questionnaire_list = []
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=8)
     for row in rows:
-        link = reverse("project-overview", args=(row['value']['_id'],))
+        if row['value']['is_poll'] is True:
+            link = reverse("submissions", args=[row['value']['_id'], row['value']['form_code']])
+        else:
+            link = reverse("project-overview", args=(row['value']['_id'],))
         questionnaire = dict(name=row['value']['name'], link=link, id=row['value']['_id'])
         questionnaire_list.append(questionnaire)
     language = request.session.get("django_language", "en")
