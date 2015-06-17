@@ -122,6 +122,7 @@ var PollOptionsViewModel = function() {
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
+                $('.message-box').delay(2000).fadeOut();
             }
         });
         self.close_deactivation_popup();
@@ -157,10 +158,12 @@ var PollOptionsViewModel = function() {
                 self.change_days('Change');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"));
+
                 $('#send_sms').removeClass('link_color disable_link');
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '<a href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))
+                $('.message-box').delay(2000).fadeOut();
             }
         });
         data = {};
@@ -171,7 +174,6 @@ var PollOptionsViewModel = function() {
 $(document).ready(function () {
     window.smsViewModel = new SmsViewModel();
     window.poll_options = new PollOptionsViewModel();
-
     ko.applyBindings(poll_options, $('#poll_options')[0]);
 
     ko.applyBindings(smsViewModel, $('#send-sms-section')[0]);
