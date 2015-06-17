@@ -12,7 +12,7 @@
             $(this).val(e.target.value.substring(0, maxAllowedSMSCharacters));
         }
 
-        smsViewModel.smsCharacterCount($(this).val().length + gettext(" of " + maxAllowedSMSCharacters + " characters used"));
+        window.smsViewModel.smsCharacterCount($(this).val().length + gettext(" of " + maxAllowedSMSCharacters + " characters used"));
     };
 
     smsTextElement.keyup(smsTextLengthCheck);

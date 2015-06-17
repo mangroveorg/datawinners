@@ -71,19 +71,6 @@ var PollOptionsViewModel = function() {
             month_name_map[start_date.getMonth()] + " " +
             start_date.getFullYear();
     }
-    var maxAllowedSMSCharacters = 160;
-
-    var smsTextElement = $("#sms-text");
-    var smsTextLengthCheck = function (e) {
-        if (e.target.value.length > maxAllowedSMSCharacters) {
-            $(this).val(e.target.value.substring(0, maxAllowedSMSCharacters));
-        }
-
-        smsViewModel.smsCharacterCount($(this).val().length + gettext(" of " + maxAllowedSMSCharacters + " characters used"));
-    };
-
-    smsTextElement.keyup(smsTextLengthCheck);
-    smsTextElement.keydown(smsTextLengthCheck);
 
     if (is_active == 'True') {
         self.status('Active');
@@ -187,5 +174,6 @@ $(document).ready(function () {
     window.poll_options = new PollOptionsViewModel();
 
     ko.applyBindings(poll_options, $('#poll_options')[0]);
+
     ko.applyBindings(smsViewModel, $('#send-sms-section')[0]);
 });
