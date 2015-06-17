@@ -9,7 +9,8 @@ from datawinners.main.database import get_database_manager
 from datawinners.project import helper
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.all_datasender_search import get_datasenders_ids_by_questionnaire_names, get_datasender_ids_by_group_names
-from datawinners.utils import lowercase_and_strip_accents
+from datawinners.submission.organization_finder import OrganizationFinder
+from datawinners.utils import lowercase_and_strip_accents, get_organization
 from mangrove.form_model.project import Project, is_active_form_model
 
 
@@ -79,12 +80,27 @@ def create_poll_questionnaire(request):
                                     'project_name_unique': project_name_unique}))
 
 
+def _check_if_smsc_is_configured(request):
+    organization = get_organization(request)
+    organization_setting = OrganizationFinder().find_organization_setting(organization.tel_number())
+    smsc = None
+    if organization_setting is not None and organization_setting.outgoing_number is not None:
+        smsc = organization_setting.outgoing_number.smsc
+    return smsc
+
+
 @login_required
 @session_not_expired
 @csrf_exempt
 @is_not_expired
 def create_poll(request):
     if request.method == 'POST':
+        smsc = _check_if_smsc_is_configured(request)
+        if smsc is None:
+            return HttpResponse(json.dumps({'success': False,
+                                    'error_message': 'No SMSC configured'}))
+
+
         manager = get_database_manager(request.user)
         is_active, project_id, project_name = is_active_form_model(manager)
         if not is_active:

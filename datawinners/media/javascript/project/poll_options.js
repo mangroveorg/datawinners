@@ -50,7 +50,6 @@ var PollOptionsViewModel = function() {
     self.activatePollDialog = ko.observable($('#activate_poll_dialog').html());
 
     $('#sms-text').val(message_text);
-
     window.smsViewModel.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
                                             {"label":gettext('My Poll Recipients'), "code": "poll_recipients"},
                                             {"label":gettext('Group'), "code": "group"},
@@ -155,7 +154,7 @@ var PollOptionsViewModel = function() {
                 self.active_dates_poll('<b>From</b> '  + self.from_date_poll() + ' <b>To</b> ' + self.to_date_poll());
                 self.change_days('Change');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
-                $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
+                $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"));
                 $('#send_sms').removeClass('link_color disable_link');
             }
             else {
@@ -172,5 +171,6 @@ $(document).ready(function () {
     window.poll_options = new PollOptionsViewModel();
 
     ko.applyBindings(poll_options, $('#poll_options')[0]);
+
     ko.applyBindings(smsViewModel, $('#send-sms-section')[0]);
 });
