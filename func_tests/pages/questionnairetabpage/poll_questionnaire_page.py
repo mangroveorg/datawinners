@@ -169,3 +169,7 @@ class PollQuestionnairePage(Page):
 
     def isRecipientAssociated(self, ds_name, row, column):
         return ds_name == self.get_cell_value(column, row)
+
+    def delete_the_poll(self):
+        self.select_element(by_css('.delete_project'))
+        self.select_element(by_id('confirm_delete'))

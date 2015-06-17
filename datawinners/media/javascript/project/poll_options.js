@@ -6,6 +6,12 @@ var PollOptionsViewModel = function() {
     var END_TIME = "T23:59:00";
     var data = {};
 
+    var get_default_number_of_days = function(){
+        var from = from_date.split(',')[0].split(' ')[1]
+        var to = to_date.split(',')[0].split(' ')[1]
+        return (to - from).toString();
+    };
+
     var month_name_map = {
         0: gettext('January'),
         1: gettext('February'),
@@ -21,15 +27,6 @@ var PollOptionsViewModel = function() {
         11: gettext('December')
     };
 
-    var item_map_week = {
-        1: gettext('Monday'),
-        2: gettext('Tuesday'),
-        3: gettext('Wednesday'),
-        4: gettext('Thursday'),
-        5: gettext('Friday'),
-        6: gettext('Saturday'),
-        0: gettext('Sunday')
-    };
     self.selectedPollOption = ko.observableArray([1, 3, 4]);
     self.active_poll_days = ko.observable([1, 2, 3, 4, 5]);
     self.number_of_days = ko.observable();
@@ -78,6 +75,7 @@ var PollOptionsViewModel = function() {
         self.deactivation('Deactivate');
         self.duration('is active From ' + from_date + ' To ' + to_date);
         self.change_days('Change');
+        self.number_of_days(get_default_number_of_days())
         self.active_dates_poll('<b>From</b> '+ from_date + ' <b>To</b> ' + to_date);
     }
     else {
@@ -85,6 +83,7 @@ var PollOptionsViewModel = function() {
         self.status('Deactivated');
         self.deactivation('');
         self.activation('Activate');
+        self.number_of_days()
         self.duration('is inactive');
         self.change_days('');
     }
@@ -150,6 +149,7 @@ var PollOptionsViewModel = function() {
         $.post(activate_poll_url, data).done(function (response) {
             var responseJson = $.parseJSON(response);
             if (responseJson['success']) {
+                (self.status()=="Deactivated") && self.number_of_days(1)
                 self.status('Active');
                 self.deactivation('Deactivate');
                 self.activation('');
