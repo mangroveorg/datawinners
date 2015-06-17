@@ -22,7 +22,7 @@
     <div class="tableRow">
         <div class = "tableCell" data-bind="visible: showToSection">{% trans "To:" %}</div>
         <div class = "tableCell sms_dropdown"  data-bind="visible: showToSection">
-            <select data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
+            <select id="recipient-dropdown" data-bind="options: smsOptionList, optionsText: 'label', optionsValue: 'code', value: selectedSmsOption, optionsAfterRender: setOptionDisable"></select>
         </div>
     </div>
 
@@ -105,6 +105,6 @@
     <br/>
     <div class="right_aligned_button margin_right_4" id="send_sms_button">
     <a id="cancel-sms" class="margin_right_20 dialog-anchor" data-bind="click: closeSmsDialog">{% trans "Cancel" %}</a>
-    <button class="button" data-bind="click: sendSms, disable: disableSendSms, text: sendButtonText, css: {'ui-state-disabled': disableSendSms}"></button>
+    <button id="send_button" class="button" data-bind="click: sendSms, disable: disableSendSms, text: sendButtonText, css: {'ui-state-disabled': disableSendSms}"></button>
     </div>
 </div>

@@ -40,13 +40,12 @@
 
                 <div>
                      <div>
-                            <span> <input type="radio" id="poll_via_sms" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms"/>
-                            {% trans "I will use other means" %} <i>{% trans "(Example: Radio, TV Billboards)"%}</i></span>
-                        </div>
-                        <div class="margin_left_25">
-
-                            <span class="italic_grey">{% trans 'This is where we explain that anyone can send in data.'%}</span>
-                        </div>
+                          <span> <input type="radio" id="poll_via_broadcast" name="poll_via_sms" value="poll_broadcast" data-bind="checked: show_sms"/>
+                          {% trans "I will use other means" %} <i>{% trans "(Example: Radio, TV Billboards)"%}</i></span>
+                    </div>
+                    <div class="margin_left_25 italic_grey">
+                        <span class="italic_grey">{% trans ' This is where we explain that anyone can send in data.'%}</span>
+                    </div>
 
                 </div>
                 <br>
@@ -69,20 +68,20 @@
                 </div>
                 <br>
                 <div class="create_project">
-                        <div class="grid_5">
-                            <a href="{% url create_project %}?prev=dash" id="back_to_create_options">{% trans "Back" %} </a>
+                    <div class="grid_5">
+                        <a href="{% url create_project %}?prev=dash" id="back_to_create_options">{% trans "Back" %} </a>
+                    </div>
+                    <div class="grid_15 float_right" id="send_sms_section">
+                        <div class="right_aligned_button">
+                            <a href="{{ cancel_link }}" class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
+                            <input type="button" class="button_wizard_next create_poll_button" id="save_and_create"
+                              data-bind="click: create_poll, disable: disableSendPoll, css: {'ui-state-disabled': disableSendPoll}"
+                              value="{% trans "Save & Create Poll" %}"/>
                         </div>
-                            <div class="grid_15 float_right" id="send_sms_section">
-                                <div class="right_aligned_button">
-                                    <a href="{{ cancel_link }}" class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
-                                    <input type="button" class="button_wizard_next create_poll_button" id="save_and_create"
-                                       data-bind="click: create_poll, disable: disableSendPoll, css: {'ui-state-disabled': disableSendPoll}"
-                                       value="{% trans "Save & Create Poll" %}"/>
-                                </div>
-                            <div class="clear-both"></div>
-                        </div>
+                        <div class="clear-both"></div>
+                    </div>
                 </div>
-             </div>
+            </div>
          </div>
     </form>
 

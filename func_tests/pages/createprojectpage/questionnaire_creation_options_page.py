@@ -1,6 +1,7 @@
 from time import sleep
 from framework.utils.common_utils import by_id, by_xpath, by_css, generateId
 from pages.createprojectpage.create_project_locator import CONTINUE_BTN
+from pages.globalnavigationpage.global_navigation_locator import CREATE_PROJECT_LINK
 from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.page import Page
 from tests.questionnaireTemplateTests.questionnaire_template_test_data import BLANK_QUESTIONNAIRE_SELECTION_ACCORDION, SELECT_USING_TEMPLATE_ACCORDION, AJAX_LOADER_HORIZONTAL, TEMPLATE_CATEGORY_ACCORDION, SELECTED_TEMPLATE_QUESTIONS_DIV, TEMPLATE_NAME_DIV, TEMPLATE_NAME_HEADER, TEMPLATE_QUESTIONS, \
