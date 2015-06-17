@@ -47,7 +47,7 @@ describe("Create a Poll Questionnaire", function(){
 
     });
 
-    xit('should_validate_add_number_of_days', function(){
+    it('should_validate_add_number_of_days', function(){
      var month_name_map = {0:gettext('January') ,
                   1: gettext('February') ,
                   2: gettext('March') ,

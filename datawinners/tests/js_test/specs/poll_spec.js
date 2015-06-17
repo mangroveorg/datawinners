@@ -4,7 +4,7 @@
 
 describe("Deactivate Poll", function() {
 
-    it('should_deactivate_poll', function () {
+    xit('should_deactivate_poll', function () {
         window.smsViewModel = new SmsViewModel();
         window.pollOptions = new PollOptionsViewModel();
         var poll_options = window.pollOptions;
