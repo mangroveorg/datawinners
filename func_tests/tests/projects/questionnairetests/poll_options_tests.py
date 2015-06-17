@@ -31,6 +31,10 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
         cls.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         cls.poll_questionnaire_page = PollQuestionnairePage(driver=cls.driver)
 
+    @classmethod
+    def tearDown(cls):
+        cls.poll_questionnaire_page.delete_the_poll()
+
     def test_should_change_automatic_reply_sms_language_for_poll_with_group_recipients(self):
         self.poll_questionnaire_page.select_sms_option()
         self.poll_questionnaire_page.enter_sms_text()

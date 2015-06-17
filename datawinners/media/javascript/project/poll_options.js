@@ -6,6 +6,12 @@ var PollOptionsViewModel = function() {
     var END_TIME = "T23:59:00";
     var data = {};
 
+    var get_default_number_of_days = function(){
+        var from = from_date.split(',')[0].split(' ')[1]
+        var to = to_date.split(',')[0].split(' ')[1]
+        return (to - from).toString();
+    };
+
     var month_name_map = {
         0: gettext('January'),
         1: gettext('February'),
@@ -21,18 +27,9 @@ var PollOptionsViewModel = function() {
         11: gettext('December')
     };
 
-    var item_map_week = {
-        1: gettext('Monday'),
-        2: gettext('Tuesday'),
-        3: gettext('Wednesday'),
-        4: gettext('Thursday'),
-        5: gettext('Friday'),
-        6: gettext('Saturday'),
-        0: gettext('Sunday')
-    };
     self.selectedPollOption = ko.observableArray([1, 3, 4]);
     self.active_poll_days = ko.observable([1, 2, 3, 4, 5]);
-    self.number_of_days = ko.observable();
+    self.number_of_days = ko.observable(get_default_number_of_days());
 
     self.activation = ko.observable();
     self.deactivation = ko.observable();

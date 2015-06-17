@@ -28,6 +28,10 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
         cls.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
 
+    @classmethod
+    def tearDown(cls):
+        cls.poll_questionnaire_page.delete_the_poll()
+
 
     def test_should_create_a_poll_questionnaire_with_sms_option_with_group(self):
         poll_title = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
