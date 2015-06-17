@@ -6,7 +6,7 @@ var PollOptionsViewModel = function() {
     var END_TIME = "T23:59:00";
     var data = {};
 
-    var get_default_number_of_days = function(){
+    var get_current_number_of_days = function(){
         var from = from_date.split(',')[0].split(' ')[1]
         var to = to_date.split(',')[0].split(' ')[1]
         return (to - from).toString();
@@ -75,7 +75,7 @@ var PollOptionsViewModel = function() {
         self.deactivation('Deactivate');
         self.duration('is active From ' + from_date + ' To ' + to_date);
         self.change_days('Change');
-        self.number_of_days(get_default_number_of_days())
+        self.number_of_days(get_current_number_of_days())
         self.active_dates_poll('<b>From</b> '+ from_date + ' <b>To</b> ' + to_date);
     }
     else {
@@ -83,7 +83,6 @@ var PollOptionsViewModel = function() {
         self.status('Deactivated');
         self.deactivation('');
         self.activation('Activate');
-        self.number_of_days()
         self.duration('is inactive');
         self.change_days('');
     }
@@ -116,6 +115,7 @@ var PollOptionsViewModel = function() {
                 self.duration('is inactive');
                 self.active_dates_poll('');
                 self.change_days('');
+                self.number_of_days('1');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
                 $('#send_sms').addClass('link_color disable_link');
@@ -149,7 +149,6 @@ var PollOptionsViewModel = function() {
         $.post(activate_poll_url, data).done(function (response) {
             var responseJson = $.parseJSON(response);
             if (responseJson['success']) {
-                (self.status()=="Deactivated") && self.number_of_days(1)
                 self.status('Active');
                 self.deactivation('Deactivate');
                 self.activation('');
