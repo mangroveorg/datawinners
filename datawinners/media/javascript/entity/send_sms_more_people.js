@@ -24,6 +24,7 @@ $(function(){
     });
 
     $("#send_sms").on('click', function(){
+        $('#sms-text').val(message_text);
         $("#send-sms-section").dialog('open');
     });
 

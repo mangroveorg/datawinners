@@ -102,7 +102,7 @@
                 selected_option = {
                     'option' : 'broadcast'
             };
-                question = "BroadCast"
+                question = "Response"
             }
             else{
                 selected_option = get_questionnaire_or_group_names(selected_option);

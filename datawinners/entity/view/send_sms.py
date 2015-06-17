@@ -166,7 +166,7 @@ def get_name_short_code_mobile_numbers_for_contacts(dbm, poll_recipients, failed
                  contact_dict_list.append("%s (%s)" % (contact.name, contact.short_code))
             else:
                 contact_dict_list.append("%s (%s)" % (contact.data['mobile_number']['value'], contact.short_code))
-            short_codes.append(short_codes)
+            short_codes.append(contact.short_code)
     return mobile_numbers, contact_dict_list, short_codes
 
 
