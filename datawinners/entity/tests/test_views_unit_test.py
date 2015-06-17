@@ -345,16 +345,19 @@ class TestWebUserAccess(TestCase):
 
         contact_display_list = [{'contact_short_code': 'contact_name'}]
         mobile_numbers = ['some_number']
+        short_codes = ['contact_short_code']
 
         with patch('datawinners.entity.view.send_sms._get_contact_details_for_questionnaire') as _get_contact_details_for_questionnaire_mock:
-            _get_contact_details_for_questionnaire_mock.return_value =contact_display_list, mobile_numbers
-            mobile_numbers, contact_display_list = get_contact_details(dbm, request, failed_numbers)
+            _get_contact_details_for_questionnaire_mock.return_value =contact_display_list, mobile_numbers, short_codes
+            mobile_numbers, contact_display_list, short_code = get_contact_details(dbm, request, failed_numbers)
 
             expected_contact_display_list = [{'contact_short_code': 'contact_name'}]
             expected_mobile_numbers = ['some_number']
+            expected_short_code = ['contact_short_code']
 
             self.assertEquals(contact_display_list, expected_contact_display_list)
             self.assertListEqual(mobile_numbers, expected_mobile_numbers)
+            self.assertListEqual(short_codes, expected_short_code)
 
     def test_should_get_contact_details_when_group_name_are_given(self):
         dbm = MagicMock(spec=DatabaseManager)
@@ -364,16 +367,19 @@ class TestWebUserAccess(TestCase):
 
         contact_display_list = [{'contact_short_code': 'contact_name'}]
         mobile_numbers = ['some_number']
-
+        short_codes = ['contact_short_code']
         with patch('datawinners.entity.view.send_sms._get_contact_details_for_group_names') as _get_contact_details_for_group_names_mock:
-            _get_contact_details_for_group_names_mock.return_value =contact_display_list, mobile_numbers
-            mobile_numbers, contact_display_list = get_contact_details(dbm, request, failed_numbers)
+            _get_contact_details_for_group_names_mock.return_value =contact_display_list, mobile_numbers, short_codes
+            mobile_numbers, contact_display_list, short_codes = get_contact_details(dbm, request, failed_numbers)
 
             expected_contact_display_list = [{'contact_short_code': 'contact_name'}]
             expected_mobile_numbers = ['some_number']
+            expected_short_codes = ['contact_short_code']
 
             self.assertEquals(contact_display_list, expected_contact_display_list)
             self.assertListEqual(mobile_numbers, expected_mobile_numbers)
+            self.assertListEqual(expected_short_codes, short_codes)
+
 
     def test_should_get_contact_details_when_recipients_name_are_given(self):
         dbm = MagicMock(spec=DatabaseManager)
@@ -383,13 +389,16 @@ class TestWebUserAccess(TestCase):
 
         contact_display_list = [{'contact_short_code': 'contact_name'}]
         mobile_numbers = ['some_number']
+        short_codes = ['contact_short_code']
 
         with patch('datawinners.entity.view.send_sms.get_name_short_code_mobile_numbers_for_contacts') as get_name_short_code_mobile_numbers_for_contacts_mock:
-            get_name_short_code_mobile_numbers_for_contacts_mock.return_value =mobile_numbers, contact_display_list
-            mobile_numbers, contact_display_list = get_contact_details(dbm, request, failed_numbers)
+            get_name_short_code_mobile_numbers_for_contacts_mock.return_value =mobile_numbers, contact_display_list, short_codes
+            mobile_numbers, contact_display_list, short_codes = get_contact_details(dbm, request, failed_numbers)
 
             expected_contact_display_list = [{'contact_short_code': 'contact_name'}]
             expected_mobile_numbers = ['some_number']
+            expected_short_codes = ['contact_short_code']
 
             self.assertEquals(contact_display_list, expected_contact_display_list)
             self.assertListEqual(mobile_numbers, expected_mobile_numbers)
+            self.assertListEqual(short_codes, expected_short_codes)

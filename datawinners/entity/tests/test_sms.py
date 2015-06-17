@@ -72,7 +72,7 @@ class TestSMS(TestCase):
             self.assertListEqual(actual_mobile_numbers, ['123456', '98765'])
             self.assertListEqual(actual_contact_display_list, ['ds1 (code1)', '98765 (code2)'])
 
-    def test_should_return_contact_details_along_with_mobile_number_search_results_excluding_failed_numbers_is_given(self):
+    def test_should_return_contact_details_with_mobile_number_search_results_excluding_failed_numbers(self):
         dbm = MagicMock(spec=DatabaseManager)
         search_parameters = MagicMock()
         failed_numbers = ['some_number']
@@ -84,7 +84,8 @@ class TestSMS(TestCase):
             ]
             get_all_datasenders_search_results_mock.return_value = result_mock
 
-            actual_mobile_numbers, actual_contact_display_list = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
+            actual_mobile_numbers, actual_contact_display_list, actual_short_codes = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
 
             self.assertListEqual(actual_mobile_numbers, ['98765'])
             self.assertListEqual(actual_contact_display_list, ['98765 (code2)'])
+            self.assertListEqual(actual_short_codes, ['code2'])
