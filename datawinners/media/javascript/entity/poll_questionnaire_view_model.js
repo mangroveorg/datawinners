@@ -5,7 +5,7 @@
     var active_poll_days = [1,2,3,4,5];
     var current_date = new Date();
     var maxAllowedSMSCharacters = 160;
-        
+
     var smsTextElement = $("#sms-text");
     var smsTextLengthCheck = function (e) {
         if (e.target.value.length > maxAllowedSMSCharacters) {
