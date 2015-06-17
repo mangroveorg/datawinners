@@ -29,7 +29,7 @@ var PollOptionsViewModel = function() {
 
     self.selectedPollOption = ko.observableArray([1, 3, 4]);
     self.active_poll_days = ko.observable([1, 2, 3, 4, 5]);
-    self.number_of_days = ko.observable(get_default_number_of_days());
+    self.number_of_days = ko.observable();
 
     self.activation = ko.observable();
     self.deactivation = ko.observable();
@@ -75,6 +75,7 @@ var PollOptionsViewModel = function() {
         self.deactivation('Deactivate');
         self.duration('is active From ' + from_date + ' To ' + to_date);
         self.change_days('Change');
+        self.number_of_days(get_default_number_of_days())
         self.active_dates_poll('<b>From</b> '+ from_date + ' <b>To</b> ' + to_date);
     }
     else {
@@ -82,6 +83,7 @@ var PollOptionsViewModel = function() {
         self.status('Deactivated');
         self.deactivation('');
         self.activation('Activate');
+        self.number_of_days()
         self.duration('is inactive');
         self.change_days('');
     }
@@ -147,6 +149,7 @@ var PollOptionsViewModel = function() {
         $.post(activate_poll_url, data).done(function (response) {
             var responseJson = $.parseJSON(response);
             if (responseJson['success']) {
+                (self.status()=="Deactivated") && self.number_of_days(1)
                 self.status('Active');
                 self.deactivation('Deactivate');
                 self.activation('');
