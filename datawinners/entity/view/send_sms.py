@@ -181,7 +181,7 @@ def _get_contact_details_for_questionnaire(dbm, failed_numbers, request):
 
 def _get_contact_details_for_group_names(dbm, failed_numbers, request):
     group_names = json.loads(request.POST['group-names'])
-    search_parameters = {'void': False, 'search_filters': {'group_name': group_names}}
+    search_parameters = {'void': False, 'search_filters': {'group_names': group_names}}
     mobile_numbers, contact_display_list, short_codes = _get_all_contacts_details_with_mobile_number(dbm, search_parameters,
                                                                                         failed_numbers)
     return contact_display_list, mobile_numbers, short_codes
