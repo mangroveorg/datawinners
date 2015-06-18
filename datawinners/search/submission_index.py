@@ -9,7 +9,7 @@ from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundErro
 from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, \
     convert_choice_options_to_options_text
-from datawinners.search.datasender_index import get_ds_fields_mapping
+from datawinners.search.datasender_index import get_ds_fields_mapping, create_contact_dict
 from datawinners.search.subject_index import get_subject_fields_mapping
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.documents import ProjectDocument
@@ -228,7 +228,7 @@ def update_ds_info_in_submission(entity_doc, dbm):
     # datasender_dict = {}
     # for datasender_info in entity_doc.data:
     # datasender_dict.update({datasender_info: entity_doc.data[datasender_info]['value']})
-    datasender_dict = contact_dict(entity_doc, dbm, get_form_model_by_code(dbm, 'reg'))
+    datasender_dict = create_contact_dict(dbm, entity_doc, get_form_model_by_code(dbm, 'reg'))
 
     for project_form_model_id in project_form_model_ids:
         kwargs = {
@@ -254,7 +254,7 @@ def _get_datasender_info(dbm, submission_doc):
     if submission_doc.owner_uid:
         datasender = _lookup_contact_by_uid(dbm, submission_doc.owner_uid)
         if datasender:
-            return contact_dict(datasender._doc, dbm, get_form_model_by_code(dbm, 'reg'))
+            return create_contact_dict(dbm, datasender._doc, get_form_model_by_code(dbm, 'reg'))
         else:
             return OrderedDict([('name', UNKNOWN),
                                 ('short_code', submission_doc.created_by),
@@ -263,6 +263,9 @@ def _get_datasender_info(dbm, submission_doc):
                                 ('mobile_number', ''),
                                 ('email', ''),
                                 ('entity_type', ['reporter']),
+                                ('projects', []),
+                                ('groups', []),
+                                ('customgroups', []),
                                 ('void', False)])
     return OrderedDict([('name', ''),
                         ('short_code', UNKNOWN),
@@ -270,6 +273,9 @@ def _get_datasender_info(dbm, submission_doc):
                         ('geo_code', ''),
                         ('mobile_number', submission_doc.created_by),
                         ('email', ''),
+                        ('projects', []),
+                        ('groups', []),
+                        ('customgroups', []),
                         ('entity_type', ['reporter']),
                         ('void', False)])
 
