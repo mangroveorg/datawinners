@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.translation import ugettext as _
+import time
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired
 from datawinners.main.database import get_database_manager
 from datawinners.project import helper
@@ -56,7 +57,7 @@ def _construct_questionnaire(request):
     manager = get_database_manager(request.user)
     end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%dT%H:%M:%S')
 
-    questionnaire_code = helper.generate_questionnaire_code(manager)
+    questionnaire_code = 'poll_timestamp_'+str(time.time())
     questionnaire = Project(manager, name=request.POST.get('poll_name'),
                             fields=[], form_code=questionnaire_code, language=request.LANGUAGE_CODE,
                             devices=[u'sms', u'web', u'smartPhone'], is_poll=True, end_date=end_date, active="active")
