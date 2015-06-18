@@ -13,6 +13,7 @@ from datawinners.common.lang.utils import get_available_project_languages
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import make_project_links
+from datawinners.utils import get_organization
 from mangrove.form_model.project import Project
 
 
@@ -30,6 +31,7 @@ class QuestionnaireLanguageView(TemplateView):
                                 'project_links': make_project_links(questionnaire),
                                 'languages_list':  json.dumps(languages_list),
                                 'languages_link': reverse('languages'),
+                                'is_pro_sms': get_organization(request).is_pro_sms,
                                 'current_project_language': current_project_language,
                                 'post_url': reverse("project-language", args=[project_id]),
                                 'questionnaire_code': questionnaire.form_code
@@ -49,7 +51,7 @@ class QuestionnaireLanguageView(TemplateView):
         except:
             is_success = False
 
-        return HttpResponse(json.dumps({'success': is_success}), mimetype='application/json', content_type='application/json')
+        return HttpResponse(json.dumps({'success': is_success, 'is_pro_sms': get_organization(request).is_pro_sms}), mimetype='application/json', content_type='application/json')
 
     @method_decorator(login_required)
     @method_decorator(session_not_expired)

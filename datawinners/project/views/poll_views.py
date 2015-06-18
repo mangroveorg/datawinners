@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.sent_message.models import PollInfo
+from datawinners.utils import get_organization
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.form_model.project import Project, is_active_form_model
 from django.template.context import RequestContext
@@ -97,6 +98,7 @@ def poll(request, project_id):
         'project_links': project_links,
         'is_active': is_active,
         'from_date': from_date,
+        'is_pro_sms': get_organization(request).is_pro_sms,
         'to_date': to_date,
         'questionnaire_id': question_id_active,
         'questionnaire_name': question_name_active,
