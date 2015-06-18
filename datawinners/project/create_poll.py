@@ -11,7 +11,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.all_datasender_search import get_datasenders_ids_by_questionnaire_names, get_datasender_ids_by_group_names
 from datawinners.submission.organization_finder import OrganizationFinder
 from datawinners.utils import lowercase_and_strip_accents, get_organization
-from mangrove.form_model.project import Project, is_active_form_model
+from mangrove.form_model.project import Project, get_active_form_model_name_and_id
 
 
 def _is_project_name_unique(error_message, name_has_errors, questionnaire):
@@ -102,7 +102,7 @@ def create_poll(request):
 
 
         manager = get_database_manager(request.user)
-        is_active, project_id, project_name = is_active_form_model(manager)
+        is_active, project_id, project_name = get_active_form_model_name_and_id(manager)
         if not is_active:
             return create_poll_questionnaire(request)
         else:

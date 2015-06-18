@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datawinners.sent_message.models import PollInfo
 from datawinners.utils import get_organization
 from mangrove.datastore.entity import contact_by_short_code
-from mangrove.form_model.project import Project, is_active_form_model
+from mangrove.form_model.project import Project, get_active_form_model_name_and_id
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from datawinners.accountmanagement.decorators import is_not_expired, is_datasender, session_not_expired
@@ -85,7 +85,7 @@ def poll(request, project_id):
     questionnaire = Project.get(manager, project_id)
     project_links = get_project_link(questionnaire)
     is_active = _is_active(questionnaire)
-    questionnaire_active, question_id_active, question_name_active = is_active_form_model(manager)
+    questionnaire_active, question_id_active, question_name_active = get_active_form_model_name_and_id(manager)
     from_date = questionnaire.modified.date()
     to_date = questionnaire.end_date.date()
     languages_list = get_available_project_languages(manager)
@@ -144,7 +144,7 @@ def activate_poll(request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         if questionnaire:
-            is_active, question_id_active, question_name_active = is_active_form_model(manager)
+            is_active, question_id_active, question_name_active = get_active_form_model_name_and_id(manager)
             is_current_active = _is_same_questionnaire(question_id_active, questionnaire)
             end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%dT%H:%M:%S')
             if is_current_active:

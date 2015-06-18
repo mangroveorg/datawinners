@@ -15,7 +15,7 @@ from celery.task import current
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, \
     EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.project import Project, is_active_form_model
+from mangrove.form_model.project import Project, get_active_form_model_name_and_id
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_model_id
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
