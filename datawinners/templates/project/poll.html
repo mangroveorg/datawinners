@@ -89,7 +89,7 @@
         <h4>Poll</h4>
         <p class="italic_grey"> View, edit & send your Survey.</p>
 
-        <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
+        <div id="questionnaire_types" class="position_relative" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
         <div id="poll_status_info" class="questionnaire_type_header">
             <span class="header">{% trans "Poll "%}
                     <span data-bind="text:duration"> </span>
@@ -143,7 +143,7 @@
 
 
          </div>
-        <div>
+        <div class="position_unset">
             {% include 'project/language.html' %}
         </div>
             {% if project.is_open_survey %}
