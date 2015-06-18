@@ -16,7 +16,7 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
 from datawinners.accountmanagement.models import NGOUserProfile, Organization, PaymentDetails
-from datawinners.utils import get_map_key
+from datawinners.utils import get_map_key, get_organization
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
 from datawinners.preferences.models import UserPreferences
@@ -178,7 +178,7 @@ def start(request):
     help_url = help_url_dict[url_tokens[-1]] % _("wp_language")
     return render_to_response('dashboard/start.html',
                               {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]],
-                               'help_url': help_url},
+                               'help_url': help_url, 'is_pro_sms': get_organization(request)},
                               context_instance=RequestContext(request))
 
 

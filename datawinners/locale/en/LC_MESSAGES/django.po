@@ -594,6 +594,9 @@ msgstr ""
 msgid "order_to_create_project"
 msgstr "create a new Questionnaire"
 
+msgid "order_to_create_project_and_poll"
+msgstr "Create a new Questionnaire or Poll "
+
 msgid "Add a data sender"
 msgstr ""
 
