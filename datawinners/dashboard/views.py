@@ -178,7 +178,7 @@ def start(request):
     help_url = help_url_dict[url_tokens[-1]] % _("wp_language")
     return render_to_response('dashboard/start.html',
                               {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]],
-                               'help_url': help_url, 'is_pro_sms': get_organization(request)},
+                               'help_url': help_url, 'is_pro_sms': get_organization(request).is_pro_sms},
                               context_instance=RequestContext(request))
 
 

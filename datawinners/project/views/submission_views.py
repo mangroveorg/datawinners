@@ -73,8 +73,10 @@ logger = logging.getLogger("datawinners")
 @is_not_expired
 def headers(request, form_code):
     manager = get_database_manager(request.user)
-    submission_type = request.GET.get('type', 'all')
     form_model = get_form_model_by_code(manager, form_code)
+    submission_type = request.GET.get('type', 'all')
+    if form_model.is_poll and submission_type == 'all':
+        submission_type = 'success'
     headers = SubmissionsPageHeader(form_model, submission_type).get_column_title()
     response = []
     for header in headers:
@@ -324,7 +326,7 @@ def edit(request, project_id, survey_response_id, tab=0):
     form_ui_model = build_static_info_context(manager, survey_response,
                                               questionnaire_form_model=questionnaire_form_model,
                                               reporter_id=reporter_id)
-    form_ui_model.update({"back_link": back_link, 'is_datasender': is_data_sender(request)})
+    form_ui_model.update({"back_link": back_link, 'is_datasender': is_data_sender(request), 'hide_change': questionnaire_form_model.active})
     data_sender = get_data_sender(manager, survey_response)
     short_code = data_sender[1]
     enable_datasender_edit = True if survey_response.owner_uid else False

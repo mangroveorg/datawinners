@@ -1,7 +1,7 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
@@ -23,6 +23,8 @@ class QuestionnaireLanguageView(TemplateView):
     def get(self, request, project_id):
         dbm = get_database_manager(request.user)
         questionnaire = Project.get(dbm, project_id)
+        if questionnaire.is_poll:
+            return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
         languages_list = get_available_project_languages(dbm)
         current_project_language = questionnaire.language
 

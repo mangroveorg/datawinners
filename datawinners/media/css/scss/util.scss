@@ -581,6 +581,10 @@ ul.bulleted li {
   width: 100% !important;
 }
 
+.auto_width {
+  width: auto !important;
+}
+
 .grey {
   color: #888
 }
@@ -650,6 +654,16 @@ div.border_top_bottom{
   padding-right: 10px !important;
 }
 
+.padding_bottom_10 {
+  padding-bottom: 10px !important;
+}
+
+.padding_left_30 {
+  padding-left: 30px !important;
+}
+.border_bottom_grey {
+  border-bottom: 1px solid #CCCCCC !important;
+}
 .left_null{
   left: 0px !important;
 }

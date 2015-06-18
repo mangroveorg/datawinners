@@ -37,7 +37,16 @@ def get_all_form_models(dbm, data_sender_id=None):
             idnr_questionnaires.extend(subject_docs)
         rows.extend(idnr_questionnaires)
         return rows
-    return dbm.load_all_rows_in_view('all_questionnaire')
+
+    questionnaires = []
+    rows = dbm.load_all_rows_in_view('all_questionnaire')
+    for row in rows:
+        if 'is_poll' in row and  not row['value']['is_poll']:
+            questionnaires.append(row)
+        else:
+             questionnaires.append(row)
+
+    return questionnaires
 
 
 def get_subject_form_model_docs_of_questionnaire(dbm, questionnaire_doc):
@@ -55,7 +64,10 @@ def get_project_id_name_map(dbm):
     project_id_name_map = {}
     rows = dbm.load_all_rows_in_view('project_names')
     for row in rows:
-        project_id_name_map.update({row['value']['id']:row['value']['name']})
+        if 'is_poll' in row['value'] and not row['value']['is_poll']:
+            project_id_name_map.update({row['value']['id']:row['value']['name']})
+        else:
+            project_id_name_map.update({row['value']['id']:row['value']['name']})
 
     project_map = sorted(project_id_name_map.items(), key=lambda(project_id, name): name.lower())
 
