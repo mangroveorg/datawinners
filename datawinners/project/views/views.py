@@ -155,6 +155,9 @@ def _get_entity_types_with_no_registered_entities(dbm, entity_types):
 def project_overview(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
+
     open_survey_questionnaire= questionnaire.is_open_survey
     is_pro_sms = _is_pro_sms(request)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
@@ -264,6 +267,8 @@ def sent_reminders(request, project_id):
     questionnaire = Project.get(dbm, project_id)
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
     organization = Organization.objects.get(org_id=request.user.get_profile().org_id)
     is_trial_account = organization.in_trial_mode
     html = 'project/sent_reminders_trial.html' if organization.in_trial_mode else 'project/sent_reminders.html'
@@ -296,6 +301,8 @@ def _get_data_senders(dbm, form, project):
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
     form_class = OpenDsBroadcastMessageForm if questionnaire.is_open_survey else BroadcastMessageForm
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
@@ -385,6 +392,8 @@ def get_project_link(project, entity_type=None):
 def registered_subjects(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
@@ -427,6 +436,9 @@ def questionnaire(request, project_id):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         questionnaire = Project.get(manager, project_id)
+        if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
+
         if questionnaire.is_void():
             return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")
         fields = questionnaire.fields
@@ -533,6 +545,9 @@ class SubjectWebQuestionnaireRequest():
         return (_("%s with Identification Number %s successfully registered.")) % (entity_type,response_short_code)
 
     def response_for_get_request(self, initial_data=None, is_update=False):
+        if questionnaire.is_poll:
+            return HttpResponseRedirect('/project/''/results/'+questionnaire.form_code)
+
         if self.entity_type not in self.questionnaire.entity_type:
             raise Http404
         questionnaire_form = self.form(initial_data=initial_data)

@@ -181,6 +181,8 @@ def reminder_settings(request, project_id):
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
     from datawinners.project.views.views import make_project_links
 
 
