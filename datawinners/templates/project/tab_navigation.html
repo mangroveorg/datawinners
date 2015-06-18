@@ -35,6 +35,7 @@
         var activate_poll_url = "{{ project_links.activate_poll }}";
         var get_poll_info_url = "{{ project_links.get_poll_info }}";
         var my_poll_recipients_count_url = "{{ project_links.my_poll_recipients_count }}";
+        var is_poll = "{{ project.is_poll }}";
     </script>
     {% endcompress %}
 {% endblock %}
@@ -69,10 +70,24 @@
     </div>
 
     <div id="delete_project_block">
-        <p class="warning_message">{% trans "Export all submissions prior to deleting your questionnaire." %}</p>
-        <a href="#" class="button float_right" id="confirm_delete">{% trans "Delete Questionnaire Now" %}</a>
-        <a href="#" class="cancel_link float_right cancel_{% trans "en" %}">{% trans "Cancel" %}</a>
-        <div class="clear-both">&nbsp;</div>
+        {% if project.is_poll %}
+
+                <p class="warning_message">{% trans "Export all submissions prior to deleting your poll." %}</p>
+                <a href="#" class="button float_right" id="confirm_delete">
+
+                    {% trans "Delete Poll Now" %}</a>
+                    <a href="#" class="cancel_link float_right cancel_{% trans "en" %}">{% trans "Cancel" %}</a>
+                <div class="clear-both">&nbsp;</div>
+        {% else %}
+
+                <p class="warning_message">{% trans "Export all submissions prior to deleting your questionnaire." %}</p>
+                <a href="#" class="button float_right" id="confirm_delete">
+
+                    {% trans "Delete Questionnaire Now" %}</a>
+                    <a href="#" class="cancel_link float_right cancel_{% trans "en" %}">{% trans "Cancel" %}</a>
+                <div class="clear-both">&nbsp;</div>
+
+        {% endif %}
     </div>
 
 {% endblock %}
