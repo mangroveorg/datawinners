@@ -159,7 +159,11 @@
     </div>
 
     <div class="grid_17 margin_left_null dashboard_left">
-        <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Questionnaires" %}</h4>
+        {% if is_pro_sms %}
+            <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Questionnaires & Polls" %}</h4>
+        {% else %}
+            <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Questionnaires" %}</h4>
+        {% endif %}
         <div id="projects">
         {% for project in projects %}
             <div class="project_header">
@@ -169,7 +173,12 @@
             </div>
         {% endfor %}
         </div>
-        <a class="grid_4  omega alpha view_all_projects" href="{% url alldata_index %}">{% trans "view all Questionnaires"%} »</a>
+        <a class="grid_4  omega alpha view_all_projects" href="{% url alldata_index %}">
+         {% if is_pro_sms %}
+            {% trans "view all Questionnaires & Polls"%} »</a>
+        {% else %}
+            {% trans "view all Questionnaires"%} »</a>
+        {% endif %}
     </div>
     <div class="grid_5 alpha omega dashboard_right">
     {% if in_trial_mode and user.groups.all.0.name == 'NGO Admins' %}
