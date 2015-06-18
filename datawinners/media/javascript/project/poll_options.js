@@ -81,6 +81,7 @@ var PollOptionsViewModel = function() {
         self.deactivation('');
         self.activation('Activate');
         self.duration('is inactive');
+        self.number_of_days(1)
         self.change_days('');
     }
 
