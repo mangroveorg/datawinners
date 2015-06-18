@@ -1,6 +1,5 @@
 var PollOptionsViewModel = function() {
     var self = this;
-
     var start_date = new Date();
     var end_date;
     var END_TIME = "T23:59:00";
@@ -9,8 +8,12 @@ var PollOptionsViewModel = function() {
     var get_current_number_of_days = function(){
         var from = from_date.split(',')[0].split(' ')[1]
         var to = to_date.split(',')[0].split(' ')[1]
-        return (to - from).toString();
+        return (to - from);
     };
+
+    self.get_formatted_date = function(date){
+        return month_name_map[date.getMonth()] +" " + date.getDate() +", "+ date.getFullYear();
+    }
 
     var month_name_map = {
         0: gettext('January'),
@@ -30,7 +33,6 @@ var PollOptionsViewModel = function() {
     self.selectedPollOption = ko.observableArray([1, 3, 4]);
     self.active_poll_days = ko.observable([1, 2, 3, 4, 5]);
     self.number_of_days = ko.observable();
-
     self.activation = ko.observable();
     self.deactivation = ko.observable();
     self.send_poll_text = ko.observable("Send Sms to More People");
@@ -39,7 +41,7 @@ var PollOptionsViewModel = function() {
     self.number_of_people = ko.observable();
     self.show_poll_table = ko.observable(false);
     self.poll_messages = ko.observableArray();
-    self.from_date_poll = ko.observable(get_current_date());
+    self.from_date_poll = ko.observable(self.get_formatted_date(start_date));
     self.show_sms_option = ko.observable(false);
 
     self.duration = ko.observable();
@@ -50,24 +52,19 @@ var PollOptionsViewModel = function() {
     self.activatePollDialog = ko.observable($('#activate_poll_dialog').html());
 
 
-    window.smsViewModel.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
-                                            {"label":gettext('My Poll Recipients'), "code": "poll_recipients"},
-                                            {"label":gettext('Group'), "code": "group"},
-                                            {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"}
-                                            ]);
+    window.smsViewModel.smsOptionList = ko.observableArray([
+                                {"label":gettext('Select Recipients'), disable: ko.observable(true)},
+                                {"label":gettext('My Poll Recipients'), "code": "poll_recipients"},
+                                {"label":gettext('Group'), "code": "group"},
+                                {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"}
+    ]);
 
 
     self.to_date_poll = ko.computed(function () {
         end_date = new Date();
         end_date.setDate(end_date.getDate() + self.number_of_days());
-        return end_date.getDate() + " " + month_name_map[end_date.getMonth()] + " " + end_date.getFullYear();
+        return self.get_formatted_date(end_date);
     });
-
-    function get_current_date() {
-        return start_date.getDate() + " " +
-            month_name_map[start_date.getMonth()] + " " +
-            start_date.getFullYear();
-    }
 
     if (is_active == 'True') {
         self.status('Active');
@@ -115,7 +112,7 @@ var PollOptionsViewModel = function() {
                 self.duration('is inactive');
                 self.active_dates_poll('');
                 self.change_days('');
-                self.number_of_days('1');
+                self.number_of_days(1);
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"))
                 $('#send_sms').addClass('link_color disable_link');
@@ -133,16 +130,14 @@ var PollOptionsViewModel = function() {
        $.get(get_poll_info_url, data).done(function (response) {
            var responseJson = $.parseJSON(response);
            if (responseJson['success']) {
-               var poll_me = responseJson['poll_messages'];
-
-                self.poll_messages(poll_me);
+               var poll_msg = responseJson['poll_messages'];
+                self.poll_messages(poll_msg);
                 self.show_poll_table(true);
            }
        });
     };
 
     self.activate_poll = function() {
-
         data = {
             'end_date': end_date.getFullYear() + "-" + (end_date.getMonth()+1) + "-" + end_date.getDate() + END_TIME
         };
@@ -166,7 +161,6 @@ var PollOptionsViewModel = function() {
                 $('.message-box').delay(2000).fadeOut();
             }
         });
-        data = {};
         self.close_activation_popup();
     };
 };
@@ -175,6 +169,5 @@ $(document).ready(function () {
     window.smsViewModel = new SmsViewModel();
     window.poll_options = new PollOptionsViewModel();
     ko.applyBindings(poll_options, $('#poll_options')[0]);
-
     ko.applyBindings(smsViewModel, $('#send-sms-section')[0]);
 });

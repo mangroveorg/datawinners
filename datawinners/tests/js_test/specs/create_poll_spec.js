@@ -61,15 +61,6 @@ describe("Create a Poll Questionnaire", function(){
                       10:gettext('November') ,
                       11:gettext('December') };
 
-    var item_map_week = {
-            1: gettext('Monday'),
-            2: gettext('Tuesday'),
-            3: gettext('Wednesday'),
-            4: gettext('Thursday'),
-            5: gettext('Friday'),
-            6: gettext('Saturday'),
-            0: gettext('Sunday')
-    };
         window.pollViewModel = new PollViewModel();
         var pollViewModel = window.pollViewModel;
         var current_date = new Date();
