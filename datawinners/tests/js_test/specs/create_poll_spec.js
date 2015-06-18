@@ -48,19 +48,18 @@ describe("Create a Poll Questionnaire", function(){
     });
 
     it('should_validate_add_number_of_days', function(){
-     var month_name_map = {0:gettext('January') ,
-                  1: gettext('February') ,
-                  2: gettext('March') ,
-                  3: gettext('April') ,
-                  4: gettext('May') ,
-                  5: gettext('June') ,
-                  6: gettext('July') ,
-                  7: gettext('August') ,
-                  8: gettext('September'),
-                  9: gettext('October') ,
-                  10:gettext('November') ,
-                  11:gettext('December') };
-
+         var month_name_map = {0:gettext('January') ,
+                      1: gettext('February') ,
+                      2: gettext('March') ,
+                      3: gettext('April') ,
+                      4: gettext('May') ,
+                      5: gettext('June') ,
+                      6: gettext('July') ,
+                      7: gettext('August') ,
+                      8: gettext('September'),
+                      9: gettext('October') ,
+                      10:gettext('November') ,
+                      11:gettext('December') };
         window.pollViewModel = new PollViewModel();
         var pollViewModel = window.pollViewModel;
         var current_date = new Date();
@@ -68,7 +67,7 @@ describe("Create a Poll Questionnaire", function(){
         pollViewModel.number_of_days(5);
         pollViewModel.from_date_poll(current_date);
         pollViewModel.days_active();
-        expected_date = new Date();
+        var expected_date = new Date();
         expected_date.setDate(current_date.getDate() + 5);
 
         expect(pollViewModel.to_date_poll()).toBe(expected_date.getDate()+ " "+ month_name_map[expected_date.getMonth()] +" "+ expected_date.getFullYear())

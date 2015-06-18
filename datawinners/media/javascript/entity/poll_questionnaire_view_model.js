@@ -2,8 +2,10 @@
     var self = this;
     self.show_sms = ko.observable();
     self.number_of_days = ko.observable();
+    self.to_date_poll = ko.observable();
+
     var active_poll_days = [1,2,3,4,5];
-    var current_date = new Date();
+    var start_date = new Date();
     var maxAllowedSMSCharacters = 160;
 
     var smsTextElement = $("#sms-text");
@@ -11,8 +13,8 @@
         if (e.target.value.length > maxAllowedSMSCharacters) {
             $(this).val(e.target.value.substring(0, maxAllowedSMSCharacters));
         }
-
-        window.smsViewModel.smsCharacterCount($(this).val().length + gettext(" of " + maxAllowedSMSCharacters + " characters used"));
+        window.smsViewModel.smsCharacterCount($(this).val().length +
+            gettext(" of " + maxAllowedSMSCharacters + " characters used"));
     };
 
     smsTextElement.keyup(smsTextLengthCheck);
@@ -35,33 +37,20 @@
                       10:gettext('November') ,
                       11:gettext('December') };
 
-    var item_map_week = {
-            1: gettext('Monday'),
-            2: gettext('Tuesday'),
-            3: gettext('Wednesday'),
-            4: gettext('Thursday'),
-            5: gettext('Friday'),
-            6: gettext('Saturday'),
-            0: gettext('Sunday')
-    };
-    self.to_date_poll = ko.observable();
-
     var end_date;
     self.days_active = ko.computed(function(){
-        var dat = new Date();
-        dat.setDate(dat.getDate() + self.number_of_days());
-        end_date = dat;
-        self.to_date_poll(dat.getDate()+ " "+ month_name_map[dat.getMonth()] +" "+ dat.getFullYear());
+        var current_date = new Date();
+        current_date.setDate(current_date.getDate() + self.number_of_days());
+        end_date = current_date;
+        self.to_date_poll(get_formatted_date(current_date));
         return active_poll_days
     });
 
-    function get_current_date() {
-        return current_date.getDate() + " " +
-                            month_name_map[current_date.getMonth()] + " " +
-                            current_date.getFullYear();
+    function get_formatted_date(date) {
+        return month_name_map[date.getMonth()]+" "+ date.getDate() + ", " +date.getFullYear();
     }
 
-    self.from_date_poll = ko.observable(get_current_date());
+    self.from_date_poll = ko.observable(get_formatted_date(start_date));
 
     self.disableSendPoll = ko.computed(function(){
         if(window.smsViewModel.disableSendSms() ){

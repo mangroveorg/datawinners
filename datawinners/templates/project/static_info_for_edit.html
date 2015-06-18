@@ -7,7 +7,7 @@
                 {% if header == 'Data Sender' %}
                     <text class='ds_id'>{{ value.0 }}</text>
                     <text class='datasender small_grey'>{{ value.1 }}</text>
-                    {% if value.1 != "" %}
+                    {% if value.1 != ""  and not hide_change %}
                         <a id="change_ds_link" class="margin_left_10">{% trans "Change" %}
                     {% endif %}</a>
                     </br>

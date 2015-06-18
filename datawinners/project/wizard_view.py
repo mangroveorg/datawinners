@@ -1,5 +1,4 @@
 import json
-from datawinners import settings
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -12,14 +11,14 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from celery.task import current
 
+from datawinners import settings
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, \
     EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.project import Project, get_active_form_model_name_and_id
+from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_model_id
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
-from datawinners.project.forms import ReminderForm
 from datawinners.project.models import Reminder, ReminderMode
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.questionnaire.library import QuestionnaireLibrary
@@ -31,7 +30,6 @@ from datawinners.common.constant import EDITED_QUESTIONNAIRE, ACTIVATED_REMINDER
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
-from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty
 
 

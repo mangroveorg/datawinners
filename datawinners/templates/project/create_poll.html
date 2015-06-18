@@ -55,13 +55,13 @@
                     <a>{% trans " Learn More" %} </a>
                     <br><br>
                     <span>{% trans 'Active for' %}</span>
-                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style"></select> <span> {% trans 'Days' %} </span><br><br>
+                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style auto_width"></select> <span> {% trans 'Days' %} </span>
 
                     <span class="bold-text">{% trans 'From '%} </span>
-                    <span id="from_date_poll"
+                    <span id="from_date_poll" class="date_text"
                                      data-bind="text:from_date_poll"></span>
                         <span class="bold-text">{% trans ' To '%} </span>
-                    <span id="to_date_poll"
+                    <span id="to_date_poll" class="date_text"
                                      data-bind="text:to_date_poll"></span>
 
                 </div>

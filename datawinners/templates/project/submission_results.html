@@ -102,13 +102,22 @@
     <div id="submission_logs" class="grid_23 alpha margin_top_20">
         <div id="tabs" class="ui-tabs ui-widget ui-widget-content">
             <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header">
-                <li class="ui-state-default"><a
-                        href="#tab_template">{% trans 'All' %}</a><a class="tab-separator"></a></li>
-                <li class="ui-state-default"><a href="#tab_template" class="tab-middle">{% trans 'Success' %}</a><a
-                        class="tab-separator"></a></li>
-                <li class="ui-state-default"><a href="#tab_template">{% trans 'Errors' %}</a></li>
-                <li style="float:right" class="ui-state-default"><a
-                        href="#tab_template">{% trans 'Deleted Submissions' %}</a></li>
+                {% if not project.is_poll %}
+                    <li class="ui-state-default"><a
+                            href="#tab_template">{% trans 'All' %}</a><a class="tab-separator"></a></li>
+                    <li class="ui-state-default"><a href="#tab_template" class="tab-middle">{% trans 'Success' %}</a><a
+                            class="tab-separator"></a></li>
+                    <li class="ui-state-default"><a href="#tab_template">{% trans 'Errors' %}</a></li>
+                    <li style="float:right" class="ui-state-default"><a
+                            href="#tab_template">{% trans 'Deleted Submissions' %}</a></li>
+                {% else %}
+                    <li class="ui-state-default"><a
+                            href="#tab_template">{% trans 'All' %}</a><a class="tab-separator"></a></li>
+                    <li></li>
+                    <li></li>
+                    <li class="ui-state-default"><a
+                            href="#tab_template">{% trans 'Deleted Submissions' %}</a></li>
+                {% endif %}
             </ul>
             <div id="tab_template" style="padding: 0px;" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
                 {% include 'project/log_table.html' %}
