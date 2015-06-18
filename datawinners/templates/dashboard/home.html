@@ -28,6 +28,8 @@
         var send_sms_url = "{% url send-sms%}";
         var registered_ds_count_url = "{% url registered_ds_count %}";
         var group_ds_count_url = "{% url group_ds_count %}";
+        var message_text = "";
+        var is_poll = ""
     </script>
     <script type="text/javascript" src="/media/javascript/home/dashboard.js"></script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
@@ -120,10 +122,10 @@
             <div class="tableCell sub_section" id="questionnaire_section">
                 <img  class='dashboard_icon'  src="/media/images/collect_data.png"/><br/>
                 <p class="explanation">{% trans "Collect Data" %}</p>
-                {% if  in_trial_mode %}
-                    <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires" %}</a>
-                {% else %}
+                {% if  is_pro_sms %}
                     <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires & Polls" %}</a>
+                {% else %}
+                    <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires" %}</a>
                 {% endif %}
             </div>
             <!--<div class="tableCell sub_section">

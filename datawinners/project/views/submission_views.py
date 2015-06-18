@@ -163,6 +163,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "user_email": request.user.email,
             "tab": tab,
             "xform": xform,
+            'is_pro_sms': get_organization(request).is_pro_sms,
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
@@ -203,6 +204,7 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
             "filterable_fields": filterable_fields,
+            'is_pro_sms': get_organization(request).is_pro_sms,
             "is_media_field_present": questionnaire.is_media_type_fields_present
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
         }

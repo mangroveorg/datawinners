@@ -13,6 +13,7 @@ from django.http import Http404
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, \
     is_new_user, valid_web_user
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
+from datawinners.common.authorization import is_data_sender
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, \
@@ -105,6 +106,28 @@ def is_crs_user(request):
     return get_organization(request).org_id == CRS_ORG_ID
 
 
+def _construct_project_dict(local_time_delta, project):
+    project_id = project['project_id']
+    delete_links = reverse('delete_project', args=[project_id])
+    project = dict(delete_links=delete_links,
+                   name=project['name'],
+                   created=convert_utc_to_localized(local_time_delta, project['created']),
+                   qid=project['qid'],
+                   link=project['link'],
+                   web_submission_link_disabled=project['web_submission_link_disabled'],
+                   web_submission_link=project['web_submission_link'],
+                   analysis=project['analysis'],
+                   disabled=project['disabled'],
+                   log=project['log'],
+                   create_subjects_link=project['create_subjects_link'],
+                   entity_type=project['entity_type'],
+                   encoded_name=project['encoded_name'],
+                   import_template_file_name=project['import_template_file_name'],
+                   is_advanced_questionnaire=bool(project['is_advanced_questionnaire']),
+                   is_poll=project['is_poll']
+                   )
+
+
 @login_required
 @session_not_expired
 @is_new_user
@@ -117,28 +140,14 @@ def index(request):
     project_list.sort(key=itemgetter('name'))
     smart_phone_instruction_link = reverse("smart_phone_instruction")
     local_time_delta = get_country_time_delta(organization.country)
+    is_datasender = is_data_sender(request)
     for project in rows:
-        project_id = project['project_id']
-        delete_links = reverse('delete_project', args=[project_id])
-        project = dict(delete_links=delete_links,
-                       name=project['name'],
-                       created=convert_utc_to_localized(local_time_delta, project['created']),
-                       qid=project['qid'],
-                       link=project['link'],
-                       web_submission_link_disabled=project['web_submission_link_disabled'],
-                       web_submission_link=project['web_submission_link'],
-                       analysis=project['analysis'],
-                       disabled=project['disabled'],
-                       log=project['log'],
-                       create_subjects_link=project['create_subjects_link'],
-                       entity_type=project['entity_type'],
-                       encoded_name=project['encoded_name'],
-                       import_template_file_name=project['import_template_file_name'],
-                       is_advanced_questionnaire=bool(project['is_advanced_questionnaire']),
-                       is_poll=project['is_poll']
-                       )
+        if is_datasender and 'is_poll' in project and project['is_poll']:
+            _construct_project_dict(local_time_delta, project)
+        else:
+            _construct_project_dict(local_time_delta, project)
 
-        project_list.append(project)
+            project_list.append(project)
     activation_success = request.GET.get('activation', False)
 
     error_messages = []
@@ -166,7 +175,7 @@ def index(request):
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached': is_quota_reached(request),
                                    'error_messages': error_messages,
-                                   'is_pro_sms':organization.is_pro_sms,
+                                   'is_pro_sms': organization.is_pro_sms,
                                    'activation_success': activation_success,
                                    'current_lang': get_language()},
                                   context_instance=RequestContext(request))
@@ -189,6 +198,7 @@ def failed_submissions(request):
     return render_to_response('alldata/failed_submissions.html',
                               {'logs': org_logs,
                                'page_heading': page_heading,
+                               'is_pro_sms': organization.is_pro_sms,
                                'disable_link_class': disable_link_class,
                                'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
                                'project_links': get_alldata_project_links(),

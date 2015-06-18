@@ -1,6 +1,13 @@
 $(document).ready(function(){
+    var title;
+    if (is_poll){
+        title = gettext("Delete this Poll?");
+    }
+    else{
+        title = gettext("Delete this Questionnaire?");
+    }
    $("#delete_project_block").dialog({
-        title: gettext("Delete this Questionnaire?"),
+        title: title,
         modal: true,
         autoOpen: false,
         height: 150,

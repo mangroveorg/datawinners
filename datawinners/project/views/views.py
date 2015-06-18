@@ -273,6 +273,7 @@ def sent_reminders(request, project_id):
                                   "project_links": make_project_links(questionnaire),
                                   'is_quota_reached': is_quota_reached(request, organization=organization),
                                   'reminders': get_all_reminder_logs_for_project(project_id, dbm),
+                                  'is_pro_sms': get_organization(request).is_pro_sms,
                                   'in_trial_mode': is_trial_account,
                                   'questionnaire_code': questionnaire.form_code
                               },
@@ -316,6 +317,7 @@ def broadcast_message(request, project_id):
                                          "project_links": make_project_links(questionnaire),
                                          'is_quota_reached': is_quota_reached(request, organization=organization),
                                          "form": form, "ong_country": organization.country,
+                                         'is_pro_sms': get_organization(request).is_pro_sms,
                                          "success": None,
                                          'questionnaire_code': questionnaire.form_code
         },
@@ -352,6 +354,7 @@ def broadcast_message(request, project_id):
                                        "project_links": make_project_links(questionnaire),
                                        'is_quota_reached': is_quota_reached(request, organization=organization),
                                        "form": form, "account_type": account_type,
+                                       'is_pro_sms': get_organization(request).is_pro_sms,
                                        "ong_country": organization.country, "no_smsc": no_smsc,
                                        'questionnaire_code': questionnaire.form_code,
                                        'failed_numbers': ",".join(failed_numbers), "success": success},
@@ -400,6 +403,7 @@ def registered_subjects(request, project_id, entity_type=None):
                                "subject": subject,
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
+                               'is_pro_sms': get_organization(request).is_pro_sms,
                                'entity_type': current_entity_type,
                                'subject_headers': header_fields(subject_form_model),
                                'questionnaire_code': questionnaire.form_code,
@@ -442,6 +446,7 @@ def questionnaire(request, project_id):
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,
                                    'project': questionnaire,
+                                   'is_pro_sms': get_organization(request).is_pro_sms,
                                    'project_id': project_id,
                                    'project_has_submissions': project_has_submissions,
                                    'project_links': project_links,
@@ -458,6 +463,7 @@ def questionnaire(request, project_id):
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,
                                    'project': questionnaire,
+                                   'is_pro_sms': get_organization(request).is_pro_sms,
                                    'project_has_submissions': project_has_submissions,
                                    'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request),
@@ -483,6 +489,7 @@ def get_questionnaire_ajax(request, project_id):
                                        'is_outgoing_sms_enabled': project.is_outgoing_sms_replies_enabled,
                                        'datasenders': project.data_senders,
                                        'is_open_survey': 1 if project.is_open_survey else '',
+                                       'is_pro_sms': get_organization(request).is_pro_sms,
                                        'reminder_and_deadline': project.reminder_and_deadline
                                    }, default=field_to_json), content_type='application/json')
 
@@ -642,6 +649,7 @@ class SurveyWebQuestionnaireRequest():
             'is_advance_questionnaire': False,
             'reporter_id': reporter_id,
             'reporter_name': reporter_name,
+            'is_pro_sms': get_organization(self.request).is_pro_sms,
             'is_linked': self.is_linked,
         })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
@@ -904,6 +912,7 @@ def create_data_sender_and_web_user(request, project_id):
             'project': questionnaire,
             'project_links': project_links,
             'is_quota_reached': is_quota_reached(request),
+            'is_pro_sms': get_organization(request).is_pro_sms,
             'form': form,
             'in_trial_mode': in_trial_mode,
             'questionnaire_code': questionnaire.form_code,
@@ -935,7 +944,7 @@ def create_data_sender_and_web_user(request, project_id):
                                   detail=json.dumps(dict({"Unique ID": reporter_id})), project=questionnaire.name)
         if message is not None and reporter_id:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
-        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'success': reporter_id is not None,
+        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'is_pro_sms': get_organization(request).is_pro_sms, 'success': reporter_id is not None,
                    'button_text': ugettext('Register')}
         return render_to_response('datasender_form.html',
                                   context,
