@@ -67,7 +67,7 @@ class TestCreatePoll(TestCase):
                 }
 
         manager = MagicMock(spec=DatabaseManager)
-        questionnaire_code = 'q_code'
+        questionnaire_code = 'poll_timestamp_'
 
 
         with patch('datawinners.project.create_poll.get_database_manager') as get_database_manager_mock:
@@ -76,7 +76,7 @@ class TestCreatePoll(TestCase):
                 get_database_manager_mock.return_value = manager
                 manager, questionnaire = _construct_questionnaire(request)
                 self.assertEquals(questionnaire.name, project_name)
-                self.assertEquals(questionnaire.form_code, questionnaire_code)
+                self.assertIn(questionnaire_code, questionnaire.form_code)
 
 
     def test_should_validate_project_name_to_be_unique(self):

@@ -37,7 +37,14 @@ def get_all_form_models(dbm, data_sender_id=None):
             idnr_questionnaires.extend(subject_docs)
         rows.extend(idnr_questionnaires)
         return rows
-    return dbm.load_all_rows_in_view('all_questionnaire')
+
+    questionnaires = []
+    rows = dbm.load_all_rows_in_view('all_questionnaire')
+    for row in rows:
+        if not row['value']['is_poll']:
+            questionnaires.append(row)
+
+    return questionnaires
 
 
 def get_subject_form_model_docs_of_questionnaire(dbm, questionnaire_doc):
