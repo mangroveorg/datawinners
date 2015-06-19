@@ -42,7 +42,7 @@ from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQueryResponseCreator
 from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet, DateTimeField
-from mangrove.form_model.project import Project
+from mangrove.form_model.project import Project, get_project_by_code
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -73,11 +73,11 @@ logger = logging.getLogger("datawinners")
 @is_not_expired
 def headers(request, form_code):
     manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, form_code)
+    questionnaire = get_project_by_code(manager, form_code)
     submission_type = request.GET.get('type', 'all')
-    if form_model.is_poll and submission_type == 'all':
+    if questionnaire.is_poll and submission_type == 'all':
         submission_type = 'success'
-    headers = SubmissionsPageHeader(form_model, submission_type).get_column_title()
+    headers = SubmissionsPageHeader(questionnaire, submission_type).get_column_title()
     response = []
     for header in headers:
         response.append({"sTitle": ugettext(header)})
