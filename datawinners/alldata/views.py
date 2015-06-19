@@ -109,23 +109,23 @@ def is_crs_user(request):
 def _construct_project_dict(local_time_delta, project):
     project_id = project['project_id']
     delete_links = reverse('delete_project', args=[project_id])
-    project = dict(delete_links=delete_links,
-                   name=project['name'],
-                   created=convert_utc_to_localized(local_time_delta, project['created']),
-                   qid=project['qid'],
-                   link=project['link'],
-                   web_submission_link_disabled=project['web_submission_link_disabled'],
-                   web_submission_link=project['web_submission_link'],
-                   analysis=project['analysis'],
-                   disabled=project['disabled'],
-                   log=project['log'],
-                   create_subjects_link=project['create_subjects_link'],
-                   entity_type=project['entity_type'],
-                   encoded_name=project['encoded_name'],
-                   import_template_file_name=project['import_template_file_name'],
-                   is_advanced_questionnaire=bool(project['is_advanced_questionnaire']),
-                   is_poll=project['is_poll']
-                   )
+    return dict(delete_links=delete_links,
+                name=project['name'],
+                created=convert_utc_to_localized(local_time_delta, project['created']),
+                qid=project['qid'],
+                link=project['link'],
+                web_submission_link_disabled=project['web_submission_link_disabled'],
+                web_submission_link=project['web_submission_link'],
+                analysis=project['analysis'],
+                disabled=project['disabled'],
+                log=project['log'],
+                create_subjects_link=project['create_subjects_link'],
+                entity_type=project['entity_type'],
+                encoded_name=project['encoded_name'],
+                import_template_file_name=project['import_template_file_name'],
+                is_advanced_questionnaire=bool(project['is_advanced_questionnaire']),
+                is_poll=project['is_poll']
+                )
 
 
 @login_required
@@ -140,14 +140,9 @@ def index(request):
     project_list.sort(key=itemgetter('name'))
     smart_phone_instruction_link = reverse("smart_phone_instruction")
     local_time_delta = get_country_time_delta(organization.country)
-    is_datasender = is_data_sender(request)
     for project in rows:
-        if is_datasender and 'is_poll' in project and project['is_poll']:
-            _construct_project_dict(local_time_delta, project)
-        else:
-            _construct_project_dict(local_time_delta, project)
+            project_list.append(_construct_project_dict(local_time_delta, project))
 
-            project_list.append(project)
     activation_success = request.GET.get('activation', False)
 
     error_messages = []
