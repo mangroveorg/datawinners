@@ -88,7 +88,7 @@
                             <a href="{{ project.log }}"
                                 class="{{ project.disabled}} {{ disable_link_class}}">{% trans "Analyze Data" %}</a>
                             <span class="{{ hide_link_class }}">
-                                |<a href="{{ project.delete_links }}" class="delete_project">{% trans "Delete Poll" %}</a>
+                                |<a href="{{ project.delete_links }}" class="delete_project" data-is_poll="true">{% trans "Delete Poll" %}</a>
                             </span>
                 </tr>
                 {% else %}
@@ -136,6 +136,12 @@
             <p class="warning_message">{% trans "Export all Submissions prior to deleting your Questionnaire." %}</p>
             <a href="#" class="cancel_link cancel_{% trans "en" %}" >{% trans "Cancel" %}</a>
             <a href="#" class="button" id="confirm_delete">{% trans "Delete Questionnaire Now" %}</a>
+        </div>
+
+        <div id="delete_poll_block">
+            <p class="warning_message">{% trans "Export all Submissions prior to deleting your Poll." %}</p>
+            <a href="#" class="cancel_link cancel_{% trans "en" %}" >{% trans "Cancel" %}</a>
+            <a href="#" class="button" id="confirm_delete">{% trans "Delete Poll Now" %}</a>
         </div>
         {% include "project/import_submission.html" %}
     </div>

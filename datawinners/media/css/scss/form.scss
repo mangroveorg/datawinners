@@ -538,7 +538,7 @@ input [type=text]{
 }
 
 /*Delete the project block*/
-#delete_project_block{
+#delete_project_block, #delete_poll_block{
     height:110px ! important;
     width:auto ! important;
     .cancel_link{
