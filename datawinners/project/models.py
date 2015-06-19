@@ -156,9 +156,7 @@ def get_simple_project_names(dbm):
         if 'is_poll' in simple_project['value'] and simple_project['value']['is_poll'] is False:
             questionnaire_name = simple_project['value']['name']
             result.append({'name': questionnaire_name, 'id': simple_project['value']['id']})
-        else:
-            questionnaire_name = simple_project['value']['name']
-            result.append({'name': questionnaire_name, 'id': simple_project['value']['id']})
+
 
 
     return result

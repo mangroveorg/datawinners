@@ -64,10 +64,9 @@ def get_project_id_name_map(dbm):
     project_id_name_map = {}
     rows = dbm.load_all_rows_in_view('project_names')
     for row in rows:
-        if 'is_poll' in row['value'] and not row['value']['is_poll']:
+        if 'is_poll' in row['value'] and row['value']['is_poll'] is False:
             project_id_name_map.update({row['value']['id']:row['value']['name']})
-        else:
-            project_id_name_map.update({row['value']['id']:row['value']['name']})
+
 
     project_map = sorted(project_id_name_map.items(), key=lambda(project_id, name): name.lower())
 
