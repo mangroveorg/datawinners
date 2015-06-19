@@ -592,10 +592,10 @@ msgid "To get started with DataWinners"
 msgstr ""
 
 msgid "order_to_create_project"
-msgstr "create a new Questionnaire"
+msgstr "Create a New Questionnaire"
 
 msgid "order_to_create_project_and_poll"
-msgstr "Create a new Questionnaire or Poll "
+msgstr "Create a New Questionnaire or Poll"
 
 msgid "Add a data sender"
 msgstr ""
