@@ -164,3 +164,6 @@ def random_string(length=6):
 
 def is_empty_string(value):
     return value is None or value.strip() == ''
+
+def is_admin(user):
+    return user.groups.filter(name="NGO Admins").count() > 0
