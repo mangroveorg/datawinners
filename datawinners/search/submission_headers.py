@@ -88,7 +88,8 @@ class AllSubmissionHeader(SubmissionHeader):
         header_dict.update(
             {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
-        header_dict.update({"status": translate("Status", self.language, ugettext)})
+        if not self.form_model.is_poll:
+            header_dict.update({"status": translate("Status", self.language, ugettext)})
 
         return header_dict
 
