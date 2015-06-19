@@ -759,7 +759,7 @@ a.dialog-anchor {
 }
 .ui-widget-content {
   a {
-    color: #0070AC !important; ;
+    color: #0070AC;
     font-size: 12px;
   }
   a.size_1_em {
@@ -800,4 +800,7 @@ span.selected_list_item_arrow {
   font-style: italic;
   font-weight: bold;
   white-space: pre;
+}
+.link_color {
+  color: $link_color !important;
 }
