@@ -42,7 +42,6 @@ class MyDataSendersAjaxView(View):
         user = request.user
         manager = get_database_manager(user)
         project_name_unquoted = lowercase_and_strip_accents(unquote(project_name))
-
         search_parameters = {}
         search_filters = {}
         search_text = lower(request.POST.get('sSearch', '').strip())
@@ -119,6 +118,9 @@ def registered_datasenders(request, project_id):
         return HttpResponseRedirect(dashboard_page)
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
+        if questionnaire.is_open_survey and questionnaire.is_poll:
+            return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
+
         is_open_survey_allowed = _is_pro_sms(request) and not questionnaire.xform
         is_open_survey = 'open' if questionnaire.is_open_survey else 'restricted'
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)

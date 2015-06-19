@@ -162,7 +162,7 @@
     <div id="activate_poll_dialog" class="none">
         <br>
         <span>{% trans 'Active for' %}</span>
-        <select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style"></select>
+        <select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style auto_width"></select>
         <span> {% trans 'Days' %} </span><br><br>
         <span><b>{% trans 'From '%} </b></span>
         <span data-bind="text:from_date_poll" class="date_text"> </span>&nbsp;&nbsp;
@@ -171,7 +171,7 @@
         <span data-bind="text:to_date_poll" class="date_text"></span>
         <div class="float_right margin_top_20">
               <a id="close_activate_link" class="cancel_link" data-bind="click: close_activation_popup">{%trans "Cancel"%}</a>
-              <input id="activate_button" class="button" type="button" data-bind="click: activate_poll" value="Yes, Activate">
+              <input id="activate_button" class="button" type="button" data-bind="click: activate_poll" value="Activate">
         </div>
     </div>
     </div>
