@@ -181,7 +181,7 @@ function _if_pro_sms_mode_show_poll_option() {
 function _is_another_poll_is_active() {
     if (is_active == "True") {
         $('.poll_active').show();
-        $('<div class="italic_grey padding_left_30 padding_top_10 padding_bottom_10 border_bottom_grey">Another poll is already active <span id="active_poll_name"><a class="link_color"href="/project/poll/' + project_active_id + '">' + project_active_name + '</a></span></div>').insertAfter($(".poll_active"));
+        $('<div class="italic_grey padding_left_30 padding_top_10 padding_bottom_10 border_bottom_grey">Another poll is already active <span><a id="active_poll_name" class="link_color" href="/project/poll/' + project_active_id + '">' + project_active_name + '</a></span></div>').insertAfter($(".poll_active"));
         $('.poll_deactivated').hide();
     }
     else {
