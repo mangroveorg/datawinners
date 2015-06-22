@@ -23,7 +23,6 @@ class PostSMSProcessorLanguageActivator(object):
         self.request[FORM_CODE] = form_code
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
-            check_if_form_code_is_poll(self, form_model)
         except FormModelDoesNotExistsException:
             form_model = get_active_form_model(self.dbm, form_code)
         if not isinstance(form_model, EntityFormModel):
@@ -44,7 +43,6 @@ class PostSMSProcessorCheckDSIsRegistered(object):
     def process(self, form_code, submission_values):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
-            check_if_form_code_is_poll(self, form_model)
         except FormModelDoesNotExistsException:
             form_model = get_active_form_model(self.dbm, form_code)
         exception = self.request.get('exception')
@@ -128,7 +126,6 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
     def process(self, form_code, submission_values):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
-            check_if_form_code_is_poll(self, form_model)
         except FormModelDoesNotExistsException:
             form_model = get_active_form_model(self.dbm, form_code)
         project = Project.from_form_model(form_model=form_model)
