@@ -47,7 +47,6 @@ from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
-from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
@@ -480,7 +479,7 @@ def export_count(request):
     search_filters = post_body['search_filters']
     questionnaire_code = post_body['questionnaire_code']
     manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
+    questionnaire = get_project_by_code(manager, questionnaire_code)
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
 
@@ -498,7 +497,7 @@ def export_count(request):
     query_params.update({"search_text": search_text})
     query_params.update({"filter": submission_type})
 
-    submission_count = get_submission_count(manager, form_model, query_params, local_time_delta)
+    submission_count = get_submission_count(manager, questionnaire, query_params, local_time_delta)
     return HttpResponse(mimetype='application/json', content=json.dumps({"count": submission_count}))
 
 
@@ -553,9 +552,9 @@ def export(request):
     questionnaire_code = request.POST.get(u'questionnaire_code')
     manager = get_database_manager(request.user)
 
-    form_model = get_form_model_by_code(manager, questionnaire_code)
+    questionnaire = get_project_by_code(manager, questionnaire_code)
 
-    return _create_export_artifact(form_model, manager, request, search_filters)
+    return _create_export_artifact(questionnaire, manager, request, search_filters)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
@@ -642,7 +641,7 @@ def get_facet_response_for_choice_fields(query_with_criteria, choice_fields, for
 @valid_web_user
 def get_stats(request, form_code):
     dbm = get_database_manager(request.user)
-    form_model = get_form_model_by_code(dbm, form_code)
+    questionnaire = get_project_by_code(dbm, form_code)
     search_parameters = {}
     search_parameters.update({"start_result_number": 0})
     search_parameters.update({"number_of_results": 0})
@@ -658,11 +657,11 @@ def get_stats(request, form_code):
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
     # total success submission count irrespective of current fields being present or not
-    facet_results, total_submissions = get_facets_for_choice_fields(dbm, form_model, search_parameters,
+    facet_results, total_submissions = get_facets_for_choice_fields(dbm, questionnaire, search_parameters,
                                                                     local_time_delta)
 
     return HttpResponse(json.dumps(
-        {'result': create_statistics_response(facet_results, form_model),
+        {'result': create_statistics_response(facet_results, questionnaire),
          'total': total_submissions
         }), content_type='application/json')
 
