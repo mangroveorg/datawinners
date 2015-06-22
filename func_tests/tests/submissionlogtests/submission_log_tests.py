@@ -334,7 +334,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
         warning_dialog.confirm()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('#message_text .success-box'))
         delete_success_text = self.driver.find_visible_element(by_css('#message_text')).text
-        self.assertEqual(delete_success_text, "The selected records have been deleted")
+        self.assertEqual(delete_success_text, "The selected submissions have been deleted")
         submission_log_page.wait_for_table_data_to_load()
         self.assertEquals(int(submission_log_page.get_total_number_of_records()), 0)
 

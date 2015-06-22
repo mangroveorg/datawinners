@@ -72,7 +72,7 @@
     <div id="delete_project_block">
         {% if project.is_poll %}
 
-                <p class="warning_message">{% trans "Export all submissions prior to deleting your poll." %}</p>
+                <p class="warning_message">{% trans "Export all submissions prior to deleting your Poll." %}</p>
                 <a href="#" class="button float_right" id="confirm_delete">
 
                     {% trans "Delete Poll Now" %}</a>
@@ -100,7 +100,7 @@
             <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
 
                 <a id="data_tab" href="{{ project_links.submission_log_link }}"
-                class="{{ disable_link_class }}">{% trans "Data" %}</a>
+                class="{{ disable_link_class }}">{% trans "Data Analysis" %}</a>
             </li>
 
             <li class="{% ifactivetab 'tab_nav' 'poll' %}active{% else %}inactive{% endifactivetab %}">

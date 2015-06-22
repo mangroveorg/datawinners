@@ -121,7 +121,7 @@
             </div>
             <div class="tableCell sub_section" id="questionnaire_section">
                 <img  class='dashboard_icon'  src="/media/images/collect_data.png"/><br/>
-                <p class="explanation">{% trans "Collect Data" %}</p>
+                <span class="explanation">{% trans "Collect Data" %}</span><br/>
                 {% if  is_pro_sms %}
                     <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires & Polls" %}</a>
                 {% else %}

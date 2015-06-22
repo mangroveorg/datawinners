@@ -18,7 +18,7 @@ from mangrove.form_model.project import Project, get_active_form_model_name_and_
 def _is_project_name_unique(error_message, name_has_errors, questionnaire):
     if not questionnaire.is_project_name_unique():
         name_has_errors = True
-        error_message["name"] = _("Questionnaire with same name already exists.")
+        error_message["name"] = _("Questionnaire or Poll with same name already exists.")
     return name_has_errors
 
 def _associate_data_senders_to_questionnaire(manager, questionnaire, selected_option):

@@ -61,9 +61,9 @@
         {% endif %}
         <span class="{{ hide_link_class }}">
             {% if is_pro_sms %}
-                <a id="create_project_link" href="{% url create_project %}?prev=ques" class="button">{% trans "Create a New Questionnaire & Polls" %}</a>
+                <a id="create_project_link" href="{% url create_project %}?prev=ques" class="button">{% trans "Create Questionnaires & Polls" %}</a>
             {% else %}
-                <a id="create_project_link" href="{% url create_project %}?prev=ques" class="button">{% trans "Create a New Questionnaire" %}</a>
+                <a id="create_project_link" href="{% url create_project %}?prev=ques" class="button">{% trans "Create Questionnaires" %}</a>
             {% endif %}
         </span>
         <table class="styled_table margin_top_20">

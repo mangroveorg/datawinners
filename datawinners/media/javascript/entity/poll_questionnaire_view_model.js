@@ -1,9 +1,8 @@
     function PollViewModel() {
     var self = this;
-    self.show_sms = ko.observable();
+    self.show_sms = ko.observable('Save/Create Poll');
     self.number_of_days = ko.observable();
     self.to_date_poll = ko.observable();
-
 
     self.show_sms.subscribe(function(){
        window.smsViewModel.clearSelection();
@@ -58,13 +57,13 @@
 
     self.disableSendPoll = ko.computed(function(){
         if(window.smsViewModel.disableSendSms() ){
-            return (self.show_sms() != 'poll_broadcast' || window.smsViewModel.validate() == 1)
+            return (self.show_sms() != 'Save Poll' || window.smsViewModel.validate() == 1)
         }
         return false;
     });
 
     self.validateCreatePoll = function(){
-        return (DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && ((window.smsViewModel.validate() == 1) || self.show_sms() == 'poll_broadcast'));
+        return (DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && ((window.smsViewModel.validate() == 1) || self.show_sms() == 'Save Poll'));
     };
 
     function get_questionnaire_or_group_names() {
@@ -82,7 +81,7 @@
     }
 
     function _send_sms_(project_id) {
-        if (self.show_sms() == 'poll_via_sms') {
+        if (self.show_sms() == 'Send Poll') {
             window.smsViewModel.sendSms(project_id)
         }
     }
@@ -91,7 +90,7 @@
         if(self.validateCreatePoll()) {
             var selected_option = {};
             var question = $("#sms-text").val();
-            if (self.show_sms() == 'poll_broadcast'){
+            if (self.show_sms() == 'Save Poll'){
                 selected_option = {
                     'option' : 'broadcast'
             };
