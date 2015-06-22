@@ -31,8 +31,6 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         HeadlessRunnerTest.setUpClass()
         cls.global_navigation = login(cls.driver)
 
-        cls.create_group_with_a_contact()
-
     def setUp(self):
         dashboard_page = self.global_navigation.navigate_to_dashboard_page()
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
@@ -44,8 +42,9 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_create_a_poll_questionnaire_with_sms_option_with_group(self):
-        poll_title = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         group_name, contact_id = self.create_group_with_a_contact()
+        poll_title = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
+
         self.poll_Questionnaire_page.select_sms_option()
         self.poll_Questionnaire_page.enter_sms_text()
         self.poll_Questionnaire_page.select_receipient(GROUP, group_name)
@@ -70,8 +69,8 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_poll_should_have_data_senders_of_group_as_poll_recipient(self):
-        self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         group_name, contact_id = self.create_group_with_a_contact()
+        self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_Questionnaire_page.select_sms_option()
         self.poll_Questionnaire_page.enter_sms_text()
         self.poll_Questionnaire_page.select_receipient(GROUP, group_name)
@@ -106,8 +105,8 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_after_poll_creation_with_group_the_group_should_receive_sms_and_appear_in_sent_sms_table(self):
-        self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         group_name, contact_id = self.create_group_with_a_contact()
+        self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_Questionnaire_page.select_sms_option()
         self.poll_Questionnaire_page.enter_sms_text()
         self.poll_Questionnaire_page.select_receipient(GROUP, group_name)

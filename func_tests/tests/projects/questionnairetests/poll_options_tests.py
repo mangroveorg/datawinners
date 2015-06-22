@@ -2,14 +2,12 @@ from time import sleep
 from nose.plugins.attrib import attr
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import random_number, by_css
-from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS, DATA_SENDER_TAB, \
-    poll_info_accordian
+from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS, DATA_SENDER_TAB
 from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
 from tests.projects.questionnairetests.project_questionnaire_data import LANGUAGES, CLINIC_ALL_DS, PT, FR, \
     REP7, REP5, REP6, THIRD_COLUMN, SECOND_ROW, GROUP, THIRD_ROW, MY_POLL_RECIPIENTS, CLINIC_TEST_PROJECT, REP8, REP3, \
     REP1, SIXTH_COLUMN, FIRST_ROW, FOURTH_ROW, SIXTH_ROW, FIFTH_ROW
-
 
 class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
     @classmethod
@@ -128,7 +126,6 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
     def test_should_deactivate_the_poll(self):
         self.poll_questionnaire_page.select_broadcast_option()
         self.poll_questionnaire_page.click_create_poll()
-        self.driver.find(POLL_TAB).click()
         self.poll_questionnaire_page.deactivate_poll()
         sleep(2)
         self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'Deactivated')
@@ -139,7 +136,6 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.driver.find(POLL_TAB).click()
         self.poll_questionnaire_page.deactivate_poll()
-        self.driver.find(poll_info_accordian).click()
         sleep(2)
         self.poll_questionnaire_page.activate_poll()
         sleep(2)

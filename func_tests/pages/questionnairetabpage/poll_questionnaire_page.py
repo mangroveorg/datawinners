@@ -128,12 +128,14 @@ class PollQuestionnairePage(Page):
         return recipent in recipient_name
 
     def deactivate_poll(self):
+        self.select_element(POLL_TAB)
         self.select_element(poll_info_accordian)
         self.driver.find(deactivate_link).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DEACTIVATE_BTN, True)
         self.driver.find_text_box(DEACTIVATE_BTN).click()
 
     def activate_poll(self):
+        self.select_element(POLL_TAB)
         self.select_element(poll_info_accordian)
         self.driver.find(activate_link).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTIVATE_BTN, True)

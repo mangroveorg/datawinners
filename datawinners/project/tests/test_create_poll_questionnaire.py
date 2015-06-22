@@ -67,8 +67,7 @@ class TestCreatePoll(TestCase):
                 }
 
         manager = MagicMock(spec=DatabaseManager)
-        questionnaire_code = 'poll_timestamp_'
-
+        questionnaire_code = 'poll_'
 
         with patch('datawinners.project.create_poll.get_database_manager') as get_database_manager_mock:
             with patch('datawinners.project.create_poll.helper.generate_questionnaire_code') as generate_questionnaire_code_mock:
