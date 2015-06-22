@@ -8,7 +8,7 @@ from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_
     POLL_VIA_BROADCAST_RD_BUTTON, active_poll_link, poll_info_accordian, deactivate_link, POLL_STATUS_INFO, \
     AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, AUTOMATIC_REPLY_SECTION, ITALIC_GREY_COMMENT, \
     VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_SMS_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
-    DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS
+    DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS, LANGUAGE_TEXT, ACTIVATE_BTN, activate_link
 from pages.page import Page
 from tests.projects.questionnairetests.project_questionnaire_data import TYPE, GROUP, CONTACTS_LINKED, DATA_TAB, \
     POLL, POLL_RECIPIENTS, MY_POLL_RECIPIENTS
@@ -63,8 +63,8 @@ class PollQuestionnairePage(Page):
 
     def is_automatic_reply_sms_option_present(self):
         self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, AUTOMATIC_REPLY_SECTION, True)
-        return self.driver.find(AUTOMATIC_REPLY_SECTION).text.__eq__(AUTOMATIC_REPLY_SMS_TEXT)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, LANGUAGE_TEXT, True)
+        return self.driver.find(LANGUAGE_TEXT).text.__eq__(AUTOMATIC_REPLY_SMS_TEXT)
 
     def is_sent_poll_sms_table(self):
         self.select_element(POLL_SMS_ACCORDIAN)
@@ -128,11 +128,16 @@ class PollQuestionnairePage(Page):
         return recipent in recipient_name
 
     def deactivate_poll(self):
-        self.driver.find(POLL_TAB).click()
         self.select_element(poll_info_accordian)
         self.driver.find(deactivate_link).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DEACTIVATE_BTN, True)
         self.driver.find_text_box(DEACTIVATE_BTN).click()
+
+    def activate_poll(self):
+        self.select_element(poll_info_accordian)
+        self.driver.find(activate_link).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTIVATE_BTN, True)
+        self.driver.find_text_box(ACTIVATE_BTN).click()
 
     def select_send_sms(self):
         self.select_element(POLL_TAB)
@@ -150,6 +155,9 @@ class PollQuestionnairePage(Page):
     def send_sms_to_my_poll_recipients(self):
         self.select_recipient_type(RECIPIENT_DROPDOWN, MY_POLL_RECIPIENTS)
 
+    def get_poll_status(self):
+        return self.driver.find(by_id("poll_status")).text
+
     def _configure_given_contacts(self, recipient_name):
         """
         Function to select Group option To whom to send
@@ -161,6 +169,7 @@ class PollQuestionnairePage(Page):
         return self
 
     def select_element(self, element):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, element,True)
         self.driver.find(element).click()
 
     def get_cell_value(self, column, row):

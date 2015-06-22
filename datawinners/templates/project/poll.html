@@ -101,9 +101,9 @@
 
             <div>
                 <p>
-                    Poll is <strong><span data-bind="text:status"> </span> </strong>now :
+                    Poll is <strong><span id="poll_status"  data-bind="text:status"> </span> </strong>now :
                     <a id="deactivate_link" data-bind="text:deactivation, click:deactivate" class="cancel_link" > </a>
-                    <a data-bind="text:activation, click:activate" class="cancel_link"> </a>
+                    <a id="activate_link" data-bind="text:activation, click:activate" class="cancel_link"> </a>
                 </p>
                 <p>
                     <br/>

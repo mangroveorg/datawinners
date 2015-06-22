@@ -48,9 +48,9 @@ ON_SWITCH = by_css(".onoffswitch-checked")
 SAVE_LANG_BTN = by_id("save_lang")
 SUCCESS_MSG_BOX = by_css(".success-message-box")
 RECIPIENT_DROPDOWN = by_id("recipient-dropdown")
-AUTOMATIC_REPLY_SMS_TEXT = "Automatic Reply SMS\n" +\
-                      "DataWinners analyzes each SMS Submission and automatically sends back an SMS reply."
+AUTOMATIC_REPLY_SMS_TEXT = "Send Automatic SMS Replies for My Questionnaire"
 WORD_OR_PHRASE = 'text'
+LANGUAGE_TEXT = by_css(".title_set_SMS")
 NUMBER_OPTION = 'integer'
 DATE_OPTION = 'date'
 LIST_OF_CHOICES_OPTION = 'choice'
@@ -62,8 +62,12 @@ OTHERS = 'others'
 active_poll_link = by_id('active_poll_name')
 poll_info_accordian = by_id('poll_status_info')
 deactivate_link = by_id('deactivate_link')
-DEACTIVATE_BTN = by_id("deactivate_button")
-ACTIVATE_BTN = by_id("activate_button")
+activate_link = by_id('activate_link')
+
+DEACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/input[@id='deactivate_button']")
+
+ACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/input[@id='activate_button']")
+
 NEW_UNIQUE_ID_TEXT = by_css('.newUniqueIdName')
 UNIQUE_ID_CHOICE_BOX = by_css('.uniqueIdType')
 UNIQUE_ID_COMBO_BOX = by_css('.uniqueIdTypeContents')
