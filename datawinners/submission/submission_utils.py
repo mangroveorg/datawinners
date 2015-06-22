@@ -2,12 +2,13 @@ from django.utils import translation
 
 from datawinners.messageprovider.handlers import data_sender_not_linked_handler, data_sender_not_registered_handler
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
+from mangrove.datastore.documents import ProjectDocument
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException, NumberNotRegisteredException, \
-    FormModelDoesNotExistsException
+    FormModelDoesNotExistsException, ProjectPollCodeDoesNotExistsException
 from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
 from mangrove.errors.MangroveException import DatasenderIsNotLinkedException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
-from mangrove.form_model.project import Project, get_active_form_model
+from mangrove.form_model.project import Project, get_active_form_model, get_project_by_code, check_if_form_code_is_poll
 from mangrove.transport.contract.response import Response
 from mangrove.form_model.form_model import EntityFormModel
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
@@ -22,6 +23,7 @@ class PostSMSProcessorLanguageActivator(object):
         self.request[FORM_CODE] = form_code
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
+            check_if_form_code_is_poll(self, form_model)
         except FormModelDoesNotExistsException:
             form_model = get_active_form_model(self.dbm, form_code)
         if not isinstance(form_model, EntityFormModel):
@@ -42,6 +44,7 @@ class PostSMSProcessorCheckDSIsRegistered(object):
     def process(self, form_code, submission_values):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
+            check_if_form_code_is_poll(self, form_model)
         except FormModelDoesNotExistsException:
             form_model = get_active_form_model(self.dbm, form_code)
         exception = self.request.get('exception')
@@ -57,6 +60,7 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
     def process(self, form_code, submission_values, extra_data=[]):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
+            check_if_form_code_is_poll(self, form_model)
         except FormModelDoesNotExistsException:
             form_model = get_active_form_model(self.dbm, form_code)
 
@@ -120,9 +124,11 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         response.errors = data_sender_not_linked_handler(self.dbm, self.request, form_code=form_code)
         return response
 
+
     def process(self, form_code, submission_values):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
+            check_if_form_code_is_poll(self, form_model)
         except FormModelDoesNotExistsException:
             form_model = get_active_form_model(self.dbm, form_code)
         project = Project.from_form_model(form_model=form_model)
