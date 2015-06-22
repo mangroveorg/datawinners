@@ -42,7 +42,7 @@ from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQueryResponseCreator
 from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet, DateTimeField
-from mangrove.form_model.project import Project
+from mangrove.form_model.project import Project, get_project_by_code
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -73,11 +73,9 @@ logger = logging.getLogger("datawinners")
 @is_not_expired
 def headers(request, form_code):
     manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, form_code)
+    questionnaire = get_project_by_code(manager, form_code)
     submission_type = request.GET.get('type', 'all')
-    if form_model.is_poll and submission_type == 'all':
-        submission_type = 'success'
-    headers = SubmissionsPageHeader(form_model, submission_type).get_column_title()
+    headers = SubmissionsPageHeader(questionnaire, submission_type).get_column_title()
     response = []
     for header in headers:
         response.append({"sTitle": ugettext(header)})
@@ -585,14 +583,14 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 @valid_web_user
 def get_submissions(request, form_code):
     dbm = get_database_manager(request.user)
-    form_model = get_form_model_by_code(dbm, form_code)
+    questionnaire = get_project_by_code(dbm, form_code)
     search_parameters = {}
     search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
     search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
     filter_type = request.GET['type']
     search_parameters.update({"filter": filter_type})
 
-    search_parameters.update({"sort_field": _get_field_to_sort_on(request.POST, form_model, filter_type)})
+    search_parameters.update({"sort_field": _get_field_to_sort_on(request.POST, questionnaire, filter_type)})
     search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
     search_filters = json.loads(request.POST.get('search_filters'))
     search_parameters.update({"search_filters": search_filters})
@@ -600,10 +598,10 @@ def get_submissions(request, form_code):
     search_parameters.update({"search_text": search_text})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    search_results, query_fields = get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta)
-    submission_count_with_filters = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
-    submission_count_without_filters = get_submissions_without_user_filters_count(dbm, form_model, search_parameters)
-    submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields,
+    search_results, query_fields = get_submissions_paginated(dbm, questionnaire, search_parameters, local_time_delta)
+    submission_count_with_filters = get_submission_count(dbm, questionnaire, search_parameters, local_time_delta)
+    submission_count_without_filters = get_submissions_without_user_filters_count(dbm, questionnaire, search_parameters)
+    submissions = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields,
                                                                                                search_results)
 
     return HttpResponse(

@@ -41,10 +41,8 @@ def get_all_form_models(dbm, data_sender_id=None):
     questionnaires = []
     rows = dbm.load_all_rows_in_view('all_questionnaire')
     for row in rows:
-        if 'is_poll' in row and  not row['value']['is_poll']:
+        if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
             questionnaires.append(row)
-        else:
-             questionnaires.append(row)
 
     return questionnaires
 
@@ -64,9 +62,7 @@ def get_project_id_name_map(dbm):
     project_id_name_map = {}
     rows = dbm.load_all_rows_in_view('project_names')
     for row in rows:
-        if 'is_poll' in row['value'] and not row['value']['is_poll']:
-            project_id_name_map.update({row['value']['id']:row['value']['name']})
-        else:
+        if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
             project_id_name_map.update({row['value']['id']:row['value']['name']})
 
     project_map = sorted(project_id_name_map.items(), key=lambda(project_id, name): name.lower())

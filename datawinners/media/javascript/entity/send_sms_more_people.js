@@ -19,6 +19,7 @@ $(function(){
         width: 720,
         height: 'auto',
         close: function () {
+            window.location.reload();
             smsViewModel.clearSelection();
         }
     });

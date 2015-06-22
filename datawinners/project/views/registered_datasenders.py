@@ -11,11 +11,7 @@ def registered_ds_count(request):
     dbm = get_database_manager(request.user)
     result = []
     for row in dbm.database.view("project_names/project_names"):
-        if 'is_poll' in row['value'] and not row['value']['is_poll']:
-            questionnaire_name = row['value']['name']
-            result.append({'name': questionnaire_name, 'id': row['value']['id'],
-                           'ds-count': get_registered_datasender_count(dbm, questionnaire_name)})
-        else:
+        if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
             questionnaire_name = row['value']['name']
             result.append({'name': questionnaire_name, 'id': row['value']['id'],
                            'ds-count': get_registered_datasender_count(dbm, questionnaire_name)})

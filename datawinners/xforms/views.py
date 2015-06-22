@@ -10,6 +10,7 @@ from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.couch_view_helper import get_all_form_models
 from datawinners.submission.location import LocationBridge
+from datawinners.utils import is_admin
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, DataObjectAlreadyExists
 from datawinners.feeds.database import get_feeds_database
@@ -65,7 +66,10 @@ def restrict_request_country(f):
 @restrict_request_country
 def formList(request):
     user = request.user
-    rows = get_all_form_models(get_database_manager(user), user.get_profile().reporter_id)
+    reporter_id = user.get_profile().reporter_id
+    if is_admin(user):
+        reporter_id = None
+    rows = get_all_form_models(get_database_manager(user), reporter_id)
     form_tuples = [(row['value']['name'], row['id']) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
     response = HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")

@@ -538,7 +538,7 @@ input [type=text]{
 }
 
 /*Delete the project block*/
-#delete_project_block{
+#delete_project_block, #delete_poll_block{
     height:110px ! important;
     width:auto ! important;
     .cancel_link{
@@ -759,7 +759,7 @@ a.dialog-anchor {
 }
 .ui-widget-content {
   a {
-    color: #0070AC !important; ;
+    color: #0070AC;
     font-size: 12px;
   }
   a.size_1_em {
@@ -800,4 +800,7 @@ span.selected_list_item_arrow {
   font-style: italic;
   font-weight: bold;
   white-space: pre;
+}
+.link_color {
+  color: $link_color !important;
 }

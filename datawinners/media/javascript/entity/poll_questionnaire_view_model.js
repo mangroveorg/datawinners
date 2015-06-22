@@ -4,6 +4,10 @@
     self.number_of_days = ko.observable();
     self.to_date_poll = ko.observable();
 
+
+    self.show_sms.subscribe(function(){
+       window.smsViewModel.clearSelection();
+    });
     var active_poll_days = [1,2,3,4,5];
     var start_date = new Date();
     var maxAllowedSMSCharacters = 160;
@@ -18,7 +22,7 @@
     };
 
     smsTextElement.keyup(smsTextLengthCheck);
-    smsTextElement.keydown(smsTextLengthCheck);
+    smsTextElement.keydown(smsTextLengthCheck)
 
     window.smsViewModel.smsOptionList = ko.observableArray([ {"label":gettext('Select Recipients'), disable: ko.observable(true)},
                                             {"label":gettext('Group'), "code": "group"},

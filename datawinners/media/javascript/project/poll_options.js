@@ -158,7 +158,7 @@ var PollOptionsViewModel = function() {
                 $('#send_sms').removeClass('link_color disable_link');
             }
             else {
-                $('<div class="information_box">' + responseJson['message'] + '<a href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))
+                $('<div class="information_box">' + responseJson['message'] + '<a class="link_color" href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))
                 $('.message-box').delay(2000).fadeOut();
             }
         });

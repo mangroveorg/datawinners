@@ -57,7 +57,7 @@ def _construct_questionnaire(request):
     manager = get_database_manager(request.user)
     end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%dT%H:%M:%S')
 
-    questionnaire_code = 'poll_timestamp_'+str(time.time())
+    questionnaire_code = 'poll_'+str(time.time()).split('.')[0]
     questionnaire = Project(manager, name=request.POST.get('poll_name'),
                             fields=[], form_code=questionnaire_code, language=request.LANGUAGE_CODE,
                             devices=[u'sms', u'web', u'smartPhone'], is_poll=True, end_date=end_date, active="active")
