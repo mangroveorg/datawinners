@@ -10,11 +10,14 @@ def get_all_projects_for_datasender(dbm, data_sender_id):
 
 def get_all_projects(dbm, data_sender_id=None):
     if data_sender_id:
+        projects = []
         rows = dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id,
                                          include_docs=True)
         for row in rows:
             row.update({'value': row["doc"]})
-        return rows
+            if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
+                projects.append(row)
+        return projects
     return dbm.load_all_rows_in_view('all_projects')
 
 
