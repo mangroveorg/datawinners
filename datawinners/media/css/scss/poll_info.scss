@@ -58,3 +58,12 @@
 .questionnaire_type_header{
   padding-top: 10px !important;
 }
+
+.link_color {
+  color: #0070ac !important;
+}
+.disable_link {
+            color: #CCCCCC !important;
+            pointer-events: none;
+            cursor: default;
+}

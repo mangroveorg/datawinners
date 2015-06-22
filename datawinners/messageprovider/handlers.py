@@ -132,6 +132,7 @@ exception_handlers = {
 
     ex.DataObjectNotFound: data_object_not_found_handler,
     ex.FormModelDoesNotExistsException: wrong_questionnaire_code_handler,
+    ex.ProjectPollCodeDoesNotExistsException: wrong_questionnaire_code_handler,
     ex.NumberNotRegisteredException: data_sender_not_registered_handler,
     ex.SubmissionParseException: default_exception_handler_with_logger,
     ex.SMSParserInvalidFormatException: sms_parser_invalid_format_handler,
