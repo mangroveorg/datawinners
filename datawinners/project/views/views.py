@@ -545,9 +545,6 @@ class SubjectWebQuestionnaireRequest():
         return (_("%s with Identification Number %s successfully registered.")) % (entity_type,response_short_code)
 
     def response_for_get_request(self, initial_data=None, is_update=False):
-        if questionnaire.is_poll:
-            return HttpResponseRedirect('/project/''/results/'+questionnaire.form_code)
-
         if self.entity_type not in self.questionnaire.entity_type:
             raise Http404
         questionnaire_form = self.form(initial_data=initial_data)
