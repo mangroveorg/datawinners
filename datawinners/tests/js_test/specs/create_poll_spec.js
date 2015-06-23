@@ -30,14 +30,9 @@ describe("Create a Poll Questionnaire", function(){
 
     it('should_not_show_other_option_for_sending_sms_when_poll_is_created', function(){
         window.questionnaireViewModel = new QuestionnaireViewModel();
-        var questionnaire_view_model = window.questionnaireViewModel;
-
         window.smsViewModel = new SmsViewModel();
-        var sms_view_model = window.smsViewModel;
-
         window.pollViewModel = new PollViewModel();
         var poll_questionnaire_model = window.pollViewModel;
-
         poll_questionnaire_model.show_sms("poll_via_sms");
         poll_questionnaire_model.create_poll();
 
@@ -60,6 +55,7 @@ describe("Create a Poll Questionnaire", function(){
                       9: gettext('October') ,
                       10:gettext('November') ,
                       11:gettext('December') };
+
         window.pollViewModel = new PollViewModel();
         var pollViewModel = window.pollViewModel;
         var current_date = new Date();
@@ -70,8 +66,7 @@ describe("Create a Poll Questionnaire", function(){
         var expected_date = new Date();
         expected_date.setDate(current_date.getDate() + 5);
 
-        expect(pollViewModel.to_date_poll()).toBe(expected_date.getDate()+ " "+ month_name_map[expected_date.getMonth()] +" "+ expected_date.getFullYear())
-
+        expect(pollViewModel.to_date_poll()).toBe(month_name_map[expected_date.getMonth()] +" "+ expected_date.getDate()+ ", "+  expected_date.getFullYear())
 
     });
 
