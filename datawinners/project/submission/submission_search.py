@@ -160,8 +160,6 @@ class SubmissionSearch():
         return query_fields
 
     def _add_search_filters(self, search):
-        query_fields = self._get_query_fields()
-        query_fields = self._remove_hidden_fields(query_fields)
         search_filter_param = self.search_parameters.get('search_filters')
         if not search_filter_param:
             return
@@ -169,6 +167,8 @@ class SubmissionSearch():
         query_text = search_filter_param.get("search_text")
         query_text_escaped = ElasticUtilsHelper().replace_special_chars(query_text)
         if query_text:
+            query_fields = self._get_query_fields()
+            query_fields = self._remove_hidden_fields(query_fields)
             search = search.query("query_string", query=query_text_escaped, fields=query_fields)
         submission_date_range = search_filter_param.get("submissionDatePicker")
         submission_date_query = SubmissionDateRangeFilter(submission_date_range,

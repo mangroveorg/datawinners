@@ -36,9 +36,9 @@ def hide_submission_log_column(request):
     return HttpResponse(json.dumps({'success': True}))
 
 
-# @valid_web_user
-# @is_datasender
-# @csrf_exempt
+@valid_web_user
+@is_datasender
+@csrf_exempt
 def get_hidden_columns(request):
     user = request.user
     post_data = json.loads(request.POST.get('data'))
