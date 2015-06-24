@@ -1,6 +1,6 @@
     function PollViewModel() {
     var self = this;
-    self.show_sms = ko.observable('Save/Create Poll');
+    self.show_sms = ko.observable(gettext('Save/Create Poll'));
     self.number_of_days = ko.observable();
     self.to_date_poll = ko.observable();
 
@@ -81,7 +81,7 @@
     }
 
     function _send_sms_(project_id) {
-        if (self.show_sms() == 'Send Poll') {
+        if (self.show_sms() == gettext('Send Poll')) {
             window.smsViewModel.sendSms(project_id)
         }
     }

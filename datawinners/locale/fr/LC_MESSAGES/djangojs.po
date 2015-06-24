@@ -186,12 +186,10 @@ msgid "You are trying to delete 1 or more active accounts."
 msgstr ""
 
 #: media/javascript/admin/organization.js:16
-msgid "Activate"
-msgstr ""
 
 #: media/javascript/admin/organization.js:17
 msgid "Deactivate"
-msgstr ""
+msgstr "Désactive"
 
 msgid "Delete"
 msgstr "Supprimer"
@@ -1553,3 +1551,65 @@ msgstr "Expéditeur(s) supprimé(s) avec succès."
 
 msgid "Contact(s) successfully deleted."
 msgstr "Contact(s) supprimé(s) avec succès."
+
+msgid "To create the Poll you must first deactivate your current "
+msgstr "Pour créer un nouveau Sondage, vous devez d’abord désactiver le Sondage en cours "
+
+msgid "You may only have one active Poll at a time."
+msgstr "Vous pouvez avoir uniquement un Sondage actif à la fois."
+
+msgid "Send Poll"
+msgstr "Envoyer le Sondage"
+
+msgid "Save Poll"
+msgstr "Enregistrer le Sondage"
+
+msgid "Save/Create Poll"
+msgstr "Enregistrer/Envoyer le Sondage"
+
+msgid "Delete this Poll"
+msgstr "Supprimer ce Sondage"
+
+msgid "is active From: "
+msgstr "est actif Du :"
+
+msgid "' To: "
+msgstr " Au :"
+
+msgid "Deactivated"
+msgstr "Désactivé"
+
+msgid "Change"
+msgstr "Changer"
+
+msgid "Activate"
+msgstr "Activer"
+
+msgid "Active"
+msgstr "Actif"
+
+msgid "My Poll Recipients"
+msgstr "Les destinataires de mon Sondage"
+
+msgid "Poll Recipients"
+msgstr "Destinataires du Sondage"
+
+
+msgid "Deactivate Poll?"
+msgstr "Désactiver le Sondage?"
+
+msgid "Activate Poll?"
+msgstr "Acrtiver le Sondage?"
+
+msgid "Remove from Poll"
+msgstr "Retirer du Sondage"
+
+msgid "From: "
+msgstr "Du : "
+
+msgid " To: "
+msgstr " Au: "
+
+
+msgid "is inactive"
+msgstr "est inactif"

@@ -86,7 +86,7 @@
                 <a id="send_sms" class="margin_bottom_10">{% trans "Send SMS to More People" %}</a>
             {% endif %}
         </div>
-        <h4>Poll</h4>
+        <h4>{% trans 'Poll' %}</h4>
 
         <div id="questionnaire_types" class="position_relative" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
         <div id="poll_status_info" class="questionnaire_type_header">
@@ -100,7 +100,7 @@
 
             <div>
                 <p>
-                    Poll is <strong><span id="poll_status"  data-bind="text:status"> </span> </strong>:
+                    {%  trans 'Poll is' %} <strong><span id="poll_status"  data-bind="text:status"> </span> </strong>:
                     <a id="deactivate_link" data-bind="text:deactivation, click:deactivate" class="cancel_link" > </a>
                     <a id="activate_link" data-bind="text:activation, click:activate" class="cancel_link"> </a>
                 </p>
@@ -125,14 +125,14 @@
                 <p> {% trans 'Are you sure want to deactivate this Poll?' %}</p>
                 <div class="float_right margin_top_40">
                     <a id="close_deactivate_link" class="cancel_link" data-bind="click: close_deactivation_popup">{%trans "Cancel"%}</a>
-                    <input id="deactivate_button" class="button" type="button" data-bind="click: deactivate_poll" value="Yes, Deactivate">
+                    <button id="deactivate_button" class="button" type="button" data-bind="click: deactivate_poll">{% trans "Yes, Deactivate" %}</button>
                 </div>
             </div>
 
         </div>
          <div id="automatic_reply" class="questionnaire_type_header">
 
-             <span class="header" >{% trans "Automatic Reply SMS:"%}
+             <span class="header" >{% trans "Automatic Reply SMS"%} :
              {% if  project.is_outgoing_sms_replies_enabled %}
                  <b>On</b>
              {% else %}

@@ -390,9 +390,6 @@ msgstr "Ajouter un Nouveau Projet"
 msgid "Are you sure you want to cancel this project?"
 msgstr "Etes-vous sûr de vouloir annuler ce projet ?"
 
-msgid "How Do You Want to Broadcast this Poll?"
-msgstr "Comment vous voulez diffuser ce sondage ?"
-
 msgid "Create a Poll "
 msgstr "Créer un vote rapide "
 
@@ -674,6 +671,13 @@ msgstr "Voir tous les Questionnaires"
 msgid ""
 " Once you have created Questionnaires, a list of your %(text)s will appear here."
 msgstr "Une fois que vous avez créé des Questionnaires, une liste de vos %(text)s sera affichée ici."
+
+msgid ""
+" Once you have created Questionnaires or Polls, a list of your %(text)s will appear here."
+msgstr "Une fois que vous avez créé des Questionnaires et des Sondages, une liste de vos %(text)s sera affichée ici."
+
+msgid "Create a Poll"
+msgstr "Créer un Sondage"
 
 msgid "To get started with DataWinners"
 msgstr "Pour commençer à utiliser DataWinners"
@@ -1649,6 +1653,7 @@ msgstr "Résumé"
 msgid "Data"
 msgstr "Données"
 
+
 msgid "tooltip_tab_navigation"
 msgstr ""
 "Visualisez, analysez et exportez vos données collectées. Créez une alarme "
@@ -2092,7 +2097,7 @@ msgid "Name your project and provide basic information about it."
 msgstr "Nommez votre projet et fournissez des informations élémentaires."
 
 msgid "Create a Basic Questionnaire"
-msgstr "Créez un questionnaire de base"
+msgstr "Créer un Questionnaire simple pour"
 
 msgid "I want to send this Poll Question via SMS"
 msgstr "Je veux envoyer ce sondage question par SMS"
@@ -2131,8 +2136,119 @@ msgstr "Saisissez et éditez vos Questions"
 msgid "Save and create your project."
 msgstr "Sauvegardez et créez votre projet."
 
+msgid "p_tooltip_poll_option"
+msgstr "Par SMS, envoyez une question à un groupe spécifique : <br>\"Avez-vous reçu la livraison de manuels ? Veuillez répondre par OUI ou NON\".  <br><br>Ou diffusez votre question ouverte à la radio et collectez des réponses SMS : <br>\"Veuillez nous envoyer toute information sur des braconnages dans votre zone\""
+
+msgid "To activate the Poll you must first deactivate your current %s. You may only have one active Poll at a time."
+msgstr "Pour activer le Sondage, vous devez d’abord désactiver le Sondage en cours."
+
+msgid "Create a New Poll"
+msgstr "Créer un nouveau Sondage"
+
+msgid "Poll Name"
+msgstr "Nom du Sondage"
+
+msgid "How Do You Want to Broadcast this Poll?"
+msgstr "Comment souhaitez-vous diffuser ce Sondage?"
+
+msgid "Send the Poll Question by SMS"
+msgstr "Envoyer la question du Sondage par SMS"
+
+msgid "Broadcast through other channels (Radio, TV Billboards)"
+msgstr "Diffuser à travers d’autres canaux (radio, TV)"
+
+msgid "Anyone can send an SMS response"
+msgstr "out le monde peut envoyer une réponse SMS"
+
+msgid "How Long Should the Poll be Active?"
+msgstr "Combien de temps le Sondage sera-t-il actif ?"
+
+msgid "Choose the number of days people can respond to this poll."
+msgstr "Choisissez le nombre de jours durant lequel les gens peuvent répondre au Sondage."
+
+msgid "Active for"
+msgstr "Actif pour"
+
+msgid "From: "
+msgstr "Du : "
+
+msgid "To: "
+msgstr "Au: "
+
+msgid "Are you sure want to deactivate this Poll?"
+msgstr "Etes-vous sûr de vouloir désactiver ce Sondage ?"
+
+msgid "Yes, Deactivate"
+msgstr "Oui, désactiver"
+
+msgid "Include your question, reply instructions and answer options. Example: Did you receive the textbook shipment?  Please reply to this SMS with YES or NO. (Don’t use quotation marks.  Poll respondents may think they have to use them)."
+msgstr "Votre SMS doit contenir votre question, les instructions relatives à la réponse et les options de réponse. Exemple : Avez-vous reçu la livraison de manuels ? Veuillez répondre à cet SMS par OUI ou NON. (N’utilisez pas de guillemets. Les répondants peuvent penser qu’ils doivent les utiliser)."
+
+msgid "Delete this Poll"
+msgstr "Supprimer ce Sondage"
+
+msgid "Only recipients of the SMS can respond"
+msgstr "Seuls les destinataires de cet SMS peuvent répondre"
+
+msgid "To create a new Poll you must first deactivate your current"
+msgstr "Pour créer un nouveau Sondage, vous devez d’abord désactiver le Sondage en cours"
+
+msgid "Choose this option to create a single question Poll and collect responses through SMS"
+msgstr "Choisissez cette option pour créer un Sondage à une question et collectez des réponses par SMS"
+
 msgid "Send A Message"
 msgstr "Envoyer un message"
+
+msgid "Send Automatic SMS Replies for My Poll"
+msgstr "Envoyer des retours SMS automatiques pour mon Sondage"
+
+msgid "tooltip_language_checkbox_poll"
+msgstr "Cliquez sur le fond bleu pour positionner ce bouton sur \"OFF\" (arret) et cliquez sur le bouton \"Enregistrer\" pour désactiver l'envoi de messages de retour automatiques pour ce Sondage."
+
+msgid "Export all submissions prior to deleting your Poll."
+msgstr "Exportez toutes les Soumisisons avant de supprimer votre Sondage."
+
+msgid "Polled Recipients: "
+msgstr "Personnes interrogées: "
+
+msgid "Sent On"
+msgstr "Envoyé le"
+
+msgid "Recipients"
+msgstr "Destinataires"
+
+msgid "Sender"
+msgstr "Expéditeur"
+
+msgid "The selected submissions have been deleted"
+msgstr "Les Soumissions sélectionnées ont été suppriméesQuestionnaire or Poll with same name already exists"
+
+msgid "Poll"
+msgstr "Sondage"
+
+msgid "Poll "
+msgstr "Sondage "
+
+msgid "Send SMS to More People"
+msgstr "Envoyer le SMS à d’autres personnes"
+
+msgid "Questionnaire or Poll with same name already exists"
+msgstr "Un Questionnaire ou Sondage portant le même nom existe déjà"
+
+msgid "View and manage all Submissions for this poll."
+msgstr "Voir et gérer toutes les Soumissions liées à ce sondage"
+
+msgid "My Poll Recipients"
+msgstr "Les destinataires de mon Sondage"
+
+msgid "Poll Recipients"
+msgstr "Destinataires du Sondage"
+
+msgid "Delete Poll Now"
+msgstr "Supprimer le Sondage"
+
+msgid "Delete Poll"
+msgstr "Supprimer le Sondage"
 
 msgid "Text:"
 msgstr "Texte:"
@@ -4901,6 +5017,15 @@ msgstr "Tapez le code unique du/de la %s"
 
 msgid "View and manage all Submissions for this project."
 msgstr "Voir et gérer toutes les Soumissions liées à ce projet."
+
+msgid "Questionnaires & Polls"
+msgstr "Questionnaires & Sondages"
+
+msgid "Create Questionnaires & Polls"
+msgstr "Créer des Questionnaires et des Sondages"
+
+msgid "Your Most Recent Questionnaires & Polls"
+msgstr "Vos Questionnaires et Sondages les plus récents"
 
 msgid "Step 1. Write your Identification Number Question"
 msgstr "Etape 1. Tapez votre Question sur le Numéro d'Identification"

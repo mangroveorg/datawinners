@@ -181,9 +181,8 @@ function _if_pro_sms_mode_show_poll_option() {
 function _is_another_poll_is_active() {
     if (is_active == "True") {
         $('.poll_active').show();
-        $('<div class="italic_grey padding_left_30 padding_top_10 padding_bottom_10 border_bottom_grey">' +
-        'To create a new Poll you must first deactivate your current <span id="active_poll_name"><a class="link_color"href="/project/poll/' +
-        project_active_id + '">'+ project_active_name + '</a></span>. You may only have one active Poll at a time.</div>').insertAfter($(".poll_active"));
+        $('<div class="italic_grey padding_left_30 padding_top_10 padding_bottom_10 border_bottom_grey">'+ gettext('To create the Poll you must first deactivate your current ') + '<span id="active_poll_name"><a class="link_color"href="/project/poll/' +
+        project_active_id + '">'+ project_active_name + '</a></span>.'+ gettext('You may only have one active Poll at a time.') +'</div>').insertAfter($(".poll_active"));
         $('.poll_deactivated').hide();
     }
     else {

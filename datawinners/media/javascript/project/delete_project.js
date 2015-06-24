@@ -11,7 +11,7 @@ $(document).ready(function(){
    );
 
    $("#delete_poll_block").dialog({
-        title: "Delete this Poll?",
+        title: gettext("Delete this Poll?"),
         modal: true,
         autoOpen: false,
         height: 150,

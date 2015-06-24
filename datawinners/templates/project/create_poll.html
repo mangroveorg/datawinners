@@ -28,9 +28,7 @@
                 <br>
                 </div>
                 <div data-bind="visible: show_sms() === 'Send Poll'" class="margin_left_25">
-                    <i>Include your question, reply instructions and answer options. Example:
-                        Did you receive the textbook shipment?  Please reply to this SMS with YES or NO.
-                        (Don’t use quotation marks.  Poll respondents may think they have to use them).</i>
+                    <i>{% trans "Include your question, reply instructions and answer options. Example: Did you receive the textbook shipment?  Please reply to this SMS with YES or NO. (Don’t use quotation marks.  Poll respondents may think they have to use them)." %}</i>
                     <br>
                     <div data-bind="stopBinding: true" >
                             {% include 'send-sms.html' %}
@@ -51,16 +49,16 @@
 
                 <div><br>
                     <label>3. {%trans 'How Long Should the Poll be Active?'%}</label>
-                    &nbsp&nbsp&nbsp&nbsp<span class="italic_grey">{% trans 'Choose the number of days people can respond to this poll. ' %}</span>
+                    &nbsp&nbsp&nbsp&nbsp<span class="italic_grey">{% trans 'Choose the number of days people can respond to this poll.' %}</span>
                     <br><br>
                      &nbsp&nbsp&nbsp
                     <span>{% trans 'Active for' %}</span>
-                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style dropdown_width"></select> <span> {% trans 'Days   ' %} </span>
+                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style dropdown_width"></select> <span> {% trans 'Days' %} </span>
                     &nbsp
-                    <span class="bold-text italic_grey">{% trans ' From: '%} </span>
+                    <span class="bold-text italic_grey">{% trans 'From: '%} </span>
                     <span id="from_date_poll" class="date_text"
-                                     data-bind="text:from_date_poll"></span>
-                        <span class="bold-text italic_grey">{% trans ' To: '%} </span>
+                                     data-bind="text:from_date_poll"></span>&nbsp
+                        <span class="bold-text italic_grey">{% trans 'To: '%} </span>
                     <span id="to_date_poll" class="date_text"
                                      data-bind="text:to_date_poll"></span>
 
