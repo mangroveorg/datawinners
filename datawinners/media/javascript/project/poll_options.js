@@ -153,7 +153,7 @@ var PollOptionsViewModel = function() {
                 self.active_dates_poll('<i class="italic_grey"><b>From:</b> '  + self.from_date_poll() + ' <b>&nbsp To: </b> ' + self.to_date_poll()+'</i>');
                 self.change_days(gettext('Change'));
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
-                $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"));
+                $('<div class="success-message-box">' + gettext('Your changes have been saved.') +'</div>').insertBefore($("#poll_options"));
 
                 $('#send_sms').removeClass('link_color disable_link');
             }

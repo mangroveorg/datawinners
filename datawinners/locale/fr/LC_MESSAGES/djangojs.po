@@ -1570,6 +1570,9 @@ msgstr "Enregistrer/Envoyer le Sondage"
 msgid "Delete this Poll"
 msgstr "Supprimer ce Sondage"
 
+msgid "Delete this Poll?"
+msgstr "Supprimer ce Sondage?"
+
 msgid "is active From: "
 msgstr "est actif Du :"
 

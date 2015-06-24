@@ -668,6 +668,12 @@ msgstr "Ce projet n'est pas activé"
 msgid "view all Questionnaires"
 msgstr "Voir tous les Questionnaires"
 
+msgid "view all Questionnaires & Polls"
+msgstr "Voir tous les Questionnaires & Sondage"
+
+msgid "Tablet"
+msgstr "Tablette"
+
 msgid ""
 " Once you have created Questionnaires, a list of your %(text)s will appear here."
 msgstr "Une fois que vous avez créé des Questionnaires, une liste de vos %(text)s sera affichée ici."
@@ -2187,8 +2193,8 @@ msgstr "Etes-vous sûr de vouloir désactiver ce Sondage ?"
 msgid "Yes, Deactivate"
 msgstr "Oui, désactiver"
 
-msgid "Include your question, reply instructions and answer options. Example: Did you receive the textbook shipment?  Please reply to this SMS with YES or NO. (Don’t use quotation marks.  Poll respondents may think they have to use them)."
-msgstr "Votre SMS doit contenir votre question, les instructions relatives à la réponse et les options de réponse. Exemple : Avez-vous reçu la livraison de manuels ? Veuillez répondre à cet SMS par OUI ou NON. (N’utilisez pas de guillemets. Les répondants peuvent penser qu’ils doivent les utiliser)."
+msgid "Include your question, reply instructions and answer options. Example: Did you receive the textbook shipment?  Please reply to this SMS with YES or NO."
+msgstr "Votre SMS doit contenir votre question, les instructions relatives à la réponse et les options de réponse. Exemple : Avez-vous reçu la livraison de manuels ? Veuillez répondre à cet SMS par OUI ou NON."
 
 msgid "Delete this Poll"
 msgstr "Supprimer ce Sondage"

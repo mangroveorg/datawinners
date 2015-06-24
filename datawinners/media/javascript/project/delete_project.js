@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
     $("#delete_project_block").dialog({
-        title: "Delete this Questionnaire?",
+        title: gettext("Delete this Questionnaire?"),
         modal: true,
         autoOpen: false,
         height: 150,
