@@ -111,7 +111,7 @@ DW.SubmissionAnalysisChartGenerator = function(){
         var $chart_ol = chartView.attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();
 
         if (response.total == 0) {
-            var html = "<span id='no_charts_here'>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html();
+            var html = "<span id='no_charts_here'>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>";
             showNoSubmissionExplanation(chartView, html);
             return;
         } else if ($.isEmptyObject(response.result)){
