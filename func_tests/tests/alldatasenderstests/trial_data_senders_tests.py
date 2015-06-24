@@ -62,7 +62,7 @@ class TestTrialDataSenders(HeadlessRunnerTest):
 
 
     def tearDown(self):
-        teardown_driver(self.driver)
+        # teardown_driver(self.driver)
         try:
             for email in self.emails:
                 dbmanager = DatabaseManager()
