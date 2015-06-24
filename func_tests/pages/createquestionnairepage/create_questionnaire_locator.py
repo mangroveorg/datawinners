@@ -59,14 +59,16 @@ UNIQUE_ID_OPTION = 'unique_id'
 GROUP_OPTION = 'group'
 LINKED_CONTACTS = 'linked'
 OTHERS = 'others'
-active_poll_link = by_id('active_poll_name')
+ACTIVE_POLL_NAME = by_id('active_poll_name')
 poll_info_accordian = by_id('poll_status_info')
 deactivate_link = by_id('deactivate_link')
 activate_link = by_id('activate_link')
-
+POLL_INFORMATION_BOX = by_css(".information_box")
 DEACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/input[@id='deactivate_button']")
 
 ACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/input[@id='activate_button']")
+
+FIRST_CREATED_POLL = by_xpath(".//*[@id='container_content']/div[2]/div[2]/div/table/tbody/tr[22]/td[1]/a")
 NEW_UNIQUE_ID_TEXT = by_css('.newUniqueIdName')
 UNIQUE_ID_CHOICE_BOX = by_css('.uniqueIdType')
 UNIQUE_ID_COMBO_BOX = by_css('.uniqueIdTypeContents')

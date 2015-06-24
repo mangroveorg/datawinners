@@ -78,6 +78,7 @@ class GlobalNavigationPage(Page):
 
         Return add data sender page
          """
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, PROJECT_LINK, True)
         self.driver.find(PROJECT_LINK).click()
         return AllDataPage(self.driver)
 

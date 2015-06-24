@@ -2,14 +2,16 @@ from time import sleep
 from nose.plugins.attrib import attr
 from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import random_number, by_css
-from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS, DATA_SENDER_TAB
+from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS, DATA_SENDER_TAB, FIRST_CREATED_POLL, \
+    ACTIVE_POLL_NAME
 from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
 from tests.projects.questionnairetests.project_questionnaire_data import LANGUAGES, CLINIC_ALL_DS, PT, FR, \
     REP7, REP5, REP6, THIRD_COLUMN, SECOND_ROW, GROUP, THIRD_ROW, MY_POLL_RECIPIENTS, CLINIC_TEST_PROJECT, REP8, REP3, \
     REP1, SIXTH_COLUMN, FIRST_ROW, FOURTH_ROW, SIXTH_ROW, FIFTH_ROW
 
-class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
+
+class TestPollOptions(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
@@ -48,6 +50,7 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
         self.driver.find(POLL_TAB).click()
         self.assertEquals(self.poll_questionnaire_page.get_automatic_reply_status(), "On")
         self.poll_questionnaire_page.change_autoamtic_reply_sms_status()
+        sleep(2)
         self.assertEquals(self.poll_questionnaire_page.get_automatic_reply_status(), "Off")
         self.assertFalse(self.poll_questionnaire_page.change_automatic_reply_sms_language(LANGUAGES[PT]))
 
@@ -102,7 +105,7 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
 
         self.poll_questionnaire_page.select_element(DATA_SENDER_TAB)
         self.poll_questionnaire_page.select_element(by_css('.short_code'))
-        sleep(5)
+        sleep(3)
         self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(REP1, FIRST_ROW, SIXTH_COLUMN))
         self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(REP3, SECOND_ROW, SIXTH_COLUMN))
         self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(REP5, THIRD_ROW, SIXTH_COLUMN))
@@ -120,7 +123,7 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
         self.poll_questionnaire_page.select_element(DATA_SENDER_TAB)
-        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(unique_id, FIRST_ROW, SIXTH_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(unique_id, FOURTH_ROW, SIXTH_COLUMN))
 
     @attr('functional_test')
     def test_should_deactivate_the_poll(self):
@@ -134,12 +137,29 @@ class TestOptionsOfPollQuestionnaire(HeadlessRunnerTest):
     def test_should_activate_the_poll(self):
         self.poll_questionnaire_page.select_broadcast_option()
         self.poll_questionnaire_page.click_create_poll()
-        self.driver.find(POLL_TAB).click()
         self.poll_questionnaire_page.deactivate_poll()
         sleep(2)
+        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'Deactivated')
         self.poll_questionnaire_page.activate_poll()
         sleep(2)
         self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'Active')
+
+    @attr('functional_test')
+    def test_warning_message_should_come_while_activating_a_poll_when_another_poll_is_active(self):
+        poll_title_1 = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
+        self.poll_questionnaire_page.select_broadcast_option()
+        self.poll_questionnaire_page.click_create_poll()
+        self.poll_questionnaire_page.deactivate_poll()
+        self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page().select_poll_questionnaire_option()
+        poll_title_2 = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
+        self.poll_questionnaire_page.select_broadcast_option()
+        self.poll_questionnaire_page.click_create_poll()
+        self.global_navigation.navigate_to_all_data_page()
+        previous_poll = FIRST_CREATED_POLL
+        self.driver.find(previous_poll).click()
+        self.poll_questionnaire_page.activate_poll()
+        self.assertTrue(self.poll_questionnaire_page.is_another_poll_active(poll_title_2))
+        self.driver.find(ACTIVE_POLL_NAME).click()
 
     def create_group_with_one_contact(self):
         all_contacts_page = self.global_navigation.navigate_to_all_data_sender_page()

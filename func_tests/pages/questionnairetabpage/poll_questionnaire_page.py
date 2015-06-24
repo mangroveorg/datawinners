@@ -5,10 +5,11 @@ from selenium.webdriver.support.select import Select
 from framework.utils.common_utils import by_css, by_id, generateId, CommonUtilities, by_xpath, by_name
 from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_DROPDOWN, \
     POLL_VIA_SMS_RD_BUTTON, SMS_TEXTBOX, CREATE_POLL_BUTTON, POLL_TITLE, DATA_SENDER_TAB, POLL_TAB, DATA_TAB_BTN, \
-    POLL_VIA_BROADCAST_RD_BUTTON, active_poll_link, poll_info_accordian, deactivate_link, POLL_STATUS_INFO, \
+    POLL_VIA_BROADCAST_RD_BUTTON, poll_info_accordian, deactivate_link, POLL_STATUS_INFO, \
     AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, AUTOMATIC_REPLY_SECTION, ITALIC_GREY_COMMENT, \
     VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_SMS_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
-    DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS, LANGUAGE_TEXT, ACTIVATE_BTN, activate_link
+    DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS, LANGUAGE_TEXT, ACTIVATE_BTN, activate_link, \
+    ACTIVE_POLL_NAME, POLL_INFORMATION_BOX
 from pages.page import Page
 from tests.projects.questionnairetests.project_questionnaire_data import TYPE, GROUP, CONTACTS_LINKED, DATA_TAB, \
     POLL, POLL_RECIPIENTS, MY_POLL_RECIPIENTS
@@ -36,7 +37,7 @@ class PollQuestionnairePage(Page):
         self.driver.find_drop_down(dropdown).set_selected(recipient_type)
 
     def click_create_poll(self):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT,CREATE_POLL_BUTTON,True)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_POLL_BUTTON, True)
         self.driver.find(CREATE_POLL_BUTTON).click()
 
     def is_poll_created(self, poll_title):
@@ -160,6 +161,12 @@ class PollQuestionnairePage(Page):
     def get_poll_status(self):
         return self.driver.find(by_id("poll_status")).text
 
+    def get_already_active_poll_name(self):
+        return self.driver.find(ACTIVE_POLL_NAME).text
+
+    def is_another_poll_active(self, poll_title):
+        return (self.driver.find(POLL_INFORMATION_BOX) is not None) & (self.driver.find(ACTIVE_POLL_NAME).text == poll_title)
+
     def _configure_given_contacts(self, recipient_name):
         """
         Function to select Group option To whom to send
@@ -171,7 +178,7 @@ class PollQuestionnairePage(Page):
         return self
 
     def select_element(self, element):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, element,True)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, element, True)
         self.driver.find(element).click()
 
     def get_cell_value(self, column, row):
