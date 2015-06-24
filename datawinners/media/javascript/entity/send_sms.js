@@ -194,7 +194,7 @@ function SmsViewModel(){
 
   self.validateSmsText = function(){
 
-    if(smsTextArea.val() == ""){
+    if(smsTextArea.val().trim() == ""){
         self.smsText.setError(gettext("This field is required."));
         return false;
     }
