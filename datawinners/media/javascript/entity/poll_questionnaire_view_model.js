@@ -1,4 +1,4 @@
-    function PollViewModel() {
+function PollViewModel() {
     var self = this;
     self.show_sms = ko.observable(gettext('Save/Create Poll'));
     self.number_of_days = ko.observable();
@@ -57,6 +57,8 @@
 
     self.disableSendPoll = ko.computed(function(){
         if(window.smsViewModel.disableSendSms() ){
+            if(DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && self.show_sms() == 'Save Poll')
+                return false;
             return (self.show_sms() != 'Save Poll' || window.smsViewModel.validate() == 1)
         }
         return false;
@@ -81,7 +83,7 @@
     }
 
     function _send_sms_(project_id) {
-        if (self.show_sms() == gettext('Send Poll')) {
+        if (self.show_sms() == 'Send Poll') {
             window.smsViewModel.sendSms(project_id)
         }
     }
