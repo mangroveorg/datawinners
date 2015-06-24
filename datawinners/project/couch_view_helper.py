@@ -22,6 +22,7 @@ def get_all_projects(dbm, data_sender_id=None):
 
 
 def get_all_form_models(dbm, data_sender_id=None):
+    questionnaires = []
     if data_sender_id:
         rows = dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id,
                                          include_docs=True)
@@ -39,10 +40,8 @@ def get_all_form_models(dbm, data_sender_id=None):
                     subject_docs.remove(duplicate_doc)
             idnr_questionnaires.extend(subject_docs)
         rows.extend(idnr_questionnaires)
-        return rows
-
-    questionnaires = []
-    rows = dbm.load_all_rows_in_view('all_questionnaire')
+    else:
+        rows = dbm.load_all_rows_in_view('all_questionnaire')
     for row in rows:
         if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
             questionnaires.append(row)
