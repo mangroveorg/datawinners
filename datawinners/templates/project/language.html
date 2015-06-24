@@ -15,11 +15,23 @@
             {% else %}
                  <div>
                     <h6 class="title_set_SMS">
-                        {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
-                        <img src="/media/images/help_icon.png" class="help_icon">
-                        <div class="tooltip">
-                           <p style="text-align: justify !important;" > {% trans "tooltip_language_checkbox" %} </p>
-                        </div>
+                        {% if project.is_poll %}
+
+                            {% trans 'Send Automatic SMS Replies for My Poll' %}
+
+                            <img src="/media/images/help_icon.png" class="help_icon">
+                            <div class="tooltip">
+                               <p style="text-align: justify !important;" > {% trans "tooltip_language_checkbox_poll" %} </p>
+                            </div>
+                        {% else %}
+                            {% trans 'Send Automatic SMS Replies for My Questionnaire' %}
+
+                            <img src="/media/images/help_icon.png" class="help_icon">
+                            <div class="tooltip">
+                               <p style="text-align: justify !important;" > {% trans "tooltip_language_checkbox" %} </p>
+                            </div>
+                        {% endif %}
+
                     </h6>
                     <div class="onoffswitch" data-bind="onoff: enable_sms_replies" id="myonoffswitch">
                         <label class="onoffswitch-label" for="myonoffswitch">

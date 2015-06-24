@@ -245,7 +245,7 @@ class DisassociateDataSendersView(DataSenderActionView):
                     projects_name.add(questionnaire.name.capitalize())
                     removed_rep_ids.add(rep_id)
                 if questionnaire.is_poll:
-                    message = _("The Poll Recipient(s) are removed from Questionnaire(s) successfully")
+                    message = _("The Poll Recipient(s) are removed.")
                 else:
                     message = _("The Data Sender(s) are removed from Questionnaire(s) successfully")
 

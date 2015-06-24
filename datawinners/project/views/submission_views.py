@@ -163,6 +163,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "tab": tab,
             "xform": xform,
             'is_pro_sms': get_organization(request).is_pro_sms,
+            "is_poll" : questionnaire.is_poll,
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
@@ -251,7 +252,7 @@ def delete(request, project_id):
     if len(received_times):
         UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=questionnaire.name,
                               detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
-        response = encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
+        response = encode_json({'success_message': ugettext("The selected submissions have been deleted"), 'success': True})
     else:
         response = encode_json({'error_message': ugettext("No records deleted"), 'success': False})
 

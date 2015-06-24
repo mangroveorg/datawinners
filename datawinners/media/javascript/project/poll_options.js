@@ -35,7 +35,7 @@ var PollOptionsViewModel = function() {
     self.number_of_days = ko.observable();
     self.activation = ko.observable();
     self.deactivation = ko.observable();
-    self.send_poll_text = ko.observable("Send Sms to More People");
+    self.send_poll_text = ko.observable("Send SMS to More People");
     self.status = ko.observable();
     self.change_days = ko.observable();
     self.number_of_people = ko.observable();
@@ -70,10 +70,10 @@ var PollOptionsViewModel = function() {
         self.status('Active');
         self.activation('');
         self.deactivation('Deactivate');
-        self.duration('is active From ' + from_date + ' To ' + to_date);
+        self.duration('is active From: ' + from_date + ' To: ' + to_date);
         self.change_days('Change');
         self.number_of_days(get_current_number_of_days())
-        self.active_dates_poll('<b>From</b> '+ from_date + ' <b>To</b> ' + to_date);
+        self.active_dates_poll('<i class="italic_grey"><b>From:</b> '+ from_date + ' <b>&nbsp To: </b>' + to_date +'</i>');
     }
     else {
         $('#send_sms').addClass('link_color disable_link');
@@ -149,8 +149,8 @@ var PollOptionsViewModel = function() {
                 self.status('Active');
                 self.deactivation('Deactivate');
                 self.activation('');
-                self.duration('is active From ' + self.from_date_poll() + ' To ' + self.to_date_poll());
-                self.active_dates_poll('<b>From</b> '  + self.from_date_poll() + ' <b>To</b> ' + self.to_date_poll());
+                self.duration('is active From: ' + self.from_date_poll() + ' To: ' + self.to_date_poll());
+                self.active_dates_poll('<i class="italic_grey"><b>From:</b> '  + self.from_date_poll() + ' <b>&nbsp To: </b> ' + self.to_date_poll()+'</i>');
                 self.change_days('Change');
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box"> Your changes have been saved.</div>').insertBefore($("#poll_options"));
@@ -158,7 +158,8 @@ var PollOptionsViewModel = function() {
                 $('#send_sms').removeClass('link_color disable_link');
             }
             else {
-                $('<div class="information_box">' + responseJson['message'] + '<a class="link_color" href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a></div>').insertBefore($("#poll_success"))
+                var responseMessage =responseJson['message'].replace(responseJson['question_name_active'], '<a class="link_color" href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a>');
+                $('<div class="information_box">' + responseMessage + '</div>').insertBefore($("#poll_success"));
                 $('.message-box').delay(2000).fadeOut();
             }
         });

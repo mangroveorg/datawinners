@@ -78,6 +78,7 @@
             var entity_type = '{{ entity_type }}';
             var render_table_url = '/project/submissions/{{ questionnaire_code }}';
             var project_id = '{{ project.id }}';
+            var is_poll = '{{ is_poll }}';
             var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
             var import_submission_url = "{% url import_submissions 'form_code'%}";
             DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/sublog/?template=help";
@@ -95,7 +96,13 @@
         {{ block.super }}
     {% endblock %}
             {% include "project/export_and_import_options.html" %}
-    {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
+    {% if is_poll %}
+        {% include 'project/partials/_page_header.html' with title="Data Analysis" help_message='place_holder' %}
+    {% else %}
+        {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
+    {% endif %}
+
+
     {% include "flash_message.html" %}
     {% include "project/submission_page_hint.html" %}
     {% include "project/submission_filters.html" %}

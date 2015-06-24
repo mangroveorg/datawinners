@@ -112,7 +112,6 @@ def poll(request, project_id):
         'poll_messages': messages_poll_info_array
     }))
 
-
 def _change_questionnaire_status(questionnaire, active_status):
     questionnaire.active = active_status
     questionnaire.save()
@@ -154,8 +153,9 @@ def activate_poll(request, project_id):
                 _change_questionnaire_status(questionnaire, "active")
                 _change_questionnaire_end_date(questionnaire, end_date)
                 return HttpResponse(json.dumps({'success': True}))
+            message = "To activate the Poll you must first deactivate your current %s. You may only have one active Poll at a time." % question_name_active
             return HttpResponse(
-                json.dumps({'success': False, 'message': "Another poll is already active ",
+                json.dumps({'success': False, 'message': message,
                             'question_id_active': question_id_active,
                             'question_name_active': question_name_active}))
         return HttpResponse(json.dumps({'success': False, 'message': "No Such questionnaire"}))

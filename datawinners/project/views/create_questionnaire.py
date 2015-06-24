@@ -46,7 +46,7 @@ def create_project(request):
         return HttpResponse(json.dumps(response_dict))
 
 
-def validate_questionnaire_name_and_code(questionnaire):
+def validate_questionnaire_name_and_code(questionnaire, org):
     code_has_errors, name_has_errors = False, False
     error_message = {}
     if not questionnaire.is_form_code_unique():
@@ -54,7 +54,10 @@ def validate_questionnaire_name_and_code(questionnaire):
         error_message["code"] = _("Questionnaire with same code already exists.")
     if not questionnaire.is_project_name_unique():
         name_has_errors = True
-        error_message["name"] = _("Questionnaire with same name already exists.")
+        if org.is_pro_sms:
+            error_message["name"] = _("Questionnaire or Polls with same name already exists.")
+        else:
+            error_message["name"] = _("Questionnaire with same name already exists.")
     return code_has_errors, error_message, name_has_errors
 
 
@@ -75,7 +78,9 @@ def _create_project_post_response(request, manager):
             EntityQuestionAlreadyExistsException) as ex:
         return {'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}
 
-    code_has_errors, error_message, name_has_errors = validate_questionnaire_name_and_code(questionnaire)
+    org = get_organization(request)
+
+    code_has_errors, error_message, name_has_errors = validate_questionnaire_name_and_code(questionnaire, org)
 
     if not code_has_errors and not name_has_errors:
         associate_account_users_to_project(manager, questionnaire)

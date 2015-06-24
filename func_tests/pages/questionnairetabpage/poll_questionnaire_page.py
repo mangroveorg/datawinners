@@ -115,7 +115,7 @@ class PollQuestionnairePage(Page):
 
     def is_send_sms_to_more_people_visible(self):
         try:
-            return self.driver.find(SEND_SMS_LINK).text == "Send Sms to More People"
+            return self.driver.find(SEND_SMS_LINK).text == "Send SMS to More People"
         except:
             return False
 
