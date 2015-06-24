@@ -9,7 +9,7 @@ DW.bind_project_links = function () {
 
             $(".delete_project").on("click", function () {
                 var is_poll = $(this).data("is_poll");
-                if (is_poll)
+                if (is_poll == true)
                     $("#delete_poll_block").dialog("open");
                 else
                     $("#delete_project_block").dialog("open");

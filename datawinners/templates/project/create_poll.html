@@ -73,7 +73,7 @@
                         <div class="right_aligned_button">
                             <a href="{{ cancel_link }}" class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
                             <button type="button" class="button_wizard_next create_poll_button" id="save_and_create"
-                              data-bind="click: create_poll, disable: disableSendPoll, css: {'ui-state-disabled': disableSendPoll}, text:show_sms"
+                              data-bind="click: create_poll, disable: disableSendPoll, css: {'ui-state-disabled': disableSendPoll}, text:gettext(show_sms())"
                               ></button>
                         </div>
                         <div class="clear-both"></div>

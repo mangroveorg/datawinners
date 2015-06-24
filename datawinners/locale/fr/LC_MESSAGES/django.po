@@ -1092,6 +1092,9 @@ msgstr "Attention : L'activation du projet va supprimer toutes ses données enre
 msgid "Export all Submissions prior to deleting your Questionnaire."
 msgstr "Veuillez exporter toutes les données avant de supprimer votre Questionnaire."
 
+msgid "Export all Submissions prior to deleting your Poll."
+msgstr "Exportez toutes les Soumisisons avant de supprimer votre Sondage."
+
 msgid "Delete Questionnaire Now"
 msgstr "Supprimez le questionnaire maintenant"
 
