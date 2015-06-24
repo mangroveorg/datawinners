@@ -2175,6 +2175,12 @@ msgstr "Du : "
 msgid "To: "
 msgstr "Au: "
 
+msgid "Poll is"
+msgstr "Le Sondage est"
+
+msgid "Choose this option to create a single question Poll and collect responses through SMS."
+msgstr "Choisissez cette option pour créer un Sondage à une question et collectez des réponses par SMS."
+
 msgid "Are you sure want to deactivate this Poll?"
 msgstr "Etes-vous sûr de vouloir désactiver ce Sondage ?"
 
