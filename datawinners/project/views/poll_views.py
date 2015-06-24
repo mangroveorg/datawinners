@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.sent_message.models import PollInfo
+from django.utils.translation import ugettext as _
 from datawinners.utils import get_organization
 from mangrove.datastore.entity import contact_by_short_code
 from mangrove.form_model.project import Project, get_active_form_model_name_and_id

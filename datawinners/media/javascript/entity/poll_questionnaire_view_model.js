@@ -122,7 +122,9 @@
                     if(responseJson['error_message']['name']){
                         window.questionnaireViewModel.projectName.setError(responseJson['error_message']['name']);}
                     else{
-                        $('<div class="message-error  margin-left-right-null">' + responseJson['error_message'] + '</a></span></div>').insertBefore($("#poll_title"));
+
+                        var responseMessage =responseJson['error_message'].replace(responseJson['question_name_active'], '<a class="link_color" href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'].toUpperCase() + '</a>');
+                        $('<div class="information_box">' + responseMessage + '</div>').insertBefore($("#poll_title"));
                     }
 
                 }
