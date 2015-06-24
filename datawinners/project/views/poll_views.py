@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.common.constant import DEACTIVATE_POLL, ACTIVATE_POLL
 from datawinners.sent_message.models import PollInfo
 from django.utils.translation import ugettext as _
 from datawinners.utils import get_organization
@@ -132,6 +134,8 @@ def deactivate_poll(request, project_id):
         questionnaire = Project.get(manager, project_id)
         if questionnaire:
             _change_questionnaire_status(questionnaire, "deactivated")
+            UserActivityLog().log(request, action=DEACTIVATE_POLL, project=questionnaire.name,
+                                  detail=questionnaire.name)
             return HttpResponse(json.dumps({'success': True}))
         return HttpResponse(json.dumps({'success': False}))
 
@@ -153,6 +157,8 @@ def activate_poll(request, project_id):
             elif not is_active and not is_current_active:
                 _change_questionnaire_status(questionnaire, "active")
                 _change_questionnaire_end_date(questionnaire, end_date)
+                UserActivityLog().log(request, action=ACTIVATE_POLL, project=questionnaire.name,
+                                      detail=questionnaire.name)
                 return HttpResponse(json.dumps({'success': True}))
             message = _("To activate the Poll you must first deactivate your current Poll %s. You may only have one active Poll at a time.") % question_name_active
             return HttpResponse(

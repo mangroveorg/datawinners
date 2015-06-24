@@ -6,6 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.translation import ugettext as _
 import time
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.common.constant import CREATED_POLL
 from datawinners.main.database import get_database_manager
 from datawinners.project import helper
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
@@ -74,6 +76,8 @@ def create_poll_questionnaire(request):
     project_name_unique = _is_project_name_unique(error_message, project_name_unique, questionnaire)
     if not project_name_unique:
         _create_poll(manager, questionnaire, selected_option, question)
+        UserActivityLog().log(request, action=CREATED_POLL, project=questionnaire.name,
+                              detail=questionnaire.name)
         return HttpResponse(
             json.dumps({'success': True, 'project_id': questionnaire.id, 'project_code': questionnaire.form_code}))
     return HttpResponse(json.dumps({'success': False,

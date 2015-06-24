@@ -172,6 +172,7 @@ function SmsViewModel(){
     self.questionnaireItems([]);
     self.disableOtherContacts(false);
     self.groupItems([]);
+    self.myPollRecipientsItems([]);
     self.hideSpecifiedContacts(true);
     self.smsCharacterCount("0" + gettext(" of 160 characters used"));
     self.othersList("");
