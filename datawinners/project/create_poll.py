@@ -81,13 +81,14 @@ def create_poll_questionnaire(request):
                                     'project_name_unique': project_name_unique}))
 
 
-def _check_if_smsc_is_configured(request):
-    organization = get_organization(request)
+def _is_smsc_configured(organization):
     organization_setting = OrganizationFinder().find_organization_setting(organization.tel_number())
     smsc = None
     if organization_setting is not None and organization_setting.outgoing_number is not None:
         smsc = organization_setting.outgoing_number.smsc
-    return smsc
+    if smsc:
+        return True
+    return False
 
 
 @login_required
@@ -96,10 +97,10 @@ def _check_if_smsc_is_configured(request):
 @is_not_expired
 def create_poll(request):
     if request.method == 'POST':
-        smsc = _check_if_smsc_is_configured(request)
-        if smsc is None:
+        organization = get_organization(request)
+        if not _is_smsc_configured(organization):
             return HttpResponse(json.dumps({'success': False,
-                                    'error_message': 'No SMSC configured'}))
+                                            'error_message': _("Your message could not be sent.")}))
 
 
         manager = get_database_manager(request.user)
@@ -108,5 +109,5 @@ def create_poll(request):
             return create_poll_questionnaire(request)
         else:
             return HttpResponse(json.dumps({'success': False,
-                                    'error_message': 'Another poll is active',
-                                    'project_name_unique': project_name}))
+                                            'error_message': 'Another poll is active',
+                                            'project_name_unique': project_name}))

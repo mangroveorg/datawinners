@@ -58,7 +58,7 @@ def _get_poll_sent_messages_info(project_id):
     poll_submissions = PollInfo.objects.filter(questionnaire_id=project_id)
     for poll_submission in poll_submissions:
         messages = {}
-        messages['sent_on'] = poll_submission.sent_on
+        messages['sent_on'] = poll_submission.sent_on[:-3]
         messages['message'] = poll_submission.message
         poll_recipient_map = _construct_poll_recipients(poll_submission)
         messages['poll_recipient_map'] = poll_recipient_map

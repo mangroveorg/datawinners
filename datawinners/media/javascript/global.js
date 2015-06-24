@@ -30,7 +30,6 @@ $(document).ready(function() {
 
     DW.flash_message = function() {
         $('.success-message-box').delay(10000).fadeOut();
-        $('.information_box').delay(10000).fadeOut();
     };
 
     DW.set_focus_on_flash_message = function(){
