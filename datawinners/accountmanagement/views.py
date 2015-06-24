@@ -96,6 +96,7 @@ def settings(request):
         return render_to_response("accountmanagement/account/org_settings.html",
                                   {
                                       'organization_form': organization_form,
+                                      'is_pro_sms': organization.is_pro_sms,
                                       'timezone_information': _get_timezone_information(organization),
                                       'current_lang': get_language()
                                   }, context_instance=RequestContext(request))
@@ -146,11 +147,14 @@ def associate_user_with_existing_project(manager, reporter_id):
 @is_admin
 @is_not_expired
 def new_user(request):
+    org = get_organization(request)
     add_user_success = False
     if request.method == 'GET':
         profile_form = UserProfileForm()
         return render_to_response("accountmanagement/account/add_user.html", {'profile_form': profile_form,
-                                                                              'current_lang': get_language()},
+                                                                              'is_pro_sms': org.is_pro_sms,
+                                                                              'current_lang': get_language(),
+                                                                              },
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -197,7 +201,9 @@ def users(request):
     if request.method == 'GET':
         org_id = request.user.get_profile().org_id
         users = get_all_users_for_organization(org_id)
+        organization = get_organization(request)
         return render_to_response("accountmanagement/account/users_list.html", {'users': users,
+                                                                                'is_pro_sms': organization.is_pro_sms,
                                                                                 'current_lang': get_language()},
                                   context_instance=RequestContext(request))
 
@@ -213,7 +219,7 @@ def edit_user(request):
         form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=dict(title=profile.title, full_name=profile.user.first_name,
                                                                username=profile.user.username,
                                                                mobile_phone=profile.mobile_phone))
-        return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form},
+        return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'is_pro_sms': org.is_pro_sms},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         profile = request.user.get_profile()

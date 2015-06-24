@@ -57,6 +57,7 @@ def show_log(request):
     return render_to_response("activitylog/activitylog.html",
                               {
                                 'form': form,
+                                'is_pro_sms': organization.is_pro_sms,
                                 'log_data': repr(encode_json([log.to_render() for log in log_data]))
                               },
                               context_instance=RequestContext(request))
