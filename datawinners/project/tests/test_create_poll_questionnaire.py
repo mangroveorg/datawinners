@@ -2,54 +2,13 @@ import json
 from unittest import TestCase
 from django.contrib.auth.models import User
 from mock import MagicMock, patch, Mock, PropertyMock
-from datawinners.project.create_poll import create_poll_questionnaire, _construct_questionnaire, _is_project_name_unique
+from datawinners.project.create_poll import _construct_questionnaire, _is_project_name_unique
 from datawinners.project.views.poll_views import _is_active, _is_same_questionnaire
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.project import Project
 
 
 class TestCreatePoll(TestCase):
-
-    def test_should_create_a_poll_questionnaire(self):
-        project_name = 'test_poll'
-        days_active = 3
-        question = "What poll questionnaire?"
-        request = MagicMock()
-
-        request.user = MagicMock(spec=User)
-
-        manager = MagicMock(spec=DatabaseManager)
-
-        questionnaire_code = 'q_code'
-
-        request.POST = {
-            'poll_name': project_name,
-            'active_days': days_active,
-            'question': question,
-            'selected_option': '{"option":"broadcast"}'
-        }
-        selected_option = {"option": "broadcast"}
-
-        questionnaire = MagicMock(spec=Project)
-        questionnaire.id = 'some_id'
-        questionnaire.form_code = "some_code"
-
-        with patch('datawinners.project.create_poll.get_database_manager') as get_database_manager_mock:
-            with patch('datawinners.project.create_poll.helper.generate_questionnaire_code') as generate_questionnaire_code_mock:
-                with patch('datawinners.project.create_poll.helper.Project') as project_mock:
-                    with patch('datawinners.project.create_poll._construct_questionnaire') as _construct_questionnaire_mock:
-                        with patch('datawinners.project.create_poll._is_project_name_unique') as _is_project_name_unique_mock:
-                            with patch('datawinners.project.create_poll._create_poll') as _create_poll_mock:
-                                project_mock.return_value = questionnaire
-                                get_database_manager_mock.return_value = manager
-                                _construct_questionnaire_mock.return_value = manager, questionnaire
-                                generate_questionnaire_code_mock.return_value = questionnaire_code
-                                _is_project_name_unique_mock.return_value = False
-
-                                response = create_poll_questionnaire(request)
-                                self.assertDictEqual(json.loads(response.content), {"project_id": "some_id", "success": True, "project_code": "some_code"})
-
-                                _create_poll_mock.assert_called_with(manager, questionnaire, selected_option, question)
 
     def test_should_construct_questionnaire(self):
         project_name = 'test_poll'
