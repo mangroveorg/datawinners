@@ -104,6 +104,7 @@ var PollOptionsViewModel = function() {
     };
 
     self.deactivate_poll = function () {
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
         $.post(deactivate_poll_url, data).done(function (response) {
             var responseJson = $.parseJSON(response);
             if (responseJson['success']) {
@@ -119,7 +120,7 @@ var PollOptionsViewModel = function() {
                 $('#send_sms').addClass('link_color disable_link');
             }
             else {
-                $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_success"))
+                $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_options"))
                 $('.message-box').delay(2000).fadeOut();
             }
         });
@@ -142,7 +143,7 @@ var PollOptionsViewModel = function() {
         data = {
             'end_date': end_date.getFullYear() + "-" + (end_date.getMonth()+1) + "-" + end_date.getDate() + END_TIME
         };
-
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
         $.post(activate_poll_url, data).done(function (response) {
             var responseJson = $.parseJSON(response);
             if (responseJson['success']) {
@@ -159,7 +160,7 @@ var PollOptionsViewModel = function() {
             }
             else {
                 var responseMessage =responseJson['message'].replace(responseJson['question_name_active'], '<a class="link_color" href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a>');
-                $('<div class="information_box">' + responseMessage + '</div>').insertBefore($("#poll_success"));
+                $('<div class="information_box">' + responseMessage + '</div>').insertBefore($("#poll_options"));
                 $('.message-box').delay(2000).fadeOut();
             }
         });
