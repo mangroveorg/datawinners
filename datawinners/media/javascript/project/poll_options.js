@@ -126,7 +126,7 @@ var PollOptionsViewModel = function() {
         });
 
         self.close_deactivation_popup();
-        window.location.refresh();
+        window.location.reload();
     };
 
     self.show_poll_info = function(){
