@@ -124,6 +124,7 @@ var PollOptionsViewModel = function() {
                 $('.message-box').delay(2000).fadeOut();
             }
         });
+        window.location.refresh();
         self.close_deactivation_popup();
     };
 
