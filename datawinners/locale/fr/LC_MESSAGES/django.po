@@ -2148,8 +2148,8 @@ msgstr "Sauvegardez et créez votre projet."
 msgid "p_tooltip_poll_option"
 msgstr "Par SMS, envoyez une question à un groupe spécifique : <br>\"Avez-vous reçu la livraison de manuels ? Veuillez répondre par OUI ou NON\".  <br><br>Ou diffusez votre question ouverte à la radio et collectez des réponses SMS : <br>\"Veuillez nous envoyer toute information sur des braconnages dans votre zone\""
 
-msgid "To activate the Poll you must first deactivate your current %s. You may only have one active Poll at a time."
-msgstr "Pour activer le Sondage, vous devez d’abord désactiver le Sondage en cours."
+msgid "To activate the Poll you must first deactivate your current Poll %s. You may only have one active Poll at a time."
+msgstr "Pour activer le Sondage  %s, vous devez d’abord désactiver le Sondage en cours."
 
 msgid "Create a New Poll"
 msgstr "Créer un nouveau Sondage"

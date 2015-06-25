@@ -154,7 +154,7 @@ def activate_poll(request, project_id):
                 _change_questionnaire_status(questionnaire, "active")
                 _change_questionnaire_end_date(questionnaire, end_date)
                 return HttpResponse(json.dumps({'success': True}))
-            message = _("To activate the Poll you must first deactivate your current %s. You may only have one active Poll at a time." % question_name_active)
+            message = _("To activate the Poll you must first deactivate your current Poll %s. You may only have one active Poll at a time.") % question_name_active
             return HttpResponse(
                 json.dumps({'success': False, 'message': message,
                             'question_id_active': question_id_active,
