@@ -28,7 +28,7 @@
                 <br>
                 </div>
                 <div data-bind="visible: show_sms() === 'Send Poll'" class="margin_left_25">
-                    <i>{% trans "Include your question, reply instructions and answer options. Example: Did you receive the textbook shipment?  Please reply to this SMS with YES or NO. (Don’t use quotation marks.  Poll respondents may think they have to use them)." %}</i>
+                    <i>{% trans "Include your question, reply instructions and answer options. Example: Did you receive the textbook shipment?  Please reply to this SMS with YES or NO." %}</i>
                     <br>
                     <div data-bind="stopBinding: true" >
                             {% include 'send-sms.html' %}
