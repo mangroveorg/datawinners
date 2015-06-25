@@ -163,6 +163,7 @@ var PollOptionsViewModel = function() {
                 var responseMessage =responseJson['message'].replace(responseJson['question_name_active'], '<a class="link_color" href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a>');
                 $('<div class="information_box">' + responseMessage + '</div>').insertBefore($("#poll_options"));
                 $('.message-box').delay(2000).fadeOut();
+                $('.information_box').delay(10000).fadeOut();
             }
         });
         self.close_activation_popup();
