@@ -99,7 +99,8 @@ class SendSMS(View):
         user_profile = self._get_sender_details(organization_setting)
         if mobile_numbers:
                 self._associate_datasender_to_poll_questionnaire(current_project_id, dbm, short_codes)
-                self._save_sent_message_info(organization.org_id, datetime.datetime.now(), sms_text, contact_dict,
+                current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                self._save_sent_message_info(organization.org_id, current_time, sms_text, contact_dict,
                                      user_profile, current_project_id)
 
     def post(self, request, *args, **kwargs):

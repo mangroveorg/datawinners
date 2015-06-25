@@ -6,14 +6,14 @@ var PollOptionsViewModel = function() {
     var data = {};
 
     var get_current_number_of_days = function(){
-        var from = from_date.split(',')[0].split(' ')[1]
-        var to = to_date.split(',')[0].split(' ')[1]
+        var from = from_date.split(',')[0].split(' ')[1];
+        var to = to_date.split(',')[0].split(' ')[1];
         return (to - from);
     };
 
     self.get_formatted_date = function(date){
         return month_name_map[date.getMonth()] +" " + date.getDate() +", "+ date.getFullYear();
-    }
+    };
 
     var month_name_map = {
         0: gettext('January'),
@@ -72,7 +72,7 @@ var PollOptionsViewModel = function() {
         self.deactivation(gettext('Deactivate'));
         self.duration(gettext('is active From: ') + from_date + gettext(' To: ') + to_date);
         self.change_days(gettext('Change'));
-        self.number_of_days(get_current_number_of_days())
+        self.number_of_days(get_current_number_of_days());
         self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From: ')+'</b> '+ from_date + ' <b>&nbsp'+gettext(' To: ')+'</b>' + to_date +'</i>');
     }
     else {
@@ -81,7 +81,7 @@ var PollOptionsViewModel = function() {
         self.deactivation('');
         self.activation(gettext('Activate'));
         self.duration(gettext('is inactive'));
-        self.number_of_days(1)
+        self.number_of_days(1);
         self.change_days('');
     }
 
