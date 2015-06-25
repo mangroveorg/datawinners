@@ -45,14 +45,16 @@ class SendSMS(View):
         search_parameters = {'void': False, 'search_filters': {'group_names': group_names}}
         return _get_all_contacts_mobile_numbers(dbm, search_parameters)
 
-    def _get_mobile_number_for_contacts(self, dbm, poll_recipients):
-        poll_recipients = ast.literal_eval(poll_recipients)
-        mobile_numbers = []
-        for poll_recipient in poll_recipients:
-            contact = contact_by_short_code(dbm, poll_recipient)
-            mobile_numbers.append(contact.data.get('mobile_number')['value'])
-        return mobile_numbers
-
+    def _get_mobile_number_for_contacts(self, dbm, poll_recipients, recipient_option):
+        if recipient_option == 'poll_recipients':
+            poll_recipients = ast.literal_eval(poll_recipients)
+            mobile_numbers = []
+            for poll_recipient in poll_recipients:
+                contact = contact_by_short_code(dbm, poll_recipient)
+                mobile_numbers.append(contact.data.get('mobile_number')['value'])
+            return mobile_numbers
+        else:
+            return []
 
 
 
@@ -116,8 +118,9 @@ class SendSMS(View):
                                                                                                              request)
         mobile_numbers_for_specific_contacts = self._get_mobile_numbers_for_specific_contacts(dbm, request)
         mobile_numbers_for_ds_linked_to_group = self._get_mobile_numbers_for_groups(dbm, request)
-        mobile_numbers_for_ds = self._get_mobile_number_for_contacts(dbm, request.POST['my_poll_recipients'])
-        mobile_numbers = mobile_numbers_for_ds_linked_to_questionnaire + mobile_numbers_for_ds_linked_to_group + mobile_numbers_for_specific_contacts + mobile_numbers_for_ds
+        mobile_numbers_for_ds = self._get_mobile_number_for_contacts(dbm, request.POST['my_poll_recipients'], request.POST['recipient'] )
+        mobile_numbers = mobile_numbers_for_ds_linked_to_questionnaire + mobile_numbers_for_ds_linked_to_group + \
+                         mobile_numbers_for_specific_contacts + mobile_numbers_for_ds
 
         failed_numbers = []
         try:
