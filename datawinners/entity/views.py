@@ -125,12 +125,14 @@ def all_subject_types(request):
         return render_to_response('entity/all_subject_types.html',
                               {'all_data': subjects_data, 'current_language': translation.get_language(),
                                'subjects_count': subjects_count,
+                               'is_pro_sms': get_organization(request).is_pro_sms,
                                'deleted_subject_error_message': [deleted_subject_error_message],
                               },
                               context_instance=RequestContext(request))
     else:
         return render_to_response('entity/all_subject_types.html',
-                              {'all_data': subjects_data, 'current_language': translation.get_language(),
+                              {'all_data': subjects_data,'is_pro_sms': get_organization(request).is_pro_sms
+                               ,'current_language': translation.get_language(),
                                'subjects_count': subjects_count,
                               },
                               context_instance=RequestContext(request))
@@ -176,6 +178,7 @@ def all_subjects(request, subject_type):
                                'entity_type': subject_type,
                                'questions': form_model.fields,
                                'form_code': form_model.form_code,
+                               'is_pro_sms': get_organization(request).is_pro_sms,
                                'links': {
                                    'create_subject': reverse("create_subject", args=(subject_type,)) + "?web_view=True",
                                    'edit_subject_registration_form': reverse("edit_subject_questionnaire",
@@ -404,6 +407,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
                                           form_model.form_code, get_organization_telephone_number(request),
                                           form_model.fields, is_update=True,
                                           back_link=back_link)
+        form_context.update({'is_pro_sms': get_organization(request).is_pro_sms})
         return render_to_response(web_questionnaire_template,
                                   form_context,
                                   context_instance=RequestContext(request))
@@ -470,6 +474,7 @@ def create_subject(request, entity_type=None):
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
                                           form_model.form_code, get_organization_telephone_number(request),
                                           form_model.fields, web_view=request.GET.get("web_view", False))
+        form_context.update({'is_pro_sms': get_organization(request).is_pro_sms})
 
         return render_to_response(web_questionnaire_template,
                                   form_context,
@@ -571,6 +576,7 @@ def edit_subject_questionnaire(request, entity_type=None):
                                   'questionnaire_code': form_model.form_code,
                                   'language': form_model.activeLanguages[0],
                                   'entity_type': entity_type,
+                                  'is_pro_sms': get_organization(request).is_pro_sms,
                                   'post_url': reverse(save_questionnaire)
                               },
                               context_instance=RequestContext(request))

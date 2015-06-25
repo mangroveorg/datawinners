@@ -21,7 +21,7 @@ from datawinners.common.lang.utils import questionnaire_customized_message_detai
 from datawinners.common.lang.utils import ERROR_MSG_MISMATCHED_SYS_VARIABLE
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from datawinners.main.database import get_database_manager
-from datawinners.utils import get_organization_language
+from datawinners.utils import get_organization_language, get_organization
 
 
 class LanguagesView(TemplateView):
@@ -35,6 +35,7 @@ class LanguagesView(TemplateView):
         languages_list = get_available_project_languages(dbm)
         return self.render_to_response(RequestContext(request, {
             "available_languages": json.dumps(languages_list),
+            'is_pro_sms': get_organization(request).is_pro_sms,
             "current_language": current_language_code,
         }))
 
