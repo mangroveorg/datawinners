@@ -5,6 +5,7 @@ ADDED_USER = 'Added User'
 CHANGED_ACCOUNT_INFO = 'Changed Account Information'
 
 CREATED_QUESTIONNAIRE = 'Created Questionnaire'
+CREATED_POLL = 'Created Poll'
 ACTIVATED_QUESTIONNAIRE = 'Activated Questionnaire'
 EDITED_QUESTIONNAIRE = 'Edited Questionnaire'
 DELETED_QUESTIONNAIRE = 'Deleted Questionnaire'
