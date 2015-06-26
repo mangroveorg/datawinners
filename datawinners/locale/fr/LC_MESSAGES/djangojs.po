@@ -1575,7 +1575,7 @@ msgstr "Supprimer ce Sondage?"
 
 msgid "is active From : "
 msgstr "est actif du  "
-git gui
+
 msgid "To : "
 msgstr " au "
 
