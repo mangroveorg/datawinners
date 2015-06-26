@@ -55,7 +55,7 @@ def validate_questionnaire_name_and_code(questionnaire, org):
     if not questionnaire.is_project_name_unique():
         name_has_errors = True
         if org.is_pro_sms:
-            error_message["name"] = _("Questionnaire or Polls with same name already exists.")
+            error_message["name"] = _("Questionnaire or Poll with same name already exists.")
         else:
             error_message["name"] = _("Questionnaire with same name already exists.")
     return code_has_errors, error_message, name_has_errors

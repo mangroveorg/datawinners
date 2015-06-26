@@ -6022,7 +6022,7 @@ msgid "Take a Tour"
 msgstr "Faire un tour"
 
 msgid "Create Your Questionnaire </br> in 5 minutes"
-msgstr "Créez votre Questionnaire </br> en 5 minutes"
+msgstr "Créer votre Questionnaire </br> en 5 minutes"
 
 msgid "Tips for Successful Data </br> Collection"
 msgstr "Conseils pour une Collecte </br> de Données réussie"
@@ -6037,7 +6037,7 @@ msgid "The Get Started section can be removed when you no longer need it."
 msgstr "La section Démarrer peut être retirée lorsque vous n’en avez plus besoin."
 
 msgid "The Get Started information is always available in our Help Center."
-msgstr "Les informations sur le démarrage sont toujours disponible sur notre Centre d'aide."
+msgstr "Les informations sur le démarrage sont toujours disponibles sur notre Centre d'aide."
 
 msgid "The help is unavailable for a moment!"
 msgstr "L’aide est indisponible pour l’instant !"
