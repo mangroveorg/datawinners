@@ -1514,7 +1514,7 @@ msgid "Once you have created questionnaires, a list of your questionnaires will 
 msgstr "Une fois que vous avez créé des questionnaires, la liste de vos questionnaires apparaitront à cet endroit."
 
 msgid "Once you have created groups, a list of your groups will appear here."
-msgstr "Une fois que vous avez créé des groupe, une liste de vos groupe sera affichée ici."
+msgstr "Une fois que vous avez créé des groupes, une liste de vos groupes sera affichée ici."
 
 msgid "Rename Group"
 msgstr "Renommer le Groupe"
@@ -1573,8 +1573,8 @@ msgstr "Supprimer ce Sondage"
 msgid "Delete this Poll?"
 msgstr "Supprimer ce Sondage?"
 
-msgid "is active From : "
-msgstr "est actif Du : "
+msgid " active From: "
+msgstr " actif Du :"
 
 msgid "' To : "
 msgstr " au :"
@@ -1602,7 +1602,7 @@ msgid "Deactivate Poll?"
 msgstr "Désactiver le Sondage?"
 
 msgid "Activate Poll?"
-msgstr "Acrtiver le Sondage?"
+msgstr "Activer le Sondage?"
 
 msgid "Remove from Poll"
 msgstr "Retirer du Sondage"
@@ -1614,5 +1614,5 @@ msgid " To : "
 msgstr " Au : "
 
 
-msgid "is inactive"
-msgstr "est inactif"
+msgid " inactive"
+msgstr " inactif"

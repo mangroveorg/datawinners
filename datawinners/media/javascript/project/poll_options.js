@@ -12,7 +12,7 @@ var PollOptionsViewModel = function() {
     };
 
     self.get_formatted_date = function(date){
-        return month_name_map[date.getMonth()] +" " + date.getDate() +", "+ date.getFullYear();
+        return  date.getDate() +" " +month_name_map[date.getMonth()] +", "+ date.getFullYear();
     };
 
     var month_name_map = {
@@ -70,7 +70,7 @@ var PollOptionsViewModel = function() {
         self.status(gettext('Active'));
         self.activation('');
         self.deactivation(gettext('Deactivate'));
-        self.duration(gettext('is active From : ') + from_date + gettext(' To : ') + to_date);
+        self.duration(gettext(' active From: ') + from_date + gettext(' To: ') + to_date);
         self.change_days(gettext('Change'));
         self.number_of_days(get_current_number_of_days());
         self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ from_date + ' <b>&nbsp'+gettext(' To : ')+'</b>' + to_date +'</i>');
@@ -80,7 +80,7 @@ var PollOptionsViewModel = function() {
         self.status(gettext('Deactivated'));
         self.deactivation('');
         self.activation(gettext('Activate'));
-        self.duration(gettext('is inactive'));
+        self.duration(gettext(' inactive'));
         self.number_of_days(1);
         self.change_days('');
     }
@@ -111,7 +111,7 @@ var PollOptionsViewModel = function() {
                 self.status(gettext('Deactivated'));
                 self.activation(gettext('Activate'));
                 self.deactivation('');
-                self.duration(gettext('is inactive'));
+                self.duration(gettext(' inactive'));
                 self.active_dates_poll('');
                 self.change_days('');
                 self.number_of_days(1);
@@ -151,7 +151,7 @@ var PollOptionsViewModel = function() {
                 self.status(gettext('Active'));
                 self.deactivation(gettext('Deactivate'));
                 self.activation('');
-                self.duration(gettext('is active From : ') + self.from_date_poll() + gettext(' To : ') + self.to_date_poll());
+                self.duration(gettext(' active From: ') + self.from_date_poll() + gettext(' To: ') + self.to_date_poll());
                 self.active_dates_poll('<i class="italic_grey"><b>From:</b> '  + self.from_date_poll() + ' <b>&nbsp To: </b> ' + self.to_date_poll()+'</i>');
                 self.change_days(gettext('Change'));
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
