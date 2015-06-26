@@ -347,6 +347,7 @@ def edit(request, project_id, survey_response_id, tab=0):
             form_ui_model.update({'error_message': error_message,
                                   "reporter_id": reporter_id,
                                   "is_linked": is_linked,
+                                  "is_pro_sms": get_organization(request).is_pro_sms,
                                   "reporter_name": reporter_name})
         return render_to_response("project/web_questionnaire.html", form_ui_model,
                                   context_instance=RequestContext(request))

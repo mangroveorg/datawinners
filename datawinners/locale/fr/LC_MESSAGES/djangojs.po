@@ -1579,6 +1579,9 @@ msgstr "est actif du  "
 msgid "To : "
 msgstr " au "
 
+msgid "Response"
+msgstr "Réponse"
+
 msgid "Deactivated"
 msgstr "désactivé"
 

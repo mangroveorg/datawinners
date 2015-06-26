@@ -6061,8 +6061,6 @@ msgstr "fr/en"
 msgid "Questionnaire or Poll with same name already exists."
 msgstr "Un Questionnaire ou Sondage portant le même nom existe déjà "
 
-msgid "Response"
-msgstr "Réponse"
 
 msgid "The Poll Recipient(s) are removed."
 msgstr "Les destinataires ont été retirés."

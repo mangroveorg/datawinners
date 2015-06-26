@@ -97,7 +97,7 @@ function PollViewModel() {
                 selected_option = {
                     'option' : 'broadcast'
             };
-                question = "Response"
+                question = gettext("Response")
             }
             else{
                 selected_option = get_questionnaire_or_group_names(selected_option);
