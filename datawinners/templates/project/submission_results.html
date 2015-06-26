@@ -1,7 +1,12 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-{% block page_title %} {% trans "Submission Log" %} {% endblock %}
-
+{% block page_title %}
+    {% if is_poll %}
+        {% trans "Data Analysis" %}
+    {% else %}
+        {% trans "Submission Log" %}
+    {% endif %}
+{% endblock %}
 {% load dw_tabs %}
 {% block navigation %}
     {% activetab "tab_nav" "data" %}
