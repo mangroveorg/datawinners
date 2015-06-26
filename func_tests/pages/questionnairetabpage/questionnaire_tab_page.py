@@ -78,7 +78,7 @@ class QuestionnaireTabPage(Page):
             gen_random = False
         if gen_random:
             project_name += generateId()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, PROJECT_NAME_TB, True)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, PROJECT_NAME_TB)
         self.driver.find_text_box(PROJECT_NAME_TB).enter_text(project_name)
         return project_name
 

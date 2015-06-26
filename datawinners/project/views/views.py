@@ -69,7 +69,8 @@ from datawinners.project import helper
 from datawinners.project.utils import make_project_links
 from datawinners.project.helper import is_project_exist, get_feed_dictionary
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE
+from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE, \
+    DELETED_POLL
 from datawinners.project.views.utils import get_form_context
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
@@ -93,7 +94,8 @@ def delete_project(request, project_id):
     helper.delete_project(questionnaire)
     undelete_link = reverse(undelete_project, args=[project_id])
     messages.info(request, undelete_link)
-    UserActivityLog().log(request, action=DELETED_QUESTIONNAIRE, project=questionnaire.name)
+    action = DELETED_POLL if questionnaire.is_poll else DELETED_QUESTIONNAIRE
+    UserActivityLog().log(request, action=action, project=questionnaire.name)
     return HttpResponseRedirect(reverse(views.index))
 
 @csrf_view_exempt
