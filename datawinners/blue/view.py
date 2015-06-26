@@ -180,7 +180,7 @@ class ProjectUpload(View):
         if not questionnaire_id:
             org = get_organization(request)
             if org.is_pro_sms:
-                message = _("Questionnaire or Polls with same name already exists.Upload was cancelled.")
+                message = _("Questionnaire or Poll with same name already exists.Upload was cancelled.")
             else:
                 message = _("Questionnaire with same name already exists.Upload was cancelled.")
             return HttpResponse(json.dumps(
