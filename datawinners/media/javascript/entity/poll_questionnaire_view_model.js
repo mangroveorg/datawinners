@@ -130,9 +130,6 @@ function PollViewModel() {
                     }
 
                 }
-
-                $('#sms-success').hide();
-                window.smsViewModel.clearSelection();
             });
         }
         else {if(window.questionnaireViewModel.projectName().trim() == ""){

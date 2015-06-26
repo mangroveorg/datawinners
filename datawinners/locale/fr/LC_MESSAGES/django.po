@@ -6051,3 +6051,6 @@ msgstr "Support de DataWinners."
 
 msgid "wp_language"
 msgstr "fr/en"
+
+msgid "Questionnaire or Poll with same name already exists."
+msgstr "Un Questionnaire ou Sondage portant le même nom existe déjà "
