@@ -189,7 +189,7 @@ msgstr ""
 
 #: media/javascript/admin/organization.js:17
 msgid "Deactivate"
-msgstr "Désactive"
+msgstr "Désactiver"
 
 msgid "Delete"
 msgstr "Supprimer"
@@ -1573,14 +1573,14 @@ msgstr "Supprimer ce Sondage"
 msgid "Delete this Poll?"
 msgstr "Supprimer ce Sondage?"
 
-msgid "is active From: "
-msgstr "est actif Du :"
+msgid "is active From : "
+msgstr "est actif Du : "
 
-msgid "' To: "
-msgstr " Au :"
+msgid "' To : "
+msgstr " au :"
 
 msgid "Deactivated"
-msgstr "Désactivé"
+msgstr "désactivé"
 
 msgid "Change"
 msgstr "Changer"
@@ -1607,11 +1607,11 @@ msgstr "Acrtiver le Sondage?"
 msgid "Remove from Poll"
 msgstr "Retirer du Sondage"
 
-msgid "From: "
+msgid "From : "
 msgstr "Du : "
 
-msgid " To: "
-msgstr " Au: "
+msgid " To : "
+msgstr " Au : "
 
 
 msgid "is inactive"

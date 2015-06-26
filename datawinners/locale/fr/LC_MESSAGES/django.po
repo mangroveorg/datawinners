@@ -2178,11 +2178,11 @@ msgstr "Choisissez le nombre de jours durant lequel les gens peuvent répondre a
 msgid "Active for"
 msgstr "Actif pour"
 
-msgid "From: "
+msgid "From : "
 msgstr "Du : "
 
-msgid "To: "
-msgstr "Au: "
+msgid "To : "
+msgstr "Au : "
 
 msgid "Poll is"
 msgstr "Le Sondage est"
@@ -2242,7 +2242,7 @@ msgid "Poll"
 msgstr "Sondage"
 
 msgid "Poll "
-msgstr "Sondage "
+msgstr "Le Sondage "
 
 msgid "Send SMS to More People"
 msgstr "Envoyer le SMS à d’autres personnes"
@@ -6054,3 +6054,6 @@ msgstr "fr/en"
 
 msgid "Questionnaire or Poll with same name already exists."
 msgstr "Un Questionnaire ou Sondage portant le même nom existe déjà "
+
+msgid "Response"
+msgstr "Réponse"
