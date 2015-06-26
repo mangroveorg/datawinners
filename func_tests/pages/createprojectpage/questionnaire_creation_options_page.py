@@ -35,7 +35,7 @@ class QuestionnaireCreationOptionsPage(Page):
         return QuestionnaireTabPage(self.driver)
 
     def select_create_questionnaire_by_template_option(self):
-        create_by_template_option = self.driver.find_element_by_xpath(SELECT_USING_TEMPLATE_ACCORDION)
+        create_by_template_option = self.driver.find(by_css(SELECT_USING_TEMPLATE_ACCORDION))
         create_by_template_option.click()
         sleep(1)
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, AJAX_LOADER_HORIZONTAL)
