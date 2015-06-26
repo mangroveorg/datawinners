@@ -1574,10 +1574,10 @@ msgid "Delete this Poll?"
 msgstr "Supprimer ce Sondage?"
 
 msgid "is active From : "
-msgstr "est actif Du : "
+msgstr "est actif du  "
 
-msgid "' To : "
-msgstr " au :"
+msgid "To : "
+msgstr " au "
 
 msgid "Deactivated"
 msgstr "désactivé"

@@ -70,7 +70,7 @@ var PollOptionsViewModel = function() {
         self.status(gettext('Active'));
         self.activation('');
         self.deactivation(gettext('Deactivate'));
-        self.duration(gettext('is active From : ') + from_date + gettext(' To : ') + to_date);
+        self.duration(gettext('is active From : ') + from_date + gettext('To : ') + to_date);
         self.change_days(gettext('Change'));
         self.number_of_days(get_current_number_of_days());
         self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ from_date + ' <b>&nbsp'+gettext(' To : ')+'</b>' + to_date +'</i>');
@@ -151,7 +151,7 @@ var PollOptionsViewModel = function() {
                 self.status(gettext('Active'));
                 self.deactivation(gettext('Deactivate'));
                 self.activation('');
-                self.duration(gettext('is active From : ') + self.from_date_poll() + gettext(' To : ') + self.to_date_poll());
+                self.duration(gettext('is active From : ') + self.from_date_poll() + gettext('To : ') + self.to_date_poll());
                 self.active_dates_poll('<i class="italic_grey"><b>From:</b> '  + self.from_date_poll() + ' <b>&nbsp To: </b> ' + self.to_date_poll()+'</i>');
                 self.change_days(gettext('Change'));
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
@@ -163,7 +163,7 @@ var PollOptionsViewModel = function() {
                 var responseMessage =responseJson['message'].replace(responseJson['question_name_active'], '<a class="link_color" href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a>');
                 $('<div class="information_box">' + responseMessage + '</div>').insertBefore($("#poll_options"));
                 $('.message-box').delay(2000).fadeOut();
-                $('.information_box').delay(10000).fadeOut();
+                $('.information_box').delay(30000).fadeOut();
             }
         });
         self.close_activation_popup();

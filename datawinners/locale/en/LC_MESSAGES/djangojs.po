@@ -193,6 +193,9 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
+msgid "To : "
+msgstr " To: "
+
 #: media/javascript/admin/organization.js:18
 msgid "Delete"
 msgstr ""

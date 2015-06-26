@@ -64,7 +64,11 @@ def _get_poll_sent_messages_info(project_id):
         messages['message'] = poll_submission.message
         poll_recipient_map = _construct_poll_recipients(poll_submission)
         messages['poll_recipient_map'] = poll_recipient_map
-        messages['sender'] = poll_submission.sender
+        poll_sender = poll_submission.sender.split('(')
+
+        poll_sender_map = {poll_sender[0]: poll_sender[1].strip(")")}
+
+        messages['sender'] = poll_sender_map
         messages_poll_info_array.append(messages)
     return messages_poll_info_array
 
