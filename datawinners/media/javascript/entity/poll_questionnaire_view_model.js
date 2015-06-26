@@ -57,6 +57,8 @@ function PollViewModel() {
 
     self.disableSendPoll = ko.computed(function(){
         if(window.smsViewModel.disableSendSms() ){
+            if(DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && self.show_sms() == 'Save Poll')
+                return false;
             return (self.show_sms() != 'Save Poll' || window.smsViewModel.validate() == 1)
         }
         return false;
