@@ -2137,7 +2137,7 @@ msgid "Short explanation and why we suggest to have a fixed activation period"
 msgstr "Brève explication et pourquoi nous suggérons d'avoir une période d'activation fixe"
 
 msgid "Days"
-msgstr "journées"
+msgstr "jours"
 
 msgid "Write and Edit Your Questions"
 msgstr "Saisissez et éditez vos Questions"
@@ -2149,7 +2149,7 @@ msgid "p_tooltip_poll_option"
 msgstr "Par SMS, envoyez une question à un groupe spécifique : <br>\"Avez-vous reçu la livraison de manuels ? Veuillez répondre par OUI ou NON\".  <br><br>Ou diffusez votre question ouverte à la radio et collectez des réponses SMS : <br>\"Veuillez nous envoyer toute information sur des braconnages dans votre zone\""
 
 msgid "To activate the Poll you must first deactivate your current Poll %s. You may only have one active Poll at a time."
-msgstr "Pour activer le Sondage  %s, vous devez d’abord désactiver le Sondage en cours."
+msgstr "Pour activer ce Sondage, vous devez d’abord désactiver le Sondage en cours %s Vous pouvez avoir uniquement un Sondage actif à la fois."
 
 msgid "Create a New Poll"
 msgstr "Créer un nouveau Sondage"
@@ -2167,7 +2167,7 @@ msgid "Broadcast through other channels (Radio, TV Billboards)"
 msgstr "Diffuser à travers d’autres canaux (radio, TV)"
 
 msgid "Anyone can send an SMS response"
-msgstr "out le monde peut envoyer une réponse SMS"
+msgstr "Tout le monde peut envoyer une réponse SMS"
 
 msgid "How Long Should the Poll be Active?"
 msgstr "Combien de temps le Sondage sera-t-il actif ?"
@@ -2826,6 +2826,9 @@ msgstr "Entrez le numéro d'identification de l'Expéditeur de données. Cliquez
 
 msgid "I want to submit this data on behalf of a registered Data Sender"
 msgstr "Je vous soumettre ces données pour le compte d'un Expéditeur de Données enregistré"
+
+msgid "I am submitting this data on behalf of"
+msgstr "Je soumets ces Données pour le compte de"
 
 msgid "What is associated Data sender type?"
 msgstr "Quel est le type de sujet associé ?"
@@ -4291,6 +4294,9 @@ msgstr "Veuillez noter que les Contacts suivants ne seront pas supprimés car il
 
 msgid "You cannot delete the following Contacts as they are DataWinners users:"
 msgstr "Vous ne pouvez pas supprimer ces Contacts car ils sont des utilisateurs de DataWinners:"
+
+msgid "You cannot delete the following Data Senders as they are DataWinners users:"
+msgstr "Vous ne pouvez pas supprimer ces expéditeurs car ils sont des utilisateurs de DataWinners:"
 
 msgid "Deleted User"
 msgstr "Utilisateur supprimé"
@@ -6057,3 +6063,6 @@ msgstr "Un Questionnaire ou Sondage portant le même nom existe déjà "
 
 msgid "Response"
 msgstr "Réponse"
+
+msgid "The Poll Recipient(s) are removed."
+msgstr "Les destinataires ont été retirés."

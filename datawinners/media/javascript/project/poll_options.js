@@ -12,7 +12,7 @@ var PollOptionsViewModel = function() {
     };
 
     self.get_formatted_date = function(date){
-        return month_name_map[date.getMonth()] +" " + date.getDate() +", "+ date.getFullYear();
+        return  date.getDate() +" " +month_name_map[date.getMonth()] +", "+ date.getFullYear();
     };
 
     var month_name_map = {
@@ -80,7 +80,7 @@ var PollOptionsViewModel = function() {
         self.status(gettext('Deactivated'));
         self.deactivation('');
         self.activation(gettext('Activate'));
-        self.duration(gettext('is inactive'));
+        self.duration(gettext(' inactive'));
         self.number_of_days(1);
         self.change_days('');
     }
@@ -111,7 +111,7 @@ var PollOptionsViewModel = function() {
                 self.status(gettext('Deactivated'));
                 self.activation(gettext('Activate'));
                 self.deactivation('');
-                self.duration(gettext('is inactive'));
+                self.duration(gettext(' inactive'));
                 self.active_dates_poll('');
                 self.change_days('');
                 self.number_of_days(1);
