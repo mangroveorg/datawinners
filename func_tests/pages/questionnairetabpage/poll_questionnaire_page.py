@@ -1,18 +1,14 @@
-from time import sleep
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support.select import Select
-
-from framework.utils.common_utils import by_css, by_id, generateId, CommonUtilities, by_xpath, by_name
+from framework.utils.common_utils import by_css, by_id, generateId, by_xpath
 from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_DROPDOWN, \
     POLL_VIA_SMS_RD_BUTTON, SMS_TEXTBOX, CREATE_POLL_BUTTON, POLL_TITLE, DATA_SENDER_TAB, POLL_TAB, DATA_TAB_BTN, \
     POLL_VIA_BROADCAST_RD_BUTTON, poll_info_accordian, deactivate_link, POLL_STATUS_INFO, \
-    AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, AUTOMATIC_REPLY_SECTION, ITALIC_GREY_COMMENT, \
-    VIEW_EDIT_SEND, POLL_SMS_TABLE, SEND_SMS_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
+    AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, ITALIC_GREY_COMMENT, \
+    POLL_SMS_TABLE, SEND_SMS_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
     DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS, LANGUAGE_TEXT, ACTIVATE_BTN, activate_link, \
-    ACTIVE_POLL_NAME, POLL_INFORMATION_BOX
+    ACTIVE_POLL_NAME, POLL_INFORMATION_BOX, ON_OFF_SWITCH
+from pages.globalnavigationpage.global_navigation_locator import PROJECT_LINK
 from pages.page import Page
-from tests.projects.questionnairetests.project_questionnaire_data import TYPE, GROUP, CONTACTS_LINKED, DATA_TAB, \
-    POLL, POLL_RECIPIENTS, MY_POLL_RECIPIENTS
+from tests.projects.questionnairetests.project_questionnaire_data import POLL, POLL_RECIPIENTS, MY_POLL_RECIPIENTS, DATA_ANALYSIS
 from tests.testsettings import UI_TEST_TIMEOUT
 
 class PollQuestionnairePage(Page):
@@ -39,6 +35,7 @@ class PollQuestionnairePage(Page):
     def click_create_poll(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_POLL_BUTTON, True)
         self.driver.find(CREATE_POLL_BUTTON).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, PROJECT_LINK, True)
 
     def is_poll_created(self, poll_title):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_TITLE, True)
@@ -46,13 +43,13 @@ class PollQuestionnairePage(Page):
         return (self.driver.find(POLL_TITLE).text == poll_title) & self.are_all_tabs_loaded()
 
     def are_all_tabs_loaded(self):
-        data_tab = self.driver.find(DATA_TAB_BTN).text == DATA_TAB
+        data_tab = self.driver.find(DATA_TAB_BTN).text == DATA_ANALYSIS
         data_senders_tab = self.driver.find(DATA_SENDER_TAB).text == POLL_RECIPIENTS
         poll_tab = self.driver.find(POLL_TAB).text == POLL
         return data_tab & data_senders_tab & poll_tab
 
     def does_poll_has_broacast_accordians(self, poll_title):
-        data_tab = self.driver.find(DATA_TAB_BTN).text == DATA_TAB
+        data_tab = self.driver.find(DATA_TAB_BTN).text == DATA_ANALYSIS
         poll_tab = self.driver.find(POLL_TAB).text == POLL
         return (self.driver.find(POLL_TITLE).text == poll_title) & data_tab & poll_tab
 
@@ -60,12 +57,12 @@ class PollQuestionnairePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_STATUS_INFO, True)
         self.driver.find(POLL_STATUS_INFO).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ITALIC_GREY_COMMENT, True)
-        return self.driver.find(ITALIC_GREY_COMMENT).text == VIEW_EDIT_SEND
+        return self.driver.find(ITALIC_GREY_COMMENT).text != ''
 
     def is_automatic_reply_sms_option_present(self):
         self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, LANGUAGE_TEXT, True)
-        return self.driver.find(LANGUAGE_TEXT).text.__eq__(AUTOMATIC_REPLY_SMS_TEXT)
+        return self.driver.find(LANGUAGE_TEXT).text == AUTOMATIC_REPLY_SMS_TEXT
 
     def is_sent_poll_sms_table(self):
         self.select_element(POLL_SMS_ACCORDIAN)
@@ -76,7 +73,7 @@ class PollQuestionnairePage(Page):
         try:
             self.select_element(POLL_TAB)
             self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
-            self.driver.find(ON_SWITCH)
+            self.driver.wait_for_element(UI_TEST_TIMEOUT, ON_SWITCH, True)
             self.driver.find_drop_down(PROJECT_LANGUAGE).set_selected(language)
             self.driver.find_text_box(SAVE_LANG_BTN).click()
             return True
@@ -95,7 +92,8 @@ class PollQuestionnairePage(Page):
     def change_autoamtic_reply_sms_status(self):
         self.select_element(POLL_TAB)
         self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
-        self.driver.find(by_css(".onoffswitch-label")).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, ON_OFF_SWITCH)
+        self.select_element(ON_OFF_SWITCH)
         self.select_element(SAVE_LANG_BTN)
 
     def are_all_three_accordians_present(self):
@@ -165,6 +163,7 @@ class PollQuestionnairePage(Page):
         return self.driver.find(ACTIVE_POLL_NAME).text
 
     def is_another_poll_active(self, poll_title):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTIVE_POLL_NAME, True)
         return (self.driver.find(POLL_INFORMATION_BOX) is not None) & (self.driver.find(ACTIVE_POLL_NAME).text == poll_title)
 
     def _configure_given_contacts(self, recipient_name):
@@ -182,12 +181,13 @@ class PollQuestionnairePage(Page):
         self.driver.find(element).click()
 
     def get_cell_value(self, column, row):
-        return self.driver.find(
-            by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % (row+1, column+1))).text
+        cell = by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % (row+1, column+1))
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, cell, True)
+        return self.driver.find(cell).text
 
     def isRecipientAssociated(self, ds_name, row, column):
         return ds_name == self.get_cell_value(column, row)
 
     def delete_the_poll(self):
         self.select_element(by_css('.delete_project'))
-        self.select_element(by_id('confirm_delete'))
+        self.select_element(by_id('confirm_delete_poll'))

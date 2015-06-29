@@ -33,14 +33,14 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.enter_sms_text()
         self.poll_questionnaire_page.select_receipient(LINKED_CONTACTS, CLINIC_ALL_DS)
         self.poll_questionnaire_page.click_create_poll()
-        self.assertTrue(self.poll_questionnaire_page.change_automatic_reply_sms_language(LANGUAGES[FR]))
+        self.poll_questionnaire_page.change_automatic_reply_sms_language(LANGUAGES[FR])
         self.assertEquals(self.poll_questionnaire_page.is_reply_sms_language_updated(), True)
 
     @attr('functional_test')
     def test_should_change_automatic_reply_sms_language_for_broadcast_poll(self):
         self.poll_questionnaire_page.select_broadcast_option()
         self.poll_questionnaire_page.click_create_poll()
-        self.assertTrue(self.poll_questionnaire_page.change_automatic_reply_sms_language(LANGUAGES[PT]))
+        self.poll_questionnaire_page.change_automatic_reply_sms_language(LANGUAGES[PT])
         self.assertEquals(self.poll_questionnaire_page.is_reply_sms_language_updated(), True)
 
     @attr('functional_test')
@@ -123,7 +123,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
         self.poll_questionnaire_page.select_element(DATA_SENDER_TAB)
-        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(unique_id, FOURTH_ROW, SIXTH_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(unique_id, FIRST_ROW, SIXTH_COLUMN))
 
     @attr('functional_test')
     def test_should_deactivate_the_poll(self):

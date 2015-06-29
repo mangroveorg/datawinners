@@ -9,7 +9,7 @@ from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnaire
 from tests.projects.questionnairetests.project_questionnaire_data import CLINIC_ALL_DS, FIRST_ROW, SIXTH_COLUMN, \
     THIRD_COLUMN, REP6, REP5, REP7, CONTACTS_LINKED, GROUP, SECOND_ROW, THIRD_ROW
 
-class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
+class TestCreatePollQuestionnaire(HeadlessRunnerTest):
 
     def create_group_with_a_contact(self):
         all_contacts_page = self.global_navigation.navigate_to_all_data_sender_page()
@@ -100,6 +100,7 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         poll_title = self.create_Questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_Questionnaire_page.select_broadcast_option()
         self.poll_Questionnaire_page.click_create_poll()
+
         self.assertEquals(self.poll_Questionnaire_page.does_poll_has_broacast_accordians(poll_title), True)
         self.assertEquals(self.poll_Questionnaire_page.are_broadcast_poll_accordians_present(), True)
         self.assertEquals(self.poll_Questionnaire_page.are_all_three_accordians_present(), False)
@@ -126,6 +127,7 @@ class TestCreateBlankPollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.select_receipient(CONTACTS_LINKED, CLINIC_ALL_DS)
         self.poll_Questionnaire_page.click_create_poll()
         self.poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
+
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(REP7, FIRST_ROW, THIRD_COLUMN), True)
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(REP5, FIRST_ROW, THIRD_COLUMN), True)
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(REP6, FIRST_ROW, THIRD_COLUMN), True)

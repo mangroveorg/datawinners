@@ -45,10 +45,11 @@ SEND_BUTTON = by_id("send_button")
 CANCEL_SMS = by_id("cancel-sms")
 PROJECT_LANGUAGE = by_id("project_language")
 ON_SWITCH = by_css(".onoffswitch-checked")
+ON_OFF_SWITCH = by_css(".onoffswitch-label")
 SAVE_LANG_BTN = by_id("save_lang")
 SUCCESS_MSG_BOX = by_css(".success-message-box")
 RECIPIENT_DROPDOWN = by_id("recipient-dropdown")
-AUTOMATIC_REPLY_SMS_TEXT = "Send Automatic SMS Replies for My Questionnaire"
+AUTOMATIC_REPLY_SMS_TEXT = 'Send Automatic SMS Replies for My Poll'
 WORD_OR_PHRASE = 'text'
 LANGUAGE_TEXT = by_css(".title_set_SMS")
 NUMBER_OPTION = 'integer'
@@ -64,9 +65,9 @@ poll_info_accordian = by_id('poll_status_info')
 deactivate_link = by_id('deactivate_link')
 activate_link = by_id('activate_link')
 POLL_INFORMATION_BOX = by_css(".information_box")
-DEACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/input[@id='deactivate_button']")
+DEACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/button[@id='deactivate_button']")
 
-ACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/input[@id='activate_button']")
+ACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/button[@id='activate_button']")
 
 FIRST_CREATED_POLL = by_xpath(".//*[@id='container_content']/div[2]/div[2]/div/table/tbody/tr[22]/td[1]/a")
 NEW_UNIQUE_ID_TEXT = by_css('.newUniqueIdName')
