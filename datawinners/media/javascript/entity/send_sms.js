@@ -82,9 +82,8 @@ function SmsViewModel(){
 
   var myRecipientsDetailsResponseHandler = function(response){
     var myRecipientsItems = [];
-
-    if(response.my_poll_recipients.length == 0){
-        self.myPollRecipientsPlaceHolderText(gettext("Once you have my_poll_recipients, a list of your recipients will appear here."));
+    if(Object.keys(response.my_poll_recipients).length == 0){
+        self.myPollRecipientsPlaceHolderText(gettext("There are no Poll Recipients yet to send a message."));
     }
     else{
        self.myPollRecipientsPlaceHolderText("");
