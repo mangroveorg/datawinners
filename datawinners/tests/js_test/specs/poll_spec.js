@@ -62,7 +62,7 @@ describe("Activate Poll", function() {
         expect(poll_options.status()).toBe('Active');
         expect(poll_options.from_date_poll()).toBe(current_date);
         expect(poll_options.to_date_poll()).toBe(poll_options.get_formatted_date(expected_date));
-        expect(poll_options.duration()).toBe(' active From: '+current_date +' To: '+poll_options.get_formatted_date(expected_date));
+        expect(poll_options.duration()).toBe(' active From : '+ current_date +'To : '+ poll_options.get_formatted_date(expected_date));
         expect(poll_options.activation()).toBe('');
         expect(poll_options.deactivation()).toBe('Deactivate');
         expect(poll_options.number_of_days()).toBe(3);
@@ -96,7 +96,7 @@ describe("Activate Poll", function() {
         expect(poll_options.status()).toBe('Active');
         expect(poll_options.from_date_poll()).toBe(current_date);
         expect(poll_options.to_date_poll()).toBe(poll_options.get_formatted_date(expected_date));
-        expect(poll_options.duration()).toBe(' active From: '+current_date +' To: '+poll_options.get_formatted_date(expected_date));
+        expect(poll_options.duration()).toBe(' active From : '+ current_date +'To : '+poll_options.get_formatted_date(expected_date));
         expect(poll_options.activation()).toBe('');
         expect(poll_options.deactivation()).toBe('Deactivate');
         expect(poll_options.number_of_days()).toBe(5);

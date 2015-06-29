@@ -6,13 +6,11 @@ var PollOptionsViewModel = function() {
     var data = {};
 
     var get_current_number_of_days = function(){
-        var from = from_date.split(',')[0].split(' ')[1];
-        var to = to_date.split(',')[0].split(' ')[1];
-        return (to - from);
+        return (to_date.getDate() - from_date.getDate());
     };
 
     self.get_formatted_date = function(date){
-        return  date.getDate() +" " +month_name_map[date.getMonth()] +", "+ date.getFullYear();
+        return  date.getDate() +" " +month_name_map[date.getMonth()] +" "+ date.getFullYear();
     };
 
     var month_name_map = {
@@ -70,10 +68,10 @@ var PollOptionsViewModel = function() {
         self.status(gettext('Active'));
         self.activation('');
         self.deactivation(gettext('Deactivate'));
-        self.duration(gettext('is active From : ') + from_date + gettext('To : ') + to_date);
+        self.duration(gettext(' active From : ') + self.get_formatted_date(from_date) + gettext('To : ') + self.get_formatted_date(to_date));
         self.change_days(gettext('Change'));
         self.number_of_days(get_current_number_of_days());
-        self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ from_date + ' <b>&nbsp'+gettext(' To : ')+'</b>' + to_date +'</i>');
+        self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ self.get_formatted_date(from_date) + ' <b>&nbsp'+gettext(' To : ')+'</b>' + self.get_formatted_date(to_date) +'</i>');
     }
     else {
         $('#send_sms').addClass('link_color disable_link');
@@ -118,6 +116,7 @@ var PollOptionsViewModel = function() {
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box">'+ gettext('Your changes have been saved.')+'</div>').insertBefore($("#poll_options"))
                 $('#send_sms').addClass('link_color disable_link');
+                 DW.trackEvent('Poll', 'deactivation');
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_options"))
@@ -136,6 +135,7 @@ var PollOptionsViewModel = function() {
                var poll_msg = responseJson['poll_messages'];
                 self.poll_messages(poll_msg);
                 self.show_poll_table(true);
+                DW.trackEvent('Poll', 'Poll Table Info');
            }
        });
     };
@@ -151,13 +151,15 @@ var PollOptionsViewModel = function() {
                 self.status(gettext('Active'));
                 self.deactivation(gettext('Deactivate'));
                 self.activation('');
-                self.duration(gettext('is active From : ') + self.from_date_poll() + gettext('To : ') + self.to_date_poll());
-                self.active_dates_poll('<i class="italic_grey"><b>From:</b> '  + self.from_date_poll() + ' <b>&nbsp To: </b> ' + self.to_date_poll()+'</i>');
+                self.duration(gettext(' active From : ') + self.from_date_poll() + gettext('To : ') + self.to_date_poll());
+                self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ self.from_date_poll() + ' <b>&nbsp'+gettext(' To : ')+'</b>' + self.to_date_poll() +'</i>');
                 self.change_days(gettext('Change'));
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box">' + gettext('Your changes have been saved.') +'</div>').insertBefore($("#poll_options"));
 
                 $('#send_sms').removeClass('link_color disable_link');
+                 DW.trackEvent('Poll', 'Activation');
+
             }
             else {
                 var responseMessage =responseJson['message'].replace(responseJson['question_name_active'], '<a id="active_poll_name" class="link_color" href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a>');

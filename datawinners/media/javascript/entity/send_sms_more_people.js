@@ -25,6 +25,7 @@ $(function(){
     });
 
     $("#send_sms").on('click', function(){
+        DW.trackEvent('Poll', 'send_sms_to_more_people');
         $('#sms-text').val(message_text);
         $("#send-sms-section").dialog('open');
     });

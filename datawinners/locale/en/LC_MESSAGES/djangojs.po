@@ -196,6 +196,9 @@ msgstr ""
 msgid "To : "
 msgstr " To: "
 
+msgid "to : "
+msgstr " to : "
+
 #: media/javascript/admin/organization.js:18
 msgid "Delete"
 msgstr ""

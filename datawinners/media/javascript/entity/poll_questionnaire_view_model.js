@@ -51,7 +51,7 @@ function PollViewModel() {
 
     function get_formatted_date(date) {
         //return month_name_map[date.getMonth()]+" "+ date.getDate() + ", " +date.getFullYear();
-        return date.getDate()+" "+month_name_map[date.getMonth()]+ ", " +date.getFullYear();
+        return date.getDate()+" "+month_name_map[date.getMonth()]+ " " +date.getFullYear();
     }
 
     self.from_date_poll = ko.observable(get_formatted_date(start_date));
@@ -120,6 +120,7 @@ function PollViewModel() {
                     DW.trackEvent('poll-creation-method', 'poll-qns-success');
                     window.location.replace(redirect_url);
                     _send_sms_(responseJson.project_id);
+                     DW.trackEvent('Create Questionnaire', 'Poll');
                 }
                 else{
                     if(responseJson['error_message']['name']){

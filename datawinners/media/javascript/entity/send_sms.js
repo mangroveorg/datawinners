@@ -82,9 +82,8 @@ function SmsViewModel(){
 
   var myRecipientsDetailsResponseHandler = function(response){
     var myRecipientsItems = [];
-
-    if(response.my_poll_recipients.length == 0){
-        self.myPollRecipientsPlaceHolderText(gettext("Once you have my_poll_recipients, a list of your recipients will appear here."));
+    if(Object.keys(response.my_poll_recipients).length == 0){
+        self.myPollRecipientsPlaceHolderText(gettext("There are no Poll Recipients yet to send a message."));
     }
     else{
        self.myPollRecipientsPlaceHolderText("");
@@ -325,6 +324,19 @@ function SmsViewModel(){
           return self.selectedSmsOption();
       }
   }
+    ko.computed(function () {
+        self.selectedSmsOption();
+        self.selectedGroupNames();
+        self.selectedMyPollRecipientsNames();
+        self.selectedQuestionnaireNames();
+        self._resetSuccessMessage();
+        self._resetErrorMessages();
+    })
+
+    $("#sms-text").change(function(){
+        self._resetSuccessMessage();
+        self._resetErrorMessages();
+    });
 
   self.sendSms = function(project_id){
       var project_id_type = typeof project_id;

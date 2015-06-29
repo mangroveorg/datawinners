@@ -864,7 +864,7 @@ msgstr "Le message de rappèl a été enregistré"
 
 #: media/javascript/project/results.js:331
 msgid "Your Submission(s) will be deleted"
-msgstr "Votre/vos Soumission(s) sera/seront supprimée(s)"
+msgstr "Vos Soumissions seront supprimées"
 
 #: media/javascript/project/results.js:345
 msgid "Please select 1 Submission only"
@@ -1573,8 +1573,8 @@ msgstr "Supprimer ce Sondage"
 msgid "Delete this Poll?"
 msgstr "Supprimer ce Sondage?"
 
-msgid "is active From : "
-msgstr "est actif du  "
+msgid " active From : "
+msgstr " actif du  "
 
 msgid "To : "
 msgstr " au "
@@ -1593,6 +1593,9 @@ msgstr "Activer"
 
 msgid "Active"
 msgstr "Actif"
+
+msgid "There are no Poll Recipients yet to send a message."
+msgstr "Il n’y a aucun destinataire vers qui envoyer le message."
 
 msgid "My Poll Recipients"
 msgstr "Les destinataires de mon Sondage"
@@ -1618,4 +1621,4 @@ msgstr " Au : "
 
 
 msgid " inactive"
-msgstr " inactif"
+msgstr " désactivé"

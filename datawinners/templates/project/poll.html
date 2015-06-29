@@ -45,8 +45,8 @@
         var sms_popup_page = "poll_questionnaire";
         var is_open_survey = "{{ project.is_open_survey }}";
         var project = "{{ project }}";
-        var from_date = "{{ from_date }}";
-        var to_date = "{{ to_date }}";
+        var from_date = new Date("{{ from_date.isoformat }}");
+        var to_date = new Date("{{ to_date.isoformat }}");
         var questionnaire_id = "{{ questionnaire_id }}";
         var languages_list = {{ languages_list|safe }};
         var current_project_language = '{{ current_project_language|safe }}';
@@ -60,6 +60,7 @@
         var project_id = '{{ project.id }}';
         var get_poll_info_url = "{{ get_poll_info }}";
         var message_text = "{{ message_text }}";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/createq/?template=help";
     </script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
@@ -143,8 +144,7 @@
 
 
          </div>
-        <div class="position_unset">
-
+        <div class="position_static">
             {% include 'project/language.html' %}
         </div>
             {% if project.is_open_survey %}
