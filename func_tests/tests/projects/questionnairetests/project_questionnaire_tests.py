@@ -356,7 +356,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         #create_questionnaire_page.select_question_link(3)
         #tip_message_element = self.driver.find(by_id('periode_green_message'))
         #self.assertFalse(tip_message_element.is_displayed())
-        create_questionnaire_page.select_question_link(1)
+        # create_questionnaire_page.select_question_link(1)
         self.assertEqual(questions[0], create_questionnaire_page.get_word_type_question())
         create_questionnaire_page.select_question_link(2)
         self.assertEqual(questions[1], create_questionnaire_page.get_number_type_question())
