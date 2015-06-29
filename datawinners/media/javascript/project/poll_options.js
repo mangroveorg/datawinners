@@ -6,9 +6,7 @@ var PollOptionsViewModel = function() {
     var data = {};
 
     var get_current_number_of_days = function(){
-        var from = from_date.split(',')[0].split(' ')[1];
-        var to = to_date.split(',')[0].split(' ')[1];
-        return (to - from);
+        return (to_date.getDate() - from_date.getDate());
     };
 
     self.get_formatted_date = function(date){
@@ -70,10 +68,10 @@ var PollOptionsViewModel = function() {
         self.status(gettext('Active'));
         self.activation('');
         self.deactivation(gettext('Deactivate'));
-        self.duration(gettext('is active from : ') + from_date + gettext('to : ') + to_date);
+        self.duration(gettext('is active From : ') + self.get_formatted_date(from_date) + gettext('To : ') + self.get_formatted_date(to_date));
         self.change_days(gettext('Change'));
         self.number_of_days(get_current_number_of_days());
-        self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ from_date + ' <b>&nbsp'+gettext(' To : ')+'</b>' + to_date +'</i>');
+        self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ self.get_formatted_date(from_date) + ' <b>&nbsp'+gettext(' To : ')+'</b>' + self.get_formatted_date(to_date) +'</i>');
     }
     else {
         $('#send_sms').addClass('link_color disable_link');
