@@ -9,7 +9,7 @@
                 headers: { "X-CSRFToken": $.cookie('csrftoken') },
                 data: {
                     'group_name':selected_group,
-                    'search_query':$(".dataTables_filter input").val()
+                        'search_query':$(".dataTables_filter input").val()
                 }
 
             }).done(function (json_response) {
@@ -25,7 +25,7 @@
                 var children = $("input[value=" + rep_id + "]").closest("tr").children();
                 var mobile_number = $(children[2]).text();
                 var contact_name = $(children[1]).text();
-                var display_text = contact_name == "" ? mobile_number : contact_name
+                var display_text = contact_name == "" ? mobile_number : contact_name;
                 contact_display_list.push(display_text + " ("+ rep_id +")");
                 contact_mobile_numbers.push(mobile_number);
             });

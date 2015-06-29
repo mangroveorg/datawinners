@@ -1,6 +1,7 @@
 from unittest import TestCase
 from mock import MagicMock, Mock, patch
-from datawinners.entity.view.send_sms import SendSMS, _get_all_contacts_details
+from datawinners.entity.view.send_sms import SendSMS, _get_all_contacts_details, _get_contact_details_for_questionnaire, \
+    _get_all_contacts_details_with_mobile_number
 from mangrove.datastore.database import DatabaseManager
 
 
@@ -71,3 +72,20 @@ class TestSMS(TestCase):
             self.assertListEqual(actual_mobile_numbers, ['123456', '98765'])
             self.assertListEqual(actual_contact_display_list, ['ds1 (code1)', '98765 (code2)'])
 
+    def test_should_return_contact_details_with_mobile_number_search_results_excluding_failed_numbers(self):
+        dbm = MagicMock(spec=DatabaseManager)
+        search_parameters = MagicMock()
+        failed_numbers = ['some_number']
+        with patch("datawinners.entity.view.send_sms.get_all_datasenders_search_results") as get_all_datasenders_search_results_mock:
+            result_mock = MagicMock()
+            result_mock.hits = [
+                {'name': "ds1", 'short_code': 'code1', 'mobile_number': 'some_number'},
+                {'name': "", 'short_code': 'code2', 'mobile_number': '98765'}
+            ]
+            get_all_datasenders_search_results_mock.return_value = result_mock
+
+            actual_mobile_numbers, actual_contact_display_list, actual_short_codes = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
+
+            self.assertListEqual(actual_mobile_numbers, ['98765'])
+            self.assertListEqual(actual_contact_display_list, ['98765 (code2)'])
+            self.assertListEqual(actual_short_codes, ['code2'])

@@ -48,7 +48,7 @@
         var existing_groups = $.parseJSON({{ groups|safe }});
         var all_groups_url = "{% url all_groups%}";
         var update_groups_url = "{% url add_or_remove_contact_from_groups %}";
-        var selected_group = 'All Contacts'
+        var selected_group = 'All Contacts';
         var datasender_ajax_url = "{% url all_datasenders_ajax %}";
         var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
         var number_of_projects = {{ projects|length }};
@@ -57,6 +57,8 @@
         var sms_popup_page = "all-contacts";
         var is_pro_sms = "{{ is_pro_sms }}"
         var user_group = "{{ user_group }}";
+        var message_text = "";
+        var is_poll = "";
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/allds/?template=help";
         $(document).ready(function() {
             $("#page_title").addClass("full_width");

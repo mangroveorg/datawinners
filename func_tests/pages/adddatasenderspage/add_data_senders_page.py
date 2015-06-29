@@ -1,8 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from framework.utils.common_utils import generateId
 from pages.page import Page
+import random
 from framework.utils.data_fetcher import *
 from pages.adddatasenderspage.add_data_senders_locator import *
+from tests.allcontactstests.all_contacts_data import VALID_CONTACTS_WITH_WEB_ACCESS
 from tests.alldatasenderstests.add_data_senders_data import *
 from tests.alldatasenderstests.all_data_sender_data import REGISTRATION_SUCCESS_MESSAGE_TEXT
 from tests.testsettings import UI_TEST_TIMEOUT
@@ -47,9 +49,9 @@ class AddDataSenderPage(Page):
         return self
 
     def enter_data_sender_with_mobile_number(self, registration_data, unique_id=None, email=None):
-
-        self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(
-            fetch_(MOBILE_NUMBER, from_(registration_data)))
+        mobile_number = fetch_(MOBILE_NUMBER, from_(registration_data))
+        random_mobile_number = ''.join(random.sample(mobile_number, 9))
+        self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(random_mobile_number)
 
         if email is not None:
             self.driver.find_text_box(EMAIL_TB).enter_text(email)
@@ -129,21 +131,18 @@ class AddDataSenderPage(Page):
     def close_add_datasender_dialog(self):
         self.driver.find(CANCEL).click()
 
+    def create_contact(self, unique_id):
+        # self.driver = self.driver.navigate_to_add_a_data_sender_page()
+        self.enter_data_sender_with_mobile_number(VALID_CONTACTS_WITH_WEB_ACCESS,
+                                                                   unique_id=unique_id)
+        self.get_rep_id_from_success_message(
+            self.get_success_message()) if id is None else id
+        self.close_add_datasender_dialog()
+        # self.driver.search_with(self.unique_id)
+        # self.assertEquals(self.driver.get_cell_value(1, 7), self.unique_id)
+
 class AddContactPage(AddDataSenderPage):
 
     def __init__(self, driver):
         AddDataSenderPage.__init__(self, driver)
 
-    # def enter_data_sender_with_mobile_number(self, registration_data, unique_id=None, email=None):
-    #
-    #     self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(
-    #         fetch_(MOBILE_NUMBER, from_(registration_data)))
-    #
-    #     if email is not None:
-    #         self.driver.find_text_box(EMAIL_TB).enter_text(email)
-    #
-    #     if unique_id is not None:
-    #         self.set_unique_id(unique_id)
-    #     self.driver.find(REGISTER_BTN).click()
-    #     self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css("span.loading"))
-    #     return self

@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from _collections import defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import logging
 
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
@@ -9,6 +9,8 @@ from datawinners.scheduler.smsclient import SMSClient
 from datawinners.main.database import get_db_manager
 from dateutil.relativedelta import relativedelta
 from datawinners.accountmanagement.utils import RELATIVE_DELTA_BY_EMAIL_TYPE
+from datawinners.utils import get_database_manager_for_org
+from mangrove.datastore.documents import ProjectDocument
 from mangrove.form_model.project import Project
 from django.conf import settings
 
@@ -24,7 +26,7 @@ def send_reminders():
     send_reminders_scheduled_on(date(now.year, now.month, now.day), SMSClient())
 
 
-def _get_active_paid_organization():
+def _get_active_paid_organizations():
     return Organization.objects.filter(status='Activated', account_type='Pro SMS')
 
 
@@ -36,7 +38,7 @@ def send_reminders_scheduled_on(on_date, sms_client):
 
     try:
         logger.info("Sending reminders for date:- %s" % on_date)
-        paid_organization = _get_active_paid_organization()
+        paid_organization = _get_active_paid_organizations()
         for org in paid_organization:
             try:
                 logger.info("Organization %s" % org.name)
@@ -126,9 +128,32 @@ def send_time_based_reminder_email_by_account_status(date_delta, email_type,
     for organization in organizations:
         if organization.active_date != organization.status_changed_datetime and not date_delta[1]: continue
         organization.send_mail_to_organization_creator(email_type)
-    
+
+
+def deactivate_poll_questionnaire():
+    now = datetime.now()
+    try:
+        logger.info("Deactivating polls for date :- %s" % now)
+        paid_organizations = _get_active_paid_organizations()
+        for org in paid_organizations:
+            dbm = get_database_manager_for_org(org)
+            projects = dbm.load_all_rows_in_view("all_projects")
+            for project_row in projects:
+                project_doc = ProjectDocument.wrap(project_row.get('value'))
+                project = Project.new_from_doc(dbm, project_doc)
+                if project.end_date:
+                    if project.end_date.date() <= now.date():
+                        project.active = "deactivated"
+                        project.save()
+    except Exception:
+            logger.exception("Exception while deactivating poll for this project")
+
+
+
+
 if __name__ == "__main__":
     #send_reminders_scheduled_on(date(2011, 10, 20), SMSClient())
+    deactivate_poll_questionnaire()
     send_time_based_reminder_email()
     send_reminders()
 

@@ -124,7 +124,7 @@ span .error_arrow,div.error_arrow, label.error_arrow{
 .message-box, div.message-box{
         background:#fdd3d2 url(/media/images/error_alert.png) no-repeat 10px 3px;
         color: black !important;
-        margin:10px;
+        margin:10px 0;
         padding:7px 10px 7px 40px;
         border:1px solid red;
         label{
@@ -136,7 +136,7 @@ span .error_arrow,div.error_arrow, label.error_arrow{
 .success-message-box,div.success-message-box, .success-box{
         background:#E7FED5 url("/media/images/right_icons.png") no-repeat scroll 4px -29px;
         color: black !important;
-        margin:10px;
+        margin: 10px 0px;
         padding:7px 10px 7px 50px;
         border:1px solid #2a8634;
         label{
@@ -538,7 +538,7 @@ input [type=text]{
 }
 
 /*Delete the project block*/
-#delete_project_block{
+#delete_project_block, #delete_poll_block{
     height:110px ! important;
     width:auto ! important;
     .cancel_link{
@@ -759,7 +759,7 @@ a.dialog-anchor {
 }
 .ui-widget-content {
   a {
-    color: #0070AC ;
+    color: #0070AC;
     font-size: 12px;
   }
   a.size_1_em {
@@ -793,4 +793,14 @@ span.selected_list_item_arrow {
 
 .visible {
     visibility: visible !important;
+}
+
+.date_text {
+  color: #666666;
+  font-style: italic;
+  font-weight: bold;
+  white-space: pre;
+}
+.link_color {
+  color: $link_color !important;
 }

@@ -17,6 +17,7 @@ from datawinners.project.wizard_view import get_preview_and_instruction_links, c
 from datawinners.utils import get_organization
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException
+from mangrove.form_model.project import get_active_form_model_name_and_id
 
 
 @login_required
@@ -25,24 +26,27 @@ from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException
 @is_not_expired
 def create_project(request):
     manager = get_database_manager(request.user)
+    org = get_organization(request)
+    is_active, project_active_id, project_active_name = get_active_form_model_name_and_id(manager)
     if request.method == 'GET':
         cancel_link = reverse('dashboard') if request.GET.get('prev', None) == 'dash' else reverse('alldata_index')
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
+                                   'is_pro_sms': org.is_pro_sms,
                                    'active_language': request.LANGUAGE_CODE,
                                    'post_url': reverse(create_project),
                                    'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in
                                                                   get_unique_id_types(manager)]),
-                                   'cancel_link': cancel_link}, context_instance=RequestContext(request))
+                                   'cancel_link': cancel_link, 'is_active': is_active, 'project_active_id': project_active_id, 'project_active_name': project_active_name}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         response_dict = _create_project_post_response(request, manager)
         return HttpResponse(json.dumps(response_dict))
 
 
-def _validate_questionnaire_name_and_code(questionnaire):
+def validate_questionnaire_name_and_code(questionnaire, org):
     code_has_errors, name_has_errors = False, False
     error_message = {}
     if not questionnaire.is_form_code_unique():
@@ -50,7 +54,10 @@ def _validate_questionnaire_name_and_code(questionnaire):
         error_message["code"] = _("Questionnaire with same code already exists.")
     if not questionnaire.is_project_name_unique():
         name_has_errors = True
-        error_message["name"] = _("Questionnaire with same name already exists.")
+        if org.is_pro_sms:
+            error_message["name"] = _("Questionnaire or Poll with same name already exists.")
+        else:
+            error_message["name"] = _("Questionnaire with same name already exists.")
     return code_has_errors, error_message, name_has_errors
 
 
@@ -71,7 +78,9 @@ def _create_project_post_response(request, manager):
             EntityQuestionAlreadyExistsException) as ex:
         return {'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}
 
-    code_has_errors, error_message, name_has_errors = _validate_questionnaire_name_and_code(questionnaire)
+    org = get_organization(request)
+
+    code_has_errors, error_message, name_has_errors = validate_questionnaire_name_and_code(questionnaire, org)
 
     if not code_has_errors and not name_has_errors:
         associate_account_users_to_project(manager, questionnaire)

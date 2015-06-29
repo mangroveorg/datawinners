@@ -418,7 +418,7 @@ span.tooltip {
 }
 
 #cancel_project_block, #activate_project_block, #questionnaire_code_change,
-#subject_warning_message, #delete_project_block, #all_project_block, #new_reminder,
+#subject_warning_message, #delete_project_block, #delete_poll_block, #all_project_block, #new_reminder,
 #web_user_block, #user_should_agree_terms_block, #delete_question, #edit_question,
 #delete_entity_block, #delete_ds_block,
 #delete_all_ds_are_users_warning_dialog,
@@ -581,6 +581,10 @@ ul.bulleted li {
   width: 100% !important;
 }
 
+.auto_width {
+  width: auto !important;
+}
+
 .grey {
   color: #888
 }
@@ -650,6 +654,16 @@ div.border_top_bottom{
   padding-right: 10px !important;
 }
 
+.padding_bottom_10 {
+  padding-bottom: 10px !important;
+}
+
+.padding_left_30 {
+  padding-left: 30px !important;
+}
+.border_bottom_grey {
+  border-bottom: 1px solid #CCCCCC !important;
+}
 .left_null{
   left: 0px !important;
 }
@@ -722,6 +736,12 @@ div.border_top_bottom{
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
+.capitalize{
+  text-transform: capitalize;
+}
+
+.margin_left_700 {
+  margin-left: 700px !important; }
 
 #div_iframe{
   background-color: #ffffff;
@@ -772,4 +792,10 @@ div.border_top_bottom{
   margin-right: 10px;
 }
 
+.overflow_visible{
+  overflow: visible !important;
+}
 
+.position_static{
+  position: static!important;
+}

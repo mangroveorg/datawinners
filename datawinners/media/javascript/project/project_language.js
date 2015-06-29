@@ -49,6 +49,7 @@ function ProjectLanguageViewModel(){
                     callback();
                   else
                     window.location.reload();
+
               }
               else{
                 flash_message("#flash-message-section", "Save Failed!", false);
@@ -56,7 +57,9 @@ function ProjectLanguageViewModel(){
               }
           },
           dataType: 'json'
+
       });
+
   };
 
 }

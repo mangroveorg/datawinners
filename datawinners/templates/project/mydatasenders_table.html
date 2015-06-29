@@ -9,13 +9,29 @@
     <script>
         var datasender_ajax_url = "{{ project_links.my_datasenders_ajax_link}}";
         var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
-
     $(function(){
         function col(header_class_name){
             return $('#datasender_table th.' + header_class_name).index('#datasender_table th');
         }
         var action_handler = new DW.DataSenderActionHandler();
         var number_of_projects = {{ projects|length }};
+        var is_poll = "{{ project.is_poll }}";
+        var action_items_array = [
+                {"label":"Edit", handler:action_handler["mydsedit"], "allow_selection": "single"},
+                {"label": "Delete", handler:action_handler["delete"], "allow_selection": "multiple"}
+        ];
+        if (is_poll == 'True'){
+            action_items_array.push(
+                    {"label":"Remove from Poll", handler:action_handler["remove_from_project"], "allow_selection": "multiple"})
+        }
+        else {
+            action_items_array.push(
+                    {"label":"Remove from Questionnaire", handler:action_handler["remove_from_project"], "allow_selection": "multiple"},
+                    {"label":"Give Web Submission Access", handler:action_handler["makewebuser"], "allow_selection": "multiple"})
+         
+        }
+
+
         $("#datasender_table").dwTable({
                 "concept": "Data Sender",
                 "sAjaxSource": datasender_ajax_url,
@@ -25,12 +41,7 @@
                     "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
                 },
                 "aaSorting": [ [ col("name"), "asc"] ] ,
-                "actionItems" : [
-                    {"label":"Edit", handler:action_handler["mydsedit"], "allow_selection": "single"},
-                    {"label":"Remove from Questionnaire", handler:action_handler["remove_from_project"], "allow_selection": "multiple"},
-                    {"label":"Give Web Submission Access", handler:action_handler["makewebuser"], "allow_selection": "multiple"},
-                    {"label": "Delete", handler:action_handler["delete"], "allow_selection": "multiple"}
-                ],
+                "actionItems" : action_items_array,
                 "aoColumnDefs":[{"bSortable": false, "aTargets":[col("devices")]}]
           });
      });

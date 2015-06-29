@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
 from mock import Mock, patch, PropertyMock, MagicMock
 from django.core import mail
+from datawinners.entity.view.send_sms import get_contact_details
 from datawinners.entity.view.unique_id import _subject_short_codes_to_delete
 
 from datawinners.entity.views import initialize_values, _set_contacts_email_address, create_multiple_web_users, \
@@ -336,3 +337,68 @@ class TestWebUserAccess(TestCase):
                     self.assertFalse(set_email_for_contact_mock.called)
                     create_web_users_mock.assert_called_with('org_id', expected_contact_id_map, 'en')
 
+    def test_should_get_contact_details_when_questionnaire_name_are_given(self):
+        dbm = MagicMock(spec=DatabaseManager)
+        request = MagicMock()
+        request.POST = {'recipient': 'linked', 'questionnaire_names': 'question1_name'}
+        failed_numbers = ['some_number']
+
+        contact_display_list = [{'contact_short_code': 'contact_name'}]
+        mobile_numbers = ['some_number']
+        short_codes = ['contact_short_code']
+
+        with patch('datawinners.entity.view.send_sms._get_contact_details_for_questionnaire') as _get_contact_details_for_questionnaire_mock:
+            _get_contact_details_for_questionnaire_mock.return_value =contact_display_list, mobile_numbers, short_codes
+            mobile_numbers, contact_display_list, short_code = get_contact_details(dbm, request, failed_numbers)
+
+            expected_contact_display_list = [{'contact_short_code': 'contact_name'}]
+            expected_mobile_numbers = ['some_number']
+            expected_short_code = ['contact_short_code']
+
+            self.assertEquals(contact_display_list, expected_contact_display_list)
+            self.assertListEqual(mobile_numbers, expected_mobile_numbers)
+            self.assertListEqual(short_codes, expected_short_code)
+
+    def test_should_get_contact_details_when_group_name_are_given(self):
+        dbm = MagicMock(spec=DatabaseManager)
+        request = MagicMock()
+        request.POST = {'recipient': 'group'}
+        failed_numbers = ['some_number']
+
+        contact_display_list = [{'contact_short_code': 'contact_name'}]
+        mobile_numbers = ['some_number']
+        short_codes = ['contact_short_code']
+        with patch('datawinners.entity.view.send_sms._get_contact_details_for_group_names') as _get_contact_details_for_group_names_mock:
+            _get_contact_details_for_group_names_mock.return_value =contact_display_list, mobile_numbers, short_codes
+            mobile_numbers, contact_display_list, short_codes = get_contact_details(dbm, request, failed_numbers)
+
+            expected_contact_display_list = [{'contact_short_code': 'contact_name'}]
+            expected_mobile_numbers = ['some_number']
+            expected_short_codes = ['contact_short_code']
+
+            self.assertEquals(contact_display_list, expected_contact_display_list)
+            self.assertListEqual(mobile_numbers, expected_mobile_numbers)
+            self.assertListEqual(expected_short_codes, short_codes)
+
+
+    def test_should_get_contact_details_when_recipients_name_are_given(self):
+        dbm = MagicMock(spec=DatabaseManager)
+        request = MagicMock()
+        request.POST = {'recipient': 'poll_recipients', 'my_poll_recipients': ['contact_short_code']}
+        failed_numbers = ['some_number']
+
+        contact_display_list = [{'contact_short_code': 'contact_name'}]
+        mobile_numbers = ['some_number']
+        short_codes = ['contact_short_code']
+
+        with patch('datawinners.entity.view.send_sms.get_name_short_code_mobile_numbers_for_contacts') as get_name_short_code_mobile_numbers_for_contacts_mock:
+            get_name_short_code_mobile_numbers_for_contacts_mock.return_value =mobile_numbers, contact_display_list, short_codes
+            mobile_numbers, contact_display_list, short_codes = get_contact_details(dbm, request, failed_numbers)
+
+            expected_contact_display_list = [{'contact_short_code': 'contact_name'}]
+            expected_mobile_numbers = ['some_number']
+            expected_short_codes = ['contact_short_code']
+
+            self.assertEquals(contact_display_list, expected_contact_display_list)
+            self.assertListEqual(mobile_numbers, expected_mobile_numbers)
+            self.assertListEqual(short_codes, expected_short_codes)

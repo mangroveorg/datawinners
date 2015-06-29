@@ -1,7 +1,12 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-{% block page_title %} {% trans "Submission Log" %} {% endblock %}
-
+{% block page_title %}
+    {% if is_poll %}
+        {% trans "Data Analysis" %}
+    {% else %}
+        {% trans "Submission Log" %}
+    {% endif %}
+{% endblock %}
 {% load dw_tabs %}
 {% block navigation %}
     {% activetab "tab_nav" "data" %}
@@ -78,6 +83,7 @@
             var entity_type = '{{ entity_type }}';
             var render_table_url = '/project/submissions/{{ questionnaire_code }}';
             var project_id = '{{ project.id }}';
+            var is_poll = '{{ is_poll }}';
             var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
             var import_submission_url = "{% url import_submissions 'form_code'%}";
             DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/sublog/?template=help";
@@ -95,20 +101,35 @@
         {{ block.super }}
     {% endblock %}
             {% include "project/export_and_import_options.html" %}
-    {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
+    {% if is_poll %}
+        {% include 'project/partials/_page_header.html' with title="Data Analysis" help_message='place_holder' %}
+    {% else %}
+        {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
+    {% endif %}
+
+
     {% include "flash_message.html" %}
     {% include "project/submission_page_hint.html" %}
     {% include "project/submission_filters.html" %}
     <div id="submission_logs" class="grid_23 alpha margin_top_20">
         <div id="tabs" class="ui-tabs ui-widget ui-widget-content">
             <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header">
-                <li class="ui-state-default"><a
-                        href="#tab_template">{% trans 'All' %}</a><a class="tab-separator"></a></li>
-                <li class="ui-state-default"><a href="#tab_template" class="tab-middle">{% trans 'Success' %}</a><a
-                        class="tab-separator"></a></li>
-                <li class="ui-state-default"><a href="#tab_template">{% trans 'Errors' %}</a></li>
-                <li style="float:right" class="ui-state-default"><a
-                        href="#tab_template">{% trans 'Deleted Submissions' %}</a></li>
+                {% if not project.is_poll %}
+                    <li class="ui-state-default"><a
+                            href="#tab_template">{% trans 'All' %}</a><a class="tab-separator"></a></li>
+                    <li class="ui-state-default"><a href="#tab_template" class="tab-middle">{% trans 'Success' %}</a><a
+                            class="tab-separator"></a></li>
+                    <li class="ui-state-default"><a href="#tab_template">{% trans 'Errors' %}</a></li>
+                    <li style="float:right" class="ui-state-default"><a
+                            href="#tab_template">{% trans 'Deleted Submissions' %}</a></li>
+                {% else %}
+                    <li class="ui-state-default"><a
+                            href="#tab_template">{% trans 'All' %}</a><a class="tab-separator"></a></li>
+                    <li></li>
+                    <li></li>
+                    <li class="ui-state-default"><a
+                            href="#tab_template">{% trans 'Deleted Submissions' %}</a></li>
+                {% endif %}
             </ul>
             <div id="tab_template" style="padding: 0px;" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
                 {% include 'project/log_table.html' %}

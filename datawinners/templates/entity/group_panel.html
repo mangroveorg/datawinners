@@ -4,7 +4,7 @@
         <li class="contact_group" data-bind="click: $root.changeSelectedGroup, css:{selected: group == $root.selectedGroup()}">
             <!-- ko if: group.isEditable -->
 
-            <div class="contact_group_name"><b class="padding_left_10 break_word" data-bind="text: $data.name"></b></div>
+            <div class="contact_group_name"><b class="padding_left_10 " style="word-wrap: break-word;" data-bind="text: $data.name"></b></div>
             <div class="group_actions" data-bind="css:{visible: group == $root.selectedGroup()}">
 
                 <span>
@@ -35,10 +35,9 @@
         <a class="add_link" data-bind="click:open" href="javascript:void(0);">{% trans "Add a Group" %}</a>
     </div>
     <div class="add_group_dialog" data-bind="dialog: {autoOpen: false, width: 475, height: 190,
-                                                                title:'Add a Group', dialogClass:'no-close'},
-                                                       dialogVisible: isOpen,
-                                                       open: open,
-                                                       dialogContent:addGroupDialogContent">
+                                                        title:'Add a Group', dialogClass:'no-close'},
+                                                        dialogVisible: isOpen, open: open,
+                                                        dialogContent:addGroupDialogContent">
     </div>
     <div id="add_group_dialog_content" class="none">
         <div>{% trans 'Name' %}</div>

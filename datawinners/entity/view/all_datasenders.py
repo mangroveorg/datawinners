@@ -232,7 +232,7 @@ class DisassociateDataSendersView(DataSenderActionView):
         projects_name = Set()
         removed_rep_ids = Set()
         selected_rep_ids = data_sender_short_codes(request, manager)
-
+        message = ""
         for questionnaire in questionnaires:
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
             if questionnaire.is_void():
@@ -244,14 +244,19 @@ class DisassociateDataSendersView(DataSenderActionView):
 
                     projects_name.add(questionnaire.name.capitalize())
                     removed_rep_ids.add(rep_id)
+                if questionnaire.is_poll:
+                    message = _("The Poll Recipient(s) are removed.")
+                else:
+                    message = _("The Data Sender(s) are removed from Questionnaire(s) successfully")
 
         if len(removed_rep_ids):
             UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_QUESTIONNAIRES,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(removed_rep_ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
-        return HttpResponse(
-            json.dumps({"success": True, "message": _("The Data Sender(s) are removed from Questionnaire(s) successfully")}))
+
+
+        return HttpResponse(json.dumps({"success": True, "message": message}))
 
 
 @csrf_view_exempt

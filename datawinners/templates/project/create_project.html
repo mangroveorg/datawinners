@@ -2,9 +2,8 @@
 {% load i18n %}
 {% block page_title %} {% trans "Create Questionnaire" %}{% endblock %}
 {% block section_title %}
-    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Create a New Questionnaire" %}
-        {% include 'need_help.html' %}
-    </h2>
+    {% include 'need_help.html' %}
+    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Collect Data" %}</h2>
 {% endblock %}
 
 {% load dw_tabs %}
@@ -17,6 +16,10 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
+        var group_ds_count_url = "{% url group_ds_count %}";
+        var registered_ds_count_url = "{% url registered_ds_count %}";
+        var send_sms_url = "{% url send-sms%}";
+        var sms_popup_page = "create_questionnaire";
         var sms_preview_link = "{{ preview_links.sms_preview }}";
         var questionnaire_code = '{{ questionnaire_code}}';
         var web_preview_link = "{{ preview_links.web_preview }}";
@@ -26,6 +29,14 @@
         var existing_questionnaires_url = "{% url existing_questionnaires %}";
         var uniqueIdTypes = {{ unique_id_types|safe }};
         var active_language = "{{ active_language }}";
+        var create_poll_url = "{% url create_poll %}";
+        var is_active = '{{ is_active }}';
+        var is_pro_sms = "{{ is_pro_sms }}";
+        var project_active_name = "{{ project_active_name }}";
+        var project_active_id = "{{ project_active_id }}";
+        var is_poll ='{{ project.is_poll }}';
+        var project_id = '{{ project.id }}';
+        var message_text = "";
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/createq/?template=help";
     </script>
 
@@ -33,6 +44,8 @@
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
 
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/poll_questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/project_questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_fetcher.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_creation_options_view_model.js"></script>
@@ -59,9 +72,11 @@
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet"/>
+    <link href="/media/css/scss/send-sms.css" rel="stylesheet" />
+    <link href="/media/css/scss/poll_info.css" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
     {% include 'project/questionnaire_creation_options.html' %}
-    {% include 'project/quesitionnaire_builder.html' %}
+    {% include 'project/questionnaire_builder.html' %}
 {% endblock %}

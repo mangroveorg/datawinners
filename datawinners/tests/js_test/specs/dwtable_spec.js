@@ -10,7 +10,7 @@ describe("dwtable test", function () {
 
         return pagination_button;
 
-    }
+    };
 
     beforeEach(function () {
         setFixtures('<div id="table-wrapper"><table id="simpleTable" ><thead><tr></tr></thead></table></div>');

@@ -17,6 +17,23 @@ ko.bindingHandlers.sortable = {
         });
     }
 };
+ko.bindingHandlers['keyvalue'] = {
+    makeTemplateValueAccessor: function(valueAccessor) {
+        return function() {
+            var values = valueAccessor();
+            var array = [];
+            for (var key in values)
+                array.push({key: key, value: values[key]});
+            return array;
+        };
+    },
+    'init': function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        return ko.bindingHandlers['foreach']['init'](element, ko.bindingHandlers['keyvalue'].makeTemplateValueAccessor(valueAccessor));
+    },
+    'update': function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        return ko.bindingHandlers['foreach']['update'](element, ko.bindingHandlers['keyvalue'].makeTemplateValueAccessor(valueAccessor), allBindings, viewModel, bindingContext);
+    }
+};
 
 ko.bindingHandlers.scrollToView = {
     update: function (element, valueAccessor) {
@@ -68,7 +85,7 @@ ko.bindingHandlers.accordion = {
             header: options.header,
             change: function(event, ui){
                 var activatedSection = $(event.target).accordion('option', 'active');
-                var activeObservable = accessor.active
+                var activeObservable = accessor.active;
                 activeObservable && activeObservable(activatedSection);
             }
         });
@@ -86,7 +103,8 @@ ko.bindingHandlers.accordion = {
             header: options.header,
             change: function(event, ui){
                 var activatedSection = $(event.target).accordion('option', 'active');
-                var activeObservable = accessor.active
+                $("#accordion").show();
+                var activeObservable = accessor.active;
                 activeObservable && activeObservable(activatedSection);
             }
         });
@@ -212,4 +230,10 @@ ko.bindingHandlers.dialog = {
                 $el.dialog(shouldBeOpen ? "open" : "close");
             }
         }
+};
+
+ko.bindingHandlers.stopBinding = {
+    init: function() {
+        return { controlsDescendantBindings: true };
+    }
 };

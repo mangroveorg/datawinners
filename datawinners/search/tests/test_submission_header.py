@@ -5,6 +5,7 @@ from mock import MagicMock, Mock
 from datawinners.search.submission_headers import SubmissionAnalysisHeader, AllSubmissionHeader, SuccessSubmissionHeader, ErroredSubmissionHeader, HeaderFactory
 from mangrove.form_model.field import TextField, IntegerField, UniqueIdField, FieldSet
 from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.project import Project
 
 
 class TestSubmissionHeader(unittest.TestCase):
@@ -14,7 +15,7 @@ class TestSubmissionHeader(unittest.TestCase):
         self.field3 = UniqueIdField('clinic', 'unique_id_field', 'q3', 'Which clinic are you reporting on')
         self.field4 = UniqueIdField('school', 'unique_id_field2', 'q4', 'Which school are you reporting on')
         self.repeat_field = FieldSet('repeat','repeat', 'repeat label', field_set=[self.field1, self.field4])
-        self.form_model = MagicMock(spec=FormModel)
+        self.form_model = MagicMock(spec=Project)
         self.form_model.id = 'form_model_id'
 
     def test_get_header_dict_from_form_model_without_unique_id_question(self):
@@ -67,10 +68,19 @@ class TestSubmissionHeader(unittest.TestCase):
     def test_should_return_submission_log_specific_header_fields(self):
         self.form_model.fields = [self.field1, self.field2, self.field3, self.field4]
         self.form_model.entity_questions = [self.field3, self.field4]
-
+        self.form_model.is_poll = False
         headers = AllSubmissionHeader(self.form_model).get_header_field_names()
 
         expected = ["ds_id", "ds_name", "date", "status", "form_model_id_q1", "form_model_id_q2", "form_model_id_q3", "form_model_id_q3_unique_code", "form_model_id_q4", "form_model_id_q4_unique_code"]
+        self.assertListEqual(expected, headers)
+
+    def test_should_return_submission_log_specific_header_fields_for_poll(self):
+        self.form_model.fields = [self.field1, self.field2, self.field3, self.field4]
+        self.form_model.entity_questions = [self.field3, self.field4]
+        self.form_model.is_poll = True
+        headers = AllSubmissionHeader(self.form_model).get_header_field_names()
+
+        expected = ["ds_id", "ds_name", "date", "form_model_id_q1", "form_model_id_q2", "form_model_id_q3", "form_model_id_q3_unique_code", "form_model_id_q4", "form_model_id_q4_unique_code"]
         self.assertListEqual(expected, headers)
 
 

@@ -150,9 +150,16 @@ class ReminderLog(DataObject):
 
 
 def get_simple_project_names(dbm):
-    return [{'name': result['value']["name"], 'id': result['value']["id"]} for result in
-            dbm.load_all_rows_in_view("simple_project_names")]
+    result = []
+    simple_projects = dbm.load_all_rows_in_view("simple_project_names")
+    for simple_project in simple_projects:
+        if 'is_poll' not in simple_project['value'] or simple_project['value']['is_poll'] is False:
+            questionnaire_name = simple_project['value']['name']
+            result.append({'name': questionnaire_name, 'id': simple_project['value']['id']})
 
+
+
+    return result
 
 def count_projects(dbm, include_voided_projects=True):
     if include_voided_projects:

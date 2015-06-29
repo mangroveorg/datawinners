@@ -1,14 +1,16 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.project.couch_view_helper import get_all_projects, remove_poll_questionnaires
 from datawinners.settings import CRS_ORG_ID
 from datawinners.project import models
 from django.utils.translation import ugettext_lazy as _
 from datawinners.main.database import get_database_manager
+from datawinners.utils import get_organization
 
 
 def get_all_project_for_user(user):
     if user.get_profile().reporter:
-        return get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
+        questionnaires = get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
+        return remove_poll_questionnaires(questionnaires)
     return get_all_projects(get_database_manager(user))
 
 
@@ -18,10 +20,14 @@ def get_visibility_settings_for(user):
     return "", ""
 
 
-def get_page_heading(user):
-    if user.get_profile().reporter:
+def get_page_heading(request):
+    organization = get_organization(request)
+    if request.user.get_profile().reporter:
         return "Data Submission"
-    return "Questionnaires"
+    if organization.is_pro_sms:
+        return "Questionnaires & Polls"
+    else:
+        return "Questionnaires"
 
 
 def link(report_name, language):

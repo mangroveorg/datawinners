@@ -1,16 +1,37 @@
 {% load i18n %}
 
 <div id="project_profile" class="clear_both" data-bind="visible: showQuestionnaireCreationOptions">
-    <h5>1. {% trans "Choose How To Start" %}</h5>
-
     <div id="questionnaire_types" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedCreationOption}">
+        <div class="create_poll_section">
+             <div class="advanced_questionnaire_section_header create_poll_section">
+                <span class="questionnaire_subtitles font_size_18">{% trans "Create a New Poll" %}</span>
+                <img class="help_icon submission_date_help_icon margin_bottom_5" src="/media/images/help_icon.png">
+                <div class="tooltip">
+                <p>
+                    <strong>{% trans "What is this?" %}</strong><br/>
+                        {% trans "p_tooltip_poll_option" %}
+                </p>
+                </div>
+             <span class="italic_grey">SMS</span>
+            </div>
+            <div class="poll_active"></div>
+            <div class="questionnaire_type_header poll_deactivated">
+                <span class="header" id="create_poll">{% trans "Create a New Poll" %}</span>
+            </div>
+            <h6 class="create_questionnaire_help remove_border">{% trans "Choose this option to create a single question Poll and collect responses through SMS." %}</h6>
+        </div>
+        <div class="advanced_questionnaire_section_header basic_questionnaire">
+            <span class="questionnaire_subtitles font_size_18" >{% trans "Create a Basic Questionnaire" %}</span>
+            <span class="subtitle_helper italic_grey">SMS, Web, Smartphone, {% trans 'Tablet'%}</span>
+        </div>
+
         <div class="questionnaire_type_header">
-            <span class="header">{% trans "Create a New Questionnaire" %}</span>
+            <span class="header" id="create_blank" class="font_size_18">{% trans "Create a New Questionnaire" %}</span>
         </div>
         <h6 class="create_questionnaire_help">{% trans "Start with a blank Questionnaire and add your list of questions" %}</h6>
 
         <div id="copy_existing_questionnaire" class="questionnaire_type_header" data-bind="click: getExistingQuestionnaireList">
-            <span class="header">{% trans "Copy an Existing Questionnaire" %}</span>
+            <span class="header" id="copy_existing">{% trans "Copy an Existing Questionnaire" %}</span>
         </div>
 
         <div>
@@ -18,15 +39,16 @@
         </div>
 
         <div class="questionnaire_type_header" data-bind="click: getTemplates">
-            <span class="header">{% trans "Use a Template" %}</span>
+            <span class="header" id="create_template">{% trans "Use a Template" %}</span>
         </div>
 
         <div>
             {% include 'project/questionnaire_template.html' %}
         </div>
-        <div class="advanced_questionnaire_section_header">
-            <span>{% trans "Advanced Option (Beta Version)" %}</span>
-            <img class="help_icon submission_date_help_icon" src="/media/images/help_icon.png">
+        <div class="advanced_questionnaire_section_header advanced_header">
+            <span class="questionnaire_subtitles font_size_18">{% trans "Create an Advanced Questionnaire" %}</span>
+
+            <img class="help_icon submission_date_help_icon margin_bottom_5" src="/media/images/help_icon.png">
             <div class="tooltip">
                 <p>
                     <strong>{% trans "What is this?" %}</strong><br/>
@@ -35,13 +57,15 @@
                     {% trans "r_tooltip_advanced_questionnaire_option" %}
                 </p>
             </div>
+            <span class="subtitle_helper italic_grey"> Web, Smartphone, {% trans 'Tablet'%}</span>
         </div>
         <div class="questionnaire_type_header">
-            <span class="header">{% trans "Upload an XLSForm" %}</span>
+            <span class="header" id="adv_questionnaire">{% trans "Upload an XLSForm" %}</span>
         </div>
         <div>
             <h6 class="create_questionnaire_help">{% trans "Choose this option to create a Questionnaire with advanced features by uploading an XLSForm (Excel file)" %} <a class="dialog-anchor xls_learn_more">{% trans "Learn More" %}</a></h6>
         </div>
+
     </div>
     <div class="right_aligned_button create_project">
         <a href="{{ cancel_link }}" class="cancel_project">{% trans "Cancel" %} </a>

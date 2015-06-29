@@ -29,7 +29,7 @@ from datawinners.search.all_datasender_search import get_data_sender_search_resu
     get_data_sender_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.entity_search import DatasenderQueryResponseCreator, DATASENDER_DISPLAY_FIELD_ORDER
-from datawinners.utils import strip_accents, lowercase_and_strip_accents
+from datawinners.utils import strip_accents, lowercase_and_strip_accents, get_organization
 from mangrove.form_model.project import Project
 from mangrove.transport.player.parser import XlsDatasenderParser
 from mangrove.utils.types import is_empty
@@ -42,7 +42,6 @@ class MyDataSendersAjaxView(View):
         user = request.user
         manager = get_database_manager(user)
         project_name_unquoted = lowercase_and_strip_accents(unquote(project_name))
-
         search_parameters = {}
         search_filters = {}
         search_text = lower(request.POST.get('sSearch', '').strip())
@@ -119,6 +118,9 @@ def registered_datasenders(request, project_id):
         return HttpResponseRedirect(dashboard_page)
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
+        if questionnaire.is_open_survey and questionnaire.is_poll:
+            return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
+
         is_open_survey_allowed = _is_pro_sms(request) and not questionnaire.xform
         is_open_survey = 'open' if questionnaire.is_open_survey else 'restricted'
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
@@ -130,6 +132,7 @@ def registered_datasenders(request, project_id):
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,
                                    'is_open_survey_allowed': is_open_survey_allowed,
+                                   'is_pro_sms': get_organization(request).is_pro_sms,
                                    'is_open_survey': is_open_survey,
                                    'user_dict': json.dumps(user_rep_id_name_dict)},
                                   context_instance=RequestContext(request))
@@ -160,6 +163,7 @@ def registered_datasenders(request, project_id):
                 'message': success_message,
                 'error_message': error_message,
                 'failure_imports': failure_imports,
-                'successful_imports': imported_data_senders
+                'successful_imports': imported_data_senders,
+                'is_pro_sms': get_organization(request).is_pro_sms
             }))
 

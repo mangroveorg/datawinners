@@ -34,8 +34,12 @@
             </div>
         {% endfor %}
     {% endif %}
+    {% if is_pro_sms %}
+     {% blocktrans %} Once you have created Questionnaires or Polls, a list of your {{ text }} or Polls will appear here.{% endblocktrans %}
+     {% trans "To get started with DataWinners" %}, <a id="create_project_link" href="{% url create_project %}?prev=dash"> {% trans  "order_to_create_project_and_poll" %} </a>
+    {% else %}
+        {% blocktrans %} Once you have created Questionnaires, a list of your {{ text }} will appear here.{% endblocktrans %}
+        {% trans "To get started with DataWinners" %}, <a id="create_project_link" href="{% url create_project %}?prev=dash"> {% trans  "order_to_create_project" %} </a>
+    {% endif %}
 
-    {% blocktrans %} Once you have created Questionnaires, a list of your {{ text }} will appear here.{% endblocktrans %}
-
-    {% trans "To get started with DataWinners" %}, <a id="create_project_link" href="{% url create_project %}?prev=dash"> {% trans  "order_to_create_project" %} </a>
 {% endblock %}

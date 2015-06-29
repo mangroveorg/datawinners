@@ -1,6 +1,12 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-{% block page_title %} {% trans "Questionnaires - Data Senders" %} {% endblock %}
+{% block page_title %}
+    {% if project.is_poll %}
+        {% trans "Polls - Recipients" %}
+    {% else %}
+        {% trans "Questionnaires - Data Senders" %}
+    {% endif %}
+{% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -53,48 +59,53 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        <div class="grid_8 alpha">
-            <h2>{% trans "My Data Senders" %}</h2>
-        </div>
-        {% if in_trial_mode %}
-            <div class="float_left full_width">
-                <div class="warning-message-box clear-both overflow_hidden padding_left_right_10 padding_top_10">
-                    {% trans "In the Basic account only registered Data Senders can send you data. However, when you upgrade to a Pro SMS  account you have the option to let anyone send in data." %}
-                    <a class="button margin_10 float_right" target="blank" href="{% url prosms_upgrade %}">{% trans "Subscribe Now" %}</a>
-                    <a class="float_right margin_10 padding_top_10" href="https://www.datawinners.com/{{ active_language }}/pricing/" target="blank">{% trans "Learn More" %}</a>
+    {% if project.is_poll %}
+        <h2>{% trans "Poll Recipients" %}</h2>
+    {% else %}
+        <div>
+            <div class="grid_8 alpha">
+                <h2>{% trans "My Data Senders" %}</h2>
+            </div>
+            {% if in_trial_mode %}
+                <div class="float_left full_width">
+                    <div class="warning-message-box clear-both overflow_hidden padding_left_right_10 padding_top_10">
+                        {% trans "In the Basic account only registered Data Senders can send you data. However, when you upgrade to a Pro SMS  account you have the option to let anyone send in data." %}
+                        <a class="button margin_10 float_right" target="blank" href="{% url prosms_upgrade %}">{% trans "Subscribe Now" %}</a>
+                        <a class="float_right margin_10 padding_top_10" href="https://www.datawinners.com/{{ active_language }}/pricing/" target="blank">{% trans "Learn More" %}</a>
+                    </div>
                 </div>
+            {% endif %}
+            {% if is_open_survey_allowed %}
+            <div class="float_left full_width margin_top_15">
+            {% include 'flash_message.html' %}
+            <strong>{% trans "People Authorized to Submit Data Using SMS" %}</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon margin_bottom_5">
+                <div class="tooltip">
+                    <ol class="margin_left_20">
+                    <span>{% trans "You decide who has permission to submit data using SMS for this Questionnaire:" %} </br> </span>
+                        <li class="margin_left_30">{% trans "Everyone - Anyone with a simple phone can submit data." %} </br> </li>
+                        <li class="margin_left_30">{% trans "Only Registered People  – Data Senders must be registered first before submitting data."%}</li>
+                    </ol>
+                </div>
+                </br>
+                <span id="setting_description" data-bind="text:ds_setting_description">{% trans "Everyone – Anyone with a simple phone can submit data" %}</span>&nbsp;&nbsp;<a class="change_setting">{% trans "Change" %}</a>
+                </br></br>
             </div>
-        {% endif %}
-        {% if is_open_survey_allowed %}
-        <div class="float_left full_width margin_top_15">
-        {% include 'flash_message.html' %}
-        <strong>{% trans "People Authorized to Submit Data Using SMS" %}</strong><img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon margin_bottom_5">
-            <div class="tooltip">
-                <ol class="margin_left_20">
-                <span>{% trans "You decide who has permission to submit data using SMS for this Questionnaire:" %} </br> </span>
-                    <li class="margin_left_30">{% trans "Everyone - Anyone with a simple phone can submit data." %} </br> </li>
-                    <li class="margin_left_30">{% trans "Only Registered People  – Data Senders must be registered first before submitting data."%}</li>
-                </ol>
+            {% endif %}
+            <div align="right">
+                <a class="register_data_sender" onclick="register_datasender()">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
+                <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
             </div>
-            </br>
-            <span id="setting_description" data-bind="text:ds_setting_description">{% trans "Everyone – Anyone with a simple phone can submit data" %}</span>&nbsp;&nbsp;<a class="change_setting">{% trans "Change" %}</a>
-            </br></br>
+            <div class="clear-both"></div>
         </div>
-        {% endif %}
-        <div align="right">
-            <a class="register_data_sender" onclick="register_datasender()">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
-            <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
+        <div id="my_subjects">
+            {% block secondary_navigation_datasenders %}
+                {% activetab "secondary_tab_nav" "datasenders" %}
+                {{ block.super }}
+            {% endblock %}
         </div>
-        <div class="clear-both"></div>
-    </div>
+     {% endif %}
 
-    <div id="my_subjects">
-        {% block secondary_navigation_datasenders %}
-            {% activetab "secondary_tab_nav" "datasenders" %}
-            {{ block.super }}
-        {% endblock %}
-    </div>
+
 
 
     {% include 'entity/all_data_senders/web_submission_access_block.html' %}

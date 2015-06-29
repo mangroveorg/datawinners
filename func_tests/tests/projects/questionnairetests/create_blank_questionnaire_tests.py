@@ -85,7 +85,7 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         self.assertEqual(create_questionnaire_page.get_duplicate_questionnaire_code_error_message(),
                          "Questionnaire with same code already exists.")
         self.assertEqual(create_questionnaire_page.get_duplicate_questionnaire_title_error_message(),
-                         "Questionnaire with same name already exists.")
+                         "Questionnaire or Poll with same name already exists.")
 
     @attr('functional_test')
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
@@ -104,9 +104,9 @@ class TestCreateBlankQuestionnaire(HeadlessRunnerTest):
         create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
         create_questionnaire_page.submit_errored_questionnaire()
         self.global_navigation.navigate_to_all_data_page()
-        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
         modified_warning_dialog.cancel()
-        self.assertEqual(create_questionnaire_page.get_page_title(), "Create a New Questionnaire",
+        self.assertEqual(create_questionnaire_page.get_page_title(), "Collect Data",
                          "Should continue to stay on questionnaire page")
 
     def _verify_edit_dialog_ignore_changes(self, modified_warning_dialog, project_name):

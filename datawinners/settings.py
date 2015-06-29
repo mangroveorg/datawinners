@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     'datawinners.accountmanagement',
     'datawinners.sms',
     'datawinners.activitylog',
+    'datawinners.sent_message',
     'registration',
     'django.contrib.admin',
     'compressor',
@@ -277,7 +278,7 @@ GRAPHITE_MONITORING_ENABLED = False
 ENVIRONMENT = 'dev'
 CARBON_HOST = '127.0.0.1'
 CARBON_PORT = 2003
-
+DEBUG_BROWSER = 'firefox'
 
 BRAND = "dw"
 

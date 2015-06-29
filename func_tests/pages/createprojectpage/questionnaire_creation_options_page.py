@@ -1,9 +1,11 @@
 from time import sleep
-from framework.utils.common_utils import by_id, by_xpath, by_css
+from framework.utils.common_utils import by_id, by_xpath, by_css, generateId
 from pages.createprojectpage.create_project_locator import CONTINUE_BTN
+from pages.globalnavigationpage.global_navigation_locator import CREATE_PROJECT_LINK
 from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.page import Page
-from tests.questionnaireTemplateTests.questionnaire_template_test_data import BLANK_QUESTIONNAIRE_SELECTION_ACCORDION, SELECT_USING_TEMPLATE_ACCORDION, AJAX_LOADER_HORIZONTAL, TEMPLATE_CATEGORY_ACCORDION, SELECTED_TEMPLATE_QUESTIONS_DIV, TEMPLATE_NAME_DIV, TEMPLATE_NAME_HEADER, TEMPLATE_QUESTIONS
+from tests.questionnaireTemplateTests.questionnaire_template_test_data import BLANK_QUESTIONNAIRE_SELECTION_ACCORDION, SELECT_USING_TEMPLATE_ACCORDION, AJAX_LOADER_HORIZONTAL, TEMPLATE_CATEGORY_ACCORDION, SELECTED_TEMPLATE_QUESTIONS_DIV, TEMPLATE_NAME_DIV, TEMPLATE_NAME_HEADER, TEMPLATE_QUESTIONS, \
+    POLL_QUESTIONNAIRE_SELECTION_ACCORDION
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -13,7 +15,16 @@ class QuestionnaireCreationOptionsPage(Page):
 
 
     def select_blank_questionnaire_creation_option(self):
+        sleep(1)
         blank_questionnaire_accoridion = self.driver.find(by_css(BLANK_QUESTIONNAIRE_SELECTION_ACCORDION))
+        blank_questionnaire_accoridion.click()
+        sleep(1)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, CONTINUE_BTN, True)
+        return self.go_to_create_questionnaire_page()
+
+    def select_poll_questionnaire_option(self):
+        sleep(1)
+        blank_questionnaire_accoridion = self.driver.find(by_css(POLL_QUESTIONNAIRE_SELECTION_ACCORDION))
         blank_questionnaire_accoridion.click()
         sleep(1)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CONTINUE_BTN, True)
@@ -24,7 +35,7 @@ class QuestionnaireCreationOptionsPage(Page):
         return QuestionnaireTabPage(self.driver)
 
     def select_create_questionnaire_by_template_option(self):
-        create_by_template_option = self.driver.find_element_by_xpath(SELECT_USING_TEMPLATE_ACCORDION)
+        create_by_template_option = self.driver.find(by_css(SELECT_USING_TEMPLATE_ACCORDION))
         create_by_template_option.click()
         sleep(1)
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, AJAX_LOADER_HORIZONTAL)

@@ -1,10 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-from mock import Mock, patch
+from mock import Mock, patch, MagicMock
 from django.contrib.auth.models import User
-from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.alldata import helper
-from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.project.couch_view_helper import get_all_projects
 
 
@@ -57,11 +56,32 @@ class TestHelper(unittest.TestCase):
 
     def test_should_return_DataSubmission_for_reporter(self):
         user = self._get_reporter_user()
-        assert helper.get_page_heading(user) == 'Data Submission'
+        request = MagicMock()
+        organization = MagicMock(spec=Organization)
+        with patch('datawinners.alldata.helper.get_organization') as mock_get_organization:
+            mock_get_organization.return_value = organization
+            request.user = user
+            assert helper.get_page_heading(request) == 'Data Submission'
 
-    def test_should_return_AllData_for_other(self):
+    def test_should_return_AllData_for_trial_and_pro_account(self):
         user = self._get_normal_user()
-        assert helper.get_page_heading(user) == 'Questionnaires'
+        request = MagicMock()
+        organization = MagicMock(spec=Organization)
+        organization.is_pro_sms = False
+        with patch('datawinners.alldata.helper.get_organization') as mock_get_organization:
+            mock_get_organization.return_value = organization
+            request.user = user
+            assert helper.get_page_heading(request) == 'Questionnaires'
+
+    def test_should_return_AllData_for_pro_sms_account(self):
+        user = self._get_normal_user()
+        request = MagicMock()
+        organization = MagicMock(spec=Organization)
+        organization.is_pro_sms = True
+        with patch('datawinners.alldata.helper.get_organization') as mock_get_organization:
+            mock_get_organization.return_value = organization
+            request.user = user
+            assert helper.get_page_heading(request) == 'Questionnaires & Polls'
 
     def tearDown(self):
         get_all_projects = self.all_projects

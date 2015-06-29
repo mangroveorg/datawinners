@@ -16,7 +16,7 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
 from datawinners.accountmanagement.models import NGOUserProfile, Organization, PaymentDetails
-from datawinners.utils import get_map_key
+from datawinners.utils import get_map_key, get_organization
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
 from datawinners.preferences.models import UserPreferences
@@ -103,7 +103,10 @@ def dashboard(request):
     questionnaire_list = []
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=8)
     for row in rows:
-        link = reverse("project-overview", args=(row['value']['_id'],))
+        if 'is_poll' in row['value'] and row['value']['is_poll'] is True:
+            link = reverse("submissions", args=[row['value']['_id'], row['value']['form_code']])
+        else:
+            link = reverse("project-overview", args=(row['value']['_id'],))
         questionnaire = dict(name=row['value']['name'], link=link, id=row['value']['_id'])
         questionnaire_list.append(questionnaire)
     language = request.session.get("django_language", "en")
@@ -175,7 +178,7 @@ def start(request):
     help_url = help_url_dict[url_tokens[-1]] % _("wp_language")
     return render_to_response('dashboard/start.html',
                               {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]],
-                               'help_url': help_url},
+                               'help_url': help_url, 'is_pro_sms': get_organization(request).is_pro_sms},
                               context_instance=RequestContext(request))
 
 

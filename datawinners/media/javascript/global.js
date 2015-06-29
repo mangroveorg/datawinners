@@ -36,7 +36,7 @@ $(document).ready(function() {
         if ($(".errorlist:has(li)").length == 0){
             $("#flash-message").attr("tabindex", -1).focus();
         }
-    }
+    };
     var shoudlShowAjaxError = ($('#debug').val()=="True");
     if(shoudlShowAjaxError){
         $("#global_error").ajaxError(function(event, request, settings) {

@@ -186,12 +186,10 @@ msgid "You are trying to delete 1 or more active accounts."
 msgstr ""
 
 #: media/javascript/admin/organization.js:16
-msgid "Activate"
-msgstr ""
 
 #: media/javascript/admin/organization.js:17
 msgid "Deactivate"
-msgstr ""
+msgstr "Désactiver"
 
 msgid "Delete"
 msgstr "Supprimer"
@@ -866,7 +864,7 @@ msgstr "Le message de rappèl a été enregistré"
 
 #: media/javascript/project/results.js:331
 msgid "Your Submission(s) will be deleted"
-msgstr "Votre/vos Soumission(s) sera/seront supprimée(s)"
+msgstr "Vos Soumissions seront supprimées"
 
 #: media/javascript/project/results.js:345
 msgid "Please select 1 Submission only"
@@ -1516,7 +1514,7 @@ msgid "Once you have created questionnaires, a list of your questionnaires will 
 msgstr "Une fois que vous avez créé des questionnaires, la liste de vos questionnaires apparaitront à cet endroit."
 
 msgid "Once you have created groups, a list of your groups will appear here."
-msgstr "Une fois que vous avez créé des groupe, une liste de vos groupe sera affichée ici."
+msgstr "Une fois que vous avez créé des groupes, une liste de vos groupes sera affichée ici."
 
 msgid "Rename Group"
 msgstr "Renommer le Groupe"
@@ -1553,3 +1551,74 @@ msgstr "Expéditeur(s) supprimé(s) avec succès."
 
 msgid "Contact(s) successfully deleted."
 msgstr "Contact(s) supprimé(s) avec succès."
+
+msgid "To create the Poll you must first deactivate your current "
+msgstr "Pour créer un nouveau Sondage, vous devez d’abord désactiver le Sondage en cours "
+
+msgid "You may only have one active Poll at a time."
+msgstr "Vous pouvez avoir uniquement un Sondage actif à la fois."
+
+msgid "Send Poll"
+msgstr "Envoyer le Sondage"
+
+msgid "Save Poll"
+msgstr "Enregistrer le Sondage"
+
+msgid "Save/Create Poll"
+msgstr "Enregistrer/Envoyer le Sondage"
+
+msgid "Delete this Poll"
+msgstr "Supprimer ce Sondage"
+
+msgid "Delete this Poll?"
+msgstr "Supprimer ce Sondage?"
+
+msgid " active From : "
+msgstr " actif du  "
+
+msgid "To : "
+msgstr " au "
+
+msgid "Response"
+msgstr "Réponse"
+
+msgid "Deactivated"
+msgstr "désactivé"
+
+msgid "Change"
+msgstr "Changer"
+
+msgid "Activate"
+msgstr "Activer"
+
+msgid "Active"
+msgstr "Actif"
+
+msgid "The list of your Poll Recipients is empty."
+msgstr "La liste des destinataires de votre Sondage est vide."
+
+msgid "My Poll Recipients"
+msgstr "Les destinataires de mon Sondage"
+
+msgid "Poll Recipients"
+msgstr "Destinataires du Sondage"
+
+
+msgid "Deactivate Poll?"
+msgstr "Désactiver le Sondage?"
+
+msgid "Activate Poll?"
+msgstr "Activer le Sondage?"
+
+msgid "Remove from Poll"
+msgstr "Retirer du Sondage"
+
+msgid "From : "
+msgstr "Du : "
+
+msgid " To : "
+msgstr " Au : "
+
+
+msgid " inactive"
+msgstr " désactivé"

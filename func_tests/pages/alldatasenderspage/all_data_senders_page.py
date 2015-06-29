@@ -292,3 +292,13 @@ class AllDataSendersPage(Page):
 
     def click_delete_group_icon(self, group_name):
          self.driver.find(by_xpath(".//*[@id='group_panel']/div/ol/li[contains(.,'"+group_name +"')]/div[2]/span[2]/img")).click()
+
+    def add_contact_to_group(self, unique_id, group_name):
+        self.refresh()
+        self.search_with(unique_id)
+        self.select_a_data_sender_by_id(unique_id)
+        self.perform_datasender_action('add to groups')
+        add_group_page = AddGroupPage(self.driver)
+        add_group_page.add_or_remove_contact_to_group(group_name)
+        add_group_page.click_on_contact_to_group_button()
+        add_group_page.wait_for_table_to_load()

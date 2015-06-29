@@ -1,5 +1,4 @@
 import json
-from datawinners import settings
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -12,6 +11,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from celery.task import current
 
+from datawinners import settings
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, \
     EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
@@ -19,19 +19,17 @@ from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_model_id
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
-from datawinners.project.forms import ReminderForm
 from datawinners.project.models import Reminder, ReminderMode
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.utils import get_changed_questions
+from datawinners.utils import get_changed_questions, get_organization
 from datawinners.common.constant import EDITED_QUESTIONNAIRE, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
     SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
-from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty
 
 
@@ -131,6 +129,7 @@ def edit_project(request, project_id):
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
                                    'questionnaire_code': questionnaire.form_code,
+                                   'is_pro_sms': get_organization(request).is_pro_sms,
                                    'is_edit': 'true',
                                    'post_url': reverse(edit_project, args=[project_id])},
                                   context_instance=RequestContext(request))
@@ -165,7 +164,7 @@ def edit_project(request, project_id):
                                             'error_message': ugettext('Questionnaire with same code already exists.')}))
         if request.POST['has_callback'] == 'false':
             messages.add_message(request,messages.INFO,"success")
-        return HttpResponse(json.dumps({'success': True, 'project_id': project_id}))
+        return HttpResponse(json.dumps({'success': True, 'project_id': project_id, 'is_pro_sms': get_organization(request).is_pro_sms,}))
 
 
 @login_required
@@ -180,6 +179,8 @@ def reminder_settings(request, project_id):
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
     from datawinners.project.views.views import make_project_links
 
 
@@ -202,6 +203,7 @@ def reminder_settings(request, project_id):
                                    'is_reminder_disabled': is_reminder_disabled,
                                    'active_language': active_language,
                                    'no_of_my_datasenders': len(questionnaire.data_senders),
+                                   'is_pro_sms': get_organization(request).is_pro_sms,
                                    'url_to_my_datasender': url_to_my_datasender,
                                    'post_url': reverse(reminder_settings, args=[project_id])
                                   }, context_instance=RequestContext(request))
@@ -221,7 +223,7 @@ def reminder_settings(request, project_id):
             UserActivityLog().log(request, action=action, project=questionnaire.name)
         if set_deadline:
             UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name)
-        response = {'success_message': ugettext("Reminder settings saved successfully."), 'success': True}
+        response = {'success_message': ugettext("Reminder settings saved successfully."), 'success': True, 'is_pro_sms': get_organization(request).is_pro_sms,}
         return HttpResponse(json.dumps(response))
 
 

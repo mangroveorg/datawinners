@@ -30,6 +30,7 @@ from datawinners.blue.error_translation_utils import transform_error_message, tr
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from datawinners.feeds.database import get_feeds_database
 from datawinners.search.submission_index import SubmissionSearchStore
+from datawinners.utils import get_organization
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
@@ -177,11 +178,16 @@ class ProjectUpload(View):
                 tmp_file.close()
 
         if not questionnaire_id:
+            org = get_organization(request)
+            if org.is_pro_sms:
+                message = _("Questionnaire or Poll with same name already exists.Upload was cancelled.")
+            else:
+                message = _("Questionnaire with same name already exists.Upload was cancelled.")
             return HttpResponse(json.dumps(
                 {
                     'success': False,
                     'duplicate_project_name': True,
-                    'error_msg': [_("Questionnaire with same name already exists.Upload was cancelled.")]}
+                    'error_msg': [message]}
             ), content_type='application/json')
 
         return HttpResponse(

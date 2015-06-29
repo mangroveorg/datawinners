@@ -3,6 +3,9 @@ function ProjectQuestionnaireViewModel() {
 
     self.uniqueIdTypes = ko.observableArray(uniqueIdTypes);
     self.isXLSUploadQuestionnaire = ko.observable(false);
+    self.showPollQuestionnaireForm = ko.observable(false);
+    self.above = ko.observable('above');
+    self.below = ko.observable('below');
 
     self.showUniqueIdTypeList = ko.computed(function(){
         return self.uniqueIdTypes().length == 0;

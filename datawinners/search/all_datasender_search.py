@@ -176,3 +176,15 @@ def get_all_data_sender_mobile_numbers(dbm):
     search = _add_response_fields(search_parameters, search)
     search_results = search.execute()
     return [item['mobile_number'] for item in search_results.hits]
+
+def get_datasenders_ids_by_questionnaire_names(manager, questionnaire_names):
+    search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}
+    data_sender_ids = get_all_datasenders_short_codes(manager, search_parameters)
+    return list(set(data_sender_ids))
+
+
+def get_datasender_ids_by_group_names(manger, group_names):
+    search_parameters = {'void': False, 'search_filters': {'group_names': group_names}}
+    data_sender_ids = get_all_datasenders_short_codes(manger, search_parameters)
+
+    return list(set(data_sender_ids))

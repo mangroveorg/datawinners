@@ -8,8 +8,15 @@ DW.bind_project_links = function () {
             });
 
             $(".delete_project").on("click", function () {
-                $("#delete_project_block").dialog("open");
-                $('#confirm_delete').attr('href', $(this).attr('href'));
+                var is_poll = $(this).data("is_poll");
+                if (is_poll == true) {
+                    $("#delete_poll_block").dialog("open");
+                    $('#confirm_delete_poll').attr('href', $(this).attr('href'));
+                }
+                else {
+                    $("#delete_project_block").dialog("open");
+                    $('#confirm_delete').attr('href', $(this).attr('href'));
+                }
                 $('#undelete_project_section').show().hide(50000);
                 return false;
             });

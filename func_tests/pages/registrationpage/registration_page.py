@@ -25,7 +25,7 @@ class RegistrationPage(Page):
 
     def register_with(self, registration_data):
         self.agree_terms_and_conditions()
-        for key,value in registration_data.items():
+        for key, value in registration_data.items():
             if key in [ORGANIZATION_SECTOR, ORGANIZATION_COUNTRY, ORGANIZATION_SECTOR_FOR_UPGRADE]:
                 self.driver.find_drop_down(by_css(".registration_form select[name=%s]" % key)).set_selected(value)
             elif key in [PAY_MONTHLY, WIRE_TRANSFER, PRO, PRO_SMS]:

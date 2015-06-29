@@ -2,11 +2,13 @@ from django.utils import translation
 
 from datawinners.messageprovider.handlers import data_sender_not_linked_handler, data_sender_not_registered_handler
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
-from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException, NumberNotRegisteredException
+from mangrove.datastore.documents import ProjectDocument
+from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException, NumberNotRegisteredException, \
+    FormModelDoesNotExistsException, ProjectPollCodeDoesNotExistsException
 from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
 from mangrove.errors.MangroveException import DatasenderIsNotLinkedException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
-from mangrove.form_model.project import Project
+from mangrove.form_model.project import Project, get_active_form_model, get_project_by_code, check_if_form_code_is_poll
 from mangrove.transport.contract.response import Response
 from mangrove.form_model.form_model import EntityFormModel
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
@@ -19,7 +21,10 @@ class PostSMSProcessorLanguageActivator(object):
 
     def process(self, form_code, submission_values):
         self.request[FORM_CODE] = form_code
-        form_model = get_form_model_by_code(self.dbm, form_code)
+        try:
+            form_model = get_form_model_by_code(self.dbm, form_code)
+        except FormModelDoesNotExistsException:
+            form_model = get_active_form_model(self.dbm, form_code)
         if not isinstance(form_model, EntityFormModel):
             translation.activate(form_model.activeLanguages[0])
         else:
@@ -36,7 +41,10 @@ class PostSMSProcessorCheckDSIsRegistered(object):
         return response
 
     def process(self, form_code, submission_values):
-        form_model = get_form_model_by_code(self.dbm, form_code)
+        try:
+            form_model = get_form_model_by_code(self.dbm, form_code)
+        except FormModelDoesNotExistsException:
+            form_model = get_active_form_model(self.dbm, form_code)
         exception = self.request.get('exception')
         if exception and isinstance(exception, NumberNotRegisteredException) and not form_model.is_open_survey:
            return self._get_response()
@@ -48,7 +56,11 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
         self.request = request
 
     def process(self, form_code, submission_values, extra_data=[]):
-        form_model = get_form_model_by_code(self.dbm, form_code)
+        try:
+            form_model = get_form_model_by_code(self.dbm, form_code)
+            check_if_form_code_is_poll(self, form_model)
+        except FormModelDoesNotExistsException:
+            form_model = get_active_form_model(self.dbm, form_code)
 
         processor_func = self._get_handlers(form_model)
         response = processor_func(form_model, submission_values)
@@ -110,26 +122,32 @@ class PostSMSProcessorCheckDSIsLinkedToProject(object):
         response.errors = data_sender_not_linked_handler(self.dbm, self.request, form_code=form_code)
         return response
 
+
     def process(self, form_code, submission_values):
-        form_model = get_form_model_by_code(self.dbm, form_code)
+        try:
+            form_model = get_form_model_by_code(self.dbm, form_code)
+        except FormModelDoesNotExistsException:
+            form_model = get_active_form_model(self.dbm, form_code)
         project = Project.from_form_model(form_model=form_model)
         reporter_entity = self.request.get('reporter_entity')
 
         if project.is_open_survey or (reporter_entity.short_code == "test" or \
                 isinstance(form_model, EntityFormModel) or \
                         reporter_entity.short_code in Project.from_form_model(form_model).data_senders):
-            self.check_answers_numbers()
+            self.check_answers_numbers(is_poll=project.is_poll, submission_values=submission_values)
             return None
 
-        self.check_answers_numbers(linked_datasender=False)
+        self.check_answers_numbers(is_poll=project.is_poll, submission_values=submission_values, linked_datasender=False)
         return self._get_response(form_code)
 
-    def check_answers_numbers(self, linked_datasender=True):
+    def check_answers_numbers(self, is_poll, submission_values, linked_datasender=True):
         exception = self.request.get('exception', False)
         if exception and isinstance(exception, SMSParserWrongNumberOfAnswersException):
             if linked_datasender:
                 raise exception
             raise self._get_exception()
+        elif not linked_datasender and is_poll:
+            raise FormModelDoesNotExistsException(submission_values['q1'])
 
     def _get_exception(self):
         datasender = self.request.get('reporter_entity')

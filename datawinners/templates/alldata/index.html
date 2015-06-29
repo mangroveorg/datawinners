@@ -19,7 +19,7 @@
     <script type="text/javascript">
         var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
         var import_submission_url = "{% url import_submissions 'form_code'%}";
-
+        var is_poll="";
     </script>
 {% endblock %}
 
@@ -60,7 +60,11 @@
             {% endfor %}
         {% endif %}
         <span class="{{ hide_link_class }}">
-            <a id="create_project_link" href="{% url create_project %}?prev=ques" class="button">{% trans "Create a New Questionnaire" %}</a>
+            {% if is_pro_sms %}
+                <a id="create_project_link" href="{% url create_project %}?prev=ques" class="button">{% trans "Create Questionnaires & Polls" %}</a>
+            {% else %}
+                <a id="create_project_link" href="{% url create_project %}?prev=ques" class="button">{% trans "Create Questionnaires" %}</a>
+            {% endif %}
         </span>
         <table class="styled_table margin_top_20">
             <thead>
@@ -69,6 +73,25 @@
             <th> {% trans "What Do You Want to Do?" %}</th>
             </thead>
             {% for project in projects %}
+
+                {% if project.is_poll %}
+                 <tr>
+
+                {% if disable_link_class == ''  %}
+                    <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
+                {% else %}
+                    <td class='project-id-class'>{{ project.name }}</td>
+                {% endif %}
+                    <td class="{{ hide_link_class }}" style="width: 90px">{{ project.created|date:"DATE_FORMAT" }}</td>
+                    <td>
+                        <span class="report_links">
+                            <a href="{{ project.log }}"
+                                class="{{ project.disabled}} {{ disable_link_class}}">{% trans "Analyze Data" %}</a>
+                            <span class="{{ hide_link_class }}">
+                                |<a href="{{ project.delete_links }}" class="delete_project" data-is_poll="true">{% trans "Delete Poll" %}</a>
+                            </span>
+                </tr>
+                {% else %}
                 <tr>
                 {% if disable_link_class == ''  %}
                     <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
@@ -106,12 +129,19 @@
                         </span>
                     </td>
                 </tr>
+                {% endif %}
             {% endfor %}
         </table>
         <div id="delete_project_block">
             <p class="warning_message">{% trans "Export all Submissions prior to deleting your Questionnaire." %}</p>
             <a href="#" class="cancel_link cancel_{% trans "en" %}" >{% trans "Cancel" %}</a>
             <a href="#" class="button" id="confirm_delete">{% trans "Delete Questionnaire Now" %}</a>
+        </div>
+
+        <div id="delete_poll_block">
+            <p class="warning_message">{% trans "Export all Submissions prior to deleting your Poll." %}</p>
+            <a href="#" class="cancel_link cancel_{% trans "en" %}" >{% trans "Cancel" %}</a>
+            <a href="#" class="button" id="confirm_delete_poll">{% trans "Delete Poll Now" %}</a>
         </div>
         {% include "project/import_submission.html" %}
     </div>

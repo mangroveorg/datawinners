@@ -69,7 +69,8 @@ from datawinners.project import helper
 from datawinners.project.utils import make_project_links
 from datawinners.project.helper import is_project_exist, get_feed_dictionary
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE
+from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE, \
+    DELETED_POLL
 from datawinners.project.views.utils import get_form_context
 from datawinners.project.utils import is_quota_reached
 from datawinners.submission.views import check_quotas_and_update_users
@@ -93,14 +94,17 @@ def delete_project(request, project_id):
     helper.delete_project(questionnaire)
     undelete_link = reverse(undelete_project, args=[project_id])
     messages.info(request, undelete_link)
-    UserActivityLog().log(request, action=DELETED_QUESTIONNAIRE, project=questionnaire.name)
+    action = DELETED_POLL if questionnaire.is_poll else DELETED_QUESTIONNAIRE
+    UserActivityLog().log(request, action=action, project=questionnaire.name)
     return HttpResponseRedirect(reverse(views.index))
 
 @csrf_view_exempt
 @valid_web_user
 @is_datasender
 def rename_project(request, project_id):
-    manager = get_database_manager(request.user)
+    user = request.user
+    organization = Organization.objects.get(org_id=user.get_profile().org_id)
+    manager = get_database_manager(user)
     questionnaire = Project.get(manager, project_id)
     new_project_name = request.POST.get('data', '').strip()
     if len(new_project_name) == 0:
@@ -116,9 +120,12 @@ def rename_project(request, project_id):
             UserActivityLog().log(request, action=RENAMED_QUESTIONNAIRE, project=questionnaire.name)
             return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
         except DataObjectAlreadyExists as e:
+            if organization.is_pro_sms:
+                error_message = "Questionnaire or Poll with same name already exists."
+            else:
+                error_message = "Questionnaire with same name already exists."
             return HttpResponse(
-                json.dumps({"status": "error", "message": ugettext("Questionnaire with same name already exists.")}),
-                content_type='application/json')
+                json.dumps({"status": "error", "message": ugettext("%s" % error_message)}), content_type='application/json')
     return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
 
 @is_datasender
@@ -155,6 +162,9 @@ def _get_entity_types_with_no_registered_entities(dbm, entity_types):
 def project_overview(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
+
     open_survey_questionnaire= questionnaire.is_open_survey
     is_pro_sms = _is_pro_sms(request)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
@@ -264,6 +274,8 @@ def sent_reminders(request, project_id):
     questionnaire = Project.get(dbm, project_id)
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
     organization = Organization.objects.get(org_id=request.user.get_profile().org_id)
     is_trial_account = organization.in_trial_mode
     html = 'project/sent_reminders_trial.html' if organization.in_trial_mode else 'project/sent_reminders.html'
@@ -273,6 +285,7 @@ def sent_reminders(request, project_id):
                                   "project_links": make_project_links(questionnaire),
                                   'is_quota_reached': is_quota_reached(request, organization=organization),
                                   'reminders': get_all_reminder_logs_for_project(project_id, dbm),
+                                  'is_pro_sms': get_organization(request).is_pro_sms,
                                   'in_trial_mode': is_trial_account,
                                   'questionnaire_code': questionnaire.form_code
                               },
@@ -295,6 +308,8 @@ def _get_data_senders(dbm, form, project):
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
     form_class = OpenDsBroadcastMessageForm if questionnaire.is_open_survey else BroadcastMessageForm
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
@@ -316,6 +331,7 @@ def broadcast_message(request, project_id):
                                          "project_links": make_project_links(questionnaire),
                                          'is_quota_reached': is_quota_reached(request, organization=organization),
                                          "form": form, "ong_country": organization.country,
+                                         'is_pro_sms': get_organization(request).is_pro_sms,
                                          "success": None,
                                          'questionnaire_code': questionnaire.form_code
         },
@@ -352,6 +368,7 @@ def broadcast_message(request, project_id):
                                        "project_links": make_project_links(questionnaire),
                                        'is_quota_reached': is_quota_reached(request, organization=organization),
                                        "form": form, "account_type": account_type,
+                                       'is_pro_sms': get_organization(request).is_pro_sms,
                                        "ong_country": organization.country, "no_smsc": no_smsc,
                                        'questionnaire_code': questionnaire.form_code,
                                        'failed_numbers': ",".join(failed_numbers), "success": success},
@@ -382,6 +399,8 @@ def get_project_link(project, entity_type=None):
 def registered_subjects(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
+    if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
@@ -400,6 +419,7 @@ def registered_subjects(request, project_id, entity_type=None):
                                "subject": subject,
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
+                               'is_pro_sms': get_organization(request).is_pro_sms,
                                'entity_type': current_entity_type,
                                'subject_headers': header_fields(subject_form_model),
                                'questionnaire_code': questionnaire.form_code,
@@ -423,6 +443,9 @@ def questionnaire(request, project_id):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         questionnaire = Project.get(manager, project_id)
+        if questionnaire.is_poll:
+         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
+
         if questionnaire.is_void():
             return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")
         fields = questionnaire.fields
@@ -442,6 +465,7 @@ def questionnaire(request, project_id):
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,
                                    'project': questionnaire,
+                                   'is_pro_sms': get_organization(request).is_pro_sms,
                                    'project_id': project_id,
                                    'project_has_submissions': project_has_submissions,
                                    'project_links': project_links,
@@ -458,6 +482,7 @@ def questionnaire(request, project_id):
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,
                                    'project': questionnaire,
+                                   'is_pro_sms': get_organization(request).is_pro_sms,
                                    'project_has_submissions': project_has_submissions,
                                    'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request),
@@ -483,6 +508,7 @@ def get_questionnaire_ajax(request, project_id):
                                        'is_outgoing_sms_enabled': project.is_outgoing_sms_replies_enabled,
                                        'datasenders': project.data_senders,
                                        'is_open_survey': 1 if project.is_open_survey else '',
+                                       'is_pro_sms': get_organization(request).is_pro_sms,
                                        'reminder_and_deadline': project.reminder_and_deadline
                                    }, default=field_to_json), content_type='application/json')
 
@@ -642,6 +668,7 @@ class SurveyWebQuestionnaireRequest():
             'is_advance_questionnaire': False,
             'reporter_id': reporter_id,
             'reporter_name': reporter_name,
+            'is_pro_sms': get_organization(self.request).is_pro_sms,
             'is_linked': self.is_linked,
         })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
@@ -904,6 +931,7 @@ def create_data_sender_and_web_user(request, project_id):
             'project': questionnaire,
             'project_links': project_links,
             'is_quota_reached': is_quota_reached(request),
+            'is_pro_sms': get_organization(request).is_pro_sms,
             'form': form,
             'in_trial_mode': in_trial_mode,
             'questionnaire_code': questionnaire.form_code,
@@ -935,7 +963,7 @@ def create_data_sender_and_web_user(request, project_id):
                                   detail=json.dumps(dict({"Unique ID": reporter_id})), project=questionnaire.name)
         if message is not None and reporter_id:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
-        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'success': reporter_id is not None,
+        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'is_pro_sms': get_organization(request).is_pro_sms, 'success': reporter_id is not None,
                    'button_text': ugettext('Register')}
         return render_to_response('datasender_form.html',
                                   context,

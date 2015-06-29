@@ -41,11 +41,14 @@
         var uniqueIdTypes = {{ unique_id_types|safe }}
         var is_success = "{{ is_success }}"
         var active_language = "{{ active_language }}"
+        var message_text = "";
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/qrs/?template=help";
     </script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/project_questionnaire_view_model.js"></script>
+
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/project/new_questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
@@ -53,6 +56,7 @@
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/poll_questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_instruction_and_preview.js"></script>
     <script type="text/javascript"

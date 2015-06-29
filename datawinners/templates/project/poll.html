@@ -1,0 +1,179 @@
+{% extends 'project/tab_navigation.html' %}
+{% load compress %}
+{% load i18n %}
+{% block page_title %} {% trans "Questionnaires - Poll" %} {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+    {% activetab "tab_nav" "poll" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "questionnaires" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
+{% endblock %}
+
+{% block page_scss %}
+    <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet"/>
+    <link href="/media/css/scss/send-sms.css" rel="stylesheet" />
+    <link href="/media/css/scss/poll_info.css" rel="stylesheet" />
+    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="/media/css/scss/util.css" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/automatic_reply_sms.css" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/on-off.css" rel="stylesheet" />
+{% endblock %}
+
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        var group_ds_count_url = "{% url group_ds_count %}";
+        var registered_ds_count_url = "{% url registered_ds_count %}";
+        var send_sms_url = "{% url send-sms%}";
+        var is_active = "{{ is_active }}";
+        var sms_popup_page = "poll_questionnaire";
+        var is_open_survey = "{{ project.is_open_survey }}";
+        var project = "{{ project }}";
+        var from_date = new Date("{{ from_date.isoformat }}");
+        var to_date = new Date("{{ to_date.isoformat }}");
+        var questionnaire_id = "{{ questionnaire_id }}";
+        var languages_list = {{ languages_list|safe }};
+        var current_project_language = '{{ current_project_language|safe }}';
+        var post_url = '{{ post_url }}';
+        var language_page_link = '{{ languages_link }}';
+        var is_outgoing_reply_messages_enabled = '{{ project.is_outgoing_sms_replies_enabled }}';
+        var questionnaire_name = "{{ questionnaire_name }}";
+        var days_active = "{{ days_active }}";
+        var number_of_days = '{{ number_of_days }}';
+        var is_poll ='{{ project.is_poll }}';
+        var project_id = '{{ project.id }}';
+        var get_poll_info_url = "{{ get_poll_info }}";
+        var message_text = "{{ message_text }}";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/createq/?template=help";
+    </script>
+    <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/project_language.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/send_sms_more_people.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/poll_options.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div id="flash-message-section">
+        {% include "flash_message.html" %}
+    </div>
+
+{% include 'send-sms.html' %}
+    <div id="poll_options">
+        <div style="float: right">
+
+            {% if project.is_open_survey %}
+            {% else %}
+                <a id="send_sms" class="margin_bottom_10">{% trans "Send SMS to More People" %}</a>
+            {% endif %}
+        </div>
+        <h4>{% trans 'Poll' %}</h4>
+
+        <div id="questionnaire_types" class="position_relative" data-bind="accordion: {header: '.questionnaire_type_header', active: selectedPollOption}">
+        <div id="poll_status_info" class="questionnaire_type_header">
+            <span class="header">{% trans "Poll is"%}
+                    <span data-bind="text:duration"> </span>
+            </span>
+        </div>
+        <div>
+
+            <span id="poll_success"> </span>
+
+            <div>
+                <p>
+                    {%  trans 'Poll is' %} <strong><span id="poll_status"  data-bind="text:status"> </span> </strong>:
+                    <a id="deactivate_link" data-bind="text:deactivation, click:deactivate" class="cancel_link" > </a>
+                    <a id="activate_link" data-bind="text:activation, click:activate" class="cancel_link"> </a>
+                </p>
+                <p>
+                    <br/>
+                    <span data-bind="html:active_dates_poll"> </span>
+                    <span>
+                        &nbsp<a id="change_poll" data-bind="text:change_days, click:activate" class="cancel_link"> {% trans "Change" %}</a>
+                    </span>
+                </p>
+            </div>
+
+            <div data-bind="dialog: {autoOpen: false, width: 450, height: 170, title:'Deactivate Poll?', dialogClass:'no-close'},
+                    dialogVisible: deactivationDialogVisible, open: deactivate, dialogContent: deactivatePollDialog">
+            </div>
+            <div data-bind="dialog: {autoOpen: false, width: 475, height: 'auto', title:'Activate Poll?', dialogClass:'no-close'},
+                    dialogVisible: activationDialogVisible, open: activate, dialogContent: activatePollDialog">
+            </div>
+
+            <div id="deactivate_poll_dialog" class="none">
+                <br>
+                <p> {% trans 'Are you sure want to deactivate this Poll?' %}</p>
+                <div class="float_right margin_top_40">
+                    <a id="close_deactivate_link" class="cancel_link" data-bind="click: close_deactivation_popup">{%trans "Cancel"%}</a>
+                    <button id="deactivate_button" class="button" type="button" data-bind="click: deactivate_poll">{% trans "Yes, Deactivate" %}</button>
+                </div>
+            </div>
+
+        </div>
+         <div id="automatic_reply" class="questionnaire_type_header">
+
+             <span class="header" >{% trans "Automatic Reply SMS"%} :
+             {% if  project.is_outgoing_sms_replies_enabled %}
+                 On
+             {% else %}
+                 Off
+             {% endif %}
+             </span>
+
+
+         </div>
+        <div class="position_static">
+            {% include 'project/language.html' %}
+        </div>
+            {% if project.is_open_survey %}
+        {% else %}
+             <div id="poll_sms_info" class="questionnaire_type_header">
+                 <div data-bind="click: show_poll_info()">
+                 <span class="header" >{% trans "Polled Recipients: "%} {{ num_of_recipients }}</span>
+                  </div>
+             </div>
+            <div data-bind="visible:show_poll_table">
+               {% include 'project/poll_info_table.html' %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div id="activate_poll_dialog" class="none">
+        <br>
+        <span>{% trans 'Active for' %}</span>&nbsp
+        <select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style dropdown_width"></select>&nbsp
+        <span> {% trans 'Days' %} </span><br><br>
+        <span class="italic_grey"><b>{% trans 'From : '%} </b></span>
+        <span data-bind="text:from_date_poll" class="date_text"> </span>&nbsp;
+
+        <span class="italic_grey">  <b>{% trans 'To : '%}</b> </span>
+        <span data-bind="text:to_date_poll" class="date_text"></span>
+        <div class="float_right margin_top_20">
+              <a id="close_activate_link" class="cancel_link" data-bind="click: close_activation_popup">{%trans "Cancel"%}</a>
+              <button id="activate_button" class="button" type="button" data-bind="click: activate_poll"> {% trans "Activate"%}</button>
+        </div>
+    </div>
+    </div>
+{% endblock %}

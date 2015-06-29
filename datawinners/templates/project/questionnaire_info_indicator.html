@@ -1,10 +1,16 @@
 {% load i18n %}
 <div>
     <div class="form-row-10px" id="questionnaire_name_section" data-bind="hidden: isEditMode">
-        <label>{% trans 'Questionnaire Name:' %}</label>
-        <input id= 'questionnaire_title' data-bind="inputValue: projectName, value: projectName, hasFocus: enableQuestionnaireTitleFocus" />
-        <div class="validationMessage" data-bind="ifnot: projectName.valid">
+        <div id= 'questionnaire_title' class="poll_title"  data-bind="visible: showPollQuestionnaireForm()">
+            <label>1. {% trans 'Poll Name' %}</label>
+        </div>
+        <div data-bind="visible: showQuestionnaireForm() || isXLSUploadQuestionnaire()">
+            <label>{% trans 'Questionnaire Name:' %}</label>
+
+            <input id= 'questionnaire_title' class="questionnaire_title"  data-bind="inputValue: projectName, value: projectName, hasFocus: enableQuestionnaireTitleFocus" />
+            <div class="validationMessage" data-bind="ifnot: projectName.valid">
                <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error, scrollToElement: projectName.error"></span>
+            </div>
         </div>
     </div>
 </div>

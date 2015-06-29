@@ -23,13 +23,53 @@ QUESTION_TB = by_xpath("//input[@id='question_title']")
 CODE_TB = by_css("input#code")
 
 ANSWER_TYPE_DROPDOWN = by_css(".dropdown select")
+POLL_SMS_DROPDOWN = by_css(".sms_dropdown select")
+POLL_VIA_SMS_RD_BUTTON = by_id('poll_via_sms')
+POLL_VIA_BROADCAST_RD_BUTTON = by_id('poll_via_broadcast')
+SMS_TEXTBOX = by_id('sms-text')
+POLL_TITLE = by_css(".project_title")
+CREATE_POLL_BUTTON = by_css('.create_poll_button')
+DATA_TAB_BTN = by_id("data_tab")
+DATA_SENDER_TAB = by_id("data_senders_tab")
+POLL_TAB = by_id("poll_tab")
 WORD_OR_PHRASE_RB = by_css("input[value='text']")
+POLL_STATUS_INFO = by_id("poll_status_info")
+AUTOMATIC_REPLY_ACCORDIAN = by_id("automatic_reply")
+AUTOMATIC_REPLY_SECTION = by_id("automatic_reply_section")
+POLL_SMS_ACCORDIAN = by_id("poll_sms_info")
+ITALIC_GREY_COMMENT = by_css(".italic_grey")
+VIEW_EDIT_SEND = "View, edit & send your Survey."
+POLL_SMS_TABLE = by_id("poll_sms_table")
+SEND_SMS_LINK = by_id("send_sms")
+SEND_BUTTON = by_id("send_button")
+CANCEL_SMS = by_id("cancel-sms")
+PROJECT_LANGUAGE = by_id("project_language")
+ON_SWITCH = by_css(".onoffswitch-checked")
+ON_OFF_SWITCH = by_css(".onoffswitch-label")
+SAVE_LANG_BTN = by_id("save_lang")
+SUCCESS_MSG_BOX = by_css(".success-message-box")
+RECIPIENT_DROPDOWN = by_id("recipient-dropdown")
+AUTOMATIC_REPLY_SMS_TEXT = 'Send Automatic SMS Replies for My Poll'
 WORD_OR_PHRASE = 'text'
+LANGUAGE_TEXT = by_css(".title_set_SMS")
 NUMBER_OPTION = 'integer'
 DATE_OPTION = 'date'
 LIST_OF_CHOICES_OPTION = 'choice'
 GPS_COORDINATES = 'geocode'
 UNIQUE_ID_OPTION = 'unique_id'
+GROUP_OPTION = 'group'
+LINKED_CONTACTS = 'linked'
+OTHERS = 'others'
+ACTIVE_POLL_NAME = by_id('active_poll_name')
+poll_info_accordian = by_id('poll_status_info')
+deactivate_link = by_id('deactivate_link')
+activate_link = by_id('activate_link')
+POLL_INFORMATION_BOX = by_css(".information_box")
+DEACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/button[@id='deactivate_button']")
+
+ACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/button[@id='activate_button']")
+
+FIRST_CREATED_POLL = by_xpath(".//*[@id='container_content']/div[2]/div[2]/div/table/tbody/tr[22]/td[1]/a")
 NEW_UNIQUE_ID_TEXT = by_css('.newUniqueIdName')
 UNIQUE_ID_CHOICE_BOX = by_css('.uniqueIdType')
 UNIQUE_ID_COMBO_BOX = by_css('.uniqueIdTypeContents')

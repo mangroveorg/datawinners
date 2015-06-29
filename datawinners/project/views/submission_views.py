@@ -42,12 +42,11 @@ from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQueryResponseCreator
 from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet, DateTimeField
-from mangrove.form_model.project import Project
+from mangrove.form_model.project import Project, get_project_by_code
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
-from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
@@ -73,9 +72,9 @@ logger = logging.getLogger("datawinners")
 @is_not_expired
 def headers(request, form_code):
     manager = get_database_manager(request.user)
+    questionnaire = get_project_by_code(manager, form_code)
     submission_type = request.GET.get('type', 'all')
-    form_model = get_form_model_by_code(manager, form_code)
-    headers = SubmissionsPageHeader(form_model, submission_type).get_column_title()
+    headers = SubmissionsPageHeader(questionnaire, submission_type).get_column_title()
     response = []
     for header in headers:
         response.append({"sTitle": ugettext(header)})
@@ -163,6 +162,8 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "user_email": request.user.email,
             "tab": tab,
             "xform": xform,
+            'is_pro_sms': get_organization(request).is_pro_sms,
+            "is_poll" : questionnaire.is_poll,
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
@@ -203,6 +204,7 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
             "filterable_fields": filterable_fields,
+            'is_pro_sms': get_organization(request).is_pro_sms,
             "is_media_field_present": questionnaire.is_media_type_fields_present
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
         }
@@ -250,7 +252,7 @@ def delete(request, project_id):
     if len(received_times):
         UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=questionnaire.name,
                               detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
-        response = encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
+        response = encode_json({'success_message': ugettext("The selected submissions have been deleted"), 'success': True})
     else:
         response = encode_json({'error_message': ugettext("No records deleted"), 'success': False})
 
@@ -322,7 +324,7 @@ def edit(request, project_id, survey_response_id, tab=0):
     form_ui_model = build_static_info_context(manager, survey_response,
                                               questionnaire_form_model=questionnaire_form_model,
                                               reporter_id=reporter_id)
-    form_ui_model.update({"back_link": back_link, 'is_datasender': is_data_sender(request)})
+    form_ui_model.update({"back_link": back_link, 'is_datasender': is_data_sender(request), 'hide_change': questionnaire_form_model.is_poll and questionnaire_form_model.is_open_survey})
     data_sender = get_data_sender(manager, survey_response)
     short_code = data_sender[1]
     enable_datasender_edit = True if survey_response.owner_uid else False
@@ -338,6 +340,7 @@ def edit(request, project_id, survey_response_id, tab=0):
         form_ui_model.update({"redirect_url": "",
                               "reporter_id": reporter_id,
                               "is_linked": is_linked,
+                              "is_pro_sms": get_organization(request).is_pro_sms,
                               "reporter_name": reporter_name})
 
         if not survey_response_form.is_valid() or form_ui_model['datasender_error_message']:
@@ -345,6 +348,7 @@ def edit(request, project_id, survey_response_id, tab=0):
             form_ui_model.update({'error_message': error_message,
                                   "reporter_id": reporter_id,
                                   "is_linked": is_linked,
+
                                   "reporter_name": reporter_name})
         return render_to_response("project/web_questionnaire.html", form_ui_model,
                                   context_instance=RequestContext(request))
@@ -478,7 +482,7 @@ def export_count(request):
     search_filters = post_body['search_filters']
     questionnaire_code = post_body['questionnaire_code']
     manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
+    questionnaire = get_project_by_code(manager, questionnaire_code)
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
 
@@ -496,7 +500,7 @@ def export_count(request):
     query_params.update({"search_text": search_text})
     query_params.update({"filter": submission_type})
 
-    submission_count = get_submission_count(manager, form_model, query_params, local_time_delta)
+    submission_count = get_submission_count(manager, questionnaire, query_params, local_time_delta)
     return HttpResponse(mimetype='application/json', content=json.dumps({"count": submission_count}))
 
 
@@ -551,9 +555,9 @@ def export(request):
     questionnaire_code = request.POST.get(u'questionnaire_code')
     manager = get_database_manager(request.user)
 
-    form_model = get_form_model_by_code(manager, questionnaire_code)
+    questionnaire = get_project_by_code(manager, questionnaire_code)
 
-    return _create_export_artifact(form_model, manager, request, search_filters)
+    return _create_export_artifact(questionnaire, manager, request, search_filters)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
@@ -581,14 +585,14 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 @valid_web_user
 def get_submissions(request, form_code):
     dbm = get_database_manager(request.user)
-    form_model = get_form_model_by_code(dbm, form_code)
+    questionnaire = get_project_by_code(dbm, form_code)
     search_parameters = {}
     search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
     search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
     filter_type = request.GET['type']
     search_parameters.update({"filter": filter_type})
 
-    search_parameters.update({"sort_field": _get_field_to_sort_on(request.POST, form_model, filter_type)})
+    search_parameters.update({"sort_field": _get_field_to_sort_on(request.POST, questionnaire, filter_type)})
     search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
     search_filters = json.loads(request.POST.get('search_filters'))
     search_parameters.update({"search_filters": search_filters})
@@ -596,10 +600,10 @@ def get_submissions(request, form_code):
     search_parameters.update({"search_text": search_text})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    search_results, query_fields = get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta)
-    submission_count_with_filters = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
-    submission_count_without_filters = get_submissions_without_user_filters_count(dbm, form_model, search_parameters)
-    submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(query_fields,
+    search_results, query_fields = get_submissions_paginated(dbm, questionnaire, search_parameters, local_time_delta)
+    submission_count_with_filters = get_submission_count(dbm, questionnaire, search_parameters, local_time_delta)
+    submission_count_without_filters = get_submissions_without_user_filters_count(dbm, questionnaire, search_parameters)
+    submissions = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields,
                                                                                                search_results)
 
     return HttpResponse(
@@ -640,7 +644,7 @@ def get_facet_response_for_choice_fields(query_with_criteria, choice_fields, for
 @valid_web_user
 def get_stats(request, form_code):
     dbm = get_database_manager(request.user)
-    form_model = get_form_model_by_code(dbm, form_code)
+    questionnaire = get_project_by_code(dbm, form_code)
     search_parameters = {}
     search_parameters.update({"start_result_number": 0})
     search_parameters.update({"number_of_results": 0})
@@ -656,11 +660,11 @@ def get_stats(request, form_code):
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
     # total success submission count irrespective of current fields being present or not
-    facet_results, total_submissions = get_facets_for_choice_fields(dbm, form_model, search_parameters,
+    facet_results, total_submissions = get_facets_for_choice_fields(dbm, questionnaire, search_parameters,
                                                                     local_time_delta)
 
     return HttpResponse(json.dumps(
-        {'result': create_statistics_response(facet_results, form_model),
+        {'result': create_statistics_response(facet_results, questionnaire),
          'total': total_submissions
         }), content_type='application/json')
 

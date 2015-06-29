@@ -77,6 +77,7 @@ DW.controllers = {
                 questionnaireViewModel.showQuestionnaireForm(true);
                 questionnaireViewModel.isOpenSurvey(true);
                 questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+                questionnaireViewModel.showPollQuestionnaireForm(false);
                 DW.trackEvent('questionnaire-creation-method', 'copy-from-template');
             });
     },
@@ -90,10 +91,11 @@ DW.controllers = {
             questionnaireViewModel.loadQuestion(questions);
         };
         questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+        questionnaireViewModel.showPollQuestionnaireForm(false);
         questionnaireViewModel.showQuestionnaireForm(true);
         questionnaireViewModel.enableQuestionnaireTitleFocus(true);
         questionnaireViewModel.questionnaireCode(questionnaire_code);
-        questionnaireViewModel.isOpenSurvey(questionnaireData.is_open_survey)
+        questionnaireViewModel.isOpenSurvey(questionnaireData.is_open_survey);
         DW.trackEvent('questionnaire-creation-method', 'copy-questionnaire');
     },
     "blankQuestionnaire": function () {
@@ -103,6 +105,7 @@ DW.controllers = {
             questionnaireViewModel.questionnaireCode(questionnaire_code);
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
             questionnaireViewModel.isOpenSurvey(true);
+            questionnaireViewModel.showPollQuestionnaireForm(false);
             DW.trackEvent('questionnaire-creation-method', 'blank-questionnaire');
     },
     "uploadQuestionnaire": function(){
@@ -112,6 +115,7 @@ DW.controllers = {
         questionnaireViewModel.enableQuestionnaireTitleFocus(true);
         questionnaireViewModel.isXLSUploadQuestionnaire(true);
         questionnaireViewModel.isOpenSurvey(false);
+        questionnaireViewModel.showPollQuestionnaireForm(false);
         DW.trackEvent('questionnaire-creation-method', 'advanced-questionnaire');
     },
     "questionnaireCreationOptions": function () {
@@ -120,11 +124,24 @@ DW.controllers = {
             questionnaireViewModel.showQuestionnaireForm(false);
             questionnaireViewModel.isXLSUploadQuestionnaire(false);
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(true);
+            questionnaireViewModel.showPollQuestionnaireForm(false);
+    },
+    "pollQuestionnaire": function () {
+            questionnaireViewModel.clearQuestionnaire();
+            questionnaireViewModel.showQuestionnaireForm(false);
+            questionnaireViewModel.showPollQuestionnaireForm(true);
+            questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+            questionnaireViewModel.questionnaireCode(questionnaire_code);
+            questionnaireViewModel.enableQuestionnaireTitleFocus(true);
+            questionnaireViewModel.isOpenSurvey(true);
+            DW.trackEvent('questionnaire-creation-method', 'poll-questionnaire');
+
     }
 };
 
 
 DW.projectRouter = Sammy(function () {
+        this.get('#questionnaire/poll', DW.controllers.pollQuestionnaire);
         this.get('#questionnaire/new', DW.controllers.blankQuestionnaire);
         this.get('#questionnaire/load/:template_id', DW.controllers.templateQuestionnaire);
         this.get('#questionnaire/copy/:questionnaire_id', DW.controllers.copyQuestionnaire);
@@ -134,9 +151,16 @@ DW.projectRouter = Sammy(function () {
 
 function _initializeViewModel() {
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
+
+    window.smsViewModel = new SmsViewModel();
     window.questionnaireViewModel = new ProjectQuestionnaireViewModel();
+    window.pollViewModel = new PollViewModel();
+
     ko.applyBindings(questionnaireViewModel, $('#create_questionnaire')[0]);
+    ko.applyBindings(pollViewModel, $('#poll_questionnaire')[0]);
+    ko.applyBindings(smsViewModel, $('#send-sms-section')[0]);
     ko.applyBindings(questionnaireCreationOptionsViewModel, $('#project_profile')[0]);
+    $("#send_sms_button").hide();
 }
 
 function _save_questionnaire(callback) {
@@ -146,8 +170,30 @@ function _save_questionnaire(callback) {
     $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     DW.post_project_data(callback);
 }
+function _if_pro_sms_mode_show_poll_option() {
+        if (is_pro_sms == "True")
+            $('.create_poll_section').show();
+        else
+            $('.create_poll_section').hide();
+    }
+
+
+function _is_another_poll_is_active() {
+    if (is_active == "True") {
+        $('.poll_active').show();
+        $('<div class="italic_grey padding_left_30 padding_top_10 padding_bottom_10 border_bottom_grey">'+ gettext('To create the Poll you must first deactivate your current ') + '<span><a id="active_poll_name" class="link_color"href="/project/poll/' +
+        project_active_id + '">'+ project_active_name + '</a></span>.'+ gettext('You may only have one active Poll at a time.') +'</div>').insertAfter($(".poll_active"));
+        $('.poll_deactivated').hide();
+    }
+    else {
+        $('.poll_active').hide();
+        $('.poll_deactivated').show();
+    }
+}
 $(document).ready(function () {
     _initializeViewModel();
+    _if_pro_sms_mode_show_poll_option();
+    _is_another_poll_is_active();
     DW.option_warning_dialog.init();
     new DW.UniqueIdHelpSection().init();
     DW.init_delete_periodicity_question_warning();
@@ -169,13 +215,19 @@ $(document).ready(function () {
     new DW.CancelWarningDialog(options).init().initializeLinkBindings();
 
     $("#save_and_create").on("click", function () {
-            _save_questionnaire(function (response) {
+            create_questionnaire();
+    });
+
+    var create_questionnaire = function(){
+        _save_questionnaire(function (response) {
                 var redirect_url = '/project/overview/' + response.project_id;
                 DW.trackEvent('questionnaire-creation-method', 'simple-qns-success');
                 window.location.replace(redirect_url);
                 return true;
             });
-    });
+    };
+
+
 
     new DW.UploadQuestionnaire({
         buttonText: "Upload XLSForm and Create Questionnaire",

@@ -28,6 +28,8 @@
         var send_sms_url = "{% url send-sms%}";
         var registered_ds_count_url = "{% url registered_ds_count %}";
         var group_ds_count_url = "{% url group_ds_count %}";
+        var message_text = "";
+        var is_poll = ""
     </script>
     <script type="text/javascript" src="/media/javascript/home/dashboard.js"></script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
@@ -118,9 +120,13 @@
                 {% endif %}
             </div>
             <div class="tableCell sub_section" id="questionnaire_section">
-                <img  class='dashboard_icon'  src="/media/images/analysis_business_check_checklist.png"/><br/>
-                <span class="explanation">{% trans 'Collect Data' %}</span><br/>
-                <a id="create_project_link" href="/project/wizard/create/?prev=dash" class="margin_bottom_10">{% trans 'Create a Questionnaire' %}</a>
+                <img  class='dashboard_icon'  src="/media/images/collect_data.png"/><br/>
+                <span class="explanation">{% trans "Collect Data" %}</span><br/>
+                {% if  is_pro_sms %}
+                    <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires & Polls" %}</a>
+                {% else %}
+                    <a id="create_project_link" href="{% url create_project %}?prev=dash" class="margin_bottom_10">{% trans "Create Questionnaires" %}</a>
+                {% endif %}
             </div>
             <!--<div class="tableCell sub_section">
                 <img  class='dashboard_icon'  src="/media/images/magnidier.png"/><br/>
@@ -153,7 +159,11 @@
     </div>
 
     <div class="grid_17 margin_left_null dashboard_left">
-        <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Questionnaires" %}</h4>
+        {% if is_pro_sms %}
+            <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Questionnaires & Polls" %}</h4>
+        {% else %}
+            <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Questionnaires" %}</h4>
+        {% endif %}
         <div id="projects">
         {% for project in projects %}
             <div class="project_header">
@@ -163,7 +173,12 @@
             </div>
         {% endfor %}
         </div>
-        <a class="grid_4  omega alpha view_all_projects" href="{% url alldata_index %}">{% trans "view all Questionnaires"%} »</a>
+        <a class="grid_4  omega alpha view_all_projects" href="{% url alldata_index %}">
+         {% if is_pro_sms %}
+            {% trans "view all Questionnaires & Polls"%} »</a>
+        {% else %}
+            {% trans "view all Questionnaires"%} »</a>
+        {% endif %}
     </div>
     <div class="grid_5 alpha omega dashboard_right">
     {% if in_trial_mode and user.groups.all.0.name == 'NGO Admins' %}

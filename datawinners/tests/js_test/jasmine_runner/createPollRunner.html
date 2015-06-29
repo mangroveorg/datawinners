@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script>
+        function gettext(msgid) {
+            return msgid;
+        }
+
+        function interpolate(fmt, obj, named) {
+
+        }
+        var DW = {
+            trackEvent: function(){}
+        };
+        subject_type = "Clinic";
+
+        var uniqueIdTypes = ['Clinic', 'WaterPoint']
+        var message_text = "";
+    </script>
+    <!-- lib files goes first; Change the order at your own risk -->
+    <link href="../../../media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../../../media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="../js_libs/jasmine_reporters/jasmine.css" rel="stylesheet"/>
+
+    <script src="../../../media/javascript/jquery.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/underscore.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery.blockUI.js"></script>
+
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine.js"></script>
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine-html.js"></script>
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine-jquery.js"></script>
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine.tap_reporter.js"></script>
+
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine_init.js"></script>
+    <!-- custom files goes next -->
+
+    <link href="../../../media/css/scss/util.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../../../media/javascript/knockout-3.0.0.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/ko-binding-extensions.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/dw-ko-validation-extensions.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/knockout-postbox.min.js"></script>
+
+{#    <script type="text/javascript" src="../../../media/javascript/project/create_project.js"></script>#}
+    <script type="text/javascript" src="../../../media/javascript/entity/send_sms.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/entity/questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/entity/project_questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/entity/poll_questionnaire_view_model.js"></script>
+
+    <!--spec -->
+    <script type="text/javascript" src="../specs/SpecHelper.js"></script>
+    <script type="text/javascript" src="../specs/create_poll_spec.js"></script>
+
+</head>
+
+<body>
+
+     <input id= 'poll_title' type="text" />
+     <textarea id="sms-text"></textarea>
+     <input name="csrfmiddlewaretoken" value="csrf1234">
+
+</body>
+</html>

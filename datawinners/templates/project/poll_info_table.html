@@ -1,0 +1,27 @@
+{% load i18n %}
+<div class='poll_info_table'>
+    <table id="poll_sms_table" class="styled_table margin_top_20 ">
+        <thead>
+        <th>{% trans "Sent On" %}</th>
+        <th> {% trans "Messages" %}</th>
+        <th> {% trans "Recipients" %}</th>
+        <th> {% trans "Sender" %} </th>
+        </thead>
+        <tbody data-bind="foreach: poll_messages">
+        <tr>
+               <td> <span data-bind='text: $data.sent_on' ></span></td>
+               <td> <span data-bind='text: $data.message' ></span></td>
+               <td data-bind="keyvalue: $data.poll_recipient_map">
+                   <span  class="capitalize" data-bind='text: $data.key'  ></span>
+                   (<span class="small_grey" data-bind='text: $data.value' ></span>);
+               </td>
+               <td data-bind="keyvalue: $data.sender">
+                   <span  class="capitalize" data-bind='text: $data.key'  ></span>
+                   (<span class="small_grey" data-bind='text: $data.value' ></span>)
+               </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+</div>

@@ -592,7 +592,10 @@ msgid "To get started with DataWinners"
 msgstr ""
 
 msgid "order_to_create_project"
-msgstr "create a new Questionnaire"
+msgstr "Create a New Questionnaire"
+
+msgid "order_to_create_project_and_poll"
+msgstr "Create a New Questionnaire or Poll"
 
 msgid "Add a data sender"
 msgstr ""
@@ -1686,6 +1689,8 @@ msgstr ""
 msgid "%s already registered as a subject type."
 msgstr ""
 
+msgid "Are you sure want to deactivate?"
+msgstr ""
 
 msgid "answer"
 msgstr ""
@@ -2032,7 +2037,10 @@ msgid "tooltip_error_language"
 msgstr "Data Senders receive an automatic reply SMS from DataWinners after every Submission.  There are two types of automatic reply SMS:  1) Questionnaire-level (Example: “Thank you David.  We received your SMS.) and; 2) Account-level (Example:  Error.  You are not registered as a Data Sender. Please contact your supervisor.”). Select your language preference for the Questionnaire-level reply SMS here. You can set your language preference for the Account-level reply SMS on the Languages page."
 
 msgid "tooltip_language_checkbox"
-msgstr " Click on the blue background to slide this switch to “OFF” and click the Save button to stop DataWinners from sending out automatic reply messages for this questionnaire.  <br /> Click on the grey background to slide this switch to “ON” and click the Save button to reactivate."
+msgstr " Click on the blue background to slide this switch to “OFF” and click the Save button to stop DataWinners from sending out automatic reply messages for this Questionnaire.  <br /> Click on the grey background to slide this switch to “ON” and click the Save button to reactivate."
+
+msgid "tooltip_language_checkbox_poll"
+msgstr " Click on the blue background to slide this switch to “OFF” and click the Save button to stop DataWinners from sending out automatic reply messages for this Poll.  <br /> Click on the grey background to slide this switch to “ON” and click the Save button to reactivate."
 
 msgid "Your project"
 msgstr ""
@@ -4651,6 +4659,9 @@ msgstr "Use this option if you want to create advanced features in your Question
 
 msgid "r_tooltip_advanced_questionnaire_option"
 msgstr "This is our first release of the Upload XLSForm feature.  Please help us to improve it by sending any feedback to <a> support@datawinners.com. </a>"
+
+msgid "p_tooltip_poll_option"
+msgstr "Using SMS, send a single question to a specific group: <br>\"Did you get the textbook shipment?  Please respond YES or NO.\" <br><br> Or broadcast your open-ended question on the radio and collect SMS responses: <br>\"Please send us information about any illegal poaching in your area.\""
 
 msgid "Prefetch of csv not supported"
 msgstr "preloading of CSV data (the PullData() function)."
