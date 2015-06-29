@@ -92,7 +92,7 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         current_failed_submission_entry_count = failed_submissions_page.get_total_number_of_entries()
         self.assertEqual(current_failed_submission_entry_count, failed_submission_entry_count+1)
         self.assertEqual(sms_with_incorrect_number_of_answers[SMS],
-                         failed_submissions_page.get_entry_for_row_number(failed_submission_entry_count + 1)['message'])
+                         failed_submissions_page.get_entry_for_row_number(1)['message'])
 
     @attr('functional_test')
     def test_reply_messages_in_light_box_when_outgoing_reply_turned_off(self):
