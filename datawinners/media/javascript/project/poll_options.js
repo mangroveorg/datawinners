@@ -118,6 +118,7 @@ var PollOptionsViewModel = function() {
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box">'+ gettext('Your changes have been saved.')+'</div>').insertBefore($("#poll_options"))
                 $('#send_sms').addClass('link_color disable_link');
+                 DW.trackEvent('Poll', 'deactivation');
             }
             else {
                 $('<div class="message-box">' + responseJson['message'] + '</div>').insertBefore($("#poll_options"))
@@ -136,6 +137,7 @@ var PollOptionsViewModel = function() {
                var poll_msg = responseJson['poll_messages'];
                 self.poll_messages(poll_msg);
                 self.show_poll_table(true);
+                DW.trackEvent('Poll', 'Poll Table Info');
            }
        });
     };
@@ -158,6 +160,8 @@ var PollOptionsViewModel = function() {
                 $('<div class="success-message-box">' + gettext('Your changes have been saved.') +'</div>').insertBefore($("#poll_options"));
 
                 $('#send_sms').removeClass('link_color disable_link');
+                 DW.trackEvent('Poll', 'Activation');
+
             }
             else {
                 var responseMessage =responseJson['message'].replace(responseJson['question_name_active'], '<a class="link_color" href="/project/poll/' + responseJson['question_id_active'] + '">' + responseJson['question_name_active'] + '</a>');

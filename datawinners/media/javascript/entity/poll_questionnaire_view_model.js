@@ -120,6 +120,7 @@ function PollViewModel() {
                     DW.trackEvent('poll-creation-method', 'poll-qns-success');
                     window.location.replace(redirect_url);
                     _send_sms_(responseJson.project_id);
+                     DW.trackEvent('Create Questionnaire', 'Poll');
                 }
                 else{
                     if(responseJson['error_message']['name']){
