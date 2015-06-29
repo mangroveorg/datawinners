@@ -15,10 +15,17 @@ def get_all_projects(dbm, data_sender_id=None):
                                          include_docs=True)
         for row in rows:
             row.update({'value': row["doc"]})
-            if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
-                projects.append(row)
+            projects.append(row)
         return projects
     return dbm.load_all_rows_in_view('all_projects')
+
+
+def remove_poll_questionnaires(rows):
+    projects = []
+    for row in rows:
+        if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
+            projects.append(row)
+    return projects
 
 
 def get_all_form_models(dbm, data_sender_id=None):
