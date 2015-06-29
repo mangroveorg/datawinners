@@ -19,6 +19,7 @@ class TestDeleteSubmission(unittest.TestCase):
 
         self.dbm = get_db_manager('hni_testorg_slx364903')
         self.form_model = self.project_info('cli001')
+        self.form_model.is_poll = False
 
     def test_should_delete_all_submissions_given_delete_all_flag_true(self):
         unique_text = random_string()
