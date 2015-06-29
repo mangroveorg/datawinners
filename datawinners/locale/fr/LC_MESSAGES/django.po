@@ -2236,7 +2236,7 @@ msgid "Sender"
 msgstr "Expéditeur"
 
 msgid "The selected submissions have been deleted"
-msgstr "Les Soumissions sélectionnées ont été suppriméesQuestionnaire or Poll with same name already exists"
+msgstr "Les Soumissions sélectionnées ont été supprimées"
 
 msgid "Poll"
 msgstr "Sondage"
@@ -4341,7 +4341,7 @@ msgid "OK, Got it!"
 msgstr "OK, Compris!"
 
 msgid "Your Submission(s) will be moved to Deleted Submissions.<br/>This action cannot be undone."
-msgstr "Votre/vos Soumission(s) sera/seront déplacée(s) vers Soumissions Supprimées.<br/>Cette action ne peut pas être annulée"
+msgstr "Vos Soumissions seront déplacées vers Soumissions supprimées.<br/>Cette action ne peut pas être annulée"
 
 msgid "Are you sure you want to continue?"
 msgstr "Etes-vous sûr de vouloir continuer?"
@@ -6064,3 +6064,7 @@ msgstr "Un Questionnaire ou Sondage portant le même nom existe déjà "
 
 msgid "The Poll Recipient(s) are removed."
 msgstr "Les destinataires ont été retirés."
+
+msgid "Polls - Recipients"
+msgstr "Sondages - Destinataires"
+
