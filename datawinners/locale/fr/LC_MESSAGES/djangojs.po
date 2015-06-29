@@ -1618,4 +1618,4 @@ msgstr " Au : "
 
 
 msgid " inactive"
-msgstr " inactif"
+msgstr " désactivé"

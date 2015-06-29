@@ -102,7 +102,9 @@ def delete_project(request, project_id):
 @valid_web_user
 @is_datasender
 def rename_project(request, project_id):
-    manager = get_database_manager(request.user)
+    user = request.user
+    organization = Organization.objects.get(org_id=user.get_profile().org_id)
+    manager = get_database_manager(user)
     questionnaire = Project.get(manager, project_id)
     new_project_name = request.POST.get('data', '').strip()
     if len(new_project_name) == 0:
@@ -118,9 +120,12 @@ def rename_project(request, project_id):
             UserActivityLog().log(request, action=RENAMED_QUESTIONNAIRE, project=questionnaire.name)
             return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
         except DataObjectAlreadyExists as e:
+            if organization.is_pro_sms:
+                error_message = "Questionnaire or Poll with same name already exists."
+            else:
+                error_message = "Questionnaire with same name already exists."
             return HttpResponse(
-                json.dumps({"status": "error", "message": ugettext("Questionnaire with same name already exists.")}),
-                content_type='application/json')
+                json.dumps({"status": "error", "message": ugettext("%s" % error_message)}), content_type='application/json')
     return HttpResponse(json.dumps({"status": "success"}), content_type='application/json')
 
 @is_datasender

@@ -151,8 +151,8 @@ var PollOptionsViewModel = function() {
                 self.status(gettext('Active'));
                 self.deactivation(gettext('Deactivate'));
                 self.activation('');
-                self.duration(gettext('is active From : ') + self.from_date_poll() + gettext('To : ') + self.to_date_poll());
-                self.active_dates_poll('<i class="italic_grey"><b>From :</b> '  + self.from_date_poll() + ' <b>&nbsp To : </b> ' + self.to_date_poll()+'</i>');
+                self.duration(gettext('is active from : ') + self.from_date_poll() + gettext('to : ') + self.to_date_poll());
+                self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ self.from_date_poll() + ' <b>&nbsp'+gettext(' To : ')+'</b>' + self.to_date_poll() +'</i>');
                 self.change_days(gettext('Change'));
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box">' + gettext('Your changes have been saved.') +'</div>').insertBefore($("#poll_options"));
