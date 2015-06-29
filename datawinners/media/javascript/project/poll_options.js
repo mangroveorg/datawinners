@@ -12,7 +12,7 @@ var PollOptionsViewModel = function() {
     };
 
     self.get_formatted_date = function(date){
-        return  date.getDate() +" " +month_name_map[date.getMonth()] +", "+ date.getFullYear();
+        return  date.getDate() +" " +month_name_map[date.getMonth()] +" "+ date.getFullYear();
     };
 
     var month_name_map = {

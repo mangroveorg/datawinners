@@ -51,7 +51,7 @@ function PollViewModel() {
 
     function get_formatted_date(date) {
         //return month_name_map[date.getMonth()]+" "+ date.getDate() + ", " +date.getFullYear();
-        return date.getDate()+" "+month_name_map[date.getMonth()]+ ", " +date.getFullYear();
+        return date.getDate()+" "+month_name_map[date.getMonth()]+ " " +date.getFullYear();
     }
 
     self.from_date_poll = ko.observable(get_formatted_date(start_date));
