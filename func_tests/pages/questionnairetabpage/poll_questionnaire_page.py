@@ -87,6 +87,7 @@ class PollQuestionnairePage(Page):
         return status
 
     def is_reply_sms_language_updated(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MSG_BOX, True)
         return self.driver.find(SUCCESS_MSG_BOX) is not None
 
     def change_autoamtic_reply_sms_status(self):
