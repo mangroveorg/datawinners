@@ -324,6 +324,19 @@ function SmsViewModel(){
           return self.selectedSmsOption();
       }
   }
+    ko.computed(function () {
+        self.selectedSmsOption();
+        self.selectedGroupNames();
+        self.selectedMyPollRecipientsNames();
+        self.selectedQuestionnaireNames();
+        self._resetSuccessMessage();
+        self._resetErrorMessages();
+    })
+
+    $("#sms-text").change(function(){
+        self._resetSuccessMessage();
+        self._resetErrorMessages();
+    });
 
   self.sendSms = function(project_id){
       var project_id_type = typeof project_id;
