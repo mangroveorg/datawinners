@@ -1594,8 +1594,8 @@ msgstr "Activer"
 msgid "Active"
 msgstr "Actif"
 
-msgid "There are no Poll Recipients yet to send a message."
-msgstr "Il n’y a aucun destinataire vers qui envoyer le message."
+msgid "The list of your Poll Recipients is empty."
+msgstr "La liste des destinataires de votre Sondage est vide."
 
 msgid "My Poll Recipients"
 msgstr "Les destinataires de mon Sondage"

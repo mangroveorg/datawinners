@@ -4,7 +4,6 @@ from mock import Mock, patch, MagicMock
 from django.contrib.auth.models import User
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.alldata import helper
-from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.project.couch_view_helper import get_all_projects
 
 
