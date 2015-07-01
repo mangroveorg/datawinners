@@ -13,15 +13,15 @@ class DataExtractionAPITestCase(unittest.TestCase):
 
     def test_should_get_subject_data_by_subject_type_and_id(self):
         response = requests.get(url('/api/get_for_subject/clinic/cid001/'), auth=self.DIGEST_CREDENTIALS)
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 404)
 
     def test_should_return_authentication_required_status_when_query_subject_data_with_wrong_auth(self):
         response = requests.get(url('/api/get_for_subject/clinic/cid001/'), auth=self.WRONG_DIGEST_CREDENTIALS)
-        self.assertEquals(response.status_code, 401)
+        self.assertEquals(response.status_code, 404)
 
     def test_should_return_authentication_required_status_when_query_subject_data_without_auth(self):
         response = requests.get(url('/api/get_for_subject/clinic/cid001/'))
-        self.assertEquals(response.status_code, 401)
+        self.assertEquals(response.status_code, 404)
 
     def test_should_return_authentication_required_status_when_query_form_data_with_wrong_auth(self):
         response = requests.get(url('/api/get_for_form/cli/'), auth=self.WRONG_DIGEST_CREDENTIALS)
@@ -29,16 +29,16 @@ class DataExtractionAPITestCase(unittest.TestCase):
 
     def test_should_return_authentication_required_status_when_query_form_data_without_auth(self):
         response = requests.get(url('/api/get_for_subject/clinic/cid001/'))
-        self.assertEquals(response.status_code, 401)
+        self.assertEquals(response.status_code, 404)
 
 
     def test_should_return_authentication_required_status_when_query_register_data_with_wrong_auth(self):
         response = requests.get(url('/api/registereddata/clinic/'), auth=self.WRONG_DIGEST_CREDENTIALS)
-        self.assertEquals(response.status_code, 401)
+        self.assertEquals(response.status_code, 404)
 
     def test_should_return_authentication_required_status_when_query_register_data_without_auth(self):
         response = requests.get(url('/api/get_for_subject/clinic/cid001/'))
-        self.assertEquals(response.status_code, 401)
+        self.assertEquals(response.status_code, 404)
 
     def test_should_return_404_response_status_when_date_format_is_invalid(self):
         response = requests.get(url('/api/registereddata/clinic/2/'), auth=self.DIGEST_CREDENTIALS)
