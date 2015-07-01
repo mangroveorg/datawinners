@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from tests.testsettings import WAIT
+from Tkconstants import TRUE
+from tests.testsettings import WAIT, UI_TEST_TIMEOUT
 
 
 class Page(object):
@@ -19,6 +20,8 @@ class Page(object):
     def is_help_button_present(self):
         from framework.utils.common_utils import by_id
         locator = by_id("need_help_button")
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, locator, True)
+
         return self.driver.is_element_present(locator)
 
     def is_help_content_available(self):
