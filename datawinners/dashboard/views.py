@@ -165,7 +165,7 @@ def start(request):
     tabs_dict = {'project': 'questionnaires', 'datasenders': 'data_senders',
                  'subjects': 'subjects', 'alldata': 'questionnaires'}
 
-    help_url_dict = {'projet': 'https://www.datawinners.com/%s/find-answers-app/category/proj/?template=help',
+    help_url_dict = {'project': 'https://www.datawinners.com/%s/find-answers-app/category/proj/?template=help',
                      'datasenders': 'https://www.datawinners.com/%s/find-answers-app/category/allds/?template=help',
                      'subjects': 'https://www.datawinners.com/%s/find-answers-app/category/idnos/?template=help',
                      'alldata': 'https://www.datawinners.com/%s/find-answers-app/category/proj/?template=help'}
