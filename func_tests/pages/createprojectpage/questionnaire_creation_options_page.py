@@ -23,10 +23,9 @@ class QuestionnaireCreationOptionsPage(Page):
         return self.go_to_create_questionnaire_page()
 
     def select_poll_questionnaire_option(self):
-        sleep(1)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(POLL_QUESTIONNAIRE_SELECTION_ACCORDION), True)
         blank_questionnaire_accoridion = self.driver.find(by_css(POLL_QUESTIONNAIRE_SELECTION_ACCORDION))
         blank_questionnaire_accoridion.click()
-        sleep(1)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CONTINUE_BTN, True)
         return self.go_to_create_questionnaire_page()
 
