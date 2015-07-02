@@ -38,7 +38,7 @@ class TestProjectOverview(HeadlessRunnerTest):
         self.driver.go_to(url('/project/overview/%s' % project_id))
         project_name = self.driver.find(by_css(".project_title")).text
         self.driver.find(by_css(".project_title")).click()
-        self.enter_project_name_and_validate_error_msg("Clinic Test Project1", "Questionnaire with same name already exists.")
+        self.enter_project_name_and_validate_error_msg("Clinic Test Project1", "Questionnaire or Poll with same name already exists.")
         self.enter_project_name_and_validate_error_msg("", "This field is required.")
 
         self.driver.find_text_box(by_css(".project_title input.editField")).enter_text("Renamed_%s" %project_name)
