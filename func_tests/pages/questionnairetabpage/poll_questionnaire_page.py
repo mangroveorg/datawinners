@@ -35,7 +35,6 @@ class PollQuestionnairePage(Page):
     def click_create_poll(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_POLL_BUTTON, True)
         self.driver.find(CREATE_POLL_BUTTON).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, PROJECT_LINK, True)
 
     def is_poll_created(self, poll_title):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_TITLE, True)
