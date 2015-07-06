@@ -9,6 +9,7 @@ function PollViewModel() {
     });
     var active_poll_days = [1,2,3,4,5];
     var start_date = new Date();
+    var calculateDays = new CalculateDays(start_date.getDate() + self.number_of_days() + start_date);
     var maxAllowedSMSCharacters = 160;
 
     var smsTextElement = $("#sms-text");
@@ -27,34 +28,17 @@ function PollViewModel() {
                                             {"label":gettext('Group'), "code": "group"},
                                             {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"}
                                             ]);
-    var month_name_map = {0:gettext('January') ,
-                      1: gettext('February') ,
-                      2: gettext('March') ,
-                      3: gettext('April') ,
-                      4: gettext('May') ,
-                      5: gettext('June') ,
-                      6: gettext('July') ,
-                      7: gettext('August') ,
-                      8: gettext('September'),
-                      9: gettext('October') ,
-                      10:gettext('November') ,
-                      11:gettext('December') };
 
     var end_date;
     self.days_active = ko.computed(function(){
         var current_date = new Date();
         current_date.setDate(current_date.getDate() + self.number_of_days());
         end_date = current_date;
-        self.to_date_poll(get_formatted_date(current_date));
+        self.to_date_poll(calculateDays.get_formatted_date_for_poll(current_date));
         return active_poll_days
     });
 
-    function get_formatted_date(date) {
-        //return month_name_map[date.getMonth()]+" "+ date.getDate() + ", " +date.getFullYear();
-        return date.getDate()+" "+month_name_map[date.getMonth()]+ " " +date.getFullYear();
-    }
-
-    self.from_date_poll = ko.observable(get_formatted_date(start_date));
+    self.from_date_poll = ko.observable(calculateDays.get_formatted_date_for_poll(start_date));
 
     self.disableSendPoll = ko.computed(function(){
         if(window.smsViewModel.disableSendSms() ){

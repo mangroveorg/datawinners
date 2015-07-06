@@ -48,7 +48,6 @@ def _construct_poll_recipients(poll_submission):
 
 
 def _get_poll_sent_messages_info(project_id):
-
     messages_poll_info_array = []
     poll_submissions = PollInfo.objects.filter(questionnaire_id=project_id)
     for poll_submission in poll_submissions:

@@ -5,28 +5,7 @@ var PollOptionsViewModel = function() {
     var END_TIME = "T23:59:00";
     var data = {};
 
-    var get_current_number_of_days = function(){
-        return (to_date.getDate() - from_date.getDate());
-    };
-
-    self.get_formatted_date = function(date){
-        return  date.getDate() +" " +month_name_map[date.getMonth()] +" "+ date.getFullYear();
-    };
-
-    var month_name_map = {
-        0: gettext('January'),
-        1: gettext('February'),
-        2: gettext('March'),
-        3: gettext('April'),
-        4: gettext('May'),
-        5: gettext('June'),
-        6: gettext('July'),
-        7: gettext('August'),
-        8: gettext('September'),
-        9: gettext('October'),
-        10: gettext('November'),
-        11: gettext('December')
-    };
+    var calculateDays = new CalculateDays(to_date, from_date);
 
     self.selectedPollOption = ko.observableArray([1, 3, 4]);
     self.active_poll_days = ko.observable([1, 2, 3, 4, 5]);
@@ -39,7 +18,7 @@ var PollOptionsViewModel = function() {
     self.number_of_people = ko.observable();
     self.show_poll_table = ko.observable(false);
     self.poll_messages = ko.observableArray();
-    self.from_date_poll = ko.observable(self.get_formatted_date(start_date));
+    self.from_date_poll = ko.observable(calculateDays.get_formatted_date_for_poll(start_date));
     self.show_sms_option = ko.observable(false);
 
     self.duration = ko.observable();
@@ -61,17 +40,19 @@ var PollOptionsViewModel = function() {
     self.to_date_poll = ko.computed(function () {
         end_date = new Date();
         end_date.setDate(end_date.getDate() + self.number_of_days());
-        return self.get_formatted_date(end_date);
+        return calculateDays.get_formatted_date_for_poll(end_date);
     });
+
+
 
     if (is_active == 'True') {
         self.status(gettext('Active'));
         self.activation('');
         self.deactivation(gettext('Deactivate'));
-        self.duration(gettext(' active From : ') + self.get_formatted_date(from_date) + gettext('To : ') + self.get_formatted_date(to_date));
+        self.duration(gettext(' active From : ') + calculateDays.get_formatted_date_for_poll(from_date) + gettext('To : ') + calculateDays.get_formatted_date_for_poll(to_date));
         self.change_days(gettext('Change'));
-        self.number_of_days(get_current_number_of_days());
-        self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ self.get_formatted_date(from_date) + ' <b>&nbsp'+gettext(' To : ')+'</b>' + self.get_formatted_date(to_date) +'</i>');
+        self.number_of_days(calculateDays.get_difference_between_dates());
+        self.active_dates_poll('<i class="italic_grey"><b> '+gettext('From : ')+'</b> '+ calculateDays.get_formatted_date_for_poll(from_date) + ' <b>&nbsp'+gettext(' To : ')+'</b>' + calculateDays.get_formatted_date_for_poll(to_date) +'</i>');
     }
     else {
         $('#send_sms').addClass('link_color disable_link');

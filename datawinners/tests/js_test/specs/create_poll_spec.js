@@ -65,8 +65,8 @@ describe("Create a Poll Questionnaire", function(){
         pollViewModel.days_active();
         var expected_date = new Date();
         expected_date.setDate(current_date.getDate() + 5);
-
-        expect(pollViewModel.to_date_poll()).toBe(expected_date.getDate()+" "+month_name_map[expected_date.getMonth()]+" "+  expected_date.getFullYear())
+        var calculateDays = new CalculateDays(current_date.getDate() + 5, current_date)
+        expect(pollViewModel.to_date_poll()).toBe(expected_date.getDate()+" "+ calculateDays.month_name_map[expected_date.getMonth()]+" "+  expected_date.getFullYear())
 
     });
 
