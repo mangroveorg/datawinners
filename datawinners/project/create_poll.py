@@ -17,12 +17,6 @@ from datawinners.utils import lowercase_and_strip_accents, get_organization
 from mangrove.form_model.project import Project, get_active_form_model_name_and_id
 
 
-def _is_project_name_unique(error_message, name_has_errors, questionnaire):
-    if not questionnaire.is_project_name_unique():
-        name_has_errors = True
-        error_message["name"] = _("Questionnaire or Poll with same name already exists.")
-    return name_has_errors
-
 def _associate_data_senders_to_questionnaire(manager, questionnaire, selected_option):
     data_senders_list = []
     if selected_option.get('option') == 'questionnaire_linked':
@@ -48,7 +42,7 @@ def _create_questionnaire(manager, questionnaire, question):
     QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
 
 
-def _create_poll(manager, questionnaire, selected_option, question):
+def _save_poll(manager, questionnaire, selected_option, question):
     _create_questionnaire(manager, questionnaire, question)
     _associate_data_senders_to_questionnaire(manager, questionnaire, selected_option)
     questionnaire.update_doc_and_save()
@@ -66,25 +60,6 @@ def _construct_questionnaire(request):
 
     return manager, questionnaire
 
-
-def create_poll_questionnaire(request):
-    manager, questionnaire = _construct_questionnaire(request)
-    project_name_unique = False
-    error_message = {}
-    selected_option = json.loads(request.POST['selected_option'])
-    question = request.POST.get('question')
-    project_name_unique = _is_project_name_unique(error_message, project_name_unique, questionnaire)
-    if not project_name_unique:
-        _create_poll(manager, questionnaire, selected_option, question)
-        UserActivityLog().log(request, action=CREATED_POLL, project=questionnaire.name,
-                              detail=questionnaire.name)
-        return HttpResponse(
-            json.dumps({'success': True, 'project_id': questionnaire.id, 'project_code': questionnaire.form_code}))
-    return HttpResponse(json.dumps({'success': False,
-                                    'error_message': error_message,
-                                    'project_name_unique': project_name_unique}))
-
-
 def _is_smsc_configured(organization):
     organization_setting = OrganizationFinder().find_organization_setting(organization.tel_number())
     smsc = None
@@ -93,6 +68,23 @@ def _is_smsc_configured(organization):
     if smsc:
         return True
     return False
+
+
+def _create_response_dict(request):
+    manager, questionnaire = _construct_questionnaire(request)
+    error_message = {}
+    selected_option = json.loads(request.POST['selected_option'])
+    question = request.POST.get('question')
+    if questionnaire.is_project_name_unique():
+        _save_poll(manager, questionnaire, selected_option, question)
+        UserActivityLog().log(request, action=CREATED_POLL, project=questionnaire.name,
+                              detail=questionnaire.name)
+
+        return {'success': True, 'project_id': questionnaire.id, 'project_code': questionnaire.form_code}
+    else:
+        project_name_unique = True
+        error_message["name"] = _("Questionnaire or Poll with same name already exists.")
+        return {'success': False, 'error_message': error_message, 'project_name_unique': project_name_unique}
 
 
 @login_required
@@ -110,7 +102,9 @@ def create_poll(request):
         manager = get_database_manager(request.user)
         is_active, project_id, project_name = get_active_form_model_name_and_id(manager)
         if not is_active:
-            return create_poll_questionnaire(request)
+            response_dict = _create_response_dict(request)
+            return HttpResponse(json.dumps(response_dict))
+
         else:
             return HttpResponse(json.dumps({'success': False,
                                             'error_message': 'Another poll is active',

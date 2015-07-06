@@ -22,13 +22,6 @@ from datawinners.project.helper import is_project_exist
 from datawinners.project.views.views import get_project_link
 
 
-def _is_active(questionnaire):
-    is_active = False
-    if questionnaire.active == "active":
-        is_active = True
-    return is_active
-
-
 def _is_same_questionnaire(question_id_active, questionnaire):
     if questionnaire.id == question_id_active:
         is_active = True
@@ -76,7 +69,8 @@ def _get_poll_sent_messages_info(project_id):
 @login_required
 @csrf_exempt
 @is_not_expired
-def get_poll_info(request, project_id):
+@is_project_exist
+def get_poll_sent_messages(request, project_id):
     messages_poll_info_array = _get_poll_sent_messages_info(project_id)
     return HttpResponse(json.dumps({'success': True, 'poll_messages': messages_poll_info_array}))
 
@@ -87,36 +81,33 @@ def get_poll_info(request, project_id):
 @is_not_expired
 @is_project_exist
 @is_datasender
-def poll(request, project_id):
+def get_poll_info(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
     project_links = get_project_link(questionnaire)
-    is_active = _is_active(questionnaire)
-    questionnaire_active, question_id_active, question_name_active = get_active_form_model_name_and_id(manager)
+    questionnaire_active, active_poll_id, active_poll_name = get_active_form_model_name_and_id(manager)
     from_date = questionnaire.modified.date()
     to_date = questionnaire.end_date.date()
     languages_list = get_available_project_languages(manager)
     current_project_language = questionnaire.language
     num_of_recipients = _get_number_of_recipients_(project_id)
-    messages_poll_info_array = _get_poll_sent_messages_info(project_id)
     return render_to_response('project/poll.html', RequestContext(request, {
         'project': questionnaire,
         'message_text': questionnaire.form_fields[0]['label'],
         'project_links': project_links,
-        'is_active': is_active,
+        'is_active': questionnaire.active,
         'from_date': from_date,
         'is_pro_sms': get_organization(request).is_pro_sms,
         'to_date': to_date,
-        'questionnaire_id': question_id_active,
-        'questionnaire_name': question_name_active,
+        'questionnaire_id': active_poll_id,
+        'questionnaire_name': active_poll_name,
         'languages_list': json.dumps(languages_list),
         'languages_link': reverse('languages'),
         'current_project_language': current_project_language,
         'post_url': reverse("project-language", args=[questionnaire.id]),
-        'get_poll_info': reverse("get_poll_info", args=[questionnaire.id]),
+        'get_poll_sent_messages': reverse("get_poll_sent_messages", args=[questionnaire.id]),
         'questionnaire_code': questionnaire.form_code,
         'num_of_recipients': num_of_recipients,
-        'poll_messages': messages_poll_info_array
     }))
 
 def _change_questionnaire_status(questionnaire, active_status):
@@ -132,6 +123,7 @@ def _change_questionnaire_end_date(questionnaire, end_date):
 @login_required
 @csrf_exempt
 @is_not_expired
+@is_project_exist
 def deactivate_poll(request, project_id):
     if request.method == 'POST':
         manager = get_database_manager(request.user)
@@ -144,40 +136,41 @@ def deactivate_poll(request, project_id):
         return HttpResponse(json.dumps({'success': False}))
 
 
+def _create_reponse_for_activated_poll(manager, questionnaire, request):
+    is_active, question_id_active, question_name_active = get_active_form_model_name_and_id(manager)
+    is_current_active = _is_same_questionnaire(question_id_active, questionnaire)
+    end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%dT%H:%M:%S')
+    if is_current_active:
+        _change_questionnaire_end_date(questionnaire, end_date)
+        return {'success': True}
+    elif not is_active and not is_current_active:
+        _change_questionnaire_status(questionnaire, "active")
+        _change_questionnaire_end_date(questionnaire, end_date)
+        UserActivityLog().log(request, action=ACTIVATE_POLL, project=questionnaire.name,
+                              detail=questionnaire.name)
+        return {'success': True}
+    message = _(
+        "To activate the Poll you must first deactivate your current Poll %s. You may only have one active Poll at a time.") % question_name_active
+    return {'success': False, 'message': message,
+                    'question_id_active': question_id_active,
+                    'question_name_active': question_name_active}
+
+
 @login_required
 @csrf_exempt
 @is_not_expired
+@is_project_exist
 def activate_poll(request, project_id):
     if request.method == 'POST':
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         if questionnaire:
-            is_active, question_id_active, question_name_active = get_active_form_model_name_and_id(manager)
-            is_current_active = _is_same_questionnaire(question_id_active, questionnaire)
-            end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%dT%H:%M:%S')
-            if is_current_active:
-                _change_questionnaire_end_date(questionnaire, end_date)
-                return HttpResponse(json.dumps({'success': True}))
-            elif not is_active and not is_current_active:
-                _change_questionnaire_status(questionnaire, "active")
-                _change_questionnaire_end_date(questionnaire, end_date)
-                UserActivityLog().log(request, action=ACTIVATE_POLL, project=questionnaire.name,
-                                      detail=questionnaire.name)
-                return HttpResponse(json.dumps({'success': True}))
-            message = _("To activate the Poll you must first deactivate your current Poll %s. You may only have one active Poll at a time.") % question_name_active
-            return HttpResponse(
-                json.dumps({'success': False, 'message': message,
-                            'question_id_active': question_id_active,
-                            'question_name_active': question_name_active}))
+            response_dict =_create_reponse_for_activated_poll(manager, questionnaire, request)
+            return HttpResponse(json.dumps(response_dict))
         return HttpResponse(json.dumps({'success': False, 'message': "No Such questionnaire"}))
 
-@login_required
-@session_not_expired
-@is_datasender
-@is_not_expired
-def my_poll_recipients_count(request, project_id):
-    dbm = get_database_manager(request.user)
-    questionnaire = Project.get(dbm, project_id)
+
+def _get_poll_recipients(dbm, questionnaire):
     datasender_ids = questionnaire.data_senders
     contact_dict = {}
     for datasender_id in datasender_ids:
@@ -185,5 +178,17 @@ def my_poll_recipients_count(request, project_id):
         if contact.name != '':
             contact_dict[contact.name] = contact.short_code
         else:
-             contact_dict[contact.data.get('mobile_number')['value']] = contact.short_code
+            contact_dict[contact.data.get('mobile_number')['value']] = contact.short_code
+    return contact_dict
+
+
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
+@is_project_exist
+def my_poll_recipients_count(request, project_id):
+    dbm = get_database_manager(request.user)
+    questionnaire = Project.get(dbm, project_id)
+    contact_dict = _get_poll_recipients(dbm, questionnaire)
     return HttpResponse(content_type='application/json', content=json.dumps({'my_poll_recipients': contact_dict}))

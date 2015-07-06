@@ -6,7 +6,7 @@ from datawinners.project.views.change_language import QuestionnaireLanguageView
 from datawinners.project.views.create_questionnaire import create_project
 from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders
 from datawinners.project.views.import_submissions_views import ImportSubmissionView
-from datawinners.project.views.poll_views import poll, deactivate_poll, activate_poll, get_poll_info, \
+from datawinners.project.views.poll_views import get_poll_info, deactivate_poll, activate_poll, get_poll_sent_messages, \
     my_poll_recipients_count
 from datawinners.project.views.registered_datasenders import registered_ds_count
 
@@ -44,7 +44,7 @@ urlpatterns = patterns('',
                        url(r'^project/templates/$', get_templates, name="project_templates"),
                        url(r'^project/wizard/edit/(?P<project_id>\w+?)/$', edit_project, name="edit_project"),
                        url(r'^project/overview/(?P<project_id>\w+?)/$', project_overview, name="project-overview"),
-                       url(r'^project/poll/(?P<project_id>\w+?)/$', poll, name="poll"),
+                       url(r'^project/poll/(?P<project_id>\w+?)/$', get_poll_info, name="poll"),
                        url(r'^project/language/(?P<project_id>\w+?)/$', QuestionnaireLanguageView.as_view(), name="project-language"),
                        url(r'^project/registered_subjects/(?P<project_id>\w+?)/$', registered_subjects,
                            name="registered_subjects_default"),
@@ -95,7 +95,7 @@ urlpatterns = patterns('',
                        url(r'^project/deactivate/(?P<project_id>\w+?)/$', deactivate_poll, name='deactivate_poll'),
                        url(r'^project/activate/(?P<project_id>\w+?)/$', activate_poll, name='activate_poll'),
                        url(r'^project/my-poll-recipients-count/(?P<project_id>\w+?)/$', my_poll_recipients_count, name="my_poll_recipients_count"),
-                       url(r'^project/get_poll_info/(?P<project_id>\w+?)/$',  get_poll_info, name="get_poll_info"),
+                       url(r'^project/get_poll_sent_messages/(?P<project_id>\w+?)/$',  get_poll_sent_messages, name="get_poll_sent_messages"),
                        url(r'^project/create-poll$', create_poll.create_poll, name="create_poll"),
                        )
 

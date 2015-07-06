@@ -1,9 +1,10 @@
-import json
 from unittest import TestCase
+
 from django.contrib.auth.models import User
-from mock import MagicMock, patch, Mock, PropertyMock
-from datawinners.project.create_poll import _construct_questionnaire, _is_project_name_unique
-from datawinners.project.views.poll_views import _is_active, _is_same_questionnaire
+from mock import MagicMock, patch
+
+from datawinners.project.create_poll import _construct_questionnaire
+from datawinners.project.views.poll_views import _is_same_questionnaire
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.project import Project
 
@@ -36,42 +37,6 @@ class TestCreatePoll(TestCase):
                 self.assertEquals(questionnaire.name, project_name)
                 self.assertIn(questionnaire_code, questionnaire.form_code)
 
-
-    def test_should_validate_project_name_to_be_unique(self):
-        error_message = {}
-        name_has_errors = False
-        questionnaire = MagicMock(spec=Project)
-
-        questionnaire.is_project_name_unique.return_value = False
-
-        project_name_unique = _is_project_name_unique(error_message, name_has_errors, questionnaire)
-        self.assertEquals(project_name_unique, True)
-
-    def test_should_validate_project_name_if_not_unique(self):
-        error_message = {}
-        name_has_errors = False
-        questionnaire = MagicMock(spec=Project)
-
-        questionnaire.is_project_name_unique.return_value = True
-
-        project_name_unique = _is_project_name_unique(error_message, name_has_errors, questionnaire)
-        self.assertEquals(project_name_unique, False)
-
-    def test_should_validate_questionnaire_is_active(self):
-        questionnaire = MagicMock(spec=Project)
-        questionnaire.active = "active"
-
-        is_active = _is_active(questionnaire)
-
-        self.assertEquals(True, is_active)
-
-    def test_should_validate_questionnaire_is_not_active(self):
-        questionnaire = MagicMock(spec=Project)
-        questionnaire.active = "deactivate"
-
-        is_active = _is_active(questionnaire)
-
-        self.assertEquals(False, is_active)
 
     def test_should_validate_when_current_questionnaire_is_active_and_trying_to_activate_the_same_questionnaire(self):
         is_active = True

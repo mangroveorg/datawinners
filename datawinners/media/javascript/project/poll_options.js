@@ -129,7 +129,7 @@ var PollOptionsViewModel = function() {
 
     self.show_poll_info = function(){
        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
-       $.get(get_poll_info_url, data).done(function (response) {
+       $.get(get_poll_sent_messages_url, data).done(function (response) {
            var responseJson = $.parseJSON(response);
            if (responseJson['success']) {
                var poll_msg = responseJson['poll_messages'];
