@@ -4,11 +4,13 @@ from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import random_number, by_css
 from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS, DATA_SENDER_TAB, FIRST_CREATED_POLL, \
     ACTIVE_POLL_NAME
+from pages.globalnavigationpage.global_navigation_locator import DASHBOARD_PAGE_LINK
 from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
 from tests.projects.questionnairetests.project_questionnaire_data import LANGUAGES, CLINIC_ALL_DS, PT, FR, \
     REP7, REP5, REP6, THIRD_COLUMN, SECOND_ROW, GROUP, THIRD_ROW, MY_POLL_RECIPIENTS, CLINIC_TEST_PROJECT, REP8, REP3, \
     REP1, SIXTH_COLUMN, FIRST_ROW, FOURTH_ROW, SIXTH_ROW, FIFTH_ROW
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class TestPollOptions(HeadlessRunnerTest):
@@ -62,12 +64,12 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(LINKED_CONTACTS, CLINIC_TEST_PROJECT)
-
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP8, SECOND_ROW, THIRD_COLUMN))
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP3, SECOND_ROW, THIRD_COLUMN))
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP1, SECOND_ROW, THIRD_COLUMN))
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP5, SECOND_ROW, THIRD_COLUMN))
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP6, SECOND_ROW, THIRD_COLUMN))
+        recipients = [REP8, REP3, REP1, REP5, REP6]
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
 
     @attr('functional_test')
     def test_should_send_sms_to_people_from_selected_groups(self):
@@ -171,6 +173,7 @@ class TestPollOptions(HeadlessRunnerTest):
         add_group_page.enter_group_name(group_name)
         add_group_page.click_on_add_group_button()
         all_contacts_page.add_contact_to_group(unique_id, group_name)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         create_questionnaire_options_page = self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
         self.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
         self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)

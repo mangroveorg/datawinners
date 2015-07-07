@@ -121,10 +121,9 @@ class PollQuestionnairePage(Page):
     def has_DS_received_sms(self, recipent, row, column):
         self.select_element(POLL_TAB)
         self.select_element(POLL_SMS_ACCORDIAN)
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("poll_sms_table"), True)
-        recipient_name = self.driver.find(
-            by_xpath(".//*[@id='poll_sms_table']/tbody/tr[%s]/td[%s]" % (row, column))).text
-        return recipent in recipient_name
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
+        recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
+        return recipient_name in recipent
 
     def deactivate_poll(self):
         self.select_element(POLL_TAB)

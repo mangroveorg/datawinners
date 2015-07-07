@@ -30,6 +30,7 @@ class QuestionnaireCreationOptionsPage(Page):
         return self.go_to_create_questionnaire_page()
 
     def go_to_create_questionnaire_page(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, CONTINUE_BTN)
         self.driver.find(CONTINUE_BTN).click()
         return QuestionnaireTabPage(self.driver)
 

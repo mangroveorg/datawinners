@@ -24,7 +24,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         add_group_page.enter_group_name(group_name)
         add_group_page.click_on_add_group_button()
         all_contacts_page.add_contact_to_group(unique_id, group_name)
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         create_questionnaire_options_page = self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
         self.create_Questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
         return group_name, unique_id
@@ -130,8 +130,8 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.enter_sms_text()
         self.poll_Questionnaire_page.select_receipient(CONTACTS_LINKED, CLINIC_ALL_DS)
         self.poll_Questionnaire_page.click_create_poll()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDER_TAB, True)
         self.poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
-
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(REP7, FIRST_ROW, THIRD_COLUMN), True)
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(REP5, FIRST_ROW, THIRD_COLUMN), True)
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(REP6, FIRST_ROW, THIRD_COLUMN), True)
