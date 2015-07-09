@@ -88,7 +88,7 @@
                             <a href="{{ project.log }}"
                                 class="{{ project.disabled}} {{ disable_link_class}}">{% trans "Analyze Data" %}</a>
                             <span class="{{ hide_link_class }}">
-                                |<a href="{{ project.delete_links }}" class="delete_project" data-is_poll="true">{% trans "Delete Poll" %}</a>
+                                |<a href="{{ project.delete_links }}" class="delete_project"  id='delete_poll' data-is_poll="true">{% trans "Delete Poll" %}</a>
                             </span>
                 </tr>
                 {% else %}

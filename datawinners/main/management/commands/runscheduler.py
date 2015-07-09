@@ -3,7 +3,8 @@ from apscheduler.scheduler import Scheduler
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from datawinners.deactivate.deactive import send_deactivate_email, deactivate_expired_trial_account
-from datawinners.scheduler.scheduler import send_reminders, send_time_based_reminder_email
+from datawinners.scheduler.scheduler import send_reminders, send_time_based_reminder_email, \
+    deactivate_poll_questionnaire
 from datawinners.main.couchdb.view_updater import update_all_views
 
 import logging
@@ -16,6 +17,7 @@ class Command(BaseCommand):
         logger.info("started the scheduler")
         scheduler.add_cron_job(send_reminders, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES)
         scheduler.add_cron_job(send_time_based_reminder_email, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES)
+        scheduler.add_cron_job(deactivate_poll_questionnaire, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES)
         scheduler.add_cron_job(deactivate_expired_trial_account, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES + 1)
         scheduler.add_cron_job(update_all_views, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES)
         scheduler.start()
