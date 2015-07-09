@@ -31,6 +31,7 @@ class GlobalNavigationPage(Page):
 
         Return add data sender page
          """
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDERS_LINK, True)
         self.driver.find(DATA_SENDERS_LINK).click()
         return AllDataSendersPage(self.driver)
 
@@ -67,6 +68,7 @@ class GlobalNavigationPage(Page):
 
         Return dashboard page
          """
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         self.driver.find(DASHBOARD_PAGE_LINK).click()
         self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Dashboard")
         return DashboardPage(self.driver)

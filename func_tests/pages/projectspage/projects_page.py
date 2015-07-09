@@ -19,7 +19,7 @@ class ProjectsPage(Page):
 
         Return create project page
          """
-        sleep(60)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_A_NEW_PROJECT_LINK, True)
         self.driver.find(CREATE_A_NEW_PROJECT_LINK).click()
         return QuestionnaireCreationOptionsPage(self.driver)
 
