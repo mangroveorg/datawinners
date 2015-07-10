@@ -1,6 +1,6 @@
 {% if messages %}
     {% for message in messages %}
-        <div style="clear: both;" class="{% if 'success' in message.tags %} success-message-box {% else %} message-box {% endif %}"  >
+        <div style="clear: both;" class="{% if 'success' in message.tags %} success-message-box {% else %} message-box {% endif %}"  id="success-message-box" >
             <span class="message-span">{{ message }}</span>
         </div>
     {% endfor %}
