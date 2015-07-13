@@ -132,9 +132,10 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.click_create_poll()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDER_TAB, True)
         self.poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
-        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(REP7, FIRST_ROW, THIRD_COLUMN), True)
-        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(REP5, FIRST_ROW, THIRD_COLUMN), True)
-        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(REP6, FIRST_ROW, THIRD_COLUMN), True)
+        recipient = [REP5, REP6, REP7]
+        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
+        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
+        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
 
     @attr('functional_test')
     def test_a_poll_cannot_be_created_when_another_poll_is_active(self):
