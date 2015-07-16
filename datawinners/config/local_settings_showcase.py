@@ -3,8 +3,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 COMPRESS_ENABLED = True
 
-ADMINS = (('DWBLR', 'datawinnersblr@thoughtworks.com'),)
-
+ADMINS = (('DWCHN', 'datawinners@sahajsoft.com'),('milena','milena@hni.org'),('heri','herihaja@hni.org'),('sophie','aliasophie@hni.org'))
 COMPRESS = False
 
 DATABASES = {

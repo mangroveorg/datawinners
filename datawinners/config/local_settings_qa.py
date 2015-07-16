@@ -2,8 +2,7 @@ SITE_ID = 6
 DEBUG=False
 
 
-ADMINS = (('DWBLR', 'datawinnersblr@thoughtworks.com'),)
-
+ADMINS = (('DWCHN', 'datawinners@sahajsoft.com'),('milena','milena@hni.org'),('heri','herihaja@hni.org'),('sophie','aliasophie@hni.org'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
