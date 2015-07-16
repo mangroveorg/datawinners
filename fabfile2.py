@@ -54,7 +54,7 @@ def showcase():
 
 def qa():
     env.user = "mangrover"
-    env.hosts = ["54.163.243.239"]
+    env.hosts = ["54.163.243.239:51986"]
     env.key_filename = ["/home/datawinners/.ssh/id_rsa"]
     env.warn_only = True
 
