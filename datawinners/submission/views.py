@@ -213,10 +213,13 @@ def post_player_handler(incoming_request, message):
     if not incoming_request.get('test_sms_questionnaire', False):
         if is_outgoing_reply_sms_enabled:
             increment_dict = {'outgoing_sms_count':1}
-            org_setting = OrganizationSetting.objects.filter(organization=organization)[0]
-            smsc = org_setting.outgoing_number.smsc
-            if smsc.vumi_username in settings.SMSC_WITHOUT_STATUS_REPORT:
-                increment_dict.update({'outgoing_sms_charged_count':1})
+
+            if not organization.in_trial_mode:
+                org_setting = OrganizationSetting.objects.filter(organization=organization)[0]
+                smsc = org_setting.outgoing_number.smsc
+                if smsc.vumi_username in settings.SMSC_WITHOUT_STATUS_REPORT:
+                    increment_dict.update({'outgoing_sms_charged_count':1})
+                    
             organization.increment_message_count_for(**increment_dict)
         log_sms(message=message,
                 message_id=incoming_request['message_id'],
