@@ -3,7 +3,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 COMPRESS_ENABLED = True
 
-ADMINS = (('DWCHN', 'datawinners@sahajsoft.com'),('milena','milena@hni.org'),('heri','herihaja@hni.org'),('sophie','aliasophie@hni.org'))
+ADMINS = (('DW Devs', 'datawinners-devs@googlegroups.com'),)
 COMPRESS = False
 
 DATABASES = {
@@ -21,7 +21,7 @@ API_KEYS = {
     'uat.datawinners.com': 'AIzaSyCr4DDqoKgR5MzPci7GHWaXms8bYNprY-g'
 }
 
-HNI_SUPPORT_EMAIL_ID = 'datawinnersblr@thoughtworks.com'
+HNI_SUPPORT_EMAIL_ID = 'hery.imiary@gmail.com'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
