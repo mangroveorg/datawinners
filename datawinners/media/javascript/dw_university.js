@@ -7,7 +7,10 @@ $(document).ready(function(){
         $("#help_iframe").height(event.data);
     }
 
-    $.ajax({
+    $("#help_iframe").attr("src", DW.help_url);
+    $("#help_iframe").addClass("block");
+    
+    /*$.ajax({
         url: DW.help_url,
         data: {},
         global: false,
@@ -24,7 +27,7 @@ $(document).ready(function(){
                 $("#help_unavailable").removeClass("none");
             }
         }
-    });
+    });*/
 
     $("#need_help_button").click(function() {
         $("#div_iframe").css("visibility", "visible");

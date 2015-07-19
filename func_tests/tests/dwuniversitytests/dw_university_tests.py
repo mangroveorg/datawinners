@@ -20,12 +20,11 @@ class TestDWUniversityHelpContent(HeadlessRunnerTest):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_datawinners_university_for_some_global_urls(self):
         for dw_page_url in DW_PAGES_HAVING_HELP:
             self.driver.go_to(url(dw_page_url))
-            self.assertTrue(self.dw_university_page.is_help_content_available())
-
+            self.assertEqual("ok", self.dw_university_page.is_help_content_available())
 
     @attr('functional_test')
     def test_datawinners_university_project_level(self):

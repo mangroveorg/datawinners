@@ -30,4 +30,6 @@ function main {
 	esac	
 }
 
-main $@
+#main $@
+restore_couchdb_and_postgres
+
