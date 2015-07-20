@@ -123,15 +123,8 @@ class FilePlayer(Player):
             if organization.in_trial_mode:
                 data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
                                                                      organization=organization)
-                #try:
-                #    from django.db import transaction
                 data_sender.save(force_insert=True)
-                #except IntegrityError:
-                #    transaction.rollback_unless_managed()
-                    #raise MultipleReportersForANumberException(mobile_number)
         except IntegrityError:
-            from django.db import transaction
-            #transaction.rollback_unless_managed()
             raise MultipleReportersForANumberException(mobile_number)
 
         if len(",".join(values["l"])) > 500:

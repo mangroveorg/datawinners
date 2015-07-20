@@ -1,3 +1,3 @@
-#python manage.py recreatedb
+python manage.py recreatedb
 cd ../func_tests
-nosetests -a "functional_testa"
+nosetests -v -a "functional_test"

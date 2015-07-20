@@ -20,6 +20,8 @@ class Page(object):
     def is_help_button_present(self):
         from framework.utils.common_utils import by_id
         locator = by_id("need_help_button")
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, locator, True)
+
         return self.driver.is_element_present(locator)
 
     def is_help_content_available(self):
@@ -32,7 +34,7 @@ class Page(object):
         locator = by_id("need_help_button")
         self.driver.find(locator).click()
         iframe = self.driver.find(by_id('help_iframe'))
-        end_time = start_time + datetime.timedelta(0, 150)
+        end_time = start_time + datetime.timedelta(0, 120)
 
         while True:
             try:
@@ -42,9 +44,6 @@ class Page(object):
                     return True
 
                 if current_time >= end_time:
-                    self.driver.create_screenshot("fomba-inana-azy.png")
-                    return iframe.get_attribute('src')
-
                     return False
 
             except Exception as e:
