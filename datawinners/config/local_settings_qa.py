@@ -2,7 +2,8 @@ SITE_ID = 6
 DEBUG=False
 
 
-ADMINS = (('DWCHN', 'datawinners@sahajsoft.com'),('milena','milena@hni.org'),('heri','herihaja@hni.org'),('sophie','aliasophie@hni.org'))
+ADMINS = (('Google group', 'datawinners-devs@googlegroups.com'),)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
@@ -22,7 +23,7 @@ GOOGLE_ANALYTICS_ENABLED = False
 
 TRIAL_REGISTRATION_ENABLED = True
 GOOGLE_MAPS_ENABLED = True
-HNI_SUPPORT_EMAIL_ID = 'datawinnersblr@thoughtworks.com'
+HNI_SUPPORT_EMAIL_ID = 'hery.imiary@gmail.com'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
