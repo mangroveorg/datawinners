@@ -65,9 +65,9 @@ poll_info_accordian = by_id('poll_status_info')
 deactivate_link = by_xpath(".//*[@id='deactivate_link']")
 activate_link = by_id('activate_link')
 POLL_INFORMATION_BOX = by_css(".information_box")
-DEACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/button[@id='deactivate_button']")
+DEACTIVATE_BTN = by_css('div.ui-dialog #deactivate_button')
 
-ACTIVATE_BTN = by_xpath(".//*[contains(concat(' ', @class, ' '), ' ui-dialog-content')]/div/button[@id='activate_button']")
+ACTIVATE_BTN = by_css("div.ui-dialog #activate_button")
 
 FIRST_CREATED_POLL_XPATH = ".//*[@id='container_content']/div[2]/div[2]/div/table/tbody/tr[contains(., \"%s\")]/td[1]/a"
 NEW_UNIQUE_ID_TEXT = by_css('.newUniqueIdName')
