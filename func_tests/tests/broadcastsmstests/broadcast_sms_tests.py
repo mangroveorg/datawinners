@@ -22,7 +22,7 @@ class TestBroadcastSMS(HeadlessRunnerTest):
     def test_retain_sms_content_after_unsuccessful_send(self):
         self.send_message_page.write_sms_content(SMS_VALID_DATA)
         self.send_message_page.click_send()
-        self.assertEquals(self.send_message_page.get_sms_content(), '')
+        self.assertEquals(self.send_message_page.get_sms_content(), 'The typhoon is coming. Please run!!')
 
     @attr('functional_test')
     def test_exceed_sms_content_limitation(self):

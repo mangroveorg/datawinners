@@ -189,4 +189,4 @@ class PollQuestionnairePage(Page):
 
     def delete_the_poll(self):
         self.select_element(by_css('.delete_project'))
-        self.select_element(by_id('confirm_delete_poll'))
+        self.select_element(by_css('div.ui-dialog #confirm_delete_poll'))

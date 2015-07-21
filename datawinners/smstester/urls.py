@@ -5,5 +5,5 @@ from datawinners.smstester.views import index, vumi_stub
 
 urlpatterns = patterns('',
     (r'^$', index),
-    (r'^vumi-stub/api/v1/sms/send.json$', vumi_stub),
+    (r'vumi-stub/api/v1/sms/send.json$', vumi_stub),
     )
