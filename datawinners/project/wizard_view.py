@@ -39,9 +39,10 @@ def create_questionnaire(post, manager, name, language, reporter_id, question_se
     questionnaire_code = post['questionnaire-code'].lower()
     datasenders = json.loads(post.get('datasenders', "[]"))
     question_set = question_set_json if question_set_json else json.loads(post['question-set'])
+    creator = reporter_id
     questionnaire = Project(manager, name=name,
                            fields=[], form_code=questionnaire_code, language=language,
-                           devices=[u'sms', u'web', u'smartPhone'])
+                           devices=[u'sms', u'web', u'smartPhone'], creator=creator)
     questionnaire.xform = xform
 
     if is_open_survey:
