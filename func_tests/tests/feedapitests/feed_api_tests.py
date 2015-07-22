@@ -155,6 +155,7 @@ class TestFeeds(HeadlessRunnerTest):
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         edited_response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
+        edited_response_list.sort()
         self.assertEquals(2, len(edited_response_list))
         edited_feed_entry = edited_response_list[-1]
         #expected_data_after_edit = {"q3": "8.0", "q2": {"deleted": False, "id": "wp01", "name": "Test"},
