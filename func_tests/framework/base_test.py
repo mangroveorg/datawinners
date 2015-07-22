@@ -30,7 +30,7 @@ class BaseTest(unittest.TestCase):
 
 
 def is_running_in_pycharm():
-    return 'pycharm' in sys.argv[0]
+    return 'pycharm' in sys.argv[0] or 'eclipse' in sys.argv[0]
 
 
 class HeadlessRunnerTest(unittest.TestCase):
