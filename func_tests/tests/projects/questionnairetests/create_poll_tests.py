@@ -21,7 +21,8 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         add_group_page.enter_group_name(group_name)
         add_group_page.click_on_add_group_button()
         all_contacts_page.add_contact_to_group(unique_id, group_name)
-        create_questionnaire_options_page = self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
         self.create_Questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
         return group_name, unique_id
 
@@ -137,7 +138,8 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         poll_title = self.create_Questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_Questionnaire_page.select_broadcast_option()
         self.poll_Questionnaire_page.click_create_poll()
-        self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        dashboard_page.navigate_to_create_project_page()
         self.assertEquals(self.poll_Questionnaire_page.get_already_active_poll_name(), poll_title)
 
         self.driver.find(ACTIVE_POLL_NAME).click()
