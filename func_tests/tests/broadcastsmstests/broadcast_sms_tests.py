@@ -21,6 +21,7 @@ class TestBroadcastSMS(HeadlessRunnerTest):
     @attr('functional_test')
     def test_retain_sms_content_after_unsuccessful_send(self):
         self.send_message_page.write_sms_content(SMS_VALID_DATA)
+        self.send_message_page.choose_type_other_people()
         self.send_message_page.click_send()
         self.assertEquals(self.send_message_page.get_sms_content(), 'The typhoon is coming. Please run!!')
 
