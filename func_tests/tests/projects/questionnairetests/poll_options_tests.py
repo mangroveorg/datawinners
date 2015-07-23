@@ -126,7 +126,8 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
         self.poll_questionnaire_page.select_element(DATA_SENDER_TAB)
-        self.assertTrue(self.poll_questionnaire_page.isRecipientAssociated(unique_id, FIRST_ROW, SIXTH_COLUMN))
+        poll_recipients = self.poll_questionnaire_page.all_recipients(SIXTH_COLUMN)
+        self.assertIn(unique_id, poll_recipients)
 
     @attr('functional_test')
     def test_should_deactivate_the_poll(self):
