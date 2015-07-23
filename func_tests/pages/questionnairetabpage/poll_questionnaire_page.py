@@ -192,3 +192,12 @@ class PollQuestionnairePage(Page):
     def delete_the_poll(self):
         self.select_element(by_css('.delete_project'))
         self.select_element(by_css('div.ui-dialog #confirm_delete_poll'))
+
+    def all_recipients(self, column):
+        div = by_xpath(".//*[@id='datasender_table_wrapper']/div[8]")
+        div_text = self.driver.find(div).text
+        number_of_data_senders = int((div_text.split(' '))[2])
+        poll_recipients = []
+        for i in range(1, number_of_data_senders + 1):
+            poll_recipients.append(self.get_cell_value(column, i))
+        return poll_recipients
