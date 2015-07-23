@@ -1,8 +1,8 @@
 from time import sleep
 from nose.plugins.attrib import attr
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import random_number, by_css
-from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS, DATA_SENDER_TAB, FIRST_CREATED_POLL, \
+from framework.utils.common_utils import random_number, by_css, by_xpath
+from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS, DATA_SENDER_TAB, FIRST_CREATED_POLL_XPATH, \
     ACTIVE_POLL_NAME
 from pages.globalnavigationpage.global_navigation_locator import DASHBOARD_PAGE_LINK
 from pages.loginpage.login_page import login
@@ -159,7 +159,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_broadcast_option()
         self.poll_questionnaire_page.click_create_poll()
         self.global_navigation.navigate_to_all_data_page()
-        previous_poll = FIRST_CREATED_POLL
+        previous_poll = by_xpath(FIRST_CREATED_POLL_XPATH % poll_title_1)
         self.driver.find(previous_poll).click()
         self.poll_questionnaire_page.activate_poll()
         self.assertTrue(self.poll_questionnaire_page.is_another_poll_active(poll_title_2))
