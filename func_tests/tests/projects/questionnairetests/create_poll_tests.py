@@ -96,9 +96,10 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
         self.poll_Questionnaire_page.select_element(by_css('.short_code'))
         sleep(3)
-        self.assertEquals(self.poll_Questionnaire_page.isRecipientAssociated(REP5, FIRST_ROW, SIXTH_COLUMN), True)
-        self.assertEquals(self.poll_Questionnaire_page.isRecipientAssociated(REP6, SECOND_ROW, SIXTH_COLUMN), True)
-        self.assertEquals(self.poll_Questionnaire_page.isRecipientAssociated(REP7, THIRD_ROW, SIXTH_COLUMN), True)
+        recipients = self.poll_Questionnaire_page.all_recipients(SIXTH_COLUMN)
+        self.assertIn(REP5, recipients)
+        self.assertIn(REP6, recipients)
+        self.assertIn(REP7, recipients)
 
     @attr('functional_test')
     def test_should_create_poll_with_broadcast_option(self):
