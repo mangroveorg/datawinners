@@ -46,5 +46,11 @@ class TestCreateBlankQuestionnaireProAccount(HeadlessRunnerTest):
         project = Project.from_form_model(form_model)
         self.assertFalse(project.is_open_survey)
 
-
-  
+    @attr('functional_test')
+    def test_should_create_questionnaire_with_roles(self):
+        self.registered_datasenders_page = self._create_project_and_go_to_registered_datasenders()
+        form_model = get_form_model_by_code(self.dbm, self.questionnaire_code)
+        project = Project.from_form_model(form_model)
+        self.assertEqual(project.creator, "rep276")
+        self.assertEqual(project.users, [] )
+        self.assertEqual(project.users_as_datasender, [] )

@@ -1,12 +1,24 @@
 from collections import OrderedDict
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type
+from mangrove.form_model.project import Project
 
 
 def get_all_projects_for_datasender(dbm, data_sender_id):
     rows = dbm.load_all_rows_in_view('projects_by_datasenders', key=data_sender_id, include_docs=True)
     return rows
 
+def get_all_projects_for_creator(dbm, user_id):
+    rows = dbm.load_all_rows_in_view('projects_by_creator', key=user_id, include_docs=True)
+    return rows
+
+def get_all_projects_for_users(dbm, user_id):
+    rows = dbm.load_all_rows_in_view('projects_by_users', key=user_id, include_docs=True)
+    return rows
+
+def get_all_projects_for_users_as_datasenders(dbm, user_id):
+    rows = dbm.load_all_rows_in_view('projects_by_users_as_datasender', key=user_id, include_docs=True)
+    return rows
 
 def get_all_projects(dbm, data_sender_id=None):
     if data_sender_id:
