@@ -23,6 +23,7 @@ from tests.projects.questionnairetests.project_questionnaire_data import WATERPO
 from tests.smstestertests.sms_tester_data import MESSAGE
 from tests.submissionlogtests.edit_survey_response_data import ANSWERS_TO_BE_SUBMITTED, EDITED_ANSWERS, \
     get_errorred_sms_data_with_questionnaire_code
+from operator import itemgetter
 
 
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
@@ -155,7 +156,7 @@ class TestFeeds(HeadlessRunnerTest):
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         edited_response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
-        edited_response_list.sort()
+        edited_response_list = sorted(edited_response_list,key=itemgetter('submission_modified_time'))
         self.assertEquals(2, len(edited_response_list))
         edited_feed_entry = edited_response_list[-1]
         #expected_data_after_edit = {"q3": "8.0", "q2": {"deleted": False, "id": "wp01", "name": "Test"},
@@ -170,6 +171,7 @@ class TestFeeds(HeadlessRunnerTest):
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
+        response_list_after_delete = sorted(response_list_after_delete,key=itemgetter('submission_modified_time'))
         self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]
         #expected_data_after_delete = {'q2': {"deleted": False, "id": "wp01", "name": "Test"}, 'q3': '8.0', 'q5': ['b'], 'q4': '24.12.2012',
