@@ -92,18 +92,6 @@ class TestHelper(TestCase):
 
                 self.assertEqual(actual_form_model, form_model_mock, "form_model not returned after creation")
 
-    def test_should_return_created_registration_form(self):
-        with patch("datawinners.entity.helper._generate_form_code") as form_code_generator_mock:
-            with patch("datawinners.entity.helper._create_registration_form") as registration_form_creator_mock:
-                database_manager = Mock(name="dbm_mock")
-                form_model_mock = Mock(name="form_model_mock")
-                form_code_generator_mock.return_value = "form_code"
-                registration_form_creator_mock.return_value = form_model_mock
-
-                actual_form_model = create_registration_form(database_manager, "entitytypename")
-
-                self.assertEqual(actual_form_model, form_model_mock, "form_model not returned after creation")
-
     def test_should_generate_form_code_with_prefix_as_first_3_characters_of_entity_name(self):
         with patch("datawinners.entity.helper._generate_form_code") as form_code_generator_mock:
             with patch("datawinners.entity.helper._create_registration_form") as registration_form_creator_mock:

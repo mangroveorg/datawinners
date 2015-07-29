@@ -8,7 +8,7 @@ from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersExcep
 from mangrove.errors.MangroveException import ExceedSMSLimitException, ExceedSubmissionLimitException
 from mangrove.errors.MangroveException import DatasenderIsNotLinkedException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
-from mangrove.form_model.project import Project, get_active_form_model, get_project_by_code, check_if_form_code_is_poll
+from mangrove.form_model.project import Project, get_active_form_model, get_project_by_code, check_if_form_model_is_poll
 from mangrove.transport.contract.response import Response
 from mangrove.form_model.form_model import EntityFormModel
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
@@ -58,7 +58,7 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
     def process(self, form_code, submission_values, extra_data=[]):
         try:
             form_model = get_form_model_by_code(self.dbm, form_code)
-            check_if_form_code_is_poll(self, form_model)
+            check_if_form_model_is_poll(self, form_model)
         except FormModelDoesNotExistsException:
             form_model = get_active_form_model(self.dbm, form_code)
 
