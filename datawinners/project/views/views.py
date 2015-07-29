@@ -925,13 +925,14 @@ def create_data_sender_and_web_user(request, project_id):
 
     in_trial_mode = _in_trial_mode(request)
 
+    organization = get_organization(request)
     if request.method == 'GET':
         form = ReporterRegistrationForm(initial={'project_id': project_id})
         return render_to_response('project/register_datasender.html', {
             'project': questionnaire,
             'project_links': project_links,
             'is_quota_reached': is_quota_reached(request),
-            'is_pro_sms': get_organization(request).is_pro_sms,
+            'is_pro_sms': organization.is_pro_sms,
             'form': form,
             'in_trial_mode': in_trial_mode,
             'questionnaire_code': questionnaire.form_code,
@@ -963,7 +964,7 @@ def create_data_sender_and_web_user(request, project_id):
                                   detail=json.dumps(dict({"Unique ID": reporter_id})), project=questionnaire.name)
         if message is not None and reporter_id:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
-        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'is_pro_sms': get_organization(request).is_pro_sms, 'success': reporter_id is not None,
+        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'is_pro_sms': organization.is_pro_sms, 'success': reporter_id is not None,
                    'button_text': ugettext('Register')}
         return render_to_response('datasender_form.html',
                                   context,

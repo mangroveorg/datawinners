@@ -17,7 +17,7 @@ from django.utils.http import int_to_base36
 from datawinners.entity.datasender_search import datasender_count_with
 from datawinners.entity.subject_template_validator import SubjectTemplateValidator
 from datawinners.entity.helper import get_country_appended_location, entity_type_as_sequence, \
-    get_organization_telephone_number
+    get_organization_telephone_number, validate_mobile_number_for_trial_account
 
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
 from datawinners.location.LocationTree import get_location_tree
@@ -115,17 +115,14 @@ class FilePlayer(Player):
             raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
     def _import_data_sender(self, form_model, organization, values):
-        try:
-            mobile_number = case_insensitive_lookup(values, "m")
-
-            if not mobile_number:
-                raise MobileNumberMandatoryException()
-            if organization.in_trial_mode:
-                data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
-                                                                     organization=organization)
-                data_sender.save(force_insert=True)
-        except IntegrityError:
-            raise MultipleReportersForANumberException(mobile_number)
+        mobile_number = case_insensitive_lookup(values, "m")
+        if not mobile_number:
+            raise MobileNumberMandatoryException()
+        if organization.in_trial_mode:
+            validate_mobile_number_for_trial_account(mobile_number)
+            data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
+                                                                 organization=organization)
+            data_sender.save(force_insert=True)
 
         if len(",".join(values["l"])) > 500:
             raise MangroveException("Location Name cannot exceed 500 characters.")

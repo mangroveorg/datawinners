@@ -13,7 +13,7 @@ from mangrove.transport import Request, TransportInfo
 from datawinners.utils import get_organization_from_manager
 from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.entity import get_by_short_code_include_voided
-from mangrove.errors.MangroveException import MangroveException
+from mangrove.errors.MangroveException import MangroveException, MultipleReportersForANumberException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
@@ -159,6 +159,12 @@ def update_data_sender_from_trial_organization(old_telephone_number,new_telephon
     data_sender.delete()
     _add_data_sender_to_trial_organization(new_telephone_number,org_id=org_id)
 
+
+def validate_mobile_number_for_trial_account(mobile_number):
+    if DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number).exists():
+        raise MultipleReportersForANumberException(mobile_number)
+
+
 def process_create_data_sender_form(dbm, form, org_id):
     message = None
     data_sender_id = None
@@ -167,7 +173,9 @@ def process_create_data_sender_form(dbm, form, org_id):
         try:
             organization = Organization.objects.get(org_id=org_id)
             if organization.in_trial_mode:
-                _add_data_sender_to_trial_organization(form.cleaned_data["telephone_number"], org_id)
+                mobile_number = form.cleaned_data["telephone_number"]
+                validate_mobile_number_for_trial_account(mobile_number)
+                _add_data_sender_to_trial_organization(mobile_number, org_id)
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
             reporter_id = form.cleaned_data["short_code"].lower() if form.cleaned_data != "" else None
             request = Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
@@ -179,7 +187,7 @@ def process_create_data_sender_form(dbm, form, org_id):
                 message = get_success_msg_for_ds_registration_using(response, "web")
             else:
                 form.update_errors(response.errors)
-        except IntegrityError as e:
+        except MultipleReportersForANumberException as e:
             form.update_errors({MOBILE_NUMBER_FIELD_CODE: _("This phone number is already in use. Please supply a different phone number")})
         except DataObjectAlreadyExists as e:
             raise e
