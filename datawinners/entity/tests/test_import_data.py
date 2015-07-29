@@ -2,6 +2,7 @@
 import unittest
 
 from mock import Mock, patch
+from mangrove.errors.MangroveException import MultipleReportersForANumberException
 
 from mangrove.transport.contract.response import Response
 from mangrove.datastore.database import DatabaseManager

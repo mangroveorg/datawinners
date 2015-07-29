@@ -1,18 +1,19 @@
 import unittest
+
 from django.contrib.auth.models import User
+from mock import Mock
+from nose.plugins.attrib import attr
+
 from mangrove.bootstrap import initializer
 from mangrove.datastore.database import get_db_manager
-from mangrove.datastore.documents import EntityDocument, FormModelDocument, EntityFormModelDocument
+from mangrove.datastore.documents import EntityDocument, EntityFormModelDocument
 from mangrove.utils.test_utils.database_utils import delete_and_create_form_model, uniq
-from mock import Mock
-
-from mangrove.contrib.registration import create_default_reg_form_model, GLOBAL_REGISTRATION_FORM_CODE
+from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.datastore.entity import Entity
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.utils.types import is_empty
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.entity.helper import delete_datasender_users_if_any, set_email_for_contact
-from datawinners.search import datasender_index as unused
 
 
 class TestEntityHelper(unittest.TestCase):
@@ -34,6 +35,7 @@ class TestEntityHelper(unittest.TestCase):
                                 org_id=cls.org_id, mobile_phone=cls.mobile_number, reporter_id = cls.reporter_id)
         cls.datasender_user_profile.save()
 
+    @attr('integration_tests')
     def test_should_add_email_to_datasender(self):
         email = "tester@test.com"
         entity = Entity(self.manager, entity_type=REPORTER_ENTITY_TYPE, short_code="short_code")
@@ -45,6 +47,7 @@ class TestEntityHelper(unittest.TestCase):
         entity_values = entity.data
         self.assertEquals(entity_values["email"]["value"], email)
 
+    @attr('integration_tests')
     def test_should_delete_the_datasender_user_if_it_exists(self):
         self.assertTrue(User.objects.get(username=self.username))
         self.assertTrue(NGOUserProfile.objects.get(reporter_id=self.reporter_id, org_id=self.org_id))
