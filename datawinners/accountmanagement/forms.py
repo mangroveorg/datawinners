@@ -17,7 +17,6 @@ from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import AccountExpiredException
 from models import Organization
 
-
 def get_organization_sectors():
     return (('', _('Please Select...')),
             ('CommercialBusiness', _('Commercial Business')),

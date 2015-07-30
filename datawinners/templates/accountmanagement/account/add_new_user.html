@@ -1,0 +1,116 @@
+{% extends 'accountmanagement/account/index.html' %}
+
+{% load field_tags %}
+{% load i18n %}
+{% block page_title %} {% trans "Account" %} {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+{% activetab "tab_nav" "users" %}
+{{ block.super }}
+{% endblock %}
+{% block layout_scss %}
+{% include 'application_scss.html' %}
+<link href="/media/css/scss/section_registration.css" rel="stylesheet" xmlns="http://www.w3.org/1999/html"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/account/add_user_view_model.js"/>
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"/>
+    <script type="text/javascript">
+            DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/usrs/?template=help";
+    </script>
+
+{% endblock %}
+{% block content %}
+    <div class="text_align_right margin_bottom_20">
+      <a href= "/account/users" >{% trans "All Users" %}</a>
+    </div>
+    <div id="add_user">
+        <div class="administrative">
+          <div>
+            <h3 class="title">{% trans "Point of Contact" %} / {% trans "Account Administrator" %}</h3>
+            <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
+          </div>
+          <div class="tableRow form-row-10px">
+            <div class="tableCell">
+                <label>{% trans 'Name' %}</label>
+            </div>
+            <div class="tableCell">&nbsp;</div>
+            <div class="tableCell">
+                <input type="text" data-bind="value: fullName"/>
+            </div>
+            <span data-bind="hidden: full_name.valid, text: fullName.error"/>
+          </div>
+          <div class="tableRow">&nbsp;
+          </div>
+          <div class="tableRow form-row-10px">
+              <div class="tableCell ">
+                  <label>{% trans 'Job Title' %}<span class='optional_field'>{% trans 'Optional' %}</span></label>
+              </div>
+              <div class="tableCell">&nbsp;</div>
+              <div class="tableCell">
+                  <input type="text" data-bind="value: title"/>
+                  <p class="black_italic optional">{% trans "Example: Program Director" %}</p>
+              </div>
+          </div>
+          <div class="tableRow">&nbsp;
+          </div>
+            <div class="tableRow">
+                <div class="tableCell">
+                    <label>{% trans 'Role' %}</label>
+                </div>
+                <div class="tableCell">&nbsp;</div>
+                <div class="tableCell">
+                    <label><input type="radio" name="role" data-bind="checked: role, value: 'administrator'" />Administrator</label>
+                    <label><input type="radio" name="role" data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'project-manager'" />Project Manager</label>
+                    <div data-bind="visible: role()=='project-manager'">
+                        <ul data-bind="foreach: questionnaires">
+                            <li>
+                                <input type="checkbox" data-bind="checkedValue: {'id': id, 'name': name}, value: id, checked: $root.selectedQuestionnaires()"/>
+                                <span data-bind="html: name"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="tableRow">&nbsp;
+             </div>
+          <div class="tableRow form-row-10px">
+              <div class="tableCell">
+                  <label>{% trans 'Email' %}</label>
+              </div>
+              <div class="tableCell">
+                  &nbsp;
+              </div>
+              <div class="tableCell">
+                <input type="text" data-bind="value: email" />
+                <span data-bind="hidden: email.valid, text: email.error"/>
+              </div>
+          </div>
+          <div class="tableRow">&nbsp;
+          </div>
+          <div class="tableRow form-row-10px">
+              <div class="tableCell">
+                  <label>{% trans 'Phone Number' %}</label>
+              </div>
+              <div class="tableCell">
+                  &nbsp;
+              </div>
+              <div class="tableCell">
+                  <input type="text" data-bind="value: mobilePhone"/>
+                  <span data-bind="hidden: mobilePhone.valid, text: mobilePhone.error"/>
+                  <p class="black_italic">{% trans "phone_number_example" %}</p>
+              </div>
+          </div>
+          <div class="tableRow">&nbsp;
+          </div>
+          <div class="tableRow margin_top_20">
+              <div class="tableCell">
+                  <button class="button float_right" id="submit" class="button" data-bind="click: submit">{% trans 'Register' %}</button>
+              </div>
+          </div>
+        </div>
+    </div>
+{% endblock %}

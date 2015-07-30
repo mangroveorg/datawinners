@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
 import datetime
+from operator import itemgetter
 
 from django.contrib.auth.decorators import login_required
 from django.conf import settings as django_settings
@@ -23,7 +24,7 @@ from django.contrib.sites.models import Site
 
 from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
-from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.project.couch_view_helper import get_all_projects, get_project_id_name_map
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_pro_sms, valid_web_user, is_sms_api_user, is_datasender
@@ -133,14 +134,24 @@ def settings(request):
 def associate_user_with_existing_project(manager, reporter_id):
     rows = get_all_projects(manager)
     for row in rows:
-        project_id = row['value']['_id']
-        questionnaire = Project.get(manager, project_id)
-        reporters_to_associate = [reporter_id]
-        questionnaire.associate_data_sender_to_project(manager, reporters_to_associate)
-        for data_senders_code in reporters_to_associate:
-            update_datasender_index_by_id(data_senders_code, manager)
+        associate_user_with_project(manager, reporter_id, row)
 
 
+def associate_user_with_project(manager, reporter_id, project):
+    project_id = project['value']['_id']
+    questionnaire = Project.get(manager, project_id)
+    reporters_to_associate = [reporter_id]
+    questionnaire.associate_data_sender_to_project(manager, reporters_to_associate)
+    for data_senders_code in reporters_to_associate:
+        update_datasender_index_by_id(data_senders_code, manager)
+
+
+def associate_user_with_projects(manager, reporter_id, projects):
+    for project in projects:
+        associate_user_with_project(manager, reporter_id, project)
+
+def get_all_questionnaires(manager):
+    return get_project_id_name_map(manager)
 
 @login_required
 @session_not_expired
@@ -149,16 +160,19 @@ def associate_user_with_existing_project(manager, reporter_id):
 def new_user(request):
     org = get_organization(request)
     add_user_success = False
+    manager = get_database_manager(request.user)
     if request.method == 'GET':
         profile_form = UserProfileForm()
-        return render_to_response("accountmanagement/account/add_user.html", {'profile_form': profile_form,
+        all_questionnaires = get_all_questionnaires(manager)
+
+        return render_to_response("accountmanagement/account/add_new_user.html", {'profile_form': profile_form,
                                                                               'is_pro_sms': org.is_pro_sms,
                                                                               'current_lang': get_language(),
+                                                                              'questionnaires': all_questionnaires
                                                                               },
-                                  context_instance=RequestContext(request))
+                                  context_instance=(RequestContext(request)))
 
     if request.method == 'POST':
-        manager = get_database_manager(request.user)
         org = get_organization(request)
         form = UserProfileForm(organization=org, data=request.POST)
 
