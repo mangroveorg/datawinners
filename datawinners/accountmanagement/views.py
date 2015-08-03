@@ -203,11 +203,8 @@ def new_user(request):
                     detail_dict = dict({"Name": name})
                     UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
 
-        return render_to_response("accountmanagement/account/add_user.html",
-                                  {'profile_form': form, 'add_user_success': add_user_success,
-                                   'current_lang': get_language()},
-                                  context_instance=RequestContext(request))
-
+        data = {"add_user_success": add_user_success, "errors": form.errors}
+        return HttpResponse(json.dumps(data), mimetype="application/json")
 
 @valid_web_user
 @is_admin

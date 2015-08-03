@@ -28,6 +28,10 @@
       <a href= "/account/users" >{% trans "All Users" %}</a>
     </div>
     <div id="add_user">
+        <div id="flash-message" class="success-message-box" data-bind="visible: addUserSuccess()">
+            {% trans "User has been added successfully" %}
+        </div>
+        {% csrf_token %}
         <div class="administrative">
           <div>
             <h3 class="title">{% trans "Point of Contact" %} / {% trans "Account Administrator" %}</h3>
@@ -63,8 +67,8 @@
                 </div>
                 <div class="tableCell">&nbsp;</div>
                 <div class="tableCell">
-                    <label><input type="radio" name="role" data-bind="checked: role, value: 'administrator'" />Administrator</label>
-                    <label><input type="radio" name="role" data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'project-manager'" />Project Manager</label>
+                    <label><input type="radio" name="role" data-bind="checked: role, value: 'administrator'" />{% trans "Administrator" %}</label>
+                    <label><input type="radio" name="role" data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'project-manager'" />{% trans "Project Manager" %}</label>
                     <div data-bind="visible: role()=='project-manager'">
                         <ul data-bind="foreach: questionnaires">
                             <li>
