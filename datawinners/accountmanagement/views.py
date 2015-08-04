@@ -154,6 +154,7 @@ def associate_user_with_projects(manager, reporter_id, user_id, project_ids):
         associate_user_with_project(manager, reporter_id, project_id)
     UserPermission(manager, user_id, project_ids).save()
 
+
 def get_all_questionnaires(manager):
     return get_project_id_name_map(manager)
 
@@ -202,8 +203,7 @@ def new_user(request):
                                                                          mobile_number=mobile_number, email=username)
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
-                associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
-                                             selected_questionnaires)
+                associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id, selected_questionnaires)
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user", organization=org)

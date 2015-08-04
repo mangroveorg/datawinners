@@ -1,4 +1,4 @@
-var viewModel = function() {
+var viewModel = function () {
     var self = this;
     this.fullName = DW.ko.createValidatableObservable({value: ""});
     this.email = DW.ko.createValidatableObservable({value: ""});
@@ -9,19 +9,19 @@ var viewModel = function() {
     this.role = DW.ko.createValidatableObservable({value: "administrator"});
     this.addUserSuccess = ko.observable(false);
 
-    this.fullName.subscribe(function(){
-       DW.ko.mandatoryValidator(self.fullName, 'This field is required')
+    this.fullName.subscribe(function () {
+        DW.ko.mandatoryValidator(self.fullName, 'This field is required')
     });
 
-    this.email.subscribe(function(){
+    this.email.subscribe(function () {
         DW.ko.mandatoryValidator(self.email, 'This field is required')
     });
 
-    this.mobilePhone.subscribe(function(){
-       DW.ko.mandatoryValidator(self.mobilePhone, 'This field is required')
+    this.mobilePhone.subscribe(function () {
+        DW.ko.mandatoryValidator(self.mobilePhone, 'This field is required')
     });
 
-    this.submit = function() {
+    this.submit = function () {
         var formData = {
             'title': self.title(),
             'full_name': self.fullName(),
@@ -31,9 +31,9 @@ var viewModel = function() {
             'selected_questionnaires': self.selectedQuestionnaires(),
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         };
-        $.post('/account/user/new/', formData, function(response){
+        $.post('/account/user/new/', formData, function (response) {
             var responseJson = $.parseJSON(JSON.stringify(response));
-            if(responseJson['add_user_success'] == true) {
+            if (responseJson['add_user_success'] == true) {
                 self.addUserSuccess(true);
                 self.clearFields();
             } else {
@@ -44,16 +44,16 @@ var viewModel = function() {
     };
 
     this.parseErrors = function (errors) {
-        if(errors['username']) {
+        if (errors['username']) {
             self.email.setError(errors['username'][0]);
         }
-        if(errors['mobile_phone']) {
+        if (errors['mobile_phone']) {
             self.mobilePhone.setError(errors['mobile_phone'][0]);
         }
     };
 
-    this.fetchQuestionnaires = function() {
-        if(self.role()=='Project Managers') {
+    this.fetchQuestionnaires = function () {
+        if (self.role() == 'Project Managers') {
             $.getJSON('/entity/questionnaires/', {}, function (data) {
                 $('#container_content').height('auto');
                 self.questionnaires(data['questionnaires']);
@@ -62,7 +62,7 @@ var viewModel = function() {
         return true;
     };
 
-    this.clearFields = function() {
+    this.clearFields = function () {
         this.fullName(null);
         this.email(null);
         this.email.setError(null);
@@ -79,7 +79,7 @@ var viewModel = function() {
 
 };
 
-$(document).ready(function(){
+$(document).ready(function () {
     var userModel = new viewModel();
     window.userModel = userModel;
     ko.applyBindings(userModel, $("#add_user")[0]);

@@ -24,9 +24,7 @@
 
 {% endblock %}
 {% block content %}
-    <div class="text_align_right margin_bottom_20">
-        <a href="/account/users">{% trans "All Users" %}</a>
-    </div>
+    <a class="users-back-btn" href="/account/users">« {% trans "Back to Users" %}</a>
     <div id="add_user">
         <div id="flash-message" class="success-message-box" data-bind="visible: addUserSuccess()">
             {% trans "User has been added successfully" %}
@@ -37,43 +35,31 @@
                 <h3 class="title">{% trans "Point of Contact" %} / {% trans "Account Administrator" %}</h3>
                 <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
             </div>
-            <div class="tableRow form-row-10px">
+            <div class="tableRow">
                 <div class="tableCell">
                     <label>{% trans 'Name' %}</label>
                 </div>
-                <div class="tableCell">&nbsp;</div>
                 <div class="tableCell">
-                    <input type="text" data-bind="value: fullName"/>
+                    <input type="text" name="full_name" data-bind="value: fullName"/>
                 </div>
-                <div class="tableCell errorlist" data-bind="hidden: fullName.valid">
-                    <span data-bind="hidden: fullName.valid, text: fullName.error"></span>
-                </div>
-            </div>
-            <div class="tableRow">&nbsp;
-            </div>
-            <div class="tableRow form-row-10px">
-                <div class="tableCell ">
-                    <label>{% trans 'Job Title' %}<span class='optional_field'>{% trans 'Optional' %}</span></label>
-                </div>
-                <div class="tableCell">&nbsp;</div>
-                <div class="tableCell">
-                    <input type="text" data-bind="value: title"/>
+                <div class="tableCell" data-bind="css: { errorlist: fullName.error()  != null && fullName.error() != '' }">
+                    <span data-bind="text: fullName.error"></span>
                 </div>
             </div>
             <div class="tableRow">
-                <div class="tableCell">&nbsp;</div>
-                <div class="tableCell">&nbsp;</div>
+                <div class="tableCell ">
+                    <label>{% trans 'Job Title' %}<span class='optional_field'>{% trans 'Optional' %}</span></label>
+
+                </div>
                 <div class="tableCell">
+                    <input type="text" name="title" data-bind="value: title"/>
                     <p class="black_italic optional">{% trans "Example: Program Director" %}</p>
                 </div>
-            </div>
-            <div class="tableRow">&nbsp;
             </div>
             <div class="tableRow">
                 <div class="tableCell">
                     <label>{% trans 'Role' %}</label>
                 </div>
-                <div class="tableCell">&nbsp;</div>
                 <div class="tableCell">
                     <label><input type="radio" name="role"
                                   data-bind="checked: role, value: 'administrator'"/>{% trans "Administrator" %}</label>
@@ -92,51 +78,36 @@
                     </div>
                 </div>
             </div>
-            <div class="tableRow">&nbsp;
-            </div>
-            <div class="tableRow form-row-10px">
+            <div class="tableRow">
                 <div class="tableCell">
                     <label>{% trans 'Email' %}</label>
                 </div>
                 <div class="tableCell">
-                    &nbsp;
+                    <input type="text" name="username" data-bind="value: email"/>
                 </div>
-                <div class="tableCell">
-                    <input type="text" data-bind="value: email"/>
-                </div>
-                <div class="tableCell errorlist" data-bind="hidden: email.valid">
-                    <span data-bind="hidden: email.valid, text: email.error"></span>
+                <div class="tableCell" data-bind="css: { errorlist: email.error() != null && email.error() != '' }">
+                    <span data-bind="text: email.error"></span>
                 </div>
             </div>
-            <div class="tableRow">&nbsp;
-            </div>
-            <div class="tableRow form-row-10px">
+            <div class="tableRow">
                 <div class="tableCell">
                     <label>{% trans 'Phone Number' %}</label>
                 </div>
                 <div class="tableCell">
-                    &nbsp;
-                </div>
-                <div class="tableCell">
-                    <input type="text" data-bind="value: mobilePhone"/>
-                </div>
-                <div class="tableCell errorlist" data-bind="hidden: mobilePhone.valid">
-                    <span data-bind="hidden: mobilePhone.valid, text: mobilePhone.error"></span>
-                </div>
-            </div>
-            <div class="tableRow">
-                <div class="tableCell">&nbsp;</div>
-                <div class="tableCell">&nbsp;</div>
-                <div class="tableCell">
+                    <input type="text" name="mobile_phone" data-bind="value: mobilePhone"/>
                     <p class="black_italic">{% trans "phone_number_example" %}</p>
                 </div>
-            </div>
-            <div class="tableRow">&nbsp;
+                <div class="tableCell" data-bind="css: { errorlist: mobilePhone.error()  != null && mobilePhone.error() != '' }">
+                    <span data-bind="text: mobilePhone.error"></span>
+                </div>
             </div>
             <div class="tableRow margin_top_20">
+                <div class="tableCell"></div>
                 <div class="tableCell">
                     <button class="button float_right" id="submit" class="button"
-                            data-bind="click: submit">{% trans 'Register' %}</button>
+                            data-bind="click: submit">{% trans 'Add User' %}</button>
+                    <a class="user-cancel-btn" data-bind="click: $root.clearFields()">{% trans 'Cancel' %}</a>
+
                 </div>
             </div>
         </div>

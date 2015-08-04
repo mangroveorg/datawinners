@@ -4839,3 +4839,24 @@ msgstr ""
 
 msgid "wp_language"
 msgstr "en"
+
+msgid "Role"
+msgstr ""
+
+msgid "Administrators"
+msgstr ""
+
+msgid "Project Managers"
+msgstr ""
+
+msgid "Back to Users"
+msgstr ""
+
+msgid "Add User"
+msgstr ""
+
+msgid "role_administrator_description"
+msgstr ""
+
+msgid "role_project_manager_description"
+msgstr ""

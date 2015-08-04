@@ -2,9 +2,10 @@ import unittest
 from django.test import TestCase
 
 from mock import Mock, patch, MagicMock
-from datawinners.accountmanagement.views import associate_user_with_all_projects_of_organisation
+from datawinners.accountmanagement.views import associate_user_with_all_projects_of_organisation, \
+    associate_user_with_projects, associate_user_with_project
 from mangrove.form_model.project import Project
-
+from mangrove.datastore.user_permission import UserPermission
 
 class TestUserActivityLogDetails(TestCase):
 
@@ -34,3 +35,22 @@ class TestUserAssociationToProject(unittest.TestCase):
                     associate_user_with_all_projects_of_organisation(dbm, 'rep123')
 
                     project_mock.associate_data_sender_to_project.assert_called_once_with(dbm, ['rep123'])
+
+    def test_should_associate_user_to_projects(self):
+        dbm = Mock()
+        with patch('datawinners.accountmanagement.views.Project') as ProjectMock:
+            with patch("datawinners.accountmanagement.views.get_all_projects") as get_all_projects_mock:
+                with patch("datawinners.accountmanagement.views.update_datasender_index_by_id") as update_datasender_index_by_id_mock:
+                    with patch('datawinners.accountmanagement.views.UserPermission') as UPMock:
+                        get_all_projects_mock.return_value = [{'value':{'_id': 'id1'}}]
+                        project_mock = MagicMock(spec=Project)
+                        user_permission_mock = MagicMock(spec=UserPermission)
+                        UPMock.return_value = user_permission_mock
+                        ProjectMock.get.return_value = project_mock
+                        project_mock.data_senders = []
+
+                        associate_user_with_projects(dbm, 'rep123', '1', ['q1', 'q2'])
+
+                        project_mock.associate_data_sender_to_project.assert_called_with(dbm, ['rep123'])
+                        assert user_permission_mock.save.called, 'Save on User Permissions was expected to be called ' \
+                                                                 'but was not called'
