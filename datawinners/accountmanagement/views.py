@@ -27,12 +27,14 @@ from datawinners.accountmanagement.localized_time import get_country_time_delta,
 from datawinners.project.couch_view_helper import get_all_projects, get_project_id_name_map
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.transport import TransportInfo
-from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_pro_sms, valid_web_user, is_sms_api_user, is_datasender
+from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_pro_sms, \
+    valid_web_user, is_sms_api_user, is_datasender
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.main.database import get_database_manager
 from mangrove.errors.MangroveException import AccountExpiredException
-from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm, UpgradeFormProSms
+from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, \
+    ResetPasswordForm, UpgradeFormProSms
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, \
     DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for
 from datawinners.project.models import delete_datasenders_from_project
@@ -45,6 +47,7 @@ from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
 from mangrove.form_model.project import Project
 from datawinners.accountmanagement.registration_views import get_previous_page_language
+from mangrove.datastore.user_permission import UserPermission, get_user_permission
 
 
 def registration_complete(request):
@@ -82,7 +85,8 @@ def _get_timezone_information(organization):
     timedelta = get_country_time_delta(organization.country)
     localized_time = convert_utc_to_localized(timedelta, datetime.datetime.utcnow())
     timedelta_as_string = "%s%.2d:%.2d" % (timedelta[0], timedelta[1], timedelta[2])
-    return ugettext("GMT%s <span class='timezone-text'>  Now it is: %s</span>") % (timedelta_as_string, datetime.datetime.strftime(localized_time, "%H:%M"))
+    return ugettext("GMT%s <span class='timezone-text'>  Now it is: %s</span>") % (
+    timedelta_as_string, datetime.datetime.strftime(localized_time, "%H:%M"))
 
 
 @login_required
@@ -123,22 +127,21 @@ def settings(request):
 
         return render_to_response("accountmanagement/account/org_settings.html",
                                   {
-                                   'organization_form': organization_form,
-                                   'message': message,
-                                   'timezone_information':  _get_timezone_information(organization),
-                                   'current_lang': get_language()
+                                      'organization_form': organization_form,
+                                      'message': message,
+                                      'timezone_information': _get_timezone_information(organization),
+                                      'current_lang': get_language()
                                   },
                                   context_instance=RequestContext(request))
 
 
-def associate_user_with_existing_project(manager, reporter_id):
+def associate_user_with_all_projects_of_organisation(manager, reporter_id):
     rows = get_all_projects(manager)
     for row in rows:
-        associate_user_with_project(manager, reporter_id, row)
+        associate_user_with_project(manager, reporter_id, row['value']['_id'])
 
 
-def associate_user_with_project(manager, reporter_id, project):
-    project_id = project['value']['_id']
+def associate_user_with_project(manager, reporter_id, project_id):
     questionnaire = Project.get(manager, project_id)
     reporters_to_associate = [reporter_id]
     questionnaire.associate_data_sender_to_project(manager, reporters_to_associate)
@@ -146,12 +149,14 @@ def associate_user_with_project(manager, reporter_id, project):
         update_datasender_index_by_id(data_senders_code, manager)
 
 
-def associate_user_with_projects(manager, reporter_id, projects):
-    for project in projects:
-        associate_user_with_project(manager, reporter_id, project)
+def associate_user_with_projects(manager, reporter_id, user_id, project_ids):
+    for project_id in project_ids:
+        associate_user_with_project(manager, reporter_id, project_id)
+    UserPermission(manager, user_id, project_ids).save()
 
 def get_all_questionnaires(manager):
     return get_project_id_name_map(manager)
+
 
 @login_required
 @session_not_expired
@@ -173,31 +178,36 @@ def new_user(request):
                                   context_instance=(RequestContext(request)))
 
     if request.method == 'POST':
+        post_parameters = request.POST
         org = get_organization(request)
         form = UserProfileForm(organization=org, data=request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data.get('username')
+            username = post_parameters['username']
+            selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
+            if selected_questionnaires is None or len(selected_questionnaires) < 1:
+                selected_questionnaires = []
             if not form.errors:
                 user = User.objects.create_user(username, username, 'test123')
-                user.first_name = form.cleaned_data['full_name']
+                user.first_name = post_parameters['full_name']
                 group = Group.objects.filter(name="Project Managers")
                 user.groups.add(group[0])
-                user.save()
-                mobile_number = form.cleaned_data['mobile_phone']
-                ngo_user_profile = NGOUserProfile(user=user, title=form.cleaned_data['title'],
+                user_id = user.save()
+                mobile_number = post_parameters['mobile_phone']
+                ngo_user_profile = NGOUserProfile(user=user, title=post_parameters['title'],
                                                   mobile_phone=mobile_number,
                                                   org_id=org.org_id)
                 ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
                                                                          current_user_name=user.get_full_name(),
                                                                          mobile_number=mobile_number, email=username)
                 ngo_user_profile.save()
-                associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
                 reset_form = PasswordResetForm({"email": username})
+                associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
+                                             selected_questionnaires)
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
-                                              type="created_user",organization=org)
-                    name = form.cleaned_data.get("full_name")
+                                              type="created_user", organization=org)
+                    name = post_parameters["full_name"]
                     form = UserProfileForm()
                     add_user_success = True
                     detail_dict = dict({"Name": name})
@@ -261,16 +271,19 @@ def upgrade(request, token=None, account_type=None, language=None):
     if request.method == 'GET':
         form = UpgradeForm() if not account_type else UpgradeFormProSms()
         organization_form = OrganizationForm(instance=organization)
-        profile_form = EditUserProfileForm(organization=organization, reporter_id=profile.reporter_id,data=dict(title=profile.title, full_name=profile.user.first_name,
-                                             username=profile.user.username,
-                                             mobile_phone=profile.mobile_phone))
-        return render_to_response("registration/upgrade.html", {'organization': organization_form, 'profile': profile_form,
-                                                                'form': form}, context_instance=RequestContext(request))
+        profile_form = EditUserProfileForm(organization=organization, reporter_id=profile.reporter_id,
+                                           data=dict(title=profile.title, full_name=profile.user.first_name,
+                                                     username=profile.user.username,
+                                                     mobile_phone=profile.mobile_phone))
+        return render_to_response("registration/upgrade.html",
+                                  {'organization': organization_form, 'profile': profile_form,
+                                   'form': form}, context_instance=RequestContext(request))
     if request.method == 'POST':
         form = UpgradeForm(request.POST)
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance=organization).update()
-        profile_form = EditUserProfileForm(organization=organization, reporter_id=profile.reporter_id, data=request.POST)
+        profile_form = EditUserProfileForm(organization=organization, reporter_id=profile.reporter_id,
+                                           data=request.POST)
         if form.is_valid() and organization_form.is_valid() and profile_form.is_valid():
             organization.save()
 
@@ -293,15 +306,17 @@ def upgrade(request, token=None, account_type=None, language=None):
                 Token.objects.get(pk=token).delete()
             return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
 
-        return render_to_response("registration/upgrade.html", {'organization': organization_form, 'profile': profile_form,
-                                                                'form': form}, context_instance=RequestContext(request))
+        return render_to_response("registration/upgrade.html",
+                                  {'organization': organization_form, 'profile': profile_form,
+                                   'form': form}, context_instance=RequestContext(request))
 
 
 def _send_upgrade_email(user, language):
     subject = render_to_string('accountmanagement/upgrade_email_subject_' + language + '.txt')
-    subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
+    subject = ''.join(subject.splitlines())  # Email subject *must not* contain newlines
     site = Site.objects.get_current()
-    body = render_to_string('accountmanagement/upgrade_email_' + language + '.html', {'username': user.first_name, 'site':site})
+    body = render_to_string('accountmanagement/upgrade_email_' + language + '.html',
+                            {'username': user.first_name, 'site': site})
     email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
     email.send()
@@ -330,7 +345,7 @@ def delete_users(request):
 
     if ngo_admin_user_profile.reporter_id in all_ids:
         messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
-                                (ngo_admin_user_profile.user.first_name), "error_message")
+                       (ngo_admin_user_profile.user.first_name), "error_message")
     else:
         detail = user_activity_log_details(User.objects.filter(id__in=django_ids))
         delete_datasenders_from_project(manager, all_ids)
@@ -374,4 +389,4 @@ def _update_user_and_profile(request, form):
     ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
 
     ngo_user_profile.save()
-    update_corresponding_datasender_details(user,ngo_user_profile,old_phone_number)
+    update_corresponding_datasender_details(user, ngo_user_profile, old_phone_number)

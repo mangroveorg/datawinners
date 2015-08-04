@@ -2,7 +2,7 @@ import unittest
 from django.test import TestCase
 
 from mock import Mock, patch, MagicMock
-from datawinners.accountmanagement.views import associate_user_with_existing_project
+from datawinners.accountmanagement.views import associate_user_with_all_projects_of_organisation
 from mangrove.form_model.project import Project
 
 
@@ -31,6 +31,6 @@ class TestUserAssociationToProject(unittest.TestCase):
                     ProjectMock.get.return_value = project_mock
                     project_mock.data_senders = []
 
-                    associate_user_with_existing_project(dbm, 'rep123')
+                    associate_user_with_all_projects_of_organisation(dbm, 'rep123')
 
                     project_mock.associate_data_sender_to_project.assert_called_once_with(dbm, ['rep123'])
