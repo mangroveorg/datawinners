@@ -54,8 +54,8 @@ msgstr "Prénom"
 msgid "Last name"
 msgstr "Nom"
 
-msgid "Enter a valid email address. Example:name@organization.com"
-msgstr "Entrez une adresse email valide. Exemple : name@organisation.com"
+msgid "Enter a valid email address"
+msgstr "Entrez une adresse email valide"
 
 
 msgid "Phone Number"
@@ -2918,7 +2918,7 @@ msgid "Example: Program Director"
 msgstr "Exemple: Directeur de programme"
 
 msgid "phone_number_example"
-msgstr "Entrez le code pays et le  numéro de téléphone. Exemple:261333745269"
+msgstr "Entrez le code pays et le  numéro de téléphone.<br>Exemple:261333745269"
 
 msgid "Minimum	of 6 characters in length"
 msgstr "Au minimum 6 caratères"
@@ -6083,8 +6083,17 @@ msgstr ""
 msgid "Add User"
 msgstr ""
 
+msgid "Add a User"
+msgstr ""
+
 msgid "role_administrator_description"
 msgstr ""
 
 msgid "role_project_manager_description"
 msgstr ""
+
+msgid "Once a Questionnaire or Poll is created you can give access"
+msgstr ""
+
+msgid "add_user_help_text"
+msgstr "When you click on Add User, we will send an Email to invite this person to<br>your DataWinners account"

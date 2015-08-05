@@ -8,17 +8,26 @@ var viewModel = function () {
     this.selectedQuestionnaires = ko.observableArray([]);
     this.role = DW.ko.createValidatableObservable({value: "administrator"});
     this.addUserSuccess = ko.observable(false);
+    this.hasFormChanged = ko.observable(false);
 
     this.fullName.subscribe(function () {
-        DW.ko.mandatoryValidator(self.fullName, 'This field is required')
+        DW.ko.mandatoryValidator(self.fullName, 'This field is required');
+        window.onbeforeunload = 'You have made some changes. Are you sure you want to discard the changes and move away?'
+        self.hasFormChanged(true);
     });
 
     this.email.subscribe(function () {
         DW.ko.mandatoryValidator(self.email, 'This field is required')
+        self.hasFormChanged(true);
     });
 
     this.mobilePhone.subscribe(function () {
         DW.ko.mandatoryValidator(self.mobilePhone, 'This field is required')
+        self.hasFormChanged(true)
+    });
+
+    this.email.subscribe(function () {
+        self.hasFormChanged(true);
     });
 
     this.submit = function () {
@@ -67,20 +76,34 @@ var viewModel = function () {
         this.email(null);
         this.email.setError(null);
         this.title(null);
+        this.role('administrator');
         this.mobilePhone(null);
         this.mobilePhone.setError(null);
         this.fullName.setError(null);
         this.questionnaires([]);
         this.selectedQuestionnaires([]);
+        this.hasFormChanged(false);
         setTimeout(function () {
             self.addUserSuccess(false);
         }, 4000)
     }
-
 };
 
 $(document).ready(function () {
     var userModel = new viewModel();
     window.userModel = userModel;
     ko.applyBindings(userModel, $("#add_user")[0]);
+
+    window.addEventListener("beforeunload", function (e) {
+        var confirmationMessage = 'It looks like you have been editing something. ';
+        confirmationMessage += 'If you leave before saving, your changes will be lost.';
+        var model = window.userModel;
+
+        if (!model.hasFormChanged()) {
+            return undefined;
+        }
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
 });

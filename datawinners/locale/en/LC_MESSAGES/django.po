@@ -53,7 +53,7 @@ msgstr ""
 msgid "Last name"
 msgstr ""
 
-msgid "Enter a valid email address. Example:name@organization.com"
+msgid "Enter a valid email address"
 msgstr ""
 
 msgid "Phone Number"
@@ -2594,7 +2594,7 @@ msgid "Example: Program Director"
 msgstr ""
 
 msgid "phone_number_example"
-msgstr "Enter the country code and telephone number. Example: 261333745269"
+msgstr "Enter the country code and telephone number.<br>Example: 261333745269"
 
 msgid "Example: Minimum	of 6 characters in length"
 msgstr ""
@@ -2706,7 +2706,7 @@ msgid "What is the %(entity_type)s's Unique ID Number?"
 msgstr ""
 
 msgid "Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269"
-msgstr "Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269"
+msgstr "Enter the %(entity_type)s's number with the country code and telephone number.<br>Example: 261333745269"
 
 msgid "some default value"
 msgstr ""
@@ -4856,7 +4856,13 @@ msgid "Add User"
 msgstr ""
 
 msgid "role_administrator_description"
-msgstr "This person can manage users, view and manage all<br />Questionnaires and Polls."
+msgstr "This person can manage users, view and manage all<br>Questionnaires and Polls."
 
 msgid "role_project_manager_description"
-msgstr "This person can manage Questionnaires and<br />Polls he has created or given access to."
+msgstr "This person can view and manage Questionnaires and<br>Polls he has created or given access to."
+
+msgid "Once a Questionnaire or Poll is created you can give access"
+msgstr ""
+
+msgid "add_user_help_text"
+msgstr "When you click on Add User, we will send an Email to invite this person to<br>your DataWinners account"

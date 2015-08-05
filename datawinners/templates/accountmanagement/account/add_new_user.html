@@ -25,14 +25,14 @@
 {% endblock %}
 {% block content %}
     <a class="users-back-btn" href="/account/users">« {% trans "Back to Users" %}</a>
-    <div id="add_user">
+    <div id="add_user" data-bind="beforeUnloadText: beforeUnloadPrompt">
         <div id="flash-message" class="success-message-box" data-bind="visible: addUserSuccess()">
             {% trans "User has been added successfully" %}
         </div>
         {% csrf_token %}
         <div class="administrative">
             <div>
-                <h3 class="title">{% trans "Point of Contact" %} / {% trans "Account Administrator" %}</h3>
+                <h3 class="title">{% trans "Add a User" %}</h3>
                 <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
             </div>
             <div class="tableRow">
@@ -42,18 +42,11 @@
                 <div class="tableCell">
                     <input type="text" name="full_name" data-bind="value: fullName"/>
                 </div>
-                <div class="tableCell" data-bind="css: { errorlist: fullName.error()  != null && fullName.error() != '' }">
-                    <span data-bind="text: fullName.error"></span>
-                </div>
-            </div>
-            <div class="tableRow">
-                <div class="tableCell ">
-                    <label>{% trans 'Job Title' %}<span class='optional_field'>{% trans 'Optional' %}</span></label>
-
-                </div>
-                <div class="tableCell">
-                    <input type="text" name="title" data-bind="value: title"/>
-                    <p class="black_italic optional">{% trans "Example: Program Director" %}</p>
+                <div class="tableCell"
+                     data-bind="css: { errorlist: fullName.error()  != null && fullName.error() != '' }">
+                    <div class="error-box">
+                        <span data-bind="text: fullName.error"></span>
+                    </div>
                 </div>
             </div>
             <div class="tableRow">
@@ -64,13 +57,16 @@
                     <label><input type="radio" name="role"
                                   data-bind="checked: role, value: 'administrator'"/>{% trans "Administrator" %}
                     </label>
+
                     <p class="black_italic role_description">{% trans "role_administrator_description" %}</p>
                     <label><input type="radio" name="role"
                                   data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'Project Managers'"/>{% trans "Project Manager" %}
                     </label>
+
                     <p class="black_italic role_description">{% trans "role_project_manager_description" %}</p>
 
-                    <div data-bind="visible: role()=='Project Managers'">
+                    <div class="questionnaire-list" data-bind="visible: role()=='Project Managers'">
+                        <div class="bold_italic" data-bind="visibility: role() == 'Project Managers' && questionnaires().length < 1">{% trans "Once a Questionnaire or Poll is created you can give access" %}</div>
                         <ul data-bind="foreach: questionnaires">
                             <li>
                                 <input type="checkbox"
@@ -82,6 +78,17 @@
                 </div>
             </div>
             <div class="tableRow">
+                <div class="tableCell ">
+                    <label>{% trans 'Job Title' %}<span class='optional_field'>{% trans 'Optional' %}</span></label>
+
+                </div>
+                <div class="tableCell">
+                    <input type="text" name="title" data-bind="value: title"/>
+
+                    <p class="black_italic optional">{% trans "Example: Program Director" %}</p>
+                </div>
+            </div>
+            <div class="tableRow">
                 <div class="tableCell">
                     <label>{% trans 'Email' %}</label>
                 </div>
@@ -89,7 +96,9 @@
                     <input type="text" name="username" data-bind="value: email"/>
                 </div>
                 <div class="tableCell" data-bind="css: { errorlist: email.error() != null && email.error() != '' }">
-                    <span data-bind="text: email.error"></span>
+                    <div class="error-box">
+                        <span data-bind="text: email.error"></span>
+                    </div>
                 </div>
             </div>
             <div class="tableRow">
@@ -98,18 +107,24 @@
                 </div>
                 <div class="tableCell">
                     <input type="text" name="mobile_phone" data-bind="value: mobilePhone"/>
+
                     <p class="black_italic">{% trans "phone_number_example" %}</p>
                 </div>
-                <div class="tableCell" data-bind="css: { errorlist: mobilePhone.error()  != null && mobilePhone.error() != '' }">
-                    <span data-bind="text: mobilePhone.error"></span>
+                <div class="tableCell"
+                     data-bind="css: { errorlist: mobilePhone.error()  != null && mobilePhone.error() != '' }">
+                    <div class="error-box">
+                        <span data-bind="text: mobilePhone.error"></span>
+                    </div>
                 </div>
             </div>
+            <p class="bold_italic">{% trans add_user_help_text %}</p>
             <div class="tableRow margin_top_20">
+                <div class="tableCell"></div>
                 <div class="tableCell"></div>
                 <div class="tableCell">
                     <button class="button float_right" id="submit" class="button"
                             data-bind="click: submit">{% trans 'Add User' %}</button>
-                    <a class="user-cancel-btn" data-bind="click: $root.clearFields()">{% trans 'Cancel' %}</a>
+                    <a class="user-cancel-btn" href="/account/users">{% trans 'Cancel' %}</a>
 
                 </div>
             </div>
