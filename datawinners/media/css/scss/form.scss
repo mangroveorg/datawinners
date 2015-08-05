@@ -828,9 +828,9 @@ span.selected_list_item_arrow {
 }
 
 .users-back-btn {
-    display: block;
-    padding-left: 10px;
-    margin-bottom: 10px;
+  display: block;
+  padding-left: 10px;
+  margin-bottom: 10px;
 }
 
 #add_user {
@@ -869,6 +869,10 @@ span.selected_list_item_arrow {
       .tableCell {
         &:first-child {
           padding-right: 73px;
+        }
+        .role_description {
+          padding: 0 0 5px 0;
+          margin-left:30px;
         }
         padding-bottom: 20px;
       }

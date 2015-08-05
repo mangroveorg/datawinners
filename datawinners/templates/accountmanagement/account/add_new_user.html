@@ -62,10 +62,13 @@
                 </div>
                 <div class="tableCell">
                     <label><input type="radio" name="role"
-                                  data-bind="checked: role, value: 'administrator'"/>{% trans "Administrator" %}</label>
+                                  data-bind="checked: role, value: 'administrator'"/>{% trans "Administrator" %}
+                    </label>
+                    <p class="black_italic role_description">{% trans "role_administrator_description" %}</p>
                     <label><input type="radio" name="role"
                                   data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'Project Managers'"/>{% trans "Project Manager" %}
                     </label>
+                    <p class="black_italic role_description">{% trans "role_project_manager_description" %}</p>
 
                     <div data-bind="visible: role()=='Project Managers'">
                         <ul data-bind="foreach: questionnaires">

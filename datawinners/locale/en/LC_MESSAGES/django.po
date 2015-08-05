@@ -4856,7 +4856,7 @@ msgid "Add User"
 msgstr ""
 
 msgid "role_administrator_description"
-msgstr ""
+msgstr "This person can manage users, view and manage all<br />Questionnaires and Polls."
 
 msgid "role_project_manager_description"
-msgstr ""
+msgstr "This person can manage Questionnaires and<br />Polls he has created or given access to."
