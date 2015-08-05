@@ -45,6 +45,7 @@ var viewModel = function () {
             if (responseJson['add_user_success'] == true) {
                 self.addUserSuccess(true);
                 self.clearFields();
+                $('html, body').animate({scrollTop: '0px'}, 0);
             } else {
                 var errors = responseJson['errors'];
                 self.parseErrors(errors);
