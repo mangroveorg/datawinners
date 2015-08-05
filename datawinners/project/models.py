@@ -157,7 +157,14 @@ def get_simple_project_names(dbm):
             questionnaire_name = simple_project['value']['name']
             result.append({'name': questionnaire_name, 'id': simple_project['value']['id']})
 
+    return result
 
+def get_all_project_names(dbm):
+    result = []
+    simple_projects = dbm.load_all_rows_in_view("simple_project_names")
+    for simple_project in simple_projects:
+        questionnaire_name = simple_project['value']['name']
+        result.append({'name': questionnaire_name, 'id': simple_project['value']['id']})
 
     return result
 

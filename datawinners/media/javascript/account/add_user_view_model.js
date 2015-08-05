@@ -64,7 +64,7 @@ var viewModel = function () {
 
     this.fetchQuestionnaires = function () {
         if (self.role() == 'Project Managers') {
-            $.getJSON('/entity/questionnaires/', {}, function (data) {
+            $.getJSON('/entity/questionnairesandpolls/', {}, function (data) {
                 $('#container_content').height('auto');
                 self.questionnaires(data['questionnaires']);
             });
