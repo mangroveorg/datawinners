@@ -25,6 +25,7 @@ from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 from datawinners.project.utils import is_quota_reached
 from mangrove.form_model.project import Project
+from mangrove.datastore.documents import ProjectDocument
 
 
 REPORTER_ENTITY_TYPE = u'reporter'
@@ -46,8 +47,8 @@ def get_project_analysis_and_log_link(project_id, questionnaire_code):
 
 
 def get_project_info(manager, project):
-    project_id = project['value']['_id']
-    questionnaire = Project.get(manager, project_id)
+    project_id = project['_id']
+    questionnaire = Project.new_from_doc(manager, ProjectDocument.wrap(project))
     questionnaire_code = questionnaire.form_code
 
     analysis, disabled, log = get_project_analysis_and_log_link(project_id, questionnaire_code)
@@ -55,7 +56,7 @@ def get_project_info(manager, project):
     web_submission_link = reverse("web_questionnaire", args=[project_id])
 
     web_submission_link_disabled = 'disable_link'
-    if 'web' in project['value']['devices']:
+    if 'web' in project['devices']:
         web_submission_link_disabled = ""
 
     create_subjects_links = {}
@@ -69,18 +70,18 @@ def get_project_info(manager, project):
         project_link = reverse('project-overview', args=[project_id])
 
     project_info = dict(project_id=project_id,
-                        name=project['value']['name'],
+                        name=project['name'],
                         qid=questionnaire_code,
-                        created=project['value']['created'],
-                        is_advanced_questionnaire=bool(project['value'].get('xform')),
+                        created=project['created'],
+                        is_advanced_questionnaire=bool(project.get('xform')),
                         link=project_link,
                         log=log, analysis=analysis, disabled=disabled,
                         web_submission_link=web_submission_link,
                         web_submission_link_disabled=web_submission_link_disabled,
                         create_subjects_link=create_subjects_links,
                         entity_type=questionnaire.entity_type,
-                        encoded_name=urlquote(project['value']['name']),
-                        import_template_file_name=slugify(project['value']['name']),
+                        encoded_name=urlquote(project['name']),
+                        import_template_file_name=slugify(project['name']),
                         is_poll=bool(questionnaire.is_poll))
     return project_info
 

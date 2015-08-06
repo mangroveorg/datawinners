@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datawinners.project.couch_view_helper import get_all_projects, remove_poll_questionnaires,\
-    get_all_projects_for_users
+from datawinners.project.couch_view_helper import get_all_projects, remove_poll_questionnaires
 from datawinners.settings import CRS_ORG_ID
 from datawinners.project import models
 from django.utils.translation import ugettext_lazy as _
