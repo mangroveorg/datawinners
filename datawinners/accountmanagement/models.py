@@ -321,6 +321,11 @@ class NGOUserProfile(models.Model):
     def reporter(self):
         user = User.objects.get(email=self.user)
         return True if user.groups.filter(name="Data Senders").count() else False
+    
+    @property
+    def isNGOAdmin(self):
+        user = User.objects.get(email=self.user)
+        return True if user.groups.filter(name="NGO Admins").count() else False
 
 
 class PaymentDetails(models.Model):

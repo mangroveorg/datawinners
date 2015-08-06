@@ -51,6 +51,9 @@ xunit*.xml
 coverage.xml
 .idea
 screenshots
+.project
+.pydevproject
+.settings
 
 # gitflow specific files #
 ##########################

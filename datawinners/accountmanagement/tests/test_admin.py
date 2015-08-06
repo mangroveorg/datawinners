@@ -1,6 +1,6 @@
 from datetime import datetime
 import unittest
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.handlers.wsgi import WSGIRequest
 from django.template.defaultfilters import slugify
 from django_digest.models import PartialDigest
@@ -24,7 +24,6 @@ class TestAdmin(unittest.TestCase):
         self.org_id=OrganizationIdCreator().generateId()
         self.create_organization()
         self.admin = FakeUserAdmin(self.org_id)
-
 
     def tearDown(self):
         User.objects.get(username='a@a.com').delete()
@@ -81,3 +80,10 @@ class TestAdmin(unittest.TestCase):
         digest.save()
         self.digest = digest
         return user
+
+    def test_should_check_whether_user_is_ngo_admin(self):
+        group = Group.objects.filter(name="NGO Admins")
+        self.user.groups.add(group[0])
+        self.user.save()
+        self.assertTrue(self.user.get_profile().isNGOAdmin, 'User is a NGOAdmin')
+        
