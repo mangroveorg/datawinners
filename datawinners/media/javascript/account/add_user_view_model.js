@@ -12,17 +12,18 @@ var viewModel = function () {
 
     this.fullName.subscribe(function () {
         DW.ko.mandatoryValidator(self.fullName, 'This field is required');
-        window.onbeforeunload = 'You have made some changes. Are you sure you want to discard the changes and move away?'
         self.hasFormChanged(true);
     });
 
     this.email.subscribe(function () {
-        DW.ko.mandatoryValidator(self.email, 'This field is required')
+        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        DW.ko.regexValidator(self.email, 'Invalid email id', re);
         self.hasFormChanged(true);
     });
 
     this.mobilePhone.subscribe(function () {
-        DW.ko.mandatoryValidator(self.mobilePhone, 'This field is required')
+        var re = /^([0-9]{5,15})$/i;
+        DW.ko.regexValidator(self.mobilePhone, 'Invalid phone number', re);
         self.hasFormChanged(true)
     });
 
@@ -37,7 +38,7 @@ var viewModel = function () {
             'username': self.email(),
             'role': self.role(),
             'mobile_phone': self.mobilePhone(),
-            'selected_questionnaires': self.selectedQuestionnaires(),
+            'selected_questionnaires': self.selectedQuestionnaires() || [],
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         };
         $.post('/account/user/new/', formData, function (response) {
