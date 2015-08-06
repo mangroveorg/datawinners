@@ -4861,8 +4861,8 @@ msgstr "This person can manage users, view and manage all<br>Questionnaires and 
 msgid "role_project_manager_description"
 msgstr "This person can view and manage Questionnaires and<br>Polls he has created or given access to."
 
-msgid "Once a Questionnaire or Poll is created you can give access"
-msgstr ""
+msgid "questionnaire_access_placeholder_text"
+msgstr "Once a Questionnaire or Poll is created, you can give access here."
 
 msgid "add_user_help_text"
 msgstr "When you click on Add User, we will send an Email to invite this person to<br>your DataWinners account"

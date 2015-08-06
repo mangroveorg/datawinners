@@ -6092,7 +6092,7 @@ msgstr ""
 msgid "role_project_manager_description"
 msgstr ""
 
-msgid "Once a Questionnaire or Poll is created you can give access"
+msgid "questionnaire_access_placeholder_text"
 msgstr ""
 
 msgid "add_user_help_text"

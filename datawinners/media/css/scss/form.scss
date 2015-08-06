@@ -873,6 +873,13 @@ span.selected_list_item_arrow {
     padding-top: 10px;
   }
 
+  div.italic_text {
+    position: relative;
+    left: 25px;
+    font-style: italic;
+    margin-left: 0;
+  }
+
   .administrative {
     .section_description {
       padding-bottom: 20px;

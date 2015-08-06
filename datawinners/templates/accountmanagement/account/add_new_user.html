@@ -65,8 +65,8 @@
 
                     <p class="black_italic role_description">{% trans "role_project_manager_description" %}</p>
 
-                    <div class="questionnaire-list" data-bind="visible: role()=='Project Managers'">
-                        <div class="bold_italic blue-info" data-bind="visible: questionnaires().length < 1">{% trans "Once a Questionnaire or Poll is created you can give access" %}</div>
+                    <div class="italic_text grey-info" data-bind="visible: role()=='Project Managers' & questionnaires().length < 1">{% trans "questionnaire_access_placeholder_text" %}</div>
+                    <div class="questionnaire-list" data-bind="visible: role()=='Project Managers' & questionnaires().length >= 1">
                         <ul data-bind="foreach: questionnaires">
                             <li>
                                 <input type="checkbox"
