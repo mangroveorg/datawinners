@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.alldata import helper
 from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.alldata.helper import get_all_project_for_user
 
 
 class TestHelper(unittest.TestCase):
@@ -29,18 +30,39 @@ class TestHelper(unittest.TestCase):
         user.get_profile.return_value = reporter_profile
         return user
 
-    # def test_should_return_all_projects(self):
-    #     user = self._get_normal_user()
-    #     with patch("datawinners.alldata.helper.get_all_projects") as get_all_projects_mock:
-    #         get_all_projects_mock.return_value = {"project_name": "hello world"}
-    #         projects = get_all_project_for_user(user)
-    #     assert projects["project_name"] == "hello world"
+    def _get_ngo_admin(self):
+        user = Mock(User)
+        ngo_admin_profile = Mock(NGOUserProfile)
+        ngo_admin_profile.reporter = False
+        ngo_admin_profile.isNGOAdmin.return_value = True
+        user.get_profile.return_value = ngo_admin_profile
+        return user
 
-    # def test_should_return_all_projects_for_user(self):
-    #     user = self._get_reporter_user()
-    #     get_all_projects = stub_get_all_projects_for_reporter
-    #     projects = get_all_project_for_user(user)
-    #     assert projects["project_name"] == "hello world"
+    def test_should_return_all_projects_for_user_as_reporter(self):
+        user = self._get_reporter_user()
+        request = MagicMock()
+        all_projects = {}
+        all_projects_for_user = [{'_id':'d3456cc','name':'test questionnaire'}]
+        with patch('datawinners.alldata.helper.get_all_projects') as mock_get_all_projects, patch('datawinners.alldata.helper.remove_poll_questionnaires') as mock_remove_poll_questionnaires:
+            mock_get_all_projects.return_value = all_projects
+            mock_remove_poll_questionnaires.return_value = all_projects_for_user
+            request.user = user
+            assert helper.get_all_project_for_user(user) == all_projects_for_user
+            
+#     def test_should_return_all_projects_for_user_as_project_manager(self):
+#         user = self._get_normal_user()
+#         request = MagicMock()
+#         all_project_for_user = [{''}]
+
+    def test_should_return_all_projects_for_user_as_ngo_admin(self):
+        user = self._get_ngo_admin()
+        request = MagicMock()
+        all_projects = [{'value':{'_id':'d3456cc','name':'test questionnaire'}},{'value':{'_id':'256cc','name':'2nd questionnaire'}}]
+        all_projects_expected = [{'_id':'d3456cc','name':'test questionnaire'},{'_id':'256cc','name':'2nd questionnaire'}]
+        with patch('datawinners.alldata.helper.get_all_projects') as mock_get_all_projects:
+            mock_get_all_projects.return_value = all_projects
+            request.user = user
+            assert helper.get_all_project_for_user(user) == all_projects_expected
 
     def test_should_return_disabled_and_display_none_for_reporter(self):
         user = self._get_reporter_user()
