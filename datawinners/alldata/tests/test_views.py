@@ -15,9 +15,9 @@ class TestViews(TestCase):
         request.user = Mock(spec = User)
         manager = Mock(spec = DatabaseManager)
         manager.database = dict()
-        raw_project = dict(value = dict(_id = "pid", devices = ["sms", "web"],
+        raw_project = dict(_id = "pid", devices = ["sms", "web"],
                                         name = "Project Name",
-                                        created = "2012-05-23T02:57:09.788294+00:00",))
+                                        created = "2012-05-23T02:57:09.788294+00:00")
 
         project = Project(dbm=manager, name="Project Name")
 
@@ -41,9 +41,9 @@ class TestViews(TestCase):
         request.user = Mock(spec = User)
         manager = Mock(spec = DatabaseManager)
         manager.database = dict()
-        raw_project = dict(value = dict(_id = "pid", devices = ["sms", "web"],
+        raw_project = dict(_id = "pid", devices = ["sms", "web"],
                                         name = "Project Name",
-                                        created = "2012-05-23T02:57:09.788294+00:00"))
+                                        created = "2012-05-23T02:57:09.788294+00:00")
 
         project = Project(dbm=manager, name="Project Name", is_poll=True, form_code="q01")
         profile = Mock(spec = NGOUserProfile)

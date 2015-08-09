@@ -10,7 +10,7 @@ from mangrove.datastore.user_permission import get_questionnaires_for_user
 
 def get_all_project_for_user(user):
     if user.get_profile().reporter:
-        questionnaires = get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
+        questionnaires = [row['value'] for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]
         return remove_poll_questionnaires(questionnaires)
     if user.get_profile().isNGOAdmin:
         questionnaires = [row['value'] for row in get_all_projects(get_database_manager(user))]
