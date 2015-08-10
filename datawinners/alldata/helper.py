@@ -15,8 +15,13 @@ def get_all_project_for_user(user):
     if user.get_profile().isNGOAdmin:
         questionnaires = [row['value'] for row in get_all_projects(get_database_manager(user))]
         return questionnaires
-    return get_questionnaires_for_user(user.id, get_database_manager(user))
-
+    questionnaires_as_datasender = [row['value'] for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]
+    questionnaires_as_pm = get_questionnaires_for_user(user.id, get_database_manager(user))
+    for q_ds in questionnaires_as_datasender:
+        already_exists = [True for q_pm in questionnaires_as_pm if q_pm.get('_id') == q_ds.get('_id')]
+        if True not in already_exists:
+           questionnaires_as_pm.append(q_ds)
+    return questionnaires_as_pm
 
 def get_visibility_settings_for(user):
     if user.get_profile().reporter:

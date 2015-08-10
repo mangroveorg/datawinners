@@ -82,7 +82,8 @@ def get_project_info(manager, project):
                         entity_type=questionnaire.entity_type,
                         encoded_name=urlquote(project['name']),
                         import_template_file_name=slugify(project['name']),
-                        is_poll=bool(questionnaire.is_poll))
+                        is_poll=bool(questionnaire.is_poll),
+                        is_project_manager=project.get('is_project_manager',False))
     return project_info
 
 
@@ -106,10 +107,18 @@ def is_crs_admin(request):
 def is_crs_user(request):
     return get_organization(request).org_id == CRS_ORG_ID
 
+def _get_visibility_settings_for(user,project):
+    if user.get_profile().isNGOAdmin or project.get('is_project_manager', False) is True:
+        return "", ""
+    if user.get_profile().reporter or project.get('is_project_manager', False) is False:
+        return "disable_link_for_reporter", "none"
+    return "", ""
 
-def _construct_project_dict(local_time_delta, project):
+def _construct_project_dict(user, local_time_delta, project):
     project_id = project['project_id']
     delete_links = reverse('delete_project', args=[project_id])
+    disable_link_class, hide_link_class = _get_visibility_settings_for(user, project)
+    
     return dict(delete_links=delete_links,
                 name=project['name'],
                 created=convert_utc_to_localized(local_time_delta, project['created']),
@@ -125,7 +134,9 @@ def _construct_project_dict(local_time_delta, project):
                 encoded_name=project['encoded_name'],
                 import_template_file_name=project['import_template_file_name'],
                 is_advanced_questionnaire=bool(project['is_advanced_questionnaire']),
-                is_poll=project['is_poll']
+                is_poll=project['is_poll'],
+                disable_link_class=disable_link_class,
+                hide_link_class=hide_link_class
                 )
 
 
@@ -135,14 +146,16 @@ def _construct_project_dict(local_time_delta, project):
 @is_not_expired
 def index(request):
     organization = get_organization(request)
-    disable_link_class, hide_link_class, page_heading = projects_index(request)
+    page_heading = get_page_heading(request)
+    hide_for_data_sender = 'none' if request.user.get_profile().reporter else ''
+#     disable_link_class, hide_link_class, page_heading = projects_index(request)
     rows = get_project_list(request)
     project_list = []
     project_list.sort(key=itemgetter('name'))
     smart_phone_instruction_link = reverse("smart_phone_instruction")
     local_time_delta = get_country_time_delta(organization.country)
     for project in rows:
-            project_list.append(_construct_project_dict(local_time_delta, project))
+            project_list.append(_construct_project_dict(request.user, local_time_delta, project))
 
     activation_success = request.GET.get('activation', False)
 
@@ -153,26 +166,26 @@ def index(request):
     if is_crs_admin(request):
         return render_to_response('alldata/index.html',
                                   {'projects': project_list, 'page_heading': page_heading,
-                                   'disable_link_class': disable_link_class,
-                                   'hide_link_class': hide_link_class, 'is_crs_admin': True,
+                                   'is_crs_admin': True,
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached': is_quota_reached(request),
                                    'error_messages': error_messages,
                                    'is_pro_sms': organization.is_pro_sms,
                                    'activation_success': activation_success,
+                                   'hide_for_data_sender': hide_for_data_sender,
                                    'current_lang': get_language()},
                                   context_instance=RequestContext(request))
     else:
         return render_to_response('alldata/index.html',
                                   {'projects': project_list, 'page_heading': page_heading,
-                                   'disable_link_class': disable_link_class,
-                                   'hide_link_class': hide_link_class, 'is_crs_admin': False,
+                                   'is_crs_admin': False,
                                    "smart_phone_instruction_link": smart_phone_instruction_link,
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached': is_quota_reached(request),
                                    'error_messages': error_messages,
                                    'is_pro_sms': organization.is_pro_sms,
                                    'activation_success': activation_success,
+                                   'hide_for_data_sender':hide_for_data_sender,
                                    'current_lang': get_language()},
                                   context_instance=RequestContext(request))
 
