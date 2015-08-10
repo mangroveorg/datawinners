@@ -61,6 +61,9 @@ var viewModel = function () {
         if (errors['mobile_phone']) {
             self.mobilePhone.setError(errors['mobile_phone'][0]);
         }
+        if (errors['full_name']) {
+            self.fullName.setError(errors['full_name'][0]);
+        }
     };
 
     this.fetchQuestionnaires = function () {

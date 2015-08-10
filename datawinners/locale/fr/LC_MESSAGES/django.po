@@ -6083,9 +6083,6 @@ msgstr ""
 msgid "Add User"
 msgstr ""
 
-msgid "Add a User"
-msgstr ""
-
 msgid "role_administrator_description"
 msgstr ""
 
