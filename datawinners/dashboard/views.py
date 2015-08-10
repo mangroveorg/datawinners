@@ -20,6 +20,7 @@ from datawinners.utils import get_map_key, get_organization
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
 from datawinners.preferences.models import UserPreferences
+from mangrove.datastore.user_permission import get_questionnaires_for_user
 
 def _find_reporter_name(dbm, row):
     try:
@@ -101,13 +102,16 @@ def dashboard(request):
 
     organization = Organization.objects.get(org_id=user_profile.org_id)
     questionnaire_list = []
-    rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=8)
+    if request.user.get_profile().isNGOAdmin:
+        rows = [row['value'] for row in manager.load_all_rows_in_view('all_projects', descending=True, limit=8)]
+    else:
+        rows = get_questionnaires_for_user(request.user.id, manager, descending=True, limit=8)
     for row in rows:
-        if 'is_poll' in row['value'] and row['value']['is_poll'] is True:
-            link = reverse("submissions", args=[row['value']['_id'], row['value']['form_code']])
+        if row.get('is_poll', False) is True:
+            link = reverse("submissions", args=[row['_id'], row['form_code']])
         else:
-            link = reverse("project-overview", args=(row['value']['_id'],))
-        questionnaire = dict(name=row['value']['name'], link=link, id=row['value']['_id'])
+            link = reverse("project-overview", args=(row['_id'],))
+        questionnaire = dict(name=row['name'], link=link, id=row['_id'])
         questionnaire_list.append(questionnaire)
     language = request.session.get("django_language", "en")
     has_reached_sms_limit = organization.has_exceeded_message_limit()
