@@ -148,7 +148,6 @@ def index(request):
     organization = get_organization(request)
     page_heading = get_page_heading(request)
     hide_for_data_sender = 'none' if request.user.get_profile().reporter else ''
-#     disable_link_class, hide_link_class, page_heading = projects_index(request)
     rows = get_project_list(request)
     project_list = []
     project_list.sort(key=itemgetter('name'))

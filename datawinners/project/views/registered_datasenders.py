@@ -5,17 +5,16 @@ from elasticsearch_dsl import Search
 from datawinners.main.database import get_database_manager
 from datawinners.settings import ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
 from datawinners.utils import strip_accents, lowercase_and_strip_accents
+from datawinners.alldata.helper import get_all_project_for_user
 
 
 def registered_ds_count(request):
     dbm = get_database_manager(request.user)
     result = []
-    for row in dbm.database.view("project_names/project_names"):
-        if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
-            questionnaire_name = row['value']['name']
-            result.append({'name': questionnaire_name, 'id': row['value']['id'],
-                           'ds-count': get_registered_datasender_count(dbm, questionnaire_name)})
-
+    for row in get_all_project_for_user(request.user):
+        if not row.get('is_poll', False):
+            result.append({'name': row.get('name'), 'id': row.get('_id'),
+                           'ds-count': get_registered_datasender_count(dbm, row.get('name'))})
     return HttpResponse(json.dumps(result))
 
 
