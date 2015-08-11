@@ -5,13 +5,17 @@ from elasticsearch_dsl import Search
 from datawinners.main.database import get_database_manager
 from datawinners.settings import ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
 from datawinners.utils import strip_accents, lowercase_and_strip_accents
-from datawinners.alldata.helper import get_all_project_for_user
-
+from mangrove.datastore.user_permission import get_questionnaires_for_user
 
 def registered_ds_count(request):
     dbm = get_database_manager(request.user)
     result = []
-    for row in get_all_project_for_user(request.user):
+    if request.user.get_profile().isNGOAdmin:
+        rows = [row['value'] for row in dbm.load_all_rows_in_view('all_projects')]
+    else:
+        rows = get_questionnaires_for_user(request.user.id, dbm)
+    
+    for row in rows:
         if not row.get('is_poll', False):
             result.append({'name': row.get('name'), 'id': row.get('_id'),
                            'ds-count': get_registered_datasender_count(dbm, row.get('name'))})
