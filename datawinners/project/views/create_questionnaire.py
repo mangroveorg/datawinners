@@ -7,7 +7,8 @@ from django.template import RequestContext
 from django.utils.translation import ugettext as _, ugettext
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired
-from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile,\
+    get_ngo_admin_user_profiles_for
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import CREATED_QUESTIONNAIRE
 from datawinners.main.database import get_database_manager
@@ -18,7 +19,8 @@ from datawinners.utils import get_organization
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException
 from mangrove.form_model.project import get_active_form_model_name_and_id
-from mangrove.datastore.user_permission import grant_user_permission_for
+from mangrove.datastore.user_permission import grant_user_permission_for,\
+    get_user_permission
 
 
 @login_required
@@ -29,6 +31,13 @@ def create_project(request):
     manager = get_database_manager(request.user)
     org = get_organization(request)
     is_active, project_active_id, project_active_name = get_active_form_model_name_and_id(manager)
+    has_permission_on_active_project = True
+    ngo_admin_email = get_ngo_admin_user_profiles_for(org)[0].user.email
+    if is_active:
+        user_permission = get_user_permission(user_id=request.user.id, dbm=manager)
+        if not project_active_id in user_permission.project_ids:
+            has_permission_on_active_project = False
+    
     if request.method == 'GET':
         cancel_link = reverse('dashboard') if request.GET.get('prev', None) == 'dash' else reverse('alldata_index')
         return render_to_response('project/create_project.html',
@@ -40,6 +49,8 @@ def create_project(request):
                                    'post_url': reverse(create_project),
                                    'unique_id_types': json.dumps([unique_id_type.capitalize() for unique_id_type in
                                                                   get_unique_id_types(manager)]),
+                                   'has_permission_on_active_project':has_permission_on_active_project,
+                                   'ngo_admin_email':ngo_admin_email,
                                    'cancel_link': cancel_link, 'is_active': is_active, 'project_active_id': project_active_id, 'project_active_name': project_active_name}, context_instance=RequestContext(request))
 
     if request.method == 'POST':

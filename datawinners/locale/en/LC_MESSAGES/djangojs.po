@@ -1193,3 +1193,7 @@ msgstr ""
 msgid "failed numbers message: %(failed_numbers)s."
 msgstr "You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions: %(failed_numbers)s. \
  We have successfully sent your message to all other numbers. For more information contact support@datawinners.com."
+
+msgid "to_deactivate_poll_contact_admin"
+msgstr "To create the Poll you must first deactivate current active poll. You don’t have access to this Poll, please contact the administrator"
+ 

@@ -180,9 +180,15 @@ function _if_pro_sms_mode_show_poll_option() {
 
 function _is_another_poll_is_active() {
     if (is_active == "True") {
+    	var msg_text = "";
+    	if(has_permission_on_active_project == "True") {
+    		msg_text = gettext('To create the Poll you must first deactivate your current ') + '<span><a id="active_poll_name" class="link_color"href="/project/poll/' +
+            project_active_id + '">'+ project_active_name + '</a></span>.'+ gettext('You may only have one active Poll at a time.');
+    	}else{
+    		msg_text = gettext("to_deactivate_poll_contact_admin")+'('+ ngo_admin_email +')';
+    	}
         $('.poll_active').show();
-        $('<div class="italic_grey padding_left_30 padding_top_10 padding_bottom_10 border_bottom_grey">'+ gettext('To create the Poll you must first deactivate your current ') + '<span><a id="active_poll_name" class="link_color"href="/project/poll/' +
-        project_active_id + '">'+ project_active_name + '</a></span>.'+ gettext('You may only have one active Poll at a time.') +'</div>').insertAfter($(".poll_active"));
+        $('<div class="italic_grey padding_left_30 padding_top_10 padding_bottom_10 border_bottom_grey">'+ msg_text +'</div>').insertAfter($(".poll_active"));
         $('.poll_deactivated').hide();
     }
     else {
