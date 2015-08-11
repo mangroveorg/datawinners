@@ -18,6 +18,7 @@ from datawinners.utils import get_organization
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException
 from mangrove.form_model.project import get_active_form_model_name_and_id
+from mangrove.datastore.user_permission import grant_user_permission_for
 
 
 @login_required
@@ -85,6 +86,7 @@ def _create_project_post_response(request, manager):
     if not code_has_errors and not name_has_errors:
         associate_account_users_to_project(manager, questionnaire)
         questionnaire.update_doc_and_save()
+        grant_user_permission_for(user_id=request.user.id, questionnaire_id=questionnaire.id, manager=manager)
         UserActivityLog().log(request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
                               detail=questionnaire.name)
         return {'success': True, 'project_id': questionnaire.id}
@@ -94,3 +96,4 @@ def _create_project_post_response(request, manager):
             'error_in_project_section': False,
             'code_has_errors': code_has_errors,
             'name_has_errors': name_has_errors}
+    

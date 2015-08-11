@@ -15,7 +15,7 @@ from datawinners.search.all_datasender_search import get_datasenders_ids_by_ques
 from datawinners.submission.organization_finder import OrganizationFinder
 from datawinners.utils import lowercase_and_strip_accents, get_organization
 from mangrove.form_model.project import Project, get_active_form_model_name_and_id
-
+from mangrove.datastore.user_permission import grant_user_permission_for
 
 def _associate_data_senders_to_questionnaire(manager, questionnaire, selected_option):
     data_senders_list = []
@@ -42,10 +42,12 @@ def _create_questionnaire(manager, questionnaire, question):
     QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
 
 
-def _save_poll(manager, questionnaire, selected_option, question):
+def _save_poll(manager, questionnaire, selected_option, question, user_id):
     _create_questionnaire(manager, questionnaire, question)
     _associate_data_senders_to_questionnaire(manager, questionnaire, selected_option)
     questionnaire.update_doc_and_save()
+    grant_user_permission_for(user_id=user_id, questionnaire_id=questionnaire.id, manager=manager)
+    
 
 
 def _construct_questionnaire(request):
@@ -76,7 +78,7 @@ def _create_response_dict(request):
     selected_option = json.loads(request.POST['selected_option'])
     question = request.POST.get('question')
     if questionnaire.is_project_name_unique():
-        _save_poll(manager, questionnaire, selected_option, question)
+        _save_poll(manager, questionnaire, selected_option, question, user_id=request.user.id)
         UserActivityLog().log(request, action=CREATED_POLL, project=questionnaire.name,
                               detail=questionnaire.name)
 
