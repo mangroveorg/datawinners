@@ -4938,8 +4938,8 @@ msgstr "Choisissez un modèle et modifiez-le selon vos besoins."
 msgid "Delete this Questionnaire"
 msgstr "Supprimer ce Questionnaire"
 
-msgid "Your Most Recent Questionnaires"
-msgstr "Vos questionnaires les plus récents"
+msgid "Recent Questionnaires"
+msgstr "Questionnaires récents"
 
 msgid "Questionnaire Name:"
 msgstr "Nom du Questionnaire:"
@@ -5045,8 +5045,8 @@ msgstr "Questionnaires & Sondages"
 msgid "Create Questionnaires & Polls"
 msgstr "Créer des Questionnaires et des Sondages"
 
-msgid "Your Most Recent Questionnaires & Polls"
-msgstr "Vos Questionnaires et Sondages les plus récents"
+msgid "Recent Questionnaires & Polls"
+msgstr "Questionnaires et Sondages récents"
 
 msgid "Step 1. Write your Identification Number Question"
 msgstr "Etape 1. Tapez votre Question sur le Numéro d'Identification"

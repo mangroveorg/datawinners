@@ -4333,7 +4333,10 @@ msgstr ""
 msgid "Invalid GPS value."
 msgstr ""
 
-msgid "Your Most Recent Questionnaires"
+msgid "Recent Questionnaires"
+msgstr ""
+
+msgid "Recent Questionnaires & Polls"
 msgstr ""
 
 msgid "Submissions Received"
