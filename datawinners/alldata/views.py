@@ -154,7 +154,7 @@ def index(request):
     smart_phone_instruction_link = reverse("smart_phone_instruction")
     local_time_delta = get_country_time_delta(organization.country)
     for project in rows:
-            project_list.append(_construct_project_dict(request.user, local_time_delta, project))
+        project_list.append(_construct_project_dict(request.user, local_time_delta, project))
 
     activation_success = request.GET.get('activation', False)
 

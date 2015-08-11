@@ -7,8 +7,9 @@ var viewModel = function () {
     this.questionnaires = ko.observableArray([])
     this.selectedQuestionnaires = ko.observableArray([]);
     this.role = DW.ko.createValidatableObservable({value: "administrator"});
-    this.addUserSuccess = ko.observable(false);
+    this.editUserSuccess = ko.observable(false);
     this.hasFormChanged = ko.observable(false);
+    this.userId = 0;
 
     this.fullName.subscribe(function () {
         DW.ko.mandatoryValidator(self.fullName, 'This field is required');
@@ -41,10 +42,11 @@ var viewModel = function () {
             'selected_questionnaires': self.selectedQuestionnaires() || [],
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         };
-        $.post('/account/user/new/', formData, function (response) {
+        $.post('/account/users/'  + self.userId + '/edit/', formData, function (response) {
             var responseJson = $.parseJSON(JSON.stringify(response));
-            if (responseJson['add_user_success'] == true) {
-                self.addUserSuccess(true);
+            console.log("Response: "+ JSON.stringify(response));
+            if (responseJson['edit_user_success'] == true) {
+                self.editUserSuccess(true);
                 self.clearFields();
                 $('html, body').animate({scrollTop: '0px'}, 0);
             } else {
@@ -77,25 +79,28 @@ var viewModel = function () {
     };
 
     this.clearFields = function () {
-        this.fullName(null);
-        this.email(null);
-        this.email.setError(null);
-        this.title(null);
-        this.role('administrator');
-        this.mobilePhone(null);
-        this.mobilePhone.setError(null);
-        this.fullName.setError(null);
-        this.questionnaires([]);
-        this.selectedQuestionnaires([]);
         this.hasFormChanged(false);
         setTimeout(function () {
-            self.addUserSuccess(false);
-        }, 4000)
+            self.editUserSuccess(false);
+        }, 4000);
     }
 };
 
 $(document).ready(function () {
     var userModel = new viewModel();
+    userModel.fullName(data_from_django['full_name']);
+    userModel.email(data_from_django['username']);
+    userModel.mobilePhone(data_from_django['mobile_phone']);
+    userModel.title(data_from_django['title']);
+    userModel.role(data_from_django['role']);
+    userModel.userId = data_from_django['id'];
+    var selectedQuestionnaires = [];
+    data_from_django['questionnaires'].forEach(function (q) {
+        selectedQuestionnaires.push(q.id);
+    });
+    userModel.fetchQuestionnaires();
+
+    userModel.selectedQuestionnaires(selectedQuestionnaires);
     window.userModel = userModel;
     ko.applyBindings(userModel, $("#user_profile_content")[0]);
 

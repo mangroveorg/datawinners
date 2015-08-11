@@ -22,6 +22,15 @@ $(document).ready(function () {
             if (action == "delete") {
                 $("#delete_user_warning_dialog").dialog("open");
             }
+
+            if(action == "edit") {
+                if (ids.length != 1) {
+                    $(this).val("");
+                    return;
+                }
+                var user_id = ids[0];
+                window.location.href = '/account/users/' + user_id + '/edit';
+            }
         });
     });
 

@@ -47,7 +47,7 @@ from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
 from mangrove.form_model.project import Project
 from datawinners.accountmanagement.registration_views import get_previous_page_language
-from mangrove.datastore.user_permission import UserPermission, get_user_permission
+from mangrove.datastore.user_permission import UserPermission, get_user_permission, get_questionnaires_for_user
 
 
 def registration_complete(request):
@@ -86,7 +86,7 @@ def _get_timezone_information(organization):
     localized_time = convert_utc_to_localized(timedelta, datetime.datetime.utcnow())
     timedelta_as_string = "%s%.2d:%.2d" % (timedelta[0], timedelta[1], timedelta[2])
     return ugettext("GMT%s <span class='timezone-text'>  Now it is: %s</span>") % (
-    timedelta_as_string, datetime.datetime.strftime(localized_time, "%H:%M"))
+        timedelta_as_string, datetime.datetime.strftime(localized_time, "%H:%M"))
 
 
 @login_required
@@ -172,10 +172,10 @@ def new_user(request):
         all_questionnaires = get_all_questionnaires(manager)
 
         return render_to_response("accountmanagement/account/add_new_user.html", {'profile_form': profile_form,
-                                                                              'is_pro_sms': org.is_pro_sms,
-                                                                              'current_lang': get_language(),
-                                                                              'questionnaires': all_questionnaires
-                                                                              },
+                                                                                  'is_pro_sms': org.is_pro_sms,
+                                                                                  'current_lang': get_language(),
+                                                                                  'questionnaires': all_questionnaires
+                                                                                  },
                                   context_instance=(RequestContext(request)))
 
     if request.method == 'POST':
@@ -214,51 +214,51 @@ def new_user(request):
                     UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
 
         data = {"add_user_success": add_user_success, "errors": form.errors}
-        return HttpResponse(json.dumps(data), mimetype="application/json")
+        return HttpResponse(json.dumps(data), mimetype="application/json", status=201)
+
 
 @valid_web_user
 @is_admin
 def users(request):
+    manager = get_database_manager(request.user)
+
     if request.method == 'GET':
         org_id = request.user.get_profile().org_id
         users = get_all_users_for_organization(org_id)
         organization = get_organization(request)
+        questionnaire_map = dict()
+        for user in users:
+            questionnaires_for_user = get_questionnaires_for_user(user.user.id, get_database_manager(user.user))
+            questionnaire_map.update({user.id: make_questionnaire_map(questionnaires_for_user)})
+
         return render_to_response("accountmanagement/account/users_list.html", {'users': users,
+                                                                                'questionnaire_map': questionnaire_map,
                                                                                 'is_pro_sms': organization.is_pro_sms,
                                                                                 'current_lang': get_language()},
                                   context_instance=RequestContext(request))
 
 
-@valid_web_user
-@is_datasender
-def edit_user(request):
-    if request.method == 'GET':
-        profile = request.user.get_profile()
-        if profile.mobile_phone == 'Not Assigned':
-            profile.mobile_phone = ''
-        org = get_organization(request)
-        form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=dict(title=profile.title, full_name=profile.user.first_name,
-                                                               username=profile.user.username,
-                                                               mobile_phone=profile.mobile_phone))
-        return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'is_pro_sms': org.is_pro_sms},
-                                  context_instance=RequestContext(request))
-    if request.method == 'POST':
-        profile = request.user.get_profile()
-        org = get_organization(request)
+def make_questionnaire_map(questionnaires):
+    questionnaires_for_user = list()
+    for questionnaire in questionnaires:
+        qmap = dict()
+        qmap.update({'id': questionnaire['_id'], 'name': questionnaire['name']})
+        questionnaires_for_user.append(qmap)
 
-        form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=request.POST)
-        message = ""
-        if form.is_valid():
-            _update_user_and_profile(request, form)
+    return questionnaires_for_user
 
-            message = _('Profile has been updated successfully')
-        return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
-                                  context_instance=RequestContext(request))
+
+def get_user_profile(user_id):
+    user = User.objects.get(id=user_id)
+    if user is None:
+        profile = user.get_profile()
+        return profile
+    return None
 
 
 def trial_expired(request):
-    return render_to_response("registration/trial_account_expired_message.html", context_instance=RequestContext(request))
-
+    return render_to_response("registration/trial_account_expired_message.html",
+                              context_instance=RequestContext(request))
 
 @is_admin
 @is_pro_sms
@@ -298,7 +298,7 @@ def upgrade(request, token=None, account_type=None, language=None):
 
             DataSenderOnTrialAccount.objects.filter(organization=organization).delete()
             _send_upgrade_email(request.user, request.LANGUAGE_CODE)
-            _update_user_and_profile(request, profile_form)
+            _update_user_and_profile(request, profile_form, request.user.username)
             messages.success(request, _("upgrade success message"))
             if token:
                 request.user.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -379,8 +379,8 @@ def custom_password_reset_confirm(request, uidb36=None, token=None, set_password
     return response
 
 
-def _update_user_and_profile(request, form):
-    user = User.objects.get(username=request.user.username)
+def _update_user_and_profile(request, form, user_name):
+    user = User.objects.get(username=user_name)
     user.first_name = form.cleaned_data['full_name']
     user.save()
     ngo_user_profile = NGOUserProfile.objects.get(user=user)
@@ -390,3 +390,86 @@ def _update_user_and_profile(request, form):
 
     ngo_user_profile.save()
     update_corresponding_datasender_details(user, ngo_user_profile, old_phone_number)
+
+
+def update_user_profile(request, form, user, project_ids):
+    _update_user_and_profile(request, form, user.username)
+    user_permission = get_user_permission(user.id, get_database_manager(user))
+    user_permission.set_project_ids(project_ids)
+    user_permission.save()
+
+
+@valid_web_user
+@is_datasender
+def edit_user(request):
+    if request.method == 'GET':
+        profile = request.user.get_profile()
+        if profile.mobile_phone == 'Not Assigned':
+            profile.mobile_phone = ''
+        org = get_organization(request)
+        form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id,
+                                   data=dict(title=profile.title, full_name=profile.user.first_name,
+                                             username=profile.user.username,
+                                             mobile_phone=profile.mobile_phone))
+        return render_to_response("accountmanagement/profile/edit_profile.html",
+                                  {'form': form, 'is_pro_sms': org.is_pro_sms},
+                                  context_instance=RequestContext(request))
+    if request.method == 'POST':
+        profile = request.user.get_profile()
+        org = get_organization(request)
+
+        form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=request.POST)
+        message = ""
+        if form.is_valid():
+            _update_user_and_profile(request, form, request.user.username)
+
+            message = _('Profile has been updated successfully')
+        return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
+                                  context_instance=RequestContext(request))
+
+
+@valid_web_user
+@is_datasender
+def edit_user_profile(request, user_id=None):
+    user = User.objects.get(id=user_id)
+
+    if user is None:
+        data = {"errors": "User not found"}
+        return HttpResponse(json.dumps(data), mimetype="application/json", status=404)
+    else:
+        profile = user.get_profile()
+    if request.method == 'GET':
+        if profile.mobile_phone == 'Not Assigned':
+            profile.mobile_phone = ''
+        org = get_organization(request)
+        questionnaire_list = get_questionnaires_for_user(user.id, get_database_manager(user))
+        questionnaire_map = make_questionnaire_map(questionnaire_list)
+        form_data = dict(title=profile.title,
+                         id=user_id,
+                         full_name=profile.user.first_name,
+                         username=profile.user.username,
+                         mobile_phone=profile.mobile_phone,
+                         role=user.groups.all()[0].name,
+                         questionnaires=questionnaire_map,
+                         is_pro_sms=org.is_pro_sms,
+                         current_lang=get_language())
+        return render_to_response("accountmanagement/account/edit_user.html", {'form_data': json.dumps(form_data)},
+                                  context_instance=(RequestContext(request)))
+
+    if request.method == 'POST':
+        post_parameters = request.POST
+        org = get_organization(request)
+        form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=request.POST)
+        message = ""
+        _edit_user_success = False
+        if form.is_valid():
+            selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
+            if selected_questionnaires is None or len(selected_questionnaires) < 1:
+                selected_questionnaires = []
+            update_user_profile(request, form, user, selected_questionnaires)
+            message = _('Profile has been updated successfully')
+            _edit_user_success = True
+        data = dict(edit_user_success=_edit_user_success,
+                    errors=form.errors)
+        return HttpResponse(json.dumps(data), mimetype="application/json", status=200)
+

@@ -3,6 +3,7 @@
 {% block page_title %} {% trans "Account" %} {% endblock %}
 
 {% load dw_tabs %}
+{% load filters %}
 {% block navigation %}
     {% activetab "tab_nav" "users" %}
     {{ block.super }}
@@ -43,7 +44,6 @@
             </div>
         {% endfor %}
     {% endif %}
-
     {% include "action.html" %}
     <br/>
     <div id="users_list">
@@ -57,11 +57,15 @@
                 {% trans "Email" %}
             </th>
             <th>
+                {% trans "Role" %}
+            </th>
+            <th>
                 {% trans "Questionnaires" %}
             </th>
             </thead>
             <tbody>
             {% for user in users %}
+                {% with user_id=user.id questionnaire=questionnaire_map.user_id %}
                 <tr>
                     <td><input type="checkbox" value="{{ user.user.id }}" name="user_ids" class="user_entry"/></td>
                     <td>
@@ -71,9 +75,25 @@
                         {{ user.user.email }}
                     </td>
                     <td>
-                        {% trans "All" %}
+                        {% for group in user.user.groups.all %}
+                            {{ group.name }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if 'NGO Admins' == user.user.groups.all.0.name %}
+                            {% trans 'All' %}
+                        {% else %}
+                            {% with ques=questionnaire_map|get_item:user_id %}
+                                {% for q in ques %}
+                                    <div width="100%">
+                                    {{ q.name }}
+                                    </div>
+                                {% endfor %}
+                            {% endwith %}
+                        {% endif %}
                     </td>
                 </tr>
+                {% endwith %}
             {% endfor %}
             </tbody>
         </table>
@@ -90,5 +110,4 @@
             <a class="button yes_button">{% trans "Yes, Delete" %}</a>
         </div>
     </div>
-
 {% endblock %}

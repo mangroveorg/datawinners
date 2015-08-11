@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from datawinners.accountmanagement.forms import FullRegistrationForm, LoginForm, PasswordSetForm
 from datawinners.accountmanagement.forms import MinimalRegistrationForm, ProRegistrationForm, ProSMSRegistrationForm
 from datawinners.accountmanagement.views import custom_reset_password, custom_password_reset_confirm
-from views import settings, new_user, edit_user, users, custom_login, registration_complete, trial_expired, upgrade, delete_users, registration_activation_complete
+from views import settings, new_user, edit_user, edit_user_profile, users, custom_login, registration_complete, trial_expired, upgrade, delete_users, registration_activation_complete
 from datawinners.accountmanagement.registration_views import register_view
 
 admin.autodiscover()
@@ -83,6 +83,7 @@ urlpatterns = patterns('',
                        (r'^account/$', settings),
                        (r'^account/user/new/$', new_user),
                        (r'^profile/$', edit_user),
+                       (r'^account/users/(?P<user_id>[0-9]+)/edit', edit_user_profile),
                        (r'^account/users/$', users),
                        (r'^account/users/delete/$', delete_users),
                        (r'^trial/expired/$', trial_expired),

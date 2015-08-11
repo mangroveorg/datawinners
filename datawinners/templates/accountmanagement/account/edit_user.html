@@ -16,7 +16,7 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/account/add_user_view_model.js"/>
+    <script type="text/javascript" src="/media/javascript/account/edit_user_view_model.js"/>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"/>
     <script type="text/javascript">
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/usrs/?template=help";
@@ -24,15 +24,19 @@
 
 {% endblock %}
 {% block content %}
+
+    <script type="text/javascript">
+        var data_from_django = {{ form_data|safe }}
+    </script>
     <a class="users-back-btn" href="/account/users">« {% trans "Back to Users" %}</a>
     <div id="user_profile_content" data-bind="beforeUnloadText: beforeUnloadPrompt">
-        <div id="flash-message" class="success-message-box" data-bind="visible: addUserSuccess()">
-            {% trans "User has been added successfully" %}
+        <div id="flash-message" class="success-message-box" data-bind="visible: editUserSuccess()">
+            {% trans "User has been updated successfully" %}
         </div>
         {% csrf_token %}
         <div class="administrative">
             <div>
-                <h3 class="title">{% trans "Add a User" %}</h3>
+                <h3 class="title">{% trans "Edit User" %}</h3>
                 <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
             </div>
             <div class="tableRow">
@@ -40,7 +44,7 @@
                     <label>{% trans 'Name' %}</label>
                 </div>
                 <div class="tableCell">
-                    <input type="text" name="full_name" data-bind="value: fullName"/>
+                    <input type="text" name="full_name" data-bind="value: fullName" value="{{ full_name }}"/>
                 </div>
                 <div class="tableCell"
                      data-bind="css: { errorlist: fullName.error()  != null && fullName.error() != '' }">
@@ -93,7 +97,7 @@
                     <label>{% trans 'Email' %}</label>
                 </div>
                 <div class="tableCell">
-                    <input type="text" name="username" data-bind="value: email"/>
+                    <input type="text" name="username" disabled="disabled" data-bind="value: email"/>
                 </div>
                 <div class="tableCell" data-bind="css: { errorlist: email.error() != null && email.error() != '' }">
                     <div class="error-box">
@@ -117,13 +121,12 @@
                     </div>
                 </div>
             </div>
-            <p class="black_italic">{% trans "add_user_help_text" %}</p>
             <div class="tableRow margin_top_20">
                 <div class="tableCell"></div>
                 <div class="tableCell"></div>
                 <div class="tableCell">
                     <button class="button float_right" id="submit" class="button"
-                            data-bind="click: submit">{% trans 'Add User' %}</button>
+                            data-bind="click: submit">{% trans 'Update' %}</button>
                     <a class="user-cancel-btn" href="/account/users">{% trans 'Cancel' %}</a>
 
                 </div>
@@ -131,3 +134,4 @@
         </div>
     </div>
 {% endblock %}
+
