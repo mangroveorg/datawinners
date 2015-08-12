@@ -866,11 +866,10 @@ span.selected_list_item_arrow {
 
   p.black_italic {
     position: relative;
-    left: -10px;
     font-style: italic;
     clear: left;
     margin-left: 0;
-    padding-top: 10px;
+    padding-top: 2px;
   }
 
   div.italic_text {
@@ -884,18 +883,27 @@ span.selected_list_item_arrow {
     .section_description {
       padding-bottom: 20px;
     }
-    div.grey-info {
+  .grey-info {
       color: #888;
     }
 
     .tableRow {
       .tableCell {
         &:first-child {
-          padding-right: 73px;
+          padding-right: 30px;
+          text-align: right;
+          white-space: nowrap;
         }
         .role_description {
           padding: 0 0 5px 0;
           margin-left: 30px;
+        }
+        .optional_field {
+          display: block;
+          font-weight: normal;
+          font-size: 13px;
+          position: relative;
+          top: -4px;
         }
         padding-bottom: 20px;
       }

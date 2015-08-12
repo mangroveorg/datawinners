@@ -44,7 +44,7 @@
                     <label>{% trans 'Name' %}</label>
                 </div>
                 <div class="tableCell">
-                    <input type="text" name="full_name" data-bind="value: fullName" value="{{ full_name }}"/>
+                    <input type="text" name="full_name" data-bind="value: fullName" />
                 </div>
                 <div class="tableCell"
                      data-bind="css: { errorlist: fullName.error()  != null && fullName.error() != '' }">
@@ -59,15 +59,15 @@
                 </div>
                 <div class="tableCell">
                     <label><input type="radio" name="role"
-                                  data-bind="checked: role, value: 'administrator'"/>{% trans "Administrator" %}
+                                  data-bind="checked: role, value: 'administrator'"/> {% trans "Administrator" %}
                     </label>
 
-                    <p class="black_italic role_description">{% trans "role_administrator_description" %}</p>
+                    <p class="role_description">{% trans "role_administrator_description" %}</p>
                     <label><input type="radio" name="role"
-                                  data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'Project Managers'"/>{% trans "Project Manager" %}
+                                  data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'Project Managers'"/> {% trans "Project Manager" %}
                     </label>
 
-                    <p class="black_italic role_description">{% trans "role_project_manager_description" %}</p>
+                    <p class="role_description">{% trans "role_project_manager_description" %}</p>
 
                     <div class="italic_text grey-info" data-bind="visible: role()=='Project Managers' & questionnaires().length < 1">{% trans "questionnaire_access_placeholder_text" %}</div>
                     <div class="questionnaire-list" data-bind="visible: role()=='Project Managers' & questionnaires().length >= 1">
@@ -83,13 +83,13 @@
             </div>
             <div class="tableRow">
                 <div class="tableCell ">
-                    <label>{% trans 'Job Title' %}<span class='optional_field'>{% trans 'Optional' %}</span></label>
+                    <label>{% trans 'Job Title' %}<span class='optional_field black_italic grey-info'>{% trans 'Optional' %}</span></label>
 
                 </div>
                 <div class="tableCell">
                     <input type="text" name="title" data-bind="value: title"/>
 
-                    <p class="black_italic optional">{% trans "Example: Program Director" %}</p>
+                    <p class="black_italic grey-info">{% trans "Example: Program Director" %}</p>
                 </div>
             </div>
             <div class="tableRow">
@@ -112,7 +112,7 @@
                 <div class="tableCell">
                     <input type="text" name="mobile_phone" data-bind="value: mobilePhone"/>
 
-                    <p class="black_italic">{% trans "phone_number_example" %}</p>
+                    <p class="black_italic grey-info">{% trans "phone_number_example" %}</p>
                 </div>
                 <div class="tableCell"
                      data-bind="css: { errorlist: mobilePhone.error()  != null && mobilePhone.error() != '' }">
