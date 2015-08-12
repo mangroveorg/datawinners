@@ -101,6 +101,8 @@ $(document).ready(function () {
     userModel.fetchQuestionnaires();
 
     userModel.selectedQuestionnaires(selectedQuestionnaires);
+    userModel.hasFormChanged = ko.observable(false);
+
     window.userModel = userModel;
     ko.applyBindings(userModel, $("#user_profile_content")[0]);
 

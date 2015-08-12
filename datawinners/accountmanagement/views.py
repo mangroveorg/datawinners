@@ -138,10 +138,10 @@ def settings(request):
 def associate_user_with_all_projects_of_organisation(manager, reporter_id):
     rows = get_all_projects(manager)
     for row in rows:
-        associate_user_with_project(manager, reporter_id, row['value']['_id'])
+        make_user_data_sender_with_project(manager, reporter_id, row['value']['_id'])
 
 
-def associate_user_with_project(manager, reporter_id, project_id):
+def make_user_data_sender_with_project(manager, reporter_id, project_id):
     questionnaire = Project.get(manager, project_id)
     reporters_to_associate = [reporter_id]
     questionnaire.associate_data_sender_to_project(manager, reporters_to_associate)
@@ -150,9 +150,13 @@ def associate_user_with_project(manager, reporter_id, project_id):
 
 
 def associate_user_with_projects(manager, reporter_id, user_id, project_ids):
-    for project_id in project_ids:
-        associate_user_with_project(manager, reporter_id, project_id)
+    make_user_data_sender_for_projects(manager, project_ids, reporter_id)
     UserPermission(manager, user_id, project_ids).save()
+
+
+def make_user_data_sender_for_projects(manager, project_ids, reporter_id):
+    for project_id in project_ids:
+        make_user_data_sender_with_project(manager, reporter_id, project_id)
 
 
 def get_all_questionnaires(manager):
@@ -193,7 +197,7 @@ def new_user(request):
                 user.first_name = post_parameters['full_name']
                 group = Group.objects.filter(name="Project Managers")
                 user.groups.add(group[0])
-                user_id = user.save()
+                user.save()
                 mobile_number = post_parameters['mobile_phone']
                 ngo_user_profile = NGOUserProfile(user=user, title=post_parameters['title'],
                                                   mobile_phone=mobile_number,
@@ -260,6 +264,7 @@ def trial_expired(request):
     return render_to_response("registration/trial_account_expired_message.html",
                               context_instance=RequestContext(request))
 
+
 @is_admin
 @is_pro_sms
 def upgrade(request, token=None, account_type=None, language=None):
@@ -298,7 +303,7 @@ def upgrade(request, token=None, account_type=None, language=None):
 
             DataSenderOnTrialAccount.objects.filter(organization=organization).delete()
             _send_upgrade_email(request.user, request.LANGUAGE_CODE)
-            _update_user_and_profile(request, profile_form, request.user.username)
+            _update_user_and_profile(profile_form, request.user.username)
             messages.success(request, _("upgrade success message"))
             if token:
                 request.user.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -379,7 +384,7 @@ def custom_password_reset_confirm(request, uidb36=None, token=None, set_password
     return response
 
 
-def _update_user_and_profile(request, form, user_name):
+def _update_user_and_profile(form, user_name):
     user = User.objects.get(username=user_name)
     user.first_name = form.cleaned_data['full_name']
     user.save()
@@ -392,8 +397,7 @@ def _update_user_and_profile(request, form, user_name):
     update_corresponding_datasender_details(user, ngo_user_profile, old_phone_number)
 
 
-def update_user_profile(request, form, user, project_ids):
-    _update_user_and_profile(request, form, user.username)
+def update_user_permissions(project_ids, user):
     user_permission = get_user_permission(user.id, get_database_manager(user))
     user_permission.set_project_ids(project_ids)
     user_permission.save()
@@ -421,7 +425,7 @@ def edit_user(request):
         form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=request.POST)
         message = ""
         if form.is_valid():
-            _update_user_and_profile(request, form, request.user.username)
+            _update_user_and_profile(form, request.user.username)
 
             message = _('Profile has been updated successfully')
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
@@ -442,7 +446,8 @@ def edit_user_profile(request, user_id=None):
         if profile.mobile_phone == 'Not Assigned':
             profile.mobile_phone = ''
         org = get_organization(request)
-        questionnaire_list = get_questionnaires_for_user(user.id, get_database_manager(user))
+        manager = get_database_manager(user)
+        questionnaire_list = get_questionnaires_for_user(user.id, manager)
         questionnaire_map = make_questionnaire_map(questionnaire_list)
         form_data = dict(title=profile.title,
                          id=user_id,
@@ -458,6 +463,9 @@ def edit_user_profile(request, user_id=None):
 
     if request.method == 'POST':
         post_parameters = request.POST
+        ngo_user = NGOUserProfile.objects.get(user=user)
+        manager = get_database_manager(user)
+        reporter_id = ngo_user.reporter_id
         org = get_organization(request)
         form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=request.POST)
         message = ""
@@ -466,10 +474,12 @@ def edit_user_profile(request, user_id=None):
             selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
             if selected_questionnaires is None or len(selected_questionnaires) < 1:
                 selected_questionnaires = []
-            update_user_profile(request, form, user, selected_questionnaires)
+
+            _update_user_and_profile(form, user.username)
+            update_user_permissions(selected_questionnaires, user)
+            make_user_data_sender_for_projects(manager, reporter_id, user.id, selected_questionnaires)
             message = _('Profile has been updated successfully')
             _edit_user_success = True
         data = dict(edit_user_success=_edit_user_success,
-                    errors=form.errors)
+                    errors=form.errors, message=message)
         return HttpResponse(json.dumps(data), mimetype="application/json", status=200)
-

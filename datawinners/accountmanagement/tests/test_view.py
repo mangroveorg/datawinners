@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from mock import Mock, patch, MagicMock
 from datawinners.accountmanagement.views import associate_user_with_all_projects_of_organisation, \
-    associate_user_with_projects, associate_user_with_project
+    associate_user_with_projects, make_user_data_sender_with_project
 from mangrove.form_model.project import Project
 from mangrove.datastore.user_permission import UserPermission
 
