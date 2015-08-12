@@ -42,7 +42,6 @@
     .black_italic{
         font-style: italic;
         clear:left;
-        margin-left: 170px;
     }
 }
 
@@ -53,7 +52,7 @@
     }
     .black_italic.optional{
         display: block;
-    }
+    }\
     ul{
         li#mobile-phone-number-fr p{
             margin-top: -12px;
@@ -240,4 +239,11 @@ ul.organization {
   font-style: italic;
   font-weight: bold;
   white-space: pre;
+}
+
+.user_actions {
+    margin: 20px 0 0 325px;
+}
+.edit_user_actions {
+    margin: 20px 0 0 342px;
 }

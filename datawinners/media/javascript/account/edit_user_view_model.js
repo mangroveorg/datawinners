@@ -32,6 +32,14 @@ var viewModel = function () {
         self.hasFormChanged(true);
     });
 
+    this.selectedQuestionnaires.subscribe(function(){
+        self.hasFormChanged(true);
+    });
+
+    this.role.subscribe(function(){
+        self.hasFormChanged(true);
+    });
+
     this.submit = function () {
         var formData = {
             'title': self.title(),

@@ -121,17 +121,13 @@
                     </div>
                 </div>
             </div>
-            <div class="tableRow margin_top_20">
-                <div class="tableCell"></div>
-                <div class="tableCell"></div>
-                <div class="tableCell">
-                    <button class="button float_right" id="submit" class="button"
-                            data-bind="click: submit">{% trans 'Update' %}</button>
-                    <a class="user-cancel-btn" href="/account/users">{% trans 'Cancel' %}</a>
-
-                </div>
+            <div class="edit_user_actions">
+            <a class="user-cancel-btn" href="/account/users">{% trans 'Cancel' %}</a>
+            <button class="button" id="submit" class="button"
+                    data-bind="click: submit">{% trans ' Update ' %}
+            </button>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
-
