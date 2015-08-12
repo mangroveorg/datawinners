@@ -477,7 +477,7 @@ def edit_user_profile(request, user_id=None):
 
             _update_user_and_profile(form, user.username)
             update_user_permissions(selected_questionnaires, user)
-            make_user_data_sender_for_projects(manager, reporter_id, user.id, selected_questionnaires)
+            make_user_data_sender_for_projects(manager, selected_questionnaires, reporter_id)
             message = _('Profile has been updated successfully')
             _edit_user_success = True
         data = dict(edit_user_success=_edit_user_success,
