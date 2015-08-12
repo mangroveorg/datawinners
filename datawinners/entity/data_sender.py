@@ -20,7 +20,7 @@ def get_datasender_user_detail(datasender, user):
     if user_profile:
         datasender_user_groups = list(user_profile.user.groups.values_list('name', flat=True))
         if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
-            or "Read Only Users" in datasender_user_groups:
+            or "Read Only Users" in datasender_user_groups or "Extended Users" in datasender_user_groups:
             datasender["is_user"] = True
         # datasender['email'] = user_profile.user.email
         # datasender['devices'] = "SMS,Web,Smartphone"

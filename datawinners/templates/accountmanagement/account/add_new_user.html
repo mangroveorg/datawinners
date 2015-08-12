@@ -48,6 +48,7 @@
                 <div class="error-box">
                     <span data-bind="text: fullName.error"></span>
                 </div>
+<<<<<<< HEAD
             </div>
         </div>
         <div class="tableRow">
@@ -55,11 +56,13 @@
                 <label>{% trans 'Role' %}</label>
             </div>
             <div class="tableCell">
+                 {% if user.groups.all.0.name == 'NGO Admins'%}
                 <label><input type="radio" name="role"
                               data-bind="checked: role, value: 'administrator'"/> {% trans "Administrator" %}
                 </label>
 
                 <p class="role_description">{% trans "role_administrator_description" %}</p>
+                {% endif %}
                 <label><input type="radio" name="role"
                               data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'Project Managers'"/>
                     {% trans "Project Manager" %}

@@ -63,7 +63,7 @@ class SurveyResponseForm(BaseSubmissionForm):
             org_id = get_organization_from_manager(self.form_model._dbm).org_id
             is_admin = len(User.objects.filter(ngouserprofile__org_id=org_id,
                                                         ngouserprofile__reporter_id=sender_id,
-                                                        groups__name__in=["NGO Admins", "Project Managers"])) > 0
+                                                        groups__name__in=["NGO Admins", "Project Managers", "Extended Users"])) > 0
 
             if self.form_model.is_open_survey or is_admin:
                 self.errors.pop("dsid")

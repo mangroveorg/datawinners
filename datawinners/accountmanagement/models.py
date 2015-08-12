@@ -200,7 +200,7 @@ class Organization(models.Model):
         return User.objects.filter(ngouserprofile__org_id=self.org_id)
 
     def send_mail_to_organization_creator(self, email_type):
-        users = self.get_related_users().filter(groups__name__in=["NGO Admins", "Project Managers"])
+        users = self.get_related_users().filter(groups__name__in=["NGO Admins", "Project Managers", "Extended Users"])
         from django.contrib.sites.models import Site
 
         current_site = Site.objects.get_current()

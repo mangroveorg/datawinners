@@ -64,7 +64,7 @@ def is_admin(f):
             except Exception:
                 return HttpResponseRedirect(django_settings.HOME_PAGE)
         user = args[0].user
-        if not user.groups.filter(name="NGO Admins").count() > 0:
+        if not user.groups.filter(name__in=["NGO Admins", "Extended Users"]) > 0:
             return HttpResponseRedirect(django_settings.HOME_PAGE)
 
         return f(*args, **kw)

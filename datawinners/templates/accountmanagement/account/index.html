@@ -11,11 +11,13 @@
 {% block navigation %}
 <div class="grid_24 tab_navigation">
   <ul>
+  {% if user.groups.all.0.name == 'NGO Admins'%}
     <li class="{% ifactivetab 'tab_nav' 'settings' %}active{% else %}inactive{% endifactivetab %}">
       <a href="{% url datawinners.accountmanagement.views.settings %}">
           {% trans "Your Organization Account" %}
       </a>
     </li>
+  {% endif %}
     <li class="{% ifactivetab 'tab_nav' 'users' %}active{% else %}inactive{% endifactivetab %}">
       <a href="{% url datawinners.accountmanagement.views.users %}" class="user_tab">{% trans "Users" %}</a>
     </li>

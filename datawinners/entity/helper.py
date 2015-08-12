@@ -248,7 +248,7 @@ def rep_id_name_dict_of_users(manager):
     user_id_name_map = {}
     for u in orgUsers:
         rep_id_map.update({u[0]: u[1]})
-    users = User.objects.filter(groups__name__in=['Project Managers', 'NGO Admins'], id__in=rep_id_map.keys()).values()
+    users = User.objects.filter(groups__name__in=['Project Managers', 'NGO Admins', "Extended Users"], id__in=rep_id_map.keys()).values()
 
     for user in users:
         user_id_name_map[rep_id_map[user["id"]]] = user["first_name"]

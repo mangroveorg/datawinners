@@ -47,7 +47,7 @@ def get_all_registered_phone_numbers_on_trial_account():
 
 
 def is_org_user(user):
-    return user.groups.filter(name__in=["NGO Admins", "Project Managers"]).count() > 0
+    return user.groups.filter(name__in=["NGO Admins", "Project Managers", "Extended Users"]).count() > 0
 
 def get_all_users_for_organization(org_id):
     viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users']).values_list('id',

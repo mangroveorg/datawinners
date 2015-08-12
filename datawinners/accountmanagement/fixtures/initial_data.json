@@ -78,5 +78,13 @@
             "name": "SMS API Users",
             "permissions": []
         }
+    },
+    {
+        "pk": 6,
+        "model": "auth.group",
+        "fields":{
+            "name": "Extended Users",
+            "permissions": []
+        }
     }
 ]
