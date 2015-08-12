@@ -35,7 +35,7 @@ def create_project(request):
     ngo_admin_email = get_ngo_admin_user_profiles_for(org)[0].user.email
     if is_active:
         user_permission = get_user_permission(user_id=request.user.id, dbm=manager)
-        if not project_active_id in user_permission.project_ids:
+        if user_permission is not None and project_active_id not in user_permission.project_ids:
             has_permission_on_active_project = False
     
     if request.method == 'GET':
