@@ -58,11 +58,13 @@
                     <label>{% trans 'Role' %}</label>
                 </div>
                 <div class="tableCell">
-                    <label><input type="radio" name="role"
-                                  data-bind="checked: role, value: 'administrator'"/> {% trans "Administrator" %}
-                    </label>
+                    {% if user.groups.all.0.name == 'NGO Admins' %}
+                        <label><input type="radio" name="role"
+                                      data-bind="checked: role, value: 'Extended Users'"/> {% trans "Administrator" %}
+                        </label>
 
-                    <p class="role_description">{% trans "role_administrator_description" %}</p>
+                        <p class="role_description">{% trans "role_administrator_description" %}</p>
+                    {% endif %}
                     <label><input type="radio" name="role"
                                   data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'Project Managers'"/> {% trans "Project Manager" %}
                     </label>
@@ -126,7 +128,7 @@
             <div class="edit_user_actions">
             <a class="user-cancel-btn" href="/account/users">{% trans 'Cancel' %}</a>
             <button class="button" id="submit" class="button"
-                    data-bind="click: submit">{% trans ' Update ' %}
+                    data-bind="click: submit">{% trans 'Update' %}
             </button>
             </div>
         </div>

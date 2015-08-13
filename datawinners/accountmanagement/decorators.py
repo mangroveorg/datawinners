@@ -72,6 +72,24 @@ def is_admin(f):
     return wrapper
 
 
+def for_super_admin_only(f):
+    def wrapper(*args, **kw):
+        from django.core.urlresolvers import resolve
+        current_url = resolve(args[0].path_info).url_name if args[0].path_info else ''
+        if not args[0].user.is_authenticated() and current_url == 'upgrade_from_mail' and kw.get('token'):
+            try:
+                args[0].user = User.objects.get(auth_token__key=kw.get('token'))
+            except Exception:
+                return HttpResponseRedirect(django_settings.HOME_PAGE)
+        user = args[0].user
+        if len(user.groups.filter(name__in=["NGO Admins"])) < 1:
+            return HttpResponseRedirect(django_settings.HOME_PAGE)
+
+        return f(*args, **kw)
+
+    return wrapper
+
+
 def session_not_expired(f):
     def wrapper(*args, **kw):
         request = args[0]

@@ -28,10 +28,6 @@ var viewModel = function () {
         self.hasFormChanged(true)
     });
 
-    this.email.subscribe(function () {
-        self.hasFormChanged(true);
-    });
-
     this.submit = function () {
         var formData = {
             'title': self.title(),

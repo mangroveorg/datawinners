@@ -28,7 +28,7 @@ from datawinners.project.couch_view_helper import get_all_projects, get_project_
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_pro_sms, \
-    valid_web_user, is_sms_api_user, is_datasender
+    valid_web_user, is_sms_api_user, is_datasender, for_super_admin_only
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.main.database import get_database_manager
@@ -91,7 +91,7 @@ def _get_timezone_information(organization):
 
 @login_required
 @session_not_expired
-@is_admin
+@for_super_admin_only
 @is_not_expired
 def settings(request):
     if request.method == 'GET':
@@ -433,13 +433,15 @@ def edit_user(request):
 
 
 @valid_web_user
-@is_datasender
+@is_admin
 def edit_user_profile(request, user_id=None):
     user = User.objects.get(id=user_id)
 
     if user is None:
         data = {"errors": "User not found"}
         return HttpResponse(json.dumps(data), mimetype="application/json", status=404)
+    if len(user.groups.filter(name__in='NGO Admins')) < 1:
+        return HttpResponseRedirect(django_settings.HOME_PAGE)
     else:
         profile = user.get_profile()
     if request.method == 'GET':

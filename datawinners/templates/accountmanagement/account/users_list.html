@@ -67,7 +67,11 @@
             {% for user in users %}
                 {% with user_id=user.id questionnaire=questionnaire_map.user_id role=user.user.groups.all.0.name %}
                 <tr>
-                    <td><input type="checkbox" value="{{ user.user.id }}" name="user_ids" class="user_entry"/></td>
+                    <td>
+                        {% if not user.isNGOAdmin %}
+                            <input type="checkbox" value="{{ user.user.id }}" name="user_ids" class="user_entry"/>
+                        {% endif %}
+                    </td>
                     <td>
                         {{ user.user.first_name }}
                     </td>
@@ -78,7 +82,7 @@
                         {{ role|friendly_name }}
                     </td>
                     <td>
-                        {% if 'NGO Admins' == role %}
+                        {% if user.isNGOAdmin %}
                             {% trans 'All' %}
                         {% else %}
                             {% with ques=questionnaire_map|get_item:user_id %}

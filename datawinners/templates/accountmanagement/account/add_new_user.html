@@ -57,8 +57,8 @@
             <div class="tableCell">
                  {% if user.groups.all.0.name == 'NGO Admins'%}
                 <label><input type="radio" name="role" id="option_administrator"
-                              data-bind="checked: role, value: 'administrator'"/> {% trans "Administrator" %}
-                </label>
+                              data-bind="checked: role, value: 'Extended Users'"/> {% trans "Administrator" %}
+                 </label>
 
                 <p class="role_description">{% trans "role_administrator_description" %}</p>
                 {% endif %}
