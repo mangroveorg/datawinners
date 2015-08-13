@@ -68,13 +68,15 @@
                 </label>
 
                 <p class="role_description">{% trans "role_project_manager_description" %}</p>
-
                 <div class="italic_text grey-info"
-                     data-bind="visible: role()=='Project Managers' & questionnaires().length < 1">{% trans
+                     data-bind="visible: role()=='Project Managers' && hasFetchedQuestionnaires() == false"> {% trans "Please wait while the questionnaires are being fetched" %}
+                </div>
+                <div class="italic_text grey-info"
+                     data-bind="visible: role()=='Project Managers' && hasFetchedQuestionnaires() == true && questionnaires().length < 1">{% trans
                     "questionnaire_access_placeholder_text" %}
                 </div>
                 <div class="questionnaire-list"
-                     data-bind="visible: role()=='Project Managers' & questionnaires().length >= 1">
+                     data-bind="visible: role()=='Project Managers' && questionnaires().length >= 1">
                     <ul data-bind="foreach: questionnaires">
                         <li>
                             <input type="checkbox"

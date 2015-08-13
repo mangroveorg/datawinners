@@ -7,6 +7,7 @@ var viewModel = function () {
     this.questionnaires = ko.observableArray([])
     this.selectedQuestionnaires = ko.observableArray([]);
     this.role = DW.ko.createValidatableObservable({value: "administrator"});
+    this.hasFetchedQuestionnaires = ko.observable(false);
     this.addUserSuccess = ko.observable(false);
     this.hasFormChanged = ko.observable(false);
 
@@ -70,6 +71,7 @@ var viewModel = function () {
         if (self.role() == 'Project Managers') {
             $.getJSON('/entity/questionnairesandpolls/', {}, function (data) {
                 $('#container_content').height('auto');
+                self.hasFetchedQuestionnaires(true);
                 self.questionnaires(data['questionnaires']);
             });
         }
@@ -86,6 +88,7 @@ var viewModel = function () {
         this.mobilePhone.setError(null);
         this.fullName.setError(null);
         this.questionnaires([]);
+        this.hasFetchedQuestionnaires(false);
         this.selectedQuestionnaires([]);
         this.hasFormChanged(false);
         setTimeout(function () {
