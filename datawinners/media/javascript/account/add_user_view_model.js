@@ -100,6 +100,9 @@ var viewModel = function () {
 $(document).ready(function () {
     var userModel = new viewModel();
     window.userModel = userModel;
+    if($('#option_administrator')[0] === undefined) {
+        $("option_project_manager").trigger("click");
+    }
     ko.applyBindings(userModel, $("#user_profile_content")[0]);
 
     window.addEventListener("beforeunload", function (e) {
