@@ -19,7 +19,7 @@
         "pk": 6,
         "model": "sites.site",
         "fields": {
-            "domain": "datawinnersqa.thoughtworks.com",
+            "domain": "54.163.243.239",
             "name": "QA Box"
         }
     },
