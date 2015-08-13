@@ -65,7 +65,7 @@
             </thead>
             <tbody>
             {% for user in users %}
-                {% with user_id=user.id questionnaire=questionnaire_map.user_id %}
+                {% with user_id=user.id questionnaire=questionnaire_map.user_id role=user.user.groups.all.0.name %}
                 <tr>
                     <td><input type="checkbox" value="{{ user.user.id }}" name="user_ids" class="user_entry"/></td>
                     <td>
@@ -75,19 +75,15 @@
                         {{ user.user.email }}
                     </td>
                     <td>
-                        {% for group in user.user.groups.all %}
-                            {{ group.name }}
-                        {% endfor %}
+                        {{ role|friendly_name }}
                     </td>
                     <td>
-                        {% if 'NGO Admins' == user.user.groups.all.0.name %}
+                        {% if 'NGO Admins' == role %}
                             {% trans 'All' %}
                         {% else %}
                             {% with ques=questionnaire_map|get_item:user_id %}
                                 {% for q in ques %}
-                                    <div width="100%">
-                                    {{ q.name }}
-                                    </div>
+                                    {{ q.name }}<br>
                                 {% endfor %}
                             {% endwith %}
                         {% endif %}

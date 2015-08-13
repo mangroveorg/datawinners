@@ -18,3 +18,10 @@ def join_by_attr(the_list, attr_name='name', separator=', '):
         a_list.append(item[str(attr_name)])
     return separator.join(a_list)
 
+@register.filter
+def friendly_name(name):
+    role_map = {'NGO Admins': 'Super Admin', 'Project Managers': 'Project Manager', 'Extended Users': 'Administrator'};
+    if role_map[name] is not None:
+        return role_map[name]
+    return name
+
