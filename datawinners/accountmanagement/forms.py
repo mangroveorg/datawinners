@@ -2,6 +2,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django import forms
+from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.utils.safestring import mark_safe
@@ -69,6 +70,7 @@ class UserProfileForm(forms.Form):
 
     title = forms.CharField(max_length=30, required=False, label=_("Job title"))
     full_name = forms.CharField(max_length=80, required=True, label=_('Name'))
+    role = forms.CharField(max_length=20, required=True, label=_('Role'))
     username = forms.EmailField(max_length=75, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
     mobile_phone = PhoneNumberField(required=True, label=_("Phone Number"),
@@ -93,6 +95,11 @@ class UserProfileForm(forms.Form):
             raise ValidationError(_("This email address is already in use. Please supply a different email address"))
         return self.cleaned_data.get('username').lower()
 
+    def clean_role(self):
+        selected_role = self.cleaned_data.get('role')
+        if len(Group.objects.filter(name__in=[selected_role])) < 1:
+            raise ValidationError(_("This field is required"))
+        return selected_role
 
 class EditUserProfileForm(UserProfileForm):
     def __init__(self, organization=None, reporter_id=None, *args, **kwargs):

@@ -75,6 +75,9 @@ var viewModel = function () {
         if (errors['full_name']) {
             self.fullName.setError(errors['full_name'][0]);
         }
+        if (errors['role']) {
+            self.fullName.setError(errors['role'][0]);
+        }
     };
 
     this.fetchQuestionnaires = function () {

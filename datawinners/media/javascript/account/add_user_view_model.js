@@ -6,7 +6,7 @@ var viewModel = function () {
     this.mobilePhone = DW.ko.createValidatableObservable({value: ""});
     this.questionnaires = ko.observableArray([])
     this.selectedQuestionnaires = ko.observableArray([]);
-    this.role = DW.ko.createValidatableObservable({value: "administrator"});
+    this.role = DW.ko.createValidatableObservable({value: ""});
     this.hasFetchedQuestionnaires = ko.observable(false);
     this.addUserSuccess = ko.observable(false);
     this.hasFormChanged = ko.observable(false);
@@ -26,6 +26,11 @@ var viewModel = function () {
         var re = /^([0-9]{5,15})$/i;
         DW.ko.regexValidator(self.mobilePhone, 'Invalid phone number', re);
         self.hasFormChanged(true)
+    });
+
+    this.role.subscribe(function () {
+        self.hasFormChanged(true);
+        self.role.setError(null);
     });
 
     this.submit = function () {
@@ -61,6 +66,9 @@ var viewModel = function () {
         if (errors['full_name']) {
             self.fullName.setError(errors['full_name'][0]);
         }
+        if (errors['role']) {
+            self.role.setError(errors['role'][0]);
+        }
     };
 
     this.fetchQuestionnaires = function () {
@@ -79,7 +87,7 @@ var viewModel = function () {
         this.email(null);
         this.email.setError(null);
         this.title(null);
-        this.role('administrator');
+        this.role('');
         this.mobilePhone(null);
         this.mobilePhone.setError(null);
         this.fullName.setError(null);
@@ -111,7 +119,7 @@ $(document).ready(function () {
         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
     });
 
-    if($('#option_administrator')[0] === undefined) {
+    if ($('#option_administrator')[0] === undefined) {
         userModel.role('Project Managers');
         userModel.fetchQuestionnaires();
     }

@@ -55,7 +55,7 @@
                 <label>{% trans 'Role' %}</label>
             </div>
             <div class="tableCell">
-                 {% if user.groups.all.0.name == 'NGO Admins'%}
+                 {% if user.is_ngo_admin%}
                 <label><input type="radio" name="role" id="option_administrator"
                               data-bind="checked: role, value: 'Extended Users'"/> {% trans "Administrator" %}
                  </label>
@@ -84,6 +84,12 @@
                             <span data-bind="html: name"></span>
                         </li>
                     </ul>
+                </div>
+            </div>
+            <div class="tableCell"
+                 data-bind="css: { errorlist: role.error()  != null && role.error() != '' }">
+                <div class="error-box">
+                    <span data-bind="text: role.error"></span>
                 </div>
             </div>
         </div>
