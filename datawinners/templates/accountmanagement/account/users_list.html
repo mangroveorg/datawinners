@@ -82,7 +82,7 @@
                         {{ role|friendly_name }}
                     </td>
                     <td>
-                        {% if user.isNGOAdmin %}
+                        {% if 'NGO Admins' == role or 'Extended Users' == role %}
                             {% trans 'All' %}
                         {% else %}
                             {% with ques=questionnaire_map|get_item:user_id %}

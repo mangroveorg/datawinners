@@ -76,7 +76,7 @@ var viewModel = function () {
             self.fullName.setError(errors['full_name'][0]);
         }
         if (errors['role']) {
-            self.fullName.setError(errors['role'][0]);
+            self.role.setError(errors['role'][0]);
         }
     };
 

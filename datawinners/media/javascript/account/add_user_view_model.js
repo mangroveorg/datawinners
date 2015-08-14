@@ -25,7 +25,7 @@ var viewModel = function () {
     this.mobilePhone.subscribe(function () {
         var re = /^([0-9]{5,15})$/i;
         DW.ko.regexValidator(self.mobilePhone, 'Invalid phone number', re);
-        self.hasFormChanged(true)
+        self.hasFormChanged(true);
     });
 
     this.role.subscribe(function () {
@@ -87,7 +87,7 @@ var viewModel = function () {
         this.email(null);
         this.email.setError(null);
         this.title(null);
-        this.role('');
+        this.role(null);
         this.mobilePhone(null);
         this.mobilePhone.setError(null);
         this.fullName.setError(null);

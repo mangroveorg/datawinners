@@ -189,13 +189,11 @@ def new_user(request):
 
         if form.is_valid():
             username = post_parameters['username']
-            selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
-            if selected_questionnaires is None or len(selected_questionnaires) < 1:
-                selected_questionnaires = []
+            role = post_parameters['role']
             if not form.errors:
                 user = User.objects.create_user(username, username, 'test123')
                 user.first_name = post_parameters['full_name']
-                group = Group.objects.filter(name="Project Managers")
+                group = Group.objects.filter(name=role)
                 user.groups.add(group[0])
                 user.save()
                 mobile_number = post_parameters['mobile_phone']
@@ -207,7 +205,13 @@ def new_user(request):
                                                                          mobile_number=mobile_number, email=username)
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
-                associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id, selected_questionnaires)
+                if role == 'Extended Users':
+                    associate_user_with_all_projects_of_organisation(manager,ngo_user_profile.reporter_id)
+                elif role == 'Project Managers':
+                    selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
+                    if selected_questionnaires is None:
+                        selected_questionnaires = []
+                    associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id, selected_questionnaires)
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user", organization=org)
