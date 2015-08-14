@@ -1,111 +1,124 @@
 {% load i18n %}
 <script type="text/javascript">
-var sender_registration_link = "{{ registration_link }}";
+    var sender_registration_link = "{{ registration_link }}";
 </script>
 {% load compress %}
 {% compress css %}
     <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet"/>
 {% endcompress %}
 
-  {% block messages %}
-      <div id="message-label" class="message-box none">
-      </div>
-  {% endblock %}
+{% block messages %}
+    <div id="message-label" class="message-box none">
+    </div>
+{% endblock %}
 <input id='post_url' type="hidden" value="{{ post_url }}"/>
-  <div class="application_register">
-      {% if message %}
-           <div id="flash-message" class="{% if success %}success-message-box{% else %}message-box{% endif %}">
-               {{ message }}
-           </div>
-      {% else %}
-           &nbsp;
-      {% endif %}
+<div class="application_register">
+    {% if message %}
+        <div id="flash-message" class="{% if success %}success-message-box{% else %}message-box{% endif %}">
+            {{ message }}
+        </div>
+    {% else %}
+        &nbsp;
+    {% endif %}
 
-  </div>
+</div>
 <div id="add_data_sender_form" class="">
 
-  <form id="registration_form" class="" action="" method="POST">
-  <fieldset>
-      {% csrf_token %}
-      <ul>
-          <li class="{{ form.name.css_classes }} form-row-10px">
-              {{ form.name.label_tag }}
-              {{ form.name }}
-              {{ form.name.errors }}
-          </li>
+    <form id="registration_form" class="" action="" method="POST">
+        <fieldset>
+            {% csrf_token %}
+            <ul>
+                <li class="{{ form.name.css_classes }} form-row-10px">
+                    <span class='optional_field register_optional'>{% trans 'Optional' %}</span>
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                    {{ form.name.errors }}
 
-          <li class="{{ form.telephone_number.css_classes }} form-row-10px margin_bottom_10">
-              {{ form.telephone_number.label_tag }}
-              {{ form.telephone_number }}
-              {{ form.telephone_number.errors }}
-          </li>
-          <li class="margin_left_180 italic_grey clear-left instruction_text">
-                  {% trans "phone_number_example" %}
-          </li>
+                </li>
 
-          <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
-              {{ form.email.label_tag }}
-              {{ form.email }}
-              {{ form.email.errors }}
-          </li>
+                <li class="{{ form.telephone_number.css_classes }} form-row-10px margin_bottom_10">
+                    {{ form.telephone_number.label_tag }}
+                    {{ form.telephone_number }}
+                    {{ form.telephone_number.errors }}
+                </li>
+                <li class="margin_left_180 italic_grey clear-left instruction_text">
+                    {% trans "phone_number_example" %}
+                </li>
 
-          <li class="{{ form.location.css_classes }} form-row-10px">
-              <label>{% trans "Location" %}</label>
-              <ul class="location_section">
-                  <li>
-                      {{ form.location.label_tag }}
-                      {{ form.location }}
-                      {{ form.location.errors }}
-                  </li>
-                  <li class="italic_grey margin_bottom_5 instruction_text">
-                      {% trans "location_name_example" %}
-                  </li>
-                  <li class="{{ form.geo_code.css_classes }} form-row-10px">
-                      <div class="clearfix">
-                          <label for="id_{{ form.geo_code.name }}" style="float: left;">{{ form.geo_code.label  }}</label>
-                          <a id="find_gps_link" href="http://itouchmap.com/latlong.html" class="find_gps_{% trans "en" %}" target="_blank">{% trans "Find GPS coordinates" %}</a>
-                      </div>
-                      {{ form.geo_code }}
-                      {{ form.geo_code.errors }}
+                <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
+                    <span class='optional_field register_optional'>{% trans 'Optional' %}</span>
 
-                  </li>
-                  <li class="italic_grey margin_bottom_5 instruction_text">
-                      {% trans "location_coordinate_example" %}
-                  </li>
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </li>
 
-                  <li>
-                      {{ form.project_id.as_hidden }}
-                  </li>
-              </ul>
-          </li>
-          <li class="{{ form.short_code.css_classes }} form-row-10px">
-              {{ form.short_code.label_tag }}
-              {{ form.short_code }}
+                <li class="{{ form.location.css_classes }} form-row-10px">
+                    <label>{% trans "Location" %}
+                        <span class='optional_field location_optional'>{% trans 'Optional' %}</span>
+                    </label>
+                    <ul class="location_section">
+                        <li>
+                            {{ form.location.label_tag }}
+                            {{ form.location }}
+                            {{ form.location.errors }}
+                        </li>
+                        <li class="italic_grey margin_bottom_5 instruction_text">
+                            {% trans "location_name_example" %}
+                        </li>
+                        <li class="{{ form.geo_code.css_classes }} form-row-10px">
+                            <div class="clearfix">
+                                <label for="id_{{ form.geo_code.name }}"
+                                       style="float: left;">{{ form.geo_code.label }}</label>
+                                <a id="find_gps_link" href="http://itouchmap.com/latlong.html"
+                                   class="find_gps_{% trans "en" %}"
+                                   target="_blank">{% trans "Find GPS coordinates" %}</a>
+                            </div>
+                            {{ form.geo_code }}
+                            {{ form.geo_code.errors }}
 
-              {% if form.short_code.errors %}
+                        </li>
+                        <li class="italic_grey margin_bottom_5 instruction_text">
+                            {% trans "location_coordinate_example" %}
+                        </li>
+
+                        <li>
+                            {{ form.project_id.as_hidden }}
+                        </li>
+                    </ul>
+                </li>
+                <li class="{{ form.short_code.css_classes }} form-row-10px">
+                    <span class='optional_field register_optional'>{% trans 'Optional' %}</span>
+
+                    {{ form.short_code.label_tag }}
+                    {{ form.short_code }}
+
+                    {% if form.short_code.errors %}
 
 
-              {{ form.short_code.errors }}
+                        {{ form.short_code.errors }}
 
 
-              {% endif %}
+                    {% endif %}
 
-               <br class="clear"/>
-               <label style="width: 145px;">&nbsp;</label>
-{#               <span><input type="checkbox" id="generate_id" name="generate_id" value="checked" {% if not form.short_code.value %}checked="checked"{% endif %} />{% trans "Let us generate an ID for you" %}</span>#}
+                    <br class="clear"/>
+                    <label style="width: 145px;">&nbsp;</label>
+                    {#               <span><input type="checkbox" id="generate_id" name="generate_id" value="checked" {% if not form.short_code.value %}checked="checked"{% endif %} />{% trans "Let us generate an ID for you" %}</span>#}
                <span>
                    {{ form.generated_id }}{% trans "ID Automatic" %}
                </span>
 
 
-          </li>
-          <li class="button_block">
-              <a id="cancel" class="cancel_link" >{% trans "Cancel" %}</a>
-              <div style="display: none;"> {% include "warning_section.html" %} </div>
-{#              <input type="button" id="id_register_button" value="{% trans 'Add Contact' %}" class="button margin_top_20"/>#}
-              <input type="button" id="id_register_button" value="{{ button_text }}" class="button margin_top_20"/>
-          </li>
-      </ul>
-  </fieldset>
-</form>
+                </li>
+                <li class="button_block">
+                    <a id="cancel" class="cancel_link">{% trans "Cancel" %}</a>
+
+                    <div style="display: none;"> {% include "warning_section.html" %} </div>
+                    {#              <input type="button" id="id_register_button" value="{% trans 'Add Contact' %}" class="button margin_top_20"/>#}
+                    <input type="button" id="id_register_button" value="{{ button_text }}"
+                           class="button margin_top_20"/>
+                </li>
+            </ul>
+        </fieldset>
+    </form>
 </div>

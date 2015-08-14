@@ -67,21 +67,37 @@ li.instruction_text {
   width: 360px;
 }
 
-#registration_form fieldset > ul {
+#registration_form {
+  fieldset > ul {
     width: 918px;
-    > li:last-child{
-        text-align: right;
-        margin-right: 377px;
-        width: 534px;
+    > li:last-child {
+      text-align: right;
+      margin-right: 377px;
+      width: 534px;
     }
     li {
-        .find_gps_en{
-            padding-left: 85px;
-        }
-        .find_gps_fr{
-            padding-left: 40px;
-        }
+      .find_gps_en {
+        padding-left: 85px;
+      }
+      .find_gps_fr {
+        padding-left: 40px;
+      }
     }
+  }
+  .register_optional {
+    width: 150px;
+    position: relative;
+    left: 107px;
+    top: 35px;
+    font-style: italic;
+  }
+
+  .location_optional {
+    font-style: italic;
+    font-weight: normal;
+    position: relative;
+    top: -4px;
+  }
 }
 
 .button_block {
@@ -89,8 +105,9 @@ li.instruction_text {
   margin-right: 377px;
   width: 534px;
 }
-#cancel{
-   padding-right: 12px;
+
+#cancel {
+  padding-right: 12px;
 }
 
 form ul li label {
@@ -99,6 +116,6 @@ form ul li label {
   padding-right: 20px;
 }
 
-.users_list{
+.users_list {
   list-style: circle inside;
 }
