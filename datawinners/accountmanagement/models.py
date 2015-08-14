@@ -327,6 +327,11 @@ class NGOUserProfile(models.Model):
         user = User.objects.get(email=self.user)
         return True if user.groups.filter(name="NGO Admins").count() else False
 
+    @property
+    def isExtendedUser(self):
+        user = User.objects.get(email=self.user)
+        return True if user.groups.filter(name="Extended Users").count() else False
+
 
 class PaymentDetails(models.Model):
     organization = models.ForeignKey(Organization)
