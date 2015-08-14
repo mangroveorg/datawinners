@@ -96,9 +96,6 @@ var viewModel = function () {
 $(document).ready(function () {
     var userModel = new viewModel();
     window.userModel = userModel;
-    if($('#option_administrator')[0] === undefined) {
-        $("option_project_manager").trigger("click");
-    }
     ko.applyBindings(userModel, $("#user_profile_content")[0]);
 
     window.addEventListener("beforeunload", function (e) {
@@ -113,4 +110,10 @@ $(document).ready(function () {
         (e || window.event).returnValue = confirmationMessage; //Gecko + IE
         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
     });
+
+    if($('#option_administrator')[0] === undefined) {
+        userModel.role('Project Managers');
+        userModel.fetchQuestionnaires();
+    }
+
 });
