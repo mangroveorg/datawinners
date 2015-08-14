@@ -440,7 +440,7 @@ def edit_user_profile(request, user_id=None):
     if user is None:
         data = {"errors": "User not found"}
         return HttpResponse(json.dumps(data), mimetype="application/json", status=404)
-    if len(user.groups.filter(name__in='NGO Admins')) < 1:
+    if user.is_ngo_admin():
         return HttpResponseRedirect(django_settings.HOME_PAGE)
     else:
         profile = user.get_profile()
