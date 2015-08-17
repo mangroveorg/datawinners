@@ -4,7 +4,7 @@ var viewModel = function () {
     this.email = DW.ko.createValidatableObservable({value: ""});
     this.title = DW.ko.createValidatableObservable({value: ""});
     this.mobilePhone = DW.ko.createValidatableObservable({value: ""});
-    this.questionnaires = ko.observableArray([])
+    this.questionnaires = ko.observableArray([]);
     this.selectedQuestionnaires = ko.observableArray([]);
     this.role = DW.ko.createValidatableObservable({value: ""});
     this.hasFetchedQuestionnaires = ko.observable(false);
@@ -34,7 +34,10 @@ var viewModel = function () {
     });
 
     this.submit = function () {
-        $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+        $.blockUI({
+            message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
+            css: {width: '275px'}
+        });
 
         var formData = {
             'title': self.title(),
@@ -106,24 +109,47 @@ var viewModel = function () {
 $(document).ready(function () {
     var userModel = new viewModel();
     window.userModel = userModel;
-    ko.applyBindings(userModel, $("#user_profile_content")[0]);
-
-    window.addEventListener("beforeunload", function (e) {
-        var confirmationMessage = 'It looks like you have been editing something. ';
-        confirmationMessage += 'If you leave before saving, your changes will be lost.';
-        var model = window.userModel;
-
-        if (!model.hasFormChanged()) {
-            return undefined;
-        }
-
-        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-    });
-
-    if ($('#option_administrator')[0] === undefined) {
+     if ($('#option_administrator')[0] === undefined) {
         userModel.role('Project Managers');
         userModel.fetchQuestionnaires();
     }
+    userModel.hasFormChanged(false);
+    ko.applyBindings(userModel, $("#user_profile_content")[0]);
+
+    //window.addEventListener("beforeunload", function (e) {
+    //    var confirmationMessage = 'It looks like you have been editing something. ';
+    //    confirmationMessage += 'If you leave before saving, your changes will be lost.';
+    //    var model = window.userModel;
+    //
+    //    if (!model.hasFormChanged()) {
+    //        return undefined;
+    //    }
+    //
+    //    (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+    //    return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    //});
+
+    $('a[href]:visible').bind('click', function (event) {
+        if(userModel.hasFormChanged()) {
+            window.redirectUrl = $(this).attr('href');
+            $("#form_changed_warning_dialog").dialog("open");
+            return false;
+        }
+        return true;
+    });
+
+    var kwargs = {
+        container: "#form_changed_warning_dialog",
+        continue_handler: function () {
+            window.location.href = window.redirectUrl;
+        },
+        title: gettext("Your change(s) will be lost"),
+        cancel_handler: function () {
+        },
+        height: 150,
+        width: 550
+    };
+
+    DW.delete_user_warning_dialog = new DW.warning_dialog(kwargs);
 
 });
