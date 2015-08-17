@@ -115,20 +115,7 @@ $(document).ready(function () {
     }
     userModel.hasFormChanged(false);
     ko.applyBindings(userModel, $("#user_profile_content")[0]);
-
-    //window.addEventListener("beforeunload", function (e) {
-    //    var confirmationMessage = 'It looks like you have been editing something. ';
-    //    confirmationMessage += 'If you leave before saving, your changes will be lost.';
-    //    var model = window.userModel;
-    //
-    //    if (!model.hasFormChanged()) {
-    //        return undefined;
-    //    }
-    //
-    //    (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-    //    return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-    //});
-
+    
     $('a[href]:visible').bind('click', function (event) {
         if(userModel.hasFormChanged()) {
             window.redirectUrl = $(this).attr('href');

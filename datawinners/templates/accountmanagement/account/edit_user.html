@@ -18,6 +18,7 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/account/edit_user_view_model.js"/>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"/>
+    <script type="text/javascript" src="/media/javascript/warning_dialog.js"/>
     <script type="text/javascript">
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/usrs/?template=help";
     </script>
@@ -138,6 +139,17 @@
                     data-bind="click: submit">{% trans 'Update' %}
             </button>
             </div>
+        </div>
+    </div>
+    <div id="form_changed_warning_dialog">
+        <p class="warning_message">
+            {% trans "You have made changes to the form. These changes will be lost if you navigate away from this page." %}<br/><br/>
+            {% trans "Are you sure you want to proceed?" %}
+        </p>
+
+        <div class="text_align_right">
+            <a class="cancel_link no_button">{% trans "Cancel" %}</a>
+            <a class="button yes_button">{% trans "Yes, Proceed" %}</a>
         </div>
     </div>
 </div>

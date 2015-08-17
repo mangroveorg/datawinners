@@ -121,16 +121,26 @@ $(document).ready(function () {
     window.userModel = userModel;
     ko.applyBindings(userModel, $("#user_profile_content")[0]);
 
-    window.addEventListener("beforeunload", function (e) {
-        var confirmationMessage = 'It looks like you have been editing something. ';
-        confirmationMessage += 'If you leave before saving, your changes will be lost.';
-        var model = window.userModel;
-
-        if (!model.hasFormChanged()) {
-            return undefined;
+    $('a[href]:visible').bind('click', function (event) {
+        if(userModel.hasFormChanged()) {
+            window.redirectUrl = $(this).attr('href');
+            $("#form_changed_warning_dialog").dialog("open");
+            return false;
         }
-
-        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+        return true;
     });
+
+    var kwargs = {
+        container: "#form_changed_warning_dialog",
+        continue_handler: function () {
+            window.location.href = window.redirectUrl;
+        },
+        title: gettext("Your change(s) will be lost"),
+        cancel_handler: function () {
+        },
+        height: 160,
+        width: 550
+    };
+
+    DW.delete_user_warning_dialog = new DW.warning_dialog(kwargs);
 });
