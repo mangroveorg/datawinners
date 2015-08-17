@@ -30,7 +30,7 @@ class TestAccountManagement(TestCase):
         response = self.client.post('/password/reset/')
         self.assertEquals(response.status_code,200)
 
-    def test_should_render_register_view(self):
+    def test_should_render_registration_complete_view(self):
         response = self.client.post('/registration_complete')
         self.assertEquals(response.status_code, 200)
 

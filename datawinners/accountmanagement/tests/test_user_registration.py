@@ -31,10 +31,18 @@ class TestUserRegistration(TestCase):
                 self.assertEqual(form.errors['username'],['This email address is already in use. Please supply a different email address'])
                 mobile_validater.validate.assert_called_with()
                 datasender_count_with_mock.return_value = 0
+                
+                #Role validation
                 form = UserProfileForm(organization=trial_organization,
                                data={'title': 'manager', 'full_name': 'user one', 'username': 'uSER1@User.com',
-                                     'mobile_phone': '7889522', 'role': 'Project Managers'})
+                                     'mobile_phone': '7889522'})
 
-                self.assertTrue(form.is_valid(), 'Form was expected to be valid but is invalid')
-                self.assertEqual(form.clean_username(), 'user1@user.com')
-
+                self.assertFalse(form.is_valid())
+                self.assertEqual(form.errors['role'],['This field is required.'])
+                
+                #Valid form
+                form = UserProfileForm(organization=trial_organization,
+                               data={'title': 'manager', 'full_name': 'user one', 'username': 'uSER1@User.com',
+                                     'mobile_phone': '7889522', 'role': 'Extended Users'})
+                self.assertTrue(form.is_valid())
+                self.assertEqual(form.clean_username(),'user1@user.com')
