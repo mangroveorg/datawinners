@@ -34,6 +34,8 @@ var viewModel = function () {
     });
 
     this.submit = function () {
+        $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+
         var formData = {
             'title': self.title(),
             'full_name': self.fullName(),
