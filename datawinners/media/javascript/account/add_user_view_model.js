@@ -115,7 +115,7 @@ $(document).ready(function () {
     }
     userModel.hasFormChanged(false);
     ko.applyBindings(userModel, $("#user_profile_content")[0]);
-    
+
     $('a[href]:visible').bind('click', function (event) {
         if(userModel.hasFormChanged()) {
             window.redirectUrl = $(this).attr('href');

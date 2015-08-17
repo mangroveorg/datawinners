@@ -239,7 +239,8 @@ def users(request):
             questionnaires_for_user = get_questionnaires_for_user(user.user.id, get_database_manager(user.user))
             questionnaire_map.update({user.id: make_questionnaire_map(questionnaires_for_user)})
 
-        return render_to_response("accountmanagement/account/users_list.html", {'users': users,
+        return render_to_response("accountmanagement/account/users_list.html", {'current_user':request.user,
+                                                                                'users': users,
                                                                                 'questionnaire_map': questionnaire_map,
                                                                                 'is_pro_sms': organization.is_pro_sms,
                                                                                 'current_lang': get_language()},
@@ -440,11 +441,12 @@ def edit_user(request):
 @is_admin
 def edit_user_profile(request, user_id=None):
     user = User.objects.get(id=user_id)
+    current_user = request.user
 
     if user is None:
         data = {"errors": "User not found"}
         return HttpResponse(json.dumps(data), mimetype="application/json", status=404)
-    if user.is_ngo_admin():
+    if not current_user.has_higher_privileges_than(user):
         return HttpResponseRedirect(django_settings.HOME_PAGE)
     else:
         profile = user.get_profile()
@@ -489,3 +491,4 @@ def edit_user_profile(request, user_id=None):
         data = dict(edit_user_success=_edit_user_success,
                     errors=form.errors, message=message)
         return HttpResponse(json.dumps(data), mimetype="application/json", status=200)
+

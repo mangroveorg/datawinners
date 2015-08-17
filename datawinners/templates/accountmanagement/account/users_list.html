@@ -65,18 +65,18 @@
             </thead>
             <tbody>
             {% for user in users %}
-                {% with user_id=user.id questionnaire=questionnaire_map.user_id role=user.user.groups.all.0.name %}
+                {% with user_id=user.id questionnaire=questionnaire_map.user_id role=user.user.groups.all.0.name auth_user=user.user%}
                 <tr>
                     <td>
-                        {% if not user.isNGOAdmin %}
-                            <input type="checkbox" value="{{ user.user.id }}" name="user_ids" class="user_entry"/>
+                        {% if current_user|has_higher_privileges_than:auth_user %}
+                            <input type="checkbox" value="{{ auth_user.id }}" name="user_ids" class="user_entry"/>
                         {% endif %}
                     </td>
                     <td>
-                        {{ user.user.first_name }}
+                        {{ auth_user.first_name }}
                     </td>
                     <td class="email">
-                        {{ user.user.email }}
+                        {{ auth_user.email }}
                     </td>
                     <td>
                         {{ role|friendly_name }}

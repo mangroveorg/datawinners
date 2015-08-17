@@ -25,3 +25,8 @@ def friendly_name(name):
         return role_map[name]
     return name
 
+
+@register.filter
+def has_higher_privileges_than(current_user, user):
+    return current_user.has_higher_privileges_than(user)
+
