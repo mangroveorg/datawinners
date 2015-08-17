@@ -25,7 +25,7 @@ class TestUserRegistration(TestCase):
                 validater.return_value = mobile_validater
                 form = UserProfileForm(organization=trial_organization,
                                        data={'title': 'manager', 'full_name': 'user one', 'username': 'uSER@User.com',
-                                             'mobile_phone': '7889522'})
+                                             'mobile_phone': '7889522', 'role': 'Project Managers'})
 
                 self.assertFalse(form.is_valid())
                 self.assertEqual(form.errors['username'],['This email address is already in use. Please supply a different email address'])
@@ -33,7 +33,8 @@ class TestUserRegistration(TestCase):
                 datasender_count_with_mock.return_value = 0
                 form = UserProfileForm(organization=trial_organization,
                                data={'title': 'manager', 'full_name': 'user one', 'username': 'uSER1@User.com',
-                                     'mobile_phone': '7889522'})
+                                     'mobile_phone': '7889522', 'role': 'Project Managers'})
 
-                self.assertTrue(form.is_valid())
-                self.assertEqual(form.clean_username(),'user1@user.com')
+                self.assertTrue(form.is_valid(), 'Form was expected to be valid but is invalid')
+                self.assertEqual(form.clean_username(), 'user1@user.com')
+
