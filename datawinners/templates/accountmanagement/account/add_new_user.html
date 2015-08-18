@@ -28,14 +28,14 @@
 {% block content %}
 <a class="users-back-btn" href="/account/users">« {% trans "Back to Users" %}</a>
 <div id="user_profile_content" data-bind="beforeUnloadText: beforeUnloadPrompt">
-    <div id="flash-message" class="success-message-box" data-bind="visible: addUserSuccess()">
-        {% trans "User has been added successfully" %}
-    </div>
     {% csrf_token %}
     <div class="administrative">
         <div>
             <h3 class="title">{% trans "Add a User" %}</h3>
             <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
+        </div>
+        <div id="flash-message" class="success-message-box" data-bind="visible: addUserSuccess() == true && hasFormChanged() == false">
+            {% trans "User has been added successfully" %}
         </div>
         <div class="tableRow">
             <div class="tableCell">

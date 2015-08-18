@@ -97,7 +97,7 @@ var viewModel = function () {
         this.hasFormChanged(false);
         setTimeout(function () {
             self.editUserSuccess(false);
-        }, 4000);
+        }, 10000);
     }
 };
 

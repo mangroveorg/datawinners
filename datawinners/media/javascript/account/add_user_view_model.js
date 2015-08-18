@@ -102,7 +102,7 @@ var viewModel = function () {
         this.hasFormChanged(false);
         setTimeout(function () {
             self.addUserSuccess(false);
-        }, 4000)
+        }, 10000)
     }
 };
 

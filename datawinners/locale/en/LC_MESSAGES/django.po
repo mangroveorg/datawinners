@@ -4868,4 +4868,4 @@ msgid "questionnaire_access_placeholder_text"
 msgstr "Once a Questionnaire or Poll is created, you can give access here."
 
 msgid "add_user_help_text"
-msgstr "When you click on Add User, we will send an Email to invite this person to<br>your DataWinners account"
+msgstr "When you click on Add User, we will send an Email to invite this person to your DataWinners account"
