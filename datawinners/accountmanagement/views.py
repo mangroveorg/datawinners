@@ -206,12 +206,13 @@ def new_user(request):
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
                 if role == 'Extended Users':
-                    associate_user_with_all_projects_of_organisation(manager,ngo_user_profile.reporter_id)
+                    associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
                 elif role == 'Project Managers':
                     selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
                     if selected_questionnaires is None:
                         selected_questionnaires = []
-                    associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id, selected_questionnaires)
+                    associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
+                                                 selected_questionnaires)
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user", organization=org)
@@ -239,7 +240,7 @@ def users(request):
             questionnaires_for_user = get_questionnaires_for_user(user.user.id, get_database_manager(user.user))
             questionnaire_map.update({user.id: make_questionnaire_map(questionnaires_for_user)})
 
-        return render_to_response("accountmanagement/account/users_list.html", {'current_user':request.user,
+        return render_to_response("accountmanagement/account/users_list.html", {'current_user': request.user,
                                                                                 'users': users,
                                                                                 'questionnaire_map': questionnaire_map,
                                                                                 'is_pro_sms': organization.is_pro_sms,
@@ -389,9 +390,13 @@ def custom_password_reset_confirm(request, uidb36=None, token=None, set_password
     return response
 
 
-def _update_user_and_profile(form, user_name):
+def _update_user_and_profile(form, user_name, role=None):
     user = User.objects.get(username=user_name)
     user.first_name = form.cleaned_data['full_name']
+    if role is not None:
+        group = Group.objects.filter(name=role)
+        user.groups.clear()
+        user.groups.add(group[0])
     user.save()
     ngo_user_profile = NGOUserProfile.objects.get(user=user)
     ngo_user_profile.title = form.cleaned_data['title']
@@ -403,10 +408,37 @@ def _update_user_and_profile(form, user_name):
 
 
 def update_user_permissions(project_ids, user):
-    user_permission = get_user_permission(user.id, get_database_manager(user))
+    manager = get_database_manager(user)
+    user_permission = get_user_permission(user.id, manager)
+    if user_permission is None:
+        UserPermission(manager, user.id, project_ids).save()
+        return
     user_permission.set_project_ids(project_ids)
     user_permission.save()
 
+
+def dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role, selected_questionnaires):
+    manager = get_database_manager(user)
+
+    if previous_role == 'Project Managers':
+        user_permission = get_user_permission(user.id, manager)
+        project_ids = user_permission.project_ids
+    elif previous_role == 'Extended Users':
+        rows = get_all_projects(manager)
+        project_ids = []
+        for row in rows:
+            project_ids.append(row['value']['_id'])
+
+    remove_user_as_datasender_for_projects(manager, project_ids, selected_questionnaires, reporter_id)
+    return
+
+
+def remove_user_as_datasender_for_projects(manager, project_ids, selected_questionnaires, reporter_id):
+    removed_questionnaires = list(set(project_ids) - set(selected_questionnaires))
+    for questionnaire in removed_questionnaires:
+        project = Project.get(manager, questionnaire)
+        project.delete_datasender(manager, reporter_id)
+        update_datasender_index_by_id(reporter_id, manager)
 
 @valid_web_user
 @is_datasender
@@ -471,9 +503,11 @@ def edit_user_profile(request, user_id=None):
 
     if request.method == 'POST':
         post_parameters = request.POST
+        role = post_parameters['role']
         ngo_user = NGOUserProfile.objects.get(user=user)
         manager = get_database_manager(user)
         reporter_id = ngo_user.reporter_id
+        previous_role = user.groups.all()[0].name
         org = get_organization(request)
         form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=request.POST)
         message = ""
@@ -483,12 +517,16 @@ def edit_user_profile(request, user_id=None):
             if selected_questionnaires is None or len(selected_questionnaires) < 1:
                 selected_questionnaires = []
 
-            _update_user_and_profile(form, user.username)
+            _update_user_and_profile(form, user.username, role)
+            # Accommodate dissociate user as data sender for the removed projects
+            if role == 'Project Managers':
+                dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role, selected_questionnaires)
+                make_user_data_sender_for_projects(manager, selected_questionnaires, reporter_id)
+            elif role == 'Extended Users' and previous_role != 'Extended Users':
+                associate_user_with_all_projects_of_organisation(manager, reporter_id)
             update_user_permissions(selected_questionnaires, user)
-            make_user_data_sender_for_projects(manager, selected_questionnaires, reporter_id)
             message = _('Profile has been updated successfully')
             _edit_user_success = True
         data = dict(edit_user_success=_edit_user_success,
                     errors=form.errors, message=message)
         return HttpResponse(json.dumps(data), mimetype="application/json", status=200)
-

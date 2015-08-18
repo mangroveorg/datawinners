@@ -48,7 +48,7 @@
                     <input type="text" name="full_name" data-bind="value: fullName" />
                 </div>
                 <div class="tableCell"
-                     data-bind="css: { errorlist: fullName.error()  != null && fullName.error() != '' }">
+                     data-bind="css: { errorlist: fullName.error() != null && fullName.error() != '' }">
                     <div class="error-box">
                         <span data-bind="text: fullName.error"></span>
                     </div>
@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="tableCell"
-                     data-bind="css: { errorlist: role.error()  != null && role.error() != '' }">
+                     data-bind="css: { errorlist: role.error() != null && role.error() != '' }">
                     <div class="error-box">
                         <span data-bind="text: role.error"></span>
                     </div>
