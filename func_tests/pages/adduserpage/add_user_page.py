@@ -11,10 +11,26 @@ class AddUserPage(Page):
         Page.__init__(self, driver)
 
     def add_user_with(self, user_data):
-        for key,value in user_data.items():
+        for key, value in user_data.items():
             self.driver.find_text_box(by_css("input[name=%s]" % key)).enter_text(value)
-        self.driver.find(by_css("input[type=submit]")).click()
+        self.driver.find(by_css("button[id=submit]")).click()
 
     def get_success_message(self):
-        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT*2, FLASH_MESSAGE_LABEL)
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, FLASH_MESSAGE_LABEL)
         return locator.text
+
+    def select_role_as_administrator(self):
+        self.driver.find(by_css("input[id=option_administrator]")).click()
+
+    def select_role_as_project_manager(self):
+        self.driver.find(by_css("input[id=option_project_manager]")).click()
+
+    def select_questionnaires(self, no_of_questionnaires=0):
+        for index in range(0, no_of_questionnaires):
+            self.driver.wait_for_element(10,
+                                         by_css(".questionnaire-list ul li:nth-child(%s) input[type=checkbox]" % (index+1)),
+                                         True).click()
+        return [
+            self.driver.wait_for_element(10, by_css(".questionnaire-list ul li:nth-child(1) span"), True).text,
+            self.driver.wait_for_element(10, by_css(".questionnaire-list ul li:nth-child(2) span"), True).text
+        ]

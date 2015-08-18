@@ -64,3 +64,9 @@ class AllUsersPage(Page):
     def check_user_by_username(self, username):
         user_id = User.objects.get(username=username).id
         self.driver.find_element_by_css_selector('input[value="%s"]' % user_id).click()
+
+    def get_questionnaire_list_for(self, username):
+        return self.driver.find(by_xpath(".//tr/td[contains(text(), '%s')]/../td[5]" % username)).text.split("\n")
+
+    def get_role_for(self, username):
+        return self.driver.find(by_xpath(".//tr/td[contains(text(), '%s')]/../td[4]" % username)).text

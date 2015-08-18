@@ -117,6 +117,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         cls.driver.go_to(ALL_USERS_URL)
         all_users_page = AllUsersPage(cls.driver)
         add_user_page = all_users_page.navigate_to_add_user()
+        add_user_page.select_role_as_administrator()
         add_user_page.add_user_with(user_data)
         cls.driver.wait_for_element(UI_TEST_TIMEOUT*2, FLASH_MESSAGE_LABEL, True)
         user_mobile_number = fetch_(MOBILE_PHONE, user_data)
