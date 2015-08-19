@@ -16,7 +16,7 @@ class AddUserPage(Page):
         self.driver.find(by_css("button[id=submit]")).click()
 
     def get_success_message(self):
-        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, FLASH_MESSAGE_LABEL)
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, FLASH_MESSAGE_LABEL, True)
         return locator.text
 
     def select_role_as_administrator(self):
@@ -34,3 +34,6 @@ class AddUserPage(Page):
             self.driver.wait_for_element(10, by_css(".questionnaire-list ul li:nth-child(1) span"), True).text,
             self.driver.wait_for_element(10, by_css(".questionnaire-list ul li:nth-child(2) span"), True).text
         ]
+
+    def is_administrator_role_visible(self):
+        return self.driver.is_element_present(by_css("input[id=option_administrator]"))
