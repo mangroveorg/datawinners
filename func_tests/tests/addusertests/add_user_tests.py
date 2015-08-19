@@ -44,7 +44,6 @@ class TestAddUser(HeadlessRunnerTest):
         questionnaires = self.add_user_page.select_questionnaires(2)
         user = generate_user()
         self.add_user_page.add_user_with(user)
-        self.driver.wait_for_element(5, by_css('.success-message-box'), want_visible=True)
         message = self.add_user_page.get_success_message()
         self.assertEqual(message, ADDED_USER_SUCCESS_MSG)
         self.username = fetch_(USERNAME, user)
