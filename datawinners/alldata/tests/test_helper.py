@@ -20,6 +20,7 @@ class TestHelper(unittest.TestCase):
         normal_profile.reporter = False
         normal_profile.reporter_id = 2
         normal_profile.isNGOAdmin = False
+        normal_profile.isExtendedUser = False
         user.get_profile.return_value = normal_profile
         return user
 
@@ -36,7 +37,17 @@ class TestHelper(unittest.TestCase):
         ngo_admin_profile = Mock(NGOUserProfile)
         ngo_admin_profile.reporter = False
         ngo_admin_profile.isNGOAdmin = True
+        ngo_admin_profile.isExtendedUser = False
         user.get_profile.return_value = ngo_admin_profile
+        return user
+
+    def _get_extended_user(self):
+        user = Mock(User)
+        extended_user_profile = Mock(NGOUserProfile)
+        extended_user_profile.reporter = False
+        extended_user_profile.isNGOAdmin = False
+        extended_user_profile.isExtendedUser = True
+        user.get_profile.return_value = extended_user_profile
         return user
 
     @patch('datawinners.alldata.helper.remove_poll_questionnaires')
@@ -64,6 +75,14 @@ class TestHelper(unittest.TestCase):
 
     def test_should_return_all_projects_for_user_as_ngo_admin(self):
         user = self._get_ngo_admin()
+        all_projects = [{'value':{'_id':'d3456cc', 'name':'test questionnaire'}}, {'value':{'_id':'256cc', 'name':'2nd questionnaire'}}]
+        all_projects_expected = [{'_id':'d3456cc', 'name':'test questionnaire'}, {'_id':'256cc', 'name':'2nd questionnaire'}]
+        with patch('datawinners.alldata.helper.get_all_projects') as mock_get_all_projects:
+            mock_get_all_projects.return_value = all_projects
+            assert helper.get_all_project_for_user(user) == all_projects_expected
+
+    def test_should_return_all_projects_for_user_as_extended_user(self):
+        user = self._get_extended_user()
         all_projects = [{'value':{'_id':'d3456cc', 'name':'test questionnaire'}}, {'value':{'_id':'256cc', 'name':'2nd questionnaire'}}]
         all_projects_expected = [{'_id':'d3456cc', 'name':'test questionnaire'}, {'_id':'256cc', 'name':'2nd questionnaire'}]
         with patch('datawinners.alldata.helper.get_all_projects') as mock_get_all_projects:

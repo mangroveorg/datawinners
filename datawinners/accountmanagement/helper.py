@@ -55,7 +55,9 @@ def get_all_users_for_organization(org_id):
     return NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
 
 def get_all_user_repids_for_org(org_id):
-    users = get_all_users_for_organization(org_id)
+    viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users', 'Project Managers']).values_list('id',
+                                                                                                          flat=True)
+    users = NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
     return [user.reporter_id for user in users]
 
 def update_user_name_if_exists(email, new_name):
