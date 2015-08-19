@@ -12,7 +12,7 @@ def get_all_project_for_user(user):
     if user.get_profile().reporter:
         questionnaires = [row['value'] for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]
         return remove_poll_questionnaires(questionnaires)
-    if user.get_profile().isNGOAdmin:
+    if user.get_profile().isNGOAdmin or user.get_profile().isExtendedUser:
         questionnaires = [row['value'] for row in get_all_projects(get_database_manager(user))]
         return questionnaires
     questionnaires_as_datasender = [row['value'] for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]

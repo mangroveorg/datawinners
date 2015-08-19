@@ -108,7 +108,7 @@ def is_crs_user(request):
     return get_organization(request).org_id == CRS_ORG_ID
 
 def _get_visibility_settings_for(user,project):
-    if user.get_profile().isNGOAdmin or project.get('is_project_manager', False) is True:
+    if user.get_profile().isNGOAdmin or user.get_profile().isExtendedUser or project.get('is_project_manager', False) is True:
         return "", ""
     if user.get_profile().reporter or project.get('is_project_manager', False) is False:
         return "disable_link_for_reporter", "none"
@@ -150,11 +150,11 @@ def index(request):
     hide_for_data_sender = 'none' if request.user.get_profile().reporter else ''
     rows = get_project_list(request)
     project_list = []
-    project_list.sort(key=itemgetter('name'))
     smart_phone_instruction_link = reverse("smart_phone_instruction")
     local_time_delta = get_country_time_delta(organization.country)
     for project in rows:
         project_list.append(_construct_project_dict(request.user, local_time_delta, project))
+    project_list.sort(key=itemgetter('name'))
 
     activation_success = request.GET.get('activation', False)
 

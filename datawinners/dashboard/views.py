@@ -102,7 +102,7 @@ def dashboard(request):
 
     organization = Organization.objects.get(org_id=user_profile.org_id)
     questionnaire_list = []
-    if request.user.get_profile().isNGOAdmin:
+    if request.user.get_profile().isNGOAdmin or request.user.get_profile().isExtendedUser:
         rows = [row['value'] for row in manager.load_all_rows_in_view('all_projects', descending=True, limit=8)]
     else:
         rows = get_questionnaires_for_user(request.user.id, manager, descending=True, limit=8)
