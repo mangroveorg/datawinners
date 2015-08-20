@@ -1,10 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.contrib.auth.models import User
+from framework.exception import CouldNotLocateElementException
+from pages.edituserpage.edit_user_page import EditUserPage
 
 from pages.page import Page
 from framework.utils.data_fetcher import from_, fetch_
 from pages.alluserspage.all_users_locator import *
-from tests.alluserstests.all_users_data import DELETE
+from tests.alluserstests.all_users_data import DELETE, EDIT
 from framework.utils.common_utils import by_css
 from pages.adduserpage.add_user_page import AddUserPage
 
@@ -26,6 +28,11 @@ class AllUsersPage(Page):
             self.confirm_delete()
         if cancel:
             self.cancel_delete()
+
+    def select_edit_action(self, confirm=False, cancel=False):
+        action_to_be_performed = EDIT
+        self.perform_user_action(action_to_be_performed)
+        return EditUserPage(self.driver)
 
     def perform_user_action(self, action_to_be_performed):
         self.click_action_button()
@@ -66,7 +73,29 @@ class AllUsersPage(Page):
         self.driver.find_element_by_css_selector('input[value="%s"]' % user_id).click()
 
     def get_questionnaire_list_for(self, username):
-        return self.driver.find(by_xpath(".//tr/td[contains(text(), '%s')]/../td[5]" % username)).text.split("\n")
+        return self.driver.find(
+            by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[5]" % username)).text.split("\n")
 
     def get_role_for(self, username):
-        return self.driver.find(by_xpath(".//tr/td[contains(text(), '%s')]/../td[4]" % username)).text
+        return self.driver.find(
+            by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[4]" % username)).text
+
+    def select_user_with_username(self, username):
+        self.driver.find(
+            by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[1]/input" % username)).click()
+
+    def is_editable(self, username):
+        try:
+            self.driver.find(by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[1]/input" % username))
+            return True
+        except CouldNotLocateElementException:
+            return False
+
+    def get_full_name_for(self, username):
+        return self.driver.find(
+            by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[2]" % username)).text
+
+    def number_of_editable_users_for_role(self, role):
+        elements_by_xpath = self.driver.find_elements_by_xpath(
+            "//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[1]/input" % role)
+        return len(elements_by_xpath)

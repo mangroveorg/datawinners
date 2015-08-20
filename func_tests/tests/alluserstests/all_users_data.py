@@ -9,6 +9,7 @@ def url(path):
     return full_path
 ALL_USERS_URL = url("/account/users/")
 DELETE = "delete"
+EDIT = "edit"
 SELECT_ATLEAST_1_USER_MSG = u'Please select at least 1 user'
 ADMIN_CANT_BE_DELETED = u"Your organization's account Administrator Tester Pune cannot be deleted"
 SUCCESSFULLY_DELETED_USER_MSG = u"User(s) successfully deleted."

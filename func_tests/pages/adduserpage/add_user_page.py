@@ -25,15 +25,25 @@ class AddUserPage(Page):
     def select_role_as_project_manager(self):
         self.driver.find(by_css("input[id=option_project_manager]")).click()
 
-    def select_questionnaires(self, no_of_questionnaires=0):
-        for index in range(0, no_of_questionnaires):
+    def select_questionnaires(self, no_of_questionnaires=0, from_index=0):
+        self._uncheck_all_questionnaires()
+        for index in range(from_index, (from_index+no_of_questionnaires)):
             self.driver.wait_for_element(10,
                                          by_css(".questionnaire-list ul li:nth-child(%s) input[type=checkbox]" % (index+1)),
                                          True).click()
-        return [
-            self.driver.wait_for_element(10, by_css(".questionnaire-list ul li:nth-child(1) span"), True).text,
-            self.driver.wait_for_element(10, by_css(".questionnaire-list ul li:nth-child(2) span"), True).text
-        ]
+        list_of_questionnaires = []
+        for index in range(0, no_of_questionnaires):
+            element = self.driver.wait_for_element(10,
+                                                   by_css(".questionnaire-list ul li:nth-child(%s) span" % (index + 1)),
+                                                   True)
+            list_of_questionnaires.append(element.text)
+        return list_of_questionnaires
 
     def is_administrator_role_visible(self):
         return self.driver.is_element_present(by_css("input[id=option_administrator]"))
+
+    def _uncheck_all_questionnaires(self):
+        selected_questionnaires = self.driver.find_elements_by_css_selector('.questionnaire-list ul li input:checked')
+        for element in selected_questionnaires:
+            element.click()
+
