@@ -53,7 +53,7 @@ msgstr ""
 msgid "Last name"
 msgstr ""
 
-msgid "Enter a valid email address"
+msgid "Enter a valid email address. Example:name@organization.com"
 msgstr ""
 
 msgid "Phone Number"
@@ -2706,7 +2706,7 @@ msgid "What is the %(entity_type)s's Unique ID Number?"
 msgstr ""
 
 msgid "Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269"
-msgstr "Enter the %(entity_type)s's number with the country code and telephone number.<br>Example: 261333745269"
+msgstr "Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269"
 
 msgid "some default value"
 msgstr ""
@@ -4846,10 +4846,10 @@ msgstr "en"
 msgid "Role"
 msgstr ""
 
-msgid "Administrators"
+msgid "Administrator"
 msgstr ""
 
-msgid "Project Managers"
+msgid "Project Manager"
 msgstr ""
 
 msgid "Back to Users"
@@ -4869,3 +4869,13 @@ msgstr "Once a Questionnaire or Poll is created, you can give access here."
 
 msgid "add_user_help_text"
 msgstr "When you click on Add User, we will send an Email to invite this person to your DataWinners account"
+
+msgid "User has been updated successfully"
+msgstr ""
+
+msgid "Edit User"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+

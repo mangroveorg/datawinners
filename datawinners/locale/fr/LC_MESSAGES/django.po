@@ -54,8 +54,8 @@ msgstr "Prénom"
 msgid "Last name"
 msgstr "Nom"
 
-msgid "Enter a valid email address"
-msgstr "Entrez une adresse email valide"
+msgid "Enter a valid email address. Example:name@organization.com"
+msgstr "Entrez une adresse email valide. Exemple : name@organisation.com"
 
 
 msgid "Phone Number"
@@ -6071,10 +6071,10 @@ msgstr "Sondages - Destinataires"
 msgid "Role"
 msgstr ""
 
-msgid "Administrators"
+msgid "Administrator"
 msgstr ""
 
-msgid "Project Managers"
+msgid "Project Manager"
 msgstr ""
 
 msgid "Back to Users"
@@ -6094,3 +6094,12 @@ msgstr ""
 
 msgid "add_user_help_text"
 msgstr "When you click on Add User, we will send an Email to invite this person to your DataWinners account"
+
+msgid "User has been updated successfully"
+msgstr ""
+
+msgid "Edit User"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
