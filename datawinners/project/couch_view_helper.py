@@ -22,7 +22,7 @@ def get_all_projects(dbm, data_sender_id=None):
 def remove_poll_questionnaires(rows):
     projects = []
     for row in rows:
-        if row['is_poll'] is False:
+        if row.get('is_poll',False) is False:
             projects.append(row)
     return projects
 
