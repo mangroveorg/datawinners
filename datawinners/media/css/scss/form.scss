@@ -881,7 +881,11 @@ span.selected_list_item_arrow {
 
   .administrative {
     .ajax-loader {
-      margin: 30px 0px 0px 420px;
+      margin: 0;
+
+      img{
+        margin-left: 18px;
+      }
     }
     .section_description {
       padding-bottom: 20px;
