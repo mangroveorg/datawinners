@@ -11,7 +11,9 @@ class EditUserPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 
-    def save_changes(self, user_data):
+    def save_changes(self, user_data=None):
+        if not user_data:
+            user_data = {}
         self.edit_values(user_data)
         self.driver.find(by_css("button[id=submit]")).click()
 
