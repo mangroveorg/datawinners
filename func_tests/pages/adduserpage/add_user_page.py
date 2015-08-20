@@ -3,6 +3,7 @@
 from pages.page import Page
 from framework.utils.common_utils import by_css
 from pages.adddatasenderspage.add_data_senders_locator import FLASH_MESSAGE_LABEL
+from pages.adduserpage.add_user_locator import *
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -47,3 +48,11 @@ class AddUserPage(Page):
         for element in selected_questionnaires:
             element.click()
 
+    def get_error_messages(self):
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, ERROR_MESSAGES_LOCATOR, True)
+        return locator.text
+
+    def confirm_leave_page(self):
+        locator = self.driver.find(CONFIRM_LEAVE_PAGE_BUTTON)
+        if locator.is_displayed():
+            locator.click()
