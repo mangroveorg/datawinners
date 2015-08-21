@@ -29,7 +29,7 @@ var viewModel = function () {
         self.hasFormChanged(true)
     });
 
-    this.email.subscribe(function () {
+    this.title.subscribe(function () {
         self.hasFormChanged(true);
     });
 
@@ -55,7 +55,6 @@ var viewModel = function () {
         };
         $.post('/account/users/'  + self.userId + '/edit/', formData, function (response) {
             var responseJson = $.parseJSON(JSON.stringify(response));
-            console.log("Response: "+ JSON.stringify(response));
             if (responseJson['edit_user_success'] == true) {
                 self.editUserSuccess(true);
                 self.clearFields();

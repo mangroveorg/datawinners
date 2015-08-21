@@ -33,6 +33,10 @@ var viewModel = function () {
         self.role.setError(null);
     });
 
+    this.title.subscribe(function(){
+       self.hasFormChanged(true);
+    });
+
     this.submit = function () {
         $.blockUI({
             message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
