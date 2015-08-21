@@ -54,14 +54,19 @@
                 {% trans "Name" %}
             </th>
             <th>
-                {% trans "Email" %}
-            </th>
-            <th>
                 {% trans "Role" %}
             </th>
             <th>
-                {% trans "Questionnaires" %}
+                {% trans "Questionnaires & Polls" %}
             </th>
+            <th>
+                {% trans "Email" %}
+            </th>
+            <th>
+                {% trans "Phone Number" %}
+            </th>
+
+
             </thead>
             <tbody>
             {% for user in users %}
@@ -74,9 +79,6 @@
                     </td>
                     <td>
                         {{ auth_user.first_name }}
-                    </td>
-                    <td class="email">
-                        {{ auth_user.email }}
                     </td>
                     <td>
                         {{ role|friendly_name }}
@@ -92,6 +94,13 @@
                             {% endwith %}
                         {% endif %}
                     </td>
+                    <td class="email">
+                        {{ auth_user.email }}
+                    </td>
+                    <td>
+                        {{ user.mobile_phone }}
+                    </td>
+
                 </tr>
                 {% endwith %}
             {% endfor %}
