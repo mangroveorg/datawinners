@@ -6100,6 +6100,3 @@ msgstr ""
 
 msgid "Edit User"
 msgstr ""
-
-msgid "Edit"
-msgstr ""

@@ -4876,9 +4876,6 @@ msgstr ""
 msgid "Edit User"
 msgstr ""
 
-msgid "Edit"
-msgstr ""
-
 msgid "Questionnaires & Polls"
 msgstr ""
 
