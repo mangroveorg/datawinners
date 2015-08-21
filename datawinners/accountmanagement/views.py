@@ -47,7 +47,8 @@ from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
 from mangrove.form_model.project import Project
 from datawinners.accountmanagement.registration_views import get_previous_page_language
-from mangrove.datastore.user_permission import UserPermission, get_user_permission, get_questionnaires_for_user
+from mangrove.datastore.user_permission import UserPermission, \
+    get_user_permission, get_questionnaires_for_user, update_user_permission
 
 
 def registration_complete(request):
@@ -406,17 +407,6 @@ def _update_user_and_profile(form, user_name, role=None):
     ngo_user_profile.save()
     update_corresponding_datasender_details(user, ngo_user_profile, old_phone_number)
 
-
-def update_user_permissions(project_ids, user):
-    manager = get_database_manager(user)
-    user_permission = get_user_permission(user.id, manager)
-    if user_permission is None:
-        UserPermission(manager, user.id, project_ids).save()
-        return
-    user_permission.set_project_ids(project_ids)
-    user_permission.save()
-
-
 def dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role, selected_questionnaires):
     manager = get_database_manager(user)
 
@@ -522,9 +512,12 @@ def edit_user_profile(request, user_id=None):
             if role == 'Project Managers':
                 dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role, selected_questionnaires)
                 make_user_data_sender_for_projects(manager, selected_questionnaires, reporter_id)
+                update_user_permission(manager, user_id=user.id, project_ids=selected_questionnaires)
+
             elif role == 'Extended Users' and previous_role != 'Extended Users':
                 associate_user_with_all_projects_of_organisation(manager, reporter_id)
-            update_user_permissions(selected_questionnaires, user)
+                update_user_permission(manager, user_id=user.id, project_ids=[])
+
             message = _('Profile has been updated successfully')
             _edit_user_success = True
         data = dict(edit_user_success=_edit_user_success,
