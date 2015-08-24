@@ -129,6 +129,7 @@ def settings(request):
         return render_to_response("accountmanagement/account/org_settings.html",
                                   {
                                       'organization_form': organization_form,
+                                      'is_pro_sms': organization.is_pro_sms,
                                       'message': message,
                                       'timezone_information': _get_timezone_information(organization),
                                       'current_lang': get_language()
@@ -485,10 +486,10 @@ def edit_user_profile(request, user_id=None):
                          username=profile.user.username,
                          mobile_phone=profile.mobile_phone,
                          role=user.groups.all()[0].name,
-                         questionnaires=questionnaire_map,
-                         is_pro_sms=org.is_pro_sms,
-                         current_lang=get_language())
-        return render_to_response("accountmanagement/account/edit_user.html", {'form_data': json.dumps(form_data)},
+                         questionnaires=questionnaire_map)
+        return render_to_response("accountmanagement/account/edit_user.html", {'form_data': json.dumps(form_data),
+                                                                               'is_pro_sms': org.is_pro_sms,
+                                                                               'current_lang': get_language()},
                                   context_instance=(RequestContext(request)))
 
     if request.method == 'POST':

@@ -1,6 +1,6 @@
 import json
 from django.contrib.auth.decorators import login_required
-from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
+from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_admin
 from django.views.decorators.csrf import csrf_exempt
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response
@@ -21,7 +21,7 @@ def convert_to_ymd(date):
 @session_not_expired
 @csrf_exempt
 @is_not_expired
-@is_datasender
+@is_admin
 def show_log(request):
     organization = get_organization(request)
     org_id = organization.org_id
