@@ -8,6 +8,7 @@ def url(path):
         full_path += "/"
     return full_path
 ALL_USERS_URL = url("/account/users/")
+ORG_SETTINGS_URL=url('/account')
 DELETE = "delete"
 EDIT = "edit"
 SELECT_ATLEAST_1_USER_MSG = u'Please select at least 1 user'
@@ -36,4 +37,6 @@ EDIT_USER_DATA = {
 }
 
 NAME_COLUMN = "//div[@id='users_list']/table/tbody/tr/td[3][contains(text(),'%s')]//parent::tr/td[2]"
+DASHBOARD_PAGE_TITLE = u'Dashboard'
+
 

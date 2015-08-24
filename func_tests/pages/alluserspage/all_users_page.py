@@ -74,11 +74,11 @@ class AllUsersPage(Page):
 
     def get_questionnaire_list_for(self, username):
         return self.driver.find(
-            by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[5]" % username)).text.split("\n")
+            by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[4]" % username)).text.split("\n")
 
     def get_role_for(self, username):
         return self.driver.find(
-            by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[4]" % username)).text
+            by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[3]" % username)).text
 
     def select_user_with_username(self, username):
         self.driver.find(

@@ -70,7 +70,8 @@ class TestAddUser(HeadlessRunnerTest):
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
         self.add_user_page = self.all_users_page.navigate_to_add_user()
-        self.assertFalse(self.add_user_page.is_administrator_role_visible(), 'Expected Administrator Role not to be present but it was present')
+        self.assertFalse(self.add_user_page.is_administrator_role_visible(),
+                         'Expected Administrator Role not to be present but it was present')
         self.add_user_page.select_role_as_project_manager()
         questionnaires = self.add_user_page.select_questionnaires(2)
         user = generate_user()
@@ -99,29 +100,27 @@ class TestAddUser(HeadlessRunnerTest):
     def test_should_check_when_adding_user_with_existing_username(self):
         user = get_existing_username_user()
         self._validate_and_check_error_message(user,
-            u'This email address is already in use. Please supply a different email address')
+                                               u'This email address is already in use. Please supply a different email address')
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_existing_phonenumber(self):
         user = generate_user_with_existing_phone_number()
         self._validate_and_check_error_message(user,
-            u'This phone number is already in use. Please supply a different phone number')
-
+                                               u'This phone number is already in use. Please supply a different phone number')
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_phonenumber(self):
         user = generate_user()
-        user.update({MOBILE_PHONE:'abcdefgh'})
+        user.update({MOBILE_PHONE: 'abcdefgh'})
         self._validate_and_check_error_message(user,
-            u'Invalid phone number')
+                                               u'Invalid phone number')
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_email_address(self):
         user = generate_user()
-        user.update({USERNAME:'abcdefgh'})
+        user.update({USERNAME: 'abcdefgh'})
         self._validate_and_check_error_message(user,
-            u'Enter a valid email address. Example:name@organization.com')
-
+                                               u'Enter a valid email address. Example:name@organization.com')
 
     def _validate_and_check_error_message(self, user, expected_message):
         self.add_user_page.select_role_as_project_manager()

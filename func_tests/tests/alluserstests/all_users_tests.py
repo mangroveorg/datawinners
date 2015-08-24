@@ -53,6 +53,7 @@ class TestAllUsers(HeadlessRunnerTest):
     def test_should_create_activity_log_and_submit_data(self):
         add_user_page = self.all_users_page.navigate_to_add_user()
         add_user_page.add_user_with(NEW_USER_DATA)
+        add_user_page.select_role_as_administrator()
         self.driver.go_to(LOGOUT)
         new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
         login(self.driver, new_user_credential)
@@ -69,6 +70,7 @@ class TestAllUsers(HeadlessRunnerTest):
     def test_should_update_user_name_when_edited_from_datasender_page(self):
         add_user_page = self.all_users_page.navigate_to_add_user()
         add_user_page.add_user_with(EDIT_USER_DATA)
+        add_user_page.select_role_as_administrator()
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_datasenders_page = AllDataSendersPage(self.driver)
         all_datasenders_page.search_with(EDIT_USER_DATA.get('username'))
@@ -127,3 +129,32 @@ class TestAllUsers(HeadlessRunnerTest):
         action = self.driver.find(by_xpath("//td[contains(.,'%s')]/../td[2]" % project_name)).text
         self.assertEqual("Deleted User", username)
         self.assertEqual("Created Questionnaire", action)
+
+    @attr('functional_test')
+    def test_should_check_if_org_settings_is_restricted_to_extended_user(self):
+        add_user_page = self.all_users_page.navigate_to_add_user()
+        add_user_page.select_role_as_administrator()
+        add_user_page.add_user_with(NEW_USER_DATA)
+        self.driver.go_to(LOGOUT)
+        new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
+        login(self.driver, new_user_credential)
+        self.driver.go_to(ORG_SETTINGS_URL)
+        title = self.driver.get_title()
+        self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+
+    @attr('functional_test')
+    def test_should_check_if_account_settings_is_restricted_to_project_manager(self):
+        add_user_page = self.all_users_page.navigate_to_add_user()
+        add_user_page.select_role_as_project_manager()
+        add_user_page.select_questionnaires(2)
+        add_user_page.add_user_with(NEW_USER_DATA)
+        self.driver.go_to(LOGOUT)
+        new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
+        login(self.driver, new_user_credential)
+        self.driver.go_to(ORG_SETTINGS_URL)
+        title = self.driver.get_title()
+        self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+        self.driver.go_to(ALL_USERS_URL)
+        title = self.driver.get_title()
+        self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+
