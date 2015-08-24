@@ -71,8 +71,11 @@
                     </label>
 
                     <p class="role_description">{% trans "role_project_manager_description" %}</p>
-
                     <div class="ajax-loader" data-bind="visible: role()=='Project Managers' && hasFetchedQuestionnaires() == false"><img src="/media/images/ajax-loader-horizontal-bar.gif"/></div>
+
+                    <div class="italic_text grey-info" data-bind="visible: role()=='Project Managers' && hasFetchedQuestionnaires() == true && questionnaires().length < 1">
+                        {% trans "questionnaire_access_placeholder_text" %}
+                    </div>
 
                     <div class="questionnaire-list" data-bind="visible: role()=='Project Managers' && questionnaires().length >= 1">
                         <ul data-bind="foreach: questionnaires">
