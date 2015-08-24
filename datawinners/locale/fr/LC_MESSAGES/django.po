@@ -6069,34 +6069,34 @@ msgid "Polls - Recipients"
 msgstr "Sondages - Destinataires"
 
 msgid "Role"
-msgstr ""
+msgstr "Rôle"
 
 msgid "Administrator"
-msgstr ""
+msgstr "Administrateur"
 
 msgid "Project Manager"
-msgstr ""
+msgstr "Gestionnaire de projet"
 
 msgid "Back to Users"
-msgstr ""
+msgstr "Retour vers Utilisateurs"
 
 msgid "Add User"
-msgstr ""
+msgstr "Ajouter un utilisateur"
 
 msgid "role_administrator_description"
-msgstr ""
+msgstr "Cette personne aura un accès Lecture/Ecriture à tous les Questionnaires et Sondages, pourra ajouter des utilisateurs et gérer les autorisations des utilisateurs"
 
 msgid "role_project_manager_description"
-msgstr ""
+msgstr "Cette personne pourra créer des Questionnaires ou Sondages avec un accès total Lecture/Ecriture. Vous pouvez aussi donner à cette personne l'accès Lecture/Ecriture aux Questionnaires et Sondages existants en cochant la case en dessous."
 
 msgid "questionnaire_access_placeholder_text"
-msgstr ""
+msgstr "Une fois le Questionnaire ou Sondage créé, vous pouvez donner un accès ici"
 
 msgid "add_user_help_text"
-msgstr "When you click on Add User, we will send an Email to invite this person to your DataWinners account"
+msgstr "Lorsque vous cliquez sur Ajouter un utilisateur, nous vous enverrons un email pour inviter cette personne à votre compte DataWinners"
 
 msgid "User has been updated successfully"
-msgstr ""
+msgstr "L'utilisateur a été mis à jour avec succès"
 
 msgid "Edit User"
-msgstr ""
+msgstr "Modifier un utilisateur"

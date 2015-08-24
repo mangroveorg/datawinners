@@ -4859,16 +4859,16 @@ msgid "Add User"
 msgstr ""
 
 msgid "role_administrator_description"
-msgstr "This person can manage users, view and manage all<br>Questionnaires and Polls."
+msgstr "This person will have Read/Write access to all Questionnaires and Polls, will be able to add users and manage user permissions."
 
 msgid "role_project_manager_description"
-msgstr "This person can view and manage Questionnaires and<br>Polls he has created or given access to."
+msgstr "This person will be able to create Questionnaires or Polls with full Read/Write access. You can also give this person Read/Write access to existing Questionnaires or Polls by checking boxes below."
 
 msgid "questionnaire_access_placeholder_text"
 msgstr "Once a Questionnaire or Poll is created, you can give access here."
 
 msgid "add_user_help_text"
-msgstr "When you click on Add User, we will send an Email to invite this person to your DataWinners account"
+msgstr "When you click on Add User, we will send an Email to invite this person to your DataWinners account."
 
 msgid "User has been updated successfully"
 msgstr ""
