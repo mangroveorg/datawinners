@@ -1,11 +1,20 @@
 import unittest
 from django.test import Client, TestCase
 from datawinners.utils import _get_email_template_name_for_reset_password
-from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_PASSWORD
+from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_PASSWORD, \
+    DEFAULT_TEST_DB
+from datawinners.main.database import get_db_manager
+from mangrove.bootstrap import initializer
 
 class TestAccountManagement(TestCase):
 
     fixtures = ['test_data.json']
+    
+    @classmethod
+    def setUpClass(cls):
+        super(TestAccountManagement, cls).setUpClass()
+        dbm = get_db_manager(DEFAULT_TEST_DB)
+        initializer.sync_views(dbm)
 
     def setUp(self):
         self.client = Client()
