@@ -1,4 +1,6 @@
 from django.template.defaulttags import register
+from django.utils.translation import ugettext
+
 
 @register.filter
 def get_item(dictionary, key):
@@ -22,7 +24,7 @@ def join_by_attr(the_list, attr_name='name', separator=', '):
 def friendly_name(name):
     role_map = {'NGO Admins': 'Super Admin', 'Project Managers': 'Project Manager', 'Extended Users': 'Administrator'};
     if role_map[name] is not None:
-        return role_map[name]
+        return ugettext(role_map[name])
     return name
 
 

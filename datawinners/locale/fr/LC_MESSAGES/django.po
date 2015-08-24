@@ -2737,7 +2737,7 @@ msgstr "Un %s portant le code ID '%s' existe déjà ou est lié à des données 
 msgid "Unique ID Number"
 msgstr "Numéro d'Identification unique"
 
-msgid "Job title"
+msgid "Job Title"
 msgstr "Titre"
 
 msgid "broadcast_trial_warning_message"
