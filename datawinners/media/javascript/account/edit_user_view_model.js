@@ -4,41 +4,81 @@ var viewModel = function () {
     this.email = DW.ko.createValidatableObservable({value: ""});
     this.title = DW.ko.createValidatableObservable({value: ""});
     this.mobilePhone = DW.ko.createValidatableObservable({value: ""});
-    this.questionnaires = ko.observableArray([])
+    this.questionnaires = ko.observableArray([]);
     this.selectedQuestionnaires = ko.observableArray([]);
     this.role = DW.ko.createValidatableObservable({value: "administrator"});
     this.editUserSuccess = ko.observable(false);
     this.hasFetchedQuestionnaires = ko.observable(false);
-    this.hasFormChanged = ko.observable(false);
+    this.hasFormEdited = ko.observable(false);
     this.userId = 0;
 
     this.fullName.subscribe(function () {
         DW.ko.mandatoryValidator(self.fullName, 'This field is required');
-        self.hasFormChanged(true);
+        if(data_from_django['full_name'] != self.fullName()) {
+            self.hasFormEdited(true);
+        } else {
+            self.hasFormEdited(false);
+        }
     });
 
     this.email.subscribe(function () {
         var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
         DW.ko.regexValidator(self.email, 'Invalid email id', re);
-        self.hasFormChanged(true);
+        if(data_from_django['username'] != self.email()) {
+            self.hasFormEdited(true);
+        } else {
+            self.hasFormEdited(false);
+        }
     });
 
     this.mobilePhone.subscribe(function () {
         var re = /^([0-9]{5,15})$/i;
         DW.ko.regexValidator(self.mobilePhone, 'Invalid phone number', re);
-        self.hasFormChanged(true)
+        if(data_from_django['mobile_phone'] != self.mobilePhone()) {
+            self.hasFormEdited(true);
+        } else {
+            self.hasFormEdited(false);
+        }
     });
 
-    this.title.subscribe(function () {
-        self.hasFormChanged(true);
+    this.title.subscribe(function() {
+        if(data_from_django['title'] != self.title()) {
+            self.hasFormEdited(true);
+        } else {
+            self.hasFormEdited(false);
+        }
     });
+
 
     this.selectedQuestionnaires.subscribe(function(){
-        self.hasFormChanged(true);
+
+    });
+
+
+    $(".questionnaire-list ul").click(function(event) {
+        if(event.target.nodeName == "INPUT") {
+            var questionnaires = $.map(data_from_django['questionnaires'], function(qstn) { return qstn.id; });
+
+            if(userModel.fetchSlectedQuestions.length >= questionnaires.length) {
+                $.map(userModel.fetchSlectedQuestions, function (qstn) {
+                    if (questionnaires.indexOf(qstn) != -1) {
+                        self.hasFormEdited(false);
+                    } else {
+                        self.hasFormEdited(true);
+                    }
+                });
+            } else {
+                self.hasFormEdited(true);
+            }
+        }
     });
 
     this.role.subscribe(function(){
-        self.hasFormChanged(true);
+        if(data_from_django['role'] != self.role()) {
+            self.hasFormEdited(true);
+        } else {
+            self.hasFormEdited(false);
+        }
     });
 
     this.submit = function () {
@@ -93,7 +133,7 @@ var viewModel = function () {
     };
 
     this.clearFields = function () {
-        this.hasFormChanged(false);
+        this.hasFormEdited(false);
         setTimeout(function () {
             self.editUserSuccess(false);
         }, 10000);
@@ -113,15 +153,15 @@ $(document).ready(function () {
         selectedQuestionnaires.push(q.id);
     });
     userModel.fetchQuestionnaires();
+    userModel.fetchSlectedQuestions = selectedQuestionnaires;
 
     userModel.selectedQuestionnaires(selectedQuestionnaires);
-    userModel.hasFormChanged = ko.observable(false);
 
     window.userModel = userModel;
     ko.applyBindings(userModel, $("#user_profile_content")[0]);
 
     $('a[href]:visible').bind('click', function (event) {
-        if(userModel.hasFormChanged()) {
+        if(userModel.hasFormEdited()) {
             window.redirectUrl = $(this).attr('href');
             $("#form_changed_warning_dialog").dialog("open");
             return false;
