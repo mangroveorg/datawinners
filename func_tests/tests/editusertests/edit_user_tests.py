@@ -178,6 +178,56 @@ class TestEditUser(HeadlessRunnerTest):
         self.assertEqual('All', self.all_users_page.get_questionnaire_list_for(username)[0])
         self.global_navigation.sign_out()
 
+    @attr('functional_test')
+    def test_should_check_when_adding_user_with_existing_username(self):
+        # Create a Project Manager
+        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        self.driver.go_to(ALL_USERS_URL)
+        self.all_users_page = AllUsersPage(self.driver)
+        existing_mobile_number = self.all_users_page.get_mobile_number_for(VALID_CREDENTIALS[USERNAME])
+        add_user_page = self.all_users_page.navigate_to_add_user()
+        user = generate_user()
+        add_user_page.select_role_as_project_manager()
+        add_user_page.select_questionnaires(2, 4)
+        add_user_page.add_user_with(user)
+        username = fetch_(USERNAME, user)
+
+        # Edit the Project Manager
+        self.driver.go_to(ALL_USERS_URL)
+        self.all_users_page.select_user_with_username(username)
+        edit_user_page = self.all_users_page.select_edit_action()
+
+        updated_user_data = {NAME: ""}
+        edit_user_page.edit_values(updated_user_data)
+
+        message = edit_user_page.get_error_messages()
+        self.assertEqual(message, u'This field is required')
+
+        updated_user_data = {NAME: "Test User", MOBILE_PHONE: ""}
+        edit_user_page.edit_values(updated_user_data)
+
+        message = edit_user_page.get_error_messages()
+        self.assertEqual(message, u'This field is required')
+
+        updated_user_data = {MOBILE_PHONE: "Some text value"}
+        edit_user_page.edit_values(updated_user_data)
+
+        message = edit_user_page.get_error_messages()
+        self.assertEqual(message, u'Invalid phone number')
+
+        updated_user_data = {MOBILE_PHONE: "1234"}
+        edit_user_page.edit_values(updated_user_data)
+
+        message = edit_user_page.get_error_messages()
+        self.assertEqual(message, u'Invalid phone number')
+
+        updated_user_data = {MOBILE_PHONE: existing_mobile_number}
+        edit_user_page.save_changes(updated_user_data)
+
+        message = edit_user_page.get_error_messages()
+        self.assertEqual(message, u'This phone number is already in use. Please supply a different phone number')
+
+
     def _create_extended_user(self, user):
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)

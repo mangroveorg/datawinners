@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from selenium.common.exceptions import InvalidElementStateException
+from pages.adduserpage.add_user_locator import ERROR_MESSAGES_LOCATOR
 
 from pages.page import Page
 from framework.utils.common_utils import by_css
@@ -23,6 +24,10 @@ class EditUserPage(Page):
 
     def get_success_message(self):
         locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, FLASH_MESSAGE_LABEL)
+        return locator.text
+
+    def get_error_messages(self):
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, ERROR_MESSAGES_LOCATOR, True)
         return locator.text
 
     def select_role_as_administrator(self):

@@ -95,6 +95,10 @@ class AllUsersPage(Page):
         return self.driver.find(
             by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[2]" % username)).text
 
+    def get_mobile_number_for(self, username):
+        return self.driver.find(
+            by_xpath("//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[6]" % username)).text
+
     def number_of_editable_users_for_role(self, role):
         elements_by_xpath = self.driver.find_elements_by_xpath(
             "//*[@id='users_list']//tr/td[contains(text(), '%s')]/../td[1]/input" % role)
