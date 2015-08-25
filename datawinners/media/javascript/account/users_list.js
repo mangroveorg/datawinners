@@ -4,7 +4,7 @@ $(document).ready(function () {
         $(".user_entry").attr("checked", $(this).attr("checked") == "checked");
     });
 
-    $(".user_entry").bind("click", function(){
+    $(".user_entry").attr("checked",false).bind("click", function(){
         var checked = $(".user_entry:checked").length == $(".user_entry").length;
         $("#check_all_users").attr("checked", checked)
     });

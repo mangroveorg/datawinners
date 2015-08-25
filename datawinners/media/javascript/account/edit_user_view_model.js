@@ -59,8 +59,8 @@ var viewModel = function () {
         if(event.target.nodeName == "INPUT") {
             var questionnaires = $.map(data_from_django['questionnaires'], function(qstn) { return qstn.id; });
 
-            if(userModel.fetchSlectedQuestions.length >= questionnaires.length) {
-                $.map(userModel.fetchSlectedQuestions, function (qstn) {
+            if(userModel.fetchSelectedQuestions.length >= questionnaires.length) {
+                $.map(userModel.fetchSelectedQuestions, function (qstn) {
                     if (questionnaires.indexOf(qstn) != -1) {
                         self.hasFormEdited(false);
                     } else {
@@ -153,7 +153,7 @@ $(document).ready(function () {
         selectedQuestionnaires.push(q.id);
     });
     userModel.fetchQuestionnaires();
-    userModel.fetchSlectedQuestions = selectedQuestionnaires;
+    userModel.fetchSelectedQuestions = selectedQuestionnaires;
 
     userModel.selectedQuestionnaires(selectedQuestionnaires);
 
@@ -169,9 +169,21 @@ $(document).ready(function () {
         return true;
     });
 
+    window.addEventListener("beforeunload", function (e) {
+        var confirmationMessage = "You have made changes to the form. ";
+        confirmationMessage += "These changes will be lost if you navigate away from this page.";
+        if (!userModel.hasFormEdited() || window.confirmationShown) {
+            return undefined;
+        }
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+
     var kwargs = {
         container: "#form_changed_warning_dialog",
         continue_handler: function () {
+            window.confirmationShown = true;
             window.location.href = window.redirectUrl;
         },
         title: gettext("Your change(s) will be lost"),

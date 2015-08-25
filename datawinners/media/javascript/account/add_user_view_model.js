@@ -129,9 +129,21 @@ $(document).ready(function () {
         return true;
     });
 
+    window.addEventListener("beforeunload", function (e) {
+        var confirmationMessage = "You have made changes to the form. ";
+        confirmationMessage += "These changes will be lost if you navigate away from this page.";
+        if (!userModel.hasFormChanged() || window.confirmationShown) {
+            return undefined;
+        }
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+
     var kwargs = {
         container: "#form_changed_warning_dialog",
         continue_handler: function () {
+            window.confirmationShown = true;
             window.location.href = window.redirectUrl;
         },
         title: gettext("Your change(s) will be lost"),
