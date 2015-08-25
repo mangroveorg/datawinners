@@ -4879,3 +4879,11 @@ msgstr ""
 msgid "Questionnaires & Polls"
 msgstr ""
 
+msgid "You have made changes to the form. These changes will be lost if you navigate away from this page."
+msgstr ""
+
+msgid "Are you sure you want to proceed?"
+msgstr ""
+
+msgid "Yes, Proceed"
+msgstr ""

@@ -1196,3 +1196,6 @@ msgstr "You cannot send messages to the following number as it is set up to expl
 
 msgid "to_deactivate_poll_contact_admin"
 msgstr "To create the Poll you must first deactivate current active poll. You don’t have access to this Poll, please contact the administrator "
+
+msgid "Your change(s) will be lost"
+msgstr ""

@@ -1625,3 +1625,6 @@ msgstr " désactivé"
 
 msgid "to_deactivate_poll_contact_admin"
 msgstr "Pour créer le Sondage, vous devez tout d'abord désactiver le sondage actif. Vous n'avez pas accès à ce Sondage, veuillez contacter votre administrateur "
+
+msgid "Your change(s) will be lost"
+msgstr "Vos modifications seront perdues"
