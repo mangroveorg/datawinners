@@ -190,7 +190,7 @@ class TestEditUser(HeadlessRunnerTest):
         add_user_page.select_role_as_project_manager()
         add_user_page.select_questionnaires(2, 4)
         add_user_page.add_user_with(user)
-        username = fetch_(USERNAME, user)
+        username = user[USERNAME]
 
         # Edit the Project Manager
         self.driver.go_to(ALL_USERS_URL)
@@ -226,7 +226,8 @@ class TestEditUser(HeadlessRunnerTest):
 
         message = edit_user_page.get_error_messages()
         self.assertEqual(message, u'This phone number is already in use. Please supply a different phone number')
-
+        self.global_navigation.sign_out()
+        self.add_user_page.confirm_leave_page()
 
     def _create_extended_user(self, user):
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)

@@ -33,6 +33,7 @@ class TestAddUser(HeadlessRunnerTest):
         login(self.driver, self.new_user_credential)
         title = self.driver.get_title()
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+        self.global_navigation.sign_out()
 
     @attr('functional_test')
     def test_should_add_a_new_extended_user_as_ngo_admin(self):
@@ -63,6 +64,7 @@ class TestAddUser(HeadlessRunnerTest):
         login(self.driver, self.new_user_credential)
         title = self.driver.get_title()
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+        self.global_navigation.sign_out()
 
     @attr('functional_test')
     def test_should_add_a_new_project_manager_as_extended_user(self):
@@ -95,18 +97,23 @@ class TestAddUser(HeadlessRunnerTest):
         login(self.driver, self.new_user_credential)
         title = self.driver.get_title()
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+        self.global_navigation.sign_out()
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_existing_username(self):
         user = get_existing_username_user()
         self._validate_and_check_error_message(user,
                                                u'This email address is already in use. Please supply a different email address')
+        self.global_navigation.sign_out()
+        self.add_user_page.confirm_leave_page()
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_existing_phonenumber(self):
         user = generate_user_with_existing_phone_number()
         self._validate_and_check_error_message(user,
                                                u'This phone number is already in use. Please supply a different phone number')
+        self.global_navigation.sign_out()
+        self.add_user_page.confirm_leave_page()
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_phonenumber(self):
@@ -114,6 +121,8 @@ class TestAddUser(HeadlessRunnerTest):
         user.update({MOBILE_PHONE: 'abcdefgh'})
         self._validate_and_check_error_message(user,
                                                u'Invalid phone number')
+        self.global_navigation.sign_out()
+        self.add_user_page.confirm_leave_page()
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_email_address(self):
@@ -121,17 +130,12 @@ class TestAddUser(HeadlessRunnerTest):
         user.update({USERNAME: 'abcdefgh'})
         self._validate_and_check_error_message(user,
                                                u'Enter a valid email address. Example:name@organization.com')
+        self.global_navigation.sign_out()
+        self.add_user_page.confirm_leave_page()
 
     def _validate_and_check_error_message(self, user, expected_message):
         self.add_user_page.select_role_as_project_manager()
         self.add_user_page.add_user_with(user)
         message = self.add_user_page.get_error_messages()
         self.assertEqual(message, expected_message)
-
-    def tearDown(self):
-        self.global_navigation.sign_out()
-        try:
-            self.driver.wait_for_page_with_title(5, "Sign Out")
-        except Exception:
-            self.add_user_page.confirm_leave_page()
 

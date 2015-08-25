@@ -13,7 +13,7 @@ class AddUserPage(Page):
 
     def add_user_with(self, user_data):
         for key, value in user_data.items():
-            self.driver.find_text_box(by_css("input[name=%s]" % key)).enter_text(value)
+            self.driver.find_text_box(by_css("input[name='%s']" % key)).enter_text(value)
         self.driver.find(by_css("button[id=submit]")).click()
 
     def get_success_message(self):
