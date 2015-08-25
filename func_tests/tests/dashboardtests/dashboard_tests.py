@@ -6,6 +6,7 @@ from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, LOGOUT
 from tests.logintests.login_data import VALID_CREDENTIALS
 from pages.dashboardpage.dashboard_page import DashboardPage
+from tests.dashboardtests.dashboard_tests_data import *
 
 
 class TestDashboard(HeadlessRunnerTest):
@@ -44,3 +45,12 @@ class TestDashboard(HeadlessRunnerTest):
         dashboard_page = login_page.do_successful_login_with(VALID_CREDENTIALS)
         self.assertFalse(self.dashboard_page.is_help_element_present())
 
+
+    @attr('functional_test')
+    def test_should_restrict_questionnaire_list_on_dashboard_according_to_user_permission(self):
+        self.assertEqual(len(self.dashboard_page.get_projects_list()), 8)
+        self.driver.go_to(LOGOUT)
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        login_page.do_successful_login_with(USER_RASITEFA_CREDENTIALS)
+        self.assertEqual(len(self.dashboard_page.get_projects_list()), 3)

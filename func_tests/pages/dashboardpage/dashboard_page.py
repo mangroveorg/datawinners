@@ -3,6 +3,7 @@ from pages.createprojectpage.questionnaire_creation_options_page import Question
 from pages.dashboardpage.dashboard_locator import *
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
+from pages.broadcastSMSpage.broadcast_sms_page import BroadcastSmsPage
 
 
 class DashboardPage(Page):
@@ -34,3 +35,10 @@ class DashboardPage(Page):
 
     def is_help_element_present(self):
         return self.driver.is_element_present(HELP_ELEMENT_WELCOME)
+
+    def get_projects_list(self):
+        return [project.text for project in self.driver.find_elements_(PROJECTS_LIST_LOCATOR)]
+
+    def click_on_send_a_message(self):
+        self.driver.find(SEND_A_MSG_LINK_LOCATOR).click()
+        return BroadcastSmsPage(self.driver)

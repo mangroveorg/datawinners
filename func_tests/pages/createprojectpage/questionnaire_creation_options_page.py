@@ -1,6 +1,5 @@
 from time import sleep
-from framework.utils.common_utils import by_id, by_xpath, by_css, generateId
-from pages.createprojectpage.create_project_locator import CONTINUE_BTN
+from pages.createprojectpage.create_project_locator import *
 from pages.globalnavigationpage.global_navigation_locator import CREATE_PROJECT_LINK
 from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.page import Page
@@ -45,8 +44,7 @@ class QuestionnaireCreationOptionsPage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SELECTED_TEMPLATE_QUESTIONS_DIV, True)
 
     def get_questions_list_for_selected_project(self,project_name):
-        create_by_template_option = self.driver.find(by_id("copy_existing_questionnaire"))
-        create_by_template_option.click()
+        self.click_copy_existing_questionnaire()
         self.driver.wait_for_element(UI_TEST_TIMEOUT,by_id("existing_questionnaires"),True)
         self.driver.find(by_xpath(".//*[@id='existing_questionnaires']/div/div[text()='%s']" % project_name)).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("existing_questions"), True)
@@ -74,3 +72,11 @@ class QuestionnaireCreationOptionsPage(Page):
         for question in question_divs:
             questions.append(question.text)
         return questions
+
+    def click_copy_existing_questionnaire(self):
+        create_by_template_option = self.driver.find(COPY_EXISTING_QUESTIONNAIRE_LINK_LOCATOR)
+        create_by_template_option.click()
+
+    def count_questionnaires_available_for_copy(self):
+        self.click_copy_existing_questionnaire()
+        return len(self.driver.find_elements_(QUESTIONNAIRES_LIST_LOCATOR))

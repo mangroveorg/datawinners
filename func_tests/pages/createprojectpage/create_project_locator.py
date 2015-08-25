@@ -42,3 +42,6 @@ PROJECT_NAME_ERROR_MSG_LABEL = by_css("label.error[for='id_name']")
 QUESTIONNAIRE_ABOUT_MSG_LABEL = by_css("li>label[for='id_activity_report_0']~ul.errorlist>li")
 PROJECT_DESCRIPTION_MSG = by_css("[for='id_goals'].error")
 INFORM_DATASENDERS_OK_BUTTON_BY_CSS = by_css("#inform_datasender_about_changes a.yes_button")
+
+COPY_EXISTING_QUESTIONNAIRE_LINK_LOCATOR = by_id("copy_existing_questionnaire")
+QUESTIONNAIRES_LIST_LOCATOR = by_css('#existing_questionnaires div.questionnaire_data div.highlight_on_hover')

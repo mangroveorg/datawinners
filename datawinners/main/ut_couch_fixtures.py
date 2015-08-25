@@ -1450,6 +1450,7 @@ def load_data():
     call_command("recreate_search_indexes", "hni_testorg_slx364903")
     call_command("recreate_search_indexes", "hni_testorg_coj00001")
 
+    grant_questionnaire_permissions_to_rasitefa()
 
 def create_datasender_for_nigeria_test_organization():
     register_datasender_for_org("samuel@mailinator.com","Rasefo","26112345",
@@ -1535,3 +1536,12 @@ def register_datasender_for_org(email,name,mobile_number,location,short_code,gps
                    (NAME_FIELD, name)],
              location=location,
              short_code=short_code, geometry=gps)
+
+
+def grant_questionnaire_permissions_to_rasitefa():
+    user = User.objects.get(username="rasitefa@mailinator.com")
+    manager = get_database_manager(user)
+    project_docs = manager.load_all_rows_in_view('all_projects', limit=3)
+    from mangrove.datastore.user_permission import update_user_permission
+    project_ids = [row['value']['_id'] for row in project_docs]
+    update_user_permission(manager, user.id, project_ids)
