@@ -193,5 +193,14 @@ $(document).ready(function () {
         width: 550
     };
 
+    /*Aligning Edit User Actions buttons towards right lane of input boxes*/
+    var $editUser = $(".edit_user_actions");
+    var tableRowWidth = $(".administrative .tableRow").width(),
+        editUserActionWidth = $editUser.width();
+
+    $editUser.css("margin-left", (tableRowWidth - editUserActionWidth - 22) + "px");
+
+
     DW.delete_user_warning_dialog = new DW.warning_dialog(kwargs);
+
 });

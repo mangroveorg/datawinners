@@ -153,6 +153,13 @@ $(document).ready(function () {
         width: 550
     };
 
-    DW.delete_user_warning_dialog = new DW.warning_dialog(kwargs);
+    /*Aligning Add User Actions buttons towards right lane of input boxes*/
+    var $userAction = $(".user_actions");
+    var tableRowWidth = $(".administrative .tableRow").width(),
+        userActionWidth = $userAction.width();
 
+    $userAction.css("margin-left", (tableRowWidth - userActionWidth - 22) + "px");
+
+
+    DW.delete_user_warning_dialog = new DW.warning_dialog(kwargs);
 });
