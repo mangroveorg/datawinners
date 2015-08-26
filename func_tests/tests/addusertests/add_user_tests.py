@@ -116,6 +116,13 @@ class TestAddUser(HeadlessRunnerTest):
         self.add_user_page.confirm_leave_page()
 
     @attr('functional_test')
+    def test_should_check_choose_a_role_when_adding_user(self):
+        user = generate_user()
+        self.add_user_page.add_user_with(user)
+        message = self.add_user_page.get_error_messages()
+        self.assertEqual(message, "This field is required.")
+
+    @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_phonenumber(self):
         user = generate_user()
         user.update({MOBILE_PHONE: 'abcdefgh'})
