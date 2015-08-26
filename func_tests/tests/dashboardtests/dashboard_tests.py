@@ -54,3 +54,16 @@ class TestDashboard(HeadlessRunnerTest):
         login_page = LoginPage(self.driver)
         login_page.do_successful_login_with(USER_RASITEFA_CREDENTIALS)
         self.assertEqual(len(self.dashboard_page.get_projects_list()), 3)
+
+    @attr('functional_test')
+    def test_should_available_project_for_send_sms(self):
+        send_sms_lightbox = self.dashboard_page.click_on_send_a_message()
+        all_questionnaires = send_sms_lightbox.get_all_available_questionnaires()
+        self.driver.go_to(LOGOUT)
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        login_page.do_successful_login_with(USER_RASITEFA_CREDENTIALS)
+        send_sms_lightbox = self.dashboard_page.click_on_send_a_message()
+        questionnaires = send_sms_lightbox.get_all_available_questionnaires()
+        self.assertGreater(len(all_questionnaires), len(questionnaires))
+        self.assertEqual(len(questionnaires), 3)
