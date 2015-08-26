@@ -15,7 +15,7 @@ import jsonpickle
 from datawinners.accountmanagement.helper import get_org_id, create_web_users
 from datawinners.entity.datasender_tasks import convert_open_submissions_to_registered_submissions
 from datawinners.entity.group_helper import get_group_details
-from datawinners.project.couch_view_helper import get_project_id_name_map
+from datawinners.project.couch_view_helper import get_project_id_name_map_for_user
 from datawinners.search.all_datasender_search import get_data_sender_search_results, get_data_sender_count, \
     get_data_sender_without_search_filters_count, get_all_datasenders_short_codes, get_query_fields
 from datawinners.search.datasender_index import update_datasender_index_by_id
@@ -49,7 +49,7 @@ class AllDataSendersView(TemplateView):
     def get(self, request, *args, **kwargs):
         user_group = request.user.groups.all()[0].name
         manager = get_database_manager(request.user)
-        project_name_id_map = get_project_id_name_map(manager)
+        project_name_id_map = get_project_id_name_map_for_user(manager, request.user)
         organization = utils.get_organization(request)
         in_trial_mode = organization.in_trial_mode
         is_pro_sms = organization.is_pro_sms

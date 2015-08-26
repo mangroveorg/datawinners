@@ -53,7 +53,7 @@
                 return $($(item).closest("tr").children()[7]).text() != "";
         });
 
-        if(contactRowWithQuestionnaire){
+        if(contactRowWithQuestionnaire && number_of_projects>0 ){
             removeQuestionnaireMenuItem.removeClass('disabled');
         }
         else{

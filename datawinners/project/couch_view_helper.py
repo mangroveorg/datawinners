@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from mangrove.datastore.documents import FormModelDocument
+from mangrove.datastore.user_permission import get_questionnaires_for_user
 from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type
 
 
@@ -73,6 +74,17 @@ def get_project_id_name_map(dbm):
         if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
             project_id_name_map.update({row['value']['id']:row['value']['name']})
 
+    project_map = sorted(project_id_name_map.items(), key=lambda(project_id, name): name.lower())
+
+    return OrderedDict(project_map)
+
+
+def get_project_id_name_map_for_user(dbm, user):
+    project_id_name_map = {}
+    projects = get_questionnaires_for_user(user.id, dbm)
+    for project in projects:
+        if not project.get('is_poll', False):
+            project_id_name_map.update({project.get('_id'): project.get('name')})
     project_map = sorted(project_id_name_map.items(), key=lambda(project_id, name): name.lower())
 
     return OrderedDict(project_map)

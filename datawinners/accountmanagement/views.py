@@ -24,7 +24,7 @@ from django.contrib.sites.models import Site
 
 from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
-from datawinners.project.couch_view_helper import get_all_projects, get_project_id_name_map
+from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_pro_sms, \
@@ -161,9 +161,6 @@ def make_user_data_sender_for_projects(manager, project_ids, reporter_id):
         make_user_data_sender_with_project(manager, reporter_id, project_id)
 
 
-def get_all_questionnaires(manager):
-    return get_project_id_name_map(manager)
-
 
 @login_required
 @session_not_expired
@@ -175,12 +172,10 @@ def new_user(request):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         profile_form = UserProfileForm()
-        all_questionnaires = get_all_questionnaires(manager)
 
         return render_to_response("accountmanagement/account/add_new_user.html", {'profile_form': profile_form,
                                                                                   'is_pro_sms': org.is_pro_sms,
-                                                                                  'current_lang': get_language(),
-                                                                                  'questionnaires': all_questionnaires
+                                                                                  'current_lang': get_language()
                                                                                   },
                                   context_instance=(RequestContext(request)))
 
