@@ -6109,3 +6109,6 @@ msgstr "Etes vous sur de vouloir quitter?"
 
 msgid "Yes, Proceed"
 msgstr "Oui, quitter"
+
+msgid "Account Administrator"
+msgstr "Compte Administrateur"

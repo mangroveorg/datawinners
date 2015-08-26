@@ -4887,3 +4887,6 @@ msgstr ""
 
 msgid "Yes, Proceed"
 msgstr ""
+
+msgid "Account Administrator"
+msgstr ""
