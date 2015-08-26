@@ -4879,7 +4879,6 @@ msgstr ""
 msgid "Questionnaires & Polls"
 msgstr ""
 
-<<<<<<< HEAD
 msgid "You have made changes to the form. These changes will be lost if you navigate away from this page."
 msgstr ""
 
