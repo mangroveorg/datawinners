@@ -25,7 +25,8 @@ from datawinners.blue.xform_submission_exporter import XFormSubmissionExporter
 from datawinners.blue.view import SurveyWebXformQuestionnaireRequest
 from datawinners.blue.xform_bridge import XFormSubmissionProcessor
 from datawinners.project import helper
-from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
+from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user, \
+    restrict_access
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.common.authorization import is_data_sender
 from datawinners.feeds.database import get_feeds_database
@@ -145,6 +146,7 @@ def get_filterable_fields(fields, filterable_fields, parent_code=None):
 @is_datasender
 @is_not_expired
 @is_project_exist
+@restrict_access
 def index(request, project_id=None, questionnaire_code=None, tab=0):
     manager = get_database_manager(request.user)
     org_id = helper.get_org_id_by_user(request.user)
@@ -185,6 +187,7 @@ def _is_account_with_large_submissions(dbm):
 @is_datasender
 @is_not_expired
 @is_project_exist
+@restrict_access
 def analysis_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     org_id = helper.get_org_id_by_user(request.user)

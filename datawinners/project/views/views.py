@@ -39,7 +39,7 @@ from mangrove.transport.contract.transport_info import Channel
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, \
-    project_has_web_device, valid_web_user
+    project_has_web_device, valid_web_user, restrict_access
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -159,6 +159,7 @@ def _get_entity_types_with_no_registered_entities(dbm, entity_types):
 @is_datasender
 @is_not_expired
 @is_project_exist
+@restrict_access
 def project_overview(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -305,6 +306,7 @@ def _get_data_senders(dbm, form, project):
 @is_datasender
 @is_not_expired
 @is_project_exist
+@restrict_access
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     questionnaire = Project.get(dbm, project_id)
@@ -396,6 +398,7 @@ def get_project_link(project, entity_type=None):
 @valid_web_user
 @is_project_exist
 @is_datasender
+@restrict_access
 def registered_subjects(request, project_id, entity_type=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -439,6 +442,7 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
 @valid_web_user
 @is_project_exist
 @is_datasender
+@restrict_access
 def questionnaire(request, project_id):
     manager = get_database_manager(request.user)
     if request.method == 'GET':

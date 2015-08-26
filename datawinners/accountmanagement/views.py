@@ -408,6 +408,7 @@ def _update_user_and_profile(form, user_name, role=None):
     ngo_user_profile.save()
     update_corresponding_datasender_details(user, ngo_user_profile, old_phone_number)
 
+
 def dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role, selected_questionnaires):
     manager = get_database_manager(user)
 
@@ -430,6 +431,7 @@ def remove_user_as_datasender_for_projects(manager, project_ids, selected_questi
         project = Project.get(manager, questionnaire)
         project.delete_datasender(manager, reporter_id)
         update_datasender_index_by_id(reporter_id, manager)
+
 
 @valid_web_user
 @is_datasender
@@ -529,7 +531,7 @@ def edit_user_profile(request, user_id=None):
 @login_required
 @session_not_expired
 def access_denied(request):
-    return render_to_response("accountmanagement/account/access_denied.html", {'current_lang': get_language()},
+    org = get_organization(request)
+    return render_to_response("accountmanagement/account/access_denied.html", {'is_pro_sms': org.is_pro_sms,
+                                                                               'current_lang': get_language()},
                               context_instance=(RequestContext(request)))
-
-
