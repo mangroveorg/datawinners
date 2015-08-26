@@ -38,5 +38,6 @@ EDIT_USER_DATA = {
 
 NAME_COLUMN = "//div[@id='users_list']/table/tbody/tr/td[3][contains(text(),'%s')]//parent::tr/td[2]"
 DASHBOARD_PAGE_TITLE = u'Dashboard'
+ACCESS_DENIED_TITLE = u'Access Denied'
 
 

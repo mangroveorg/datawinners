@@ -45,6 +45,7 @@ class TestEditUser(HeadlessRunnerTest):
         add_user_page.select_role_as_project_manager()
         add_user_page.select_questionnaires(2, 4)
         add_user_page.add_user_with(user)
+        add_user_page.get_success_message()
         username = fetch_(USERNAME, user)
         self.driver.go_to(ALL_USERS_URL)
         questionnaire_list_for_user = all_users_page.get_questionnaire_list_for(username)
@@ -95,7 +96,7 @@ class TestEditUser(HeadlessRunnerTest):
         self.add_user_page.select_role_as_project_manager()
         self.add_user_page.select_questionnaires(2)
         self.add_user_page.add_user_with(new_user)
-
+        self.add_user_page.get_success_message()
         username = fetch_(USERNAME, new_user)
         self.driver.go_to(ALL_USERS_URL)
         self.assertGreater(1, self.all_users_page.number_of_editable_users_for_role('Super Admin'),
@@ -173,6 +174,7 @@ class TestEditUser(HeadlessRunnerTest):
         self.assertTrue(edit_user_page.is_role_project_manager())
         edit_user_page.select_role_as_administrator()
         edit_user_page.save_changes()
+        edit_user_page.get_success_message()
         self.driver.go_to(ALL_USERS_URL)
         self.assertEqual('Administrator', self.all_users_page.get_role_for(username))
         self.assertEqual('All', self.all_users_page.get_questionnaire_list_for(username)[0])
@@ -190,6 +192,7 @@ class TestEditUser(HeadlessRunnerTest):
         add_user_page.select_role_as_project_manager()
         add_user_page.select_questionnaires(2, 4)
         add_user_page.add_user_with(user)
+        add_user_page.get_success_message()
         username = user[USERNAME]
 
         # Edit the Project Manager
@@ -227,7 +230,7 @@ class TestEditUser(HeadlessRunnerTest):
         message = edit_user_page.get_error_messages()
         self.assertEqual(message, u'This phone number is already in use. Please supply a different phone number')
         self.global_navigation.sign_out()
-        self.add_user_page.confirm_leave_page()
+        self.edit_user_page.confirm_leave_page()
 
     def _create_extended_user(self, user):
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
@@ -236,3 +239,4 @@ class TestEditUser(HeadlessRunnerTest):
         self.add_user_page = self.all_users_page.navigate_to_add_user()
         self.add_user_page.select_role_as_administrator()
         self.add_user_page.add_user_with(user)
+        self.add_user_page.get_success_message()
