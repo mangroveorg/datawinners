@@ -6101,6 +6101,7 @@ msgstr "L'utilisateur a été mis à jour avec succès"
 msgid "Edit User"
 msgstr "Modifier un utilisateur"
 
+<<<<<<< HEAD
 msgid "You have made changes to the form. These changes will be lost if you navigate away from this page."
 msgstr "Vous avez apporté des modifications au formulaire. Ces modifications seront perdues si vous quittez cette page."
 
@@ -6112,3 +6113,9 @@ msgstr "Oui, quitter"
 
 msgid "Account Administrator"
 msgstr "Compte Administrateur"
+
+msgid "access_denied_message"
+msgstr "Désolé, vous n'êtes pas autorisé à accéder à cette page. Veuillez contacter votre Administrateur."
+
+msgid "Access Denied"
+msgstr ""

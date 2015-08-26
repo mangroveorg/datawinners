@@ -65,7 +65,7 @@ def is_admin(f):
                 return HttpResponseRedirect(django_settings.HOME_PAGE)
         user = args[0].user
         if not len(user.groups.filter(name__in=["NGO Admins", "Extended Users"])) > 0:
-            return HttpResponseRedirect(django_settings.HOME_PAGE)
+            return HttpResponseRedirect(django_settings.ACCESS_DENIED_PAGE)
 
         return f(*args, **kw)
 
@@ -83,7 +83,7 @@ def for_super_admin_only(f):
                 return HttpResponseRedirect(django_settings.HOME_PAGE)
         user = args[0].user
         if len(user.groups.filter(name__in=["NGO Admins"])) < 1:
-            return HttpResponseRedirect(django_settings.HOME_PAGE)
+            return HttpResponseRedirect(django_settings.ACCESS_DENIED_PAGE)
 
         return f(*args, **kw)
 

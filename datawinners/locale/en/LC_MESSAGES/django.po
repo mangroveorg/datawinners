@@ -4879,6 +4879,7 @@ msgstr ""
 msgid "Questionnaires & Polls"
 msgstr ""
 
+<<<<<<< HEAD
 msgid "You have made changes to the form. These changes will be lost if you navigate away from this page."
 msgstr ""
 
@@ -4890,3 +4891,6 @@ msgstr ""
 
 msgid "Account Administrator"
 msgstr ""
+
+msgid "access_denied_message"
+msgstr "Sorry, you are not authorized to access this page. Please contact your Administrator."

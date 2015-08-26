@@ -470,7 +470,7 @@ def edit_user_profile(request, user_id=None):
         data = {"errors": "User not found"}
         return HttpResponse(json.dumps(data), mimetype="application/json", status=404)
     if not current_user.has_higher_privileges_than(user):
-        return HttpResponseRedirect(django_settings.HOME_PAGE)
+        return HttpResponseRedirect(django_settings.ACCESS_DENIED_PAGE)
     else:
         profile = user.get_profile()
     if request.method == 'GET':
@@ -524,3 +524,12 @@ def edit_user_profile(request, user_id=None):
         data = dict(edit_user_success=_edit_user_success,
                     errors=form.errors, message=message)
         return HttpResponse(json.dumps(data), mimetype="application/json", status=200)
+
+
+@login_required
+@session_not_expired
+def access_denied(request):
+    return render_to_response("accountmanagement/account/access_denied.html", {'current_lang': get_language()},
+                              context_instance=(RequestContext(request)))
+
+
