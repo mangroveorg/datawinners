@@ -2,6 +2,7 @@ DEFAULT_LANGUAGE="en"
 FRENCH_LANGUAGE="fr"
 
 ADDED_USER = 'Added User'
+UPDATED_USER = 'Updated User'
 CHANGED_ACCOUNT_INFO = 'Changed Account Information'
 
 CREATED_QUESTIONNAIRE = 'Created Questionnaire'

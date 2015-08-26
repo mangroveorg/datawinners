@@ -25,6 +25,7 @@ from django.contrib.sites.models import Site
 from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
 from datawinners.project.couch_view_helper import get_all_projects
+from datawinners.project.templatetags.filters import friendly_name
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_pro_sms, \
@@ -40,7 +41,7 @@ from datawinners.accountmanagement.models import Organization, NGOUserProfile, P
 from datawinners.project.models import delete_datasenders_from_project
 from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS
+from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS, UPDATED_USER
 from datawinners.entity.helper import delete_datasender_for_trial_mode, \
     delete_datasender_users_if_any, delete_entity_instance
 from datawinners.entity.import_data import send_email_to_data_sender
@@ -162,6 +163,14 @@ def make_user_data_sender_for_projects(manager, project_ids, reporter_id):
 
 
 
+def administrator_log_details(detail_dict):
+    return "Name: " + detail_dict['Name'] + "<br>" + "Role: " + detail_dict['Role']
+
+
+def project_manager_log_details(detail_dict):
+    return "Name: " + detail_dict['Name'] + "<br>" + "Role: " + detail_dict['Role'] + "<br>" + "Questionnaires & Polls: [%s]" % ",<br>".join(detail_dict['Projects'])
+
+
 @login_required
 @session_not_expired
 @is_admin
@@ -202,22 +211,28 @@ def new_user(request):
                                                                          mobile_number=mobile_number, email=username)
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
+
+                name = post_parameters["full_name"]
+
                 if role == 'Extended Users':
                     associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
+                    detail_dict = dict({"Role": friendly_name(role), "Name": name})
+                    UserActivityLog().log(request, action=ADDED_USER, detail=administrator_log_details(detail_dict))
                 elif role == 'Project Managers':
                     selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
                     if selected_questionnaires is None:
                         selected_questionnaires = []
                     associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
                                                  selected_questionnaires)
+                    detail_dict = dict(
+                        {"Name": name, "Role": friendly_name(role), "Projects": selected_questionnaires})
+                    UserActivityLog().log(request, action=ADDED_USER, detail=project_manager_log_details(detail_dict))
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user", organization=org)
-                    name = post_parameters["full_name"]
+
                     form = UserProfileForm()
                     add_user_success = True
-                    detail_dict = dict({"Name": name})
-                    UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
 
         data = {"add_user_success": add_user_success, "errors": form.errors}
         return HttpResponse(json.dumps(data), mimetype="application/json", status=201)
@@ -506,15 +521,21 @@ def edit_user_profile(request, user_id=None):
                 selected_questionnaires = []
 
             _update_user_and_profile(form, user.username, role)
-            # Accommodate dissociate user as data sender for the removed projects
+
+            name = post_parameters["full_name"]
+
             if role == 'Project Managers':
                 dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role, selected_questionnaires)
                 make_user_data_sender_for_projects(manager, selected_questionnaires, reporter_id)
                 update_user_permission(manager, user_id=user.id, project_ids=selected_questionnaires)
-
+                detail_dict = dict(
+                    {"Projects": selected_questionnaires, "Role": friendly_name(role), "Name": name})
+                UserActivityLog().log(request, action=UPDATED_USER, detail=project_manager_log_details(detail_dict))
             elif role == 'Extended Users' and previous_role != 'Extended Users':
                 associate_user_with_all_projects_of_organisation(manager, reporter_id)
                 update_user_permission(manager, user_id=user.id, project_ids=[])
+                detail_dict = dict({"Role": friendly_name(role), "Name": name})
+                UserActivityLog().log(request, action=UPDATED_USER, detail=administrator_log_details(detail_dict))
 
             message = _('Profile has been updated successfully')
             _edit_user_success = True
