@@ -6110,9 +6110,6 @@ msgstr "Etes vous sur de vouloir quitter?"
 msgid "Yes, Proceed"
 msgstr "Oui, quitter"
 
-msgid "Account Administrator"
-msgstr "Compte Administrateur"
-
 msgid "access_denied_message"
 msgstr "Désolé, vous n'êtes pas autorisé à accéder à cette page. Veuillez contacter votre Administrateur."
 
