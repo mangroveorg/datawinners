@@ -33,7 +33,7 @@
         });
         var unique_questionnaire_names = _.union(all_matching_questionnaires);
         return unique_questionnaire_names;
-    }
+    };
 
     dw.removeFromQuestionnaire = function (table, selected_ids, all_selected) {
         var all_project_block = $("#all_project_block");

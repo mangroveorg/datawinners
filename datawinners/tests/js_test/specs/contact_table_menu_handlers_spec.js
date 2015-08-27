@@ -107,6 +107,7 @@ describe('contact table menu items', function () {
         });
 
         it('should be disabled when no contacts are not linked to questionnaires', function(){
+
             $removeFromQuestionnaireParent.removeClass('disabled');
             $("#all_selected_element").data('all_selected', false);
             $("#id5").click();
