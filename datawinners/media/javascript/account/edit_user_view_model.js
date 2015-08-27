@@ -11,6 +11,10 @@ var viewModel = function () {
     this.hasFetchedQuestionnaires = ko.observable(false);
     this.hasFormEdited = ko.observable(false);
     this.userId = 0;
+    this.hasEditedPermission = false;
+    this.changedPermission = function(){
+        return (this.hasEditedPermission) ? 'Permission-changed' : 'Permission-not-changed';
+    }
 
     this.fullName.subscribe(function () {
         DW.ko.mandatoryValidator(self.fullName, 'This field is required');
@@ -65,10 +69,12 @@ var viewModel = function () {
                         self.hasFormEdited(false);
                     } else {
                         self.hasFormEdited(true);
+                        self.hasEditedPermission = true;
                     }
                 });
             } else {
                 self.hasFormEdited(true);
+                self.hasEditedPermission = true;
             }
         }
     });
@@ -99,6 +105,7 @@ var viewModel = function () {
                 self.editUserSuccess(true);
                 self.clearFields();
                 $('html, body').animate({scrollTop: '0px'}, 0);
+                DW.trackEvent('account-management', 'edit-user', this.changedPermission());
             } else {
                 var errors = responseJson['errors'];
                 self.parseErrors(errors);
