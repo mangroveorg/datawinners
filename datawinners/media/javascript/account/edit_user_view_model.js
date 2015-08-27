@@ -105,7 +105,7 @@ var viewModel = function () {
                 self.editUserSuccess(true);
                 self.clearFields();
                 $('html, body').animate({scrollTop: '0px'}, 0);
-                DW.trackEvent('account-management', 'edit-user', this.changedPermission());
+                DW.trackEvent('account-management', 'edit-user', self.changedPermission());
             } else {
                 var errors = responseJson['errors'];
                 self.parseErrors(errors);
