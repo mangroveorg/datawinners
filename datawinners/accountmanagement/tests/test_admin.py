@@ -85,10 +85,10 @@ class TestAdmin(unittest.TestCase):
         group = Group.objects.filter(name="NGO Admins")
         self.user.groups.add(group[0])
         self.user.save()
-        self.assertTrue(self.user.get_profile().isNGOAdmin, 'User is a NGOAdmin')
+        self.assertTrue(self.user.is_ngo_admin(), 'User is a NGOAdmin')
 
     def test_should_check_whether_user_is_extended_user(self):
         group = Group.objects.filter(name="Extended Users")
         self.user.groups.add(group[0])
         self.user.save()
-        self.assertTrue(self.user.get_profile().isExtendedUser)
+        self.assertTrue(self.user.is_extended_user())

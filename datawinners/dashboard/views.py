@@ -10,7 +10,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _, ugettext, get_language
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.datastore.entity import Entity, get_all_entities, by_short_codes, Contact
+from mangrove.datastore.entity import get_all_entities, by_short_codes, Contact
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.main.database import get_database_manager
@@ -102,7 +102,7 @@ def dashboard(request):
 
     organization = Organization.objects.get(org_id=user_profile.org_id)
     questionnaire_list = []
-    if request.user.get_profile().isNGOAdmin or request.user.get_profile().isExtendedUser:
+    if request.user.is_ngo_admin() or request.user.is_extended_user():
         rows = [row['value'] for row in manager.load_all_rows_in_view('all_projects', descending=True, limit=8)]
     else:
         rows = get_questionnaires_for_user(request.user.id, manager, descending=True, limit=8)

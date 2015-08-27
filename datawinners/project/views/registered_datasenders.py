@@ -4,13 +4,13 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
 from datawinners.main.database import get_database_manager
 from datawinners.settings import ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
-from datawinners.utils import strip_accents, lowercase_and_strip_accents
+from datawinners.utils import lowercase_and_strip_accents
 from mangrove.datastore.user_permission import get_questionnaires_for_user
 
 def registered_ds_count(request):
     dbm = get_database_manager(request.user)
     result = []
-    if request.user.get_profile().isNGOAdmin or request.user.get_profile().isExtendedUser:
+    if request.is_ngo_admin() or request.user.is_extended_user():
         rows = [row['value'] for row in dbm.load_all_rows_in_view('all_projects')]
     else:
         rows = get_questionnaires_for_user(request.user.id, dbm)

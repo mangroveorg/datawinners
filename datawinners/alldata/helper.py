@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners.project.couch_view_helper import get_all_projects, remove_poll_questionnaires
 from datawinners.settings import CRS_ORG_ID
-from datawinners.project import models
 from django.utils.translation import ugettext_lazy as _
 from datawinners.main.database import get_database_manager
 from datawinners.utils import get_organization
@@ -12,7 +11,7 @@ def get_all_project_for_user(user):
     if user.get_profile().reporter:
         questionnaires = [row['value'] for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]
         return remove_poll_questionnaires(questionnaires)
-    if user.get_profile().isNGOAdmin or user.get_profile().isExtendedUser:
+    if user.is_ngo_admin() or user.is_extended_user():
         questionnaires = [row['value'] for row in get_all_projects(get_database_manager(user))]
         return questionnaires
     questionnaires_as_datasender = [row['value'] for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]

@@ -319,18 +319,11 @@ class NGOUserProfile(models.Model):
 
     @property
     def reporter(self):
-        user = User.objects.get(email=self.user)
-        return True if user.groups.filter(name="Data Senders").count() else False
+        return self._is("Data Senders")
 
-    @property
-    def isNGOAdmin(self):
+    def _is(self, role_name):
         user = User.objects.get(email=self.user)
-        return True if user.groups.filter(name="NGO Admins").count() else False
-
-    @property
-    def isExtendedUser(self):
-        user = User.objects.get(email=self.user)
-        return True if user.groups.filter(name="Extended Users").count() else False
+        return True if user.groups.filter(name=role_name).count() else False
 
 
 class PaymentDetails(models.Model):

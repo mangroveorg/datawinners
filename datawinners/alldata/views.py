@@ -108,7 +108,7 @@ def is_crs_user(request):
     return get_organization(request).org_id == CRS_ORG_ID
 
 def _get_visibility_settings_for(user,project):
-    if user.get_profile().isNGOAdmin or user.get_profile().isExtendedUser or project.get('is_project_manager', False) is True:
+    if user.is_ngo_admin() or user.is_extended_user() or project.get('is_project_manager', False) is True:
         return "", ""
     if user.get_profile().reporter or project.get('is_project_manager', False) is False:
         return "disable_link_for_reporter", "none"

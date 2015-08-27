@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.user_permission import get_questionnaires_for_user
-from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type
+from mangrove.form_model.form_model import FormModel
 
 
 def get_all_projects_for_datasender(dbm, data_sender_id):
@@ -69,7 +69,7 @@ def get_subject_form_model_docs_of_questionnaire(dbm, questionnaire_doc):
 
 def get_project_id_name_map_for_user(dbm, user):
     project_id_name_map = {}
-    if user.get_profile().isNGOAdmin or user.get_profile().isExtendedUser:
+    if user.is_ngo_admin() or user.is_extended_user():
         projects = [row['value'] for row in dbm.load_all_rows_in_view('all_projects')]
     else:
         projects = get_questionnaires_for_user(user.id, dbm)
