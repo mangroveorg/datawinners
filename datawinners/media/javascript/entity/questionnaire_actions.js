@@ -20,7 +20,7 @@
         all_project_block.dialog("open");
     };
 
-    function _matchingQuestionnaireNames(selectedIds) {
+     dw.matchingQuestionnaireNames = function(selectedIds) {
         var all_matching_questionnaires = [];
         $.each(selectedIds, function (index, rep_id) {
             var children = $("input[value=" + rep_id + "]").closest("tr").children();
@@ -41,7 +41,7 @@
         $('#all_project_block :checked').attr("checked", false);
 
         if (!all_selected) {
-            var unique_questionnaire_names = _matchingQuestionnaireNames(selected_ids);
+            var unique_questionnaire_names = dw.matchingQuestionnaireNames(selected_ids);
             $.each($("#all_projects li"), function (index, item) {
                 var $item = $(item);
                 if (unique_questionnaire_names.indexOf($item.text()) > -1) {

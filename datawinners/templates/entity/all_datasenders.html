@@ -52,6 +52,9 @@
         var datasender_ajax_url = "{% url all_datasenders_ajax %}";
         var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
         var number_of_projects = {{ projects|length }};
+        {% with project_names=projects.values %}
+            var project_list = {{ project_names|safe }};
+        {% endwith %}
         var delete_group_url = "{% url group_delete %}";
         var group_rename_url = "{% url group_rename %}";
         var sms_popup_page = "all-contacts";

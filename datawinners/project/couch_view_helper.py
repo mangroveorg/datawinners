@@ -67,21 +67,12 @@ def get_subject_form_model_docs_of_questionnaire(dbm, questionnaire_doc):
     return subject_form_model_docs
 
 
-def get_project_id_name_map(dbm):
-    project_id_name_map = {}
-    rows = dbm.load_all_rows_in_view('project_names')
-    for row in rows:
-        if 'is_poll' not in row['value'] or row['value']['is_poll'] is False:
-            project_id_name_map.update({row['value']['id']:row['value']['name']})
-
-    project_map = sorted(project_id_name_map.items(), key=lambda(project_id, name): name.lower())
-
-    return OrderedDict(project_map)
-
-
 def get_project_id_name_map_for_user(dbm, user):
     project_id_name_map = {}
-    projects = get_questionnaires_for_user(user.id, dbm)
+    if user.get_profile().isNGOAdmin or user.get_profile().isExtendedUser:
+        projects = [row['value'] for row in dbm.load_all_rows_in_view('all_projects')]
+    else:
+        projects = get_questionnaires_for_user(user.id, dbm)
     for project in projects:
         if not project.get('is_poll', False):
             project_id_name_map.update({project.get('_id'): project.get('name')})

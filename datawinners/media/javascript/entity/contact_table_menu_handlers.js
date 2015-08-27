@@ -43,7 +43,6 @@
         var isContactsAcrossPagesSelected = $datasenderTable.find(".select_all_message").data('all_selected');
         var removeQuestionnaireMenuItem = $($('#remove-from-questionnaire').parent());
 
-
         if(isContactsAcrossPagesSelected){
             removeQuestionnaireMenuItem.removeClass('disabled');
             return;
@@ -53,13 +52,20 @@
                 return $($(item).closest("tr").children()[7]).text() != "";
         });
 
-        if(contactRowWithQuestionnaire && number_of_projects>0 ){
+        if(dw.allContactTableMenu.canRemoveQuestionnaire(selectedContacts)){
             removeQuestionnaireMenuItem.removeClass('disabled');
         }
         else{
             removeQuestionnaireMenuItem.addClass('disabled');
         }
     };
+
+    dw.allContactTableMenu.canRemoveQuestionnaire = function(selectedContacts){
+        var selectedIds = _.map(selectedContacts, function(elem){ return elem.value})
+        var currentQuestionnaireList = dw.matchingQuestionnaireNames(selectedIds);
+        var commonQuestionnaires = _.intersection(project_list,currentQuestionnaireList)
+        return commonQuestionnaires.length > 0;
+    }
 
     dw.allContactTableMenu.disableMenuItemWhenAccountIsNotProSMS = function(){
         var sendSmsMenuItem = $($('#send-an-sms').parent());
