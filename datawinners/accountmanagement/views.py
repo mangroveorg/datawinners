@@ -233,8 +233,11 @@ def new_user(request):
 
                     form = UserProfileForm()
                     add_user_success = True
-
-        data = {"add_user_success": add_user_success, "errors": form.errors}
+        if len(request.user.groups.filter(name__in=["NGO Admins"])) < 1:
+            current_user_type = "Administrator"
+        else:
+            current_user_type = "Account-Administrator"
+        data = {"add_user_success": add_user_success, "errors": form.errors, "current_user": current_user_type}
         return HttpResponse(json.dumps(data), mimetype="application/json", status=201)
 
 

@@ -58,7 +58,7 @@ var viewModel = function () {
                 self.addUserSuccess(true);
                 self.clearFields();
                 $('html, body').animate({scrollTop: '0px'}, 0);
-                DW.trackEvent('account-management', 'add-user', self.role());
+                DW.trackEvent('account-management', responseJson['current_user'] +'add-user', self.role());
             } else {
                 var errors = responseJson['errors'];
                 self.parseErrors(errors);
