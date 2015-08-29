@@ -2,12 +2,14 @@ from nose.plugins.attrib import attr
 
 from framework.utils.data_fetcher import fetch_
 from framework.base_test import HeadlessRunnerTest
-from pages.loginpage.login_page import login
+from pages.loginpage.login_page import login, LoginPage
 from tests.logintests.login_data import VALID_CREDENTIALS, PASSWORD
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.editusertests.edit_user_data import *
 from tests.addusertests.add_user_data import *
 from tests.alluserstests.all_users_data import ALL_USERS_URL
+from tests.dashboardtests.dashboard_tests_data import USER_RASITEFA_CREDENTIALS
+from tests.submissionlogtests.submission_log_tests import send_sms_with
 
 
 class TestEditUser(HeadlessRunnerTest):
@@ -240,3 +242,24 @@ class TestEditUser(HeadlessRunnerTest):
         self.add_user_page.select_role_as_administrator()
         self.add_user_page.add_user_with(user)
         self.add_user_page.get_success_message()
+
+    @attr('functional_test')
+    def test_should_make_sure_that_ds_permission_is_removed_in_the_same_time_as_user_permission_is_removed(self):
+        response = send_sms_with(SMS_TO_TEST_PERMISSION)
+        self.assertEqual(response, SUCCESS_MESSAGE)
+        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        self.driver.go_to(ALL_USERS_URL)
+        all_users_page = AllUsersPage(self.driver)
+        all_users_page.select_user_with_username("rasitefa@mailinator.com")
+        edit_user_page = all_users_page.select_edit_action()
+        edit_user_page._uncheck_all_questionnaires()
+        edit_user_page.save_changes()
+        edit_user_page.get_success_message()
+        response = send_sms_with(SMS_TO_TEST_PERMISSION)
+        self.assertEqual(response, ERROR_MESSAGE)
+        edit_user_page.select_questionnaires(3, 7)
+        edit_user_page.save_changes()
+        edit_user_page.get_success_message()
+        response = send_sms_with(SMS_TO_TEST_PERMISSION)
+        self.assertEqual(response, SUCCESS_MESSAGE)
+

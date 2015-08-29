@@ -181,6 +181,7 @@ def create_project1(manager, questions, weekly_reminder_and_deadline):
                                fields=questions, devices=["sms", "web", "smartPhone"], sender_group="close",
                                goals="This project is for automation"
     )
+    questionnaire1.is_open_survey = False
     questionnaire1.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         qid = questionnaire1.save()
@@ -1545,3 +1546,6 @@ def grant_questionnaire_permissions_to_rasitefa():
     from mangrove.datastore.user_permission import update_user_permission
     project_ids = [row['value']['_id'] for row in project_docs]
     update_user_permission(manager, user.id, project_ids)
+
+    from datawinners.accountmanagement.views import make_user_data_sender_for_projects
+    make_user_data_sender_for_projects(manager, project_ids, 'rep10')

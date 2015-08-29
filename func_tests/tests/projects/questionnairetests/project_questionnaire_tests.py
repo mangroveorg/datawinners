@@ -22,7 +22,8 @@ from tests.projects.questionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.warningdialog.warning_dialog import WarningDialog
 from framework.utils.common_utils import by_id, by_css, random_string, by_xpath
-
+from tests.submissionlogtests.submission_log_tests import send_sms_with
+from tests.editusertests.edit_user_data import SMS_TO_TEST_PERMISSION, SMS
 
 CLOSE_WARNING_DIALOGUE_LINK = by_css(
     'div.ui-dialog[style*="block"] > div.ui-dialog-titlebar>a.ui-dialog-titlebar-close')
@@ -497,3 +498,23 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         user_names = [element.text for element in self.driver.find_elements_(by_xpath("//*[@id='users_list']/table/tbody/tr/td[2]"))]
         self.assertEquals(user_names.__len__(),registered_ds_names.__len__())
 
+    @attr('functional_testa')
+    def test_pm_should_not_have_ds_permission_to_newly_created_questionnaire(self):
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        questionnaire_creation_options_page = dashboard_page.navigate_to_create_project_page()
+        create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page = create_questionnaire_page.create_questionnaire_with(CLINIC_PROJECT_DATA,
+                                                                                        QUESTIONNAIRE_DATA_CLINIC_PROJECT)
+        overview_page = create_questionnaire_page.save_and_create_project_successfully()
+        my_ds_page = overview_page.navigate_to_datasenders_page()
+        questionnaire_code = overview_page.get_questionnaire_code()
+        SMS_TO_TEST_PERMISSION[SMS] = CLINIC_SUCCESS_SMS % questionnaire_code
+        response = send_sms_with(SMS_TO_TEST_PERMISSION)
+        self.assertEqual(response, SUCCESS_MESSAGE_MSG)
+
+        my_ds_page.open_setting_popup()
+        my_ds_page.set_setting_value('restricted')
+        my_ds_page.save_setting()
+
+        response = send_sms_with(SMS_TO_TEST_PERMISSION)
+        self.assertEqual(response, ERROR_MESSAGE_MSG)

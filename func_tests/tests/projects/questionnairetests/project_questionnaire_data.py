@@ -294,3 +294,7 @@ LANGUAGES = {
     MG:"Malagasy",
     PT:"Portuguese"
 }
+
+CLINIC_SUCCESS_SMS = "%s myname 28 25.12.2010 a ca 12.34,45.67"
+SUCCESS_MESSAGE_MSG = "Thank you Stefan. We received your SMS: myname; 28; 25.12.2010; O+; Pneumonia,Rapid weight loss; 12.34, 45.67"
+ERROR_MESSAGE_MSG = "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."
