@@ -289,3 +289,9 @@ except ImportError as e:
     raise Exception("You need to create a local_settings.py from local_settings_example.py")
 
 from logger_settings import *
+
+if DEBUG:
+    # make all loggers use the console.
+    for logger in LOGGING['loggers']:
+        LOGGING['loggers'][logger]['handlers'] += ['console']
+

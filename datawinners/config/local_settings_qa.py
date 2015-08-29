@@ -1,5 +1,5 @@
 SITE_ID = 6
-DEBUG=False
+DEBUG=True
 
 
 ADMINS = (('Google group', 'datawinners-devs@googlegroups.com'),)

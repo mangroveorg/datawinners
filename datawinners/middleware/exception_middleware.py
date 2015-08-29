@@ -12,6 +12,7 @@ class ExceptionMiddleware(object):
             profile = request.user.get_profile()
             organization = Organization.objects.get(org_id=profile.org_id)
             request.META['organization_details'] = ('%s (%s)' % (organization.name, profile.org_id))
+            self.logger.exception("Exception happened for request "+request.path)
         except Exception as ex:
             self.logger.error("Failed to get customer data for: %s", request.user.username)
             self.logger.error("error while getting meta info to be provided via email", ex)

@@ -126,6 +126,11 @@ LOGGING = {
             'maxBytes': MAX_LOG_BYTES,
             'backupCount': BACK_UP_COUNT
         },
+        'console': { 
+            'level': 'DEBUG', 
+            'class': 'logging.StreamHandler', 
+            'formatter': 'verbose' 
+        },                 
     },
     'loggers': {
         'django': {
