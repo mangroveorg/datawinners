@@ -200,13 +200,25 @@ table.error_table {
   }
 }
 
-.single-user-role {
-  input[type="radio"] {
-    display: none;
+#user_profile_content {
+
+  .single-user-role {
+    input[type="radio"] {
+      display: none;
+    }
+
+    .role_description {
+      padding-left: 0;
+      width: 350px;
+    }
+
+    .questionnaire-list {
+      padding-left: 0;
+    }
   }
 
-  .role_description {
-    padding-left: 0;
-    width: 350px;
-  }
+}
+
+#users_list table {
+  margin-bottom: 12px;
 }
