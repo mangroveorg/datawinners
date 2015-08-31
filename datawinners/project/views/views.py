@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 
 from datawinners.alldata import views
-from datawinners.common.authorization import is_data_sender
+from datawinners.common.authorization import is_data_sender, is_data_sender_for_project
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
@@ -640,7 +640,7 @@ class SurveyWebQuestionnaireRequest():
         self.questionnaire = Project.get(self.manager, project_id)
         self.form_code = self.questionnaire.form_code
         self.feeds_dbm = get_feeds_database(request.user)
-        self.is_data_sender = is_data_sender(request)
+        self.is_data_sender = is_data_sender_for_project(request, project_id)
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
         self.reporter_id = NGOUserProfile.objects.get(user=self.request.user).reporter_id
         self.reporter_name = NGOUserProfile.objects.get(user=self.request.user).user.first_name

@@ -13,7 +13,6 @@ from django.http import Http404
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, \
     is_new_user, valid_web_user
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
-from datawinners.common.authorization import is_data_sender
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, \

@@ -364,7 +364,8 @@ def edit(request, project_id, survey_response_id, tab=0):
         owner_id = submitted_values.get("dsid")
         form_ui_model.update({
             "redirect_url": submitted_values.get("redirect_url"),
-            'is_datasender': is_data_sender(request)
+            'is_datasender': is_data_sender(request),
+            "is_pro_sms": get_organization(request).is_pro_sms
         })
         form_ui_model.update({"click_after_reload": submitted_values.get("click_after_reload")})
         if submitted_values.get("discard"):

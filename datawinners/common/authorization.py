@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate, login
 #############################################################################
 #
 from datawinners.accountmanagement.decorators import is_sms_api_user
+from datawinners.main.database import get_database_manager
+from datawinners.project.couch_view_helper import get_all_projects
+from mangrove.datastore.user_permission import get_questionnaires_for_user
 
 
 def view_or_basicauth(view, request, is_authenticated_func, authenticate_func, realm="", *args, **kwargs):
@@ -97,8 +100,30 @@ def is_not_datasender(func):
 
     return inner
 
+
 def is_data_sender(request):
     return request.user.get_profile().reporter
+
+
+def is_data_sender_for_project(request, project_id):
+    return request.user.get_profile().reporter or _is_pm_data_sender_for_project(request.user, project_id)
+
+
+def _is_pm_data_sender_for_project(user, project_id):
+    if user.is_project_manager():
+        questionnaires_as_datasender = [row['value'] for row in
+                                        get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]
+        qn_as_ds = []
+        for q_ds in questionnaires_as_datasender:
+            qn_as_ds.append(q_ds.get('_id'))
+        questionnaires_as_pm = get_questionnaires_for_user(user.id, get_database_manager(user))
+        qn_as_pm = []
+        for q_pm in questionnaires_as_pm:
+            qn_as_pm.append(q_pm.get('_id'))
+        questionnaires_only_as_datasender = list(set(qn_as_ds) - set(qn_as_pm))
+        return project_id in questionnaires_only_as_datasender
+
+    return False
 
 
 def authenticate_api_user(username, password):
