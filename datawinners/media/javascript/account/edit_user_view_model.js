@@ -89,7 +89,7 @@ var viewModel = function () {
 
     this.submit = function () {
         $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
-
+        
         var formData = {
             'title': self.title(),
             'full_name': self.fullName(),
@@ -97,6 +97,7 @@ var viewModel = function () {
             'role': self.role(),
             'mobile_phone': self.mobilePhone(),
             'selected_questionnaires': self.selectedQuestionnaires() || [],
+            'selected_questionnaire_names': self.selectedQuestionnaireNames() || [],
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         };
         $.post('/account/users/'  + self.userId + '/edit/', formData, function (response) {
@@ -144,6 +145,16 @@ var viewModel = function () {
         setTimeout(function () {
             self.editUserSuccess(false);
         }, 10000);
+    };
+    
+    this.selectedQuestionnaireNames = function(){
+    	var selectedQuestionairesObj = _.filter(self.questionnaires(),function(q){
+    		return _.contains(self.selectedQuestionnaires(), q.id); 
+    	});
+    	var selectedQuestionnaireNames = _.map(selectedQuestionairesObj,function(q){
+    		return q.name;
+    	});
+    	return selectedQuestionnaireNames;
     }
 };
 

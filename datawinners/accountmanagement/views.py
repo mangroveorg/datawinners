@@ -50,6 +50,7 @@ from mangrove.form_model.project import Project
 from datawinners.accountmanagement.registration_views import get_previous_page_language
 from mangrove.datastore.user_permission import UserPermission, \
     get_user_permission, get_questionnaires_for_user, update_user_permission
+from collections import OrderedDict
 
 
 def registration_complete(request):
@@ -162,14 +163,13 @@ def make_user_data_sender_for_projects(manager, project_ids, reporter_id):
         make_user_data_sender_with_project(manager, reporter_id, project_id)
 
 
-
-def administrator_log_details(detail_dict):
-    return "Name: " + detail_dict['Name'] + "<br>" + "Role: " + detail_dict['Role']
-
-
-def project_manager_log_details(detail_dict):
-    return "Name: " + detail_dict['Name'] + "<br>" + "Role: " + detail_dict['Role'] + "<br>" + "Questionnaires & Polls: [%s]" % ",<br>".join(detail_dict['Projects'])
-
+def activity_log_detail(name, role, questionnaires=None):
+    detail = OrderedDict()
+    detail["Name"] = name
+    detail["Role"] = role
+    if questionnaires:
+        detail["Questionnaires & Polls"] = ",<br>".join(questionnaires)
+    return json.dumps(detail)
 
 @login_required
 @session_not_expired
@@ -217,16 +217,17 @@ def new_user(request):
                 if role == 'Extended Users':
                     associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
                     detail_dict = dict({"Role": friendly_name(role), "Name": name})
-                    UserActivityLog().log(request, action=ADDED_USER, detail=administrator_log_details(detail_dict))
+                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, role))
                 elif role == 'Project Managers':
                     selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
+                    selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
                     if selected_questionnaires is None:
                         selected_questionnaires = []
                     associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
                                                  selected_questionnaires)
                     detail_dict = dict(
                         {"Name": name, "Role": friendly_name(role), "Projects": selected_questionnaires})
-                    UserActivityLog().log(request, action=ADDED_USER, detail=project_manager_log_details(detail_dict))
+                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, role, selected_questionnaire_names))
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user", organization=org)
@@ -519,26 +520,24 @@ def edit_user_profile(request, user_id=None):
         message = ""
         _edit_user_success = False
         if form.is_valid():
-            selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
-            if selected_questionnaires is None or len(selected_questionnaires) < 1:
-                selected_questionnaires = []
-
             _update_user_and_profile(form, user.username, role)
 
             name = post_parameters["full_name"]
 
             if role == 'Project Managers':
+                selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
+                selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
+                if selected_questionnaires is None or len(selected_questionnaires) < 1:
+                    selected_questionnaires = []
+
                 dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role, selected_questionnaires)
                 make_user_data_sender_for_projects(manager, selected_questionnaires, reporter_id)
                 update_user_permission(manager, user_id=user.id, project_ids=selected_questionnaires)
-                detail_dict = dict(
-                    {"Projects": selected_questionnaires, "Role": friendly_name(role), "Name": name})
-                UserActivityLog().log(request, action=UPDATED_USER, detail=project_manager_log_details(detail_dict))
+                UserActivityLog().log(request, action=UPDATED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
             elif role == 'Extended Users' and previous_role != 'Extended Users':
                 associate_user_with_all_projects_of_organisation(manager, reporter_id)
                 update_user_permission(manager, user_id=user.id, project_ids=[])
-                detail_dict = dict({"Role": friendly_name(role), "Name": name})
-                UserActivityLog().log(request, action=UPDATED_USER, detail=administrator_log_details(detail_dict))
+                UserActivityLog().log(request, action=UPDATED_USER, detail=activity_log_detail(name, friendly_name(role)))
 
             message = _('Profile has been updated successfully')
             _edit_user_success = True

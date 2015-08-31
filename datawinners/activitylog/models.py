@@ -5,6 +5,7 @@ from datetime import datetime
 from django.utils.translation import ugettext_lazy as _, ugettext
 import json
 from datawinners.common.constant import *
+from collections import OrderedDict
 
 action_list = (
     ('',_("All Actions")),
@@ -84,7 +85,7 @@ class UserActivityLog(models.Model):
 
     def translated_detail(self):
         try:
-            detail_dict = json.loads(self.detail)
+            detail_dict = json.loads(self.detail, object_pairs_hook=OrderedDict)
             assert isinstance(detail_dict, dict)
         except Exception:
             return self.detail
