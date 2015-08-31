@@ -58,7 +58,11 @@
                 <div class="tableCell">
                     <label>{% trans 'Role' %}</label>
                 </div>
+                {% if user.is_ngo_admin %}
                 <div class="tableCell">
+                {% else %}
+                <div class="tableCell single-user-role">
+                {% endif %}
                     {% if user.groups.all.0.name == 'NGO Admins' %}
                         <label><input type="radio" name="role" id="option_administrator"
                                       data-bind="checked: role, value: 'Extended Users'"/> {% trans "Administrator" %}
@@ -110,7 +114,7 @@
                     <label>{% trans 'Email' %}</label>
                 </div>
                 <div class="tableCell">
-                    <input type="text" name="username" disabled="disabled" data-bind="value: email"/>
+                    <span data-bind="text: email"></span>
                 </div>
                 <div class="tableCell" data-bind="css: { errorlist: email.error() != null && email.error() != '' }">
                     <div class="error-box">

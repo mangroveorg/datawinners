@@ -858,7 +858,6 @@ span.selected_list_item_arrow {
     }
   }
   .questionnaire-list {
-    padding-left: 25px;
     max-height: 318px;
     overflow-y: scroll;
     width: 100%;
@@ -902,8 +901,7 @@ span.selected_list_item_arrow {
           white-space: nowrap;
         }
         .role_description {
-          padding: 0 0 5px 0;
-          margin-left: 25px;
+          padding: 0 0 5px 25px;
           width: 350px;
         }
         .optional_field {
@@ -913,6 +911,17 @@ span.selected_list_item_arrow {
           position: relative;
           top: -4px;
         }
+
+        &.single-user-role {
+          input[type="radio"] {
+            display: none;
+          }
+
+          .role_description {
+            padding-left: 0;
+          }
+        }
+
         padding-bottom: 20px;
       }
     }

@@ -199,3 +199,14 @@ table.error_table {
     color: black;
   }
 }
+
+.single-user-role {
+  input[type="radio"] {
+    display: none;
+  }
+
+  .role_description {
+    padding-left: 0;
+    width: 350px;
+  }
+}

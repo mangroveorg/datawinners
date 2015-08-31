@@ -55,8 +55,12 @@
             <div class="tableCell">
                 <label>{% trans 'Role' %}</label>
             </div>
+            {% if user.is_ngo_admin %}
             <div class="tableCell">
-                 {% if user.is_ngo_admin%}
+            {% else %}
+            <div class="tableCell single-user-role">
+            {% endif %}
+                 {% if user.is_ngo_admin %}
                 <label><input type="radio" name="role" id="option_administrator"
                               data-bind="checked: role, value: 'Extended Users'"/> {% trans "Administrator" %}
                  </label>
