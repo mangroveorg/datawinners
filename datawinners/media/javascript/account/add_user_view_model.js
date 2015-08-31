@@ -50,6 +50,7 @@ var viewModel = function () {
             'role': self.role(),
             'mobile_phone': self.mobilePhone(),
             'selected_questionnaires': self.selectedQuestionnaires() || [],
+            'selected_questionnaire_names': self.selectedQuestionnaireNames() || [],
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
         };
         $.post('/account/user/new/', formData, function (response) {
@@ -108,7 +109,18 @@ var viewModel = function () {
         setTimeout(function () {
             self.addUserSuccess(false);
         }, 10000)
-    }
+    };
+    
+    this.selectedQuestionnaireNames = function(){
+    	var selectedQuestionairesObj = _.filter(self.questionnaires(),function(q){
+    		return _.contains(self.selectedQuestionnaires(), q.id); 
+    	});
+    	var selectedQuestionnaireNames = _.map(selectedQuestionairesObj,function(q){
+    		return q.name;
+    	});
+    	return selectedQuestionnaireNames;
+    };
+    
 };
 
 $(document).ready(function () {
