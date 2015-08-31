@@ -216,8 +216,7 @@ def new_user(request):
 
                 if role == 'Extended Users':
                     associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
-                    detail_dict = dict({"Role": friendly_name(role), "Name": name})
-                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, role))
+                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
                 elif role == 'Project Managers':
                     selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
                     selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
@@ -225,9 +224,7 @@ def new_user(request):
                         selected_questionnaires = []
                     associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
                                                  selected_questionnaires)
-                    detail_dict = dict(
-                        {"Name": name, "Role": friendly_name(role), "Projects": selected_questionnaires})
-                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, role, selected_questionnaire_names))
+                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user", organization=org)
