@@ -6114,4 +6114,4 @@ msgid "access_denied_message"
 msgstr "Désolé, vous n'êtes pas autorisé à accéder à cette page. Veuillez contacter votre Administrateur."
 
 msgid "Access Denied"
-msgstr ""
+msgstr "Accès non autorisé"

@@ -4890,3 +4890,6 @@ msgstr ""
 
 msgid "access_denied_message"
 msgstr "Sorry, you are not authorized to access this page. Please contact your Administrator."
+
+msgid "Access Denied"
+msgstr ""
