@@ -440,7 +440,8 @@ def remove_user_as_datasender_for_projects(manager, project_ids, selected_questi
     removed_questionnaires = list(set(project_ids) - set(selected_questionnaires))
     for questionnaire in removed_questionnaires:
         project = Project.get(manager, questionnaire)
-        project.delete_datasender(manager, reporter_id)
+        if reporter_id in project.data_senders:
+            project.delete_datasender(manager, reporter_id)
         update_datasender_index_by_id(reporter_id, manager)
 
 
