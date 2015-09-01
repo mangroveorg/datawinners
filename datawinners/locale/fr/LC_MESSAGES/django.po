@@ -6096,7 +6096,7 @@ msgid "add_user_help_text"
 msgstr "Lorsque vous cliquez sur Ajouter un Utilisateur, nous enverrons un email pour inviter cette personne à votre compte DataWinners."
 
 msgid "User has been updated successfully"
-msgstr "L'utilisateur a été mis à jour avec succès"
+msgstr "L'Utilisateur a été mis à jour avec succès"
 
 msgid "Edit User"
 msgstr "Modifier un Utilisateur"
@@ -6117,10 +6117,22 @@ msgid "Access Denied"
 msgstr "Accès non autorisé"
 
 msgid "Create Questionnaires"
-msgstr "Créer un Questionnaire"
+msgstr "Créer des Questionnaires"
 
 msgid "Updated User"
-msgstr "A mis à jour l’utilisateur"
+msgstr "A mis à jour l’Utilisateur"
 
 msgid "Renamed Questionnaire"
 msgstr "A renommé le Questionnaire"
+
+msgid "Created Poll"
+msgstr "Sondage créé"
+
+msgid "Deleted Poll"
+msgstr "Sondage supprimé"
+
+msgid "Deactivated Poll"
+msgstr "Sondage désactivé"
+
+msgid "Activated Poll"
+msgstr "Sondage activé"

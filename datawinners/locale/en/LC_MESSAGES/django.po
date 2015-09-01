@@ -4902,3 +4902,16 @@ msgstr ""
 
 msgid "Renamed Questionnaire"
 msgstr ""
+
+msgid "Created Poll"
+msgstr ""
+
+msgid "Deleted Poll"
+msgstr ""
+
+msgid "Deactivated Poll"
+msgstr ""
+
+msgid "Activated Poll"
+msgstr ""
+
