@@ -60,10 +60,16 @@
         }
     };
 
+    $(document).ready(function() {
+        $.each($("input[name='project_names']"), function(index, element) {
+           project_list.push(element.value);
+        });
+    });
+
     dw.allContactTableMenu.canRemoveQuestionnaire = function(selectedContacts){
         var selectedIds = _.map(selectedContacts, function(elem){ return elem.value})
         var currentQuestionnaireList = dw.matchingQuestionnaireNames(selectedIds);
-        var commonQuestionnaires = _.intersection(project_list,currentQuestionnaireList)
+        var commonQuestionnaires = _.intersection(project_list, currentQuestionnaireList);
         return commonQuestionnaires.length > 0;
     }
 
