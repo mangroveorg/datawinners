@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django_digest.decorators import httpdigest
+from mangrove.datastore.user_permission import has_permission
+from mangrove.form_model.form_model import get_form_model_by_code
 from datawinners.dataextraction.helper import  encapsulate_data_for_form, convert_to_json_file_download_response
 from datawinners.dataextraction.helper import generate_filename, check_date_format
 from datawinners.main.database import get_database_manager
@@ -15,8 +17,13 @@ def get_for_form(request, form_code, start_date=None, end_date=None):
     if request.method == 'GET':
         user = request.user
         dbm = get_database_manager(user)
-        data_for_form = encapsulate_data_for_form(dbm, form_code, start_date, end_date)
-        return convert_to_json_file_download_response(data_for_form, generate_filename(form_code, start_date, end_date))
+        questionnaire_id = get_form_model_by_code(dbm, form_code).id
+        if user.is_ngo_admin() or user.is_extended_user() or \
+                (user.is_project_manager() and has_permission(dbm, user.id, questionnaire_id)):
+            data_for_form = encapsulate_data_for_form(dbm, form_code, start_date, end_date)
+            return convert_to_json_file_download_response(data_for_form, generate_filename(form_code, start_date, end_date))
+
+        return HttpResponse(content="Error: You don't have access to this information", status=403)
     return HttpResponse("Error. Only support GET method.")
 
 @httpdigest

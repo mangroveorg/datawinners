@@ -2,6 +2,7 @@ import json
 from django.http import HttpResponse
 from django_digest.decorators import httpdigest
 import elasticutils
+from mangrove.datastore.user_permission import has_permission
 from datawinners.main.database import get_database_manager
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
@@ -58,10 +59,14 @@ def get_unique_ids_for_form_code(request, form_code):
         user = request.user
         dbm = get_database_manager(user)
         response_limit = request.GET.get('limit', 15000)
-        unique_ids, questionnaire_dict = _get_response(dbm, form_code, user, response_limit)
-        if unique_ids is None:
-            return HttpResponse(status=404)
-        return HttpResponse(json.dumps({
-                                        'unique-ids': unique_ids,
-                                        'questionnaire': questionnaire_dict
-                                       }), content_type='application/json; charset=UTF-8')
+        questionnaire_id = get_form_model_by_code(dbm, form_code).id
+        if user.is_ngo_admin() or user.is_extended_user() or
+            (user.is_project_manager() and has_permission(dbm, user.id, questionnaire_id)):
+            unique_ids, questionnaire_dict = _get_response(dbm, form_code, user, response_limit)
+            if unique_ids is None:
+                return HttpResponse(status=404)
+            return HttpResponse(json.dumps({
+                                            'unique-ids': unique_ids,
+                                            'questionnaire': questionnaire_dict
+                                           }), content_type='application/json; charset=UTF-8')
+        return HttpResponse(content="Error: You don't have access to the information", status=403)
