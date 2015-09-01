@@ -50,7 +50,8 @@ def feed_entries(request, form_code):
         dbm = get_database_manager(user)
         form_model = get_form_model_by_code(dbm, form_code)
         questionnaire_id = form_model.id
-        if user.can_manage_questionnaire(questionnaire_id):
+        if user.is_ngo_admin() or user.is_extended_user() or \
+                (user.is_project_manager() and has_permission(dbm, user.id, questionnaire_id)):
             feed_dbm = get_feeds_database(request.user)
             start_date = _parse_date(request.GET['start_date'])
             end_date = _parse_date(request.GET['end_date'])

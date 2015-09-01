@@ -60,7 +60,8 @@ def get_unique_ids_for_form_code(request, form_code):
         dbm = get_database_manager(user)
         response_limit = request.GET.get('limit', 15000)
         questionnaire_id = get_form_model_by_code(dbm, form_code).id
-        if user.can_manage_questionnaire(questionnaire_id):
+        if user.is_ngo_admin() or user.is_extended_user() or \
+                (user.is_project_manager() and has_permission(dbm, user.id, questionnaire_id)):
             unique_ids, questionnaire_dict = _get_response(dbm, form_code, user, response_limit)
             if unique_ids is None:
                 return HttpResponse(status=404)

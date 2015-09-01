@@ -1,6 +1,4 @@
 from django.contrib.auth.models import User
-from mangrove.datastore.user_permission import has_permission
-from datawinners.main.database import get_database_manager
 
 
 def is_ngo_admin(self):
@@ -21,16 +19,7 @@ def has_higher_privileges_than(self, user):
         return True
     return False
 
-def can_manage_questionnaire(self, questionnaire_id):
-    if self.is_ngo_admin() or self.is_extended_user():
-        return True
-    if self.is_project_manager() and has_permission(get_database_manager(self), self.id, questionnaire_id):
-        return True
-    return False
-
-
 User.add_to_class("is_ngo_admin", is_ngo_admin)
 User.add_to_class("is_extended_user", is_extended_user)
 User.add_to_class("is_project_manager", is_project_manager)
 User.add_to_class("has_higher_privileges_than", has_higher_privileges_than)
-User.add_to_class("can_manage_questionnaire", can_manage_questionnaire)

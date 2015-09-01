@@ -18,7 +18,8 @@ def get_for_form(request, form_code, start_date=None, end_date=None):
         user = request.user
         dbm = get_database_manager(user)
         questionnaire_id = get_form_model_by_code(dbm, form_code).id
-        if user.can_manage_questionnaire(questionnaire_id):
+        if user.is_ngo_admin() or user.is_extended_user() or \
+                (user.is_project_manager() and has_permission(dbm, user.id, questionnaire_id)):
             data_for_form = encapsulate_data_for_form(dbm, form_code, start_date, end_date)
             return convert_to_json_file_download_response(data_for_form, generate_filename(form_code, start_date, end_date))
 
