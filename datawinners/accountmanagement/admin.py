@@ -461,7 +461,8 @@ def _remove_default_name_fields():
 def export_user_list_to_excel(a,b,c):
     #Custom Method to export user details.
     def is_required(user):
-        return True if user.groups.filter(name="NGO Admins").count() or user.groups.filter(name="Project Managers").count() else False
+        return True if user.groups.filter(name="NGO Admins").count() or user.groups.filter(name="Project Managers").count() \
+            or user.groups.filter(name="Extended Users").count()else False
 
     def user_role(user):
         if user.groups.filter(name='NGO Admins').count():

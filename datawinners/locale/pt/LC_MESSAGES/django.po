@@ -2422,7 +2422,7 @@ msgstr ""
 msgid "%s with %s = %s already exists."
 msgstr ""
 
-msgid "Job title"
+msgid "Job Title"
 msgstr ""
 
 msgid "broadcast_trial_warning_message"

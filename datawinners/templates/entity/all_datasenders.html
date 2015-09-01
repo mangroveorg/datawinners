@@ -52,9 +52,9 @@
         var datasender_ajax_url = "{% url all_datasenders_ajax %}";
         var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
         var number_of_projects = {{ projects|length }};
-        {% with project_names=projects.values %}
-            var project_list = {{ project_names|safe }};
-        {% endwith %}
+{#        {% with project_names=projects.values %}#}
+{#            var project_list = {{ project_names|safe }};#}
+{#        {% endwith %}#}
         var delete_group_url = "{% url group_delete %}";
         var group_rename_url = "{% url group_rename %}";
         var sms_popup_page = "all-contacts";
@@ -62,6 +62,7 @@
         var user_group = "{{ user_group }}";
         var message_text = "";
         var is_poll = "";
+        var project_list = [];
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/allds/?template=help";
         $(document).ready(function() {
             $("#page_title").addClass("full_width");
@@ -112,6 +113,9 @@
 {% endblock %}
 {% load i18n %}
 {% block content %}
+    {% for questionnaire in projects.values %}
+        <input type="hidden" name="project_names" value="{{ questionnaire }}">
+    {% endfor %}
     <div>
         <div>
             <div class="float_right">

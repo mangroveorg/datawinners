@@ -4,7 +4,7 @@
 
 <div class="grid_24 tab_navigation">
     <ul>
-        {% if user|in_group:"NGO Admins,Project Managers,Read Only Users" %}
+        {% if user|in_group:"NGO Admins,Project Managers,Read Only Users, Extended Users" %}
             <li class="{% ifactivetab 'tab_nav' 'projects' %}active{% else %}inactive{% endifactivetab %}">
             {% if is_pro_sms %}
                 <a id="projects_tab" href="{{ project_links.projects_link }}"
@@ -25,7 +25,7 @@
         </li>
         {% endif %}
 
-        {% if user|in_group:"NGO Admins,Project Managers,Read Only Users" %}
+        {% if user|in_group:"NGO Admins,Project Managers,Read Only Users, Extended Users" %}
         <li class="{% ifactivetab 'tab_nav' 'failed_submissions' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="failed_submissions_tab" href="{{ project_links.failed_submissions_link }}"
                class="{{ disable_link_class }}">{% trans "Failed Submissions" %}</a>

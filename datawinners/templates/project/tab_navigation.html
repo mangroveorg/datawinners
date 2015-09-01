@@ -55,16 +55,17 @@
                     <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>&nbsp&nbsp|&nbsp
                 {% endif %}
             {% endif %}
-        {% if user|in_group:"NGO Admins,Project Managers" %}
+        {% if user|in_group:"NGO Admins,Project Managers,Extended Users" %}
 
                {% if project.is_poll %}
                    <a href="{{ project_links.delete_project_link }}" class="delete_project" id="delete_poll" data-is_poll="true">
                    {% trans "Delete this Poll" %}
+                   </a>
                {% else %}
                    <a href="{{ project_links.delete_project_link }}"  class="delete_project" >
                     {% trans "Delete this Questionnaire" %}
+                   </a>
                {% endif %}
-               </a>
 
         {% endif %}
         </div>

@@ -10,7 +10,7 @@ from mangrove.datastore.user_permission import get_questionnaires_for_user
 def registered_ds_count(request):
     dbm = get_database_manager(request.user)
     result = []
-    if request.is_ngo_admin() or request.user.is_extended_user():
+    if request.user.is_ngo_admin() or request.user.is_extended_user():
         rows = [row['value'] for row in dbm.load_all_rows_in_view('all_projects')]
     else:
         rows = get_questionnaires_for_user(request.user.id, dbm)

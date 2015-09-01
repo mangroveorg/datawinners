@@ -16,7 +16,7 @@
         all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
 
         $('#action_for_project').text(gettext("Add"));
-        all_project_block.dialog('option', 'title', gettext('Add to Questionnaire'));
+        all_project_block.dialog('option', 'title', gettext('Add to Questionnaires'));
         all_project_block.dialog("open");
     };
 

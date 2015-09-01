@@ -5,6 +5,7 @@ import urllib2
 from django.conf import settings
 from django.http import HttpResponse
 import jsonpickle
+from mangrove.datastore.user_permission import has_permission
 from datawinners.common.authorization import httpbasic, is_not_datasender
 
 from datawinners.main.database import get_database_manager
@@ -12,7 +13,6 @@ from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.feeds.database import get_feeds_database
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.form_model import get_form_model_by_code
-
 
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
 
@@ -31,6 +31,7 @@ def stream_feeds(feed_dbm, startkey, endkey):
 @httpbasic
 @is_not_datasender
 def feed_entries(request, form_code):
+    user = request.user
     try:
         if not settings.FEEDS_ENABLED:
             return HttpResponse(404)
@@ -46,11 +47,18 @@ def feed_entries(request, form_code):
         if _invalid_form_code(request, form_code):
             return convert_to_json_response({"ERROR_CODE": 101, "ERROR_MESSAGE": 'Invalid form code provided'}, 400)
 
-        feed_dbm = get_feeds_database(request.user)
-        start_date = _parse_date(request.GET['start_date'])
-        end_date = _parse_date(request.GET['end_date'])
-        return HttpResponse(stream_feeds(feed_dbm, startkey=[form_code, start_date], endkey=[form_code, end_date]),
-                            content_type='application/json; charset=utf-8')
+        dbm = get_database_manager(user)
+        form_model = get_form_model_by_code(dbm, form_code)
+        questionnaire_id = form_model.id
+        if user.is_ngo_admin() or user.is_extended_user() or \
+                (user.is_project_manager() and has_permission(dbm, user.id, questionnaire_id)):
+            feed_dbm = get_feeds_database(request.user)
+            start_date = _parse_date(request.GET['start_date'])
+            end_date = _parse_date(request.GET['end_date'])
+            return HttpResponse(stream_feeds(feed_dbm, startkey=[form_code, start_date], endkey=[form_code, end_date]),
+                                content_type='application/json; charset=utf-8')
+
+        return convert_to_json_response({"ERROR_CODE": 104, "ERROR_MESSAGE": "You don't have access to this feed"}, 403)
     except Exception as e:
         logger = logging.getLogger('datawinners')
         logger.exception(e)

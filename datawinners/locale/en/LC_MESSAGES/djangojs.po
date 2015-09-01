@@ -1199,3 +1199,6 @@ msgstr "To create the Poll you must first deactivate current active poll. You do
 
 msgid "Your change(s) will be lost"
 msgstr ""
+
+msgid "Add to Questionnaires"
+msgstr ""
