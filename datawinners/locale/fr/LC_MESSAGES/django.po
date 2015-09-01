@@ -6081,25 +6081,25 @@ msgid "Back to Users"
 msgstr "Retour vers Utilisateurs"
 
 msgid "Add User"
-msgstr "Ajouter un utilisateur"
+msgstr "Ajouter un Utilisateur"
 
 msgid "role_administrator_description"
 msgstr "Cette personne aura un accès Lecture/Ecriture à tous les Questionnaires et Sondages, pourra ajouter des utilisateurs et gérer les autorisations des utilisateurs"
 
 msgid "role_project_manager_description"
-msgstr "Cette personne pourra créer des Questionnaires ou Sondages avec un accès total Lecture/Ecriture. Vous pouvez aussi donner à cette personne l'accès Lecture/Ecriture aux Questionnaires et Sondages existants en cochant la case en dessous."
+msgstr "Cette personne pourra créer des Questionnaires ou Sondages avec un accès total Lecture/Ecriture. Vous pouvez aussi donner à cette personne l'accès Lecture/Ecriture aux Questionnaires et Sondages existants en cochant les cases appropriées ci-dessous."
 
 msgid "questionnaire_access_placeholder_text"
 msgstr "Une fois le Questionnaire ou Sondage créé, vous pouvez donner un accès ici"
 
 msgid "add_user_help_text"
-msgstr "Lorsque vous cliquez sur Ajouter un utilisateur, nous vous enverrons un email pour inviter cette personne à votre compte DataWinners"
+msgstr "Lorsque vous cliquez sur Ajouter un Utilisateur, nous enverrons un email pour inviter cette personne à votre compte DataWinners."
 
 msgid "User has been updated successfully"
 msgstr "L'utilisateur a été mis à jour avec succès"
 
 msgid "Edit User"
-msgstr "Modifier un utilisateur"
+msgstr "Modifier un Utilisateur"
 
 msgid "You have made changes to the form. These changes will be lost if you navigate away from this page."
 msgstr "Vous avez apporté des modifications au formulaire. Ces modifications seront perdues si vous quittez cette page."
@@ -6115,3 +6115,12 @@ msgstr "Désolé, vous n'êtes pas autorisé à accéder à cette page. Veuillez
 
 msgid "Access Denied"
 msgstr "Accès non autorisé"
+
+msgid "Create Questionnaires"
+msgstr "Créer un Questionnaire"
+
+msgid "Updated User"
+msgstr "A mis à jour l’utilisateur"
+
+msgid "Renamed Questionnaire"
+msgstr "A renommé le Questionnaire"

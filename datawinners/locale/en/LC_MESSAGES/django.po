@@ -2429,7 +2429,7 @@ msgstr ""
 msgid "%s with Unique ID Number = %s already exists."
 msgstr ""
 
-msgid "Job title"
+msgid "Job Title"
 msgstr ""
 
 msgid "broadcast_trial_warning_message"
@@ -4892,4 +4892,13 @@ msgid "access_denied_message"
 msgstr "Sorry, you are not authorized to access this page. Please contact your Administrator."
 
 msgid "Access Denied"
+msgstr ""
+
+msgid "Create Questionnaires"
+msgstr ""
+
+msgid "Updated User"
+msgstr ""
+
+msgid "Renamed Questionnaire"
 msgstr ""
