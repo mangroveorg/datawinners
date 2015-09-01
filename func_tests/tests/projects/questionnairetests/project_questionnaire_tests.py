@@ -16,7 +16,7 @@ from pages.projectspage.projects_page import ProjectsPage
 from pages.questionnairetabpage.questionnaire_tab_page import SUCCESS_PROJECT_SAVE_MESSAGE, DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
 from pages.warningdialog.redistribute_questionnaire_dialog import RedistributeQuestionnaireDialog
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url, DATA_WINNER_ALL_PROJECTS_PAGE, ACCOUNT_USERS
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url, DATA_WINNER_ALL_PROJECTS_PAGE, ACCOUNT_USERS, DATA_WINNER_DASHBOARD_PAGE, LOGOUT
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
@@ -24,6 +24,8 @@ from pages.warningdialog.warning_dialog import WarningDialog
 from framework.utils.common_utils import by_id, by_css, random_string, by_xpath
 from tests.submissionlogtests.submission_log_tests import send_sms_with
 from tests.editusertests.edit_user_data import SMS_TO_TEST_PERMISSION, SMS
+from tests.dashboardtests.dashboard_tests_data import USER_RASITEFA_CREDENTIALS
+from tests.alldatasenderstests.all_data_sender_data import *
 
 CLOSE_WARNING_DIALOGUE_LINK = by_css(
     'div.ui-dialog[style*="block"] > div.ui-dialog-titlebar>a.ui-dialog-titlebar-close')
@@ -498,7 +500,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         user_names = [element.text for element in self.driver.find_elements_(by_xpath("//*[@id='users_list']/table/tbody/tr/td[2]"))]
         self.assertEquals(user_names.__len__(),registered_ds_names.__len__())
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_pm_should_not_have_ds_permission_to_newly_created_questionnaire(self):
         dashboard_page = self.global_navigation.navigate_to_dashboard_page()
         questionnaire_creation_options_page = dashboard_page.navigate_to_create_project_page()
@@ -518,3 +520,30 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
 
         response = send_sms_with(SMS_TO_TEST_PERMISSION)
         self.assertEqual(response, ERROR_MESSAGE_MSG)
+
+    @attr('functional_testa')
+    def test_should_check_if_deleted_questionnaires_and_poll_not_be_in_questionnaires_list(self):
+        self.driver.go_to(LOGOUT)
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        login_page.do_successful_login_with(USER_RASITEFA_CREDENTIALS)
+        self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
+        dashboard_page = DashboardPage(self.driver)
+        self.assertEqual(len(dashboard_page.get_projects_list()), 3)
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+
+        create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page.create_questionnaire_with(NEW_PROJECT, QUESTIONNAIRE_DATA)
+        global_navigation = GlobalNavigationPage(self.driver)
+        project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
+        project_name = project_overview_page.get_project_title()
+        all_projects_page = global_navigation.navigate_to_view_all_project_page()
+        all_projects_page.delete_project(project_name)
+        self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
+        dashboard_page = DashboardPage(self.driver)
+        all_projects_page = ProjectsPage(self.driver)
+        self.assertEqual(len(dashboard_page.get_projects_list()), 3)
+        self.assertFalse(all_projects_page.is_project_present(project_name))
+    
+
+
