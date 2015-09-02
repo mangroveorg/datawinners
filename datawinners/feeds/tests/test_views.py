@@ -2,9 +2,10 @@ import types
 from unittest import TestCase
 import urllib2
 from couchdb.client import Database
+from django.contrib.auth.models import User
 from django.http import HttpRequest
 import jsonpickle
-from mock import Mock, patch
+from mock import Mock, patch, MagicMock
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.datastore.database import DatabaseManager
 
@@ -66,6 +67,8 @@ class TestFeedView(TestCase):
 
     def test_error_when_start_date_not_provided(self):
         request = HttpRequest()
+        user = MagicMock(spec=User)
+        request.user = user
         response = feed_entries(request, "cli001")
         self.assertEqual(400, response.status_code)
         response_content = jsonpickle.decode(response.content)
@@ -75,6 +78,8 @@ class TestFeedView(TestCase):
 
     def test_error_when_start_date_is_empty(self):
         request = HttpRequest()
+        user = MagicMock(spec=User)
+        request.user = user
         request.GET['start_date'] = "     "
 
         response = feed_entries(request, "cli001")
@@ -86,6 +91,8 @@ class TestFeedView(TestCase):
 
     def test_error_when_start_date_is_not_in_correct_format(self):
         request = HttpRequest()
+        user = MagicMock(spec=User)
+        request.user = user
         request.GET['start_date'] = urllib2.quote("21/12/2001".encode("utf-8"))
         response = feed_entries(request, "cli001")
         self.assertEqual(400, response.status_code)
@@ -95,6 +102,8 @@ class TestFeedView(TestCase):
 
     def test_error_when_end_date_not_provided(self):
         request = HttpRequest()
+        user = MagicMock(spec=User)
+        request.user = user
         request.GET['start_date'] = urllib2.quote("21-12-2001 12:12:57".encode("utf-8"))
         response = feed_entries(request, "cli001")
         self.assertEqual(400, response.status_code)
@@ -105,6 +114,8 @@ class TestFeedView(TestCase):
 
     def test_error_when_end_date_is_empty(self):
         request = HttpRequest()
+        user = MagicMock(spec=User)
+        request.user = user
         request.GET['start_date'] = urllib2.quote("21-12-2001 12:12:57".encode("utf-8"))
         request.GET['end_date'] = "   "
 
@@ -117,6 +128,8 @@ class TestFeedView(TestCase):
 
     def test_error_when_end_date_is_not_in_correct_format(self):
         request = HttpRequest()
+        user = MagicMock(spec=User)
+        request.user = user
         request.GET['start_date'] = urllib2.quote("21-12-2001 12:12:57".encode("utf-8"))
         request.GET['end_date'] = urllib2.quote("21-12-2001".encode("utf-8"))
 
@@ -128,6 +141,8 @@ class TestFeedView(TestCase):
 
     def test_error_when_end_date_is_less_than_start_date(self):
         request = HttpRequest()
+        user = MagicMock(spec=User)
+        request.user = user
         request.GET['start_date'] = urllib2.quote("21-12-2001 12:12:57".encode("utf-8"))
         request.GET['end_date'] = urllib2.quote("21-12-2001 12:12:56".encode("utf-8"))
 
