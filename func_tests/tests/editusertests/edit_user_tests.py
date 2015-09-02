@@ -34,6 +34,7 @@ class TestEditUser(HeadlessRunnerTest):
         success_message = edit_user_page.get_success_message()
         self.assertEqual(USER_EDITED_SUCCESS_MESSAGE, success_message,
                          'Expected "User has been updated successfully" message but was not found')
+        self.global_navigation.sign_out()
 
     @attr('functional_test')
     def test_should_edit_a_project_manager_as_ngo_admin(self):
