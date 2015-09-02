@@ -1,9 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from selenium.common.exceptions import InvalidElementStateException
-from pages.adduserpage.add_user_locator import ERROR_MESSAGES_LOCATOR
+from pages.adduserpage.add_user_locator import ERROR_MESSAGES_LOCATOR, CONFIRM_LEAVE_PAGE_BUTTON
 
 from pages.page import Page
-from framework.utils.common_utils import by_css
+from framework.utils.common_utils import by_css, by_xpath
 from pages.adddatasenderspage.add_data_senders_locator import FLASH_MESSAGE_LABEL
 from tests.testsettings import UI_TEST_TIMEOUT
 
@@ -23,7 +23,7 @@ class EditUserPage(Page):
             self.driver.find_text_box(by_css("input[name=%s]" % key)).enter_text(value)
 
     def get_success_message(self):
-        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, FLASH_MESSAGE_LABEL)
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, FLASH_MESSAGE_LABEL, True)
         return locator.text
 
     def get_error_messages(self):
@@ -52,12 +52,8 @@ class EditUserPage(Page):
         return list_of_questionnaires
 
     def is_user_name_is_prefetched(self, username):
-        prefetched_username = self.driver.find(by_css("input[name=username]")).get_attribute('value')
+        prefetched_username = self.driver.find(by_css("span[id=prefetched-username]")).text
         return True if prefetched_username == username else False
-
-    def is_user_name_text_box_disabled(self):
-        disabled_attribute = self.driver.find(by_css("input[name=username]")).get_attribute('disabled')
-        return True if disabled_attribute is not None else False
 
     def is_role_administrator(self):
         administrator_checked = self.driver.find(by_css("input[id=option_administrator]")).get_attribute('checked')
@@ -76,3 +72,14 @@ class EditUserPage(Page):
         selected_questionnaires = self.driver.find_elements_by_css_selector('.questionnaire-list ul li input:checked')
         for element in selected_questionnaires:
             element.click()
+
+    def confirm_leave_page(self):
+        locator = self.driver.find(CONFIRM_LEAVE_PAGE_BUTTON)
+        if locator.is_displayed():
+            locator.click()
+
+    def select_questionnaires_by_name(self, questionnaire_names):
+        for name in questionnaire_names:
+            self.driver.find(by_xpath("//span[contains(text(), '%s')]/../input" % name)).click()
+
+
