@@ -37,7 +37,22 @@ class TestAddUser(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_add_a_new_extended_user_as_ngo_admin(self):
-        self._create_extended_user()
+        self.add_user_page.select_role_as_administrator()
+        user = generate_user()
+        self.add_user_page.add_user_with(user)
+        message = self.add_user_page.get_success_message()
+        self.assertEqual(message, ADDED_USER_SUCCESS_MSG)
+        self.username = fetch_(USERNAME, user)
+        password = DEFAULT_PASSWORD
+        self.new_user_credential = {USERNAME: self.username, PASSWORD: password}
+        self.driver.go_to(ALL_USERS_URL)
+        role_for_user = self.all_users_page.get_role_for(self.username)
+        self.assertEqual('Administrator', role_for_user, 'Expected role to be Administrator but was %s' % role_for_user)
+        self.global_navigation.sign_out()
+        login(self.driver, self.new_user_credential)
+        title = self.driver.get_title()
+        self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+        self.global_navigation.sign_out()
 
     @attr('functional_test')
     def test_should_add_a_new_project_manager_as_ngo_admin(self):
@@ -68,7 +83,18 @@ class TestAddUser(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_add_a_new_project_manager_as_extended_user(self):
-        self._create_extended_user()
+        self.add_user_page.select_role_as_administrator()
+        user = generate_user()
+        self.add_user_page.add_user_with(user)
+        message = self.add_user_page.get_success_message()
+        self.assertEqual(message, ADDED_USER_SUCCESS_MSG)
+        self.username = fetch_(USERNAME, user)
+        password = DEFAULT_PASSWORD
+        self.new_user_credential = {USERNAME: self.username, PASSWORD: password}
+        self.global_navigation.sign_out()
+        login(self.driver, self.new_user_credential)
+        title = self.driver.get_title()
+        self.assertEqual(title, DASHBOARD_PAGE_TITLE)
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
         self.add_user_page = self.all_users_page.navigate_to_add_user()
@@ -121,13 +147,15 @@ class TestAddUser(HeadlessRunnerTest):
         self.add_user_page.add_user_with(user)
         message = self.add_user_page.get_error_messages()
         self.assertEqual(message, "This field is required.")
+        self.global_navigation.sign_out()
+        self.add_user_page.confirm_leave_page()
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_phonenumber(self):
         user = generate_user()
         user.update({MOBILE_PHONE: 'abcdefgh'})
         self._validate_and_check_error_message(user,
-                                               u'Invalid phone number')
+                                               u'Please enter a valid phone number.')
         self.global_navigation.sign_out()
         self.add_user_page.confirm_leave_page()
 
