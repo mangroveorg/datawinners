@@ -395,7 +395,7 @@ msgid "Point of Contact"
 msgstr "Personne à contacter"
 
 msgid "Account Administrator"
-msgstr "Gestionnaire du compte"
+msgstr "Administrateur du compte"
 
 msgid "Account Settings"
 msgstr "Paramètres du compte"

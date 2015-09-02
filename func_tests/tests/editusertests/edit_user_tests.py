@@ -2,13 +2,12 @@ from nose.plugins.attrib import attr
 
 from framework.utils.data_fetcher import fetch_
 from framework.base_test import HeadlessRunnerTest
-from pages.loginpage.login_page import login, LoginPage
+from pages.loginpage.login_page import login
 from tests.logintests.login_data import VALID_CREDENTIALS, PASSWORD
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.editusertests.edit_user_data import *
 from tests.addusertests.add_user_data import *
 from tests.alluserstests.all_users_data import ALL_USERS_URL
-from tests.dashboardtests.dashboard_tests_data import USER_RASITEFA_CREDENTIALS
 from tests.submissionlogtests.submission_log_tests import send_sms_with
 
 
@@ -27,7 +26,6 @@ class TestEditUser(HeadlessRunnerTest):
         self.driver.go_to(ALL_USERS_URL)
         all_users_page.select_user_with_username(username)
         edit_user_page = all_users_page.select_edit_action()
-        self.assertTrue(edit_user_page.is_user_name_text_box_disabled())
         self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
         self.assertTrue(edit_user_page.is_role_administrator())
         edit_user_page.save_changes({
@@ -36,6 +34,7 @@ class TestEditUser(HeadlessRunnerTest):
         success_message = edit_user_page.get_success_message()
         self.assertEqual(USER_EDITED_SUCCESS_MESSAGE, success_message,
                          'Expected "User has been updated successfully" message but was not found')
+        self.global_navigation.sign_out()
 
     @attr('functional_test')
     def test_should_edit_a_project_manager_as_ngo_admin(self):
@@ -53,7 +52,6 @@ class TestEditUser(HeadlessRunnerTest):
         questionnaire_list_for_user = all_users_page.get_questionnaire_list_for(username)
         all_users_page.select_user_with_username(username)
         edit_user_page = all_users_page.select_edit_action()
-        self.assertTrue(edit_user_page.is_user_name_text_box_disabled(), 'User name text was expected to be disabled ')
         self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
         self.assertTrue(edit_user_page.is_role_project_manager())
         self.assertTrue(edit_user_page.are_questionnaires_preselected(questionnaire_list_for_user))
@@ -108,7 +106,6 @@ class TestEditUser(HeadlessRunnerTest):
         questionnaire_list_for_user = self.all_users_page.get_questionnaire_list_for(username)
         self.all_users_page.select_user_with_username(username)
         edit_user_page = self.all_users_page.select_edit_action()
-        self.assertTrue(edit_user_page.is_user_name_text_box_disabled(), 'User name text was expected to be disabled ')
         self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
         self.assertTrue(edit_user_page.is_role_project_manager())
         self.assertTrue(edit_user_page.are_questionnaires_preselected(questionnaire_list_for_user))
@@ -139,12 +136,12 @@ class TestEditUser(HeadlessRunnerTest):
                         '%s user was expected to be editable but was not editable')
         self.all_users_page.select_user_with_username(username)
         edit_user_page = self.all_users_page.select_edit_action()
-        self.assertTrue(edit_user_page.is_user_name_text_box_disabled(), 'User name text was expected to be disabled ')
         self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
         self.assertTrue(edit_user_page.is_role_administrator())
         edit_user_page.select_role_as_project_manager()
         selected_questionnaires = edit_user_page.select_questionnaires(3)
         edit_user_page.save_changes()
+        edit_user_page.get_success_message()
         self.driver.go_to(ALL_USERS_URL)
         questionnaire_list_for_user = self.all_users_page.get_questionnaire_list_for(username)
         self.assertEqual(set(questionnaire_list_for_user), set(selected_questionnaires))
@@ -171,7 +168,6 @@ class TestEditUser(HeadlessRunnerTest):
         self.all_users_page.select_user_with_username(username)
         edit_user_page = self.all_users_page.select_edit_action()
 
-        self.assertTrue(edit_user_page.is_user_name_text_box_disabled(), 'User name text was expected to be disabled ')
         self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
         self.assertTrue(edit_user_page.is_role_project_manager())
         edit_user_page.select_role_as_administrator()
@@ -183,12 +179,13 @@ class TestEditUser(HeadlessRunnerTest):
         self.global_navigation.sign_out()
 
     @attr('functional_test')
-    def test_should_check_when_adding_user_with_existing_username(self):
+    def test_should_check_validations_while_editing_an_user(self):
         # Create a Project Manager
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        user = generate_user()
+        self._create_extended_user(user)
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
-        existing_mobile_number = self.all_users_page.get_mobile_number_for(VALID_CREDENTIALS[USERNAME])
+        existing_mobile_number = self.all_users_page.get_mobile_number_for(user.get(USERNAME))
         add_user_page = self.all_users_page.navigate_to_add_user()
         user = generate_user()
         add_user_page.select_role_as_project_manager()
@@ -232,7 +229,7 @@ class TestEditUser(HeadlessRunnerTest):
         message = edit_user_page.get_error_messages()
         self.assertEqual(message, u'This phone number is already in use. Please supply a different phone number')
         self.global_navigation.sign_out()
-        self.edit_user_page.confirm_leave_page()
+        edit_user_page.confirm_leave_page()
 
     def _create_extended_user(self, user):
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
@@ -240,6 +237,16 @@ class TestEditUser(HeadlessRunnerTest):
         self.all_users_page = AllUsersPage(self.driver)
         self.add_user_page = self.all_users_page.navigate_to_add_user()
         self.add_user_page.select_role_as_administrator()
+        self.add_user_page.add_user_with(user)
+        self.add_user_page.get_success_message()
+
+    def _create_project_manager(self, user):
+        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        self.driver.go_to(ALL_USERS_URL)
+        self.all_users_page = AllUsersPage(self.driver)
+        self.add_user_page = self.all_users_page.navigate_to_add_user()
+        self.add_user_page.select_role_as_project_manager()
+        self.add_user_page.select_questionnaires(1, 0)
         self.add_user_page.add_user_with(user)
         self.add_user_page.get_success_message()
 
@@ -257,9 +264,8 @@ class TestEditUser(HeadlessRunnerTest):
         edit_user_page.get_success_message()
         response = send_sms_with(SMS_TO_TEST_PERMISSION)
         self.assertEqual(response, ERROR_MESSAGE)
-        edit_user_page.select_questionnaires(3, 7)
+        edit_user_page.select_questionnaires_by_name(["clinic test project1"])
         edit_user_page.save_changes()
         edit_user_page.get_success_message()
         response = send_sms_with(SMS_TO_TEST_PERMISSION)
         self.assertEqual(response, SUCCESS_MESSAGE)
-

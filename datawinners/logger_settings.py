@@ -213,5 +213,10 @@ LOGGING = {
             'handlers': ['log-file'],
             'propagate': True,
         },
+        'migration': {
+            'level': 'INFO',
+            'handlers': ['log-file'],
+            'propagate': True,
+        }
     }
 }

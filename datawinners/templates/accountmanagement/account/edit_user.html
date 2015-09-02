@@ -114,7 +114,7 @@
                     <label>{% trans 'Email' %}</label>
                 </div>
                 <div class="tableCell">
-                    <span data-bind="text: email"></span>
+                    <span id="prefetched-username" data-bind="text: email"></span>
                 </div>
                 <div class="tableCell" data-bind="css: { errorlist: email.error() != null && email.error() != '' }">
                     <div class="error-box">

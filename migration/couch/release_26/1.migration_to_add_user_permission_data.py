@@ -9,6 +9,8 @@ from datawinners.project.views.views import questionnaire
 from mangrove.datastore.user_permission import UserPermission, update_user_permission
 import traceback
 import sys
+import time
+import logging
 
 map_all_questionnaire_id = """
 function(doc) {
@@ -17,8 +19,11 @@ function(doc) {
     }
 }"""
 
+logger = logging.getLogger("migration")
+
 def populate_user_permission(database_name):
     try:
+        start = time.time()
         organization_setting = OrganizationSetting.objects.get(document_store=database_name)
         org_id = organization_setting.organization_id
         project_managers = User.objects.filter(ngouserprofile__org_id=org_id, groups__name__in=["Project Managers"])\
@@ -28,9 +33,13 @@ def populate_user_permission(database_name):
         for user_id in project_managers:
             update_user_permission(dbm, user_id, project_ids)
         mark_as_completed(database_name)
+        logger.info('Time taken (seconds) for migrating {database_name} : {timetaken}'.format(database_name=database_name,timetaken=(time.time()-start)))
     except Exception as e:
-        print 'Unexpected error while migrating user permission'
-        print traceback.format_exc()
+        self.logger.exception('Unexpected error while migrating user permission')
         raise
-   	
+
+logger.info('Started user_permission migration')
+start = time.time()   	
 migrate(all_db_names(), populate_user_permission, version=(26, 0, 2), threads=1)
+logger.info('Completed user_permission migration')
+logger.info('Total Time taken (seconds) : {timetaken}'.format(timetaken=(time.time()-start)))
