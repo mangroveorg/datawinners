@@ -36,7 +36,7 @@ EDIT_USER_DATA = {
     MOBILE_PHONE: random_number()
 }
 
-NAME_COLUMN = "//div[@id='users_list']/table/tbody/tr/td[3][contains(text(),'%s')]//parent::tr/td[2]"
+NAME_COLUMN = "//*[@id='users_list']//tr/td[contains(text(),'ikbd@mailinator.com')]/../td[2]"
 DASHBOARD_PAGE_TITLE = u'Dashboard'
 ACCESS_DENIED_TITLE = u'Access Denied'
 
