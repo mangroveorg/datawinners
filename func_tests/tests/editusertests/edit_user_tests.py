@@ -93,7 +93,6 @@ class TestEditUser(HeadlessRunnerTest):
         self.assertEqual(0, self.all_users_page.number_of_editable_users_for_role('Super Admin'),
                          'Expected Super Admin to be non-editable but was editable')
         self.add_user_page = self.all_users_page.navigate_to_add_user()
-        self.add_user_page.select_role_as_project_manager()
         self.add_user_page.select_questionnaires(2)
         self.add_user_page.add_user_with(new_user)
         self.add_user_page.get_success_message()
@@ -252,8 +251,6 @@ class TestEditUser(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_make_sure_that_ds_permission_is_removed_in_the_same_time_as_user_permission_is_removed(self):
-        response = send_sms_with(SMS_TO_TEST_PERMISSION)
-        self.assertEqual(response, SUCCESS_MESSAGE)
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         all_users_page = AllUsersPage(self.driver)
