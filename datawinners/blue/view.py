@@ -5,7 +5,6 @@ import os
 import re
 from tempfile import NamedTemporaryFile
 import traceback
-from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -31,8 +30,8 @@ from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from datawinners.feeds.database import get_feeds_database
 from datawinners.search.submission_index import SubmissionSearchStore
 from datawinners.utils import get_organization
-from mangrove.datastore.user_permission import grant_user_permission_for
-from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
+from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException, \
+    QuestionnaireAlreadyExistsException
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
 from datawinners.main.database import get_database_manager
@@ -108,7 +107,9 @@ class ProjectUpload(View):
                                                project_name=project_name, xls_form=tmp_file,
                                                xls_parser_response=xls_parser_response)
             questionnaire_id, form_code = mangrove_service.create_project()
-            grant_user_permission_for(user_id=request.user.id, questionnaire_id=questionnaire_id, manager=manager)
+
+            if not questionnaire_id:
+                raise QuestionnaireAlreadyExistsException("Questionnaire must be unique")
 
         except PyXFormError as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
@@ -145,6 +146,20 @@ class ProjectUpload(View):
                 'message_suffix': _("Update your XLSForm and upload again.")
             }))
 
+        except QuestionnaireAlreadyExistsException as e:
+            logger.info("Questionnaire %s already exists. Error: %s", project_name, e.message)
+            org = get_organization(request)
+            if org.is_pro_sms:
+                message = _("Questionnaire or Poll with same name already exists.Upload was cancelled.")
+            else:
+                message = _("Questionnaire with same name already exists.Upload was cancelled.")
+            return HttpResponse(json.dumps(
+                {
+                    'success': False,
+                    'duplicate_project_name': True,
+                    'error_msg': [message]}
+            ), content_type='application/json')
+
         except UnicodeDecodeError as e:
             logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
 
@@ -178,19 +193,6 @@ class ProjectUpload(View):
 
             if tmp_file:
                 tmp_file.close()
-
-        if not questionnaire_id:
-            org = get_organization(request)
-            if org.is_pro_sms:
-                message = _("Questionnaire or Poll with same name already exists.Upload was cancelled.")
-            else:
-                message = _("Questionnaire with same name already exists.Upload was cancelled.")
-            return HttpResponse(json.dumps(
-                {
-                    'success': False,
-                    'duplicate_project_name': True,
-                    'error_msg': [message]}
-            ), content_type='application/json')
 
         return HttpResponse(
             json.dumps(

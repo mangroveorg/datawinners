@@ -20,6 +20,7 @@ from datawinners.project.wizard_view import create_questionnaire
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, associate_account_users_to_project
+from mangrove.datastore.user_permission import grant_user_permission_for
 from mangrove.form_model.field import FieldSet, GeoCodeField, DateField, PhotoField, VideoField, AudioField, MediaField, \
     SelectField, DateTimeField
 
@@ -551,6 +552,7 @@ class MangroveService():
         associate_account_users_to_project(self.manager, questionnaire)
         questionnaire.update_media_field_flag()
         questionnaire.update_doc_and_save()
+        grant_user_permission_for(user_id=self.request.user.id, questionnaire_id=questionnaire.id, manager=self.manager)
         if self.xls_form:
             base_name, extension = os.path.splitext(self.xls_form.name)
         else:
