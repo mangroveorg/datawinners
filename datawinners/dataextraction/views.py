@@ -1,8 +1,10 @@
+import json
 from django.http import HttpResponse
 from django_digest.decorators import httpdigest
 from mangrove.datastore.user_permission import has_permission
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.form_model import get_form_model_by_code
-from datawinners.dataextraction.helper import  encapsulate_data_for_form, convert_to_json_file_download_response
+from datawinners.dataextraction.helper import encapsulate_data_for_form, convert_to_json_file_download_response
 from datawinners.dataextraction.helper import generate_filename, check_date_format
 from datawinners.main.database import get_database_manager
 from datawinners.submission.models import DatawinnerLog
@@ -10,6 +12,7 @@ from datawinners.utils import get_organization
 from django.db.models import Q
 import operator
 from datetime import datetime
+from django.utils.translation import gettext as _
 
 
 @httpdigest
@@ -17,14 +20,24 @@ def get_for_form(request, form_code, start_date=None, end_date=None):
     if request.method == 'GET':
         user = request.user
         dbm = get_database_manager(user)
-        questionnaire_id = get_form_model_by_code(dbm, form_code).id
+        try:
+            questionnaire_id = get_form_model_by_code(dbm, form_code).id
+        except FormModelDoesNotExistsException:
+            return HttpResponse(content=json.dumps(dict(submissions=[],
+                                                        success=False,
+                                                        message=_(
+                                                            "Questionnaire code [%s] does not existed.") % form_code
+                                                        )))
+
         if user.is_ngo_admin() or user.is_extended_user() or \
                 (user.is_project_manager() and has_permission(dbm, user.id, questionnaire_id)):
             data_for_form = encapsulate_data_for_form(dbm, form_code, start_date, end_date)
-            return convert_to_json_file_download_response(data_for_form, generate_filename(form_code, start_date, end_date))
+            return convert_to_json_file_download_response(data_for_form,
+                                                          generate_filename(form_code, start_date, end_date))
 
         return HttpResponse(content="Error: You don't have access to this information", status=403)
     return HttpResponse("Error. Only support GET method.")
+
 
 @httpdigest
 def get_failed_submissions(request):
@@ -32,7 +45,7 @@ def get_failed_submissions(request):
     start_date = request.GET.get('start_date') if check_date_format(request.GET.get('start_date')) else None
     end_date = request.GET.get('end_date') if check_date_format(request.GET.get('end_date')) else None
     to_number = request.GET.get('to_number')
-    
+
     criteria = [Q(organization=organization)]
 
     if start_date is not None:
@@ -50,18 +63,9 @@ def get_failed_submissions(request):
                               .order_by('created_at')
                               )
     if len(failed_submissions):
-        failed_submissions_dict = {"message": "You can access the data in submissions field.", "submissions": failed_submissions, "success": True}
+        failed_submissions_dict = {"message": "You can access the data in submissions field.",
+                                   "submissions": failed_submissions, "success": True}
     else:
         failed_submissions_dict = {"message": "No failed submissions available", "submissions": [], "success": False}
 
     return convert_to_json_file_download_response(failed_submissions_dict, "failed_submissions")
-
-
-
-
-
-
-
-
-
-
