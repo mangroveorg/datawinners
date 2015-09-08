@@ -123,7 +123,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.enter_sms_text()
         self.poll_Questionnaire_page.select_receipient(GROUP, group_name)
         self.poll_Questionnaire_page.click_create_poll()
-        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(contact_id, FIRST_ROW, THIRD_COLUMN), True)
+        self.assertTrue(self.poll_Questionnaire_page.has_DS_received_sms(contact_id, FIRST_ROW, THIRD_COLUMN))
 
     @attr('functional_test')
     def test_after_poll_creation_with_linked_contacts_the_recipients_should_receive_sms_and_appear_in_sent_sms_table(self):
