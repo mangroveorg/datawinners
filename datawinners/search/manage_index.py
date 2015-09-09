@@ -11,18 +11,20 @@ from mangrove.form_model.form_model import FormModel
 def populate_submission_index(dbm, form_model_id=None):
     logger = logging.getLogger()
     if form_model_id is None:
-        questionnaires = dbm.database.iterview("surveyresponse_by_questionnaire_id/surveyresponse_by_questionnaire_id", 1, reduce=True, group=True)
+        questionnaires = dbm.load_all_rows_in_view("surveyresponse_by_questionnaire_id", reduce=True, group=True)
         for q in questionnaires:
             logger.info('Processing questionnaire id {q}'.format(q=q.key))
             populate_submission_index(dbm, q.key)
-        
+    
     start = time.time()
     start_key = [form_model_id] if form_model_id else []
     end_key = [form_model_id, {}] if form_model_id else [{}, {}]
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False, startkey=start_key, endkey=end_key)
     form_model = FormModel.get(dbm, form_model_id)
+    logger = logging.getLogger(form_model.name)
     ignored = 0
     counter = 0
+    error_count = 0
     for row in rows:
         try:
             survey_response = SurveyResponseDocument._wrap_row(row)
@@ -34,8 +36,11 @@ def populate_submission_index(dbm, form_model_id=None):
             logger.warning(e.message) # ignore orphaned submissions On changing form code!
         except Exception as ex:
             logger.exception('Exception occurred')
-    if ignored > 0:
-        logger.warning("Few submissions are ignored %s" % ignored)
+            error_count += 1
+            
+    logger.warning("No of submissions ignored: {ignored}".format(ignored=ignored))
+    logger.warning("No of submissions had errors:{errors}".format(errors=error_count))
+        
     logger.info('Time taken (seconds) for indexing {counter} submissions of questionnaire {q} : {timetaken}'
                 .format(counter=counter,q=form_model_id,timetaken=(time.time()-start)))
     
