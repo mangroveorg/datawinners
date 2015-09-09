@@ -60,7 +60,7 @@ def convert_choice_options_to_options_text(field, answer):
     try:
         options = field.get_options_map()
         value_list = []
-        answers = re.findall(r'([1-9]?[a-z])',answer) 
+        answers = re.findall(r'([1-9]?[a-zA-Z])',answer) 
         for answer_value in answers:
             value_list.append(options[answer_value])
     except Exception as e:
