@@ -5,6 +5,7 @@ from datawinners.entity.import_data import get_entity_type_info
 from datawinners.project.utils import make_project_links
 from django.utils.translation import ugettext_lazy as _
 import logging
+import re
 
 def get_form_context(questionnaire, survey_response_form, manager, hide_link_class, disable_link_class,entity_type=None, is_update=False):
     form_context = _make_form_context(survey_response_form, questionnaire, hide_link_class, disable_link_class, entity_type, is_update)
@@ -59,12 +60,9 @@ def convert_choice_options_to_options_text(field, answer):
     try:
         options = field.get_options_map()
         value_list = []
-        #When exact match available, this takes priority
-        if options.get(answer):
-            value_list.append(options.get(answer))
-        else:    
-            for answer_value in list(answer):
-                value_list.append(options[answer_value])
+        answers = re.findall(r'([1-9]?[a-z])',answer) 
+        for answer_value in answers:
+            value_list.append(options[answer_value])
     except Exception as e:
         msg = 'Exception occurred while converting old submission data'
         logging.info(field.name)
