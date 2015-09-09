@@ -5,23 +5,40 @@ from datawinners.search import update_submission_search_index, form_model_change
 from mangrove.datastore.documents import SurveyResponseDocument, FormModelDocument, EntityFormModelDocument
 from mangrove.datastore.entity import Entity, Contact
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
-
+import time
+from mangrove.form_model.form_model import FormModel
 
 def populate_submission_index(dbm, form_model_id=None):
+    logger = logging.getLogger()
+    if form_model_id is None:
+        questionnaires = dbm.database.iterview("surveyresponse_by_questionnaire_id/surveyresponse_by_questionnaire_id", 1, reduce=True, group=True)
+        for q in questionnaires:
+            logger.info('Processing questionnaire id {q}'.format(q=q.key))
+            populate_submission_index(dbm, q.key)
+        
+    start = time.time()
     start_key = [form_model_id] if form_model_id else []
     end_key = [form_model_id, {}] if form_model_id else [{}, {}]
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False, startkey=start_key, endkey=end_key)
-    logger = logging.getLogger(dbm.database_name)
+    form_model = FormModel.get(dbm, form_model_id)
     ignored = 0
+    counter = 0
     for row in rows:
         try:
             survey_response = SurveyResponseDocument._wrap_row(row)
-            update_submission_search_index(survey_response, dbm, refresh_index=False)
+            update_submission_search_index(survey_response, dbm, refresh_index=False, form_model=form_model)
+            counter += 1
+            logger.info('No of submissions processed {counter}'.format(counter=counter))
         except FormModelDoesNotExistsException as e:
             ignored += 1
             logger.warning(e.message) # ignore orphaned submissions On changing form code!
+        except Exception as ex:
+            logger.exception('Exception occurred')
     if ignored > 0:
         logger.warning("Few submissions are ignored %s" % ignored)
+    logger.info('Time taken (seconds) for indexing {counter} submissions of questionnaire {q} : {timetaken}'
+                .format(counter=counter,q=form_model_id,timetaken=(time.time()-start)))
+    
 
 
 def populate_entity_index(dbm):

@@ -4,7 +4,7 @@ from mangrove.form_model.field import SelectField
 from datawinners.entity.import_data import get_entity_type_info
 from datawinners.project.utils import make_project_links
 from django.utils.translation import ugettext_lazy as _
-
+import logging
 
 def get_form_context(questionnaire, survey_response_form, manager, hide_link_class, disable_link_class,entity_type=None, is_update=False):
     form_context = _make_form_context(survey_response_form, questionnaire, hide_link_class, disable_link_class, entity_type, is_update)
@@ -56,10 +56,20 @@ def is_original_field_and_latest_field_of_type_choice_answer(original_field, lat
     return isinstance(original_field, SelectField) and isinstance(latest_field, SelectField)
 
 def convert_choice_options_to_options_text(field, answer):
-    options = field.get_options_map()
-    value_list = []
-    for answer_value in list(answer):
-        value_list.append(options[answer_value])
+    try:
+        options = field.get_options_map()
+        value_list = []
+        #When exact match available, this takes priority
+        if options.get(answer):
+            value_list.append(options.get(answer))
+        else:    
+            for answer_value in list(answer):
+                value_list.append(options[answer_value])
+    except Exception as e:
+        msg = 'Exception occurred while converting old submission data'
+        logging.info(field.name)
+        logging.info(answer)
+        logging.exception(msg)
     return ",".join(value_list)
 
 def filter_submission_choice_options_based_on_current_answer_choices(answer, original_field, latest_field):
