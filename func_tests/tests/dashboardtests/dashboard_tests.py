@@ -48,7 +48,7 @@ class TestDashboard(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_restrict_questionnaire_list_on_dashboard_according_to_user_permission(self):
-        self.assertEqual(len(self.dashboard_page.get_projects_list()), 8)
+        self.assertGreaterEqual(len(self.dashboard_page.get_projects_list()), 8)
         self.driver.go_to(LOGOUT)
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
