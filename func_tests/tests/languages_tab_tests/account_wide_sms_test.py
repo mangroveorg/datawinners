@@ -32,7 +32,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
 
     def setUp(self):
         self.account_sms_page = AccountWideSmsReplyPage(self.driver)
-        self.account_sms_page.revert_to_original()
+        # self.account_sms_page.revert_to_original()
 
     def reset_account_messages(self):
         self.driver.go_to(ACCOUNT_MESSAGES_URL)
