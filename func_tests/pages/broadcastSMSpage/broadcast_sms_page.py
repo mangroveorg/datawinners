@@ -56,3 +56,11 @@ class BroadcastSmsPage(Page):
     def is_send_a_message_to_unregistered_present(self):
         self.driver.find(SEND_TO_DDCL).click()
         return self.driver.find(by_css("ul li a#AllSubmitted")).is_displayed()
+
+    def choose_contacts_linked_to_questionnaire(self):
+        self.driver.find(CONTACTS_LINKED_TO_QUESTIONNAIRE_LOCATOR).click()
+
+    def get_all_available_questionnaires(self):
+        self.choose_contacts_linked_to_questionnaire()
+        elements = self.driver.find_elements_(by_css("#send-sms-section > div.tableRow:nth-of-type(7) div.tableCell:nth-of-type(2) > div > input"))
+        return [project.get_attribute('value') for project in elements]

@@ -467,7 +467,7 @@ msgid "Point of Contact"
 msgstr "Contact principal"
 
 msgid "Account Administrator"
-msgstr "Gestionnaire du compte"
+msgstr "Administrateur du compte"
 
 msgid "Account Settings"
 msgstr "Paramètres du compte"

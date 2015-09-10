@@ -3,6 +3,7 @@ from nose.plugins.attrib import attr
 
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+from tests.addusertests.add_user_data import generate_user
 from tests.testsettings import UI_TEST_TIMEOUT
 from framework.base_test import HeadlessRunnerTest
 from django.test import Client
@@ -44,23 +45,22 @@ class TestAllUsers(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_not_delete_super_admin_user(self):
-        self.all_users_page.click_check_all_users()
-        self.all_users_page.select_delete_action(confirm=True)
-        message = self.all_users_page.get_message()
-        self.assertEqual(message, ADMIN_CANT_BE_DELETED)
+        self.assertFalse(self.all_users_page.is_editable('tester150411@gmail.com'))
 
     @attr('functional_test')
     def test_should_create_activity_log_and_submit_data(self):
         add_user_page = self.all_users_page.navigate_to_add_user()
-        add_user_page.add_user_with(NEW_USER_DATA)
+        user_data = generate_user()
         add_user_page.select_role_as_administrator()
+        add_user_page.add_user_with(user_data)
+        add_user_page.get_success_message()
         self.global_navigation.sign_out()
-        new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
+        new_user_credential = {USERNAME: user_data[USERNAME], PASSWORD: "test123"}
         self.global_navigation = login(self.driver, new_user_credential)
         self.driver.go_to(DATA_WINNER_ALL_PROJECTS_PAGE)
         project_name, questionnaire_code = self.create_project()
-        self.send_submission(questionnaire_code)
-        self.delete_user(NEW_USER_DATA[USERNAME])
+        self.send_submission(user_data[MOBILE_PHONE], questionnaire_code)
+        self.delete_user(user_data[USERNAME])
         self.check_sent_submission(project_name)
         self.check_deleted_user_name_on_activity_log_page(project_name)
         self.global_navigation.sign_out()
@@ -69,8 +69,9 @@ class TestAllUsers(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_update_user_name_when_edited_from_datasender_page(self):
         add_user_page = self.all_users_page.navigate_to_add_user()
-        add_user_page.add_user_with(EDIT_USER_DATA)
         add_user_page.select_role_as_administrator()
+        add_user_page.add_user_with(EDIT_USER_DATA)
+        add_user_page.get_success_message()
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_datasenders_page = AllDataSendersPage(self.driver)
         all_datasenders_page.search_with(EDIT_USER_DATA.get('username'))
@@ -83,16 +84,16 @@ class TestAllUsers(HeadlessRunnerTest):
         AddDataSenderPage(self.driver).enter_data_sender_details_from(EDIT_DETAILS).navigate_to_datasender_page()
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
-        element = self.driver.find(by_xpath(NAME_COLUMN % EDIT_USER_DATA.get("username")))
-        self.assertEquals(EDIT_DETAILS.get("name"),element.text)
+        user_name = self.all_users_page.get_full_name_for(EDIT_USER_DATA.get("username"))
+        self.assertEquals(EDIT_DETAILS.get("name"), user_name)
 
-    def send_submission(self, questionnaire_code):
+    def send_submission(self, mobile_number, questionnaire_code):
         client = Client()
-        valid_sms = {"from_msisdn": NEW_USER_DATA[MOBILE_PHONE],
+        valid_sms = {"from_msisdn": mobile_number,
                      "to_msisdn": '919880734937',
                      MESSAGE: "%s 10.10.2010" % questionnaire_code,
                      "message_id": uuid.uuid1().hex}
-        resp = client.post('/submission',valid_sms)
+        resp = client.post('/submission', valid_sms)
         self.assertIn("Thank you", resp.content)
 
     def create_project(self):
@@ -121,7 +122,7 @@ class TestAllUsers(HeadlessRunnerTest):
         all_data_page = self.global_navigation.navigate_to_all_data_page()
         data_analysis_page = all_data_page.navigate_to_data_analysis_page(project_name)
         data_sender_name = data_analysis_page.get_all_data_on_nth_row(1)[1]
-        self.assertTrue("kimi" in data_sender_name)
+        self.assertTrue("Mino" in data_sender_name)
 
     def check_deleted_user_name_on_activity_log_page(self, project_name):
         self.driver.go_to(DATA_WINNER_USER_ACTIVITY_LOG_PAGE)
@@ -134,10 +135,11 @@ class TestAllUsers(HeadlessRunnerTest):
     def test_should_check_if_org_settings_is_restricted_to_extended_user(self):
         add_user_page = self.all_users_page.navigate_to_add_user()
         add_user_page.select_role_as_administrator()
-        add_user_page.add_user_with(NEW_USER_DATA)
+        user_data = generate_user()
+        add_user_page.add_user_with(user_data)
         add_user_page.get_success_message()
         self.global_navigation.sign_out()
-        new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
+        new_user_credential = {USERNAME: user_data[USERNAME], PASSWORD: "test123"}
         login(self.driver, new_user_credential)
         self.driver.go_to(ORG_SETTINGS_URL)
         title = self.driver.get_title()
@@ -148,10 +150,11 @@ class TestAllUsers(HeadlessRunnerTest):
         add_user_page = self.all_users_page.navigate_to_add_user()
         add_user_page.select_role_as_project_manager()
         add_user_page.select_questionnaires(2)
-        add_user_page.add_user_with(NEW_USER_DATA)
+        new_user_data = generate_user()
+        add_user_page.add_user_with(new_user_data)
         add_user_page.get_success_message()
         self.global_navigation.sign_out()
-        new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
+        new_user_credential = {USERNAME: new_user_data[USERNAME], PASSWORD: "test123"}
         login(self.driver, new_user_credential)
         self.driver.go_to(ORG_SETTINGS_URL)
         title = self.driver.get_title()

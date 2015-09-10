@@ -527,7 +527,7 @@ class SubjectWebQuestionnaireRequest():
         self.questionnaire = Project.get(self.manager, project_id)
         if self.questionnaire.is_void():
             return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")
-        self.is_data_sender = self.request.user.get_profile().reporter
+        self.is_data_sender = is_data_sender_for_project(self.request, project_id)
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
         #self.form_code = self.questionnaire.form_code
         self.entity_type = entity_type

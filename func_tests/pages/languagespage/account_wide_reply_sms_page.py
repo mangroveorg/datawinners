@@ -49,7 +49,7 @@ class AccountWideSmsReplyPage(Page):
 
     def save_changes(self):
         self.driver.find(LANGUAGE_SAVE_BUTTON_LOCATOR).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".success-message-box"), True)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".success-message-box"))
 
     def get_success_message(self):
         success_message = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".success-message-box"),want_visible=True)

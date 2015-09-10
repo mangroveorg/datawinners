@@ -32,6 +32,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
 
     def setUp(self):
         self.account_sms_page = AccountWideSmsReplyPage(self.driver)
+        # self.account_sms_page.revert_to_original()
 
     def reset_account_messages(self):
         self.driver.go_to(ACCOUNT_MESSAGES_URL)
@@ -128,7 +129,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         incorrect_qcode_data = {"from": "1234123413", "to": '919880734937', "sms": "wrcode sender_name 45 cid001" }
         sms_tester_page.send_sms_with(incorrect_qcode_data)
         message = sms_tester_page.get_response_message()
-        self.assertEquals('Error. Questionnaire Code wrcode sender_name 45 cid001 is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.new message',message)
+        self.assertEquals('Error. Questionnaire Code wrcode is incorrect. Find the Code on the top of the printed Questionnaire and resend SMS starting with this Code.new message',message)
 
         success_subject_registration_data = {"from": "1234123413", "to": '919880734937', "sms": "peo fname lname location 4,4 898989898" }
         sms_tester_page.send_sms_with(success_subject_registration_data)

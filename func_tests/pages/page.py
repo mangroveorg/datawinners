@@ -33,7 +33,7 @@ class Page(object):
         start_time = datetime.datetime.now()
         locator = by_id("need_help_button")
         self.driver.find(locator).click()
-        iframe = self.driver.find(by_id('help_iframe'))
+        iframe = self.driver.find(by_id('div_iframe'))
         end_time = start_time + datetime.timedelta(0, 120)
 
         while True:

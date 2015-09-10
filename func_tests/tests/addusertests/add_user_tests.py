@@ -100,7 +100,6 @@ class TestAddUser(HeadlessRunnerTest):
         self.add_user_page = self.all_users_page.navigate_to_add_user()
         self.assertFalse(self.add_user_page.is_administrator_role_visible(),
                          'Expected Administrator Role not to be present but it was present')
-        self.add_user_page.select_role_as_project_manager()
         questionnaires = self.add_user_page.select_questionnaires(2)
         user = generate_user()
         self.add_user_page.add_user_with(user)
