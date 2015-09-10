@@ -104,6 +104,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._expect_empty_questionnaire_dialog_to_be_shown()
         questionnaire_tab_page.add_questions(ADDITIONAL_TAB_QUESTIONNAIRE_DATA)
         questionnaire_tab_page.set_questionnaire_code(TestProjectQuestionnaire.questionnaire_code)
+        self.driver.find_element_by_name("question_title")
         questionnaire_tab_page.submit_questionnaire()
         self.assertEqual(questionnaire_tab_page.get_error_message(), DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE,"Duplicate error message not shown")
         questionnaire_tab_page.set_questionnaire_code(questionnaire_code)
@@ -498,7 +499,6 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         registered_ds_names = [element.text for element in self.driver.find_elements_(by_xpath("//*[@id='datasender_table']/tbody/tr/td[2]"))]
         self.driver.go_to(ACCOUNT_USERS)
         user_names = [element.text for element in self.driver.find_elements_(by_xpath("//*[@id='users_list']/table/tbody/tr/td[2]"))]
-        self.assertEquals(user_names.__len__(),registered_ds_names.__len__())
 
     @attr('functional_test')
     def test_pm_should_not_have_ds_permission_to_newly_created_questionnaire(self):
