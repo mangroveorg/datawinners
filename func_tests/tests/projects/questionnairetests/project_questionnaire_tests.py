@@ -521,7 +521,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         response = send_sms_with(SMS_TO_TEST_PERMISSION)
         self.assertEqual(response, ERROR_MESSAGE_MSG)
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_check_if_deleted_questionnaires_and_poll_not_be_in_questionnaires_list(self):
         self.driver.go_to(LOGOUT)
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
