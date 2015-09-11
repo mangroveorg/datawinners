@@ -295,3 +295,17 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         dw_university_page = Page(self.driver)
         self.assertTrue(dw_university_page.is_help_content_available())
         dw_university_page.close_help()
+
+    @attr('functional_test')
+    def test_should_create_project_and_its_accessible_by_the_creator(self):
+        self.global_navigation_page.sign_out()
+        login(self.driver, USER_RASITEFA_CREDENTIALS)
+        self.project_name = random_string()
+        self.client.logout()
+        self.client.login(username="rasitefa@mailinator.com", password="test123")
+        file_name = 'ft_advanced_questionnaire.xls'
+        form_code = self._verify_questionnaire_creation(self.project_name, file_name)
+        self.assertEqual(len(form_code), 3)
+        all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
+        all_project_page.navigate_to_project_overview_page(self.project_name)
+        self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
