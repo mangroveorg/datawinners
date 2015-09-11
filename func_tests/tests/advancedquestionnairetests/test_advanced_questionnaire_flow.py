@@ -23,6 +23,7 @@ from tests.advancedquestionnairetests.advanced_questionnaire_test_helper import 
 from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.testsettings import UI_TEST_TIMEOUT
+from tests.dashboardtests.dashboard_tests_data import USER_RASITEFA_CREDENTIALS
 
 
 DIR = os.path.dirname(__file__)
