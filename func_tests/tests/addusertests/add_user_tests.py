@@ -173,3 +173,13 @@ class TestAddUser(HeadlessRunnerTest):
         message = self.add_user_page.get_error_messages()
         self.assertEqual(message, expected_message)
 
+    @attr('functional_test')
+    def test_should_show_warning_when_trying_to_leave_page_without_saving(self):
+        user = generate_user()
+        self.add_user_page.select_questionnaires()
+        self.add_user_page.add_user_with(user, click_submit=False)
+        self.driver.refresh()
+        expected_msg = u'This page is asking you to confirm that you want to leave - data you have entered may not be saved.'
+
+        alert = self.driver.switch_to_alert()
+        self.assertEqual(alert.text, expected_msg)

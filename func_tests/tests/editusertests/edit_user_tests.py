@@ -266,3 +266,17 @@ class TestEditUser(HeadlessRunnerTest):
         edit_user_page.get_success_message()
         response = send_sms_with(SMS_TO_TEST_PERMISSION)
         self.assertEqual(response, SUCCESS_MESSAGE)
+
+    @attr('functional_test')
+    def test_should_show_warning_when_trying_to_leave_page_without_saving(self):
+        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        self.driver.go_to(ALL_USERS_URL)
+        all_users_page = AllUsersPage(self.driver)
+        all_users_page.select_user_with_username("rasitefa@mailinator.com")
+        edit_user_page = all_users_page.select_edit_action()
+        edit_user_page.select_role_as_administrator()
+        self.driver.refresh()
+        expected_msg = u'This page is asking you to confirm that you want to leave - data you have entered may not be saved.'
+
+        alert = self.driver.switch_to_alert()
+        self.assertEqual(alert.text, expected_msg)
