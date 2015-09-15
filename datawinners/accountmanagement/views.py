@@ -303,11 +303,14 @@ def upgrade(request, token=None, account_type=None, language=None):
                                   {'organization': organization_form, 'profile': profile_form,
                                    'form': form}, context_instance=RequestContext(request))
     if request.method == 'POST':
-        form = UpgradeForm(request.POST)
-        organization = Organization.objects.get(org_id=request.POST["org_id"])
-        organization_form = OrganizationForm(request.POST, instance=organization).update()
+        role = request.user.groups.all()[0].name
+        post_parameters = request.POST.copy()
+        post_parameters['role'] = role
+        form = UpgradeForm(post_parameters)
+        organization = Organization.objects.get(org_id=post_parameters["org_id"])
+        organization_form = OrganizationForm(post_parameters, instance=organization).update()
         profile_form = EditUserProfileForm(organization=organization, reporter_id=profile.reporter_id,
-                                           data=request.POST)
+                                           data=post_parameters)
         if form.is_valid() and organization_form.is_valid() and profile_form.is_valid():
             organization.save()
 
@@ -460,16 +463,19 @@ def edit_user(request):
                                   {'form': form, 'is_pro_sms': org.is_pro_sms},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
+        post_parameter = request.POST.copy()
+        post_parameter['role'] = request.user.groups.all()[0].name
         profile = request.user.get_profile()
         org = get_organization(request)
 
-        form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=request.POST)
+        form = EditUserProfileForm(organization=org, reporter_id=profile.reporter_id, data=post_parameter)
         message = ""
         if form.is_valid():
             _update_user_and_profile(form, request.user.username)
 
             message = _('Profile has been updated successfully')
-        return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
+        return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message,
+                                                                                  'is_pro_sms':org.is_pro_sms},
                                   context_instance=RequestContext(request))
 
 
