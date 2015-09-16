@@ -18,6 +18,7 @@ from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import AccountExpiredException
 from models import Organization
 
+
 def get_organization_sectors():
     return (('', _('Please Select...')),
             ('CommercialBusiness', _('Commercial Business')),
@@ -56,7 +57,6 @@ class OrganizationForm(ModelForm):
         model = Organization
         exclude = ('in_trial_mode', 'active_date', 'is_deactivate_email_sent', 'addressline2', 'language', 'status',
                    'status_changed_datetime')
-
 
     def update(self):
         if self.is_valid():
@@ -100,6 +100,7 @@ class UserProfileForm(forms.Form):
         if len(Group.objects.filter(name__in=[selected_role])) < 1:
             raise ValidationError(_("This field is required"))
         return selected_role
+
 
 class EditUserProfileForm(UserProfileForm):
     def __init__(self, organization=None, reporter_id=None, *args, **kwargs):
@@ -249,7 +250,6 @@ class LoginForm(AuthenticationForm):
             elif not self.user_cache.is_active:
                 raise forms.ValidationError(_("This account is inactive."))
 
-
     def check_trial_account_expired(self):
         org = Organization.objects.get(org_id=self.user_cache.get_profile().org_id)
         if org.is_expired():
@@ -292,5 +292,3 @@ class ProSMSRegistrationForm(FullRegistrationForm):
     def __init__(self, *args, **kwargs):
         super(ProSMSRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['account_type'].initial = 'Pro SMS'
-
-

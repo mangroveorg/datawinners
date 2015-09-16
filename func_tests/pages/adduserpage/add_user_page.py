@@ -11,10 +11,11 @@ class AddUserPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 
-    def add_user_with(self, user_data):
+    def add_user_with(self, user_data, click_submit=True):
         for key, value in user_data.items():
             self.driver.find_text_box(by_css("input[name='%s']" % key)).enter_text(value)
-        self.driver.find(by_css("button[id=submit]")).click()
+        if click_submit:
+            self.driver.find(by_css("button[id=submit]")).click()
 
     def get_success_message(self):
         locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, FLASH_MESSAGE_LABEL, True)
