@@ -284,7 +284,7 @@ def trial_expired(request):
                               context_instance=RequestContext(request))
 
 
-@is_admin
+@for_super_admin_only
 @is_pro_sms
 def upgrade(request, token=None, account_type=None, language=None):
     if language:
