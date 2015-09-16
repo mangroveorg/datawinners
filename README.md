@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/mangroveorg/datawinners/badges/gpa.svg)](https://codeclimate.com/github/mangroveorg/datawinners)
+
 ##Introduction
 
 __Data winners__ is a data collection application supporting multiple channels
