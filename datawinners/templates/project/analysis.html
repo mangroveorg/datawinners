@@ -17,21 +17,6 @@
     {{ block.super }}
 {% endblock %}
 
-{% block page_js %}
-    {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
-    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-    <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
-    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
-    <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
-    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
-    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
-    <script src="/media/javascript/data_tables/js/dwtable.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/analysis.js"></script>
-    
-{% endblock %}
-
 {% block page_css %}
     {{ block.super }}
     <link href="/media/css/plugins/jquery_pagination/pagination.css" media="screen" rel="stylesheet"/>
@@ -43,7 +28,7 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet"/>
-    <link href="/media/javascript/project/css/data_analysis_chart.css" rel="stylesheet"/>
+    <link href="/media/javascript/project/css/data_analysis_chart.css"   rel="stylesheet"/>
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
     <link href="/media/css/scss/util.css" rel="stylesheet"/>
     <link href="/media/css/scss/submission_log.css" media="screen" rel="stylesheet"/>
@@ -54,6 +39,7 @@
     <link href="/media/css/plugins/jqueryUI/ie-hacks.css" rel="stylesheet"/>
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
+    <link href="/media/javascript/data_tables/css/dataTables.colVis.css" rel="stylesheet"/>
     <link href="/media/css/scss/import_submission.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
 {% endblock %}
@@ -87,4 +73,20 @@
     <div id="submission_logs" class="grid_23 alpha">
         {% include 'project/analysis_table.html' %}
     </div>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_tables/js/dataTables.colVis.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
+    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
+    <script src="/media/javascript/data_tables/js/dwtable.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/analysis.js"></script>
+
 {% endblock %}
