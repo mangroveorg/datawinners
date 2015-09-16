@@ -37,7 +37,7 @@ from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import get_submissions_paginated, \
     get_all_submissions_ids_by_criteria, get_facets_for_choice_fields, get_submission_count, \
-    get_submissions_without_user_filters_count
+    get_submissions_without_user_filters_count, get_submissions_paginated_simple
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
@@ -181,6 +181,34 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
 def _is_account_with_large_submissions(dbm):
     return dbm.database_name == 'hni_usaid-mikolo_lei526034'
 
+
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
+@is_project_exist
+@restrict_access
+def analysis(request, project_id, questionnaire_code=None):
+    manager = get_database_manager(request.user)
+    org_id = helper.get_org_id_by_user(request.user)
+    if request.method == 'GET':
+        questionnaire = Project.get(manager, project_id)
+        dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        if questionnaire.is_void():
+            return HttpResponseRedirect(dashboard_page)
+
+        result_dict = {
+            "xform": questionnaire.xform,
+            "user_email": request.user.email,
+            "is_quota_reached": is_quota_reached(request, org_id=org_id),
+            'is_pro_sms': get_organization(request).is_pro_sms,
+            "is_media_field_present": questionnaire.is_media_type_fields_present
+            # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
+        }
+        result_dict.update(project_info(request, questionnaire, questionnaire_code))
+        return render_to_response('project/analysis.html', result_dict,
+                                  context_instance=RequestContext(request))
+    
 
 @login_required
 @session_not_expired
@@ -584,6 +612,28 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
             pass
     return headers[order_by]
 
+@csrf_view_exempt
+@valid_web_user
+def get_analysis_data(request, form_code):
+    dbm = get_database_manager(request.user)
+    questionnaire = get_project_by_code(dbm, form_code)
+    search_parameters = {}
+    filter_type = 'all'
+    search_parameters.update({"filter": filter_type})
+    search_parameters.update({"search_filters": {}})
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+    search_results, query_fields = get_submissions_paginated_simple(dbm, questionnaire)
+#     submission_count_with_filters = get_submission_count(dbm, questionnaire, search_parameters, local_time_delta)
+#     submission_count_without_filters = get_submissions_without_user_filters_count(dbm, questionnaire, search_parameters)
+    submissions = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields,
+                                                                                               search_results)
+
+    return HttpResponse(
+        jsonpickle.encode(
+            {
+                'data': submissions
+            }, unpicklable=False), content_type='application/json')
 
 @csrf_view_exempt
 @valid_web_user
