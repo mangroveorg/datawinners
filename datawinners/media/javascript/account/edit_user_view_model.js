@@ -8,6 +8,7 @@ var viewModel = function () {
     this.selectedQuestionnaires = ko.observableArray([]);
     this.role = DW.ko.createValidatableObservable({value: "administrator"});
     this.editUserSuccess = ko.observable(false);
+    this.questionnaireRevoked = ko.observable(false);
     this.hasFetchedQuestionnaires = ko.observable(false);
     this.hasFormEdited = ko.observable(false);
     this.userId = 0;
@@ -61,6 +62,10 @@ var viewModel = function () {
 
     $(".questionnaire-list ul").click(function(event) {
         if(event.target.nodeName == "INPUT") {
+
+            if(!$(event.target).is(":checked")) {
+                self.questionnaireRevoked('True')
+            }
             var questionnaires = $.map(data_from_django['questionnaires'], function(qstn) { return qstn.id; });
 
             if(userModel.fetchSelectedQuestions.length >= questionnaires.length) {
@@ -142,6 +147,7 @@ var viewModel = function () {
 
     this.clearFields = function () {
         this.hasFormEdited(false);
+        self.questionnaireRevoked(false);
         setTimeout(function () {
             self.editUserSuccess(false);
         }, 10000);

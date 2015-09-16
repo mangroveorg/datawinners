@@ -81,6 +81,7 @@
                         {% trans "questionnaire_access_placeholder_text" %}
                     </div>
 
+                    <p class="alert_message_box" data-bind="visible: role()=='Project Managers' && questionnaires().length >= 1 && questionnaireRevoked() ">{% trans "alert_message_for_project_manager" %}</p>
                     <div class="questionnaire-list" data-bind="visible: role()=='Project Managers' && questionnaires().length >= 1">
                         <ul data-bind="foreach: questionnaires">
                             <li>
