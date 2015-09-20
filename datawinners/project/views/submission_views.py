@@ -52,7 +52,7 @@ from mangrove.utils.json_codecs import encode_json
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
 from datawinners.project.utils import project_info, is_quota_reached
-from datawinners.project.Header import SubmissionsPageHeader
+from datawinners.project.Header import SubmissionsPageHeader, AnalysisPageHeader
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed, \
@@ -81,6 +81,16 @@ def headers(request, form_code):
         response.append({"sTitle": ugettext(header)})
     return HttpResponse(encode_json(response))
 
+@login_required
+@session_not_expired
+@is_datasender
+@is_not_expired
+def analysis_headers(request, form_code):
+    manager = get_database_manager(request.user)
+    questionnaire = get_project_by_code(manager, form_code)
+    submission_type = request.GET.get('type', 'all')
+    headers = AnalysisPageHeader(questionnaire, submission_type).get_column_title()
+    return HttpResponse(encode_json(headers), content_type='application/json')
 
 def _get_date_fields_info(questionnaire):
     date_fields_array = []
@@ -623,17 +633,20 @@ def get_analysis_data(request, form_code):
     search_parameters.update({"search_filters": {}})
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
-    search_results, query_fields = get_submissions_paginated_simple(dbm, questionnaire)
-#     submission_count_with_filters = get_submission_count(dbm, questionnaire, search_parameters, local_time_delta)
-#     submission_count_without_filters = get_submissions_without_user_filters_count(dbm, questionnaire, search_parameters)
-    submissions = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields,
-                                                                                               search_results)
-
+    search_results = get_submissions_paginated_simple(dbm, questionnaire)
+    
+    responses = _create_analysis_response(search_results)
     return HttpResponse(
         jsonpickle.encode(
             {
-                'data': submissions
+                'data': responses
             }, unpicklable=False), content_type='application/json')
+
+def _create_analysis_response(search_results):
+    responses = []
+    for result in search_results.hits:
+        responses.append(result._d_)
+    return responses    
 
 @csrf_view_exempt
 @valid_web_user

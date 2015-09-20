@@ -32,6 +32,7 @@ class SubmissionHeader():
                 header_dict.update({key: val})
 
         return header_dict
+    
 
     def _get_entity_question_path(self, field):
         return "%s-%s" % (field.parent_field_code, field.code) if field.parent_field_code else field.code

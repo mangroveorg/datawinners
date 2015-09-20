@@ -125,8 +125,7 @@ def get_submissions_paginated_simple(dbm, form_model):
     es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     search_results = search.execute()
-    query_fields = _get_query_fields(form_model, 'all')
-    return search_results, query_fields
+    return search_results
 
 def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_time_delta):
     """
