@@ -2,8 +2,6 @@ $(document).ready(function () {
     var dwAnalysis, headers,
         dataToPopulate;
     var tableElement = $("#analysis_table");
-    var headerUrl = "/project/analysis/cli018/headers";
-    var dataUrl = "/project/analysis/cli018";
 
     var DwTable = (function ($, tableElement) {
 
