@@ -32,7 +32,7 @@ $(document).ready(function () {
         }
 
         DwTable.prototype.addHeaderToElement = function (element, value) {
-            element.append('<td>' + value + '</td>');
+            element.append('<th>' + value + '</th>');
         }
 
         DwTable.prototype.handleHeaderArray = function (element, array, prefix) {
