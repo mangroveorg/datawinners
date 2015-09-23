@@ -627,26 +627,29 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 def get_analysis_data(request, form_code):
     dbm = get_database_manager(request.user)
     questionnaire = get_project_by_code(dbm, form_code)
-    search_parameters = {}
-    filter_type = 'all'
-    search_parameters.update({"filter": filter_type})
-    search_parameters.update({"search_filters": {}})
-    organization = get_organization(request)
-    local_time_delta = get_country_time_delta(organization.country)
-    search_results = get_submissions_paginated_simple(dbm, questionnaire)
-    
-    responses = _create_analysis_response(search_results)
+    pagination_params = _get_pagination_params(request)
+    search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params)
+    data = _create_analysis_response(search_results)
     return HttpResponse(
         jsonpickle.encode(
             {
-                'data': responses
+                'total': search_results.hits.total,
+                'data': data,
             }, unpicklable=False), content_type='application/json')
 
+def _get_pagination_params(request):
+    pagination_related_param_keys = ['from','size']
+    pagination_params = {}
+    for key in request.GET:
+        if key in pagination_related_param_keys:
+            pagination_params[key]=request.GET[key]
+    return pagination_params
+        
 def _create_analysis_response(search_results):
-    responses = []
+    data = []
     for result in search_results.hits:
-        responses.append(result._d_)
-    return responses    
+        data.append(result._d_)
+    return data
 
 @csrf_view_exempt
 @valid_web_user
