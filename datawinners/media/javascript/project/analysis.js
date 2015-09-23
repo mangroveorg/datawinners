@@ -174,17 +174,7 @@ $(document).ready(function () {
             this.$tableName.DataTable({
                 "dom": 'C<"clear">lfrtip',
                 "scrollX": true,
-                "ColVis": {
-                    "activate": "mouseover"
-                },
-                columnDefs: [
-                    {visible: false, targets: 2}
-                ],
-                colVis: {
-                    restore: "Restore",
-                    showAll: "Show all",
-                    showNone: "Show none"
-                }
+                "scrollY": "450px"
             });
         }
 

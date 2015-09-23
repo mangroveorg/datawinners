@@ -27,19 +27,20 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet"/>
     <link href="/media/javascript/project/css/data_analysis_chart.css"   rel="stylesheet"/>
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
     <link href="/media/css/scss/util.css" rel="stylesheet"/>
     <link href="/media/css/scss/submission_log.css" media="screen" rel="stylesheet"/>
-    <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet"/>
+{#    <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet"/>#}
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/form.css" rel="stylesheet"/>
     <link href="/media/css/scss/analysis_view.css" rel="stylesheet"/>
     <link href="/media/css/plugins/jqueryUI/ie-hacks.css" rel="stylesheet"/>
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
-    <link href="/media/javascript/data_tables/css/dataTables.colVis.css" rel="stylesheet"/>
+    <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet"/>
+    <link href="/media/javascript/data_tables/css/dynamicHeaderDataTable.css" rel="stylesheet"/>
+{#    <link href="/media/javascript/data_tables/css/dataTables.colVis.css" rel="stylesheet"/>#}
     <link href="/media/css/scss/import_submission.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
 {% endblock %}
@@ -60,7 +61,7 @@
             var import_submission_url = "{% url import_submissions 'form_code'%}";
             DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/analysis/?template=help";
             $(document).ready(function() {
-                $("#page_title").addClass("full_width");
+                //$("#page_title").addClass("full_width");
                 $("#need_help_link").addClass("margin_right_20");
                 $("#need_help_button").addClass("margin_top_minus_106");
                 $("#need_help_active_button").addClass("margin_top_minus_106");
@@ -84,7 +85,7 @@
 {#    <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>#}
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="/media/javascript/data_tables/js/dataTables.colVis.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/data_tables/js/dataTables.colVis.js"></script>#}
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>

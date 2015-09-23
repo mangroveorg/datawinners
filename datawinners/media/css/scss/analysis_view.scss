@@ -77,3 +77,41 @@ body ul.ColVis_collection {
     }
   }
 }
+
+.dataTable {
+  tbody {
+    tr {
+      &:hover {
+        background-color: #f6f6f6;
+      }
+    }
+    .odd {
+        background-color: #f9f9f9;
+    }
+  }
+}
+
+.dataTables_wrapper {
+  .dataTables_info {
+    padding-left: 0;
+  }
+}
+
+#analysis_table_wrapper {
+  .dataTables_length {
+    float: none;
+  }
+
+  .dataTables_scroll {
+    margin: 10px 0 15px;
+  }
+
+  table thead th {
+    border-bottom: none;
+    cursor: pointer;
+  }
+
+  .dataTables_scrollBody {
+    border-bottom: none;
+  }
+}
