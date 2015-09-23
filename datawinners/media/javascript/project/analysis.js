@@ -1,38 +1,72 @@
+var dwAnalysis, totalEntries;
 $(document).ready(function () {
-    var dwAnalysis, headers,
+    var headers,
         dataToPopulate;
     var tableElement = $("#analysis_table");
 
     var DwTable = (function ($, tableElement) {
 
-        function DwTable(header, dataToPopulate) {
+        function DwTable(header, dataToPopulate, totalEntries) {
 
             //cache DOM Elements
             this.$tableName = tableElement;
-            this.$tableName.append("<thead><tr></tr></thead><tbody></tbody>");
-            this.$tBody = this.$tableName.find("tbody");
-            this.$tHeadRow = this.$tableName.find("thead tr");
+
+            //this.$pagination = $(".dataTables_paginate");
+
             this.dataToPopulate = dataToPopulate;
             this.header = header;
 
             //Default Int values
             this.headerArray = [];
-
+            this.currentPageIndex = 0;
+            this.sortColumn = header[0].id;
+            this.sortAscending = true;
+            this.totalEntries = totalEntries;
+            this.size = $('select[name=analysis_table_length]').val() || 25;
+            this.totalPages = Math.ceil(this.totalEntries/this.size);
             this.init();
         }
 
         DwTable.prototype.init = function () {
             var self = this;
-            this.headerArray = [];
-
+            this.$tableName.append("<thead><tr></tr></thead><tbody></tbody>");
+            this.$tBody = this.$tableName.find("tbody");
+            this.$tHeadRow = this.$tableName.find("thead tr");
             this.handleHeaderArray(this.$tHeadRow, this.header, "");
             var element = self.$tBody.find("tr:last-child");
             self.handleJSONDataAsArray(self.$tBody, self.dataToPopulate, self.headerArray);
             self.populateTable();
+
+            $(".dataTables_paginate").on("click", function (event) {
+                var e = $(event.target);
+                var pageIndex = self.currentPageIndex;
+                var requestedPageIndex = e.attr("data-dt-idx");
+                if (e.hasClass("disabled") || self.currentPageIndex == requestedPageIndex)
+                    return;
+                if (e.hasClass("next")) {
+                    pageIndex++;
+                } else if (e.hasClass("previous")) {
+                    pageIndex--;
+                } else {
+                    pageIndex = requestedPageIndex;
+                }
+                self.fetchData(pageIndex)
+            });
+
+            this.$tHeadRow.on("click", function (event) {
+                var e = $(event.target);
+                var currentColumn = event.target.getAttribute('data-columncode');
+                if (currentColumn == self.sortColumn)
+                    self.sortAscending = !self.sortAscending;
+                else
+                    self.sortAscending = true;
+                self.fetchData(self.currentPageIndex);
+            });
+
         }
 
         DwTable.prototype.addHeaderToElement = function (element, value) {
-            element.append('<th>' + value + '</th>');
+            element.append('<th data-columncode=' + value.id + '>' + value.title + '</th>');
         }
 
         DwTable.prototype.handleHeaderArray = function (element, array, prefix) {
@@ -50,7 +84,7 @@ $(document).ready(function () {
             }
             if (jsonObject.hasOwnProperty("title")) {
                 self.headerArray.push(prefix);
-                self.addHeaderToElement(element, jsonObject.title);
+                self.addHeaderToElement(element, jsonObject);
                 return;
             }
             $.each(jsonObject, function (key, value) {
@@ -97,7 +131,46 @@ $(document).ready(function () {
             return jsonObject;
         }
 
+        DwTable.prototype.fetchData = function (pageIndex) {
+            var self = this;
+            var from = pageIndex * self.size;
+            self.currentPageIndex = pageIndex;
+            sortColumn = self.sortColumn || "";
+            isSortAscending = self.sortAscending || true;
+            var order = isSortAscending ? "asc" : "desc";
+            var params = $.param({
+                "from": from,
+                "size": size,
+                "sort": sortColumn,
+                "order": order
+            });
+
+            $.getJSON(dataUrl + "?" + params, function (response) {
+                $.blockUI({
+                    message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
+                    css: {width: '275px'}
+                });
+                self.dataToPopulate = response.data;
+            }).done(function () {
+
+                table = self.$tableName.dataTable();
+                oSettings = table.fnSettings();
+
+                table.fnClearTable(this);
+
+                self.handleJSONDataAsArray(self.$tBody, self.dataToPopulate, self.headerArray);
+
+
+                oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+                table.fnDraw();
+                //self.handleJSONDataAsArray(self.dataToPopulate)
+                //self.handleJSONDataAsArray(self.$tableName, self.dataToPopulate);
+                //self.populateTable();
+            });
+        };
+
         DwTable.prototype.populateTable = function () {
+            var self = this;
             this.$tableName.DataTable({
                 "dom": 'C<"clear">lfrtip',
                 "scrollX": true,
@@ -119,12 +192,13 @@ $(document).ready(function () {
 
     })($, tableElement);
 
-     $.getJSON(headerUrl, function (response) {
+    $.getJSON(headerUrl, function (response) {
         headers = response;
         $.getJSON(dataUrl, function (response) {
+            totalEntries = response.total || 0;
             dataToPopulate = response.data;
         }).done(function () {
-            dwAnalysis = new DwTable(headers, dataToPopulate);
+            dwAnalysis = new DwTable(headers, dataToPopulate, totalEntries);
         }).fail(function (error) {
             console.log(error);
         });
