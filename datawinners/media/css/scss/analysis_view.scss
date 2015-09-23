@@ -54,3 +54,26 @@
     }
   }
 }
+
+body ul.ColVis_collection {
+  width: auto;
+  background: #fafafa;
+
+  li {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    //-webkit-box-shadow: 1px 1px 3px #999;
+    //-moz-box-shadow: 1px 1px 3px #999;
+    //-ms-box-shadow: 1px 1px 3px #999;
+    //-o-box-shadow: 1px 1px 3px #999;
+    //box-shadow: 1px 1px 3px #999;
+
+    &:hover {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+  }
+}
