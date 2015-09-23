@@ -121,10 +121,11 @@ def get_submissions_paginated(dbm, form_model, search_parameters, local_time_del
     search_results = search.execute()
     return search_results, query_fields
 
-def get_submissions_paginated_simple(dbm, form_model, pagination_params):
+def get_submissions_paginated_simple(dbm, form_model, pagination_params, sort_params=None):
     pagination_params = _transform_params_based_on_type(pagination_params)
     es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
+    search = search.sort(sort_params)
     search = search.extra(**pagination_params)
     search_results = search.execute()
     return search_results

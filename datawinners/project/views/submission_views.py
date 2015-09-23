@@ -628,7 +628,8 @@ def get_analysis_data(request, form_code):
     dbm = get_database_manager(request.user)
     questionnaire = get_project_by_code(dbm, form_code)
     pagination_params = _get_pagination_params(request)
-    search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params)
+    sort_params = _get_sorting_params(request)
+    search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, sort_params)
     data = _create_analysis_response(search_results)
     return HttpResponse(
         jsonpickle.encode(
@@ -637,6 +638,12 @@ def get_analysis_data(request, form_code):
                 'data': data,
             }, unpicklable=False), content_type='application/json')
 
+def _get_sorting_params(request):
+    sort_params = {}
+    if request.GET.get('sort'):
+        sort_params[request.GET['sort']] = {'order':request.GET.get('order','asc')}
+    return sort_params
+    
 def _get_pagination_params(request):
     pagination_related_param_keys = ['from','size']
     pagination_params = {}
