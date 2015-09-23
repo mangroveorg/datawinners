@@ -4,9 +4,9 @@ $(document).ready(function () {
         dataToPopulate;
     var tableElement = $("#analysis_table");
 
-    var DwTable = (function ($, tableElement) {
+    var DynamicHeaderDataTable = (function ($, tableElement) {
 
-        function DwTable(header, dataToPopulate, totalEntries) {
+        function DynamicHeaderDataTable(header, dataToPopulate, totalEntries) {
 
             //cache DOM Elements
             this.$tableName = tableElement;
@@ -27,7 +27,7 @@ $(document).ready(function () {
             this.init();
         }
 
-        DwTable.prototype.init = function () {
+        DynamicHeaderDataTable.prototype.init = function () {
             var self = this;
             this.$tableName.append("<thead><tr></tr></thead><tbody></tbody>");
             this.$tBody = this.$tableName.find("tbody");
@@ -65,18 +65,18 @@ $(document).ready(function () {
 
         }
 
-        DwTable.prototype.addHeaderToElement = function (element, value) {
+        DynamicHeaderDataTable.prototype.addHeaderToElement = function (element, value) {
             element.append('<th data-columncode=' + value.id + '>' + value.title + '</th>');
         }
 
-        DwTable.prototype.handleHeaderArray = function (element, array, prefix) {
+        DynamicHeaderDataTable.prototype.handleHeaderArray = function (element, array, prefix) {
             var self = this;
             $.each(array, function (index, value) {
                 self.handleHeaderObject(element, value, prefix);
             });
         }
 
-        DwTable.prototype.handleHeaderObject = function (element, jsonObject, prefix) {
+        DynamicHeaderDataTable.prototype.handleHeaderObject = function (element, jsonObject, prefix) {
             var self = this;
             var prefix;
             if (jsonObject.hasOwnProperty("id")) {
@@ -98,7 +98,7 @@ $(document).ready(function () {
             });
         }
 
-        DwTable.prototype.handleJSONDataAsObject = function (element, jsonObject) {
+        DynamicHeaderDataTable.prototype.handleJSONDataAsObject = function (element, jsonObject) {
             var self = this;
             $.each(self.headerArray, function (index, header) {
                 var value = self.findProperty(jsonObject, header, "");
@@ -107,11 +107,11 @@ $(document).ready(function () {
         }
 
 
-        DwTable.prototype.handleJSONDataAsString = function (element, string) {
+        DynamicHeaderDataTable.prototype.handleJSONDataAsString = function (element, string) {
             element.append('<td>' + string + '</td>')
         }
 
-        DwTable.prototype.handleJSONDataAsArray = function (element, array) {
+        DynamicHeaderDataTable.prototype.handleJSONDataAsArray = function (element, array) {
             var self = this;
             $.each(array, function (index, value) {
                 element.append("<tr></tr>");
@@ -119,7 +119,7 @@ $(document).ready(function () {
             });
         }
 
-        DwTable.prototype.findProperty = function (jsonObject, property, defaultValue) {
+        DynamicHeaderDataTable.prototype.findProperty = function (jsonObject, property, defaultValue) {
             if (typeof defaultValue == 'undefined')
                 defaultValue = null;
             property = property.split('.');
@@ -131,7 +131,7 @@ $(document).ready(function () {
             return jsonObject;
         }
 
-        DwTable.prototype.fetchData = function (pageIndex) {
+        DynamicHeaderDataTable.prototype.fetchData = function (pageIndex) {
             var self = this;
             var from = pageIndex * self.size;
             self.currentPageIndex = pageIndex;
@@ -169,7 +169,7 @@ $(document).ready(function () {
             });
         };
 
-        DwTable.prototype.populateTable = function () {
+        DynamicHeaderDataTable.prototype.populateTable = function () {
             var self = this;
             this.$tableName.DataTable({
                 "dom": 'C<"clear">lfrtip',
@@ -188,7 +188,7 @@ $(document).ready(function () {
             });
         }
 
-        return DwTable;
+        return DynamicHeaderDataTable;
 
     })($, tableElement);
 
@@ -198,7 +198,7 @@ $(document).ready(function () {
             totalEntries = response.total || 0;
             dataToPopulate = response.data;
         }).done(function () {
-            dwAnalysis = new DwTable(headers, dataToPopulate, totalEntries);
+            dwAnalysis = new DynamicHeaderDataTable(headers, dataToPopulate, totalEntries);
         }).fail(function (error) {
             console.log(error);
         });
