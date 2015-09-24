@@ -292,15 +292,15 @@ class TestSubmissionIndex(unittest.TestCase):
         dbm = MagicMock(spec=DatabaseManager)
         uuid = "ds_short_code"
         contact = Mock(spec=Contact)
-        contact.value.return_value = "ds_name"
+        contact.value = Mock(return_value="ds_name", name='name')
         contact.short_code = uuid
 
         with patch('datawinners.search.submission_index.Contact') as contact_mock:
             contact_mock.get.return_value = contact
-            name, short_code = _lookup_contact_by_uid(dbm, uuid)
+            datasender_dict = _lookup_contact_by_uid(dbm, uuid)
 
-            self.assertEqual(name, "ds_name")
-            self.assertEqual(short_code, "ds_short_code")
+            self.assertEqual(datasender_dict['name'], "ds_name")
+            self.assertEqual(datasender_dict['id'], "ds_short_code")
 
     def test_should_get_phone_number_and_short_code_of_contact_when_name_does_not_exist(self):
         dbm = MagicMock(spec=DatabaseManager)
@@ -308,13 +308,14 @@ class TestSubmissionIndex(unittest.TestCase):
         mobile_number = "some_number"
 
         contact = Mock(spec=Contact)
-        contact.value('name').return_value = None
-        contact.value('mobile_number').return_value = 'some_number'
+        contact.value = Mock(name='name', return_value=None)
+        contact.value = Mock(return_value=mobile_number, name='mobile_number')
         contact.short_code = uuid
 
         with patch('datawinners.search.submission_index.Contact') as contact_mock:
             contact_mock.get.return_value = contact
-            number, short_code = _lookup_contact_by_uid(dbm, uuid)
+            datasender_dict = _lookup_contact_by_uid(dbm, uuid)
 
-            self.assertEqual(mobile_number, "some_number")
-            self.assertEqual(short_code, "ds_short_code")
+            self.assertEqual(datasender_dict['id'], "ds_short_code")
+            self.assertEqual(datasender_dict['name'], "some_number")
+
