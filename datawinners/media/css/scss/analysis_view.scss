@@ -79,14 +79,29 @@ body ul.ColVis_collection {
 }
 
 .dataTable {
+  th,
+  td {
+    border: none;
+  }
   tbody {
     tr {
       &:hover {
         background-color: #f6f6f6;
       }
+      .sorting_1 {
+        background-color: transparent;
+      }
     }
     .odd {
         background-color: #f9f9f9;
+    }
+  }
+
+  thead {
+    tr {
+      th {
+        border-bottom: 1px solid #111;
+      }
     }
   }
 }
@@ -107,11 +122,16 @@ body ul.ColVis_collection {
   }
 
   table thead th {
-    border-bottom: none;
+    //border-bottom: none;
+    font-size: 12px;
     cursor: pointer;
   }
 
   .dataTables_scrollBody {
-    border-bottom: none;
+    border-bottom: 1px solid #111;
   }
+}
+
+#analysis_table tbody tr .sorting_1 {
+  background-color: transparent;
 }
