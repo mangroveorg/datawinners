@@ -69,13 +69,16 @@
         </script>
     {% endcompress %}
 
-    {% block secondary_navigation_data %}
-        {% activetab "secondary_tab_nav" "analysis" %}
-        {{ block.super }}
-    {% endblock %}
-    <div id="submission_logs" class="grid_23 alpha">
-        {% include 'project/analysis_table.html' %}
-    </div>
+    <section class="analysis_header">
+        {% block secondary_navigation_data %}
+            {% activetab "secondary_tab_nav" "analysis" %}
+            {{ block.super }}
+        {% endblock %}
+        {% include 'project/partials/_page_header.html' with title="Analysis" help_message='Analyze your successful submissions' %}
+        <div id="submission_logs" class="grid_23 alpha">
+            {% include 'project/analysis_table.html' %}
+        </div>
+    </section>
 {% endblock %}
 
 {% block page_js %}

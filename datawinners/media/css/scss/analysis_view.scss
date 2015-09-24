@@ -85,9 +85,6 @@ body ul.ColVis_collection {
   }
   tbody {
     tr {
-      &:hover {
-        background-color: #f6f6f6;
-      }
       .sorting_1 {
         background-color: transparent;
       }
@@ -104,6 +101,8 @@ body ul.ColVis_collection {
       }
     }
   }
+
+
 }
 
 .dataTables_wrapper {
@@ -121,17 +120,42 @@ body ul.ColVis_collection {
     margin: 10px 0 15px;
   }
 
-  table thead th {
-    //border-bottom: none;
-    font-size: 12px;
-    cursor: pointer;
+  table {
+    thead th {
+      //border-bottom: none;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    tbody {
+      tr {
+        color: #333;
+        &:hover {
+          background-color: #bdd6ec; /*f6f6f6*/
+          color: #000;
+        }
+      }
+    }
   }
 
   .dataTables_scrollBody {
     border-bottom: 1px solid #111;
   }
+
 }
 
 #analysis_table tbody tr .sorting_1 {
   background-color: transparent;
+}
+
+.analysis_header {
+  .secondary_tab {
+    left: -25px;
+  }
+
+  .heading_block {
+    float: left;
+    width: 100%;
+    margin: 0 0 25px;
+  }
 }

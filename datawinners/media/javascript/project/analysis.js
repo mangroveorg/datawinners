@@ -174,7 +174,8 @@ $(document).ready(function () {
             this.$tableName.DataTable({
                 "dom": 'C<"clear">lfrtip',
                 "scrollX": true,
-                "scrollY": "450px"
+                "scrollY": "450px",
+                "searching": false
             });
         }
 
