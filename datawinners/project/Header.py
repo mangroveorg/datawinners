@@ -77,7 +77,7 @@ class AnalysisPageHeader():
     def get_column_title(self):
         header = []
         for field in self._form_model.fields:
-            header.append({"id":self._form_model.id+'_'+field.code,"title":field.name})
+            header.append({"data":self._form_model.id+'_'+field.code,"title":field.name})
         return header
 
 class SubmissionExcelHeader():

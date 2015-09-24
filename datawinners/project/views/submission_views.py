@@ -634,22 +634,24 @@ def get_analysis_data(request, form_code):
     return HttpResponse(
         jsonpickle.encode(
             {
-                'total': search_results.hits.total,
+                'recordsTotal': search_results.hits.total,
+                'recordsFiltered': search_results.hits.total,
                 'data': data,
+                'draw': int(request.GET.get('draw', 1)),
             }, unpicklable=False), content_type='application/json')
 
 def _get_sorting_params(request):
     sort_params = {}
-    if request.GET.get('sort'):
-        sort_params[request.GET['sort']] = {'order':request.GET.get('order','asc')}
+    if request.GET.get('order[0][column]'):
+        sort_column_index = request.GET.get('order[0][column]')
+        sort_column_id = request.GET.get('columns['+sort_column_index+'][data]') 
+        sort_params[sort_column_id] = {'order':request.GET.get('order[0][dir]','asc')}
     return sort_params
     
 def _get_pagination_params(request):
-    pagination_related_param_keys = ['from','size']
     pagination_params = {}
-    for key in request.GET:
-        if key in pagination_related_param_keys:
-            pagination_params[key]=request.GET[key]
+    pagination_params['from']=request.GET.get('start',0)
+    pagination_params['size']=request.GET.get('length',10)
     return pagination_params
         
 def _create_analysis_response(search_results):
