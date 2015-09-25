@@ -236,10 +236,10 @@ def _get_datasender_info(dbm, submission_doc):
     else:
         datasender_dict['name'] = submission_doc.created_by
         datasender_dict['id'] = UNKNOWN
-        datasender_dict['location'] = UNKNOWN
+        datasender_dict['location'] = []
         datasender_dict['email'] = UNKNOWN
-        datasender_dict['groups'] = UNKNOWN
-        datasender_dict['mobile_number'] = UNKNOWN
+        datasender_dict['groups'] = []
+        datasender_dict['mobile_number'] = submission_doc.created_by
 
     return datasender_dict
 
