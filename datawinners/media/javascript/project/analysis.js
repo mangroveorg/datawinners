@@ -4,7 +4,7 @@ $(document).ready(function () {
     	function AnalysisPageDataTable(columns){
             tableElement.DataTable({
                 "scrollX": true,
-                "scrollY": "450px",
+                "scrollY": "374px",
                 "searching": false,
                 "processing": true,
                 "serverSide": true,

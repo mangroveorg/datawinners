@@ -125,6 +125,10 @@ body ul.ColVis_collection {
       //border-bottom: none;
       font-size: 12px;
       cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: auto !important;
     }
 
     tbody {
