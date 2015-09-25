@@ -117,6 +117,9 @@ def es_questionnaire_field_name(field_code, form_model_id, parent_field_code=Non
 def es_unique_id_code_field_name(es_field_name):
     return es_field_name+'_unique_code'
 
+def es_unique_id_details_field_name(es_field_name):
+    return es_field_name+'_details'
+
 def is_submission_meta_field(field_name):
     return submission_meta_field_names.has_key(field_name)
 

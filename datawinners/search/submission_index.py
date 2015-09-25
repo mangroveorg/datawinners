@@ -18,7 +18,7 @@ from datawinners.search.submission_index_helper import SubmissionIndexUpdateHand
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
     es_unique_id_code_field_name, \
-    es_questionnaire_field_name, _add_text_field_mapping
+    es_questionnaire_field_name, _add_text_field_mapping, es_unique_id_details_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.project import Project
@@ -274,10 +274,14 @@ def _lookup_contact_by_uid(dbm, uid):
     return ds_dict
 
 
-def lookup_entity_name(dbm, id, entity_type):
+def lookup_entity(dbm, id, entity_type):
     try:
         if id:
-            return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
+            data_dict = {}
+            data = get_by_short_code_include_voided(dbm, id, entity_type).data_value()
+            for key, value in data.iteritems():
+                data_dict[key] = value['value']
+            return data_dict
     except DataObjectNotFound:
         pass
     return " "
@@ -360,8 +364,14 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
 
                 if is_original_question_changed_from_choice_answer_type(original_field, field):
                     entry = convert_choice_options_to_options_text(original_field, entry)
-                entity_name = lookup_entity_name(dbm, entry, [field.unique_id_type])
+                entity = lookup_entity(dbm, entry, [field.unique_id_type])
+                search_dict.update({})
+                entity_name = entity.get('name')
                 entry_code = entry
+                search_dict.update(
+                    {es_unique_id_details_field_name(
+                        es_questionnaire_field_name(field.code, form_model.id,
+                                                    parent_field_name)): entity})
                 search_dict.update(
                     {es_unique_id_code_field_name(
                         es_questionnaire_field_name(field.code, form_model.id,
@@ -421,7 +431,7 @@ def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
         for field in fieldset_field.fields:
             if isinstance(field, UniqueIdField):
                 unique_code = entry.get(field.code)
-                unique_id_name = lookup_entity_name(dbm, str(unique_code), [field.unique_id_type])
+                unique_id_name = lookup_entity(dbm, str(unique_code), [field.unique_id_type]).get('name')
                 entry[field.code + '_unique_code'] = unique_code if unique_code else ''
                 entry[field.code] = unique_id_name
             elif isinstance(field, FieldSet):
