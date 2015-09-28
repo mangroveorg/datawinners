@@ -284,7 +284,9 @@ def lookup_entity(dbm, id, entity_type):
             return data_dict
     except DataObjectNotFound:
         pass
-    return " "
+    return {
+        'name': " "
+    }
 
 
 # TODO:This is required only for the migration for creating submission indexes.To be removed following release10
