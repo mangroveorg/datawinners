@@ -634,8 +634,8 @@ def get_analysis_data(request, form_code):
     return HttpResponse(
         jsonpickle.encode(
             {
-                'recordsTotal': search_results.hits.total,
-                'recordsFiltered': search_results.hits.total,
+                'recordsTotal': search_results.hits.total if search_results is not None else 0,
+                'recordsFiltered': search_results.hits.total if search_results is not None else 0,
                 'data': data,
                 'draw': int(request.GET.get('draw', 1)),
             }, unpicklable=False), content_type='application/json')
@@ -656,8 +656,9 @@ def _get_pagination_params(request):
         
 def _create_analysis_response(search_results):
     data = []
-    for result in search_results.hits:
-        data.append(result._d_)
+    if search_results is not None:
+        for result in search_results.hits:
+            data.append(result._d_)
     return data
 
 @csrf_view_exempt

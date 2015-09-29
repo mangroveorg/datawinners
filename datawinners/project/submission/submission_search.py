@@ -6,7 +6,9 @@ from datawinners.search.index_utils import es_unique_id_code_field_name, es_ques
 from datawinners.search.query import ElasticUtilsHelper
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT, ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
+import logging
 
+logger = logging.getLogger("datawinners")
 
 def _add_sort_criteria(search_parameters, search):
     if 'sort_field' not in search_parameters:
@@ -127,7 +129,11 @@ def get_submissions_paginated_simple(dbm, form_model, pagination_params, sort_pa
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     search = search.sort(sort_params)
     search = search.extra(**pagination_params)
-    search_results = search.execute()
+    search_results = None
+    try:
+        search_results = search.execute()
+    except:
+        logger.exception('Exception happened while fetching analysis data')
     return search_results
 
 def _transform_params_based_on_type(params):
