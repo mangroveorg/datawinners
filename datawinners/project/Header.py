@@ -83,10 +83,10 @@ class AnalysisPageHeader():
                               'datasender.groups': 'Datasender Groups',
                               'datasender.location': 'Datasender Location'}
         for column_id, column_title in datasender_columns.iteritems():
-            header.append({"data": column_id, "title": column_title})
+            header.append({"data": column_id, "title": column_title, "defaultContent": ""})
 
         for field in self._form_model.fields:
-            header.append({"data": self._form_model.id+'_'+field.code, "title": field.name})
+            header.append({"data": self._form_model.id+'_'+field.code, "title": field.name, "defaultContent": ""})
 
         return header
 
