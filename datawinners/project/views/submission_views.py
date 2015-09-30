@@ -650,8 +650,8 @@ def _get_sorting_params(request):
     
 def _get_pagination_params(request):
     pagination_params = {}
-    pagination_params['from']=request.GET.get('start',0)
-    pagination_params['size']=request.GET.get('length',10)
+    pagination_params['from']=int(request.GET.get('start',0))
+    pagination_params['size']=int(request.GET.get('length',10))
     return pagination_params
         
 def _create_analysis_response(search_results):
