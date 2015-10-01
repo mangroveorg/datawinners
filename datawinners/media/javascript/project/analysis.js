@@ -19,7 +19,11 @@ $(document).ready(function () {
                 "ajax": {
                     url: dataUrl
                 },
-                "columns":   columns
+                "columns":   columns,
+                "initComplete": function(settings, json) {
+                    $(".paging_dw_pagination").show();
+                },
+                "pagingType": "dw_pagination"
             });
     	};
 
