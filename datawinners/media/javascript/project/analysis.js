@@ -32,11 +32,10 @@ $(document).ready(function () {
         analysisTable = new AnalysisPageDataTable(columns);
         setTimeout(function(){
             var custTableHeight = $(".dataTables_scroll").height();
-            $(".customization-widget").height(custTableHeight-7);
-            $(".customization-menu").height(custTableHeight-17-49);
-        }, 500);
+            $(".customization-widget").height(custTableHeight-17);
+            $(".customization-menu").height(custTableHeight-7-74);
+        }, 1000);
     });
-
 
 
     /*Col Customization Widget*/
@@ -275,16 +274,26 @@ $(document).ready(function () {
                     self.$columnWidget.removeClass("expand");
                     self.$customizationOverlay.hide();
                   } else {
-                    customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
+                    var custTableHeight = $(".dataTables_scroll").height();
+                    self.$custMenu.height(custTableHeight-81);
+                    self.$columnWidget.height(custTableHeight-17).addClass("expand");
                     self.$dataTable.addClass("shrink");
-                    self.$columnWidget.addClass("expand");
+                    customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
                     self.$customizationOverlay.height(customizationOverlayHeight).show();
                   }
             });
 
-            $(".customization-menu li").on("click", function() {
+            this.$customizationOverlay.on("click", function() {
+                self.$dataTable.removeClass("shrink");
+                self.$columnWidget.removeClass("expand");
+                $(this).hide();
+            });
+
+
+            $(".customization-menu li").on("click", function(event) {
                 var $checkBox = $(this).find("input[type=checkbox]");
                 $checkBox.prop("checked", !$checkBox.prop("checked"));
+                event.stopPropagation();
             });
 
             this.$selectAll.on("click", function(){
@@ -295,11 +304,12 @@ $(document).ready(function () {
                self.$custMenu.find("input[type=checkbox]").prop('checked', false);
             });
 
-            $(".customization-menu input[type=checkbox]").click(function(){
+            $(".customization-menu input[type=checkbox]").click(function(event){
                 if(this.checked){
                     $(this).parents('li').children('input[type=checkbox]').prop('checked',true);
                 }
                 $(this).parent().find('input[type=checkbox]').prop('checked',this.checked);
+                event.stopPropagation();
             });
 
         };
