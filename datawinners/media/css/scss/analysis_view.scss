@@ -199,6 +199,7 @@ body ul.ColVis_collection {
 .customization-widget {
   position: relative;
   display: none;
+  height: 600px;
   float: left;
   margin-top: 42px;
   background-color: #fafafa;
@@ -230,6 +231,7 @@ body ul.ColVis_collection {
 
 .customization-menu {
     margin-bottom: 10px;
+    height: 535px;
     overflow-y: scroll;
 
     ul {

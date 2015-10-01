@@ -31,11 +31,6 @@ $(document).ready(function () {
     
     $.getJSON(headerUrl, function (columns) {
         analysisTable = new AnalysisPageDataTable(columns);
-        setTimeout(function(){
-            var custTableHeight = $(".dataTables_scroll").height();
-            $(".customization-widget").height(custTableHeight-17);
-            $(".customization-menu").height(custTableHeight-7-74);
-        }, 1000);
     });
 
 
@@ -275,9 +270,7 @@ $(document).ready(function () {
                     self.$columnWidget.removeClass("expand");
                     self.$customizationOverlay.hide();
                   } else {
-                    var custTableHeight = $(".dataTables_scroll").height();
-                    self.$custMenu.height(custTableHeight-81);
-                    self.$columnWidget.height(custTableHeight-17).addClass("expand");
+                    self.$columnWidget.addClass("expand");
                     self.$dataTable.addClass("shrink");
                     customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
                     self.$customizationOverlay.height(customizationOverlayHeight).show();
