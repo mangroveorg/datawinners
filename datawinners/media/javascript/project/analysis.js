@@ -19,6 +19,7 @@ $(document).ready(function () {
                 },
                 "columns":   columns,
                 "initComplete": function(settings, json) {
+                	$('.dataTables_scrollBody thead tr').css({visibility:'collapse'});
                     $(".paging_dw_pagination").show();
                 },
                 "pagingType": "dw_pagination"
