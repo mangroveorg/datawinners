@@ -139,11 +139,6 @@ body ul.ColVis_collection {
       }
     }
   }
-
-  .dataTables_scrollBody {
-    border-bottom: 1px solid #111;
-  }
-
 }
 
 #analysis_table tbody tr .sorting_1 {
@@ -158,7 +153,7 @@ body ul.ColVis_collection {
   .heading_block {
     float: left;
     width: 100%;
-    margin: 0 0 25px;
+    margin: 0 0 10px;
   }
 }
 
@@ -178,34 +173,145 @@ body ul.ColVis_collection {
   width: 100%;
 
   &.shrink {
-    width: 70%;
+    width: 50%;
   }
 
+}
+
+.customization-icon {
+  float: right;
+  position: relative;
+  top: 40px;
+  background: url(/media/images/settings.png) no-repeat;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: .8;
+  }
 }
 
 .data-widget {
   clear: both;
 }
 
-.customization_widget {
+.customization-widget {
+  position: relative;
   display: none;
   float: left;
-  margin-top: 58px;
+  margin-top: 57px;
   background-color: #fafafa;
-  border: 1px solid #000;
+  border: 1px solid #e1e1e1;
+  border-top: none;
+  z-index:101;
 
   &.expand {
-    width: 29.5%;
+    width: 49.7%;
     display: block;
   }
 
-  ul {
-    padding-left: 10px;
+  .customization-widget-close {
+    position: relative;
+    top: 15px;
+    background: url(/media/images/col_widget_close.png) no-repeat;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 18px;
+    float: right;
+    padding-right: 10px;
 
-    li {
-      padding-left: 10px;
+    &:hover {
+      opacity: 0.8;
     }
   }
+}
+
+.customization-menu {
+    margin-bottom: 10px;
+    overflow-y: scroll;
+
+    ul {
+      padding-left: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    li {
+      padding-left: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &:hover {
+        cursor: pointer;
+        background-color: #f0f0f0;
+      }
+    }
+
+  > ul {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    border-bottom: 3px solid rgba(0,0,0,0.10);
+    border-left: 1px solid rgba(0,0,0,0.10);
+    border-right: 1px solid rgba(0,0,0,0.10);
+    border-top: 1px solid rgba(0,0,0,0.10);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    padding: 0;
+  }
+
+}
+
+.select-menu {
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  background-color: #fafafa;
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid #e5e5e5;
+  margin-bottom: 5px;
+
+  .select-menu-box {
+    text-align: center;
+    padding: 5px 0;
+    background-color: #eee;
+    width: 135px;
+    margin-left: 10px;
+    border-radius: 5px;
+  }
+
+  .select-all,
+  .select-none {
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+  }
+}
+
+.customization-overlay {
+  display:none;
+  top:0;
+  left:0;
+  min-width:100%;
+  min-height:100%;
+  opacity:0.4;
+  filter:alpha(opacity=50);
+  position:absolute;
+  background: #000;
+  z-index:100;
 }
 
 //pagination Styles
@@ -328,9 +434,9 @@ body ul.ColVis_collection {
   margin: 0 !important;
   padding: 0 !important;
 }
-.dataTables_wrapper.no-footer .dataTables_scrollBody {
+/*.dataTables_wrapper.no-footer .dataTables_scrollBody {
   border-bottom: 1px solid #111;
-}
+}*/
 .dataTables_wrapper.no-footer div.dataTables_scrollHead table,
 .dataTables_wrapper.no-footer div.dataTables_scrollBody table {
   border-bottom: none;
