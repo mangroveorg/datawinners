@@ -89,7 +89,7 @@ def analysis_headers(request, form_code):
     manager = get_database_manager(request.user)
     questionnaire = get_project_by_code(manager, form_code)
     submission_type = request.GET.get('type', 'all')
-    headers = AnalysisPageHeader(questionnaire, submission_type).get_column_title()
+    headers = AnalysisPageHeader(questionnaire, submission_type, manager).get_column_title()
     return HttpResponse(encode_json(headers), content_type='application/json')
 
 def _get_date_fields_info(questionnaire):

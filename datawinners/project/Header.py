@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 from django.utils.translation import ugettext
+from datawinners.entity.import_data import get_entity_type_info
 
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
@@ -71,8 +72,9 @@ class SubmissionsPageHeader():
         return header_dict.values()
 
 class AnalysisPageHeader():
-    def __init__(self, form_model, submission_type):
+    def __init__(self, form_model, submission_type, dbm):
         self._form_model = form_model
+        self._dbm = dbm
     
     def get_column_title(self):
         header = []
@@ -86,7 +88,13 @@ class AnalysisPageHeader():
             header.append({"data": column_id, "title": column_title, "defaultContent": ""})
 
         for field in self._form_model.fields:
-            header.append({"data": self._form_model.id+'_'+field.code, "title": field.name, "defaultContent": ""})
+            prefix = self._form_model.id + "_" + field.code + "_details"
+            if field.is_entity_field:
+                entity_type_info = get_entity_type_info(field.unique_id_type, self._dbm)
+                for idx, val in enumerate(entity_type_info['names']):
+                    header.append({"data": prefix+"."+val, "title": entity_type_info['labels'][idx],  "defaultContent": ""})
+            else:
+                header.append({"data": self._form_model.id+'_'+field.code, "title": field.name,  "defaultContent": ""})
 
         return header
 
