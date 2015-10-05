@@ -40,7 +40,7 @@ class SubmissionFormatter(object):
 
     def _format_date_field(self, field, field_code, result, row, columns):
         date_format = columns[field_code].get("format")
-        date_value_str = row[field_code]
+        date_value_str = row.get(field_code, '')
         try:
             if field_code == 'date':
                 date_value = self._convert_to_localized_date_time(date_value_str)
