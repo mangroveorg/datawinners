@@ -2,6 +2,7 @@ import logging
 from datawinners.main.database import get_db_manager
 from datawinners.search import update_submission_search_index, form_model_change_handler, entity_search_update, entity_form_model_change_handler, \
     contact_search_update
+from datawinners.search.index_utils import get_elasticsearch_handle
 from mangrove.datastore.documents import SurveyResponseDocument, FormModelDocument, EntityFormModelDocument
 from mangrove.datastore.entity import Entity, Contact
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
@@ -25,10 +26,13 @@ def populate_submission_index(dbm, form_model_id=None):
         ignored = 0
         counter = 0
         error_count = 0
+        actions = []
         for row in rows:
             try:
                 survey_response = SurveyResponseDocument._wrap_row(row)
-                update_submission_search_index(survey_response, dbm, refresh_index=False, form_model=form_model)
+                submission_action = update_submission_search_index(survey_response, dbm, refresh_index=False,
+                                                                   form_model=form_model, bulk=True)
+                actions.append(submission_action)
                 counter += 1
                 logger.info('No of submissions processed {counter}'.format(counter=counter))
             except FormModelDoesNotExistsException as e:
@@ -37,6 +41,9 @@ def populate_submission_index(dbm, form_model_id=None):
             except Exception as ex:
                 logger.exception('Exception occurred')
                 error_count += 1
+
+        es = get_elasticsearch_handle()
+        es.bulk(actions, index=dbm.database_name, doc_type=form_model.id)
                 
         logger.warning("No of submissions ignored: {ignored}".format(ignored=ignored))
         logger.warning("No of submissions had errors:{errors}".format(errors=error_count))
@@ -48,19 +55,27 @@ def populate_submission_index(dbm, form_model_id=None):
 
 def populate_entity_index(dbm):
     rows = dbm.database.iterview('by_short_codes/by_short_codes', 100, reduce=False, include_docs=True)
+    actions = []
     for row in rows:
         try:
             entity = Entity.__document_class__.wrap(row.get('doc'))
-            entity_search_update(entity, dbm)
+            action = entity_search_update(entity, dbm, bulk=True)
+            if action is not None: actions.append(action)
         except Exception as e:
             raise e
+    es = get_elasticsearch_handle()
+    es.bulk(actions)
 
 
 def populate_contact_index(dbm):
     rows = dbm.database.iterview('datasender_by_mobile/datasender_by_mobile', 100, reduce=False, include_docs=True)
+    actions = []
     for row in rows:
         contact = Contact.__document_class__.wrap(row.get('doc'))
-        contact_search_update(contact, dbm)
+        action = contact_search_update(contact, dbm, bulk=True)
+        if action is not None: actions.append(action)
+    es = get_elasticsearch_handle()
+    es.bulk(actions)
 
 
 def create_all_indices(dbm):
@@ -70,13 +85,18 @@ def create_all_indices(dbm):
 
 
 def create_all_mappings(dbm):
+    logger = logging.getLogger(dbm.database_name)
     for row in dbm.load_all_rows_in_view('questionnaire'):
-        if row['value']['is_registration_model']:
-            entity_form_model_change_handler(EntityFormModelDocument.wrap(row["value"]), dbm)
-        else:
-            form_model_change_handler(FormModelDocument.wrap(row["value"]), dbm)
+        try:
+            if row['value']['is_registration_model']:
+                entity_form_model_change_handler(EntityFormModelDocument.wrap(row["value"]), dbm)
+            else:
+                form_model_change_handler(FormModelDocument.wrap(row["value"]), dbm)
+        except Exception as e:
+            logger.exception(e.message)
 
 
 if __name__ == '__main__':
     dbm = get_db_manager('hni_testorg_slx364903')
-    populate_contact_index(dbm)
+    populate_submission_index(dbm, '54887ad0678e11e5a990080027c7303b')
+    #populate_contact_index(dbm)

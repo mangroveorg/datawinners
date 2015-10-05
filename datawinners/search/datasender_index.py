@@ -13,11 +13,16 @@ def update_datasender_index_by_id(short_code, dbm):
     update_datasender_index(datasender, dbm)
 
 
-def update_datasender_index(contact_doc, dbm):
+def update_datasender_index(contact_doc, dbm, bulk=False):
     es = get_elasticsearch_handle()
     if contact_doc.data:
         form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
         datasender_dict = _create_contact_dict(dbm, contact_doc, form_model)
+
+        if bulk:
+            datasender_dict.update({'id':contact_doc.id})
+            return es.index_op(datasender_dict, index=dbm.database_name, doc_type=REPORTER_ENTITY_TYPE[0])
+        
         es.index(dbm.database_name, REPORTER_ENTITY_TYPE[0], datasender_dict, id=contact_doc.id)
     es.refresh(dbm.database_name)
 
@@ -72,5 +77,5 @@ def create_ds_mapping(dbm, form_model):
     fields.append(TextField(name="projects", code='projects', label='projects'))
     fields.append(TextField(name="groups", code='groups', label='My Groups'))
     fields.append(TextField(name="customgroups", code='customgroups', label='Custom groups'))
-    es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
+    es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(REPORTER_ENTITY_TYPE[0], fields))
 
