@@ -78,12 +78,12 @@ class AnalysisPageHeader():
     
     def get_column_title(self):
         header = []
-        datasender_columns = {'datasender.name': 'Datasender Name',
-                              'datasender.mobile_number': 'Datasender Mobile Number',
-                              'datasender.id': 'Datasender ID Number',
-                              'datasender.email': 'Datasender Email',
-                              'datasender.groups': 'Datasender Groups',
-                              'datasender.location': 'Datasender Location'}
+        datasender_columns = {'datasender.name': 'Data Sender Name',
+                              'datasender.mobile_number': 'Data Sender Mobile Number',
+                              'datasender.id': 'Data Sender ID Number',
+                              'datasender.email': 'Data Sender Email',
+                              'datasender.groups': 'Data Sender Groups',
+                              'datasender.location': 'Data Sender Location'}
         for column_id, column_title in datasender_columns.iteritems():
             header.append({"data": column_id, "title": column_title, "defaultContent": ""})
 
