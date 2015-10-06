@@ -72,7 +72,7 @@ class SubmissionsPageHeader():
         return header_dict.values()
 
 class AnalysisPageHeader():
-    def __init__(self, form_model, submission_type, dbm):
+    def __init__(self, form_model, dbm):
         self._form_model = form_model
         self._dbm = dbm
     
@@ -94,7 +94,7 @@ class AnalysisPageHeader():
                 for idx, val in enumerate(entity_type_info['names']):
                     header.append({"data": prefix+"."+val, "title": entity_type_info['labels'][idx],  "defaultContent": ""})
             else:
-                header.append({"data": self._form_model.id+'_'+field.code, "title": field.name,  "defaultContent": ""})
+                header.append({"data": self._form_model.id+'_'+field.code, "title": field.label,  "defaultContent": ""})
 
         return header
 
