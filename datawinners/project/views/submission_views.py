@@ -61,7 +61,8 @@ from datawinners.project.views.utils import get_form_context, get_project_detail
 from datawinners.project.submission_form import SurveyResponseForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.transport.contract.survey_response import SurveyResponse
-from mangrove.datastore.user_questionnaire_preference import get_analysis_field_preferences
+from mangrove.datastore.user_questionnaire_preference import get_analysis_field_preferences, \
+    save_analysis_field_preferences
 
 
 websubmission_logger = logging.getLogger("websubmission")
@@ -99,6 +100,9 @@ def analysis_headers(request, form_code):
 def analysis_user_preferences(request, form_code):
     manager = get_database_manager(request.user)
     questionnaire = get_project_by_code(manager, form_code)
+    if request.method == 'POST':
+        save_analysis_field_preferences(manager, request.user.id, questionnaire, dict(request.POST.iterlists()))
+        return HttpResponse()
     preferences = get_analysis_field_preferences(manager, request.user.id, questionnaire)
     return HttpResponse(encode_json(preferences), content_type='application/json')
 

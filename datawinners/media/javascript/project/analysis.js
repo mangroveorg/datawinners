@@ -80,7 +80,8 @@ $(document).ready(function () {
                     self.$columnWidget.removeClass("expand");
                     self.$customizationOverlay.hide();
                     self.$customizationIcon.removeClass("active");
-                } else {
+                    self.submit();
+                  } else {
                     self.$columnWidget.addClass("expand");
                     self.$dataTable.addClass("shrink");
                     customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
@@ -93,6 +94,7 @@ $(document).ready(function () {
                 self.$dataTable.removeClass("shrink");
                 self.$columnWidget.removeClass("expand");
                 $(this).hide();
+                self.submit();
             });
 
 
@@ -131,9 +133,9 @@ $(document).ready(function () {
             });
         };
 
-        ColCustomWidget.prototype.createColItems = function (element, value, parentElement) {
-            var $listElement = $('<' + element + '/>'),
-                $checkBox = $("<input type='checkbox' value='" + value.title + "'>");
+        ColCustomWidget.prototype.createColItems = function(element, value, parentElement) {
+            var $listElement = $('<'+ element + '/>'),
+                $checkBox = $("<input type='checkbox' value='True' name='" + value.data + "'>");
 
             $checkBox.prop('checked', value.visibility);
             $listElement.text(value.title).prepend($checkBox);
@@ -160,6 +162,21 @@ $(document).ready(function () {
             } else {
                 this.createColItems("li", value, $parentElement);
             }
+        };
+        
+        ColCustomWidget.prototype.submit = function(){
+        	$.ajax({
+        		  type: "POST",
+        		  url: preferenceUrl,
+        		  data: $("#customization-form").serialize(),
+        		  success: self.submitSuccess,
+        		  dataType: 'json'
+        		});
+    	};
+    	
+        ColCustomWidget.prototype.submitSuccess = function(){
+        	//reload the table
+        	//TODO
         };
 
         return ColCustomWidget;
