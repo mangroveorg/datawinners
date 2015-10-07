@@ -53,6 +53,7 @@ class TestSubmissionIndex(unittest.TestCase):
             self.assertEquals(
                 {'void': False,
                  '1212_q4': ['one', 'two'],
+                 'media': [],
                  'is_anonymous': False},
                 search_dict)
 
@@ -68,6 +69,7 @@ class TestSubmissionIndex(unittest.TestCase):
                 {'1212_q1': 'test1', "1212_q1_details": {'name': 'test1'}, "1212_q1_unique_code": "test_id",
                  '1212_q2': 'wrong number',
                  '1212_q3': 'wrong text', 'is_anonymous': False,
+                 'media': [],
                  'void': False},
                 search_dict)
 
@@ -78,7 +80,7 @@ class TestSubmissionIndex(unittest.TestCase):
         submission_doc = SurveyResponseDocument(values=values, status="error")
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
-            {'1212_q2': 'wrong number', '1212_q3': 'wrong text', 'is_anonymous': False,
+            {'1212_q2': 'wrong number', '1212_q3': 'wrong text', 'is_anonymous': False, 'media': [],
              'void': False},
             search_dict)
 
@@ -90,6 +92,7 @@ class TestSubmissionIndex(unittest.TestCase):
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
             {'1212_repeat-code': '[{"single-select": "one", "q4": ["one", "two"]}]', 'is_anonymous': False,
+             'media': [],
              'void': False},
             search_dict)
 
@@ -104,6 +107,7 @@ class TestSubmissionIndex(unittest.TestCase):
         self.assertEquals(
             {'1212_repeat-code': '[{"group-code": [{"single-select": "one", "q4": ["one", "two"]}]}]',
              'is_anonymous': False,
+             'media': [],
              'void': False},
             search_dict)
 
@@ -117,6 +121,7 @@ class TestSubmissionIndex(unittest.TestCase):
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
             {'void': False, '1212_group-code-single-select': 'one', '1212_group-code-q4': ['one', 'two'],
+             'media': [],
              'is_anonymous': False},
             search_dict)
 
@@ -193,7 +198,9 @@ class TestSubmissionIndex(unittest.TestCase):
             _update_with_form_model_fields(Mock(spec=DatabaseManager), submission, search_dict, self.form_model)
             self.assertEqual(search_dict, {'1212_my_unique_id': 'my_clinic', '1212_my_unique_id_details':
                 {'name': 'my_clinic'}, '1212_my_unique_id_unique_code': 'cli001',
-                                           'is_anonymous': False, 'void': False})
+                                           'is_anonymous': False,
+                                           'media':[],
+                                           'void': False})
 
     def test_generate_elastic_index_for_a_unique_id_field_within_group(self):
         search_dict = {}
@@ -208,6 +215,7 @@ class TestSubmissionIndex(unittest.TestCase):
             self.assertEqual(search_dict, {'1212_group_name-my_unique_id_details': {'name': 'my_clinic'},
                                            '1212_group_name-my_unique_id': 'my_clinic',
                                            '1212_group_name-my_unique_id_unique_code': 'cli001', 'is_anonymous': False,
+                                           'media': [],
                                            'void': False})
 
     def test_generate_elastic_index_for_a_unique_id_field_within_repeat(self):
@@ -226,7 +234,9 @@ class TestSubmissionIndex(unittest.TestCase):
             self.assertDictEqual(search_dict, {
                 '1212_repeat_name': '[{"my_unique_id": "my_clinic", "my_unique_id_unique_code": "cli001"}, '
                                     '{"my_unique_id": "my_clinic", "my_unique_id_unique_code": "cli002"}]',
-                'is_anonymous': False, 'void': False, })
+                'is_anonymous': False,
+                'media':[],
+                'void': False, })
 
     def test_generate_elastic_index_for_a_unique_id_field_within_repeat_in_group(self):
         unique_id_field = UniqueIdField('clinic', 'my_unique_id', 'my_unique_id', 'My Unique ID')
@@ -245,7 +255,9 @@ class TestSubmissionIndex(unittest.TestCase):
             self.assertDictEqual(search_dict, {
                 '1212_group_name-repeat_name': '[{"my_unique_id": "my_clinic", "my_unique_id_unique_code": "cli001"}, '
                                                '{"my_unique_id": "my_clinic", "my_unique_id_unique_code": "cli002"}]',
-                'is_anonymous': False, 'void': False, })
+                'is_anonymous': False,
+                'media': [],
+                'void': False, })
 
     def test_generate_elastic_index_for_a_unique_id_field_within_group_in_repeat(self):
         unique_id_field = UniqueIdField('clinic', 'my_unique_id', 'my_unique_id', 'My Unique ID')
@@ -266,7 +278,9 @@ class TestSubmissionIndex(unittest.TestCase):
             self.assertDictEqual(search_dict, {
                 '1212_repeat_name': '[{"group_name": [{"my_unique_id": "my_clinic", "my_unique_id_unique_code": "cli001"}]}, '
                                     '{"group_name": [{"my_unique_id": "my_clinic", "my_unique_id_unique_code": "cli002"}]}]',
-                'is_anonymous': False, 'void': False, })
+                'is_anonymous': False,
+                'media': [],
+                'void': False, })
 
     def test_generate_elastic_index_for_a_unique_id_field_within_group_in_group(self):
         unique_id_field = UniqueIdField('clinic', 'my_unique_id', 'my_unique_id', 'My Unique ID')
@@ -289,7 +303,7 @@ class TestSubmissionIndex(unittest.TestCase):
                 _update_with_form_model_fields(Mock(spec=DatabaseManager), submission, search_dict, self.form_model)
                 self.assertDictEqual(search_dict,
                                      {'void': False, '1212_group1_name-my_unique_id_details': {'id': 'test'},
-                                      '1212_group1_name-my_unique_id_unique_code': 'cli001', 'is_anonymous': False})
+                                      '1212_group1_name-my_unique_id_unique_code': 'cli001', 'media':[], 'is_anonymous': False})
 
     def test_should_get_name_and_short_code_of_contact(self):
         dbm = MagicMock(spec=DatabaseManager)

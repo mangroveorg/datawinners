@@ -18,8 +18,7 @@ from datawinners.search.submission_index_helper import SubmissionIndexUpdateHand
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
     es_unique_id_code_field_name, \
-    es_questionnaire_field_name, _add_text_field_mapping, es_unique_id_details_field_name, \
-    es_media_questionnaire_field_detail
+    es_questionnaire_field_name, _add_text_field_mapping, es_unique_id_details_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.project import Project
