@@ -18,10 +18,12 @@ from datawinners.search.submission_index_helper import SubmissionIndexUpdateHand
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
     es_unique_id_code_field_name, \
-    es_questionnaire_field_name, _add_text_field_mapping, es_unique_id_details_field_name
+    es_questionnaire_field_name, _add_text_field_mapping, es_unique_id_details_field_name, \
+    es_media_questionnaire_field_detail
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.project import Project
+from mangrove.form_model.field import PhotoField, AudioField, VideoField
 
 logger = logging.getLogger("datawinners")
 UNKNOWN = "N/A"
@@ -413,6 +415,19 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
             except Exception as ignore_conversion_errors:
                 pass
         if entry:
+            if 'media' not in search_dict.keys():
+                search_dict.update({'media': []})
+
+            if isinstance(field, PhotoField):
+                search_dict['media'].append({'type':'image', 'value': entry,
+                                    'key': es_questionnaire_field_name(field.code, form_model.id, parent_field_name)})
+            if isinstance(field, AudioField):
+                search_dict['media'].append({'type':'audio', 'value': entry,
+                                    'key': es_questionnaire_field_name(field.code, form_model.id, parent_field_name)})
+            if isinstance(field, VideoField):
+                search_dict['media'].append({'type': 'video', 'value': entry,
+                                    'key': es_questionnaire_field_name(field.code, form_model.id, parent_field_name)})
+
             if isinstance(field, FieldSet):
                 if field.is_group():
                     for value in submission_values[field_code]:
