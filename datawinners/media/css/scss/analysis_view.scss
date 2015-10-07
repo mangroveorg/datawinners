@@ -153,7 +153,7 @@ body ul.ColVis_collection {
   .heading_block {
     float: left;
     width: 100%;
-    margin: 0 0 10px;
+    margin: 0 0 20px;
   }
 }
 
@@ -178,22 +178,107 @@ body ul.ColVis_collection {
 
 }
 
-.customization-icon {
+.data-table-icons {
   float: right;
-  position: relative;
-  top: 33px;
-  background: url(/media/images/settings.png) no-repeat;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  margin-top: -10px;
 
-  &:hover {
-    opacity: .8;
+  ul {
+    clear: both;
+    overflow: hidden;
+    list-style: none;
+    background: #e6f2fc;
+    border: 1px solid #e6f2fc;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+  }
+
+  .chart-view-icon {
+    float: left;
+    background: url('/media/images/list_chart_map.png') no-repeat 10px -26px;
+    background-color: #e6f2fc;
+    height: 24px;
+    width: 40px;
+    cursor: pointer;
+    border-right: 1px solid #CCC;
+
+    &.active,
+    &:hover {
+      background-color: #94d1ff;
+    }
+
+    &.active {
+      cursor: default;
+    }
+  }
+
+  .list-view-icon {
+    float: left;
+    background: url('/media/images/list_chart_map.png') no-repeat 23px 4px;
+    height: 24px;
+    width: 50px;
+    cursor: pointer;
+    border-right: 1px solid #CCC;
+
+    &.active,
+    &:hover {
+      background-color: #94d1ff;
+    }
+
+    div {
+      position: relative;
+      display: block;
+      right: 32px;
+      height: 24px;
+      border-right: 1px solid #e6f2fc;
+
+      span {
+        position: relative;
+        left: 37px;
+        top: 11px;
+      }
+    }
+
+    &.active {
+      cursor: default;
+    }
+  }
+
+  #cust-icon {
+    overflow: hidden;
+    clear: both;
+    width: 44px;
+    background-color: #e6f2fc;
+    margin-left: 8px;
+    border-top: 1px solid #fff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    cursor: pointer;
+
+    .customization-icon {
+      float: left;
+      position: relative;
+      top: -2px;
+      left: 14px;
+      background: url('/media/images/settings.png') no-repeat 0 4px;
+      width: 24px;
+      height: 21px;
+      background-size: 70%;
+    }
+
+    &.active,
+    &:hover {
+        background-color: #94d1ff;
+    }
   }
 }
 
+
 .data-widget {
   clear: both;
+  position: relative;
 }
 
 .customization-widget {
@@ -214,10 +299,10 @@ body ul.ColVis_collection {
 
   .customization-widget-close {
     position: relative;
-    top: 15px;
-    background: url(/media/images/col_widget_close.png) no-repeat;
-    width: 24px;
-    height: 24px;
+    top: 16px;
+    background: url("/media/images/icons.png") no-repeat scroll -5px -170px;
+    width: 16px;
+    height: 16px;
     cursor: pointer;
     font-size: 18px;
     float: right;
@@ -288,7 +373,6 @@ body ul.ColVis_collection {
   .select-menu-box {
     text-align: center;
     padding: 5px 0;
-    background-color: #eee;
     width: 135px;
     margin-left: 10px;
     border-radius: 5px;
@@ -297,9 +381,15 @@ body ul.ColVis_collection {
   .select-all,
   .select-none {
       cursor: pointer;
+      color: #0070AC;
+
       &:hover {
         text-decoration: underline;
       }
+  }
+
+  .select-menu-separator {
+    color: #888888;
   }
 }
 
