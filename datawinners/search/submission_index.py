@@ -417,15 +417,27 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
             if 'media' not in search_dict.keys():
                 search_dict.update({'media': []})
 
+            submission_id = submission_doc.id
+            value = submission_values[field_code]
             if isinstance(field, PhotoField):
-                search_dict['media'].append({'type':'image', 'value': entry,
-                                    'key': es_questionnaire_field_name(field.code, form_model.id, parent_field_name)})
+                search_dict['media'].append({'type': 'image',
+                                             'value': value,
+                                             'download_link': '/download/attachment/' + submission_id + '/' + value,
+                                             'preview_link': '/download/attachment/' + submission_id + '/preview_' + value,
+                                             'key': es_questionnaire_field_name(field.code,
+                                                                                form_model.id, parent_field_name)})
             if isinstance(field, AudioField):
-                search_dict['media'].append({'type':'audio', 'value': entry,
-                                    'key': es_questionnaire_field_name(field.code, form_model.id, parent_field_name)})
+                search_dict['media'].append({'type': 'audio',
+                                             'value': value,
+                                             'download_link': '/download/attachment/' + submission_id + '/' + value,
+                                             'key': es_questionnaire_field_name(field.code,
+                                                                                form_model.id, parent_field_name)})
             if isinstance(field, VideoField):
-                search_dict['media'].append({'type': 'video', 'value': entry,
-                                    'key': es_questionnaire_field_name(field.code, form_model.id, parent_field_name)})
+                search_dict['media'].append({'type': 'video',
+                                             'value': value,
+                                             'download_link': '/download/attachment/' + submission_id + '/' + value,
+                                             'key': es_questionnaire_field_name(field.code,
+                                                                                form_model.id, parent_field_name)})
 
             if isinstance(field, FieldSet):
                 if field.is_group():
