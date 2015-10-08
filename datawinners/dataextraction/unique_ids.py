@@ -20,7 +20,7 @@ def _create_response(required_field_names, query, header_dict):
         required_field_names.append('void')
         header_dict.update({'deleted': 'deleted'})
         label_names = header_dict.keys()
-        for res in query.values_dict(tuple(required_field_names)):
+        for res in query.values_dict(*required_field_names):
             subject = {}
             for index, key in enumerate(required_field_names):
                 subject.update({label_names[index]: res.get(key)})

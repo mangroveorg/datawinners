@@ -36,7 +36,7 @@ class SubjectQuery(Query):
 class SubjectQueryResponseCreator():
     def create_response(self, required_field_names, query):
         subjects = []
-        for res in query.values_dict(tuple(required_field_names)):
+        for res in query.values_dict(*required_field_names):
             subject = []
             for key in required_field_names:
                 subject.append(res.get(key))
