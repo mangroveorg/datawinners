@@ -30,6 +30,9 @@ $(document).ready(function () {
                     $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
                     $(".paging_dw_pagination").show();
                 },
+                "drawCallback":function (settings, json){
+                    $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
+                },
                 "pagingType": "dw_pagination",
                 "columnDefs": [{
                     "targets": "media",
@@ -111,20 +114,40 @@ $(document).ready(function () {
 
             this.$selectAll.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', true);
+                self.handleVisibility(self.$custMenu);
             });
 
             this.$selectNone.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', false);
+                self.handleVisibility(self.$custMenu);
             });
-
+            
+            this.$custMenu.find("input[type=checkbox]").change(function(){
+            	console.log('checkbox changed...,'+this.name + ':'+this.checked);
+            });
+            
             $(".customization-menu input[type=checkbox]").click(function (event) {
                 if (this.checked) {
                     $(this).parents('li').children('input[type=checkbox]').prop('checked', true);
                 }
                 $(this).parent().find('input[type=checkbox]').prop('checked', this.checked);
+                self.handleVisibility(this);
                 event.stopPropagation();
             });
 
+        };
+        
+        ColCustomWidget.prototype.handleVisibility = function(element){
+        	var self = this;
+        	$(element).parent().find('li > input[type=checkbox]').each(function(index,elem){
+        		self.handleVisibility(elem);
+        	});
+            self.updateTable(element.name,element.checked);
+        };
+        
+        ColCustomWidget.prototype.updateTable = function(columnName,visibility){
+        	column = tableElement.DataTable().column(columnName+':name');
+        	column.visible(visibility);
         };
 
         ColCustomWidget.prototype.constructItems = function (customizationHeader) {

@@ -85,16 +85,16 @@ class AnalysisPageHeader():
                               'datasender.groups': 'Data Sender Groups',
                               'datasender.location': 'Data Sender Location'}
         for column_id, column_title in datasender_columns.iteritems():
-            header.append({"data": column_id, "title": column_title, "defaultContent": ""})
+            header.append({"data": column_id,"name": column_id, "title": column_title, "defaultContent": ""})
 
         for field in self._form_model.fields:
             prefix = self._form_model.id + "_" + field.code + "_details"
             if field.is_entity_field:
                 entity_type_info = get_entity_type_info(field.unique_id_type, self._dbm)
                 for idx, val in enumerate(entity_type_info['names']):
-                    header.append({"data": prefix+"."+val, "title": entity_type_info['labels'][idx],  "defaultContent": ""})
+                    header.append({"data": prefix+"."+val,"name": prefix+"."+val, "title": entity_type_info['labels'][idx],  "defaultContent": ""})
             else:
-                header.append({"data": self._form_model.id+'_'+field.code, "title": field.label,  "defaultContent": ""})
+                header.append({"data": self._form_model.id+'_'+field.code,"name": self._form_model.id+'_'+field.code, "title": field.label,  "defaultContent": ""})
 
         return header
 
