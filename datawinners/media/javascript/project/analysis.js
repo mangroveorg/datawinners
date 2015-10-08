@@ -200,7 +200,7 @@ $(document).ready(function () {
         $customizationMenu = $("#cust-icon");
 
     $dataTableViews.on("click", function (event) {
-        if($(event.target).hasClass("active")) {
+        if($(event.target).hasClass("active") || $(event.target).closest("li").hasClass("active")) {
             return;
         }
         if ($("#analysis_table_wrapper").css("display") == "none") {

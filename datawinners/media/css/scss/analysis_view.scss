@@ -140,13 +140,26 @@ body ul.ColVis_collection {
 
 .analysis_header {
   .secondary_tab {
-    left: -25px;
+    left: -20px;
+    width: 100%;
   }
 
   .heading_block {
     float: left;
     width: 100%;
     margin: 0 0 20px;
+  }
+}
+
+#submission_logs {
+  width: 100%;
+
+  .analysis_tbl_wrapper {
+    width: 100%;
+
+    &.shrink {
+      width: 50%;
+    }
   }
 }
 
@@ -162,14 +175,6 @@ body ul.ColVis_collection {
   float: right;
 }
 
-.analysis_tbl_wrapper {
-  width: 100%;
-
-  &.shrink {
-    width: 50%;
-  }
-
-}
 
 .data-table-icons {
   float: right;
@@ -344,7 +349,8 @@ body ul.ColVis_collection {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 95%;
+    min-width: 95%;
+    max-width: 95%;
     cursor: pointer;
 
     &:hover {

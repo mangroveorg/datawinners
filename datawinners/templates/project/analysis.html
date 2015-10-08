@@ -31,7 +31,7 @@
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
     <link href="/media/css/scss/util.css" rel="stylesheet"/>
     <link href="/media/css/scss/submission_log.css" media="screen" rel="stylesheet"/>
-{#    <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet"/>#}
+    <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/form.css" rel="stylesheet"/>
     <link href="/media/css/plugins/jqueryUI/ie-hacks.css" rel="stylesheet"/>
@@ -62,10 +62,10 @@
             var import_submission_url = "{% url import_submissions 'form_code'%}";
             DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/analysis/?template=help";
             $(document).ready(function() {
-                //$("#page_title").addClass("full_width");
+                $("#page_title").addClass("full_width");
                 $("#need_help_link").addClass("margin_right_20");
-                $("#need_help_button").addClass("margin_top_minus_106");
-                $("#need_help_active_button").addClass("margin_top_minus_106");
+{#                $("#need_help_button").addClass("margin_top_minus_106");#}
+                $("#need_help_active_button").addClass("margin_top_minus_112");
             });
         </script>
     {% endcompress %}
@@ -76,6 +76,9 @@
             {{ block.super }}
         {% endblock %}
         {% include 'project/partials/_page_header.html' with title="Analysis" help_message='Analyze your successful submissions' %}
+{#        <div id="page_hint" class="help_accordion margin_top_15 display_none">#}
+{#            <div>{% trans "Analyze your successful submissions" %}</div>#}
+{#        </div>#}
         <div id="submission_logs" class="grid_23 alpha">
             {% include 'project/analysis_table.html' %}
         </div>
