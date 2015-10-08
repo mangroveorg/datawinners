@@ -30,7 +30,12 @@ $(document).ready(function () {
                     $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
                     $(".paging_dw_pagination").show();
                 },
-                "pagingType": "dw_pagination"
+                "pagingType": "dw_pagination",
+                "columnDefs": [{
+                    "targets": "media",
+                    "data": null,
+                    "defaultContent": "<button>Click!</button>"
+                }]
             });
         };
 
@@ -98,8 +103,8 @@ $(document).ready(function () {
             });
 
 
-            $(".customization-menu li").on("click", function (event) {
-                var $checkBox = $(this).find("input[type=checkbox]");
+            $(".customization-menu span").on("click", function (event) {
+                var $checkBox = $(this).prev("input[type=checkbox]");
                 $checkBox.prop("checked", !$checkBox.prop("checked"));
                 event.stopPropagation();
             });
@@ -138,7 +143,7 @@ $(document).ready(function () {
                 $checkBox = $("<input type='checkbox' value='True' name='" + value.data + "'>");
 
             $checkBox.prop('checked', value.visibility);
-            $listElement.text(value.title).prepend($checkBox);
+            $listElement.append("<span title='" + value.title +"'>" + value.title + "</span>").prepend($checkBox);
             parentElement.append($listElement);
 
             return $listElement;
@@ -187,13 +192,14 @@ $(document).ready(function () {
     });
 
     /*Chart View*/
-    var $dataTableviews = $(".chart-view-icon, .list-view-icon"),
+    var $dataTableViews = $(".chart-view-icon, .list-view-icon"),
         $chartViewIcon = $(".chart-view-icon"),
         $listViewIcon = $(".list-view-icon"),
-        $chartViewWrapper = $(".chart-view-wrapper"),
-        $customizationIcon = $("#cust-icon");
+        $chartViewWrapper = $("#chart_ol"),
+        $chartViewInfo = $("#chart_info"),
+        $customizationMenu = $("#cust-icon");
 
-    $dataTableviews.on("click", function (event) {
+    $dataTableViews.on("click", function (event) {
         if($(event.target).hasClass("active")) {
             return;
         }
@@ -201,15 +207,18 @@ $(document).ready(function () {
             $chartViewIcon.removeClass("active");
             $listViewIcon.addClass("active");
             $chartViewWrapper.hide();
-            $custIcon.show();
+            $chartViewInfo.hide();
+            $customizationMenu.show();
             $("#analysis_table_wrapper").show();
         } else {
             $chartViewIcon.addClass("active");
             $listViewIcon.removeClass("active");
             $("#analysis_table_wrapper").hide();
-            $customizationIcon.hide();
             $chartViewWrapper.show();
+            $chartViewInfo.show();
+            $customizationMenu.hide();
         }
     });
 
+    $('[data-toggle="tooltip"]').tooltip();
 });
