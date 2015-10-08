@@ -16,7 +16,8 @@ $(document).ready(function () {
                             'total': '_TOTAL_',
                             subject_type: gettext("Submission")
                         }, true),
-                    "lengthMenu": gettext("Show") + ' _MENU_ ' + gettext("Submission")
+                    "lengthMenu": gettext("Show") + ' _MENU_ ' + gettext("Submission"),
+                    "emptyTable": "No data available in table"
                 },
                 "scrollX": true,
                 "searching": false,
@@ -114,16 +115,16 @@ $(document).ready(function () {
 
             this.$selectAll.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', true);
-                self.handleVisibility(self.$custMenu);
+                self.$custMenu.find("input[type=checkbox]").each(function(index,element){
+                    self.handleVisibility(element);
+                });
             });
 
             this.$selectNone.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', false);
-                self.handleVisibility(self.$custMenu);
-            });
-            
-            this.$custMenu.find("input[type=checkbox]").change(function(){
-            	console.log('checkbox changed...,'+this.name + ':'+this.checked);
+                self.$custMenu.find("input[type=checkbox]").each(function(index,element){
+                    self.handleVisibility(element);
+                });
             });
             
             $(".customization-menu input[type=checkbox]").click(function (event) {
@@ -143,6 +144,17 @@ $(document).ready(function () {
         		self.handleVisibility(elem);
         	});
             self.updateTable(element.name,element.checked);
+            $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
+            var isAnyColumnVisible = tableElement.DataTable().columns().visible().reduce(function(a,b){ return a || b });
+            if (!isAnyColumnVisible){
+            	$('#analysis_table_empty').show();
+            	$('#analysis_table_empty').html('No column selected');
+            	$('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'hidden');
+            }else{
+            	$('#analysis_table_empty').hide();
+            	$('#analysis_table_empty').empty();
+            	$('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'block');
+            }
         };
         
         ColCustomWidget.prototype.updateTable = function(columnName,visibility){
