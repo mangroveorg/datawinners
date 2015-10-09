@@ -126,6 +126,8 @@ $(document).ready(function () {
             $(".customization-menu span").on("click", function (event) {
                 var $checkBox = $(this).prev("input[type=checkbox]");
                 $checkBox.prop("checked", !$checkBox.prop("checked"));
+                $(this).parent().find('input[type=checkbox]').prop('checked', $checkBox.prop("checked"));
+
                 event.stopPropagation();
                 self.handleVisibility($checkBox[0]);
             });
