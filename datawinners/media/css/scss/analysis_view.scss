@@ -200,7 +200,7 @@ body ul.ColVis_collection {
     height: 24px;
     width: 40px;
     cursor: pointer;
-    border-right: 1px solid #CCC;
+    border-left: 1px solid #CCC;
 
     &.active,
     &:hover {
@@ -214,29 +214,14 @@ body ul.ColVis_collection {
 
   .list-view-icon {
     float: left;
-    background: url('/media/images/list_chart_map.png') no-repeat 23px 4px;
+    background: url('/media/images/list_chart_map.png') no-repeat 14px 4px;
     height: 24px;
-    width: 50px;
+    width: 40px;
     cursor: pointer;
-    border-right: 1px solid #CCC;
 
     &.active,
     &:hover {
       background-color: #94d1ff;
-    }
-
-    div {
-      position: relative;
-      display: block;
-      right: 32px;
-      height: 24px;
-      border-right: 1px solid #e6f2fc;
-
-      span {
-        position: relative;
-        left: 37px;
-        top: 11px;
-      }
     }
 
     &.active {
@@ -245,9 +230,11 @@ body ul.ColVis_collection {
   }
 
   #cust-icon {
+    position: relative;
+    top: -1px;
     overflow: hidden;
     clear: both;
-    width: 44px;
+    width: 34px;
     background-color: #e6f2fc;
     margin-left: 8px;
     border-top: 1px solid #fff;
@@ -259,7 +246,7 @@ body ul.ColVis_collection {
       float: left;
       position: relative;
       top: -2px;
-      left: 14px;
+      left: 9px;
       background: url('/media/images/settings.png') no-repeat 0 4px;
       width: 24px;
       height: 21px;
