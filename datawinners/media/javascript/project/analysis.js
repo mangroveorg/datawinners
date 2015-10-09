@@ -68,7 +68,6 @@ $(document).ready(function () {
 
     var ColCustomWidget = (function($){
         function ColCustomWidget(customizationHeader) {
-            this.$dataTable = $(".analysis_tbl_wrapper");
             this.$columnWidget = $(".customization-widget");
             this.$custMenu = $(".customization-menu");
             this.$colWidgetActions = $("#cust-icon, .customization-widget-close");
@@ -99,15 +98,13 @@ $(document).ready(function () {
             var customizationOverlayHeight;
 
             this.$colWidgetActions.on("click", function () {
-                if (self.$dataTable.hasClass("shrink")) {
-                    self.$dataTable.removeClass("shrink");
-                    self.$columnWidget.removeClass("expand");
+                if (self.$customizationIcon.hasClass("active")) {
+                    self.$columnWidget.hide();
                     self.$customizationOverlay.hide();
                     self.$customizationIcon.removeClass("active");
                     self.submit();
                   } else {
-                    self.$columnWidget.addClass("expand");
-                    self.$dataTable.addClass("shrink");
+                    self.$columnWidget.show();
                     customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
                     self.$customizationOverlay.height(customizationOverlayHeight).show();
                     self.$customizationIcon.addClass("active");
@@ -115,8 +112,7 @@ $(document).ready(function () {
             });
 
             this.$customizationOverlay.on("click", function () {
-                self.$dataTable.removeClass("shrink");
-                self.$columnWidget.removeClass("expand");
+                self.$columnWidget.hide();
                 $(this).hide();
                 self.submit();
             });
@@ -238,7 +234,7 @@ $(document).ready(function () {
         colCustomization = new ColCustomWidget(customizationHeader);
     });
 
-    /*Chart View*/
+    /*Show/Hide List & Chart View*/
     var $dataTableViews = $(".chart-view-icon, .list-view-icon"),
         $chartViewIcon = $(".chart-view-icon"),
         $listViewIcon = $(".list-view-icon"),

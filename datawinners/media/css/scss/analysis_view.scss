@@ -156,10 +156,6 @@ body ul.ColVis_collection {
 
   .analysis_tbl_wrapper {
     width: 100%;
-
-    &.shrink {
-      width: 60%;
-    }
   }
 }
 
@@ -266,20 +262,16 @@ body ul.ColVis_collection {
 }
 
 .customization-widget {
-  position: relative;
+  position: absolute;
   display: none;
+  width: 45%;
   height: 600px;
-  float: left;
+  right: 0;
   margin-top: 42px;
   background-color: #fafafa;
   border: 1px solid #e1e1e1;
   border-top: none;
   z-index: 101;
-
-  &.expand {
-    width: 39.7%;
-    display: block;
-  }
 
   .customization-widget-close {
     position: relative;
