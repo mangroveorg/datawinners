@@ -298,9 +298,8 @@ body ul.ColVis_collection {
   ul {
     padding-left: 30px;
 
-    > span {
-      position: relative;
-      top: 3px;
+    > input {
+      float: left;
     }
   }
 
