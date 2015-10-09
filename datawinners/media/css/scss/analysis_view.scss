@@ -336,9 +336,10 @@ body ul.ColVis_collection {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    min-width: 95%;
-    max-width: 95%;
     cursor: pointer;
+    max-width: 95%;
+    min-width: 175px;
+    padding-right: 10px;
 
     &:hover {
       cursor: pointer;
