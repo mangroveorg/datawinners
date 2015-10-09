@@ -90,7 +90,7 @@ def headers(request, form_code):
 def analysis_headers(request, form_code):
     manager = get_database_manager(request.user)
     questionnaire = get_project_by_code(manager, form_code)
-    headers = AnalysisPageHeader(questionnaire, manager).get_column_title()
+    headers = AnalysisPageHeader(questionnaire, manager, request.user.id).get_column_title()
     return HttpResponse(encode_json(headers), content_type='application/json')
 
 @login_required

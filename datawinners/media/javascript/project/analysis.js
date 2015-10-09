@@ -17,7 +17,7 @@ $(document).ready(function () {
                             subject_type: gettext("Submission")
                         }, true),
                     "lengthMenu": gettext("Show") + ' _MENU_ ' + gettext("Submission"),
-                    "emptyTable": "No data available in table"
+                    "emptyTable": gettext("No data available in table")
                 },
                 "scrollX": true,
                 "searching": false,
@@ -71,11 +71,13 @@ $(document).ready(function () {
 
             //Bind initial click events
             this.bindEvents();
+            
         }
 
         ColCustomWidget.prototype.init = function () {
             //Start constructing the widget with loaded Items
             this.constructItems(this.items);
+            
         };
 
         ColCustomWidget.prototype.bindEvents = function () {
@@ -106,25 +108,21 @@ $(document).ready(function () {
                 self.submit();
             });
 
-
             $(".customization-menu span").on("click", function (event) {
                 var $checkBox = $(this).prev("input[type=checkbox]");
                 $checkBox.prop("checked", !$checkBox.prop("checked"));
                 event.stopPropagation();
+                self.handleVisibility($checkBox[0]);
             });
 
             this.$selectAll.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', true);
-                self.$custMenu.find("input[type=checkbox]").each(function(index,element){
-                    self.handleVisibility(element);
-                });
+                self.handleVisibility();
             });
 
             this.$selectNone.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', false);
-                self.$custMenu.find("input[type=checkbox]").each(function(index,element){
-                    self.handleVisibility(element);
-                });
+                self.handleVisibility();
             });
             
             $(".customization-menu input[type=checkbox]").click(function (event) {
@@ -140,6 +138,15 @@ $(document).ready(function () {
         
         ColCustomWidget.prototype.handleVisibility = function(element){
         	var self = this;
+        	
+        	//Recursively handle all column visibility
+        	if(!element){
+                self.$custMenu.find("input[type=checkbox]").each(function(index,element){
+                    self.handleVisibility(element);
+                });
+                return;
+        	}
+        	
         	$(element).parent().find('li > input[type=checkbox]').each(function(index,elem){
         		self.handleVisibility(elem);
         	});
@@ -148,7 +155,7 @@ $(document).ready(function () {
             var isAnyColumnVisible = tableElement.DataTable().columns().visible().reduce(function(a,b){ return a || b });
             if (!isAnyColumnVisible){
             	$('#analysis_table_empty').show();
-            	$('#analysis_table_empty').html('No column selected');
+            	$('#analysis_table_empty').html(gettext('No column selected'));
             	$('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'hidden');
             }else{
             	$('#analysis_table_empty').hide();

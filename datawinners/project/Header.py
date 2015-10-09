@@ -9,6 +9,7 @@ from datawinners.search.submission_index_constants import SubmissionIndexConstan
 from mangrove.form_model.field import DateField, GeoCodeField, FieldSet
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.helper import DEFAULT_DATE_FORMAT
+from mangrove.datastore.user_questionnaire_preference import get_user_questionnaire_preference, detect_visibility
 
 
 class Header(object):
@@ -72,12 +73,15 @@ class SubmissionsPageHeader():
         return header_dict.values()
 
 class AnalysisPageHeader():
-    def __init__(self, form_model, dbm):
+    def __init__(self, form_model, dbm, user_id):
         self._form_model = form_model
         self._dbm = dbm
+        self._user_id = user_id
     
     def get_column_title(self):
         header = []
+        user_questionnaire_preference = get_user_questionnaire_preference(self._dbm, self._user_id, self._form_model.id)
+
         datasender_columns = {'datasender.name': 'Data Sender Name',
                               'datasender.mobile_number': 'Data Sender Mobile Number',
                               'datasender.id': 'Data Sender ID Number',
@@ -85,16 +89,36 @@ class AnalysisPageHeader():
                               'datasender.groups': 'Data Sender Groups',
                               'datasender.location': 'Data Sender Location'}
         for column_id, column_title in datasender_columns.iteritems():
-            header.append({"data": column_id,"name": column_id, "title": column_title, "defaultContent": ""})
+            header.append({
+                           "data": column_id,
+                           "name": column_id, 
+                           "title": column_title, 
+                           "defaultContent": "", 
+                           "visible":detect_visibility(user_questionnaire_preference, column_id)
+                           })
 
         for field in self._form_model.fields:
             prefix = self._form_model.id + "_" + field.code + "_details"
             if field.is_entity_field:
                 entity_type_info = get_entity_type_info(field.unique_id_type, self._dbm)
                 for idx, val in enumerate(entity_type_info['names']):
-                    header.append({"data": prefix+"."+val,"name": prefix+"."+val, "title": entity_type_info['labels'][idx],  "defaultContent": ""})
+                    column_id = prefix+"."+val
+                    header.append({
+                                   "data": column_id,
+                                   "name": column_id, 
+                                   "title": entity_type_info['labels'][idx],
+                                   "defaultContent": "",
+                                   "visible":detect_visibility(user_questionnaire_preference, column_id)
+                    })
             else:
-                header.append({"data": self._form_model.id+'_'+field.code,"name": self._form_model.id+'_'+field.code, "title": field.label,  "defaultContent": ""})
+                column_id = self._form_model.id+'_'+field.code
+                header.append({
+                               "data": column_id,
+                               "name": column_id, 
+                               "title": field.label,
+                               "defaultContent": "",
+                               "visible":detect_visibility(user_questionnaire_preference, column_id)
+                })
 
         return header
 
