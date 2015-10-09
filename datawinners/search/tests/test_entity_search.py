@@ -21,7 +21,7 @@ class TestSubjectQueryResponseCreator(TestCase):
         actualSubjects = SubjectQueryResponseCreator().create_response(
             required_field_names=["field_name1", "field_name2"], query=query)
 
-        query.values_dict.assert_called_with(("field_name1", "field_name2"))
+        query.values_dict.assert_called_with("field_name1", "field_name2")
         self.assertEquals(actualSubjects, [["field_value11", "field_value12"], ["field_value21", "field_value22"]])
 
 
