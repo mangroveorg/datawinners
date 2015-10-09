@@ -252,8 +252,8 @@ def _meta_fields(submission_doc, dbm):
     datasender_dict = _get_datasender_info(dbm, submission_doc)
     search_dict.update({"status": status_message(submission_doc.status)})
     search_dict.update({"date": format_datetime(submission_doc.submitted_on, "MMM. dd, yyyy, hh:mm a", locale="en")})
-    search_dict.update({"ds_id": datasender_dict['id']})
-    search_dict.update({"ds_name": datasender_dict['name']})
+    search_dict.update({"ds_id": datasender_dict.get('id', '')})
+    search_dict.update({"ds_name": datasender_dict.get('name', '')})
     search_dict.update({"datasender": datasender_dict})
     search_dict.update({"error_msg": submission_doc.error_message})
     return search_dict
