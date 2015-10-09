@@ -39,7 +39,40 @@ $(document).ready(function () {
                     "targets": "media",
                     "data": null,
                     "defaultContent": "<button>Click!</button>"
-                }]
+                }],
+                "createdRow": function (row, data, rowIndex) {
+                    var columnsInDataTable = this.dataTableSettings[0].aoColumns;
+                    var table = this;
+                    $.each(data.media, function (key, value) {
+                        var result = $.grep(columnsInDataTable, function (e) {
+                            return e.sName == key;
+                        });
+                        var columnIndex = result[0]['idx'];
+                        var html = '';
+                        switch (value.type) {
+                            case 'image':
+                                html = '<img src="'+ value.preview_link + '">'
+                                html = html + "<br>"
+                                html = html + '<a href="' + value.download_link +'">'+ value.value+'</a>'
+                                break;
+
+                            case 'audio':
+                                html = "<audio controls>" +
+                                        "<source src='" + value.download_link +"' type='audio/ogg'> \
+                                            Your browser does not support the audio tag. \
+                                        </audio>"
+                                break;
+
+                            case 'video':
+                                html = "<video controls>" +
+                                        "<source src='" + value.download_link +"' type='video/mp4'> \
+                                            Your browser does not support the audio tag. \
+                                        </video>"
+                                break;
+                        }
+                        table.fnUpdate(html, rowIndex, columnIndex);
+                    });
+                }
             });
             
             this.handleEmptyTable();
