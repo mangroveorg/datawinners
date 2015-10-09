@@ -584,5 +584,12 @@ body ul.ColVis_collection {
 }
 
 .empty-table {
-	position: absolute;
+    &.warning-message-box {
+		position: relative;
+		width: 400px;
+		margin: 0px auto;
+		p {
+			background: transparent url("/media/images/icons.png") no-repeat scroll left -74px;
+		}
+	}
 }

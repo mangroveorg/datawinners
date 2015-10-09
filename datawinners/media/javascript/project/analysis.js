@@ -50,11 +50,9 @@ $(document).ready(function () {
             var isAnyColumnVisible = tableElement.DataTable().columns().visible().reduce(function(a,b){ return a || b });
             if (!isAnyColumnVisible){
             	$('#analysis_table_empty').show();
-            	$('#analysis_table_empty').html(gettext('No column selected'));
             	$('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'hidden');
             }else{
             	$('#analysis_table_empty').hide();
-            	$('#analysis_table_empty').empty();
             	$('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'block');
             }        	
         }
