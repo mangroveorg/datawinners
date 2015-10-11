@@ -8,6 +8,7 @@ from mangrove.datastore.entity import Entity, Contact
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 import time
 from mangrove.form_model.form_model import FormModel
+from django.conf import settings
 
 def populate_submission_index(dbm, form_model_id=None):
     logger = logging.getLogger()
@@ -27,12 +28,16 @@ def populate_submission_index(dbm, form_model_id=None):
         counter = 0
         error_count = 0
         actions = []
+        es = get_elasticsearch_handle()
         for row in rows:
             try:
                 survey_response = SurveyResponseDocument._wrap_row(row)
                 submission_action = update_submission_search_index(survey_response, dbm, refresh_index=False,
                                                                    form_model=form_model, bulk=True)
                 actions.append(submission_action)
+                if len(actions) == settings.ES_INDEX_RECREATION_BATCH:
+                    es.bulk(actions, index=dbm.database_name, doc_type=form_model.id)
+                    actions = []
                 counter += 1
                 logger.info('No of submissions processed {counter}'.format(counter=counter))
             except FormModelDoesNotExistsException as e:
@@ -42,7 +47,6 @@ def populate_submission_index(dbm, form_model_id=None):
                 logger.exception('Exception occurred')
                 error_count += 1
 
-        es = get_elasticsearch_handle()
         es.bulk(actions, index=dbm.database_name, doc_type=form_model.id)
                 
         logger.warning("No of submissions ignored: {ignored}".format(ignored=ignored))
@@ -56,25 +60,31 @@ def populate_submission_index(dbm, form_model_id=None):
 def populate_entity_index(dbm):
     rows = dbm.database.iterview('by_short_codes/by_short_codes', 100, reduce=False, include_docs=True)
     actions = []
+    es = get_elasticsearch_handle()
     for row in rows:
         try:
             entity = Entity.__document_class__.wrap(row.get('doc'))
             action = entity_search_update(entity, dbm, bulk=True)
             if action is not None: actions.append(action)
+            if len(actions) == settings.ES_INDEX_RECREATION_BATCH:
+                es.bulk(actions)
+                actions = []
         except Exception as e:
             raise e
-    es = get_elasticsearch_handle()
     es.bulk(actions)
 
 
 def populate_contact_index(dbm):
     rows = dbm.database.iterview('datasender_by_mobile/datasender_by_mobile', 100, reduce=False, include_docs=True)
     actions = []
+    es = get_elasticsearch_handle()
     for row in rows:
         contact = Contact.__document_class__.wrap(row.get('doc'))
         action = contact_search_update(contact, dbm, bulk=True)
         if action is not None: actions.append(action)
-    es = get_elasticsearch_handle()
+        if len(actions) == settings.ES_INDEX_RECREATION_BATCH:
+            es.bulk(actions)
+            actions = []
     es.bulk(actions)
 
 
@@ -98,5 +108,5 @@ def create_all_mappings(dbm):
 
 if __name__ == '__main__':
     dbm = get_db_manager('hni_testorg_slx364903')
-    populate_submission_index(dbm, '54887ad0678e11e5a990080027c7303b')
-    #populate_contact_index(dbm)
+    populate_submission_index(dbm)
+    populate_contact_index(dbm)
