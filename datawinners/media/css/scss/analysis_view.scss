@@ -134,8 +134,13 @@ body ul.ColVis_collection {
   }
 }
 
-#analysis_table tbody tr .sorting_1 {
-  background-color: transparent;
+#analysis_table tbody tr {
+  td img {
+    width: 90%;
+  }
+  &.sorting_1 {
+    background-color: transparent;
+  }
 }
 
 .analysis_header {

@@ -31,7 +31,7 @@ $(document).ready(function () {
                     $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
                     $(".paging_dw_pagination").show();
                 },
-                "drawCallback":function (settings, json){
+                "drawCallback": function (settings, json) {
                     $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
                 },
                 "pagingType": "dw_pagination",
@@ -40,54 +40,68 @@ $(document).ready(function () {
                     "data": null,
                     "defaultContent": "<button>Click!</button>"
                 }],
-                "createdRow": function (row, data, rowIndex) {
+                "rowCallback": function (row, data, rowIndex) {
                     var columnsInDataTable = this.dataTableSettings[0].aoColumns;
-                    var table = this;
+                    var visibleColumns = $.grep(columnsInDataTable, function (e) {
+                            return e.bVisible != false;
+                        });
                     $.each(data.media, function (key, value) {
                         var result = $.grep(columnsInDataTable, function (e) {
                             return e.sName == key;
                         });
-                        var columnIndex = result[0]['idx'];
+                        var columnIndex = -1;
+                        for(var i =0; i< visibleColumns.length; i++) {
+                            if (key == visibleColumns[i].name) {
+                                columnIndex = i;
+                                break;
+                            }
+                        }
+                        if(columnIndex == -1) {
+                            return row;
+                        }
                         var html = '';
                         switch (value.type) {
                             case 'image':
-                                html = '<img src="'+ value.preview_link + '">'
-                                html = html + "<br>"
-                                html = html + '<a href="' + value.download_link +'">'+ value.value+'</a>'
+                                html = '<img src="' + value.preview_link + '">';
+                                html = html + '<br>';
+                                html = html + '<a href="' + value.download_link + '">' + value.value + '</a>';
                                 break;
 
                             case 'audio':
                                 html = "<audio controls>" +
-                                        "<source src='" + value.download_link +"' type='audio/ogg'> \
+                                    "<source src='" + value.download_link + "' type='audio/ogg'> \
                                             Your browser does not support the audio tag. \
-                                        </audio>"
+                                        </audio>";
                                 break;
 
                             case 'video':
                                 html = "<video controls>" +
-                                        "<source src='" + value.download_link +"' type='video/mp4'> \
+                                    "<source src='" + value.download_link + "' type='video/mp4'> \
                                             Your browser does not support the audio tag. \
-                                        </video>"
+                                        </video>";
                                 break;
                         }
-                        table.fnUpdate(html, rowIndex, columnIndex);
+                        $(row).find("td").eq(columnIndex).html(html);
                     });
+                    return row;
                 }
             });
-            
+
             this.handleEmptyTable();
         };
 
-        AnalysisPageDataTable.prototype.handleEmptyTable = function(){
-        	$('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
-            var isAnyColumnVisible = tableElement.DataTable().columns().visible().reduce(function(a,b){ return a || b });
-            if (!isAnyColumnVisible){
-            	$('#analysis_table_empty').show();
-            	$('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'hidden');
-            }else{
-            	$('#analysis_table_empty').hide();
-            	$('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'block');
-            }        	
+        AnalysisPageDataTable.prototype.handleEmptyTable = function () {
+            $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
+            var isAnyColumnVisible = tableElement.DataTable().columns().visible().reduce(function (a, b) {
+                return a || b
+            });
+            if (!isAnyColumnVisible) {
+                $('#analysis_table_empty').show();
+                $('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'hidden');
+            } else {
+                $('#analysis_table_empty').hide();
+                $('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'block');
+            }
         }
         return AnalysisPageDataTable;
     })($, tableElement);
@@ -99,7 +113,7 @@ $(document).ready(function () {
 
     /*Col Customization Widget*/
 
-    var ColCustomWidget = (function($){
+    var ColCustomWidget = (function ($) {
         function ColCustomWidget(customizationHeader) {
             this.$columnWidget = $(".customization-widget");
             this.$custMenu = $(".customization-menu");
@@ -116,13 +130,13 @@ $(document).ready(function () {
 
             //Bind initial click events
             this.bindEvents();
-            
+
         }
 
         ColCustomWidget.prototype.init = function () {
             //Start constructing the widget with loaded Items
             this.constructItems(this.items);
-            
+
         };
 
         ColCustomWidget.prototype.bindEvents = function () {
@@ -136,7 +150,7 @@ $(document).ready(function () {
                     self.$customizationOverlay.hide();
                     self.$customizationIcon.removeClass("active");
                     self.submit();
-                  } else {
+                } else {
                     self.$columnWidget.show();
                     customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
                     self.$customizationOverlay.height(customizationOverlayHeight).show();
@@ -168,7 +182,7 @@ $(document).ready(function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', false);
                 self.handleVisibility();
             });
-            
+
             $(".customization-menu input[type=checkbox]").click(function (event) {
                 if (this.checked) {
                     $(this).parents('li').children('input[type=checkbox]').prop('checked', true);
@@ -179,28 +193,28 @@ $(document).ready(function () {
             });
 
         };
-        
-        ColCustomWidget.prototype.handleVisibility = function(element){
-        	var self = this;
-        	
-        	//Recursively handle all column visibility
-        	if(!element){
-                self.$custMenu.find("input[type=checkbox]").each(function(index,element){
+
+        ColCustomWidget.prototype.handleVisibility = function (element) {
+            var self = this;
+
+            //Recursively handle all column visibility
+            if (!element) {
+                self.$custMenu.find("input[type=checkbox]").each(function (index, element) {
                     self.handleVisibility(element);
                 });
                 return;
-        	}
-        	
-        	$(element).parent().find('li > input[type=checkbox]').each(function(index,elem){
-        		self.handleVisibility(elem);
-        	});
-            self.updateTable(element.name,element.checked);
+            }
+
+            $(element).parent().find('li > input[type=checkbox]').each(function (index, elem) {
+                self.handleVisibility(elem);
+            });
+            self.updateTable(element.name, element.checked);
             analysisTable.handleEmptyTable();
         };
-        
-        ColCustomWidget.prototype.updateTable = function(columnName,visibility){
-        	column = tableElement.DataTable().column(columnName+':name');
-        	column.visible(visibility);
+
+        ColCustomWidget.prototype.updateTable = function (columnName, visibility) {
+            column = tableElement.DataTable().column(columnName + ':name');
+            column.visible(visibility);
         };
 
         ColCustomWidget.prototype.constructItems = function (customizationHeader) {
@@ -214,12 +228,12 @@ $(document).ready(function () {
             });
         };
 
-        ColCustomWidget.prototype.createColItems = function(element, value, parentElement) {
-            var $listElement = $('<'+ element + '/>'),
+        ColCustomWidget.prototype.createColItems = function (element, value, parentElement) {
+            var $listElement = $('<' + element + '/>'),
                 $checkBox = $("<input type='checkbox' value='True' name='" + value.data + "'>");
 
             $checkBox.prop('checked', value.visibility);
-            $listElement.append("<span title='" + value.title +"'>" + value.title + "</span>").prepend($checkBox);
+            $listElement.append("<span title='" + value.title + "'>" + value.title + "</span>").prepend($checkBox);
             parentElement.append($listElement);
 
             return $listElement;
@@ -244,20 +258,20 @@ $(document).ready(function () {
                 this.createColItems("li", value, $parentElement);
             }
         };
-        
-        ColCustomWidget.prototype.submit = function(){
-        	$.ajax({
-        		  type: "POST",
-        		  url: preferenceUrl,
-        		  data: $("#customization-form").serialize(),
-        		  success: self.submitSuccess,
-        		  dataType: 'json'
-        		});
-    	};
-    	
-        ColCustomWidget.prototype.submitSuccess = function(){
-        	//reload the table
-        	//TODO
+
+        ColCustomWidget.prototype.submit = function () {
+            $.ajax({
+                type: "POST",
+                url: preferenceUrl,
+                data: $("#customization-form").serialize(),
+                success: self.submitSuccess,
+                dataType: 'json'
+            });
+        };
+
+        ColCustomWidget.prototype.submitSuccess = function () {
+            //reload the table
+            //TODO
         };
 
         return ColCustomWidget;
@@ -276,7 +290,7 @@ $(document).ready(function () {
         $customizationMenu = $("#cust-icon");
 
     $dataTableViews.on("click", function (event) {
-        if($(event.target).hasClass("active") || $(event.target).closest("li").hasClass("active")) {
+        if ($(event.target).hasClass("active") || $(event.target).closest("li").hasClass("active")) {
             return;
         }
         if ($("#analysis_table_wrapper").css("display") == "none") {
