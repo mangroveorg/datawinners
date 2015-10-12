@@ -147,12 +147,14 @@ body ul.ColVis_collection {
   .heading_block {
     float: left;
     width: 100%;
-    margin: 0 0 20px;
+    margin: 0 0 15px;
   }
 }
 
 #submission_logs {
   width: 100%;
+  float: none;
+  clear: both;
 
   .analysis_tbl_wrapper {
     width: 100%;
@@ -176,7 +178,7 @@ body ul.ColVis_collection {
   float: right;
   position: absolute;
   right: 10px;
-  margin-top: -10px;
+  margin-top: -18px;
 
   ul {
     clear: both;
@@ -191,12 +193,19 @@ body ul.ColVis_collection {
 
   .chart-view-icon {
     float: left;
-    background: url('/media/images/list_chart_map.png') no-repeat 10px -26px;
+    background: url('/media/images/list_chart_map.png') no-repeat 15px -26px;
     background-color: #e6f2fc;
     height: 24px;
-    width: 40px;
+    width: 93px;
     cursor: pointer;
     border-left: 1px solid #CCC;
+
+    a {
+      float: left;
+      position: relative;
+      left: 42px;
+      top: 3px;
+    }
 
     &.active,
     &:hover {
@@ -205,6 +214,10 @@ body ul.ColVis_collection {
 
     &.active {
       cursor: default;
+       a {
+        color: #000 !important;
+        text-decoration: none;
+      }
     }
   }
 
@@ -212,8 +225,15 @@ body ul.ColVis_collection {
     float: left;
     background: url('/media/images/list_chart_map.png') no-repeat 14px 4px;
     height: 24px;
-    width: 40px;
+    width: 93px;
     cursor: pointer;
+
+    a {
+      float: left;
+      position: relative;
+      left: 45px;
+      top: 3px;
+    }
 
     &.active,
     &:hover {
@@ -222,6 +242,10 @@ body ul.ColVis_collection {
 
     &.active {
       cursor: default;
+      a {
+        color: #000 !important;
+        text-decoration: none;
+      }
     }
   }
 
@@ -230,7 +254,8 @@ body ul.ColVis_collection {
     top: -1px;
     overflow: hidden;
     clear: both;
-    width: 34px;
+    width: 87px;
+    height: 24px;
     background-color: #e6f2fc;
     margin-left: 8px;
     border-top: 1px solid #fff;
@@ -241,12 +266,17 @@ body ul.ColVis_collection {
     .customization-icon {
       float: left;
       position: relative;
-      top: -2px;
       left: 9px;
       background: url('/media/images/settings.png') no-repeat 0 4px;
       width: 24px;
       height: 21px;
       background-size: 70%;
+    }
+
+    .customization-title {
+      position: relative;
+      top: 3px;
+      left: 7px;
     }
 
     &.active,
