@@ -101,7 +101,7 @@ class AnalysisPageHeader():
             prefix = self._form_model.id + "_" + field.code + "_details"
             if field.is_entity_field:
                 entity_type_info = get_entity_type_info(field.unique_id_type, self._dbm)
-                for idx, val in enumerate(entity_type_info['names']):
+                for idx, val in enumerate(entity_type_info['codes']):
                     column_id = prefix+"."+val
                     header.append({
                                    "data": column_id,

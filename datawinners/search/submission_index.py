@@ -5,6 +5,7 @@ from collections import OrderedDict
 from babel.dates import format_datetime
 import elasticutils
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
+from datawinners.entity.import_data import get_entity_type_info
 
 from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, \
@@ -193,7 +194,7 @@ def _get_submissions_for_unique_id_entry(args, dbm, project):
     return query
 
 
-def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code, last_name):
+def update_submission_search_for_subject_edition(dbm, unique_id_type, subject_details):
     projects = []
     for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=unique_id_type[0], include_docs=True):
         projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc'])))
@@ -206,8 +207,9 @@ def update_submission_search_for_subject_edition(dbm, unique_id_type, short_code
         if entity_field_code:
             unique_id_field_name = es_questionnaire_field_name(entity_field_code, project.id)
 
-            fields_mapping = {unique_id_field_name: last_name}
-            args = {es_unique_id_code_field_name(unique_id_field_name): short_code}
+            fields_mapping = {unique_id_field_name: subject_details.get('q2'),
+                              unique_id_field_name + '_details': subject_details}
+            args = {es_unique_id_code_field_name(unique_id_field_name): subject_details.get('q6')}
 
             query = _get_submissions_for_unique_id_entry(args, dbm, project)
 
@@ -281,14 +283,18 @@ def lookup_entity(dbm, id, entity_type):
     try:
         if id:
             data_dict = {}
+            entity_type_info = get_entity_type_info(entity_type, dbm)
+            names_to_codes_map = {}
+            for name, code in zip(entity_type_info['names'], entity_type_info['codes']):
+                names_to_codes_map[name] = code
             data = get_by_short_code_include_voided(dbm, id, entity_type).data_value()
             for key, value in data.iteritems():
-                data_dict[key] = value['value']
+                data_dict[names_to_codes_map[key]] = value['value']
             return data_dict
     except DataObjectNotFound:
         pass
     return {
-        'name': " "
+        'q2': " "
     }
 
 
@@ -371,7 +377,7 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                     entry = convert_choice_options_to_options_text(original_field, entry)
                 entity = lookup_entity(dbm, entry, [field.unique_id_type])
                 search_dict.update({})
-                entity_name = entity.get('name')
+                entity_name = entity.get('q2')
                 entry_code = entry
                 search_dict.update(
                     {es_unique_id_details_field_name(
@@ -470,7 +476,7 @@ def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
         for field in fieldset_field.fields:
             if isinstance(field, UniqueIdField):
                 unique_code = entry.get(field.code)
-                unique_id_name = lookup_entity(dbm, str(unique_code), [field.unique_id_type]).get('name')
+                unique_id_name = lookup_entity(dbm, str(unique_code), [field.unique_id_type]).get('q2')
                 entry[field.code + '_unique_code'] = unique_code if unique_code else ''
                 entry[field.code] = unique_id_name
             elif isinstance(field, FieldSet):

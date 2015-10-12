@@ -432,7 +432,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
             if response.success:
                 #assumption q6 - unique_id code and q2 - lastname codes cannot be changed
-                update_submission_search_for_subject_edition(manager, [entity_type], entity_id, response.processed_data['q2'])
+                update_submission_search_for_subject_edition(manager, [entity_type], response.processed_data)
                 success_message = _("Your changes have been saved.")
                 questionnaire_form = SubjectRegistrationForm(form_model, data=request.POST,
                                                              country=get_organization_country(request))
