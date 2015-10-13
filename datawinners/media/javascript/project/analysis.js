@@ -27,6 +27,7 @@ $(document).ready(function () {
                 "ajax": {
                     url: dataUrl
                 },
+                "order":[6,"desc"], //For analysis table, always first 7 columns are fixed., 7th being submission date
                 "columns": columns,
                 "initComplete": function (settings, json) {
                     $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});

@@ -661,6 +661,8 @@ def _get_sorting_params(request):
         sort_column_index = request.GET.get('order[0][column]')
         sort_column_id = request.GET.get('columns['+sort_column_index+'][data]') 
         sort_params[sort_column_id] = {'order':request.GET.get('order[0][dir]','asc')}
+    else:
+        sort_params['date']={'order':'desc'} #default
     return sort_params
     
 def _get_pagination_params(request):
