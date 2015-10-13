@@ -106,7 +106,6 @@ class AnalysisPageHeader():
                 for val in expected_mandatory_fields_with_order:
                     if val in entity_type_info['codes']:
                         idx = entity_type_info['codes'].index(val)
-                        entity_type_info['codes'].remove(val)
                         column_id = prefix+"."+val
                         header.append(self._form_column_info(
                                                              column_id, entity_type_info['labels'][idx],
@@ -115,12 +114,13 @@ class AnalysisPageHeader():
                                                                                column_id)))
 
                 for idx, val in enumerate(entity_type_info['codes']):
-                    column_id = prefix+"."+val
-                    header.append(self._form_column_info(
-                                                         column_id, entity_type_info['labels'][idx],
-                                                         detect_visibility(
-                                                                           user_questionnaire_preference,
-                                                                           column_id)))
+                    if val not in entity_type_info['codes']:
+                        column_id = prefix+"."+val
+                        header.append(self._form_column_info(
+                                                             column_id, entity_type_info['labels'][idx],
+                                                             detect_visibility(
+                                                                               user_questionnaire_preference,
+                                                                               column_id)))
 
             else:
                 column_id = self._form_model.id+'_'+field.code
