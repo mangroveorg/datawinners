@@ -672,9 +672,15 @@ def _get_pagination_params(request):
 def _create_analysis_response(search_results):
     data = []
     if search_results is not None:
-        for result in search_results.hits:
-            data.append(result._d_)
+        data = [_transform_elastic_to_analysis_view(result._d_) for result in search_results.hits]
     return data
+
+'''
+    Placeholder for all analysis data transformation from elastic
+    search to display
+'''
+def _transform_elastic_to_analysis_view(record):
+    return record
 
 @csrf_view_exempt
 @valid_web_user

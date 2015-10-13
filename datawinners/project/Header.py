@@ -82,13 +82,16 @@ class AnalysisPageHeader():
         header = []
         user_questionnaire_preference = get_user_questionnaire_preference(self._dbm, self._user_id, self._form_model.id)
 
-        datasender_columns = {'datasender.name': 'Data Sender Name',
-                              'datasender.id': 'Data Sender ID Number',
-                              'datasender.mobile_number': 'Data Sender Mobile Number',
-                              'datasender.email': 'Data Sender Email',
-                              'datasender.groups': 'Data Sender Groups',
-                              'datasender.location': 'Data Sender Location'}
-        for column_id, column_title in datasender_columns.iteritems():
+        generic_columns = OrderedDict()
+        generic_columns['datasender.name']='Data Sender Name'
+        generic_columns['datasender.id']='Data Sender ID Number'
+        generic_columns['datasender.mobile_number']='Data Sender Mobile Number'
+        generic_columns['datasender.email']='Data Sender Email'
+        generic_columns['datasender.groups']='Data Sender Groups'
+        generic_columns['datasender.location']='Data Sender Location'
+        generic_columns['date']='Submission Date'
+         
+        for column_id, column_title in generic_columns.iteritems():
             header.append(self._form_column_info(
                                                  column_id, column_title,
                                                  detect_visibility(
