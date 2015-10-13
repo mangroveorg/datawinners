@@ -83,44 +83,63 @@ class AnalysisPageHeader():
         user_questionnaire_preference = get_user_questionnaire_preference(self._dbm, self._user_id, self._form_model.id)
 
         datasender_columns = {'datasender.name': 'Data Sender Name',
-                              'datasender.mobile_number': 'Data Sender Mobile Number',
                               'datasender.id': 'Data Sender ID Number',
+                              'datasender.mobile_number': 'Data Sender Mobile Number',
                               'datasender.email': 'Data Sender Email',
                               'datasender.groups': 'Data Sender Groups',
                               'datasender.location': 'Data Sender Location'}
         for column_id, column_title in datasender_columns.iteritems():
-            header.append({
-                           "data": column_id,
-                           "name": column_id, 
-                           "title": column_title, 
-                           "defaultContent": "", 
-                           "visible":detect_visibility(user_questionnaire_preference, column_id)
-                           })
+            header.append(self._form_column_info(
+                                                 column_id, column_title,
+                                                 detect_visibility(
+                                                                   user_questionnaire_preference,
+                                                                   column_id)))
 
         for field in self._form_model.fields:
             prefix = self._form_model.id + "_" + field.code + "_details"
             if field.is_entity_field:
                 entity_type_info = get_entity_type_info(field.unique_id_type, self._dbm)
+                #ID Nr mandatory fields, with mandatory order of fields
+                #q2 is the name field, q6 is the code field
+                expected_mandatory_fields_with_order = ['q2','q6']
+#                 [for col in expected_mandatory_fields_with_order:
+                for val in expected_mandatory_fields_with_order:
+                    if val in entity_type_info['codes']:
+                        idx = entity_type_info['codes'].index(val)
+                        entity_type_info['codes'].remove(val)
+                        column_id = prefix+"."+val
+                        header.append(self._form_column_info(
+                                                             column_id, entity_type_info['labels'][idx],
+                                                             detect_visibility(
+                                                                               user_questionnaire_preference,
+                                                                               column_id)))
+
                 for idx, val in enumerate(entity_type_info['codes']):
                     column_id = prefix+"."+val
-                    header.append({
-                                   "data": column_id,
-                                   "name": column_id, 
-                                   "title": entity_type_info['labels'][idx],
-                                   "defaultContent": "",
-                                   "visible":detect_visibility(user_questionnaire_preference, column_id)
-                    })
+                    header.append(self._form_column_info(
+                                                         column_id, entity_type_info['labels'][idx],
+                                                         detect_visibility(
+                                                                           user_questionnaire_preference,
+                                                                           column_id)))
+
             else:
                 column_id = self._form_model.id+'_'+field.code
-                header.append({
-                               "data": column_id,
-                               "name": column_id, 
-                               "title": field.label,
-                               "defaultContent": "",
-                               "visible":detect_visibility(user_questionnaire_preference, column_id)
-                })
+                header.append(self._form_column_info(
+                                                     column_id, field.label,
+                                                     detect_visibility(
+                                                                       user_questionnaire_preference,
+                                                                       column_id)))
 
         return header
+    
+    def _form_column_info(self, column_id, column_title, visibility):
+        return {
+                "data": column_id,
+                "name": column_id, 
+                "title": column_title, 
+                "defaultContent": "", 
+                "visible":visibility
+               }
 
 class SubmissionExcelHeader():
     def __init__(self, form_model, submission_type, language='en'):
