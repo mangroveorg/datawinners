@@ -7,7 +7,7 @@ $(document).ready(function () {
     var AnalysisPageDataTable = (function ($, tableElement) {
         function AnalysisPageDataTable(columns) {
             tableElement.DataTable({
-                "pageLength": 10,
+                "pageLength": 25,
                 "dom": '<ip<t>ipfl>',
                 "language": {
                     "info": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
