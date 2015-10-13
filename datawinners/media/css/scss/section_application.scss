@@ -24,11 +24,11 @@
   padding-bottom: 30px;
   .content {
     clear: both;
-    //min-height: 550px;
+    min-height: 550px;
     background: #FFFFFF;
     border: 1px solid #cccccc;
     padding: 25px;
-    //overflow: auto;
+    overflow: auto;
     margin: 0 auto;
   }
   .wizard_content {
@@ -49,7 +49,6 @@
     min-height: 40px;
     padding: 15px 0 0px 0;
     width: 961px;
-    border-radius: 1px solid red;
     margin: 0 auto;
     font-size: 22px;
     font-weight: bold;

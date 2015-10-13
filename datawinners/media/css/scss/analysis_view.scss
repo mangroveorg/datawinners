@@ -21,8 +21,27 @@ body ul.ColVis_collection {
   }
 }
 
+
 #container_content {
-  min-height: inherit;
+  clear: both;
+  overflow: hidden;
+
+  #page_title {
+    margin: 0 !important;
+
+    .project_detail_header {
+      padding-left: 15px;
+    }
+  }
+
+  .container_24 {
+    padding: 0 !important;
+  }
+
+  .grid_23.content {
+    border: none !important;
+    padding: 24px;
+  }
 }
 
 .dataTable {
