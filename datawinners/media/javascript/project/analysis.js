@@ -102,7 +102,7 @@ $(document).ready(function () {
                 $('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'hidden');
             } else {
                 $('#analysis_table_empty').hide();
-                $('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'block');
+                $('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'visible');
             }
         }
         return AnalysisPageDataTable;
