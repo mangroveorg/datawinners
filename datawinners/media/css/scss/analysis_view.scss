@@ -175,14 +175,12 @@ body ul.ColVis_collection {
   .heading_block {
     float: left;
     width: 100%;
-    margin: 0 0 15px;
+    margin: 0;
   }
 }
 
 #submission_logs {
   width: 100%;
-  float: none;
-  clear: both;
 
   .analysis_tbl_wrapper {
     width: 100%;
@@ -205,8 +203,8 @@ body ul.ColVis_collection {
 .data-table-icons {
   float: right;
   position: absolute;
+  top: 15px;
   right: 10px;
-  margin-top: -18px;
 
   ul {
     clear: both;
@@ -315,6 +313,10 @@ body ul.ColVis_collection {
 .data-widget {
   clear: both;
   position: relative;
+
+  #analysis_table_wrapper {
+    margin-top: 40px;
+  }
 }
 
 .customization-widget {
