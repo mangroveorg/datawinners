@@ -155,7 +155,12 @@ $(document).ready(function () {
                 } else {
                     self.$columnWidget.show();
                     customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
-                    self.$customizationOverlay.height(customizationOverlayHeight + 5).show();
+                    if(customizationOverlayHeight > 970) {
+                        customizationOverlayHeight = customizationOverlayHeight + 5;
+                    } else {
+                        customizationOverlayHeight = 970;
+                    }
+                    self.$customizationOverlay.height(customizationOverlayHeight).show();
                     self.$customizationIcon.addClass("active");
                 }
             });
