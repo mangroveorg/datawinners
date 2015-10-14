@@ -155,7 +155,7 @@ $(document).ready(function () {
                 } else {
                     self.$columnWidget.show();
                     customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
-                    self.$customizationOverlay.height(customizationOverlayHeight).show();
+                    self.$customizationOverlay.height(customizationOverlayHeight + 5).show();
                     self.$customizationIcon.addClass("active");
                 }
             });
@@ -283,34 +283,7 @@ $(document).ready(function () {
         colCustomization = new ColCustomWidget(customizationHeader);
     });
 
-    /*Show/Hide List & Chart View*/
-    var $dataTableViews = $(".chart-view-icon, .list-view-icon"),
-        $chartViewIcon = $(".chart-view-icon"),
-        $listViewIcon = $(".list-view-icon"),
-        $chartViewWrapper = $("#chart_ol"),
-        $chartViewInfo = $("#chart_info"),
-        $customizationMenu = $("#cust-icon");
 
-    $dataTableViews.on("click", function (event) {
-        if ($(event.target).hasClass("active") || $(event.target).closest("li").hasClass("active")) {
-            return;
-        }
-        if ($("#analysis_table_wrapper").css("display") == "none") {
-            $chartViewIcon.removeClass("active");
-            $listViewIcon.addClass("active");
-            $chartViewWrapper.hide();
-            $chartViewInfo.hide();
-            $customizationMenu.show();
-            $("#analysis_table_wrapper").show();
-        } else {
-            $chartViewIcon.addClass("active");
-            $listViewIcon.removeClass("active");
-            $("#analysis_table_wrapper").hide();
-            $chartViewWrapper.show();
-            $chartViewInfo.show();
-            $customizationMenu.hide();
-        }
-    });
 
     $('[data-toggle="tooltip"]').tooltip();
 

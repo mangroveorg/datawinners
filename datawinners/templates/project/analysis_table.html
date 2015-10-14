@@ -1,15 +1,12 @@
-{% load i18n %}
-<div id="message_text" style="display: none">
-    {% if  success_message  %}
-        <div class="success-message-box">{{ success_message }}</div>
-    {% endif %}
-</div>
-
-
-<div class="data-widget">
-    <div class="data-table-icons">
-        <div id="cust-icon" title="List View Customization"><span class="customization-icon"></span><span class="customization-title">Settings</span></div>
+<div id="submission_logs" class="grid_23 alpha">
+        
+    {% load i18n %}
+    <div id="message_text" style="display: none">
+        {% if  success_message %}
+            <div class="success-message-box">{{ success_message }}</div>
+        {% endif %}
     </div>
+
     <div class="grid_23 alpha omega analysis_tbl_wrapper">
         <table id="analysis_table" class="dataTable display">
         </table>
@@ -18,26 +15,28 @@
     <div class="customization-widget">
         <form id="customization-form">
             <span class="customization-widget-close"></span>
+
             <div class="select-menu">
-                   <div class="select-menu-box">
-                       Select :
-                       <span class="select-all">All</span>
-                       <span class="select-menu-separator">|</span>
-                       <span class="select-none">None</span>
-                   </div>
+                <div class="select-menu-box">
+                    Select :
+                    <span class="select-all">All</span>
+                    <span class="select-menu-separator">|</span>
+                    <span class="select-none">None</span>
+                </div>
             </div>
             <div class="customization-menu">
 
             </div>
-	    </form>
+        </form>
     </div>
-    
-</div>
-<div class="customization-overlay">
 
-</div>
-<div id="analysis_table_empty" class="warning-message-box clear-left empty-table hide">
-	<p>
-	{% trans 'No column selected to display' %}
-	</p>
+    <div class="customization-overlay">
+
+    </div>
+    <div id="analysis_table_empty" class="warning-message-box clear-left empty-table hide">
+        <p>
+            {% trans 'No column selected to display' %}
+        </p>
+    </div>
+
 </div>

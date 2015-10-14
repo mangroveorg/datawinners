@@ -5,6 +5,7 @@ DW.SubmissionAnalysisView = function(){
     var chartViewOption = $("#chart_view_option");
     var tableView = $("#submission_logs");
     var chartView = $('#chart_ol');
+    var customizationView = $('#cust-icon');
     var isChartViewShown = false;
     var submissionTabs = new DW.SubmissionTabs();
     var chartGenerator = new DW.SubmissionAnalysisChartGenerator();
@@ -59,6 +60,7 @@ DW.SubmissionAnalysisView = function(){
             return;
         tableViewOption.addClass("active");
         chartViewOption.removeClass("active-right");
+        customizationView.show();
         _reinitializeSubmissionTableView();
         _initializeSubmissionTable(submissionTabs);
         chartView.hide();
@@ -80,6 +82,7 @@ DW.SubmissionAnalysisView = function(){
         DW.trackEvent('chart-view', 'chart-view-link-clicked');
         tableViewOption.removeClass("active");
         chartViewOption.addClass("active-right");
+        customizationView.hide();
         isChartViewShown = true;
         tableView.hide();
         chartGenerator.generateCharts();

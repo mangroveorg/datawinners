@@ -95,7 +95,11 @@ div.valueLabel {
         float: left;
         padding: 0 5px  0 5px; }
 
+#chart_info {
+  margin-top: 10px; }
+
 .chartInfo2 {
+  float: left;
   margin-top: 5px;
   color: #545454;
   font-style: italic;
