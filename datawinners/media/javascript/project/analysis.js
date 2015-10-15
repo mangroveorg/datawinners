@@ -184,6 +184,7 @@ $(document).ready(function () {
 
             this.$selectNone.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', false);
+                self.handleVisibility();
             });
 
             $(".customization-menu input[type=checkbox]").click(function (event) {
