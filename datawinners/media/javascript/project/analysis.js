@@ -99,10 +99,10 @@ $(document).ready(function () {
             });
             if (!isAnyColumnVisible) {
                 $('#analysis_table_empty').show();
-                $('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'hidden');
+                $('.paging_dw_pagination,.dataTables_info,.dataTables_length,.dataTables_scroll').css('visibility', 'hidden');
             } else {
                 $('#analysis_table_empty').hide();
-                $('.paging_dw_pagination,.dataTables_info,.dataTables_length').css('visibility', 'visible');
+                $('.paging_dw_pagination,.dataTables_info,.dataTables_length,.dataTables_scroll').css('visibility', 'visible');
             }
         }
         return AnalysisPageDataTable;
