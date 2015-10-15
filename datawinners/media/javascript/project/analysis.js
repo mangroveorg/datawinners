@@ -222,6 +222,7 @@ $(document).ready(function () {
         ColCustomWidget.prototype.updateTable = function (columnName, visibility) {
             column = tableElement.DataTable().column(columnName + ':name');
             column.visible(visibility);
+            tableElement.DataTable().draw('page');
         };
 
         ColCustomWidget.prototype.constructItems = function (customizationHeader) {
