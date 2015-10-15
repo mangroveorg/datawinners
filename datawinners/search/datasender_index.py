@@ -20,9 +20,10 @@ def update_datasender_index(contact_doc, dbm, bulk=False):
         datasender_dict = _create_contact_dict(dbm, contact_doc, form_model)
 
         if bulk:
-            datasender_dict.update({'id':contact_doc.id})
-            return es.index_op(datasender_dict, index=dbm.database_name, doc_type=REPORTER_ENTITY_TYPE[0])
-        
+            datasender_dict.update({'id': contact_doc.id})
+            return es.index_op(datasender_dict, index=dbm.database_name, doc_type=REPORTER_ENTITY_TYPE[0],
+                               id=contact_doc.id)
+
         es.index(dbm.database_name, REPORTER_ENTITY_TYPE[0], datasender_dict, id=contact_doc.id)
     es.refresh(dbm.database_name)
 
@@ -30,10 +31,10 @@ def update_datasender_index(contact_doc, dbm, bulk=False):
 def _create_contact_dict(dbm, entity_doc, form_model):
     contact_dict = _contact_dict(entity_doc, dbm, form_model)
     contact_dict.update({
-                            "projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code),
-                            "groups": entity_doc.groups,
-                            "customgroups": entity_doc.custom_groups
-                        })
+        "projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code),
+        "groups": entity_doc.groups,
+        "customgroups": entity_doc.custom_groups
+    })
     return contact_dict
 
 
@@ -78,4 +79,3 @@ def create_ds_mapping(dbm, form_model):
     fields.append(TextField(name="groups", code='groups', label='My Groups'))
     fields.append(TextField(name="customgroups", code='customgroups', label='Custom groups'))
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(REPORTER_ENTITY_TYPE[0], fields))
-

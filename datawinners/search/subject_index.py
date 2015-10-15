@@ -1,5 +1,6 @@
 from datawinners.search.datasender_index import update_datasender_index
-from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, get_fields_mapping_by_field_def, \
+from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, \
+    get_fields_mapping_by_field_def, \
     subject_dict, \
     es_questionnaire_field_name
 from mangrove.form_model.form_model import get_form_model_by_entity_type
@@ -25,7 +26,8 @@ def entity_search_update(entity_doc, dbm, bulk=False):
         entity_type = entity_doc.aggregation_paths['_type'][0].lower()
         form_model = get_form_model_by_entity_type(dbm, [entity_type])
         if bulk:
-            return es.index_op(subject_dict(entity_type, entity_doc, dbm, form_model), index=dbm.database_name, doc_type=entity_type)
+            return es.index_op(subject_dict(entity_type, entity_doc, dbm, form_model), index=dbm.database_name,
+                               doc_type=entity_type, id=entity_doc.id)
         es.index(dbm.database_name, entity_type, subject_dict(entity_type, entity_doc, dbm, form_model),
                  id=entity_doc.id)
     es.refresh(dbm.database_name)
