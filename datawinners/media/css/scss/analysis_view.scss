@@ -160,8 +160,12 @@ body ul.ColVis_collection {
 }
 
 #analysis_table tbody tr {
-  td img {
-    width: 90%;
+  td {
+    img,
+    video,
+    audio {
+      width: 90%;
+    }
   }
   &.sorting_1 {
     background-color: transparent;

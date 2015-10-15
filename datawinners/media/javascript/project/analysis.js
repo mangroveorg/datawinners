@@ -73,14 +73,14 @@ $(document).ready(function () {
                                 html = "<audio controls>" +
                                     "<source src='" + value.download_link + "' type='audio/ogg'> \
                                             Your browser does not support the audio tag. \
-                                        </audio>";
+                                        </audio><br><a href='"+ value.download_link + "'>Download</a>";
                                 break;
 
                             case 'video':
                                 html = "<video controls>" +
                                     "<source src='" + value.download_link + "' type='video/mp4'> \
                                             Your browser does not support the audio tag. \
-                                        </video>";
+                                        </video><br><a href='"+ value.download_link + "'>Download</a>";
                                 break;
                         }
                         $(row).find("td").eq(columnIndex).html(html);
