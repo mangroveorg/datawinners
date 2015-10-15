@@ -187,6 +187,7 @@ body ul.ColVis_collection {
 
 #submission_logs {
   width: 100%;
+  margin-top: -57px;
 
   .analysis_tbl_wrapper {
     width: 100%;
@@ -207,10 +208,7 @@ body ul.ColVis_collection {
 
 
 .data-table-icons {
-  float: right;
-  position: absolute;
-  top: 8px;
-  right: 10px;
+  float: left;
 
   ul {
     clear: both;
@@ -228,7 +226,7 @@ body ul.ColVis_collection {
     background: url('/media/images/list_chart_map.png') no-repeat 15px -26px;
     background-color: #e6f2fc;
     height: 24px;
-    width: 93px;
+    width: 120px;
     cursor: pointer;
     border-left: 1px solid #CCC;
 
@@ -257,13 +255,13 @@ body ul.ColVis_collection {
     float: left;
     background: url('/media/images/list_chart_map.png') no-repeat 14px 4px;
     height: 24px;
-    width: 93px;
+    width: 120px;
     cursor: pointer;
 
     a {
       float: left;
       position: relative;
-      left: 45px;
+      left: 40px;
       top: 3px;
     }
 
@@ -284,7 +282,7 @@ body ul.ColVis_collection {
   #cust-icon {
     overflow: hidden;
     clear: both;
-    width: 93px;
+    width: 120px;
     height: 24px;
     background-color: #e6f2fc;
     margin-left: 2px;
@@ -306,7 +304,7 @@ body ul.ColVis_collection {
     .customization-title {
       position: relative;
       top: 3px;
-      left: 12px;
+      left: 14px;
     }
 
     &.active,
@@ -319,6 +317,14 @@ body ul.ColVis_collection {
 .data-widget {
   clear: both;
   position: relative;
+  float: right;
+  margin-top: 15px;
+
+  > label {
+    float: left;
+    margin: 3px 10px 0 0;
+    font-weight: normal;
+  }
 
   #analysis_table_wrapper {
     margin-top: 40px;
@@ -421,9 +427,9 @@ body ul.ColVis_collection {
   margin-bottom: 5px;
 
   .select-menu-box {
-    text-align: center;
-    padding: 5px 0;
-    width: 135px;
+    text-align: left;
+    padding: 5px 0 5px 10px;
+    width: 270px;
     margin-left: 10px;
     border-radius: 5px;
   }

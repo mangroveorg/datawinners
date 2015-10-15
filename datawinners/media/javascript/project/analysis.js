@@ -4,6 +4,10 @@ $(document).ready(function () {
         colCustomization;
 
     var tableElement = $("#analysis_table");
+
+    //Tooltip for long questionnaires on column customisation widget
+    $('[data-toggle="tooltip"]').tooltip();
+
     var AnalysisPageDataTable = (function ($, tableElement) {
         function AnalysisPageDataTable(columns) {
             tableElement.DataTable({
@@ -171,15 +175,8 @@ $(document).ready(function () {
                 self.submit();
             });
 
-            $(".customization-menu span").on("click", function (event) {
-                var $checkBox = $(this).prev("input[type=checkbox]");
-                $checkBox.prop("checked", !$checkBox.prop("checked"));
-                $(this).parent().find('input[type=checkbox]').prop('checked', $checkBox.prop("checked"));
 
-                event.stopPropagation();
-                self.handleVisibility($checkBox[0]);
-            });
-
+            /*Column Customisation click events*/
             this.$selectAll.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', true);
                 self.handleVisibility();
@@ -187,18 +184,45 @@ $(document).ready(function () {
 
             this.$selectNone.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', false);
-                self.handleVisibility();
             });
 
             $(".customization-menu input[type=checkbox]").click(function (event) {
-                if (this.checked) {
-                    $(this).parents('li').children('input[type=checkbox]').prop('checked', true);
-                }
-                $(this).parent().find('input[type=checkbox]').prop('checked', this.checked);
-                self.handleVisibility(this);
+                self.handleCheckBoxes(this, event);
                 event.stopPropagation();
             });
 
+            $(".customization-menu span").on("click", function (event) {
+                var $checkBox = $(this).prev("input[type=checkbox]");
+                $checkBox[0].checked = !$checkBox[0].checked;
+                self.handleCheckBoxes($checkBox[0], event);
+                event.stopPropagation();
+            });
+        };
+
+        ColCustomWidget.prototype.handleCheckBoxes = function(element, event) {
+            var self = this;
+
+            if (element.checked) {
+                $(element).parents('li').children('input[type=checkbox]').prop('checked', true);
+            }
+
+            if($(element).parent("ul").length == 0) {
+
+                var $parentElement =$(element).closest("ul"),
+                    $listElements = $parentElement.children("li"),
+                    $inputElementsLength = $listElements.find("input[type=checkbox]").length;
+
+                if($listElements.find("input:checkbox:checked").length != $inputElementsLength) {
+                    $parentElement.find("> input:checkbox").prop('checked', false);
+                } else {
+                    $parentElement.find("> input:checkbox").prop('checked', true);
+                }
+
+            }
+
+            $(element).parent().find('input[type=checkbox]').prop('checked', element.checked);
+            self.handleVisibility(element);
+            event.stopPropagation();
         };
 
         ColCustomWidget.prototype.handleVisibility = function (element) {
@@ -288,9 +312,5 @@ $(document).ready(function () {
     $.getJSON(preferenceUrl, function (customizationHeader) {
         colCustomization = new ColCustomWidget(customizationHeader);
     });
-
-
-
-    $('[data-toggle="tooltip"]').tooltip();
 
 });
