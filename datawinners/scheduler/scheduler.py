@@ -46,7 +46,8 @@ def send_reminders_scheduled_on(on_date, sms_client):
                 smsc = org_setting.outgoing_number.smsc
                 charged_sms = smsc.vumi_username in settings.SMSC_WITHOUT_STATUS_REPORT
                 manager = get_db_manager(org_setting.document_store)
-                send_reminders_for_an_organization(org, on_date, sms_client, from_number=org_setting.sms_tel_number,
+                from_number = org_setting.sms_tel_number.split(',')[0]
+                send_reminders_for_an_organization(org, on_date, sms_client, from_number=from_number,
                                                dbm=manager, charged_sms=charged_sms)
                 logger.info("Successfully sent reminders for Org: %s.", org.name)
             except Exception as e:
