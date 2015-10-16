@@ -289,7 +289,8 @@ def lookup_entity(dbm, id, entity_type):
                 names_to_codes_map[name] = code
             data = get_by_short_code_include_voided(dbm, id, entity_type).data_value()
             for key, value in data.iteritems():
-                data_dict[names_to_codes_map[key]] = value['value']
+                if names_to_codes_map.get(key):
+                    data_dict[names_to_codes_map[key]] = value['value']
             return data_dict
     except DataObjectNotFound:
         pass
