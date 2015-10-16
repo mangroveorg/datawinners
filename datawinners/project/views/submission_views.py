@@ -228,7 +228,8 @@ def analysis(request, project_id, questionnaire_code=None):
             "user_email": request.user.email,
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             'is_pro_sms': get_organization(request).is_pro_sms,
-            "is_media_field_present": questionnaire.is_media_type_fields_present
+            "is_media_field_present": questionnaire.is_media_type_fields_present,
+            'has_chart': len(questionnaire.choice_fields) > 0,
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
         }
         result_dict.update(project_info(request, questionnaire, questionnaire_code))

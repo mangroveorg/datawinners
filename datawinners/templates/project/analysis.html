@@ -49,10 +49,10 @@
             var user_email = '{{ user_email }}';
             var organization_name = '{{ organization_name }}';
             var entity_type = '{{ entity_type }}';
+            var has_chart = '{{ has_chart }}';
             var headerUrl = '/project/analysis/{{ questionnaire_code }}/headers';
             var preferenceUrl = '/project/analysis/{{ questionnaire_code }}/preferences';
             var dataUrl = '/project/analysis/{{ questionnaire_code }}';
-            ;
             var render_table_url = '/project/submissions/{{ questionnaire_code }}';
             var analysis_stats_url = '/project/submissions/{{ questionnaire_code }}/analysis'
             var project_id = '{{ project.id }}';
@@ -73,19 +73,20 @@
             {% activetab "secondary_tab_nav" "analysis" %}
             {{ block.super }}
         {% endblock %}
+    
         {% include 'project/partials/_page_header.html' with title=_("Analysis") help_message=_("Analyze your successful submissions") %}
 
         {% include "project/submission_filters.html" %}
 
         <div class="data-widget">
-            <label>View:</label>
             <div class="data-table-icons">
                 <ul>
                     <li id="table_view_option" class="list-view-icon active"><a>{% trans "List" %}</a></li>
                     <li id="chart_view_option" class="chart-view-icon"><a>{% trans "Chart" %}</a></li>
                 </ul>
-                <div id="cust-icon"><span class="customization-icon"></span><span
-                        class="customization-title">{% trans "Settings" %}</span></div>
+                <div id="cust-icon">
+                    <span class="customization-icon"></span>
+                    <span class="customization-title">{% trans "Settings" %}</span></div>
             </div>
         </div>
 

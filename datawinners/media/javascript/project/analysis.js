@@ -5,9 +5,6 @@ $(document).ready(function () {
 
     var tableElement = $("#analysis_table");
 
-    //Tooltip for long questionnaires on column customisation widget
-    $('[data-toggle="tooltip"]').tooltip();
-
     var AnalysisPageDataTable = (function ($, tableElement) {
         function AnalysisPageDataTable(columns) {
             tableElement.DataTable({
@@ -117,7 +114,7 @@ $(document).ready(function () {
     });
 
 
-    /*Col Customization Widget*/
+    /*Column Customization Widget*/
 
     var ColCustomWidget = (function ($) {
         function ColCustomWidget(customizationHeader) {
@@ -136,13 +133,11 @@ $(document).ready(function () {
 
             //Bind initial click events
             this.bindEvents();
-
         }
 
         ColCustomWidget.prototype.init = function () {
             //Start constructing the widget with loaded Items
             this.constructItems(this.items);
-
         };
 
         ColCustomWidget.prototype.bindEvents = function () {
@@ -188,24 +183,24 @@ $(document).ready(function () {
             });
 
             $(".customization-menu input[type=checkbox]").click(function (event) {
-                self.handleCheckBoxes(this, event);
+                self.handleCheckBoxes(this);
                 event.stopPropagation();
             });
 
             $(".customization-menu span").on("click", function (event) {
                 var $checkBox = $(this).prev("input[type=checkbox]");
+
                 $checkBox[0].checked = !$checkBox[0].checked;
-                self.handleCheckBoxes($checkBox[0], event);
+                self.handleCheckBoxes($checkBox[0]);
                 event.stopPropagation();
             });
+
+            /*Tooltip for long questionnaires on column customisation widget*/
+            $('[data-toggle="tooltip"]').tooltip();
         };
 
-        ColCustomWidget.prototype.handleCheckBoxes = function(element, event) {
+        ColCustomWidget.prototype.handleCheckBoxes = function(element) {
             var self = this;
-
-            if (element.checked) {
-                $(element).parents('li').children('input[type=checkbox]').prop('checked', true);
-            }
 
             if($(element).parent("ul").length == 0) {
 
@@ -223,7 +218,6 @@ $(document).ready(function () {
 
             $(element).parent().find('input[type=checkbox]').prop('checked', element.checked);
             self.handleVisibility(element);
-            event.stopPropagation();
         };
 
         ColCustomWidget.prototype.handleVisibility = function (element) {
@@ -245,7 +239,7 @@ $(document).ready(function () {
         };
 
         ColCustomWidget.prototype.updateTable = function (columnName, visibility) {
-            column = tableElement.DataTable().column(columnName + ':name');
+            var column = tableElement.DataTable().column(columnName + ':name');
             column.visible(visibility);
             tableElement.DataTable().draw('page');
         };
@@ -262,11 +256,12 @@ $(document).ready(function () {
         };
 
         ColCustomWidget.prototype.createColItems = function (element, value, parentElement) {
-            var $listElement = $('<' + element + '/>'),
+            var toolTipText = value.title.replace(/'/g, "&#39;"),
+                $listElement = $('<' + element + '/>'),
                 $checkBox = $("<input type='checkbox' value='True' name='" + value.data + "'>");
 
             $checkBox.prop('checked', value.visibility);
-            $listElement.append("<span title='" + value.title + "'>" + value.title + "</span>").prepend($checkBox);
+            $listElement.append("<span title='" + toolTipText + "'>" + value.title + "</span>").prepend($checkBox);
             parentElement.append($listElement);
 
             return $listElement;
