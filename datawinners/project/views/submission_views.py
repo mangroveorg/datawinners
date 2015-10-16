@@ -64,7 +64,6 @@ from mangrove.transport.contract.survey_response import SurveyResponse
 from mangrove.datastore.user_questionnaire_preference import get_analysis_field_preferences, \
     save_analysis_field_preferences
 
-
 websubmission_logger = logging.getLogger("websubmission")
 logger = logging.getLogger("datawinners")
 
@@ -83,6 +82,7 @@ def headers(request, form_code):
         response.append({"sTitle": ugettext(header)})
     return HttpResponse(encode_json(response))
 
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -92,6 +92,7 @@ def analysis_headers(request, form_code):
     questionnaire = get_project_by_code(manager, form_code)
     headers = AnalysisPageHeader(questionnaire, manager, request.user.id).get_column_title()
     return HttpResponse(encode_json(headers), content_type='application/json')
+
 
 @login_required
 @session_not_expired
@@ -106,7 +107,7 @@ def analysis_user_preferences(request, form_code):
     preferences = get_analysis_field_preferences(manager, request.user.id, questionnaire)
     return HttpResponse(encode_json(preferences), content_type='application/json')
 
-    
+
 def _get_date_fields_info(questionnaire):
     date_fields_array = []
     for date_field in questionnaire.date_fields:
@@ -190,7 +191,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "tab": tab,
             "xform": xform,
             'is_pro_sms': get_organization(request).is_pro_sms,
-            "is_poll" : questionnaire.is_poll,
+            "is_poll": questionnaire.is_poll,
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status)
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
@@ -233,7 +234,7 @@ def analysis(request, project_id, questionnaire_code=None):
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/analysis.html', result_dict,
                                   context_instance=RequestContext(request))
-    
+
 
 @login_required
 @session_not_expired
@@ -308,7 +309,8 @@ def delete(request, project_id):
     if len(received_times):
         UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=questionnaire.name,
                               detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
-        response = encode_json({'success_message': ugettext("The selected submissions have been deleted"), 'success': True})
+        response = encode_json(
+            {'success_message': ugettext("The selected submissions have been deleted"), 'success': True})
     else:
         response = encode_json({'error_message': ugettext("No records deleted"), 'success': False})
 
@@ -380,7 +382,8 @@ def edit(request, project_id, survey_response_id, tab=0):
     form_ui_model = build_static_info_context(manager, survey_response,
                                               questionnaire_form_model=questionnaire_form_model,
                                               reporter_id=reporter_id)
-    form_ui_model.update({"back_link": back_link, 'is_datasender': is_data_sender(request), 'hide_change': questionnaire_form_model.is_poll and questionnaire_form_model.is_open_survey})
+    form_ui_model.update({"back_link": back_link, 'is_datasender': is_data_sender(request),
+                          'hide_change': questionnaire_form_model.is_poll and questionnaire_form_model.is_open_survey})
     data_sender = get_data_sender(manager, survey_response)
     short_code = data_sender[1]
     enable_datasender_edit = True if survey_response.owner_uid else False
@@ -544,14 +547,14 @@ def export_count(request):
     local_time_delta = get_country_time_delta(organization.country)
 
     # the number_of_results limit will not be used for result-set size since scan-scroll api does not support it.
-    #it is specified since the code-flow requires its value to be present
+    # it is specified since the code-flow requires its value to be present
 
     query_params = {"search_filters": search_filters,
                     "start_result_number": 0,
                     "number_of_results": 4000,
                     "order": "",
                     "sort_field": "date"
-    }
+                    }
 
     search_text = search_filters.get("search_text", '')
     query_params.update({"search_text": search_text})
@@ -580,7 +583,7 @@ def _create_export_artifact(form_model, manager, request, search_filters):
                     "number_of_results": 4000,
                     "order": "",
                     "sort_field": "date"
-    }
+                    }
     search_text = search_filters.get("search_text", '')
     submission_type = request.GET.get(u'type')
     query_params.update({"search_text": search_text})
@@ -637,6 +640,7 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
             pass
     return headers[order_by]
 
+
 @csrf_view_exempt
 @valid_web_user
 def get_analysis_data(request, form_code):
@@ -655,34 +659,41 @@ def get_analysis_data(request, form_code):
                 'draw': int(request.GET.get('draw', 1)),
             }, unpicklable=False), content_type='application/json')
 
+
 def _get_sorting_params(request):
     sort_params = {}
     if request.GET.get('order[0][column]'):
         sort_column_index = request.GET.get('order[0][column]')
-        sort_column_id = request.GET.get('columns['+sort_column_index+'][data]') 
-        sort_params[sort_column_id] = {'order':request.GET.get('order[0][dir]','asc')}
+        sort_column_id = request.GET.get('columns[' + sort_column_index + '][data]')
+        sort_params[sort_column_id] = {'order': request.GET.get('order[0][dir]', 'asc'), "ignore_unmapped": "true"}
     else:
-        sort_params['date']={'order':'desc'} #default
+        sort_params['date'] = {'order': 'desc'}  # default
     return sort_params
-    
+
+
 def _get_pagination_params(request):
     pagination_params = {}
-    pagination_params['from']=int(request.GET.get('start',0))
-    pagination_params['size']=int(request.GET.get('length',10))
+    pagination_params['from'] = int(request.GET.get('start', 0))
+    pagination_params['size'] = int(request.GET.get('length', 10))
     return pagination_params
-        
+
+
 def _create_analysis_response(search_results):
     data = []
     if search_results is not None:
         data = [_transform_elastic_to_analysis_view(result._d_) for result in search_results.hits]
     return data
 
+
 '''
     Placeholder for all analysis data transformation from elastic
     search to display
 '''
+
+
 def _transform_elastic_to_analysis_view(record):
     return record
+
 
 @csrf_view_exempt
 @valid_web_user
@@ -707,7 +718,7 @@ def get_submissions(request, form_code):
     submission_count_with_filters = get_submission_count(dbm, questionnaire, search_parameters, local_time_delta)
     submission_count_without_filters = get_submissions_without_user_filters_count(dbm, questionnaire, search_parameters)
     submissions = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields,
-                                                                                               search_results)
+                                                                                                  search_results)
 
     return HttpResponse(
         jsonpickle.encode(
@@ -769,7 +780,7 @@ def get_stats(request, form_code):
     return HttpResponse(json.dumps(
         {'result': create_statistics_response(facet_results, questionnaire),
          'total': total_submissions
-        }), content_type='application/json')
+         }), content_type='application/json')
 
 
 def create_statistics_response(facet_results, form_model):
