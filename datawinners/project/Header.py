@@ -108,7 +108,6 @@ class AnalysisPageHeader():
                 # ID Nr mandatory fields, with mandatory order of fields
                 # q2 is the name field, q6 is the code field
                 expected_mandatory_fields_with_order = ['q2', 'q6']
-                #                 [for col in expected_mandatory_fields_with_order:
                 for val in expected_mandatory_fields_with_order:
                     if val in entity_type_info['codes']:
                         idx = entity_type_info['codes'].index(val)
@@ -120,7 +119,7 @@ class AnalysisPageHeader():
                                 column_id)))
 
                 for idx, val in enumerate(entity_type_info['codes']):
-                    if val not in entity_type_info['codes']:
+                    if val not in expected_mandatory_fields_with_order:
                         column_id = prefix + "." + val
                         header.append(self._form_column_info(
                             column_id, entity_type_info['labels'][idx],

@@ -175,16 +175,19 @@ $(document).ready(function () {
             this.$selectAll.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', true);
                 self.handleVisibility();
+                tableElement.DataTable().draw('page');
             });
 
             this.$selectNone.on("click", function () {
                 self.$custMenu.find("input[type=checkbox]").prop('checked', false);
                 self.handleVisibility();
+                tableElement.DataTable().draw('page');
             });
 
             $(".customization-menu input[type=checkbox]").click(function (event) {
                 self.handleCheckBoxes(this);
                 event.stopPropagation();
+                tableElement.DataTable().draw('page');
             });
 
             $(".customization-menu span").on("click", function (event) {
@@ -193,6 +196,7 @@ $(document).ready(function () {
                 $checkBox[0].checked = !$checkBox[0].checked;
                 self.handleCheckBoxes($checkBox[0]);
                 event.stopPropagation();
+                tableElement.DataTable().draw('page');
             });
 
             /*Tooltip for long questionnaires on column customisation widget*/
@@ -241,7 +245,6 @@ $(document).ready(function () {
         ColCustomWidget.prototype.updateTable = function (columnName, visibility) {
             var column = tableElement.DataTable().column(columnName + ':name');
             column.visible(visibility);
-            tableElement.DataTable().draw('page');
         };
 
         ColCustomWidget.prototype.constructItems = function (customizationHeader) {
