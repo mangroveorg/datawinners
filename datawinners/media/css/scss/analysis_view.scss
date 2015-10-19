@@ -21,7 +21,6 @@ body ul.ColVis_collection {
   }
 }
 
-
 #container_content {
   clear: both;
   overflow: hidden;
@@ -206,12 +205,11 @@ body ul.ColVis_collection {
   float: right;
 }
 
-
 .data-table-icons {
   float: left;
 
   ul {
-    clear: both;
+    float: left;
     overflow: hidden;
     list-style: none;
     background: #e6f2fc;
@@ -226,7 +224,7 @@ body ul.ColVis_collection {
     background: url('/media/images/list_chart_map.png') no-repeat 15px -26px;
     background-color: #e6f2fc;
     height: 24px;
-    width: 120px;
+    width: 85px;
     cursor: pointer;
     border-left: 1px solid #CCC;
 
@@ -244,7 +242,7 @@ body ul.ColVis_collection {
 
     &.active-right {
       cursor: default;
-       a {
+      a {
         color: #000 !important;
         text-decoration: none;
       }
@@ -255,7 +253,7 @@ body ul.ColVis_collection {
     float: left;
     background: url('/media/images/list_chart_map.png') no-repeat 14px 4px;
     height: 24px;
-    width: 120px;
+    width: 75px;
     cursor: pointer;
 
     a {
@@ -279,37 +277,15 @@ body ul.ColVis_collection {
     }
   }
 
-  #cust-icon {
-    overflow: hidden;
-    clear: both;
-    width: 120px;
-    height: 24px;
-    background-color: #e6f2fc;
-    margin-left: 2px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-top-left-radius: 10px;
+  #customize-btn {
+    float: left;
     cursor: pointer;
-
-    .customization-icon {
-      float: left;
-      position: relative;
-      left: 15px;
-      background: url('/media/images/settings.png') no-repeat 0 4px;
-      width: 24px;
-      height: 21px;
-      background-size: 70%;
-    }
-
-    .customization-title {
-      position: relative;
-      top: 3px;
-      left: 14px;
-    }
+    color: #0070ac;
+    padding: 4px 15px 0 0;
 
     &.active,
     &:hover {
-      background-color: #94d1ff;
+      text-decoration: underline;
     }
   }
 }
@@ -627,14 +603,21 @@ body ul.ColVis_collection {
 }
 
 .empty-table {
-    &.warning-message-box {
-		position: relative;
-		width: 400px;
-		margin: 0px auto;
-		p {
-			background: transparent url("/media/images/icons.png") no-repeat scroll left -74px;
-		}
-	}
+  .customize-list-link {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #0070ac;
+  }
+  p {
+    margin-top: 38px;
+    font-style: italic;
+    color: #888888;
+    font-size: 14px;
+  }
+}
+
+.analysis-help-btn {
+  margin: -106px 3px 0 0;
 }
 
 /*Hiding Filters Temporarily - WIP*/

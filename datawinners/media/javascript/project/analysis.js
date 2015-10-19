@@ -120,8 +120,8 @@ $(document).ready(function () {
         function ColCustomWidget(customizationHeader) {
             this.$columnWidget = $(".customization-widget");
             this.$custMenu = $(".customization-menu");
-            this.$colWidgetActions = $("#cust-icon, .customization-widget-close");
-            this.$customizationIcon = $("#cust-icon");
+            this.$colWidgetActions = $("#customize-btn, .customization-widget-close, .customize-list-link");
+            this.$customizationIcon = $("#customize-btn");
             this.$selectAll = $(".select-all");
             this.$selectNone = $(".select-none");
             this.$customizationOverlay = $(".customization-overlay");
@@ -145,7 +145,8 @@ $(document).ready(function () {
             var self = this;
             var customizationOverlayHeight;
 
-            this.$colWidgetActions.on("click", function () {
+            this.$colWidgetActions.on("click", function (event) {
+                console.log("clicked customization");
                 if (self.$customizationIcon.hasClass("active")) {
                     self.$columnWidget.hide();
                     self.$customizationOverlay.hide();
@@ -162,10 +163,12 @@ $(document).ready(function () {
                     self.$customizationOverlay.height(customizationOverlayHeight).show();
                     self.$customizationIcon.addClass("active");
                 }
+                event.stopPropagation();
             });
 
             this.$customizationOverlay.on("click", function () {
                 self.$columnWidget.hide();
+                self.$customizationIcon.removeClass("active");
                 $(this).hide();
                 self.submit();
             });
