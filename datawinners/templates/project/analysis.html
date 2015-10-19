@@ -136,5 +136,9 @@
     <script type="text/javascript" src="/media/javascript/flot/jquery.flot.min.js"></script>
     <script type="text/javascript" src="/media/javascript/flot/jquery.flot.valuelabel.js"></script>
     <script type="text/javascript" src="/media/javascript/flot/jquery.flot.pie.min.js"></script>
-
+    <script>
+        function resize_iframe(event) {
+            $("#help_iframe").height(event.data);
+        }
+    </script>
 {% endblock %}

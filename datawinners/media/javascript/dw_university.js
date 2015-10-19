@@ -1,11 +1,11 @@
-$(document).ready(function(){
-
-    function resize_iframe(event) {
-        //if ($("#container_content").height() < event.data + 150) {
-        //    $("#container_content").height(event.data + 150);
-        //}
-        $("#help_iframe").height(event.data);
+function resize_iframe(event) {
+    if ($("#container_content").height() < event.data + 150) {
+        $("#container_content").height(event.data + 150);
     }
+    $("#help_iframe").height(event.data);
+}
+
+$(document).ready(function(){
 
     $.ajax({
         url: DW.help_url,
