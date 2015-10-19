@@ -13,7 +13,8 @@ def _add_date_field_mapping(mapping_fields, field_def):
     name = field_def["name"]
     mapping_fields.update(
         {name: {"type": "multi_field", "fields": {
-            name: {"type": "string"},
+            name: {"type": "date", "format": DateField.FORMAT_DATE_DICTIONARY.get(field_def["date_format"]),
+                              "ignore_malformed": True},
             name + "_value": {"type": "date", "format": DateField.FORMAT_DATE_DICTIONARY.get(field_def["date_format"]),
                               "ignore_malformed": True}
         }}})
