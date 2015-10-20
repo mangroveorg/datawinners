@@ -647,10 +647,12 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 def get_analysis_data(request, form_code):
     dbm = get_database_manager(request.user)
     questionnaire = get_project_by_code(dbm, form_code)
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
     pagination_params = _get_pagination_params(request)
     sort_params = _get_sorting_params(request)
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, sort_params)
-    data = _create_analysis_response(search_results)
+    data = _create_analysis_response(local_time_delta, search_results)
     return HttpResponse(
         jsonpickle.encode(
             {
@@ -679,10 +681,10 @@ def _get_pagination_params(request):
     return pagination_params
 
 
-def _create_analysis_response(search_results):
+def _create_analysis_response(local_time_delta, search_results):
     data = []
     if search_results is not None:
-        data = [_transform_elastic_to_analysis_view(result._d_) for result in search_results.hits]
+        data = [_transform_elastic_to_analysis_view(local_time_delta, result)._d_ for result in search_results.hits]
     return data
 
 
@@ -692,8 +694,16 @@ def _create_analysis_response(search_results):
 '''
 
 
-def _transform_elastic_to_analysis_view(record):
+def _transform_elastic_to_analysis_view(local_time_delta, record):
+    if record.get('date'):
+        _convert_to_localized_date_time(record, local_time_delta)
     return record
+
+
+def _convert_to_localized_date_time(res, local_time_delta):
+    submission_date_time = datetime.datetime.strptime(res.get('date'), "%b. %d, %Y, %I:%M %p")
+    datetime_local = convert_utc_to_localized(local_time_delta, submission_date_time)
+    res['date'] = datetime_local.strftime("%b. %d, %Y, %H:%M")
 
 
 @csrf_view_exempt

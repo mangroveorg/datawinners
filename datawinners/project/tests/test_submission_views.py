@@ -2,6 +2,8 @@ from collections import OrderedDict
 import json
 import unittest
 from datetime import datetime
+from django.contrib.auth.models import User
+from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpRequest
 
 from mock import Mock, patch, call, PropertyMock, MagicMock
@@ -14,8 +16,9 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoC
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import SurveyResponse, SurveyResponseDifference
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
-from datawinners.project.views.submission_views import build_static_info_context, get_option_value_for_field, construct_request_dict, get_survey_response_ids_from_request, \
-    create_statistics_response
+from datawinners.project.views.submission_views import build_static_info_context, get_option_value_for_field, \
+    construct_request_dict, get_survey_response_ids_from_request, \
+    create_statistics_response, get_analysis_data
 from datawinners.project.views.submission_views import log_edit_action
 
 
@@ -32,14 +35,13 @@ class TestSubmissionViews(unittest.TestCase):
             survey_response = SurveyResponse(Mock())
 
             survey_response._doc = survey_response_document
-            project=Mock()
+            project = Mock()
             project.data_senders = ["rep2"]
             organization_mock = Mock()
             organization_mock.org_id = "TEST1234"
             # with patch("datawinners.project.views.submission_views.get_organization_from_manager") as get_ngo_from_manager_mock:
             #     get_ngo_from_manager_mock.return_value = organization_mock
             static_info = build_static_info_context(Mock(), survey_response, questionnaire_form_model=project)
-                
 
             expected_values = OrderedDict({'static_content': {
                 'Data Sender': ('Psub', 'rep2'),
@@ -98,7 +100,7 @@ class TestSubmissionViews(unittest.TestCase):
         choices = {"old": "hi", "new": "ab"}
         choice_field = SelectField(name='question', code='q1', label="question",
                                    options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
-                                   single_select_flag=False,)
+                                   single_select_flag=False, )
         result_dict = get_option_value_for_field(choices, choice_field)
         expected = {"old": "hi", "new": "one, two"}
         self.assertEqual(expected, result_dict)
@@ -121,7 +123,7 @@ class TestSubmissionViews(unittest.TestCase):
 
         request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'dsid')
         expected_dict = OrderedDict({'q1': '23', 'q2': 'sometext', 'q3': 'a', 'GEO': '2.34,5.64', 'DATE': '12.12.2012',
-                                     'form_code': 'test_form_code', 'dsid':'dsid'})
+                                     'form_code': 'test_form_code', 'dsid': 'dsid'})
         self.assertEqual(expected_dict, request_dict)
 
     def test_multiple_choice_field_should_be_split(self):
@@ -138,7 +140,7 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
 
         result_dict = construct_request_dict(survey_response, questionnaire_form_model, 'dsid')
-        expected_dict = {'q1': '23', 'q2': 'sometext', 'Q3': ['a', 'b'], 'form_code': 'test_form_code', 'dsid':'dsid'}
+        expected_dict = {'q1': '23', 'q2': 'sometext', 'Q3': ['a', 'b'], 'form_code': 'test_form_code', 'dsid': 'dsid'}
         self.assertEqual(expected_dict, result_dict)
 
     def test_should_return_none_if_survey_response_questionnaire_is_different_from_form_model(self):
@@ -154,7 +156,7 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
         result_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
-        expected_dict = {'q1': None, 'q2': None, 'Q3': None, 'form_code': 'test_form_code', 'dsid':'id'}
+        expected_dict = {'q1': None, 'q2': None, 'Q3': None, 'form_code': 'test_form_code', 'dsid': 'id'}
         self.assertEqual(expected_dict, result_dict)
 
     def test_should_create_request_dict(self):
@@ -171,7 +173,7 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
 
         request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
-        expected_dict = {'q1': 23, 'q2': 'sometext', 'q3': ['a', 'b'], 'form_code': 'test_form_code', 'dsid':'id'}
+        expected_dict = {'q1': 23, 'q2': 'sometext', 'q3': ['a', 'b'], 'form_code': 'test_form_code', 'dsid': 'id'}
         self.assertEqual(request_dict, expected_dict)
 
     def test_should_create_request_dict_with_older_survey_response(self):
@@ -188,11 +190,11 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
 
         request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
-        expected_dict = {'q1': 23, 'q2': 'sometext', 'q4': None, 'form_code': 'test_form_code', 'dsid':'id'}
+        expected_dict = {'q1': 23, 'q2': 'sometext', 'q4': None, 'form_code': 'test_form_code', 'dsid': 'id'}
         self.assertEqual(request_dict, expected_dict)
 
-
-    def test_should_replace_answer_option_values_with_options_text_when_answer_type_is_changed_from_multi_select_choice_field(self):
+    def test_should_replace_answer_option_values_with_options_text_when_answer_type_is_changed_from_multi_select_choice_field(
+            self):
         survey_response_doc = SurveyResponseDocument(values={'q1': 'ac', })
         survey_response = SurveyResponse(Mock())
         survey_response._doc = survey_response_doc
@@ -207,10 +209,11 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.get_field_by_code_and_rev.return_value = choice_field
         request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
 
-        expected_dict = {'q1': 'one,three', 'form_code': 'test_form_code', 'dsid':'id'}
+        expected_dict = {'q1': 'one,three', 'form_code': 'test_form_code', 'dsid': 'id'}
         self.assertEqual(request_dict, expected_dict)
 
-    def test_should_replace_answer_option_values_with_options_text_when_answer_type_is_changed_from_single_select_choice_field(self):
+    def test_should_replace_answer_option_values_with_options_text_when_answer_type_is_changed_from_single_select_choice_field(
+            self):
         survey_response_doc = SurveyResponseDocument(values={'q1': 'a', })
         survey_response = SurveyResponse(Mock())
         survey_response._doc = survey_response_doc
@@ -225,10 +228,8 @@ class TestSubmissionViews(unittest.TestCase):
         questionnaire_form_model.get_field_by_code_and_rev.return_value = choice_field
         request_dict = construct_request_dict(survey_response, questionnaire_form_model, 'id')
 
-        expected_dict = {'q1': 'one', 'form_code': 'test_form_code', 'dsid':'id'}
+        expected_dict = {'q1': 'one', 'form_code': 'test_form_code', 'dsid': 'id'}
         self.assertEqual(request_dict, expected_dict)
-
-
 
     def test_get_submission_ids_to_delete_should_give_back_selected_ids_if_select_all_flag_is_false(self):
         dbm = Mock(spec=DatabaseManager)
@@ -243,30 +244,36 @@ class TestSubmissionViews(unittest.TestCase):
         dbm = MagicMock(spec=DatabaseManager)
         dbm.database_name = 'db_name'
         request = Mock(spec=HttpRequest)
-        post_params = {"search_filters": json.dumps([]), "submission_type":"all",'all_selected': "true"}
+        post_params = {"search_filters": json.dumps([]), "submission_type": "all", 'all_selected': "true"}
         type(request).POST = PropertyMock(return_value=post_params)
         form_model = Mock(spec=FormModel)
-        with patch('datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
+        with patch(
+                'datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
             get_all_submissions_ids_by_criteria_mock.return_value = []
 
             get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
 
-            get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'all', 'search_filters': []}, ('+', 0, 0))
+            get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model,
+                                                                        {'filter': 'all', 'search_filters': []},
+                                                                        ('+', 0, 0))
 
-    def test_get_submission_ids_to_delete_should_call_submission_query_with_submission_type_if_select_all_flag_is_true(self):
+    def test_get_submission_ids_to_delete_should_call_submission_query_with_submission_type_if_select_all_flag_is_true(
+            self):
         dbm = MagicMock(spec=DatabaseManager)
         dbm.database_name = 'db_name'
         request = Mock(spec=HttpRequest)
         post_params = {"search_filters": json.dumps([]), "submission_type": "success", 'all_selected': "true"}
         type(request).POST = PropertyMock(return_value=post_params)
         form_model = Mock(spec=FormModel)
-        with patch('datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
-             get_all_submissions_ids_by_criteria_mock.return_value = []
+        with patch(
+                'datawinners.project.views.submission_views.get_all_submissions_ids_by_criteria') as get_all_submissions_ids_by_criteria_mock:
+            get_all_submissions_ids_by_criteria_mock.return_value = []
 
-             get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
+            get_survey_response_ids_from_request(dbm, request, form_model, ('+', 0, 0))
 
-             get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model, {'filter':'success', 'search_filters': []}, ('+', 0, 0))
-
+            get_all_submissions_ids_by_criteria_mock.assert_called_with(dbm, form_model,
+                                                                        {'filter': 'success', 'search_filters': []},
+                                                                        ('+', 0, 0))
 
 
 class TestSubmissionAnalysisResponseCreation(unittest.TestCase):
@@ -280,10 +287,10 @@ class TestSubmissionAnalysisResponseCreation(unittest.TestCase):
         form_model = MagicMock(spec=FormModel)
         form_model.id = '0dab4170697411e3985908002738abcf'
         form_model.get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
-                                                                 label="What is your blood group?",
-                                                                 options=[{"text": "O+"}, {"text": "B+"},
-                                                                          {"text": "A-"}], single_select_flag=False,
-                                                                 required=False)
+                                                                label="What is your blood group?",
+                                                                options=[{"text": "O+"}, {"text": "B+"},
+                                                                         {"text": "A-"}], single_select_flag=False,
+                                                                required=False)
 
         analysis_response = create_statistics_response(facet_results, form_model)
 
@@ -299,9 +306,10 @@ class TestSubmissionAnalysisResponseCreation(unittest.TestCase):
         form_model = MagicMock(spec=FormModel)
         form_model.id = '0dab4170697411e3985908002738abcf'
         form_model.get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
-                                                                 label="What is your blood group?",
-                                                                 options=[{"text": "O+"}, {"text": "B+"}], single_select_flag=False,
-                                                                 required=False)
+                                                                label="What is your blood group?",
+                                                                options=[{"text": "O+"}, {"text": "B+"}],
+                                                                single_select_flag=False,
+                                                                required=False)
 
         analysis_response = create_statistics_response(facet_results, form_model)
 
@@ -311,5 +319,19 @@ class TestSubmissionAnalysisResponseCreation(unittest.TestCase):
         self.assertEqual(facet_result['data'], [{'term': 'B+', 'count': 3}, {'term': 'O+', 'count': 2}])
         self.assertEqual(facet_result['field_type'], 'select')
 
-
-
+    # @patch("datawinners.project.views.submission_views.get_country_time_delta")
+    # @patch("datawinners.project.views.submission_views.get_submissions_paginated_simple")
+    # def test_should_get_analysis_data(self, get_submissions_paginated_simple_mock, get_country_time_delta_mock):
+    #     form_code = 'test'
+    #     request = MagicMock(spec=WSGIRequest)
+    #     get_country_time_delta_mock.return_value = (u'+', 2, 0)
+    #     search_result = Mock()
+    #     get_submissions_paginated_simple_mock.return_value = search_result
+    #     search_result.hits.return_value = [
+    #         {u'status': u'Success', u'datasender': {u'name': u'TestBlueUser', u'email': u'testblue@mailinator.com'},
+    #          'date': u'Oct. 08, 2015, 10:43 AM', 'ds_id': u'rep2', '0a40c5_q2': u'Natchu', '0a40c5_q3': u'Blue New'}]
+    #     expected_data = [
+    #         {"status": "Success", "datasender": {"name": "TestBlueUser", "email": "testblue@mailinator.com"},
+    #          "ds_id": "rep2", "0a40c5_q3": "Blue new", "0a40c5_q2": "Natchu", "date": "Oct. 08, 2015, 12:43"}]
+    #     response = get_analysis_data(request, form_code)
+    #     self.assertEqual(response.content.get('data'), expected_data)
