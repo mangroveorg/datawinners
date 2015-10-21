@@ -655,7 +655,8 @@ def get_analysis_data(request, form_code):
     local_time_delta = get_country_time_delta(organization.country)
     pagination_params = _get_pagination_params(request)
     sort_params = _get_sorting_params(request)
-    search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, sort_params)
+    search_parameters = _get_search_params(request)
+    search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta, sort_params, search_parameters)
     data = _create_analysis_response(local_time_delta, search_results)
     return HttpResponse(
         jsonpickle.encode(
@@ -663,16 +664,22 @@ def get_analysis_data(request, form_code):
                 'recordsTotal': search_results.hits.total if search_results is not None else 0,
                 'recordsFiltered': search_results.hits.total if search_results is not None else 0,
                 'data': data,
-                'draw': int(request.GET.get('draw', 1)),
+                'draw': int(request.POST.get('draw', 1)),
             }, unpicklable=False), content_type='application/json')
 
+def _get_search_params(request):
+    search_parameters = {}
+    search_parameters['data_sender_filter'] = request.POST.get('data_sender_filter')
+    search_parameters['search_text'] = request.POST.get('search_text') 
+    search_parameters['submission_date_range'] = request.POST.get('submission_date_range')
+    return search_parameters
 
 def _get_sorting_params(request):
     sort_params = {}
-    if request.GET.get('order[0][column]'):
-        sort_column_index = request.GET.get('order[0][column]')
-        sort_column_id = request.GET.get('columns[' + sort_column_index + '][data]')
-        sort_params[sort_column_id] = {'order': request.GET.get('order[0][dir]', 'asc'), "ignore_unmapped": "true"}
+    if request.POST.get('order[0][column]'):
+        sort_column_index = request.POST.get('order[0][column]')
+        sort_column_id = request.POST.get('columns[' + sort_column_index + '][data]')
+        sort_params[sort_column_id] = {'order': request.POST.get('order[0][dir]', 'asc'), "ignore_unmapped": "true"}
     else:
         sort_params['date'] = {'order': 'desc'}  # default
     return sort_params
@@ -680,8 +687,8 @@ def _get_sorting_params(request):
 
 def _get_pagination_params(request):
     pagination_params = {}
-    pagination_params['from'] = int(request.GET.get('start', 0))
-    pagination_params['size'] = int(request.GET.get('length', 10))
+    pagination_params['from'] = int(request.POST.get('start', 0))
+    pagination_params['size'] = int(request.POST.get('length', 10))
     return pagination_params
 
 
@@ -696,18 +703,15 @@ def _create_analysis_response(local_time_delta, search_results):
     Placeholder for all analysis data transformation from elastic
     search to display
 '''
-
-
 def _transform_elastic_to_analysis_view(local_time_delta, record):
-    if record.get('date'):
-        _convert_to_localized_date_time(record, local_time_delta)
+    record.date = _convert_to_localized_date_time(record.date, local_time_delta)
     return record
 
 
-def _convert_to_localized_date_time(res, local_time_delta):
-    submission_date_time = datetime.datetime.strptime(res.get('date'), "%b. %d, %Y, %I:%M %p")
+def _convert_to_localized_date_time(submission_date, local_time_delta):
+    submission_date_time = datetime.datetime.strptime(submission_date, "%b. %d, %Y, %I:%M %p")
     datetime_local = convert_utc_to_localized(local_time_delta, submission_date_time)
-    res['date'] = datetime_local.strftime("%b. %d, %Y, %H:%M")
+    return datetime_local.strftime("%b. %d, %Y, %H:%M")
 
 
 @csrf_view_exempt

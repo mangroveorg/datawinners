@@ -123,11 +123,21 @@ def get_submissions_paginated(dbm, form_model, search_parameters, local_time_del
     search_results = search.execute()
     return search_results, query_fields
 
-def get_submissions_paginated_simple(dbm, form_model, pagination_params, sort_params=None):
+def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_time_delta, sort_params=None, search_parameters={}):
     es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     search = search.sort(sort_params)
     search = search.extra(**pagination_params)
+    if search_parameters.get('data_sender_filter'):
+        search = search.query(
+                              "term", 
+                              **{"datasender.id": search_parameters.get('data_sender_filter')})
+    if search_parameters.get('search_text'):
+        search = search.query("query_string", query=search_parameters.get('search_text'))
+    submission_date_query = SubmissionDateRangeFilter(search_parameters.get('submission_date_range'), local_time_delta).build_filter_query()
+    if submission_date_query:
+        search = search.query(submission_date_query)
+
     search_results = None
     try:
         search_results = search.execute()

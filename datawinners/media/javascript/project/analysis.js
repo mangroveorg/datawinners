@@ -26,7 +26,13 @@ $(document).ready(function () {
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    url: dataUrl
+                    url: dataUrl,
+                    type: "POST",
+                    data: function(d){
+                		d.data_sender_filter = $("#data_sender_filter").data('ds_id');
+                		d.search_text = $('#search_text').val();
+                		d.submission_date_range = $('#submissionDatePicker').val();
+                    }
                 },
                 "order":[0,"desc"], //submission date
                 "columns": columns,
@@ -314,5 +320,17 @@ $(document).ready(function () {
     $.getJSON(preferenceUrl, function (customizationHeader) {
         colCustomization = new ColCustomWidget(customizationHeader);
     });
+    
+    var _postFilterSelection = function() {
+    	tableElement.DataTable().draw();
+    };
 
+    var _initialize_filters = function(){
+        new DW.DateFilter(_postFilterSelection).init();
+        new DW.DataSenderFilter(_postFilterSelection).init();
+        new DW.SubjectFilter(_postFilterSelection).init();
+        new DW.SearchTextFilter(_postFilterSelection).init();
+    };
+
+    _initialize_filters();
 });
