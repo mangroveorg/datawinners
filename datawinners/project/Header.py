@@ -90,7 +90,6 @@ class AnalysisPageHeader():
         generic_columns['datasender.id'] = ugettext("Data Sender Id")
         generic_columns['datasender.mobile_number'] = ugettext("Data Sender Mobile Number")
         generic_columns['datasender.email'] = ugettext("Data Sender Email")
-        generic_columns['datasender.groups'] = ugettext("Data Sender Groups")
         generic_columns['datasender.location'] = ugettext("Data Sender Location")
 
 

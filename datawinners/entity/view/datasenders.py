@@ -114,7 +114,7 @@ class EditDataSenderView(TemplateView):
         reporter_entity = ReporterEntity(contact_by_short_code(manager, reporter_id))
         email = reporter_entity.email
         org_id = request.user.get_profile().org_id
-        form = EditReporterRegistrationForm(org_id=org_id, existing_email=email,  data=request.POST)
+        form = EditReporterRegistrationForm(org_id=org_id, existing_email=email, data=request.POST)
         message = None
         if form.is_valid():
             try:
@@ -131,7 +131,9 @@ class EditDataSenderView(TemplateView):
 
                     data_sender_name = self._update_name_in_postgres_if_exists(form, reporter_entity)
 
-                    datasender_dict = {'name': data_sender_name, 'mobile_number': form.cleaned_data['telephone_number']}
+                    datasender_dict = {'name': data_sender_name, 'mobile_number': form.cleaned_data['telephone_number'],
+                                       'geo_code': form.cleaned_data['geo_code'].split(' '),
+                                       'location': response.processed_data['l']}
                     update_submission_search_for_datasender_edition(manager, reporter_id, datasender_dict)
                     message = _("Your changes have been saved.")
 
@@ -246,7 +248,6 @@ class RegisterDatasenderView(TemplateView):
                                   },
                                   context_instance=RequestContext(request))
 
-
     @method_decorator(valid_web_user)
     @method_decorator(is_datasender)
     def dispatch(self, *args, **kwargs):
@@ -255,10 +256,6 @@ class RegisterDatasenderView(TemplateView):
     def _get_message_text(self, message, project_id, reporter_id):
         if reporter_id:
             return message if project_id else "%s %s %s" % (
-                _("Your Contact has been successfully added."), _("ID is:"), reporter_id )
+                _("Your Contact has been successfully added."), _("ID is:"), reporter_id)
         else:
             return message
-
-
-
-

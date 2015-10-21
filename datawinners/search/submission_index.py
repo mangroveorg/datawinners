@@ -175,7 +175,7 @@ def get_submission_meta_fields():
 def update_submission_search_for_datasender_edition(dbm, short_code, datasender_dict):
     kwargs = {"%s%s" % (SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): short_code}
     name = datasender_dict['name'] if datasender_dict['name'] else datasender_dict['mobile_number']
-    fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: name}
+    fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: name, 'datasender': datasender_dict}
     project_form_model_ids = [project.id for project in get_all_projects(dbm, short_code)]
 
     query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(
@@ -243,7 +243,7 @@ def _get_datasender_info(dbm, submission_doc):
         datasender_dict['id'] = UNKNOWN
         datasender_dict['location'] = []
         datasender_dict['email'] = UNKNOWN
-        datasender_dict['groups'] = []
+        datasender_dict['geo_code'] = []
         datasender_dict['mobile_number'] = submission_doc.created_by
 
     return datasender_dict
@@ -271,8 +271,8 @@ def _lookup_contact_by_uid(dbm, uid):
             ds_dict['mobile_number'] = mobile_number
             ds_dict['name'] = name if name else mobile_number
             ds_dict['email'] = contact.value('email') if contact.value('email') else UNKNOWN
-            ds_dict['groups'] = contact.custom_groups
-            ds_dict['location'] = contact.geometry.get('coordinates') if contact.geometry.get('coordinates') else []
+            ds_dict['location'] = contact.value('location') if contact.value('location') else []
+            ds_dict['geo_code'] = contact.geometry.get('coordinates') if contact.geometry.get('coordinates') else []
             ds_dict['id'] = contact.short_code
     except Exception:
         pass
