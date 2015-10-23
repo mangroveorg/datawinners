@@ -21,7 +21,7 @@ class AllDataSenderAutoCompleteView(View):
         if search_text:
             query_params = {
                      "query":search_text+"*",
-                     "fields":["name","short_code"],
+                     "fields":["name_value","short_code_value"],
                      "analyze_wildcard":True
                      }
         search = search.query("query_string", **query_params)
