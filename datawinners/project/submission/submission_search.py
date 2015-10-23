@@ -133,7 +133,8 @@ def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_t
                               "term", 
                               **{"datasender.id": search_parameters.get('data_sender_filter')})
     if search_parameters.get('search_text'):
-        search = search.query("query_string", query=search_parameters.get('search_text'))
+        query_text_escaped = ElasticUtilsHelper().replace_special_chars(search_parameters.get('search_text'))
+        search = search.query("query_string", query=query_text_escaped)
     submission_date_query = SubmissionDateRangeFilter(search_parameters.get('submission_date_range'), local_time_delta).build_filter_query()
     if submission_date_query:
         search = search.query(submission_date_query)
