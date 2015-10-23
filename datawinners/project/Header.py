@@ -10,6 +10,7 @@ from mangrove.form_model.field import DateField, GeoCodeField, FieldSet
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.helper import DEFAULT_DATE_FORMAT
 from mangrove.datastore.user_questionnaire_preference import get_user_questionnaire_preference, detect_visibility
+from mangrove.form_model.form_model import get_form_model_by_entity_type
 
 
 class Header(object):
@@ -184,8 +185,18 @@ class SubmissionExcelHeader():
                 if key == SubmissionIndexConstants.DATASENDER_NAME_KEY:  # add key column after name
                     self.add_datasender_id_column(header_dict, result)
 
+        if self.submission_type == 'analysis':
+            self._add_type_to_datasender_fields(result)
         self._update_with_field_meta(self._form_model.fields, result, header=header)
         return result
+
+    def _add_type_to_datasender_fields(self, result):
+        result.get('datasender.id').update({'type':'short_code'})
+        result.get('datasender.name').update({'type':'text'})
+        result.get('datasender.email').update({'type':'email'})
+        result.get('datasender.location').update({'type':'geo_code'})
+        result.get('datasender.mobile_number').update({'type':'telephone_number'})
+        
 
     def get_sub_fields_of(self, field, header):
         col = OrderedDict()

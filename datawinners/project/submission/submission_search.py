@@ -103,7 +103,7 @@ def _query_for_questionnaire(dbm, form_model):
 
 
 def _add_response_fields(search_parameters, search):
-    if 'response_fields' in search_parameters:
+    if 'response_fields' in search_parameters and len(search_parameters['response_fields']) > 0:
         search = search.fields(search_parameters['response_fields'])
     return search
 

@@ -62,7 +62,7 @@ from datawinners.project.submission_form import SurveyResponseForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.transport.contract.survey_response import SurveyResponse
 from mangrove.datastore.user_questionnaire_preference import get_analysis_field_preferences, \
-    save_analysis_field_preferences
+    save_analysis_field_preferences, get_preferences
 
 websubmission_logger = logging.getLogger("websubmission")
 logger = logging.getLogger("datawinners")
@@ -566,14 +566,16 @@ def export_count(request):
 
 
 def _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager, project_name,
-                                   query_params, submission_type):
+                                   query_params, submission_type, preferences):
     if not is_media:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, preferences) \
             .create_excel_response(submission_type, query_params)
 
     else:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, preferences) \
             .create_excel_response_with_media(submission_type, query_params)
+
+
 
 
 def _create_export_artifact(form_model, manager, request, search_filters):
@@ -596,11 +598,13 @@ def _create_export_artifact(form_model, manager, request, search_filters):
     local_time_delta = get_country_time_delta(organization.country)
     project_name = request.POST.get(u"project_name")
     current_language = get_language()
+
+    preferences = get_preferences(manager, request.user.id, form_model, submission_type)
     if form_model.xform:
         return _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager,
-                                              project_name, query_params, submission_type)
+                                              project_name, query_params, submission_type, preferences)
 
-    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language) \
+    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, preferences) \
         .create_excel_response(submission_type, query_params)
 
 

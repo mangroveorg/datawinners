@@ -21,8 +21,12 @@ class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
 
         expected_header = ['Datasender Id', 'City', 'Area','_index', '_parent_index']
         expected_family_header = ['Name', 'Age', '_index', '_parent_index']
+        preferences = [dict(data='ds_id', visibility='True'),
+                       dict(data='uuid1_family', visibility='True', children=[dict(data='name',visibility='True'),
+                                                                              dict(data='age',visibility='True')]),
+                       dict(data='uuid1_city',visibility=False), dict(data='area',visibility='True')]
 
-        headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(columns, form_model_mock).create_headers()
+        headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(columns, form_model_mock, preferences).create_headers()
 
         self.assertEqual(expected_header, headers['main'])
         self.assertEqual(expected_family_header, headers['field_code'])
@@ -34,6 +38,11 @@ class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
 
         expected_header = ['City','_index', '_parent_index']
 
-        headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(columns, form_model_mock).create_headers()
+        preferences = OrderedDict()
+
+        headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(columns, form_model_mock, preferences).create_headers()
 
         self.assertEqual(expected_header, headers['main'])
+
+
+#class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):

@@ -26,7 +26,9 @@ class TestSubmissionExporter(TestCase):
 
     def test_should_export_data_in_xlsx(self):
         self.format_row_patch.side_effect = lambda x: x
-        file_response = export_to_new_excel(self.headers, self.data, 'filename', SubmissionFormatter(self.headers, None))
+        preferences = [dict(data='q1', visibility='True')]
+        file_response = export_to_new_excel(self.headers, self.data, 'filename',
+                                            SubmissionFormatter(self.headers, None, preferences))
         self.assertTrue(isinstance(file_response, HttpResponse))
         self.assertEquals(file_response.get('Content-Disposition', None), "attachment; filename=filename.xlsx")
 

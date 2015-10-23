@@ -4,17 +4,20 @@ from datawinners.accountmanagement.localized_time import convert_utc_to_localize
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from mangrove.form_model.field import ExcelDate, DateField
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
+from mangrove.datastore.user_questionnaire_preference import detect_visibility
+from collections import OrderedDict
 
 GEODCODE_FIELD_CODE = "geocode"
 
 
 class SubmissionFormatter(object):
-    def __init__(self, columns, local_time_delta):
+    def __init__(self, columns, local_time_delta, preferences):
         """
         :param header_keys: specifies column order of formated output.
         """
         self.columns = columns
         self.local_time_delta = local_time_delta
+        self.preferences = preferences
 
     def format_tabular_data(self, values):
         formatted_values = []
@@ -23,9 +26,26 @@ class SubmissionFormatter(object):
             formatted_values.append(self.format_row(row_dict['_source']))
         return headers, formatted_values
 
+    def get_visible_columns(self):
+        if not self.preferences:
+            return self.columns
+
+        visible_columns = OrderedDict()
+        for preference in self.preferences:
+            if preference.get('visibility') == 'True' or preference.has_key('children'):
+                key = preference.get('data')
+                if preference.has_key('children'):
+                    for children_preference in preference.get('children'):
+                        key = children_preference.get('data')
+                        if not children_preference.get('visibility'): continue
+                        visible_columns.update({key: self.columns.get(key)})
+                else:
+                    visible_columns.update({key: self.columns.get(key)})
+        return visible_columns
+
     def format_header_data(self):
         headers = []
-        for col_def in self.columns.values():
+        for col_def in self.get_visible_columns().values():
             if col_def.get('type', '') == GEODCODE_FIELD_CODE:
                 headers.append(col_def['label'] + " Latitude")
                 headers.append(col_def['label'] + " Longitude")
@@ -66,8 +86,11 @@ class SubmissionFormatter(object):
 
     def format_row(self, row):
         result = []
-        for field_code in self.columns.keys():
+        for field_code in self.get_visible_columns().keys():
             field_value = row.get(field_code)
+            if '.' in field_code:
+                entity_type, entity_type_field_code = field_code.split('.')
+                field_value = row.get(entity_type).get(entity_type_field_code)
             try:
 
                 parsed_value = self._parsed_field_value(field_value)
@@ -85,9 +108,9 @@ class SubmissionFormatter(object):
                 else:
                     self._default_format(parsed_value, result)
 
-            except Exception:
+            except Exception as e:
                 col_val = field_value or ""
-                result.extend(col_val)
+                result.append(col_val)
 
         return result
 

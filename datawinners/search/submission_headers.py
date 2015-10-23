@@ -70,14 +70,47 @@ class SubmissionHeader():
 
 
 class SubmissionAnalysisHeader(SubmissionHeader):
+    def get_header_dict(self):
+        header_dict = OrderedDict()
+        header_dict.update(self.update_static_header_info())
+
+        for field in self.form_model.fields:
+            if field.is_entity_field:
+                self.add_unique_id_in_header_dict(header_dict, field)
+            else:
+                key = es_questionnaire_field_name(field.code, self.form_model.id)
+                header_dict.update({key: field.name})
+
+        return header_dict
+
+    def add_unique_id_in_header_dict(self, header_dict, field):
+        from datawinners.entity.import_data import get_entity_type_info
+        entity_type_info = get_entity_type_info(field.unique_id_type, self.form_model._dbm)
+        prefix = self.form_model.id + "_" + field.code + "_details"
+
+        for val in entity_type_info.get('codes'):
+            if val in entity_type_info['codes']:
+                idx = entity_type_info['codes'].index(val)
+                column_id = prefix + "." + val
+
+                header_dict.update({column_id: entity_type_info['labels'][idx]})
+
     def update_static_header_info(self):
         header_dict = OrderedDict()
 
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         header_dict.update(
-            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+            {'datasender.id': translate("Datasender Id", self.language, ugettext)})
         header_dict.update(
-            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+            {'datasender.name': translate("Data Sender", self.language, ugettext)})
+        header_dict.update(
+            {'datasender.mobile_number': translate("Data Sender Mobile Number", self.language, ugettext)})
+        header_dict.update(
+            {'datasender.email': translate("Data Sender Email", self.language, ugettext)})
+        header_dict.update(
+            {'datasender.location': translate("Data Sender Location", self.language, ugettext)})
+        header_dict.update(
+            {'datasender.geo_code': translate("Data Sender GPS Coordinates", self.language, ugettext)})
         return header_dict
 
 

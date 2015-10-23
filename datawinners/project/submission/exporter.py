@@ -5,15 +5,16 @@ from datawinners.project.submission.submission_search import get_scrolling_submi
 
 
 class SubmissionExporter:
-    def __init__(self, form_model, project_name, dbm, local_time_delta, current_language='en'):
+    def __init__(self, form_model, project_name, dbm, local_time_delta, current_language='en', preferences=None):
         self.form_model = form_model
         self.project_name = project_name
         self.language = current_language
         self.dbm = dbm
         self.local_time_delta = local_time_delta
+        self.preferences = preferences
 
     def _get_header_list(self, columns):
-        submission_formatter = SubmissionFormatter(columns, self.local_time_delta)
+        submission_formatter = SubmissionFormatter(columns, self.local_time_delta, self.preferences)
         header_list = submission_formatter.format_header_data()
         return header_list, submission_formatter
 

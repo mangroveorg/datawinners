@@ -25,8 +25,8 @@ from mangrove.form_model.field import ExcelDate, DateField
 class XFormSubmissionExporter(SubmissionExporter):
     def _create_excel_workbook(self, columns, submission_list, submission_type):
         file_name = export_filename(submission_type, self.project_name)
-        workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns,
-                                                                self.local_time_delta).create_excel(submission_list)
+        workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns, self.local_time_delta,
+                                                                self.preferences).create_excel(submission_list)
         workbook_file.close()
 
         return file_name, workbook_file
@@ -34,11 +34,33 @@ class XFormSubmissionExporter(SubmissionExporter):
     def add_files_to_temp_directory_if_present(self, submission_id, folder_name):
         submission = self.dbm._load_document(submission_id, SurveyResponseDocument)
         files = submission._data.get('_attachments', {})
+        if not self.preferences:
+            self._add_files_to_temp(files, folder_name, submission_id)
+            return
+
+        for preference in self.preferences:
+            if preference.get('visibility') == 'True':
+                field = preference.get('data').replace('%s_' % submission.form_model_id,'')
+                name = submission.values.get(field)
+                if isinstance(name, list): #process for repeats or groups
+                    for group_item in name:
+                        for key, val in group_item.items():
+                            self._check_and_add_file_to_temp(val, files,folder_name, submission_id)
+                else:
+                    self._check_and_add_file_to_temp(name, files, folder_name, submission_id)
+
+    def _check_and_add_file_to_temp(self, name, files, folder_name, submission_id):
+        if name and name in files.keys():
+            temp_file = open(os.path.join(folder_name, name), "w")
+            temp_file.write(self.dbm.get_attachments(submission_id, name))
+            temp_file.close()
+
+
+    def _add_files_to_temp(self, files, folder_name, submission_id):
         for name in files.keys():
-            if not name.startswith('preview_'): #Ignoring image preview files in export
-                temp_file = open(os.path.join(folder_name, name), "w")
-                temp_file.write(self.dbm.get_attachments(submission_id, name))
-                temp_file.close()
+            temp_file = open(os.path.join(folder_name, name), "w")
+            temp_file.write(self.dbm.get_attachments(submission_id, name))
+            temp_file.close()
 
     @staticmethod
     def add_directory_to_archive(archive, folder_name, media_folder):
@@ -88,7 +110,7 @@ class XFormSubmissionExporter(SubmissionExporter):
     def _create_response(self, columns, submission_list, submission_type):
         file_name = slugify(export_filename(submission_type, self.project_name))
         workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns,
-                                                                self.local_time_delta).create_excel(submission_list)
+                                                                self.local_time_delta, self.preferences).create_excel(submission_list)
 
         workbook_file.seek(0)
         response = HttpResponse(FileWrapper(workbook_file),
@@ -103,9 +125,10 @@ FIELD_SET = "field_set"
 
 
 class AdvancedQuestionnaireSubmissionExportHeaderCreator():
-    def __init__(self, columns, form_model):
+    def __init__(self, columns, form_model, preferences):
         self.columns = columns
         self.form_model = form_model
+        self.preferences = preferences
 
     def create_headers(self):
         repeat_headers = OrderedDict()
@@ -140,23 +163,25 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
 
 
 class AdvancedQuestionnaireSubmissionExporter():
-    def __init__(self, form_model, columns, local_time_delta):
+    def __init__(self, form_model, columns, local_time_delta, preferences):
         self.form_model = form_model
         self.columns = columns
         self.local_time_delta = local_time_delta
+        self.preferences = preferences
 
     def create_excel(self, submission_list):
         workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
         workbook = Workbook(workbook_file, options={'constant_memory': True})
 
-        excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns,
-                                                                           self.form_model).create_headers()
-        create_multi_sheet_excel_headers(excel_headers, workbook)
+        excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns, self.form_model,
+                                                                           self.preferences).create_headers()
+        visible_headers = self.get_visible_headers(excel_headers)
+        create_multi_sheet_excel_headers(visible_headers, workbook)
 
         sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(excel_headers.iterkeys())])
         sheet_name_row_count_map = dict([(sheet_name, 0) for sheet_name in sheet_names_index_map.iterkeys()])
 
-        formatter = AdvanceSubmissionFormatter(self.columns, self.form_model, self.local_time_delta)
+        formatter = AdvanceSubmissionFormatter(self.columns, self.form_model, self.local_time_delta, self.preferences)
 
         for row_number, row_dict in enumerate(submission_list):
             formatted_values, formatted_repeats = [], {}
@@ -179,17 +204,39 @@ class AdvancedQuestionnaireSubmissionExporter():
         workbook.close()
         return workbook_file
 
+    def get_visible_headers(self, excel_headers):
+        if not self.preferences:
+            return excel_headers
+
+        headers_dict = OrderedDict()
+        headers_dict.update({'main': []})
+        for preference in self.preferences:
+            if preference.get('visibility') == 'True' or preference.has_key('children'):
+                key = preference.get('data')
+                if preference.has_key('children'):
+                    for child in preference.get('children'):
+                        if child.get('visibility') == 'True':
+                            headers_dict.get('main').append(child.get('title'))
+                elif self.columns.get(key) and self.columns.get(key).get('type') == 'field_set':
+                    sheet_name = self.columns.get(key).get('code')
+                    headers_dict.update({sheet_name:excel_headers.get(sheet_name)})
+                elif self.columns.get(key):
+                    headers_dict.get('main').append(self.columns.get(key).get('label'))
+                    
+        return headers_dict
+
+
 
 class AdvanceSubmissionFormatter(SubmissionFormatter):
-    def __init__(self, columns, form_model, local_time_delta):
-        super(AdvanceSubmissionFormatter, self).__init__(columns, local_time_delta)
+    def __init__(self, columns, form_model, local_time_delta, preferences):
+        super(AdvanceSubmissionFormatter, self).__init__(columns, local_time_delta, preferences)
         self.form_model = form_model
 
     def _get_repeat_col_name(self, label):
         return slugify(label)[:30]
 
     def format_row(self, row, index, formatted_repeats):
-        return self.__format_row(row, self.columns, index, formatted_repeats)
+        return self.__format_row(row, self.get_visible_columns(), index, formatted_repeats)
 
     def _add_repeat_data(self, repeat, col_name, row):
         if repeat.get(col_name):
@@ -212,11 +259,31 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
             _result.append(index + 1)
         return _repeat_row
 
+    def get_visible_columns(self):
+        if not self.preferences:
+            return self.columns
+
+        visible_columns = OrderedDict()
+        for preference in self.preferences:
+            if preference.get('visibility') == 'True' or preference.has_key('children'):
+                key = preference.get('data')
+                if preference.has_key('children'):
+                    for children_preference in preference.get('children'):
+                        key = children_preference.get('data')
+                        if not children_preference.get('visibility'): continue
+                        visible_columns.update({key: self.columns.get(key)})
+                else:
+                    visible_columns.update({key: self.columns.get(key)})
+        return visible_columns
+
     def __format_row(self, row, columns, index, repeat):
         result = []
         for field_code in columns.keys():
             try:
                 field_value = row.get(field_code, None)
+                if '.' in field_code:
+                    entity_type, entity_type_field_code = field_code.split('.')
+                    field_value = row.get(entity_type).get(entity_type_field_code)
                 parsed_value = self._parsed_field_value(field_value)
                 field_type = columns[field_code].get("type")
 
