@@ -7,6 +7,7 @@ from datawinners.search.query import ElasticUtilsHelper
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT, ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
 import logging
+from elasticsearch_dsl.aggs import A
 
 logger = logging.getLogger("datawinners")
 
@@ -175,22 +176,6 @@ def get_submission_count(dbm, form_model, search_parameters, local_time_delta):
     return es.search(index=dbm.database_name, doc_type=form_model.id, body=body, search_type='count')['hits']['total']
 
 
-def _get_facet_result(facet_response, field_name):
-    facet_result_options = []
-    facet_result = {
-        "es_field_name": field_name,
-        "facets": facet_result_options,
-        # find total submissions containing specified answer
-        "total": facet_response['hits']['total'] - facet_response['facets'][field_name]['missing']
-    }
-    for facet in facet_response['facets'][field_name]['terms']:
-        facet_result_options.append({
-            "term": facet['term'],
-            "count": facet['count']
-        })
-    return facet_result
-
-
 def _create_facet_request_body(field_name, query_body):
     facet_terms = {"terms": {"field": field_name}}
     facet = {"facets": {field_name: facet_terms}}
@@ -198,20 +183,38 @@ def _create_facet_request_body(field_name, query_body):
     return facet
 
 
-def get_facets_for_choice_fields(dbm, form_model, search_parameters, local_time_delta):
-    query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
-    query_body = search.to_dict()
-    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
-    total_submission_count = get_submission_count(dbm, form_model, search_parameters, local_time_delta)
-    facet_results = []
-    for field in form_model.choice_fields:
-        field_name = es_questionnaire_field_name(field.code, form_model.id) + "_exact"
-        facet = _create_facet_request_body(field_name, query_body)
-        facet_response = es.search(index=dbm.database_name, doc_type=form_model.id, body=facet, search_type='count')
-        facet_result = _get_facet_result(facet_response, field_name)
-        facet_results.append(facet_result)
+def _get_aggregation_result(field_name, search_results):
+    agg_result = search_results.aggregations[field_name]
+    agg_result_options = []
+    for bucket in agg_result.buckets:
+        agg_result_options.append({
+            "term": bucket['key'],
+            "count": bucket['doc_count']
+        })
+    agg_result = {
+        "es_field_name": field_name,
+        "facets": agg_result_options,
+        # find total submissions containing specified answer
+        "total": search_results.hits.total
+    }
+    return agg_result
 
-    return facet_results, total_submission_count
+# TODO - need to handle search parameters based chart
+
+
+def get_facets_for_choice_fields(dbm, form_model, search_parameters, local_time_delta):
+    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
+    search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
+    field_names = []
+    for field in form_model.choice_fields:
+        field_name = es_questionnaire_field_name(field.code, form_model.id)
+        a = A("terms", field=field_name)
+        search.aggs.bucket(field_name, a)
+        field_names.append(field_name)
+    search_results = search.execute()
+    aggs_results = [_get_aggregation_result(field_name, search_results)
+                    for field_name in field_names]
+    return aggs_results, search_results.hits.total
 
 
 def get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters, local_time_delta):

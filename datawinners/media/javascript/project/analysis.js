@@ -333,4 +333,6 @@ $(document).ready(function () {
     };
 
     _initialize_filters();
+    new DW.SubmissionAnalysisView().init();
+
 });
