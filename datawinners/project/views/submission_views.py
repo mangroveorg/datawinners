@@ -104,9 +104,9 @@ def analysis_user_preferences(request, form_code):
     if request.method == 'POST':
         save_analysis_field_preferences(manager, request.user.id, questionnaire, dict(request.POST.iterlists()))
         return HttpResponse()
-    preferences = get_analysis_field_preferences(manager, request.user.id, questionnaire)
+    
+    preferences = get_analysis_field_preferences(manager, request.user.id, questionnaire, ugettext)
     return HttpResponse(encode_json(preferences), content_type='application/json')
-
 
 def _get_date_fields_info(questionnaire):
     date_fields_array = []
