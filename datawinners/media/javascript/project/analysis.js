@@ -333,6 +333,118 @@ $(document).ready(function () {
     };
 
     _initialize_filters();
-    new DW.SubmissionAnalysisView().init();
 
+    new DW.SubmissionAnalysisView().init();
+    new DW.FilterSection().init();
 });
+
+
+DW.SubmissionAnalysisView = function(){
+
+    var self = this;
+    var tableViewOption = $("#table_view_option");
+    var chartViewOption = $("#chart_view_option");
+    var tableView = $("#submission_logs");
+    var chartView = $('#chart_ol');
+    var customizationView = $('#customize-btn');
+    var isChartViewShown = false;
+    var submissionTabs = new DW.SubmissionTabs();
+    var chartGenerator = new DW.SubmissionAnalysisChartGenerator();
+
+    self.init = function() {
+       _initializeEvents();
+       _initializeExport();
+    };
+
+    var _initializeExport = function () {
+        var submissionLogExport = new DW.SubmissionLogExport();
+        submissionLogExport.update_tab(submissionTabs.getActiveTabName());
+        submissionLogExport.init();
+    };
+
+    var _initializeEvents = function(){
+        tableViewOption.on("click", _showDataTableView);
+        chartViewOption.on("click", _showChartView);
+    };
+
+    var _showDataTableView = function () {
+        if (!isChartViewShown)
+            return;
+        tableViewOption.addClass("active");
+        chartViewOption.removeClass("active-right");
+        customizationView.show();
+        _reinitializeSubmissionTableView();
+        chartView.hide();
+        isChartViewShown = false;
+    };
+
+    var _reinitializeSubmissionTableView = function(){
+        tableView.show();
+        $('.submission_table').dataTable().fnDestroy();
+        $('.submission_table').empty();
+        $('#chart_info').empty();
+        $('#chart_info_2').empty();
+        chartView.empty();
+    };
+
+    var _showChartView = function () {
+        if (isChartViewShown)
+            return;
+        DW.trackEvent('chart-view', 'chart-view-link-clicked');
+        tableViewOption.removeClass("active");
+        chartViewOption.addClass("active-right");
+        customizationView.hide();
+        isChartViewShown = true;
+        tableView.hide();
+        chartGenerator.generateCharts();
+    };
+
+};
+
+DW.SubmissionAnalysisChartGenerator = function(){
+    var self = this;
+    var chartView = $('#chart_ol');
+    var chartData = {};
+
+    self.generateCharts = function(){
+        if(chartData.hasOwnProperty("result")) {
+            chartView.show();
+            _draw_bar_charts(chartData);
+        } else {
+             $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": analysis_stats_url,
+                    "data": {'search_filters': JSON.stringify(filter_as_json())},
+                    "success": function (response) {
+                           chartView.show();
+                           chartData = response;
+                          _draw_bar_charts(response);
+                    },
+                    "error": function () {
+                    },
+                    "global": false
+             });
+        }
+    };
+
+    var _draw_bar_charts = function(response){
+        var $chart_ol = chartView.attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();
+
+        if (response.total == 0) {
+            var html = "<span id='no_charts_here'>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>";
+            showNoSubmissionExplanation(chartView, html);
+            return;
+        } else if ($.isEmptyObject(response.result)){
+            showNoSubmissionExplanation(chartView, gettext("You do not have any multiple choice questions (Answer Type: List of choices) to display here."));
+            return;
+        }
+
+        var i = 0;
+        $.each(response.result, function (index, ans) {
+            drawChartBlockForQuestions(index, ans, i, $chart_ol);
+            drawChart(ans, i, response.total, "");
+            i++;
+        });
+    };
+};
