@@ -329,7 +329,6 @@ $(document).ready(function () {
     });
 
 
-
     DW.SubmissionAnalysisView = function(){
 
         var self = this;
@@ -385,7 +384,7 @@ $(document).ready(function () {
 
         _initialize_filters();
 
-        var _reinitializeSubmissionTableView = function(){
+        var _reinitializeSubmissionTableView = function() {
             tableView.show();
             $('.submission_table').dataTable().fnDestroy();
             $('.submission_table').empty();
@@ -413,7 +412,7 @@ $(document).ready(function () {
         var chartView = $('#chart_ol');
         var chartData = {};
 
-        self.generateCharts = function(){
+        self.generateCharts = function() {
             if(chartData.hasOwnProperty("result")) {
                 chartView.show();
                 _draw_bar_charts(chartData);
@@ -435,7 +434,7 @@ $(document).ready(function () {
             }
         };
 
-        var _draw_bar_charts = function(response){
+        var _draw_bar_charts = function(response) {
             var $chart_ol = chartView.attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();
 
             if (response.total == 0) {

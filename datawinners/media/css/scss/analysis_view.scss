@@ -220,15 +220,12 @@ body ul.ColVis_collection {
     background: url('/media/images/list_chart_map.png') no-repeat 15px -26px;
     background-color: #e6f2fc;
     height: 24px;
-    width: 85px;
     cursor: pointer;
     border-left: 1px solid #CCC;
 
     a {
       float: left;
-      position: relative;
-      left: 42px;
-      top: 3px;
+      padding: 3px 10px 0 42px;
     }
 
     &.active-right,
@@ -249,14 +246,11 @@ body ul.ColVis_collection {
     float: left;
     background: url('/media/images/list_chart_map.png') no-repeat 14px 4px;
     height: 24px;
-    width: 75px;
     cursor: pointer;
 
     a {
       float: left;
-      position: relative;
-      left: 40px;
-      top: 3px;
+      padding: 3px 10px 0 40px;
     }
 
     &.active,
