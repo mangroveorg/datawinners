@@ -186,7 +186,7 @@ def _create_facet_request_body(field_name, query_body):
 def _get_aggregation_result(field_name, search_results):
     agg_result = search_results.aggregations[field_name]
     agg_result_options = []
-    for bucket in agg_result["buckets"]:
+    for bucket in agg_result.buckets:
         agg_result_options.append({
             "term": bucket['key'],
             "count": bucket['doc_count']

@@ -612,6 +612,13 @@ body ul.ColVis_collection {
   }
 }
 
+.analysis-ajax-loader {
+  display: none;
+  position: absolute;
+  top: 425px;
+  left: 300px;
+}
+
 .analysis-help-btn {
   margin: -106px 3px 0 0;
 }
