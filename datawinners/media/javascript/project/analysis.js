@@ -410,28 +410,21 @@ $(document).ready(function () {
     DW.SubmissionAnalysisChartGenerator = function(){
         var self = this;
         var chartView = $('#chart_ol');
-        var chartData = {};
 
         self.generateCharts = function() {
-            if(chartData.hasOwnProperty("result")) {
-                chartView.show();
-                _draw_bar_charts(chartData);
-            } else {
-                 $.ajax({
-                        "dataType": 'json',
-                        "type": "POST",
-                        "url": analysis_stats_url,
-                        "data": {'search_filters': JSON.stringify(filter_as_json())},
-                        "success": function (response) {
-                               chartView.show();
-                               chartData = response;
-                              _draw_bar_charts(response);
-                        },
-                        "error": function () {
-                        },
-                        "global": false
-                 });
-            }
+             $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": analysis_stats_url,
+                    "data": {'search_filters': JSON.stringify(filter_as_json())},
+                    "success": function (response) {
+                           chartView.show();
+                          _draw_bar_charts(response);
+                    },
+                    "error": function () {
+                    },
+                    "global": false
+             });
         };
 
         var _draw_bar_charts = function(response) {
