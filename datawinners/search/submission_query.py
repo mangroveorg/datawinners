@@ -30,20 +30,20 @@ class SubmissionQueryResponseCreator(object):
         return field_set_field_dict
 
     def _populate_datasender(self, res, submission):
-        if res.get(SubmissionIndexConstants.DATASENDER_ID_KEY) == u'N/A':
-            submission.append(res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY))
+        if res[SubmissionIndexConstants.DATASENDER_ID_KEY] == u'N/A':
+            submission.append(res[SubmissionIndexConstants.DATASENDER_NAME_KEY])
         else:
-            self.combine_name_and_id(res.get(SubmissionIndexConstants.DATASENDER_ID_KEY),
-                                     res.get(SubmissionIndexConstants.DATASENDER_NAME_KEY), submission)
+            self.combine_name_and_id(res[SubmissionIndexConstants.DATASENDER_ID_KEY],
+                                     res[SubmissionIndexConstants.DATASENDER_NAME_KEY], submission)
 
     def _populate_error_message(self, key, language, res, submission):
-        error_msg = res.get(key)
+        error_msg = res[key]
         if error_msg.find('| |') != -1:
             error_msg = error_msg.split('| |,')[['en', 'fr'].index(language)]
         submission.append(error_msg)
 
     def _convert_to_localized_date_time(self, key, res, submission):
-        submission_date_time = datetime.datetime.strptime(res.get(key), "%b. %d, %Y, %I:%M %p")
+        submission_date_time = datetime.datetime.strptime(res[key], "%b. %d, %Y, %I:%M %p")
         datetime_local = convert_utc_to_localized(self.localized_time_delta, submission_date_time)
         submission.append(datetime_local.strftime("%b. %d, %Y, %H:%M"))
 
@@ -70,24 +70,24 @@ class SubmissionQueryResponseCreator(object):
         submissions = []
         language = get_language()
         for res in search_results.hits:
-            submission = [res._meta.id]
+            submission = [res.meta.id]
             for key in required_field_names:
                 if not key in meta_fields:
                     if key in entity_question_codes:
-                        self.combine_name_and_id(short_code=res.get(es_unique_id_code_field_name(key)),
-                                                 entity_name=res.get(key), submission=submission)
+                        self.combine_name_and_id(short_code=res[es_unique_id_code_field_name(key)],
+                                                 entity_name=res[key], submission=submission)
                     elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
                         self._populate_datasender(res, submission)
                     elif key == 'status':
-                        submission.append(ugettext(res.get(key)))
+                        submission.append(ugettext(res[key]))
                     elif key == SubmissionIndexConstants.SUBMISSION_DATE_KEY:
                         self._convert_to_localized_date_time(key, res, submission)
                     elif key == 'error_msg':
                         self._populate_error_message(key, language, res, submission)
                     elif key in fieldset_fields.keys():
                         submission.append(
-                            _format_fieldset_values_for_representation(res.get(key), fieldset_fields.get(key),
-                                                                       res._meta.id))
+                            _format_fieldset_values_for_representation(res[key], fieldset_fields.get(key),
+                                                                       res.meta.id))
                     else:
                         submission.append(self._append_if_attachments_are_present(res, key, media_field_codes, image_fields))
             submissions.append(submission)
@@ -96,12 +96,12 @@ class SubmissionQueryResponseCreator(object):
     def _append_if_attachments_are_present(self, res, key, media_field_codes, image_fields):
         if self.form_model.is_media_type_fields_present and key in media_field_codes:
             if key in image_fields:
-                return _format_media_value(res._meta.id, res.get(key), thumbnail_flag=True)
+                return _format_media_value(res.meta.id, res[key], thumbnail_flag=True)
             else:
-                return _format_media_value(res._meta.id, res.get(key))
+                return _format_media_value(res.meta.id, res[key])
 
         else:
-            return res.get(ugettext(key))
+            return res[ugettext(key)]
 
 def _format_media_value(submission_id, value, thumbnail_flag=False):
     formatted_value = ""
