@@ -537,9 +537,10 @@ def edit_user_profile(request, user_id=None):
                 make_user_data_sender_for_projects(manager, selected_questionnaires, reporter_id)
                 update_user_permission(manager, user_id=user.id, project_ids=selected_questionnaires)
                 UserActivityLog().log(request, action=UPDATED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
-            elif role == 'Extended Users' and previous_role != 'Extended Users':
-                associate_user_with_all_projects_of_organisation(manager, reporter_id)
-                update_user_permission(manager, user_id=user.id, project_ids=[])
+            elif role == 'Extended Users':
+                if previous_role != 'Extended Users':
+                    associate_user_with_all_projects_of_organisation(manager, reporter_id)
+                    update_user_permission(manager, user_id=user.id, project_ids=[])
                 UserActivityLog().log(request, action=UPDATED_USER, detail=activity_log_detail(name, friendly_name(role)))
 
             message = _('Profile has been updated successfully')
