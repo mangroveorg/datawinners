@@ -366,6 +366,7 @@ $(document).ready(function () {
             _reinitializeSubmissionTableView();
             chartView.hide();
             isChartViewShown = false;
+            tableElement.DataTable().draw();
         };
 
         var _postFilterSelection = function() {
@@ -416,7 +417,11 @@ $(document).ready(function () {
                     "dataType": 'json',
                     "type": "POST",
                     "url": analysis_stats_url,
-                    "data": {'search_filters': JSON.stringify(filter_as_json())},
+                    "data": {
+                		data_sender_filter: $("#data_sender_filter").data('ds_id'),
+                		search_text: $('#search_text').val(),
+                		submission_date_range: $('#submissionDatePicker').val()
+                    },
                     "success": function (response) {
                            chartView.show();
                           _draw_bar_charts(response);

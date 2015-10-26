@@ -124,7 +124,8 @@ def get_submissions_paginated(dbm, form_model, search_parameters, local_time_del
     search_results = search.execute()
     return search_results, query_fields
 
-def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_time_delta, sort_params=None, search_parameters={}):
+
+def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_params, search_parameters):
     es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     search = search.sort(sort_params)
@@ -139,6 +140,11 @@ def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_t
     submission_date_query = SubmissionDateRangeFilter(search_parameters.get('submission_date_range'), local_time_delta).build_filter_query()
     if submission_date_query:
         search = search.query(submission_date_query)
+    return search
+    
+
+def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_time_delta, sort_params=None, search_parameters={}):
+    search = _create_search(dbm, form_model, local_time_delta, pagination_params, sort_params, search_parameters)
 
     search_results = None
     try:
@@ -146,6 +152,7 @@ def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_t
     except:
         logger.exception('Exception happened while fetching analysis data')
     return search_results
+
 
 def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_time_delta):
     """
@@ -199,12 +206,13 @@ def _get_aggregation_result(field_name, search_results):
     }
     return agg_result
 
-# TODO - need to handle search parameters based chart
 
-
-def get_facets_for_choice_fields(dbm, form_model, search_parameters, local_time_delta):
-    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
-    search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
+def get_aggregations_for_choice_fields(dbm, form_model, 
+                                       local_time_delta, pagination_params, 
+                                       sort_params, search_parameters):
+    search = _create_search(dbm, form_model, local_time_delta, 
+                            pagination_params, sort_params, 
+                            search_parameters)
     field_names = []
     for field in form_model.choice_fields:
         field_name = es_questionnaire_field_name(field.code, form_model.id)

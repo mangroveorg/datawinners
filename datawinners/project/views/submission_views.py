@@ -36,7 +36,7 @@ from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import get_submissions_paginated, \
-    get_all_submissions_ids_by_criteria, get_facets_for_choice_fields, get_submission_count, \
+    get_all_submissions_ids_by_criteria, get_aggregations_for_choice_fields, get_submission_count, \
     get_submissions_without_user_filters_count, get_submissions_paginated_simple
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
@@ -772,32 +772,41 @@ def get_facet_response_for_choice_fields(query_with_criteria, choice_fields, for
 
     return facet_results
 
+'''
+    dbm = get_database_manager(request.user)
+    questionnaire = get_project_by_code(dbm, form_code)
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+    pagination_params = _get_pagination_params(request)
+    sort_params = _get_sorting_params(request)
+    search_parameters = _get_search_params(request)
+    search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta, sort_params, search_parameters)
+
+'''
+def _get_all_criterias_from_request(request, form_code):
+    dbm = get_database_manager(request.user)
+    questionnaire = get_project_by_code(dbm, form_code)
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+    pagination_params = _get_pagination_params(request)
+    sort_params = _get_sorting_params(request)
+    search_parameters = _get_search_params(request)
+    return dbm, questionnaire, pagination_params, \
+        local_time_delta, sort_params, search_parameters
+
 
 @csrf_view_exempt
 @valid_web_user
 def get_stats(request, form_code):
-    dbm = get_database_manager(request.user)
-    questionnaire = get_project_by_code(dbm, form_code)
-    search_parameters = {}
-    search_parameters.update({"start_result_number": 0})
-    search_parameters.update({"number_of_results": 0})
-    filter_type = "success"
-    search_parameters.update({"filter": filter_type})
-
-    search_parameters.update({"sort_field": "ds_id"})
-    search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
-    search_filters = json.loads(request.POST.get('search_filters'))
-    search_parameters.update({"search_filters": search_filters})
-    search_text = search_filters.get("search_text", '')
-    search_parameters.update({"search_text": search_text})
-    organization = get_organization(request)
-    local_time_delta = get_country_time_delta(organization.country)
-    # total success submission count irrespective of current fields being present or not
-    facet_results, total_submissions = get_facets_for_choice_fields(dbm, questionnaire, search_parameters,
-                                                                    local_time_delta)
+#     filter_type = "success"
+#     search_parameters.update({"filter": filter_type})
+    dbm, questionnaire, pagination_params, \
+        local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
+    agg_results, total_submissions = get_aggregations_for_choice_fields(dbm, questionnaire,
+                                                                    local_time_delta, pagination_params, sort_params, search_parameters)
 
     return HttpResponse(json.dumps(
-        {'result': create_statistics_response(facet_results, questionnaire),
+        {'result': create_statistics_response(agg_results, questionnaire),
          'total': total_submissions
          }), content_type='application/json')
 
