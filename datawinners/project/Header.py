@@ -194,7 +194,8 @@ class SubmissionExcelHeader():
         result.get('datasender.id').update({'type':'short_code'})
         result.get('datasender.name').update({'type':'text'})
         result.get('datasender.email').update({'type':'email'})
-        result.get('datasender.location').update({'type':'geo_code'})
+        result.get('datasender.location').update({'type':'text'})
+        result.get('datasender.geo_code').update({'type':'geocode'})
         result.get('datasender.mobile_number').update({'type':'telephone_number'})
         
 
