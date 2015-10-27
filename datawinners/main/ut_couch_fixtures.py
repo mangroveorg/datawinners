@@ -21,7 +21,7 @@ from mangrove.form_model.validators import UniqueIdExistsValidator
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField, UniqueIdField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code, \
-    EMAIL_FIELD
+    EMAIL_FIELD, LOCATION_TYPE_FIELD_NAME, ENTITY_TYPE_FIELD_NAME, GEO_CODE_FIELD_NAME, SHORT_CODE_FIELD
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
@@ -50,17 +50,15 @@ class DateTimeMocker(object):
 def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Bhopal'], short_code="cid001",
                                geometry={"type": "Point", "coordinates": [23.2833, 77.35]},
-                               name="Test", firstname="Bhopal Clinic", description="This a clinic in Bhopal.",
-                               mobile_number="123456")
-    e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
+                               name="Test", firstname="Bhopal Clinic", mobile_number="123456")
+    e.set_aggregation_path("governance", ['India', 'MP', 'Bhopal'])
     try:
         e.save()
     except Exception:
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Satna'], short_code="cid002",
                                geometry={"type": "Point", "coordinates": [24.5667, 80.8333]},
-                               name="Test", firstname="Satna Clinic", description="This a clinic in Satna.",
-                               mobile_number="123457")
+                               name="Test", firstname="Satna Clinic", mobile_number="123457")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Surgeon"])
     try:
         e.save()
@@ -68,8 +66,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Jabalpur'], short_code="cid003",
                                geometry={"type": "Point", "coordinates": [23.2, 79.95]},
-                               name="Test", firstname="Jabalpur Clinic", description="This a clinic in Jabalpur.",
-                               mobile_number="123458")
+                               name="Test", firstname="Jabalpur Clinic", mobile_number="123458")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Doctor"])
     try:
         e.save()
@@ -77,8 +74,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Khandwa'], short_code="cid004",
                                geometry={"type": "Point", "coordinates": [21.8333, 76.3667]},
-                               name="Test", firstname="Khandwa Clinic", description="This a clinic in Khandwa.",
-                               mobile_number="123459")
+                               name="Test", firstname="Khandwa Clinic", mobile_number="123459")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Nurse"])
     try:
         e.save()
@@ -86,8 +82,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], short_code="cid005",
                                geometry={"type": "Point", "coordinates": [9.939248, 76.259625]},
-                               name="Test", firstname="Kochi Clinic", description="This a clinic in Kochi.",
-                               mobile_number="123460")
+                               name="Test", firstname="Kochi Clinic", mobile_number="123460")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -95,8 +90,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'],
                                short_code="cid006", geometry={"type": "Point", "coordinates": [26.227112, 78.18708]},
-                               name="Test", firstname="New Gwalior Clinic", description="This a clinic in New Gwalior.",
-                               mobile_number="1234561")
+                               name="Test", firstname="New Gwalior Clinic", mobile_number="1234561")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -104,8 +98,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Indore'], short_code="cid007",
                                geometry={"type": "Point", "coordinates": [22.7167, 75.8]},
-                               name="Test", firstname="Indore Clinic", description="This a clinic in Indore.",
-                               mobile_number="1234562")
+                               name="Test", firstname="Indore Clinic", mobile_number="1234562")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -117,7 +110,6 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="wp01",
                                geometry={"type": "Point", "coordinates": [23.0395677, 72.566005]},
                                name="Test", firstname="Ahmedabad waterpoint",
-                               description="This a waterpoint in Ahmedabad.",
                                mobile_number="1234563")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
@@ -126,8 +118,7 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], short_code="wp02",
                                geometry={"type": "Point", "coordinates": [23.251671, 69.66256]},
-                               name="Test", firstname="Bhuj waterpoint", description="This a waterpoint in Bhuj.",
-                               mobile_number="1234564")
+                               name="Test", firstname="Bhuj waterpoint", mobile_number="1234564")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
@@ -135,8 +126,7 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Haryana', 'Gurgaon'], short_code="wp03",
                                geometry={"type": "Point", "coordinates": [28.46385, 77.017838]},
-                               name="Test", firstname="Gurgaon waterpoint", description="This a waterpoint in Gurgaon.",
-                               mobile_number="1234564")
+                               name="Test", firstname="Gurgaon waterpoint", mobile_number="1234564")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
@@ -1372,53 +1362,126 @@ def load_data():
     create_open_datasender_project(WATER_POINT_ENTITY_TYPE, manager)
 
     #Register Reporters
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890"),
-                                                              (NAME_FIELD, "Shweta")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[
+                 (MOBILE_NUMBER_FIELD, "1234567890"),
+                 (NAME_FIELD, "Shweta"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep1"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634"),
-                                                              (NAME_FIELD, "David")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "261332592634"),
+                 (NAME_FIELD, "David"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin']),
+                 (SHORT_CODE_FIELD, "rep2"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-20.9027586764, 47.165034158])
+             ],
              location=[u'Madagascar', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
              short_code="rep2", geometry={"type": "Point", "coordinates": [-20.9027586764, 47.165034158]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567891"),
-                                                              (NAME_FIELD, "Shilpa")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "1234567891"),
+                 (NAME_FIELD, "Shilpa"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep3"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep3", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567892"),
-                                                              (NAME_FIELD, "Asif")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "1234567892"),
+                 (NAME_FIELD, "Asif"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep4"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep4", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919970059125"),
-                                                              (NAME_FIELD, "Ritesh")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "919970059125"),
+                 (NAME_FIELD, "Ritesh"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep5"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep5", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987116"),
-                                                              (NAME_FIELD, "RiteshY")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "917798987116"),
+                 (NAME_FIELD, "RiteshY"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep6"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep6", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987102"),
-                                                              (NAME_FIELD, "AkshaY")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "917798987102"),
+                 (NAME_FIELD, "AkshaY"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep7"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep7", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919049008976"),
-                                                              (NAME_FIELD, "Ashwini")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "919049008976"),
+                 (NAME_FIELD, "Ashwini"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep8"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep8", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619876"),
-                                                              (NAME_FIELD, "stefan")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "2619876"),
+                 (NAME_FIELD, "stefan"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep10"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep10", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619875"),
-                                                              (NAME_FIELD, "mamy")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "2619875"),
+                 (NAME_FIELD, "mamy"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep11"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep11", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234123413"),
-                                                              (EMAIL_FIELD, "tester150411@gmail.com"),
-                                                              (NAME_FIELD, "Tester Pune")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "1234123413"),
+                 (EMAIL_FIELD, "tester150411@gmail.com"),
+                 (NAME_FIELD, "Tester Pune"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Bangalore', u'Karnatka', u'India', u'Asia']),
+                 (SHORT_CODE_FIELD, "rep276"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Bangalore', u'Karnatka', u'India', u'Asia'],
              short_code="rep276", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "37287364782"),
-                                                              (NAME_FIELD, "Datasender test")],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+             data=[(MOBILE_NUMBER_FIELD, "37287364782"),
+                 (NAME_FIELD, "Datasender test"),
+                 (LOCATION_TYPE_FIELD_NAME, [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']),
+                 (SHORT_CODE_FIELD, "rep13"),
+                 (ENTITY_TYPE_FIELD_NAME, REPORTER_ENTITY_TYPE),
+                 (GEO_CODE_FIELD_NAME, [-21.0399440737, 45.2363669927])
+             ],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep13", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 

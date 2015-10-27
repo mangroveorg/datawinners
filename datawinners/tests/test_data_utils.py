@@ -6,7 +6,7 @@ from datawinners.entity.helper import create_registration_form
 from datawinners.common.constant import DEFAULT_LANGUAGE
 from django.utils.translation import activate
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
-from mangrove.form_model.form_model import DESCRIPTION_FIELD, MOBILE_NUMBER_FIELD, NAME_FIELD
+from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD, GEO_CODE_FIELD_NAME, LOCATION_TYPE_FIELD_NAME, SHORT_CODE_FIELD
 from mangrove.utils.entity_builder import EntityBuilder
 
 FIRST_NAME_FIELD = "firstname"
@@ -28,15 +28,15 @@ def create_entity_types(manager, entity_types):
             pass
 
 
-def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None,
-                           description=None, firstname=None):
+def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None, firstname=None):
     entity = EntityBuilder(manager, entity_type, short_code)\
     .geometry(geometry)\
-    .location(location)\
+    .add_data([(GEO_CODE_FIELD_NAME, geometry)])\
     .add_data(data=[(NAME_FIELD, name)])\
     .add_data([(FIRST_NAME_FIELD, firstname)])\
-    .add_data([(MOBILE_NUMBER_FIELD, mobile_number)])\
-    .add_data([(DESCRIPTION_FIELD, description)]).build()
+    .add_data([(SHORT_CODE_FIELD, short_code)])\
+    .add_data([(LOCATION_TYPE_FIELD_NAME, location)])\
+    .add_data([(MOBILE_NUMBER_FIELD, mobile_number)]).build()
     entity.save()
     return entity
 
