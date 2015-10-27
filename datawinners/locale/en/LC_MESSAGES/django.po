@@ -4917,3 +4917,12 @@ msgstr ""
 
 msgid "alert_message_for_project_manager"
 msgstr "If you revoke access to a Questionnaire or Poll, the person will also be removed as a Data Sender. You can add this person as a Data Sender to a Questionnaire or Poll on the Contacts page."
+
+msgid "analysis_table_empty_text1"
+msgstr "No columns selected for the list view."
+
+msgid "analysis_table_empty_text2"
+msgstr "Customize View"
+
+msgid "analysis_table_empty_text3"
+msgstr "to add columns."

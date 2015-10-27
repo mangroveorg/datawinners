@@ -10,8 +10,7 @@
     <div class="grid_23 alpha omega analysis_tbl_wrapper">
         <div id="analysis_table_empty" class="empty-table hide">
             <p>
-    {#            {% trans 'No  selected to display' %}#}
-                No columns selected for the Custom View. Click <span class="customize-list-link">Customize View</span> to add columns
+                {% trans "analysis_table_empty_text1" %} <span class="customize-list-link">{% trans "analysis_table_empty_text2" %}</span> {% trans "analysis_table_empty_text3" %}
             </p>
         </div>
         <table id="analysis_table" class="dataTable display">

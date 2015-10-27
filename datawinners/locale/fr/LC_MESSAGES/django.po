@@ -6144,13 +6144,28 @@ msgid "None"
 msgstr "Aucun"
 
 msgid "Data Sender Mobile Number"
-msgstr ""
+msgstr "Numéro de téléphone mobile de l'Expéditeur de Données"
 
 msgid "Data Sender Email"
-msgstr ""
+msgstr "Adresse email de l'Expéditeur de Données"
 
 msgid "Data Sender Location"
-msgstr ""
+msgstr "Localisation de l'Expéditeur de Données"
 
-msgid "No column selected"
-msgstr ""
+msgid "Data Sender Groups"
+msgstr "Groupes d'Expéditeurs de Données"
+
+msgid "analysis_table_empty_text1"
+msgstr "Aucune colonne sélectionnée pour la vue en liste."
+
+msgid "Customize View"
+msgstr "Personnaliser l'affichage"
+
+msgid "analysis_table_empty_text2"
+msgstr "Personnalisez l'affichage"
+
+msgid "analysis_table_empty_text3"
+msgstr "pour ajouter des colonnes."
+
+
+
