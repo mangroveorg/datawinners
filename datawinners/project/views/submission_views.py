@@ -599,7 +599,7 @@ def _create_export_artifact(form_model, manager, request, search_filters):
     project_name = request.POST.get(u"project_name")
     current_language = get_language()
 
-    preferences = get_preferences(manager, request.user.id, form_model, submission_type)
+    preferences = get_preferences(manager, request.user.id, form_model, submission_type, ugettext)
     if form_model.xform:
         return _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager,
                                               project_name, query_params, submission_type, preferences)

@@ -348,6 +348,7 @@ $(document).ready(function () {
 
         var _initializeExport = function () {
             var submissionLogExport = new DW.SubmissionLogExport();
+            submissionTabs.setToAnalysisTab();
             submissionLogExport.update_tab(submissionTabs.getActiveTabName());
             submissionLogExport.init();
         };
