@@ -38,7 +38,7 @@ from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import get_submissions_paginated, \
     get_all_submissions_ids_by_criteria, get_aggregations_for_choice_fields, get_submission_count, \
     get_submissions_without_user_filters_count, get_submissions_paginated_simple
-from datawinners.search.index_utils import es_questionnaire_field_name
+from datawinners.search.index_utils import es_questionnaire_field_name, es_unique_id_code_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQueryResponseCreator
@@ -131,39 +131,46 @@ def _field_code(field, parent_code):
     return field.code
 
 
-def get_filterable_field_details(field, filterable_fields, parent_code):
+def get_filterable_field_details(field, filterable_fields, parent_code, project_id=None):
+    value ={}
     if isinstance(field, DateField):
-        return {
+        value = {
             'type': 'date',
             'code': _field_code(field, parent_code),
             'label': field.label,
             'is_month_format': field.is_monthly_format,
             'format': field.date_format
         }
+        if project_id:
+            value['es_key'] = es_questionnaire_field_name(field.code, project_id, parent_code)
     elif isinstance(field, DateTimeField):
-        return {
+        value = {
             'type': 'date',
             'code': _field_code(field, parent_code),
             'label': field.label,
             'is_month_format': field.is_monthly_format,
             'format': 'dd.mm.yyyy'
         }
+        if project_id:
+            value['es_key'] = es_questionnaire_field_name(field.code, project_id, parent_code)
     elif isinstance(field, UniqueIdField):
         if not _is_unique_id_type_present(filterable_fields, field.unique_id_type):
-            return {
+            value = {
                 'type': 'unique_id',
                 'code': _field_code(field, parent_code),
                 'entity_type': field.unique_id_type,
             }
+        if project_id:
+            value['es_key'] = es_unique_id_code_field_name(es_questionnaire_field_name(field.code, project_id, parent_code))
+    return value
 
-
-def get_filterable_fields(fields, filterable_fields, parent_code=None):
+def get_filterable_fields(fields, filterable_fields, parent_code=None, project_id=None):
     for field in fields:
-        field_detials = get_filterable_field_details(field, filterable_fields, parent_code)
-        if field_detials:
-            filterable_fields.append(field_detials)
+        field_details = get_filterable_field_details(field, filterable_fields, parent_code, project_id)
+        if field_details:
+            filterable_fields.append(field_details)
         if isinstance(field, FieldSet) and field.is_group():
-            filterable_fields = get_filterable_fields(field.fields, filterable_fields, field.code)
+            filterable_fields = get_filterable_fields(field.fields, filterable_fields, field.code, project_id=project_id)
     return filterable_fields
 
 
@@ -220,6 +227,8 @@ def analysis(request, project_id, questionnaire_code=None):
     if request.method == 'GET':
         questionnaire = Project.get(manager, project_id)
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        filterable_fields = get_filterable_fields(questionnaire.fields, [], project_id=project_id)
+        first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
         if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
 
@@ -228,6 +237,8 @@ def analysis(request, project_id, questionnaire_code=None):
             "user_email": request.user.email,
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             'is_pro_sms': get_organization(request).is_pro_sms,
+            'filterable_fields': filterable_fields,
+            'first_filterable_field': first_filterable_fields,
             "is_media_field_present": questionnaire.is_media_type_fields_present,
             'has_chart': (len(questionnaire.choice_fields) > 0) & (not bool(questionnaire.xform)),
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
@@ -672,6 +683,8 @@ def _get_search_params(request):
     search_parameters['data_sender_filter'] = request.POST.get('data_sender_filter')
     search_parameters['search_text'] = request.POST.get('search_text') 
     search_parameters['submission_date_range'] = request.POST.get('submission_date_range')
+    search_parameters['unique_id_filters'] = json.loads(request.POST.get('uniqueIdFilters'))
+    search_parameters['date_question_filters'] = json.loads(request.POST.get('dateQuestionFilters'))
     return search_parameters
 
 def _get_sorting_params(request):

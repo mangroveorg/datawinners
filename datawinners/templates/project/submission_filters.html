@@ -7,9 +7,9 @@
             {% include 'project/partials/filters/_filter_by_submission_date.html' %}
             {% if first_filterable_field %}
                 {% if first_filterable_field.type == 'unique_id' %}
-                    {% include 'project/partials/filters/_filter_by_subject.html' with entity_type=first_filterable_field.entity_type%}
+                    {% include 'project/partials/filters/_filter_by_subject.html' with entity_type=first_filterable_field.entity_type es_key=first_filterable_field.es_key %}
                 {% else %}
-                    {% include 'project/partials/filters/_filter_by_date_question.html' with date=first_filterable_field %}
+                    {% include 'project/partials/filters/_filter_by_date_question.html' with date=first_filterable_field  es_key=first_filterable_field.es_key %}
                 {% endif %}
             {% endif %}
             {% if filterable_fields %}
@@ -20,9 +20,9 @@
             <div id="questionnaire_field_filters">
                 {% for field in filterable_fields %}
                     {% if field.type == 'unique_id' %}
-                        {% include 'project/partials/filters/_filter_by_subject.html' with entity_type=field.entity_type%}
+                        {% include 'project/partials/filters/_filter_by_subject.html' with entity_type=field.entity_type  es_key=field.es_key%}
                     {% else %}
-                        {% include 'project/partials/filters/_filter_by_date_question.html' with date=field %}
+                        {% include 'project/partials/filters/_filter_by_date_question.html' with date=field es_key=field.es_key%}
                     {% endif %}
                 {% endfor %}
                 <div id="hide_filters">
