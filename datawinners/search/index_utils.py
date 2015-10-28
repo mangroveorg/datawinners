@@ -24,7 +24,7 @@ def _add_text_field_mapping(mapping_fields, field_def):
     name = field_def["name"]
     mapping_fields.update(
         {name: {"type": "multi_field", "fields": {
-            name: {"type": "string", "index": "not_analyzed"},
+            name: {"type": "string"},
             name + "_value": {"type": "string", "index_analyzer": "sort_analyzer", "include_in_all": False},
             name + "_exact": {"type": "string", "index": "not_analyzed", "include_in_all": False},
 
