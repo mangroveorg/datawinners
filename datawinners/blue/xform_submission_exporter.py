@@ -222,7 +222,9 @@ class AdvancedQuestionnaireSubmissionExporter():
                     headers_dict.update({sheet_name:excel_headers.get(sheet_name)})
                 elif self.columns.get(key):
                     headers_dict.get('main').append(self.columns.get(key).get('label'))
-                    
+
+        if self.form_model.has_nested_fields:
+            headers_dict.get('main').extend(['_index', '_parent_index'])
         return headers_dict
 
 

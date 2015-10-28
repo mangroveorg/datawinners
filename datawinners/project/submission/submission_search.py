@@ -77,7 +77,7 @@ def _add_search_filters(search_filter_param, form_model, local_time_delta, query
     query_text = search_filter_param.get("search_text")
     query_text_escaped = ElasticUtilsHelper().replace_special_chars(query_text)
     if query_text:
-        search = search.query("query_string", query=query_text_escaped, fields=query_fields)
+        search = search.query("query_string", query=query_text_escaped)
     submission_date_range = search_filter_param.get("submissionDatePicker")
     submission_date_query = SubmissionDateRangeFilter(submission_date_range, local_time_delta).build_filter_query()
     if submission_date_query:
