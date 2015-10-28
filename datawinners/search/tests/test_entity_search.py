@@ -30,13 +30,15 @@ class TestDatasenderQueryResponseCreator(TestCase):
     def test_should_return_datasender_with_space_seperated_projects_and_groups(self):
         # required_field_names = ['field_name1', 'projects']
         query = MagicMock()
-        query.hits = [{
-                          "projects": ["p1", "p2"],
-                          "customgroups":["g1", "g2"]
-                      }, {
-                          "projects": ["p1", "p2", "p3"],
-                          "customgroups":["g2"]
-                      }]
+        result = SimpleResult()
+        result.projects = ["p1", "p2"]
+        result.customgroups = ["g1", "g2"]
+        
+        result2 = SimpleResult()
+        result2.projects = ["p1", "p2", "p3"]
+        result2.customgroups = ["g2"]
+        
+        query.hits = [result, result2]
 
         datasenders = DatasenderQueryResponseCreator().create_response(query)
         self.assertEquals(datasenders, [["", "", "", "", "", "", "p1, p2", '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">', "g1, g2", ""], ["", "", "", "", "", "", "p1, p2, p3", '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">', "g2", ""]])
@@ -45,17 +47,21 @@ class TestDatasenderQueryResponseCreator(TestCase):
     def test_add_check_symbol_for_datasender_row(self):
         result = []
         check_img = '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">'
-        datasender = {'email': 'test@test.com'}
+        datasender = SimpleResult()
+        datasender.email = 'test@test.com'
         DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender, result)
         self.assertListEqual(result, [check_img + check_img + check_img])
 
     def test_should_not_add_check_symbol_if_no_email_id(self):
         result = []
         check_img = '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">'
-        datasender = {'name': 'name'}
+        datasender = SimpleResult()
+        datasender.name = 'name'
         DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender, result)
         self.assertListEqual(result, [check_img])
 
+class SimpleResult():
+    pass
 
 class TestSubjectQuery(TestCase):
     def test_should_return_all_subjects_matching_given_subject_type_and_database_name_and_query_text(self):
