@@ -683,8 +683,12 @@ def _get_search_params(request):
     search_parameters['data_sender_filter'] = request.POST.get('data_sender_filter')
     search_parameters['search_text'] = request.POST.get('search_text') 
     search_parameters['submission_date_range'] = request.POST.get('submission_date_range')
-    search_parameters['unique_id_filters'] = json.loads(request.POST.get('uniqueIdFilters'))
-    search_parameters['date_question_filters'] = json.loads(request.POST.get('dateQuestionFilters'))
+    unique_id_filters = request.POST.get('uniqueIdFilters')
+    if unique_id_filters is not None and bool(unique_id_filters):
+        search_parameters['unique_id_filters'] = json.loads(unique_id_filters)
+    date_question_filters = request.POST.get('dateQuestionFilters')
+    if date_question_filters is not None and bool(date_question_filters):
+        search_parameters['date_question_filters'] = json.loads(date_question_filters)
     return search_parameters
 
 def _get_sorting_params(request):
