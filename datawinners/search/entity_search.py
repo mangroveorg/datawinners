@@ -46,7 +46,7 @@ class SubjectQueryResponseCreator():
 
 class DatasenderQueryResponseCreator():
     def _format_contact_groups(self, key, res, result):
-        groups = res.get(key)
+        groups = getattr(res, key, None)
         if groups:
             result.append(", ".join(groups))
         else:
@@ -65,18 +65,18 @@ class DatasenderQueryResponseCreator():
                 if key is "devices":
                     self.add_check_symbol_for_row(res, result)
                 elif key in ["projects", "customgroups"]:
-                    values_joined = ", ".join(res.get(key, []))
+                    values_joined = ", ".join(getattr(res, key, []))
                     result.append(cgi.escape(values_joined))
                 elif key is "groups":
                     self._format_contact_groups(key, res, result)
                 else:
-                    result.append(res.get(key, ''))
+                    result.append(getattr(res, key, ''))
             datasenders.append(result)
         return datasenders
 
     def add_check_symbol_for_row(self, datasender, result):
         check_img = '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">'
-        if datasender.get("email"):
+        if getattr(datasender, 'email', None):
             result.extend([check_img + check_img + check_img])
         else:
             result.extend([check_img])
