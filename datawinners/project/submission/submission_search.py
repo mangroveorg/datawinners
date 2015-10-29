@@ -130,6 +130,8 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     search = search.sort(sort_params)
     search = search.extra(**pagination_params)
+    search = search.query('term', status='success')
+    search = search.query('term', void=False)
     if search_parameters.get('data_sender_filter'):
         search = search.filter(F("term", 
                               **{"ds_id_exact": search_parameters.get('data_sender_filter')})
@@ -154,7 +156,6 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
 
 def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_time_delta, sort_params=None, search_parameters={}):
     search = _create_search(dbm, form_model, local_time_delta, pagination_params, sort_params, search_parameters)
-
     search_results = None
     try:
         search_results = search.execute()
