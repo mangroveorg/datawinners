@@ -10,18 +10,19 @@ from tests.dashboardtests.dashboard_tests_data import *
 
 
 class TestDashboard(HeadlessRunnerTest):
-    @classmethod
-    def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
-        cls.client = Client()
-        cls.dashboard_page = cls.login_with(credential=VALID_CREDENTIALS)
+    def setUp(self):
+        self.client = Client()
+        self.dashboard_page = self.login_with(credential=VALID_CREDENTIALS)
+
+    def tearDown(self):
+        self.driver.go_to(LOGOUT)
 
     @classmethod
-    def login_with(cls, credential):
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
+    def login_with(self, credential):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
         login_page.do_successful_login_with(credential)
-        return DashboardPage(cls.driver)
+        return DashboardPage(self.driver)
 
     @attr('functional_test')
     def test_should_open_video_in_lightbox(self):
