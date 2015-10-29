@@ -40,15 +40,6 @@ body ul.ColVis_collection {
 }
 
 .dataTable {
-  thead {
-    tr {
-      th {
-        &:first-child {
-          width: 90px !important;
-        }
-      }
-    }
-  }
   tbody {
     tr {
       .sorting_1 {
