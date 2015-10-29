@@ -131,9 +131,9 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
     search = search.sort(sort_params)
     search = search.extra(**pagination_params)
     if search_parameters.get('data_sender_filter'):
-        search = search.query(
-                              "term", 
-                              **{"datasender.id": search_parameters.get('data_sender_filter')})
+        search = search.filter(F("term", 
+                              **{"ds_id_exact": search_parameters.get('data_sender_filter')})
+                              )
     if search_parameters.get('unique_id_filters'):
         for key, value in search_parameters.get('unique_id_filters').iteritems():
             search = search.query("term",
