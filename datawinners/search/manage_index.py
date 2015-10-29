@@ -47,7 +47,8 @@ def populate_submission_index(dbm, form_model_id=None):
                 logger.exception('Exception occurred')
                 error_count += 1
 
-        es.bulk(actions, index=dbm.database_name, doc_type=form_model.id)
+        if len(actions) > 0:
+            es.bulk(actions, index=dbm.database_name, doc_type=form_model.id)
                 
         logger.warning("No of submissions ignored: {ignored}".format(ignored=ignored))
         logger.warning("No of submissions had errors:{errors}".format(errors=error_count))
@@ -71,7 +72,8 @@ def populate_entity_index(dbm):
                 actions = []
         except Exception as e:
             raise e
-    es.bulk(actions)
+    if len(actions) > 0:
+        es.bulk(actions)
 
 
 def populate_contact_index(dbm):
@@ -85,7 +87,9 @@ def populate_contact_index(dbm):
         if len(actions) == settings.ES_INDEX_RECREATION_BATCH:
             es.bulk(actions)
             actions = []
-    es.bulk(actions)
+
+    if len(actions) > 0:
+        es.bulk(actions)
 
 
 def create_all_indices(dbm):
