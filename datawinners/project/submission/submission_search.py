@@ -130,7 +130,7 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
     search = search.sort(sort_params)
     search = search.extra(**pagination_params)
-    search = search.query('term', status='success')
+    search = search.query('match', status='Success')
     search = search.query('term', void=False)
     if search_parameters.get('data_sender_filter'):
         search = search.filter(F("term", 
