@@ -40,6 +40,15 @@ body ul.ColVis_collection {
 }
 
 .dataTable {
+  thead {
+    tr {
+      th {
+        &:first-child {
+          width: 90px !important;
+        }
+      }
+    }
+  }
   tbody {
     tr {
       .sorting_1 {
@@ -160,6 +169,16 @@ body ul.ColVis_collection {
     video,
     audio {
       width: 90%;
+    }
+
+    img {
+      max-width: 56px;
+      max-height: 56px;
+    }
+
+    video {
+      max-width: 280px;
+      max-height: 200px;
     }
   }
   &.sorting_1 {
@@ -599,7 +618,7 @@ body ul.ColVis_collection {
     color: #0070ac;
   }
   p {
-    margin-top: 38px;
+    margin-top: 65px;
     font-style: italic;
     color: #888888;
     font-size: 14px;
