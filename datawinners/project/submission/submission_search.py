@@ -226,7 +226,7 @@ def get_aggregations_for_choice_fields(dbm, form_model,
     field_names = []
     for field in form_model.choice_fields:
         field_name = es_questionnaire_field_name(field.code, form_model.id)
-        a = A("terms", field=field_name)
+        a = A("terms", field=field_name+'_exact')
         search.aggs.bucket(field_name, a)
         field_names.append(field_name)
     search_results = search.execute()
