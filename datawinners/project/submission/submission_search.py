@@ -34,7 +34,7 @@ def _query_by_submission_type(submission_type_filter, search):
         return search.query('term', void=False)
 
     if submission_type_filter == 'analysis':
-        search = search.query('term', status='Success')
+        search = search.query('match', status='Success')
     else:
         search = search.query('term', status=submission_type_filter)
     return search.query('term', void=False)
