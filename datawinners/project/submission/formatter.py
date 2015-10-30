@@ -91,7 +91,7 @@ class SubmissionFormatter(object):
             if '.' in field_code:
                 entity_type, entity_type_field_code = field_code.split('.')
                 field_value = row.get(entity_type).get(entity_type_field_code)
-                if field_code == 'datasender.geo_code':
+                if field_code == 'datasender.geo_code' and field_value:
                     field_value = "%s,%s" % (field_value[0], field_value[1])
             try:
 
