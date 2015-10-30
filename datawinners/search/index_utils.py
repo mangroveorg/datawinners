@@ -14,7 +14,7 @@ def _add_date_field_mapping(mapping_fields, field_def):
     mapping_fields.update(
         {name: {"type": "multi_field", "fields": {
             name: {"type": "date", "format": DateField.FORMAT_DATE_DICTIONARY.get(field_def["date_format"]),
-                              "ignore_malformed": True},
+                   "ignore_malformed": True},
             name + "_value": {"type": "date", "format": DateField.FORMAT_DATE_DICTIONARY.get(field_def["date_format"]),
                               "ignore_malformed": True}
         }}})
@@ -29,8 +29,6 @@ def _add_text_field_mapping(mapping_fields, field_def):
             name + "_exact": {"type": "string", "index": "not_analyzed", "include_in_all": False},
 
         }}})
-
-
 
 
 def get_field_definition(form_field, field_name=None):
@@ -81,7 +79,7 @@ def subject_dict(entity_type, entity_doc, dbm, form_model):
     data = tabulate_data(entity, form_model, codes)
     dictionary = OrderedDict()
     for index in range(0, len(field_names)):
-        dictionary.update({es_questionnaire_field_name(codes[index],form_model.id): data['cols'][index]})
+        dictionary.update({es_questionnaire_field_name(codes[index], form_model.id): data['cols'][index]})
     dictionary.update({"entity_type": entity_type})
     dictionary.update({"void": entity.is_void()})
     return dictionary
@@ -116,15 +114,25 @@ def es_questionnaire_field_name(field_code, form_model_id, parent_field_code=Non
     code = "%s-%s" % (parent_field_code, field_code) if parent_field_code else field_code
     return "%s_%s" % (form_model_id, code)
 
+
 def es_unique_id_code_field_name(es_field_name):
-    return es_field_name+'_unique_code'
+    return es_field_name + '_unique_code'
+
 
 def es_unique_id_details_field_name(es_field_name):
-    return es_field_name+'_details'
+    return es_field_name + '_details'
+
 
 def is_submission_meta_field(field_name):
     return submission_meta_field_names.has_key(field_name)
 
+
 def delete_mapping(db_name, doc_type):
     es = get_elasticsearch_handle()
     es.delete_all(db_name, doc_type)
+
+
+def safe_getattr(result, key, default=None):
+    if hasattr(result, key):
+        return getattr(result, key)
+    return default
