@@ -4,6 +4,7 @@ from datawinners.entity.datasender_search import datasender_count_with
 from datawinners.entity.helper import update_data_sender_from_trial_organization, set_email_for_contact
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.main.database import get_database_manager
+from datawinners.search.submission_index import update_submission_search_for_datasender_edition
 from mangrove.datastore.entity import get_by_short_code, contact_by_short_code
 from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.utils.types import is_empty
@@ -73,6 +74,9 @@ def update_corresponding_datasender_details(user,ngo_user_profile,old_phone_numb
     reporter_entity = contact_by_short_code(manager, ngo_user_profile.reporter_id)
     current_phone_number = ngo_user_profile.mobile_phone
     reporter_entity.update_latest_data([('name',user.first_name),("mobile_number", current_phone_number)])
+
+    datasender_dict = {'name': user.first_name, 'mobile_number': current_phone_number}
+    update_submission_search_for_datasender_edition(manager, ngo_user_profile.reporter_id, datasender_dict)
 
     organization = Organization.objects.get(org_id=ngo_user_profile.org_id)
     if organization.in_trial_mode:
