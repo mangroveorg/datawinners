@@ -21,7 +21,7 @@ from datawinners.search.index_utils import get_elasticsearch_handle, get_field_d
     es_unique_id_code_field_name, \
     es_questionnaire_field_name, _add_text_field_mapping, es_unique_id_details_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type
 from mangrove.form_model.project import Project
 from mangrove.form_model.field import PhotoField, AudioField, VideoField
 
@@ -151,6 +151,14 @@ class SubmissionSearchStore():
                 _add_date_field_mapping(mapping_fields, field_def)
             else:
                 _add_text_field_mapping(mapping_fields, field_def)
+
+        ds_mapping = self._add_data_sender_details_to_mapping()
+        all_id_fields = [field for field in self.latest_form_model.fields if
+                         isinstance(field, UniqueIdField)]
+        id_field_mapping = self._add_id_field_details_to_mapping(self.latest_form_model.id, all_id_fields)
+        mapping_fields.update(ds_mapping)
+        if bool(id_field_mapping):
+            mapping_fields.update(id_field_mapping)
         return {doc_type: mapping}
 
     def _verify_unique_id_change(self):
@@ -164,6 +172,45 @@ class SubmissionSearchStore():
 
             if old_unique_id_types != new_unique_id_types:
                 raise FieldTypeChangeException()
+
+    def _add_id_field_details_to_mapping(self, questionnaire_id, all_id_fields):
+        id_field_mapping = {}
+        for id_field in all_id_fields:
+            key = es_unique_id_details_field_name(questionnaire_id + '_' + id_field.code)
+            unique_field_mapping = {}
+            entity_type = get_form_model_by_entity_type(self.dbm, [id_field.unique_id_type])
+
+            for field in entity_type.fields:
+                if field.type is "date":
+                    unique_field_mapping.update({field.code: {'type': "date"}})
+                elif field.type is "double":
+                    unique_field_mapping.update({field.code: {'type': "double"}})
+                else:
+                    unique_field_mapping.update({field.code: {'type': "string"}})
+            id_field_mapping.update({key: {'properties': unique_field_mapping}})
+
+        return id_field_mapping
+
+    def _add_data_sender_details_to_mapping(self):
+        return {"datasender": {
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "geo_code": {
+                    "type": "double"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "mobile_number": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }}
 
 
 class FieldTypeChangeException(Exception):
