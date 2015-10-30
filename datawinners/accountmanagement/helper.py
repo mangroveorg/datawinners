@@ -70,7 +70,7 @@ def update_user_name_if_exists(email, new_name):
 
 def update_corresponding_datasender_details(user,ngo_user_profile,old_phone_number):
     manager = get_database_manager(user)
-    reporter_entity = get_by_short_code(manager, ngo_user_profile.reporter_id, [REPORTER])
+    reporter_entity = contact_by_short_code(manager, ngo_user_profile.reporter_id)
     current_phone_number = ngo_user_profile.mobile_phone
     reporter_entity.update_latest_data([('name',user.first_name),("mobile_number", current_phone_number)])
 
