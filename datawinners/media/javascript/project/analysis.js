@@ -307,9 +307,27 @@ $(document).ready(function () {
             return $listElement;
         };
 
-        ColCustomWidget.prototype.iterateItems = function (items, $parentElement) {
-            var self = this;
+        ColCustomWidget.prototype.sortItems = function(items){
+            firstCols = [];
+            otherCols = []
             $.each(items, function (index, value) {
+                if (value.data.indexOf('.q2') >= 0 || value.data.indexOf('.q6') >= 0) {
+                    firstCols.push(value)
+                }
+                else {
+                    otherCols.push(value)
+                }
+            });
+            var concat = firstCols.concat(otherCols);
+            console.log('concat');
+            console.log(JSON.stringify(concat));
+            return concat;
+        };
+
+        ColCustomWidget.prototype.iterateItems = function (items, $parentElement) {
+            var sortedItems = this.sortItems(items);
+            var self = this;
+            $.each(sortedItems, function (index, value) {
                 if (value.hasOwnProperty('children') && (value.children.length > 0)) {
                     var $newParentElement = self.createColItems("ul", value, $parentElement);
                     self.constructChildNodes(value, $newParentElement);
