@@ -186,7 +186,7 @@ class SubmissionSearchStore():
                     elif field.type is "double":
                         unique_field_mapping.update({field.code: {'type': "double"}})
                     else:
-                        unique_field_mapping.update({field.code: {'type': "string"}})
+                        unique_field_mapping.update({field.code: {'type': "string", 'index_analyzer': 'sort_analyzer'}})
                 id_field_mapping.update({key: {'properties': unique_field_mapping}})
 
         return id_field_mapping
