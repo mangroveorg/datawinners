@@ -146,7 +146,7 @@ def get_all_datasenders_search_results(dbm, search_parameters):
 def get_all_datasenders_short_codes(dbm, search_parameters):
     search_parameters['response_fields'] = ['short_code']
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
-    return [item['short_code'] for item in search_results.hits]
+    return [item['short_code'][0] for item in search_results.hits]
 
 
 def get_all_data_senders_count(dbm):
