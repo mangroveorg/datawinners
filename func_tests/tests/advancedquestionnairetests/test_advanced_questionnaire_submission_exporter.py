@@ -25,7 +25,7 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
 
     def _verify_main_sheet(self, workbook):
         self.assertEqual(
-            "[u'Data Sender', u'Datasender Id', u'Submission Date', u'Status', u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Outer text', u'Select one outer', u'Select multiple outer', u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'_index', u'_parent_index']",
+            "[u'Data Sender Name', u'Data Sender Id', u'Submission Date', u'Status', u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Outer text', u'Select one outer', u'Select multiple outer', u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'Date(Year)', u'Date(Month-Year)', u'Date(DD-MM-YYYY)', u'Text in a group', u'Yes or No?', u'Yes No or both', u'_index', u'_parent_index']",
             str(workbook.sheet_by_index(0).row_values(0)))
         self.assertEqual(
             "[u'Tester Pune', u'rep276']",

@@ -13,13 +13,13 @@ class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
         family_dict = OrderedDict({'name': {'type': 'text', 'label': 'Name'}})
         family_dict.update({'age': {'type': 'text', 'label': 'Age'}})
 
-        columns = OrderedDict([('ds_id', {'label': 'Datasender Id'}),
+        columns = OrderedDict([('ds_id', {'label': 'Data Sender Id'}),
                                ('uuid1_family',
                                 {'fields': family_dict, 'type': 'field_set', 'code': 'field_code', 'label': 'Family','fieldset_type':'repeat'}),
                                ('uuid1_city', {'type': 'text', 'label': 'City'}),
                                ('area', {'type': 'text', 'label': 'Area'})])
 
-        expected_header = ['Datasender Id', 'City', 'Area','_index', '_parent_index']
+        expected_header = ['Data Sender Id', 'City', 'Area','_index', '_parent_index']
         expected_family_header = ['Name', 'Age', '_index', '_parent_index']
         preferences = [dict(data='ds_id', visibility='True'),
                        dict(data='uuid1_family', visibility='True', children=[dict(data='name',visibility='True'),

@@ -15,7 +15,7 @@ class TestSubmissionExporter(TestCase):
         date_1 = ExcelDate(datetime.datetime(2012, 04, 24), 'mm.yyyy')
         self.data = data = [{'_source':[u'N/A', '', date_1, u'Success', u'Analalava', u'cli8', u'Kanda (",)', 34.0,
                  date_1, u'B+', u'Dry cough; Neurological disorders ', 38.3452, 15.3345, u'R\xe9trovir']}]
-        self.headers = [u'Data Sender', u'Datasender Id', u'Submission Date', u'Status', u'What is associat\xe9d entity?',
+        self.headers = [u'Data Sender Name', u'Data Sender Id', u'Submission Date', u'Status', u'What is associat\xe9d entity?',
                    u'clinic ID', u'What is your nam\xe9?', u'What is age \xf6f father?', u'What is r\xe9porting date?',
                    u'What is your blood group?', u'What ar\xe9 symptoms?', u'What is the GPS code for clinic? Latitude',
                    u'What is the GPS code for clinic? Longitude', u'What are the required medicines?']

@@ -28,8 +28,8 @@ class TestSubmissionHeader(unittest.TestCase):
         self.form_model.fields = [self.field1, self.field2]
         self.form_model.entity_questions = []
         
-        expected = OrderedDict([('date', u'Submission Date'), ('datasender.id', u'Datasender Id'),
-            ('datasender.name', u'Data Sender'), ('datasender.mobile_number', u'Data Sender Mobile Number'),
+        expected = OrderedDict([('date', u'Submission Date'), ('datasender.id', u'Data Sender Id'),
+            ('datasender.name', u'Data Sender Name'), ('datasender.mobile_number', u'Data Sender Mobile Number'),
             ('datasender.email', u'Data Sender Email'), ('datasender.location', u'Data Sender Location'),
             ('datasender.geo_code', u'Data Sender GPS Coordinates'),
             ('form_model_id_q1', 'text'), ('form_model_id_q2', 'integer')])
@@ -60,8 +60,8 @@ class TestSubmissionHeader(unittest.TestCase):
         self.form_model.fields = [self.field1, self.field2, self.field3]
         self.form_model._dbm = Mock(spec=FormModel)
         self.form_model.entity_questions = [self.field3]
-        expected = OrderedDict([('date', u'Submission Date'), ('datasender.id', u'Datasender Id'),
-            ('datasender.name', u'Data Sender'), ('datasender.mobile_number', u'Data Sender Mobile Number'),
+        expected = OrderedDict([('date', u'Submission Date'), ('datasender.id', u'Data Sender Id'),
+            ('datasender.name', u'Data Sender Name'), ('datasender.mobile_number', u'Data Sender Mobile Number'),
             ('datasender.email', u'Data Sender Email'), ('datasender.location', u'Data Sender Location'),
             ('datasender.geo_code', u'Data Sender GPS Coordinates'), ('form_model_id_q1', 'text'), ('form_model_id_q2', 'integer'),
             ('form_model_id_q3_details.code1', 'label1'), ('form_model_id_q3_details.code2', 'label2')])
@@ -73,7 +73,7 @@ class TestSubmissionHeader(unittest.TestCase):
     def test_get_header_dict_from_form_model_with_single_unique_id_question_inside_repeat(self):
         self.form_model.fields = [self.field1, self.field2, self.repeat_field]
         self.form_model.entity_questions = [self.field4]
-        expected = {'date': 'Submission Date', 'ds_id': 'Datasender Id', 'ds_name': 'Data Sender',
+        expected = {'date': 'Submission Date', 'ds_id': 'Data Sender Id', 'ds_name': 'Data Sender Name',
                     'form_model_id_q1': 'Enter Text',
                     'form_model_id_q2': 'Enter a Number',  'form_model_id_repeat-q1': 'Enter Text',
                     'form_model_id_repeat-q4': 'Which school are you reporting on'}

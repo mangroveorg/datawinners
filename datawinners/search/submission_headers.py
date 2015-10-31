@@ -100,9 +100,9 @@ class SubmissionAnalysisHeader(SubmissionHeader):
 
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         header_dict.update(
-            {'datasender.id': translate("Datasender Id", self.language, ugettext)})
+            {'datasender.id': translate("Data Sender Id", self.language, ugettext)})
         header_dict.update(
-            {'datasender.name': translate("Data Sender", self.language, ugettext)})
+            {'datasender.name': translate("Data Sender Name", self.language, ugettext)})
         header_dict.update(
             {'datasender.mobile_number': translate("Data Sender Mobile Number", self.language, ugettext)})
         header_dict.update(
@@ -118,9 +118,9 @@ class AllSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update(
-            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Data Sender Id", self.language, ugettext)})
         header_dict.update(
-            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender Name", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         if not self.form_model.is_poll:
             header_dict.update({"status": translate("Status", self.language, ugettext)})
@@ -132,9 +132,9 @@ class SuccessSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update(
-            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Data Sender Id", self.language, ugettext)})
         header_dict.update(
-            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender Name", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         return header_dict
 
@@ -142,7 +142,7 @@ class SuccessSubmissionHeader(SubmissionHeader):
 class MobileSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Data Sender Name"})
         header_dict.update({"date": "Submission Date"})
         return header_dict
 
@@ -151,9 +151,9 @@ class ErroredSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update(
-            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Datasender Id", self.language, ugettext)})
+            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Data Sender Id", self.language, ugettext)})
         header_dict.update(
-            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender", self.language, ugettext)})
+            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender Name", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         header_dict.update({"error_msg": translate("Error Message", self.language, ugettext)})
         return header_dict
