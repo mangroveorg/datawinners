@@ -195,19 +195,19 @@ class SubmissionSearchStore():
         return {"datasender": {
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string", 'index_analyzer': 'sort_analyzer'
                 },
                 "geo_code": {
                     "type": "double"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "string", 'index_analyzer': 'sort_analyzer'
                 },
                 "mobile_number": {
-                    "type": "string"
+                    "type": "string", 'index_analyzer': 'sort_analyzer'
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string", 'index_analyzer': 'sort_analyzer'
                 }
             }
         }}
