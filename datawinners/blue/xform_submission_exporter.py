@@ -39,7 +39,7 @@ class XFormSubmissionExporter(SubmissionExporter):
             return
 
         for preference in self.preferences:
-            if preference.get('visibility') == 'True':
+            if preference.get('visibility'):
                 field = preference.get('data').replace('%s_' % submission.form_model_id,'')
                 name = submission.values.get(field)
                 if isinstance(name, list): #process for repeats or groups
@@ -211,11 +211,11 @@ class AdvancedQuestionnaireSubmissionExporter():
         headers_dict = OrderedDict()
         headers_dict.update({'main': []})
         for preference in self.preferences:
-            if preference.get('visibility') == 'True' or preference.has_key('children'):
+            if preference.get('visibility') or preference.has_key('children'):
                 key = preference.get('data')
                 if preference.has_key('children'):
                     for child in preference.get('children'):
-                        if child.get('visibility') == 'True':
+                        if child.get('visibility'):
                             headers_dict.get('main').append(child.get('title'))
                 elif self.columns.get(key) and self.columns.get(key).get('type') == 'field_set':
                     sheet_name = self.columns.get(key).get('code')
@@ -267,7 +267,7 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
 
         visible_columns = OrderedDict()
         for preference in self.preferences:
-            if preference.get('visibility') == 'True' or preference.has_key('children'):
+            if preference.get('visibility') or preference.has_key('children'):
                 key = preference.get('data')
                 if preference.has_key('children'):
                     for children_preference in preference.get('children'):

@@ -102,7 +102,9 @@ def analysis_user_preferences(request, form_code):
     manager = get_database_manager(request.user)
     questionnaire = get_project_by_code(manager, form_code)
     if request.method == 'POST':
-        save_analysis_field_preferences(manager, request.user.id, questionnaire, dict(request.POST.iterlists()))
+        preferences_submitted= request.POST.iterlists()
+        preferences_to_save = {key: 'True' in value for key,value in preferences_submitted}
+        save_analysis_field_preferences(manager, request.user.id, questionnaire, preferences_to_save)
         return HttpResponse()
     
     preferences = get_analysis_field_preferences(manager, request.user.id, questionnaire, ugettext)

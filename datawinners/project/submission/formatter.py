@@ -32,7 +32,7 @@ class SubmissionFormatter(object):
 
         visible_columns = OrderedDict()
         for preference in self.preferences:
-            if preference.get('visibility') == 'True' or preference.has_key('children'):
+            if preference.get('visibility') or preference.has_key('children'):
                 key = preference.get('data')
                 if preference.has_key('children'):
                     for children_preference in preference.get('children'):
