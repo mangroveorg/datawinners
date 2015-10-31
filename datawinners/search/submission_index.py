@@ -179,15 +179,15 @@ class SubmissionSearchStore():
             key = es_unique_id_details_field_name(questionnaire_id + '_' + id_field.code)
             unique_field_mapping = {}
             entity_type = get_form_model_by_entity_type(self.dbm, [id_field.unique_id_type])
-
-            for field in entity_type.fields:
-                if field.type is "date":
-                    unique_field_mapping.update({field.code: {'type': "date"}})
-                elif field.type is "double":
-                    unique_field_mapping.update({field.code: {'type': "double"}})
-                else:
-                    unique_field_mapping.update({field.code: {'type': "string"}})
-            id_field_mapping.update({key: {'properties': unique_field_mapping}})
+            if entity_type is not None:
+                for field in entity_type.fields:
+                    if field.type is "date":
+                        unique_field_mapping.update({field.code: {'type': "date"}})
+                    elif field.type is "double":
+                        unique_field_mapping.update({field.code: {'type': "double"}})
+                    else:
+                        unique_field_mapping.update({field.code: {'type': "string"}})
+                id_field_mapping.update({key: {'properties': unique_field_mapping}})
 
         return id_field_mapping
 

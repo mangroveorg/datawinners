@@ -5,7 +5,7 @@ from mock import Mock, MagicMock, patch
 from mangrove.datastore.database import DatabaseManager
 from datawinners.search.submission_index import SubmissionSearchStore, FieldTypeChangeException
 from mangrove.form_model.field import DateField, UniqueIdField
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, EntityFormModel
 
 
 class TestSubmissionSearchStore(unittest.TestCase):
@@ -15,16 +15,22 @@ class TestSubmissionSearchStore(unittest.TestCase):
              UniqueIdField(unique_id_type='clinic',name="Q1", code="EID", label="What is the clinic id?")]
         self.form_model = FormModel(self.dbm, "abc", "abc", form_code="cli001", fields=fields)
         self.dbm = MagicMock(spec=DatabaseManager)
+        dbm_view = MagicMock()
         self.dbm.database_name = 'somedb'
+        self.dbm.view = dbm_view
         self.es = Mock()
 
     def test_should_add_es_mapping_when_no_existing_questions_mapping(self):
         no_old_mapping = []
         es_mock = MagicMock()
+        form_model_mock = MagicMock()
 
         with patch("datawinners.search.submission_index.get_elasticsearch_handle") as get_elasticsearch_handle_mock:
             get_elasticsearch_handle_mock.return_value = es_mock
             es_mock.get_mapping.return_value = no_old_mapping
+            self.dbm.view.registration_form_model_by_entity_type.return_value = []
+            # form_model_mock.return_value = EntityFormModel(self.dbm, name='clinic',
+            #                                                form_code='cli', fields=[])
 
             SubmissionSearchStore(self.dbm, self.form_model, self.form_model).update_store()
 
