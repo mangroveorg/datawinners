@@ -164,7 +164,10 @@ def get_filterable_field_details(field, filterable_fields, parent_code, project_
             }
         if project_id:
             value['es_key'] = es_unique_id_code_field_name(es_questionnaire_field_name(field.code, project_id, parent_code))
-    return value
+
+    if bool(value):
+        return value
+    return None
 
 def get_filterable_fields(fields, filterable_fields, parent_code=None, project_id=None):
     for field in fields:
