@@ -673,7 +673,7 @@ def get_analysis_data(request, form_code):
     sort_params = _get_sorting_params(request)
     search_parameters = _get_search_params(request)
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta, sort_params, search_parameters)
-    data = _create_analysis_response(local_time_delta, search_results)
+    data = _create_analysis_response(local_time_delta, search_results, questionnaire)
     return HttpResponse(
         jsonpickle.encode(
             {
@@ -714,10 +714,10 @@ def _get_pagination_params(request):
     return pagination_params
 
 
-def _create_analysis_response(local_time_delta, search_results):
+def _create_analysis_response(local_time_delta, search_results, questionnaire):
     data = []
     if search_results is not None:
-        data = [_transform_elastic_to_analysis_view(local_time_delta, result)._d_ for result in search_results.hits]
+        data = [_transform_elastic_to_analysis_view(local_time_delta, result, questionnaire)._d_ for result in search_results.hits]
     return data
 
 
@@ -725,10 +725,31 @@ def _create_analysis_response(local_time_delta, search_results):
     Placeholder for all analysis data transformation from elastic
     search to display
 '''
-def _transform_elastic_to_analysis_view(local_time_delta, record):
+def _transform_elastic_to_analysis_view(local_time_delta, record, questionnaire):
     record.date = _convert_to_localized_date_time(record.date, local_time_delta)
+    for key,value in record.to_dict().iteritems():
+        if isinstance(value,basestring):
+            try:
+                value_obj = json.loads(value)
+                if isinstance(value_obj,list):
+                    _transform_nested_question_answer(key, value_obj, record, questionnaire)
+            except:
+                return record
     return record
 
+def _transform_nested_question_answer(key, value_obj, record, questionnaire):
+    field_code = key.replace(record.meta.doc_type+'_', '')
+    target_fields = [ nested_field for nested_field in questionnaire.has_nested_fields if nested_field.code == field_code]
+    updated_answers = ''
+    for repeat_question_answer in value_obj:
+        updated_answer = ''
+        for field in target_fields[0].fields:
+            updated_answer += '"'+field.label + ':' + repeat_question_answer[field.code]+'"'
+            updated_answer += ' ' 
+        updated_answers += updated_answer + ';<br/><br/>'
+
+    record[key] = updated_answers
+    
 
 def _convert_to_localized_date_time(submission_date, local_time_delta):
     submission_date_time = datetime.datetime.strptime(submission_date, "%b. %d, %Y, %I:%M %p")
