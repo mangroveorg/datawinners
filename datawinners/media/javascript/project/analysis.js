@@ -319,8 +319,6 @@ $(document).ready(function () {
                 }
             });
             var concat = firstCols.concat(otherCols);
-            console.log('concat');
-            console.log(JSON.stringify(concat));
             return concat;
         };
 
