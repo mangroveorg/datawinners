@@ -1,8 +1,12 @@
 from unittest import TestCase
-from mock import MagicMock, Mock, patch
-from datawinners.entity.view.send_sms import SendSMS, _get_all_contacts_details, _get_contact_details_for_questionnaire, \
-    _get_all_contacts_details_with_mobile_number
+
+from elasticsearch_dsl.utils import AttrList
+from mock import MagicMock, patch
 from mangrove.datastore.database import DatabaseManager
+
+from datawinners.entity.view.send_sms import SendSMS, _get_all_contacts_details, \
+    _get_all_contacts_details_with_mobile_number
+from datawinners.search.tests.test_entity_search import SimpleResult
 
 
 class TestSMS(TestCase):
@@ -42,12 +46,20 @@ class TestSMS(TestCase):
         dbm = MagicMock(spec=DatabaseManager)
         search_parameters = MagicMock()
 
-        with patch("datawinners.entity.view.send_sms.get_all_datasenders_search_results") as get_all_datasenders_search_results_mock:
+        with patch(
+                "datawinners.entity.view.send_sms.get_all_datasenders_search_results") as get_all_datasenders_search_results_mock:
             result_mock = MagicMock()
-            result_mock.hits = [
-                {'name': "ds1", 'short_code': 'code1', 'mobile_number': '123456'},
-                {'name': "ds2", 'short_code': 'code2', 'mobile_number': '98765'}
-            ]
+            result1 = SimpleResult()
+            result1.name = ['ds1']
+            result1.short_code = ['code1']
+            result1.mobile_number = ['123456']
+
+            result2 = SimpleResult()
+            result2.name = ['ds2']
+            result2.short_code = ['code2']
+            result2.mobile_number = ['98765']
+
+            result_mock.hits = AttrList([result1, result2])
             get_all_datasenders_search_results_mock.return_value = result_mock
 
             actual_mobile_numbers, actual_contact_display_list = _get_all_contacts_details(dbm, search_parameters)
@@ -59,12 +71,19 @@ class TestSMS(TestCase):
         dbm = MagicMock(spec=DatabaseManager)
         search_parameters = MagicMock()
 
-        with patch("datawinners.entity.view.send_sms.get_all_datasenders_search_results") as get_all_datasenders_search_results_mock:
+        with patch(
+                "datawinners.entity.view.send_sms.get_all_datasenders_search_results") as get_all_datasenders_search_results_mock:
             result_mock = MagicMock()
-            result_mock.hits = [
-                {'name': "ds1", 'short_code': 'code1', 'mobile_number': '123456'},
-                {'name': "", 'short_code': 'code2', 'mobile_number': '98765'}
-            ]
+            result1 = SimpleResult()
+            result1.name = ['ds1']
+            result1.short_code = ['code1']
+            result1.mobile_number = ['123456']
+
+            result2 = SimpleResult()
+            result2.short_code = ['code2']
+            result2.mobile_number = ['98765']
+
+            result_mock.hits = AttrList([result1, result2])
             get_all_datasenders_search_results_mock.return_value = result_mock
 
             actual_mobile_numbers, actual_contact_display_list = _get_all_contacts_details(dbm, search_parameters)
@@ -76,15 +95,23 @@ class TestSMS(TestCase):
         dbm = MagicMock(spec=DatabaseManager)
         search_parameters = MagicMock()
         failed_numbers = ['some_number']
-        with patch("datawinners.entity.view.send_sms.get_all_datasenders_search_results") as get_all_datasenders_search_results_mock:
+        with patch(
+                "datawinners.entity.view.send_sms.get_all_datasenders_search_results") as get_all_datasenders_search_results_mock:
             result_mock = MagicMock()
-            result_mock.hits = [
-                {'name': "ds1", 'short_code': 'code1', 'mobile_number': 'some_number'},
-                {'name': "", 'short_code': 'code2', 'mobile_number': '98765'}
-            ]
+            result1 = SimpleResult()
+            result1.name = ['ds1']
+            result1.short_code = ['code1']
+            result1.mobile_number = ['some_number']
+
+            result2 = SimpleResult()
+            result2.short_code = ['code2']
+            result2.mobile_number = ['98765']
+
+            result_mock.hits = AttrList([result1, result2])
             get_all_datasenders_search_results_mock.return_value = result_mock
 
-            actual_mobile_numbers, actual_contact_display_list, actual_short_codes = _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_numbers)
+            actual_mobile_numbers, actual_contact_display_list, actual_short_codes = _get_all_contacts_details_with_mobile_number(
+                dbm, search_parameters, failed_numbers)
 
             self.assertListEqual(actual_mobile_numbers, ['98765'])
             self.assertListEqual(actual_contact_display_list, ['98765 (code2)'])

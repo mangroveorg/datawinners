@@ -1,5 +1,6 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Q, F
+from datawinners.search.index_utils import safe_getattr
 
 from datawinners.search.query import ElasticUtilsHelper
 from datawinners.settings import ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
@@ -146,7 +147,7 @@ def get_all_datasenders_search_results(dbm, search_parameters):
 def get_all_datasenders_short_codes(dbm, search_parameters):
     search_parameters['response_fields'] = ['short_code']
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
-    return [item['short_code'][0] for item in search_results.hits]
+    return [safe_getattr(item,'short_code')[0] for item in search_results.hits]
 
 
 def get_all_data_senders_count(dbm):
@@ -175,7 +176,7 @@ def get_all_data_sender_mobile_numbers(dbm):
     search = _add_pagination_criteria(search_parameters, search)
     search = _add_response_fields(search_parameters, search)
     search_results = search.execute()
-    return [item['mobile_number'] for item in search_results.hits]
+    return [safe_getattr(item, 'mobile_number')[0] for item in search_results.hits]
 
 def get_datasenders_ids_by_questionnaire_names(manager, questionnaire_names):
     search_parameters = {'void': False, 'search_filters': {'projects': questionnaire_names}}

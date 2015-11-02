@@ -15,6 +15,7 @@ from datawinners.project.helper import broadcast_message
 from datawinners.scheduler.smsclient import NoSMSCException
 from datawinners.search.all_datasender_search import get_all_datasenders_search_results
 from datawinners.search.datasender_index import update_datasender_index_by_id
+from datawinners.search.index_utils import safe_getattr
 from datawinners.sent_message.models import PollInfo
 from datawinners.utils import strip_accents, lowercase_and_strip_accents, get_organization_from_manager
 from mangrove.datastore.entity import contact_by_short_code
@@ -153,7 +154,7 @@ class SendSMS(View):
 def _get_all_contacts_mobile_numbers(dbm, search_parameters):
     search_parameters['response_fields'] = ['mobile_number']
     search_results = get_all_datasenders_search_results(dbm, search_parameters)
-    return [item['mobile_number'] for item in search_results.hits]
+    return [safe_getattr(item, 'mobile_number')[0] for item in search_results.hits]
 
 def get_name_short_code_mobile_numbers_for_contacts(dbm, poll_recipients, failed_numbers):
     short_codes = []
@@ -211,9 +212,10 @@ def _get_all_contacts_details(dbm, search_parameters):
     mobile_numbers, contact_display_list = [], []
 
     for entry in search_results.hits:
-        mobile_numbers.append(entry['mobile_number'])
-        display_prefix = entry['name'] if entry.get('name') else entry['mobile_number']
-        contact_display_list.append("%s (%s)" % (display_prefix, entry['short_code']))
+        mobile_numbers.append(safe_getattr(entry, 'mobile_number')[0])
+        display_prefix = safe_getattr(entry, 'name')[0] if safe_getattr(entry, 'name') else safe_getattr(entry, 'mobile_number')[0]
+        short_code = (safe_getattr(entry, 'short_code')[0])
+        contact_display_list.append("%s (%s)" % (display_prefix, short_code))
 
     return mobile_numbers, contact_display_list
 
@@ -224,11 +226,13 @@ def _get_all_contacts_details_with_mobile_number(dbm, search_parameters, failed_
     mobile_numbers, contact_display_list = [], []
 
     for entry in search_results.hits:
-        if entry['mobile_number'] not in failed_numbers:
-            mobile_numbers.append(entry['mobile_number'])
-            display_prefix = entry['name'] if entry.get('name') else entry['mobile_number']
-            contact_display_list.append("%s (%s)" % (display_prefix, entry['short_code']))
-            short_codes.append(entry['short_code'])
+        mobile_number = safe_getattr(entry, 'mobile_number')[0]
+        if mobile_number not in failed_numbers:
+            mobile_numbers.append(mobile_number)
+            display_prefix = safe_getattr(entry, 'name')[0] if safe_getattr(entry, 'name') else mobile_number
+            short_code = safe_getattr(entry, 'short_code')[0] if safe_getattr(entry, 'short_code') else safe_getattr(entry, 'short_code')
+            contact_display_list.append("%s (%s)" % (display_prefix, short_code))
+            short_codes.append(short_code)
 
     return mobile_numbers, contact_display_list, short_codes
 
