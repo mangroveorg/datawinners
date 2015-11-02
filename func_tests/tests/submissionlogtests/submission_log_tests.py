@@ -26,6 +26,7 @@ from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
 from tests.utils import get_subject_short_code
+from testdata.test_data import LOGOUT
 
 
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %H:%M"
@@ -43,12 +44,13 @@ def send_valid_sms_with(sms):
 
 
 class TestSubmissionLog(HeadlessRunnerTest):
-    @classmethod
-    def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
-        cls.dashboard = login(cls.driver)
-        cls.reporting_period_project_name = None
-        cls.URL = None
+    def setUp(self):
+        self.dashboard = login(self.driver)
+        self.reporting_period_project_name = None
+        self.URL = None
+
+    def tearDown(self):
+        self.driver.go_to(LOGOUT)
 
 
     def _create_project(self, project_data, questionnaire_data, monthly):
@@ -68,7 +70,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
         project_name, questionnaire_code = self._get_project_details()
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_datasenders_page = AllDataSendersPage(self.driver)
-        all_datasenders_page.associate_datasender_to_projects("rep8", [project_name.lower()])
+        all_datasenders_page.associate_datasender_to_projects("rep11", [project_name.lower()])
         self._submit_sms_data(questionnaire_code, monthly=monthly)
         return project_name
 
@@ -76,8 +78,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
         overview_page = ProjectOverviewPage(self.driver)
         return overview_page.get_project_title(), overview_page.get_questionnaire_code()
 
-    @classmethod
-    def _submit_sms_data(cls, questionnaire_code, monthly):
+    def _submit_sms_data(self, questionnaire_code, monthly):
         dates = get_reporting_date_values(monthly)
         for i in dates:
             send_valid_sms_with(get_sms_data_with_questionnaire_code(questionnaire_code, i))
@@ -93,10 +94,9 @@ class TestSubmissionLog(HeadlessRunnerTest):
                 self.URL = self.driver.current_url
         return submission_log_page
 
-    @classmethod
-    def go_to_submission_log_page(cls, project_name=FIRST_PROJECT_NAME):
-        cls.driver.go_to(ALL_DATA_PAGE)
-        submission_log_page = AllDataPage(cls.driver).navigate_to_submission_log_page(project_name)
+    def go_to_submission_log_page(self, project_name=FIRST_PROJECT_NAME):
+        self.driver.go_to(ALL_DATA_PAGE)
+        submission_log_page = AllDataPage(self.driver).navigate_to_submission_log_page(project_name)
         return submission_log_page
 
     def assert_none_selected_shown(self, submission_log_page):
