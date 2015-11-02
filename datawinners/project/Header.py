@@ -3,10 +3,11 @@ from collections import OrderedDict
 from django.utils.translation import ugettext
 from datawinners.entity.import_data import get_entity_type_info
 
-from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
+from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name, \
+    es_unique_id_details_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
-from mangrove.form_model.field import DateField, GeoCodeField, FieldSet
+from mangrove.form_model.field import DateField, GeoCodeField, FieldSet, UniqueIdField
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.helper import DEFAULT_DATE_FORMAT
 from mangrove.datastore.user_questionnaire_preference import get_user_questionnaire_preference, detect_visibility
@@ -157,8 +158,9 @@ class AnalysisPageHeader():
         }
 
 
-class SubmissionExcelHeader():
-    def __init__(self, form_model, submission_type, language='en'):
+class SubmissionExcelHeader:
+    def __init__(self, dbm, form_model, submission_type, language='en'):
+        self.dbm = dbm
         self._form_model = form_model
         self.submission_type = submission_type
         self.language = language
@@ -168,14 +170,14 @@ class SubmissionExcelHeader():
             SubmissionIndexConstants.DATASENDER_ID_KEY: {
                 "label": header_dict[SubmissionIndexConstants.DATASENDER_ID_KEY]}})
 
-    def _update_with_field_meta(self, fields, result, header, parent_field_name=None, ):
+    def _update_with_field_meta(self, fields, result, header, parent_field_name=None):
         for field in fields:
             if isinstance(field, FieldSet) and field.is_group():
                 self._update_with_field_meta(field.fields, result, header, field.code)
             else:
                 field_name = es_questionnaire_field_name(field.code, self._form_model.id, parent_field_name)
 
-                if result.has_key(field_name):
+                if field_name in result.keys():
                     result.get(field_name).update({"type": field.type})
                     if field.type == "date":
                         result.get(field_name).update({"format": field.date_format})
@@ -183,6 +185,26 @@ class SubmissionExcelHeader():
                         result.get(field_name).update({"fields": self.get_sub_fields_of(field, header),
                                                        "code": field.code,
                                                        'fieldset_type': field.fieldset_type})
+
+    def _update_with_id_fields_meta(self, questionnaire_id, unique_id_fields, result, header, parent_field_name=None):
+        for field in unique_id_fields:
+            self._update_with_id_field_meta(field, questionnaire_id, result)
+
+    def _update_with_id_field_meta(self, field, questionnaire_id, result):
+        if isinstance(field, UniqueIdField):
+            field_name = es_unique_id_details_field_name(questionnaire_id + '_' + field.code)
+            entity_type = get_form_model_by_entity_type(self.dbm, [field.unique_id_type])
+            if entity_type is not None:
+                self._map_entity_type_in_result(entity_type, field, field_name, result)
+
+    def _map_entity_type_in_result(self, entity_type, field, field_name, result):
+        for entity_field in entity_type.fields:
+            code = field_name + "." + entity_field.code
+            if code in result.keys():
+                if field.type == "date":
+                    result.get(code).update({"format": entity_field.date_format})
+                else:
+                    result.get(code).update({"type": entity_field.type})
 
     def get_columns(self):
         header = HeaderFactory(self._form_model, self.language).create_header(self.submission_type)
@@ -197,6 +219,8 @@ class SubmissionExcelHeader():
         if self.submission_type == 'analysis':
             self._add_type_to_datasender_fields(result)
         self._update_with_field_meta(self._form_model.fields, result, header=header)
+        unique_id_fields = [field for field in self._form_model.fields if isinstance(field, UniqueIdField)]
+        self._update_with_id_fields_meta(self._form_model.id, unique_id_fields, result, header=header)
         return result
 
     def _add_type_to_datasender_fields(self, result):

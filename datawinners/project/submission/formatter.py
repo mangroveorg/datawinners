@@ -7,7 +7,7 @@ from datawinners.search.submission_index_constants import SubmissionIndexConstan
 from mangrove.datastore.user_questionnaire_preference import detect_visibility
 from collections import OrderedDict
 
-GEODCODE_FIELD_CODE = "geocode"
+GEOCODE_FIELD_CODE = "geocode"
 
 
 class SubmissionFormatter(object):
@@ -46,7 +46,7 @@ class SubmissionFormatter(object):
     def format_header_data(self):
         headers = []
         for col_def in self.get_visible_columns().values():
-            if col_def.get('type', '') == GEODCODE_FIELD_CODE:
+            if col_def.get('type', '') == GEOCODE_FIELD_CODE:
                 headers.append(col_def['label'] + " Latitude")
                 headers.append(col_def['label'] + " Longitude")
             else:
@@ -93,13 +93,15 @@ class SubmissionFormatter(object):
                 field_value = row.get(entity_type).get(entity_type_field_code) if row.get(entity_type) else ""
                 if field_code == 'datasender.geo_code' and field_value:
                     field_value = "%s,%s" % (field_value[0], field_value[1])
+                if self.columns[field_code].get("type") == GEOCODE_FIELD_CODE and field_value:
+                    field_value = "%s,%s" % (field_value[0], field_value[1])
             try:
 
                 parsed_value = self._parsed_field_value(field_value)
                 field_type = self.columns[field_code].get("type")
                 if field_type == "date" or field_code == "date":
                     self._format_date_field(field_value, field_code, result, row, self.columns)
-                elif field_type == GEODCODE_FIELD_CODE:
+                elif field_type == GEOCODE_FIELD_CODE:
                     self._format_gps_field(parsed_value, result)
                 elif field_type == 'select':
                     self._format_select_field(parsed_value, result)
