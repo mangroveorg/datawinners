@@ -15,7 +15,7 @@ from datawinners.project.submission.export import export_filename, add_sheet_wit
     export_to_new_excel, \
     create_multi_sheet_excel_headers, create_multi_sheet_entries
 from datawinners.project.submission.exporter import SubmissionExporter
-from datawinners.project.submission.formatter import SubmissionFormatter
+from datawinners.project.submission.formatter import SubmissionFormatter, GEOCODE_FIELD_CODE
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.datastore.documents import SurveyResponseDocument
@@ -216,20 +216,26 @@ class AdvancedQuestionnaireSubmissionExporter():
                 if preference.has_key('children'):
                     for child in preference.get('children'):
                         if child.get('visibility'):
-                            headers_dict.get('main').append(child.get('title'))
+                            self._check_and_append_column_header(headers_dict, child.get('data'), child.get('title'))
+
+                                
                 elif self.columns.get(key):
                     if self.columns.get(key).get('type') == 'field_set':
                         sheet_name = self.columns.get(key).get('code')
                         headers_dict.update({sheet_name:excel_headers.get(sheet_name)})
-                    elif self.columns.get(key).get('type') == 'geocode':
-                        headers_dict.get('main').append(self.columns.get(key).get('label') + " Latitude")
-                        headers_dict.get('main').append(self.columns.get(key).get('label') + " Longitude")
                     else:
-                        headers_dict.get('main').append(self.columns.get(key).get('label'))
+                        self._check_and_append_column_header(headers_dict, key, self.columns.get(key).get('label'))
 
         if self.form_model.has_nested_fields:
             headers_dict.get('main').extend(['_index', '_parent_index'])
         return headers_dict
+
+    def _check_and_append_column_header(self, headers_dict, key, label):
+        if self.columns.get(key).get('type') == GEOCODE_FIELD_CODE:
+            headers_dict.get('main').append(label + " Latitude")
+            headers_dict.get('main').append(label + " Longitude")
+        else:
+            headers_dict.get('main').append(label)
 
 
 
@@ -290,6 +296,7 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                 if '.' in field_code:
                     entity_type, entity_type_field_code = field_code.split('.')
                     field_value = row.get(entity_type).get(entity_type_field_code)
+                    field_value = self.post_parse_field(field_code, field_value)
                 parsed_value = self._parsed_field_value(field_value)
                 field_type = columns[field_code].get("type")
 

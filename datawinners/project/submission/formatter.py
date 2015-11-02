@@ -91,10 +91,7 @@ class SubmissionFormatter(object):
             if '.' in field_code:
                 entity_type, entity_type_field_code = field_code.split('.')
                 field_value = row.get(entity_type).get(entity_type_field_code) if row.get(entity_type) else ""
-                if field_code == 'datasender.geo_code' and field_value:
-                    field_value = "%s,%s" % (field_value[0], field_value[1])
-                if self.columns[field_code].get("type") == GEOCODE_FIELD_CODE and field_value:
-                    field_value = "%s,%s" % (field_value[0], field_value[1])
+                field_value = self.post_parse_field(field_code, field_value)
             try:
 
                 parsed_value = self._parsed_field_value(field_value)
@@ -117,6 +114,11 @@ class SubmissionFormatter(object):
                 result.append(col_val)
 
         return result
+
+    def post_parse_field(self, field_code, field_value):
+        if self.columns[field_code].get("type") == GEOCODE_FIELD_CODE and field_value:
+            return "%s,%s" % (field_value[0], field_value[1])
+        return field_value
 
     def _format_gps_field(self, value, result):
         if not value:
