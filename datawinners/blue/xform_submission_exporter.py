@@ -176,7 +176,7 @@ class AdvancedQuestionnaireSubmissionExporter():
         visible_headers = self.get_visible_headers()
         create_multi_sheet_excel_headers(visible_headers, workbook)
 
-        sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(excel_headers.iterkeys())])
+        sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(visible_headers.iterkeys())])
         sheet_name_row_count_map = dict([(sheet_name, 0) for sheet_name in sheet_names_index_map.iterkeys()])
 
         formatter = AdvanceSubmissionFormatter(self.columns, self.form_model, self.local_time_delta, self.preferences)
