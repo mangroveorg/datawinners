@@ -102,13 +102,14 @@ def analysis_user_preferences(request, form_code):
     manager = get_database_manager(request.user)
     questionnaire = get_project_by_code(manager, form_code)
     if request.method == 'POST':
-        preferences_submitted= request.POST.iterlists()
-        preferences_to_save = {key: 'True' in value for key,value in preferences_submitted}
+        preferences_submitted = request.POST.iterlists()
+        preferences_to_save = {key: 'True' in value for key, value in preferences_submitted}
         save_analysis_field_preferences(manager, request.user.id, questionnaire, preferences_to_save)
         return HttpResponse()
-    
+
     preferences = get_analysis_field_preferences(manager, request.user.id, questionnaire, ugettext)
     return HttpResponse(encode_json(preferences), content_type='application/json')
+
 
 def _get_date_fields_info(questionnaire):
     date_fields_array = []
@@ -134,7 +135,7 @@ def _field_code(field, parent_code):
 
 
 def get_filterable_field_details(field, filterable_fields, parent_code, project_id=None):
-    value ={}
+    value = {}
     if isinstance(field, DateField):
         value = {
             'type': 'date',
@@ -163,11 +164,13 @@ def get_filterable_field_details(field, filterable_fields, parent_code, project_
                 'entity_type': field.unique_id_type,
             }
         if project_id:
-            value['es_key'] = es_unique_id_code_field_name(es_questionnaire_field_name(field.code, project_id, parent_code))
+            value['es_key'] = es_unique_id_code_field_name(
+                es_questionnaire_field_name(field.code, project_id, parent_code))
 
     if bool(value):
         return value
     return None
+
 
 def get_filterable_fields(fields, filterable_fields, parent_code=None, project_id=None):
     for field in fields:
@@ -175,7 +178,8 @@ def get_filterable_fields(fields, filterable_fields, parent_code=None, project_i
         if field_details:
             filterable_fields.append(field_details)
         if isinstance(field, FieldSet) and field.is_group():
-            filterable_fields = get_filterable_fields(field.fields, filterable_fields, field.code, project_id=project_id)
+            filterable_fields = get_filterable_fields(field.fields, filterable_fields, field.code,
+                                                      project_id=project_id)
     return filterable_fields
 
 
@@ -584,14 +588,14 @@ def export_count(request):
 def _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager, project_name,
                                    query_params, submission_type, preferences):
     if not is_media:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, preferences) \
+        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language,
+                                       preferences) \
             .create_excel_response(submission_type, query_params)
 
     else:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, preferences) \
+        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language,
+                                       preferences) \
             .create_excel_response_with_media(submission_type, query_params)
-
-
 
 
 def _create_export_artifact(form_model, manager, request, search_filters):
@@ -672,7 +676,8 @@ def get_analysis_data(request, form_code):
     pagination_params = _get_pagination_params(request)
     sort_params = _get_sorting_params(request)
     search_parameters = _get_search_params(request)
-    search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta, sort_params, search_parameters)
+    search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta,
+                                                      sort_params, search_parameters)
     data = _create_analysis_response(local_time_delta, search_results, questionnaire)
     return HttpResponse(
         jsonpickle.encode(
@@ -683,10 +688,11 @@ def get_analysis_data(request, form_code):
                 'draw': int(request.POST.get('draw', 1)),
             }, unpicklable=False), content_type='application/json')
 
+
 def _get_search_params(request):
     search_parameters = {}
     search_parameters['data_sender_filter'] = request.POST.get('data_sender_filter')
-    search_parameters['search_text'] = request.POST.get('search_text') 
+    search_parameters['search_text'] = request.POST.get('search_text')
     search_parameters['submission_date_range'] = request.POST.get('submission_date_range')
     unique_id_filters = request.POST.get('uniqueIdFilters')
     if unique_id_filters is not None and bool(unique_id_filters):
@@ -695,6 +701,7 @@ def _get_search_params(request):
     if date_question_filters is not None and bool(date_question_filters):
         search_parameters['date_question_filters'] = json.loads(date_question_filters)
     return search_parameters
+
 
 def _get_sorting_params(request):
     sort_params = {}
@@ -717,7 +724,8 @@ def _get_pagination_params(request):
 def _create_analysis_response(local_time_delta, search_results, questionnaire):
     data = []
     if search_results is not None:
-        data = [_transform_elastic_to_analysis_view(local_time_delta, result, questionnaire)._d_ for result in search_results.hits]
+        data = [_transform_elastic_to_analysis_view(local_time_delta, result, questionnaire)._d_ for result in
+                search_results.hits]
     return data
 
 
@@ -725,31 +733,38 @@ def _create_analysis_response(local_time_delta, search_results, questionnaire):
     Placeholder for all analysis data transformation from elastic
     search to display
 '''
+
+
 def _transform_elastic_to_analysis_view(local_time_delta, record, questionnaire):
     record.date = _convert_to_localized_date_time(record.date, local_time_delta)
-    for key,value in record.to_dict().iteritems():
-        if isinstance(value,basestring):
+    for key, value in record.to_dict().iteritems():
+        if isinstance(value, basestring):
             try:
                 value_obj = json.loads(value)
-                if isinstance(value_obj,list):
+                if isinstance(value_obj, list):
                     _transform_nested_question_answer(key, value_obj, record, questionnaire)
-            except:
-                return record
+            except Exception as e:
+                continue
     return record
 
+
 def _transform_nested_question_answer(key, value_obj, record, questionnaire):
-    field_code = key.replace(record.meta.doc_type+'_', '')
-    target_fields = [ nested_field for nested_field in questionnaire.has_nested_fields if nested_field.code == field_code]
+    field_code = key.replace(record.meta.doc_type + '_', '')
+    target_fields = [nested_field for nested_field in questionnaire.has_nested_fields if
+                     nested_field.code == field_code]
     updated_answers = ''
     for repeat_question_answer in value_obj:
         updated_answer = ''
         for field in target_fields[0].fields:
-            updated_answer += '"'+field.label + ':' + repeat_question_answer[field.code]+'"'
-            updated_answer += ' ' 
+            field_value = repeat_question_answer[field.code] if repeat_question_answer[field.code] else ''
+            str_value = ','.join(field_value) if isinstance(field_value, list) else field_value
+
+            updated_answer += '"' + field.label + ':' + str_value + '"'
+            updated_answer += ' '
         updated_answers += updated_answer + ';<br/><br/>'
 
     record[key] = updated_answers
-    
+
 
 def _convert_to_localized_date_time(submission_date, local_time_delta):
     submission_date_time = datetime.datetime.strptime(submission_date, "%b. %d, %Y, %I:%M %p")
@@ -815,6 +830,7 @@ def get_facet_response_for_choice_fields(query_with_criteria, choice_fields, for
 
     return facet_results
 
+
 '''
     dbm = get_database_manager(request.user)
     questionnaire = get_project_by_code(dbm, form_code)
@@ -826,6 +842,8 @@ def get_facet_response_for_choice_fields(query_with_criteria, choice_fields, for
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta, sort_params, search_parameters)
 
 '''
+
+
 def _get_all_criterias_from_request(request, form_code):
     dbm = get_database_manager(request.user)
     questionnaire = get_project_by_code(dbm, form_code)
@@ -835,18 +853,19 @@ def _get_all_criterias_from_request(request, form_code):
     sort_params = _get_sorting_params(request)
     search_parameters = _get_search_params(request)
     return dbm, questionnaire, pagination_params, \
-        local_time_delta, sort_params, search_parameters
+           local_time_delta, sort_params, search_parameters
 
 
 @csrf_view_exempt
 @valid_web_user
 def get_stats(request, form_code):
-#     filter_type = "success"
-#     search_parameters.update({"filter": filter_type})
+    #     filter_type = "success"
+    #     search_parameters.update({"filter": filter_type})
     dbm, questionnaire, pagination_params, \
-        local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
+    local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
     agg_results, total_submissions = get_aggregations_for_choice_fields(dbm, questionnaire,
-                                                                    local_time_delta, pagination_params, sort_params, search_parameters)
+                                                                        local_time_delta, pagination_params,
+                                                                        sort_params, search_parameters)
 
     return HttpResponse(json.dumps(
         {'result': create_statistics_response(agg_results, questionnaire),
