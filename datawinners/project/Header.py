@@ -130,11 +130,20 @@ class AnalysisPageHeader():
 
             else:
                 column_id = self._form_model.id + '_' + field.code
-                header.append(self._form_column_info(
-                    column_id, field.label,
-                    detect_visibility(
-                        user_questionnaire_preference,
-                        column_id)))
+                if field.is_group():
+                    for child_field in field.fields:
+                        header.append(self._form_column_info(
+                            column_id +'-'+child_field.code, child_field.label,
+                            detect_visibility(
+                                user_questionnaire_preference,
+                                column_id +'-'+child_field.code)))
+                        
+                else:
+                    header.append(self._form_column_info(
+                        column_id, field.label,
+                        detect_visibility(
+                            user_questionnaire_preference,
+                            column_id)))
 
         return header
 
