@@ -173,9 +173,7 @@ class AdvancedQuestionnaireSubmissionExporter():
         workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
         workbook = Workbook(workbook_file, options={'constant_memory': True})
 
-        excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns, self.form_model,
-                                                                           self.preferences).create_headers()
-        visible_headers = self.get_visible_headers(excel_headers)
+        visible_headers = self.get_visible_headers()
         create_multi_sheet_excel_headers(visible_headers, workbook)
 
         sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(excel_headers.iterkeys())])
@@ -204,7 +202,9 @@ class AdvancedQuestionnaireSubmissionExporter():
         workbook.close()
         return workbook_file
 
-    def get_visible_headers(self, excel_headers):
+    def get_visible_headers(self):
+        excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns, self.form_model,
+                                                                           self.preferences).create_headers()
         if not self.preferences:
             return excel_headers
 
@@ -217,11 +217,15 @@ class AdvancedQuestionnaireSubmissionExporter():
                     for child in preference.get('children'):
                         if child.get('visibility'):
                             headers_dict.get('main').append(child.get('title'))
-                elif self.columns.get(key) and self.columns.get(key).get('type') == 'field_set':
-                    sheet_name = self.columns.get(key).get('code')
-                    headers_dict.update({sheet_name:excel_headers.get(sheet_name)})
                 elif self.columns.get(key):
-                    headers_dict.get('main').append(self.columns.get(key).get('label'))
+                    if self.columns.get(key).get('type') == 'field_set':
+                        sheet_name = self.columns.get(key).get('code')
+                        headers_dict.update({sheet_name:excel_headers.get(sheet_name)})
+                    elif self.columns.get(key).get('type') == 'geocode':
+                        headers_dict.get('main').append(self.columns.get(key).get('label') + " Latitude")
+                        headers_dict.get('main').append(self.columns.get(key).get('label') + " Longitude")
+                    else:
+                        headers_dict.get('main').append(self.columns.get(key).get('label'))
 
         if self.form_model.has_nested_fields:
             headers_dict.get('main').extend(['_index', '_parent_index'])

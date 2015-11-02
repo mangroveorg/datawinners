@@ -2,7 +2,7 @@ from collections import OrderedDict
 import unittest
 from mock import MagicMock
 from datawinners.blue.xform_submission_exporter import AdvanceSubmissionFormatter, \
-    AdvancedQuestionnaireSubmissionExportHeaderCreator
+    AdvancedQuestionnaireSubmissionExportHeaderCreator, AdvancedQuestionnaireSubmissionExporter
 from mangrove.form_model.form_model import FormModel
 
 
@@ -45,4 +45,18 @@ class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
         self.assertEqual(expected_header, headers['main'])
 
 
-#class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
+    def test_should_create_header_geocode_field(self):
+        form_model_mock = MagicMock(spec=FormModel)
+
+        columns = OrderedDict([('uuid1_city', {'type': 'geocode', 'label': 'G P S Coordinates'})])
+
+        expected_header = ['G P S Coordinates Latitude', 'G P S Coordinates Longitude','_index', '_parent_index']
+
+        local_time_delta = '+', 0, 0
+
+        preferences = [dict(data='uuid1_city',visibility=True), dict(data='area',visibility=False)]
+
+        headers = AdvancedQuestionnaireSubmissionExporter(form_model_mock, columns, local_time_delta, preferences).\
+            get_visible_headers()
+
+        self.assertEqual(expected_header, headers['main'])
