@@ -4,6 +4,7 @@ import json
 import os
 from tempfile import NamedTemporaryFile, TemporaryFile, mkdtemp
 import tempfile
+from types import NoneType
 import zipfile
 
 from django.http import HttpResponse
@@ -173,7 +174,10 @@ class AdvancedQuestionnaireSubmissionExporter():
         workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
         workbook = Workbook(workbook_file, options={'constant_memory': True})
 
-        visible_headers = self.get_visible_headers()
+        headers = self.get_visible_headers()
+        if isinstance(headers, NoneType):
+            headers = {}
+        visible_headers = headers
         create_multi_sheet_excel_headers(visible_headers, workbook)
 
         sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(visible_headers.iterkeys())])
@@ -218,11 +222,10 @@ class AdvancedQuestionnaireSubmissionExporter():
                         if child.get('visibility'):
                             self._check_and_append_column_header(headers_dict, child.get('data'), child.get('title'))
 
-                                
                 elif self.columns.get(key):
                     if self.columns.get(key).get('type') == 'field_set':
                         sheet_name = self.columns.get(key).get('code')
-                        headers_dict.update({sheet_name:excel_headers.get(sheet_name)})
+                        headers_dict.update({sheet_name: excel_headers.get(sheet_name)})
                     else:
                         self._check_and_append_column_header(headers_dict, key, self.columns.get(key).get('label'))
 
