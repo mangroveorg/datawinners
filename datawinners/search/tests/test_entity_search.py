@@ -11,11 +11,11 @@ class TestSubjectQueryResponseCreator(TestCase):
         query = Mock()
 
         query.values_dict.return_value = [{
-                                              "field_name1": "field_value11",
-                                              "field_name2": "field_value12"
+                                              "field_name1": ["field_value11"],
+                                              "field_name2": ["field_value12"]
                                           }, {
-                                              "field_name1": "field_value21",
-                                              "field_name2": "field_value22"
+                                              "field_name1": ["field_value21"],
+                                              "field_name2": ["field_value22"]
                                           }]
 
         actualSubjects = SubjectQueryResponseCreator().create_response(

@@ -39,7 +39,8 @@ class SubjectQueryResponseCreator():
         for res in query.values_dict(*required_field_names):
             subject = []
             for key in required_field_names:
-                subject.append(res.get(key))
+                value = res.get(key)[0] if res.get(key) and len(res.get(key)) > 0 else ""
+                subject.append(value)
             subjects.append(subject)
         return subjects
 
