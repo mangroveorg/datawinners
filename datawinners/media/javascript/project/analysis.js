@@ -20,7 +20,7 @@ $(document).ready(function () {
                             subject_type: gettext("Submission")
                         }, true),
                     "lengthMenu": gettext("Show") + ' _MENU_ ' + gettext("Submission"),
-                    "emptyTable": gettext("No data available in table")
+                    "emptyTable": gettext("Once your Data Senders have sent in Submissions, they will appear here.")
                 },
                 "scrollX": true,
                 "searching": false,
