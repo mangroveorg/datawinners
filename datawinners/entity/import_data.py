@@ -373,10 +373,14 @@ def get_entity_type_info(entity_type, manager=None):
     names = []
     codes = []
     labels = []
+    form_code = ''
+    fields_names, labels, codes = [], [], []
     if entity_type:
         form_model = get_form_model_by_entity_type(manager, entity_type_as_sequence(entity_type))
-        form_code = form_model.form_code
-        names, labels, codes = get_field_infos(form_model.fields)
+        if form_model:
+            form_code = form_model.form_code
+            names, labels, codes = get_field_infos(form_model.fields)
+
     return dict(entity=entity_type, code=form_code, names=names, labels=labels, codes=codes, data=[])
 
 

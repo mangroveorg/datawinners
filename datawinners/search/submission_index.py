@@ -1,6 +1,7 @@
 import json
 import logging
 from collections import OrderedDict
+from types import NoneType
 
 from babel.dates import format_datetime
 import elasticutils
@@ -179,7 +180,7 @@ class SubmissionSearchStore():
             key = es_unique_id_details_field_name(questionnaire_id + '_' + id_field.code)
             unique_field_mapping = {}
             entity_type = get_form_model_by_entity_type(self.dbm, [id_field.unique_id_type])
-            if entity_type is not None:
+            if entity_type is not None and not isinstance(entity_type, NoneType):
                 for field in entity_type.fields:
                     if field.type is "date":
                         unique_field_mapping.update({field.code: {'type': "date"}})
