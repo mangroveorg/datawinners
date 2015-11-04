@@ -570,6 +570,7 @@ class SubjectWebQuestionnaireRequest():
     def _update_form_context(self, form_context, questionnaire_form, web_view_enabled=True):
         form_context.update({'extension_template': 'project/subjects.html',
                              'form_code': self.subject_registration_code,
+                             'is_pro_sms': get_organization(self.request).is_pro_sms,
                              'entity_type': self.entity_type,
                              'project_id': self.questionnaire.id,
                              "questionnaire_form": questionnaire_form,
