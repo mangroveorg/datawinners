@@ -7,6 +7,7 @@ from datawinners.search.index_utils import es_unique_id_code_field_name, es_ques
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.utils import translate
 from mangrove.form_model.form_model import header_fields
+from mangrove.form_model.field import FieldSet
 
 
 class SubmissionHeader():
@@ -74,19 +75,26 @@ class SubmissionAnalysisHeader(SubmissionHeader):
         header_dict = OrderedDict()
         header_dict.update(self.update_static_header_info())
 
-        for field in self.form_model.fields:
-            if field.is_entity_field:
-                self.add_unique_id_in_header_dict(header_dict, field)
-            else:
-                key = es_questionnaire_field_name(field.code, self.form_model.id)
-                header_dict.update({key: field.name})
+        self._update_header_dict_from_fields(self.form_model.fields, header_dict)
 
         return header_dict
 
-    def add_unique_id_in_header_dict(self, header_dict, field):
+    def _update_header_dict_from_fields(self, fields, header_dict, parent_field_code=None):
+        for field in fields:
+            if field.is_entity_field:
+                self.add_unique_id_in_header_dict(header_dict, field, parent_field_code)
+            elif isinstance(field, FieldSet) and field.is_group():
+                self._update_header_dict_from_fields(field.fields, header_dict, field.code)
+            else:
+                key = es_questionnaire_field_name(field.code, self.form_model.id, parent_field_code=parent_field_code)
+                header_dict.update({key: field.name})
+
+
+    def add_unique_id_in_header_dict(self, header_dict, field, parent_field_code=None):
         from datawinners.entity.import_data import get_entity_type_info
         entity_type_info = get_entity_type_info(field.unique_id_type, self.form_model._dbm)
-        prefix = self.form_model.id + "_" + field.code + "_details"
+        parent_field_code = parent_field_code + "-" if parent_field_code else "_"
+        prefix = self.form_model.id + parent_field_code + field.code + "_details"
 
         for val in entity_type_info.get('codes'):
             if val in entity_type_info['codes']:

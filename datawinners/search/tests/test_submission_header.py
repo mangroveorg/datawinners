@@ -119,6 +119,23 @@ class TestSubmissionHeader(unittest.TestCase):
         self.assertListEqual(expected, headers)
 
 
+    def test_get_header_dict_from_form_model_with_group_field(self):
+        self.get_entity_type_info_mock.return_value = dict(entity='clinic', code='cli002', names=['name1', 'name2'],
+                                                          codes=['code1', 'code2'], labels=['label1','label2'], data=[])
+        self.form_model.fields = [self.repeat_field]
+        self.form_model._dbm = Mock(spec=FormModel)
+        
+        expected = OrderedDict([('date', u'Submission Date'), ('datasender.id', u'Data Sender Id'),
+            ('datasender.name', u'Data Sender Name'), ('datasender.mobile_number', u'Data Sender Mobile Number'),
+            ('datasender.email', u'Data Sender Email'), ('datasender.location', u'Data Sender Location'),
+            ('datasender.geo_code', u'Data Sender GPS Coordinates'), ('form_model_id_repeat-q1', 'text'),
+            ('form_model_idrepeat-q4_details.code1', 'label1'), ('form_model_idrepeat-q4_details.code2', 'label2')])
+
+        result = SubmissionAnalysisHeader(self.form_model).get_header_dict()
+
+        self.assertDictEqual(expected, result)
+
+
 class TestHeaderFactory(unittest.TestCase):
     def test_should_return_header_instance_based_on_submission_type(self):
         form_model = Mock(spec=FormModel)
