@@ -715,6 +715,13 @@ a.dialog-anchor {
     margin-left: 0;
     margin-top: 8px;
     border-top: 4px solid #0070AC;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    content: "";
+    display: inline-block;
+    height: 0;
+    vertical-align: top;
+    width: 0;
   }
 }
 
