@@ -59,9 +59,10 @@ class XFormSubmissionExporter(SubmissionExporter):
 
     def _add_files_to_temp(self, files, folder_name, submission_id):
         for name in files.keys():
-            temp_file = open(os.path.join(folder_name, name), "w")
-            temp_file.write(self.dbm.get_attachments(submission_id, name))
-            temp_file.close()
+            if not name.startswith('preview_'): #Ignoring image preview files in export
+                temp_file = open(os.path.join(folder_name, name), "w")
+                temp_file.write(self.dbm.get_attachments(submission_id, name))
+                temp_file.close()
 
     @staticmethod
     def add_directory_to_archive(archive, folder_name, media_folder):
