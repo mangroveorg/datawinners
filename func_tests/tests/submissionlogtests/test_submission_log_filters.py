@@ -27,13 +27,13 @@ class TestSubmissionLogFilter(unittest.TestCase):
         request = {"search_filters": '{"submissionDatePicker":"All Dates", "search_text":"", "uniqueIdFilters":{"clinic":"cid001", "waterpoint":""}}',
             'iDisplayStart':0,'iDisplayLength':25,'iSortCol_0':2
         }
-        res = self.client.post("/project/submissions/%s?type=analysis" % form_code, request)
+        res = self.client.post("/project/submissions/%s?type=success" % form_code, request)
         self.assertEqual(1, len(json.loads(res.content).get('data')), res.content)
 
         request = {"search_filters": '{"submissionDatePicker":"All Dates", "search_text":"", "uniqueIdFilters":{"clinic":"cid004", "waterpoint":""}}',
             'iDisplayStart':0,'iDisplayLength':25,'iSortCol_0':2
         }
-        res = self.client.post("/project/submissions/%s?type=analysis" % form_code, request)
+        res = self.client.post("/project/submissions/%s?type=success" % form_code, request)
         self.assertEqual(2, len(json.loads(res.content).get('data')), res.content)
 
 
