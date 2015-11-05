@@ -35,7 +35,8 @@ class TestAnalysisStats(unittest.TestCase):
         self.assertEquals(response['result'].get('Blood Group').get('field_type'), 'select1')
 
     def test_get_stats_with_date_filters(self):
-        data = {"search_filters": "{\"search_text\":\"\",\"dateQuestionFilters\":{\"q3\":\"10.03.2014 - 10.05.2014\", \"q4\":\"01.2015 - 02.2015\" }}"}
+#         data = {"search_filters": "{\"search_text\":\"\",\"dateQuestionFilters\":{\"q3\":\"10.03.2014 - 10.05.2014\", \"q4\":\"01.2015 - 02.2015\" }}"}
+        data={"dateQuestionFilters":"{\"q3\":{\"dateRange\":\"10.03.2014 - 10.05.2014\",\"searchKey\":\""+form_code+"_q3\" }, \"q4\":{\"dateRange\":\"01.2015 - 02.2015\",\"searchKey\":\""+form_code+"_q4\" }}"}
 
         res = self.client.post("/project/submissions/%s/analysis" % form_code, data)
 

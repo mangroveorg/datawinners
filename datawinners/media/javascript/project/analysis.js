@@ -451,6 +451,26 @@ $(document).ready(function () {
         var chartView = $('#chart_ol');
 
         self.generateCharts = function() {
+            var subject_filter = {};
+            $('input.subject_filter').each(function(index, element){
+                var entity_type = element.getAttribute('search-key');
+                var data = $(element).data('value');
+                if(data != '')
+                    subject_filter[entity_type] = data;
+            });
+            var date_filters = {};
+            $('input.date-question-filter').each(function(index, element){
+                var question_code = $(element).data('questionCode');
+                var searchKey = element.getAttribute('search-key');
+                var format = $(element).data('questionCode');
+                var question_code = element.getAttribute('data-question-code');
+                date_filters[question_code] = {
+                    'dateRange': element.value,
+                    'searchKey': searchKey,
+                    'format': $(element).data('format')
+                };
+            });
+        	
              $.ajax({
                     "dataType": 'json',
                     "type": "POST",
@@ -458,7 +478,9 @@ $(document).ready(function () {
                     "data": {
                 		data_sender_filter: $("#data_sender_filter").data('ds_id'),
                 		search_text: $('#search_text').val(),
-                		submission_date_range: $('#submissionDatePicker').val()
+                		submission_date_range: $('#submissionDatePicker').val(),
+			            uniqueIdFilters: JSON.stringify(subject_filter),
+			            dateQuestionFilters: JSON.stringify(date_filters)
                     },
                     "success": function (response) {
                            chartView.show();

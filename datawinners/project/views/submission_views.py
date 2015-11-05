@@ -669,13 +669,9 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 @csrf_view_exempt
 @valid_web_user
 def get_analysis_data(request, form_code):
-    dbm = get_database_manager(request.user)
-    questionnaire = get_project_by_code(dbm, form_code)
-    organization = get_organization(request)
-    local_time_delta = get_country_time_delta(organization.country)
-    pagination_params = _get_pagination_params(request)
-    sort_params = _get_sorting_params(request)
-    search_parameters = _get_search_params(request)
+    dbm, questionnaire, pagination_params, \
+    local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
+    
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta,
                                                       sort_params, search_parameters)
     data = _create_analysis_response(local_time_delta, search_results, questionnaire)
@@ -829,19 +825,6 @@ def get_facet_response_for_choice_fields(query_with_criteria, choice_fields, for
             facet_results.append(facet_result)
 
     return facet_results
-
-
-'''
-    dbm = get_database_manager(request.user)
-    questionnaire = get_project_by_code(dbm, form_code)
-    organization = get_organization(request)
-    local_time_delta = get_country_time_delta(organization.country)
-    pagination_params = _get_pagination_params(request)
-    sort_params = _get_sorting_params(request)
-    search_parameters = _get_search_params(request)
-    search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta, sort_params, search_parameters)
-
-'''
 
 
 def _get_all_criterias_from_request(request, form_code):
