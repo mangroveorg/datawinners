@@ -41,7 +41,7 @@ from datawinners.project.submission.submission_search import get_submissions_pag
 from datawinners.search.index_utils import es_questionnaire_field_name, es_unique_id_code_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
-from datawinners.search.submission_query import SubmissionQueryResponseCreator
+from datawinners.search.submission_query import SubmissionQueryResponseCreator, _format_values
 from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet, DateTimeField
 from mangrove.form_model.project import Project, get_project_by_code
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -753,13 +753,37 @@ def _transform_nested_question_answer(key, value_obj, record, questionnaire):
         updated_answer = ''
         for field in target_fields[0].fields:
             field_value = repeat_question_answer[field.code] if repeat_question_answer[field.code] else ''
-            str_value = ','.join(field_value) if isinstance(field_value, list) else field_value
+            str_value = _handle_field_types(field, field_value, record.meta.id, repeat_question_answer)
 
-            updated_answer += '"' + field.label + ':' + str_value + '"'
+            updated_answer += '<div><span>' + field.label + '</span><div>' + str_value + '</div></div>'
             updated_answer += ' '
         updated_answers += updated_answer + ';<br/><br/>'
 
     record[key] = updated_answers
+
+
+def _handle_field_types(field, field_value, submission_id, repeat_question_answer):
+    str_value = ''
+    if field.type == 'photo':
+        str_value = "<a href='/download/attachment/%s/%s'><img src='/download/attachment/%s/preview_%s' " \
+                    "alt=''/></a><br>" % (submission_id, field_value, submission_id, field_value)
+    elif field.type in ['audio', 'video']:
+        str_value = "<a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, field_value, field_value)
+    elif isinstance(field_value, list) and not field.type == 'field_set':
+        str_value = ','.join(field_value)
+    elif field.type == 'field_set':
+        sub_question_answer = repeat_question_answer[field.code] if repeat_question_answer[field.code] else ''
+        for answer in sub_question_answer:
+            for f in field.fields:
+                field_value = answer[f.code] if answer[f.code] else None
+                try:
+                    if field_value:
+                        return _handle_field_types(f, field_value, submission_id, answer)
+                except Exception as e:
+                    pass
+    else:
+        str_value = field_value
+    return str_value
 
 
 def _convert_to_localized_date_time(submission_date, local_time_delta):
