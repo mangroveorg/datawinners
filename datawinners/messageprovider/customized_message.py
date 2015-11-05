@@ -21,6 +21,7 @@ def get_customized_message_for_questionnaire(dbm, request, message_code, form_co
     else: # For questionnaire submission
         project = Project.from_form_model(form_model)
         message = _get_customized_message_for_language(dbm, project.language, message_code)
+        request['is_outgoing_reply_sms_enabled'] = project.is_outgoing_sms_replies_enabled
 
     if placeholder_dict:
         message = _replace_placeholders_in_message(message, placeholder_dict)
