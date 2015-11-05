@@ -4798,7 +4798,7 @@ msgstr ""
 msgid "https://www.youtube.com/embed/4QmTmcr56wU?autoplay=1"
 msgstr ""
 
-msgid "https://www.datawinners.com/dwcdt"
+msgid "https://www.datawinners.com/en/help-center/get-started/tips/"
 msgstr ""
 
 msgid "Get Started with DataWinners!"

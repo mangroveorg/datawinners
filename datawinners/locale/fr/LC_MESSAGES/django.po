@@ -6006,8 +6006,8 @@ msgstr "https://www.youtube.com/embed/imobK5Gk4wU?autoplay=1"
 msgid "https://www.youtube.com/embed/4QmTmcr56wU?autoplay=1"
 msgstr "https://www.youtube.com/embed/UWZPWQIuXUU?autoplay=1"
 
-msgid "https://www.datawinners.com/dwcdt"
-msgstr "https://www.datawinners.com/fr/dwcdt"
+msgid "https://www.datawinners.com/en/help-center/get-started/tips/"
+msgstr "https://www.datawinners.com/fr/centre-d-aide/demarrer/conseils/"
 
 msgid "Get Started with DataWinners!"
 msgstr "Démarrez avec DataWinners!"
