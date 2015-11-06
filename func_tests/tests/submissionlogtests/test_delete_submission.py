@@ -1,4 +1,5 @@
 import json
+import unittest
 import uuid
 
 from django.test import Client
