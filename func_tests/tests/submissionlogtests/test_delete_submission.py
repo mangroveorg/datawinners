@@ -1,5 +1,4 @@
 import json
-import unittest
 import uuid
 
 from django.test import Client
@@ -21,7 +20,6 @@ class TestDeleteSubmission(unittest.TestCase):
         self.form_model = self.project_info('cli001')
         self.form_model.is_poll = False
 
-    @unittest.skip('Failed only in jenkins - Temporarily skipping')
     def test_should_delete_all_submissions_given_delete_all_flag_true(self):
         unique_text = random_string()
         self.create_success_submissions(2, unique_text)
@@ -38,7 +36,6 @@ class TestDeleteSubmission(unittest.TestCase):
         self.assertEqual(json.loads(resp.content)['success'], True)
         self.assertEqual(len(self.get_submissions('all', unique_text)), 0)
 
-    @unittest.skip('Failed only in jenkins - Temporarily skipping')
     def test_should_delete_only_success_submissions_given_delete_all_flag_true_and_submission_type_success(self):
         unique_text = random_string()
         self.create_success_submissions(2, unique_text)

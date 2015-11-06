@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
-import unittest
 import uuid
 
 from nose.plugins.attrib import attr
@@ -322,7 +321,6 @@ class TestSubmissionLog(HeadlessRunnerTest):
         self.verify_sort_data_by_date(submission_log_page, 5, less_than_equal, date_format='%d.%m.%Y')
 
     @attr('functional_test')
-    @unittest.skip('Failed only in jenkins - Temporarily skipping')
     def test_should_delete_submission(self):
         send_valid_sms_with(VALID_DATA_FOR_DELETE)
 
