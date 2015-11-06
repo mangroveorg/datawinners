@@ -47,6 +47,8 @@ def get_header_style(workbook):
 def create_multi_sheet_excel_headers(excel_headers, workbook):
 
     for sheet_name, headers in excel_headers.iteritems():
+        if not headers:
+            continue
         ws = workbook.add_worksheet(name=sheet_name)
         worksheet_add_header(ws, headers, workbook, get_header_style(workbook))
 
@@ -55,6 +57,8 @@ def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict
     date_formats = {}
 
     for sheet_name, data in raw_data.iteritems():
+        if sheet_name not in excel_headers:
+            continue
         ws = workbook.worksheets()[excel_headers[sheet_name]]
         for row in raw_data[sheet_name]:
             for column, val in enumerate(row):

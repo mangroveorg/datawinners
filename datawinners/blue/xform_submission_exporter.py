@@ -235,7 +235,7 @@ class AdvancedQuestionnaireSubmissionExporter():
         return headers_dict
 
     def _check_and_append_column_header(self, headers_dict, key, label):
-        if self.columns.get(key).get('type') == GEOCODE_FIELD_CODE:
+        if self.columns.get(key) and self.columns.get(key).get('type') == GEOCODE_FIELD_CODE:
             headers_dict.get('main').append(label + " Latitude")
             headers_dict.get('main').append(label + " Longitude")
         else:
