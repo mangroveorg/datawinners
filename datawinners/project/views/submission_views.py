@@ -125,7 +125,7 @@ def _get_date_fields_info(questionnaire):
 
 def _is_unique_id_type_present(fields_array, unique_id_type):
     return len(
-        [item for item in fields_array if item['type'] == 'unique_id' and item['entity_type'] == unique_id_type]) > 0
+            [item for item in fields_array if item.get('type') == 'unique_id' and item.get('entity_type') == unique_id_type]) > 0
 
 
 def _field_code(field, parent_code):
