@@ -48,4 +48,13 @@ class DataAnalysisPage(SubmissionLogPage):
         return self.driver.find_visible_element(CHART_ELEMENT)
 
     def get_chart_question_title(self, chart_number):
-        return self.driver.find(by_css('#chart_ol li:nth-of-type('+ chart_number +') h6')).text
+        return self.driver.find(by_css('#chart_ol li:nth-of-type(' + chart_number + ') h6')).text
+
+    def get_number_of_columns(self, row):
+        columns = self.driver.find_elements_(by_xpath(".//*[@id='analysis_table']/tbody/tr[%s]/td" % row))
+        return len(columns)
+
+    def get_cell_value(self, row, column):
+        # row+1 for ignoring extra row for select all msg
+        return self.driver.find(
+            by_xpath(".//*[@id='analysis_table']/tbody/tr[%s]/td[%s]" % (row, column))).text
