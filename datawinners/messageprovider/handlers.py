@@ -39,7 +39,7 @@ def incorrect_number_of_answers_for_submission_handler(dbm, form_code, request):
     message = get_customized_message_for_questionnaire(dbm, request, "reply_incorrect_number_of_responses",
                                                              form_code)
     create_failure_log(message, request)
-    request.update({'is_outgoing_reply_sms_enabled':False})
+    request.update({'is_outgoing_reply_sms_enabled':True})
     return message
 
 def incorrect_number_of_answers_for_uid_registration_handler(dbm,form_code,request):
