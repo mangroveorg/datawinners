@@ -1,7 +1,7 @@
 from elasticsearch import Elasticsearch, helpers
 from elasticsearch_dsl import Search, Q, F
 import elasticutils
-from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter, DateRangeFilter
+from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.query import ElasticUtilsHelper
 from datawinners.search.submission_headers import HeaderFactory
@@ -133,18 +133,9 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
     search = search.query('match', status='Success')
     search = search.query('term', void=False)
     if search_parameters.get('data_sender_filter'):
-        search = search.filter(F("term", 
-                              **{"ds_id_exact": search_parameters.get('data_sender_filter')})
-                              )
-    if search_parameters.get('unique_id_filters'):
-        for key, value in search_parameters.get('unique_id_filters').iteritems():
-            search = search.query("term",
-                              **{key: value})
-    if search_parameters.get('date_question_filters'):
-        for key, values in search_parameters.get('date_question_filters').iteritems():
-            query = DateQuestionRangeFilter(values['dateRange'], form_model, key).build_filter_query()
-            if query is not None:
-                search = search.query(query)
+        search = search.query(
+                              "term", 
+                              **{"datasender.id": search_parameters.get('data_sender_filter')})
     if search_parameters.get('search_text'):
         query_text_escaped = ElasticUtilsHelper().replace_special_chars(search_parameters.get('search_text'))
         search = search.query("query_string", query=query_text_escaped)
