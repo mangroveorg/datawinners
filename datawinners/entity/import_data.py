@@ -45,6 +45,7 @@ from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTri
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.questionnaire.helper import get_location_field_code
 from mangrove.transport.player.parser import XlsxParser
+from django.db import transaction
 
 
 class FormCodeDoesNotMatchException(Exception):
@@ -156,21 +157,22 @@ class FilePlayer(Player):
     def _import_submission(self, organization, values, form_model=None):
         self._append_country_for_location_field(form_model, values, organization)
         try:
-            if filter(lambda x: len(x), values.values()).__len__() == 0:
-                raise EmptyRowException()
-            values = self._process(form_model, values)
-            is_reporter = case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER
-            if is_reporter:
-                values['is_data_sender'] = 'True' if self.is_datasender else 'False'
-                response = self._import_data_sender(form_model, organization, values)
-            else:
-                SubjectTemplateValidator(form_model).validate(values)
-                response = self.submit(form_model, values, [])
-
-            if not response.success:
-                response.errors = dict(error=response.errors, row=values)
-
-            return response
+            with transaction.commit_on_success():
+                if filter(lambda x: len(x), values.values()).__len__() == 0:
+                    raise EmptyRowException()
+                values = self._process(form_model, values)
+                is_reporter = case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER
+                if is_reporter:
+                    values['is_data_sender'] = 'True' if self.is_datasender else 'False'
+                    response = self._import_data_sender(form_model, organization, values)
+                else:
+                    SubjectTemplateValidator(form_model).validate(values)
+                    response = self.submit(form_model, values, [])
+    
+                if not response.success:
+                    response.errors = dict(error=response.errors, row=values)
+    
+                return response
         except DataObjectAlreadyExists as e:
             if is_reporter:
                 msg = _("%s with Unique ID Number = %s already exists.") % (e.data[2], e.data[1]) \
