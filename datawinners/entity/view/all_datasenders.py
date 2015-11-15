@@ -41,7 +41,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_QUESTIONNAIRES, \
     REMOVED_DATA_SENDER_TO_QUESTIONNAIRES, DELETED_DATA_SENDERS
 from mangrove.transport.player.parser import XlsxDataSenderParser
-
+from django.db import transaction
 
 class AllDataSendersView(TemplateView):
     template_name = 'entity/all_datasenders.html'
@@ -87,6 +87,7 @@ class AllDataSendersView(TemplateView):
         imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
         convert_open_submissions_to_registered_submissions.delay(manager.database_name, imported_datasenders_ids)
 
+    @transaction.commit_manually
     def post(self, request, *args, **kwargs):
         parser_dict = {'.xls': XlsDatasenderParser, '.xlsx': XlsxDataSenderParser}
         manager = get_database_manager(request.user)
@@ -99,6 +100,7 @@ class AllDataSendersView(TemplateView):
         self._convert_anonymous_submissions_to_registered(imported_data_senders, manager)
 
         self.update_activity_log(request, successful_imports)
+        transaction.commit()
 
         return HttpResponse(json.dumps(
             {

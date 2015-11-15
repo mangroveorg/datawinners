@@ -127,6 +127,8 @@ class FilePlayer(Player):
                 data_sender.save(force_insert=True)
         except IntegrityError:
             raise MultipleReportersForANumberException(mobile_number)
+        except Exception as ex:
+            raise ex
 
         if len(",".join(values["l"])) > 500:
             raise MangroveException("Location Name cannot exceed 500 characters.")
@@ -156,24 +158,25 @@ class FilePlayer(Player):
 
     def _import_submission(self, organization, values, form_model=None):
         self._append_country_for_location_field(form_model, values, organization)
+        sid = transaction.savepoint()
         try:
-            with transaction.commit_on_success():
-                if filter(lambda x: len(x), values.values()).__len__() == 0:
-                    raise EmptyRowException()
-                values = self._process(form_model, values)
-                is_reporter = case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER
-                if is_reporter:
-                    values['is_data_sender'] = 'True' if self.is_datasender else 'False'
-                    response = self._import_data_sender(form_model, organization, values)
-                else:
-                    SubjectTemplateValidator(form_model).validate(values)
-                    response = self.submit(form_model, values, [])
-    
-                if not response.success:
-                    response.errors = dict(error=response.errors, row=values)
-    
-                return response
+            if filter(lambda x: len(x), values.values()).__len__() == 0:
+                raise EmptyRowException()
+            values = self._process(form_model, values)
+            is_reporter = case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER
+            if is_reporter:
+                values['is_data_sender'] = 'True' if self.is_datasender else 'False'
+                response = self._import_data_sender(form_model, organization, values)
+            else:
+                SubjectTemplateValidator(form_model).validate(values)
+                response = self.submit(form_model, values, [])
+
+            if not response.success:
+                response.errors = dict(error=response.errors, row=values)
+            transaction.savepoint_commit(sid)    
+            return response
         except DataObjectAlreadyExists as e:
+            transaction.savepoint_rollback(sid)
             if is_reporter:
                 msg = _("%s with Unique ID Number = %s already exists.") % (e.data[2], e.data[1]) \
                     if e.data[0] == 'Unique ID Number' \
@@ -186,8 +189,10 @@ class FilePlayer(Player):
             return self._appendFailedResponse(msg,
                                               values=values)
         except EmptyRowException as e:
+            transaction.savepoint_rollback(sid)
             return self._appendFailedResponse(e.message)
         except (InvalidEmailException, MangroveException, NameNotFoundException, ValidationError) as e:
+            transaction.savepoint_rollback(sid)
             return self._appendFailedResponse(e.message, values=values)
 
     def _get_registered_emails(self):
@@ -221,6 +226,7 @@ class FilePlayer(Player):
         for (form_code, values) in rows:
             responses.append(
                 self._import_submission(organization, values, form_model))
+            
         return responses
 
 
@@ -467,6 +473,7 @@ def import_data(request, manager, default_parser=None, form_code=None, is_datase
         failure_imports = tabulate_failures(failures, manager)
         total = len(failure_imports) + successful_import_count
         response_message = ugettext_lazy('%s of %s records uploaded') % (successful_import_count, total)
+
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
