@@ -125,15 +125,14 @@ def _get_date_fields_info(questionnaire):
 
 def _is_unique_id_type_present(fields_array, unique_id_type):
     return len(
-            [item for item in fields_array if item.get('type') == 'unique_id' and item.get('entity_type') == unique_id_type]) > 0
+        [item for item in fields_array if
+         item.get('type') == 'unique_id' and item.get('entity_type') == unique_id_type]) > 0
 
 
 def _field_code(field, parent_code):
     if parent_code:
         return parent_code + '----' + field.code
     return field.code
-
-
 
 
 def get_filterable_field_details(field, filterable_fields, parent_code):
@@ -160,7 +159,6 @@ def get_filterable_field_details(field, filterable_fields, parent_code):
                 'code': _field_code(field, parent_code),
                 'entity_type': field.unique_id_type,
             }
-
 
 
 def get_filterable_fields(fields, filterable_fields, parent_code=None):
@@ -226,6 +224,8 @@ def analysis(request, project_id, questionnaire_code=None):
     if request.method == 'GET':
         questionnaire = Project.get(manager, project_id)
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        filterable_fields = get_filterable_fields(questionnaire.fields, [])
+        first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
         if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
 
@@ -234,6 +234,8 @@ def analysis(request, project_id, questionnaire_code=None):
             "user_email": request.user.email,
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             'is_pro_sms': get_organization(request).is_pro_sms,
+            'filterable_fields': filterable_fields,
+            'first_filterable_field': first_filterable_fields,
             "is_media_field_present": questionnaire.is_media_type_fields_present,
             'has_chart': (len(questionnaire.choice_fields) > 0) & (not bool(questionnaire.xform)),
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
@@ -657,7 +659,7 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 def get_analysis_data(request, form_code):
     dbm, questionnaire, pagination_params, \
     local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
-    
+
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta,
                                                       sort_params, search_parameters)
     data = _create_analysis_response(local_time_delta, search_results, questionnaire)
@@ -676,6 +678,8 @@ def _get_search_params(request):
     search_parameters['data_sender_filter'] = request.POST.get('data_sender_filter')
     search_parameters['search_text'] = request.POST.get('search_text')
     search_parameters['submission_date_range'] = request.POST.get('submission_date_range')
+    search_parameters['unique_id_filters'] = json.loads(request.POST.get('uniqueIdFilters'))
+    search_parameters['date_question_filters'] = json.loads(request.POST.get('dateQuestionFilters'))
     return search_parameters
 
 

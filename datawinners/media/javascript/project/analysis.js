@@ -33,6 +33,25 @@ $(document).ready(function () {
                 		d.data_sender_filter = $("#data_sender_filter").data('ds_id');
                 		d.search_text = $('#search_text').val();
                 		d.submission_date_range = $('#submissionDatePicker').val();
+                		var subject_filter = {};
+                        $('input.subject_filter').each(function(index, element){
+                            var entity_type = element.getAttribute('entity_type');
+                            var data = $(element).data('value');
+                            if(data != '')
+                                subject_filter[entity_type] = data;
+                        });
+                        d.uniqueIdFilters = JSON.stringify(subject_filter);
+                        var date_filters = {};
+                        $('input.date-question-filter').each(function(index, element){
+                            var question_code = $(element).data('questionCode');
+                            var format = $(element).data('questionCode');
+                            var question_code = element.getAttribute('data-question-code');
+                            date_filters[question_code] = {
+                                'dateRange': element.value,
+                                'format': $(element).data('format')
+                            };
+                        });
+                        d.dateQuestionFilters = JSON.stringify(date_filters);
                     },
                     beforeSend: function() {
                         $analysisLoader.show();

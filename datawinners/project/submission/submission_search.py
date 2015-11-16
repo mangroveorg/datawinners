@@ -136,6 +136,13 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
         search = search.query(
                               "term", 
                               **{"datasender.id": search_parameters.get('data_sender_filter')})
+    if search_parameters.get('unique_id_filters'):
+        search = _add_unique_id_filters(form_model, search_parameters.get('unique_id_filters'), search)
+    if search_parameters.get('date_question_filters'):
+        for key, values in search_parameters.get('date_question_filters').iteritems():
+            query = DateQuestionRangeFilter(values['dateRange'], form_model, key).build_filter_query()
+            if query is not None:
+                search = search.query(query)
     if search_parameters.get('search_text'):
         query_text_escaped = ElasticUtilsHelper().replace_special_chars(search_parameters.get('search_text'))
         search = search.query("query_string", query=query_text_escaped)
