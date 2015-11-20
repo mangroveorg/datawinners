@@ -128,7 +128,7 @@ def _is_pm_data_sender_for_project(user, project_id):
 
 def authenticate_api_user(username, password):
     user = authenticate(username=username, password=password)
-    if is_sms_api_user(user):
+    if user is not None and is_sms_api_user(user):
         return user
     return None
 
