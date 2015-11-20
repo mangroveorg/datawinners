@@ -68,7 +68,7 @@ class SubmissionSearchStore():
     def _has_fields_changed(self, mapping, mapping_old):
         old_mapping_properties = mapping_old.values()[0].values()[0].values()[0]['properties']
         new_fields_with_format = set(
-            [k + f["fields"][k + "_value"]["type"] for k, f in mapping.values()[0]['properties'].items()])
+            [k + f["fields"][k + "_value"]["type"] for k, f in mapping.values()[0]['properties'].items() if f.get('fields')])
         old_fields_with_format = set(
             [k + f["fields"][k + "_value"]["type"] for k, f in old_mapping_properties.items() if
              f.get("fields")])
@@ -82,7 +82,7 @@ class SubmissionSearchStore():
         new_q_codes = new_mapping_properties.keys()
         new_date_fields_with_format = set(
             [k + f["fields"][k + "_value"]["format"] for k, f in new_mapping_properties.items()
-             if f["fields"][k + "_value"]["type"] == "date" and k in old_q_codes])
+             if f.get('fields') and f["fields"][k + "_value"]["type"] == "date" and k in old_q_codes])
         old_date_fields_with_format = set(
             [k + f["fields"][k + "_value"]["format"] for k, f in old_mapping_properties.items()
              if f.get('fields') and f["fields"][k + "_value"]["type"] == "date" and k in new_q_codes])
