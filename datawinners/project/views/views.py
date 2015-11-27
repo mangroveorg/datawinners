@@ -67,7 +67,7 @@ from datawinners.entity.views import save_questionnaire as subject_save_question
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import helper
 from datawinners.project.utils import make_project_links
-from datawinners.project.helper import is_project_exist, get_feed_dictionary
+from datawinners.project.helper import is_project_exist, get_feed_dictionary, get_field_instruction
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE, \
     DELETED_POLL
@@ -792,6 +792,7 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
         questions = []
         fields = questionnaire.fields
         for field in fields:
+            field.set_instruction(get_field_instruction(field))
             question = helper.get_preview_for_field(field)
             questions.append(question)
         example_sms = "%s" % (

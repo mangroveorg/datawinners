@@ -17,7 +17,8 @@ from datawinners.utils import get_organization_from_manager
 from mangrove.datastore.documents import ProjectDocument
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
+from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField, SelectField, \
+    HierarchyField, TelephoneNumberField, UniqueIdField, ShortCodeField
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_sequence, sequence_to_str
@@ -123,6 +124,53 @@ def get_preview_for_field(field):
 
 def _get_instruction_text(field):
     return field.instruction
+
+
+def get_field_instruction(field):
+    if type(field) == ShortCodeField and field.constraint[0].max == 20:
+        instruction = ugettext("Answer must be 20 characters maximum")
+
+    if type(field) == TextField:
+        constraint = field.constraints
+        constraint = constraint[0]
+
+        if constraint.max:
+            instruction = ugettext("Answer must be a word %d characters maximum") % int(constraint.max)
+        else:
+            instruction = ugettext("Answer must be a word")
+
+    if type(field) == TelephoneNumberField:
+        instruction = ugettext("Answer must be country code plus telephone number. Example: 261333745269")
+
+    if type(field) == HierarchyField:
+        instruction = ugettext("Answer must be a word")
+        
+    if type(field) == IntegerField:
+        instruction = ugettext("Answer must be a number.")
+        constraint = field.constraints
+        if len(constraint):
+            constraint = constraint[0]
+            if constraint.max and constraint.min:
+                instruction = ugettext("Answer must be a number between %d-%d.") % (int(constraint.min), int(constraint.max))
+            elif constraint.min:
+                instruction = ugettext("Answer must be a number. The minimum is %d.") % int(constraint.min)
+            elif constraint.max:
+                instruction = ugettext("Answer must be a number. The maximum is %d.") % int(constraint.max)
+
+    if type(field) == DateField:
+        instruction = [ugettext("Answer must be a date in the following format: %s. Example: %s")
+                       % (field.date_format, field.example)]
+    if type(field) == GeoCodeField:
+        instruction = ugettext("Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547")
+    if type(field) == SelectField:
+        if field.is_single_select:
+            instruction = ugettext("Choose 1 answer from the list. Example: a")
+        else:
+            instruction = ugettext("Choose 1 or more answers from the list. Example: a or ab ")
+    if type(field) == UniqueIdField:
+        instruction = ugettext("Answer must be the Identification Number of the %s you are reporting on.") \
+        % field.unique_id_type
+    return instruction
 
 
 def _update_survey_responses(manager, questionnaire, void):
