@@ -148,10 +148,6 @@ function drawPie(answers, total, $locator, baseColor, colorScaleFactor) {
                 pie:{
                     show:true,
                     radius:.9,
-                    combine: {
-                        color: '#999',
-                        threshold: 0.05
-                    },
                     label:{
                         show:true,
                         radius:1,
