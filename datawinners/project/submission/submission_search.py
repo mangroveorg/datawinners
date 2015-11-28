@@ -221,10 +221,11 @@ def get_aggregations_for_choice_fields(dbm, form_model,
     search = _create_search(dbm, form_model, local_time_delta, 
                             pagination_params, sort_params, 
                             search_parameters)
+    search = search.params(search_type="count")
     field_names = []
     for field in form_model.choice_fields:
         field_name = es_questionnaire_field_name(field.code, form_model.id)
-        a = A("terms", field=field_name+'_exact')
+        a = A("terms", field=field_name+'_exact', size=0)
         search.aggs.bucket(field_name, a)
         field_names.append(field_name)
     search_results = search.execute()
