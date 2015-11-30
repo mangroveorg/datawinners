@@ -1,6 +1,6 @@
 from django.forms import Form, CharField, HiddenInput, RegexField
 from django.utils.translation import ugettext_lazy as _
-from datawinners.entity.helper import get_country_appended_location
+from datawinners.entity.helper import get_country_appended_location, get_subject_field_instruction
 from datawinners.project.questionnaire_fields import FormField, css_class
 from datawinners.questionnaire.helper import get_location_field_code
 from mangrove.form_model.field import UniqueIdField
@@ -26,6 +26,7 @@ class SubjectRegistrationForm(WebForm):
             if field.is_entity_field:
                 self.fields[field.code] = self.regex_field(field)
             else:
+                field.set_instruction(get_subject_field_instruction(field, entity_type=self.form_model.entity_type[0]))
                 self.fields[field.code] = FormField().create(field)
 
     def regex_field(self, field):
