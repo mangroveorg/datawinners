@@ -296,7 +296,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         dialog_title = self.all_datasenders_page.add_contacts_to_new_group("New Group")
         self.assertEqual(dialog_title, 'Add to a new Group')
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_show_extra_informations_for_empty_group(self):
         group_name = "My new Group"
         add_group_page = self.all_datasenders_page.go_to_add_group_page()
