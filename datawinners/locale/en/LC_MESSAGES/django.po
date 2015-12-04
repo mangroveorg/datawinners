@@ -4926,3 +4926,15 @@ msgstr "Customize View"
 
 msgid "analysis_table_empty_text3"
 msgstr "to add columns."
+
+msgid "Add existing Contacts from the"
+msgstr ""
+
+msgid "All Contacts view"
+msgstr ""
+
+msgid "Import new Contacts"
+msgstr ""
+
+msgid "Add a new Contact"
+msgstr ""

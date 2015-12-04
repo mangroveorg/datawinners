@@ -16,6 +16,7 @@ from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE, UNDELETE_PROJE
 from tests.alldatasenderstests.all_data_sender_data import *
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.testsettings import UI_TEST_TIMEOUT
+from pages.warningdialog.warning_dialog import WarningDialog
 
 
 class TestAllDataSenders(HeadlessRunnerTest):
@@ -288,3 +289,28 @@ class TestAllDataSenders(HeadlessRunnerTest):
         all_datasender_page.select_a_data_sender_by_id(self.datasender_id_with_web_access)
 
         self.assertIn(project_name.lower(), all_datasender_page.get_project_names(self.datasender_id_with_web_access))
+
+    @attr('functional_test')
+    def test_should_select_contacts_and_and_to_new_group(self):
+        self.all_datasenders_page.click_checkall_checkbox()
+        dialog_title = self.all_datasenders_page.add_contacts_to_new_group("New Group")
+        self.assertEqual(dialog_title, 'Add to a new Group')
+
+    @attr('functional_testa')
+    def test_should_show_extra_informations_for_empty_group(self):
+        group_name = "My new Group"
+        add_group_page = self.all_datasenders_page.go_to_add_group_page()
+        page_title = add_group_page.create_a_group(group_name)
+        self.assertEquals(page_title, 'Add a Group')
+        self.all_datasenders_page.select_group_by_name(group_name)
+        self.assertEqual(self.all_datasenders_page.is_instruction_displayed(), instructions_expected)
+        
+        self.assertEqual(group_name, self.all_datasenders_page.get_name_of_selected_group())
+        self.all_datasenders_page.click_on_all_contacts_view_link()
+        self.assertEqual(u'All Contacts', self.all_datasenders_page.get_name_of_selected_group())
+
+        self.all_datasenders_page.select_group_by_name(group_name)
+        self.assertTrue(self.all_datasenders_page.is_add_ds_lightbox_open_after_a_click_in_the_instructions())
+
+        self.assertTrue(self.all_datasenders_page.is_import_lightbox_open_after_a_click_in_the_instructions())
+        

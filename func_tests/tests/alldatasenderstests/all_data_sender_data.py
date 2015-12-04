@@ -118,4 +118,6 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: True,
                                 {QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
                                    DATE_FORMAT: DD_MM_YYYY}]}
 
-
+instructions_expected = """Once you have added Contacts to your Group, they will appear here.
+\nTo get started\nAdd existing Contacts from the All Contacts view.
+Add a new Contact or Import new Contacts."""

@@ -31,6 +31,7 @@ function ContactsGroupViewModel() {
     self.newGroupName = DW.ko.createValidatableObservable({value: ""});
     self.selectedGroup = ko.observable();
     self.isOpen = ko.observable(false);
+    self.dialogTitle = ko.observable('Add a Group');
     self.disable_button = ko.observable(false);
     self.disable_attr = ko.observable(null);
     self.addGroupDialogContent = ko.observable($('#add_group_dialog_content').html());
@@ -134,7 +135,11 @@ function ContactsGroupViewModel() {
             if (response.success) {
                 self.groups.push(newGroup);
                 self.show_html_success_message(response.message);
-                self.close_popup();
+                if (self.create_and_add){
+                    self.addSelectedToNewlyCreatedGroup(newGroup.name());
+                } else {
+                    self.close_popup();
+                }
                 DW.trackEvent('groups', 'new-group-created');
             }
             else {
@@ -142,6 +147,32 @@ function ContactsGroupViewModel() {
             }
         });
     };
+
+    self.addSelectedToNewlyCreatedGroup = function(new_group_name) {
+        var allGroupsSection = $("#all_groups");
+        var contacts = allGroupsSection.data()['selected_ids'];
+        var all_selected = allGroupsSection.data()['all_selected'];
+
+        $.ajax({
+            url: update_groups_url,
+            type: "POST",
+            headers: { "X-CSRFToken": $.cookie('csrftoken') },
+            'data': {
+                'group-names': JSON.stringify([new_group_name]),
+                'contact_ids':JSON.stringify(contacts),
+                'all_selected' : all_selected,
+                'current_group_name': selected_group,
+                'action': 'add',
+                'search_query': $(".dataTables_filter input").val()
+        }}).done(function(response){
+            $("#datasender_table").dataTable().fnReloadAjax();
+            DW.flashMessage(response.message, response.success);
+            $("#all_groups_block").dialog("close");
+            DW.trackEvent('groups', 'add-contacts');
+            self.close_popup();
+            self.setSelectedGroupToDefault();
+        });
+    }
 
     self.showDeleteGroupConfirmation = function(groupToDelete){
         var groupDeleteDialog = $("#group-delete-confirmation-section");
@@ -174,6 +205,7 @@ function ContactsGroupViewModel() {
     };
 
     self.close_popup = function () {
+        self.create_and_add = false;
         self.newGroupName('');
         self.newGroupName.clearError();
         self.isOpen(false);
@@ -225,6 +257,9 @@ function ContactsGroupViewModel() {
     };
 
     self.open = function () {
+        var dialogTitle = (self.create_and_add)? 'Add to a new Group':'Add a Group';
+        $(".add_group_dialog").dialog({title: gettext(dialogTitle)});
+
         self.isOpen(true);
         self.newGroupName('');
         self.newGroupName.clearError();

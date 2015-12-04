@@ -110,6 +110,15 @@ DW.DataSenderActionHandler = function () {
             }
         );
     };
+
+    this["addToNewGroup"] = function(table, selectedIds, all_selected) {
+        window.groupViewModel.create_and_add = true;
+        window.groupViewModel.open();
+        var allGroupsSection = $("#all_groups");
+        allGroupsSection.html("");
+        allGroupsSection.data("selected_ids", selectedIds);
+        allGroupsSection.data("all_selected", all_selected);
+    }
 };
 
 function init_add_remove_from_project() {
@@ -415,6 +424,10 @@ function register_datasender(table) {
             new DW.InitializeEditDataSender().init();
         }
     });
+}
+
+function open_import_contacts_dialog(){
+    $('#import-datasenders').trigger('click');
 }
 
 function populate_dialog_box_for_web_users(table, all_selected) {

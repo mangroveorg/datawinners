@@ -1628,3 +1628,6 @@ msgstr "Pour créer le Sondage, vous devez tout d'abord désactiver le sondage a
 
 msgid "Your change(s) will be lost"
 msgstr "Vos modifications seront perdues"
+
+msgid "Add to a new Group"
+msgstr "Ajouter à un nouveau Groupe"

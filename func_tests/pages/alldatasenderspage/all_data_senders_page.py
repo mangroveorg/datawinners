@@ -9,6 +9,7 @@ from pages.page import Page
 from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from tests.alldatasenderstests.all_data_sender_data import *
 from tests.testsettings import UI_TEST_TIMEOUT
+from testdata.constants import ADD_TO_NEW_GROUP
 
 
 class AllDataSendersPage(Page):
@@ -302,3 +303,39 @@ class AllDataSendersPage(Page):
         add_group_page.add_or_remove_contact_to_group(group_name)
         add_group_page.click_on_contact_to_group_button()
         add_group_page.wait_for_table_to_load()
+
+
+    def add_contacts_to_new_group(self, group_name):
+        self.perform_datasender_action(ADD_TO_NEW_GROUP)
+        add_group_page = AddGroupPage(self.driver)
+        return add_group_page.create_a_group(group_name)
+
+    def is_instruction_displayed(self):
+        element = self.driver.find(by_css(".dataTables_empty"))
+        return element.text
+
+    def click_on_all_contacts_view_link(self):
+        self.driver.find(by_css(".dataTables_empty ul li:first-child a")).click()
+
+    def get_name_of_selected_group(self):
+        return self.driver.find(by_css("#group_panel li.selected div.contact_group_name b")).text
+
+    def is_import_lightbox_open_after_a_click_in_the_instructions(self):
+        link_locator = ".dataTables_empty ul li:nth-child(2) a:nth-child(2)"
+        dialog_title_locator = "#ui-dialog-title-popup-import"
+        close_dialog_locator = "a.close_import_dialog"
+        return self.check_links_should_open_dialog(link_locator, dialog_title_locator, close_dialog_locator)
+
+    def is_add_ds_lightbox_open_after_a_click_in_the_instructions(self):
+        link_locator = ".dataTables_empty ul li:nth-child(2) a:nth-child(1)"
+        dialog_title_locator = "#ui-dialog-title-datasender-popup"
+        close_dialog_locator = "a#cancel"
+        return self.check_links_should_open_dialog(link_locator, dialog_title_locator, close_dialog_locator)
+
+    def check_links_should_open_dialog(self, link_locator, dialog_title_locator, close_dialog_locator):
+        self.driver.find(by_css(link_locator)).click()
+        self.driver.wait_for_element(5, by_css(dialog_title_locator))
+        value = self.driver.find(by_css(dialog_title_locator)).is_displayed()
+        self.driver.find(by_css(close_dialog_locator)).click()
+        return value
+        

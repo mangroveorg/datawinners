@@ -6188,5 +6188,15 @@ msgstr "Personnalisez l'affichage"
 msgid "analysis_table_empty_text3"
 msgstr "pour ajouter des colonnes."
 
+msgid "Add existing Contacts from the"
+msgstr "Ajouter des Contacts existants à partir de"
 
+msgid "All Contacts view"
+msgstr "Tous les Contacts"
+
+msgid "Import new Contacts"
+msgstr "Importer de nouveaux Contacts"
+
+msgid "Add a new Contact"
+msgstr "Ajouter un nouveau Contact"
 

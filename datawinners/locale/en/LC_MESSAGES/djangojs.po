@@ -1202,3 +1202,6 @@ msgstr ""
 
 msgid "Add to Questionnaires"
 msgstr ""
+
+msgid "Add to a new Group"
+msgstr ""
