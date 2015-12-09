@@ -6200,3 +6200,5 @@ msgstr "Importer de nouveaux Contacts"
 msgid "Add a new Contact"
 msgstr "Ajouter un nouveau Contact"
 
+msgid "The template you are using is not correct, please use DataWinners template and try again"
+msgstr ""

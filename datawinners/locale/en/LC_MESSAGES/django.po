@@ -4938,3 +4938,6 @@ msgstr ""
 
 msgid "Add a new Contact"
 msgstr ""
+
+msgid "The template you are using is not correct, please use DataWinners template and try again"
+msgstr ""

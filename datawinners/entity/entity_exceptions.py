@@ -4,3 +4,11 @@
 class InvalidFileFormatException(Exception):
     def __str__(self):
         return self.message
+
+class CodeSheetMissingException(Exception):
+    def __str__(self):
+        return self.message
+
+class LessNumberOfSheetsException(Exception):
+    def __str__(self):
+        return self.message
