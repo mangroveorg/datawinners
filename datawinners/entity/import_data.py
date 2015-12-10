@@ -21,7 +21,8 @@ from datawinners.entity.helper import get_country_appended_location, entity_type
 
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.entity.entity_exceptions import InvalidFileFormatException, CodeSheetMissingException, LessNumberOfSheetsException
+from datawinners.entity.entity_exceptions import InvalidFileFormatException
+from mangrove.errors.MangroveException import CodeSheetMissingException, LessNumberOfSheetsException
 from mangrove.datastore.entity import get_all_entities, Entity
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, EmptyRowException, \
     MultipleReportersForANumberException, MobileNumberMandatoryException
@@ -475,8 +476,6 @@ def import_data(request, manager, default_parser=None, form_code=None, is_datase
         response_message = ugettext_lazy('%s of %s records uploaded') % (successful_import_count, total)
     except CodeSheetMissingException:
         error_message = _("The template you are using is not correct, please use DataWinners template and try again")
-    except LessNumberOfSheetsException:
-        error_message = _("Less number of sheets")
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
