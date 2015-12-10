@@ -31,7 +31,7 @@ def create_entity_types(manager, entity_types):
 def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None, firstname=None):
     entity = EntityBuilder(manager, entity_type, short_code)\
     .geometry(geometry)\
-    .add_data([(GEO_CODE_FIELD_NAME, geometry)])\
+    .add_data([(GEO_CODE_FIELD_NAME, geometry.get("coordinates"))])\
     .add_data(data=[(NAME_FIELD, name)])\
     .add_data([(FIRST_NAME_FIELD, firstname)])\
     .add_data([(SHORT_CODE_FIELD, short_code)])\
