@@ -1631,3 +1631,6 @@ msgstr "Vos modifications seront perdues"
 
 msgid "Add to a new Group"
 msgstr "Ajouter à un nouveau Groupe"
+
+msgid "Test SMS Questionnaire"
+msgstr "Tester le Questionnaire SMS"
