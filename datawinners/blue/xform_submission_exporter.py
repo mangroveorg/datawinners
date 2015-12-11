@@ -218,21 +218,24 @@ class AdvancedQuestionnaireSubmissionExporter():
         for preference in self.preferences:
             if preference.get('visibility') or preference.has_key('children'):
                 key = preference.get('data')
-                if preference.has_key('children'):
+                if preference.has_key('children'):  #handling group
                     for child in preference.get('children'):
                         if child.get('visibility'):
-                            self._check_and_append_column_header(headers_dict, child.get('data'), child.get('title'))
-
-                elif self.columns.get(key):
-                    if self.columns.get(key).get('type') == 'field_set':
-                        sheet_name = self.columns.get(key).get('code')
-                        headers_dict.update({sheet_name: excel_headers.get(sheet_name)})
-                    else:
-                        self._check_and_append_column_header(headers_dict, key, self.columns.get(key).get('label'))
+                            self._check_if_repeat(child.get('data'), headers_dict, excel_headers)
+                else:
+                    self._check_if_repeat(key, headers_dict, excel_headers)
 
         if self.form_model.has_nested_fields:
             headers_dict.get('main').extend(['_index', '_parent_index'])
         return headers_dict
+
+    def _check_if_repeat(self, key, headers_dict, excel_headers):
+        if self.columns.get(key):
+            if self.columns.get(key).get('type') == 'field_set': #handling repeat
+                sheet_name = self.columns.get(key).get('code')
+                headers_dict.update({sheet_name: excel_headers.get(sheet_name)})
+            else:
+                self._check_and_append_column_header(headers_dict, key, self.columns.get(key).get('label'))
 
     def _check_and_append_column_header(self, headers_dict, key, label):
         if self.columns.get(key) and self.columns.get(key).get('type') == GEOCODE_FIELD_CODE:
