@@ -158,8 +158,19 @@ def get_field_instruction(field):
                 instruction = ugettext("Answer must be a number. The maximum is %d.") % int(constraint.max)
 
     if type(field) == DateField:
-        instruction = [ugettext("Answer must be a date in the following format: %s. Example: %s")
-                       % (field.date_format, field.example)]
+        example = {
+            "mm.yyyy": ('12.2011'),
+            "dd.mm.yyyy": ('25.12.2011'),
+            "mm.dd.yyyy": ('12.25.2011')
+        }
+        date = {
+            "mm.yyyy": ugettext("month.year"),
+            "dd.mm.yyyy": ugettext("day.month.year"),
+            "mm.dd.yyyy": ugettext("month.day.year")
+        }
+        example = example.get(field.date_format)
+        date_format = date.get(field.date_format)
+        instruction = ugettext("Answer must be a date in the following format: %s. Example: %s") % (date_format, example)
     if type(field) == GeoCodeField:
         instruction = ugettext("Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547")
     if type(field) == SelectField:

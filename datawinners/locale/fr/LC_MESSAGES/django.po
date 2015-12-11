@@ -6201,4 +6201,7 @@ msgid "Add a new Contact"
 msgstr "Ajouter un nouveau Contact"
 
 msgid "The template you are using is not correct, please use DataWinners template and try again"
-msgstr ""
+msgstr "Le modèle que vous utilisez n'est pas adapté, veuillez utiliser le modèle de DataWinners et réessayer."
+
+msgid "Answer must be a date in the following format: %s. Example: %s"
+msgstr "La réponse doit être une date au format : %s. Exemple : %s"

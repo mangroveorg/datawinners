@@ -4941,3 +4941,6 @@ msgstr ""
 
 msgid "The template you are using is not correct, please use DataWinners template and try again"
 msgstr ""
+
+msgid "Answer must be a date in the following format: %s. Example: %s"
+msgstr ""
