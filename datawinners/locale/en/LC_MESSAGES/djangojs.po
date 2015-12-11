@@ -1203,5 +1203,5 @@ msgstr ""
 msgid "Add to Questionnaires"
 msgstr ""
 
-msgid "Add to a new Group"
+msgid "Add to new Group"
 msgstr ""
