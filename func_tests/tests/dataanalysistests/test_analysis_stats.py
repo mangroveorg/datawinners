@@ -24,7 +24,7 @@ class TestAnalysisStats(unittest.TestCase):
             send_valid_sms_with({SENDER: '1234123413', RECEIVER: '919880734937', SMS: "%s %s" % (form_code, answer)})
 
     def test_get_stats(self):
-        data = {"search_filters": "{\"search_text\":\"\",\"dateQuestionFilters\":{}}"}
+        data = {"search_filters": "{\"search_text\":\"\",\"dateQuestionFilters\":{}}", "uniqueIdFilters":"{}", "dateQuestionFilters":"{}"}
 
         res = self.client.post("/project/submissions/%s/analysis" % form_code, data)
 
@@ -37,13 +37,14 @@ class TestAnalysisStats(unittest.TestCase):
     def test_get_stats_with_date_filters(self):
 #         data = {"search_filters": "{\"search_text\":\"\",\"dateQuestionFilters\":{\"q3\":\"10.03.2014 - 10.05.2014\", \"q4\":\"01.2015 - 02.2015\" }}"}
         data={"dateQuestionFilters":"{\"q3\":{\"dateRange\":\"10.03.2014 - 10.05.2014\",\"searchKey\":\""+form_code+"_q3\" }, \"q4\":{\"dateRange\":\"01.2015 - 02.2015\",\"searchKey\":\""+form_code+"_q4\" }}"}
+        data.update({"uniqueIdFilters":"{}", "dateQuestionFilters":"{}"})
 
         res = self.client.post("/project/submissions/%s/analysis" % form_code, data)
 
-        expected = set([(1, "A"), (1, "B"), (0, "AB"), (0, "O")])
+        expected = set([(2, "A"), (1, "B"), (0, "AB"), (1, "O")])
         response = json.loads(res.content)
         actual_stat = set([(i["count"], i["term"]) for i in response['result'].get('Blood Group').get('data')])
-        self.assertEquals(actual_stat, expected)
+        self.assertEqual(actual_stat, expected)
         self.assertEquals(response['result'].get('Blood Group').get('field_type'), 'select1')
 
 
