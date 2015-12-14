@@ -422,6 +422,9 @@ msgstr ""
 "La réponse doit être un numéro de téléphone précédé du code pays. Exemple : "
 "261333745269"
 
+msgid "Answer must be country code plus telephone number"
+msgstr "La réponse doit être un numéro de téléphone précédé du code pays"
+
 #: media/javascript/entity/questionnaire_helper.js:35
 msgid "day.month.year"
 msgstr "jour.mois.année"

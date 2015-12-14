@@ -3050,6 +3050,9 @@ msgstr ""
 "La réponse doit être un numéro de téléphone précédé du code pays. Exemple : "
 "261333745269"
 
+msgid "Answer must be country code plus telephone number"
+msgstr "La réponse doit être un numéro de téléphone précédé du code pays"
+
 msgid "some default value"
 msgstr ""
 
