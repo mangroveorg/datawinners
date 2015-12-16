@@ -116,6 +116,9 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         sms_tester_light_box.send_sms_with(get_error_sms_data_with_questionnaire_code(self.questionnaire_code))
         self.assertEquals("", sms_tester_light_box.get_response_message())
 
+        sms_tester_light_box.send_sms_with(get_error_sms_data_with_incorrect_number_of_answers(self.questionnaire_code))
+        self.assertNotEquals("", sms_tester_light_box.get_response_message())
+
         sms_tester_light_box.send_sms_with(get_error_sms_data_with_incorrect_unique_id(self.questionnaire_code))
         self.assertEquals("", sms_tester_light_box.get_response_message())
 
@@ -139,7 +142,7 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
 
         self.driver.go_to(FAILED_SUBMISSIONS_PAGE)
         current_failed_submission_count = FailedSubmissionsPage(self.driver).get_total_number_of_entries()
-        self.assertEqual(current_failed_submission_count, initial_failed_submission_count + 1)
+        self.assertEqual(current_failed_submission_count, initial_failed_submission_count + 2)
 
     @attr('functional_test')
     def test_reply_messages_in_light_box_when_outgoing_reply_turned_on(self):

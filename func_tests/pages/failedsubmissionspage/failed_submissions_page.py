@@ -6,6 +6,7 @@ class FailedSubmissionsPage(Page):
         Page.__init__(self, driver)
 
     def get_total_number_of_entries(self):
+        self.driver.create_screenshot('counting-table-row-1.png')
         return int(self.driver.execute_script("return $('table tr').length - 1"))
 
     def get_entry_for_row_number(self, row_number):

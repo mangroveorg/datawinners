@@ -66,5 +66,6 @@ class TestDashboard(HeadlessRunnerTest):
         login_page.do_successful_login_with(USER_RASITEFA_CREDENTIALS)
         send_sms_lightbox = self.dashboard_page.click_on_send_a_message()
         questionnaires = send_sms_lightbox.get_all_available_questionnaires()
+        self.driver.create_screenshot('show-questionnaire-for-rasitefa')
         self.assertGreater(len(all_questionnaires), len(questionnaires))
-        self.assertEqual(len(questionnaires), 3)
+        self.assertEqual(questionnaires, ['questionnaire 1'])
