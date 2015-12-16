@@ -18,7 +18,7 @@ from datawinners.entity.datasender_search import datasender_count_with
 from datawinners.entity.subject_template_validator import SubjectTemplateValidator
 from datawinners.entity.helper import get_country_appended_location, entity_type_as_sequence, \
     get_organization_telephone_number
-
+from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
 from datawinners.location.LocationTree import get_location_tree
 from mangrove.errors.MangroveException import CodeSheetMissingException
