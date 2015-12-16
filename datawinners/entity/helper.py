@@ -107,17 +107,18 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
 
 
 def get_subject_field_instruction(field, entity_type):
+    instruction =  field.instruction
     if field.name == FIRSTNAME_FIELD:
         instruction = _("Enter a %(entity_type)s first name") % {'entity_type': entity_type}
-    if field.name == NAME_FIELD:
+    elif field.name == NAME_FIELD:
         instruction = _("Enter a %(entity_type)s last name") % {'entity_type': entity_type}
-    if field.name == LOCATION_TYPE_FIELD_NAME:
+    elif field.name == LOCATION_TYPE_FIELD_NAME:
         instruction = _("Enter a region, district, or commune") % {'entity_type': entity_type}
-    if field.name == GEO_CODE_FIELD_NAME:
+    elif field.name == GEO_CODE_FIELD_NAME:
         instruction = _("Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547")
-    if field.name == MOBILE_NUMBER_FIELD:
+    elif field.name == MOBILE_NUMBER_FIELD:
         instruction = _("Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269") % {'entity_type': entity_type}
-    if field.name == SHORT_CODE_FIELD:
+    elif field.name == SHORT_CODE_FIELD:
         instruction = _("Enter an id, or allow us to generate it")
     return instruction
 
