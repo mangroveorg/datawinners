@@ -7,6 +7,7 @@ from mangrove.datastore.entity import Entity, Contact
 from mangrove.form_model.field import DateField, TimeField, DateTimeField, field_attributes
 from mangrove.form_model.project import get_entity_type_fields, tabulate_data
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
+from mangrove.datastore.cache_manager import get_cache_manager
 
 
 def _add_date_field_mapping(mapping_fields, field_def):
@@ -136,3 +137,12 @@ def safe_getattr(result, key, default=None):
     if hasattr(result, key):
         return getattr(result, key)
     return default
+
+def update_reindex_status(db_name, questionnaire_id, **kwargs):
+    indexes_out_of_sync = get_cache_manager().get('indexes_out_of_sync')
+    filtered_items = [(index, info) for index, info in enumerate(indexes_out_of_sync) 
+                   if info['db_name'] == db_name and info['questionnaire_id'] == questionnaire_id]
+    if filtered_items:
+        i, info = filtered_items[0]
+        info.update(**kwargs)
+        indexes_out_of_sync[i] = info
