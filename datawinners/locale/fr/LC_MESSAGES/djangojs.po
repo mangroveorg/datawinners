@@ -228,7 +228,7 @@ msgid "Import a Data Senders list"
 msgstr "Importer une liste d'expéditeurs"
 
 msgid "Add to Questionnaires"
-msgstr "Ajouter au Questionnaires"
+msgstr "Ajouter à des Questionnaires"
 
 #: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
@@ -1498,7 +1498,7 @@ msgid " recipients"
 msgstr " destinataires"
 
 msgid "Add to Groups"
-msgstr "Ajouter aux Groupes"
+msgstr "Ajouter à des Groupes"
 
 
 msgid "Remove from Groups"
@@ -1634,5 +1634,6 @@ msgstr "Vos modifications seront perdues"
 
 msgid "Add to new Group"
 msgstr "Ajouter à un nouveau Groupe"
+
 msgid "Test SMS Questionnaire"
 msgstr "Tester le Questionnaire SMS"

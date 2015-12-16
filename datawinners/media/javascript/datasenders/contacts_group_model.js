@@ -257,7 +257,7 @@ function ContactsGroupViewModel() {
     };
 
     self.open = function () {
-        var dialogTitle = (self.create_and_add)? 'Add to a new Group':'Add a Group';
+        var dialogTitle = (self.create_and_add)? 'Add to new Group':'Add a Group';
         $(".add_group_dialog").dialog({title: gettext(dialogTitle)});
 
         self.isOpen(true);
