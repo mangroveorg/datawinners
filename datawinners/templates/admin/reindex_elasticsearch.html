@@ -1,0 +1,59 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <link href="/media/javascript/data_tables/css/jquery.dataTables.min.css" rel="stylesheet"/>
+    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    
+    <style>
+    /* Big Button Style */
+ 
+		.big {
+		    height: 45px;
+		    font: bold 20px/22px Arial, sans-serif;
+		    background: lightgreen !important;
+		}
+	  .ui-progressbar {
+	    position: relative;
+	  }
+	  .progress-label {
+	    position: absolute;
+	    left: 50%;
+	    top: 4px;
+	    font-weight: bold;
+	    text-shadow: 1px 1px 0 #fff;
+	  }		
+		 
+    </style>
+    
+	<script type="text/javascript" src="/media/javascript/jquery.js"></script>
+    <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/media/javascript/admin/reindex.js"></script>
+    
+      <script type="text/javascript">
+	      var dataUrl = '/admin-apis/reindex/list';
+	      var reload = '{{reload}}';
+	      var full_reindex = '{{full_reindex}}';
+      </script>
+	
+	<h4>List of Accounts and questionnaires that need to be reindexed</h4>
+     <table id="reindex_table" class="dataTable display">
+     </table>
+     
+	<div id="progressbar"><div class="progress-label">Not started</div></div>
+	<div id="stats">
+		<h4>Statistics</h4>
+		<div>Reindex Start Time : <span id="start_time"></span></div>
+		<div>Reindex End Time : <span id="end_time"></span></div>
+		<div>Total Submissions:<span id="total_submissions"></span></div>
+		<div>Completed Submissions:<span id="completed_submissions"></span></div>
+		
+	</div>
+     
+     <form action="/admin-apis/reindex/start_reindex" method="get">
+		<input type="submit" value="Start reindex" class="big green">
+     </form>
+     
+     
+		
+{% endblock %}

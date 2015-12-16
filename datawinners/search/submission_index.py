@@ -65,6 +65,17 @@ class SubmissionSearchStore():
         except Exception as e:
             logger.error(e)
 
+    def is_mapping_out_of_sync(self):
+        try:
+            mapping = self.get_mappings()
+            mapping_old = self.get_old_mappings()
+            if mapping_old:
+                self._verify_change_involving_date_field(mapping, mapping_old)
+                self._verify_unique_id_change()
+            return not mapping_old or self._has_fields_changed(mapping, mapping_old)
+        except Exception as e:
+            return True
+        
     def _has_fields_changed(self, mapping, mapping_old):
         old_mapping_properties = mapping_old.values()[0].values()[0].values()[0]['properties']
         new_fields_with_format = set(
@@ -123,7 +134,10 @@ class SubmissionSearchStore():
                                                                             parent_field_name)))
 
     def recreate_elastic_store(self):
-        self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
+        try:
+            self.es.send_request('DELETE', [self.dbm.database_name, self.latest_form_model.id, '_mapping'])
+        except ElasticHttpNotFoundError as e:
+            pass
         self.es.put_mapping(self.dbm.database_name, self.latest_form_model.id, self.get_mappings())
 
     def recreate_and_populate_elastic_store(self):
