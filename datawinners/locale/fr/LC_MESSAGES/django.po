@@ -2904,6 +2904,12 @@ msgstr "Entre %d -- %d caractères"
 msgid "Answer must be a number between %d-%d."
 msgstr "La réponse doit être entre %d-%d."
 
+msgid "Answer must be a number. The minimum is %d."
+msgstr "La réponse doit être un nombre. Le minimum est %d"
+
+msgid "Answer must be a number. The maximum is %d."
+msgstr "La réponse doit être un nombre. Le maximum est %d."
+
 msgid "Account Activation"
 msgstr "Activation de compte"
 

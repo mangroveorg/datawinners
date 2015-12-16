@@ -50,7 +50,7 @@ from datawinners.project.wizard_view import edit_project, get_preview_and_instru
 from datawinners.scheduler.smsclient import NoSMSCException
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import process_create_data_sender_form, get_organization_telephone_number
+from datawinners.entity.helper import process_create_data_sender_form, get_organization_telephone_number, get_field_instruction
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_map_key
@@ -67,7 +67,7 @@ from datawinners.entity.views import save_questionnaire as subject_save_question
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import helper
 from datawinners.project.utils import make_project_links
-from datawinners.project.helper import is_project_exist, get_feed_dictionary, get_field_instruction
+from datawinners.project.helper import is_project_exist, get_feed_dictionary
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_QUESTIONNAIRE, REGISTERED_IDENTIFICATION_NUMBER, REGISTERED_DATA_SENDER, RENAMED_QUESTIONNAIRE, \
     DELETED_POLL
