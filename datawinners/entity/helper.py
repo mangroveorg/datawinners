@@ -108,7 +108,6 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
 
 
 def get_subject_field_instruction(field, entity_type):
-    instruction =  get_field_instruction(field)
     if field.name == FIRSTNAME_FIELD:
         instruction = _("Enter a %(entity_type)s first name") % {'entity_type': entity_type}
     elif field.name == NAME_FIELD:
@@ -121,6 +120,8 @@ def get_subject_field_instruction(field, entity_type):
         instruction = _("Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269") % {'entity_type': entity_type}
     elif field.name == SHORT_CODE_FIELD:
         instruction = _("Enter an id, or allow us to generate it")
+    else:
+        instruction = get_field_instruction(field)
     return instruction
 
 def get_field_instruction(field):
