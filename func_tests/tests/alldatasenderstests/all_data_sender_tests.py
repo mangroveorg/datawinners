@@ -294,7 +294,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
     def test_should_select_contacts_and_and_to_new_group(self):
         self.all_datasenders_page.click_checkall_checkbox()
         dialog_title = self.all_datasenders_page.add_contacts_to_new_group("New Group")
-        self.assertEqual(dialog_title, 'Add to a new Group')
+        self.assertEqual(dialog_title, 'Add to new Group')
 
     @attr('functional_test')
     def test_should_show_extra_informations_for_empty_group(self):

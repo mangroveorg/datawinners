@@ -544,6 +544,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         all_projects_page = ProjectsPage(self.driver)
         self.assertEqual(len(dashboard_page.get_projects_list()), 3)
         self.assertFalse(all_projects_page.is_project_present(project_name))
+        self.global_navigation.sign_out()
     
 
 

@@ -54,7 +54,7 @@ class TestDashboard(HeadlessRunnerTest):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
         login_page.do_successful_login_with(USER_RASITEFA_CREDENTIALS)
-        self.assertEqual(len(self.dashboard_page.get_projects_list()), 3)
+        self.assertEqual(len(self.dashboard_page.get_projects_list()), 5)
 
     @attr('functional_test')
     def test_should_available_project_for_send_sms(self):
@@ -68,4 +68,4 @@ class TestDashboard(HeadlessRunnerTest):
         questionnaires = send_sms_lightbox.get_all_available_questionnaires()
         self.driver.create_screenshot('show-questionnaire-for-rasitefa')
         self.assertGreater(len(all_questionnaires), len(questionnaires))
-        self.assertEqual(questionnaires, ['questionnaire 1'])
+        self.assertEqual(len(questionnaires), 5)
