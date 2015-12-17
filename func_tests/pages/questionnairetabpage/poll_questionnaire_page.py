@@ -123,7 +123,8 @@ class PollQuestionnairePage(Page):
         self.select_element(POLL_SMS_ACCORDIAN)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
         recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
-        return recipient_name, recipent
+        self.driver.create_screenshot("debug-ft-DS-has_received-sms-%s-%s" % (row, column))
+        return recipient_name in recipent
 
     def deactivate_poll(self):
         self.select_element(POLL_TAB)

@@ -116,6 +116,11 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
+        login_page = LoginPage(cls.driver)
+        login_page.do_successful_login_with(VALID_CREDENTIALS)
+        project_name, questionnaire_code = self._create_project(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
+        self.questionnaire_tab_page.change_answer_type_to_choice_question()
+        self.questionnaire_tab_page.save_questionnaire()
         modified_warning_dialog = QuestionnaireModifiedDialog(self.driver)
         self._verify_edit_dialog_cancel(modified_warning_dialog)
         self._verify_edit_dialog_ignore_changes(modified_warning_dialog)
