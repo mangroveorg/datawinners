@@ -29,3 +29,13 @@ def is_mapping_out_of_sync(form_model_doc, dbm):
     current_mapping = submission_search_store.get_mappings()
     old_mapping = submission_search_store.get_old_mappings()
     return submission_search_store.is_mapping_out_of_sync()
+
+def check_mapping_out_of_sync(form_model, dbm):
+    if form_model.form_code == 'delete':
+        return
+    
+    submission_search_store = SubmissionSearchStore(dbm, form_model, old_form_model=None)
+    current_mapping = submission_search_store.get_mappings()
+    old_mapping = submission_search_store.get_old_mappings()
+    return submission_search_store.is_mapping_out_of_sync()
+        

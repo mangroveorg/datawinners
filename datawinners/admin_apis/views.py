@@ -20,6 +20,9 @@ from mangrove.datastore.cache_manager import get_cache_manager
 from celery.bin.celery import result
 import time
 import math
+from datawinners.search.submission_index_task import async_reindex, async_fetch_questionnaires, async_fetch_questionnaire_details
+from celery import chain
+
 
 reindex_in_cache_key = 'indexes_out_of_sync'
 reindex_in_progress_cache_key = 'reindex_in_progress'
@@ -72,7 +75,6 @@ def start_reindex(request):
         reindex_catalog['reindex_start_time'] = reindex_start_time
         list_of_indexes = reindex_catalog.get('list_of_indexes')
         for i, info in enumerate(list_of_indexes):
-            from datawinners.search.submission_index_task import async_reindex
             result = async_reindex.apply_async((info['db_name'], info['questionnaire_id']), countdown=5, retry=False)
             info['async_result'] = result
             list_of_indexes[i] = info
@@ -99,14 +101,23 @@ def list_of_indexes_out_of_sync(request):
     reload_data = request.GET.get('reload')
     full_reindex = request.GET.get('full_reindex')
     reindex_catalog = _get_from_cache(reindex_in_cache_key)
+    
+    #Load questionnaires
     if reindex_catalog is None or reload_data or full_reindex:
         reindex_catalog = {}
-        reindex_catalog['list_of_indexes'], reindex_catalog['total_submissions'] = get_list_of_indexes_to_reindex(full_reindex=full_reindex)
-#         reindex_catalog['total_submissions'] = reduce(
-#                                                       lambda x, y: x.get('no_of_submissions') + y.get('no_of_submissions'), 
-#                                                       reindex_catalog['list_of_indexes'])
+        reindex_catalog['questionnaires_in_progress'] = async_list_of_indexes_to_reindex(full_reindex=full_reindex)
         _set_in_cache(reindex_in_cache_key, reindex_catalog)
         _set_in_cache(reindex_in_progress_cache_key, dict())
+        return _questionnaire_loading_in_progress(reindex_catalog)
+    elif _is_questionnaire_details_in_progress(reindex_catalog):
+        return _questionnaire_loading_in_progress(reindex_catalog)
+    elif reindex_catalog.get('questionnaires_in_progress'):
+        reindex_catalog['list_of_indexes'] = _display_questionnaire_details_in_progress(reindex_catalog['questionnaires_in_progress'])
+        reindex_catalog['total_submissions'] = _compute_total_submissions(reindex_catalog['list_of_indexes'])
+        reindex_catalog.pop('questionnaires_in_progress')
+        _set_in_cache(reindex_in_cache_key, reindex_catalog)
+
+    #Update with reindex status, if started
     response_data, completed_submissions = _display_format(reindex_catalog['list_of_indexes'])
     in_progress = any([state.get('status','') == 'PENDING' for state in response_data])
     reindex_end_time_str = ''
@@ -131,7 +142,34 @@ def list_of_indexes_out_of_sync(request):
                 'reindex_end_time':reindex_end_time_str,
                 
             }, unpicklable=False), content_type='application/json')
+    
+def _questionnaire_loading_in_progress(reindex_catalog):
+    response_data = _display_questionnaire_details_in_progress(reindex_catalog['questionnaires_in_progress'])
+    return HttpResponse(
+        jsonpickle.encode(
+            {
+                'data': response_data,
+                'in_progress': True,                    
+            }, unpicklable=False), content_type='application/json')
         
+
+def _display_questionnaire_details_in_progress(results):
+    response_data = []
+    for result in results:
+        if result.ready():
+            response_data.extend(result.result)
+    return response_data
+        
+    
+def _is_questionnaire_details_in_progress(reindex_catalog):
+    results = reindex_catalog.get('questionnaires_in_progress')
+    if not results:
+        return False
+    return any([result.ready() == False for result in results])
+    
+def _compute_total_submissions(indexes):
+    return sum([index.get('no_of_submissions') for index in indexes])
+                        
 def _display_format(indexes_out_of_sync):
     response_data = []
     completed_submissions = 0
@@ -156,8 +194,17 @@ def _display_format(indexes_out_of_sync):
             
             
         response_data.append(record)
-    return response_data, completed_submissions    
+    return response_data, completed_submissions
         
+def async_list_of_indexes_to_reindex(full_reindex=False):
+    questionnaire_details_task_results = []
+    db_names = all_db_names()
+    for db_name in db_names:
+        chain_obj = chain(async_fetch_questionnaires.s(db_name, full_reindex) | async_fetch_questionnaire_details.s(db_name, full_reindex))
+        result = chain_obj.apply_async()
+        questionnaire_details_task_results.append(result)
+    return questionnaire_details_task_results
+
 def get_list_of_indexes_to_reindex(full_reindex=False):
     db_names = all_db_names()
     try:
@@ -165,7 +212,10 @@ def get_list_of_indexes_to_reindex(full_reindex=False):
         total_submissions = 0
         for database_name in db_names:
             dbm = get_db_manager(database_name)
-            for row in dbm.load_all_rows_in_view('questionnaire'):
+            questionnaires = dbm.load_all_rows_in_view('questionnaire')
+            if not questionnaires:
+                continue
+            for row in questionnaires:
                 if row['value']['is_registration_model']:
                     continue
                 
