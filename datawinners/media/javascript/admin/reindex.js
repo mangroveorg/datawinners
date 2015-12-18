@@ -6,9 +6,9 @@ $(document).ready(function(){
         "ajax": {
             url: dataUrl,
             type: "GET",
-            data:{
-            	"reload": reload,
-            	"full_reindex":full_reindex
+            data:function(d){
+            	d.reload = reload,
+            	d.full_reindex = full_reindex
             },
             dataSrc:function(d){
             	console.log(d);
@@ -21,7 +21,7 @@ $(document).ready(function(){
                 $('#completed_submissions').html(d.completed_submissions);
 
             	if(d.in_progress){
-                	setTimeout(refresh_data,3000);
+                	setTimeout(refresh_data,5000);
             	}
             	return d.data;
             }
@@ -42,7 +42,8 @@ $(document).ready(function(){
 	});
 	
 	var refresh_data = function(){
-		console.log('refreshing...');
+		reload = '';
+		full_reindex= '';
 		reindex_table.ajax.reload();
 	};
 
