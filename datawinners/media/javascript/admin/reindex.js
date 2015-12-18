@@ -12,7 +12,9 @@ $(document).ready(function(){
             },
             dataSrc:function(d){
             	console.log(d);
-                progressbar.progressbar( "value", Math.ceil(d.completed_submissions*100/d.total_submissions) );
+            	completed_percent = Math.ceil(d.completed_submissions*100/d.total_submissions);
+            	completed_percent = completed_percent ? completed_percent : 'Not applicable';
+                progressbar.progressbar( "value", completed_percent );
                 $('#start_time').html(d.reindex_start_time);
                 $('#end_time').html(d.reindex_end_time);
                 $('#total_submissions').html(d.total_submissions);

@@ -111,7 +111,8 @@ def list_of_indexes_out_of_sync(request):
     in_progress = any([state.get('status','') == 'PENDING' for state in response_data])
     reindex_end_time_str = ''
     if not in_progress:
-        reindex_end_time = max([record.get('end_time_epoch') for record in response_data])
+        end_times = [record.get('end_time_epoch') for record in response_data]
+        reindex_end_time = max(end_times) if end_times else None
         if reindex_end_time:
             reindex_end_time_str = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(reindex_end_time))
     reindex_start_time = reindex_catalog.get('reindex_start_time')
