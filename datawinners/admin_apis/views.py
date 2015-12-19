@@ -156,7 +156,7 @@ def _questionnaire_loading_in_progress(reindex_catalog):
 def _display_questionnaire_details_in_progress(results):
     response_data = []
     for result in results:
-        if result.ready():
+        if result.ready() and result.result:
             response_data.extend(result.result)
     return response_data
         
