@@ -123,6 +123,7 @@ class PollQuestionnairePage(Page):
         self.select_element(POLL_SMS_ACCORDIAN)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
         self.driver.create_screenshot("debug-ft-DS-has_received-sms-%s-%s" % (row, column))
+        raise Exception()
         recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
         return recipient_name, recipent
 

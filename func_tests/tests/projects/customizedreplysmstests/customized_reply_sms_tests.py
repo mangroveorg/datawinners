@@ -122,6 +122,7 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         self.assertNotEquals("", sms_tester_light_box.get_response_message())
 
         sms_tester_light_box.send_sms_with(get_error_sms_data_with_incorrect_unique_id(self.questionnaire_code))
+        time.sleep(5)
         self.assertEquals("", sms_tester_light_box.get_response_message())
 
         sms_tester_light_box.send_sms_with(get_error_message_from_unauthorized_source(self.questionnaire_code))

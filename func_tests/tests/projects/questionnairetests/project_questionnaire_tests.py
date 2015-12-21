@@ -116,6 +116,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
         login_page.do_successful_login_with(VALID_CREDENTIALS)
         project_name, questionnaire_code = self._create_project(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
