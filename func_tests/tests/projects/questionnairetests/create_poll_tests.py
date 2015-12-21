@@ -135,6 +135,9 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDER_TAB, True)
         self.poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
         recipient = [REP5, REP6, REP7]
+        result = self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN)
+        if not result:
+            self.driver.create_screenshot("debug-test-after-poll-creation")
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
