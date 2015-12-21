@@ -11,6 +11,7 @@ from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from testdata.constants import SMS
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_ALL_PROJECTS_PAGE, FAILED_SUBMISSIONS_PAGE
 from tests.projects.customizedreplysmstests.customized_reply_sms_data import PROJECT_DATA, PROJECT_QUESTIONNAIRE_DATA, get_success_sms_data_with_questionnaire_code, get_error_message_from_unauthorized_source, get_error_sms_data_with_incorrect_number_of_answers, get_error_sms_data_with_questionnaire_code, get_error_sms_data_with_incorrect_unique_id
+import time
 
 
 class TestCustomizedReplySms(HeadlessRunnerTest):
@@ -103,6 +104,7 @@ class TestCustomizedReplySms(HeadlessRunnerTest):
         automatic_reply_msg_page = ProjectsPage(self.driver).navigate_to_project_overview_page(self.project_name)\
                                             .navigate_send_message_tab().navigate_to_automatic_reply_sms_page()
         automatic_reply_msg_page.turn_off_reply_messages()
+        time.sleep(10)
         self.assertFalse(automatic_reply_msg_page.is_language_selection_enabled())
         self.assertEqual(automatic_reply_msg_page.get_success_message(), 'Your changes have been saved.')
 
