@@ -67,7 +67,7 @@ class TestPollOptions(HeadlessRunnerTest):
         recipients = [REP8, REP3, REP1, REP5, REP6]
         result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN)
         if not result:
-            self.driver.create_screenshot('debug-failure-poll-option')
+            self.driver.create_screenshot('failure-poll-option')
             raise Exception()
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))

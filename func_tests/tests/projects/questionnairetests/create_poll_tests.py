@@ -137,7 +137,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         recipient = [REP5, REP6, REP7]
         result = self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN)
         if not result:
-            self.driver.create_screenshot("debug-test-after-poll-creation")
+            self.driver.create_screenshot("after-poll-creation")
             raise Exception()
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
         self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
