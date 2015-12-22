@@ -180,7 +180,7 @@ class ProjectDataSendersPage(Page):
 
     def save_setting(self):
         self.driver.find(by_css("#save_ds_setting")).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MESSAGE_LABEL, True)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("success-message-box"), True)
 
     def set_setting_to_open_datasender(self):
         self.set_setting_value("open")
