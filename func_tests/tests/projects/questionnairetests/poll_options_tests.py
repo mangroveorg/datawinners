@@ -9,7 +9,7 @@ from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
 from tests.projects.questionnairetests.project_questionnaire_data import LANGUAGES, CLINIC_ALL_DS, PT, FR, \
     REP7, REP5, REP6, THIRD_COLUMN, SECOND_ROW, GROUP, THIRD_ROW, MY_POLL_RECIPIENTS, CLINIC_TEST_PROJECT, REP8, REP3, \
-    REP1, SIXTH_COLUMN, FIRST_ROW, FOURTH_ROW, SIXTH_ROW, FIFTH_ROW
+    REP1, SIXTH_COLUMN, FIRST_ROW, FOURTH_ROW, SIXTH_ROW, FIFTH_ROW, REP35
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -64,7 +64,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(LINKED_CONTACTS, CLINIC_TEST_PROJECT)
-        recipients = [REP8, REP3, REP1, REP5, REP6]
+        recipients = [REP8, REP3, REP1, REP5, REP6, REP35]
         result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN)
         if not result:
             self.driver.create_screenshot('failure-poll-option')

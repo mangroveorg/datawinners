@@ -8,7 +8,7 @@ from pages.globalnavigationpage.global_navigation_locator import DASHBOARD_PAGE_
 from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
 from tests.projects.questionnairetests.project_questionnaire_data import CLINIC_ALL_DS, FIRST_ROW, SIXTH_COLUMN, \
-    THIRD_COLUMN, REP6, REP5, REP7, CONTACTS_LINKED, GROUP, SECOND_ROW, THIRD_ROW
+    THIRD_COLUMN, REP6, REP5, REP7, CONTACTS_LINKED, GROUP, SECOND_ROW, THIRD_ROW, REP35
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -134,7 +134,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.click_create_poll()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDER_TAB, True)
         self.poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
-        recipient = [REP5, REP6, REP7]
+        recipient = [REP5, REP6, REP7, REP35]
         result = self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN)
         if not result:
             self.driver.create_screenshot("after-poll-creation")
