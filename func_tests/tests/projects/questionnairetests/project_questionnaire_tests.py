@@ -119,7 +119,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
         login_page.do_successful_login_with(VALID_CREDENTIALS)
-        id_number = EDIT_PROJECT_QUESTIONNAIRE_DATA.get(QUESTIONS[-1]).get(NEW_UNIQUE_ID_TYPE)
+        id_number = EDIT_PROJECT_QUESTIONNAIRE_DATA.get(QUESTIONS)[-1].get(NEW_UNIQUE_ID_TYPE)
         EDIT_PROJECT_QUESTIONNAIRE_DATA.get(QUESTIONS)[-1].update({EXISTING_UNIQUE_ID_TYPE:id_number})
         project_name, questionnaire_code = self._create_project(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
         self.questionnaire_tab_page.change_answer_type_to_choice_question()

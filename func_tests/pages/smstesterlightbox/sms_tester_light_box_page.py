@@ -23,7 +23,7 @@ class SMSTesterLightBoxPage(LightBox):
         """
         self.driver.find_text_box(SMS_TA).enter_text(fetch_(SMS, from_(sms_data)))
         self.driver.find(SEND_SMS_BTN).click()
-        self.driver.wait_until_modal_dismissed(10)
+        self.driver.wait_until_modal_dismissed()
         return self
 
     def get_response_message(self):
