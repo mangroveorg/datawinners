@@ -62,7 +62,6 @@ class TestFeeds(HeadlessRunnerTest):
 
         submission_page = project_overview_page.navigate_to_web_questionnaire_page()
         submission_page.fill_and_submit_answer(ANSWERS_TO_BE_SUBMITTED)
-        self.driver.create_screenshot("api_feed_sub_success.png")
         self.assertEqual(submission_page.get_success_message(), "Successfully submitted", "Web submission failed")
 
 
