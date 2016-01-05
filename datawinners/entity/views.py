@@ -40,7 +40,8 @@ from datawinners.entity.helper import create_registration_form, get_organization
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined
+from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined,\
+    get_unique_id_types
 from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
@@ -570,6 +571,7 @@ def edit_subject_questionnaire(request, entity_type=None):
     fields = form_model.fields
 
     existing_questions = json.dumps(fields, default=field_to_json)
+    
     return render_to_response('entity/questionnaire.html',
                               {
                                   'existing_questions': repr(existing_questions),
@@ -577,7 +579,11 @@ def edit_subject_questionnaire(request, entity_type=None):
                                   'language': form_model.activeLanguages[0],
                                   'entity_type': entity_type,
                                   'is_pro_sms': get_organization(request).is_pro_sms,
-                                  'post_url': reverse(save_questionnaire)
+                                  'post_url': reverse(save_questionnaire),
+                                  'unique_id_types': json.dumps([{"name":unique_id_type.capitalize(),
+                                                                  "value":unique_id_type} for unique_id_type in
+                                                                 get_unique_id_types(manager)]),
+
                               },
                               context_instance=RequestContext(request))
 

@@ -29,12 +29,16 @@ var SubjectQuestionnaireViewModel = function(){
 
     self.answerTypes = [
         {name: gettext('Select an Answer Type'), value: '', disable: true},
-        {name: gettext('Word'), value: 'text'},
+        {name: gettext('Word'), value: 'text' },
         {name: gettext('Number'), value: 'integer'},
         {name: gettext('Date'), value: 'date'},
         {name: gettext('List of Choices'), value: 'choice'},
         {name: gettext('GPS Coordinates'), value: 'geocode'},
-        {name: gettext('Telephone number'), value: 'telephone_number'}
+        {name: gettext('Telephone number'), value: 'telephone_number'},
+        {name: gettext(''), value: '', disable: true},
+        {name: gettext('Advanced Answer Types'), value: '', disable: true},
+        {name: gettext('Identification Number'), value: 'unique_id'}
+        
     ];
 
     self.setOptionDisable = function(option, item) {

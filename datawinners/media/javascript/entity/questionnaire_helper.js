@@ -114,7 +114,6 @@ DW.question.prototype = {
         this.type = ko.observable(q.type);
         this.isEntityQuestion = ko.observable(q.type == 'short_code');
         this.uniqueIdType = DW.ko.createValidatableObservable({value: q.unique_id_type});
-
         this.showDateFormats = ko.computed(function () {
             return this.type() == "date";
         }, this);

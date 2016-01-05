@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<div class="uniqueIdTypeSection">
+
+    <span>{% trans 'I want to use Identification Numbers for my' %}</span>
+
+    <div class="idTypeDropdown">
+        <div class="dropdown">
+           <select data-bind="options: $root.uniqueIdTypes, value: uniqueIdType,
+                             optionsText: 'name', optionsValue: 'value'"
+                   autofocus></select>
+        </div>
+    </div>
+</div>
