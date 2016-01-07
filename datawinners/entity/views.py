@@ -582,7 +582,7 @@ def edit_subject_questionnaire(request, entity_type=None):
                                   'post_url': reverse(save_questionnaire),
                                   'unique_id_types': json.dumps([{"name":unique_id_type.capitalize(),
                                                                   "value":unique_id_type} for unique_id_type in
-                                                                 get_unique_id_types(manager)]),
+                                                                 get_unique_id_types(manager) if unique_id_type != entity_type]),
 
                               },
                               context_instance=RequestContext(request))
