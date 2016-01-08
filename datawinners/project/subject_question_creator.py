@@ -13,9 +13,10 @@ class UniqueIdChoiceField(forms.ChoiceField):
 
 
 class SubjectQuestionFieldCreator(object):
-    def __init__(self, project):
+    def __init__(self, project, has_linked_idnr=False):
         self.project = project
         self.dbm = project._dbm
+        self.has_linked_idnr = has_linked_idnr
 
     def create(self, subject_field):
         return self._subjects_choice_fields(subject_field)
@@ -25,7 +26,10 @@ class SubjectQuestionFieldCreator(object):
                                                    required=subject_field.is_required(), choices=subject_choices,
                                                    label=subject_field.name, widget=widget,
                                                    initial=subject_field.value, help_text=help_text)
-        subject_choice_field.widget.attrs['class'] = 'subject_field'
+        if (self.has_linked_idnr):            
+            subject_choice_field.widget.attrs['class'] = 'linked_subject_field'
+        else:
+            subject_choice_field.widget.attrs['class'] = 'subject_field'
         return subject_choice_field
 
     def _get_all_options(self, entity_type):
