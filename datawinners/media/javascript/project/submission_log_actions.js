@@ -25,7 +25,8 @@ var filter_as_json = function () {
                         "reportingPeriodPicker": $('#reportingPeriodPicker').val(),
                         "search_text":$('#search_text').val(),
                         "dateQuestionFilters": dateQuestionFilters,
-                        "uniqueIdFilters": unique_id_filters
+                        "uniqueIdFilters": unique_id_filters,
+                        "duplicatesForFilter": "datasender"
                 };
 };
 

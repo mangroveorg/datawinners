@@ -171,6 +171,25 @@ def get_filterable_fields(fields, filterable_fields, parent_code=None):
     return filterable_fields
 
 
+def get_duplicates_filterable_fields(filterable_fields):
+    duplicates_filterable_fields = []
+    exact_match_option = {
+                'entity_type': 'exact match',
+            }
+    datasender_field = {
+                'entity_type': 'datasender',
+                'code': 'datasender.id',
+            }
+
+    duplicates_filterable_fields.append(datasender_field)
+    duplicates_filterable_fields.append(exact_match_option)
+
+    for field in filterable_fields:
+        if field['type'] == 'unique_id':
+            duplicates_filterable_fields.append(field)
+    return duplicates_filterable_fields
+
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -188,6 +207,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             return HttpResponseRedirect(dashboard_page)
 
         filterable_fields = get_filterable_fields(questionnaire.fields, [])
+        duplicates_filter_list = get_duplicates_filterable_fields(filterable_fields)
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
         xform = questionnaire.xform
         result_dict = {
@@ -200,6 +220,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
             "filterable_fields": filterable_fields,
+            "duplicates_filter_list": duplicates_filter_list,
             "is_media_field_present": questionnaire.is_media_type_fields_present
         }
 

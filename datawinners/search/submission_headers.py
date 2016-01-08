@@ -147,6 +147,20 @@ class SuccessSubmissionHeader(SubmissionHeader):
         return header_dict
 
 
+class DuplicatesSubmissionHeader(SubmissionHeader):
+    def update_static_header_info(self):
+        header_dict = OrderedDict()
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_ID_KEY: translate("Data Sender Id", self.language, ugettext)})
+        header_dict.update(
+            {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender Name", self.language, ugettext)})
+        header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
+        if not self.form_model.is_poll:
+            header_dict.update({"status": translate("Status", self.language, ugettext)})
+
+        return header_dict
+
+
 class MobileSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
@@ -172,7 +186,7 @@ class HeaderFactory():
         self.header_to_class_dict = {"all": AllSubmissionHeader, "deleted": AllSubmissionHeader,
                                      "analysis": SubmissionAnalysisHeader,
                                      "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader,
-                                     "mobile": MobileSubmissionHeader}
+                                     "mobile": MobileSubmissionHeader, "duplicates": DuplicatesSubmissionHeader}
         self.form_model = form_model
         self.language = language
 

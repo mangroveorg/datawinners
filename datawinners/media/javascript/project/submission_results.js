@@ -1,7 +1,7 @@
-DW.SubmissionTabs = function () {
+    DW.SubmissionTabs = function () {
     var self = this;
 
-    var tabList = ["all", "success", "error", "deleted", "analysis"];
+    var tabList = ["all", "success", "error", "duplicates", "deleted", "analysis"];
     var active_tab_index = 0;
 
     self.updateActiveTabIndexBasedOnCurrentLocation = function () {
@@ -30,11 +30,11 @@ DW.SubmissionTabs = function () {
     };
 
     self.isTableEntriesCheckable = function () {
-        return active_tab_index != 3;
+        return active_tab_index != 4;
     };
 
     self.setToAnalysisTab = function () {
-        active_tab_index = 4;
+        active_tab_index = 5;
     };
 };
 
@@ -44,7 +44,8 @@ DW.SubmissionLogTable = function (options) {
         url: options.header_url,
         data: {"type": options.tabName, "no_cache": new Date() },
         success: function (columnDef) {
-            _init_submission_log_table(columnDef)
+            _init_submission_log_table(columnDef);
+
         },
         dataType: "json"
     });
@@ -53,7 +54,8 @@ DW.SubmissionLogTable = function (options) {
         "analysis": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>",
         "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>",
         "error": gettext("No unsuccessful Submissions!"),
-        "deleted": gettext("No deleted Submissions.")
+        "deleted": gettext("No deleted Submissions."),
+        "duplicates": gettext("No Duplicates are currently available for the given time period based on your choice") + "</span>"
     };
 
     function _init_submission_log_table(cols) {
@@ -169,6 +171,17 @@ DW.SubmissionLogExport = function () {
 
     };
 };
+
+DW.DuplicatesForFilter = function(postFilterSelectionCallBack) {
+    var self = this;
+    var postFilterSelection = postFilterSelectionCallBack;
+
+    self.init = function() {
+        self.filter = $("duplicates_for");
+    };
+
+
+}
 
 DW.DataSenderFilter = function (postFilterSelectionCallBack) {
     var self = this;

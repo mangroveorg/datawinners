@@ -30,7 +30,7 @@ def _add_pagination_criteria(search_parameters, search):
 def _query_by_submission_type(submission_type_filter, search):
     if submission_type_filter == 'deleted':
         return search.query('term', void=True)
-    elif submission_type_filter == 'all':
+    elif submission_type_filter == 'all' or submission_type_filter == 'duplicates':
         return search.query('term', void=False)
 
     if submission_type_filter == 'analysis':
@@ -119,8 +119,18 @@ def _create_query(dbm, form_model, local_time_delta, search_parameters):
     return query_fields, search
 
 
+def _add_aggregations_for_duplicates(form_model, search_parameters, search):
+    if search_parameters == 'datasender':
+        a = A("terms", field='ds_id_exact', size=0, min_doc_count=2)
+        b = A("top_hits", size=(2**20))
+        search.aggs.bucket('datasender', a).bucket('duplicate_docs', b)
+    return search
+
+
 def get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta):
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
+    if search_parameters.get('filter') == 'duplicates':
+        search = _add_aggregations_for_duplicates(form_model, search_parameters.get('search_filters').get('duplicatesForFilter'), search)
     search_results = search.execute()
     return search_results, query_fields
 

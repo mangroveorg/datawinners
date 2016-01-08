@@ -1,0 +1,17 @@
+{% load i18n %}
+<div class="filter-question" id="duplicates-for-dropdown">
+    <div class="filter_label">
+        <label>{% trans "Show Duplicates For" %}<img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon"></label>
+        <div class="tooltip"><p>
+            <strong>{% trans "What is this?" %}</strong><br/>
+            {% trans "Duplicates are shown based on this attribute" %}
+        </p></div>
+    </div>
+    <div class="float_left">
+        <select id="duplicates_for">
+            {% for field in duplicates_for %}
+                <option value="{{field  }}">{{ field.entity_type|capfirst }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
