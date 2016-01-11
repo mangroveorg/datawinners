@@ -28,24 +28,35 @@ def _add_pagination_criteria(search_parameters, search):
     return search.extra(from_=start_result_number, size=number_of_results)
 
 
-def _query_duplicate_submissions(form_model, search):
+def _aggregate_other_duplicates(form_model, search_parameters, search):
+    if search_parameters == 'datasender':
+        a = A("terms", field='ds_id_exact', size=0, min_doc_count=2)
+        b = A("top_hits", size=(2**20))
+        search.aggs.bucket('tag', a).bucket('tag', b)
+    return search
+
+
+def _aggregate_exact_match_duplicates(form_model, search):
     search = search.params(search_type="count")
     nested_search = search
     for index, field in enumerate(form_model.form_fields):
         field_name = es_questionnaire_field_name(field['code'], form_model.id)
+        field_suffix = '_value' if field['type'] == 'date' else '_exact'
         if index == 0:
-            nested_search.aggs.bucket('tag', 'terms', field=field_name+'_exact', size=0, min_doc_count=2)
+            nested_search.aggs.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
         else:
-            nested_search.bucket('tag', 'terms', field=field_name+'_exact', size=0, min_doc_count=2)
+            nested_search.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
         nested_search = nested_search.aggs['tag']
-    nested_search.bucket('tag', 'top_hits')
+    nested_search.bucket('tag', 'terms', field='status_exact', size=0, min_doc_count=2)\
+        .bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)\
+        .bucket('tag', 'top_hits')
 
     return search
 
 
 def _query_by_submission_type(form_model, submission_type_filter, search):
     if submission_type_filter == 'duplicates':
-        return _query_duplicate_submissions(form_model, search)
+        return _aggregate_exact_match_duplicates(form_model, search)
 
     if submission_type_filter == 'deleted':
         return search.query('term', void=True)
@@ -138,18 +149,10 @@ def _create_query(dbm, form_model, local_time_delta, search_parameters):
     return query_fields, search
 
 
-def _add_aggregations_for_duplicates(form_model, search_parameters, search):
-    if search_parameters == 'datasender':
-        a = A("terms", field='ds_id_exact', size=0, min_doc_count=2)
-        b = A("top_hits", size=(2**20))
-        search.aggs.bucket('tag', a).bucket('tag', b)
-    return search
-
-
 def get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta):
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
     if search_parameters.get('filter') == 'duplicates':
-        search = _add_aggregations_for_duplicates(form_model, search_parameters.get('search_filters').get('duplicatesForFilter'), search)
+        search = _aggregate_other_duplicates(form_model, search_parameters.get('search_filters').get('duplicatesForFilter'), search)
     search_results = search.execute()
     return search_results, query_fields
 
