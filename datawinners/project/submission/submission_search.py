@@ -207,14 +207,6 @@ def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_ti
     return scan_response, query_fields
 
 
-def get_submissions_without_user_filters_count(dbm, form_model, search_parameters):
-    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
-    search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
-    search = _query_by_submission_type(form_model, search_parameters.get('filter'), search)
-    body = search.to_dict()
-    return es.search(index=dbm.database_name, doc_type=form_model.id, body=body, search_type='count')['hits']['total']
-
-
 def get_submission_count(dbm, form_model, search_parameters, local_time_delta):
     es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)

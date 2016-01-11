@@ -35,11 +35,11 @@ from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import get_submissions_paginated, \
     get_all_submissions_ids_by_criteria, get_aggregations_for_choice_fields, get_submission_count, \
-    get_submissions_without_user_filters_count, get_submissions_paginated_simple
+    get_submissions_paginated_simple
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
-from datawinners.search.submission_query import SubmissionQueryResponseCreator, _format_values
+from datawinners.search.submission_query import SubmissionQueryResponseCreator
 from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet, DateTimeField
 from mangrove.form_model.project import Project, get_project_by_code
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -815,17 +815,14 @@ def get_submissions(request, form_code):
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
     search_results, query_fields = get_submissions_paginated(dbm, questionnaire, search_parameters, local_time_delta)
-    submission_count_with_filters = get_submission_count(dbm, questionnaire, search_parameters, local_time_delta)
-    submission_count_without_filters = get_submissions_without_user_filters_count(dbm, questionnaire, search_parameters)
-    submissions = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields, search_results)
+    submissions, total = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields, search_results)
 
     return HttpResponse(
         jsonpickle.encode(
             {
                 'data': submissions,
-                'iTotalDisplayRecords': submission_count_with_filters,
+                'iTotalDisplayRecords': total,
                 'iDisplayStart': int(request.POST.get('iDisplayStart')),
-                "iTotalRecords": submission_count_without_filters,
                 'iDisplayLength': int(request.POST.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')
 

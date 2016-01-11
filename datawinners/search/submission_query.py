@@ -88,13 +88,14 @@ class SubmissionQueryResponseCreator(object):
                 self._append_to_submission(entity_question_codes, fieldset_fields, image_fields, language,
                                            media_field_codes, meta_fields, required_field_names, res, submission)
                 submissions.append(submission)
+            return submissions, len(aggr_result)
         else:
             for res in search_results.hits:
                 submission = [res.meta.id]
                 self._append_to_submission(entity_question_codes, fieldset_fields, image_fields, language,
                                            media_field_codes, meta_fields, required_field_names, res, submission)
                 submissions.append(submission)
-        return submissions
+            return submissions, search_results.hits.total
 
     def _append_to_submission(self, entity_question_codes, fieldset_fields, image_fields, language, media_field_codes,
                               meta_fields, required_field_names, res, submission):
