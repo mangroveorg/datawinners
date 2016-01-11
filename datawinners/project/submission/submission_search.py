@@ -1,3 +1,5 @@
+from itertools import groupby
+
 from elasticsearch import Elasticsearch, helpers
 from elasticsearch_dsl import Search, Q, F
 import elasticutils
@@ -10,6 +12,7 @@ import logging
 from elasticsearch_dsl.aggs import A
 
 logger = logging.getLogger("datawinners")
+
 
 def _add_sort_criteria(search_parameters, search):
     if 'sort_field' not in search_parameters:
@@ -27,7 +30,25 @@ def _add_pagination_criteria(search_parameters, search):
     return search.extra(from_=start_result_number, size=number_of_results)
 
 
-def _query_by_submission_type(submission_type_filter, search):
+def _query_duplicate_submissions(form_model, search):
+    search = search.params(search_type="count")
+    nested_search = search
+    for index, field in enumerate(form_model.form_fields):
+        field_name = es_questionnaire_field_name(field['code'], form_model.id)
+        if index == 0:
+            nested_search.aggs.bucket('tag', 'terms', field=field_name+'_exact', size=0, min_doc_count=2)
+        else:
+            nested_search.bucket('tag', 'terms', field=field_name+'_exact', size=0, min_doc_count=2)
+        nested_search = nested_search.aggs['tag']
+    nested_search.bucket('tag', 'top_hits')
+
+    return search
+
+
+def _query_by_submission_type(form_model, submission_type_filter, search):
+    if submission_type_filter == 'duplicates':
+        return _query_duplicate_submissions(form_model, search)
+
     if submission_type_filter == 'deleted':
         return search.query('term', void=True)
     elif submission_type_filter == 'all' or submission_type_filter == 'duplicates':
@@ -91,7 +112,7 @@ def _add_search_filters(search_filter_param, form_model, local_time_delta, query
 
 
 def _add_filters(form_model, search_parameters, local_time_delta, search):
-    search = _query_by_submission_type(search_parameters.get('filter'), search)
+    search = _query_by_submission_type(form_model, search_parameters.get('filter'), search)
     query_fields = _get_query_fields(form_model, search_parameters.get('filter'))
     search = _add_search_filters(search_parameters.get('search_filters'), form_model, local_time_delta, query_fields,
                                  search)
@@ -123,7 +144,7 @@ def _add_aggregations_for_duplicates(form_model, search_parameters, search):
     if search_parameters == 'datasender':
         a = A("terms", field='ds_id_exact', size=0, min_doc_count=2)
         b = A("top_hits", size=(2**20))
-        search.aggs.bucket('datasender', a).bucket('duplicate_docs', b)
+        search.aggs.bucket('tag', a).bucket('tag', b)
     return search
 
 
@@ -144,7 +165,7 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
     search = search.query('term', void=False)
     if search_parameters.get('data_sender_filter'):
         search = search.query(
-                              "term", 
+                              "term",
                               **{"datasender.id": search_parameters.get('data_sender_filter')})
     if search_parameters.get('unique_id_filters'):
         search = _add_unique_id_filters(form_model, search_parameters.get('unique_id_filters'), search)
@@ -160,7 +181,7 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
     if submission_date_query:
         search = search.query(submission_date_query)
     return search
-    
+
 
 def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_time_delta, sort_params=None, search_parameters={}):
     search = _create_search(dbm, form_model, local_time_delta, pagination_params, sort_params, search_parameters)
@@ -188,7 +209,7 @@ def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_ti
 def get_submissions_without_user_filters_count(dbm, form_model, search_parameters):
     es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
     search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
-    search = _query_by_submission_type(search_parameters.get('filter'), search)
+    search = _query_by_submission_type(form_model, search_parameters.get('filter'), search)
     body = search.to_dict()
     return es.search(index=dbm.database_name, doc_type=form_model.id, body=body, search_type='count')['hits']['total']
 
@@ -225,11 +246,11 @@ def _get_aggregation_result(field_name, search_results):
     return agg_result
 
 
-def get_aggregations_for_choice_fields(dbm, form_model, 
-                                       local_time_delta, pagination_params, 
+def get_aggregations_for_choice_fields(dbm, form_model,
+                                       local_time_delta, pagination_params,
                                        sort_params, search_parameters):
-    search = _create_search(dbm, form_model, local_time_delta, 
-                            pagination_params, sort_params, 
+    search = _create_search(dbm, form_model, local_time_delta,
+                            pagination_params, sort_params,
                             search_parameters)
     search = search.params(search_type="count")
     field_names = []

@@ -26,7 +26,7 @@ var filter_as_json = function () {
                         "search_text":$('#search_text').val(),
                         "dateQuestionFilters": dateQuestionFilters,
                         "uniqueIdFilters": unique_id_filters,
-                        "duplicatesForFilter": "datasender"
+                        "duplicatesForFilter": "exactmatch"
                 };
 };
 

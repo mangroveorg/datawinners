@@ -157,7 +157,6 @@ class DuplicatesSubmissionHeader(SubmissionHeader):
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
         if not self.form_model.is_poll:
             header_dict.update({"status": translate("Status", self.language, ugettext)})
-
         return header_dict
 
 
@@ -186,7 +185,8 @@ class HeaderFactory():
         self.header_to_class_dict = {"all": AllSubmissionHeader, "deleted": AllSubmissionHeader,
                                      "analysis": SubmissionAnalysisHeader,
                                      "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader,
-                                     "mobile": MobileSubmissionHeader, "duplicates": DuplicatesSubmissionHeader}
+                                     "duplicates": DuplicatesSubmissionHeader,
+                                     "mobile": MobileSubmissionHeader}
         self.form_model = form_model
         self.language = language
 

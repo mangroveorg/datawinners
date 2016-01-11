@@ -819,8 +819,7 @@ def get_submissions(request, form_code):
     search_results, query_fields = get_submissions_paginated(dbm, questionnaire, search_parameters, local_time_delta)
     submission_count_with_filters = get_submission_count(dbm, questionnaire, search_parameters, local_time_delta)
     submission_count_without_filters = get_submissions_without_user_filters_count(dbm, questionnaire, search_parameters)
-    submissions = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields,
-                                                                                                  search_results)
+    submissions = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields, search_results)
 
     return HttpResponse(
         jsonpickle.encode(
