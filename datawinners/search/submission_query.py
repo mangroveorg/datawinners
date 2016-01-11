@@ -85,55 +85,41 @@ class SubmissionQueryResponseCreator(object):
             for res in aggr_result:
                 submission = [res._id]
                 res = res._source
-                for key in required_field_names:
-                    if key not in meta_fields:
-                        if key in entity_question_codes:
-                            self.combine_name_and_id(
-                                short_code=safe_getattr(res, es_unique_id_code_field_name(key)),
-                                entity_name=safe_getattr(res, key), submission=submission)
-                        elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
-                            self._populate_datasender(res, submission)
-                        elif key == 'status':
-                            submission.append(ugettext(safe_getattr(res, key)))
-                        elif key == SubmissionIndexConstants.SUBMISSION_DATE_KEY:
-                            self._convert_to_localized_date_time(key, res, submission)
-                        elif key == 'error_msg':
-                            self._populate_error_message(key, language, res, submission)
-                        elif key in fieldset_fields.keys():
-                            submission.append(
-                                _format_fieldset_values_for_representation(safe_getattr(res, key),
-                                                                           fieldset_fields.get(key),
-                                                                           res.meta.id))
-                        else:
-                            submission.append(
-                                self._append_if_attachments_are_present(res, key, media_field_codes, image_fields))
+                self._append_to_submission(entity_question_codes, fieldset_fields, image_fields, language,
+                                           media_field_codes, meta_fields, required_field_names, res, submission)
                 submissions.append(submission)
         else:
             for res in search_results.hits:
                 submission = [res.meta.id]
-                for key in required_field_names:
-                    if key not in meta_fields:
-                        if key in entity_question_codes:
-                            self.combine_name_and_id(short_code=safe_getattr(res, es_unique_id_code_field_name(key)),
-                                                     entity_name=safe_getattr(res, key), submission=submission)
-                        elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
-                            self._populate_datasender(res, submission)
-                        elif key == 'status':
-                            submission.append(ugettext(safe_getattr(res, key)))
-                        elif key == SubmissionIndexConstants.SUBMISSION_DATE_KEY:
-                            self._convert_to_localized_date_time(key, res, submission)
-                        elif key == 'error_msg':
-                            self._populate_error_message(key, language, res, submission)
-                        elif key in fieldset_fields.keys():
-                            submission.append(
-                                _format_fieldset_values_for_representation(safe_getattr(res, key),
-                                                                           fieldset_fields.get(key),
-                                                                           res.meta.id))
-                        else:
-                            submission.append(
-                                self._append_if_attachments_are_present(res, key, media_field_codes, image_fields))
+                self._append_to_submission(entity_question_codes, fieldset_fields, image_fields, language,
+                                           media_field_codes, meta_fields, required_field_names, res, submission)
                 submissions.append(submission)
         return submissions
+
+    def _append_to_submission(self, entity_question_codes, fieldset_fields, image_fields, language, media_field_codes,
+                              meta_fields, required_field_names, res, submission):
+        for key in required_field_names:
+            if key not in meta_fields:
+                if key in entity_question_codes:
+                    self.combine_name_and_id(
+                        short_code=safe_getattr(res, es_unique_id_code_field_name(key)),
+                        entity_name=safe_getattr(res, key), submission=submission)
+                elif key == SubmissionIndexConstants.DATASENDER_NAME_KEY:
+                    self._populate_datasender(res, submission)
+                elif key == 'status':
+                    submission.append(ugettext(safe_getattr(res, key)))
+                elif key == SubmissionIndexConstants.SUBMISSION_DATE_KEY:
+                    self._convert_to_localized_date_time(key, res, submission)
+                elif key == 'error_msg':
+                    self._populate_error_message(key, language, res, submission)
+                elif key in fieldset_fields.keys():
+                    submission.append(
+                        _format_fieldset_values_for_representation(safe_getattr(res, key),
+                                                                   fieldset_fields.get(key),
+                                                                   res.meta.id))
+                else:
+                    submission.append(
+                        self._append_if_attachments_are_present(res, key, media_field_codes, image_fields))
 
     def _append_if_attachments_are_present(self, res, key, media_field_codes, image_fields):
         if self.form_model.is_media_type_fields_present and key in media_field_codes:

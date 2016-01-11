@@ -1,5 +1,3 @@
-from itertools import groupby
-
 from elasticsearch import Elasticsearch, helpers
 from elasticsearch_dsl import Search, Q, F
 import elasticutils

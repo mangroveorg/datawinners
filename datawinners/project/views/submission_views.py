@@ -16,8 +16,6 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
-import resource
-from psycopg2._psycopg import Boolean
 
 from datawinners import settings
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
