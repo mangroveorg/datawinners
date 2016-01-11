@@ -1,4 +1,6 @@
 import unittest
+
+from elasticsearch_dsl.utils import AttrList
 from elasticsearch_dsl.result import Result, Response
 from mock import MagicMock, patch
 
@@ -13,27 +15,33 @@ class TestSubmissionResponseCreator(unittest.TestCase):
     def test_should_give_back_entries_according_to_header_order(self):
         form_model = MagicMock(spec=FormModel)
         required_field_names = ['some_question', 'ds_id', 'ds_name', 'form_model_id_q1', 'form_model_id_q1_unique_code']
-        results = Response({"_hits": [
+        hits = AttrList([
             Result({'_type': "form_model_id", '_id': 'index_id', '_source': {'ds_id': 'his_id', 'ds_name': 'his_name',
                                                                              'form_model_id_q1_unique_code': 'subject_id',
                                                                              'form_model_id_q1': 'sub_last_name',
-                                                                             'some_question': 'answer for it'}})]})
+                                                                             'some_question': 'answer for it'}})
+        ])
+        hits.total = 1
+        results = Response({"_hits": hits})
         form_model.entity_questions = [UniqueIdField('Test subject', 'name', 'q1', 'which subject')]
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
         submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(required_field_names,
                                                                                                    results)
 
-        expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
-                     ["sub_last_name<span class='small_grey'>  subject_id</span>"]]]
+        expected = ([['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
+                     ["sub_last_name<span class='small_grey'>  subject_id</span>"]]], 1)
         self.assertEqual(submissions, expected)
 
     def test_should_give_create_response_with_no_unique_id_fields(self):
         form_model = MagicMock(spec=FormModel)
         required_field_names = ['ds_id', 'ds_name', 'some_question']
-        results = Response({"_hits": [
+        hits = AttrList([
             Result({'_type': "form_model_id", '_id': 'index_id', '_source': {'ds_id': 'his_id', 'ds_name': 'his_name',
-                                                                             'some_question': 'answer'}})]})
+                                                                             'some_question': 'answer'}})
+        ])
+        hits.total = 1
+        results = Response({"_hits": hits})
 
         form_model.entity_questions = []
         form_model.id = 'form_model_id'
@@ -42,7 +50,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(required_field_names,
                                                                                                    results)
 
-        expected = [['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer']]
+        expected = ([['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer']], 1)
         self.assertEqual(submissions, expected)
 
     def test_should_format_repeat_with_multi_select_question(self):
@@ -142,11 +150,14 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         form_model.is_media_type_fields_present = True
         form_model.media_fields = [PhotoField("photo", "img", "img")]
         required_field_names = ['some_question', 'ds_id', 'ds_name', 'form_model_id_img']
-        results = Response({"_hits": [
+        hits = AttrList([
             Result({'_type': "form_model_id", '_id': 'index_id', '_source': {'ds_id': 'his_id', 'ds_name': 'his_name',
                                                                              'form_model_id_q1': 'sub_last_name',
                                                                              'form_model_id_img': 'img2.png',
-                                                                             'some_question': 'answer for it'}})]})
+                                                                             'some_question': 'answer for it'}})
+        ])
+        hits.total = 1
+        results = Response({"_hits": hits})
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
 
@@ -154,8 +165,8 @@ class TestSubmissionResponseCreator(unittest.TestCase):
             required_field_names,
             results)
 
-        expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
-                     '<img src=\'/download/attachment/index_id/preview_img2.png\' alt=\'\'/>  <a href=\'/download/attachment/index_id/img2.png\'>img2.png</a>']]
+        expected = ([['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
+                     '<img src=\'/download/attachment/index_id/preview_img2.png\' alt=\'\'/>  <a href=\'/download/attachment/index_id/img2.png\'>img2.png</a>']], 1)
         self.assertEqual(submissions, expected)
 
     def test_should_format_non_image_media_question(self):
@@ -163,11 +174,14 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         form_model.is_media_type_fields_present = True
         form_model.media_fields = [VideoField("video", "mp4", "mp4")]
         required_field_names = ['some_question', 'ds_id', 'ds_name', 'form_model_id_mp4']
-        results = Response({"_hits": [
+        hits = AttrList([
             Result({'_type': "form_model_id", '_id': 'index_id', '_source': {'ds_id': 'his_id', 'ds_name': 'his_name',
                                                                              'form_model_id_q1': 'sub_last_name',
                                                                              'form_model_id_mp4': 'vid.mp4',
-                                                                             'some_question': 'answer for it'}})]})
+                                                                             'some_question': 'answer for it'}})
+        ])
+        hits.total = 1
+        results = Response({"_hits": hits})
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
 
@@ -175,6 +189,6 @@ class TestSubmissionResponseCreator(unittest.TestCase):
             required_field_names,
             results)
 
-        expected = [['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
-                     '  <a href=\'/download/attachment/index_id/vid.mp4\'>vid.mp4</a>']]
+        expected = ([['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
+                     '  <a href=\'/download/attachment/index_id/vid.mp4\'>vid.mp4</a>']], 1)
         self.assertEqual(submissions, expected)
