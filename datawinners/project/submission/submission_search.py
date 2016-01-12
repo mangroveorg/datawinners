@@ -60,7 +60,7 @@ def _aggregate_exact_match_duplicates(form_model, search):
         nested_search = nested_search.aggs['tag']
     nested_search.bucket('tag', 'terms', field='status_exact', size=0, min_doc_count=2)\
         .bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)\
-        .bucket('tag', 'top_hits')
+        .bucket('tag', 'top_hits', size=(2**20))
 
     return search
 
