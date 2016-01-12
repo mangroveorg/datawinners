@@ -174,13 +174,10 @@ DW.SubmissionLogExport = function () {
 
 DW.DuplicatesForFilter = function(postFilterSelectionCallBack) {
     var self = this;
-    var postFilterSelection = postFilterSelectionCallBack;
 
     self.init = function() {
-        self.filter = $("duplicates_for");
+        $("#duplicates_for").change(postFilterSelectionCallBack);
     };
-
-
 }
 
 DW.DataSenderFilter = function (postFilterSelectionCallBack) {
