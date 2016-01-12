@@ -28,11 +28,22 @@ def _add_pagination_criteria(search_parameters, search):
     return search.extra(from_=start_result_number, size=number_of_results)
 
 
-def _aggregate_other_duplicates(form_model, search_parameters, search):
-    if search_parameters == 'datasender':
+def _aggregate_duplicates(form_model, search_parameters, search):
+    if search_parameters == 'exactmatch':
+        search = _aggregate_exact_match_duplicates(form_model, search)
+
+    elif search_parameters == 'datasender':
+        search = search.params(search_type="count")
         a = A("terms", field='ds_id_exact', size=0, min_doc_count=2)
         b = A("top_hits", size=(2**20))
         search.aggs.bucket('tag', a).bucket('tag', b)
+
+    else:
+        search = search.params(search_type="count")
+        a = A("terms", field=form_model.id+'_'+search_parameters+'_unique_code_exact', size=0, min_doc_count=2)
+        b = A("top_hits", size=(2**20))
+        search.aggs.bucket('tag', a).bucket('tag', b)
+
     return search
 
 
@@ -55,9 +66,6 @@ def _aggregate_exact_match_duplicates(form_model, search):
 
 
 def _query_by_submission_type(form_model, submission_type_filter, search):
-    if submission_type_filter == 'duplicates':
-        return _aggregate_exact_match_duplicates(form_model, search)
-
     if submission_type_filter == 'deleted':
         return search.query('term', void=True)
     elif submission_type_filter == 'all' or submission_type_filter == 'duplicates':
@@ -152,7 +160,7 @@ def _create_query(dbm, form_model, local_time_delta, search_parameters):
 def get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta):
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
     if search_parameters.get('filter') == 'duplicates':
-        search = _aggregate_other_duplicates(form_model, search_parameters.get('search_filters').get('duplicatesForFilter'), search)
+        search = _aggregate_duplicates(form_model, search_parameters.get('search_filters').get('duplicatesForFilter'), search)
     search_results = search.execute()
     return search_results, query_fields
 

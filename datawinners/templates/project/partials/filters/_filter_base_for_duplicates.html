@@ -10,7 +10,11 @@
     <div class="float_left">
         <select id="duplicates_for">
             {% for field in duplicates_for %}
-                <option value="{{field  }}">{{ field.entity_type|capfirst }}</option>
+                {% if field.type == 'unique_id' %}
+                    <option value="{{field.code}}">{{ field.entity_type|capfirst }} - {{ field.label|capfirst }}</option>
+                {% else %}
+                    <option value="{{field.entity_type}}">{{ field.label|capfirst }}</option>
+                {% endif %}
             {% endfor %}
         </select>
     </div>
