@@ -27,7 +27,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         form_model.id = 'form_model_id'
         local_time_delta = ('+', 2, 0)
         submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(required_field_names,
-                                                                                                   results)
+                                                                                                   results, {})
 
         expected = ([['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
                      ["sub_last_name<span class='small_grey'>  subject_id</span>"]]], 1)
@@ -48,7 +48,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         local_time_delta = ('+', 2, 0)
 
         submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(required_field_names,
-                                                                                                   results)
+                                                                                                   results, {})
 
         expected = ([['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer']], 1)
         self.assertEqual(submissions, expected)
@@ -163,7 +163,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
 
         submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(
             required_field_names,
-            results)
+            results, {})
 
         expected = ([['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
                      '<img src=\'/download/attachment/index_id/preview_img2.png\' alt=\'\'/>  <a href=\'/download/attachment/index_id/img2.png\'>img2.png</a>']], 1)
@@ -187,7 +187,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
 
         submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(
             required_field_names,
-            results)
+            results, {})
 
         expected = ([['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
                      '  <a href=\'/download/attachment/index_id/vid.mp4\'>vid.mp4</a>']], 1)

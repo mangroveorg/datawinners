@@ -51,13 +51,14 @@ def _aggregate_exact_match_duplicates(form_model, search):
     search = search.params(search_type="count")
     nested_search = search
     for index, field in enumerate(form_model.form_fields):
-        field_name = es_questionnaire_field_name(field['code'], form_model.id)
-        field_suffix = '_value' if field['type'] == 'date' else '_exact'
-        if index == 0:
-            nested_search.aggs.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
-        else:
-            nested_search.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
-        nested_search = nested_search.aggs['tag']
+        if field['type'] != 'select':
+            field_name = es_questionnaire_field_name(field['code'], form_model.id)
+            field_suffix = '_value' if field['type'] == 'date' else '_exact'
+            if index == 0:
+                nested_search.aggs.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
+            else:
+                nested_search.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
+            nested_search = nested_search.aggs['tag']
     nested_search.bucket('tag', 'terms', field='status_exact', size=0, min_doc_count=2)\
         .bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)\
         .bucket('tag', 'top_hits', size=(2**20))

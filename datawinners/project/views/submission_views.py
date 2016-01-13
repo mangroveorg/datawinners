@@ -824,7 +824,7 @@ def get_submissions(request, form_code):
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
     search_results, query_fields = get_submissions_paginated(dbm, questionnaire, search_parameters, local_time_delta)
-    submissions, total = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields, search_results)
+    submissions, total = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields, search_results, search_parameters)
 
     return HttpResponse(
         jsonpickle.encode(

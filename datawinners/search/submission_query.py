@@ -1,5 +1,6 @@
 import json
 import datetime
+from itertools import groupby
 
 from django.utils.translation import ugettext, get_language
 
@@ -60,6 +61,19 @@ class SubmissionQueryResponseCreator(object):
                     es_questionnaire_field_name(media_field.code, self.form_model.id, media_field.parent_field_code))
         return media_field_code
 
+    def _group_aggregation_by_multichoice_answers(self, aggr_result):
+        for field in self.form_model.choice_fields:
+            if field.type == 'select':
+                code = es_questionnaire_field_name(field.code, self.form_model.id, field.parent_field_code)
+                sorted_list = sorted(aggr_result, key=lambda x: ",".join(getattr(x._source, code)))
+                grouped_result = []
+                for key, group in groupby(sorted_list, lambda x: ",".join(getattr(x._source, code))):
+                    grouped_list = list(group)
+                    if len(grouped_list) > 1:
+                        grouped_result.extend(grouped_list)
+                aggr_result = grouped_result
+        return aggr_result
+
     def _traverse_aggregation_buckets(self, search_results, aggr_result):
         if not hasattr(search_results['tag'], 'buckets'):
             aggr_result.extend(search_results['tag']['hits']['hits'])
@@ -67,7 +81,7 @@ class SubmissionQueryResponseCreator(object):
             for bucket in search_results['tag'].buckets:
                 self._traverse_aggregation_buckets(bucket, aggr_result)
 
-    def create_response(self, required_field_names, search_results):
+    def create_response(self, required_field_names, search_results, search_parameters):
         entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id, field.parent_field_code)
                                  for field in
                                  self.form_model.entity_questions]
@@ -82,6 +96,8 @@ class SubmissionQueryResponseCreator(object):
         if hasattr(search_results, 'aggregations'):
             aggr_result = []
             self._traverse_aggregation_buckets(search_results.aggregations, aggr_result)
+            if search_parameters.get('search_filters').get('duplicatesForFilter') == 'exactmatch':
+                aggr_result = self._group_aggregation_by_multichoice_answers(aggr_result)
             for res in aggr_result:
                 submission = [res._id]
                 res = res._source
