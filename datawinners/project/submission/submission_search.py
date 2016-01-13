@@ -66,7 +66,7 @@ def _aggregate_exact_match_duplicates(form_model, search):
     return search
 
 
-def _query_by_submission_type(form_model, submission_type_filter, search):
+def _query_by_submission_type(submission_type_filter, search):
     if submission_type_filter == 'deleted':
         return search.query('term', void=True)
     elif submission_type_filter == 'all' or submission_type_filter == 'duplicates':
@@ -130,7 +130,7 @@ def _add_search_filters(search_filter_param, form_model, local_time_delta, query
 
 
 def _add_filters(form_model, search_parameters, local_time_delta, search):
-    search = _query_by_submission_type(form_model, search_parameters.get('filter'), search)
+    search = _query_by_submission_type(search_parameters.get('filter'), search)
     query_fields = _get_query_fields(form_model, search_parameters.get('filter'))
     search = _add_search_filters(search_parameters.get('search_filters'), form_model, local_time_delta, query_fields,
                                  search)
