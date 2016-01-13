@@ -132,6 +132,11 @@ def _field_code(field, parent_code):
         return parent_code + '----' + field.code
     return field.code
 
+def _get_field_code(field, parent_code):
+    if parent_code:
+        return parent_code + '-' + field.code
+    return field.code
+
 
 def get_filterable_field_details(field, filterable_fields, parent_code):
     if isinstance(field, DateField):
@@ -171,29 +176,32 @@ def get_filterable_fields(fields, filterable_fields, parent_code=None):
 def get_unique_id_field_details(field, parent_code):
     return {
                 'type': 'unique_id',
-                'code': _field_code(field, parent_code),
+                'code': _get_field_code(field, parent_code),
                 'entity_type': field.unique_id_type,
                 'label': field.label
             }
 
-def get_duplicates_filterable_fields(fields):
-    duplicates_filterable_fields = []
-    exact_match_option = {
-                'entity_type': 'exactmatch',
-                'label': ugettext('Exact Match')
-            }
-    datasender_field = {
-                'entity_type': 'datasender',
-                'code': 'ds_id',
-                'label': ugettext('Data Sender')
-            }
-
-    duplicates_filterable_fields.append(datasender_field)
-    duplicates_filterable_fields.append(exact_match_option)
-
+def get_duplicates_filterable_fields(fields, duplicates_filterable_fields, parent_code=None):
     for field in fields:
         if isinstance(field, UniqueIdField):
-            duplicates_filterable_fields.append(get_unique_id_field_details(field, None))
+            duplicates_filterable_fields.append(get_unique_id_field_details(field, parent_code))
+        if isinstance(field, FieldSet) and field.is_group():
+            duplicates_filterable_fields = get_duplicates_filterable_fields(field.fields, duplicates_filterable_fields, field.code)
+    return duplicates_filterable_fields
+
+
+def add_static_filterable_fields_for_duplicates(duplicates_filterable_fields):
+    exact_match_option = {
+        'entity_type': 'exactmatch',
+        'label': ugettext('Exact Match')
+    }
+    datasender_field = {
+        'entity_type': 'datasender',
+        'code': 'ds_id',
+        'label': ugettext('Data Sender')
+    }
+    duplicates_filterable_fields.append(datasender_field)
+    duplicates_filterable_fields.append(exact_match_option)
     return duplicates_filterable_fields
 
 
@@ -214,7 +222,9 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             return HttpResponseRedirect(dashboard_page)
 
         filterable_fields = get_filterable_fields(questionnaire.fields, [])
-        duplicates_filter_list = get_duplicates_filterable_fields(questionnaire.fields)
+        duplicates_filter_list = add_static_filterable_fields_for_duplicates([])
+
+        duplicates_filter_list = get_duplicates_filterable_fields(questionnaire.fields, duplicates_filter_list)
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
         xform = questionnaire.xform
         result_dict = {
