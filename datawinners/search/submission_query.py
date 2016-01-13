@@ -133,7 +133,7 @@ class SubmissionQueryResponseCreator(object):
                     submission.append(
                         _format_fieldset_values_for_representation(safe_getattr(res, key),
                                                                    fieldset_fields.get(key),
-                                                                   res.meta.id))
+                                                                   submission[0]))
                 else:
                     submission.append(
                         self._append_if_attachments_are_present(res, key, media_field_codes, image_fields))
