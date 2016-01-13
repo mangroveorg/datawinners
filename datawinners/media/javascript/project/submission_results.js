@@ -33,6 +33,10 @@
         return active_tab_index != 4;
     };
 
+    self.isDuplicatesTab = function () {
+        return active_tab_index == 3;
+    };
+
     self.setToAnalysisTab = function () {
         active_tab_index = 5;
     };

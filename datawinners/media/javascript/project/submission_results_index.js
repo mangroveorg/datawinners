@@ -51,7 +51,16 @@ $(document).ready(function () {
         $(".submission_table").dataTable().fnDraw();
     };
 
+    var _show_hide_duplicates_filter = function() {
+        if (submissionTabs.isDuplicatesTab()) {
+            $("#duplicates-for-dropdown").show();
+        } else {
+            $("#duplicates-for-dropdown").hide();
+        }
+    }
+
     _initTable(submissionTabs);
+    _show_hide_duplicates_filter();
     _initialize_filters();
     $('#page_hint_section').text($('#page_hint').find('>div:first').text());
 
@@ -65,7 +74,9 @@ $(document).ready(function () {
         if (submissionTabs.getActiveTabIndex() === tab_index) {
             return;
         }
+
         submissionTabs.setActiveTabIndex(tab_index);
+        _show_hide_duplicates_filter();
         submissionLogExport.update_tab(submissionTabs.getActiveTabName());
         _activate_tab(submissionTabs);
         return true;
