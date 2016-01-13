@@ -663,7 +663,7 @@ def export_subject(request):
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)
     field_codes = form_model.field_codes()
     field_codes.insert(0, form_model.form_code)
-    labels = get_subject_headers(form_model.form_fields)
+    labels = get_subject_headers(form_model)
     raw_data = []
     headers = OrderedDict([(subject_type,labels), ("codes",field_codes)])
 

@@ -18,10 +18,11 @@ def add_to_header(headers, label, instruction, example):
     headers.append(((label, bold), (u"\n\n%s" % instruction, brown), (u"\n\n%s" % example, italic)))
 
 
-def get_subject_headers(fields):
+def get_subject_headers(form_model):
+    fields = form_model.form_fields
     headers = []
     for field in fields:
-        context = InstructionContext(field=field, unique_id_types=None)
+        context = InstructionContext(field, form_model.entity_type)
         instruction, example = SubjectInstructionBuilder.fetch_instruction(context)
         add_to_header(headers, field["label"], instruction, example)
     return headers
@@ -172,7 +173,8 @@ class EntityProjectSubmissionInstruction:
 
 
 class SubjectInstructionBuilder:
-    field_instructions = [EntityIdRegistrationInstruction, IntegerFieldInstruction, TextFieldInstruction,
+    field_instructions = [EntityProjectSubmissionInstruction,
+                          EntityIdRegistrationInstruction, IntegerFieldInstruction, TextFieldInstruction,
                           GeoCodeFieldInstruction, DateFieldInstruction, MultiSelectFieldInstruction,
                           SingleSelectFieldInstruction, TelephoneNumberFieldInstruction, ListFieldInstruction]
 
