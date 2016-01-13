@@ -4,10 +4,13 @@ import elasticutils
 from datawinners.search.submission_index_meta_fields import submission_meta_field_names
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.entity import Entity, Contact
-from mangrove.form_model.field import DateField, TimeField, DateTimeField, field_attributes
+from mangrove.form_model.field import DateField, TimeField, DateTimeField, field_attributes,\
+    UniqueIdField
 from mangrove.form_model.project import get_entity_type_fields, tabulate_data
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.cache_manager import get_cache_manager
+from __builtin__ import isinstance
+from mangrove.datastore.queries import get_all_by_type
 
 
 def _add_date_field_mapping(mapping_fields, field_def):
@@ -76,8 +79,9 @@ def _contact_dict(entity_doc, dbm, form_model):
 
 def subject_dict(entity_type, entity_doc, dbm, form_model):
     entity = Entity.get(dbm, entity_doc.id)
-    field_names, labels, codes = get_entity_type_fields(dbm, form_model.form_code)
+    field_names, labels, codes = get_entity_type_fields(dbm, form_model.form_code, form_model=form_model)
     data = tabulate_data(entity, form_model, codes)
+    data = _update_linked_idnr_data(dbm, entity, form_model, data, field_names)
     dictionary = OrderedDict()
     for index in range(0, len(field_names)):
         dictionary.update({es_questionnaire_field_name(codes[index], form_model.id): data['cols'][index]})
@@ -85,20 +89,22 @@ def subject_dict(entity_type, entity_doc, dbm, form_model):
     dictionary.update({"void": entity.is_void()})
     return dictionary
 
+def _update_linked_idnr_data(dbm, entity, form_model, data, field_names):
+    for field in form_model.fields:
+        if isinstance(field, UniqueIdField):
+            value = entity.value(field.name)
+            all_linked_idnr = get_all_by_type(dbm, field.unique_id_type)
+            linked_idnrs = [linked_id for linked_id in all_linked_idnr if linked_id['short_code'] == value]
+            if linked_idnrs:
+                for index in range(0, len(field_names)):
+                    if field.name == field_names[index]:
+                        data['cols'][index] = unicode("%s(%s)" % (unicode(linked_idnrs[0]['data']['name']['value'].capitalize()), unicode(value)))     
+    
+    return data
 
 def get_elasticsearch_handle(timeout=ELASTIC_SEARCH_TIMEOUT):
     return elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=timeout)
 
-
-# def es_field_name(field_code, form_model_id):
-#     """
-#         prefixes form_model id to namespace all additional fields on questionnaire (ds_name, ds_id, status and date are not prefixed)
-#     :param field_code:
-#     """
-#     if is_submission_meta_field(field_code):
-#         return es_submission_meta_field_name(field_code)
-#     else:
-#         return es_questionnaire_field_name(field_code, form_model_id)
 
 def es_submission_meta_field_name(field_code):
     """

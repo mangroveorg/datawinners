@@ -27,15 +27,17 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
-    {#    knows about vm #}
-    <script type="text/javascript" src="/media/javascript/entity/subject_questionnaire_view_model.js"></script>
     <script type="text/javascript">
         var existing_questions = $.parseJSON({{existing_questions|safe}});
         var questionnaire_code = '{{ questionnaire_code }}';
         var subject_type = '{{ entity_type }}';
+        var uniqueIdTypes = {{ unique_id_types|safe }}
+
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/idnos/?template=help";
     </script>
+    <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
+    {#    knows about vm #}
+    <script type="text/javascript" src="/media/javascript/entity/subject_questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_subject_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
     {#    knows about vm #}

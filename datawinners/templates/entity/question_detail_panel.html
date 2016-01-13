@@ -43,7 +43,7 @@
 
             <div class="dropdown">
                 <select data-bind="options: $root.answerTypes, value: answerType,
-                                  optionsText: 'name', optionsValue: 'value', enable: newly_added_question,
+                                  optionsText: 'name', optionsValue: 'value', enable: newly_added_question, 
                                   optionsAfterRender: $root.setOptionDisable"
                         autofocus></select>
 
@@ -135,6 +135,10 @@
                 </div>
             </div>
         </li>
+        <li data-bind="visible: showUniqueId">
+            {% include 'entity/unique_id_selection.html' %}
+        </li>
+        
         <li>
             <div class="questionnaire-instruction">
                 <label>{% trans "Instructions for Data Senders" %}<img src="/media/images/help_icon.png" class="help_icon"

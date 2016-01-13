@@ -6,6 +6,7 @@ from datawinners.questionnaire.helper import get_location_field_code
 from mangrove.form_model.field import UniqueIdField
 
 from mangrove.form_model.validation import TextLengthConstraint
+from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 
 class WebForm(Form):
     def __init__(self, form_model, data):
@@ -23,7 +24,9 @@ class SubjectRegistrationForm(WebForm):
         self.country = country
         self.fields[u't'] = CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])
         for field in self.form_model.fields:
-            if field.is_entity_field:
+            if isinstance(field, UniqueIdField):
+                self.fields[field.code] = SubjectQuestionFieldCreator(self.form_model,has_linked_idnr=True).create(field)
+            elif field.is_entity_field:
                 self.fields[field.code] = self.regex_field(field)
             else:
                 field.set_instruction(get_subject_field_instruction(field, entity_type=self.form_model.entity_type[0]))
