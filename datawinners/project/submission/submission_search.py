@@ -30,7 +30,7 @@ def _add_pagination_criteria(search_parameters, search):
 
 def _aggregate_duplicates(form_model, search_parameters, search):
     if search_parameters == 'exactmatch':
-        search = _aggregate_exact_match_duplicates(form_model, search)
+        search = _aggregate_exact_match_duplicates(form_model.form_fields, form_model.id, search)
 
     elif search_parameters == 'datasender':
         search = search.params(search_type="count")
@@ -47,19 +47,26 @@ def _aggregate_duplicates(form_model, search_parameters, search):
     return search
 
 
-def _aggregate_exact_match_duplicates(form_model, search):
+def _aggregate_exact_match_duplicates(fields, questionnaire_id, search):
     search = search.params(search_type="count")
+
     nested_search = search
-    for index, field in enumerate(form_model.form_fields):
-        if field['type'] != 'select':
-            parent_code = field['parent_field_code'] if field['parent_field_code'] else None
-            field_name = es_questionnaire_field_name(field['code'], form_model.id, parent_code)
-            field_suffix = '_value' if field['type'] == 'date' else '_exact'
-            if index == 0:
-                nested_search.aggs.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
-            else:
-                nested_search.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
-            nested_search = nested_search.aggs['tag']
+    for index, field in enumerate(fields):
+        if field['type'] == 'field_set':
+            return _aggregate_exact_match_duplicates(field['fields'], questionnaire_id, search)
+
+        if field['type'] == 'select':
+            break
+
+        parent_code = field['parent_field_code'] if field['parent_field_code'] else None
+        field_name = es_questionnaire_field_name(field['code'], questionnaire_id, parent_code)
+        field_suffix = '_value' if field['type'] == 'date' else '_exact'
+        if index == 0:
+            nested_search.aggs.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
+        else:
+            nested_search.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
+        nested_search = nested_search.aggs['tag']
+
     nested_search.bucket('tag', 'terms', field='status_exact', size=0, min_doc_count=2)\
         .bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)\
         .bucket('tag', 'top_hits', size=(2**20))
