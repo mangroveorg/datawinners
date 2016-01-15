@@ -599,6 +599,7 @@ def save_questionnaire(request):
         detail_dict = dict()
         if new_short_code != saved_short_code:
             try:
+                form_model.old_form_code = form_model.form_code
                 form_model.form_code = new_short_code
                 form_model.save()
                 detail_dict.update({"form_code": new_short_code})
