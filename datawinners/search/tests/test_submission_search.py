@@ -30,7 +30,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
                                                                                                    results, {})
 
         expected = ([['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
-                     ["sub_last_name<span class='small_grey'>  subject_id</span>"]]], 1)
+                     ["sub_last_name<span class='small_grey'>  subject_id</span>"], 0]], 1)
         self.assertEqual(submissions, expected)
 
     def test_should_give_create_response_with_no_unique_id_fields(self):
@@ -50,7 +50,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         submissions = SubmissionQueryResponseCreator(form_model, local_time_delta).create_response(required_field_names,
                                                                                                    results, {})
 
-        expected = ([['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer']], 1)
+        expected = ([['index_id', ["his_name<span class='small_grey'>  his_id</span>"], 'answer', 0]], 1)
         self.assertEqual(submissions, expected)
 
     def test_should_format_repeat_with_multi_select_question(self):
@@ -166,7 +166,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
             results, {})
 
         expected = ([['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
-                     '<img src=\'/download/attachment/index_id/preview_img2.png\' alt=\'\'/>  <a href=\'/download/attachment/index_id/img2.png\'>img2.png</a>']], 1)
+                     '<img src=\'/download/attachment/index_id/preview_img2.png\' alt=\'\'/>  <a href=\'/download/attachment/index_id/img2.png\'>img2.png</a>', 0]], 1)
         self.assertEqual(submissions, expected)
 
     def test_should_format_non_image_media_question(self):
@@ -190,5 +190,5 @@ class TestSubmissionResponseCreator(unittest.TestCase):
             results, {})
 
         expected = ([['index_id', 'answer for it', ["his_name<span class='small_grey'>  his_id</span>"],
-                     '  <a href=\'/download/attachment/index_id/vid.mp4\'>vid.mp4</a>']], 1)
+                     '  <a href=\'/download/attachment/index_id/vid.mp4\'>vid.mp4</a>', 0]], 1)
         self.assertEqual(submissions, expected)

@@ -14,6 +14,23 @@
                 "searchPlaceholderText": '',
                 'getFilter': function () {
                 },
+                "fnRowCallback": function(row, data, dataIndex) {
+                    if (dataIndex == 0) {
+                        $(row).addClass("odd_group");
+                        return row;
+                    }
+
+                    table = $(".submission_table").dataTable();
+                    prevRow = $(table.fnGetNodes(dataIndex-1));
+                    prevRowData = table.fnGetData(dataIndex-1);
+                    if (
+                        (prevRow.hasClass("odd_group") && (data[data.length-1] == prevRowData[data.length-1])) ||
+                        (!prevRow.hasClass("odd_group") && (data[data.length-1] != prevRowData[data.length-1]))
+                       ) {
+                      $(row).addClass("odd_group");
+                    }
+                    return row;
+                },
                 "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
                     lastXHR = oSettings.jqXHR;
                     lastXHR && lastXHR.abort && lastXHR.abort();

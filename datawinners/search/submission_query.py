@@ -74,12 +74,14 @@ class SubmissionQueryResponseCreator(object):
                 aggr_result = grouped_result
         return aggr_result
 
-    def _traverse_aggregation_buckets(self, search_results, aggr_result):
+    def _traverse_aggregation_buckets(self, search_results, aggr_result, groups):
         if not hasattr(search_results['tag'], 'buckets'):
-            aggr_result.extend(search_results['tag']['hits']['hits'])
+            results = [_append_to_(result, 'group_id', groups[0]) for result in search_results['tag']['hits']['hits']]
+            aggr_result.extend(results)
+            groups[0] += 1
         else:
             for bucket in search_results['tag'].buckets:
-                self._traverse_aggregation_buckets(bucket, aggr_result)
+                self._traverse_aggregation_buckets(bucket, aggr_result, groups)
 
     def create_response(self, required_field_names, search_results, search_parameters):
         entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id, field.parent_field_code)
@@ -95,14 +97,17 @@ class SubmissionQueryResponseCreator(object):
 
         if hasattr(search_results, 'aggregations'):
             aggr_result = []
-            self._traverse_aggregation_buckets(search_results.aggregations, aggr_result)
+            groups = [0]
+            self._traverse_aggregation_buckets(search_results.aggregations, aggr_result, groups)
             if search_parameters.get('search_filters').get('duplicatesForFilter') == 'exactmatch':
                 aggr_result = self._group_aggregation_by_multichoice_answers(aggr_result)
             for res in aggr_result:
                 submission = [res._id]
+                group_id = res.group_id
                 res = res._source
                 self._append_to_submission(entity_question_codes, fieldset_fields, image_fields, language,
                                            media_field_codes, meta_fields, required_field_names, res, submission)
+                submission.append(group_id)
                 submissions.append(submission)
             return submissions, len(aggr_result)
         else:
@@ -110,6 +115,7 @@ class SubmissionQueryResponseCreator(object):
                 submission = [res.meta.id]
                 self._append_to_submission(entity_question_codes, fieldset_fields, image_fields, language,
                                            media_field_codes, meta_fields, required_field_names, res, submission)
+                submission.append(0)
                 submissions.append(submission)
             return submissions, search_results.hits.total
 
@@ -195,3 +201,8 @@ def _format_fieldset_values_for_representation(entry, field_set, submission_id):
             formatted_value = _format_values(field_set, formatted_value, [value_dict], submission_id)
             formatted_value += '<br><br>'
         return '<span class="repeat_ans">' + formatted_value + '</span>'
+
+
+def _append_to_(result, key, value):
+    setattr(result, key, value)
+    return result
