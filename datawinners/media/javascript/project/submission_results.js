@@ -89,7 +89,6 @@ DW.SubmissionLogTable = function (options) {
                 },
                 "fnRowCallback": function(row, data, dataIndex) {
                     if (dataIndex == 0) {
-                        $(row).addClass("odd_group");
                         return row;
                     }
 
