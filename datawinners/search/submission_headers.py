@@ -6,8 +6,9 @@ from django.utils.translation import ugettext
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.utils import translate
-from mangrove.form_model.form_model import header_fields
+from mangrove.form_model.form_model import header_fields, EntityFormModel
 from mangrove.form_model.field import FieldSet
+from __builtin__ import isinstance
 
 
 class SubmissionHeader():
@@ -22,7 +23,10 @@ class SubmissionHeader():
         def key_attribute(field):
             return field.code
 
-        entity_questions = self.form_model.entity_questions
+        if isinstance(self.form_model, EntityFormModel):
+            entity_questions = self.form_model.base_entity_questions
+        else:
+            entity_questions = self.form_model.entity_questions
         entity_question_dict = dict((self._get_entity_question_path(field), field) for field in entity_questions)
         headers = header_fields(self.form_model, key_attribute)
         for field_code, val in headers.items():
@@ -130,11 +134,14 @@ class AllSubmissionHeader(SubmissionHeader):
         header_dict.update(
             {SubmissionIndexConstants.DATASENDER_NAME_KEY: translate("Data Sender Name", self.language, ugettext)})
         header_dict.update({"date": translate("Submission Date", self.language, ugettext)})
-        if not self.form_model.is_poll:
+        if not hasattr(self.form_model,'is_poll') or self.form_model.is_poll is False:
             header_dict.update({"status": translate("Status", self.language, ugettext)})
 
         return header_dict
 
+class IdentificationNumberHeader(SubmissionHeader):
+    def update_static_header_info(self):
+        return OrderedDict()
 
 class SuccessSubmissionHeader(SubmissionHeader):
     def update_static_header_info(self):
@@ -186,10 +193,15 @@ class HeaderFactory():
                                      "analysis": SubmissionAnalysisHeader,
                                      "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader,
                                      "duplicates": DuplicatesSubmissionHeader,
-                                     "mobile": MobileSubmissionHeader}
+                                     "mobile": MobileSubmissionHeader,
+                                     "identification_number":IdentificationNumberHeader,
+                                     }
         self.form_model = form_model
         self.language = language
 
     def create_header(self, submission_type):
-        header_class = self.header_to_class_dict.get(submission_type)
+        if submission_type is None:
+            header_class = AllSubmissionHeader
+        else:
+            header_class = self.header_to_class_dict.get(submission_type)
         return header_class(self.form_model, self.language)

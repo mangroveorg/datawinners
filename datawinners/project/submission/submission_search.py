@@ -8,6 +8,7 @@ from datawinners.search.submission_headers import HeaderFactory
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT, ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
 import logging
 from elasticsearch_dsl.aggs import A
+from mangrove.form_model.form_model import EntityFormModel
 
 logger = logging.getLogger("datawinners")
 
@@ -82,9 +83,9 @@ def _query_by_submission_type(submission_type_filter, search):
 
     if submission_type_filter == 'analysis':
         search = search.query('match', status='Success')
-    else:
+    elif submission_type_filter is not None:
         search = search.query('term', status=submission_type_filter)
-    return search.query('term', void=False)
+    return search
 
 
 def _get_query_fields(form_model, submission_type):
@@ -119,7 +120,7 @@ def _add_unique_id_filters(form_model, unique_id_filters, search):
 
 def _add_search_filters(search_filter_param, form_model, local_time_delta, query_fields, search):
     if not search_filter_param:
-        return
+        return search
 
     query_text = search_filter_param.get("search_text")
     query_text_escaped = ElasticUtilsHelper().replace_special_chars(query_text)
@@ -138,7 +139,9 @@ def _add_search_filters(search_filter_param, form_model, local_time_delta, query
 
 
 def _add_filters(form_model, search_parameters, local_time_delta, search):
-    search = _query_by_submission_type(search_parameters.get('filter'), search)
+    search = search.query('term', void=False)
+    if not isinstance(form_model, EntityFormModel):
+        search = _query_by_submission_type(search_parameters.get('filter'), search)
     query_fields = _get_query_fields(form_model, search_parameters.get('filter'))
     search = _add_search_filters(search_parameters.get('search_filters'), form_model, local_time_delta, query_fields,
                                  search)
@@ -158,7 +161,10 @@ def _add_response_fields(search_parameters, search):
 
 def _create_query(dbm, form_model, local_time_delta, search_parameters):
     es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
-    search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
+    doc_type=form_model.id
+    if isinstance(form_model, EntityFormModel):
+        doc_type = form_model.name
+    search = Search(using=es, index=dbm.database_name, doc_type=doc_type)
     search = _add_pagination_criteria(search_parameters, search)
     search = _add_sort_criteria(search_parameters, search)
     search = _add_response_fields(search_parameters, search)
@@ -219,7 +225,19 @@ def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_ti
     query_dict = search.to_dict()
     # if search_parameters.get('get_only_id', False):
     #     query_dict["fields"] = []
-    scan_response = helpers.scan(client=Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}]), index=dbm.database_name, doc_type=form_model.id,
+    doc_type=form_model.id
+    if isinstance(form_model, EntityFormModel):
+        doc_type = form_model.name
+    
+    scan_response = helpers.scan(client=
+                                 Elasticsearch(
+                                               hosts=[
+                                                      {
+                                                       "host": ELASTIC_SEARCH_HOST, 
+                                                       "port": ELASTIC_SEARCH_PORT}]
+                                               ), 
+                                 index=dbm.database_name, 
+                                 doc_type=doc_type,
                                  query=query_dict, timeout="3m", size=4000)
     return scan_response, query_fields
 

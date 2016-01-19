@@ -12,7 +12,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext as _, ugettext
+from django.utils.translation import ugettext as _, ugettext, get_language
 import elasticutils
 import jsonpickle
 from django.contrib import messages
@@ -65,6 +65,8 @@ from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGIST
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 from datawinners.project.submission.export import export_to_new_excel
+from datawinners.project.submission.exporter import SubmissionExporter
+from datawinners.accountmanagement.localized_time import get_country_time_delta
 
 
 websubmission_logger = logging.getLogger("websubmission")
@@ -651,9 +653,26 @@ def subject_autocomplete(request, entity_type):
             query[:min(query.count(), 50)]]
     return HttpResponse(json.dumps(resp))
 
-
-@valid_web_user
 def export_subject(request):
+    manager = get_database_manager(request.user)
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+    current_language = get_language()
+    subject_type = request.POST.get('subject_type', '').lower()
+    project_name = subject_type #temp
+    form_model = get_form_model_by_entity_type(manager, [subject_type.lower()])
+    query_params = {
+                    "start_result_number": 0,
+                    "number_of_results": 4000,
+                    "order": "",
+                    "filter":'identification_number',
+                    }
+    
+    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, None) \
+        .create_excel_response('identification_number', query_params)
+    
+@valid_web_user
+def _deprecated_export_subject(request):
     manager = get_database_manager(request.user)
     query_text = request.POST.get('query_text', '')
     subject_type = request.POST.get('subject_type', '').lower()
