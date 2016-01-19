@@ -200,8 +200,10 @@ def add_static_filterable_fields_for_duplicates(duplicates_filterable_fields):
         'code': 'ds_id',
         'label': ugettext('Data Sender')
     }
-    duplicates_filterable_fields.append(datasender_field)
+
     duplicates_filterable_fields.append(exact_match_option)
+    duplicates_filterable_fields.append(datasender_field)
+
     return duplicates_filterable_fields
 
 
