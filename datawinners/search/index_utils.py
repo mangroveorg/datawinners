@@ -6,11 +6,16 @@ from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.entity import Entity, Contact
 from mangrove.form_model.field import DateField, TimeField, DateTimeField, field_attributes,\
     UniqueIdField
-from mangrove.form_model.project import get_entity_type_fields, tabulate_data
+from mangrove.form_model.project import get_entity_type_fields, tabulate_data, \
+    get_field_value, get_field_default_value
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.cache_manager import get_cache_manager
 from __builtin__ import isinstance
 from mangrove.datastore.queries import get_all_by_type
+from datawinners.entity.import_data import get_entity_type_info
+from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
+from mangrove.errors.MangroveException import DataObjectNotFound
+
 
 
 def _add_date_field_mapping(mapping_fields, field_def):
@@ -77,30 +82,48 @@ def _contact_dict(entity_doc, dbm, form_model):
     return dictionary
 
 
-def subject_dict(entity_type, entity_doc, dbm, form_model):
-    entity = Entity.get(dbm, entity_doc.id)
-    field_names, labels, codes = get_entity_type_fields(dbm, form_model.form_code, form_model=form_model)
-    data = tabulate_data(entity, form_model, codes)
-    data = _update_linked_idnr_data(dbm, entity, form_model, data, field_names)
-    dictionary = OrderedDict()
-    for index in range(0, len(field_names)):
-        dictionary.update({es_questionnaire_field_name(codes[index], form_model.id): data['cols'][index]})
-    dictionary.update({"entity_type": entity_type})
-    dictionary.update({"void": entity.is_void()})
-    return dictionary
+def lookup_entity(dbm, key, entity_type):
+    try:
+        if key:
+            data_dict = {}
+            entity_type_info = get_entity_type_info(entity_type, dbm)
+            names_to_codes_map = {}
+            for name, code in zip(entity_type_info['names'], entity_type_info['codes']):
+                names_to_codes_map[name] = code
+            data = get_by_short_code_include_voided(dbm, key, entity_type).data_value()
+            for key, value in data.iteritems():
+                if names_to_codes_map.get(key):
+                    data_dict[names_to_codes_map[key]] = value['value']
+            return data_dict
+    except DataObjectNotFound:
+        pass
+    return {
+        'q2': " "
+    }
 
-def _update_linked_idnr_data(dbm, entity, form_model, data, field_names):
+
+def _subject_data(dbm, entity, form_model):
+    source_data = OrderedDict()
     for field in form_model.fields:
         if isinstance(field, UniqueIdField):
-            value = entity.value(field.name)
-            all_linked_idnr = get_all_by_type(dbm, field.unique_id_type)
-            linked_idnrs = [linked_id for linked_id in all_linked_idnr if linked_id['short_code'] == value]
-            if linked_idnrs:
-                for index in range(0, len(field_names)):
-                    if field.name == field_names[index]:
-                        data['cols'][index] = unicode("%s(%s)" % (unicode(linked_idnrs[0]['data']['name']['value'].capitalize()), unicode(value)))     
+            value = get_field_value(field.name, entity)
+            unique_id_name = lookup_entity(dbm, str(value), [field.unique_id_type]).get('q2')
+            source_data[es_questionnaire_field_name(field.code + '_unique_code', form_model.id)] = value if value else ''
+            source_data[es_questionnaire_field_name(field.code, form_model.id)] = unique_id_name
+        elif field.name in entity.data:
+            source_data[es_questionnaire_field_name(field.code, form_model.id)] = get_field_value(field.name, entity)
+        else:
+            source_data[es_questionnaire_field_name(field.code, form_model.id)] = get_field_default_value(field.name, entity)
+
+    return source_data
+
     
-    return data
+def subject_dict(entity_type, entity_doc, dbm, form_model):
+    entity = Entity.get(dbm, entity_doc.id)
+    source_data = _subject_data(dbm, entity, form_model)
+    source_data.update({"entity_type": entity_type})
+    source_data.update({"void": entity.is_void()})
+    return source_data
 
 def get_elasticsearch_handle(timeout=ELASTIC_SEARCH_TIMEOUT):
     return elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=timeout)

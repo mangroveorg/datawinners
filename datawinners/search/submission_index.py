@@ -6,7 +6,6 @@ from types import NoneType
 from babel.dates import format_datetime
 import elasticutils
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
-from datawinners.entity.import_data import get_entity_type_info
 
 from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.project.views.utils import is_original_question_changed_from_choice_answer_type, \
@@ -20,7 +19,8 @@ from datawinners.search.submission_index_helper import SubmissionIndexUpdateHand
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
     es_unique_id_code_field_name, \
-    es_questionnaire_field_name, _add_text_field_mapping, es_unique_id_details_field_name
+    es_questionnaire_field_name, _add_text_field_mapping, es_unique_id_details_field_name,\
+    lookup_entity
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
 from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type
 from mangrove.form_model.project import Project
@@ -344,24 +344,6 @@ def _lookup_contact_by_uid(dbm, uid):
     return ds_dict
 
 
-def lookup_entity(dbm, id, entity_type):
-    try:
-        if id:
-            data_dict = {}
-            entity_type_info = get_entity_type_info(entity_type, dbm)
-            names_to_codes_map = {}
-            for name, code in zip(entity_type_info['names'], entity_type_info['codes']):
-                names_to_codes_map[name] = code
-            data = get_by_short_code_include_voided(dbm, id, entity_type).data_value()
-            for key, value in data.iteritems():
-                if names_to_codes_map.get(key):
-                    data_dict[names_to_codes_map[key]] = value['value']
-            return data_dict
-    except DataObjectNotFound:
-        pass
-    return {
-        'q2': " "
-    }
 
 
 # TODO:This is required only for the migration for creating submission indexes.To be removed following release10
