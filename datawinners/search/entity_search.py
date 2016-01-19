@@ -36,10 +36,12 @@ class SubjectQuery(Query):
 class SubjectQueryResponseCreator():
     def create_response(self, required_field_names, query):
         subjects = []
-        for res in query.values_dict(*required_field_names):
+        for res in query.values_dict():
             subject = []
             for key in required_field_names:
-                value = res.get(key)[0] if res.get(key) and len(res.get(key)) > 0 else ""
+                value = res.get(key)
+                if res.get(key+'_unique_code'):
+                    value += "<span class='small_grey'>  %s</span>" % res.get(key+'_unique_code')
                 subject.append(value)
             subjects.append(subject)
         return subjects
