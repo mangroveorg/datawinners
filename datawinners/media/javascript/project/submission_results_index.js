@@ -25,8 +25,7 @@ $(document).ready(function () {
         new DW.SubmissionLogTable(submission_table_options);
     };
 
-    function _activate_tab(submissionTabs) {
-
+    function _activate_tab() {
         $('#search_box .dataTables_filter').remove();
         $.each($(".repeat_ans").find('.repeat_qtn_label'), function (index, element) {
 
@@ -44,7 +43,7 @@ $(document).ready(function () {
         new DW.DataSenderFilter(_postFilterSelection).init();
         new DW.SubjectFilter(_postFilterSelection).init();
         new DW.SearchTextFilter(_postFilterSelection).init();
-        new DW.DuplicatesForFilter(_postFilterSelection).init();
+        new DW.DuplicatesForFilter(_activate_tab).init();
     };
 
     var _postFilterSelection = function(){
@@ -78,7 +77,7 @@ $(document).ready(function () {
         submissionTabs.setActiveTabIndex(tab_index);
         _show_hide_duplicates_filter();
         submissionLogExport.update_tab(submissionTabs.getActiveTabName());
-        _activate_tab(submissionTabs);
+        _activate_tab();
         return true;
     });
 

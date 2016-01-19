@@ -62,15 +62,19 @@ DW.SubmissionLogTable = function (options) {
         "duplicates": gettext("No Duplicates are currently available for the given time period based on your choice") + "</span>"
     };
 
+    var no_ajax = {"duplicates": true}
+    var concept = {"duplicates":"Group"}
+
     function _init_submission_log_table(cols) {
         $(".submission_table").dwTable({
                 aoColumns: cols,
-                "concept": "Submission",
+                "concept": concept[options.tabName]? concept[options.tabName]: "Submission",
                 "sDom": "iprtipl",
                 "sAjaxSource": options.table_source_url,
                 "sAjaxDataIdColIndex": 1,
                 "remove_id": true,
                 "bServerSide": true,
+                "noAjax": no_ajax[options.tabName]? true: false,
                 "oLanguage": {"sEmptyTable": no_data_help[options.tabName]},
                 "aaSorting": [
                     [ options.sortCol, "desc"]
