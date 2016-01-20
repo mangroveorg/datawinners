@@ -57,7 +57,7 @@ def _aggregate_exact_match_duplicates(fields, questionnaire_id, search):
             return _aggregate_exact_match_duplicates(field['fields'], questionnaire_id, search)
 
         if field['type'] == 'select':
-            break
+            continue
 
         parent_code = field['parent_field_code'] if field['parent_field_code'] else None
         field_name = es_questionnaire_field_name(field['code'], questionnaire_id, parent_code)
