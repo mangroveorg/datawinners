@@ -61,7 +61,9 @@ def _aggregate_exact_match_duplicates(fields, questionnaire_id, search):
 
         parent_code = field['parent_field_code'] if field['parent_field_code'] else None
         field_name = es_questionnaire_field_name(field['code'], questionnaire_id, parent_code)
-        field_suffix = '_value' if field['type'] == 'date' else '_exact'
+        field_suffix = '_value' if field['type'] == 'date' \
+            else '_unique_code' if field['type'] == 'unique_id_exact' \
+            else '_exact'
         if index == 0:
             nested_search.aggs.bucket('tag', 'terms', field=field_name+field_suffix, size=0, min_doc_count=2)
         else:
