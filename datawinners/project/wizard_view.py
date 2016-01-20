@@ -141,7 +141,7 @@ def edit_project(request, project_id):
             detail.pop("Name")
         try:
             old_fields = questionnaire.fields
-            old_form_code = questionnaire.form_code
+            questionnaire.old_form_code = questionnaire.form_code
             old_field_codes = questionnaire.field_codes()
             questionnaire = update_questionnaire(questionnaire, request.POST, manager)
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
