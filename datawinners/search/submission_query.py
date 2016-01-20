@@ -165,6 +165,14 @@ class SubmissionQueryResponseCreator(object):
         else:
             return safe_getattr(res, ugettext(key))
 
+    def create_aggregate_response(self, search_results, search_parameters):
+        aggr_result = []
+        groups = [0]
+        self._traverse_aggregation_buckets(search_results.aggregations, aggr_result, groups)
+        if search_parameters.get('search_filters').get('duplicatesForFilter') == 'exactmatch':
+            aggr_result = self._group_and_filter_aggregation(aggr_result, groups)
+        return aggr_result
+
 
 def _format_media_value(submission_id, value, thumbnail_flag=False):
     formatted_value = ""
