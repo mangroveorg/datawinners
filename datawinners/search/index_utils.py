@@ -105,15 +105,16 @@ def lookup_entity(dbm, key, entity_type):
 def _subject_data(dbm, entity, form_model):
     source_data = OrderedDict()
     for field in form_model.fields:
+        value = get_field_value(field.name, entity)
+        field.set_value(value)
         if isinstance(field, UniqueIdField):
-            value = get_field_value(field.name, entity)
             unique_id_name = lookup_entity(dbm, str(value), [field.unique_id_type]).get('q2')
             source_data[es_questionnaire_field_name(field.code + '_unique_code', form_model.id)] = value if value else ''
             source_data[es_questionnaire_field_name(field.code, form_model.id)] = unique_id_name
         elif field.name in entity.data:
-            source_data[es_questionnaire_field_name(field.code, form_model.id)] = get_field_value(field.name, entity)
+            source_data[es_questionnaire_field_name(field.code, form_model.id)] = field.stringify()
         else:
-            source_data[es_questionnaire_field_name(field.code, form_model.id)] = get_field_default_value(field.name, entity)
+            source_data[es_questionnaire_field_name(field.code, form_model.id)] = field.stringify()
 
     return source_data
 

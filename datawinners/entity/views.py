@@ -653,6 +653,7 @@ def subject_autocomplete(request, entity_type):
             query[:min(query.count(), 50)]]
     return HttpResponse(json.dumps(resp))
 
+@valid_web_user
 def export_subject(request):
     manager = get_database_manager(request.user)
     organization = get_organization(request)
@@ -670,28 +671,6 @@ def export_subject(request):
     
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, None) \
         .create_excel_response('identification_number', query_params)
-    
-@valid_web_user
-def _deprecated_export_subject(request):
-    manager = get_database_manager(request.user)
-    query_text = request.POST.get('query_text', '')
-    subject_type = request.POST.get('subject_type', '').lower()
-    subject_list = SubjectQuery().query(request.user, subject_type, query_text)
-    form_model = get_form_model_by_entity_type(manager, [subject_type.lower()])
-
-    response = HttpResponse(mimetype='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)
-    field_codes = form_model.field_codes()
-    field_codes.insert(0, form_model.form_code)
-    labels = get_subject_headers(form_model)
-    raw_data = []
-    headers = OrderedDict([(subject_type,labels), ("codes",field_codes)])
-
-    for subject in subject_list:
-        raw_data.append(subject)
-
-    return export_to_new_excel(headers, {subject_type:raw_data}, subject_type, hide_codes_sheet=True)
-
 
 def add_codes_sheet(wb, form_code, field_codes):
     codes = [form_code]
