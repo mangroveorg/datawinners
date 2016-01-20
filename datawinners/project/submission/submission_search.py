@@ -36,13 +36,13 @@ def _aggregate_duplicates(form_model, search_parameters, search):
     elif search_parameters == 'datasender':
         search = search.params(search_type="count")
         a = A("terms", field='ds_id_exact', size=0, min_doc_count=2)
-        b = A("top_hits", size=(2**20))
+        b = A("top_hits", size=(2**10))
         search.aggs.bucket('tag', a).bucket('tag', b)
 
     else:
         search = search.params(search_type="count")
         a = A("terms", field=form_model.id+'_'+search_parameters+'_unique_code_exact', size=0, min_doc_count=2)
-        b = A("top_hits", size=(2**20))
+        b = A("top_hits", size=(2**10))
         search.aggs.bucket('tag', a).bucket('tag', b)
 
     return search
@@ -72,7 +72,7 @@ def _aggregate_exact_match_duplicates(fields, questionnaire_id, search):
 
     nested_search.bucket('tag', 'terms', field='status_exact', size=0, min_doc_count=2)\
         .bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)\
-        .bucket('tag', 'top_hits', size=(2**20))
+        .bucket('tag', 'top_hits', size=(2**7))
 
     return search
 
