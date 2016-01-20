@@ -660,7 +660,7 @@ def export_subject(request):
     local_time_delta = get_country_time_delta(organization.country)
     current_language = get_language()
     subject_type = request.POST.get('subject_type', '').lower()
-    project_name = subject_type #temp
+    project_name = subject_type
     form_model = get_form_model_by_entity_type(manager, [subject_type.lower()])
     query_params = {
                     "start_result_number": 0,

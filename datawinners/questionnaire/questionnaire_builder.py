@@ -26,11 +26,15 @@ class QuestionnaireBuilder(object):
         return new_fields
 
     def _update_unique_id_validator(self):
-        if not isinstance(self.form_model, EntityFormModel):
-            if self.form_model.entity_questions:
-                self.form_model.add_validator(UniqueIdExistsValidator)
-            else:
-                self.form_model.remove_validator(UniqueIdExistsValidator)
+        if isinstance(self.form_model, EntityFormModel):
+            entity_questions = self.form_model.base_entity_questions
+        else:
+            entity_questions = self.form_model.entity_questions
+                
+        if entity_questions:
+            self.form_model.add_validator(UniqueIdExistsValidator)
+        else:
+            self.form_model.remove_validator(UniqueIdExistsValidator)
 
     def update_questionnaire_with_questions(self, question_set):
         origin_json_fields = [f._to_json() for f in self.form_model.fields]
