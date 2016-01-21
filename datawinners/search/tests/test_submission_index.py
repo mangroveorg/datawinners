@@ -219,8 +219,8 @@ class TestSubmissionIndex(unittest.TestCase):
                                            'media': {},
                                            'void': False})
 
-    @patch('datawinners.search.submission_index.get_entity_type_info')
-    def test_generate_elastic_index_for_a_unique_id_field_within_repeat(self, get_entity_type_info_mock):
+    @patch('datawinners.search.submission_index.lookup_entity')
+    def test_generate_elastic_index_for_a_unique_id_field_within_repeat(self, lookup_entity_mock):
         search_dict = {}
         unique_id_field = UniqueIdField('clinic', 'my_unique_id', 'my_unique_id', 'My Unique ID')
         group_field = FieldSet('repeat_name', 'repeat_name', 'My Label', field_set=[unique_id_field],
@@ -228,7 +228,7 @@ class TestSubmissionIndex(unittest.TestCase):
         self.form_model.fields = [group_field]
         value = {'repeat_name': [{'my_unique_id': 'cli001'}, {'my_unique_id': 'cli002'}]}
         submission = SurveyResponseDocument(values=value, status='success')
-        get_entity_type_info_mock.return_value = {'names': {'name'}, 'codes': {'q2'}}
+        lookup_entity_mock.return_value = {'q2': 'my_clinic'}
 
         with patch(
                 'datawinners.search.submission_index.get_by_short_code_include_voided') as get_by_short_code_include_voided_mock:
@@ -241,8 +241,8 @@ class TestSubmissionIndex(unittest.TestCase):
                 'media':{},
                 'void': False, })
 
-    @patch('datawinners.search.submission_index.get_entity_type_info')
-    def test_generate_elastic_index_for_a_unique_id_field_within_repeat_in_group(self, get_entity_type_info_mock):
+    @patch('datawinners.search.submission_index.lookup_entity')
+    def test_generate_elastic_index_for_a_unique_id_field_within_repeat_in_group(self, lookup_entity_mock):
         unique_id_field = UniqueIdField('clinic', 'my_unique_id', 'my_unique_id', 'My Unique ID')
         repeat_field = FieldSet('repeat_name', 'repeat_name', 'My Label', field_set=[unique_id_field],
                                 fieldset_type='repeat')
@@ -250,7 +250,7 @@ class TestSubmissionIndex(unittest.TestCase):
         self.form_model.fields = [group_field]
         value = {'group_name': [{'repeat_name': [{'my_unique_id': 'cli001'}, {'my_unique_id': 'cli002'}]}]}
         submission = SurveyResponseDocument(values=value, status='success')
-        get_entity_type_info_mock.return_value = {'names': {'name'}, 'codes': {'q2'}}
+        lookup_entity_mock.return_value = {'q2': 'my_clinic'}
 
         search_dict = {}
         with patch(
@@ -264,8 +264,8 @@ class TestSubmissionIndex(unittest.TestCase):
                 'media': {},
                 'void': False, })
 
-    @patch('datawinners.search.submission_index.get_entity_type_info')
-    def test_generate_elastic_index_for_a_unique_id_field_within_group_in_repeat(self, get_entity_type_info_mock):
+    @patch('datawinners.search.submission_index.lookup_entity')
+    def test_generate_elastic_index_for_a_unique_id_field_within_group_in_repeat(self, lookup_entity_mock):
         unique_id_field = UniqueIdField('clinic', 'my_unique_id', 'my_unique_id', 'My Unique ID')
         group_field = FieldSet('group_name', 'group_name', 'My Label', field_set=[unique_id_field],
                                fieldset_type='group')
@@ -275,7 +275,7 @@ class TestSubmissionIndex(unittest.TestCase):
         value = {
             'repeat_name': [{'group_name': [{'my_unique_id': 'cli001'}]}, {'group_name': [{'my_unique_id': 'cli002'}]}]}
         submission = SurveyResponseDocument(values=value, status='success')
-        get_entity_type_info_mock.return_value = {'names': {'name'}, 'codes': {'q2'}}
+        lookup_entity_mock.return_value = {'q2': 'my_clinic'}
 
         search_dict = {}
         with patch(

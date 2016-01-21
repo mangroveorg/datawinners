@@ -2,7 +2,7 @@ import unittest
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.field import TextField, IntegerField, UniqueIdField, DateField
-from mock import Mock
+from mock import Mock, MagicMock
 from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
 
 
@@ -33,8 +33,9 @@ class TestExcelHeaders(unittest.TestCase):
                    "type": "short_code"},
                   {"name": "location", "code": 'q4', "label": 'What is the location', "type": "list"},
                   {"name": "choices", "code": 'q5', "label": 'Your choices', "type": "select"}]
-
-        headers = get_subject_headers(fields)
+        form_model = MagicMock()
+        form_model.form_fields = fields
+        headers = get_subject_headers(form_model)
 
         headers_text = self._get_header_component(headers, 0)
         self.assertEqual(
