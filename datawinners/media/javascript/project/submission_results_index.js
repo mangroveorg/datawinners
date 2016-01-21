@@ -43,7 +43,7 @@ $(document).ready(function () {
         new DW.DataSenderFilter(_postFilterSelection).init();
         new DW.SubjectFilter(_postFilterSelection).init();
         new DW.SearchTextFilter(_postFilterSelection).init();
-        new DW.DuplicatesForFilter(_activate_tab).init();
+        new DW.DuplicatesForFilter(_postFilterSelection).init();
     };
 
     var _postFilterSelection = function(){

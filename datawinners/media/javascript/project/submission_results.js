@@ -62,7 +62,7 @@ DW.SubmissionLogTable = function (options) {
         "duplicates": gettext("No Duplicates are currently available for the given time period based on your choice") + "</span>"
     };
 
-    var no_ajax = {"duplicates": true}
+    var paginateGroups = {"duplicates": true}
     var concept = {"duplicates":"Duplicate"}
 
     function _init_submission_log_table(cols) {
@@ -74,7 +74,7 @@ DW.SubmissionLogTable = function (options) {
                 "sAjaxDataIdColIndex": 1,
                 "remove_id": true,
                 "bServerSide": true,
-                "noAjax": no_ajax[options.tabName]? true: false,
+                "paginateGroups": paginateGroups[options.tabName]? true: false,
                 "oLanguage": {"sEmptyTable": no_data_help[options.tabName]},
                 "aaSorting": [
                     [ options.sortCol, "desc"]

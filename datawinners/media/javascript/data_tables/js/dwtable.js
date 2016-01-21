@@ -13,7 +13,7 @@
                 return newData;
             };
 
-            var paginate = function(oSettings, fnCallback) {
+            var paginateGroups = function(oSettings, fnCallback) {
                 displayStart = oSettings._iDisplayStart;
                 displayLength = oSettings._iDisplayLength;
                 var paginatedResult = {
@@ -42,11 +42,6 @@
                     lastXHR = oSettings.jqXHR;
                     lastXHR && lastXHR.abort && lastXHR.abort();
 
-                    if(lastXHR && defaults.noAjax) {
-                        paginate(oSettings, fnCallback);
-                        return;
-                    }
-
                     aoData.push({"name": "disable_cache", "value": new Date().getTime()});
                     aoData.push({"name": "search_filters", "value": JSON.stringify(defaults.getFilter())});
 
@@ -60,9 +55,9 @@
                             $.each(result.data, function (i, data) {
                                 data.unshift('')
                             });
-                            if (result.data.length > 0 && defaults.noAjax) {
+                            if (result.data.length > 0 && defaults.paginateGroups) {
                                 defaults.result = _.groupBy(result.data, result.data[0].length - 1);
-                                paginate(oSettings, fnCallback);
+                                paginateGroups(oSettings, fnCallback);
                                 return;
                             }
                             fnCallback(result);
