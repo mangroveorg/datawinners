@@ -153,14 +153,14 @@ class SubmissionQueryResponseCreator(object):
                                                                    submission[0]))
                 else:
                     submission.append(
-                        self._append_if_attachments_are_present(res, key, media_field_codes, image_fields))
+                        self._append_if_attachments_are_present(res, key, media_field_codes, image_fields, submission[0]))
 
-    def _append_if_attachments_are_present(self, res, key, media_field_codes, image_fields):
+    def _append_if_attachments_are_present(self, res, key, media_field_codes, image_fields, submission_id):
         if self.form_model.is_media_type_fields_present and key in media_field_codes:
             if key in image_fields:
-                return _format_media_value(res.meta.id, safe_getattr(res, key), thumbnail_flag=True)
+                return _format_media_value(submission_id, safe_getattr(res, key), thumbnail_flag=True)
             else:
-                return _format_media_value(res.meta.id, safe_getattr(res, key))
+                return _format_media_value(submission_id, safe_getattr(res, key))
 
         else:
             return safe_getattr(res, ugettext(key))
