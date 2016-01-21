@@ -33,3 +33,22 @@ class TestEditSubjectRegistrationForm(HeadlessRunnerTest):
         subjects_page.refresh()
         self.assertEqual(subjects_page.get_existing_questions_count(), existing_question_count, "Newly added question should be persisted")
 
+    @attr('functional_testa')
+    def test_should_delete_cache_after_edit_subject(self):
+        login(self.driver, VALID_CREDENTIALS)
+        self.driver.go_to(url("/entity/subjects/"))
+        add_subject_type_page = AddSubjectTypePage(self.driver)
+        add_subject_type_page.click_on_accordian_link()
+        entity_type = "alia"
+        add_subject_type_page.successfully_add_entity_type_with(entity_type)
+        self.driver.go_to(url("/entity/subject/create/" + entity_type))
+        subjects_page = ProjectSubjectsPage(self.driver)
+        subjects_page.click_edit_form_link_and_continue()
+        from framework.utils.common_utils import by_css
+        self.driver.find_text_box(by_css("#questionnaire-code")).enter_text("als")
+        subjects_page.click_submit_button()
+        self.driver.go_to(url("/entity/subjects/"))
+        add_subject_type_page = AddSubjectTypePage(self.driver)
+        add_subject_type_page.click_on_accordian_link()
+        new_entity_type = "alida"
+        add_subject_type_page.successfully_add_entity_type_with(new_entity_type)
