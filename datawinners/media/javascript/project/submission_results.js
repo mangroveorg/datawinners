@@ -63,7 +63,7 @@ DW.SubmissionLogTable = function (options) {
     };
 
     var no_ajax = {"duplicates": true}
-    var concept = {"duplicates":"Group"}
+    var concept = {"duplicates":"Duplicate"}
 
     function _init_submission_log_table(cols) {
         $(".submission_table").dwTable({
