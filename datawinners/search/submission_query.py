@@ -62,19 +62,20 @@ class SubmissionQueryResponseCreator(object):
         return media_field_code
 
     def _filter_aggregation_by_duplicate_multichoice_answers(self, result, groups):
-        for field in self.form_model.choice_fields:
-            if field.type == 'select':
-                code = es_questionnaire_field_name(field.code, self.form_model.id, field.parent_field_code)
-                sorted_list = sorted(result, key=lambda x: ",".join(getattr(x._source, code)))
-                grouped_result = []
-                for key, group in groupby(sorted_list, lambda x: ",".join(getattr(x._source, code))):
-                    grouped_list = list(group)
-                    if len(grouped_list) > 1:
-                        for item in grouped_list:
-                            item.group_id = groups[0]
-                        groups[0] += 1
-                        grouped_result.extend(grouped_list)
-                result = grouped_result
+        for field in self.form_model.filter_fields:
+            code = es_questionnaire_field_name(field['code'], self.form_model.id, field['parent_field_code'])
+            sorted_list = sorted(result, key=lambda x: "_".join("" if not hasattr(x._source, code)
+                                                                else getattr(x._source, code)))
+            grouped_result = []
+            for key, group in groupby(sorted_list, lambda x: "_".join("" if not hasattr(x._source, code)
+                                                                      else getattr(x._source, code))):
+                grouped_list = list(group)
+                if len(grouped_list) > 1:
+                    for item in grouped_list:
+                        item.group_id = groups[0]
+                    groups[0] += 1
+                    grouped_result.extend(grouped_list)
+            result = grouped_result
         return result
     
     def _group_and_filter_aggregation(self, aggr_result, groups):

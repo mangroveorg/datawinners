@@ -1,6 +1,10 @@
+import copy
+
 from elasticsearch import Elasticsearch, helpers
 from elasticsearch_dsl import Search, Q, F
 import elasticutils
+from elasticsearch_dsl.search import AggsProxy
+
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.query import ElasticUtilsHelper
@@ -32,7 +36,14 @@ def _add_pagination_criteria(search_parameters, search):
 
 def _aggregate_duplicates(form_model, search_parameters, search):
     if search_parameters == 'exactmatch':
-        search = _aggregate_exact_match_duplicates(form_model.form_fields, form_model.id, search)
+        search = search.params(search_type="count")
+        nested_search = search.aggs.bucket('tag', 'terms', field='status_exact', size=0, min_doc_count=2) \
+            .bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)
+        form_fields_to_be_filtered = []
+        nested_search = _aggregate_exact_match_duplicates(form_model.form_fields, form_model.id, nested_search, search,
+                                                          form_fields_to_be_filtered)
+        setattr(form_model, "filter_fields", form_fields_to_be_filtered)
+        nested_search.bucket('tag', 'top_hits', size=(2 ** 7))
 
     elif search_parameters == 'datasender':
         search = search.params(search_type="count")
@@ -49,33 +60,50 @@ def _aggregate_duplicates(form_model, search_parameters, search):
     return search
 
 
-def _aggregate_exact_match_duplicates(fields, questionnaire_id, search):
-    search = search.params(search_type="count")
+def _fields_with_empty_submissions(fields, questionnaire_id, search):
+    newfields = []
+    newsearch = copy.copy(search)
+    newsearch.aggs = AggsProxy(newsearch)
+    for field in list(filter(lambda f: f['type'] not in ['select', 'field_set'], fields)):
+        field_name = _get_field_name(field, questionnaire_id)
+        newsearch.aggs.bucket('by_'+field['code'], 'value_count', field=field_name)
+    result = newsearch.execute()
+    for key in result.aggregations:
+        if result.aggregations[key].value != result.hits.total:
+            field_code = key.strip('by_')
+            newfields.extend(list(filter(lambda f: f['code'] == field_code, fields)))
+    return newfields
 
-    nested_search = search
-    for index, field in enumerate(fields):
+
+def _aggregate_exact_match_duplicates(fields, questionnaire_id, nested_search, search, form_fields_to_be_filtered):
+    fields_with_empty_submissions = _fields_with_empty_submissions(fields, questionnaire_id, search)
+    for field in fields:
         if field['type'] == 'field_set':
-            return _aggregate_exact_match_duplicates(field['fields'], questionnaire_id, search)
-
-        if field['type'] == 'select':
+            nested_search = _aggregate_exact_match_duplicates(field['fields'], questionnaire_id, nested_search, search,
+                                                              form_fields_to_be_filtered)
             continue
 
-        parent_code = field['parent_field_code'] if field['parent_field_code'] else None
-        field_name = es_questionnaire_field_name(field['code'], questionnaire_id, parent_code)
-        field_suffix = '_value' if field['type'] == 'date' \
-            else '_unique_code' if field['type'] == 'unique_id_exact' \
-            else '_exact'
-        if index == 0:
-            nested_search.aggs.bucket('tag', 'terms', field=field_name + field_suffix, size=0, min_doc_count=2)
-        else:
-            nested_search.bucket('tag', 'terms', field=field_name + field_suffix, size=0, min_doc_count=2)
-        nested_search = nested_search.aggs['tag']
+        if field['type'] == 'select':
+            form_fields_to_be_filtered.append(field)
+            continue
 
-    nested_search.bucket('tag', 'terms', field='status_exact', size=0, min_doc_count=2) \
-        .bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2) \
-        .bucket('tag', 'top_hits', size=(2 ** 7))
+        if field in fields_with_empty_submissions:
+            form_fields_to_be_filtered.append(field)
+            continue
 
-    return search
+        field_name = _get_field_name(field, questionnaire_id)
+        nested_search = nested_search.bucket('tag', 'terms', field=field_name, size=0, min_doc_count=2)
+
+    return nested_search
+
+
+def _get_field_name(field, questionnaire_id):
+    parent_code = field['parent_field_code'] if field['parent_field_code'] else None
+    field_name = es_questionnaire_field_name(field['code'], questionnaire_id, parent_code)
+    field_suffix = '_value' if field['type'] == 'date' \
+        else '_unique_code' if field['type'] == 'unique_id_exact' \
+        else '_exact'
+    return field_name + field_suffix
 
 
 def _query_by_submission_type(submission_type_filter, search):
@@ -122,7 +150,7 @@ def _add_unique_id_filters(form_model, unique_id_filters, search):
     return search
 
 
-def _add_search_filters(search_filter_param, form_model, local_time_delta, query_fields, search):
+def _add_search_filters(search_filter_param, form_model, local_time_delta, search):
     if not search_filter_param:
         return search
 
@@ -147,8 +175,7 @@ def _add_filters(form_model, search_parameters, local_time_delta, search):
     if not isinstance(form_model, EntityFormModel):
         search = _query_by_submission_type(search_parameters.get('filter'), search)
     query_fields = _get_query_fields(form_model, search_parameters.get('filter'))
-    search = _add_search_filters(search_parameters.get('search_filters'), form_model, local_time_delta, query_fields,
-                                 search)
+    search = _add_search_filters(search_parameters.get('search_filters'), form_model, local_time_delta, search)
     return query_fields, search
 
 
