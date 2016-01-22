@@ -110,14 +110,14 @@ def _get_field_name(field, questionnaire_id):
 def _query_by_submission_type(submission_type_filter, search):
     if submission_type_filter == 'deleted':
         return search.query('term', void=True)
-    elif submission_type_filter == 'all' or submission_type_filter == 'duplicates':
+    elif submission_type_filter == 'all' or submission_type_filter == 'duplicates' or submission_type_filter == 'identification_number':
         return search.query('term', void=False)
 
     if submission_type_filter == 'analysis':
         search = search.query('match', status='Success')
     elif submission_type_filter is not None:
         search = search.query('term', status=submission_type_filter)
-    return search
+    return search.query('term', void=False)
 
 
 def _get_query_fields(form_model, submission_type):
@@ -172,9 +172,7 @@ def _add_search_filters(search_filter_param, form_model, local_time_delta, searc
 
 
 def _add_filters(form_model, search_parameters, local_time_delta, search):
-    search = search.query('term', void=False)
-    if not isinstance(form_model, EntityFormModel):
-        search = _query_by_submission_type(search_parameters.get('filter'), search)
+    search = _query_by_submission_type(search_parameters.get('filter'), search)
     query_fields = _get_query_fields(form_model, search_parameters.get('filter'))
     search = _add_search_filters(search_parameters.get('search_filters'), form_model, local_time_delta, search)
     return query_fields, search
