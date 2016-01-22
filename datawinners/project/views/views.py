@@ -902,7 +902,11 @@ def edit_my_subject_questionnaire(request, project_id, entity_type=None):
                                'language': reg_form.activeLanguages[0],
                                'project_id': questionnaire.id,
                                'subject': subject,
-                               'post_url': reverse(subject_save_questionnaire)},
+                               'post_url': reverse(subject_save_questionnaire),
+                               'unique_id_types': json.dumps([{"name":unique_id_type.capitalize(),
+                                                              "value":unique_id_type} for unique_id_type in
+                                                             get_unique_id_types(manager) if unique_id_type != entity_type]),
+                              },
                               context_instance=RequestContext(request))
 
 
