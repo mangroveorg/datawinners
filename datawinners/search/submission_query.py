@@ -62,8 +62,7 @@ class SubmissionQueryResponseCreator(object):
         return media_field_code
 
     def _filter_aggregation_by_duplicate_answers(self, result, groups):
-        for field in sorted(self.form_model.filter_fields,
-                            key=lambda x: any([hasattr(r._source, self._field_code(x)) for r in result])):
+        for field in self.form_model.filter_fields:
             code = self._field_code(field)
             sorted_list = sorted(result,
                                  key=lambda x: "_".join(getattr(x._source, code) if hasattr(x._source, code) else ""))
@@ -72,9 +71,10 @@ class SubmissionQueryResponseCreator(object):
                                       lambda x: "_".join(getattr(x._source, code) if hasattr(x._source, code) else "")):
                 grouped_list = list(group)
                 if len(grouped_list) > 1:
-                    for item in grouped_list:
-                        item.group_id = groups[0]
-                    groups[0] += 1
+                    if key != "":
+                        for item in grouped_list:
+                            item.group_id = groups[0]
+                        groups[0] += 1
                     grouped_result.extend(grouped_list)
             result = grouped_result
         return result
