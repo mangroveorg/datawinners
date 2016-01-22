@@ -71,7 +71,8 @@ def _fields_with_empty_submissions(fields, questionnaire_id, search):
     for key in result.aggregations:
         if result.aggregations[key].value != result.hits.total:
             field_code = key.strip('by_')
-            newfields.extend(list(filter(lambda f: f['code'] == field_code, fields)))
+            field = next(field for field in fields if field['code'] == field_code)
+            newfields.append(field)
     return newfields
 
 
