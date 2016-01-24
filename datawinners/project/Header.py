@@ -75,87 +75,93 @@ class SubmissionsPageHeader():
         return header_dict.values()
 
 
-class AnalysisPageHeader():
-    def __init__(self, form_model, dbm, user_id):
-        self._form_model = form_model
-        self._dbm = dbm
-        self._user_id = user_id
-
-    def get_column_title(self):
-        header = []
-        user_questionnaire_preference = get_user_questionnaire_preference(self._dbm, self._user_id, self._form_model.id)
-
-        generic_columns = OrderedDict()
-
-        generic_columns['date'] = ugettext("Submission Date")
-        generic_columns['datasender.name'] = ugettext("Data Sender Name")
-        generic_columns['datasender.id'] = ugettext("Data Sender Id")
-        generic_columns['datasender.mobile_number'] = ugettext("Data Sender Mobile Number")
-        generic_columns['datasender.email'] = ugettext("Data Sender Email")
-        generic_columns['datasender.location'] = ugettext("Data Sender Location")
-        generic_columns['datasender.geo_code'] = ugettext("Data Sender GPS Coordinates")
-
-
-        for column_id, column_title in generic_columns.iteritems():
-            header.append(self._form_column_info(
-                column_id, column_title,
-                detect_visibility(
-                    user_questionnaire_preference,
-                    column_id)))
-
-        for field in self._form_model.fields:
-            prefix = self._form_model.id + "_" + field.code + "_details"
-            if field.is_entity_field:
-                entity_type_info = get_entity_type_info(field.unique_id_type, self._dbm)
-                # ID Nr mandatory fields, with mandatory order of fields
-                # q2 is the name field, q6 is the code field
-                expected_mandatory_fields_with_order = ['q2', 'q6']
-                for val in expected_mandatory_fields_with_order:
-                    if val in entity_type_info['codes']:
-                        idx = entity_type_info['codes'].index(val)
-                        column_id = prefix + "." + val
-                        header.append(self._form_column_info(
-                            column_id, entity_type_info['labels'][idx],
-                            detect_visibility(
-                                user_questionnaire_preference,
-                                column_id)))
-
-                for idx, val in enumerate(entity_type_info['codes']):
-                    if val not in expected_mandatory_fields_with_order:
-                        column_id = prefix + "." + val
-                        header.append(self._form_column_info(
-                            column_id, entity_type_info['labels'][idx],
-                            detect_visibility(
-                                user_questionnaire_preference,
-                                column_id)))
-
-            else:
-                column_id = self._form_model.id + '_' + field.code
-                if field.is_group():
-                    for child_field in field.fields:
-                        header.append(self._form_column_info(
-                            column_id +'-'+child_field.code, child_field.label,
-                            detect_visibility(
-                                user_questionnaire_preference,
-                                column_id +'-'+child_field.code)))
-                        
-                else:
-                    header.append(self._form_column_info(
-                        column_id, field.label,
-                        detect_visibility(
-                            user_questionnaire_preference,
-                            column_id)))
-
-        return header
-
-    def _form_column_info(self, column_id, column_title, visibility):
-        return {
-            "data": column_id,
-            "name": column_id,
-            "title": column_title,
-            "defaultContent": "",
-            "visible": visibility
-        }
+# Refactored Analysis page to reuse preferences to generate headers
+# class AnalysisPageHeader():
+#     def __init__(self, form_model, dbm, user_id):
+#         self._form_model = form_model
+#         self._dbm = dbm
+#         self._user_id = user_id
+# 
+#     def get_column_title(self):
+#         header = []
+#         user_questionnaire_preference = get_user_questionnaire_preference(self._dbm, self._user_id, self._form_model.id)
+# 
+#         generic_columns = OrderedDict()
+# 
+#         generic_columns['date'] = ugettext("Submission Date")
+#         generic_columns['datasender.name'] = ugettext("Data Sender Name")
+#         generic_columns['datasender.id'] = ugettext("Data Sender Id")
+#         generic_columns['datasender.mobile_number'] = ugettext("Data Sender Mobile Number")
+#         generic_columns['datasender.email'] = ugettext("Data Sender Email")
+#         generic_columns['datasender.location'] = ugettext("Data Sender Location")
+#         generic_columns['datasender.geo_code'] = ugettext("Data Sender GPS Coordinates")
+# 
+# 
+#         for column_id, column_title in generic_columns.iteritems():
+#             header.append(self._form_column_info(
+#                 column_id, column_title,
+#                 detect_visibility(
+#                     user_questionnaire_preference,
+#                     column_id)))
+# 
+#         for field in self._form_model.fields:
+#             header.extend(self._convert_field_to_header(field, user_questionnaire_preference))
+# 
+#         return header
+#     
+#     def _convert_field_to_header(self, field, user_questionnaire_preference):
+#         header = []
+#         prefix = self._form_model.id + "_" + field.code + "_details"
+#         if field.is_entity_field:
+#             entity_type_info = get_entity_type_info(field.unique_id_type, self._dbm)
+#             # ID Nr mandatory fields, with mandatory order of fields
+#             # q2 is the name field, q6 is the code field
+#             expected_mandatory_fields_with_order = ['q2', 'q6']
+#             for val in expected_mandatory_fields_with_order:
+#                 if val in entity_type_info['codes']:
+#                     idx = entity_type_info['codes'].index(val)
+#                     column_id = prefix + "." + val
+#                     header.append(self._form_column_info(
+#                         column_id, entity_type_info['labels'][idx],
+#                         detect_visibility(
+#                             user_questionnaire_preference,
+#                             column_id)))
+# 
+#             for idx, val in enumerate(entity_type_info['codes']):
+#                 if val not in expected_mandatory_fields_with_order:
+#                     column_id = prefix + "." + val
+#                     header.append(self._form_column_info(
+#                         column_id, entity_type_info['labels'][idx],
+#                         detect_visibility(
+#                             user_questionnaire_preference,
+#                             column_id)))
+# 
+#         else:
+#             column_id = self._form_model.id + '_' + field.code
+#             if field.is_group():
+#                 for child_field in field.fields:
+#                     header.append(self._form_column_info(
+#                         column_id +'-'+child_field.code, child_field.label,
+#                         detect_visibility(
+#                             user_questionnaire_preference,
+#                             column_id +'-'+child_field.code)))
+#                     
+#             else:
+#                 header.append(self._form_column_info(
+#                     column_id, field.label,
+#                     detect_visibility(
+#                         user_questionnaire_preference,
+#                         column_id)))
+#         return header
+#         
+#     def _form_column_info(self, column_id, column_title, visibility):
+#         return {
+#             "data": column_id,
+#             "name": column_id,
+#             "title": column_title,
+#             "defaultContent": "",
+#             "visible": visibility
+#         }
 
 
 class SubmissionExcelHeader:

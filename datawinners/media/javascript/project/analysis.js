@@ -141,10 +141,11 @@ $(document).ready(function () {
         return AnalysisPageDataTable;
     })($, tableElement);
 
+    /*
     $.getJSON(headerUrl, function (columns) {
         analysisTable = new AnalysisPageDataTable(columns);
     });
-
+*/
 
     /*Column Customization Widget*/
 
@@ -178,7 +179,6 @@ $(document).ready(function () {
             var customizationOverlayHeight;
 
             this.$colWidgetActions.on("click", function (event) {
-                console.log("clicked customization");
                 if (self.$customizationIcon.hasClass("active")) {
                     self.$columnWidget.hide();
                     self.$customizationOverlay.hide();
@@ -352,16 +352,45 @@ $(document).ready(function () {
         };
 
         ColCustomWidget.prototype.submitSuccess = function () {
-            //reload the table
-            //TODO
+            //Placeholder to add any onSuccess logic
         };
 
         return ColCustomWidget;
     })($);
 
+    var _transform_header_item = function(item) {
+        var result = [];
+        if(item.children) {
+            var children = [];
+            $.each(item.children, function(index, item){
+                $.merge(children,_transform_header_item(item));
+            });
+            return $.merge(result,children);
+        }
+        //inconsistency between customization widget & DataTable., could be cleaned up
+        item.visible = item.visibility;
+        item.name = item.data; //Datatable doesn't support finding by data attribute
+        item.defaultContent = "";
+        result.push(item)
+        return result;
+    };
+
+    var transform_customization_to_dataTableHeader = function(customizationHeader) {
+        var dataTableHeader = []
+        $.each(customizationHeader, function(index, item){
+            $.merge(dataTableHeader,_transform_header_item(item));
+        });
+        return dataTableHeader;
+    };
+    
     $.getJSON(preferenceUrl, function (customizationHeader) {
+    	var dataTableHeader = transform_customization_to_dataTableHeader(customizationHeader)
+        analysisTable = new AnalysisPageDataTable(dataTableHeader);
+
         colCustomization = new ColCustomWidget(customizationHeader);
     });
+    
+    
 
 
     DW.SubmissionAnalysisView = function(){

@@ -50,7 +50,7 @@ from mangrove.utils.json_codecs import encode_json
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
 from datawinners.project.utils import project_info, is_quota_reached
-from datawinners.project.Header import SubmissionsPageHeader, AnalysisPageHeader
+from datawinners.project.Header import SubmissionsPageHeader
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed, \
@@ -80,16 +80,18 @@ def headers(request, form_code):
         response.append({"sTitle": ugettext(header)})
     return HttpResponse(encode_json(response))
 
-
-@login_required
-@session_not_expired
-@is_datasender
-@is_not_expired
-def analysis_headers(request, form_code):
-    manager = get_database_manager(request.user)
-    questionnaire = get_project_by_code(manager, form_code)
-    headers = AnalysisPageHeader(questionnaire, manager, request.user.id).get_column_title()
-    return HttpResponse(encode_json(headers), content_type='application/json')
+#
+# Refactored Analysis page to reuse preferences to generate headers
+#
+# @login_required
+# @session_not_expired
+# @is_datasender
+# @is_not_expired
+# def analysis_headers(request, form_code):
+#     manager = get_database_manager(request.user)
+#     questionnaire = get_project_by_code(manager, form_code)
+#     headers = AnalysisPageHeader(questionnaire, manager, request.user.id).get_column_title()
+#     return HttpResponse(encode_json(headers), content_type='application/json')
 
 
 @login_required
