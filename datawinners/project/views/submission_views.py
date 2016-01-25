@@ -36,7 +36,8 @@ from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import get_submissions_paginated, \
     get_all_submissions_ids_by_criteria, get_aggregations_for_choice_fields, get_submission_count, \
     get_submissions_paginated_simple
-from datawinners.search.index_utils import es_questionnaire_field_name
+from datawinners.search.index_utils import es_questionnaire_field_name,\
+    lookup_entity
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQueryResponseCreator
@@ -61,6 +62,8 @@ from mangrove.transport.repository.survey_responses import get_survey_response_b
 from mangrove.transport.contract.survey_response import SurveyResponse
 from mangrove.datastore.user_questionnaire_preference import get_analysis_field_preferences, \
     save_analysis_field_preferences, get_preferences
+from mangrove.form_model.form_model import get_form_model_by_entity_type
+from datawinners.project.views.views import questionnaire
 
 websubmission_logger = logging.getLogger("websubmission")
 logger = logging.getLogger("datawinners")
@@ -701,10 +704,12 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 def get_analysis_data(request, form_code):
     dbm, questionnaire, pagination_params, \
     local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
-
+    unique_id_fields = [field for field in questionnaire.fields if field.type in ['unique_id']]
+    linked_id_details = [_get_linked_id_details(dbm, field) for field in unique_id_fields]
+    
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta,
                                                       sort_params, search_parameters)
-    data = _create_analysis_response(local_time_delta, search_results, questionnaire)
+    data = _create_analysis_response(dbm, local_time_delta, search_results, questionnaire, linked_id_details)
     return HttpResponse(
         jsonpickle.encode(
             {
@@ -715,6 +720,22 @@ def get_analysis_data(request, form_code):
             }, unpicklable=False), content_type='application/json')
 
 
+def _get_linked_id_details(dbm, field):
+    linked_id_details = []
+    id_number_fields = get_form_model_by_entity_type(dbm, [field.unique_id_type]).fields
+    linked_id_fields = [child_field for child_field in id_number_fields if child_field.type in ['unique_id']]
+    if (linked_id_fields):
+        for linked_id_field in linked_id_fields:
+            linked_id_info = {
+                              'code':field.code, 
+                              'type':field.unique_id_type,
+                              'linked_code':linked_id_field.code,
+                              'linked_type':linked_id_field.unique_id_type,
+                              }
+            linked_id_info['children'] = _get_linked_id_details(dbm, linked_id_field)
+            linked_id_details.append(linked_id_info)
+    return linked_id_details
+    
 def _get_search_params(request):
     search_parameters = {}
     search_parameters['data_sender_filter'] = request.POST.get('data_sender_filter')
@@ -743,10 +764,10 @@ def _get_pagination_params(request):
     return pagination_params
 
 
-def _create_analysis_response(local_time_delta, search_results, questionnaire):
+def _create_analysis_response(dbm, local_time_delta, search_results, questionnaire, linked_id_details):
     data = []
     if search_results is not None:
-        data = [_transform_elastic_to_analysis_view(local_time_delta, result, questionnaire)._d_ for result in
+        data = [_transform_elastic_to_analysis_view(dbm, local_time_delta, result, questionnaire, linked_id_details)._d_ for result in
                 search_results.hits]
     return data
 
@@ -757,8 +778,13 @@ def _create_analysis_response(local_time_delta, search_results, questionnaire):
 '''
 
 
-def _transform_elastic_to_analysis_view(local_time_delta, record, questionnaire):
+def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire, linked_id_details):
     record.date = _convert_to_localized_date_time(record.date, local_time_delta)
+    for linked_id_detail in linked_id_details:
+        for linked_id_info in linked_id_detail:
+            value = record[questionnaire.id+'_'+linked_id_info['code']+'_details'][linked_id_info['linked_code']]
+            linked_entity = lookup_entity(dbm, value, [linked_id_info['linked_type']])
+            record[questionnaire.id+'_'+linked_id_info['code']+'_details'][linked_id_info['linked_code']+'_details'] = linked_entity
     for key, value in record.to_dict().iteritems():
         if isinstance(value, basestring):
             try:
