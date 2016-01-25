@@ -69,7 +69,7 @@ def _fields_with_empty_submissions(fields, questionnaire_id, search):
     result = newsearch.execute()
     for key in result.aggregations:
         if result.aggregations[key].value != result.hits.total:
-            field_code = key.strip('by_')
+            field_code = key.replace('by_','')
             field = next(field for field in fields if field['code'] == field_code)
             newfields.append(field)
     return newfields
