@@ -705,7 +705,7 @@ def get_analysis_data(request, form_code):
     dbm, questionnaire, pagination_params, \
     local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
     unique_id_fields = [field for field in questionnaire.fields if field.type in ['unique_id']]
-    linked_id_details = [_get_linked_id_details(dbm, field) for field in unique_id_fields]
+    linked_id_details = [_get_linked_id_details(dbm, field, parent_field_types=[]) for field in unique_id_fields]
     
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta,
                                                       sort_params, search_parameters)
@@ -720,19 +720,24 @@ def get_analysis_data(request, form_code):
             }, unpicklable=False), content_type='application/json')
 
 
-def _get_linked_id_details(dbm, field):
+def _get_linked_id_details(dbm, field, parent_field_types=[]):
     linked_id_details = []
+    if field.unique_id_type in parent_field_types:
+        return None #Prevent cyclic Linked ID Nr
+    parent_field_types.append(field.unique_id_type)
     id_number_fields = get_form_model_by_entity_type(dbm, [field.unique_id_type]).fields
     linked_id_fields = [child_field for child_field in id_number_fields if child_field.type in ['unique_id']]
     if (linked_id_fields):
         for linked_id_field in linked_id_fields:
+            if linked_id_field.unique_id_type in parent_field_types:
+                continue
             linked_id_info = {
                               'code':field.code, 
                               'type':field.unique_id_type,
                               'linked_code':linked_id_field.code,
                               'linked_type':linked_id_field.unique_id_type,
                               }
-            linked_id_info['children'] = _get_linked_id_details(dbm, linked_id_field)
+            linked_id_info['children'] = _get_linked_id_details(dbm, linked_id_field, parent_field_types=parent_field_types)
             linked_id_details.append(linked_id_info)
     return linked_id_details
     
@@ -773,6 +778,9 @@ def _create_analysis_response(dbm, local_time_delta, search_results, questionnai
 
 
 def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire_id, nested=False):
+    if linked_id_detail is None:
+        return 
+    
     for linked_id_info in linked_id_detail:
         if nested:
             base_node = record
