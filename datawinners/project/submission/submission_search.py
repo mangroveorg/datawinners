@@ -37,8 +37,7 @@ def _add_pagination_criteria(search_parameters, search):
 def _aggregate_duplicates(form_model, search_parameters, search):
     if search_parameters == 'exactmatch':
         search = search.params(search_type="count")
-        nested_search = search.aggs.bucket('tag', 'terms', field='status_exact', size=0, min_doc_count=2) \
-            .bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)
+        nested_search = search.aggs.bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)
         form_fields_to_be_filtered = []
         nested_search = _aggregate_exact_match_duplicates(form_model.form_fields, form_model.id, nested_search, search,
                                                           form_fields_to_be_filtered)
@@ -110,10 +109,10 @@ def _get_field_name(field, questionnaire_id):
 def _query_by_submission_type(submission_type_filter, search):
     if submission_type_filter == 'deleted':
         return search.query('term', void=True)
-    elif submission_type_filter == 'all' or submission_type_filter == 'duplicates' or submission_type_filter == 'identification_number':
+    elif submission_type_filter == 'all' or submission_type_filter == 'identification_number':
         return search.query('term', void=False)
 
-    if submission_type_filter == 'analysis':
+    if submission_type_filter == 'analysis' or submission_type_filter == 'duplicates':
         search = search.query('match', status='Success')
     elif submission_type_filter is not None:
         search = search.query('term', status=submission_type_filter)
