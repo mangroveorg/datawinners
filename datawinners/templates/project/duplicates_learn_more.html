@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<div id="duplicates_learn_more_text" class="none">
+    <div class="learn_more_text">
+        {% blocktrans %}
+        <pre style="font-family: inherit;">
+    How does this work
+    1. Choose the period in Submission Date filter
+    2. Choose what type of case of duplicate Submissions you are looking for - use the drop down
+        a) Submissions with the exact same answers for each question
+        b) Submissions with the exact same Identification Number (only matched on the Identification Number Question).
+        c) Submissions made by the same Data Sender
+    3. Delete or edit the submission by using the Action drop down
+
+    Note - the repeated set (nested Questions) are not considered in the duplicates check in this version
+        </pre>
+        {% endblocktrans %}
+    </div>
+    <div class="gotitbutton">
+        <a class="button yes_button" id="close_duplicates_learn_more_section">{% trans "OK, Got it" %}</a>
+    </div>
+</div>

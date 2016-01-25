@@ -204,6 +204,42 @@ DW.DuplicatesForFilter = function(postFilterSelectionCallBack) {
     };
 }
 
+DW.DuplicatesHelpSection = function(){
+
+    function _closeDialogHandler(){
+        $("#duplicates_learn_more_text").dialog('close');
+    }
+
+    function _initializeDialog(dialogSection){
+        dialogSection.dialog({
+                autoOpen: false,
+                width: 940,
+                modal: true,
+                position:"top",
+                title: gettext("Learn More About Duplicates"),
+                zIndex: 1100,
+                open: function(){
+                    $(".learn_more_accordion").accordion({collapsible: true,active: false});
+                },
+                close: function(){
+                    $(".learn_more_accordion").accordion( "destroy" );
+                }
+        });
+        dialogSection.off('click', '#close_duplicates_learn_more_section', _closeDialogHandler);
+        dialogSection.on('click', '#close_duplicates_learn_more_section', _closeDialogHandler);
+    }
+
+    this.init = function(){
+        $("#duplicates_learn_more_link").on('click', function(){
+            var dialogSection = $("#duplicates_learn_more_text");
+            _initializeDialog(dialogSection);
+            dialogSection.removeClass("none");
+            dialogSection.dialog("open");
+            dialogSection.parent(".ui-dialog")[0].scrollIntoView();
+        });
+    }
+};
+
 DW.DataSenderFilter = function (postFilterSelectionCallBack) {
     var self = this;
     var postFilterSelection = postFilterSelectionCallBack;

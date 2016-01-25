@@ -66,8 +66,28 @@ ul.ui-autocomplete{
       background: none;
       border-bottom: 4px solid #525252 !important;
     }
+
+    .duplicates_learn_more{
+      margin: 10px 0 0 0;
+      p {
+        font-style: italic;
+        color: #888888;
+      }
+    }
   }
 }
+
+.learn_more_text {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.gotitbutton {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
 .import_link {
   color: #0070AC !important;
 }

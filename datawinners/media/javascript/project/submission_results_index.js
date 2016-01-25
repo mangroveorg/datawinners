@@ -53,12 +53,15 @@ $(document).ready(function () {
     var _show_hide_duplicates_filter = function() {
         if (submissionTabs.isDuplicatesTab()) {
             $("#duplicates-for-dropdown").show();
+            $("#duplicates_learn_more").show();
         } else {
             $("#duplicates-for-dropdown").hide();
+            $("#duplicates_learn_more").hide();
         }
     }
 
     _initTable(submissionTabs);
+    new DW.DuplicatesHelpSection(). init();
     _show_hide_duplicates_filter();
     _initialize_filters();
     $('#page_hint_section').text($('#page_hint').find('>div:first').text());

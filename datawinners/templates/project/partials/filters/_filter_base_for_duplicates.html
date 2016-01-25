@@ -4,7 +4,12 @@
         <label>{% trans "Show Duplicates For" %}<img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon"></label>
         <div class="tooltip"><p>
             <strong>{% trans "What is this?" %}</strong><br/>
-            {% trans "Duplicates are shown based on this attribute" %}
+            {% blocktrans %}
+            Choose what type of case of duplicate Submissions you are looking for - use the drop down<br/>
+                a) Submissions with the exact same answers for each question<br/>
+                b) Submissions with the exact same Identification Number  (only matched on the Identification Number Question).<br/>
+                c) Submissions made by the same Data Sender
+            {% endblocktrans %}
         </p></div>
     </div>
     <div class="float_left">
