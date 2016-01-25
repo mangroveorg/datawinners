@@ -772,19 +772,26 @@ def _create_analysis_response(dbm, local_time_delta, search_results, questionnai
     return data
 
 
-'''
-    Placeholder for all analysis data transformation from elastic
-    search to display
-'''
-
+def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire_id, nested=False):
+    for linked_id_info in linked_id_detail:
+        if nested:
+            base_node = record
+        else:
+            base_node = record[questionnaire_id+'_'+linked_id_info['code']+'_details']
+        value = base_node[linked_id_info['linked_code']]
+        linked_entity = lookup_entity(dbm, value, [linked_id_info['linked_type']])
+        base_node[linked_id_info['linked_code']+'_details'] = linked_entity
+        if linked_id_info['children']:
+            _update_record_with_linked_id_details(
+                                                  dbm, 
+                                                  base_node[linked_id_info['linked_code']+'_details'], 
+                                                  linked_id_info['children'], questionnaire_id,nested=True)
+    
 
 def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire, linked_id_details):
     record.date = _convert_to_localized_date_time(record.date, local_time_delta)
     for linked_id_detail in linked_id_details:
-        for linked_id_info in linked_id_detail:
-            value = record[questionnaire.id+'_'+linked_id_info['code']+'_details'][linked_id_info['linked_code']]
-            linked_entity = lookup_entity(dbm, value, [linked_id_info['linked_type']])
-            record[questionnaire.id+'_'+linked_id_info['code']+'_details'][linked_id_info['linked_code']+'_details'] = linked_entity
+        _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire.id,nested=False)
     for key, value in record.to_dict().iteritems():
         if isinstance(value, basestring):
             try:
