@@ -37,12 +37,12 @@ def _add_pagination_criteria(search_parameters, search):
 def _aggregate_duplicates(form_model, search_parameters, search):
     if search_parameters == 'exactmatch':
         search = search.params(search_type="count")
-        nested_search = search.aggs.bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)
         form_fields_to_be_filtered = []
-        nested_search = _aggregate_exact_match_duplicates(form_model.form_fields, form_model.id, nested_search, search,
-                                                          form_fields_to_be_filtered)
+        aggs = _aggregate_exact_match_duplicates(form_model.form_fields, form_model.id, search.aggs, search,
+                                                 form_fields_to_be_filtered)
+        aggs.bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)\
+            .bucket('tag', 'top_hits', size=(2 ** 7))
         setattr(form_model, "filter_fields", form_fields_to_be_filtered)
-        nested_search.bucket('tag', 'top_hits', size=(2 ** 7))
 
     elif search_parameters == 'datasender':
         search = search.params(search_type="count")
@@ -55,7 +55,6 @@ def _aggregate_duplicates(form_model, search_parameters, search):
         a = A("terms", field=form_model.id + '_' + search_parameters + '_unique_code_exact', size=0, min_doc_count=2)
         b = A("top_hits", size=(2 ** 10))
         search.aggs.bucket('tag', a).bucket('tag', b)
-
     return search
 
 
@@ -75,12 +74,12 @@ def _fields_with_empty_submissions(fields, questionnaire_id, search):
     return newfields
 
 
-def _aggregate_exact_match_duplicates(fields, questionnaire_id, nested_search, search, form_fields_to_be_filtered):
+def _aggregate_exact_match_duplicates(fields, questionnaire_id, aggs, search, form_fields_to_be_filtered):
     fields_with_empty_submissions = _fields_with_empty_submissions(fields, questionnaire_id, search)
     for field in fields:
         if field['type'] == 'field_set':
-            nested_search = _aggregate_exact_match_duplicates(field['fields'], questionnaire_id, nested_search, search,
-                                                              form_fields_to_be_filtered)
+            aggs = _aggregate_exact_match_duplicates(field['fields'], questionnaire_id, aggs, search,
+                                                     form_fields_to_be_filtered)
             continue
 
         if field['type'] == 'select':
@@ -92,9 +91,9 @@ def _aggregate_exact_match_duplicates(fields, questionnaire_id, nested_search, s
             continue
 
         field_name = _get_field_name(field, questionnaire_id)
-        nested_search = nested_search.bucket('tag', 'terms', field=field_name, size=0, min_doc_count=2)
+        aggs = aggs.bucket('tag', 'terms', field=field_name, size=0, min_doc_count=2)
 
-    return nested_search
+    return aggs
 
 
 def _get_field_name(field, questionnaire_id):

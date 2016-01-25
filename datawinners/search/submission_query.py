@@ -92,9 +92,12 @@ class SubmissionQueryResponseCreator(object):
 
     def _traverse_aggregation_buckets(self, search_results, aggr_result, groups):
         if not hasattr(search_results['tag'], 'buckets'):
-            results = [_append_to_(result, 'group_id', groups[0]) for result in search_results['tag']['hits']['hits']]
-            aggr_result.extend(results)
-            groups[0] += 1
+            if search_results.key == 'N/A':
+                self._group_and_filter_open_data_senders(search_results['tag']['hits']['hits'], aggr_result, groups)
+            else:
+                results = [_append_to_(result, 'group_id', groups[0]) for result in search_results['tag']['hits']['hits']]
+                aggr_result.extend(results)
+                groups[0] += 1
         else:
             for bucket in search_results['tag'].buckets:
                 self._traverse_aggregation_buckets(bucket, aggr_result, groups)
@@ -177,6 +180,15 @@ class SubmissionQueryResponseCreator(object):
         if search_parameters.get('search_filters').get('duplicatesForFilter') == 'exactmatch':
             aggr_result = self._group_and_filter_aggregation(aggr_result, groups)
         return aggr_result
+
+    def _group_and_filter_open_data_senders(self, search_results, aggr_result, groups):
+        sorted_list = sorted(search_results, key=lambda x : x._source.ds_name)
+        for key, group in groupby(sorted_list, lambda x: x._source.ds_name):
+            grouped_list = list(group)
+            if len(grouped_list) > 1:
+                results = [_append_to_(result, 'group_id', groups[0]) for result in grouped_list]
+                aggr_result.extend(results)
+                groups[0] += 1
 
 
 def _format_media_value(submission_id, value, thumbnail_flag=False):
