@@ -721,25 +721,29 @@ def get_analysis_data(request, form_code):
 
 
 def _get_linked_id_details(dbm, field, parent_field_types=[]):
-    linked_id_details = []
-    if field.unique_id_type in parent_field_types:
-        return None #Prevent cyclic Linked ID Nr
-    parent_field_types.append(field.unique_id_type)
-    id_number_fields = get_form_model_by_entity_type(dbm, [field.unique_id_type]).fields
-    linked_id_fields = [child_field for child_field in id_number_fields if child_field.type in ['unique_id']]
-    if (linked_id_fields):
-        for linked_id_field in linked_id_fields:
-            if linked_id_field.unique_id_type in parent_field_types:
-                continue
-            linked_id_info = {
-                              'code':field.code, 
-                              'type':field.unique_id_type,
-                              'linked_code':linked_id_field.code,
-                              'linked_type':linked_id_field.unique_id_type,
-                              }
-            linked_id_info['children'] = _get_linked_id_details(dbm, linked_id_field, parent_field_types=parent_field_types)
-            linked_id_details.append(linked_id_info)
-    return linked_id_details
+    try:
+        linked_id_details = []
+        if field.unique_id_type in parent_field_types:
+            return None #Prevent cyclic Linked ID Nr
+        parent_field_types.append(field.unique_id_type)
+        id_number_fields = get_form_model_by_entity_type(dbm, [field.unique_id_type]).fields
+        linked_id_fields = [child_field for child_field in id_number_fields if child_field.type in ['unique_id']]
+        if (linked_id_fields):
+            for linked_id_field in linked_id_fields:
+                if linked_id_field.unique_id_type in parent_field_types:
+                    continue
+                linked_id_info = {
+                                  'code':field.code, 
+                                  'type':field.unique_id_type,
+                                  'linked_code':linked_id_field.code,
+                                  'linked_type':linked_id_field.unique_id_type,
+                                  }
+                linked_id_info['children'] = _get_linked_id_details(dbm, linked_id_field, parent_field_types=parent_field_types)
+                linked_id_details.append(linked_id_info)
+        return linked_id_details
+    except Exception as e:
+        logger.exception("Exception in constructing linked id hierrachy : \n%s" % e)
+        return None
     
 def _get_search_params(request):
     search_parameters = {}
@@ -778,23 +782,30 @@ def _create_analysis_response(dbm, local_time_delta, search_results, questionnai
 
 
 def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire_id, nested=False):
-    if linked_id_detail is None:
-        return 
-    
-    for linked_id_info in linked_id_detail:
-        if nested:
-            base_node = record
-        else:
-            base_node = record[questionnaire_id+'_'+linked_id_info['code']+'_details']
-        value = base_node[linked_id_info['linked_code']]
-        linked_entity = lookup_entity(dbm, value, [linked_id_info['linked_type']])
-        base_node[linked_id_info['linked_code']+'_details'] = linked_entity
-        if linked_id_info['children']:
-            _update_record_with_linked_id_details(
-                                                  dbm, 
-                                                  base_node[linked_id_info['linked_code']+'_details'], 
-                                                  linked_id_info['children'], questionnaire_id,nested=True)
-    
+    try:
+        
+        if linked_id_detail is None:
+            return 
+        
+        for linked_id_info in linked_id_detail:
+            if nested:
+                base_node = record
+            else:
+                base_node = record[questionnaire_id+'_'+linked_id_info['code']+'_details']
+            
+            value = base_node[linked_id_info['linked_code']]
+            linked_entity = lookup_entity(dbm, value, [linked_id_info['linked_type']])
+            base_node[linked_id_info['linked_code']+'_details'] = linked_entity
+            if linked_id_info['children']:
+                _update_record_with_linked_id_details(
+                                                      dbm, 
+                                                      base_node[linked_id_info['linked_code']+'_details'], 
+                                                      linked_id_info['children'], questionnaire_id,nested=True)
+    except KeyError as key_err:
+        return #When linked ID doesn't have value, this happens and displays blank in view
+    except Exception as e:
+        logger.exception("Exception in constructing linked id info : \n%s" % e)
+        return
 
 def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire, linked_id_details):
     record.date = _convert_to_localized_date_time(record.date, local_time_delta)
