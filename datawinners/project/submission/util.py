@@ -10,3 +10,17 @@ def submission_stats(dbm, form_model_id):
         submission_success = row["value"]["success"]
         submission_errors = row["value"]["count"] - row["value"]["success"]
     return submission_success,submission_errors
+
+
+class AccessFriendlyDict(dict):
+    def __getattr__(self, attr):
+        attributes = attr.split('.')
+        value = self
+        for nested_attr in attributes:
+            if value is not None:
+                value = value.get(nested_attr)
+                
+        return value
+    
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__

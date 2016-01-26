@@ -62,8 +62,10 @@ from mangrove.transport.repository.survey_responses import get_survey_response_b
 from mangrove.transport.contract.survey_response import SurveyResponse
 from mangrove.datastore.user_questionnaire_preference import get_analysis_field_preferences, \
     save_analysis_field_preferences, get_preferences
-from mangrove.form_model.form_model import get_form_model_by_entity_type
 from datawinners.project.views.views import questionnaire
+from datawinners.project.submission.export import export_to_new_excel
+from datawinners.project.submission.analysis_helper import convert_to_localized_date_time,\
+    enrich_analysis_data
 
 websubmission_logger = logging.getLogger("websubmission")
 logger = logging.getLogger("datawinners")
@@ -660,7 +662,7 @@ def _create_export_artifact(form_model, manager, request, search_filters):
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, preferences) \
         .create_excel_response(submission_type, query_params)
 
-
+    
 @login_required
 @session_not_expired
 @is_datasender
@@ -704,12 +706,10 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 def get_analysis_data(request, form_code):
     dbm, questionnaire, pagination_params, \
     local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
-    unique_id_fields = [field for field in questionnaire.fields if field.type in ['unique_id']]
-    linked_id_details = [_get_linked_id_details(dbm, field, parent_field_types=[]) for field in unique_id_fields]
     
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta,
                                                       sort_params, search_parameters)
-    data = _create_analysis_response(dbm, local_time_delta, search_results, questionnaire, linked_id_details)
+    data = _create_analysis_response(dbm, local_time_delta, search_results, questionnaire)
     return HttpResponse(
         jsonpickle.encode(
             {
@@ -720,30 +720,6 @@ def get_analysis_data(request, form_code):
             }, unpicklable=False), content_type='application/json')
 
 
-def _get_linked_id_details(dbm, field, parent_field_types=[]):
-    try:
-        linked_id_details = []
-        if field.unique_id_type in parent_field_types:
-            return None #Prevent cyclic Linked ID Nr
-        parent_field_types.append(field.unique_id_type)
-        id_number_fields = get_form_model_by_entity_type(dbm, [field.unique_id_type]).fields
-        linked_id_fields = [child_field for child_field in id_number_fields if child_field.type in ['unique_id']]
-        if (linked_id_fields):
-            for linked_id_field in linked_id_fields:
-                if linked_id_field.unique_id_type in parent_field_types:
-                    continue
-                linked_id_info = {
-                                  'code':field.code, 
-                                  'type':field.unique_id_type,
-                                  'linked_code':linked_id_field.code,
-                                  'linked_type':linked_id_field.unique_id_type,
-                                  }
-                linked_id_info['children'] = _get_linked_id_details(dbm, linked_id_field, parent_field_types=parent_field_types)
-                linked_id_details.append(linked_id_info)
-        return linked_id_details
-    except Exception as e:
-        logger.exception("Exception in constructing linked id hierrachy : \n%s" % e)
-        return None
     
 def _get_search_params(request):
     search_parameters = {}
@@ -773,102 +749,17 @@ def _get_pagination_params(request):
     return pagination_params
 
 
-def _create_analysis_response(dbm, local_time_delta, search_results, questionnaire, linked_id_details):
+def _create_analysis_response(dbm, local_time_delta, search_results, questionnaire):
     data = []
     if search_results is not None:
-        data = [_transform_elastic_to_analysis_view(dbm, local_time_delta, result, questionnaire, linked_id_details)._d_ for result in
+        data = [_transform_elastic_to_analysis_view(dbm, local_time_delta, result, questionnaire)._d_ for result in
                 search_results.hits]
     return data
 
-
-def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire_id, nested=False):
-    try:
-        
-        if linked_id_detail is None:
-            return 
-        
-        for linked_id_info in linked_id_detail:
-            if nested:
-                base_node = record
-            else:
-                base_node = record[questionnaire_id+'_'+linked_id_info['code']+'_details']
-            
-            value = base_node[linked_id_info['linked_code']]
-            linked_entity = lookup_entity(dbm, value, [linked_id_info['linked_type']])
-            base_node[linked_id_info['linked_code']+'_details'] = linked_entity
-            if linked_id_info['children']:
-                _update_record_with_linked_id_details(
-                                                      dbm, 
-                                                      base_node[linked_id_info['linked_code']+'_details'], 
-                                                      linked_id_info['children'], questionnaire_id,nested=True)
-    except KeyError as key_err:
-        return #When linked ID doesn't have value, this happens and displays blank in view
-    except Exception as e:
-        logger.exception("Exception in constructing linked id info : \n%s" % e)
-        return
-
-def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire, linked_id_details):
-    record.date = _convert_to_localized_date_time(record.date, local_time_delta)
-    for linked_id_detail in linked_id_details:
-        _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire.id,nested=False)
-    for key, value in record.to_dict().iteritems():
-        if isinstance(value, basestring):
-            try:
-                value_obj = json.loads(value)
-                if isinstance(value_obj, list):
-                    _transform_nested_question_answer(key, value_obj, record, questionnaire)
-            except Exception as e:
-                continue
+def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire):
+    record.date = convert_to_localized_date_time(record.date, local_time_delta)
+    record = enrich_analysis_data(record, questionnaire)
     return record
-
-
-def _transform_nested_question_answer(key, value_obj, record, questionnaire):
-    field_code = key.replace(record.meta.doc_type + '_', '')
-    target_fields = [nested_field for nested_field in questionnaire.has_nested_fields if
-                     nested_field.code == field_code]
-    updated_answers = ''
-    for repeat_question_answer in value_obj:
-        updated_answer = ''
-        for field in target_fields[0].fields:
-            field_value = repeat_question_answer[field.code] if repeat_question_answer[field.code] else ''
-            str_value = _handle_field_types(field, field_value, record.meta.id, repeat_question_answer)
-
-            updated_answer += '<div><span>' + field.label + '</span><div>' + str_value + '</div></div>'
-            updated_answer += ' '
-        updated_answers += updated_answer + ';<br/><br/>'
-
-    record[key] = updated_answers
-
-
-def _handle_field_types(field, field_value, submission_id, repeat_question_answer):
-    str_value = ''
-    if field.type == 'photo':
-        str_value = "<a href='/download/attachment/%s/%s'><img src='/download/attachment/%s/preview_%s' " \
-                    "alt=''/></a><br>" % (submission_id, field_value, submission_id, field_value)
-    elif field.type in ['audio', 'video']:
-        str_value = "<a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, field_value, field_value)
-    elif isinstance(field_value, list) and not field.type == 'field_set':
-        str_value = ','.join(field_value)
-    elif field.type == 'field_set':
-        sub_question_answer = repeat_question_answer[field.code] if repeat_question_answer[field.code] else ''
-        for answer in sub_question_answer:
-            for f in field.fields:
-                field_value = answer[f.code] if answer[f.code] else None
-                try:
-                    if field_value:
-                        return _handle_field_types(f, field_value, submission_id, answer)
-                except Exception as e:
-                    pass
-    else:
-        str_value = field_value
-    return str_value
-
-
-def _convert_to_localized_date_time(submission_date, local_time_delta):
-    submission_date_time = datetime.datetime.strptime(submission_date, "%b. %d, %Y, %I:%M %p")
-    datetime_local = convert_utc_to_localized(local_time_delta, submission_date_time)
-    return datetime_local.strftime("%b. %d, %Y, %H:%M")
-
 
 @csrf_view_exempt
 @valid_web_user

@@ -6,6 +6,7 @@ from mangrove.form_model.field import ExcelDate, DateField
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.datastore.user_questionnaire_preference import detect_visibility
 from collections import OrderedDict
+from datawinners.project.submission.util import AccessFriendlyDict
 
 GEOCODE_FIELD_CODE = "geocode"
 
@@ -18,7 +19,12 @@ class SubmissionFormatter(object):
         self.columns = columns
         self.local_time_delta = local_time_delta
         self.preferences = preferences
+        if not self.preferences:
+            self.visible_columns = self.columns
+        else:
+            self.visible_columns = self._compute_visible_columns(process_preferences=self.preferences)
 
+    #TODO: I believe this method is never used. Confirm and remove
     def format_tabular_data(self, values):
         formatted_values = []
         headers = self.format_header_data()
@@ -26,23 +32,25 @@ class SubmissionFormatter(object):
             formatted_values.append(self.format_row(row_dict['_source']))
         return headers, formatted_values
 
-    def get_visible_columns(self):
-        if not self.preferences:
-            return self.columns
+    def _compute_visible_columns(self, process_preferences=[]):
 
         visible_columns = OrderedDict()
-        for preference in self.preferences:
+        
+        for preference in process_preferences:
             if preference.get('visibility') or preference.has_key('children'):
                 key = preference.get('data')
                 if preference.has_key('children'):
-                    for children_preference in preference.get('children'):
-                        key = children_preference.get('data')
-                        if not children_preference.get('visibility'): continue
-                        visible_columns.update({key: self.columns.get(key)})
+                    child_visible_columns = self._compute_visible_columns(process_preferences=preference.get('children'))
+                    if child_visible_columns:
+                        visible_columns.update(child_visible_columns)
                 else:
                     visible_columns.update({key: self.columns.get(key)})
         return visible_columns
-
+        
+        
+    def get_visible_columns(self):
+        return self.visible_columns
+        
     def format_header_data(self):
         headers = []
         for col_def in self.get_visible_columns().values():
@@ -84,15 +92,15 @@ class SubmissionFormatter(object):
             parsed_value = '; '.join(field_value) if isinstance(field_value, list) else field_value
         return parsed_value
 
+    #TODO: row should not be unpacked based on dot. Should be based on key. Before this, we should set the value for keys
     def format_row(self, row):
         result = []
+        row = AccessFriendlyDict(row)
+        
         for field_code in self.get_visible_columns().keys():
-            field_value = row.get(field_code)
-            if '.' in field_code:
-                entity_type, entity_type_field_code = field_code.split('.')
-                field_value = row.get(entity_type).get(entity_type_field_code) if row.get(entity_type) else ""
-                field_value = self.post_parse_field(field_code, field_value)
             try:
+                field_value = getattr(row, field_code)
+                field_value = self.post_parse_field(field_code, field_value)
 
                 parsed_value = self._parsed_field_value(field_value)
                 field_type = self.columns[field_code].get("type")

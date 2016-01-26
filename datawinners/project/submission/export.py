@@ -13,16 +13,22 @@ from django.template.defaultfilters import slugify
 from datawinners.workbook_utils import workbook_add_sheet, workbook_add_sheets, workbook_add_header, workbook_add_row
 from datawinners.workbook_utils import worksheet_add_header
 from mangrove.form_model.field import ExcelDate
+from datawinners.project.submission.analysis_helper import enrich_analysis_data
 
 
-def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_prefix=None, browser=None):
+def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_prefix=None, browser=None, questionnaire=None):
     ws = workbook.add_worksheet(name=sheet_name_prefix)
     worksheet_add_header(ws, headers, workbook, browser)
     date_formats = {}
 
     for row_number, row in enumerate(raw_data):
-        if formatter:
+        if questionnaire and formatter:
+            #For advanced transformation
+            row = enrich_analysis_data(row['_source'], questionnaire)
+            row = formatter.format_row(row)
+        elif formatter:
             row = formatter.format_row(row['_source'])
+            
         for column, val in enumerate(row):
             if isinstance(val, ExcelDate):
                 if not date_formats.has_key(val.date_format):
@@ -96,15 +102,15 @@ def create_excel_response(headers, raw_data_list, file_name):
     wb.save(response)
     return response
 
-def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes_sheet=False, browser=None):
+def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes_sheet=False, browser=None, questionnaire=None):
     file_name_normalized = slugify(file_name)
     output = tempfile.TemporaryFile()
     workbook = xlsxwriter.Workbook(output, {'constant_memory': True})
     if isinstance(headers, dict):
         for sheet_name, header_row in headers.items():
-            add_sheet_with_data(raw_data.get(sheet_name, []), header_row, workbook, formatter, sheet_name, browser)
+            add_sheet_with_data(raw_data.get(sheet_name, []), header_row, workbook, formatter, sheet_name, browser, questionnaire=questionnaire)
     else:
-        add_sheet_with_data(raw_data, headers, workbook, formatter)
+        add_sheet_with_data(raw_data, headers, workbook, formatter, questionnaire=questionnaire)
     if hide_codes_sheet:
         worksheets = workbook.worksheets()
         codes_sheet = worksheets[workbook._get_sheet_index('codes')]
