@@ -72,7 +72,7 @@
             defaults["oLanguage"] = defaults["oLanguage"] || {};
             $.extend(defaults["oLanguage"], {
                 "sInfoFiltered": "",
-                "sLengthMenu": gettext("Show") + " _MENU_ " + gettext(defaults.concept),
+                "sLengthMenu": gettext("Show") + " _MENU_ " + gettext(defaults.concept)+ "s",
                 "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
                 "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
                     {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_', subject_type: gettext(defaults.concept)}, true),
