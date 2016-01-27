@@ -97,7 +97,7 @@ def _aggregate_exact_match_duplicates(fields, questionnaire_id, aggs, search, fo
 
 
 def _get_field_name(field, questionnaire_id):
-    parent_code = field['parent_field_code'] if field['parent_field_code'] else None
+    parent_code = field.get('parent_field_code') if field.get('parent_field_code') else None
     field_name = es_questionnaire_field_name(field['code'], questionnaire_id, parent_code)
     field_suffix = '_value' if field['type'] == 'date' \
         else '_unique_code' if field['type'] == 'unique_id_exact' \

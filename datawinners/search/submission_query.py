@@ -80,7 +80,7 @@ class SubmissionQueryResponseCreator(object):
         return result
 
     def _field_code(self, field):
-        return es_questionnaire_field_name(field['code'], self.form_model.id, field['parent_field_code'])
+        return es_questionnaire_field_name(field['code'], self.form_model.id, field.get('parent_field_code'))
 
     def _group_and_filter_aggregation(self, aggr_result, groups):
         sorted_list = sorted(aggr_result, key=lambda x: x.group_id)
