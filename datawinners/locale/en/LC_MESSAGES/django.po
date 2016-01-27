@@ -4944,3 +4944,15 @@ msgstr ""
 
 msgid "Answer must be a date in the following format: %s. Example: %s"
 msgstr ""
+
+msgid "Show Duplicates For"
+msgstr ""
+
+msgid "Duplicates"
+msgstr ""
+
+msgid "Exact Match"
+msgstr ""
+
+msgid "help_text_for_duplicates_oneliner"
+msgstr "This feature will identify possible duplicated Submissions. Removing or editing the duplicated Submissions will help you clean up and improve the quality of the collected data.Only Successful Submissions are analyzed for duplicates."

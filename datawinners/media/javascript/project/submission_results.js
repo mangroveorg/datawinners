@@ -59,7 +59,7 @@ DW.SubmissionLogTable = function (options) {
         "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>",
         "error": gettext("No unsuccessful Submissions!"),
         "deleted": gettext("No deleted Submissions."),
-        "duplicates": gettext("No Duplicates are currently available for the given time period based on your choice") + "</span>"
+        "duplicates": gettext("No Duplicates are currently available for the given time period based on your choice.") + "</span>"
     };
 
     var paginateGroups = {"duplicates": true}

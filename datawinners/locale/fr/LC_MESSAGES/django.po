@@ -6214,3 +6214,15 @@ msgstr "Le modèle que vous utilisez n'est pas adapté, veuillez utiliser le mod
 
 msgid "Answer must be a date in the following format: %s. Example: %s"
 msgstr "La réponse doit être une date au format : %s. Exemple : %s"
+
+msgid "Show Duplicates For"
+msgstr "Afficher les doublons pour"
+
+msgid "Duplicates"
+msgstr "Doublons"
+
+msgid "Exact Match"
+msgstr "Concordance exacte"
+
+msgid "help_text_for_duplicates_oneliner"
+msgstr "Cette fonctionnalité identifiera les doublons possibles au niveau des Soumissions. Supprimer ou modifier les doubons vous permettra de nettoyer et d'améliorer la qualité des données collectées. Seules les Soumissions effectuées avec succès sont analysées pour identifier les doublons."

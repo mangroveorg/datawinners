@@ -1637,3 +1637,15 @@ msgstr "Ajouter à un nouveau Groupe"
 
 msgid "Test SMS Questionnaire"
 msgstr "Tester le Questionnaire SMS"
+
+msgid "Identification Number"
+msgstr "Numéro d'Identification"
+
+msgid "Duplicate"
+msgstr "Doublon"
+
+msgid "No Duplicates are currently available for the given time period based on your choice."
+msgstr "Aucun doublon n'a été trouvé pour la période sélectionnée."
+
+msgid "Learn More About Duplicates"
+msgstr "En savoir plus sur les doublons"

@@ -1205,3 +1205,15 @@ msgstr ""
 
 msgid "Add to new Group"
 msgstr ""
+
+msgid "Identification Number"
+msgstr ""
+
+msgid "Duplicate"
+msgstr ""
+
+msgid "No Duplicates are currently available for the given time period based on your choice"
+msgstr ""
+
+msgid "Learn More About Duplicates"
+msgstr ""

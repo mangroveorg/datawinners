@@ -141,12 +141,7 @@
             <div id="tab_template" style="padding: 0px;" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
                 <div id="duplicates_learn_more" class="duplicates_learn_more">
                     <p>
-                        {% blocktrans %}
-                        This feature will identify possible duplicated Submissions.
-                        Removing or editing the duplicated Submissions will help you clean up
-                        and improve the quality of the collected data. Only Successful Submissions
-                        are analyzed for duplicates.
-                        {% endblocktrans %}
+                        {% trans "help_text_for_duplicates_oneliner" %}
                         <a id= "duplicates_learn_more_link" href="javascript:void(0);">{% trans "Learn More" %}</a>
                     </p>
                     {% include "project/duplicates_learn_more.html" %}
