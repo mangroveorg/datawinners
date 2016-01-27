@@ -4956,3 +4956,39 @@ msgstr ""
 
 msgid "help_text_for_duplicates_oneliner"
 msgstr "This feature will identify possible duplicated Submissions. Removing or editing the duplicated Submissions will help you clean up and improve the quality of the collected data.Only Successful Submissions are analyzed for duplicates."
+
+msgid "help_text_for_duplicates_expand_header"
+msgstr "How does this work"
+
+msgid "help_text_for_duplicates_expand_content_1"
+msgstr "1) Choose the period using Submission Date filter"
+
+msgid "help_text_for_duplicates_expand_content_2"
+msgstr "2) Choose what case of duplicate Submissions you are looking for - use the drop down \"Show Duplicates For\""
+
+msgid "help_text_for_duplicates_expand_content_2a"
+msgstr "a. Submissions with the exact same answers for each question"
+
+msgid "help_text_for_duplicates_expand_content_2b"
+msgstr "b. Submissions with the exact same Identification Number (only matched on the Identification Number Question)."
+
+msgid "help_text_for_duplicates_expand_content_2c"
+msgstr "c. Submissions made by the same Data Sender"
+
+msgid "help_text_for_duplicates_expand_content_3"
+msgstr "3) Delete or edit the submission using the Action drop down"
+
+msgid "help_text_for_duplicates_expand_content_note"
+msgstr "Note: the repeated set (nested Questions) are not considered in the duplicates check in this version"
+
+msgid "help_text_for_duplicates_near_filter_header"
+msgstr "Choose what case of duplicate Submissions you are looking for"
+
+msgid "help_text_for_duplicates_near_filter_content_1"
+msgstr "1) Submissions with the exact same answers for each question"
+
+msgid "help_text_for_duplicates_near_filter_content_2"
+msgstr "2) Submissions with the exact same unique Identification Number (per question)"
+
+msgid "help_text_for_duplicates_near_filter_content_3"
+msgstr "3) Submissions made by the same Data Sender"

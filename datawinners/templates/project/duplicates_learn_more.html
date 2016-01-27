@@ -2,19 +2,17 @@
 
 <div id="duplicates_learn_more_text" class="none">
     <div class="learn_more_text">
-        {% blocktrans %}
         <pre style="font-family: inherit;">
-    How does this work
-    1. Choose the period using Submission Date filter
-    2. Choose what type of case of duplicate Submissions you are looking for - use the drop down "Show Duplicates For"
-        a) Submissions with the exact same answers for each question
-        b) Submissions with the exact same Identification Number (only matched on the Identification Number Question).
-        c) Submissions made by the same Data Sender
-    3. Delete or edit the submission by using the Action drop down
+            {% trans "help_text_for_duplicates_expand_header" %}
+            {% trans "help_text_for_duplicates_expand_content_1" %}
+            {% trans "help_text_for_duplicates_expand_content_2" %}
+                {% trans "help_text_for_duplicates_expand_content_2a" %}
+                {% trans "help_text_for_duplicates_expand_content_2b" %}
+                {% trans "help_text_for_duplicates_expand_content_2c" %}
+            {% trans "help_text_for_duplicates_expand_content_3" %}
 
-    Note - the repeated set (nested Questions) are not considered in the duplicates check in this version
+            {% trans "help_text_for_duplicates_expand_content_note" %}
         </pre>
-        {% endblocktrans %}
     </div>
     <div class="gotitbutton">
         <a class="button yes_button" id="close_duplicates_learn_more_section">{% trans "OK, Got it" %}</a>

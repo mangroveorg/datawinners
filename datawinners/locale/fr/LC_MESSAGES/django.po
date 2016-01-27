@@ -6226,3 +6226,39 @@ msgstr "Concordance exacte"
 
 msgid "help_text_for_duplicates_oneliner"
 msgstr "Cette fonctionnalité identifiera les doublons possibles au niveau des Soumissions. Supprimer ou modifier les doubons vous permettra de nettoyer et d'améliorer la qualité des données collectées. Seules les Soumissions effectuées avec succès sont analysées pour identifier les doublons."
+
+msgid "help_text_for_duplicates_expand_header"
+msgstr "Comment ça marche"
+
+msgid "help_text_for_duplicates_expand_content_1"
+msgstr "1) Choisissez la période en utilisant le filtre de la Date de Soumission"
+
+msgid "help_text_for_duplicates_expand_content_2"
+msgstr "2) Choisissez le cas de doublons que vous souhaitez afficher. Utilisez la liste déroulante \"Afficher les doublons pour\""
+
+msgid "help_text_for_duplicates_expand_content_2a"
+msgstr "a. Soumissions comportant les mêmes réponses pour chaque question"
+
+msgid "help_text_for_duplicates_expand_content_2b"
+msgstr "b. Soumissions comportant le même Numéro d'Identification (exactitude au niveau de la question sur le Numéro d'Identification)"
+
+msgid "help_text_for_duplicates_expand_content_2c"
+msgstr "c. Soumissions effectuées par le même Expéditeur de Données"
+
+msgid "help_text_for_duplicates_expand_content_3"
+msgstr "3) Supprimez ou modifiez la Soumission en utilisant la liste déroulante Actions"
+
+msgid "help_text_for_duplicates_expand_content_note"
+msgstr "Remarque: la répétition d'une série de questions n'est pas prise en compte dans cette version"
+
+msgid "help_text_for_duplicates_near_filter_header"
+msgstr "Choissez quel cas de doublon vous souhaitez afficher"
+
+msgid "help_text_for_duplicates_near_filter_content_1"
+msgstr "1) Soumissions comportant les mêmes réponses pour chaque question"
+
+msgid "help_text_for_duplicates_near_filter_content_2"
+msgstr "2) Soumissions comportant le même Numéro d'Identification (par question)"
+
+msgid "help_text_for_duplicates_near_filter_content_3"
+msgstr "3) Soumissions effectuées par le même Expéditeur de Données"

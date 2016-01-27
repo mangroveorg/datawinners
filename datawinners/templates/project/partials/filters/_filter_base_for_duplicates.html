@@ -1,15 +1,13 @@
 {% load i18n %}
 <div class="filter-question" id="duplicates-for-dropdown">
-    <div class="filter_label">
+    <div class="filter_label duplicate_dropdown">
         <label>{% trans "Show Duplicates For" %}<img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon"></label>
         <div class="tooltip"><p>
             <strong>{% trans "What is this?" %}</strong><br/>
-            {% blocktrans %}
-            Choose what type of case of duplicate Submissions you are looking for<br/>
-                1) Submissions with the exact same answers for each question<br/>
-                2) Submissions with the exact same unique Identification Number (per question).<br/>
-                3) Submissions made by the same Data Sender
-            {% endblocktrans %}
+            {% trans "help_text_for_duplicates_near_filter_header" %}<br/>
+                {% trans "help_text_for_duplicates_near_filter_content_1" %}<br/>
+                {% trans "help_text_for_duplicates_near_filter_content_2" %}<br/>
+                {% trans "help_text_for_duplicates_near_filter_content_3" %}
         </p></div>
     </div>
     <div class="float_left">
