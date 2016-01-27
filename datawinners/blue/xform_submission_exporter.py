@@ -109,7 +109,7 @@ class XFormSubmissionExporter(SubmissionExporter):
         archive.close()
         return file_name_normalized, zip_file
 
-    def _create_response(self, columns, submission_list, submission_type):
+    def _create_response(self, columns, submission_list, submission_type, hide_codes_sheet=False):
         file_name = slugify(export_filename(submission_type, self.project_name))
         workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns,
                                                                 self.local_time_delta, self.preferences).create_excel(submission_list)
