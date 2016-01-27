@@ -137,7 +137,7 @@ def create_excel_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix, 
         row = formatter.format_row(row['_source'])
         workbook_add_row(wb, row, number_of_sheets, row_number + 1)
 
-
+#I believe this method is never used. Validate and remove
 def export_to_excel_no_zip(headers, raw_data, file_name, formatter):
     wb = xlwt.Workbook()
     create_excel_sheet_with_data(raw_data, headers, wb, 'data_log', formatter)

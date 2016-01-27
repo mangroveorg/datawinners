@@ -21,6 +21,8 @@ from datawinners.project.submission.submission_search import get_scrolling_submi
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import ExcelDate, DateField
+from datawinners.project.submission.analysis_helper import enrich_analysis_data
+from datawinners.project.submission.util import AccessFriendlyDict
 
 
 class XFormSubmissionExporter(SubmissionExporter):
@@ -194,7 +196,8 @@ class AdvancedQuestionnaireSubmissionExporter():
                 #since scan & scroll API does not support result set size the workaround is to handle it this way
                 break
 
-            result = formatter.format_row(row_dict['_source'], row_number, formatted_repeats)
+            row = enrich_analysis_data(row_dict['_source'], self.form_model)
+            result = formatter.format_row(row, row_number, formatted_repeats)
 
             if self.form_model.has_nested_fields:
                 result.append(row_number + 1)
@@ -297,13 +300,12 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
 
     def __format_row(self, row, columns, index, repeat):
         result = []
+        access_friendly_row = AccessFriendlyDict(row)
+        
         for field_code in columns.keys():
             try:
-                field_value = row.get(field_code, None)
-                if '.' in field_code:
-                    entity_type, entity_type_field_code = field_code.split('.')
-                    field_value = row.get(entity_type).get(entity_type_field_code)
-                    field_value = self.post_parse_field(field_code, field_value)
+                field_value = getattr(access_friendly_row, field_code)
+                field_value = self.post_parse_field(field_code, field_value)
                 parsed_value = self._parsed_field_value(field_value)
                 field_type = columns[field_code].get("type")
 

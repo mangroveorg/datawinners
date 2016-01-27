@@ -92,7 +92,6 @@ class SubmissionFormatter(object):
             parsed_value = '; '.join(field_value) if isinstance(field_value, list) else field_value
         return parsed_value
 
-    #TODO: row should not be unpacked based on dot. Should be based on key. Before this, we should set the value for keys
     def format_row(self, row):
         result = []
         row = AccessFriendlyDict(row)
