@@ -1649,3 +1649,6 @@ msgstr "Aucun doublon n'a été trouvé pour la période sélectionnée."
 
 msgid "Learn More About Duplicates"
 msgstr "En savoir plus sur les doublons"
+
+msgid "Advanced Answer Types"
+msgstr "Types de réponse avancés"

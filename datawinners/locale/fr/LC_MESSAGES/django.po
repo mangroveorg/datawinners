@@ -6231,7 +6231,7 @@ msgid "help_text_for_duplicates_expand_header"
 msgstr "Comment ça marche"
 
 msgid "help_text_for_duplicates_expand_content_1"
-msgstr "1) Choisissez la période en utilisant le filtre de la Date de Soumission"
+msgstr "1) Choisissez la période en utilisant le filtre \"Date de Soumission\""
 
 msgid "help_text_for_duplicates_expand_content_2"
 msgstr "2) Choisissez le cas de doublons que vous souhaitez afficher. Utilisez la liste déroulante \"Afficher les doublons pour\""

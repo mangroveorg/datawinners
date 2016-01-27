@@ -4961,7 +4961,7 @@ msgid "help_text_for_duplicates_expand_header"
 msgstr "How does this work"
 
 msgid "help_text_for_duplicates_expand_content_1"
-msgstr "1) Choose the period using Submission Date filter"
+msgstr "1) Choose the period using \"Submission Date\" filter"
 
 msgid "help_text_for_duplicates_expand_content_2"
 msgstr "2) Choose what case of duplicate Submissions you are looking for - use the drop down \"Show Duplicates For\""
