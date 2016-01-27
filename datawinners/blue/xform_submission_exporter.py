@@ -304,8 +304,10 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         
         for field_code in columns.keys():
             try:
-                field_value = getattr(access_friendly_row, field_code)
-                field_value = self.post_parse_field(field_code, field_value)
+                field_value = row.get(field_code, None)
+                if '.' in field_code:
+                    field_value = getattr(access_friendly_row, field_code)
+                    field_value = self.post_parse_field(field_code, field_value)
                 parsed_value = self._parsed_field_value(field_value)
                 field_type = columns[field_code].get("type")
 
