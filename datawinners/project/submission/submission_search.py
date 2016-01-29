@@ -60,22 +60,25 @@ def _aggregate_duplicates(form_model, search_parameters, search):
 
 def _fields_with_empty_submissions(fields, questionnaire_id, search):
     newfields = []
-    newsearch = copy.copy(search)
-    newsearch.aggs = AggsProxy(newsearch)
-    for field in list(filter(lambda f: f['type'] not in ['select', 'field_set'], fields)):
-        field_name = _get_field_name(field, questionnaire_id)
-        newsearch.aggs.bucket('by_'+field['code'], 'value_count', field=field_name)
-    result = newsearch.execute()
-    for key in result.aggregations:
-        if result.aggregations[key].value != result.hits.total:
-            field_code = key.replace('by_','')
-            field = next(field for field in fields if field['code'] == field_code)
-            newfields.append(field)
+    if fields:
+        newsearch = copy.copy(search)
+        newsearch.aggs = AggsProxy(newsearch)
+        for field in fields:
+            field_name = _get_field_name(field, questionnaire_id)
+            newsearch.aggs.bucket('by_'+field['code'], 'value_count', field=field_name)
+        result = newsearch.execute()
+        for key in result.aggregations:
+            if result.aggregations[key].value != result.hits.total:
+                field_code = key.replace('by_','')
+                field = next(field for field in fields if field['code'] == field_code)
+                newfields.append(field)
     return newfields
 
 
 def _aggregate_exact_match_duplicates(fields, questionnaire_id, aggs, search, form_fields_to_be_filtered):
-    fields_with_empty_submissions = _fields_with_empty_submissions(fields, questionnaire_id, search)
+    fields_with_empty_submissions = _fields_with_empty_submissions(
+        list(filter(lambda f: f['type'] not in ['select', 'field_set'], fields)), questionnaire_id, search
+    )
     for field in fields:
         if field['type'] == 'field_set':
             aggs = _aggregate_exact_match_duplicates(field['fields'], questionnaire_id, aggs, search,
