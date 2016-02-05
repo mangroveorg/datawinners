@@ -1652,3 +1652,9 @@ msgstr "En savoir plus sur les doublons"
 
 msgid "Advanced Answer Types"
 msgstr "Types de réponse avancés"
+
+msgid "Sorry, the user registration failed due to a unknown system error, please try again."
+msgstr "Désolé. L'enregistrement de l'Utilisateur a échoué à cause d'une erreur inattendue. Veuillez re-essayer. Si l'erreur persiste, veuillez contacter l'équipe de Support au support@datawinners.com"
+
+msgid "User has been added successfully"
+msgstr "L'utilisateur a été ajouté avec succès"

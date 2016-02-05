@@ -10,6 +10,16 @@ var viewModel = function () {
     this.hasFetchedQuestionnaires = ko.observable(false);
     this.addUserSuccess = ko.observable(false);
     this.hasFormChanged = ko.observable(false);
+    this.showFlashMessage = ko.observable(false);
+    this.flashMessage = ko.computed(function () {
+        if (!self.addUserSuccess()) {
+            return gettext("Sorry, the user registration failed due to a unknown system error, please try again.");
+        }
+        return gettext("User has been added successfully");
+    });
+    this.classFlashMessage = ko.computed(function (){
+        return self.addUserSuccess() ? 'success-message-box' : 'message-box';
+    });
 
     this.fullName.subscribe(function () {
         DW.ko.mandatoryValidator(self.fullName, 'This field is required');
@@ -37,6 +47,16 @@ var viewModel = function () {
        self.hasFormChanged(true);
     });
 
+    self.showSuccessMessage = function () {
+        self.addUserSuccess(true);
+        self.clearFields();
+        self.showFlashMessage(true);
+    }
+
+    self.showErrorMessage = function () {
+        self.showFlashMessage(true);
+    }
+
     this.submit = function () {
         $.blockUI({
             message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
@@ -56,8 +76,7 @@ var viewModel = function () {
         $.post('/account/user/new/', formData, function (response) {
             var responseJson = $.parseJSON(JSON.stringify(response));
             if (responseJson['add_user_success'] == true) {
-                self.addUserSuccess(true);
-                self.clearFields();
+                self.showSuccessMessage()
                 $('html, body').animate({scrollTop: '0px'}, 0);
                 DW.trackEvent('account-management', responseJson['current_user'] +'add-user', self.role());
             } else {
@@ -80,6 +99,11 @@ var viewModel = function () {
         if (errors['role']) {
             self.role.setError(errors['role'][0]);
         }
+
+        if ($.isEmptyObject(errors)) {
+            self.showErrorMessage();
+        }
+        
     };
 
     this.fetchQuestionnaires = function () {
