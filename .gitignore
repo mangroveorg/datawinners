@@ -54,6 +54,7 @@ screenshots
 .project
 .pydevproject
 .settings
+datawinners/cover
 
 # gitflow specific files #
 ##########################
