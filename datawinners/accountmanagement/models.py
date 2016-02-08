@@ -193,7 +193,7 @@ class Organization(models.Model):
 
     def deactivate(self):
         self.get_related_users().update(is_active=False)
-        self.status = 'Deativated'
+        self.status = 'Deactivated'
         self.save()
 
     def get_related_users(self):
