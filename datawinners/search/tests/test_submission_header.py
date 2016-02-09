@@ -54,9 +54,14 @@ class TestSubmissionHeader(unittest.TestCase):
         self.assertListEqual(expected, result)
 
 
-    def test_get_header_dict_from_form_model_with_single_unique_id_question(self):
-        self.get_entity_type_info_mock.return_value = dict(entity='clinic', code='cli002', names=['name1', 'name2'],
-                                                          codes=['code1', 'code2'], labels=['label1','label2'], data=[])
+    @patch("datawinners.search.submission_headers.get_form_model_by_entity_type")
+    def test_get_header_dict_from_form_model_with_single_unique_id_question(self, mock_get_form_model_by_entity_type):
+        mock_form_model_2 = Mock(FormModel)
+        mock_clinic_field_1 = TextField('name1', 'code1', 'label1')
+        mock_clinic_field_2 = TextField('name2', 'code2', 'label2')
+        mock_form_model_2.fields = [mock_clinic_field_1,mock_clinic_field_2]
+        mock_get_form_model_by_entity_type.side_effect = [mock_form_model_2]
+        
         self.form_model.fields = [self.field1, self.field2, self.field3]
         self.form_model._dbm = Mock(spec=FormModel)
         self.form_model.entity_questions = [self.field3]
@@ -119,9 +124,14 @@ class TestSubmissionHeader(unittest.TestCase):
         self.assertListEqual(expected, headers)
 
 
-    def test_get_header_dict_from_form_model_with_group_field(self):
-        self.get_entity_type_info_mock.return_value = dict(entity='clinic', code='cli002', names=['name1', 'name2'],
-                                                          codes=['code1', 'code2'], labels=['label1','label2'], data=[])
+    @patch("datawinners.search.submission_headers.get_form_model_by_entity_type")
+    def test_get_header_dict_from_form_model_with_group_field(self, mock_get_form_model_by_entity_type):
+        mock_form_model_2 = Mock(FormModel)
+        mock_clinic_field_1 = TextField('name1', 'code1', 'label1')
+        mock_clinic_field_2 = TextField('name2', 'code2', 'label2')
+        mock_form_model_2.fields = [mock_clinic_field_1,mock_clinic_field_2]
+        mock_get_form_model_by_entity_type.side_effect = [mock_form_model_2]
+
         self.form_model.fields = [self.repeat_field]
         self.form_model._dbm = Mock(spec=FormModel)
         
