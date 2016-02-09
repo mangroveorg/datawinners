@@ -149,6 +149,7 @@ class TestSubmissionHeader(unittest.TestCase):
 class TestHeaderFactory(unittest.TestCase):
     def test_should_return_header_instance_based_on_submission_type(self):
         form_model = Mock(spec=FormModel)
+        form_model.fields = []
         self.assertIsInstance(HeaderFactory(form_model).create_header("all"), AllSubmissionHeader)
         self.assertIsInstance(HeaderFactory(form_model).create_header("success"), SuccessSubmissionHeader)
         self.assertIsInstance(HeaderFactory(form_model).create_header("error"), ErroredSubmissionHeader)
