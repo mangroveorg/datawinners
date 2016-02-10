@@ -5,7 +5,7 @@ from elasticsearch_dsl.result import Result, Response
 from mock import MagicMock, patch
 
 from datawinners.search.submission_query import SubmissionQueryResponseCreator, \
-    _format_fieldset_values_for_representation
+    format_fieldset_values_for_representation
 from mangrove.form_model.field import UniqueIdField, TextField, IntegerField, SelectField, FieldSet, PhotoField, \
     VideoField
 from mangrove.form_model.form_model import FormModel
@@ -62,7 +62,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
                                field_set=[field1, field2, field3])
         entry = u'[{"name": "messi", "age": "24", "lang": []}, {"name": "ronaldo", "age": "28", "lang": ["English US", "French", "Spanish"]}, {"name": "mueller", "age": "22", "lang": ["German"]}]'
-        formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
+        formatted_values = format_fieldset_values_for_representation(entry, multi_field, "id")
         result = '<span class="repeat_ans">"<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur age</span>: 24", "<span class="repeat_qtn_label">wat languages do you kno</span>: ";<br><br>' \
                  '"<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur age</span>: 28", "<span class="repeat_qtn_label">wat languages do you kno</span>: (English US, French, Spanish)";<br><br>' \
                  '"<span class="repeat_qtn_label">wat is ur name</span>: mueller", "<span class="repeat_qtn_label">wat is ur age</span>: 22", "<span class="repeat_qtn_label">wat languages do you kno</span>: German";<br><br></span>'
@@ -77,7 +77,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
                                field_set=[field1, field2, field3])
         entry = u'[{"name": "messi", "age": "24", "lang": ""}, {"name": "ronaldo", "age": "28", "lang": "English US"}, {"name": "mueller", "age": "22", "lang": "German"}]'
-        formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
+        formatted_values = format_fieldset_values_for_representation(entry, multi_field, "id")
         result = '<span class="repeat_ans">"<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur age</span>: 24", "<span class="repeat_qtn_label">wat languages do you kno</span>: ";<br><br>' \
                  '"<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur age</span>: 28", "<span class="repeat_qtn_label">wat languages do you kno</span>: English US";<br><br>' \
                  '"<span class="repeat_qtn_label">wat is ur name</span>: mueller", "<span class="repeat_qtn_label">wat is ur age</span>: 22", "<span class="repeat_qtn_label">wat languages do you kno</span>: German";<br><br></span>'
@@ -93,7 +93,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
                                field_set=[group_field])
         entry = u'[{"group":[{"name": "messi", "age": "24", "lang": []}]},{"group": [{"name": "ronaldo", "age": "28", "lang": ["English US", "French", "Spanish"]}]},{"group": [{"name": "mueller", "age": "22", "lang": ["German"]}]}]'
-        formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
+        formatted_values = format_fieldset_values_for_representation(entry, multi_field, "id")
         result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: messi", "<span class="repeat_qtn_label">wat is ur age</span>: 24", "<span class="repeat_qtn_label">wat languages do you kno</span>: ";";<br><br>' \
                  '"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur age</span>: 28", "<span class="repeat_qtn_label">wat languages do you kno</span>: (English US, French, Spanish)";";<br><br>' \
                  '"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: mueller", "<span class="repeat_qtn_label">wat is ur age</span>: 22", "<span class="repeat_qtn_label">wat languages do you kno</span>: German";";<br><br></span>'
@@ -109,7 +109,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
                                field_set=[group_field])
         entry = u'[{}]'
-        formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
+        formatted_values = format_fieldset_values_for_representation(entry, multi_field, "id")
         result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: ";<br><br></span>'
         self.assertEqual(formatted_values, result)
 
@@ -121,7 +121,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
                                field_set=[repeat_field])
         entry = u'[{"group":[{"name": "messi", "img": "img.png", "video": "video.mp4" }]},{"group": [{"name": "ronaldo", "img": "img2.png", "video": "video1.mp4"}]}]'
-        actual_formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
+        actual_formatted_values = format_fieldset_values_for_representation(entry, multi_field, "id")
         expected_value = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: messi", ' \
                          '"<span class="repeat_qtn_label">wat is ur img</span>: <img src=\'/download/attachment/id/preview_img.png\' alt=\'\'/>  <a href=\'/download/attachment/id/img.png\'>img.png</a>",' \
                          ' "<span class="repeat_qtn_label">wat is ur video</span>:   <a href=\'/download/attachment/id/video.mp4\'>video.mp4</a>";";<br><br>"<span class="repeat_qtn_label">group</span>: "' \
@@ -138,7 +138,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         multi_field = FieldSet('student_details', 'student_details', 'Enter Student details', field_set=[repeat_field])
 
         entry = u'[{"group":[{"name": "messi", "unique_id":"messi", "unique_id_unique_code": "stu1" }]},{"group": [{"name": "ronaldo", "unique_id":"ronaldo", "unique_id_unique_code": "stu2" }]}]'
-        actual_formatted_values = _format_fieldset_values_for_representation(entry, multi_field, "id")
+        actual_formatted_values = format_fieldset_values_for_representation(entry, multi_field, "id")
         expected_value = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: "<span class="repeat_qtn_label">wat is ur name</span>: messi",' \
                          ' "<span class="repeat_qtn_label">wat is ur unique_id</span>: messi (stu1)";";<br><br>"<span class="repeat_qtn_label">group</span>:' \
                          ' "<span class="repeat_qtn_label">wat is ur name</span>: ronaldo", "<span class="repeat_qtn_label">wat is ur unique_id</span>: ronaldo (stu2)";";<br><br></span>'

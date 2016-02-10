@@ -8,6 +8,7 @@ from datawinners.accountmanagement.localized_time import convert_utc_to_localize
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name, safe_getattr
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.form_model.field import FieldSet, SelectField, MediaField, PhotoField, UniqueIdField
+from datawinners.project.submission.analysis_helper import get_field_set_fields
 
 
 class SubmissionQueryResponseCreator(object):
@@ -20,15 +21,7 @@ class SubmissionQueryResponseCreator(object):
             ["%s<span class='small_grey'>  %s</span>" % (
                 entity_name, short_code)]) if entity_name else submission.append(entity_name)
 
-    def get_field_set_fields(self, fields, parent_field_code=None):
-        field_set_field_dict = {}
-        for field in fields:
-            if isinstance(field, FieldSet):
-                field_set_field_dict.update(
-                    {es_questionnaire_field_name(field.code, self.form_model.id, parent_field_code): field})
-                group_field_code = field.code if field.is_group() else None
-                field_set_field_dict.update(self.get_field_set_fields(field.fields, group_field_code))
-        return field_set_field_dict
+
 
     def _populate_datasender(self, res, submission):
         if safe_getattr(res, SubmissionIndexConstants.DATASENDER_ID_KEY) == u'N/A':
@@ -106,7 +99,7 @@ class SubmissionQueryResponseCreator(object):
         entity_question_codes = [es_questionnaire_field_name(field.code, self.form_model.id, field.parent_field_code)
                                  for field in
                                  self.form_model.entity_questions]
-        fieldset_fields = self.get_field_set_fields(self.form_model.fields)
+        fieldset_fields = get_field_set_fields(self.form_model.id, self.form_model.fields)
         meta_fields = [SubmissionIndexConstants.DATASENDER_ID_KEY]
         meta_fields.extend([es_unique_id_code_field_name(code) for code in entity_question_codes])
         media_field_codes = self._get_media_field_codes()
@@ -156,7 +149,7 @@ class SubmissionQueryResponseCreator(object):
                     self._populate_error_message(key, language, res, submission)
                 elif key in fieldset_fields.keys():
                     submission.append(
-                        _format_fieldset_values_for_representation(safe_getattr(res, key),
+                        format_fieldset_values_for_representation(safe_getattr(res, key),
                                                                    fieldset_fields.get(key),
                                                                    submission[0]))
                 else:
@@ -229,11 +222,16 @@ def _format_values(field_set, formatted_value, value_list, submission_id):
         formatted_value += ';' if i == len(field_set.fields) - 1 else ', '
     return formatted_value
 
-
-def _format_fieldset_values_for_representation(entry, field_set, submission_id):
+'''
+Helper to design the display for repeat question and group questions. 
+'''
+def format_fieldset_values_for_representation(entry, field_set, submission_id):
     formatted_value = ''
+    data_to_iterate = entry
+    if not isinstance(entry, list):
+        data_to_iterate = json.loads(entry)
     if entry:
-        for value_dict in json.loads(entry):
+        for value_dict in data_to_iterate:
             formatted_value = _format_values(field_set, formatted_value, [value_dict], submission_id)
             formatted_value += '<br><br>'
         return '<span class="repeat_ans">' + formatted_value + '</span>'

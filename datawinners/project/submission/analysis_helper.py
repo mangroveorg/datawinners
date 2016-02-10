@@ -2,10 +2,12 @@ import datetime
 import logging
 import json
 
-from datawinners.search.index_utils import lookup_entity
+from datawinners.search.index_utils import lookup_entity,\
+    es_questionnaire_field_name
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 from __builtin__ import isinstance
+from mangrove.form_model.field import FieldSet
 
 logger = logging.getLogger("datawinners")
 
@@ -87,25 +89,14 @@ def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questio
         logger.exception("Exception in constructing linked id info : \n%s" % e)
         return
 
-
 def _transform_nested_question_answer(key, value_obj, record, questionnaire):
-    field_code = key.replace(record.meta.doc_type + '_', '')
-    target_fields = [nested_field for nested_field in questionnaire.has_nested_fields if
-                     nested_field.code == field_code]
-    updated_answers = ''
-    for repeat_question_answer in value_obj:
-        updated_answer = ''
-        for field in target_fields[0].fields:
-            field_value = repeat_question_answer[field.code] if repeat_question_answer[field.code] else ''
-            str_value = _handle_field_types(field, field_value, record.meta.id, repeat_question_answer)
-
-            updated_answer += '<div><span>' + field.label + '</span><div>' + str_value + '</div></div>'
-            updated_answer += ' '
-        updated_answers += updated_answer + ';<br/><br/>'
-
+    from datawinners.search.submission_query import format_fieldset_values_for_representation
+    field_set_fields = get_field_set_fields(questionnaire.id, questionnaire.fields)
+    target_field = field_set_fields.get(key)
+    updated_answers = format_fieldset_values_for_representation(value_obj, target_field, record.meta.id)
     record[key] = updated_answers
 
-
+#No longer used, since we reuse, submission log flow
 def _handle_field_types(field, field_value, submission_id, repeat_question_answer):
     str_value = ''
     if field.type == 'photo':
@@ -134,4 +125,13 @@ def convert_to_localized_date_time(submission_date, local_time_delta):
     datetime_local = convert_utc_to_localized(local_time_delta, submission_date_time)
     return datetime_local.strftime("%b. %d, %Y, %H:%M")
 
+def get_field_set_fields(form_model_id, fields, parent_field_code=None):
+    field_set_field_dict = {}
+    for field in fields:
+        if isinstance(field, FieldSet):
+            field_set_field_dict.update(
+                {es_questionnaire_field_name(field.code, form_model_id, parent_field_code): field})
+            group_field_code = field.code if field.is_group() else None
+            field_set_field_dict.update(get_field_set_fields(form_model_id, field.fields, group_field_code))
+    return field_set_field_dict
 
