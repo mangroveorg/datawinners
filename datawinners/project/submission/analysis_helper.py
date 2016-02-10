@@ -11,7 +11,7 @@ from mangrove.form_model.field import FieldSet
 
 logger = logging.getLogger("datawinners")
 
-def enrich_analysis_data(record, questionnaire):
+def enrich_analysis_data(record, questionnaire, submission_id, is_export=False):
     try:
         dbm = questionnaire._dbm
         unique_id_fields = [field for field in questionnaire.fields if field.type in ['unique_id']]
@@ -29,8 +29,8 @@ def enrich_analysis_data(record, questionnaire):
             if isinstance(value, basestring):
                 try:
                     value_obj = json.loads(value)
-                    if isinstance(value_obj, list):
-                        _transform_nested_question_answer(key, value_obj, record, questionnaire)
+                    if isinstance(value_obj, list) and not is_export:
+                        _transform_nested_question_answer(key, value_obj, record, questionnaire, submission_id)
                 except Exception as e:
                     continue
     except Exception as ex:
@@ -89,11 +89,11 @@ def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questio
         logger.exception("Exception in constructing linked id info : \n%s" % e)
         return
 
-def _transform_nested_question_answer(key, value_obj, record, questionnaire):
+def _transform_nested_question_answer(key, value_obj, record, questionnaire, submission_id):
     from datawinners.search.submission_query import format_fieldset_values_for_representation
     field_set_fields = get_field_set_fields(questionnaire.id, questionnaire.fields)
     target_field = field_set_fields.get(key)
-    updated_answers = format_fieldset_values_for_representation(value_obj, target_field, record.meta.id)
+    updated_answers = format_fieldset_values_for_representation(value_obj, target_field, submission_id)
     record[key] = updated_answers
 
 #No longer used, since we reuse, submission log flow

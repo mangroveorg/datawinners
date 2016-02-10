@@ -196,7 +196,7 @@ class AdvancedQuestionnaireSubmissionExporter():
                 #since scan & scroll API does not support result set size the workaround is to handle it this way
                 break
 
-            row = enrich_analysis_data(row_dict['_source'], self.form_model)
+            row = enrich_analysis_data(row_dict['_source'], self.form_model, submission_id=row_dict['_id'], is_export=True)
             result = formatter.format_row(row, row_number, formatted_repeats)
 
             if self.form_model.has_nested_fields:

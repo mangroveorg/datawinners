@@ -24,7 +24,7 @@ def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_
     for row_number, row in enumerate(raw_data):
         if questionnaire and formatter:
             #For advanced transformation
-            row = enrich_analysis_data(row['_source'], questionnaire)
+            row = enrich_analysis_data(row['_source'], questionnaire, row['_id'], is_export=True)
             row = formatter.format_row(row)
         elif formatter:
             row = formatter.format_row(row['_source'])

@@ -758,7 +758,7 @@ def _create_analysis_response(dbm, local_time_delta, search_results, questionnai
 
 def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire):
     record.date = convert_to_localized_date_time(record.date, local_time_delta)
-    record = enrich_analysis_data(record, questionnaire)
+    record = enrich_analysis_data(record, questionnaire, record.meta.id)
     return record
 
 @csrf_view_exempt
