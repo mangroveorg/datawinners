@@ -4,7 +4,7 @@ import json
 
 from datawinners.search.index_utils import lookup_entity,\
     es_questionnaire_field_name
-from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
+from datawinners.accountmanagement.localized_time import convert_utc_to_localized
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 from __builtin__ import isinstance
 from mangrove.form_model.field import FieldSet
@@ -14,8 +14,7 @@ logger = logging.getLogger("datawinners")
 def enrich_analysis_data(record, questionnaire, submission_id, is_export=False):
     try:
         dbm = questionnaire._dbm
-        unique_id_fields = [field for field in questionnaire.fields if field.type in ['unique_id']]
-        linked_id_details = [_get_linked_id_details(dbm, field, parent_field_types=[]) for field in unique_id_fields]
+        linked_id_details = [_get_linked_id_details(dbm, field, parent_field_types=[]) for field in questionnaire.entity_questions]
         
         for linked_id_detail in linked_id_details:
             _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire.id,nested=False)
@@ -134,4 +133,4 @@ def get_field_set_fields(form_model_id, fields, parent_field_code=None):
             group_field_code = field.code if field.is_group() else None
             field_set_field_dict.update(get_field_set_fields(form_model_id, field.fields, group_field_code))
     return field_set_field_dict
-
+    
