@@ -18,15 +18,17 @@ DW.SubjectSMSPreviewPage = function () {
         if (query_element_object.is('select')) {
             query_element_object.attr("hidden", "hidden");
             query_element_object.hide();
-            var options_html = "<ul class='multiple_select' style='clear:both'>";
-            options = query_element_object.find("option");
-            for (var i = 0; i < options.length; i++) {
-                var option = $(options[i]);
-                if (option.val() != "") {
-                    options_html += "<li><span class='bullet'>" + option.val() + ".</span><span>" + option.text() + "</span></li>"
+            if(!query_element_object.hasClass('linked_subject_field')) {
+                var options_html = "<ul class='multiple_select' style='clear:both'>";
+                options = query_element_object.find("option");
+                for (var i = 0; i < options.length; i++) {
+                    var option = $(options[i]);
+                    if (option.val() != "") {
+                        options_html += "<li><span class='bullet'>" + option.val() + ".</span><span>" + option.text() + "</span></li>"
+                    }
                 }
+                options_html += "</ul>";
             }
-            options_html += "</ul>";
 
         } else {
             query_element_object.replaceWith("<li><span class='bullet'>" + query_element_object.val() + ". &nbsp;&nbsp; </span></li>");
