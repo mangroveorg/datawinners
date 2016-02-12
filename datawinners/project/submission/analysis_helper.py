@@ -45,16 +45,17 @@ def _get_linked_id_details(dbm, field, parent_field_types=[]):
         parent_field_types.append(field.unique_id_type)
         id_number_fields = get_form_model_by_entity_type(dbm, [field.unique_id_type]).fields
         linked_id_fields = [child_field for child_field in id_number_fields if child_field.type in ['unique_id']]
-        if (linked_id_fields):
+        if linked_id_fields:
             for linked_id_field in linked_id_fields:
                 if linked_id_field.unique_id_type in parent_field_types:
                     continue
                 linked_id_info = {
-                                  'code':field.code, 
-                                  'type':field.unique_id_type,
-                                  'linked_code':linked_id_field.code,
-                                  'linked_type':linked_id_field.unique_id_type,
-                                  }
+                    'code':field.code,
+                    'type':field.unique_id_type,
+                    'parent_code': field.parent_field_code,
+                    'linked_code':linked_id_field.code,
+                    'linked_type':linked_id_field.unique_id_type
+                }
                 linked_id_info['children'] = _get_linked_id_details(dbm, linked_id_field, parent_field_types=parent_field_types)
                 linked_id_details.append(linked_id_info)
         return linked_id_details
@@ -64,15 +65,12 @@ def _get_linked_id_details(dbm, field, parent_field_types=[]):
 
 def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire_id, nested=False):
     try:
-        
-        if linked_id_detail is None:
-            return 
-        
         for linked_id_info in linked_id_detail:
             if nested:
                 base_node = record
             else:
-                base_node = record[questionnaire_id+'_'+linked_id_info['code']+'_details']
+                code = linked_id_info['parent_code'] + '-' + linked_id_info['code'] if linked_id_info['parent_code'] else linked_id_info['code']
+                base_node = record[questionnaire_id+'_'+code+'_details']
             
             value = base_node[linked_id_info['linked_code']]
             linked_entity = lookup_entity(dbm, value, [linked_id_info['linked_type']])
