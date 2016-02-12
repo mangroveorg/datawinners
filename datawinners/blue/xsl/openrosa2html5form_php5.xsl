@@ -829,8 +829,14 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </xsl:variable>
         <xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset_used] | /h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]" />
         <xsl:choose>
-            <xsl:when test="contains(@appearance, 'minimal') or contains(@appearance, 'autocomplete')">
+            <xsl:when test="contains(@appearance, 'autocomplete')">
                 <xsl:call-template name="select-input">
+                    <xsl:with-param name="nodeset" select="$nodeset" />
+                    <xsl:with-param name="binding" select="$binding" />
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:when test="contains(@appearance, 'minimal')">
+                <xsl:call-template name="select-select">
                     <xsl:with-param name="nodeset" select="$nodeset" />
                     <xsl:with-param name="binding" select="$binding" />
                 </xsl:call-template>
