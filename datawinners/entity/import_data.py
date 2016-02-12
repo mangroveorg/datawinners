@@ -125,6 +125,9 @@ class FilePlayer(Player):
                 data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
                                                                      organization=organization)
                 data_sender.save(force_insert=True)
+                from accountmanagement.helper import is_registered_on_other_trial_account
+                if is_registered_on_other_trial_account(organization, mobile_number):
+                    raise MultipleReportersForANumberException(mobile_number)
         except IntegrityError:
             raise MultipleReportersForANumberException(mobile_number)
         except Exception as ex:
