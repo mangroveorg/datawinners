@@ -93,30 +93,6 @@ def _transform_nested_question_answer(key, value_obj, record, questionnaire, sub
     updated_answers = format_fieldset_values_for_representation(value_obj, target_field, submission_id)
     record[key] = updated_answers
 
-#No longer used, since we reuse, submission log flow
-def _handle_field_types(field, field_value, submission_id, repeat_question_answer):
-    str_value = ''
-    if field.type == 'photo':
-        str_value = "<a href='/download/attachment/%s/%s'><img src='/download/attachment/%s/preview_%s' " \
-                    "alt=''/></a><br>" % (submission_id, field_value, submission_id, field_value)
-    elif field.type in ['audio', 'video']:
-        str_value = "<a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, field_value, field_value)
-    elif isinstance(field_value, list) and not field.type == 'field_set':
-        str_value = ','.join(field_value)
-    elif field.type == 'field_set':
-        sub_question_answer = repeat_question_answer[field.code] if repeat_question_answer[field.code] else ''
-        for answer in sub_question_answer:
-            for f in field.fields:
-                field_value = answer[f.code] if answer[f.code] else None
-                try:
-                    if field_value:
-                        return _handle_field_types(f, field_value, submission_id, answer)
-                except Exception as e:
-                    pass
-    else:
-        str_value = field_value
-    return str_value
-
 def convert_to_localized_date_time(submission_date, local_time_delta):
     submission_date_time = datetime.datetime.strptime(submission_date, "%b. %d, %Y, %I:%M %p")
     datetime_local = convert_utc_to_localized(local_time_delta, submission_date_time)

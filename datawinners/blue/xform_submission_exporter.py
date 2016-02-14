@@ -2,7 +2,7 @@ from collections import OrderedDict
 from datetime import datetime
 import json
 import os
-from tempfile import NamedTemporaryFile, TemporaryFile, mkdtemp
+from tempfile import TemporaryFile, mkdtemp
 import tempfile
 from types import NoneType
 import zipfile
@@ -12,8 +12,7 @@ from django.template.defaultfilters import slugify
 from xlsxwriter import Workbook
 from django.core.servers.basehttp import FileWrapper
 
-from datawinners.project.submission.export import export_filename, add_sheet_with_data, export_media_folder_name, \
-    export_to_new_excel, \
+from datawinners.project.submission.export import export_filename, export_media_folder_name, \
     create_multi_sheet_excel_headers, create_multi_sheet_entries
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter, GEOCODE_FIELD_CODE
@@ -24,8 +23,12 @@ from mangrove.form_model.field import ExcelDate, DateField
 from datawinners.project.submission.analysis_helper import enrich_analysis_data
 from datawinners.project.submission.util import AccessFriendlyDict
 
-
+'''
+TODO: Whole Advanced questionnaire export needs code refactoring and cleanup. 
+Current approach is complex and maintenance will be difficult. This can be simplified.
+'''
 class XFormSubmissionExporter(SubmissionExporter):
+
     def _create_excel_workbook(self, columns, submission_list, submission_type):
         file_name = export_filename(submission_type, self.project_name)
         workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns, self.local_time_delta,
@@ -35,7 +38,8 @@ class XFormSubmissionExporter(SubmissionExporter):
         return file_name, workbook_file
 
     def add_files_to_temp_directory_if_present(self, submission_id, folder_name):
-        submission = self.dbm._load_document(submission_id, SurveyResponseDocument)
+        submission = self.dbm._load_document(
+            submission_id, SurveyResponseDocument)
         files = submission._data.get('_attachments', {})
         if not self.preferences:
             self._add_files_to_temp(files, folder_name, submission_id)
@@ -196,7 +200,8 @@ class AdvancedQuestionnaireSubmissionExporter():
                 #since scan & scroll API does not support result set size the workaround is to handle it this way
                 break
 
-            row = enrich_analysis_data(row_dict['_source'], self.form_model, submission_id=row_dict['_id'], is_export=True)
+            row = enrich_analysis_data(
+                row_dict['_source'], self.form_model, submission_id=row_dict['_id'], is_export=True)
             result = formatter.format_row(row, row_number, formatted_repeats)
 
             if self.form_model.has_nested_fields:
@@ -216,37 +221,59 @@ class AdvancedQuestionnaireSubmissionExporter():
         if not self.preferences:
             return excel_headers
 
-        headers_dict = OrderedDict()
-        headers_dict.update({'main': []})
-        for preference in self.preferences:
+        header_columns = self._get_visible_headers(excel_headers,
+            process_preferences=self.preferences)
+        if self.form_model.has_nested_fields:
+            header_columns.get('main').extend(['_index', '_parent_index'])
+        return header_columns
+
+    '''
+    This method should return back header columns, with excel sheet names as key and array of column headers as values.
+    
+    example:
+        {
+            'main':['Datasender name', 'Age'],
+            'repeat':['Repeat column label']
+        }
+    Order of columns are important.    
+    '''
+    def _get_visible_headers(self, precomputed_excel_headers, process_preferences=[]):
+
+        excel_headers = OrderedDict()
+        for preference in process_preferences:
             if preference.get('visibility') or preference.has_key('children'):
                 key = preference.get('data')
-                if preference.has_key('children'):  #handling group
-                    for child in preference.get('children'):
-                        if child.get('visibility'):
-                            self._check_if_repeat(child.get('data'), headers_dict, excel_headers)
+                if preference.has_key('children'):
+                    child_excel_headers = self._get_visible_headers(precomputed_excel_headers,
+                        process_preferences=preference.get('children'))
+                    if child_excel_headers:
+                        for sheet_name,child_columns in child_excel_headers.iteritems():
+                            dict_extend_list_value(excel_headers, sheet_name, child_columns)
+                elif self.columns.get(key).get('type') == 'field_set':
+                    field_code = self.columns.get(key).get('code')
+                    excel_headers.update({field_code: precomputed_excel_headers.get(field_code)})
+                    #Not optimal. Temporary fix for Group within repeat scenarios, which won't have
+                    #preferences and which should come in separate sheet.
+                    for field in self.form_model.fields:
+                        if field.is_field_set and field.code == field_code:
+                            for child_field in field.fields: #current support only to first level children of repeat. Not recursive.
+                                if precomputed_excel_headers.get(child_field.code):
+                                    excel_headers.update({child_field.code: precomputed_excel_headers.get(child_field.code)})
+                                    
+                            
                 else:
-                    self._check_if_repeat(key, headers_dict, excel_headers)
+                    column_header = self._check_and_return_column_header(key, self.columns.get(key).get('label'))
+                    dict_extend_list_value(excel_headers, 'main', column_header)
+        return excel_headers
 
-        if self.form_model.has_nested_fields:
-            headers_dict.get('main').extend(['_index', '_parent_index'])
-        return headers_dict
-
-    def _check_if_repeat(self, key, headers_dict, excel_headers):
-        if self.columns.get(key):
-            if self.columns.get(key).get('type') == 'field_set': #handling repeat
-                sheet_name = self.columns.get(key).get('code')
-                headers_dict.update({sheet_name: excel_headers.get(sheet_name)})
-            else:
-                self._check_and_append_column_header(headers_dict, key, self.columns.get(key).get('label'))
-
-    def _check_and_append_column_header(self, headers_dict, key, label):
+    def _check_and_return_column_header(self, key, label):
+        header_columns = []
         if self.columns.get(key) and self.columns.get(key).get('type') == GEOCODE_FIELD_CODE:
-            headers_dict.get('main').append(label + " Latitude")
-            headers_dict.get('main').append(label + " Longitude")
+            header_columns.append(label + " Latitude")
+            header_columns.append(label + " Longitude")
         else:
-            headers_dict.get('main').append(label)
-
+            header_columns.append(label)
+        return header_columns
 
 
 class AdvanceSubmissionFormatter(SubmissionFormatter):
@@ -281,33 +308,17 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
             _result.append(index + 1)
         return _repeat_row
 
-    def get_visible_columns(self):
-        if not self.preferences:
-            return self.columns
-
-        visible_columns = OrderedDict()
-        for preference in self.preferences:
-            if preference.get('visibility') or preference.has_key('children'):
-                key = preference.get('data')
-                if preference.has_key('children'):
-                    for children_preference in preference.get('children'):
-                        key = children_preference.get('data')
-                        if not children_preference.get('visibility'): continue
-                        visible_columns.update({key: self.columns.get(key)})
-                else:
-                    visible_columns.update({key: self.columns.get(key)})
-        return visible_columns
-
     def __format_row(self, row, columns, index, repeat):
         result = []
         access_friendly_row = AccessFriendlyDict(row)
-        
+
         for field_code in columns.keys():
             try:
                 field_value = row.get(field_code, None)
                 if '.' in field_code:
                     field_value = getattr(access_friendly_row, field_code)
-                    field_value = self.post_parse_field(field_code, field_value)
+                    field_value = self.post_parse_field(
+                        field_code, field_value)
                 parsed_value = self._parsed_field_value(field_value)
                 field_type = columns[field_code].get("type")
 
@@ -331,3 +342,17 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                 result.extend(col_val)
 
         return result
+
+'''
+Utility to extend list value in a Dictionary.
+example:
+ x = {'roll_no': [1,2,3]}
+ dict_extend_list_value(x, 'roll_no',[4,5,6])
+ will return 
+ x = {'roll_no': [1,2,3,4,5,6]}
+'''
+def dict_extend_list_value(dict_obj, key, value):
+    current_value = dict_obj.get(key,[])
+    current_value.extend(value)
+    dict_obj.update({key:current_value})
+    return dict_obj

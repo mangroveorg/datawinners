@@ -38,8 +38,7 @@ class SubmissionFormatter(object):
                         visible_columns.update(child_visible_columns)
                 else:
                     visible_columns.update({key: self.columns.get(key)})
-        return visible_columns
-        
+        return visible_columns        
         
     def get_visible_columns(self):
         return self.visible_columns
