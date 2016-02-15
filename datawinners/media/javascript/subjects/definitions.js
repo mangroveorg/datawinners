@@ -11,13 +11,15 @@ DW.SubjectSMSPreviewPage = function () {
         query_element_object.attr("disabled", true);
     });
     var input_elements = $("#preview_form select, #preview_form input[type=checkbox]").not("#generate_id");
-    input_elements.parents(".answer").before('<input type="text" disabled="disabled">');
     input_elements.each(function (index, element) {
         var query_element_object = $(element);
         var options;
         if (query_element_object.is('select')) {
             query_element_object.attr("hidden", "hidden");
             query_element_object.hide();
+            query_element_object.parents(".answer").before(
+                '<p class="sms_instruction instructions italic hide">' + query_element_object.attr('sms_help_text') + '</p>'
+            );
             if(!query_element_object.hasClass('linked_subject_field')) {
                 var options_html = "<ul class='multiple_select' style='clear:both'>";
                 options = query_element_object.find("option");
@@ -35,6 +37,7 @@ DW.SubjectSMSPreviewPage = function () {
         }
         query_element_object.after(options_html);
     });
+    input_elements.parents(".answer").before('<input type="text" disabled="disabled">');
     sms_preview_form.find("input").val('');
 
     this.enable = function () {
@@ -42,11 +45,15 @@ DW.SubjectSMSPreviewPage = function () {
         $(".errorlist").remove();
         $("#sms_preview").show();
         sms_form_heading.show();
+        sms_preview_form.find(".sms_instruction").show();
+        sms_preview_form.find(".sms_instruction").prev("p").hide();
     };
 
     this.disable = function () {
         $("#sms_preview").hide();
         sms_form_heading.hide();
+        sms_preview_form.find(".sms_instruction").hide();
+        sms_preview_form.find(".sms_instruction").prev("p").show();
     };
 };
 
