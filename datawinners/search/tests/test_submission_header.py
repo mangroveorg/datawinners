@@ -139,7 +139,7 @@ class TestSubmissionHeader(unittest.TestCase):
             ('datasender.name', u'Data Sender Name'), ('datasender.mobile_number', u'Data Sender Mobile Number'),
             ('datasender.email', u'Data Sender Email'), ('datasender.location', u'Data Sender Location'),
             ('datasender.geo_code', u'Data Sender GPS Coordinates'), ('form_model_id_repeat-q1', 'text'),
-            ('form_model_idrepeat-q4_details.code1', 'label1'), ('form_model_idrepeat-q4_details.code2', 'label2')])
+            ('form_model_id_repeat-q4_details.code1', 'label1'), ('form_model_id_repeat-q4_details.code2', 'label2')])
 
         result = SubmissionAnalysisHeader(self.form_model).get_header_dict()
 
