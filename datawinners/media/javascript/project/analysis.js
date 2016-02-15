@@ -342,10 +342,15 @@ $(document).ready(function () {
         };
 
         ColCustomWidget.prototype.submit = function () {
+            var form = $("#customization-form");
+            var content = form.serialize();
+            form.find('input[type=checkbox]:not(:checked)').each(function() {
+                content += '&' + this.name + '=False';
+            });
             $.ajax({
                 type: "POST",
                 url: preferenceUrl,
-                data: $("#customization-form").serialize(),
+                data: content,
                 success: self.submitSuccess,
                 dataType: 'json'
             });
