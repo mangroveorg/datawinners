@@ -22,6 +22,9 @@ from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import ExcelDate, DateField
 from datawinners.project.submission.analysis_helper import enrich_analysis_data
 from datawinners.project.submission.util import AccessFriendlyDict
+import logging
+
+logger = logging.getLogger("datawinners")
 
 '''
 TODO: Whole Advanced questionnaire export needs code refactoring and cleanup. 
@@ -221,11 +224,16 @@ class AdvancedQuestionnaireSubmissionExporter():
         if not self.preferences:
             return excel_headers
 
-        header_columns = self._get_visible_headers(excel_headers,
-            process_preferences=self.preferences)
-        if self.form_model.has_nested_fields:
-            header_columns.get('main').extend(['_index', '_parent_index'])
-        return header_columns
+        try:
+            header_columns = self._get_visible_headers(excel_headers,
+                process_preferences=self.preferences)
+            if self.form_model.has_nested_fields:
+                header_columns.get('main').extend(['_index', '_parent_index'])
+            return header_columns
+        except Exception as e:
+            logger.exception('Exception occurred while applying preferences for exports. Safely handled for now, by exporting default columns')
+            
+        return excel_headers #safe handling
 
     '''
     This method should return back header columns, with excel sheet names as key and array of column headers as values.
@@ -249,7 +257,7 @@ class AdvancedQuestionnaireSubmissionExporter():
                     if child_excel_headers:
                         for sheet_name,child_columns in child_excel_headers.iteritems():
                             dict_extend_list_value(excel_headers, sheet_name, child_columns)
-                elif self.columns.get(key).get('type') == 'field_set':
+                elif self.columns.get(key) and self.columns.get(key).get('type') == 'field_set':
                     field_code = self.columns.get(key).get('code')
                     excel_headers.update({field_code: precomputed_excel_headers.get(field_code)})
                     #Not optimal. Temporary fix for Group within repeat scenarios, which won't have

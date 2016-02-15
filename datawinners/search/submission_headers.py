@@ -103,7 +103,7 @@ class SubmissionAnalysisHeader(SubmissionHeader):
         parent_field_types.append(field.unique_id_type)
         
         if not nested:
-            parent_field_code = parent_field_code + "-" if parent_field_code else "_"
+            parent_field_code = '_' + parent_field_code + "-" if parent_field_code else "_"
             prefix = self.form_model.id + parent_field_code + field.code + "_details"
         else:
             prefix = parent_field_code + '.' + field.code + '_details'
