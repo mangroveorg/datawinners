@@ -97,14 +97,13 @@ class SubmissionAnalysisHeader(SubmissionHeader):
 
 
     def add_unique_id_in_header_dict(self, header_dict, field, parent_field_code=None, parent_field_types=[], nested=False):
-#         from datawinners.entity.import_data import get_entity_type_info
         id_number_fields = get_form_model_by_entity_type(self.form_model._dbm, [field.unique_id_type]).fields
         if field.unique_id_type in parent_field_types:
-            return None #Prevent cyclic Linked ID Nr
+            return None #Helps Prevent cyclic Linked ID Nr
         parent_field_types.append(field.unique_id_type)
         
         if not nested:
-            parent_field_code = parent_field_code + "-" if parent_field_code else "_"
+            parent_field_code = '_' + parent_field_code + "-" if parent_field_code else "_"
             prefix = self.form_model.id + parent_field_code + field.code + "_details"
         else:
             prefix = parent_field_code + '.' + field.code + '_details'
@@ -114,7 +113,6 @@ class SubmissionAnalysisHeader(SubmissionHeader):
                 column_id = prefix + "." + nested_field.code
                 header_dict.update({column_id: nested_field.label})
             if nested_field.type in ['unique_id']:
-                #TODO parent code will change once that logic is fixed
                 self.add_unique_id_in_header_dict(
                                                   header_dict, 
                                                   nested_field, 
@@ -122,13 +120,6 @@ class SubmissionAnalysisHeader(SubmissionHeader):
                                                   parent_field_types=parent_field_types,
                                                   nested=True)
             
-#         for val in entity_type_info.get('codes'):
-#             if val in entity_type_info['codes']:
-#                 idx = entity_type_info['codes'].index(val)
-#                 column_id = prefix + "." + val
-# 
-#                 header_dict.update({column_id: entity_type_info['labels'][idx]})
-
     def update_static_header_info(self):
         header_dict = OrderedDict()
 

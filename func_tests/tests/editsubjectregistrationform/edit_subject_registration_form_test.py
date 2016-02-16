@@ -33,7 +33,7 @@ class TestEditSubjectRegistrationForm(HeadlessRunnerTest):
         subjects_page.refresh()
         self.assertEqual(subjects_page.get_existing_questions_count(), existing_question_count, "Newly added question should be persisted")
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_delete_cache_after_edit_subject(self):
         login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(url("/entity/subjects/"))

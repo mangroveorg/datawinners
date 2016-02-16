@@ -1,8 +1,6 @@
 from django import forms
-from django.forms.widgets import HiddenInput
-from django.utils.translation import ugettext
 
-from datawinners.utils import translate, get_text_language_by_instruction
+from datawinners.utils import get_text_language_by_instruction
 from django.utils.translation import ugettext as _
 
 
@@ -28,8 +26,12 @@ class SubjectQuestionFieldCreator(object):
                                                    initial=subject_field.value, help_text=help_text)
         if (self.has_linked_idnr):            
             subject_choice_field.widget.attrs['class'] = 'linked_subject_field'
+            subject_choice_field.widget.attrs["sms_help_text"] = \
+                _("%(entity_type)s must be an identification number") % {'entity_type': subject_field.unique_id_type.capitalize()}
+
         else:
             subject_choice_field.widget.attrs['class'] = 'subject_field'
+            subject_choice_field.widget.attrs["sms_help_text"] = help_text
         return subject_choice_field
 
     def _get_all_options(self, entity_type):
@@ -47,7 +49,7 @@ class SubjectQuestionFieldCreator(object):
         # instruction_for_subject_field = translate(
         #     "Choose a %(entity_type)s from this list." % {'entity_type': unique_id_type}, func=ugettext,
         #     language=language) if all_subject_choices else ''
-        instruction_for_subject_field = _("Choose a %(entity_type)s from this list.") % {
+        instruction_for_subject_field = _("Choose a %(entity_type)s from this list") % {
         'entity_type': unique_id_type} if all_subject_choices else ''
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
 

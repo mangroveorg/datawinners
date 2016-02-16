@@ -24,13 +24,6 @@ class SubmissionFormatter(object):
         else:
             self.visible_columns = self._compute_visible_columns(process_preferences=self.preferences)
 
-    #TODO: I believe this method is never used. Confirm and remove
-    def format_tabular_data(self, values):
-        formatted_values = []
-        headers = self.format_header_data()
-        for row_dict in values:
-            formatted_values.append(self.format_row(row_dict['_source']))
-        return headers, formatted_values
 
     def _compute_visible_columns(self, process_preferences=[]):
 
@@ -45,8 +38,7 @@ class SubmissionFormatter(object):
                         visible_columns.update(child_visible_columns)
                 else:
                     visible_columns.update({key: self.columns.get(key)})
-        return visible_columns
-        
+        return visible_columns        
         
     def get_visible_columns(self):
         return self.visible_columns

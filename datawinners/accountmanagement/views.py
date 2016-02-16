@@ -51,6 +51,9 @@ from datawinners.accountmanagement.registration_views import get_previous_page_l
 from mangrove.datastore.user_permission import UserPermission, \
     get_user_permission, get_questionnaires_for_user, update_user_permission
 from collections import OrderedDict
+from django.db import transaction
+import logging
+datawinners_logger = logging.getLogger("datawinners")
 
 
 def registration_complete(request):
@@ -177,7 +180,7 @@ def activity_log_detail(name, role, questionnaires=None):
 @is_not_expired
 def new_user(request):
     org = get_organization(request)
-    add_user_success = False
+    add_user_success = True
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         profile_form = UserProfileForm()
@@ -192,11 +195,13 @@ def new_user(request):
         post_parameters = request.POST
         org = get_organization(request)
         form = UserProfileForm(organization=org, data=request.POST)
+        errors = {}
 
         if form.is_valid():
             username = post_parameters['username']
             role = post_parameters['role']
             if not form.errors:
+                sid = transaction.savepoint()
                 user = User.objects.create_user(username, username, 'test123')
                 user.first_name = post_parameters['full_name']
                 group = Group.objects.filter(name=role)
@@ -213,30 +218,55 @@ def new_user(request):
                 reset_form = PasswordResetForm({"email": username})
 
                 name = post_parameters["full_name"]
+                try:
+                    if role == 'Extended Users':
+                        associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
+                        UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
+                    elif role == 'Project Managers':
+                        selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
+                        selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
+                        if selected_questionnaires is None:
+                            selected_questionnaires = []
+                        associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
+                                                     selected_questionnaires)
+                        UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
+                        transaction.savepoint_commit(sid)
 
-                if role == 'Extended Users':
-                    associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
-                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
-                elif role == 'Project Managers':
-                    selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
-                    selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
-                    if selected_questionnaires is None:
-                        selected_questionnaires = []
-                    associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
-                                                 selected_questionnaires)
-                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
-                if reset_form.is_valid():
+                except Exception as e:
+                    transaction.savepoint_rollback(sid)
+                    datawinners_logger.exception(e.message)
+                    add_user_success = False
+
+
+                if add_user_success and reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user", organization=org)
 
                     form = UserProfileForm()
-                    add_user_success = True
+                else:
+                    add_user_success = False
+        else:
+            errors = form.errors
+            add_user_success = False
+            
         if len(request.user.groups.filter(name__in=["NGO Admins"])) < 1:
             current_user_type = "Administrator"
         else:
             current_user_type = "Account-Administrator"
-        data = {"add_user_success": add_user_success, "errors": form.errors, "current_user": current_user_type}
+        data = {"add_user_success": add_user_success, "errors": errors, "current_user": current_user_type}
         return HttpResponse(json.dumps(data), mimetype="application/json", status=201)
+
+#TODO need to be removed when the flow is correctly working...
+def roll_back_user_creation(user, reporter_id, role, organization):
+    manager = get_database_manager(user)
+    transport_info = TransportInfo("web", user.username, "")
+    dissociate_user_as_datasender_with_projects(reporter_id, user, role, [])
+    if organization.in_trial_mode:
+        delete_datasender_for_trial_mode(manager, [reporter_id], REPORTER)
+        
+    delete_entity_instance(manager, [reporter_id], REPORTER, transport_info)
+    delete_datasender_users_if_any([reporter_id], organization)
+    user.delete()
 
 
 @valid_web_user
@@ -428,7 +458,7 @@ def dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role
 
     if previous_role == 'Project Managers':
         user_permission = get_user_permission(user.id, manager)
-        project_ids = user_permission.project_ids
+        project_ids = user_permission.project_ids if user_permission else []
     elif previous_role == 'Extended Users':
         rows = get_all_projects(manager)
         project_ids = []

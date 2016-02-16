@@ -292,40 +292,6 @@ def analysis(request, project_id, questionnaire_code=None):
                                   context_instance=RequestContext(request))
 
 
-@login_required
-@session_not_expired
-@is_datasender
-@is_not_expired
-@is_project_exist
-@restrict_access
-def analysis_results(request, project_id=None, questionnaire_code=None):
-    manager = get_database_manager(request.user)
-    org_id = helper.get_org_id_by_user(request.user)
-
-    if request.method == 'GET':
-        questionnaire = Project.get(manager, project_id)
-        dashboard_page = settings.HOME_PAGE + "?deleted=true"
-        if questionnaire.is_void():
-            return HttpResponseRedirect(dashboard_page)
-
-        filterable_fields = get_filterable_fields(questionnaire.fields, [])
-        first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
-
-        result_dict = {
-            "xform": questionnaire.xform,
-            "user_email": request.user.email,
-            "is_quota_reached": is_quota_reached(request, org_id=org_id),
-            "first_filterable_field": first_filterable_fields,
-            "filterable_fields": filterable_fields,
-            'is_pro_sms': get_organization(request).is_pro_sms,
-            "is_media_field_present": questionnaire.is_media_type_fields_present
-            # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
-        }
-        result_dict.update(project_info(request, questionnaire, questionnaire_code))
-        return render_to_response('project/analysis_results.html', result_dict,
-                                  context_instance=RequestContext(request))
-
-
 def get_survey_response_ids_from_request(dbm, request, form_model, local_time_delta):
     if request.POST.get('all_selected', "false") == "true":
         search_filters = json.loads(request.POST.get("search_filters"))
@@ -758,7 +724,7 @@ def _create_analysis_response(dbm, local_time_delta, search_results, questionnai
 
 def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire):
     record.date = convert_to_localized_date_time(record.date, local_time_delta)
-    record = enrich_analysis_data(record, questionnaire)
+    record = enrich_analysis_data(record, questionnaire, record.meta.id)
     return record
 
 @csrf_view_exempt

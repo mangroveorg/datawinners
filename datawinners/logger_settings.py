@@ -127,7 +127,7 @@ LOGGING = {
             'backupCount': BACK_UP_COUNT
         },
         'console': { 
-            'level': 'DEBUG', 
+            'level': 'ERROR', 
             'class': 'logging.StreamHandler', 
             'formatter': 'verbose' 
         },                 

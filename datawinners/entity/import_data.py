@@ -111,8 +111,9 @@ class FilePlayer(Player):
 
     def _validate_duplicate_email_address(self, email):
         # registered_emails = self._get_registered_emails()
+        mail_filter = User.objects.filter(email=email)
         matching_email_count = datasender_count_with(email)
-        if matching_email_count > 0:
+        if matching_email_count > 0 or mail_filter.exists():
             raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
     def _import_data_sender(self, form_model, organization, values):
@@ -122,9 +123,13 @@ class FilePlayer(Player):
             if not mobile_number:
                 raise MobileNumberMandatoryException()
             if organization.in_trial_mode:
-                data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
+                from accountmanagement.helper import is_registered_on_other_trial_account
+                if is_registered_on_other_trial_account(organization, mobile_number):
+                    raise MultipleReportersForANumberException(mobile_number)
+                else:
+                    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
                                                                      organization=organization)
-                data_sender.save(force_insert=True)
+                    data_sender.save(force_insert=True)
         except IntegrityError:
             raise MultipleReportersForANumberException(mobile_number)
         except Exception as ex:

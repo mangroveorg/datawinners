@@ -1217,3 +1217,9 @@ msgstr ""
 
 msgid "Learn More About Duplicates"
 msgstr ""
+
+msgid "Sorry, the user registration failed due to a unknown system error, please try again."
+msgstr "Sorry, the user registration failed due to a unknown system error, please try again. If the error persists please get in touch with our support team: support@datawinners.com"
+
+msgid "User has been added successfully"
+msgstr "User has been added successfully"
