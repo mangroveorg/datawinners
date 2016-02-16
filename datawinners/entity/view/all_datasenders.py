@@ -100,7 +100,7 @@ class AllDataSendersView(TemplateView):
         self._convert_anonymous_submissions_to_registered(imported_data_senders, manager)
 
         self.update_activity_log(request, successful_imports)
-        transaction.commit()
+        transaction.commit()#Mandatory for manually managed transaction blocks. Here it won't save anything
 
         return HttpResponse(json.dumps(
             {

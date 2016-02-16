@@ -201,42 +201,43 @@ def new_user(request):
             username = post_parameters['username']
             role = post_parameters['role']
             if not form.errors:
-                sid = transaction.savepoint()
-                user = User.objects.create_user(username, username, 'test123')
-                user.first_name = post_parameters['full_name']
-                group = Group.objects.filter(name=role)
-                user.groups.add(group[0])
-                user.save()
-                mobile_number = post_parameters['mobile_phone']
-                ngo_user_profile = NGOUserProfile(user=user, title=post_parameters['title'],
-                                                  mobile_phone=mobile_number,
-                                                  org_id=org.org_id)
-                ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
-                                                                         current_user_name=user.get_full_name(),
-                                                                         mobile_number=mobile_number, email=username)
-                ngo_user_profile.save()
-                reset_form = PasswordResetForm({"email": username})
-
-                name = post_parameters["full_name"]
-                try:
-                    if role == 'Extended Users':
-                        associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
-                        UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
-                    elif role == 'Project Managers':
-                        selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
-                        selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
-                        if selected_questionnaires is None:
-                            selected_questionnaires = []
-                        associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
-                                                     selected_questionnaires)
-                        UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
-                        transaction.savepoint_commit(sid)
-
-                except Exception as e:
-                    transaction.savepoint_rollback(sid)
-                    datawinners_logger.exception(e.message)
-                    add_user_success = False
-
+                with transaction.commit_manually():
+                    sid = transaction.savepoint()
+                    user = User.objects.create_user(username, username, 'test123')
+                    user.first_name = post_parameters['full_name']
+                    group = Group.objects.filter(name=role)
+                    user.groups.add(group[0])
+                    user.save()
+                    mobile_number = post_parameters['mobile_phone']
+                    ngo_user_profile = NGOUserProfile(user=user, title=post_parameters['title'],
+                                                      mobile_phone=mobile_number,
+                                                      org_id=org.org_id)
+                    ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
+                                                                             current_user_name=user.get_full_name(),
+                                                                             mobile_number=mobile_number, email=username)
+                    ngo_user_profile.save()
+                    reset_form = PasswordResetForm({"email": username})
+    
+                    name = post_parameters["full_name"]
+                    try:
+                        if role == 'Extended Users':
+                            associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
+                            UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
+                        elif role == 'Project Managers':
+                            selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
+                            selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
+                            if selected_questionnaires is None:
+                                selected_questionnaires = []
+                            associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
+                                                         selected_questionnaires)
+                            UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
+                            transaction.savepoint_commit(sid)
+    
+                    except Exception as e:
+                        transaction.savepoint_rollback(sid)
+                        datawinners_logger.exception(e.message)
+                        add_user_success = False
+                    transaction.commit()#Mandatory for manually managed transaction blocks. Here it won't save anything    
 
                 if add_user_success and reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
