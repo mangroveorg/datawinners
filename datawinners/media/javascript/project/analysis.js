@@ -65,11 +65,9 @@ $(document).ready(function () {
                 "initComplete": function (settings, json) {
                     $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
                     $(".paging_dw_pagination").show();
-                    $(".repeat_ans").parents("td").addClass('repeat_ans_style');
                 },
                 "drawCallback": function (settings, json) {
                     $('.dataTables_scrollBody thead tr').css({visibility: 'collapse'});
-                    $(".repeat_ans").parents("td").addClass('repeat_ans_style');
                 },
                 "pagingType": "dw_pagination",
                 "columnDefs": [{
