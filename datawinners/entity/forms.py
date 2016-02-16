@@ -2,7 +2,7 @@ import re
 
 from django import forms
 from django.contrib.auth.models import User
-from datawinners.accountmanagement.helper import is_registered_on_other_trial_account
+from datawinners.accountmanagement.helper import is_mobile_number_unique_for_trial_account
 from django.forms import HiddenInput, BooleanField
 from django.forms.fields import RegexField, CharField, FileField, MultipleChoiceField, EmailField
 from django.forms.widgets import CheckboxSelectMultiple, TextInput
@@ -10,7 +10,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 
-from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
+from datawinners.accountmanagement.models import Organization
 from datawinners.entity.datasender_search import datasender_count_with
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE, GEO_CODE, GEO_CODE_FIELD_NAME
 from mangrove.utils.types import is_empty
@@ -153,7 +153,7 @@ class ReporterRegistrationForm(Form):
         organization = Organization.objects.get(org_id=self.org_id)
         mobile_number = self.cleaned_data.get('telephone_number')
         if organization.in_trial_mode:
-            if is_registered_on_other_trial_account(organization, mobile_number) :
+            if not is_mobile_number_unique_for_trial_account(organization, mobile_number):
                 self._errors['telephone_number'] = self.error_class(
                     [_(u"Sorry, this number has already been used for a different DataWinners Basic account.")])
         return mobile_number

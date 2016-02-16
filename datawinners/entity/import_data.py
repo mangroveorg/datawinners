@@ -123,8 +123,8 @@ class FilePlayer(Player):
             if not mobile_number:
                 raise MobileNumberMandatoryException()
             if organization.in_trial_mode:
-                from accountmanagement.helper import is_registered_on_other_trial_account
-                if is_registered_on_other_trial_account(organization, mobile_number):
+                from accountmanagement.helper import is_mobile_number_unique_for_trial_account
+                if not is_mobile_number_unique_for_trial_account(organization, mobile_number):
                     raise MultipleReportersForANumberException(mobile_number)
                 else:
                     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
