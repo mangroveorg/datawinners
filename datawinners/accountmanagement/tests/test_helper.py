@@ -3,7 +3,7 @@ from django.test import TestCase
 from mock import Mock, patch, PropertyMock
 
 from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers, get_all_users_for_organization,\
-    is_registered_on_other_trial_account
+    is_mobile_number_unique_for_trial_account
 from datawinners.tests.data import TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS
 
 
@@ -25,5 +25,5 @@ class TestHelper(TestCase):
         from datawinners.accountmanagement.models import Organization
         org = Mock(spec=Organization)
         org.in_trial_mode = True
-        self.assertTrue(is_registered_on_other_trial_account(org, TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS))
+        self.assertFalse(is_mobile_number_unique_for_trial_account(org, TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS))
 
