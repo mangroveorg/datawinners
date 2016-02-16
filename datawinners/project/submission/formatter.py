@@ -115,7 +115,7 @@ class SubmissionFormatter(object):
         return result
 
     def post_parse_field(self, field_code, field_value):
-        if self.columns[field_code].get("type") == GEOCODE_FIELD_CODE and field_value:
+        if self.columns[field_code].get("type") == GEOCODE_FIELD_CODE and field_value and isinstance(field_value, list):
             return "%s,%s" % (field_value[0], field_value[1])
         return field_value
 
