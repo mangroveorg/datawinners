@@ -5048,6 +5048,9 @@ msgstr "Le/la %s portant le Numéro d'Identification %s a été enregistré avec
 msgid "Choose a %(entity_type)s from this list."
 msgstr "Choisissez un %(entity_type)s dans la liste."
 
+msgid "%(entity_type)s is an identification number"
+msgstr "%(entity_type)s est un numéro d’identification"
+
 msgid "Advanced Answer Types"
 msgstr "Types de réponse avancés"
 
