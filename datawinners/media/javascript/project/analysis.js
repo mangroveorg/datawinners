@@ -235,18 +235,22 @@ $(document).ready(function () {
         ColCustomWidget.prototype.handleCheckBoxes = function(element) {
             var self = this;
 
-            if($(element).parent("ul").length == 0) {
+            if($(element).parent("ul").length == 0 || $(element).is("ul")) {
 
-                var $parentElement =$(element).closest("ul"),
-                    $listElements = $parentElement.children("li"),
-                    $inputElementsLength = $listElements.find("input[type=checkbox]").length;
+                var $parentElement =$(element).parent().closest("ul"),
+                    $listElements = $parentElement.children("li,ul"),
+                    $inputElementsLength = $listElements.find("> input[type=checkbox]").length;
 
-                if($listElements.find("input:checkbox:checked").length != $inputElementsLength) {
+                if($listElements.find("> input:checkbox:checked").length != $inputElementsLength) {
                     $parentElement.find("> input:checkbox").prop('checked', false);
                 } else {
                     $parentElement.find("> input:checkbox").prop('checked', true);
                 }
 
+            }
+
+            if($(element).parents("ul").length > 0) {
+                self.handleCheckBoxes($(element).parents("ul")[0]);
             }
 
             $(element).parent().find('input[type=checkbox]').prop('checked', element.checked);
@@ -276,9 +280,27 @@ $(document).ready(function () {
             column.visible(visibility);
         };
 
+        ColCustomWidget.prototype.getVisibility = function (children) {
+            var self = this;
+            var visibility = true;
+            $.each(children, function(index, child) {
+                if(!visibility) return false;
+                if(child.hasOwnProperty('children') && child.children.length > 0) {
+                    visibility = visibility && self.getVisibility(child.children);
+                } else {
+                    visibility = visibility && child.visibility;
+                }
+            });
+            return visibility;
+        };
+
         ColCustomWidget.prototype.constructItems = function (customizationHeader) {
             var self = this;
             $.each(customizationHeader, function (index, value) {
+                if (value.hasOwnProperty('children') && (value.children.length > 0)) {
+                    value.visibility = self.getVisibility(value.children);
+                }
+
                 var $newParentElement = self.createColItems("ul", value, self.$custMenu);
 
                 if (value.hasOwnProperty('children') && (value.children.length > 0)) {
@@ -319,6 +341,7 @@ $(document).ready(function () {
             var self = this;
             $.each(sortedItems, function (index, value) {
                 if (value.hasOwnProperty('children') && (value.children.length > 0)) {
+                    value.visibility = self.getVisibility(value.children);
                     var $newParentElement = self.createColItems("ul", value, $parentElement);
                     self.constructChildNodes(value, $newParentElement);
                 } else {
