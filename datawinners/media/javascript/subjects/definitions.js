@@ -17,9 +17,7 @@ DW.SubjectSMSPreviewPage = function () {
         if (query_element_object.is('select')) {
             query_element_object.attr("hidden", "hidden");
             query_element_object.hide();
-            query_element_object.parents(".answer").before(
-                '<p class="sms_instruction instructions italic hide">' + query_element_object.attr('sms_help_text') + '</p>'
-            );
+
             if(!query_element_object.hasClass('linked_subject_field')) {
                 var options_html = "<ul class='multiple_select' style='clear:both'>";
                 options = query_element_object.find("option");
@@ -30,6 +28,10 @@ DW.SubjectSMSPreviewPage = function () {
                     }
                 }
                 options_html += "</ul>";
+            } else {
+                query_element_object.parents(".answer").before(
+                    '<p class="sms_instruction instructions italic hide">' + query_element_object.attr('sms_help_text') + '</p>'
+                );
             }
 
         } else {
