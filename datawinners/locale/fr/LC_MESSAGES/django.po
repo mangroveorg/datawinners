@@ -5045,10 +5045,10 @@ msgstr "Instructions pour les Expéditeurs de Données"
 msgid "%s with Identification Number %s successfully registered."
 msgstr "Le/la %s portant le Numéro d'Identification %s a été enregistré avec succès."
 
-msgid "Choose a %(entity_type)s from this list."
-msgstr "Choisissez un %(entity_type)s dans la liste."
+msgid "Choose a %(entity_type)s from this list"
+msgstr "Choisissez un %(entity_type)s dans la liste"
 
-msgid "%(entity_type)s is an identification number"
+msgid "%(entity_type)s is an Identification Number"
 msgstr "%(entity_type)s est un numéro d’identification"
 
 msgid "Advanced Answer Types"
