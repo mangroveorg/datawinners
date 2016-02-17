@@ -27,7 +27,7 @@ class SubjectQuestionFieldCreator(object):
         if (self.has_linked_idnr):            
             subject_choice_field.widget.attrs['class'] = 'linked_subject_field'
             subject_choice_field.widget.attrs["sms_help_text"] = \
-                _("%(entity_type)s must be an identification number") % {'entity_type': subject_field.unique_id_type.capitalize()}
+                _("%(entity_type)s is an identification number") % {'entity_type': subject_field.unique_id_type.capitalize()}
 
         else:
             subject_choice_field.widget.attrs['class'] = 'subject_field'
