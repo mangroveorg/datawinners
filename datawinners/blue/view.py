@@ -21,11 +21,13 @@ from django.core.mail import EmailMessage
 from django.utils.translation import ugettext as _
 
 from datawinners import settings
+from datawinners.activitylog.models import UserActivityLog
 from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
     get_generated_xform_id_name, XFormImageProcessor
 from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
 from datawinners.accountmanagement.models import Organization
 from datawinners.blue.error_translation_utils import transform_error_message, translate_odk_message
+from datawinners.common.constant import EDITED_QUESTIONNAIRE
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from datawinners.feeds.database import get_feeds_database
 from datawinners.search.submission_index import SubmissionSearchStore
@@ -45,7 +47,6 @@ from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
     survey_responses_by_form_model_id
 from mangrove.utils.dates import py_datetime_to_js_datestring
-
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
@@ -89,8 +90,9 @@ class ProjectUpload(View):
             profile = request.user.get_profile()
             organization = Organization.objects.get(org_id=profile.org_id)
             if xls_parser_response.is_multiple_languages:
-                logger.info("Creating Questionnaire %s with Multi Language support for organization : %s(%s) and email: %s", project_name, organization.name, profile.org_id, profile.user.email)
-
+                logger.info(
+                    "Creating Questionnaire %s with Multi Language support for organization : %s(%s) and email: %s",
+                    project_name, organization.name, profile.org_id, profile.user.email)
 
             if xls_parser_response.errors:
                 error_list = list(xls_parser_response.errors)
@@ -261,15 +263,14 @@ class ProjectUpdate(View):
 
             xls_parser_response = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
 
-
-
             send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
                                                                                questionnaire.name)
 
             profile = request.user.get_profile()
             organization = Organization.objects.get(org_id=profile.org_id)
             if xls_parser_response.is_multiple_languages:
-                logger.info("Edit Questionnaire %s with Multi Language support for organization : %s(%s) and email: %s", questionnaire.name, organization.name, profile.org_id, profile.user.email)
+                logger.info("Edit Questionnaire %s with Multi Language support for organization : %s(%s) and email: %s",
+                            questionnaire.name, organization.name, profile.org_id, profile.user.email)
 
             if xls_parser_response.errors:
                 info_list = list(xls_parser_response.errors)
@@ -292,6 +293,9 @@ class ProjectUpdate(View):
             tmp_file.seek(0)
             questionnaire.update_media_field_flag()
             questionnaire.save(process_post_update=False)
+
+            UserActivityLog().log(self.request, action=EDITED_QUESTIONNAIRE, project=questionnaire.name,
+                                  detail=questionnaire.name)
 
             base_name, extension = os.path.splitext(tmp_file.name)
             questionnaire.update_attachments(tmp_file, 'questionnaire%s' % extension)
@@ -496,7 +500,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                                     'version': submission.version,
                                     'project_uuid': self.questionnaire.id,
                                     'created': py_datetime_to_js_datestring(submission.created)
-            })
+                                    })
         return submission_list
 
     def get_submission(self, submission_uuid):
@@ -511,7 +515,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                     .get_media_files_str(self.questionnaire.fields, submission.values),
                 'xml': self._model_str_of(submission.id, get_generated_xform_id_name(self.questionnaire.xform)),
                 'data': json.dumps(submission.values)
-        }
+                }
 
 
 @csrf_exempt
@@ -539,7 +543,7 @@ def edit_xform_submission_post(request, survey_response_id):
         send_email_on_exception(request.user, "Edit Web Submission", traceback.format_exc(),
                                 additional_details={'survey_response_id': survey_response_id,
                                                     'submitted-data': request.POST['form_data']
-                                })
+                                                    })
         return HttpResponseBadRequest()
 
 
