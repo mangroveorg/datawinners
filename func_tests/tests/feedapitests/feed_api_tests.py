@@ -169,7 +169,7 @@ class TestFeeds(HeadlessRunnerTest):
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
-        self.assertEquals(2, response_list_after_delete)
+        self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]
         #expected_data_after_delete = {'q2': {"deleted": False, "id": "wp01", "name": "Test"}, 'q3': '8.0', 'q5': ['b'], 'q4': '24.12.2012',
         #                              'q7': ['a', 'b'],
