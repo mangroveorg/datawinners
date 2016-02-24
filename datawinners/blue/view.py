@@ -3,50 +3,51 @@ import logging
 import mimetypes
 import os
 import re
-from tempfile import NamedTemporaryFile
 import traceback
+from tempfile import NamedTemporaryFile
 
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.template.defaultfilters import slugify
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext
+from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
-from django.template.defaultfilters import slugify
-from pyxform.errors import PyXFormError
-from django.core.mail import EmailMessage
-from django.utils.translation import ugettext as _
-
-from datawinners import settings
-from datawinners.activitylog.models import UserActivityLog
-from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
-    get_generated_xform_id_name, XFormImageProcessor
-from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
-from datawinners.accountmanagement.models import Organization
-from datawinners.blue.error_translation_utils import transform_error_message, translate_odk_message
-from datawinners.common.constant import EDITED_QUESTIONNAIRE
-from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
-from datawinners.feeds.database import get_feeds_database
-from datawinners.search.submission_index import SubmissionSearchStore
-from datawinners.utils import get_organization
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException, \
     QuestionnaireAlreadyExistsException
+from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.project import Project
+from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
+    survey_responses_by_form_model_id
+from mangrove.utils.dates import py_datetime_to_js_datestring
+from pyxform.errors import PyXFormError
+
+from datawinners import settings
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
+from datawinners.accountmanagement.models import Organization
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.blue.error_translation_utils import transform_error_message, translate_odk_message
+from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
+    get_generated_xform_id_name, XFormImageProcessor
+from datawinners.blue.xform_editor import XFormEditor
+from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
+from datawinners.common.constant import EDITED_QUESTIONNAIRE
+from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager
 from datawinners.project.helper import generate_questionnaire_code, is_project_exist
 from datawinners.project.utils import is_quota_reached
 from datawinners.project.views.utils import get_form_context
 from datawinners.project.views.views import SurveyWebQuestionnaireRequest
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from mangrove.form_model.form_model import get_form_model_by_code
-from mangrove.form_model.project import Project
-from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
-    survey_responses_by_form_model_id
-from mangrove.utils.dates import py_datetime_to_js_datestring
+from datawinners.search.submission_index import SubmissionSearchStore
+from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
+from datawinners.utils import get_organization
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
@@ -244,9 +245,7 @@ class ProjectUpdate(View):
         tmp_file = None
         try:
             file_content = request.raw_post_data
-
             file_errors, file_extension = _perform_file_validations(request)
-            tmp_file = NamedTemporaryFile(delete=True, suffix=file_extension)
 
             if file_errors:
                 logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
@@ -258,13 +257,11 @@ class ProjectUpdate(View):
                     'error_msg': file_errors
                 }))
 
+            tmp_file = NamedTemporaryFile(delete=True, suffix=file_extension)
             tmp_file.write(file_content)
             tmp_file.seek(0)
 
             xls_parser_response = XlsFormParser(tmp_file, questionnaire.name, manager).parse()
-
-            send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
-                                                                               questionnaire.name)
 
             profile = request.user.get_profile()
             organization = Organization.objects.get(org_id=profile.org_id)
@@ -283,10 +280,19 @@ class ProjectUpdate(View):
                     'message_suffix': _("Update your XLSForm and upload again.")
                 }))
 
+            new_questionnaire = Project(manager, name=questionnaire.name, fields=[], form_code=questionnaire.form_code,
+                                        devices=[u'sms', u'web', u'smartPhone'])
+            QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(xls_parser_response.json_xform_data)
             mangrove_service = MangroveService(request, questionnaire_code=questionnaire.form_code,
-                                               project_name=questionnaire.name, xls_parser_response=xls_parser_response)
-
+                                               project_name=questionnaire.name,
+                                               xls_parser_response=xls_parser_response)
             questionnaire.xform = mangrove_service.xform_with_form_code
+            XFormEditor().edit(new_questionnaire, questionnaire)
+
+            # TODO: send  email only if new unique id added?
+            send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
+                                                                               questionnaire.name)
+
             QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(
                 xls_parser_response.json_xform_data)
 
@@ -614,7 +620,7 @@ EXCEL_UPLOAD_FILE_SIZE = 10485760  # 10MB
 
 def _perform_file_validations(request):
     errors = []
-    file_extension = ".xls"
+    file_extension = ""
     if request.GET and request.GET.get("qqfile"):
         file_extension = os.path.splitext(request.GET["qqfile"])[1]
         if file_extension not in [".xls", ".xlsx"]:
