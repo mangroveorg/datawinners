@@ -52,12 +52,16 @@ class XFormSubmissionExporter(SubmissionExporter):
             if preference.get('visibility'):
                 field = preference.get('data').replace('%s_' % submission.form_model_id,'')
                 name = submission.values.get(field)
-                if isinstance(name, list): #process for repeats or groups
-                    for group_item in name:
-                        for key, val in group_item.items():
-                            self._check_and_add_file_to_temp(val, files,folder_name, submission_id)
-                else:
-                    self._check_and_add_file_to_temp(name, files, folder_name, submission_id)
+                self._check_nested_questions(name, files, folder_name, submission_id)
+                
+    def _check_nested_questions(self, name, files, folder_name, submission_id):
+        if isinstance(name, list): #process for repeats or groups
+            for group_item in name:
+                for key, val in group_item.items():
+                    self._check_nested_questions(val, files, folder_name, submission_id)
+                    #self._check_and_add_file_to_temp(val, files,folder_name, submission_id)
+        else:
+            self._check_and_add_file_to_temp(name, files, folder_name, submission_id)
 
     def _check_and_add_file_to_temp(self, name, files, folder_name, submission_id):
         if name and name in files.keys():
