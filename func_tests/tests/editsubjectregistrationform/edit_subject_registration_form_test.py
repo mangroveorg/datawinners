@@ -1,18 +1,22 @@
-from framework.base_test import BaseTest, HeadlessRunnerTest
+from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import generateId
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
-from pages.loginpage.login_page import LoginPage, login
+from pages.loginpage.login_page import login
 from pages.projectsubjectspage.project_subjects_page import ProjectSubjectsPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, url
+from testdata.test_data import url
 from tests.subjecttypetests.add_subject_type_data import VALID_ENTITY, ENTITY_TYPE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from nose.plugins.attrib import attr
 
 class TestEditSubjectRegistrationForm(HeadlessRunnerTest):
 
+    @classmethod
+    def setUpClass(self):
+        HeadlessRunnerTest.setUpClass()
+        login(self.driver, VALID_CREDENTIALS)
+
     @attr('functional_test')
     def test_should_add_question_successfully(self):
-        login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(url("/entity/subjects/"))
         add_subject_type_page = AddSubjectTypePage(self.driver)
         add_subject_type_page.click_on_accordian_link()
@@ -35,7 +39,6 @@ class TestEditSubjectRegistrationForm(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_delete_cache_after_edit_subject(self):
-        login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(url("/entity/subjects/"))
         add_subject_type_page = AddSubjectTypePage(self.driver)
         add_subject_type_page.click_on_accordian_link()
