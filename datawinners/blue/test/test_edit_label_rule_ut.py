@@ -1,12 +1,12 @@
 import os
 import unittest
 
-from mangrove.form_model.field import Field
+from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 
-from datawinners.blue import rules
 from datawinners.blue.rules import EditLabelRule
+from datawinners.blue.rules.rule import Rule
 
 DIR = os.path.dirname(__file__)
 
@@ -17,51 +17,91 @@ class TestEditLabelRule(unittest.TestCase):
         edit_label_rule = EditLabelRule()
         self.maxDiff = None
 
-        old_xform = self.get_xform("What is your name?", "f1")
-        new_xform = self.get_xform("What is your new name?", "f1")
-        old_questionnaire = Project(DatabaseManagerStub(), name="q1", fields=[Field(name="f1", label="What is your name?")], form_code="007")
+        old_xform = self.get_xform("Name please", "text2")
+        new_xform = self.get_xform("Full name please", "text2")
+        old_questionnaire = Project(DatabaseManagerStub(), name="q1", fields=[
+            FieldSet(code="group_outer", name="group_outer", label="Enter the outer group details", field_set=[
+                Field(code="text2", name="text2", label="Name please", parent_field_code="group_outer", type="input")
+            ])
+        ], form_code="007")
         old_questionnaire.xform = old_xform
-        new_questionnaire = Project(DatabaseManagerStub(), name="q1", fields=[Field(name="f1", label="What is your new name?")], form_code="007")
+        new_questionnaire = Project(DatabaseManagerStub(), name="q1", fields=[
+            FieldSet(code="group_outer", name="group_outer", label="Enter the outer group details", field_set=[
+                Field(code="text2", name="text2", label="Full name please", parent_field_code="group_outer", type="input")
+            ])
+        ], form_code="007")
         new_questionnaire.xform = new_xform
         edit_label_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
-    def test_should_not_update_xform_when_no_label_change(self):
-        edit_label_rule = EditLabelRule()
-        self.maxDiff = None
-
-        old_xform = self.get_xform("What is your name?", "f1")
-        new_xform = self.get_xform("What is your name?", "f2")
-        old_questionnaire = Project(DatabaseManagerStub(), name="q1", fields=[Field(name="f1", label="What is your name?")], form_code="007")
-        old_questionnaire.xform = old_xform
-        new_questionnaire = Project(DatabaseManagerStub(), name="q1", fields=[Field(name="f2", label="What is your name?")], form_code="007")
-        new_questionnaire.xform = new_xform
-        edit_label_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
-        self.assertNotEqual(old_questionnaire.xform, new_questionnaire.xform)
-
     def get_xform(self, label, name):
-        return ("""
-                    <?xml version="1.0" encoding="utf-8"?>
-                    <h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                      <h:head>
-                        <h:title>q1 What is your name?</h:title>
-                        <model>
-                          <instance>
-                            <tmps8NKiE id="tmps8NKiE">
-                              <""" + name + """/>
-                              <meta>
-                                <instanceID/>
-                              </meta>
-                            </tmps8NKiE>
-                          </instance>
-                          <bind nodeset="/tmps8NKiE/""" + name + """" required="true()" type="string"/>
-                          <bind calculate="concat('uuid:', uuid())" nodeset="/tmps8NKiE/meta/instanceID" readonly="true()" type="string"/>
-                        </model>
-                      </h:head>
-                      <h:body>
-                        <input ref="/tmps8NKiE/""" + name + """">
-                          <label>%s</label>
-                        </input>
-                      </h:body>
-                    </h:html>
-                """) % label
+        return ('<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">\
+              <html:head>\
+                <html:title>q1</html:title>\
+                <model>\
+                  <instance>\
+                    <tmpkWhV2m id="tmpkWhV2m">\
+                      <group_outer>\
+                        <number1 />\
+                        <group_inner>\
+                          <number2 />\
+                          <text1 />\
+                          <number3 />\
+                          <people />\
+                          <clinic />\
+                        </group_inner>\
+                        <' + name + ' />\
+                      </group_outer>\
+                      <meta>\
+                        <instanceID />\
+                      </meta>\
+                    </tmpkWhV2m>\
+                  </instance>\
+                  <bind nodeset="/tmpkWhV2m/group_outer/number1" required="true()" type="int" />\
+                  <bind nodeset="/tmpkWhV2m/group_outer/group_inner/number2" required="true()" type="int" />\
+                  <bind nodeset="/tmpkWhV2m/group_outer/group_inner/text1" required="true()" type="string" />\
+                  <bind nodeset="/tmpkWhV2m/group_outer/group_inner/number3" required="true()" type="int" />\
+                  <bind nodeset="/tmpkWhV2m/group_outer/group_inner/people" type="select1" />\
+                  <bind nodeset="/tmpkWhV2m/group_outer/group_inner/clinic" type="select1" />\
+                  <bind nodeset="/tmpkWhV2m/group_outer/' + name + '" required="true()" type="string" />\
+                  <bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" />\
+                </model>\
+              </html:head>\
+              <html:body>\
+                <group ref="/tmpkWhV2m/group_outer">\
+                  <label>Enter the outer group details</label>\
+                  <input ref="/tmpkWhV2m/group_outer/number1">\
+                    <label>Lucky number</label>\
+                  </input>\
+                  <group ref="/tmpkWhV2m/group_outer/group_inner">\
+                    <label>Enter the inner group details</label>\
+                    <input ref="/tmpkWhV2m/group_outer/group_inner/number2">\
+                      <label>Favourite number</label>\
+                    </input>\
+                    <input ref="/tmpkWhV2m/group_outer/group_inner/text1">\
+                      <label>Favourite colour</label>\
+                    </input>\
+                    <input ref="/tmpkWhV2m/group_outer/group_inner/number3">\
+                      <label>How many friends have you got?</label>\
+                    </input>\
+                    <select1 ref="/tmpkWhV2m/group_outer/group_inner/people">\
+                      <label>Enter the city</label>\
+                      <item>\
+                        <label>placeholder</label>\
+                        <value>people</value>\
+                      </item>\
+                    </select1>\
+                    <select1 ref="/tmpkWhV2m/group_outer/group_inner/clinic">\
+                      <label>Enter the doctor</label>\
+                      <item>\
+                        <label>placeholder</label>\
+                        <value>clinic</value>\
+                      </item>\
+                    </select1>\
+                  </group>\
+                  <input ref="/tmpkWhV2m/group_outer/' + name + '">\
+                    <label>' + label + '</label>\
+                  </input>\
+                </group>\
+              </html:body>\
+            </html:html>')
