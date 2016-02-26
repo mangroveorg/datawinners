@@ -1,23 +1,29 @@
 import abc
-
 import xml.etree.ElementTree as ET
+
+from mangrove.form_model.field import FieldSet
 
 
 class Rule(object):
     __metaclass__ = abc.ABCMeta
 
     def update_xform(self, old_questionnaire, new_questionnaire):
-        for old_field in old_questionnaire.fields:
-            new_field = [new_field for new_field in new_questionnaire.fields if new_field.name == old_field.name]
-            ET.register_namespace('', 'http://www.w3.org/2002/xforms')
-            root_node = ET.fromstring(old_questionnaire.xform)
-            html_body_node = root_node._children[1]
-            node = old_questionnaire.get_node(html_body_node, old_field)
-            node_to_be_updated = [child for child in node if child.tag.endswith(self.tagname())]
+        xform = old_questionnaire.xform_model
+        self._update_xform(new_questionnaire.fields, old_questionnaire.fields, xform,  xform.get_body_node())
 
+        old_questionnaire.xform = '<?xml version="1.0" encoding="utf-8"?>%s' % ET.tostring(xform.root_node)
+
+    def _update_xform(self, new_fields, old_fields, xform, parent_node):
+        for old_field in old_fields:
+            field_type = old_field.fieldset_type if isinstance(old_field, FieldSet) else old_field.type
+            node = xform.get_node(parent_node, old_field.code, field_type)
+            new_field = [new_field for new_field in new_fields if new_field.name == old_field.name]
+
+            if isinstance(old_field, FieldSet):
+                self._update_xform(new_field[0].fields, old_field.fields, xform, node)
+
+            node_to_be_updated = [child for child in node if child.tag.endswith(self.tagname())]
             self.edit(node_to_be_updated[0], old_field, new_field[0])
-            
-            old_questionnaire.xform = '<?xml version="1.0" encoding="utf-8"?>%s' % ET.tostring(root_node)
 
     @abc.abstractmethod
     def edit(self, param, old_field, new_field):
