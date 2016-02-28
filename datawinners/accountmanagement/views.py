@@ -203,23 +203,23 @@ def new_user(request):
             if not form.errors:
                 with transaction.commit_manually():
                     sid = transaction.savepoint()
-                    user = User.objects.create_user(username, username, 'test123')
-                    user.first_name = post_parameters['full_name']
-                    group = Group.objects.filter(name=role)
-                    user.groups.add(group[0])
-                    user.save()
-                    mobile_number = post_parameters['mobile_phone']
-                    ngo_user_profile = NGOUserProfile(user=user, title=post_parameters['title'],
-                                                      mobile_phone=mobile_number,
-                                                      org_id=org.org_id)
-                    ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
-                                                                             current_user_name=user.get_full_name(),
-                                                                             mobile_number=mobile_number, email=username)
-                    ngo_user_profile.save()
-                    reset_form = PasswordResetForm({"email": username})
-    
-                    name = post_parameters["full_name"]
                     try:
+                        user = User.objects.create_user(username, username, 'test123')
+                        user.first_name = post_parameters['full_name']
+                        group = Group.objects.filter(name=role)
+                        user.groups.add(group[0])
+                        user.save()
+                        mobile_number = post_parameters['mobile_phone']
+                        ngo_user_profile = NGOUserProfile(user=user, title=post_parameters['title'],
+                                                          mobile_phone=mobile_number,
+                                                          org_id=org.org_id)
+                        ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
+                                                                                 current_user_name=user.get_full_name(),
+                                                                                 mobile_number=mobile_number, email=username)
+                        ngo_user_profile.save()
+                        reset_form = PasswordResetForm({"email": username})
+        
+                        name = post_parameters["full_name"]
                         if role == 'Extended Users':
                             associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
                             UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
