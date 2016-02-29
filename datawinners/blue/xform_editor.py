@@ -10,6 +10,7 @@ class XFormEditor(object):
         if not self._validate(new_questionnaire, old_questionnaire):
             raise UnsupportedXformEditException()
         # questionnaire.save(process_post_update=False)
+        # TODO: send email only if new unique id added?
 
     def _validate(self, new_questionnaire, old_questionnaire):
         for rule in REGISTERED_RULES:
