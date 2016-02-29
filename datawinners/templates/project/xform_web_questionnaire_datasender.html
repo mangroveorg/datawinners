@@ -31,6 +31,11 @@
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/xform_post_load_action.js"></script>
     <script type="text/javascript" src="/media/javascript/app.js"></script>
+    <script>
+        function resize_iframe(event) {
+            $("#help_iframe").height(event.data);
+        }
+    </script>
 {% endblock %}
 
 {% block device_navigation %}
