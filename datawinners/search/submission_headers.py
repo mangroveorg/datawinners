@@ -93,7 +93,7 @@ class SubmissionAnalysisHeader(SubmissionHeader):
                 self._update_header_dict_from_fields(field.fields, header_dict, field.code)
             else:
                 key = es_questionnaire_field_name(field.code, self.form_model.id, parent_field_code=parent_field_code)
-                header_dict.update({key: field.name})
+                header_dict.update({key: field.label})
 
 
     def add_unique_id_in_header_dict(self, header_dict, field, parent_field_code=None, parent_field_types=[], nested=False):
