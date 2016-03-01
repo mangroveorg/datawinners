@@ -120,7 +120,7 @@ class ProjectUpdate(View):
             if isinstance(xls_parser_response, HttpResponse):
                 return xls_parser_response
 
-            doc = ProjectDocument()
+            doc = ProjectDocument(questionnaire.id)
             doc.name = doc.form_code = questionnaire.name
             doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code, xls_parser_response=xls_parser_response).xform_with_form_code
             new_questionnaire = Project.new_from_doc(manager, doc)
