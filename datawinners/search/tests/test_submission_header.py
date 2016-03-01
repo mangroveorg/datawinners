@@ -32,7 +32,7 @@ class TestSubmissionHeader(unittest.TestCase):
             ('datasender.name', u'Data Sender Name'), ('datasender.mobile_number', u'Data Sender Mobile Number'),
             ('datasender.email', u'Data Sender Email'), ('datasender.location', u'Data Sender Location'),
             ('datasender.geo_code', u'Data Sender GPS Coordinates'),
-            ('form_model_id_q1', 'text'), ('form_model_id_q2', 'integer')])
+            ('form_model_id_q1', 'Enter Text'), ('form_model_id_q2', 'Enter a Number')])
 
         result = SubmissionAnalysisHeader(self.form_model).get_header_dict()
 
@@ -68,7 +68,7 @@ class TestSubmissionHeader(unittest.TestCase):
         expected = OrderedDict([('date', u'Submission Date'), ('datasender.id', u'Data Sender Id'),
             ('datasender.name', u'Data Sender Name'), ('datasender.mobile_number', u'Data Sender Mobile Number'),
             ('datasender.email', u'Data Sender Email'), ('datasender.location', u'Data Sender Location'),
-            ('datasender.geo_code', u'Data Sender GPS Coordinates'), ('form_model_id_q1', 'text'), ('form_model_id_q2', 'integer'),
+            ('datasender.geo_code', u'Data Sender GPS Coordinates'), ('form_model_id_q1', 'Enter Text'), ('form_model_id_q2', 'Enter a Number'),
             ('form_model_id_q3_details.code1', 'label1'), ('form_model_id_q3_details.code2', 'label2')])
 
         result = SubmissionAnalysisHeader(self.form_model).get_header_dict()
@@ -138,7 +138,7 @@ class TestSubmissionHeader(unittest.TestCase):
         expected = OrderedDict([('date', u'Submission Date'), ('datasender.id', u'Data Sender Id'),
             ('datasender.name', u'Data Sender Name'), ('datasender.mobile_number', u'Data Sender Mobile Number'),
             ('datasender.email', u'Data Sender Email'), ('datasender.location', u'Data Sender Location'),
-            ('datasender.geo_code', u'Data Sender GPS Coordinates'), ('form_model_id_repeat-q1', 'text'),
+            ('datasender.geo_code', u'Data Sender GPS Coordinates'), ('form_model_id_repeat-q1', 'Enter Text'),
             ('form_model_id_repeat-q4_details.code1', 'label1'), ('form_model_id_repeat-q4_details.code2', 'label2')])
 
         result = SubmissionAnalysisHeader(self.form_model).get_header_dict()
