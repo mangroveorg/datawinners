@@ -11619,12 +11619,9 @@ define( 'enketo-js/plugins',[ 'jquery' ], function( $ ) {
      * @return { jQuery} [description]
      */
     $.fn.clearInputs = function( ev ) {
+        var is_clone = !ev;
         ev = ev || 'edit';
-        var is_clone = false;
         return this.each( function() {
-            if($( this ).find( '.file-preview').length > 0){
-                is_clone = true
-            }
             //remove media previews
             $( this ).find( '.file-preview' ).remove();
             $( this ).find( '.remove-file' ).remove();
@@ -11655,7 +11652,7 @@ define( 'enketo-js/plugins',[ 'jquery' ], function( $ ) {
                         /* falls through */
                     case 'hidden':
                     case 'textarea':
-                        if ( is_clone === false) {
+                        if ( is_clone === true) {
                             $( this ).val( '' ).trigger( ev );
                         }
                         break;
