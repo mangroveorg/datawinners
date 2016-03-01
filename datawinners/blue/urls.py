@@ -1,8 +1,9 @@
 from django.conf.urls.defaults import patterns, url
+
 from datawinners.blue import view
-from datawinners.blue.view import new_xform_submission_post, edit_xform_submission_post, get_attachment, attachment_download
 from datawinners.blue.view import ProjectUpload, ProjectUpdate
 from datawinners.blue.view import new_xform_submission_get
+from datawinners.blue.view import new_xform_submission_post, edit_xform_submission_post, attachment_download
 from datawinners.project.views.submission_views import edit_xform_submission_get
 
 urlpatterns = patterns('',

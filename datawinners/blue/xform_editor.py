@@ -16,7 +16,7 @@ class XFormEditor(object):
         for rule in REGISTERED_RULES:
             rule.update_xform(old_questionnaire, new_questionnaire)
 
-        return old_questionnaire.xform == new_questionnaire.xform
+        return old_questionnaire.xform_model.equals(new_questionnaire.xform_model)
 
     def _apply(self):
         pass

@@ -51,8 +51,6 @@ DW.showSuccess = function(message){
 
 DW.UploadQuestionnaire.prototype._init = function(options){
     var self = this;
-    var preUploadValidation =  options.preUploadValidation || function(){ return true;};
-
     var uploadButton = $("#uploadXLS");
     var spinner = $(".upload_spinner");
     var initialUploadButtonText = uploadButton.text();
@@ -62,7 +60,6 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     new qq.FileUploader({
         element: document.getElementById('file_uploader'),
         action: options.postUrl(),
-        params: {},
         buttonText: options.buttonText,
         onSubmit: function () {
             $('.information_box').remove();
@@ -72,7 +69,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             uploadButton.text(gettext("Uploading..."));
             uploadButton.attr("disabled","disabled");
             uploadButton.addClass("disabled_yellow_submit_button");
-            this.params = (options.params && options.params()) || {};
+            this.params = options.params || {};
             options.onSubmit && options.onSubmit();
         },
         onComplete: function (id, fileName, responseJSON) {
@@ -96,10 +93,6 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     });
 
     uploadButton.on("click", function() {
-        if(!preUploadValidation()){
-            return false;
-        }
-
         $("input[name=file]").click();
         return false;
     });

@@ -37,7 +37,7 @@ class TestEditLabelRule(unittest.TestCase):
         questionnaire.form_code = "007"
         questionnaire.fields.extend([
             FieldSet(code=group_name, name=group_name, label=group_label, field_set=[
-                Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name, type="input")
+                Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name)
             ])
         ])
         return questionnaire

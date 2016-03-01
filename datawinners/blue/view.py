@@ -18,6 +18,7 @@ from django.utils.translation import ugettext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
+from mangrove.datastore.documents import ProjectDocument
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.form_model.project import Project
@@ -119,13 +120,11 @@ class ProjectUpdate(View):
             if isinstance(xls_parser_response, HttpResponse):
                 return xls_parser_response
 
-            new_questionnaire = Project(manager, name=questionnaire.name, fields=[], form_code=questionnaire.form_code,
-                                        devices=[u'sms', u'web', u'smartPhone'])
+            doc = ProjectDocument()
+            doc.name = doc.form_code = questionnaire.name
+            doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code, xls_parser_response=xls_parser_response).xform_with_form_code
+            new_questionnaire = Project.new_from_doc(manager, doc)
             QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(xls_parser_response.json_xform_data)
-            mangrove_service = MangroveService(request, questionnaire_code=questionnaire.form_code,
-                                               project_name=questionnaire.name,
-                                               xls_parser_response=xls_parser_response)
-            questionnaire.xform = mangrove_service.xform_with_form_code
             XFormEditor().edit(new_questionnaire, questionnaire)
 
         except UnsupportedXformEditException as e:
@@ -143,6 +142,10 @@ class ProjectUpdate(View):
         )
 
     def post(self, request, project_id):
+
+        if request.GET["validate"] == 'true':
+            return self.validate(request, project_id)
+
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
 

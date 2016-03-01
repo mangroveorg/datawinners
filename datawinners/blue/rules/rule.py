@@ -15,8 +15,7 @@ class Rule(object):
 
     def _update_xform(self, new_fields, old_fields, xform, parent_node):
         for old_field in old_fields:
-            field_type = old_field.fieldset_type if isinstance(old_field, FieldSet) else old_field.type
-            node = xform.get_node(parent_node, old_field.code, field_type)
+            node = xform.get_node(parent_node, old_field.code)
             new_field = [new_field for new_field in new_fields if new_field.name == old_field.name]
 
             if isinstance(old_field, FieldSet):
