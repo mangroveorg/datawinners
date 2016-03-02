@@ -5,6 +5,7 @@ class UnsupportedXformEditException(Exception):
     def __init__(self):
         self.message = "Unsupported xlsform edit exception"
 
+
 class XFormEditor(object):
     def edit(self, new_questionnaire, old_questionnaire):
         if not self._validate(new_questionnaire, old_questionnaire):
@@ -12,6 +13,8 @@ class XFormEditor(object):
 
         old_questionnaire.save(process_post_update=False)
         # TODO: send email only if new unique id added?
+        # TODO: recreate elasticsearch mapping
+        # TODO: update submissions
 
     def _validate(self, new_questionnaire, old_questionnaire):
         for rule in REGISTERED_RULES:

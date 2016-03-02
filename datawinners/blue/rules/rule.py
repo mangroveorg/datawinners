@@ -15,20 +15,19 @@ class Rule(object):
 
     def _update_xform(self, new_fields, old_fields, xform, parent_node):
         for old_field in old_fields:
+            node = xform.get_node(parent_node, old_field.code)
             new_field = [new_field for new_field in new_fields if new_field.code == old_field.code]
             if new_field:
-                node = xform.get_node(parent_node, old_field.code)
-
                 if isinstance(old_field, FieldSet):
                     self._update_xform(new_field[0].fields, old_field.fields, xform, node)
-
-                node_to_be_updated = [child for child in node if child.tag.endswith(self.tagname())]
-                self.edit(node_to_be_updated[0], old_field, new_field[0])
+                self.edit(node, old_field, new_field[0])
+            else:
+                self.remove()
 
     @abc.abstractmethod
-    def edit(self, param, old_field, new_field):
+    def remove(self):
         return
 
     @abc.abstractmethod
-    def tagname(self):
+    def edit(self):
         return
