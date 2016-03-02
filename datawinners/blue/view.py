@@ -111,7 +111,13 @@ class ProjectUpdate(View):
     def recreate_submissions_mapping(self, manager, questionnaire):
         SubmissionSearchStore(manager, questionnaire, None).recreate_elastic_store()
 
-    def validate(self, request, project_id):
+    def post(self, request, project_id):
+        if request.GET["edit"] == 'true':
+            return self._edit(request, project_id)
+
+        return self._overwrite(project_id, request)
+
+    def _edit(self, request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         try:
@@ -141,34 +147,23 @@ class ProjectUpdate(View):
             content_type='application/json'
         )
 
-    def post(self, request, project_id):
-
-        if request.GET["validate"] == 'true':
-            return self.validate(request, project_id)
-
+    def _overwrite(self, project_id, request):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
-
         xls_parser_response = _try_parse_xls(manager, request, questionnaire.name)
-
         if isinstance(xls_parser_response, HttpResponse):
             return xls_parser_response
-
         send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
                                                                            questionnaire.name)
-
         mangrove_service = MangroveService(request, questionnaire_code=questionnaire.form_code,
                                            project_name=questionnaire.name, xls_parser_response=xls_parser_response)
         questionnaire.xform = mangrove_service.xform_with_form_code
         QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(
             xls_parser_response.json_xform_data)
-
         questionnaire.update_media_field_flag()
         questionnaire.save(process_post_update=False)
-
         UserActivityLog().log(self.request, action=EDITED_QUESTIONNAIRE, project=questionnaire.name,
                               detail=questionnaire.name)
-
         tmp_file = _temp_file(request)
         base_name, extension = os.path.splitext(tmp_file.name)
         questionnaire.update_attachments(tmp_file, 'questionnaire%s' % extension)
@@ -183,7 +178,6 @@ class ProjectUpdate(View):
                 'success': True,
                 'information': info_list,
             }))
-
         return HttpResponse(
             json.dumps(
                 {

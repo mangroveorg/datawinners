@@ -6,18 +6,18 @@ $(function () {
 
     new DW.UploadQuestionnaire({
         buttonText: "Upload New XLSForm",
-        params: {"validate": true},
+        params: {"edit": true},
         postUrl: function(){
            return '/xlsform/upload/update/'+ project_id +'/';
         },
-        postErrorHandler: function(responseJSON) {
+        postErrorHandler: function(responseJSON, file_uploader, file_input) {
             var self = this;
             DW.trackEvent('advanced-questionnaire-edited', 'edit-questionnaire-errored');
             var editQuestionnaireWarningOptions = {
                 successCallBack: function (callback) {
                     callback();
-                    self.params.validate = false;
-                    $("input[name=file]").click();
+                    self.params.edit = false;
+                    file_uploader._onInputChange(file_input[0]);
                     return false;
                 },
                 title: gettext("Warning: Changes to your Questionnaire will delete previously collected data"),

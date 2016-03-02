@@ -1,6 +1,5 @@
 DW.UploadQuestionnaire = function(options){
-    var self = this;
-    self._init(options);
+    this._init(options);
 };
 DW.showError = function(errors,message_prefix,message_suffix){
     var error_message_prefix = '';
@@ -57,7 +56,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     var cancelUploadLink = $("#cancel-xlx-upload");
     var warningMessageBox = $(".warning-message-box");
     var flash_message = $("#xlx-message");
-    new qq.FileUploader({
+    self.file_uploader = new qq.FileUploader({
         element: document.getElementById('file_uploader'),
         action: options.postUrl(),
         buttonText: options.buttonText,
@@ -80,7 +79,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             uploadButton.removeClass("disabled_yellow_submit_button");
             uploadButton.removeAttr("disabled");
             if (!responseJSON['success']) {
-                options.postErrorHandler(responseJSON);
+                options.postErrorHandler(responseJSON, self.file_uploader, self.file_input);
             }
             else {
                 (options.onSuccess && options.onSuccess());
@@ -92,8 +91,10 @@ DW.UploadQuestionnaire.prototype._init = function(options){
         }
     });
 
+    self.file_input = $("input[name=file]");
+
     uploadButton.on("click", function() {
-        $("input[name=file]").click();
+        self.file_input.click();
         return false;
     });
 
