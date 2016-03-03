@@ -26,8 +26,16 @@ class Rule(object):
 
     @abc.abstractmethod
     def remove(self):
-        return
+        pass
 
     @abc.abstractmethod
-    def edit(self):
-        return
+    def edit(self, node, old_field, new_field):
+        pass
+
+    @abc.abstractmethod
+    def change_mapping(self):
+        pass
+
+    @abc.abstractmethod
+    def update_submission(self, submission):
+        pass
