@@ -1,5 +1,6 @@
 import unittest
 
+from datawinners.blue.xform_edit.submission import Submission, SubmissionSearch
 from mangrove.datastore.documents import ProjectDocument
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
@@ -8,7 +9,6 @@ from mock import Mock
 import datawinners
 from datawinners.blue.rules.rule import Rule
 from datawinners.blue.xform_edit.questionnaire import Questionnaire
-from datawinners.blue.xform_edit.submission import Submission, SubmissionSearch
 from datawinners.blue.xform_edit.validator import Validator
 from datawinners.blue.xform_editor import XFormEditor, UnsupportedXformEditException
 
