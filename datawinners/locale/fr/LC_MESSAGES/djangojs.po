@@ -1144,7 +1144,7 @@ msgstr "Les Questionnaire(s) suivants collectent des données sur <b>"
 msgid "If you want to delete the Identification Number Type(s) <b>"
 msgstr "Si vous voulez supprimer le(s) Type(s) de Numéro d’Identification <b>"
 
-msgid "</b>, you need to remove the Identification Number question(s) from the above-mentioned Questionnaire(s) first."
+    msgid "</b>, you need to remove the Identification Number question(s) from the above-mentioned Questionnaire(s) first."
 msgstr "</b>, veuillez d’abord supprimer le(s) question(s) liée(s) au Numéro d’Identification se trouvant dans ce(s) Questionnaire(s)"
 
 msgid "<b> %(entity_type)s </b> as a identification Number first"
@@ -1658,3 +1658,21 @@ msgstr "Désolé. L'enregistrement de l'Utilisateur a échoué à cause d'une er
 
 msgid "User has been added successfully"
 msgstr "L'utilisateur a été ajouté avec succès"
+
+msgid "The following Identification Number(s) are linked to <b>"
+msgstr "Les Numéros d'Identification suivants sont liés à <b>"
+
+msgid "</b>, you need to remove the Identification Number question(s) "
+msgstr "</b>, vous devez d’abord retirer les questions relatives au Numéro d’Identification "
+
+msgid "from the above-mentioned Questionnaire(s)"
+msgstr "des Questionnaire(s) mentionnés plus haut"
+
+msgid "from linked Identification Number(s)"
+msgstr "des Numéros d’Identification liés"
+
+msgid " and "
+msgstr " ainsi que "
+
+msgid " first."
+msgstr "."

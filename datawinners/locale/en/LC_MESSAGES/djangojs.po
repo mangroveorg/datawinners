@@ -1223,3 +1223,22 @@ msgstr "Sorry, the user registration failed due to a unknown system error, pleas
 
 msgid "User has been added successfully"
 msgstr "User has been added successfully"
+
+msgid "The following Identification Number(s) are linked to <b>"
+msgstr ""
+
+
+msgid "</b>, you need to remove the Identification Number question(s) "
+msgstr ""
+
+msgid "from the above-mentioned Questionnaire(s)"
+msgstr ""
+
+msgid "from linked Identification Number(s)"
+msgstr ""
+
+msgid " and "
+msgstr ""
+
+msgid " first."
+msgstr ""

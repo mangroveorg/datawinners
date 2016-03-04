@@ -22,7 +22,7 @@
                 <td class="text_align_center"><input type="checkbox" value="{{ entity }}" class="subject_type_entry"></td>
                 <td><a class="header" href="/entity/subjects/{{ entity }}">{{ entity|capfirst }}</a></td>
                 <td><span class="success_error">{{ subjects_count|get_count:entity }}</span></td>
-                <td><span class="success_error questionnaires"><span>{{ projects|join:"</span>, <span> " }}</span></span></td>
+                <td><span class="success_error questionnaires"><span>{{ projects|join:"</span>, <span>" }}</span></span></td>
             </tr>
         {% endfor %}
     </table>

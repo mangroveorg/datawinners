@@ -24,28 +24,58 @@ $(document).ready(function () {
                 warning_title = [];
                 has_questionnaires = false;
                 subject_list = [];
+                all_subjects = [];
+                is_idnr = false;
+                is_qaire = false;
                 $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").html("");
+                $('.list_header ').each(function(){
+                    all_subjects.push(($(this).find(".header").html().toLowerCase()));
+                });
+
                 $('.list_header').each(function() {
                     line = this;
                     message = "";
                     $(this).find(".subject_type_entry:checked").each(function(){
                         if($(line).find(".questionnaires").text()){
                             has_questionnaires = true;
-                            message = gettext("The following Questionnaire(s) are collecting data about <b>") + $(line).find(".header").html()+ "</b><ul class='bulleted'>";
-                            $(line).find(".questionnaires span").each(function(){
-                                message = message + "<li style='margin-left:15px;'>"+$(this).html()+"</li>";
+                            elt = [];
+                            list_subjects = [];
+                            list_qaires = [];
 
+                            $(line).find(".questionnaires span").each(function(){
+                                elt.push($(this).html());
                             });
+
+                            $.each(elt, function(key, element) {
+                                subject = $(line).find(".header").html()+ "</b><ul class='bulleted'>";
+                                    if ((all_subjects.indexOf(element)) > -1){
+                                        is_idnr = true;
+                                        list_subjects.push(element);
+                                    }
+                                    else{
+                                        is_qaire = true;
+                                        list_qaires.push(element);
+                                    }
+                            });
+
+                            message = (list_qaires.length ? (gettext("The following Questionnaire(s) are collecting data about <b>")
+                                                    +  subject + "<li style='margin-left:15px;'>"+ list_qaires +"</li>") : "");
+                            message = message + (list_subjects.length ? (gettext("The following Identification Number(s) are linked to <b>")
+                                                    +  subject + "<li style='margin-left:15px;'>"+ list_subjects +"</li>") : "");
+                        }
                             message = message + "</ul></br>";
                             list = $(line).find(".questionnaires");
                             subject_list.push($(line).find(".header").html());
-                        }
-
                     });
-                    content = gettext("If you want to delete the Identification Number Type(s) <b>");
-                    content = content + subject_list +gettext("</b>, you need to remove the Identification Number question(s) from the above-mentioned Questionnaire(s) first.");
                     $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").append(message);
                 });
+                
+                content = gettext("If you want to delete the Identification Number Type(s) <b>") + subject_list + gettext("</b>, you need to remove the Identification Number question(s) " ) ;
+                content = content + (is_qaire ? gettext("from the above-mentioned Questionnaire(s)") : "");
+                content = content + ((is_idnr && is_qaire) ? gettext(" and ") : "");
+                content = content + (is_idnr ? gettext("from linked Identification number(s)") : "");
+                content = content + gettext(" first.");
+
                 if(has_questionnaires)
                 {
                     $("#delete_subject_type_associated_questionnaires_warning_dialog .warning_message").append(content);
