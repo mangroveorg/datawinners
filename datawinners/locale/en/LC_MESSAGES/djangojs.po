@@ -1227,7 +1227,6 @@ msgstr "User has been added successfully"
 msgid "The following Identification Number(s) are linked to <b>"
 msgstr ""
 
-
 msgid "</b>, you need to remove the Identification Number question(s) "
 msgstr ""
 

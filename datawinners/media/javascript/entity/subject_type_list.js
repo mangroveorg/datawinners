@@ -73,7 +73,7 @@ $(document).ready(function () {
                 content = gettext("If you want to delete the Identification Number Type(s) <b>") + subject_list + gettext("</b>, you need to remove the Identification Number question(s) " ) ;
                 content = content + (is_qaire ? gettext("from the above-mentioned Questionnaire(s)") : "");
                 content = content + ((is_idnr && is_qaire) ? gettext(" and ") : "");
-                content = content + (is_idnr ? gettext("from linked Identification number(s)") : "");
+                content = content + (is_idnr ? gettext("from linked Identification Number(s)") : "");
                 content = content + gettext(" first.");
 
                 if(has_questionnaires)
