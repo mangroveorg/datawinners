@@ -53,6 +53,7 @@ from mangrove.datastore.user_permission import UserPermission, \
 from collections import OrderedDict
 from django.db import transaction
 import logging
+from datawinners.feature_toggle.services import handle_feature_toggle_impact_for_new_user
 datawinners_logger = logging.getLogger("datawinners")
 
 
@@ -216,6 +217,7 @@ def new_user(request):
                                                                              current_user_name=user.get_full_name(),
                                                                              mobile_number=mobile_number, email=username)
                     ngo_user_profile.save()
+                    handle_feature_toggle_impact_for_new_user(ngo_user_profile)
                     reset_form = PasswordResetForm({"email": username})
     
                     name = post_parameters["full_name"]
