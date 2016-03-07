@@ -53,7 +53,8 @@ from mangrove.datastore.user_permission import UserPermission, \
 from collections import OrderedDict
 from django.db import transaction
 import logging
-from datawinners.feature_toggle.services import handle_feature_toggle_impact_for_new_user
+from datawinners.feature_toggle.services import handle_feature_toggle_impact_for_new_user,\
+    handle_feature_toggle_impact_for_deleted_user
 datawinners_logger = logging.getLogger("datawinners")
 
 
@@ -409,6 +410,9 @@ def delete_users(request):
     else:
         detail = user_activity_log_details(User.objects.filter(id__in=django_ids))
         delete_datasenders_from_project(manager, all_ids)
+        for user_id in django_ids:
+            handle_feature_toggle_impact_for_deleted_user(user_id)
+            
         delete_entity_instance(manager, all_ids, REPORTER, transport_info)
         delete_datasender_users_if_any(all_ids, organization)
 
