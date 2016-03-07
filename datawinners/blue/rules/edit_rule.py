@@ -26,3 +26,21 @@ class EditRule(Rule):
 
     def update_submission(self, submission):
         return False
+
+
+class EditLabelRule(EditRule):
+    def update_node(self, node, old_field, new_field):
+        if new_field and new_field.label != old_field.label:
+            node.text = new_field.label
+
+    def tagname(self):
+        return 'label'
+
+
+class EditHintRule(EditRule):
+    def update_node(self, node, old_field, new_field):
+        if new_field and new_field.hint != old_field.hint:
+            node.text = new_field.hint
+
+    def tagname(self):
+        return 'hint'

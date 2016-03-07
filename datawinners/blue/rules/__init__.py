@@ -1,3 +1,3 @@
-from datawinners.blue.rules.edit_label_rule import EditLabelRule
+from datawinners.blue.rules.edit_rule import EditLabelRule, EditHintRule
 
-REGISTERED_RULES = [EditLabelRule()]
+REGISTERED_RULES = [EditLabelRule(), EditHintRule()]

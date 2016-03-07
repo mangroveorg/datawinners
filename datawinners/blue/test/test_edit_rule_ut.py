@@ -6,12 +6,12 @@ from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 
-from datawinners.blue.rules import EditLabelRule
+from datawinners.blue.rules import EditLabelRule, EditHintRule
 
 DIR = os.path.dirname(__file__)
 
 
-class TestEditLabelRule(unittest.TestCase):
+class TestEditRule(unittest.TestCase):
 
     def test_should_update_xform_with_label_change(self):
         edit_label_rule = EditLabelRule()
@@ -28,21 +28,39 @@ class TestEditLabelRule(unittest.TestCase):
         edit_label_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
+    def test_should_update_xform_with_hint_change(self):
+        edit_hint_rule = EditHintRule()
+        self.maxDiff = None
+
+        old_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
+                                                   group_name="group_outer",
+                                                   field_label="Name please",
+                                                   field_name="text2",
+                                                   hint="Enter your name")
+        new_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
+                                                   group_name="group_outer",
+                                                   field_label="Name please",
+                                                   field_name="text2",
+                                                   hint="Please enter your name")
+        edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+
     def get_questionnaire(self, group_label="Enter the outer group details", group_name="group_outer",
-                          field_label="Name please", field_name="text2"):
+                          field_label="Name please", field_name="text2", hint="Placeholder for hint"):
         doc = ProjectDocument()
-        doc.xform = self.get_xform(field_label, field_name, group_label)
+        doc.xform = self.get_xform(field_name, field_label, group_label, hint)
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
         questionnaire.name = "q1"
         questionnaire.form_code = "007"
         questionnaire.fields.extend([
             FieldSet(code=group_name, name=group_name, label=group_label, field_set=[
-                Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name)
+                Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name, hint=hint)
             ])
         ])
         return questionnaire
 
-    def get_xform(self, label, name, group_label):
+    def get_xform(self, name, label, group_label, hint):
         return ('<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">\
               <html:head>\
                 <html:title>q1</html:title>\
@@ -109,6 +127,7 @@ class TestEditLabelRule(unittest.TestCase):
                   </group>\
                   <input ref="/tmpkWhV2m/group_outer/' + name + '">\
                     <label>' + label + '</label>\
+                    <hint>' + hint + '</hint>\
                   </input>\
                 </group>\
               </html:body>\
