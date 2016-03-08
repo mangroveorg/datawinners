@@ -9,23 +9,23 @@ class EditRule(Rule):
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
-    def update_node(self, param, old_field, new_field):
+    def update_node(self, node, old_field, new_field):
         pass
 
     @abc.abstractmethod
     def tagname(self):
         pass
 
-    def _create_node(self, node, field):
-        if getattr(field, self.tagname()):
-            add_child(node, self.tagname(), getattr(field, self.tagname()))
+    @abc.abstractmethod
+    def create_node(self, node, old_field, new_field):
+        pass
 
-    def edit(self, node, old_field, new_field):
+    def edit(self, node, old_field, new_field, xform):
         node_to_be_updated = [child for child in node if child.tag.endswith(self.tagname())]
         if node_to_be_updated:
             self.update_node(node_to_be_updated[0], old_field, new_field)
         else:
-            self._create_node(node, new_field)
+            self.create_node(node, old_field, new_field)
 
     def remove(self):
         pass
@@ -38,8 +38,11 @@ class EditRule(Rule):
 
 
 class EditLabelRule(EditRule):
+    def create_node(self, node, old_field, new_field):
+        pass
+
     def update_node(self, node, old_field, new_field):
-        if new_field and new_field.label != old_field.label:
+        if new_field.label != old_field.label:
             node.text = new_field.label
 
     def tagname(self):
@@ -47,8 +50,12 @@ class EditLabelRule(EditRule):
 
 
 class EditHintRule(EditRule):
+    def create_node(self, node, old_field, new_field):
+        if old_field.hint != new_field.hint:
+            add_child(node, self.tagname(), new_field.hint)
+
     def update_node(self, node, old_field, new_field):
-        if new_field and new_field.hint != old_field.hint:
+        if new_field.hint != old_field.hint:
             node.text = new_field.hint
 
     def tagname(self):

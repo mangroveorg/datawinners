@@ -6,7 +6,7 @@ from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 
-from datawinners.blue.rules import EditLabelRule, EditHintRule
+from datawinners.blue.rules import EditLabelRule, EditHintRule, ConstraintMessageRule
 
 DIR = os.path.dirname(__file__)
 
@@ -61,22 +61,40 @@ class TestEditRule(unittest.TestCase):
         edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
+    def test_should_update_xform_with_constraint_message_change(self):
+        edit_hint_rule = ConstraintMessageRule()
+        self.maxDiff = None
+
+        old_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
+                                                   group_name="group_outer",
+                                                   field_label="Name please",
+                                                   field_name="text2")
+        new_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
+                                                   group_name="group_outer",
+                                                   field_label="Name please",
+                                                   field_name="text2",
+                                                   constraint_message="Please enter your name")
+        edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
     def get_questionnaire(self, group_label="Enter the outer group details", group_name="group_outer",
-                          field_label="Name please", field_name="text2", hint=None):
+                          field_label="Name please", field_name="text2", hint=None, constraint_message=None):
         doc = ProjectDocument()
-        doc.xform = self.get_xform(field_name, field_label, group_label, hint)
+        doc.xform = self.get_xform(field_name, field_label, group_label, hint, constraint_message)
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
         questionnaire.name = "q1"
         questionnaire.form_code = "007"
         field = Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name)
         field.hint = hint
+        field.constraint_message = constraint_message
         questionnaire.fields.append(
             FieldSet(code=group_name, name=group_name, label=group_label, field_set=[field])
         )
         return questionnaire
 
-    def get_xform(self, name, label, group_label, hint):
+    def get_xform(self, name, label, group_label, hint, constraint_message):
         hint_node = '<hint>' + hint + '</hint>' if hint else ''
+        constraint_message_attr = 'constraintMsg="' + constraint_message + '" ' if constraint_message else ''
         return ('<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">\
               <html:head>\
                 <html:title>q1</html:title>\
@@ -105,7 +123,7 @@ class TestEditRule(unittest.TestCase):
                   <bind nodeset="/tmpkWhV2m/group_outer/group_inner/number3" required="true()" type="int" />\
                   <bind nodeset="/tmpkWhV2m/group_outer/group_inner/people" type="select1" />\
                   <bind nodeset="/tmpkWhV2m/group_outer/group_inner/clinic" type="select1" />\
-                  <bind nodeset="/tmpkWhV2m/group_outer/' + name + '" required="true()" type="string" />\
+                  <bind ' + constraint_message_attr + 'nodeset="/tmpkWhV2m/group_outer/' + name + '" required="true()" type="string" />\
                   <bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" />\
                 </model>\
               </html:head>\

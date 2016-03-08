@@ -11,5 +11,5 @@ class RemoveRule(Rule):
     def remove(self):
         pass
 
-    def edit(self, node, old_field, new_field):
+    def edit(self, node, old_field, new_field, xform):
         pass
