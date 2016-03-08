@@ -45,22 +45,38 @@ class TestEditRule(unittest.TestCase):
         edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
+    def test_should_insert_hint_node_if_not_existing(self):
+        edit_hint_rule = EditHintRule()
+        self.maxDiff = None
+
+        old_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
+                                                   group_name="group_outer",
+                                                   field_label="Name please",
+                                                   field_name="text2")
+        new_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
+                                                   group_name="group_outer",
+                                                   field_label="Name please",
+                                                   field_name="text2",
+                                                   hint="Please enter your name")
+        edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def get_questionnaire(self, group_label="Enter the outer group details", group_name="group_outer",
-                          field_label="Name please", field_name="text2", hint="Placeholder for hint"):
+                          field_label="Name please", field_name="text2", hint=None):
         doc = ProjectDocument()
         doc.xform = self.get_xform(field_name, field_label, group_label, hint)
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
         questionnaire.name = "q1"
         questionnaire.form_code = "007"
-        questionnaire.fields.extend([
-            FieldSet(code=group_name, name=group_name, label=group_label, field_set=[
-                Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name, hint=hint)
-            ])
-        ])
+        field = Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name)
+        field.hint = hint
+        questionnaire.fields.append(
+            FieldSet(code=group_name, name=group_name, label=group_label, field_set=[field])
+        )
         return questionnaire
 
     def get_xform(self, name, label, group_label, hint):
+        hint_node = '<hint>' + hint + '</hint>' if hint else ''
         return ('<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">\
               <html:head>\
                 <html:title>q1</html:title>\
@@ -125,10 +141,7 @@ class TestEditRule(unittest.TestCase):
                       </item>\
                     </select1>\
                   </group>\
-                  <input ref="/tmpkWhV2m/group_outer/' + name + '">\
-                    <label>' + label + '</label>\
-                    <hint>' + hint + '</hint>\
-                  </input>\
+                  <input ref="/tmpkWhV2m/group_outer/' + name + '"><label>' + label + '</label>' + hint_node + '</input>\
                 </group>\
               </html:body>\
             </html:html>')
