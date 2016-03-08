@@ -32,6 +32,7 @@ regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}'
 SUBMISSION_DATA = 'Tester Pune rep276 ' + regex_date_match + ' Success 11.09.2014 name multiline 8 11.0 8 12.08.2016 04.2014 2016 option a,option c option b,option c option 5,option 8 option 4 No option 5 neither agree nor disagree option a option c option c   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy The Netherlands Amsterdam Westerpark United States New York City Harlem 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60", "Date within a...\n: 17.09.2014";'
 SUBMISSION_DATA_IMAGE = 'Tester Pune rep276 '+ regex_date_match + ' Success 1-locate.png'
 
+
 class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     @classmethod
@@ -134,11 +135,13 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         return False
 
-    def _verify_edit_of_questionnaire(self):
+    def _verify_edit_of_questionnaire(self, file_name, edit_flag=False):
+        edit = 'true' if edit_flag else 'false'
         r = self.client.post(
-            path='/xlsform/upload/update/' + self.project_id + "/",
-            data=open(os.path.join(self.test_data, 'ft_advanced_questionnaire.xls'), 'r').read(),
+            path='/xlsform/upload/update/' + self.project_id + "/?edit=" + edit + "&qqfile=" + file_name,
+            data=open(os.path.join(self.test_data, file_name), 'r').read(),
             content_type='application/octet-stream')
+
         self.assertEquals(r.status_code, 200)
         self.assertNotEqual(r._container[0].find('"success": true'), -1, r._container[0])
 
@@ -147,7 +150,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         is_table_empty = self._wait_for_table_to_be_empty(submission_log_page)
         self.driver.create_screenshot('empty_rows.png')
-        self.assertTrue(is_table_empty)
+        if edit:
+            self.assertFalse(is_table_empty)
+        else:
+            self.assertTrue(is_table_empty)
 
     def _activate_datasender(self, email):
         DataSenderActivationPage(self.driver).activate_datasender(email, NEW_PASSWORD)
@@ -290,8 +296,6 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self._verify_without_media(form_code)
         self._verify_with_media(form_code)
 
-
-
     def _verify_datawinners_university(self):
         dw_university_page = Page(self.driver)
         self.assertTrue(dw_university_page.is_help_content_available())
@@ -310,3 +314,30 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
         all_project_page.navigate_to_project_overview_page(self.project_name)
         self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
+
+    @attr('functional_test')
+    def test_should_delete_submission_when_editflag_is_false(self):
+        self.project_name = random_string()
+        self.client.login(username="rasitefa@mailinator.com", password="test123")
+        file_name = 'simple_advance_questionnaire.xls'
+        form_code = self._verify_questionnaire_creation(self.project_name, file_name)
+        self.assertEqual(len(form_code), 3)
+        all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
+        all_project_page.navigate_to_project_overview_page(self.project_name)
+        self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
+        self._verify_edit_of_questionnaire(file_name=file_name)
+
+    @attr('functional_test')
+    def test_should_not_delete_submission_for_label_change_when_editflag_is_true(self):
+        self.project_name = random_string()
+        self.client.login(username="rasitefa@mailinator.com", password="test123")
+        file_name = 'ft_advanced_questionnaire.xls'
+        form_code = self._verify_questionnaire_creation(self.project_name, file_name)
+        self.assertEqual(len(form_code), 3)
+        all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
+        all_project_page.navigate_to_project_overview_page(self.project_name)
+        self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
+        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        file_name = 'ft_advanced_questionnaire_label_change.xls'
+        self._verify_edit_of_questionnaire(file_name=file_name, edit_flag=True)

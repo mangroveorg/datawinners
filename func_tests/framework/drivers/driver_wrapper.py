@@ -67,7 +67,7 @@ class DriverWrapper(object):
     def __init__(self, browser=None):
         self._driver = get_driver_for_browser(browser)
         self._driver.implicitly_wait(UI_TEST_TIMEOUT)
-        self._driver.set_window_size(1600,900)
+        self._driver.set_window_size(1600, 900)
         self._driver.delete_all_cookies()
 
     def find_drop_down(self, locator_dict):

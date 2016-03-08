@@ -247,15 +247,3 @@ class TestXFormBridge(unittest.TestCase):
         self.assertEqual('true()', binds[0])
         self.assertEqual(None, binds[1])
 
-    #integration
-    def test_should_create_project_when_xlsform_is_uploaded(self):
-        project_name = random_string()
-        client = Client()
-        client.login(username='tester150411@gmail.com', password='tester150411')
-
-        r = client.post(path='/xlsform/upload/?pname='+project_name+'&qqfile=text_and_integer.xls',
-                        data=open(os.path.join(self.test_data, 'text_and_integer.xls'), 'r').read(),
-                                  content_type='application/octet-stream')
-
-        self.assertEquals(r.status_code, 200)
-        self.assertNotEqual(r._container[0].find('project_name'), -1)
