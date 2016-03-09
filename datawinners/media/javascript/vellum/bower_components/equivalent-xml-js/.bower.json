@@ -1,0 +1,13 @@
+{
+  "name": "equivalent-xml-js",
+  "homepage": "https://github.com/mwhite/equivalent-xml-js",
+  "_release": "7de21be295",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "7de21be29567a06535309b9ee969b97abcfbcb21"
+  },
+  "_source": "git://github.com/mwhite/equivalent-xml-js.git",
+  "_target": "master",
+  "_originalSource": "mwhite/equivalent-xml-js"
+}

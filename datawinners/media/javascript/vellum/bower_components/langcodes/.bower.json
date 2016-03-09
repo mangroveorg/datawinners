@@ -1,0 +1,13 @@
+{
+  "name": "langcodes",
+  "homepage": "https://github.com/dimagi/langcodes",
+  "_release": "dd833883b5",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "dd833883b5477e6f2bd916d298f236293f5de787"
+  },
+  "_source": "git://github.com/dimagi/langcodes.git",
+  "_target": "*",
+  "_originalSource": "dimagi/langcodes"
+}

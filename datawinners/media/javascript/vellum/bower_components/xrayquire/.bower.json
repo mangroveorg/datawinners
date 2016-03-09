@@ -1,0 +1,13 @@
+{
+  "name": "xrayquire",
+  "homepage": "https://github.com/requirejs/xrayquire",
+  "_release": "396ae6569b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "396ae6569b4e292bb09e2b815729f42609e7c711"
+  },
+  "_source": "git://github.com/requirejs/xrayquire.git",
+  "_target": "*",
+  "_originalSource": "requirejs/xrayquire"
+}

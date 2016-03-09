@@ -1,0 +1,13 @@
+{
+  "name": "requirejs-tpl",
+  "homepage": "https://github.com/jfparadis/requirejs-tpl",
+  "_release": "a3ca1e0e7f",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "a3ca1e0e7f5450df212d61a3738dd54082e55be1"
+  },
+  "_source": "git://github.com/jfparadis/requirejs-tpl.git",
+  "_target": "*",
+  "_originalSource": "jfparadis/requirejs-tpl"
+}

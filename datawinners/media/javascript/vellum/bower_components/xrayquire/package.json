@@ -1,0 +1,7 @@
+{
+    "name": "xrayquire",
+    "license": "MIT",
+    "volo": {
+        "url": "https://raw.github.com/requirejs/xrayquire/{version}/xrayquire.js"
+    }
+}

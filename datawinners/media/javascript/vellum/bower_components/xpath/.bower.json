@@ -1,0 +1,14 @@
+{
+  "name": "xpath",
+  "homepage": "https://github.com/dimagi/js-xpath",
+  "version": "0.0.2",
+  "_release": "0.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.2",
+    "commit": "050770493c89ec06e10b47f9db681fce4c6bdd4f"
+  },
+  "_source": "git://github.com/dimagi/js-xpath.git",
+  "_target": "v0.0.2",
+  "_originalSource": "dimagi/js-xpath"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "XMLWriter",
+  "homepage": "https://github.com/dimagi/XMLWriter",
+  "_release": "ab8760d6e0",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "ab8760d6e03925c67e3405123648291e1258ef40"
+  },
+  "_source": "git://github.com/dimagi/XMLWriter.git",
+  "_target": "master",
+  "_originalSource": "dimagi/XMLWriter"
+}
