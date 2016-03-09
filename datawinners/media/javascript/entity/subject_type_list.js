@@ -57,11 +57,21 @@ $(document).ready(function () {
                                         list_qaires.push(element);
                                     }
                             });
+                            if (list_qaires.length){
+                                message = gettext("The following Questionnaire(s) are collecting data about <b>") + subject;
 
-                            message = (list_qaires.length ? (gettext("The following Questionnaire(s) are collecting data about <b>")
-                                                    +  subject + "<li style='margin-left:15px;'>"+ list_qaires +"</li>") : "");
-                            message = message + (list_subjects.length ? (gettext("The following Identification Number(s) are linked to <b>")
-                                                    +  subject + "<li style='margin-left:15px;'>"+ list_subjects +"</li>") : "");
+                            $.each(list_qaires, function(key, element) {
+                                message = message + "<li style='margin-left:15px;'>"+ element +"</li>";
+                            });
+                            }
+                            if (list_subjects.length){
+                                message = message + gettext("The following Identification Number(s) are linked to <b>") + subject;
+
+                            $.each(list_subjects, function(key, element) {
+                                message = message + "<li style='margin-left:15px;'>"+ element +"</li>";
+                            });
+                            }
+
                         }
                             message = message + "</ul></br>";
                             list = $(line).find(".questionnaires");
