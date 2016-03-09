@@ -2,6 +2,7 @@
 {% block page_title %} Your Account Phone Number {% endblock %}
 
 {% load dw_tabs %}
+{% load waffle_tags %}
 
 {% block page_js %}
     {{ block.super }}
@@ -10,7 +11,13 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/util.css" rel="stylesheet"/>
-    <link href="/media/css/scss/section_application.css" rel="stylesheet"/>
+    {% flag "green_theme"%}
+    	<!-- Demo for feature toggle based theme change. If we have real requirement for custom themes, 
+    			we need to refactor the way styles are organized -->
+	    <link href="/media/css/scss/section_application_green_theme.css" rel="stylesheet"/>
+	{% else %}
+	    <link href="/media/css/scss/section_application.css" rel="stylesheet"/>
+	{% endflag %}    
 {% endblock %}
 {% block body %}
     {{ block.super }}

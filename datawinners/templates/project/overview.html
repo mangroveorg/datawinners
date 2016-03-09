@@ -12,13 +12,22 @@
 {% activetab "main_nav" "questionnaires" %}
 {{ block.super }}
 {% endblock %}
+{% load waffle_tags %}
 
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_new_overview.css" rel="stylesheet" />
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet" />
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
-    <link href="/media/css/scss/section_application.css" rel="stylesheet"/>
+	  
+    {% flag "green_theme"%}
+    	<!-- Demo for feature toggle based theme change. If we have real requirement for custom themes, 
+    			we need to refactor the way styles are organized -->
+	    <link href="/media/css/scss/section_application_green_theme.css" rel="stylesheet"/>
+	{% else %}
+	    <link href="/media/css/scss/section_application.css" rel="stylesheet"/>
+	{% endflag %}
+	    
     {% if GOOGLE_MAPS_ENABLED %}
         <link rel="stylesheet" href="/media/javascript/OpenLayers-2.13.1/theme/default/style.css" media="screen">
         <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map.css" media="screen">

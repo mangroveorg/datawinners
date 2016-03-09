@@ -1,4 +1,12 @@
-<link rel="stylesheet" href="/media/css/scss/section_application.css" type="text/css" media="screen">
+{% load waffle_tags %}
+    {% flag "green_theme"%}
+    	<!-- Demo for feature toggle based theme change. If we have real requirement for custom themes, 
+    			we need to refactor the way styles are organized -->
+	    <link href="/media/css/scss/section_application_green_theme.css" rel="stylesheet" type="text/css" media="screen"/>
+	{% else %}
+	    <link href="/media/css/scss/section_application.css" rel="stylesheet" type="text/css" media="screen"/>
+	{% endflag %}
+
 <link rel="stylesheet" href="/media/css/scss/section_header.css" media="screen">
 <link rel="stylesheet" href="/media/css/scss/util.css" media="screen">
 <link rel="stylesheet" href="/media/css/scss/section_tab_navigation.css" media="screen">
