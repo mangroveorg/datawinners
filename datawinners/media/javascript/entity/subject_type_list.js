@@ -74,7 +74,7 @@ $(document).ready(function () {
                 content = content + (is_qaire ? gettext("from the above-mentioned Questionnaire(s)") : "");
                 content = content + ((is_idnr && is_qaire) ? gettext(" and ") : "");
                 content = content + (is_idnr ? gettext("from linked Identification Number(s)") : "");
-                content = content + gettext(" first.");
+                content = content + gettext(" first.") + "<br/><br/>";
 
                 if(has_questionnaires)
                 {
