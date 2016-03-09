@@ -29,6 +29,7 @@ class TestScheduler(unittest.TestCase):
         ]
         self.project = Mock(spec=Project)
         self.project.get_data_senders.return_value = self.data_senders
+        self.project.xform.return_value = "<test>val</test>"
 
         self.reminder1 = Mock(spec=Reminder)
         self.reminder1.should_be_send_on.return_value = True

@@ -395,10 +395,12 @@ class XlsFormParser():
         name = self._get_label(field)
         code = field['name']
         type = field['type'].lower()
+        hint = field.get("hint")
+        constraint_message = field.get("bind").get("jr:constraintMsg") if field.get("bind") else None
 
         question = {'title': name, 'type': xform_dw_type_dict.get(type, type), "is_entity_question": False,
-                    "code": code, "name": name, 'required': self.is_required(field),
-                    "parent_field_code": parent_field_code,
+                    "code": code, "name": name, 'required': self.is_required(field), "hint": hint,
+                    "constraint_message": constraint_message, "parent_field_code": parent_field_code,
                     "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
 
         if type in ['date', TODAY]:
@@ -423,6 +425,9 @@ class XlsFormParser():
             return
         name = self._get_label(field)
         code = field['name']
+        hint = field.get("hint")
+        constraint_message = field.get("bind").get("jr:constraintMsg") if field.get("bind") else None
+
         if field.get('choices'):
             choices = [{'value': {'text': self._get_choice_label(f), 'val': f['name']}} for f in field.get('choices')]
         else:
@@ -430,7 +435,7 @@ class XlsFormParser():
             choices = [{'value': {'text': self._get_choice_label(f), 'val': f['name']}} for f in
                        self.xform_dict['choices'].get(field['itemset'])]
         question = {"title": name, "code": code, "type": "select", 'required': self.is_required(field),
-                    "parent_field_code": parent_field_code,
+                    "hint": hint, "constraint_message": constraint_message, "parent_field_code": parent_field_code,
                     "choices": choices, "is_entity_question": False}
 
         question.update({"has_other": field['type'] in self.or_other_data_types})
@@ -462,8 +467,11 @@ class XlsFormParser():
     def _media(self, field, parent_field_code=None):
         name = self._get_label(field)
         code = field['name']
+        hint = field.get("hint")
+        constraint_message = field.get("bind").get("jr:constraintMsg") if field.get("bind") else None
+
         question = {"title": name, "code": code, "type": field['type'], 'required': self.is_required(field),
-                    "parent_field_code": parent_field_code,
+                    "parent_field_code": parent_field_code, "hint": hint, "constraint_message": constraint_message,
                     "is_entity_question": False}
         return question
 

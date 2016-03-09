@@ -1,6 +1,5 @@
 DW.UploadQuestionnaire = function(options){
-    var self = this;
-    self._init(options);
+    this._init(options);
 };
 DW.showError = function(errors,message_prefix,message_suffix){
     var error_message_prefix = '';
@@ -51,18 +50,15 @@ DW.showSuccess = function(message){
 
 DW.UploadQuestionnaire.prototype._init = function(options){
     var self = this;
-    var preUploadValidation =  options.preUploadValidation || function(){ return true;};
-
     var uploadButton = $("#uploadXLS");
     var spinner = $(".upload_spinner");
     var initialUploadButtonText = uploadButton.text();
     var cancelUploadLink = $("#cancel-xlx-upload");
     var warningMessageBox = $(".warning-message-box");
     var flash_message = $("#xlx-message");
-    new qq.FileUploader({
+    self.file_uploader = new qq.FileUploader({
         element: document.getElementById('file_uploader'),
         action: options.postUrl(),
-        params: {},
         buttonText: options.buttonText,
         onSubmit: function () {
             $('.information_box').remove();
@@ -72,7 +68,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             uploadButton.text(gettext("Uploading..."));
             uploadButton.attr("disabled","disabled");
             uploadButton.addClass("disabled_yellow_submit_button");
-            this.params = (options.params && options.params()) || {};
+            this.params = options.params || {};
             options.onSubmit && options.onSubmit();
         },
         onComplete: function (id, fileName, responseJSON) {
@@ -83,7 +79,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             uploadButton.removeClass("disabled_yellow_submit_button");
             uploadButton.removeAttr("disabled");
             if (!responseJSON['success']) {
-                options.postErrorHandler(responseJSON);
+                options.postErrorHandler(responseJSON, self.file_uploader, self.file_input);
             }
             else {
                 (options.onSuccess && options.onSuccess());
@@ -95,12 +91,10 @@ DW.UploadQuestionnaire.prototype._init = function(options){
         }
     });
 
-    uploadButton.on("click", function() {
-        if(!preUploadValidation()){
-            return false;
-        }
+    self.file_input = $("input[name=file]");
 
-        $("input[name=file]").click();
+    uploadButton.on("click", function() {
+        self.file_input.click();
         return false;
     });
 
