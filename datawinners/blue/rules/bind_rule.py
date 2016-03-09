@@ -15,5 +15,5 @@ class ConstraintMessageRule(Rule):
     def update_submission(self, submission):
         return False
 
-    def remove(self):
+    def remove(self, parent_node, node, xform):
         pass

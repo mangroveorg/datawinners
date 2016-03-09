@@ -27,7 +27,7 @@ class EditRule(Rule):
         else:
             self.create_node(node, old_field, new_field)
 
-    def remove(self):
+    def remove(self, parent_node, node, xform):
         pass
 
     def change_mapping(self):

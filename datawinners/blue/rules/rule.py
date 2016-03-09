@@ -24,10 +24,10 @@ class Rule(object):
                     self._update_xform(new_field[0].fields, old_field.fields, node, xform)
                 self.edit(node, old_field, new_field[0], xform)
             else:
-                self.remove()
+                self.remove(parent_node, node, xform)
 
     @abc.abstractmethod
-    def remove(self):
+    def remove(self, parent_node, node, xform):
         pass
 
     @abc.abstractmethod
