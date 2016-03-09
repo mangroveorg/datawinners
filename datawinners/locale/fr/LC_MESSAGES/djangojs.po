@@ -1139,7 +1139,7 @@ msgid "Delete Associated Questions First"
 msgstr "Supprimer d’abord les Questions associés"
 
 msgid "The following Questionnaire(s) are collecting data about <b>"
-msgstr "Les Questionnaire(s) suivants collectent des données sur <b>"
+msgstr "Le(s) Questionnaire(s) suivant(s) collectent des données sur <b>"
 
 msgid "If you want to delete the Identification Number Type(s) <b>"
 msgstr "Si vous voulez supprimer le(s) Type(s) de Numéro d’Identification <b>"
@@ -1660,16 +1660,16 @@ msgid "User has been added successfully"
 msgstr "L'utilisateur a été ajouté avec succès"
 
 msgid "The following Identification Number(s) are linked to <b>"
-msgstr "Les Numéros d'Identification suivants sont liés à <b>"
+msgstr "Le(s) Numéros d'Identification suivant(s) sont liés à <b>"
 
 msgid "</b>, you need to remove the Identification Number question(s) "
-msgstr "</b>, vous devez d’abord retirer les questions relatives au Numéro d’Identification "
+msgstr "</b>, vous devez d’abord retirer la(les) question(s) relative(s) au Numéro d’Identification "
 
 msgid "from the above-mentioned Questionnaire(s)"
-msgstr "des Questionnaire(s) mentionnés plus haut"
+msgstr "du (des) Questionnaire(s) mentionné(s) plus haut"
 
 msgid "from linked Identification Number(s)"
-msgstr "des Numéros d’Identification liés"
+msgstr "du(des) Numéro(s) d’Identification lié(s)"
 
 msgid " and "
 msgstr " ainsi que "
