@@ -201,7 +201,7 @@ INSTALLED_APPS = (
     'datawinners.smstester',
     'datawinners.preferences',
     'waffle',
-    'datawinners.advanced_dashboard',
+    'datawinners.feature_toggle_demo_advanced_dashboard',
     'datawinners.feature_toggle',
 )
 
