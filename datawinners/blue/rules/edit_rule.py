@@ -30,9 +30,6 @@ class EditRule(Rule):
     def remove(self, parent_node, node, xform):
         pass
 
-    def change_mapping(self):
-        return False
-
     def update_submission(self, submission):
         return False
 

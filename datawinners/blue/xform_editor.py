@@ -7,9 +7,8 @@ class UnsupportedXformEditException(Exception):
 
 
 class XFormEditor(object):
-    def __init__(self, submission, submission_search, validator, questionnaire):
+    def __init__(self, submission, validator, questionnaire):
         self.submission = submission
-        self.submission_search = submission_search
         self.validator = validator
         self.questionnaire = questionnaire
 
@@ -18,8 +17,6 @@ class XFormEditor(object):
             raise UnsupportedXformEditException()
 
         self.questionnaire.save(new_questionnaire)
-
-        self.submission_search.update_mapping(new_questionnaire)
 
         self.submission.update_all(new_questionnaire)
 

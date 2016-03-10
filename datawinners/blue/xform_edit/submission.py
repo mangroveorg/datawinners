@@ -1,12 +1,13 @@
 from mangrove.datastore.documents import SurveyResponseDocument
 
 from datawinners.blue.rules import REGISTERED_RULES
-from datawinners.search.submission_index import SubmissionSearchStore
+from datawinners.search.submission_index_task import async_reindex
 
 
 class Submission(object):
-    def __init__(self, manager):
+    def __init__(self, manager, dbname):
         self.manager = manager
+        self.dbname = dbname
 
     def update_all(self, questionnaire):
         start_key = [questionnaire.id]
@@ -18,21 +19,8 @@ class Submission(object):
             submission = SurveyResponseDocument._wrap_row(row)
             for rule in REGISTERED_RULES:
                 success = success or rule.update_submission(submission)
-            # TODO: save submission
+                if success:
+                    submission.store(self.manager.database)
 
         if success:
-            # TODO: reindex elasticsearch
-            pass
-
-
-class SubmissionSearch(object):
-    def __init__(self, manager):
-        self.manager = manager
-
-    def update_mapping(self, questionnaire):
-        change_mapping = False
-        for rule in REGISTERED_RULES:
-            change_mapping = change_mapping or rule.change_mapping()
-
-        if change_mapping:
-            SubmissionSearchStore(self.manager, questionnaire, None).recreate_elastic_store()
+            async_reindex.apply_async((self.dbname, questionnaire.id), countdown=5, retry=False)

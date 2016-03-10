@@ -9,9 +9,6 @@ class ConstraintMessageRule(Rule):
         if bind_node is not None and new_field.constraint_message != old_field.constraint_message:
             add_attrib(bind_node, 'constraintMsg', new_field.constraint_message)
 
-    def change_mapping(self):
-        return False
-
     def update_submission(self, submission):
         return False
 

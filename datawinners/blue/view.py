@@ -35,14 +35,15 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.blue.error_translation_utils import transform_error_message, translate_odk_message
 from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
     get_generated_xform_id_name, XFormImageProcessor
-from datawinners.blue.xform_edit.submission import Submission, SubmissionSearch
 from datawinners.blue.xform_edit.questionnaire import Questionnaire
+from datawinners.blue.xform_edit.submission import Submission
 from datawinners.blue.xform_edit.validator import Validator
 from datawinners.blue.xform_editor import XFormEditor, UnsupportedXformEditException
 from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
 from datawinners.common.constant import EDITED_QUESTIONNAIRE
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager
+from datawinners.main.utils import get_database_name
 from datawinners.project.helper import generate_questionnaire_code, is_project_exist
 from datawinners.project.utils import is_quota_reached
 from datawinners.project.views.utils import get_form_context
@@ -133,7 +134,7 @@ class ProjectUpdate(View):
             doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code, xls_parser_response=xls_parser_response).xform_with_form_code
             new_questionnaire = Project.new_from_doc(manager, doc)
             QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(xls_parser_response.json_xform_data)
-            XFormEditor(Submission(manager), SubmissionSearch(manager), Validator(), Questionnaire(_temp_file(request))).edit(new_questionnaire, questionnaire)
+            XFormEditor(Submission(manager, get_database_name(request.user)), Validator(), Questionnaire(_temp_file(request))).edit(new_questionnaire, questionnaire)
 
         except UnsupportedXformEditException as e:
             return HttpResponse(content_type='application/json', content=json.dumps({

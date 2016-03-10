@@ -10,9 +10,11 @@ class RemoveRule(Rule):
         xform.remove_instance_node(parent_node, node)
 
     def update_submission(self, submission):
-        return True
+        if not self.fields:
+            return False
 
-    def change_mapping(self):
+        for field in self.fields:
+            del submission.values[field.code]
         return True
 
     def edit(self, node, old_field, new_field, xform):
