@@ -7,5 +7,5 @@ class Feature(models.Model):
         return self.name
 
 class FeatureSubscription(models.Model):
-    feature = models.ForeignKey(Feature)
+    feature = models.OneToOneField(Feature)
     organizations = models.ManyToManyField(Organization, blank=True)
