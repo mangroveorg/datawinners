@@ -94,7 +94,7 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     self.file_input = $("input[name=file]");
 
     uploadButton.on("click", function() {
-        self.file_input.click();
+        $("input[name=file]").click();
         return false;
     });
 
