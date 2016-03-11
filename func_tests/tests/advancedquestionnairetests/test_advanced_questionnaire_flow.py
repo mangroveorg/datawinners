@@ -338,6 +338,6 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         all_project_page.navigate_to_project_overview_page(self.project_name)
         self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
         project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
-        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        self._do_web_submission('submission_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
         file_name = 'ft_advanced_questionnaire_label_change.xls'
         self._verify_edit_of_questionnaire(file_name=file_name, edit_flag=True)
