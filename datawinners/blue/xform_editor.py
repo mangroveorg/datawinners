@@ -1,6 +1,3 @@
-from datawinners.blue.rules import REGISTERED_RULES
-
-
 class UnsupportedXformEditException(Exception):
     def __init__(self):
         self.message = "Unsupported xlsform edit exception"

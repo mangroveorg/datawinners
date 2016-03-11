@@ -33,6 +33,7 @@ from datawinners.accountmanagement.decorators import session_not_expired, is_not
 from datawinners.accountmanagement.models import Organization
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.blue.error_translation_utils import transform_error_message, translate_odk_message
+from datawinners.blue.rules.factory import get_all_rules
 from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
     get_generated_xform_id_name, XFormImageProcessor
 from datawinners.blue.xform_edit.questionnaire import Questionnaire
@@ -134,7 +135,9 @@ class ProjectUpdate(View):
             doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code, xls_parser_response=xls_parser_response).xform_with_form_code
             new_questionnaire = Project.new_from_doc(manager, doc)
             QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(xls_parser_response.json_xform_data)
-            XFormEditor(Submission(manager, get_database_name(request.user)), Validator(), Questionnaire(_temp_file(request))).edit(new_questionnaire, questionnaire)
+            xform_rules = get_all_rules()
+            XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
+                        Questionnaire(_temp_file(request))).edit(new_questionnaire, questionnaire)
 
         except UnsupportedXformEditException as e:
             return HttpResponse(content_type='application/json', content=json.dumps({

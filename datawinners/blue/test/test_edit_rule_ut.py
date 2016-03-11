@@ -6,7 +6,8 @@ from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 
-from datawinners.blue.rules import EditLabelRule, EditHintRule, ConstraintMessageRule
+from datawinners.blue.rules.bind_rule import ConstraintMessageRule
+from datawinners.blue.rules.edit_rule import EditLabelRule, EditHintRule
 from datawinners.blue.rules.remove_rule import RemoveRule
 
 DIR = os.path.dirname(__file__)
