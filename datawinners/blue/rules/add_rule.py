@@ -31,7 +31,7 @@ class AddRule(Rule):
                     old_node = get_node(old_parent_node, new_field.code)
                     self._update_xform_with_new_fields(new_field.fields, old_field[0].fields, new_node, old_node, old_xform, new_xform)
             else:
-                self.add(old_parent_node, new_node, new_xform.bind_node(new_node), new_xform._instance_node(new_node).next(), old_xform)
+                self.add(old_parent_node, new_node, new_xform.bind_node(new_node), new_xform._instance_node(new_node), old_xform)
 
     def update_submission(self, submission):
         return False

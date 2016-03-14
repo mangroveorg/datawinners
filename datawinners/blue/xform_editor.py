@@ -15,6 +15,6 @@ class XFormEditor(object):
 
         self.questionnaire.save(new_questionnaire)
 
-        self.submission.update_all(new_questionnaire)
+        # self.submission.update_all(new_questionnaire)
 
         # TODO: send email only if new unique id added?
