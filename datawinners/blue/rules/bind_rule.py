@@ -4,6 +4,9 @@ from datawinners.blue.rules.rule import Rule
 
 
 class ConstraintMessageRule(Rule):
+    def add(self, parent_node, node, bind_node, instance_node, xform):
+        pass
+
     def edit(self, node, old_field, new_field, xform):
         bind_node = xform.bind_node(node)
         if bind_node is not None and new_field.constraint_message != old_field.constraint_message:

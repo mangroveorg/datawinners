@@ -4,6 +4,9 @@ from datawinners.blue.rules.rule import Rule
 
 
 class RemoveRule(Rule):
+    def add(self, parent_node, node, bind_node, instance_node, xform):
+        pass
+
     def remove(self, parent_node, node, xform):
         remove_node(parent_node, node)
         xform.remove_bind_node(node)

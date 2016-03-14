@@ -30,6 +30,9 @@ class EditRule(Rule):
     def remove(self, parent_node, node, xform):
         pass
 
+    def add(self, parent_node, node, bind_node, instance_node, xform):
+        pass
+
     def update_submission(self, submission):
         return False
 

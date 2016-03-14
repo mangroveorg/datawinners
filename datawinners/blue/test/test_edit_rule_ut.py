@@ -6,6 +6,7 @@ from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 
+from datawinners.blue.rules.add_rule import AddRule
 from datawinners.blue.rules.bind_rule import ConstraintMessageRule
 from datawinners.blue.rules.edit_rule import EditLabelRule, EditHintRule
 from datawinners.blue.rules.remove_rule import RemoveRule
@@ -19,14 +20,14 @@ class TestEditRule(unittest.TestCase):
         edit_label_rule = EditLabelRule()
         self.maxDiff = None
 
-        old_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2")
-        new_questionnaire = self.get_questionnaire(group_label="Enter the new outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Full name please",
-                                                   field_name="text2")
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the new outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Full name please",
+                                                    field_name="text2")
         edit_label_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
@@ -34,16 +35,16 @@ class TestEditRule(unittest.TestCase):
         edit_hint_rule = EditHintRule()
         self.maxDiff = None
 
-        old_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2",
-                                                   hint="Enter your name")
-        new_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2",
-                                                   hint="Please enter your name")
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    hint="Enter your name")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    hint="Please enter your name")
         edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
@@ -51,15 +52,15 @@ class TestEditRule(unittest.TestCase):
         edit_hint_rule = EditHintRule()
         self.maxDiff = None
 
-        old_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2")
-        new_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2",
-                                                   hint="Please enter your name")
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    hint="Please enter your name")
         edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
@@ -67,15 +68,15 @@ class TestEditRule(unittest.TestCase):
         edit_constraint_message_rule = ConstraintMessageRule()
         self.maxDiff = None
 
-        old_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2")
-        new_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2",
-                                                   constraint_message="Please enter your name")
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    constraint_message="Please enter your name")
         edit_constraint_message_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
@@ -83,23 +84,36 @@ class TestEditRule(unittest.TestCase):
         remove_rule = RemoveRule()
         self.maxDiff = None
 
-        old_questionnaire = self.get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2")
-        new_questionnaire = self.get_questionnaire_with_field_removed()
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        new_questionnaire = self._get_questionnaire_with_field_removed()
 
         remove_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
-    def get_questionnaire(self, group_label="Enter the outer group details", group_name="group_outer",
-                          field_label="Name please", field_name="text2", hint=None, constraint_message=None):
+    def test_should_update_xform_with_add_field_change(self):
+        add_rule = AddRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire_with_field_removed()
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+
+        add_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+    def _get_questionnaire(self, group_label="Enter the outer group details", group_name="group_outer",
+                           field_label="Name please", field_name="text2", hint=None, constraint_message=None):
         field = Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name)
         field.hint = hint
         field.constraint_message = constraint_message
 
         doc = ProjectDocument()
-        doc.xform = self.get_xform(group_label, field)
+        doc.xform = self._get_xform(group_label, field)
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
         questionnaire.name = "q1"
         questionnaire.form_code = "007"
@@ -108,9 +122,9 @@ class TestEditRule(unittest.TestCase):
         )
         return questionnaire
 
-    def get_questionnaire_with_field_removed(self, group_label="Enter the outer group details", group_name="group_outer"):
+    def _get_questionnaire_with_field_removed(self, group_label="Enter the outer group details", group_name="group_outer"):
         doc = ProjectDocument()
-        doc.xform = self.get_xform(group_label)
+        doc.xform = self._get_xform(group_label)
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
         questionnaire.name = "q1"
         questionnaire.form_code = "007"
@@ -119,7 +133,7 @@ class TestEditRule(unittest.TestCase):
         )
         return questionnaire
 
-    def get_xform(self, group_label, field=None):
+    def _get_xform(self, group_label, field=None):
         field_attrs = {"instance_node": "", "bind_node": "", "input_node": ""}
         if field:
             hint_node = '<hint>' + field.hint + '</hint>' if field.hint else ''
@@ -155,8 +169,8 @@ class TestEditRule(unittest.TestCase):
                   <bind nodeset="/tmpkWhV2m/group_outer/group_inner/number3" required="true()" type="int" />\
                   <bind nodeset="/tmpkWhV2m/group_outer/group_inner/people" type="select1" />\
                   <bind nodeset="/tmpkWhV2m/group_outer/group_inner/clinic" type="select1" />\
-                  {bind_node}<bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" />\
-                </model>\
+                  <bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" />\
+                  {bind_node}</model>\
               </html:head>\
               <html:body>\
                 <group ref="/tmpkWhV2m/group_outer">\

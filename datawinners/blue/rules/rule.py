@@ -37,6 +37,10 @@ class Rule(object):
         pass
 
     @abc.abstractmethod
+    def add(self, parent_node, node, bind_node, instance_node, xform):
+        pass
+
+    @abc.abstractmethod
     def edit(self, node, old_field, new_field, xform):
         pass
 
