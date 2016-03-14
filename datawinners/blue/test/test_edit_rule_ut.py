@@ -6,9 +6,9 @@ from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 
+from datawinners.blue.rules import EditLabelRule, EditHintRule, ConstraintMessageRule
 from datawinners.blue.rules.add_rule import AddRule
-from datawinners.blue.rules.bind_rule import ConstraintMessageRule
-from datawinners.blue.rules.edit_rule import EditLabelRule, EditHintRule
+from datawinners.blue.rules.edit_node_attribute_rule import EditAppearanceRule
 from datawinners.blue.rules.remove_rule import RemoveRule
 
 DIR = os.path.dirname(__file__)
@@ -46,6 +46,23 @@ class TestEditRule(unittest.TestCase):
                                                     field_name="text2",
                                                     hint="Please enter your name")
         edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+    def test_should_update_xform_with_appearance_change(self):
+        edit_appearance_rule = EditAppearanceRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                   group_name="group_outer",
+                                                   field_label="Name please",
+                                                   field_name="text2",
+                                                   appearance="multiline")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                   group_name="group_outer",
+                                                   field_label="Name please",
+                                                   field_name="text2",
+                                                   appearance="")
+        edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_insert_hint_node_if_not_existing(self):
@@ -106,11 +123,11 @@ class TestEditRule(unittest.TestCase):
         add_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
+
     def _get_questionnaire(self, group_label="Enter the outer group details", group_name="group_outer",
-                           field_label="Name please", field_name="text2", hint=None, constraint_message=None):
-        field = Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name)
-        field.hint = hint
-        field.constraint_message = constraint_message
+                          field_label="Name please", field_name="text2", hint=None, constraint_message=None, appearance=None):
+        field = Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name, hint=hint,
+                      constraint_message=constraint_message, appearance=appearance)
 
         doc = ProjectDocument()
         doc.xform = self._get_xform(group_label, field)
@@ -137,7 +154,8 @@ class TestEditRule(unittest.TestCase):
         field_attrs = {"instance_node": "", "bind_node": "", "input_node": ""}
         if field:
             hint_node = '<hint>' + field.hint + '</hint>' if field.hint else ''
-            input_node = '<input ref="/tmpkWhV2m/group_outer/' + field.name + '"><label>' + field.label + '</label>' + hint_node + '</input>'
+            appearance_attr = 'appearance="' + field.appearance + '" ' if field.appearance else ''
+            input_node = '<input ' + appearance_attr + 'ref="/tmpkWhV2m/group_outer/' + field.name + '"><label>' + field.label + '</label>' + hint_node + '</input>'
             constraint_message_attr = 'constraintMsg="' + field.constraint_message + '" ' if field.constraint_message else ''
             bind_node = '<bind ' + constraint_message_attr + 'nodeset="/tmpkWhV2m/group_outer/' + field.name + '" required="true()" type="string" />'
             instance_node = '<' + field.name + ' />'

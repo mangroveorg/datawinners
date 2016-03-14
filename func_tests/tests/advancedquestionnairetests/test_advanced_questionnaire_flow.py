@@ -37,7 +37,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver("phantom")
+        cls.driver = setup_driver("firefox")
         cls.test_data = os.path.join(DIR, 'testdata')
         cls.admin_email_id = 'tester150411@gmail.com'
         cls.global_navigation_page = login(cls.driver, VALID_CREDENTIALS)
@@ -331,13 +331,13 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     def test_should_not_delete_submission_for_label_change_when_editflag_is_true(self):
         self.project_name = random_string()
         self.client.login(username="rasitefa@mailinator.com", password="test123")
-        file_name = 'ft_advanced_questionnaire.xls'
+        file_name = 'simple_advanced_questionnaire.xls'
         form_code = self._verify_questionnaire_creation(self.project_name, file_name)
         self.assertEqual(len(form_code), 3)
         all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
         all_project_page.navigate_to_project_overview_page(self.project_name)
         self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
         project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
-        self._do_web_submission('submission_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
-        file_name = 'ft_advanced_questionnaire_label_change.xls'
+        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        file_name = 'simple_advanced_questionnaire_label_change.xls'
         self._verify_edit_of_questionnaire(file_name=file_name, edit_flag=True)
