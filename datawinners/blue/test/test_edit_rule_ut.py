@@ -6,9 +6,9 @@ from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 
-from datawinners.blue.rules import EditLabelRule, EditHintRule, ConstraintMessageRule, EditDefaultRule
+from datawinners.blue.rules import EditLabelRule, EditHintRule, EditConstraintMessageRule, EditDefaultRule
 from datawinners.blue.rules.add_rule import AddRule
-from datawinners.blue.rules.edit_node_attribute_rule import EditAppearanceRule
+from datawinners.blue.rules.node_attribute_rule import EditAppearanceRule
 from datawinners.blue.rules.remove_rule import RemoveRule
 
 DIR = os.path.dirname(__file__)
@@ -99,7 +99,7 @@ class TestEditRule(unittest.TestCase):
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_constraint_message_change(self):
-        edit_constraint_message_rule = ConstraintMessageRule()
+        edit_constraint_message_rule = EditConstraintMessageRule()
         self.maxDiff = None
 
         old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",

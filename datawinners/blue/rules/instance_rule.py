@@ -17,6 +17,3 @@ class EditDefaultRule(Rule):
 
     def remove(self, parent_node, node, xform):
         pass
-
-    def change_mapping(self):
-        return False

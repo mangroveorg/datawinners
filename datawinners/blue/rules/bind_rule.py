@@ -3,7 +3,7 @@ from mangrove.form_model.xform import add_attrib
 from datawinners.blue.rules.rule import Rule
 
 
-class ConstraintMessageRule(Rule):
+class EditConstraintMessageRule(Rule):
     def add(self, parent_node, node, bind_node, instance_node, xform):
         pass
 
