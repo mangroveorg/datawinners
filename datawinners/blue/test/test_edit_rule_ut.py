@@ -6,7 +6,7 @@ from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 
-from datawinners.blue.rules import EditLabelRule, EditHintRule, ConstraintMessageRule
+from datawinners.blue.rules import EditLabelRule, EditHintRule, ConstraintMessageRule, EditDefaultRule
 from datawinners.blue.rules.add_rule import AddRule
 from datawinners.blue.rules.edit_node_attribute_rule import EditAppearanceRule
 from datawinners.blue.rules.remove_rule import RemoveRule
@@ -63,6 +63,23 @@ class TestEditRule(unittest.TestCase):
                                                    field_name="text2",
                                                    appearance="")
         edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+    def test_should_update_xform_with_default_change(self):
+        edit_default_rule = EditDefaultRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    default="18.31")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    default="")
+        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_insert_hint_node_if_not_existing(self):
@@ -123,11 +140,11 @@ class TestEditRule(unittest.TestCase):
         add_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
-
     def _get_questionnaire(self, group_label="Enter the outer group details", group_name="group_outer",
-                          field_label="Name please", field_name="text2", hint=None, constraint_message=None, appearance=None):
+                          field_label="Name please", field_name="text2", hint=None, constraint_message=None,
+                          appearance=None, default=None):
         field = Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name, hint=hint,
-                      constraint_message=constraint_message, appearance=appearance)
+                      constraint_message=constraint_message, appearance=appearance, default=default)
 
         doc = ProjectDocument()
         doc.xform = self._get_xform(group_label, field)
@@ -158,7 +175,7 @@ class TestEditRule(unittest.TestCase):
             input_node = '<input ' + appearance_attr + 'ref="/tmpkWhV2m/group_outer/' + field.name + '"><label>' + field.label + '</label>' + hint_node + '</input>'
             constraint_message_attr = 'constraintMsg="' + field.constraint_message + '" ' if field.constraint_message else ''
             bind_node = '<bind ' + constraint_message_attr + 'nodeset="/tmpkWhV2m/group_outer/' + field.name + '" required="true()" type="string" />'
-            instance_node = '<' + field.name + ' />'
+            instance_node = '<' + field.name + '>' + field.default + '</' + field.name + '>' if field.default else '<' + field.name + ' />'
             field_attrs = {"instance_node": instance_node, "bind_node": bind_node, "input_node": input_node}
         return (('<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">\
               <html:head>\
@@ -167,7 +184,7 @@ class TestEditRule(unittest.TestCase):
                   <instance>\
                     <tmpkWhV2m id="tmpkWhV2m">\
                       <group_outer>\
-                        <number1 />\
+                      <number1 />\
                         <group_inner>\
                           <number2 />\
                           <text1 />\
