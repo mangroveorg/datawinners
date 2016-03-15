@@ -5,7 +5,7 @@ from mangrove.form_model.xform import add_child
 from datawinners.blue.rules.rule import Rule
 
 
-class EditRule(Rule):
+class NodeRule(Rule):
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
@@ -37,7 +37,7 @@ class EditRule(Rule):
         return False
 
 
-class EditLabelRule(EditRule):
+class EditLabelRule(NodeRule):
     def create_node(self, node, old_field, new_field):
         pass
 
@@ -49,7 +49,7 @@ class EditLabelRule(EditRule):
         return 'label'
 
 
-class EditHintRule(EditRule):
+class EditHintRule(NodeRule):
     def create_node(self, node, old_field, new_field):
         if old_field.hint != new_field.hint:
             add_child(node, self.tagname(), new_field.hint)
