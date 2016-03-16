@@ -22,7 +22,7 @@ class NodeAttributeRule(Rule):
             add_attrib(node, self.attribute_name(), new_field.appearance)
 
         if not bool(new_field.appearance) and bool(node.get(self.attribute_name())):
-                remove_attrib(node, self.attribute_name())
+            remove_attrib(node, self.attribute_name())
 
     @abc.abstractmethod
     def attribute_name(self):

@@ -8,7 +8,7 @@ class Questionnaire(object):
 
     def save(self, questionnaire):
         questionnaire.update_media_field_flag()
-        questionnaire.save(process_post_update=False)
+        questionnaire.save(process_post_update=True)
         self._update_attachment(questionnaire)
 
     def _update_attachment(self, questionnaire):
