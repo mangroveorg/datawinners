@@ -98,7 +98,13 @@ class SubmissionLogPage(Page):
         return self.get_cell_value_anchor(row, column)
 
     def click_on_nth_header(self, index):
-        self.driver.find(by_css(HEADER_CELL_CSS_LOCATOR % str(index))).click()
+        self._get_header(index).click()
+
+    def _get_header(self, index):
+        return self.driver.find(by_css(HEADER_CELL_CSS_LOCATOR % str(index)))
+
+    def get_header_text(self, index):
+        return self._get_header(index).text
 
     def click_on_success_tab(self):
         self.driver.find(SUCCESS_TAB_CSS_LOCATOR).click()

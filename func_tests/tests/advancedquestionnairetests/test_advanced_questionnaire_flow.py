@@ -1,12 +1,11 @@
 import json
 import os
 import tempfile
-import time
 import zipfile
 
-from nose.plugins.attrib import attr
-from django.test import Client
 import xlrd
+from django.test import Client
+from nose.plugins.attrib import attr
 
 from framework.base_test import HeadlessRunnerTest, setup_driver
 from framework.utils.common_utils import random_string, by_css, generate_random_email_id, by_id
@@ -19,12 +18,12 @@ from pages.projectdatasenderspage.project_data_senders_page import ProjectDataSe
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.submissionlogpage.submission_log_page import LAST_MONTH, ALL_PERIODS
 from tests.activateaccounttests.activate_account_data import NEW_PASSWORD
-from tests.advancedquestionnairetests.advanced_questionnaire_test_helper import perform_submission, navigate_and_verify_web_submission_page_is_loaded, verify_advanced_web_submission_page_is_loaded
+from tests.advancedquestionnairetests.advanced_questionnaire_test_helper import perform_submission, navigate_and_verify_web_submission_page_is_loaded, verify_advanced_web_submission_page_is_loaded, \
+    navigate_and_verify_advanced_web_submission_page_is_loaded
 from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL
+from tests.dashboardtests.dashboard_tests_data import USER_RASITEFA_CREDENTIALS
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.testsettings import UI_TEST_TIMEOUT
-from tests.dashboardtests.dashboard_tests_data import USER_RASITEFA_CREDENTIALS
-
 
 DIR = os.path.dirname(__file__)
 
@@ -121,20 +120,6 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self._verify_edit_of_questionnaire()
         self._verify_datawinners_university()
 
-    def _wait_for_table_to_be_empty(self, submission_log_page):
-        count = 0
-        while True:
-            if count > 8:
-                return False
-            count += 1
-            if submission_log_page.get_total_number_of_records() == 0:
-                return True
-            time.sleep(10)
-            submission_log_page.refresh()
-            submission_log_page.wait_for_table_data_to_load()
-
-        return False
-
     def _verify_edit_of_questionnaire(self, file_name, edit_flag=False):
         edit = 'true' if edit_flag else 'false'
         r = self.client.post(
@@ -144,16 +129,6 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         self.assertEquals(r.status_code, 200)
         self.assertNotEqual(r._container[0].find('"success": true'), -1, r._container[0])
-
-        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
-            self.project_name).wait_for_table_data_to_load()
-
-        is_table_empty = self._wait_for_table_to_be_empty(submission_log_page)
-        self.driver.create_screenshot('empty_rows.png')
-        if edit:
-            self.assertFalse(is_table_empty)
-        else:
-            self.assertTrue(is_table_empty)
 
     def _activate_datasender(self, email):
         DataSenderActivationPage(self.driver).activate_datasender(email, NEW_PASSWORD)
@@ -322,22 +297,38 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         file_name = 'simple_advance_questionnaire.xls'
         form_code = self._verify_questionnaire_creation(self.project_name, file_name)
         self.assertEqual(len(form_code), 3)
+
         all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
         all_project_page.navigate_to_project_overview_page(self.project_name)
         self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
-        self._verify_edit_of_questionnaire(file_name=file_name)
+
+        self._verify_edit_of_questionnaire(file_name=file_name, edit_flag=False)
+
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page()\
+            .navigate_to_submission_log_page(self.project_name).wait_for_table_data_to_load()
+        self.assertTrue(submission_log_page.get_total_number_of_records() == 0)
+        self.assertEquals("Text widget", submission_log_page.get_header_text(6))
 
     @attr('functional_test')
-    def test_should_not_delete_submission_for_label_change_when_editflag_is_true(self):
+    def test_should_change_label(self):
         self.project_name = random_string()
         self.client.login(username="rasitefa@mailinator.com", password="test123")
-        file_name = 'simple_advanced_questionnaire.xls'
-        form_code = self._verify_questionnaire_creation(self.project_name, file_name)
+        form_code = self._verify_questionnaire_creation(self.project_name, 'simple_advance_questionnaire.xls')
         self.assertEqual(len(form_code), 3)
+
         all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
         all_project_page.navigate_to_project_overview_page(self.project_name)
         self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
-        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
         self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
-        file_name = 'simple_advanced_questionnaire_label_change.xls'
-        self._verify_edit_of_questionnaire(file_name=file_name, edit_flag=True)
+
+        self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire_label_change.xls', edit_flag=True)
+
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page()\
+            .navigate_to_submission_log_page(self.project_name).wait_for_table_data_to_load()
+        self.assertFalse(submission_log_page.get_total_number_of_records() == 0)
+        self.assertEquals("Updated Text widget", submission_log_page.get_header_text(6))
+
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        self.assertEquals("Updated Text widget", web_submission_page.get_label(2))

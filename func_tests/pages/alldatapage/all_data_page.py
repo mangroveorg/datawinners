@@ -2,6 +2,7 @@
 from string import lower
 from framework.utils.common_utils import by_xpath, by_css
 import pages
+from pages.advancedwebsubmissionpage.advanced_web_submission_page import AdvancedWebSubmissionPage
 from pages.alldatapage.all_data_locator import *
 from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
 from pages.page import Page
@@ -36,6 +37,10 @@ class AllDataPage(Page):
     def navigate_to_web_submission_page(self, project_name):
         self.driver.find(by_xpath(WEB_SUBMISSION_LINK_XPATH % project_name)).click()
         return WebSubmissionPage(self.driver)
+
+    def navigate_to_advanced_web_submission_page(self, project_name):
+        self.driver.find(by_xpath(WEB_SUBMISSION_LINK_XPATH % project_name)).click()
+        return AdvancedWebSubmissionPage(self.driver)
 
     def has_all_failed_submission_link(self):
         comm_util = CommonUtilities(self.driver)

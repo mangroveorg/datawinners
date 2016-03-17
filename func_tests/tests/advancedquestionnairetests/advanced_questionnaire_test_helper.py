@@ -1,13 +1,10 @@
 import os
 import re
-import tempfile
 
 from django.test import Client
-import xlrd
 
 from framework.utils.common_utils import by_css
 from tests.testsettings import UI_TEST_TIMEOUT
-
 
 DIR = os.path.dirname(__file__)
 test_data = os.path.join(DIR, 'testdata')
@@ -18,6 +15,14 @@ def navigate_and_verify_web_submission_page_is_loaded(driver, global_navigation_
     web_submission_page = all_data_page.navigate_to_web_submission_page(project_name)
     form_element = verify_advanced_web_submission_page_is_loaded(driver)
     return form_element.get_attribute('id'), web_submission_page
+
+
+def navigate_and_verify_advanced_web_submission_page_is_loaded(driver, global_navigation_page, project_name):
+    all_data_page = global_navigation_page.navigate_to_all_data_page()
+    web_submission_page = all_data_page.navigate_to_advanced_web_submission_page(project_name)
+    form_element = verify_advanced_web_submission_page_is_loaded(driver)
+    return form_element.get_attribute('id'), web_submission_page
+
 
 def verify_advanced_web_submission_page_is_loaded(driver):
     form_element = driver.wait_for_element(UI_TEST_TIMEOUT, by_css("form"), True)
