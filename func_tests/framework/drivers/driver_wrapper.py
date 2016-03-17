@@ -264,7 +264,6 @@ class DriverWrapper(object):
             except StaleElementReferenceException:
                 return
 
-
     def wait_until_web_element_is_not_present(self, time_out_in_seconds, element):
         current_time = datetime.datetime.now()
         end_time = current_time + datetime.timedelta(0, time_out_in_seconds)
