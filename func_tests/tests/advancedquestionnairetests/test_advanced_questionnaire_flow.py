@@ -332,3 +332,5 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
         self.assertEquals("Updated Text widget", web_submission_page.get_label(2))
+        self.assertEquals("Updated Can be short or long but always one line (type = text)", web_submission_page.get_hint(1))
+        self.assertEquals("New hint", web_submission_page.get_hint(0))
