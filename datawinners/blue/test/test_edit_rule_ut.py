@@ -50,6 +50,38 @@ class TestEditRule(unittest.TestCase):
         edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
+    def test_should_insert_hint_node_if_not_existing(self):
+        edit_hint_rule = EditHintRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    hint="Please enter your name")
+        edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+    def test_should_remove_hint_node(self):
+        edit_hint_rule = EditHintRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    hint="Please enter your name")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
     def test_should_update_xform_with_appearance_change(self):
         edit_appearance_rule = EditAppearanceRule()
         self.maxDiff = None
@@ -62,8 +94,32 @@ class TestEditRule(unittest.TestCase):
         new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
                                                     group_name="group_outer",
                                                     field_label="Name please",
+                                                    field_name="text2")
+        edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
                                                     field_name="text2",
-                                                    appearance="")
+                                                    appearance="multiline")
+        edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    appearance="sample")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    appearance="multiline")
         edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
@@ -79,8 +135,32 @@ class TestEditRule(unittest.TestCase):
         new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
                                                     group_name="group_outer",
                                                     field_label="Name please",
+                                                    field_name="text2")
+        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
                                                     field_name="text2",
-                                                    default="")
+                                                    default="18.31")
+        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    default="15")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    default="18.31")
         edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
@@ -118,22 +198,6 @@ class TestEditRule(unittest.TestCase):
         edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
-    def test_should_insert_hint_node_if_not_existing(self):
-        edit_hint_rule = EditHintRule()
-        self.maxDiff = None
-
-        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
-                                                    group_name="group_outer",
-                                                    field_label="Name please",
-                                                    field_name="text2")
-        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
-                                                    group_name="group_outer",
-                                                    field_label="Name please",
-                                                    field_name="text2",
-                                                    hint="Please enter your name")
-        edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
-        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
-
     def test_should_update_xform_with_constraint_message_change(self):
         edit_constraint_message_rule = EditConstraintMessageRule()
         self.maxDiff = None
@@ -147,6 +211,33 @@ class TestEditRule(unittest.TestCase):
                                                     field_label="Name please",
                                                     field_name="text2",
                                                     constraint_message="Please enter your name")
+        edit_constraint_message_rule.update_xform(old_questionnaire=old_questionnaire,
+                                                  new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    constraint_message="Please enter your name")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        edit_constraint_message_rule.update_xform(old_questionnaire=old_questionnaire,
+                                                  new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    constraint_message="Please enter your name")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    constraint_message="Updated Please enter your name")
         edit_constraint_message_rule.update_xform(old_questionnaire=old_questionnaire,
                                                   new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
