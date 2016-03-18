@@ -33,14 +33,23 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
 
     def input_present(self, index):
         try:
-            return self._get_question(index).find_element(by=By.CSS_SELECTOR, value="input")
+            return self._get_input(index)
         except NoSuchElementException:
             return False
 
+    def input_with_name_present(self, name):
+        return self._get_input_with_name(name)
+
     def set_input(self, index, value):
-        input_element = self._get_question(index).find_element(by=By.CSS_SELECTOR, value="input")
+        input_element = self._get_input(index)
         input_element.send_keys(value)
         input_element.send_keys(Keys.TAB)
+
+    def get_input_name(self, index):
+        return self._get_input(index).get_attribute("name")
+
+    def get_input_value(self, index):
+        return self._get_input(index).get_attribute("value")
 
     def submit(self):
         self.driver.find_visible_element(by_id('validate-form')).click()
@@ -48,5 +57,24 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
         self.driver.wait_for_page_load()
         return self
 
+    def question_count(self):
+        return len(self._get_questions())
+
+    def _get_input(self, index):
+        return self._get_question(index).find_element(by=By.CSS_SELECTOR, value="input")
+
+    def _get_input_with_name(self, name):
+        for qn in self._get_questions():
+            try:
+                elem = qn.find_element(by=By.CSS_SELECTOR, value="input[name*='" + name + "']")
+                if elem:
+                    return elem
+            except NoSuchElementException:
+                continue
+        return False
+
     def _get_question(self, index):
-        return self.driver.find_elements_(by_css(".question"))[index]
+        return self._get_questions()[index]
+
+    def _get_questions(self):
+        return self.driver.find_elements_(by_css(".question"))

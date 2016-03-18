@@ -340,3 +340,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         self.assertFalse(web_submission_page.text_area_present(2))
         self.assertTrue(web_submission_page.input_present(2))
+
+        self.assertEquals(6, web_submission_page.question_count())
+
+        self.assertTrue("new_field" in web_submission_page.get_input_name(5))
+        self.assertFalse(web_submission_page.input_with_name_present("my_distress"))
+
+        self.assertTrue("20.31" in web_submission_page.get_input_value(4))
