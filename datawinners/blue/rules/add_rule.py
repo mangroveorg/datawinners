@@ -1,6 +1,8 @@
+import xml.etree.ElementTree as ET
+
 from mangrove.form_model.field import FieldSet
 from mangrove.form_model.xform import get_node, add_node
-import xml.etree.ElementTree as ET
+
 from datawinners.blue.rules.rule import Rule
 
 

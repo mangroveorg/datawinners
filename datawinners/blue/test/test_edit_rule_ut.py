@@ -6,8 +6,10 @@ from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 
-from datawinners.blue.rules import EditLabelRule, EditHintRule, EditConstraintMessageRule, EditDefaultRule
+from datawinners.blue.rules.instance_rule import EditDefaultRule
+from datawinners.blue.rules.node_rule import EditLabelRule, EditHintRule
 from datawinners.blue.rules.add_rule import AddRule
+from datawinners.blue.rules.bind_rule import EditConstraintMessageRule, EditRequiredRule
 from datawinners.blue.rules.node_attribute_rule import EditAppearanceRule
 from datawinners.blue.rules.remove_rule import RemoveRule
 
@@ -53,15 +55,15 @@ class TestEditRule(unittest.TestCase):
         self.maxDiff = None
 
         old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2",
-                                                   appearance="multiline")
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    appearance="multiline")
         new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
-                                                   group_name="group_outer",
-                                                   field_label="Name please",
-                                                   field_name="text2",
-                                                   appearance="")
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    appearance="")
         edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
@@ -79,6 +81,40 @@ class TestEditRule(unittest.TestCase):
                                                     field_label="Name please",
                                                     field_name="text2",
                                                     default="")
+        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+    def test_should_update_xform_with_required_to_optional_change(self):
+        edit_default_rule = EditRequiredRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    required=True)
+
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+    def test_should_update_xform_with_optional_to_required_change(self):
+        edit_default_rule = EditRequiredRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    required=True)
         edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
@@ -111,7 +147,8 @@ class TestEditRule(unittest.TestCase):
                                                     field_label="Name please",
                                                     field_name="text2",
                                                     constraint_message="Please enter your name")
-        edit_constraint_message_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_constraint_message_rule.update_xform(old_questionnaire=old_questionnaire,
+                                                  new_questionnaire=new_questionnaire)
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_remove_field_change(self):
@@ -141,10 +178,10 @@ class TestEditRule(unittest.TestCase):
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def _get_questionnaire(self, group_label="Enter the outer group details", group_name="group_outer",
-                          field_label="Name please", field_name="text2", hint=None, constraint_message=None,
-                          appearance=None, default=None):
+                           field_label="Name please", field_name="text2", hint=None, constraint_message=None,
+                           appearance=None, default=None, required=False):
         field = Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name, hint=hint,
-                      constraint_message=constraint_message, appearance=appearance, default=default)
+                      constraint_message=constraint_message, appearance=appearance, default=default, required=required)
 
         doc = ProjectDocument()
         doc.xform = self._get_xform(group_label, field)
@@ -156,7 +193,8 @@ class TestEditRule(unittest.TestCase):
         )
         return questionnaire
 
-    def _get_questionnaire_with_field_removed(self, group_label="Enter the outer group details", group_name="group_outer"):
+    def _get_questionnaire_with_field_removed(self, group_label="Enter the outer group details",
+                                              group_name="group_outer"):
         doc = ProjectDocument()
         doc.xform = self._get_xform(group_label)
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
@@ -174,7 +212,8 @@ class TestEditRule(unittest.TestCase):
             appearance_attr = 'appearance="' + field.appearance + '" ' if field.appearance else ''
             input_node = '<input ' + appearance_attr + 'ref="/tmpkWhV2m/group_outer/' + field.name + '"><label>' + field.label + '</label>' + hint_node + '</input>'
             constraint_message_attr = 'constraintMsg="' + field.constraint_message + '" ' if field.constraint_message else ''
-            bind_node = '<bind ' + constraint_message_attr + 'nodeset="/tmpkWhV2m/group_outer/' + field.name + '" required="true()" type="string" />'
+            required_attr = ' required="true()"' if field.is_required() else ''
+            bind_node = '<bind ' + constraint_message_attr + 'nodeset="/tmpkWhV2m/group_outer/' + field.name + '"' + required_attr + ' type="string" />'
             instance_node = '<' + field.name + '>' + field.default + '</' + field.name + '>' if field.default else '<' + field.name + ' />'
             field_attrs = {"instance_node": instance_node, "bind_node": bind_node, "input_node": input_node}
         return (('<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">\
