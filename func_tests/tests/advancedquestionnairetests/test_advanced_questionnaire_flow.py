@@ -68,58 +68,6 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
             .wait_for_table_data_to_load()
         self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
 
-    @attr('functional_test')
-    def test_should_create_project_when_xlsform_is_uploaded(self):
-        self.project_name = random_string()
-
-        file_name = 'ft_advanced_questionnaire.xls'
-        form_code = self._verify_questionnaire_creation(self.project_name, file_name)
-        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
-        self._verify_datawinners_university()
-
-        web_submission_page.navigate_to_datasenders_page()
-        self._verify_datawinners_university()
-        datasender_page = ProjectDataSendersPage(self.driver)
-        datasender_page.search_with("1234123413"). \
-            select_a_data_sender_by_mobile_number("1234123413").perform_datasender_action(by_css(".remove"))
-        datasender_page.refresh()
-        datasender_page.navigate_to_analysis_page()
-        self._verify_datawinners_university()
-        DataAnalysisPage(self.driver).navigate_to_web_submission_tab()
-
-        web_submission_page = AdvancedWebSubmissionPage(self.driver)
-        self._do_web_submission('submission_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411')
-        self._verify_submission_log_page(web_submission_page)
-        datasender_rep_id, ds_email = self._register_datasender()
-        self._verify_datawinners_university()
-
-        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Submission")
-
-        datasender_page = DataSenderPage(self.driver)
-        datasender_page.send_in_data()
-        verify_advanced_web_submission_page_is_loaded(self.driver)
-        self._verify_datawinners_university()
-        self._do_web_submission('submission_data.xml', project_temp_name, form_code, ds_email, NEW_PASSWORD)
-        self.global_navigation_page.sign_out()
-
-        self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
-        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
-            self.project_name).wait_for_table_data_to_load()
-        self._verify_datawinners_university()
-
-        self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
-
-        self._verify_date_filters(submission_log_page)
-
-        submission_log_page.search(datasender_rep_id)
-        submission_log_page.check_submission_by_row_number(1).click_action_button().choose_on_dropdown_action(
-            EDIT_BUTTON)
-        verify_advanced_web_submission_page_is_loaded(self.driver)
-        self._edit_and_verify_submission(datasender_rep_id, project_temp_name)
-
-        self._verify_edit_of_questionnaire()
-        self._verify_datawinners_university()
-
     def _verify_edit_of_questionnaire(self, file_name, edit_flag=False):
         edit = 'true' if edit_flag else 'false'
         r = self.client.post(
@@ -220,7 +168,6 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][7], u'other')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][8], u'newOption')
 
-
     def _verify_file_names_in_zip(self, zip_file):
         file_read = open(zip_file, 'r')
         zip_file_open = zipfile.ZipFile(file_read.name, 'r')
@@ -251,6 +198,58 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         xlfile_name = self._write_to_file_from_zip(zip_file_open)
         workbook = xlrd.open_workbook(xlfile_name)
         self._verify_workbook_values(workbook)
+
+    @attr('functional_test')
+    def test_should_create_project_when_xlsform_is_uploaded(self):
+        self.project_name = random_string()
+
+        file_name = 'ft_advanced_questionnaire.xls'
+        form_code = self._verify_questionnaire_creation(self.project_name, file_name)
+        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        self._verify_datawinners_university()
+
+        web_submission_page.navigate_to_datasenders_page()
+        self._verify_datawinners_university()
+        datasender_page = ProjectDataSendersPage(self.driver)
+        datasender_page.search_with("1234123413"). \
+            select_a_data_sender_by_mobile_number("1234123413").perform_datasender_action(by_css(".remove"))
+        datasender_page.refresh()
+        datasender_page.navigate_to_analysis_page()
+        self._verify_datawinners_university()
+        DataAnalysisPage(self.driver).navigate_to_web_submission_tab()
+
+        web_submission_page = AdvancedWebSubmissionPage(self.driver)
+        self._do_web_submission('submission_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411')
+        self._verify_submission_log_page(web_submission_page)
+        datasender_rep_id, ds_email = self._register_datasender()
+        self._verify_datawinners_university()
+
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Submission")
+
+        datasender_page = DataSenderPage(self.driver)
+        datasender_page.send_in_data()
+        verify_advanced_web_submission_page_is_loaded(self.driver)
+        self._verify_datawinners_university()
+        self._do_web_submission('submission_data.xml', project_temp_name, form_code, ds_email, NEW_PASSWORD)
+        self.global_navigation_page.sign_out()
+
+        self.global_navigation_page = login(self.driver, VALID_CREDENTIALS)
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
+            self.project_name).wait_for_table_data_to_load()
+        self._verify_datawinners_university()
+
+        self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
+
+        self._verify_date_filters(submission_log_page)
+
+        submission_log_page.search(datasender_rep_id)
+        submission_log_page.check_submission_by_row_number(1).click_action_button().choose_on_dropdown_action(
+            EDIT_BUTTON)
+        verify_advanced_web_submission_page_is_loaded(self.driver)
+        self._edit_and_verify_submission(datasender_rep_id, project_temp_name)
+
+        self._verify_edit_of_questionnaire(file_name)
+        self._verify_datawinners_university()
 
     @attr('functional_test')
     def test_export(self):
