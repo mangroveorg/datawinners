@@ -630,6 +630,11 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:apply-templates select="$binding/@required"/>
             <xsl:apply-templates select="xf:hint" />
             <select>
+                <xsl:if test="$appearance = 'autocomplete' and $type = 'select_one'">
+                    <xsl:attribute name="class">
+                        <xsl:value-of select="'autocomplete'"/>
+                    </xsl:attribute>
+                </xsl:if>
                 <xsl:call-template name="binding-attributes">
                     <xsl:with-param name="nodeset" select="$nodeset" />
                     <xsl:with-param name="binding" select="$binding" />
@@ -702,7 +707,14 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <div class="option-wrapper">
                     <xsl:choose>
                         <xsl:when test="not(./xf:itemset)">
-                            <xsl:apply-templates select="xf:item" />
+                            <xsl:choose>
+                                <xsl:when test="contains(@appearance, 'autocomplete')">
+                                    <xsl:apply-templates select="xf:item" />
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:apply-templates select="xf:item" />
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:apply-templates select="xf:itemset" mode="templates">
@@ -829,8 +841,8 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </xsl:variable>
         <xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset_used] | /h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]" />
         <xsl:choose>
-            <xsl:when test="contains(@appearance, 'autocomplete')">
-                <xsl:call-template name="select-input">
+            <xsl:when test="contains(@appearance, 'autocomplete') and /h:html/h:body//xf:select1[@ref=$nodeset]">
+                <xsl:call-template name="select-select">
                     <xsl:with-param name="nodeset" select="$nodeset" />
                     <xsl:with-param name="binding" select="$binding" />
                 </xsl:call-template>

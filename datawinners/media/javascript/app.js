@@ -19697,11 +19697,17 @@ define( 'enketo-widget/select-desktop/selectpicker',[ 'jquery', 'enketo-js/Widge
         var $template = this._getTemplate(),
             $select = $( this.element );
         $select.css( 'display', 'none' );
-        $template = this._createLi( $template );
-        this.$picker = $template.insertAfter( $select );
-        this.$picker.find( '> a' ).addClass( this.selectClass );
-        this._clickListener();
-        this._focusListener();
+        var isAutoComplete = $select.hasClass('autocomplete');
+
+        if (isAutoComplete) {
+            $select.combobox();
+        } else {
+            $template = this._createLi( $template );
+            this.$picker = $template.insertAfter( $select );
+            this.$picker.find( '> a' ).addClass( this.selectClass );
+            this._clickListener();
+            this._focusListener();
+        }
     };
 
     DesktopSelectpicker.prototype._getTemplate = function() {
