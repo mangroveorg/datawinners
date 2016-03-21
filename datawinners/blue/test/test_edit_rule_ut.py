@@ -273,35 +273,40 @@ class TestEditRule(unittest.TestCase):
                            appearance=None, default=None, required=False):
         field = Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name, hint=hint,
                       constraint_message=constraint_message, appearance=appearance, default=default, required=required)
-
+        repeat = FieldSet(code="repeat_outer", name="repeat_outer", label="Enter the details you wanna repeat", field_set=[field])
         doc = ProjectDocument()
         doc.xform = self._get_xform(group_label, field)
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
         questionnaire.name = "q1"
         questionnaire.form_code = "007"
         questionnaire.fields.append(
-            FieldSet(code=group_name, name=group_name, label=group_label, field_set=[field])
+            FieldSet(code=group_name, name=group_name, label=group_label, field_set=[repeat])
         )
         return questionnaire
 
     def _get_questionnaire_with_field_removed(self, group_label="Enter the outer group details",
                                               group_name="group_outer"):
+        repeat = FieldSet(code="repeat_outer", name="repeat_outer", label="Enter the details you wanna repeat", field_set=[])
         doc = ProjectDocument()
         doc.xform = self._get_xform(group_label)
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
         questionnaire.name = "q1"
         questionnaire.form_code = "007"
         questionnaire.fields.append(
-            FieldSet(code=group_name, name=group_name, label=group_label, field_set=[])
+            FieldSet(code=group_name, name=group_name, label=group_label, field_set=[repeat])
         )
         return questionnaire
 
     def _get_xform(self, group_label, field=None):
-        field_attrs = {"instance_node": "", "bind_node": "", "input_node": ""}
+        field_attrs = {"instance_node": "", "bind_node": "", "input_node": '<repeat nodeset="/tmpRTha_7/repeat_outer" />'}
         if field:
             hint_node = '<hint>' + field.hint + '</hint>' if field.hint else ''
             appearance_attr = 'appearance="' + field.appearance + '" ' if field.appearance else ''
-            input_node = '<input ' + appearance_attr + 'ref="/tmpkWhV2m/group_outer/' + field.name + '"><label>' + field.label + '</label>' + hint_node + '</input>'
+            input_node = '<repeat nodeset="/tmpRTha_7/repeat_outer">' \
+                '<input ' + appearance_attr + 'ref="/tmpkWhV2m/group_outer/' + field.name + '">' \
+                '<label>' + field.label + '</label>' + hint_node + \
+                '</input>' \
+                '</repeat>'
             constraint_message_attr = 'constraintMsg="' + field.constraint_message + '" ' if field.constraint_message else ''
             required_attr = ' required="true()"' if field.is_required() else ''
             bind_node = '<bind ' + constraint_message_attr + 'nodeset="/tmpkWhV2m/group_outer/' + field.name + '"' + required_attr + ' type="string" />'
@@ -322,7 +327,9 @@ class TestEditRule(unittest.TestCase):
                           <people />\
                           <clinic />\
                         </group_inner>\
-                        {instance_node}</group_outer>\
+                        <repeat_outer>\
+                          {instance_node}</repeat_outer>\
+                      </group_outer>\
                       <meta>\
                         <instanceID />\
                       </meta>\
@@ -369,6 +376,9 @@ class TestEditRule(unittest.TestCase):
                       </item>\
                     </select1>\
                   </group>\
-                  {input_node}</group>\
+                  <group ref="/tmpRTha_7/repeat_outer">\
+                    <label>Enter the details you wanna repeat</label>{input_node}\
+                  </group>\
+                </group>\
               </html:body>\
             </html:html>').format(**field_attrs))
