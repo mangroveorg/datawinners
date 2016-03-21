@@ -61,7 +61,7 @@ from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGISTERED_IDENTIFICATION_NUMBER, \
-    EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER
+    EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER, DELETED_IDENTIFICATION_NUMBER
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 from datawinners.project.submission.export import export_to_new_excel
@@ -99,7 +99,7 @@ def create_type(request):
             define_type(manager, entity_name)
             message = _("Entity definition successful")
             success = True
-            UserActivityLog().log(request, action=ADDED_IDENTIFICATION_NUMBER_TYPE, detail=entity_name[0].capitalize())
+            UserActivityLog().log(request, action=ADDED_IDENTIFICATION_NUMBER_TYPE, project=entity_name[0].capitalize())
         except EntityTypeAlreadyDefined:
             message = _("%s already exists.") % (entity_name[0].capitalize(),)
     else:
@@ -155,6 +155,7 @@ def delete_subject_types(request):
             manager._save_document(EntityActionDocument(form_model.entity_type[0], entity.short_code, HARD_DELETE))
             entity.delete()
         form_model.delete()
+        UserActivityLog().log(request, action=DELETED_IDENTIFICATION_NUMBER, project=form_model.entity_type[0].capitalize())
     messages.success(request, _("Identification Number Type(s) successfully deleted."))
     return HttpResponse(json.dumps({'success': True}))
 
