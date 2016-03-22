@@ -30,6 +30,18 @@ class EditConstraintMessageRule(EditBindRule):
             remove_attrib(bind_node, 'constraintMsg')
 
 
+class EditConstraintRule(EditBindRule):
+
+    def edit(self, node, old_field, new_field, xform):
+        bind_node = xform.bind_node(node)
+
+        if bind_node is not None and new_field.xform_constraint != old_field.xform_constraint and new_field.xform_constraint:
+            add_attrib(bind_node, 'constraint', new_field.xform_constraint)
+
+        if bind_node is not None and new_field.xform_constraint != old_field.xform_constraint and not new_field.xform_constraint:
+            remove_attrib(bind_node, 'constraint')
+
+
 class EditRequiredRule(EditBindRule):
 
     def edit(self, node, old_field, new_field, xform):

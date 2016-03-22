@@ -334,8 +334,14 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEquals("Updated Text widget", web_submission_page.get_label(1))
         self.assertEquals("Updated Can be short or long but always one line (type = text)", web_submission_page.get_hint(1))
 
-        web_submission_page.set_input(3, "15")
+        web_submission_page.set_input(3, 16)
         self.assertEquals("Updated Requires a number less than 10", web_submission_page.get_constraint_msg(3))
+
+        web_submission_page.set_input(3, 12)
+        self.assertFalse(web_submission_page.constraint_msg_visible(3))
+
+        web_submission_page.set_input(3, 16)
+        self.assertTrue(web_submission_page.constraint_msg_visible(3))
 
         self.assertFalse(web_submission_page.text_area_present(2))
         self.assertTrue(web_submission_page.input_present(2))

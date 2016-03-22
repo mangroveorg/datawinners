@@ -22,6 +22,9 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
     def get_hint(self, index):
         return self._get_question(index).find_element(by=By.CSS_SELECTOR, value=".or-hint").text
 
+    def constraint_msg_visible(self, index):
+        return self._get_question(index).find_element(by=By.CSS_SELECTOR, value=".or-constraint-msg").is_displayed()
+
     def get_constraint_msg(self, index):
         return self._get_question(index).find_element(by=By.CSS_SELECTOR, value=".or-constraint-msg").text
 
@@ -42,7 +45,10 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
 
     def set_input(self, index, value):
         input_element = self._get_input(index)
-        input_element.send_keys(value)
+        existing = 0 if not input_element.get_attribute("value") else int(input_element.get_attribute("value"))
+        key = Keys.UP if value > existing else Keys.DOWN
+        for index in range(abs(value - existing)):
+            input_element.send_keys(key)
         input_element.send_keys(Keys.TAB)
 
     def get_input_name(self, index):
