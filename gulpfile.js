@@ -31,4 +31,8 @@ gulp.task('js', function() {
 		.pipe(gulp.dest(config.paths.dist))
 });
 
-gulp.task("default",["js"])
+gulp.task('watch', function(){
+	gulp.watch(config.paths.js, ['js']);
+})
+
+gulp.task("default",["js", "watch"])
