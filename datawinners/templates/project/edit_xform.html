@@ -1,6 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-
+{% load waffle_tags %}
 {% block page_title %}{% trans "Project - Questionnaire" %} {% endblock %}
 
 {% load dw_tabs %}
@@ -41,6 +41,35 @@
 {% endblock %}
 
 {% block content %}
+
+{% flag "questionnaire_builder"%}
+	<h3>Welcome to builder., Let's rock :)</h3>
+	
+	<div style="background-color:bisque">
+		<h5>This section will be removed once Builder development is completed.</h5>
+		<br/>
+    <div>
+        <noscript>
+            <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+        </noscript>
+        <div id="file_uploader" class="button upload_xls"></div>
+        <button id="uploadXLS">{% trans "Upload New XLSForm" %}</button>
+        <a id="cancel-xlx-upload" class="none" href="javascript:void(0);">{% trans "Cancel Upload" %}</a>
+        <img class="upload_spinner none" src="/media/images/ajax-loader.gif">
+    </div>
+    <div id="cancel_questionnaire_edit" style="display: none;">
+        {% trans "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!" %}<br/><br/>
+        <p class="font_size_13">{% trans "You can" %} <a class='dialog-link' href='{{ project_links.submission_log_link }}'> {% trans "Export Your Submissions" %}</a> {% trans "first or" %} <a class='dialog-link' href="{% url create_project %}?prev=ques#questionnaire/xlsupload/">{% trans "Create a New Questionnaire"%}</a>{% trans 'instead.'%} </p><br/>
+
+
+        {% trans "Do you want to continue uploading the edited XLSForm ?" %}
+        <div class="text_align_right padding_top_20">
+            <a id="cancel_dialog" class="dialog_cancel_button dialog-link" href="javascript:void(0);">{% trans "Cancel" %}</a>
+            <a id="save_changes" class="button yes_button">{% trans "Continue" %}</a>
+        </div>
+    </div>
+	</div>
+{% else %} <!-- if builder is not enabled, default flow -->
     <div>
         <div class="grid_8 alpha">
             <h2>{% trans "Questionnaire" %}</h2>
@@ -119,5 +148,6 @@
     <div id="choices" style="height: 200px;"></div>
     <div id="cascades" style="height: 200px;"></div>
     <div id="other" style="height: 200px;"></div>
+{% endflag %}
 
 {% endblock %}
