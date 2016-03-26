@@ -264,6 +264,15 @@ var questionFormMapper = {
   'decimal': _decimalQuestionForm2.default
 };
 
+var style = {
+  question_row: {
+    background: "azure",
+    borderBottomStyle: "solid",
+    borderBottomColor: "grey",
+    borderWidth: "2px"
+  }
+};
+
 var Question = function (_React$Component) {
   _inherits(Question, _React$Component);
 
@@ -284,11 +293,15 @@ var Question = function (_React$Component) {
     if (_this.props.question) {
       question = _this.props.question;
     }
+    var formType = questionFormMapper[question.type];
+    if (!formType) {
+      formType = questionFormMapper.text;
+    }
     _this.state = {
       question: question,
       errors: {},
       dirty: false,
-      form: questionFormMapper[question.type]
+      form: formType
     };
     return _this;
   }
@@ -337,9 +350,7 @@ var Question = function (_React$Component) {
           subtitle: this.props.question.type,
           actAsExpander: true,
           showExpandableButton: true,
-          style: { "background": "azure",
-            "borderBottomStyle": "solid",
-            "borderBottomColor": "grey" }
+          style: style.question_row
         }),
         _react2.default.createElement(
           _cardText2.default,
@@ -440,10 +451,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var style = {
-		position: 'relative',
-		bottom: '22px',
-		right: '20px',
-		float: 'right'
+		addButtonContainer: {
+				position: 'relative',
+				bottom: '22px',
+				right: '20px',
+				float: 'right'
+		},
+		appBar: {
+				backgroundColor: '#E8EFF6'
+		}
 };
 
 var question_types = ["Text", "Integer", "Decimal", "Note", "Date", "Time", "Location", "Select one", "Select multiple", "Calculate"];
@@ -531,7 +547,8 @@ var QuestionnaireList = function (_React$Component) {
 														null,
 														this.state.name
 												),
-												iconElementRight: _react2.default.createElement(_raisedButton2.default, { label: 'Save', primary: true })
+												iconElementRight: _react2.default.createElement(_raisedButton2.default, { label: 'Save', primary: true,
+														style: style.appBar })
 										}),
 										displayQuestions,
 										_react2.default.createElement(
@@ -551,7 +568,7 @@ var QuestionnaireList = function (_React$Component) {
 										),
 										_react2.default.createElement(
 												'div',
-												{ style: style },
+												{ style: style.addButtonContainer },
 												_react2.default.createElement(
 														_floatingActionButton2.default,
 														{ onMouseDown: this.handleAddButtonClick },

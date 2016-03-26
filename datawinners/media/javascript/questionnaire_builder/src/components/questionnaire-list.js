@@ -19,10 +19,15 @@ import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 
 const style = {
-  position: 'relative',
+	addButtonContainer: {
+		position: 'relative',
     bottom: '22px',
     right: '20px',
     float: 'right'
+	},
+	appBar: {
+		backgroundColor: '#E8EFF6'
+	}
 };
 
 const question_types = [
@@ -96,7 +101,8 @@ export default class QuestionnaireList extends React.Component {
       <Paper zDepth={3} >
         <AppBar
           title={<span>{this.state.name}</span>}
-          iconElementRight={<RaisedButton label="Save" primary={true} />}
+          iconElementRight={<RaisedButton label="Save" primary={true}
+					style={style.appBar}/>}
           />
 					{displayQuestions}
 
@@ -109,7 +115,7 @@ export default class QuestionnaireList extends React.Component {
                   </SelectField>
             </CardText>
           </Card>
-          <div style={style}>
+          <div style={style.addButtonContainer}>
             <FloatingActionButton onMouseDown={this.handleAddButtonClick}>
               <ContentAdd />
             </FloatingActionButton>

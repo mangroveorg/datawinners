@@ -9,12 +9,21 @@ import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
 import CardText from 'material-ui/lib/card/card-text';
 
-var questionFormMapper = {
+const questionFormMapper = {
   'text' : TextQuestionForm,
   'date' : DateQuestionForm,
   'integer' : IntegerQuestionForm,
   'decimal' : DecimalQuestionForm
 };
+
+const style = {
+  question_row: {
+    background: "azure",
+    borderBottomStyle: "solid",
+    borderBottomColor: "grey",
+    borderWidth: "2px"
+  }
+}
 
 export default class Question extends React.Component {
   constructor(props){
@@ -31,11 +40,15 @@ export default class Question extends React.Component {
     if(this.props.question){
       question = this.props.question;
     }
+    let formType = questionFormMapper[question.type];
+    if (!formType) {
+      formType = questionFormMapper.text;
+    }
     this.state = {
       question,
       errors: {},
 			dirty: false,
-      form: questionFormMapper[question.type]
+      form: formType
     }
   }
 
@@ -77,9 +90,7 @@ export default class Question extends React.Component {
             subtitle={this.props.question.type}
             actAsExpander={true}
             showExpandableButton={true}
-            style={{"background": "azure",
-                   "borderBottomStyle": "solid",
-                   "borderBottomColor": "grey"}}
+            style={style.question_row}
           />
           <CardText expandable={true}>
               <this.state.form
@@ -90,7 +101,6 @@ export default class Question extends React.Component {
 
           </CardText>
         </Card>
-
 
       );
   }
