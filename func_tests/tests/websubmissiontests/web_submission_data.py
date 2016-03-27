@@ -62,3 +62,67 @@ EDIT_BUTTON = by_css(".edit")
 EDITED_ANSWERS = [
     {QCODE: 'q2', ANSWER: '4', TYPE: TEXT}]
 
+QUESTIONNAIRE_FORM_ID = 'questionnaire_form_id'
+FIELD_INPUT_NAME = 'input_name'
+FIELD_INPUT_VALUE = 'input_value'
+FIELD_SELECT1_NAME = 'select1_name'
+FIELD_SELECT1_VALUE = 'select1_value'
+FIELD_SELECT1_MINIMAL_NAME = 'select1_minimal_name'
+FIELD_SELECT1_MINIMAL_VALUE = 'select1_minimal_value'
+FIELD_SELECT1_MINIMAL_NUMBER = 'select1_minimal_number'
+FIELD_SELECT1_AUTOCOMPLETE_NAME = 'select1_autocomplete_name'
+FIELD_SELECT1_AUTOCOMPLETE_INPUT_VALUE = 'select1_autocomplete_input_value'
+FIELD_SELECT1_AUTOCOMPLETE_ASSERT = 'select1_autocomplete_assert'
+FIELD_SELECT1_AUTOCOMPLETE_VALUE = 'select1_autocomplete_value'
+FIELD_SELECT1_AUTOCOMPLETE_NUMBER = 'select1_autocomplete_number'
+FIELD_SELECT1_IDNR_AUTOCOMPLETE_NAME = 'select1_idnr_autocomplete_name'
+FIELD_SELECT1_IDNR_AUTOCOMPLETE_INPUT_VALUE = 'select1_idnr_autocomplete_input_value'
+FIELD_SELECT1_IDNR_AUTOCOMPLETE_ASSERT = 'select1_idnr_autocomplete_assert'
+FIELD_SELECT1_IDNR_AUTOCOMPLETE_VALUE = 'select1_idnr_autocomplete_value'
+FIELD_SELECT1_IDNR_AUTOCOMPLETE_NUMBER = 'select1_idnr_autocomplete_number'
+SECTION_REPEAT_NAME = 'questionnaire_test_autocomplete_repeat_name'
+SECTION_REPEAT_NUMBER = 'questionnaire_test_autocomplete_repeat_number'
+FIELD_SELECT1_IDNR_AUTOCOMPLETE_IN_REPEAT_NAME = 'select1_idnr_autocomplete_in_repeat_name'
+FIELD_SELECT1_IDNR_AUTOCOMPLETE_IN_REPEAT_INPUT_VALUE = 'select1_idnr_autocomplete_in_repeat_input_value'
+FIELD_SELECT1_IDNR_AUTOCOMPLETE_IN_REPEAT_ASSERT = 'select1_idnr_autocomplete_in_repeat_assert'
+FIELD_SELECT1_IDNR_AUTOCOMPLETE_IN_REPEAT_VALUE = 'select1_idnr_autocomplete_in_repeat_value'
+FIELD_INPUT_IN_REPEAT_NAME = 'input_in_repeat_name'
+FIELD_INPUT_IN_REPEAT_VALUE = 'input_in_repeat_value'
+
+
+QUESTIONNAIRE_AUTOCOMPLETE_DATA = {
+    PROJECT_NAME : 'Test auto complete',
+    QUESTIONNAIRE_FORM_ID : "questionnaire_for_functional_test_autocomplete",
+    FIELD_INPUT_NAME : 'respondent_name',
+    FIELD_INPUT_VALUE : 'Safidison',
+    FIELD_SELECT1_NAME : 'issue_type',
+    FIELD_SELECT1_VALUE : 'Functionality',
+    FIELD_SELECT1_MINIMAL_NAME : 'priority_min',
+    FIELD_SELECT1_MINIMAL_VALUE : '',
+    FIELD_SELECT1_MINIMAL_NUMBER : 1,
+    FIELD_SELECT1_AUTOCOMPLETE_NAME : 'priority',
+    FIELD_SELECT1_AUTOCOMPLETE_INPUT_VALUE : 'sho',
+    FIELD_SELECT1_AUTOCOMPLETE_ASSERT : ["Showstopper"],
+    FIELD_SELECT1_AUTOCOMPLETE_VALUE : 'Showstopper',
+    FIELD_SELECT1_AUTOCOMPLETE_NUMBER : 1,
+    FIELD_SELECT1_IDNR_AUTOCOMPLETE_NAME : 'select1_idnr_comp',
+    FIELD_SELECT1_IDNR_AUTOCOMPLETE_INPUT_VALUE : 'ana',
+    FIELD_SELECT1_IDNR_AUTOCOMPLETE_ASSERT : ['ANALAMANGA (cli11)','TSIMANARIRAZANA (cli12)',
+                                              'Farafangana (cli15)','Fianarantsoa-I (cli16)',
+                                              'Analalava (cli8)'],
+    FIELD_SELECT1_IDNR_AUTOCOMPLETE_VALUE : 'Farafangana (cli15)',
+    FIELD_SELECT1_IDNR_AUTOCOMPLETE_NUMBER : 1,
+    SECTION_REPEAT_NAME : 'section_address',
+    SECTION_REPEAT_NUMBER : 3,
+    FIELD_SELECT1_IDNR_AUTOCOMPLETE_IN_REPEAT_NAME : 'clinic_repeat',
+    FIELD_SELECT1_IDNR_AUTOCOMPLETE_IN_REPEAT_INPUT_VALUE : 'ra',
+    FIELD_SELECT1_IDNR_AUTOCOMPLETE_IN_REPEAT_ASSERT : ['TSIMANARIRAZANA (cli12)','Antsirabe (cli13)',
+                                                        'Farafangana (cli15)','Fianarantsoa-I (cli16)'
+                                                        ],
+    FIELD_SELECT1_IDNR_AUTOCOMPLETE_IN_REPEAT_VALUE : 'Antsirabe (cli13)',
+    FIELD_INPUT_IN_REPEAT_NAME : 'house_number',
+    FIELD_INPUT_IN_REPEAT_VALUE : 'DISTR006',
+
+}
+
+

@@ -115,3 +115,82 @@ class WebSubmissionPage(Page):
 
     def save_change_datasender(self):
         self.driver.find(by_id('save_ds')).click()
+
+    def set_questionnaire_form_id(self,questionnaire_form_id):
+        self.questionnaire_form_id = questionnaire_form_id
+
+    def fill_questions_in_autocomplete_questionnaire(self):
+        self.driver.find_text_box(by_name("/questionnaire_for_functional_test_autocomplete/respondent_name")).enter_text("respondent_name")
+        self.driver.find(by_xpath("//label[.//input[@name='/questionnaire_for_functional_test_autocomplete/issue_type'] and .='Functionality']")).click()
+        self.driver.find(by_css("form#questionnaire_for_functional_test_autocomplete select[name='/questionnaire_for_functional_test_autocomplete/priority_min'] + div button")).click()
+        self.driver.find(by_css("form#questionnaire_for_functional_test_autocomplete select[name='/questionnaire_for_functional_test_autocomplete/priority_min'] + div > ul > li:nth-child(1)")).click()
+        self.driver.find_text_box(by_css("form#questionnaire_for_functional_test_autocomplete select[name='/questionnaire_for_functional_test_autocomplete/priority'] + input")).enter_text("sho")
+        import time
+        time.sleep(3)
+        self.driver.find(by_xpath("//ul/li/a[@class='ui-corner-all' and .='Showstopper']")).click()
+        time.sleep(3)
+        self.driver.find_text_box(by_css("form#questionnaire_for_functional_test_autocomplete select[name='/questionnaire_for_functional_test_autocomplete/select1_idnr_comp'] + input")).enter_text("ana")
+        time.sleep(3)
+        self.driver.find(by_xpath("//ul/li/a[@class='ui-corner-all' and .='Farafangana (cli15)']")).click()
+        time.sleep(3)
+        self.driver.find(by_css("button#validate-form")).click()
+
+    def fill_input_field(self,field_name,value):
+        self.driver.find_text_box(by_name(LOCATOR_INPUT % (self.questionnaire_form_id,field_name))).enter_text(value)
+
+    def fill_select_without_appearance(self,field_name,value):
+        self.driver.find(by_xpath(LOCATOR_SELECT1 % (self.questionnaire_form_id,field_name,value))).click()
+
+    def fill_select_without_appearance_by_element_number(self,field_name,element_number):
+        self.driver.find(by_xpath(LOCATOR_SELECT1_NUMBER % (self.questionnaire_form_id,field_name,element_number))).click()
+
+    def fill_select_with_minimal_appearance(self,field_name,value):
+        self.show_options_select_with_minimal_appearance(field_name=field_name)
+        self.select_option_select_with_minimal_appearance_by_element_number(field_name=field_name,element_number=value)
+
+    def show_options_select_with_minimal_appearance(self,field_name):
+        self.driver.find(by_css(LOCATOR_SELECT1_SHOW_OPTIONS % (self.questionnaire_form_id,self.questionnaire_form_id,field_name))).click()
+
+    def select_option_select_with_minimal_appearance(self,field_name,value):
+        self.driver.find(by_css(LOCATOR_SELECT1_SELECT_VALUE % (self.questionnaire_form_id,self.questionnaire_form_id,field_name))).click()
+
+    def select_option_select_with_minimal_appearance_by_element_number(self,field_name,element_number):
+        self.driver.find(by_css(LOCATOR_SELECT1_MINIMAL_NUMBER
+                                % (self.questionnaire_form_id,self.questionnaire_form_id,field_name,element_number))).click()
+
+    def fill_select_with_autocomplete_appearance(self,field_name,value):
+        self.driver.find_text_box(by_css(LOCATOR_SELECT1_AUTOCOMPLETE_INPUT %
+                                         (self.questionnaire_form_id,self.questionnaire_form_id,field_name))).enter_text(value)
+
+    def get_select_with_autocomplete_appearance_suggestions(self):
+        web_element_suggestions = self.driver.find_elements_(by_xpath(LOCATOR_SELECT1_AUTOCOMPLETE_SUGGESTION))
+        print len(web_element_suggestions)
+        suggestions = [self.get_suggestion_text(web_element=web_element) for web_element in web_element_suggestions]
+        return suggestions
+
+    def get_suggestion_text(self,web_element):
+        suggestion = web_element.text
+        return suggestion
+
+    def select_select_with_autocomplete_appearance_suggestion(self,value):
+        self.driver.find(by_xpath(LOCATOR_SELECT1_AUTOCOMPLETE_SUGGESTION_SELECT % value)).click()
+
+    def fill_select_with_autocomplete_appearance_in_repeat(self,repeat_name,repeat_number, field_name, value):
+        self.driver.find_text_box(by_xpath(LOCATOR_SELECT1_AUTOCOMPLETE__IDNR_INPUT_IN_REPEAT %
+                                         (self.questionnaire_form_id,repeat_name,repeat_number,
+                                          self.questionnaire_form_id,repeat_name, field_name
+                                          )
+                                         )
+                                  ).enter_text(value)
+
+    def fill_input_field_in_repeat(self,repeat_name,repeat_number, field_name,value):
+        self.driver.find_text_box(by_xpath(LOCATOR_INPUT_IN_REPEAT % (
+            self.questionnaire_form_id,repeat_name, repeat_number,
+            self.questionnaire_form_id,repeat_name,field_name
+        ))).enter_text(value)
+
+    def add_section_repeat(self,repeat_name,repeat_number):
+        self.driver.find(by_xpath(LOCATOR_ADD_REPEAT_SECTION % (
+            self.questionnaire_form_id, repeat_name,repeat_number
+        ))).click()
+
