@@ -1346,6 +1346,26 @@ def send_data_to_project_cli00_mp(manager):
 def load_ft_data():
     call_command("loaddata", "test_data.json")
 
+def create_advanced_questionnaire_for_autocomplete_test(manager):
+    # from datawinners.project.helper import generate_questionnaire_code
+    from datawinners.blue.xform_bridge import MangroveService, XlsFormParser
+    from django.contrib.auth.models import User
+
+    project_name = "Test auto complete"
+    # questionnaire_code = generate_questionnaire_code(manager)
+    questionnaire_code = "test999"
+    username = "tester150411@gmail.com"
+    user = User.objects.get(username=username)
+    organization = Organization.objects.get(org_id='SLX364903')
+    file_path = "main/questionnaire_for_functional_test_autocomplete.xlsx"
+    tmp_file = open(file_path, 'r')
+    tmp_file.seek(0)
+    xls_parser_response = XlsFormParser(tmp_file, project_name, manager).parse()
+    tmp_file.seek(0)
+    mangrove_service = MangroveService(request=None, questionnaire_code=questionnaire_code,
+                                               project_name=project_name, xls_form=tmp_file,
+                                               xls_parser_response=xls_parser_response,user=user)
+    questionnaire_id, form_code = mangrove_service.create_project()
 
 def load_data():
     manager = load_manager_for_default_ut_account()
@@ -1515,6 +1535,10 @@ def load_data():
     call_command("recreate_search_indexes", "hni_testorg_coj00001")
 
     grant_questionnaire_permissions_to_rasitefa()
+
+    # create advanced questionnaire for testing select autocomplete
+    manager = load_manager_for_default_ut_account()
+    create_advanced_questionnaire_for_autocomplete_test(manager)
 
 def create_datasender_for_nigeria_test_organization():
     register_datasender_for_org("samuel@mailinator.com","Rasefo","26112345",

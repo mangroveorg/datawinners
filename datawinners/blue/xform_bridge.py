@@ -383,7 +383,8 @@ class XlsFormParser():
 
     def validate_unique_id_type(self, field):
         unique_id_type = self._get_unique_id_type(field)
-        if not entity_type_already_defined(self.dbm, [unique_id_type]):
+        is_exist = entity_type_already_defined(self.dbm, [unique_id_type])
+        if not is_exist:
             raise UniqueIdNotFoundException(unique_id_type)
         if not get_non_voided_entity_count_for_type(self.dbm, unique_id_type.lower()):
             raise UniqueIdNumbersNotFoundException(unique_id_type)
@@ -517,9 +518,14 @@ def _map_unique_id_question_to_select_one(xform_dict):
 
 
 class MangroveService():
-    def __init__(self, request, questionnaire_code=None, project_name=None, xls_form=None, xls_parser_response=None):
+    def __init__(self, request, questionnaire_code=None, project_name=None, xls_form=None, xls_parser_response=None, user=None):
         self.request = request
-        self.user = request.user
+
+        if user is not None :
+            self.user = user
+        if request is not None :
+            self.user = request.user
+
         user_profile = NGOUserProfile.objects.get(user=self.user)
         self.reporter_id = user_profile.reporter_id
         self.manager = get_database_manager(self.user)
@@ -568,13 +574,17 @@ class MangroveService():
         associate_account_users_to_project(self.manager, questionnaire)
         questionnaire.update_media_field_flag()
         questionnaire.update_doc_and_save()
-        grant_user_permission_for(user_id=self.request.user.id, questionnaire_id=questionnaire.id, manager=self.manager)
+        if self.request is not None :
+            grant_user_permission_for(user_id=self.request.user.id, questionnaire_id=questionnaire.id, manager=self.manager)
+        else :
+            grant_user_permission_for(user_id=self.user.id, questionnaire_id=questionnaire.id, manager=self.manager)
         if self.xls_form:
             base_name, extension = os.path.splitext(self.xls_form.name)
         else:
             extension = ".xls"
         questionnaire.add_attachments(self.xls_form, 'questionnaire%s' % extension)
-        UserActivityLog().log(self.request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
+        if self.request is not None :
+            UserActivityLog().log(self.request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
                               detail=questionnaire.name)
         return questionnaire.id, questionnaire.form_code
 
