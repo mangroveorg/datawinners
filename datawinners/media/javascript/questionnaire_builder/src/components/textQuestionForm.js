@@ -1,17 +1,14 @@
 "use strict";
 
-var React = require('react');
-var CommonQuestionFormMixin = require('./commonQuestionFormMixin');
+import React from 'react';
+import BaseQuestions from './base-question-form';
 
-var TextQuestionForm = React.createClass({
-	mixins: [CommonQuestionFormMixin],
-	render: function() {
+export default class TextQuestionForm extends React.Component{
+	render() {
 		return (
 			<form key={this.props.question.name} className="form-horizontal">
-				{this.getCommonQuestions()}
+				{BaseQuestions.getCommonQuestions(this.props)}
 			</form>
 		);
 	}
-});
-
-module.exports = TextQuestionForm;
+};

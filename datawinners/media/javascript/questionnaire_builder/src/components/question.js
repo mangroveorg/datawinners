@@ -1,20 +1,11 @@
 import React from 'react';
-import TextQuestionForm from './textQuestionForm';
-import IntegerQuestionForm from './integerQuestionForm';
-import DateQuestionForm from './dateQuestionForm';
-import DecimalQuestionForm from './decimalQuestionForm';
 import QuestionActions from '../actions/questionnaire-actions';
 import Toastr from 'toastr';
 import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
 import CardText from 'material-ui/lib/card/card-text';
-
-const questionFormMapper = {
-  'text' : TextQuestionForm,
-  'date' : DateQuestionForm,
-  'integer' : IntegerQuestionForm,
-  'decimal' : DecimalQuestionForm
-};
+import AppConstants from '../constants/app-constants';
+import TextQuestionForm from './textQuestionForm';
 
 const style = {
   question_row: {
@@ -40,19 +31,24 @@ export default class Question extends React.Component {
     if(this.props.question){
       question = this.props.question;
     }
-    let formType = questionFormMapper[question.type];
-    if (!formType) {
-      formType = questionFormMapper.text;
-    }
+
+    this.formType = AppConstants.QuestionTypeSupport[question.type];
     this.state = {
-      question,
-      errors: {},
-			dirty: false,
-      form: formType
-    }
+      dirty:false,
+      errors: {}
+    };
+    // if (!formType) {
+    //   formType = questionFormMapper.text;
+    // }
+    // this.state = {
+    //   question: question,
+		// 	dirty: false,
+    //   form: formType
+    // }
   }
 
   setQuestionState(event) {
+    //this should call the Action., this should not have any more logic here.,
 		this.setState({dirty: true});
 		var field = event.target.name;
 		var value = event.target.value;
@@ -71,7 +67,7 @@ export default class Question extends React.Component {
 			return;
 		}
 
-		if (this.state.question.id) {
+		if (this.state.question.id) { //TODO - id is not longer meaningful.,
 			QuestionActions.updateQuestion(this.state.question);
 		} else {
 			QuestionActions.createQuestion(this.state.question);
@@ -93,8 +89,8 @@ export default class Question extends React.Component {
             style={style.question_row}
           />
           <CardText expandable={true}>
-              <this.state.form
-                question={this.state.question}
+              <TextQuestionForm
+                question={this.props.question}
                 onChange={this.setQuestionState}
                 onSave={this.saveQuestion}
                 errors={this.state.errors} />

@@ -22,8 +22,10 @@ var config = {
 	};
 
 gulp.task('js', function() {
-	browserify({})
-		.require(config.paths.main_js, {entry: true})
+	browserify({
+		entries: [config.paths.main_js],
+		debug:true
+	})
 		.transform([babelify,reactify])
 		.bundle()
 		.on('error', console.error.bind(console))

@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 
 const CHANGE_EVENT = 'change';
-import SampleQuestionnaire from './sample-questionnaire';
+// import SampleQuestionnaire from './sample-questionnaire';
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 
@@ -9,8 +9,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	questions: [],
 
 	getAllQuestions: function() {
-		console.log(SampleQuestionnaire.questions);
-		return SampleQuestionnaire.questions;
+		return this.questions;
 	},
 
 	addChangeListener: function(callback) {

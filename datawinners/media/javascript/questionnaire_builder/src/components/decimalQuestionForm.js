@@ -1,10 +1,10 @@
 "use strict";
 
 var React = require('react');
-var CommonQuestionFormMixin = require('./commonQuestionFormMixin');
+// var CommonQuestionFormMixin = require('./commonQuestionFormMixin');
 
 var DecimalQuestionForm = React.createClass({
-	mixins: [CommonQuestionFormMixin],
+	// mixins: [CommonQuestionFormMixin],
 	render: function() {
 		return (
 			<form key={this.props.question.name} className="form-horizontal">

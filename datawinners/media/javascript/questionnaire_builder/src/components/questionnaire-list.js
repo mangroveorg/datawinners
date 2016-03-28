@@ -93,7 +93,9 @@ export default class QuestionnaireList extends React.Component {
     var displayQuestions = [];
 
     for (var key in questions) {
-      displayQuestions.push(<Question key={questions[key].name} question={questions[key]} />);
+			if (AppConstants.QuestionTypeSupport[questions[key].type]) {
+				displayQuestions.push(<Question key={questions[key].name} question={questions[key]} />);
+			}
     }
 
 		return (
