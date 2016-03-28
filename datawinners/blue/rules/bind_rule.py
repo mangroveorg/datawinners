@@ -1,4 +1,5 @@
 import abc
+import re
 
 from mangrove.form_model.xform import add_attrib, remove_attrib
 
@@ -36,10 +37,18 @@ class EditConstraintRule(EditBindRule):
         bind_node = xform.bind_node(node)
 
         if bind_node is not None and new_field.xform_constraint != old_field.xform_constraint and new_field.xform_constraint:
-            add_attrib(bind_node, 'constraint', new_field.xform_constraint)
+            xform_constraint = new_field.xform_constraint
+            if "${" in new_field.xform_constraint:
+                xform_constraint = self.replace_variable_with_xpath(new_field, xform)
+            add_attrib(bind_node, 'constraint', xform_constraint)
 
         if bind_node is not None and new_field.xform_constraint != old_field.xform_constraint and not new_field.xform_constraint:
             remove_attrib(bind_node, 'constraint')
+
+    def replace_variable_with_xpath(self, new_field, xform):
+        form_code = re.search('\$\{(.*?)\}', new_field.xform_constraint).group(1)
+        constraint_xpath = xform.get_bind_node_by_name(form_code).attrib['nodeset']
+        return re.sub(r'(\$\{)(.*?)(\})', " " + constraint_xpath + " ", new_field.xform_constraint)
 
 
 class EditRequiredRule(EditBindRule):

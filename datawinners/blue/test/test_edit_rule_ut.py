@@ -287,6 +287,20 @@ class TestEditRule(unittest.TestCase):
                                                   new_questionnaire=new_questionnaire)
         self.assertEqual(ET.tostring(ET.fromstring(old_questionnaire.xform)), ET.tostring(ET.fromstring(new_questionnaire.xform)))
 
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    xform_constraint="${number1}>1000")
+        edit_constraint_rule.update_xform(old_questionnaire=old_questionnaire,
+                                                  new_questionnaire=new_questionnaire)
+        self.assertEqual(ET.tostring(ET.fromstring(old_questionnaire.xform)), ET.tostring(ET.fromstring(new_questionnaire.xform)))
+
     def test_should_update_xform_with_remove_field_change(self):
         remove_rule = RemoveRule()
         self.maxDiff = None
@@ -353,7 +367,14 @@ class TestEditRule(unittest.TestCase):
                 '<label>' + field.label + '</label>' + hint_node + \
                 '</input>' \
                 '</repeat>'
-            constraint_attr = 'constraint="' + field.xform_constraint + '" ' if field.xform_constraint else ''
+
+            constraint_attr = ''
+            if field.xform_constraint and "${" not in field.xform_constraint:
+                constraint_attr = 'constraint="' + field.xform_constraint + '" '
+
+            if field.xform_constraint and "${" in field.xform_constraint:
+                constraint_attr = 'constraint=" /tmpkWhV2m/group_outer/number1 &gt;1000" '
+
             constraint_message_attr = 'constraintMsg="' + field.constraint_message + '" ' if field.constraint_message else ''
             required_attr = ' required="true()"' if field.is_required() else ''
             bind_node = '<bind ' + constraint_attr + constraint_message_attr + 'nodeset="/tmpkWhV2m/group_outer/' + field.name + '"' + required_attr + ' type="string" />'
