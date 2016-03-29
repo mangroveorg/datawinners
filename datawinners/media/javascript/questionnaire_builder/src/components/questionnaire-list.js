@@ -17,6 +17,7 @@ import CardText from 'material-ui/lib/card/card-text';
 import SelectField from 'material-ui/lib/select-field';
 
 import MenuItem from 'material-ui/lib/menus/menu-item';
+import _ from 'lodash';
 
 const style = {
 	addButtonContainer: {
@@ -27,14 +28,11 @@ const style = {
 	},
 	appBar: {
 		backgroundColor: '#E8EFF6'
+	},
+	saveButton: {
+		backgroundColor: 'red'
 	}
 };
-
-const question_types = [
-  "Text", "Integer", "Decimal", "Note", "Date",
-  "Time", "Location", "Select one", "Select multiple",
-  "Calculate"
-];
 
 let getAllQuestions = function(questionnaire_id){
 	return {
@@ -49,6 +47,7 @@ export default class QuestionnaireList extends React.Component {
 				questionnaire_id:props.questionnaire_id,
 				questions: getAllQuestions(props.questionnaire_id)
 		}
+		this.onQuestionChange = this.onQuestionChange.bind(this);
 	}
 
 	componentDidMount(){
@@ -78,11 +77,22 @@ export default class QuestionnaireList extends React.Component {
 		this.setState({questions:getAllQuestions(this.state.id)})
 	}
 
+	onQuestionChange(updated_question){
+		let current_question_index = _.findIndex(
+																					this.state.questions,
+																					{name:updated_question.name});
+		let questions = this.state.questions;
+		questions[current_question_index] = updated_question;
+		this.setState({questions: questions});
+	}
+
 	getQuestionTypeMenuItems() {
     var question_type_menu_items = [];
-    for (var key in question_types){
+    for (var key in AppConstants.QuestionTypesDropdown){
       question_type_menu_items.push(
-        <MenuItem value={question_types[key]} primaryText={question_types[key]} />
+        <MenuItem
+						value={AppConstants.QuestionTypesDropdown[key]}
+						primaryText={AppConstants.QuestionTypesDropdown[key]} />
       );
     }
     return question_type_menu_items;
@@ -94,7 +104,12 @@ export default class QuestionnaireList extends React.Component {
 
     for (var key in questions) {
 			if (AppConstants.QuestionTypeSupport[questions[key].type]) {
-				displayQuestions.push(<Question key={questions[key].name} question={questions[key]} />);
+				displayQuestions.push(
+					<Question
+							key={questions[key].name}
+							question={questions[key]}
+							onChange={this.onQuestionChange}/>
+				);
 			}
     }
 
@@ -103,8 +118,7 @@ export default class QuestionnaireList extends React.Component {
       <Paper zDepth={3} >
         <AppBar
           title={<span>{this.state.name}</span>}
-          iconElementRight={<RaisedButton label="Save" primary={true}
-					style={style.appBar}/>}
+          iconElementRight={<RaisedButton label="Save" style={style.saveButton} />}
           />
 					{displayQuestions}
 

@@ -5,7 +5,7 @@ import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
 import CardText from 'material-ui/lib/card/card-text';
 import AppConstants from '../constants/app-constants';
-import TextQuestionForm from './textQuestionForm';
+import TextQuestionForm from './text-question-form';
 
 const style = {
   question_row: {
@@ -28,32 +28,22 @@ export default class Question extends React.Component {
       required: ''
 
     };
+    this.errors = {};
     if(this.props.question){
       question = this.props.question;
     }
 
     this.formType = AppConstants.QuestionTypeSupport[question.type];
-    this.state = {
-      dirty:false,
-      errors: {}
-    };
-    // if (!formType) {
-    //   formType = questionFormMapper.text;
-    // }
-    // this.state = {
-    //   question: question,
-		// 	dirty: false,
-    //   form: formType
-    // }
+    this.setQuestionState = this.setQuestionState.bind(this);
   }
 
   setQuestionState(event) {
-    //this should call the Action., this should not have any more logic here.,
-		this.setState({dirty: true});
-		var field = event.target.name;
-		var value = event.target.value;
-		this.state.question[field] = value;
-		return this.setState({question: this.state.question});
+		let field = event.target.name;
+		let value = event.target.value;
+    let question = this.props.question;
+    question[field] = value;
+    question.dirty = true;
+    this.props.onChange(question);
 	}
 
   questionFormIsValid() {
@@ -67,13 +57,14 @@ export default class Question extends React.Component {
 			return;
 		}
 
-		if (this.state.question.id) { //TODO - id is not longer meaningful.,
+    //TODO - id is not longer meaningful.,
+		if (this.state.question.id) {
 			QuestionActions.updateQuestion(this.state.question);
 		} else {
 			QuestionActions.createQuestion(this.state.question);
 		}
 
-		this.setState({dirty: false});
+		// this.setState({dirty: false});
 		Toastr.success('Question saved.');
 	}
 
@@ -93,7 +84,7 @@ export default class Question extends React.Component {
                 question={this.props.question}
                 onChange={this.setQuestionState}
                 onSave={this.saveQuestion}
-                errors={this.state.errors} />
+                errors={this.errors} />
 
           </CardText>
         </Card>

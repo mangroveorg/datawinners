@@ -1,4 +1,4 @@
-import TextQuestionForm from '../components/textQuestionForm';
+import TextQuestionForm from '../components/text-question-form';
 import IntegerQuestionForm from '../components/integerQuestionForm';
 import DateQuestionForm from '../components/dateQuestionForm';
 import DecimalQuestionForm from '../components/decimalQuestionForm';
@@ -17,5 +17,11 @@ module.exports = {
 	  date : DateQuestionForm,
 	  integer : IntegerQuestionForm,
 	  decimal : DecimalQuestionForm
-	}
+	},
+	//TODO: this should be clubed with QuestionTypeSupport object
+	QuestionTypesDropdown : [
+	  "Text", "Integer", "Decimal", "Note", "Date",
+	  "Time", "Location", "Select one", "Select multiple",
+	  "Calculate"
+	]
 }
