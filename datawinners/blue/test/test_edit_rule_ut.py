@@ -1,18 +1,21 @@
 import os
+import re
 import unittest
+import xml.etree.ElementTree as ET
 
 from mangrove.datastore.documents import ProjectDocument
 from mangrove.form_model.field import Field, FieldSet
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
+from mangrove.form_model.xform import replace_node_name_with_xpath, Xform
 
 from datawinners.blue.rules.add_rule import AddRule
-from datawinners.blue.rules.bind_rule import EditConstraintMessageRule, EditRequiredRule, EditConstraintRule
+from datawinners.blue.rules.bind_rule import EditConstraintMessageRule, EditRequiredRule, EditConstraintRule, \
+    EditRelevantRule
 from datawinners.blue.rules.instance_rule import EditDefaultRule
 from datawinners.blue.rules.node_attribute_rule import EditAppearanceRule
 from datawinners.blue.rules.node_rule import EditLabelRule, EditHintRule
 from datawinners.blue.rules.remove_rule import RemoveRule
-import xml.etree.ElementTree as ET
 
 DIR = os.path.dirname(__file__)
 
@@ -122,6 +125,49 @@ class TestEditRule(unittest.TestCase):
                                                     field_name="text2",
                                                     appearance="multiline")
         edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+    def test_should_update_xform_with_relevant(self):
+        edit_relevant_rule = EditRelevantRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    relevant="${number3}='1'")
+        edit_relevant_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    relevant="${number3}='1'")
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2")
+        edit_relevant_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+        old_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    relevant="${number3}='1'")
+
+        new_questionnaire = self._get_questionnaire(group_label="Enter the outer group details",
+                                                    group_name="group_outer",
+                                                    field_label="Name please",
+                                                    field_name="text2",
+                                                    relevant="${number3}='2'")
+        edit_relevant_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_default_change(self):
@@ -329,13 +375,19 @@ class TestEditRule(unittest.TestCase):
 
     def _get_questionnaire(self, group_label="Enter the outer group details", group_name="group_outer",
                            field_label="Name please", field_name="text2", hint=None, constraint_message=None,
-                           appearance=None, default=None, required=False, xform_constraint=None):
+                           appearance=None, default=None, required=False, xform_constraint=None, relevant=None):
         field = Field(code=field_name, name=field_name, label=field_label, parent_field_code=group_name, hint=hint,
                       constraint_message=constraint_message, appearance=appearance, default=default, required=required,
-                      xform_constraint=xform_constraint)
+                      xform_constraint=xform_constraint, relevant=relevant)
         repeat = FieldSet(code="repeat_outer", name="repeat_outer", label="Enter the details you wanna repeat", field_set=[field])
         doc = ProjectDocument()
-        doc.xform = self._get_xform(group_label, field)
+        xform = self._get_xform(group_label, field)
+        if field.relevant:
+            enriched_xform = _replace_node_name_with_xpath(field.relevant, xform)
+        else:
+            enriched_xform = xform
+
+        doc.xform = enriched_xform
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
         questionnaire.name = "q1"
         questionnaire.form_code = "007"
@@ -368,6 +420,8 @@ class TestEditRule(unittest.TestCase):
                 '</input>' \
                 '</repeat>'
 
+            relevant_attr = ' relevant="' + field.relevant + '"' if field.relevant else ''
+
             constraint_attr = ''
             if field.xform_constraint and "${" not in field.xform_constraint:
                 constraint_attr = 'constraint="' + field.xform_constraint + '" '
@@ -377,7 +431,7 @@ class TestEditRule(unittest.TestCase):
 
             constraint_message_attr = 'constraintMsg="' + field.constraint_message + '" ' if field.constraint_message else ''
             required_attr = ' required="true()"' if field.is_required() else ''
-            bind_node = '<bind ' + constraint_attr + constraint_message_attr + 'nodeset="/tmpkWhV2m/group_outer/' + field.name + '"' + required_attr + ' type="string" />'
+            bind_node = '<bind ' + constraint_attr + constraint_message_attr + 'nodeset="/tmpkWhV2m/group_outer/' + field.name + '"' + relevant_attr + required_attr + ' type="string" />'
             instance_node = '<' + field.name + '>' + field.default + '</' + field.name + '>' if field.default else '<' + field.name + ' />'
             field_attrs = {"instance_node": instance_node, "bind_node": bind_node, "input_node": input_node}
         return (('<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">\
@@ -450,3 +504,11 @@ class TestEditRule(unittest.TestCase):
                 </group>\
               </html:body>\
             </html:html>').format(**field_attrs))
+
+
+def _replace_node_name_with_xpath(value, xform_as_string):
+    xform = Xform(xform_as_string)
+    form_code = re.search('\$\{(.*?)\}', value).group(1)
+    value_xpath = xform.get_bind_node_by_name(form_code).attrib['nodeset']
+    return re.sub(r'(\$\{)' + form_code + '(\})', " " + value_xpath + " ", xform_as_string)
+

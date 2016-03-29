@@ -320,7 +320,9 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
 
         project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+
         self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        self.assertEquals(8, web_submission_page.question_count())
 
         self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire_label_change.xls', edit_flag=True)
 
@@ -346,9 +348,14 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertFalse(web_submission_page.text_area_present(2))
         self.assertTrue(web_submission_page.input_present(2))
 
-        self.assertEquals(6, web_submission_page.question_count())
+        self.assertEquals(8, web_submission_page.question_count())
 
         self.assertTrue("new_field" in web_submission_page.get_input_name(5))
         self.assertFalse(web_submission_page.input_with_name_present("my_distress"))
 
         self.assertTrue("20.31" in web_submission_page.get_input_value(4))
+
+        web_submission_page.select_choice(6, 0)
+        self.assertFalse(web_submission_page.is_question_visible(7))
+        web_submission_page.select_choice(6, 1)
+        self.assertTrue(web_submission_page.is_question_visible(7))

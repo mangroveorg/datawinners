@@ -353,7 +353,8 @@ class XlsFormParser():
             "fieldset_type": fieldset_type,
             "fields": questions,
             "appearance": self._get_appearance(field),
-            "default": field.get('default')
+            "default": field.get('default'),
+            "relevant": field.get("bind").get("relevant") if field.get("bind") else None
         }
         return question, errors, unique_id_errors
 
@@ -402,10 +403,11 @@ class XlsFormParser():
         appearance = self._get_appearance(field)
         default = field.get('default')
         xform_constraint = field.get("bind").get("constraint") if field.get("bind") else None
+        relevant = field.get("bind").get("relevant") if field.get("bind") else None
         question = {'title': name, 'type': xform_dw_type_dict.get(type, type), "is_entity_question": False,
                     "code": code, "name": name, 'required': self.is_required(field), "hint": hint,
                     "constraint_message": constraint_message, "parent_field_code": parent_field_code, "appearance": appearance, "default": default,
-                    "xform_constraint": xform_constraint,
+                    "xform_constraint": xform_constraint, "relevant": relevant,
                     "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
 
         if type in ['date', TODAY]:
@@ -434,6 +436,7 @@ class XlsFormParser():
         constraint_message = field.get("bind").get("jr:constraintMsg") if field.get("bind") else None
         appearance = self._get_appearance(field)
         default = field.get('default')
+        relevant = field.get("bind").get("relevant") if field.get("bind") else None
         xform_constraint = field.get("bind").get("constraint") if field.get("bind") else None
 
         if field.get('choices'):
@@ -445,7 +448,7 @@ class XlsFormParser():
         question = {"title": name, "code": code, "type": "select", 'required': self.is_required(field),
                     "hint": hint, "constraint_message": constraint_message, "parent_field_code": parent_field_code,
                     "appearance": appearance, "default": default, "choices": choices, "is_entity_question": False,
-                    "xform_constraint": xform_constraint}
+                    "xform_constraint": xform_constraint, "relevant": relevant}
 
         question.update({"has_other": field['type'] in self.or_other_data_types})
 
@@ -481,9 +484,10 @@ class XlsFormParser():
         appearance = self._get_appearance(field)
         default = field.get('default')
         xform_constraint = field.get("bind").get("constraint") if field.get("bind") else None
+        relevant = field.get("bind").get("relevant") if field.get("bind") else None
         question = {"title": name, "code": code, "type": field['type'], 'required': self.is_required(field),
                     "parent_field_code": parent_field_code, "hint": hint, "constraint_message": constraint_message,
-                    "is_entity_question": False, "appearance": appearance, "default": default, "xform_constraint": xform_constraint}
+                    "is_entity_question": False, "appearance": appearance, "default": default, "xform_constraint": xform_constraint, "relevant": relevant}
         return question
 
     def _validate_for_prefetch_csv(self, field):

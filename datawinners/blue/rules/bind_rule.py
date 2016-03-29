@@ -1,7 +1,7 @@
 import abc
 import re
 
-from mangrove.form_model.xform import add_attrib, remove_attrib
+from mangrove.form_model.xform import add_attrib, remove_attrib, replace_node_name_with_xpath
 
 from datawinners.blue.rules.rule import Rule
 
@@ -39,16 +39,11 @@ class EditConstraintRule(EditBindRule):
         if bind_node is not None and new_field.xform_constraint != old_field.xform_constraint and new_field.xform_constraint:
             xform_constraint = new_field.xform_constraint
             if "${" in new_field.xform_constraint:
-                xform_constraint = self.replace_variable_with_xpath(new_field, xform)
+                xform_constraint = replace_node_name_with_xpath(new_field.xform_constraint, xform)
             add_attrib(bind_node, 'constraint', xform_constraint)
 
         if bind_node is not None and new_field.xform_constraint != old_field.xform_constraint and not new_field.xform_constraint:
             remove_attrib(bind_node, 'constraint')
-
-    def replace_variable_with_xpath(self, new_field, xform):
-        form_code = re.search('\$\{(.*?)\}', new_field.xform_constraint).group(1)
-        constraint_xpath = xform.get_bind_node_by_name(form_code).attrib['nodeset']
-        return re.sub(r'(\$\{)(.*?)(\})', " " + constraint_xpath + " ", new_field.xform_constraint)
 
 
 class EditRequiredRule(EditBindRule):
@@ -61,3 +56,16 @@ class EditRequiredRule(EditBindRule):
 
         if bind_node is not None and not new_field.is_required() and old_field.is_required():
             remove_attrib(bind_node, 'required')
+
+
+class EditRelevantRule(EditBindRule):
+
+    def edit(self, node, old_field, new_field, xform):
+        bind_node = xform.bind_node(node)
+
+        if bind_node is not None and new_field.relevant != old_field.relevant and new_field.relevant:
+            relevant = replace_node_name_with_xpath(new_field.relevant, xform)
+            add_attrib(bind_node, 'relevant', relevant)
+
+        if bind_node is not None and new_field.relevant != old_field.relevant and not new_field.relevant:
+            remove_attrib(bind_node, 'relevant')

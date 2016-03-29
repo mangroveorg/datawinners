@@ -1,6 +1,7 @@
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.select import Select
 
 from framework.utils.common_utils import by_id, by_css
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
@@ -51,6 +52,10 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
             input_element.send_keys(key)
         input_element.send_keys(Keys.TAB)
 
+    def select_choice(self, index, choice_index):
+        select_element = self._get_question(index).find_elements(by=By.CSS_SELECTOR, value=".option-label")[choice_index]
+        select_element.click()
+
     def get_input_name(self, index):
         return self._get_input(index).get_attribute("name")
 
@@ -84,3 +89,6 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
 
     def _get_questions(self):
         return self.driver.find_elements_(by_css(".question"))
+
+    def is_question_visible(self, index):
+        return self._get_question(index).is_displayed()
