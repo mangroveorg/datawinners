@@ -16031,6 +16031,9 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                     }
 
                     $inputNodes.val( value );
+                    if ( type == 'select' && $inputNodes.hasClass('autocomplete') && typeof $inputNodes.data("combobox") !== 'undefined') {
+                            $inputNodes.data("combobox").propagate();
+                    }
 
                     return;
                 }
@@ -17026,8 +17029,10 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                     // this will trigger setting default values and other stuff
                     $clone.trigger( 'addrepeat', index + 1 );
 
-
-
+                    $clone.find('.autocomplete, .autocomplete_input').removeData();
+                    $clone.find('.autocomplete_input').detach();
+                    $clone.find('.autocomplete').combobox();
+                    
                     //p.report();
                     return true;
                 },
@@ -17040,6 +17045,7 @@ define( 'enketo-js/Form',[ 'enketo-js/FormModel', 'enketo-js/widgets', 'jquery',
                         $parentGroup = $repeat.parent( '.or-group' );
 
                     $repeat.hide( delay, function() {
+                        $repeat.find(".autocomplete, .autocomplete_input").removeData().detach();
                         $repeat.remove();
                         $parentGroup.numberRepeats();
                         that.toggleButtons( $parentGroup );

@@ -4,7 +4,7 @@ $.widget("ui.combobox", {
             select = this.element,//.hide(),
             selected = select.children(":selected"),
             value = selected.val() ? selected.text() : "";
-        var input = this.input = $('<input class="ignore" type="text" id="autocomplete_village">').insertAfter(select).val(value).autocomplete({
+        var input = this.input = $('<input class="ignore autocomplete_input" type="text">').insertAfter(select).val(value).autocomplete({
             delay: 0,
             minLength: 2,
             source: function(request, response) {
@@ -22,7 +22,6 @@ $.widget("ui.combobox", {
             select: function(event, ui) {
                 ui.item.option.selected = true;
                 select.trigger('change');
-                console.log("ito le ui.item", $(ui.item));
                 self._trigger("selected", event, {
                     item: ui.item.option
                 });
@@ -52,6 +51,13 @@ $.widget("ui.combobox", {
         input.data("autocomplete")._renderItem = function(ul, item) {
             return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
         };
+    },
+
+    propagate: function() {
+        if (this.element[0].selectedOptions.length) {
+            var text = this.element[0].selectedOptions[0].innerHTML;
+            this.input.val(text);
+        }
     },
 
     destroy: function() {
