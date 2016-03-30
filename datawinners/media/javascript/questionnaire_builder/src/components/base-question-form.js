@@ -57,9 +57,23 @@ module.exports = {
         onChange={props.onChange}
         value={props.question.constraint_message}
       />
+      <TextField
+        floatingLabelText="Appearance"
+        errorText={props.errors.appearance}
+        name='appearance'
+        onChange={props.onChange}
+        value={props.question.appearance}
+      />
+      <TextField
+        floatingLabelText="Relevant"
+        errorText={props.errors.relavant}
+        name='relavant'
+        onChange={props.onChange}
+        value={props.question.relavant}
+      />
       <Toggle
         label="Required"
-        defaultToggled={true}
+        defaultToggled={props.question.required}
         style={styles.toggle}
       />
       </div>

@@ -117,7 +117,8 @@ export default class QuestionnaireList extends React.Component {
 			<div>
       <Paper zDepth={3} >
         <AppBar
-          title={<span>{this.state.name}</span>}
+					showMenuIconButton={false}
+          title={<span>Questionnaire Builder</span>}
           iconElementRight={<RaisedButton label="Save" style={style.saveButton} />}
           />
 					{displayQuestions}

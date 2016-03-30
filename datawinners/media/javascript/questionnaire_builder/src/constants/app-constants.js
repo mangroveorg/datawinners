@@ -1,7 +1,8 @@
 import TextQuestionForm from '../components/text-question-form';
-import IntegerQuestionForm from '../components/integerQuestionForm';
-import DateQuestionForm from '../components/dateQuestionForm';
-import DecimalQuestionForm from '../components/decimalQuestionForm';
+import IntegerQuestionForm from '../components/integer-question-form';
+import DateQuestionForm from '../components/date-question-form';
+import DecimalQuestionForm from '../components/decimal-question-form';
+import NoteQuestionForm from '../components/note-question-form';
 
 
 module.exports = {
@@ -16,7 +17,8 @@ module.exports = {
 	  text : TextQuestionForm,
 	  date : DateQuestionForm,
 	  integer : IntegerQuestionForm,
-	  decimal : DecimalQuestionForm
+	  decimal : DecimalQuestionForm,
+		note : NoteQuestionForm
 	},
 	//TODO: this should be clubed with QuestionTypeSupport object
 	QuestionTypesDropdown : [

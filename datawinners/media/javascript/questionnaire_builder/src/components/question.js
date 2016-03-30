@@ -9,7 +9,7 @@ import TextQuestionForm from './text-question-form';
 
 const style = {
   question_row: {
-    background: "azure",
+    background: "#e8eff6",
     borderBottomStyle: "solid",
     borderBottomColor: "grey",
     borderWidth: "2px"
@@ -80,7 +80,7 @@ export default class Question extends React.Component {
             style={style.question_row}
           />
           <CardText expandable={true}>
-              <TextQuestionForm
+              <this.formType
                 question={this.props.question}
                 onChange={this.setQuestionState}
                 onSave={this.saveQuestion}
