@@ -13,7 +13,7 @@ from datawinners.project.views.utils import is_original_question_changed_from_ch
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.documents import ProjectDocument
 from datawinners.search.submission_index_meta_fields import submission_meta_fields
-from mangrove.form_model.field import DateField, UniqueIdField, SelectField, FieldSet
+from mangrove.form_model.field import DateField, UniqueIdField, SelectField, FieldSet, SelectOneExternalField
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
@@ -442,6 +442,11 @@ def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, su
                 entry = field.get_option_value_list(entry)
             elif field.type == "select1":
                 entry = ",".join(field.get_option_value_list(entry))
+        elif field.type == "select_one_external":
+            field = _get_select_field_by_revision(field, form_model, submission_doc)
+            if isinstance(field, SelectOneExternalField):
+                itemsets_data = form_model.get_attachments('itemsets.csv')
+                entry = field.get_option_value_list(entry, itemsets_data)
         elif field.type == "select1":
             field = _get_select_field_by_revision(field, form_model, submission_doc)
             if field.type == "select":
