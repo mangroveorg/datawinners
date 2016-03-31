@@ -196,7 +196,7 @@ def xform(request, questionnaire_code=None):
 @httpdigest
 def itemset(request, questionnaire_code=None):
     request_user = request.user
-    return itemset_for(get_database_manager(request_user), questionnaire_code, request_user.get_profile().reporter_id)
+    return itemset_for(get_database_manager(request_user), questionnaire_code)
 
 
 def send_email_for_duplicate_unique_id_registration(request, unique_id_type, unique_id_code):

@@ -46,6 +46,7 @@ from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
     survey_responses_by_form_model_id
+from mangrove.transport.xforms.xform import itemset_for
 from mangrove.utils.dates import py_datetime_to_js_datestring
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
@@ -413,6 +414,14 @@ def new_xform_submission_get(request, project_id):
     if request.method == 'GET':
         return survey_request.response_for_get_request()
 
+@login_required
+@session_not_expired
+@is_project_exist
+@is_not_expired
+def external_itemset(request, questionnaire_code=None):
+    request_user = request.user
+    return itemset_for(get_database_manager(request_user), questionnaire_code)
+
 
 class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
     def __init__(self, request, project_id=None, submissionProcessor=None):
@@ -521,7 +530,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                 }
 
     def _get_itemset_url(self, questionnaire):
-        xform_base_url = self.request.build_absolute_uri('/xforms')
+        xform_base_url = self.request.build_absolute_uri('/xlsform')
         return xform_base_url + '/itemset/' + questionnaire.id
 
 
