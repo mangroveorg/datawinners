@@ -435,9 +435,12 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                                         is_update=is_update)
         if self.questionnaire.xform:
             form_context.update(
-                {'xform_xml': re.sub(r"\n", " ", XFormTransformer(
-                    self.questionnaire.xform_with_unique_ids_substituted()).transform())})
+                {
+                    'xform_xml': re.sub(r"\n", " ", XFormTransformer(
+                        self.questionnaire.do_enrich_xform()).transform())
+                })
             form_context.update({'is_advance_questionnaire': True})
+            form_context.update({'external_itemset_url': self._get_itemset_url(self.questionnaire)})
             form_context.update({'submission_create_url': reverse('new_web_submission')})
         form_context.update({'is_quota_reached': is_quota_reached(self.request)})
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
@@ -516,6 +519,10 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                 'xml': self._model_str_of(submission.id, get_generated_xform_id_name(self.questionnaire.xform)),
                 'data': json.dumps(submission.values)
                 }
+
+    def _get_itemset_url(self, questionnaire):
+        xform_base_url = self.request.build_absolute_uri('/xforms')
+        return xform_base_url + '/itemset/' + questionnaire.id
 
 
 @csrf_exempt
