@@ -56,6 +56,7 @@ action_list = (
     (_("Reminders"),(
         (ACTIVATED_REMINDERS, _(ACTIVATED_REMINDERS)),
         (DEACTIVATED_REMINDERS, _(DEACTIVATED_REMINDERS)),
+        (UPDATED_REMINDERS, _(UPDATED_REMINDERS)),
         (SET_DEADLINE, _(SET_DEADLINE)),
     ))
 )

@@ -4246,6 +4246,9 @@ msgstr "A activé les rappels"
 msgid "De-Activated Reminders"
 msgstr "A desactivé les rappels"
 
+msgid "Updated reminders"
+msgstr "A mis à jour les rappels"
+
 msgid "Set Deadline"
 msgstr "A fixé la date limite"
 

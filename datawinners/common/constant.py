@@ -29,6 +29,7 @@ DELETED_DATA_SUBMISSION = "Deleted Data Submission(s)"
 EDITED_DATA_SUBMISSION = "Edited Data Submission(s)"
 ACTIVATED_REMINDERS = "Activated Reminders"
 DEACTIVATED_REMINDERS = "De-Activated Reminders"
+UPDATED_REMINDERS = "Updated reminders"
 SET_DEADLINE = "Set Deadline"
 DELETED_USERS = "Deleted User(s)"
 

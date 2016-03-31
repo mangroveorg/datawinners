@@ -26,7 +26,7 @@ from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions, get_organization
 from datawinners.common.constant import EDITED_QUESTIONNAIRE, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, \
-    SET_DEADLINE
+    SET_DEADLINE, UPDATED_REMINDERS
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
@@ -209,20 +209,75 @@ def reminder_settings(request, project_id):
                                   }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
+        data = (_reminder_info_about_project(questionnaire))
         post_data = request.POST.copy()
+        if unicode(data['number_of_days_before_deadline'])!= post_data['number_of_days_before_deadline']:
+            details = _('Before-deadline reminder updated: ')+ post_data['number_of_days_before_deadline']+' Day(s)'
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if  unicode(data['number_of_days_after_deadline']) != post_data['number_of_days_after_deadline']:
+            details = _('After-deadline reminder updated: ')+ post_data['number_of_days_after_deadline']+' Day(s)'
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if post_data['reminder_text_before_deadline'] != data['reminder_text_before_deadline']:
+            details = _('Text updated for before-deadline reminder: "')+post_data['reminder_text_before_deadline']+'"'
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if post_data['reminder_text_on_deadline'] != data['reminder_text_on_deadline']:
+            details = _('Text updated for on-deadline reminder: "')+post_data['reminder_text_on_deadline']+ '"'
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if post_data['reminder_text_after_deadline'] != data['reminder_text_after_deadline']:
+            details = _('Text updated for on-deadline reminder: "')+post_data['reminder_text_after_deadline']+ '"'
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if data['should_send_reminders_before_deadline']== False and post_data['should_send_reminders_before_deadline'] =='true':
+            details = _("Before-deadline reminder activated")
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+        elif data['should_send_reminders_before_deadline']== True and post_data['should_send_reminders_before_deadline'] =='false':
+            details = _("Before-deadline reminder deactivated")
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if data['should_send_reminders_on_deadline'] == False and post_data['should_send_reminders_on_deadline'] =='true':
+            details = _("On-deadline reminder activated")
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+        elif data['should_send_reminders_on_deadline'] == True and post_data['should_send_reminders_on_deadline'] =='false':
+            details = _("On-deadline reminder deactivated")
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if data['should_send_reminders_after_deadline'] == False and post_data['should_send_reminders_after_deadline'] == 'true':
+            details = _("After-deadline reminder activated")
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+        elif data['should_send_reminders_after_deadline'] == True and post_data['should_send_reminders_after_deadline'] == 'false':
+            details = _("After-deadline reminder deactivated")
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if data['select_day'] != post_data['select_day']:
+            details = _('Deadline updated: weekday')
+            UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name, detail=details)
+
+        if data['whom_to_send_message'] == False and post_data['whom_to_send_message'] == 'true':
+            if data['whom_to_send_message']:
+                details = _("Reminders updated to:  All My Data Senders")
+                UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+            elif not data['whom_to_send_message']:
+                details = _("Reminders updated to: My Data Senders who have not yet submitted for this deadline")
+                UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
         post_data['should_send_reminder_to_all_ds'] = not post_data['whom_to_send_message'] == 'true'
         post_data = _populate_week_month_data(post_data)
         org_id = NGOUserProfile.objects.get(user=request.user).org_id
         organization = Organization.objects.get(org_id=org_id)
         reminder_list = Reminder.objects.filter(project_id=questionnaire.id)
         action = _get_activity_log_action(reminder_list, post_data)
-        questionnaire, set_deadline = _add_reminder_info_to_project(post_data, questionnaire, organization,
+        questionnaire, set_deadline, details = _add_reminder_info_to_project(post_data, questionnaire, organization,
                                                               reminder_list=reminder_list)
         questionnaire.save()
         if action is not None:
             UserActivityLog().log(request, action=action, project=questionnaire.name)
         if set_deadline:
-            UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name)
+            UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name, detail=details)
         response = {'success_message': ugettext("Reminder settings saved successfully."), 'success': True, 'is_pro_sms': get_organization(request).is_pro_sms,}
         return HttpResponse(json.dumps(response))
 
@@ -319,15 +374,22 @@ def _add_reminder_info_to_project(cleaned_data, project, organization, reminder_
     else:
         reminder_list = Reminder.objects.filter(project_id=project.id)
         reminder_list.delete()
-
-    return project, set_deadline
+    details = None
+    if project.reminder_and_deadline.get('deadline_month') and set_deadline == True:
+        set_deadline = True
+        details = _('Deadline updated: month')
+    elif project.reminder_and_deadline.get('deadline_week') and set_deadline == True:
+        set_deadline = True
+        details = _('Deadline updated: week')
+        
+    return project, set_deadline, details
 
 
 def _get_activity_log_action(reminder_list, new_value):
     action = None
-    if reminder_list.count() == 0 and (new_value['should_send_reminders_after_deadline'] or
-                                           new_value['should_send_reminders_on_deadline'] or
-                                           new_value['should_send_reminders_before_deadline']):
+    if reminder_list.count() == 0 and (new_value['should_send_reminders_after_deadline'] == 'true' or
+                                           new_value['should_send_reminders_on_deadline'] == 'true' or
+                                           new_value['should_send_reminders_before_deadline'] == 'true'):
         action = ACTIVATED_REMINDERS
     if reminder_list.count() > 0 and not (new_value['should_send_reminders_after_deadline'] == 'true' or
                                               new_value['should_send_reminders_on_deadline'] == 'true 'or
