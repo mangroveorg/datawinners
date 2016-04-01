@@ -53,6 +53,18 @@ START = 'start'
 END = 'end'
 SIMSERIAL = 'simserial'
 
+
+def encode_xls_value(value, value_type):
+    if value_type == float:
+        int_value = int(value)
+        if int_value == value:
+            return unicode(int_value)
+        else:
+            return unicode(value)
+    else:
+        return value.encode('utf-8')
+
+
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
@@ -332,7 +344,7 @@ class XlsFormParser():
             mask = [v and len(v.strip()) > 0 for v in sheet.row_values(0)]
             for r in range(sheet.nrows):
                 writer.writerow(
-                    [v.encode('utf-8') for v, m in zip(sheet.row_values(r), mask) if m])
+                    [encode_xls_value(v, type(v)) for v, m in zip(sheet.row_values(r), mask) if m])
         return True
 
 
