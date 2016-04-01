@@ -12,6 +12,21 @@ var QuestionnaireActions = {
 		// 	});
 		//
 		// },
+		saveQuestionnaire : function(id, questions){
+			var onSaveHandler = () => {
+
+			}
+			$.ajax({
+			  type: "POST",
+			  url: AppConstants.QuestionnaireSaveUrl+id+'/',
+				dataType: 'json',
+			  data: {
+								data:JSON.stringify(questions),
+								from_builder:true
+							},
+			  success: onSaveHandler
+			});
+		},
 
 		createQuestion: function(question) {
 			var newQuestion = question//TODO

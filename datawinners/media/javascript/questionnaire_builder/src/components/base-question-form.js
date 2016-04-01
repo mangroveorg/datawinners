@@ -27,6 +27,7 @@ module.exports = {
         onChange={props.onChange}
         value={props.question.label}
         name="label"
+        multiLine={true}
       />
       <TextField
         floatingLabelText="Data Column Name"
@@ -35,6 +36,7 @@ module.exports = {
         disabled={true}
         onChange={props.onChange}
         value={props.question.name}
+        multiLine={true}
       />
       <TextField
         floatingLabelText="Hint"
@@ -42,6 +44,7 @@ module.exports = {
         name='hint'
         onChange={props.onChange}
         value={props.question.hint}
+        multiLine={true}
       />
       <TextField
         floatingLabelText="Constraint"
@@ -49,6 +52,7 @@ module.exports = {
         name='constraint'
         onChange={props.onChange}
         value={props.question.constraint}
+        multiLine={true}
       />
       <TextField
         floatingLabelText="Constraint Message"
@@ -56,6 +60,7 @@ module.exports = {
         name='constraint_message'
         onChange={props.onChange}
         value={props.question.constraint_message}
+        multiLine={true}
       />
       <TextField
         floatingLabelText="Appearance"
@@ -63,6 +68,7 @@ module.exports = {
         name='appearance'
         onChange={props.onChange}
         value={props.question.appearance}
+        multiLine={true}
       />
       <TextField
         floatingLabelText="Relevant"
@@ -70,6 +76,7 @@ module.exports = {
         name='relavant'
         onChange={props.onChange}
         value={props.question.relavant}
+        multiLine={true}
       />
       <Toggle
         label="Required"
@@ -80,20 +87,3 @@ module.exports = {
     );
   }
 }
-// export default class BaseQuestionForm extends React.Component {
-//     constructor(props){
-//       super(props);
-//     }
-//     render(){
-//       return <h3>Inside Base question form</h3>;
-//     }
-// }
-//
-// BaseQuestionForm.propTypes = {
-//   question:	React.PropTypes.object.isRequired,
-//   onSave:	React.PropTypes.func.isRequired,
-//   onChange: React.PropTypes.func.isRequired,
-//   errors: React.PropTypes.object
-// };
-
-// module.exports = BaseQuestions;

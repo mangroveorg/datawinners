@@ -15,9 +15,10 @@ import Card from 'material-ui/lib/card/card';
 // var CardActions = require('material-ui/lib/card/card-actions');
 import CardText from 'material-ui/lib/card/card-text';
 import SelectField from 'material-ui/lib/select-field';
-
+import QuestionnaireActions from '../actions/questionnaire-actions';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import _ from 'lodash';
+import CircularProgress from 'material-ui/lib/circular-progress';
 
 const style = {
 	addButtonContainer: {
@@ -33,33 +34,33 @@ const style = {
 		backgroundColor: 'red'
 	}
 };
-
-let getAllQuestions = function(questionnaire_id){
-	return {
-		questions: QuestionnaireStore.getAllQuestions(questionnaire_id)
-	};
-};
+//
+// let getAllQuestions = function(questionnaire_id){
+// 	return {
+// 		questions: QuestionnaireStore.getAllQuestions(questionnaire_id)
+// 	};
+// };
 
 export default class QuestionnaireList extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-				questionnaire_id:props.questionnaire_id,
-				questions: getAllQuestions(props.questionnaire_id)
+				questionnaire_id:props.questionnaire_id
+				// questions: getAllQuestions(props.questionnaire_id)
 		}
 		this.onQuestionChange = this.onQuestionChange.bind(this);
+		this.saveQuestionnaire = this.saveQuestionnaire.bind(this);
 	}
 
 	componentDidMount(){
-		let url = AppConstants.QuestionnaireUrl + this.state.questionnaire_id;
+		let url = AppConstants.QuestionnaireUrl + this.state.questionnaire_id + '/';
 		var self = this;
 		this.serverRequest = $.ajax({
 				url: url,
+				dataType: 'json',
 				success: function (result) {
-		      var lastGist = result.questions;
 		      self.setState({
-		        questions: result.questions,
-						name: result.name
+		        questionnaire: result.questionnaire
 		      });
 				}
 			});
@@ -79,9 +80,9 @@ export default class QuestionnaireList extends React.Component {
 
 	onQuestionChange(updated_question){
 		let current_question_index = _.findIndex(
-																					this.state.questions,
+																					this.state.questionnaire.survey,
 																					{name:updated_question.name});
-		let questions = this.state.questions;
+		let questions = this.state.questionnaire.survey;
 		questions[current_question_index] = updated_question;
 		this.setState({questions: questions});
 	}
@@ -98,8 +99,38 @@ export default class QuestionnaireList extends React.Component {
     return question_type_menu_items;
   }
 
+	saveQuestionnaire(event) {
+		event.preventDefault();
+
+		//TODO
+		// if (!this.questionFormIsValid()) {
+		// 	return;
+		// }
+
+    //TODO - id is not longer meaningful.,
+		// if (this.state.question.id) {
+		// 	QuestionActions.updateQuestion(this.state.question);
+		// } else {
+		// 	QuestionActions.createQuestion(this.state.question);
+		// }
+
+		let status = QuestionnaireActions.saveQuestionnaire(
+											this.state.questionnaire_id,this.state.questionnaire.survey);
+		//TODO: should update dirty flag to false
+
+		// if (status) {
+		// 	Toastr.success('Questionnaire saved successfully');
+		// }else{
+		// 	Toastr.error('Unable to save questionnaire');
+		// }
+	}
+
+
 	render(){
-		var questions = this.state.questions;
+		if (!this.state.questionnaire){
+			return <CircularProgress />
+		}
+		var questions = this.state.questionnaire.survey;
     var displayQuestions = [];
 
     for (var key in questions) {
@@ -119,7 +150,7 @@ export default class QuestionnaireList extends React.Component {
         <AppBar
 					showMenuIconButton={false}
           title={<span>Questionnaire Builder</span>}
-          iconElementRight={<RaisedButton label="Save" style={style.saveButton} />}
+          iconElementRight={<RaisedButton label="Save" style={style.saveButton} onMouseDown={this.saveQuestionnaire} />}
           />
 					{displayQuestions}
 

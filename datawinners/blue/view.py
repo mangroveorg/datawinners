@@ -54,6 +54,9 @@ from datawinners.project.views.views import SurveyWebQuestionnaireRequest
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.submission_index import SubmissionSearchStore
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
+from openpyxl import load_workbook
+from collections import OrderedDict
+from datawinners.blue.xlsform_utils import convert_excel_to_dict
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
@@ -104,6 +107,38 @@ class ProjectUpload(View):
                 }),
             content_type='application/json')
 
+class ProjectBuilder(View):
+    
+    def get(self, request, project_id):
+        manager = get_database_manager(request.user)
+        questionnaire = Project.get(manager, project_id)
+        try:
+            raw_excel, file_extension = questionnaire.has_attachment()[1:]
+            excel_as_json = convert_excel_to_dict(file_content=raw_excel, file_type=file_extension)
+            return HttpResponse(
+                json.dumps(
+                    {
+                        "project_id": project_id,
+                        "questionnaire" : excel_as_json
+                    }),
+                content_type='application/json')
+        except Exception as e:
+            logger.exception("Exception : \n%s" % e)
+            return HttpResponse(
+                json.dumps(
+                    {
+                        "success": False,
+                        "project_id": project_id,
+                        'reason': 'Unable to fetch questionnaire details'
+                        
+                    }),
+                content_type='application/json')
+
+    def post(self,request, project_id):
+        data = request.POST['data']
+        self.convert_json_to_excel(data)
+        pass
+        
 
 class ProjectUpdate(View):
     @method_decorator(csrf_view_exempt)
@@ -121,7 +156,7 @@ class ProjectUpdate(View):
     def post(self, request, project_id):
         if request.GET["edit"] == 'true':
             return self._edit(request, project_id)
-
+    
         return self._overwrite(project_id, request)
 
     def _edit(self, request, project_id):

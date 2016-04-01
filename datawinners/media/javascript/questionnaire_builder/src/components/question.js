@@ -6,6 +6,7 @@ import CardHeader from 'material-ui/lib/card/card-header';
 import CardText from 'material-ui/lib/card/card-text';
 import AppConstants from '../constants/app-constants';
 import TextQuestionForm from './text-question-form';
+import _ from 'lodash';
 
 const style = {
   question_row: {
@@ -50,30 +51,12 @@ export default class Question extends React.Component {
     return true;//TODO
   }
 
-  saveQuestion(event) {
-		event.preventDefault();
-
-		if (!this.questionFormIsValid()) {
-			return;
-		}
-
-    //TODO - id is not longer meaningful.,
-		if (this.state.question.id) {
-			QuestionActions.updateQuestion(this.state.question);
-		} else {
-			QuestionActions.createQuestion(this.state.question);
-		}
-
-		// this.setState({dirty: false});
-		Toastr.success('Question saved.');
-	}
-
   render() {
       var name = this.props.question.name;
       return (
         <Card>
           <CardHeader
-            title={this.props.question.label}
+            title={_.truncate(this.props.question.label)}
             subtitle={this.props.question.type}
             actAsExpander={true}
             showExpandableButton={true}
@@ -83,7 +66,6 @@ export default class Question extends React.Component {
               <this.formType
                 question={this.props.question}
                 onChange={this.setQuestionState}
-                onSave={this.saveQuestion}
                 errors={this.errors} />
 
           </CardText>

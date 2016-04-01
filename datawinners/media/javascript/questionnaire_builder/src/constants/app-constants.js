@@ -12,7 +12,9 @@ module.exports = {
 		UPDATE_QUESTION: 'UPDATE_QUESTION',
 		DELETE_QUESTION: 'DELETE_QUESTION'
 	},
-	QuestionnaireUrl : '/project/questionnaire/ajax/',
+	QuestionnaireUrl : '/xlsform/',
+	// QuestionnaireUrl : '/project/questionnaire/ajax/',
+	QuestionnaireSaveUrl : '/xlsform/upload/update/',
 	QuestionTypeSupport : {
 	  text : TextQuestionForm,
 	  date : DateQuestionForm,
