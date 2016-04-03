@@ -257,6 +257,14 @@ def reminder_settings(request, project_id):
             UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name, detail=details)
 
         if data['whom_to_send_message'] == False and post_data['whom_to_send_message'] == 'true':
+            details = _("Reminders updated to:  All My Data Senders")
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if data['whom_to_send_message'] == True and post_data['whom_to_send_message'] == 'false':
+            details = _("Reminders updated to: My Data Senders who have not yet submitted for this deadline")
+            UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
+
+        if data['whom_to_send_message'] == False and post_data['whom_to_send_message'] == 'true':
             if data['whom_to_send_message']:
                 details = _("Reminders updated to:  All My Data Senders")
                 UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
