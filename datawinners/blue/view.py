@@ -300,7 +300,7 @@ class ProjectUpdate(View):
 
             base_name, extension = os.path.splitext(tmp_file.name)
             questionnaire.update_attachments(tmp_file, 'questionnaire%s' % extension)
-            questionnaire.update_attachments(mangrove_service.itemsets_csv, "itemsets.csv")
+            questionnaire.update_external_itemset(mangrove_service.itemsets_csv)
             self._purge_submissions(manager, questionnaire)
             self._purge_feed_documents(questionnaire, request)
             self._purge_media_details_documents(manager, questionnaire)
