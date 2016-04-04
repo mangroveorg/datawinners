@@ -228,7 +228,7 @@ def reminder_settings(request, project_id):
             UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
 
         if post_data['reminder_text_after_deadline'] != data['reminder_text_after_deadline']:
-            details = _('Text updated for on-deadline reminder: "')+post_data['reminder_text_after_deadline']+ '"'
+            details = _('Text updated for after-deadline reminder: "') + post_data['reminder_text_after_deadline'] + '"'
             UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
 
         if data['should_send_reminders_before_deadline']== False and post_data['should_send_reminders_before_deadline'] =='true':
@@ -256,22 +256,13 @@ def reminder_settings(request, project_id):
             details = _('Deadline updated: weekday')
             UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name, detail=details)
 
-        if data['whom_to_send_message'] == False and post_data['whom_to_send_message'] == 'true':
+        if data['whom_to_send_message'] == True and post_data['whom_to_send_message'] == 'false':
             details = _("Reminders updated to:  All My Data Senders")
             UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
 
-        if data['whom_to_send_message'] == True and post_data['whom_to_send_message'] == 'false':
+        if data['whom_to_send_message'] == False and post_data['whom_to_send_message'] == 'true':
             details = _("Reminders updated to: My Data Senders who have not yet submitted for this deadline")
             UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
-
-        if data['whom_to_send_message'] == False and post_data['whom_to_send_message'] == 'true':
-            if data['whom_to_send_message']:
-                details = _("Reminders updated to:  All My Data Senders")
-                UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
-
-            elif not data['whom_to_send_message']:
-                details = _("Reminders updated to: My Data Senders who have not yet submitted for this deadline")
-                UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=details)
 
         post_data['should_send_reminder_to_all_ds'] = not post_data['whom_to_send_message'] == 'true'
         post_data = _populate_week_month_data(post_data)
