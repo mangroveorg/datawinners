@@ -194,3 +194,6 @@ class WebSubmissionPage(Page):
             self.questionnaire_form_id, repeat_name,repeat_number
         ))).click()
 
+    def wait_for_questionnaire_form_loading(self):
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(LOCATOR_FORM_AJAX_LOADING))
+

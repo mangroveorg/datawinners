@@ -19,6 +19,7 @@ CANCEL = by_id("cancel")
 # SUCCESS_MESSAGE = by_css(".success-message-box")
 
 # Locator for Autocomplete functionnal Test
+LOCATOR_FORM_AJAX_LOADING = "div.ajax-loader"
 LOCATOR_INPUT = "/%s/%s"
 LOCATOR_SELECT1 = "//label[.//input[@name='/%s/%s'] and .='%s']"
 LOCATOR_SELECT1_NUMBER = ""
