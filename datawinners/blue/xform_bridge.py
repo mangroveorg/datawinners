@@ -1,12 +1,15 @@
+import csv
 from datetime import datetime
 import itertools
 import os
 import re
+from tempfile import NamedTemporaryFile
 from xml.etree import ElementTree as ET
 
 from lxml import etree
 import unicodedata
 from openpyxl import load_workbook
+from pyxform.utils import has_external_choices
 from mangrove.datastore.entity_type import entity_type_already_defined
 from mangrove.datastore.queries import get_non_voided_entity_count_for_type
 from pyxform.xls2json import parse_file_to_json
@@ -50,6 +53,18 @@ START = 'start'
 END = 'end'
 SIMSERIAL = 'simserial'
 
+
+def encode_xls_value(value, value_type):
+    if value_type == float:
+        int_value = int(value)
+        if int_value == value:
+            return unicode(int_value)
+        else:
+            return unicode(value)
+    else:
+        return value.encode('utf-8')
+
+
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
@@ -57,7 +72,8 @@ class XlsFormParser():
                  'auto_filled': ['note'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
-                            'select all that apply or specify other']
+                            'select all that apply or specify other'],
+                 'select_external' : ['select one external']
     }
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
@@ -139,6 +155,8 @@ class XlsFormParser():
             question = self._field(field, parent_field_code)
         elif field_type in self.type_dict['select']:
             question = self._select(field, parent_field_code)
+        elif field_type in self.type_dict['select_external']:
+            question = self._select_external(field, parent_field_code)
         elif field_type in self.type_dict['media']:
             question = self._media(field, parent_field_code)
         return question, errors, unique_id_errors
@@ -299,11 +317,35 @@ class XlsFormParser():
             return XlsParserResponse(errors)
         _map_unique_id_question_to_select_one(self.xform_dict)
         survey = create_survey_element_from_dict(self.xform_dict)
+        itemsets_csv = None
+        if has_external_choices(self.xform_dict):
+            itemsets_csv = NamedTemporaryFile(delete=False, suffix=".csv")
+            choices_exported = self.sheet_to_csv(self.path, itemsets_csv.name, "external_choices")
+            if not choices_exported:
+                errors.add("Could not export itemsets.csv, perhaps the external choices sheet is missing.")
+            else:
+                print 'External choices csv is located at:', itemsets_csv
         xform = survey.to_xml()
         # encoding is added to support ie8
         xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
-        return XlsParserResponse([], updated_xform, questions, info, self._is_multi_language())
+        return XlsParserResponse([], updated_xform, questions, info, self._is_multi_language(), itemsets_csv)
+
+    def sheet_to_csv(self, workbook_path, csv_path, sheet_name):
+        wb = xlrd.open_workbook(workbook_path)
+        try:
+            sheet = wb.sheet_by_name(sheet_name)
+        except xlrd.biffh.XLRDError:
+            return False
+        if not sheet or sheet.nrows < 2:
+            return False
+        with open(csv_path, 'wb') as f:
+            writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+            mask = [v and len(v.strip()) > 0 for v in sheet.row_values(0)]
+            for r in range(sheet.nrows):
+                writer.writerow(
+                    [encode_xls_value(v, type(v)) for v, m in zip(sheet.row_values(r), mask) if m])
+        return True
 
 
     def update_xform_with_questionnaire_name(self, xform):
@@ -457,6 +499,19 @@ class XlsFormParser():
 
         return question
 
+    def _select_external(self, field, parent_field_code=None):
+        if self._get_appearance(field) == 'label':
+            return
+        name = self._get_label(field)
+        code = field['name']
+
+        query = field.get('query')
+        choice_filter = field.get('choice_filter')
+        question = {"title": name, "code": code, "type": "select one external", 'required': self.is_required(field),
+                    "parent_field_code": parent_field_code,
+                    "query": query, "choice_filter":choice_filter, "is_entity_question": False}
+        return question
+
     def _get_choice_label(self, choice_field):
         if not choice_field.get('label', None):
             raise LabelForChoiceNotPresentException(choice_field.get('name', ''))
@@ -539,6 +594,7 @@ class MangroveService():
         self.xform_with_form_code = self.add_form_code(self.questionnaire_code)
         self.json_xform_data = xls_parser_response.json_xform_data
         self.xls_form = xls_form
+        self.itemsets_csv = xls_parser_response.csv_path
 
     def _add_model_sub_element(self, root, name, value):
         generated_id = get_generated_xform_id_name(self.xform)
@@ -581,6 +637,8 @@ class MangroveService():
         else:
             extension = ".xls"
         questionnaire.add_attachments(self.xls_form, 'questionnaire%s' % extension)
+        if self.itemsets_csv:
+            questionnaire.add_attachments(self.itemsets_csv, "itemsets.csv")
         UserActivityLog().log(self.request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
                               detail=questionnaire.name)
         return questionnaire.id, questionnaire.form_code
@@ -789,7 +847,7 @@ class XlsProjectParser(XlsParser):
 
 
 class XlsParserResponse():
-    def __init__(self, errors=None, xform_as_string=None, json_xform_data=None, info=None, is_multiple_languages=False):
+    def __init__(self, errors=None, xform_as_string=None, json_xform_data=None, info=None, is_multiple_languages=False, csv_path=None):
         self.is_multiple_languages = is_multiple_languages
         self.xform_as_string = xform_as_string
         self.json_xform_data = json_xform_data
@@ -799,6 +857,7 @@ class XlsParserResponse():
             errors = []
         self.info = info
         self.errors = errors
+        self.csv_path = csv_path
 
     @property
     def xform_as_string(self):

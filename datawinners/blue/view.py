@@ -19,14 +19,16 @@ from django.utils.translation import ugettext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
+
+from pyxform.errors import PyXFormError
+
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
     survey_responses_by_form_model_id
 from mangrove.utils.dates import py_datetime_to_js_datestring
-from pyxform.errors import PyXFormError
-
+from mangrove.transport.xforms.xform import itemset_for
 from datawinners import settings
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender_allowed, \
     project_has_web_device, is_datasender
@@ -132,9 +134,11 @@ class ProjectUpdate(View):
                 return xls_parser_response
 
             doc = deepcopy(questionnaire._doc)
-            doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code, xls_parser_response=xls_parser_response).xform_with_form_code
+            doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code,
+                                        xls_parser_response=xls_parser_response).xform_with_form_code
             new_questionnaire = Project.new_from_doc(manager, doc)
-            QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(xls_parser_response.json_xform_data)
+            QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(
+                xls_parser_response.json_xform_data)
             xform_rules = get_all_rules()
             XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
                         Questionnaire(_temp_file(request))).edit(new_questionnaire, questionnaire)
@@ -173,6 +177,7 @@ class ProjectUpdate(View):
         tmp_file = _temp_file(request)
         base_name, extension = os.path.splitext(tmp_file.name)
         questionnaire.update_attachments(tmp_file, 'questionnaire%s' % extension)
+        questionnaire.update_external_itemset(mangrove_service.itemsets_csv)
         self._purge_submissions(manager, questionnaire)
         self._purge_feed_documents(questionnaire, request)
         self._purge_media_details_documents(manager, questionnaire)
@@ -351,7 +356,7 @@ def send_email_on_exception(user, error_type, stack_trace, additional_details=No
 
 def send_no_registered_unique_id_for_type_email(user, questionnaire_name):
     email_message = "Questionnaire '%s' created by '%s' has one or more unique-id question(s) with no registered unique-ids." % (
-        questionnaire_name, user.email)
+    questionnaire_name, user.email)
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     email = EmailMessage(subject="[INFO - No regd. unique-ids] : %s" % organization.name,
@@ -424,29 +429,29 @@ def _try_parse_xls(manager, request, questionnaire_name):
             }))
 
     except PyXFormError as e:
-            logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
+        logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
 
-            message = transform_error_message(e.message)
-            if 'name_type_error' in message or 'choice_name_type_error' in message:
-                if 'choice_name_type_error' in message:
-                    message_prefix = _(
-                        "On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:")
-                else:
-                    message_prefix = _(
-                        "On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
-                return HttpResponse(content_type='application/json', content=json.dumps({
-                    'success': False,
-                    'error_msg': [_("Columns are missing"), _("Column name is misspelled"),
-                                  _("Additional space in column name")],
-                    'message_prefix': message_prefix,
-                    'message_suffix': _("Update your XLSForm and upload again.")
-                }))
+        message = transform_error_message(e.message)
+        if 'name_type_error' in message or 'choice_name_type_error' in message:
+            if 'choice_name_type_error' in message:
+                message_prefix = _(
+                    "On your \"choices\" sheet the first and second column must be \"list_name\" and \"name\".  Possible errors:")
             else:
-                return HttpResponse(content_type='application/json', content=json.dumps({
-                    'success': False,
-                    'error_msg': [message if message else ugettext(
-                        "all XLSForm features. Please check the list of unsupported features.")]
-                }))
+                message_prefix = _(
+                    "On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [_("Columns are missing"), _("Column name is misspelled"),
+                              _("Additional space in column name")],
+                'message_prefix': message_prefix,
+                'message_suffix': _("Update your XLSForm and upload again.")
+            }))
+        else:
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [message if message else ugettext(
+                    "all XLSForm features. Please check the list of unsupported features.")]
+            }))
 
     except UnicodeDecodeError as e:
         logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
@@ -482,6 +487,15 @@ def _try_parse_xls(manager, request, questionnaire_name):
     return xls_parser_response
 
 
+@login_required
+@session_not_expired
+@is_project_exist
+@is_not_expired
+def external_itemset(request, questionnaire_code=None):
+    request_user = request.user
+    return itemset_for(get_database_manager(request_user), questionnaire_code)
+
+
 class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
     def __init__(self, request, project_id=None, submissionProcessor=None):
         SurveyWebQuestionnaireRequest.__init__(self, request, project_id)
@@ -503,9 +517,12 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                                         is_update=is_update)
         if self.questionnaire.xform:
             form_context.update(
-                {'xform_xml': re.sub(r"\n", " ", XFormTransformer(
-                    self.questionnaire.xform_with_unique_ids_substituted()).transform())})
+                {
+                    'xform_xml': re.sub(r"\n", " ", XFormTransformer(
+                        self.questionnaire.do_enrich_xform()).transform())
+                })
             form_context.update({'is_advance_questionnaire': True})
+            form_context.update({'external_itemset_url': self._get_itemset_url(self.questionnaire)})
             form_context.update({'submission_create_url': reverse('new_web_submission')})
         form_context.update({'is_quota_reached': is_quota_reached(self.request)})
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
@@ -532,10 +549,11 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
             form_context.update({'survey_response_id': survey_response_id})
             # xform_transformer = XFormTransformer(self.questionnaire.xform)
             form_context.update({'xform_xml': re.sub(r"\n", " ", XFormTransformer(
-                self.questionnaire.xform_with_unique_ids_substituted()).transform())})
+                self.questionnaire.do_enrich_xform()).transform())})
             form_context.update(
                 {'edit_model_str': self._model_str_of(survey_response_id,
                                                       get_generated_xform_id_name(self.questionnaire.xform))})
+            form_context.update({'external_itemset_url': self._get_itemset_url(self.questionnaire)})
             form_context.update({'submission_update_url': reverse('update_web_submission',
                                                                   kwargs={'survey_response_id': survey_response_id})})
             form_context.update({'is_advance_questionnaire': True})
@@ -584,3 +602,7 @@ class SurveyWebXformQuestionnaireRequest(SurveyWebQuestionnaireRequest):
                 'xml': self._model_str_of(submission.id, get_generated_xform_id_name(self.questionnaire.xform)),
                 'data': json.dumps(submission.values)
                 }
+
+    def _get_itemset_url(self, questionnaire):
+        xform_base_url = self.request.build_absolute_uri('/xlsform')
+        return xform_base_url + '/itemset/' + questionnaire.id

@@ -4246,6 +4246,9 @@ msgstr "A activé les rappels"
 msgid "De-Activated Reminders"
 msgstr "A desactivé les rappels"
 
+msgid "Updated reminders"
+msgstr "A mis à jour les rappels"
+
 msgid "Set Deadline"
 msgstr "A fixé la date limite"
 
@@ -6265,3 +6268,51 @@ msgstr "2) Soumissions comportant le même Numéro d'Identification (par questio
 
 msgid "help_text_for_duplicates_near_filter_content_3"
 msgstr "3) Soumissions effectuées par le même Expéditeur de Données"
+
+msgid "Before-deadline reminder updated: "
+msgstr "Rappel avant échéance mis à jour: "
+
+msgid "After-deadline reminder updated: "
+msgstr "Rappel après échéance mis à jour: "
+
+msgid "Text updated for before-deadline reminder: "
+msgstr "Texte mis à jour pour le rappel avant l’échéance"
+
+msgid "Text updated for on-deadline reminder: "
+msgstr "Texte mis à jour pour le rappel le jour de l’échéance "
+
+msgid "Text updated for after-deadline reminder: "
+msgstr "Texte mis à jour pour le rappel après l’échéance "
+
+msgid "Before-deadline reminder activated"
+msgstr "Rappel avant échéance activé"
+
+msgid "Before-deadline reminder deactivated"
+msgstr "Rappel avant échéance désactivé"
+
+msgid "On-deadline reminder activated"
+msgstr "Rappel le jour de l’échéance activé"
+
+msgid "On-deadline reminder deactivated"
+msgstr "Rappel le jour de l’échéance déactivé"
+
+msgid "After-deadline reminder activated"
+msgstr "Rappel après échéance activé"
+
+msgid "After-deadline reminder deactivated"
+msgstr "Rappel après échéance déactivé"
+
+msgid "Deadline updated: weekday"
+msgstr "Echéance mise à jour: jour de la semaine"
+
+msgid "Reminders updated to:  All My Data Senders"
+msgstr "Rappels mis à jour : Tous mes Expéditeurs de Données"
+
+msgid "Reminders updated to: My Data Senders who have not yet submitted for this deadline"
+msgstr "Rappels mis à jour à : Mes Expéditeurs de Données qui n’ont pas encore soumis pour cette échéance."
+
+msgid "Deadline updated: month"
+msgstr "Echéance mise à jour : Mois"
+
+msgid "Deadline updated: week"
+msgstr "Echéance mise à jour : Week"
