@@ -1,4 +1,4 @@
-from mangrove.form_model.field import FieldSet
+from mangrove.form_model.field import FieldSet, SelectField
 from mangrove.form_model.xform import child_nodes, node_has_child, update_node, remove_node, add_child
 
 from datawinners.blue.rules.rule import Rule
@@ -12,7 +12,7 @@ class ChoiceRule(Rule):
         pass
 
     def edit(self, node, old_field, new_field, xform):
-        if isinstance(old_field, FieldSet):
+        if not isinstance(old_field, SelectField):
             return
 
         for new_option in new_field.options:
