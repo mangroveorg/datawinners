@@ -56,5 +56,5 @@ Pillow==2.7.0
 gunicorn==18.0
 kombu==3.0.8
 django-waffle==0.11
--e git+https://github.com/mangroveorg/mangrove.git@release_30#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
 -e git+https://github.com/mangroveorg/pyxform.git@master#egg=pyxform
