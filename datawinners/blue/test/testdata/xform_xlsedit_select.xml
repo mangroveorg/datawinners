@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:head>
+        <html:title>q1</html:title>
+        <model>
+            <instance>
+                <tmpkWhV2m id="tmpkWhV2m">
+                    <group_outer>
+                        <repeat_outer>
+                            <number1 />
+                        {instance_node}</repeat_outer>
+                    </group_outer>
+                    <meta>
+                        <instanceID />
+                    </meta>
+                </tmpkWhV2m>
+            </instance>
+            <bind nodeset="/tmpkWhV2m/group_outer/repeat_outer/number1" required="true()" type="int" />
+            <bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" />
+            {bind_node}</model>
+    </html:head>
+    <html:body>
+        <group ref="/tmpkWhV2m/group_outer">
+            <group ref="/tmpkWhV2m/repeat_outer">
+                <label>Enter the details you wanna repeat</label>
+                <repeat nodeset="/tmpkWhV2m/repeat_outer">
+                    <input ref="/tmpkWhV2m/group_outer/repeat_outer/number1">
+                        <label>Dummy</label>
+                    </input>{node}</repeat>
+            </group>
+        </group>
+    </html:body>
+</html:html>

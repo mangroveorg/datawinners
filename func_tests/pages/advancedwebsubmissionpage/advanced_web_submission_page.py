@@ -53,8 +53,11 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
         input_element.send_keys(Keys.TAB)
 
     def select_choice(self, index, choice_index):
-        select_element = self._get_question(index).find_elements(by=By.CSS_SELECTOR, value=".option-label")[choice_index]
+        select_element = self._get_choices(index)[choice_index]
         select_element.click()
+
+    def has_choice(self, index, choice):
+        return choice in [elem.text for elem in self._get_choices(index)]
 
     def get_input_name(self, index):
         return self._get_input(index).get_attribute("name")
@@ -73,6 +76,9 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
 
     def _get_input(self, index):
         return self._get_question(index).find_element(by=By.CSS_SELECTOR, value="input")
+
+    def _get_choices(self, index):
+        return self._get_question(index).find_elements(by=By.CSS_SELECTOR, value=".option-label")
 
     def _get_input_with_name(self, name):
         for qn in self._get_questions():
