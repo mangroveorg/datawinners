@@ -56,7 +56,9 @@ from datawinners.search.submission_index import SubmissionSearchStore
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from openpyxl import load_workbook
 from collections import OrderedDict
-from datawinners.blue.xlsform_utils import convert_excel_to_dict
+from datawinners.blue.xlsform_utils import convert_excel_to_dict,\
+    convert_json_to_excel
+import io
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
@@ -108,18 +110,19 @@ class ProjectUpload(View):
             content_type='application/json')
 
 class ProjectBuilder(View):
-    
+
     def get(self, request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         try:
-            raw_excel, file_extension = questionnaire.has_attachment()[1:]
-            excel_as_json = convert_excel_to_dict(file_content=raw_excel, file_type=file_extension)
+            raw_excel, file_type = questionnaire.has_attachment()[1:]
+            excel_as_json = convert_excel_to_dict(file_content=raw_excel, file_type=file_type)
             return HttpResponse(
                 json.dumps(
                     {
                         "project_id": project_id,
-                        "questionnaire" : excel_as_json
+                        "questionnaire" : excel_as_json,
+                        "file_type" : file_type
                     }),
                 content_type='application/json')
         except Exception as e:
@@ -130,15 +133,64 @@ class ProjectBuilder(View):
                         "success": False,
                         "project_id": project_id,
                         'reason': 'Unable to fetch questionnaire details'
-                        
+
                     }),
                 content_type='application/json')
 
     def post(self,request, project_id):
         data = request.POST['data']
-        self.convert_json_to_excel(data)
-        pass
-        
+        file_type = request.POST['file_type']
+        try:
+            json_as_dict = json.loads(data)
+            excel_raw_stream = convert_json_to_excel(json_as_dict, file_type)
+            excel_raw_stream.read = lambda: excel_raw_stream.getvalue()
+#             excel_buffered_reader = io.BufferedReader(excel_raw_stream)
+#             _edit_questionnaire(request, project_id, excel_buffered_reader, file_type)
+            _edit_questionnaire(request, project_id, excel_raw_stream, file_type)
+        except Exception as e:
+            logger.error('Unable to save questionnaire from builder')
+            return HttpResponse(
+                json.dumps(
+                    {
+                        "success": False,
+                        "project_id": project_id,
+                        'reason': 'Unable to save questionnaire from builder'
+
+                    }),
+                content_type='application/json')
+
+def _edit_questionnaire(request, project_id, excel_raw_stream=None, file_type=None):
+    manager = get_database_manager(request.user)
+    questionnaire = Project.get(manager, project_id)
+    try:
+        xls_parser_response = _try_parse_xls(manager, request, questionnaire.name, excel_raw_stream, file_type)
+
+        if isinstance(xls_parser_response, HttpResponse):
+            return xls_parser_response
+
+        doc = deepcopy(questionnaire._doc)
+        doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code, xls_parser_response=xls_parser_response).xform_with_form_code
+        new_questionnaire = Project.new_from_doc(manager, doc)
+        QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(xls_parser_response.json_xform_data)
+        xform_rules = get_all_rules()
+        questionnaire_wrapper = Questionnaire(_temp_file(request), excel_raw_stream, file_type)
+        XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
+                    questionnaire_wrapper).edit(new_questionnaire, questionnaire)
+
+    except UnsupportedXformEditException as e:
+        return HttpResponse(content_type='application/json', content=json.dumps({
+            'success': False,
+            'error_msg': [
+                _("Unsupported edit operation")
+            ]
+        }))
+    return HttpResponse(
+        json.dumps({
+            "success": True
+        }),
+        content_type='application/json'
+    )
+
 
 class ProjectUpdate(View):
     @method_decorator(csrf_view_exempt)
@@ -155,42 +207,10 @@ class ProjectUpdate(View):
 
     def post(self, request, project_id):
         if request.GET["edit"] == 'true':
-            return self._edit(request, project_id)
-    
+            return _edit_questionnaire(request, project_id)
+
         return self._overwrite(project_id, request)
 
-    def _edit(self, request, project_id):
-        manager = get_database_manager(request.user)
-        questionnaire = Project.get(manager, project_id)
-        try:
-            xls_parser_response = _try_parse_xls(manager, request, questionnaire.name)
-
-            if isinstance(xls_parser_response, HttpResponse):
-                return xls_parser_response
-
-            doc = deepcopy(questionnaire._doc)
-            doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code,
-                                        xls_parser_response=xls_parser_response).xform_with_form_code
-            new_questionnaire = Project.new_from_doc(manager, doc)
-            QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(
-                xls_parser_response.json_xform_data)
-            xform_rules = get_all_rules()
-            XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
-                        Questionnaire(_temp_file(request))).edit(new_questionnaire, questionnaire)
-
-        except UnsupportedXformEditException as e:
-            return HttpResponse(content_type='application/json', content=json.dumps({
-                'success': False,
-                'error_msg': [
-                    _("Unsupported edit operation")
-                ]
-            }))
-        return HttpResponse(
-            json.dumps({
-                "success": True
-            }),
-            content_type='application/json'
-        )
 
     def _overwrite(self, project_id, request):
         manager = get_database_manager(request.user)
@@ -423,28 +443,32 @@ def _file_extension(request):
 
 
 def _temp_file(request):
-    tmp_file = NamedTemporaryFile(delete=True, suffix=_file_extension(request))
-    tmp_file.write(request.raw_post_data)
-    tmp_file.seek(0)
+    tmp_file = None
+    if request.GET and request.GET.get('qqfile'):
+        tmp_file = NamedTemporaryFile(delete=True, suffix=_file_extension(request))
+        tmp_file.write(request.raw_post_data)
+        tmp_file.seek(0)
     return tmp_file
 
 
-def _try_parse_xls(manager, request, questionnaire_name):
+def _try_parse_xls(manager, request, questionnaire_name, excel_raw_stream=None, file_type=None):
     tmp_file = None
     try:
-        file_errors = _perform_file_validations(request)
-        if file_errors:
-            logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
-                        request.user.username,
-                        json.dumps(file_errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
+        if excel_raw_stream is None:
+            file_errors = _perform_file_validations(request)
+            if file_errors:
+                logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
+                            request.user.username,
+                            json.dumps(file_errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
 
-            return HttpResponse(content_type='application/json', content=json.dumps({
-                'success': False,
-                'error_msg': file_errors
-            }))
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': False,
+                    'error_msg': file_errors
+                }))
 
-        tmp_file = _temp_file(request)
-        xls_parser_response = XlsFormParser(tmp_file, questionnaire_name, manager).parse()
+            tmp_file = _temp_file(request)
+
+        xls_parser_response = XlsFormParser(tmp_file, questionnaire_name, manager, excel_raw_stream, file_type).parse()
 
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)

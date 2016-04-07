@@ -19,6 +19,8 @@ import QuestionnaireActions from '../actions/questionnaire-actions';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import _ from 'lodash';
 import CircularProgress from 'material-ui/lib/circular-progress';
+import LinearProgress from 'material-ui/lib/linear-progress';
+import BuilderToolbar from './builder-toolbar';
 
 const style = {
 	addButtonContainer: {
@@ -60,7 +62,8 @@ export default class QuestionnaireList extends React.Component {
 				dataType: 'json',
 				success: function (result) {
 		      self.setState({
-		        questionnaire: result.questionnaire
+		        questionnaire: result.questionnaire,
+						file_type: result.file_type
 		      });
 				}
 			});
@@ -102,33 +105,18 @@ export default class QuestionnaireList extends React.Component {
 	saveQuestionnaire(event) {
 		event.preventDefault();
 
-		//TODO
-		// if (!this.questionFormIsValid()) {
-		// 	return;
-		// }
-
-    //TODO - id is not longer meaningful.,
-		// if (this.state.question.id) {
-		// 	QuestionActions.updateQuestion(this.state.question);
-		// } else {
-		// 	QuestionActions.createQuestion(this.state.question);
-		// }
-
 		let status = QuestionnaireActions.saveQuestionnaire(
-											this.state.questionnaire_id,this.state.questionnaire.survey);
-		//TODO: should update dirty flag to false
-
-		// if (status) {
-		// 	Toastr.success('Questionnaire saved successfully');
-		// }else{
-		// 	Toastr.error('Unable to save questionnaire');
-		// }
+											this.state.questionnaire_id,this.state.questionnaire, this.state.file_type);
 	}
 
 
 	render(){
 		if (!this.state.questionnaire){
-			return <CircularProgress />
+			return (
+				<div>
+					<LinearProgress mode="indeterminate" />
+					</div>
+			)
 		}
 		var questions = this.state.questionnaire.survey;
     var displayQuestions = [];
@@ -147,11 +135,7 @@ export default class QuestionnaireList extends React.Component {
 		return (
 			<div>
       <Paper zDepth={3} >
-        <AppBar
-					showMenuIconButton={false}
-          title={<span>Questionnaire Builder</span>}
-          iconElementRight={<RaisedButton label="Save" style={style.saveButton} onMouseDown={this.saveQuestionnaire} />}
-          />
+				<BuilderToolbar onSave={this.saveQuestionnaire}/>
 					{displayQuestions}
 
           <Card expanded={this.state.expandNewQuestionType}>

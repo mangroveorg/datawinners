@@ -80,17 +80,20 @@ class XlsFormParser():
     or_other_data_types = ['select all that apply or specify other', 'select one or specify other']
     select_without_list_name = ['select_one', 'select_multiple']
 
-    def __init__(self, path_or_file, questionnaire_name, dbm=None):
+    def __init__(self, path_or_file, questionnaire_name, dbm=None, excel_raw_stream=None, file_type=None):
         self.questionnaire_name = questionnaire_name
         self.dbm = dbm
-        if isinstance(path_or_file, basestring):
+        if excel_raw_stream is not None:
+          self._file_object = excel_raw_stream
+          self.path = 'questionnaire.'+file_type #Used only to deduct the extension internally in pyxform   
+        elif isinstance(path_or_file, basestring):
             self._file_object = None
             self.path = path_or_file
         else:
             self._file_object = path_or_file
             self.path = path_or_file.name
 
-        self.xform_dict = parse_file_to_json(self.path, file_object=path_or_file)
+        self.xform_dict = parse_file_to_json(self.path, file_object=self._file_object)
 
     def _validate_for_uppercase_names(self, field):
         if filter(lambda x: x.isupper(), field['name']):

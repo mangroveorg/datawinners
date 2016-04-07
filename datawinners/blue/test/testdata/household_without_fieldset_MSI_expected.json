@@ -1,325 +1,325 @@
 {
    "survey":[
       {
-         "constraint":"",
-         "relevant":"",
+         "type":"note",
          "name":"intro",
-         "hint":"",
-         "calculation":"",
-         "required":"",
-         "appearance":"",
          "label":"VMMC IPC Household Registration Form. Introduce yourself as a health promoter with Society for Family Health, currently working on the Voluntary Medical Male Circumcision campaign. Ask if there is a head of household, spouse or find the eldest competent respondent over the age of 18 that can answer some questions about the men residing in the household. Once the respondent has been identified, introduce yourself again. Ask the respondent whether knows about male circumcision and the VMMC campaign currently taking place in Lusaka.",
-         "type":"note"
+         "calculation":"",
+         "hint":"",
+         "required":"",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
       },
       {
-         "constraint":"",
-         "relevant":"",
+         "type":"text",
          "name":"hh_number",
-         "hint":"",
-         "calculation":"",
-         "required":"",
-         "appearance":"",
          "label":"Household Number",
-         "type":"text"
+         "calculation":"",
+         "hint":"",
+         "required":"",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
       },
       {
-         "constraint":"",
-         "relevant":"",
+         "type":"date",
          "name":"visit",
-         "hint":"",
-         "calculation":"",
-         "required":"",
-         "appearance":"",
          "label":"Date of visit",
-         "type":"date"
+         "calculation":"",
+         "hint":"",
+         "required":"",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
       },
       {
-         "constraint":"",
-         "relevant":"",
+         "type":"text",
          "name":"interviewer",
-         "hint":"",
-         "calculation":"",
-         "required":"",
-         "appearance":"",
          "label":"Name of Health Promoter",
-         "type":"text"
+         "calculation":"",
+         "hint":"",
+         "required":"",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
       },
       {
-         "constraint":"",
-         "relevant":"",
+         "type":"select_one result",
          "name":"result",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
          "label":"Is a compentant household member available to answer this questionaire?",
-         "type":"select_one result"
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
       },
       {
-         "constraint":"",
-         "relevant":"${result} = 'other'",
+         "type":"text",
          "name":"result_other",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
          "label":"Please specify",
-         "type":"text"
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":"",
+         "relevant":"${result} = 'other'"
       },
       {
-         "constraint":". > ${visit}",
-         "relevant":"${result} != 'completed'",
+         "type":"date",
          "name":"next",
-         "hint":"",
-         "calculation":"",
-         "required":"",
-         "appearance":"",
          "label":"Next visit date",
-         "type":"date"
+         "calculation":"",
+         "hint":"",
+         "required":"",
+         "appearance":"",
+         "constraint":". > ${visit}",
+         "relevant":"${result} != 'completed'"
       },
       {
-         "constraint":"",
-         "relevant":"${result} != 'completed'",
+         "type":"time",
          "name":"next_time",
-         "hint":"",
-         "calculation":"",
-         "required":"",
-         "appearance":"",
          "label":"Next visit hour (example: 1 pm)",
-         "type":"time"
+         "calculation":"",
+         "hint":"",
+         "required":"",
+         "appearance":"",
+         "constraint":"",
+         "relevant":"${result} != 'completed'"
       },
       {
-         "constraint":"",
-         "relevant":"",
+         "type":"text",
          "name":"name_hh",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
          "label":"1a. Name of the head of household",
-         "type":"text"
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
       },
       {
-         "constraint":"",
-         "relevant":"",
+         "type":"select_one sex",
          "name":"sex",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
          "label":"1b. Sex of head of household",
-         "type":"select_one sex"
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
       },
       {
-         "constraint":"",
-         "relevant":"${sex} = 'male'",
+         "type":"integer",
          "name":"sex_male",
-         "hint":"",
-         "calculation":"",
-         "required":"",
-         "appearance":"",
          "label":"1c. If male and married, how many  wives",
-         "type":"integer"
+         "calculation":"",
+         "hint":"",
+         "required":"",
+         "appearance":"",
+         "constraint":"",
+         "relevant":"${sex} = 'male'"
       },
       {
-         "constraint":"",
-         "relevant":"",
+         "type":"text",
          "name":"name_respondant",
-         "hint":"",
-         "calculation":"",
-         "required":"",
-         "appearance":"",
          "label":"2. Name of questionaire respondent",
-         "type":"text"
+         "calculation":"",
+         "hint":"",
+         "required":"",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
       },
       {
-         "constraint":"",
-         "relevant":"",
+         "type":"select_one sex",
          "name":"sex1",
-         "hint":"",
-         "calculation":"",
-         "required":"",
-         "appearance":"",
          "label":"2a. Sex of questionaire respondent",
-         "type":"select_one sex"
-      },
-      {
-         "constraint":"",
-         "relevant":"",
-         "name":"address",
-         "hint":"",
          "calculation":"",
-         "required":"yes",
-         "appearance":"",
-         "label":"3. Physical address",
-         "type":"text"
-      },
-      {
-         "constraint":". >=0",
-         "relevant":"",
-         "name":"male_all",
          "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
-         "label":"4. # of males residing in the household",
-         "type":"integer"
-      },
-      {
-         "constraint":". <=${male_all}",
-         "relevant":"",
-         "name":"male_10_14",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
-         "label":"5. # of males aged 10 to 14 years residing in the household",
-         "type":"integer"
-      },
-      {
-         "constraint":". <=${male_10_14}",
-         "relevant":"",
-         "name":"male_uncircumcised",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
-         "label":"5a.  # of males aged 10-14 uncircumcised in the household",
-         "type":"integer"
-      },
-      {
-         "constraint":". <=${male_all} - ${male_10_14}",
-         "relevant":"",
-         "name":"male_15_29",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
-         "label":"6. # of males aged 15-29 in the household",
-         "type":"integer"
-      },
-      {
-         "constraint":". <=${male_15_29}",
-         "relevant":"",
-         "name":"male_uncircumcised_15-29",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
-         "label":"6a. # of males aged 15 to 29 that are uncircumcised in household",
-         "type":"integer"
-      },
-      {
-         "constraint":". <=${male_all} - ${male_15_29}  - ${male_10_14}",
-         "relevant":"",
-         "name":"male_30",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
-         "label":"7. # of males aged above 30 years",
-         "type":"integer"
-      },
-      {
-         "constraint":". <=${male_30}",
-         "relevant":"",
-         "name":"male_uncircumcised_30",
-         "hint":"",
-         "calculation":"",
-         "required":"yes",
-         "appearance":"",
-         "label":"7a. # of males aged over 30 are uncircumcised in household",
-         "type":"integer"
-      },
-      {
-         "constraint":"",
-         "relevant":"",
-         "name":"zone",
-         "hint":"",
-         "calculation":"",
          "required":"",
          "appearance":"",
+         "constraint":"",
+         "relevant":""
+      },
+      {
+         "type":"text",
+         "name":"address",
+         "label":"3. Physical address",
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
+      },
+      {
+         "type":"integer",
+         "name":"male_all",
+         "label":"4. # of males residing in the household",
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":". >=0",
+         "relevant":""
+      },
+      {
+         "type":"integer",
+         "name":"male_10_14",
+         "label":"5. # of males aged 10 to 14 years residing in the household",
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":". <=${male_all}",
+         "relevant":""
+      },
+      {
+         "type":"integer",
+         "name":"male_uncircumcised",
+         "label":"5a.  # of males aged 10-14 uncircumcised in the household",
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":". <=${male_10_14}",
+         "relevant":""
+      },
+      {
+         "type":"integer",
+         "name":"male_15_29",
+         "label":"6. # of males aged 15-29 in the household",
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":". <=${male_all} - ${male_10_14}",
+         "relevant":""
+      },
+      {
+         "type":"integer",
+         "name":"male_uncircumcised_15-29",
+         "label":"6a. # of males aged 15 to 29 that are uncircumcised in household",
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":". <=${male_15_29}",
+         "relevant":""
+      },
+      {
+         "type":"integer",
+         "name":"male_30",
+         "label":"7. # of males aged above 30 years",
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":". <=${male_all} - ${male_15_29}  - ${male_10_14}",
+         "relevant":""
+      },
+      {
+         "type":"integer",
+         "name":"male_uncircumcised_30",
+         "label":"7a. # of males aged over 30 are uncircumcised in household",
+         "calculation":"",
+         "hint":"",
+         "required":"yes",
+         "appearance":"",
+         "constraint":". <=${male_30}",
+         "relevant":""
+      },
+      {
+         "type":"cascading_select zones",
+         "name":"zone",
          "label":"",
-         "type":"cascading_select zones"
+         "calculation":"",
+         "hint":"",
+         "required":"",
+         "appearance":"",
+         "constraint":"",
+         "relevant":""
       }
    ],
    "cascades":[
       {
+         "name":"label",
          "districts":"Please select the District",
-         "facilities":"Please select the Facility",
-         "zones":"Please select the Zone",
          "villages":"Please select the community",
-         "name":"label"
+         "facilities":"Please select the Facility",
+         "zones":"Please select the Zone"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_01",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_01"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_02",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_02"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_03",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_03"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_04",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_04"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_05",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_05"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_06",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_06"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_07",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_07"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_08",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_08"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_09",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_09"
       },
       {
+         "name":"choice_label",
          "districts":"Lusaka_District",
-         "facilities":"Kalingalinga_Urban_Health_Center",
-         "zones":"zone_10",
          "villages":"Kalingalinga",
-         "name":"choice_label"
+         "facilities":"Kalingalinga_Urban_Health_Center",
+         "zones":"zone_10"
       }
    ],
    "choices":[

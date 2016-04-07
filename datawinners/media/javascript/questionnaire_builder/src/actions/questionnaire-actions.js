@@ -12,17 +12,18 @@ var QuestionnaireActions = {
 		// 	});
 		//
 		// },
-		saveQuestionnaire : function(id, questions){
+		saveQuestionnaire : function(id, questionnaire, file_type){
 			var onSaveHandler = () => {
-
+				//TODO: toastr message
 			}
 			$.ajax({
 			  type: "POST",
 			  url: AppConstants.QuestionnaireSaveUrl+id+'/',
 				dataType: 'json',
+				headers: { "X-CSRFToken": $.cookie('csrftoken') },
 			  data: {
-								data:JSON.stringify(questions),
-								from_builder:true
+							file_type:file_type,
+								data:JSON.stringify(questionnaire),
 							},
 			  success: onSaveHandler
 			});

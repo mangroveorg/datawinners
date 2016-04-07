@@ -14,7 +14,7 @@ module.exports = {
 	},
 	QuestionnaireUrl : '/xlsform/',
 	// QuestionnaireUrl : '/project/questionnaire/ajax/',
-	QuestionnaireSaveUrl : '/xlsform/upload/update/',
+	QuestionnaireSaveUrl : '/xlsform/',
 	QuestionTypeSupport : {
 	  text : TextQuestionForm,
 	  date : DateQuestionForm,
