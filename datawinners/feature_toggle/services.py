@@ -16,6 +16,7 @@ def handle_feature_toggle_impact_for_new_user(ngo_user_profile):
                     flag.users.add(ngo_user_profile.user)
     except Exception as e:
         logger.error('Unable to handle feature toggle impact for new users')
+        logger.error(e.message)
 
 def handle_feature_toggle_impact_for_deleted_user(user_id):
     try:

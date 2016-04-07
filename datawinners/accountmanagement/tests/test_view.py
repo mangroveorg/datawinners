@@ -216,6 +216,7 @@ class TestViews(TestCase):
         ngo_user_profile_mock = MagicMock(spec=NGOUserProfile)
         ngouserprofile_def_mock.return_value = ngo_user_profile_mock
         ngouserprofile_def_mock.objects.get.return_value = ngo_user_profile_mock
+        ngo_user_profile_mock.org_id = 'SLX364903'
         questionnaire_mock = MagicMock(spec=Project)
         project_mock.get.return_value = questionnaire_mock
 

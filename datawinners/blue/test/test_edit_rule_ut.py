@@ -303,10 +303,10 @@ class TestEditRule(unittest.TestCase):
 
         if field and 'select' in field.type:
             node = self._build_select_node(field)
-            file_name = "testdata/xform_xlsedit_select.xml"
+            file_name = os.path.join(DIR, "testdata/xform_xlsedit_select.xml")
         else:
             node = self._build_input_node(field)
-            file_name = "testdata/xform_xlsedit_input.xml"
+            file_name = os.path.join(DIR, "testdata/xform_xlsedit_input.xml")
 
         field_attrs = {"group_label": group_label, "instance_node": instance_node, "bind_node": bind_node, "node": node}
 
