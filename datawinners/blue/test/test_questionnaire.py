@@ -19,6 +19,6 @@ class TestQuestionnaire(unittest.TestCase):
         questionnaire = Questionnaire(tmp_file)
         questionnaire.save(project)
         project.update_media_field_flag.assert_called_once_with()
-        project.save.assert_called_once_with(process_post_update=False)
+        project.save.assert_called_once_with(process_post_update=True)
         project.update_attachments.assert_called_once_with(tmp_file, 'questionnaire%s' % extension)
 

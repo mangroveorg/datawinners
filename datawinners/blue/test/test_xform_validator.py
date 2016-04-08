@@ -19,6 +19,7 @@ class TestXformValidator(unittest.TestCase):
         new_questionnaire = Project.new_from_doc(DatabaseManagerStub(), ProjectDocument())
         old_questionnaire = Project.new_from_doc(DatabaseManagerStub(), ProjectDocument())
         old_questionnaire.xform_model = Mock(Xform)
+        new_questionnaire.xform_model = Mock(Xform)
 
         old_questionnaire.xform_model.equals.return_value = True
         self.assertTrue(Validator([rule1, rule2]).valid(new_questionnaire, old_questionnaire))
