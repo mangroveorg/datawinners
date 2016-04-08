@@ -22,9 +22,9 @@ class TestXformBridge(unittest.TestCase):
                              {u'children': [{u'children': [
                                  {u'bind': {u'required': u'no'}, u'type': u'text', u'name': u'college',
                                   u'label': u'College Name'}],
-                                             u'type': u'repeat', u'name': u'some', u'label': u'some'}],
-                              u'type': u'repeat',
-                              u'name': u'highest_degree', u'label': u'degree'},
+                                 u'type': u'repeat', u'name': u'some', u'label': u'some'}],
+                                 u'type': u'repeat',
+                                 u'name': u'highest_degree', u'label': u'degree'},
                              {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
                                  {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
                                   'type': 'calculate',
@@ -33,7 +33,6 @@ class TestXformBridge(unittest.TestCase):
             actual_errors = xls_form_parser._validate_fields_are_recognised(fields['children'])
 
             self.assertEqual(actual_errors, {"more than one level of repeated questions."})
-
 
     # def test_should_populate_error_when_label_defined_in_multiple_languages(self):
     #     with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -119,7 +118,7 @@ class TestXformBridge(unittest.TestCase):
                       'name': 'asdasx',
                       'id_string': 'asdasx',
                       'default_language': 'english'
-            }
+                      }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
@@ -141,7 +140,7 @@ class TestXformBridge(unittest.TestCase):
                       'name': 'asdasx',
                       'id_string': 'asdasx',
                       'default_language': 'english'
-            }
+                      }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
@@ -164,7 +163,7 @@ class TestXformBridge(unittest.TestCase):
                       'name': 'asdasx',
                       'id_string': 'asdasx',
                       'default_language': 'english'
-            }
+                      }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
@@ -172,7 +171,6 @@ class TestXformBridge(unittest.TestCase):
 
             self.assertEquals(xls_parser_response.errors, {
                 'Entered default value is not defined in the choices list.'})
-
 
     def test_should_not_populate_error_when_default_choice_for_multi_select_is_present_in_choice_list(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -188,13 +186,12 @@ class TestXformBridge(unittest.TestCase):
                       'name': 'asdasx',
                       'id_string': 'asdasx',
                       'default_language': 'default'
-            }
+                      }
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
             errors = xls_form_parser._validate_choice_names(fields['children'])
 
             self.assertEquals(errors, [])
-
 
     def test_should_populate_error_when_calculate_field_with_prefetch_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -204,10 +201,10 @@ class TestXformBridge(unittest.TestCase):
                 {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
                     {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"},
                      'type': 'calculate', 'name': 'instanceID'}]}],
-                      'title': 'asdasx',
-                      'name': 'asdasx',
-                      'id_string': 'asdasx',
-                      'default_language': 'english'
+                'title': 'asdasx',
+                'name': 'asdasx',
+                'id_string': 'asdasx',
+                'default_language': 'english'
             }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
@@ -227,7 +224,7 @@ class TestXformBridge(unittest.TestCase):
                       'name': 'asdasx',
                       'id_string': 'asdasx',
                       'default_language': 'english'
-            }
+                      }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
@@ -235,7 +232,6 @@ class TestXformBridge(unittest.TestCase):
 
             self.assertEquals(xls_parser_response.errors,
                               {("%s" % SETTINGS_ERROR)})
-
 
     def test_should_populate_error_when_settings_sheet_present_with_form_id(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -248,7 +244,7 @@ class TestXformBridge(unittest.TestCase):
                       'name': 'asdasx',
                       'id_string': 'My Form Id',
                       'default_language': 'english'
-            }
+                      }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
@@ -269,7 +265,7 @@ class TestXformBridge(unittest.TestCase):
                       'id_string': 'asdasx',
                       'public_key': 'my_public_key',
                       'default_language': 'english'
-            }
+                      }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
@@ -310,7 +306,7 @@ class TestXformBridge(unittest.TestCase):
                       'id_string': 'asdasx',
                       'submission_url': 'my submission url',
                       'default_language': 'english'
-            }
+                      }
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
 
@@ -344,17 +340,25 @@ class TestXformBridge(unittest.TestCase):
             questions, errors, unique_id_errors = xls_form_parser._create_questions(fields)
 
             self.assertEqual(questions.__len__(), 2)
-            self.assertDictEqual(questions[0], {'code': u'table_list_1', 'title': u'Q1', 'required': False,
-                                                'parent_field_code': None,
+            self.assertDictEqual(questions[0], {'code': u'table_list_1', 'constraint_message': None,
+                                                'title': u'Q1', 'required': False, 'xform_constraint': None,
+                                                'relevant': None, 'parent_field_code': None,
                                                 'has_other': False,
                                                 'choices': [{'value': {'text': u'Yes', 'val': u'yes'}},
                                                             {'value': {'text': u'No', 'val': u'no'}},
                                                             {'value': {'text': u"Don't Know", 'val': u'dk'}},
                                                             {'value': {'text': u'Not Applicable', 'val': u'na'}}],
-                                                'is_entity_question': False, 'type': 'select1'})
+                                                'is_entity_question': False, 'type': 'select1',
+                                                'default': None,
+                                                'hint': u'Show only the inputs of these options and not the labels (type=select_one yes_no, appearance=list-nolabel)',
+                                                'appearance': u'list-nolabel'})
             self.assertDictEqual(questions[1], {'code': u'table_list_2', 'title': u'Question 2', 'required': False,
-                                                'parent_field_code': None,
+                                                'parent_field_code': None, 'constraint_message': None,
+                                                'xform_constraint': None, 'relevant': None,
                                                 'has_other': False,
+                                                'default': None,
+                                                'hint': u'Show only the inputs of these options and not the labels (type=select_one yes_no, appearance=list-nolabel)',
+                                                'appearance': u'list-nolabel',
                                                 'choices': [{'value': {'text': u'Yes', 'val': u'yes'}},
                                                             {'value': {'text': u'No', 'val': u'no'}},
                                                             {'value': {'text': u"Don't Know", 'val': u'dk'}},
@@ -374,18 +378,21 @@ class TestXformBridge(unittest.TestCase):
 
             self.assertEqual(questions.__len__(), 2)
             self.assertDictEqual(questions[0], {'code': u'hh_user_gender', 'title': u'Sex', 'required': False,
-                                                'parent_field_code': None,
+                                                'parent_field_code': None, 'constraint_message': None,
+                                                'xform_constraint': None, 'relevant': None,
                                                 'has_other': True,
+                                                'default': None, 'hint': None, 'appearance': None,
                                                 'choices': [{'value': {'text': u'Male', 'val': u'male'}},
                                                             {'value': {'text': u'Female', 'val': u'female'}}],
                                                 'is_entity_question': False, 'type': 'select1'})
             self.assertDictEqual(questions[1],
                                  {'code': u'hh_user_gender_other', 'title': u'Sex_other', 'required': False,
-                                  'parent_field_code': None,
+                                  'parent_field_code': None, 'constraint_message': None,
+                                  'xform_constraint': None, 'relevant': None,
+                                  'default': None, 'hint': None, 'appearance': None,
                                   'name': u'Sex_other',
                                   'instruction': 'Answer must be a word',
                                   'is_entity_question': False, 'type': u'text'})
-
 
     def test_should_return_correct_date_format_for_year_or_monthyear_appearance(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -414,7 +421,7 @@ class TestXformBridge(unittest.TestCase):
             fields = {'children': [
                 {u'type': u'date', u'name': u'birth_date', u'label': u'1. What is your date of birth?',
                  u'control': {u'appearance': u'w4'}
-                }], 'default_language': 'english'}
+                 }], 'default_language': 'english'}
             get_xform_dict.return_value = fields
 
             get_xform_dict.return_value = fields
@@ -429,12 +436,12 @@ class TestXformBridge(unittest.TestCase):
                      u'type': u'geoshape', u'name': u'timeq', u'label': u'Time q'},
                     {u'bind': {u'required': u'yes'}, u'type': u'datetime', u'name': u'datetq',
                      u'label': u'Date time q'}],
-                 u'type': u'group', u'name': u'mygroup', u'label': u'My group'
+                    u'type': u'group', u'name': u'mygroup', u'label': u'My group'
                 }], u'type': u'repeat', u'name': u'myrepeat', u'label': u'My repeat',
-                      'title': 'asdasx',
-                      'name': 'asdasx',
-                      'id_string': 'asdasx',
-                      'default_language': 'english'
+                'title': 'asdasx',
+                'name': 'asdasx',
+                'id_string': 'asdasx',
+                'default_language': 'english'
             }
 
             get_xform_dict.return_value = fields
@@ -458,7 +465,7 @@ class TestXformBridge(unittest.TestCase):
                       'name': 'asdasx',
                       'id_string': 'asdasx',
                       'default_language': 'english'
-            }
+                      }
 
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
@@ -466,7 +473,6 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors, {"XLSForm media type (audio) in survey sheet."})
-
 
     def test_should_populate_error_when_choice_answer_has_media_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -483,7 +489,7 @@ class TestXformBridge(unittest.TestCase):
                       'name': 'asdasx',
                       'id_string': 'asdasx',
                       'default_language': 'default1'
-            }
+                      }
 
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
@@ -492,17 +498,16 @@ class TestXformBridge(unittest.TestCase):
 
             self.assertEquals(xls_parser_response.errors, {"XLSForm media type (image) in choices sheet."})
 
-
     def test_should_not_populate_errors_when_choice_answer_has_no_media_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
             fields = {u'name': u'tmpGX1Ud_', u'title': u'tmpGX1Ud_', u'sms_keyword': u'tmpGX1Ud_',
                       u'default_language': u'english', u'id_string': u'tmpGX1Ud_', u'type': u'survey', u'children': [
-                {u'choices': [{u'name': u'crow', u'label': u'crow'}, {u'name': u'eagle', u'label': u'Eagle'}],
-                 u'label': u'What bird did you see?', u'type': u'select one', u'name': u'bird',
-                 u'hint': u'Some birds have included images or audio.'},
-                {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
-                    {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"}, 'type': 'calculate',
-                     'name': 'instanceID'}]}]}
+                    {u'choices': [{u'name': u'crow', u'label': u'crow'}, {u'name': u'eagle', u'label': u'Eagle'}],
+                     u'label': u'What bird did you see?', u'type': u'select one', u'name': u'bird',
+                     u'hint': u'Some birds have included images or audio.'},
+                    {'control': {'bodyless': True}, 'type': 'group', 'name': 'meta', 'children': [
+                        {'bind': {'readonly': 'true()', 'calculate': "concat('uuid:', uuid())"}, 'type': 'calculate',
+                         'name': 'instanceID'}]}]}
             get_xform_dict.return_value = fields
             xls_form_parser = XlsFormParser('some_path', u'questionnaire_name')
 
@@ -530,7 +535,9 @@ class TestXformBridge(unittest.TestCase):
                                                     'code': u'my_unique', 'title': u'mu_uni', 'required': False,
                                                     'parent_field_code': None, 'name': u'mu_uni',
                                                     'is_entity_question': True, 'type': 'unique_id',
-                                                    'uniqueIdType': u'clinic'})
+                                                    'constraint_message': None, 'xform_constraint': u'clinic',
+                                                    'uniqueIdType': u'clinic', 'relevant': None,
+                                                    'default': None, 'hint': None, 'appearance': None})
 
     def test_should_populate_error_when_constraint_not_given_for_dw_idnr_question(self):
         with patch('datawinners.blue.xform_bridge.entity_type_already_defined') as is_entity_type_already_defined:
@@ -555,7 +562,7 @@ class TestXformBridge(unittest.TestCase):
                                u'label': u'mm'}, {u'children': [
                     {u'bind': {u'constraint': u'clinic'}, u'type': u'dw_idnr', u'name': u'my_group_uni',
                      u'label': u'my_grou_uni'}, {u'type': u'text', u'name': u'text', u'label': u'ttext'}],
-                                                  u'type': u'repeat', u'name': u'gr', u'label': u'gr'}],
+                                  u'type': u'repeat', u'name': u'gr', u'label': u'gr'}],
                 u'type': u'group', u'name': u'my_groupi', u'label': u'my_group'}]}
 
         _map_unique_id_question_to_select_one(fields)
