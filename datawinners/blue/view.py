@@ -196,6 +196,8 @@ def _edit_questionnaire(request, project_id, excel_file=None):
         xform_rules = get_all_rules()
         if excel_file is None:
             excel_file = _temp_file(request)
+        else:
+            excel_file.seek(0)
         questionnaire_wrapper = Questionnaire(excel_file)
         XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
                     questionnaire_wrapper).edit(new_questionnaire, questionnaire)

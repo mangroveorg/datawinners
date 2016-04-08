@@ -1,6 +1,8 @@
 import os
 import pyexcel as pe
+#Following imports are needed for loading excel. Please don't remove them
 from pyexcel.ext import xlsx
+from pyexcel.ext import xls
 from collections import OrderedDict
 from pyexcel.sources.memory import RecrodsSource
 from pyexcel.utils import yield_from_records
