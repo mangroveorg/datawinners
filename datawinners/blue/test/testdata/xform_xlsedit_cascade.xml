@@ -2,30 +2,33 @@
     <html:head>
         <html:title>q1</html:title>
         <model>
+            <itext>
+                <translation default="true()" lang="default">
+                    {translation}
+                </translation>
+            </itext>
             <instance>
                 <tmpkWhV2m id="tmpkWhV2m">
-                    <group_outer>
-                        <repeat_outer>
-                            <number1 />
-                        {instance_node_0}</repeat_outer>
-                    </group_outer>
+                    {instance_node_0}
+                    {instance_node_1}
                     <meta>
                         <instanceID />
                     </meta>
                 </tmpkWhV2m>
             </instance>
-            <bind nodeset="/tmpkWhV2m/group_outer/repeat_outer/number1" required="true()" type="int" />
+            {bind_node_0}
+            {bind_node_1}
             <bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" />
-            {bind_node_0}</model>
+            {cascade_instance_node_0}
+            {cascade_instance_node_1}
+        </model>
     </html:head>
     <html:body>
         <group ref="/tmpkWhV2m/group_outer">
             <group ref="/tmpkWhV2m/repeat_outer">
                 <label>Enter the details you wanna repeat</label>
-                <repeat nodeset="/tmpkWhV2m/repeat_outer">
-                    <input ref="/tmpkWhV2m/group_outer/repeat_outer/number1">
-                        <label>Dummy</label>
-                    </input>{node_0}</repeat>
+                {node_0}
+                {node_1}
             </group>
         </group>
     </html:body>

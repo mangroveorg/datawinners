@@ -8,7 +8,7 @@
                         <number1 />
                         <repeat_outer>
                             <number2 />
-                        {instance_node}</repeat_outer>
+                        {instance_node_0}</repeat_outer>
                     </group_outer>
                     <meta>
                         <instanceID />
@@ -18,7 +18,7 @@
             <bind nodeset="/tmpkWhV2m/group_outer/number1" required="true()" type="int" />
             <bind nodeset="/tmpkWhV2m/group_outer/repeat_outer/number2" required="true()" type="int" />
             <bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" />
-            {bind_node}</model>
+            {bind_node_0}</model>
     </html:head>
     <html:body>
         <group ref="/tmpkWhV2m/group_outer">
@@ -31,7 +31,7 @@
                 <repeat nodeset="/tmpkWhV2m/repeat_outer">
                     <input ref="/tmpkWhV2m/group_outer/repeat_outer/number2">
                         <label>Dummy</label>
-                    </input>{node}</repeat>
+                    </input>{node_0}</repeat>
             </group>
         </group>
     </html:body>

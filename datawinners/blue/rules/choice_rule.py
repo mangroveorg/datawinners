@@ -8,11 +8,8 @@ class ChoiceRule(Rule):
     def update_submission(self, submission):
         pass
 
-    def add(self, parent_node, node, bind_node, instance_node, xform):
-        pass
-
-    def edit(self, node, old_field, new_field, xform):
-        if not isinstance(old_field, SelectField):
+    def edit(self, node, old_field, new_field, old_xform, new_xform):
+        if not isinstance(new_field, SelectField) or new_field.is_cascade:
             return
 
         for new_option in new_field.options:

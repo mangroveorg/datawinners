@@ -38,5 +38,5 @@ class AddRule(Rule):
     def update_submission(self, submission):
         return False
 
-    def edit(self, node, old_field, new_field, xform):
+    def edit(self, node, old_field, new_field, old_xform, new_xform):
         pass

@@ -189,10 +189,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     def _verify_with_media(self, form_code):
         response_content = self.client.post('/project/export/log?type=all',
-                                    {'project_name': self.project_name,
-                                        'is_media': 'true',
-                                        'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
-                                        'questionnaire_code': form_code}).content
+                                            {'project_name': self.project_name,
+                                             'is_media': 'true',
+                                             'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
+                                             'questionnaire_code': form_code}).content
         zip_file = self._write_response_to_file(response_content)
         zip_file_open = self._verify_file_names_in_zip(zip_file)
         xlfile_name = self._write_to_file_from_zip(zip_file_open)
@@ -303,7 +303,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         self._verify_edit_of_questionnaire(file_name=file_name, edit_flag=False)
 
-        submission_log_page = self.global_navigation_page.navigate_to_all_data_page()\
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page() \
             .navigate_to_submission_log_page(self.project_name).wait_for_table_data_to_load()
         self.assertTrue(submission_log_page.get_total_number_of_records() == 0)
         self.assertEquals("Text widget", submission_log_page.get_header_text(6))
@@ -322,11 +322,11 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
 
         self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
-        self.assertEquals(9, web_submission_page.question_count())
+        self.assertEquals(11, web_submission_page.question_count())
 
         self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire_label_change.xls', edit_flag=True)
 
-        submission_log_page = self.global_navigation_page.navigate_to_all_data_page()\
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page() \
             .navigate_to_submission_log_page(self.project_name).wait_for_table_data_to_load()
         self.assertFalse(submission_log_page.get_total_number_of_records() == 0)
         self.assertEquals("Updated Text widget", submission_log_page.get_header_text(6))
@@ -348,7 +348,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertFalse(web_submission_page.text_area_present(2))
         self.assertTrue(web_submission_page.input_present(2))
 
-        self.assertEquals(9, web_submission_page.question_count())
+        self.assertEquals(11, web_submission_page.question_count())
 
         self.assertTrue("new_field" in web_submission_page.get_input_name(5))
         self.assertFalse(web_submission_page.input_with_name_present("my_distress"))
@@ -364,3 +364,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertFalse(web_submission_page.has_choice(8, "Local currency"))
         self.assertTrue(web_submission_page.has_choice(8, "Dollar"))
         self.assertTrue(web_submission_page.has_choice(8, "Rupee"))
+
+        self.assertFalse(web_submission_page.has_choice(9, "Gbarpolu"))
+        self.assertTrue(web_submission_page.has_choice(9, "Golu"))
+
+        web_submission_page.select_choice(9, 0)
+        self.assertFalse(web_submission_page.has_choice(10, "Klay"))
+        self.assertTrue(web_submission_page.has_choice(10, "Clay"))

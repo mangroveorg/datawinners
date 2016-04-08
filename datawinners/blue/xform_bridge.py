@@ -493,7 +493,7 @@ class XlsFormParser():
         question = {"title": name, "code": code, "type": "select", 'required': self.is_required(field),
                     "hint": hint, "constraint_message": constraint_message, "parent_field_code": parent_field_code,
                     "appearance": appearance, "default": default, "choices": choices, "is_entity_question": False,
-                    "xform_constraint": xform_constraint, "relevant": relevant}
+                    "xform_constraint": xform_constraint, "relevant": relevant, "is_cascade": field.get("itemset") is not None}
 
         question.update({"has_other": field['type'] in self.or_other_data_types})
 

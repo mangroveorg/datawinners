@@ -24,7 +24,7 @@ class NodeRule(Rule):
     def remove_node(self, parent_node, node, new_field, old_field):
         pass
 
-    def edit(self, node, old_field, new_field, xform):
+    def edit(self, node, old_field, new_field, old_xform, new_xform):
         node_to_be_updated = [child for child in node if child.tag.endswith(self.tagname())]
         if node_to_be_updated:
             self.update_node(node_to_be_updated[0], old_field, new_field)
@@ -33,9 +33,6 @@ class NodeRule(Rule):
             self.create_node(node, old_field, new_field)
 
     def remove(self, parent_node, node, xform):
-        pass
-
-    def add(self, parent_node, node, bind_node, instance_node, xform):
         pass
 
     def update_submission(self, submission):

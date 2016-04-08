@@ -2,14 +2,11 @@ from datawinners.blue.rules.rule import Rule
 
 
 class EditDefaultRule(Rule):
-    def add(self, parent_node, node, bind_node, instance_node, xform):
-        pass
-
     def update_submission(self, submission):
         return False
 
-    def edit(self, node, old_field, new_field, xform):
-        instance_node = xform.instance_node(node)
+    def edit(self, node, old_field, new_field, old_xform, new_xform):
+        instance_node = old_xform.instance_node(node)
         if new_field.default:
             instance_node.text = new_field.default
         else:

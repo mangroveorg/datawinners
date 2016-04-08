@@ -12,12 +12,13 @@ class Rule(object):
         self.fields = []
 
     def update_xform(self, old_questionnaire, new_questionnaire):
-        xform = old_questionnaire.xform_model
-        self._update_xform(new_questionnaire.fields, old_questionnaire.fields, xform.get_body_node(), xform)
+        old_xform = old_questionnaire.xform_model
+        new_xform = new_questionnaire.xform_model
+        self._update_xform(new_questionnaire.fields, old_questionnaire.fields, old_xform.get_body_node(), old_xform, new_xform)
 
-        old_questionnaire.xform = '<?xml version="1.0" encoding="utf-8"?>%s' % ET.tostring(xform.root_node)
+        old_questionnaire.xform = '<?xml version="1.0" encoding="utf-8"?>%s' % ET.tostring(old_xform.root_node)
 
-    def _update_xform(self, new_fields, old_fields, parent_node, xform):
+    def _update_xform(self, new_fields, old_fields, parent_node, old_xform, new_xform):
         for old_field in old_fields:
             if hasattr(old_field, 'is_calculated') and old_field.is_calculated:
                 continue
@@ -26,10 +27,10 @@ class Rule(object):
             new_field = [new_field for new_field in new_fields if new_field.code == old_field.code]
             if new_field:
                 if isinstance(old_field, FieldSet):
-                    self._update_xform(new_field[0].fields, old_field.fields, node, xform)
-                self.edit(node, old_field, new_field[0], xform)
+                    self._update_xform(new_field[0].fields, old_field.fields, node, old_xform, new_xform)
+                self.edit(node, old_field, new_field[0], old_xform, new_xform)
             else:
-                self.remove(parent_node, node, xform)
+                self.remove(parent_node, node, old_xform)
                 self.fields.append(old_field)
 
     @abc.abstractmethod
@@ -37,11 +38,7 @@ class Rule(object):
         pass
 
     @abc.abstractmethod
-    def add(self, parent_node, node, bind_node, instance_node, xform):
-        pass
-
-    @abc.abstractmethod
-    def edit(self, node, old_field, new_field, xform):
+    def edit(self, node, old_field, new_field, old_xform, new_xform):
         pass
 
     @abc.abstractmethod

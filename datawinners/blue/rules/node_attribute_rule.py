@@ -8,16 +8,13 @@ from datawinners.blue.rules.rule import Rule
 class NodeAttributeRule(Rule):
     __metaclass__ = abc.ABCMeta
 
-    def add(self, parent_node, node, bind_node, instance_node, xform):
-        pass
-
     def remove(self, parent_node, node, xform):
         pass
 
     def update_submission(self, submission):
         return False
 
-    def edit(self, node, old_field, new_field, xform):
+    def edit(self, node, old_field, new_field, old_xform, new_xform):
         if bool(new_field.appearance) and node.get(self.attribute_name()) != new_field.appearance:
             add_attrib(node, self.attribute_name(), new_field.appearance)
 

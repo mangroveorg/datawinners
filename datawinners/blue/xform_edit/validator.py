@@ -7,6 +7,9 @@ class Validator(object):
             rule.update_xform(old_questionnaire, new_questionnaire)
         old_questionnaire.xform_model.change_instance_id(new_questionnaire.xform_model)
 
+        old_questionnaire.xform_model.remove_undesirable_cascade_instance_nodes()
+        new_questionnaire.xform_model.remove_undesirable_cascade_instance_nodes()
+
         old_questionnaire.xform_model.sort()
         new_questionnaire.xform_model.sort()
 

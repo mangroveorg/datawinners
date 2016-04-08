@@ -4,9 +4,6 @@ from datawinners.blue.rules.rule import Rule
 
 
 class RemoveRule(Rule):
-    def add(self, parent_node, node, bind_node, instance_node, xform):
-        pass
-
     def remove(self, parent_node, node, xform):
         remove_node(parent_node, node)
         xform.remove_bind_node(node)
@@ -20,5 +17,5 @@ class RemoveRule(Rule):
             del submission.values[field.code]
         return True
 
-    def edit(self, node, old_field, new_field, xform):
+    def edit(self, node, old_field, new_field, old_xform, new_xform):
         pass
