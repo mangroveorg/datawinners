@@ -7,7 +7,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import darkBaseTheme from 'material-ui/lib/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider';
 import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
-import {grey700} from 'material-ui/lib/styles/colors';
 
 // const darkMuiTheme = getMuiTheme(darkBaseTheme);
 // Needed for onTouchTap
@@ -20,10 +19,6 @@ const darkMuiTheme = getMuiTheme({
   // palette: {
   //   textColor: cyan500,
   // },
-  appBar: {
-    height: 40,
-    color: grey700
-  },
 });
 
 class Main extends React.Component {

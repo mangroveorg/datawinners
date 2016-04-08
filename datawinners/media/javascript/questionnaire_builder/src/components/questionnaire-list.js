@@ -76,7 +76,9 @@ export default class QuestionnaireList extends React.Component {
 				success: function (result) {
 		      self.setState({
 		        questionnaire: result.questionnaire,
-						file_type: result.file_type
+						file_type: result.file_type,
+						reason: result.reason,
+						details: result.details
 		      });
 				}
 			});
@@ -133,7 +135,9 @@ export default class QuestionnaireList extends React.Component {
 			return (
 				<div>
 					<LinearProgress mode="indeterminate" />
-					</div>
+					<h4>{this.state.reason}</h4>
+					<h5>{this.state.details}</h5>
+				</div>
 			)
 		}
 		var questions = this.state.questionnaire.survey;

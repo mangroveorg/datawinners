@@ -132,7 +132,8 @@ class ProjectBuilder(View):
                     {
                         "success": False,
                         "project_id": project_id,
-                        'reason': 'Unable to fetch questionnaire details'
+                        'reason': 'Unable to fetch questionnaire details',
+                        'details': e.message
 
                     }),
                 content_type='application/json')
