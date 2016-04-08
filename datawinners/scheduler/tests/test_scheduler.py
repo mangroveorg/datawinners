@@ -189,7 +189,8 @@ class TestScheduler(unittest.TestCase):
                                                self.FROM_NUMBER, None)
             self.assertEqual(0, org_mock._get_message_tracker.call_count)
 
-    def test_should_update_message_trackers_on_sending_reminders_for_organization(self):
+    @patch("datawinners.scheduler.scheduler.Project.get")
+    def test_should_update_message_trackers_on_sending_reminders_for_organization(self, get_project_mock):
         org_mock = Mock(spec=Organization)
         org_mock.org_id = 'test'
         dbm = Mock()
@@ -201,11 +202,14 @@ class TestScheduler(unittest.TestCase):
             self.reminder1.project_id = 'test_project'
             reminder_repository_mock.get_all_reminders_for.return_value = [self.reminder1]
             get_reminder_repository_mock.return_value = reminder_repository_mock
+            project_mock = Mock(spec=Project)
+            get_project_mock.return_value = project_mock
             send_reminders_for_an_organization(org_mock, date.today(), self.sms_client,
                                                self.FROM_NUMBER, dbm)
             org_mock.increment_message_count_for.assert_called_once_with(sent_reminders_count=4)
 
-    def test_should_increment_charged_reminders_count_on_sending_reminders_for_organization(self):
+    @patch("datawinners.scheduler.scheduler.Project.get")
+    def test_should_increment_charged_reminders_count_on_sending_reminders_for_organization(self, get_project_mock):
         org_mock = Mock(spec=Organization)
         org_mock.org_id = 'test'
         dbm = Mock()
@@ -217,6 +221,8 @@ class TestScheduler(unittest.TestCase):
             self.reminder1.project_id = 'test_project'
             reminder_repository_mock.get_all_reminders_for.return_value = [self.reminder1]
             get_reminder_repository_mock.return_value = reminder_repository_mock
+            project_mock = Mock(spec=Project)
+            get_project_mock.return_value = project_mock
             send_reminders_for_an_organization(org_mock, date.today(), self.sms_client,
                                                self.FROM_NUMBER, dbm, True)
             org_mock.increment_message_count_for.assert_called_once_with(sent_reminders_count=4,
