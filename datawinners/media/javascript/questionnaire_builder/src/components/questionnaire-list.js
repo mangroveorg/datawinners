@@ -161,17 +161,17 @@ export default class QuestionnaireList extends React.Component {
 					<Tabs onChange={this.handleChange}
           			value={this.state.slideIndex} tabItemContainerStyle={style.tabs}>
 				    <Tab
-				      icon={<FontIcon className="material-icons">phone</FontIcon>}
+				      icon={<FontIcon className="material-icons">assignment</FontIcon>}
 				      label="Survey" value={0}
 				    >
 
 						</Tab>
 				    <Tab
-				      icon={<FontIcon className="material-icons">favorite</FontIcon>}
+				      icon={<FontIcon className="material-icons">assignment_turned_in</FontIcon>}
 				      label="Choices" value={1}
 				    />
 				    <Tab
-				      icon={<FontIcon className="material-icons">person_pin</FontIcon>}
+				      icon={<FontIcon className="material-icons">low_priority</FontIcon>}
 				      label="Cascades" value={2}
 				    />
 				  </Tabs>
