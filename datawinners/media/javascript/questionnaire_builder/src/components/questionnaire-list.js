@@ -6,21 +6,21 @@ import Paper from 'material-ui/lib/paper';
 import AppBar from 'material-ui/lib/app-bar';
 
 import IconButton from 'material-ui/lib/icon-button';
-import ActionHome from 'material-ui/lib/svg-icons/action/home';
 import RaisedButton from 'material-ui/lib/raised-button';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import Card from 'material-ui/lib/card/card';
-
-// var CardActions = require('material-ui/lib/card/card-actions');
 import CardText from 'material-ui/lib/card/card-text';
 import SelectField from 'material-ui/lib/select-field';
 import QuestionnaireActions from '../actions/questionnaire-actions';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import _ from 'lodash';
-import CircularProgress from 'material-ui/lib/circular-progress';
 import LinearProgress from 'material-ui/lib/linear-progress';
 import BuilderToolbar from './builder-toolbar';
+import Tabs from 'material-ui/lib/tabs/tabs';
+import Tab from 'material-ui/lib/tabs/tab';
+import FontIcon from 'material-ui/lib/font-icon';
+import SwipeableViews from 'react-swipeable-views';
 
 const style = {
 	addButtonContainer: {
@@ -34,7 +34,19 @@ const style = {
 	},
 	saveButton: {
 		backgroundColor: 'red'
-	}
+	},
+	tabs: {
+		backgroundColor: '#329CDC'
+	},
+	headline: {
+	    fontSize: 24,
+	    paddingTop: 16,
+	    marginBottom: 12,
+	    fontWeight: 400,
+	  },
+  slide: {
+    padding: 10
+  },
 };
 //
 // let getAllQuestions = function(questionnaire_id){
@@ -47,11 +59,12 @@ export default class QuestionnaireList extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-				questionnaire_id:props.questionnaire_id
-				// questions: getAllQuestions(props.questionnaire_id)
+				questionnaire_id:props.questionnaire_id,
+			 	slideIndex: 0
 		}
 		this.onQuestionChange = this.onQuestionChange.bind(this);
 		this.saveQuestionnaire = this.saveQuestionnaire.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	componentDidMount(){
@@ -109,6 +122,11 @@ export default class QuestionnaireList extends React.Component {
 											this.state.questionnaire_id,this.state.questionnaire, this.state.file_type);
 	}
 
+	handleChange(value) {
+    this.setState({
+      slideIndex: value,
+    });
+  };
 
 	render(){
 		if (!this.state.questionnaire){
@@ -136,7 +154,37 @@ export default class QuestionnaireList extends React.Component {
 			<div>
       <Paper zDepth={3} >
 				<BuilderToolbar onSave={this.saveQuestionnaire}/>
-					{displayQuestions}
+					<Tabs onChange={this.handleChange}
+          			value={this.state.slideIndex} tabItemContainerStyle={style.tabs}>
+				    <Tab
+				      icon={<FontIcon className="material-icons">phone</FontIcon>}
+				      label="Survey" value={0}
+				    >
+
+						</Tab>
+				    <Tab
+				      icon={<FontIcon className="material-icons">favorite</FontIcon>}
+				      label="Choices" value={1}
+				    />
+				    <Tab
+				      icon={<FontIcon className="material-icons">person_pin</FontIcon>}
+				      label="Cascades" value={2}
+				    />
+				  </Tabs>
+					<SwipeableViews
+	          index={this.state.slideIndex}
+	          onChangeIndex={this.handleChange}
+	        >
+	          <div style={style.slide}>
+							{displayQuestions}
+	          </div>
+	          <div style={style.slide}>
+	            slide n°2
+	          </div>
+	          <div style={style.slide}>
+	            slide n°3
+	          </div>
+	        </SwipeableViews>
 
           <Card expanded={this.state.expandNewQuestionType}>
           <CardText expandable={true}>

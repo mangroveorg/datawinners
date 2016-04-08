@@ -8,9 +8,9 @@ from datawinners.blue.view import new_xform_submission_post, edit_xform_submissi
 from datawinners.project.views.submission_views import edit_xform_submission_get
 
 urlpatterns = patterns('',
-                       url(r'^xlsform/(?P<project_id>.+?)/$',ProjectBuilder.as_view()),
                        url(r'^xlsform/upload/$', ProjectUpload.as_view(), name="import_project"),
                        url(r'^xlsform/download/$', view.project_download),
+                       url(r'^xlsform/(?P<project_id>.+?)/$',ProjectBuilder.as_view()),
                        url(r'^xlsform/upload/update/(?P<project_id>\w+?)/$', ProjectUpdate.as_view(),
                            name="update_project"),
                        url(r'^xlsform/itemset/(?P<questionnaire_code>.+?)$', external_itemset),

@@ -1,6 +1,7 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import SampleQuestionnaire from '../store/sample-questionnaire';
+import Toastr from 'toastr';
 
 var QuestionnaireActions = {
 		// initQuestionnaire : function(questionnaire_id){
@@ -13,8 +14,8 @@ var QuestionnaireActions = {
 		//
 		// },
 		saveQuestionnaire : function(id, questionnaire, file_type){
-			var onSaveHandler = () => {
-				//TODO: toastr message
+			var onSaveHandler = (data) => {
+				Toastr[data.status](data.details, data.reason);
 			}
 			$.ajax({
 			  type: "POST",
@@ -23,10 +24,9 @@ var QuestionnaireActions = {
 				headers: { "X-CSRFToken": $.cookie('csrftoken') },
 			  data: {
 							file_type:file_type,
-								data:JSON.stringify(questionnaire),
-							},
-			  success: onSaveHandler
-			});
+								data:JSON.stringify(questionnaire)
+							}
+			}).done(onSaveHandler);
 		},
 
 		createQuestion: function(question) {

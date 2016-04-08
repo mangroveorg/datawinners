@@ -10,6 +10,8 @@ import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
 import FlatButton from 'material-ui/lib/flat-button';
 import ActionAndroid from 'material-ui/lib/svg-icons/action/android';
 import QuestionnaireActions from '../actions/questionnaire-actions';
+import MenuItem from 'material-ui/lib/menus/menu-item';
+import DropDownMenu from 'material-ui/lib/DropDownMenu';
 
 export default class BuilderToolbar extends React.Component {
 
@@ -20,24 +22,6 @@ export default class BuilderToolbar extends React.Component {
   render() {
     return (
       <Toolbar>
-        <ToolbarGroup float='left'>
-          <FlatButton
-            label="Survey"
-            labelPosition="after"
-            icon={<ActionAndroid />}
-            disabled={true}
-          />
-          <FlatButton
-            label="Choices"
-            labelPosition="after"
-            icon={<ActionAndroid />}
-          />
-          <FlatButton
-            label="Cascades"
-            labelPosition="after"
-            icon={<ActionAndroid />}
-          />
-        </ToolbarGroup>
         <ToolbarGroup float="right">
           <ToolbarSeparator />
           <RaisedButton label="Save" primary={true} onMouseDown={this.props.onSave} />

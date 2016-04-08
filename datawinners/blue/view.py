@@ -75,7 +75,7 @@ class ProjectUpload(View):
     def post(self, request):
         project_name = request.GET['pname'].strip()
         manager = get_database_manager(request.user)
-
+        
         xls_parser_response = _try_parse_xls(manager, request, project_name)
 
         if isinstance(xls_parser_response, HttpResponse):
@@ -137,33 +137,53 @@ class ProjectBuilder(View):
                     }),
                 content_type='application/json')
 
+#     def _save_to_temp_file(self, input_stream, file_type):
+#         tmp_file = NamedTemporaryFile(delete=True, suffix='.'+file_type)
+#         tmp_file.write(input_stream.getvalue())
+#         tmp_file.seek(0)
+#         return tmp_file
+        
     def post(self,request, project_id):
         data = request.POST['data']
         file_type = request.POST['file_type']
         try:
             json_as_dict = json.loads(data)
             excel_raw_stream = convert_json_to_excel(json_as_dict, file_type)
-            excel_raw_stream.read = lambda: excel_raw_stream.getvalue()
+            excel_file = _temp_file(request, excel_raw_stream, file_type)
+#             excel_raw_stream.read = lambda n=0 : excel_raw_stream.getvalue()
+#             excel_raw_stream.readable = lambda: True
 #             excel_buffered_reader = io.BufferedReader(excel_raw_stream)
 #             _edit_questionnaire(request, project_id, excel_buffered_reader, file_type)
-            _edit_questionnaire(request, project_id, excel_raw_stream, file_type)
+            _edit_questionnaire(request, project_id, excel_file)
+            return HttpResponse(
+                json.dumps(
+                    {
+                        "status": "success",
+                        "project_id": project_id,
+                        'reason': 'Successfully updated', #TODO: i18n translation
+                        'details':''
+
+                    }),
+                content_type='application/json')
+ 
         except Exception as e:
             logger.error('Unable to save questionnaire from builder')
             return HttpResponse(
                 json.dumps(
                     {
-                        "success": False,
+                        "status": "error",
                         "project_id": project_id,
-                        'reason': 'Unable to save questionnaire from builder'
+                        'reason': 'Unable to save', #TODO: i18n translation
+                        'details': e.message
 
                     }),
                 content_type='application/json')
 
-def _edit_questionnaire(request, project_id, excel_raw_stream=None, file_type=None):
+def _edit_questionnaire(request, project_id, excel_file=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
     try:
-        xls_parser_response = _try_parse_xls(manager, request, questionnaire.name, excel_raw_stream, file_type)
+        xls_parser_response = _try_parse_xls(manager, request, questionnaire.name, excel_file)
 
         if isinstance(xls_parser_response, HttpResponse):
             return xls_parser_response
@@ -173,7 +193,9 @@ def _edit_questionnaire(request, project_id, excel_raw_stream=None, file_type=No
         new_questionnaire = Project.new_from_doc(manager, doc)
         QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(xls_parser_response.json_xform_data)
         xform_rules = get_all_rules()
-        questionnaire_wrapper = Questionnaire(_temp_file(request), excel_raw_stream, file_type)
+        if excel_file is None:
+            excel_file = _temp_file(request)
+        questionnaire_wrapper = Questionnaire(excel_file)
         XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
                     questionnaire_wrapper).edit(new_questionnaire, questionnaire)
 
@@ -435,40 +457,49 @@ def _perform_file_validations(request):
 
     if request.META.get('CONTENT_LENGTH') and int(request.META.get('CONTENT_LENGTH')) > EXCEL_UPLOAD_FILE_SIZE:
         errors.append(_("larger files than 10MB."))
-    return errors
-
+        
+    if errors:
+        logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
+                    request.user.username,
+                    json.dumps(errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
+    
+        return HttpResponse(content_type='application/json', content=json.dumps({
+            'success': False,
+            'error_msg': errors
+        }))
 
 def _file_extension(request):
     return os.path.splitext(request.GET["qqfile"])[1]
 
 
-def _temp_file(request):
+def _temp_file(request, input_stream=None, file_type=None):
     tmp_file = None
     if request.GET and request.GET.get('qqfile'):
         tmp_file = NamedTemporaryFile(delete=True, suffix=_file_extension(request))
         tmp_file.write(request.raw_post_data)
         tmp_file.seek(0)
+    if input_stream:
+        tmp_file = NamedTemporaryFile(delete=True, suffix='.'+file_type)
+        tmp_file.write(input_stream.getvalue())
+        tmp_file.seek(0)
+        
     return tmp_file
 
 
-def _try_parse_xls(manager, request, questionnaire_name, excel_raw_stream=None, file_type=None):
+
+def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
     tmp_file = None
     try:
-        if excel_raw_stream is None:
-            file_errors = _perform_file_validations(request)
-            if file_errors:
-                logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
-                            request.user.username,
-                            json.dumps(file_errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
+        file_validation_results = _perform_file_validations(request)
+        if isinstance(file_validation_results, HttpResponse):
+            return file_validation_results
 
-                return HttpResponse(content_type='application/json', content=json.dumps({
-                    'success': False,
-                    'error_msg': file_errors
-                }))
-
+        if excel_file:
+            tmp_file=excel_file
+        else:
             tmp_file = _temp_file(request)
 
-        xls_parser_response = XlsFormParser(tmp_file, questionnaire_name, manager, excel_raw_stream, file_type).parse()
+        xls_parser_response = XlsFormParser(tmp_file, questionnaire_name, manager).parse()
 
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
@@ -538,10 +569,6 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_raw_stream=None, 
         return HttpResponse(content_type='application/json', content=json.dumps({
             'error_msg': [message], 'success': False,
         }))
-
-    finally:
-        if tmp_file:
-            tmp_file.close()
 
     return xls_parser_response
 
