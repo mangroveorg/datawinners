@@ -21,6 +21,9 @@ class QuestionnaireTemplateDocument(FormModelDocument):
         self.language = language
         self.form_code = form_code
 
+    def post_update(self, dbm, pre_save_object):
+        return
+
 
 class QuestionnaireLibrary:
     def __init__(self):

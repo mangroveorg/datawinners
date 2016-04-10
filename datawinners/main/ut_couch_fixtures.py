@@ -1348,8 +1348,8 @@ def load_ft_data():
 
 def create_advanced_questionnaire_for_autocomplete_test(manager):
     # from datawinners.project.helper import generate_questionnaire_code
-    from datawinners.blue.xform_bridge import MangroveService, XlsFormParser
     from django.contrib.auth.models import User
+    from datawinners.blue.xform_bridge import MangroveService, XlsFormParser
 
     project_name = "Test auto complete"
     # questionnaire_code = generate_questionnaire_code(manager)
@@ -1512,6 +1512,9 @@ def load_data():
     load_web_data_for_cli018(manager)
     load_sms_data_for_cli018(manager)
 
+    # create advanced questionnaire for testing select autocomplete
+    create_advanced_questionnaire_for_autocomplete_test(manager)
+
     create_trial_organization('chinatwu@gmail.com', 'COJ00000', False)
     create_trial_organization('chinatwu2@gmail.com', 'COJ00001', True)
     create_trial_organization('chinatwu3@gmail.com', 'COJ00002', False)
@@ -1535,10 +1538,6 @@ def load_data():
     call_command("recreate_search_indexes", "hni_testorg_coj00001")
 
     grant_questionnaire_permissions_to_rasitefa()
-
-    # create advanced questionnaire for testing select autocomplete
-    manager = load_manager_for_default_ut_account()
-    create_advanced_questionnaire_for_autocomplete_test(manager)
 
 def create_datasender_for_nigeria_test_organization():
     register_datasender_for_org("samuel@mailinator.com","Rasefo","26112345",

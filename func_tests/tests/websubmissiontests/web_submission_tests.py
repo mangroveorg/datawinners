@@ -89,6 +89,7 @@ class TestWebSubmission(HeadlessRunnerTest):
         #self.driver.create_screenshot("anaranle_fichier")
         # questions = web_submission_page.fill_questions_in_autocomplete_questionnaire()
         web_submission_page.set_questionnaire_form_id(fetch_(QUESTIONNAIRE_FORM_ID, from_(QUESTIONNAIRE_AUTOCOMPLETE_DATA)))
+        web_submission_page.wait_for_questionnaire_form_loading()
         web_submission_page.fill_input_field(fetch_(FIELD_INPUT_NAME, from_(QUESTIONNAIRE_AUTOCOMPLETE_DATA)),
                                              fetch_(FIELD_INPUT_VALUE, from_(QUESTIONNAIRE_AUTOCOMPLETE_DATA)))
         web_submission_page.fill_select_without_appearance(fetch_(FIELD_SELECT1_NAME, from_(QUESTIONNAIRE_AUTOCOMPLETE_DATA)),
