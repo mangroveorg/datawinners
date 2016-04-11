@@ -39,7 +39,6 @@
     "react-dom": "^0.14.7",
     "react-motion": "^0.4.2",
     "react-select": "^1.0.0-beta11",
-    "react-swipeable-views": "^0.4.7",
     "react-tap-event-plugin": "^0.2.2",
     "toastr": "^2.1.2"
   }

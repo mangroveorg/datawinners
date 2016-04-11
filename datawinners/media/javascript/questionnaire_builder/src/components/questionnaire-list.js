@@ -3,7 +3,6 @@ import QuestionnaireStore from '../store/questionnaire-store';
 import AppConstants from '../constants/app-constants';
 import Question from './question';
 import Paper from 'material-ui/lib/paper';
-import AppBar from 'material-ui/lib/app-bar';
 
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
@@ -20,7 +19,6 @@ import BuilderToolbar from './builder-toolbar';
 import Tabs from 'material-ui/lib/tabs/tabs';
 import Tab from 'material-ui/lib/tabs/tab';
 import FontIcon from 'material-ui/lib/font-icon';
-import SwipeableViews from 'react-swipeable-views';
 
 const style = {
 	addButtonContainer: {
@@ -164,31 +162,21 @@ export default class QuestionnaireList extends React.Component {
 				      icon={<FontIcon className="material-icons">assignment</FontIcon>}
 				      label="Survey" value={0}
 				    >
-
+							{displayQuestions}
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">assignment_turned_in</FontIcon>}
 				      label="Choices" value={1}
-				    />
+				    >
+							<h3>Choices are listed here</h3>
+						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">low_priority</FontIcon>}
 				      label="Cascades" value={2}
-				    />
+				    >
+							<h3>Cascades are listed here</h3>
+						</Tab>
 				  </Tabs>
-					<SwipeableViews
-	          index={this.state.slideIndex}
-	          onChangeIndex={this.handleChange}
-	        >
-	          <div style={style.slide}>
-							{displayQuestions}
-	          </div>
-	          <div style={style.slide}>
-	            slide n°2
-	          </div>
-	          <div style={style.slide}>
-	            slide n°3
-	          </div>
-	        </SwipeableViews>
 
           <Card expanded={this.state.expandNewQuestionType}>
           <CardText expandable={true}>
