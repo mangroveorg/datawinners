@@ -109,6 +109,7 @@ class ProjectUpload(View):
                 }),
             content_type='application/json')
 
+
 class ProjectBuilder(View):
     QUESTIONNAIRE_AS_DICT_FOR_BUILDER = 'questionnaire_as_dict_for_builder'
 
@@ -195,11 +196,11 @@ class ProjectBuilder(View):
 
                     }),
                 content_type='application/json')
-            
+
     def _save_questionnaire_as_dict(self, questionnaire, excel_as_dict):
         questionnaire.update_attachments(excel_as_dict, attachment_name=self.QUESTIONNAIRE_AS_DICT_FOR_BUILDER)
-        
-        
+
+
 def _edit_questionnaire(request, project_id, excel_file=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -225,6 +226,7 @@ def _edit_questionnaire(request, project_id, excel_file=None):
     except UnsupportedXformEditException as e:
         return HttpResponse(content_type='application/json', content=json.dumps({
             'success': False,
+            'unsupported': True,
             'error_msg': [
                 _("Unsupported edit operation")
             ]
@@ -255,7 +257,6 @@ class ProjectUpdate(View):
             return _edit_questionnaire(request, project_id)
 
         return self._overwrite(project_id, request)
-
 
     def _overwrite(self, project_id, request):
         manager = get_database_manager(request.user)

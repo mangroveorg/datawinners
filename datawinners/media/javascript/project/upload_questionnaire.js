@@ -79,7 +79,11 @@ DW.UploadQuestionnaire.prototype._init = function(options){
             uploadButton.removeClass("disabled_yellow_submit_button");
             uploadButton.removeAttr("disabled");
             if (!responseJSON['success']) {
-                options.postErrorHandler(responseJSON, self.file_uploader, self.file_input);
+                if (responseJSON['unsupported']) {
+                    options.promptOverwrite(responseJSON, self.file_uploader, self.file_input);
+                } else {
+                    options.postErrorHandler(responseJSON);
+                }
             }
             else {
                 (options.onSuccess && options.onSuccess());

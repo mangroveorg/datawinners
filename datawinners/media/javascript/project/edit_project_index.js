@@ -10,7 +10,12 @@ $(function () {
         postUrl: function(){
            return '/xlsform/upload/update/'+ project_id +'/';
         },
-        postErrorHandler: function(responseJSON, file_uploader, file_input) {
+        postErrorHandler: function(responseJSON) {
+            DW.trackEvent('advanced-questionnaire-edited', 'edit-questionnaire-errored');
+
+            DW.showError(responseJSON['error_msg'],responseJSON.message_prefix, responseJSON.message_suffix);
+        },
+        promptOverwrite: function(responseJSON, file_uploader, file_input) {
             var self = this;
             DW.trackEvent('advanced-questionnaire-edited', 'edit-questionnaire-errored');
             var editQuestionnaireWarningOptions = {
