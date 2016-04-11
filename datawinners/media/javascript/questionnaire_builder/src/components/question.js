@@ -43,7 +43,7 @@ export default class Question extends React.Component {
 		let value = event.target.value;
     let question = this.props.question;
     question[field] = value;
-    question.dirty = true;
+    // question.dirty = true;
     this.props.onChange(question);
 	}
 

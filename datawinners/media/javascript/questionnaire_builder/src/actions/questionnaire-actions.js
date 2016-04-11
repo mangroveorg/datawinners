@@ -4,15 +4,6 @@ import SampleQuestionnaire from '../store/sample-questionnaire';
 import Toastr from 'toastr';
 
 var QuestionnaireActions = {
-		// initQuestionnaire : function(questionnaire_id){
-		// 	//call api and fetch questions
-		//
-		// 	AppDispatcher.dispatch({
-		// 		type: AppConstants.ActionTypes.INITIALIZE_QUESTIONNAIRE,
-		// 		questions : SampleQuestionnaire.questions
-		// 	});
-		//
-		// },
 		saveQuestionnaire : function(id, questionnaire, file_type){
 			var onSaveHandler = (data) => {
 				Toastr[data.status](data.details, data.reason);

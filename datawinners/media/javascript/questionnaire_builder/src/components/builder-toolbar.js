@@ -24,6 +24,7 @@ export default class BuilderToolbar extends React.Component {
       <Toolbar>
         <ToolbarGroup float="right">
           <ToolbarSeparator />
+          <RaisedButton label="Save Draft" secondary={true} onMouseDown={this.props.onSave} />
           <RaisedButton label="Save" primary={true} onMouseDown={this.props.onSave} />
         </ToolbarGroup>
       </Toolbar>

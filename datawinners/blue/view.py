@@ -110,18 +110,31 @@ class ProjectUpload(View):
             content_type='application/json')
 
 class ProjectBuilder(View):
+    QUESTIONNAIRE_AS_DICT_FOR_BUILDER = 'questionnaire_as_dict_for_builder'
 
+
+    def _get_pre_computed_questionnaire_as_dict(self, questionnaire):
+        try:
+            return json.loads(questionnaire.get_attachments(self.QUESTIONNAIRE_AS_DICT_FOR_BUILDER), object_pairs_hook=OrderedDict)
+        except Exception as e: 
+            #Expected exception, if file not exist
+            logger.info(e.message)
+        return None
+    
     def get(self, request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         try:
+            excel_as_dict = self._get_pre_computed_questionnaire_as_dict(questionnaire)
             raw_excel, file_type = questionnaire.has_attachment()[1:]
-            excel_as_json = convert_excel_to_dict(file_content=raw_excel, file_type=file_type)
+            if excel_as_dict is None:
+                excel_as_dict = convert_excel_to_dict(file_content=raw_excel, file_type=file_type)
+                self._save_questionnaire_as_dict(questionnaire, excel_as_dict)
             return HttpResponse(
                 json.dumps(
                     {
                         "project_id": project_id,
-                        "questionnaire" : excel_as_json,
+                        "questionnaire" : excel_as_dict,
                         "file_type" : file_type
                     }),
                 content_type='application/json')
@@ -145,17 +158,20 @@ class ProjectBuilder(View):
 #         return tmp_file
         
     def post(self,request, project_id):
+        manager = get_database_manager(request.user)
         data = request.POST['data']
         file_type = request.POST['file_type']
         try:
-            json_as_dict = json.loads(data)
-            excel_raw_stream = convert_json_to_excel(json_as_dict, file_type)
+            excel_as_dict = json.loads(data, object_pairs_hook=OrderedDict)
+            excel_raw_stream = convert_json_to_excel(excel_as_dict, file_type)
             excel_file = _temp_file(request, excel_raw_stream, file_type)
 #             excel_raw_stream.read = lambda n=0 : excel_raw_stream.getvalue()
 #             excel_raw_stream.readable = lambda: True
 #             excel_buffered_reader = io.BufferedReader(excel_raw_stream)
 #             _edit_questionnaire(request, project_id, excel_buffered_reader, file_type)
             _edit_questionnaire(request, project_id, excel_file)
+            questionnaire = Project.get(manager, project_id)
+            self._save_questionnaire_as_dict(questionnaire, excel_as_dict)
             return HttpResponse(
                 json.dumps(
                     {
@@ -179,7 +195,11 @@ class ProjectBuilder(View):
 
                     }),
                 content_type='application/json')
-
+            
+    def _save_questionnaire_as_dict(self, questionnaire, excel_as_dict):
+        questionnaire.update_attachments(excel_as_dict, attachment_name=self.QUESTIONNAIRE_AS_DICT_FOR_BUILDER)
+        
+        
 def _edit_questionnaire(request, project_id, excel_file=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
