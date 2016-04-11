@@ -201,9 +201,9 @@ def to_json_point(value,data=None):
             "coordinates": [
                 value[1],
                 value[0]
-            ],
-            "properties": simplify_field_data(data)
-        }
+            ]
+        },
+        "properties": simplify_field_data(data)
     }
     return point_json
 
