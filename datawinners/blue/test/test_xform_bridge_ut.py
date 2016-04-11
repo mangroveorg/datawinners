@@ -351,7 +351,7 @@ class TestXformBridge(unittest.TestCase):
                                                 'is_entity_question': False, 'type': 'select1',
                                                 'default': None,
                                                 'hint': u'Show only the inputs of these options and not the labels (type=select_one yes_no, appearance=list-nolabel)',
-                                                'appearance': u'list-nolabel'})
+                                                'appearance': u'list-nolabel', 'is_cascade': False})
             self.assertDictEqual(questions[1], {'code': u'table_list_2', 'title': u'Question 2', 'required': False,
                                                 'parent_field_code': None, 'constraint_message': None,
                                                 'xform_constraint': None, 'relevant': None,
@@ -363,7 +363,7 @@ class TestXformBridge(unittest.TestCase):
                                                             {'value': {'text': u'No', 'val': u'no'}},
                                                             {'value': {'text': u"Don't Know", 'val': u'dk'}},
                                                             {'value': {'text': u'Not Applicable', 'val': u'na'}}],
-                                                'is_entity_question': False, 'type': 'select1'})
+                                                'is_entity_question': False, 'type': 'select1', 'is_cascade': False})
 
     def test_should_create_additional_text_question_for_single_select_or_other_question(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -384,7 +384,7 @@ class TestXformBridge(unittest.TestCase):
                                                 'default': None, 'hint': None, 'appearance': None,
                                                 'choices': [{'value': {'text': u'Male', 'val': u'male'}},
                                                             {'value': {'text': u'Female', 'val': u'female'}}],
-                                                'is_entity_question': False, 'type': 'select1'})
+                                                'is_entity_question': False, 'type': 'select1', 'is_cascade': False})
             self.assertDictEqual(questions[1],
                                  {'code': u'hh_user_gender_other', 'title': u'Sex_other', 'required': False,
                                   'parent_field_code': None, 'constraint_message': None,
