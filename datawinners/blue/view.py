@@ -130,7 +130,7 @@ class ProjectBuilder(View):
             raw_excel, file_type = questionnaire.has_attachment()[1:]
             if excel_as_dict is None:
                 excel_as_dict = convert_excel_to_dict(file_content=raw_excel, file_type=file_type)
-                self._save_questionnaire_as_dict(questionnaire, excel_as_dict)
+                _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict)
             return HttpResponse(
                 json.dumps(
                     {
@@ -152,37 +152,24 @@ class ProjectBuilder(View):
                     }),
                 content_type='application/json')
 
-#     def _save_to_temp_file(self, input_stream, file_type):
-#         tmp_file = NamedTemporaryFile(delete=True, suffix='.'+file_type)
-#         tmp_file.write(input_stream.getvalue())
-#         tmp_file.seek(0)
-#         return tmp_file
-        
     def post(self,request, project_id):
-        manager = get_database_manager(request.user)
         data = request.POST['data']
         file_type = request.POST['file_type']
         try:
             excel_as_dict = json.loads(data, object_pairs_hook=OrderedDict)
             excel_raw_stream = convert_json_to_excel(excel_as_dict, file_type)
             excel_file = _temp_file(request, excel_raw_stream, file_type)
-#             excel_raw_stream.read = lambda n=0 : excel_raw_stream.getvalue()
-#             excel_raw_stream.readable = lambda: True
-#             excel_buffered_reader = io.BufferedReader(excel_raw_stream)
-#             _edit_questionnaire(request, project_id, excel_buffered_reader, file_type)
-            _edit_questionnaire(request, project_id, excel_file)
-            questionnaire = Project.get(manager, project_id)
-            self._save_questionnaire_as_dict(questionnaire, excel_as_dict)
-            return HttpResponse(
-                json.dumps(
-                    {
-                        "status": "success",
-                        "project_id": project_id,
-                        'reason': 'Successfully updated', #TODO: i18n translation
-                        'details':''
-
-                    }),
-                content_type='application/json')
+            return _edit_questionnaire(request, project_id, excel_file, excel_as_dict)
+#             return HttpResponse(
+#                 json.dumps(
+#                     {
+#                         "status": "success",
+#                         "project_id": project_id,
+#                         'reason': 'Successfully updated', #TODO: i18n translation
+#                         'details':''
+# 
+#                     }),
+#                 content_type='application/json')
  
         except Exception as e:
             logger.error('Unable to save questionnaire from builder')
@@ -197,11 +184,19 @@ class ProjectBuilder(View):
                     }),
                 content_type='application/json')
 
-    def _save_questionnaire_as_dict(self, questionnaire, excel_as_dict):
+def _save_questionnaire_as_dict_for_builder(self, questionnaire, excel_as_dict=None, excel_file=None):
+    try:
+        if excel_as_dict is None:
+            extension = os.path.splitext(excel_file.name)[1]
+            if excel_as_dict is None:
+                excel_as_dict = convert_excel_to_dict(file_content=excel_file, file_type=extension[1:])
+    
         questionnaire.update_attachments(excel_as_dict, attachment_name=self.QUESTIONNAIRE_AS_DICT_FOR_BUILDER)
+    except:
+        logger.error('Unable to pre compute excel as json for Builder')
 
 
-def _edit_questionnaire(request, project_id, excel_file=None):
+def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
     try:
@@ -222,6 +217,9 @@ def _edit_questionnaire(request, project_id, excel_file=None):
         questionnaire_wrapper = Questionnaire(excel_file)
         XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
                     questionnaire_wrapper).edit(new_questionnaire, questionnaire)
+        
+        _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict, excel_file)
+
 
     except UnsupportedXformEditException as e:
         return HttpResponse(content_type='application/json', content=json.dumps({
@@ -229,11 +227,16 @@ def _edit_questionnaire(request, project_id, excel_file=None):
             'unsupported': True,
             'error_msg': [
                 _("Unsupported edit operation")
-            ]
+            ],
+            "status": "error",
+            'reason': "Unsupported edit operation", #TODO: i18n translation
+            'details': e.message
         }))
     return HttpResponse(
         json.dumps({
-            "success": True
+            "success": True,
+            "status": "success",
+            'reason': 'Successfully updated' #TODO: i18n translation
         }),
         content_type='application/json'
     )

@@ -48,7 +48,6 @@ export default class Question extends React.Component {
 	}
 
   setQuestionStateForRequired(event) {
-    debugger;
     let field = 'required';
     let value = event.target.value === 'on';
     let question = this.props.question;
