@@ -80,8 +80,9 @@ module.exports = {
       />
       <Toggle
         label="Required"
-        defaultToggled={props.question.required}
+        defaultToggled={props.question.required == true}
         style={styles.toggle}
+        onToggle={props.onChangeForRequired}
       />
       </div>
     );

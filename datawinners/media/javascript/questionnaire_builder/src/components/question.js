@@ -36,6 +36,7 @@ export default class Question extends React.Component {
 
     this.formType = AppConstants.QuestionTypeSupport[question.type];
     this.setQuestionState = this.setQuestionState.bind(this);
+    this.setQuestionStateForRequired = this.setQuestionStateForRequired.bind(this);
   }
 
   setQuestionState(event) {
@@ -43,9 +44,17 @@ export default class Question extends React.Component {
 		let value = event.target.value;
     let question = this.props.question;
     question[field] = value;
-    // question.dirty = true;
     this.props.onChange(question);
 	}
+
+  setQuestionStateForRequired(event) {
+    debugger;
+    let field = 'required';
+    let value = event.target.value === 'on';
+    let question = this.props.question;
+    question[field] = value;
+    this.props.onChange(question);
+  }
 
   questionFormIsValid() {
     return true;//TODO
@@ -66,7 +75,8 @@ export default class Question extends React.Component {
               <this.formType
                 question={this.props.question}
                 onChange={this.setQuestionState}
-                errors={this.errors} />
+                errors={this.errors}
+                onChangeForRequired={this.setQuestionStateForRequired}/>
 
           </CardText>
         </Card>

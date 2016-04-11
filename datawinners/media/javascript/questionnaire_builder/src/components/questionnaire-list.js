@@ -62,7 +62,7 @@ export default class QuestionnaireList extends React.Component {
 		}
 		this.onQuestionChange = this.onQuestionChange.bind(this);
 		this.saveQuestionnaire = this.saveQuestionnaire.bind(this);
-		this.handleChange = this.handleChange.bind(this);
+		// this.handleChange = this.handleChange.bind(this);
 	}
 
 	componentDidMount(){
@@ -122,12 +122,6 @@ export default class QuestionnaireList extends React.Component {
 											this.state.questionnaire_id,this.state.questionnaire, this.state.file_type);
 	}
 
-	handleChange(value) {
-    this.setState({
-      slideIndex: value,
-    });
-  };
-
 	render(){
 		if (!this.state.questionnaire){
 			return (
@@ -156,8 +150,7 @@ export default class QuestionnaireList extends React.Component {
 			<div>
       <Paper zDepth={3} >
 				<BuilderToolbar onSave={this.saveQuestionnaire}/>
-					<Tabs onChange={this.handleChange}
-          			value={this.state.slideIndex} tabItemContainerStyle={style.tabs}>
+					<Tabs tabItemContainerStyle={style.tabs}>
 				    <Tab
 				      icon={<FontIcon className="material-icons">assignment</FontIcon>}
 				      label="Survey" value={0}
