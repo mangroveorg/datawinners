@@ -5,7 +5,8 @@ var browserify = require('browserify');
 var reactify = require('reactify');
 var source = require('vinyl-source-stream');
 var concat = require('gulp-concat');
-var babelify = require("babelify");
+var babelify = require('babelify');
+var exorcist = require('exorcist');
 
 var config = {
 	    paths: {
@@ -29,6 +30,7 @@ gulp.task('js', function() {
 	})
 		.transform([babelify,reactify])
 		.bundle()
+		.pipe(exorcist(config.paths.dist+'/bundle.js.map'))
 		.on('error', console.error.bind(console))
 		.pipe(source('bundle.js'))
 		.pipe(gulp.dest(config.paths.dist))
