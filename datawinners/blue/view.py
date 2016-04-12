@@ -84,8 +84,9 @@ class ProjectUpload(View):
         send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
                                                                            project_name)
         questionnaire_code = generate_questionnaire_code(manager)
+        excel_file = _temp_file(request)
         mangrove_service = MangroveService(request, questionnaire_code=questionnaire_code,
-                                           project_name=project_name, xls_form=_temp_file(request),
+                                           project_name=project_name, xls_form=excel_file,
                                            xls_parser_response=xls_parser_response)
         questionnaire_id, form_code = mangrove_service.create_project()
 
@@ -98,6 +99,9 @@ class ProjectUpload(View):
                 'message_prefix': _("Sorry! Current version of DataWinners does not support"),
                 'message_suffix': _("Update your XLSForm and upload again.")
             }))
+            
+        questionnaire = Project.get(manager, questionnaire_id)
+        _save_questionnaire_as_dict_for_builder(questionnaire, excel_file=excel_file)
 
         return HttpResponse(
             json.dumps(

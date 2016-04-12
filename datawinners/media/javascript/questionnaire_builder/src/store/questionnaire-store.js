@@ -6,11 +6,7 @@ import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
-	questions: [],
-
-	getAllQuestions: function() {
-		return this.questions;
-	},
+	questionnaire: {},
 
 	addChangeListener: function(callback) {
 		this.on(CHANGE_EVENT,callback);
@@ -22,14 +18,22 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	emitChange: function(){
 		this.emit(CHANGE_EVENT)
+	},
+
+	getQuestionnaire: function(){
+		return this.questionnaire;
 	}
 
 });
 
 AppDispatcher.register(function(action){
-	switch (action.type){
+	switch (action.actionType){
+		//TODO: this needs to be updated
 		case AppConstants.ActionTypes.INITIALIZE_QUESTIONNAIRE:
 			QuestionnaireStore.questions = action.questions;
+			QuestionnaireStore.emitChange();
+		case AppConstants.ActionTypes.CREATE_QUESTION:
+			QuestionnaireStore.questionnaire = action.questionnaire;
 			QuestionnaireStore.emitChange();
 		default:
 			//do nothing

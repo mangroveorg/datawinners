@@ -20,15 +20,7 @@ const style = {
 export default class Question extends React.Component {
   constructor(props){
     super(props);
-    let question = {
-      id: '',
-      label: '',
-      name: '',
-      type: 'text',
-      hint:'',
-      required: ''
-
-    };
+    let question = {};
     this.errors = {};
     if(this.props.question){
       question = this.props.question;
@@ -37,6 +29,7 @@ export default class Question extends React.Component {
     this.formType = AppConstants.QuestionTypeSupport[question.type];
     this.setQuestionState = this.setQuestionState.bind(this);
     this.setQuestionStateForRequired = this.setQuestionStateForRequired.bind(this);
+    this.setQuestionStateForQuestionType = this.setQuestionStateForQuestionType.bind(this);
   }
 
   setQuestionState(event) {
@@ -47,12 +40,15 @@ export default class Question extends React.Component {
     this.props.onChange(question);
 	}
 
+  //TODO: eventually, we need our own Toggle with name prop
   setQuestionStateForRequired(event) {
-    let field = 'required';
-    let value = event.target.value === 'on';
-    let question = this.props.question;
-    question[field] = value;
-    this.props.onChange(question);
+    this.props.question['required'] = event.target.value === 'on';
+    this.props.onChange(this.props.question);
+  }
+  //TODO: eventually, we need our own SelectField with name prop
+  setQuestionStateForQuestionType(event,index,value){
+    this.props.question['type'] = value;
+    this.props.onChange(this.props.question);
   }
 
   questionFormIsValid() {
@@ -75,7 +71,10 @@ export default class Question extends React.Component {
                 question={this.props.question}
                 onChange={this.setQuestionState}
                 errors={this.errors}
-                onChangeForRequired={this.setQuestionStateForRequired}/>
+                onChangeForRequired={this.setQuestionStateForRequired}
+                onChangeForQuestionType={this.setQuestionStateForQuestionType}
+                questionTypes={AppConstants.QuestionTypes} //Due to cyclic dependency, passing as param
+                />
 
           </CardText>
         </Card>

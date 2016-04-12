@@ -13,7 +13,6 @@ module.exports = {
 		DELETE_QUESTION: 'DELETE_QUESTION'
 	},
 	QuestionnaireUrl : '/xlsform/',
-	// QuestionnaireUrl : '/project/questionnaire/ajax/',
 	QuestionnaireSaveUrl : '/xlsform/',
 	QuestionTypeSupport : {
 	  text : TextQuestionForm,
@@ -22,10 +21,16 @@ module.exports = {
 	  decimal : DecimalQuestionForm,
 		note : NoteQuestionForm
 	},
-	//TODO: this should be clubed with QuestionTypeSupport object
 	QuestionTypesDropdown : [
 	  "Text", "Integer", "Decimal", "Note", "Date",
 	  "Time", "Location", "Select one", "Select multiple",
 	  "Calculate"
+	],
+	QuestionTypes : [
+		{value: "text", label: "Text", form: TextQuestionForm},
+		{value: "integer", label: "Integer", form: IntegerQuestionForm},
+		{value: "decimal", label: "Decimal", form: DecimalQuestionForm},
+		{value: "date", label: "Date", form: DateQuestionForm}
+
 	]
-}
+};

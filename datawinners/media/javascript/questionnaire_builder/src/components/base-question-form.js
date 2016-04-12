@@ -1,10 +1,12 @@
-"use strict";
 
 import React  from 'react';
 import Select  from 'react-select';
 import TextField  from 'material-ui/lib/text-field';
 import Checkbox  from 'material-ui/lib/checkbox';
 import Toggle  from 'material-ui/lib/toggle';
+// import {AppConstants} from '../constants/app-constants';
+import SelectField from 'material-ui/lib/select-field';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 
 const styles = {
   block: {
@@ -17,10 +19,35 @@ const styles = {
   },
 };
 
+var getQuestionTypeMenuItems = function(questionTypes) {
+    var question_type_menu_items = [];
+    for (var key in questionTypes){
+      question_type_menu_items.push(
+        <MenuItem
+						value={questionTypes[key].value}
+						primaryText={questionTypes[key].label}
+						/>
+      );
+    }
+    return question_type_menu_items;
+};
+
 module.exports = {
-  getCommonQuestions: function(props){
+
+  getCommonQuestions: function(props, questionTypes){
     return (
       <div>
+      <SelectField
+                floatingLabelText="Question Type"
+                onChange={props.onChangeForQuestionType}
+                disabled={!props.question.isNewQuestion}
+                value={props.question.type}
+                name='type'
+                errorText={props.errors.type}
+              >
+                {getQuestionTypeMenuItems(props.questionTypes)}
+      </SelectField>
+      <br/>
       <TextField
         floatingLabelText="Question Label"
         errorText={props.errors.label}
@@ -33,7 +60,7 @@ module.exports = {
         floatingLabelText="Data Column Name"
         errorText={props.errors.name}
         name='name'
-        disabled={true}
+        disabled={!props.question.isNewQuestion}
         onChange={props.onChange}
         value={props.question.name}
         multiLine={true}

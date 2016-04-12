@@ -1,3 +1,5 @@
+"use strict";
+
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import SampleQuestionnaire from '../store/sample-questionnaire';
@@ -20,12 +22,25 @@ var QuestionnaireActions = {
 			}).done(onSaveHandler);
 		},
 
-		createQuestion: function(question) {
-			var newQuestion = question//TODO
+		createQuestion: function(questionnaire, question_type) {
+			var new_question_type = 'text' //Default question type
+			if(question_type){
+					new_question_type = question_type;
+			}
+			let question_fields = Object.keys(questionnaire.survey[0]);
+			let new_question = {};
+			for (var field of question_fields) {
+				new_question[field]='';
+			}
+			new_question['type']=new_question_type;
+			new_question['isNewQuestion']=true;
+			new_question['temp_id']=Math.random();
 
-			Dispatcher.dispatch({
-				actionType: AppConstants.CREATE_QUESTION,
-				question: newQuestion
+			questionnaire.survey.push(new_question);
+
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.CREATE_QUESTION,
+				questionnaire: questionnaire
 			});
 		},
 

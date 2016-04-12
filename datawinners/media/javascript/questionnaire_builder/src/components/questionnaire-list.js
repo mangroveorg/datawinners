@@ -1,3 +1,4 @@
+
 import React from 'react';
 import QuestionnaireStore from '../store/questionnaire-store';
 import AppConstants from '../constants/app-constants';
@@ -10,9 +11,9 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
-import SelectField from 'material-ui/lib/select-field';
+// import SelectField from 'material-ui/lib/select-field';
 import QuestionnaireActions from '../actions/questionnaire-actions';
-import MenuItem from 'material-ui/lib/menus/menu-item';
+// import MenuItem from 'material-ui/lib/menus/menu-item';
 import _ from 'lodash';
 import LinearProgress from 'material-ui/lib/linear-progress';
 import BuilderToolbar from './builder-toolbar';
@@ -46,12 +47,6 @@ const style = {
     padding: 10
   },
 };
-//
-// let getAllQuestions = function(questionnaire_id){
-// 	return {
-// 		questions: QuestionnaireStore.getAllQuestions(questionnaire_id)
-// 	};
-// };
 
 export default class QuestionnaireList extends React.Component {
 	constructor(props){
@@ -62,7 +57,8 @@ export default class QuestionnaireList extends React.Component {
 		}
 		this.onQuestionChange = this.onQuestionChange.bind(this);
 		this.saveQuestionnaire = this.saveQuestionnaire.bind(this);
-		// this.handleChange = this.handleChange.bind(this);
+		this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
+		this._onChange = this._onChange.bind(this);
 	}
 
 	componentDidMount(){
@@ -90,30 +86,29 @@ export default class QuestionnaireList extends React.Component {
 		this.serverRequest.abort();
 	}
 
+	handleAddButtonClick() {
+		QuestionnaireActions.createQuestion(this.state.questionnaire);
+  }
+
 	_onChange(){
-		this.setState({questions:getAllQuestions(this.state.id)})
+		this.setState({questionnaire:QuestionnaireStore.getQuestionnaire()});
 	}
 
 	onQuestionChange(updated_question){
 		let current_question_index = _.findIndex(
 																					this.state.questionnaire.survey,
-																					{name:updated_question.name});
+																					{temp_id: updated_question.temp_id});
+		if(current_question_index < 0){
+			current_question_index = _.findIndex(
+																						this.state.questionnaire.survey,
+																						{name:updated_question.name});
+		}
 		let questions = this.state.questionnaire.survey;
 		questions[current_question_index] = updated_question;
 		this.setState({questions: questions});
 	}
 
-	getQuestionTypeMenuItems() {
-    var question_type_menu_items = [];
-    for (var key in AppConstants.QuestionTypesDropdown){
-      question_type_menu_items.push(
-        <MenuItem
-						value={AppConstants.QuestionTypesDropdown[key]}
-						primaryText={AppConstants.QuestionTypesDropdown[key]} />
-      );
-    }
-    return question_type_menu_items;
-  }
+
 
 	saveQuestionnaire(event) {
 		event.preventDefault();
@@ -139,9 +134,9 @@ export default class QuestionnaireList extends React.Component {
 			if (AppConstants.QuestionTypeSupport[questions[key].type]) {
 				displayQuestions.push(
 					<Question
-							key={questions[key].name}
 							question={questions[key]}
-							onChange={this.onQuestionChange}/>
+							onChange={this.onQuestionChange}
+							/>
 				);
 			}
     }
@@ -171,15 +166,6 @@ export default class QuestionnaireList extends React.Component {
 						</Tab>
 				  </Tabs>
 
-          <Card expanded={this.state.expandNewQuestionType}>
-          <CardText expandable={true}>
-                <SelectField
-                          floatingLabelText="Question Type"
-                        >
-                          {this.getQuestionTypeMenuItems()}
-                  </SelectField>
-            </CardText>
-          </Card>
           <div style={style.addButtonContainer}>
             <FloatingActionButton onMouseDown={this.handleAddButtonClick}>
               <ContentAdd />
