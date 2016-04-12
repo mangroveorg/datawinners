@@ -1,9 +1,6 @@
-import TextQuestionForm from '../components/text-question-form';
-import IntegerQuestionForm from '../components/integer-question-form';
-import DateQuestionForm from '../components/date-question-form';
-import DecimalQuestionForm from '../components/decimal-question-form';
-import NoteQuestionForm from '../components/note-question-form';
+"use strict";
 
+import GenericQuestionForm from '../components/generic-question-form';
 
 module.exports = {
 	ActionTypes : {
@@ -14,23 +11,26 @@ module.exports = {
 	},
 	QuestionnaireUrl : '/xlsform/',
 	QuestionnaireSaveUrl : '/xlsform/',
-	QuestionTypeSupport : {
-	  text : TextQuestionForm,
-	  date : DateQuestionForm,
-	  integer : IntegerQuestionForm,
-	  decimal : DecimalQuestionForm,
-		note : NoteQuestionForm
-	},
-	QuestionTypesDropdown : [
-	  "Text", "Integer", "Decimal", "Note", "Date",
-	  "Time", "Location", "Select one", "Select multiple",
-	  "Calculate"
-	],
 	QuestionTypes : [
-		{value: "text", label: "Text", form: TextQuestionForm},
-		{value: "integer", label: "Integer", form: IntegerQuestionForm},
-		{value: "decimal", label: "Decimal", form: DecimalQuestionForm},
-		{value: "date", label: "Date", form: DateQuestionForm}
-
-	]
+		{value: "text", label: "Text"},
+		{value: "integer", label: "Integer"},
+		{value: "decimal", label: "Decimal"},
+		{value: "date", label: "Date"},
+		{value: "geopoint", label: "Geopoint"}
+	],
+	getFormForQuestionType: function(type){
+		var questionForm = null;
+		switch(type){
+			case 'text':
+			case 'integer':
+			case 'decimal':
+			case 'date':
+			case 'geopoint':
+				questionForm = GenericQuestionForm;
+				break;
+			default:
+				questionForm = null;
+		}
+		return questionForm;
+	}
 };

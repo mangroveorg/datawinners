@@ -5,7 +5,6 @@ import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
 import CardText from 'material-ui/lib/card/card-text';
 import AppConstants from '../constants/app-constants';
-import TextQuestionForm from './text-question-form';
 import _ from 'lodash';
 
 const style = {
@@ -26,7 +25,7 @@ export default class Question extends React.Component {
       question = this.props.question;
     }
 
-    this.formType = AppConstants.QuestionTypeSupport[question.type];
+    this.formType = AppConstants.getFormForQuestionType(question.type);
     this.setQuestionState = this.setQuestionState.bind(this);
     this.setQuestionStateForRequired = this.setQuestionStateForRequired.bind(this);
     this.setQuestionStateForQuestionType = this.setQuestionStateForQuestionType.bind(this);
