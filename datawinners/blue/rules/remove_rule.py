@@ -17,7 +17,8 @@ class RemoveRule(Rule):
             return False
 
         for field in self.fields:
-            del submission.values[field.code]
+            if hasattr(submission.values, field.code):
+                del submission.values[field.code]
         return True
 
     def edit(self, node, old_field, new_field, old_xform, new_xform, activity_log_detail):
