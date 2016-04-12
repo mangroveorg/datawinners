@@ -56,7 +56,6 @@ export default class Question extends React.Component {
   }
 
   render() {
-      var name = this.props.question.name;
       return (
         <Card>
           <CardHeader
