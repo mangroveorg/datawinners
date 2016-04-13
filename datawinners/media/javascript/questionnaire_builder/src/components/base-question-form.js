@@ -1,10 +1,9 @@
-
+"use strict";
 import React  from 'react';
 import Select  from 'react-select';
 import TextField  from 'material-ui/lib/text-field';
 import Checkbox  from 'material-ui/lib/checkbox';
 import Toggle  from 'material-ui/lib/toggle';
-// import {AppConstants} from '../constants/app-constants';
 import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 
@@ -34,20 +33,28 @@ var getQuestionTypeMenuItems = function(questionTypes) {
 
 module.exports = {
 
+  getSelectQuestionType: function(props, questionTypes){
+      return (
+        <div>
+        <SelectField
+                  floatingLabelText="Question Type"
+                  onChange={props.onChangeForQuestionType}
+                  disabled={!props.question.isNewQuestion}
+                  value={props.question.type}
+                  name='type'
+                  errorText={props.errors.type}
+                >
+                  {getQuestionTypeMenuItems(props.questionTypes)}
+        </SelectField>
+        </div>
+
+      );
+  },
+
   getCommonQuestions: function(props, questionTypes){
     return (
       <div>
-      <SelectField
-                floatingLabelText="Question Type"
-                onChange={props.onChangeForQuestionType}
-                disabled={!props.question.isNewQuestion}
-                value={props.question.type}
-                name='type'
-                errorText={props.errors.type}
-              >
-                {getQuestionTypeMenuItems(props.questionTypes)}
-      </SelectField>
-      <br/>
+        {this.getSelectQuestionType(props, questionTypes)}
       <TextField
         floatingLabelText="Question Label"
         errorText={props.errors.label}

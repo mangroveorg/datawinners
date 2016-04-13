@@ -19,12 +19,21 @@ export default class BuilderToolbar extends React.Component {
     super(props);
   }
 
+  underConstruction(){
+    alert('Under construction');
+  }
+
   render() {
     return (
       <Toolbar>
+        <ToolbarGroup float='left'>
+          <RaisedButton label="Upload"
+                onMouseDown={this.underConstruction}
+                icon={<FontIcon className="material-icons" >backup</FontIcon>} />
+        </ToolbarGroup>
         <ToolbarGroup float="right">
+          <RaisedButton label="Save Draft" onMouseDown={this.underConstruction}/>
           <ToolbarSeparator />
-          <RaisedButton label="Save Draft" secondary={true} onMouseDown={this.props.onSave} />
           <RaisedButton label="Save" primary={true} onMouseDown={this.props.onSave} />
         </ToolbarGroup>
       </Toolbar>

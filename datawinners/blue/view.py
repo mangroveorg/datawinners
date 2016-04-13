@@ -60,6 +60,7 @@ from datawinners.blue.xlsform_utils import convert_excel_to_dict,\
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
+QUESTIONNAIRE_AS_DICT_FOR_BUILDER = 'questionnaire_as_dict_for_builder'
 
 class ProjectUpload(View):
     @method_decorator(csrf_view_exempt)
@@ -113,12 +114,10 @@ class ProjectUpload(View):
 
 
 class ProjectBuilder(View):
-    QUESTIONNAIRE_AS_DICT_FOR_BUILDER = 'questionnaire_as_dict_for_builder'
-
 
     def _get_pre_computed_questionnaire_as_dict(self, questionnaire):
         try:
-            return json.loads(questionnaire.get_attachments(self.QUESTIONNAIRE_AS_DICT_FOR_BUILDER), object_pairs_hook=OrderedDict)
+            return json.loads(questionnaire.get_attachments(QUESTIONNAIRE_AS_DICT_FOR_BUILDER), object_pairs_hook=OrderedDict)
         except Exception as e: 
             #Expected exception, if file not exist
             logger.info(e.message)
@@ -174,7 +173,7 @@ class ProjectBuilder(View):
 #                 content_type='application/json')
  
         except Exception as e:
-            logger.error('Unable to save questionnaire from builder')
+            logger.exception('Unable to save questionnaire from builder')
             return HttpResponse(
                 json.dumps(
                     {
@@ -186,16 +185,17 @@ class ProjectBuilder(View):
                     }),
                 content_type='application/json')
 
-def _save_questionnaire_as_dict_for_builder(self, questionnaire, excel_as_dict=None, excel_file=None):
+def _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict=None, excel_file=None):
     try:
         if excel_as_dict is None:
             extension = os.path.splitext(excel_file.name)[1]
             if excel_as_dict is None:
-                excel_as_dict = convert_excel_to_dict(file_content=excel_file, file_type=extension[1:])
+                excel_file.seek(0)
+                excel_as_dict = convert_excel_to_dict(file_content=excel_file.read(), file_type=extension[1:])
     
-        questionnaire.update_attachments(excel_as_dict, attachment_name=self.QUESTIONNAIRE_AS_DICT_FOR_BUILDER)
+        questionnaire.update_attachments(excel_as_dict, attachment_name=QUESTIONNAIRE_AS_DICT_FOR_BUILDER)
     except:
-        logger.error('Unable to pre compute excel as json for Builder')
+        logger.exception('Unable to pre compute excel as json for Builder')
 
 
 def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None):

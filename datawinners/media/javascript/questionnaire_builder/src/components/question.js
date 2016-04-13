@@ -19,16 +19,16 @@ const style = {
 export default class Question extends React.Component {
   constructor(props){
     super(props);
-    let question = {};
+    // let question = {};
     this.errors = {};
-    if(this.props.question){
-      question = this.props.question;
-    }
+    // if(this.props.question){
+    //   question = this.props.question;
+    // }
 
-    this.formType = AppConstants.getFormForQuestionType(question.type);
+    this.formType = AppConstants.getFormForQuestionType(this.props.question.type);
     this.setQuestionState = this.setQuestionState.bind(this);
-    this.setQuestionStateForRequired = this.setQuestionStateForRequired.bind(this);
-    this.setQuestionStateForQuestionType = this.setQuestionStateForQuestionType.bind(this);
+    this.onChangeForRequired = this.onChangeForRequired.bind(this);
+    this.onChangeForQuestionType = this.onChangeForQuestionType.bind(this);
   }
 
   setQuestionState(event) {
@@ -40,14 +40,15 @@ export default class Question extends React.Component {
 	}
 
   //TODO: eventually, we need our own Toggle with name prop
-  setQuestionStateForRequired(event) {
+  onChangeForRequired(event) {
     this.props.question['required'] = event.target.value === 'on';
     this.props.onChange(this.props.question);
   }
   //TODO: eventually, we need our own SelectField with name prop
-  setQuestionStateForQuestionType(event,index,value){
+  onChangeForQuestionType(event,index,value){
     this.props.question['type'] = value;
     this.props.onChange(this.props.question);
+    this.formType = AppConstants.getFormForQuestionType(value);
   }
 
   questionFormIsValid() {
@@ -69,8 +70,8 @@ export default class Question extends React.Component {
                 question={this.props.question}
                 onChange={this.setQuestionState}
                 errors={this.errors}
-                onChangeForRequired={this.setQuestionStateForRequired}
-                onChangeForQuestionType={this.setQuestionStateForQuestionType}
+                onChangeForRequired={this.onChangeForRequired}
+                onChangeForQuestionType={this.onChangeForQuestionType}
                 questionTypes={AppConstants.QuestionTypes} //Due to cyclic dependency, passing as param
                 />
 

@@ -117,6 +117,29 @@ export default class QuestionnaireList extends React.Component {
 											this.state.questionnaire_id,this.state.questionnaire, this.state.file_type);
 	}
 
+	getListOfQuestionViews(){
+		var questions = this.state.questionnaire.survey;
+    var questionViews = [];
+
+    for (var key in questions) {
+			if (AppConstants.getFormForQuestionType(questions[key].type)) {
+				questionViews.push(
+					<Question
+							question={questions[key]}
+							onChange={this.onQuestionChange}
+							/>
+				);
+			}
+    }
+		return questionViews;
+
+	}
+
+	getListOfChoiceViews(){
+		var choices = this.state.questionnaire.choices;
+		
+	}
+
 	render(){
 		if (!this.state.questionnaire){
 			return (
@@ -127,19 +150,6 @@ export default class QuestionnaireList extends React.Component {
 				</div>
 			)
 		}
-		var questions = this.state.questionnaire.survey;
-    var displayQuestions = [];
-
-    for (var key in questions) {
-			if (AppConstants.getFormForQuestionType(questions[key].type)) {
-				displayQuestions.push(
-					<Question
-							question={questions[key]}
-							onChange={this.onQuestionChange}
-							/>
-				);
-			}
-    }
 
 		return (
 			<div>
@@ -150,19 +160,19 @@ export default class QuestionnaireList extends React.Component {
 				      icon={<FontIcon className="material-icons">assignment</FontIcon>}
 				      label="Survey" value={0}
 				    >
-							{displayQuestions}
+							{this.getListOfQuestionViews()}
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">assignment_turned_in</FontIcon>}
 				      label="Choices" value={1}
 				    >
-							<h3>Choices are listed here</h3>
+							{this.getListOfChoiceViews()}
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">low_priority</FontIcon>}
 				      label="Cascades" value={2}
 				    >
-							<h3>Cascades are listed here</h3>
+							<h3>Cascades gets listed here</h3>
 						</Tab>
 				  </Tabs>
 
