@@ -1,0 +1,17 @@
+<tmpDYoYX9 id="tmpDYoYX9">
+	<top_level_date>2015-02-11</top_level_date>
+	<my_string>My String</my_string>
+	<my_long_text>This is a long multi line text. It is really very long.</my_long_text>
+	<my_int>3</my_int>
+	<my_decimal>11.22</my_decimal>
+	<my_distress>5</my_distress>
+	<hh_user_gender>female</hh_user_gender>
+	<pregnant>no</pregnant>
+	<currency>dollars</currency>
+	<respondent_district_counties>lofa</respondent_district_counties> 
+	<respondent_district>voinjama</respondent_district>
+	<meta>
+		<instanceID>uuid:6f3db755-eb7a-4c52-bb28-c013317e4a7e</instanceID>
+	</meta>
+	<form_code>053</form_code>
+</tmpDYoYX9>
