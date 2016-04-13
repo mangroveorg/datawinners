@@ -371,7 +371,6 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertFalse(web_submission_page.has_choice(10, "Klay"))
         self.assertTrue(web_submission_page.has_choice(10, "Clay"))
 
-
     @attr('functional_test')
     def test_should_verify_add_and_remove_question(self):
         self.project_name = random_string()

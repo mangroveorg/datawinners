@@ -9,6 +9,7 @@ class TestHtmlViews(TestCase):
     in your IDE to run this test.'''
 
     def test_translate_edit_submissions_to_english(self):
+        self.maxDiff = None
         detail = {
             'received_on': 'Apr. 05, 2013, 08:01 AM',
             'status_changed': True,

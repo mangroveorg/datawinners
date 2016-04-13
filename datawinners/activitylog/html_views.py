@@ -10,11 +10,14 @@ NEW = 'new'
 def get_questionnaire_detail(detail_dict):
     detail_list = []
     for edit_type in ["added", "deleted"]:
-        detail_list.append("%s: %s" % (ugettext("%s Questions" % edit_type.capitalize()), _html(detail_dict, edit_type)))
+        if edit_type in detail_dict:
+            detail_list.append("%s: %s" % (ugettext("%s Questions" % edit_type.capitalize()), _html(detail_dict, edit_type)))
 
     for edit_type in ["", "hint", "constraint_message", "constraint", "relevant", "required", "default", "appearance", "choice"]:
-        detail_list.append("%s: %s" % (ugettext("Question %s Changed" % (edit_type.capitalize() if edit_type else "Label")),
-                                       _html(detail_dict, edit_type + "_changed" if edit_type else "changed")))
+        edit_type = edit_type + "_changed" if edit_type else "changed"
+        if edit_type in detail_dict:
+            detail_list.append("%s: %s" % (ugettext("Question %s Changed" % (edit_type.capitalize() if edit_type else "Label")),
+                                           _html(detail_dict, edit_type)))
 
     if "changed_type" in detail_dict:
         response_type = {"select1": "List of Choices", "select": "List of Choices", "text": "Word or Phrase",
@@ -29,12 +32,10 @@ def get_questionnaire_detail(detail_dict):
 
 
 def _html(detail_dict, edit_type):
-    html = ""
-    if edit_type in detail_dict:
-        html = "<ul class='bulleted'>"
-        for item in detail_dict[edit_type]:
-            html += "<li>%s</li>" % item
-        html += "</ul>"
+    html = '<ul class="bulleted">'
+    for item in detail_dict[edit_type]:
+        html += "<li>%s</li>" % item
+    html += "</ul>"
     return html
 
 

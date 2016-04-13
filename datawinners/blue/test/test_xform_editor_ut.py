@@ -21,7 +21,7 @@ class TestXformEditor(unittest.TestCase):
 
         self.assertRaises(UnsupportedXformEditException,
                           XFormEditor(Mock(Submission), validator, Mock(Questionnaire)).edit,
-                          new_questionnaire, old_questionnaire)
+                          new_questionnaire, old_questionnaire, {})
 
     def test_should_save_questionnaire_and_update_submission_when_valid_change(self):
         new_questionnaire = Project.new_from_doc(DatabaseManagerStub(), ProjectDocument())
@@ -31,6 +31,6 @@ class TestXformEditor(unittest.TestCase):
         questionnaire = Mock(Questionnaire)
         validator.valid.return_value = True
 
-        XFormEditor(submission, validator, questionnaire).edit(new_questionnaire, old_questionnaire)
+        XFormEditor(submission, validator, questionnaire).edit(new_questionnaire, old_questionnaire, {})
         questionnaire.save.assert_called_once_with(new_questionnaire)
         submission.update_all.assert_called_once_with(new_questionnaire)
