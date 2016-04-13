@@ -2,20 +2,11 @@
 
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
-import SampleQuestionnaire from '../store/sample-questionnaire';
+import QuestionnaireStore from '../store/questionnaire-store';
 import Toastr from 'toastr';
-import _ from 'lodash';
-
-var findQuestionIndex = function(survey, question) {
-	let index = _.findIndex(survey, {temp_id: question.temp_id});
-	if(index < 0){
-		index = _.findIndex(survey, {name: question.name});
-	}
-	return index;
-};
 
 var QuestionnaireActions = {
-		saveQuestionnaire : function(id, questionnaire, file_type){
+		saveQuestionnaire : function (id, questionnaire, file_type) {
 			var onSaveHandler = (data) => {
 				Toastr[data.status](data.details, data.reason);
 			}
@@ -31,43 +22,32 @@ var QuestionnaireActions = {
 			}).done(onSaveHandler);
 		},
 
-		createQuestion: function(questionnaire, question_type) {
-			var new_question_type = 'text' //Default question type
-			if(question_type){
-					new_question_type = question_type;
-			}
-			let question_fields = Object.keys(questionnaire.survey[0]);
+		createQuestion: function (question_type) {
+			var new_question_type = question_type || 'text'; //Default question type
 			let new_question = {};
-			for (var field of question_fields) {
-				new_question[field]='';
+			for (var field of QuestionnaireStore.questionFields()) {
+				new_question[field] = '';
 			}
-			new_question['type']=new_question_type;
-			new_question['isNewQuestion']=true;
-			new_question['temp_id']=Math.random();
-
-			questionnaire.survey.push(new_question);
-
+			new_question['type'] = new_question_type;
+			new_question['isNewQuestion'] = true;
+			new_question['temp_id'] = Math.random();
+			QuestionnaireStore.add(new_question);
 			AppDispatcher.dispatch({
-				actionType: AppConstants.ActionTypes.CREATE_QUESTION,
-				questionnaire: questionnaire
+				actionType: AppConstants.ActionTypes.CREATE_QUESTION
 			});
 		},
 
-		updateQuestion: function(questionnaire, question) {
-
-			questionnaire.survey[findQuestionIndex(questionnaire.survey, question)] = question;
-
+		updateQuestion: function (question) {
+			QuestionnaireStore.update(question);
 			AppDispatcher.dispatch({
-				actionType: AppConstants.ActionTypes.UPDATE_QUESTION,
-				questionnaire: questionnaire
+				actionType: AppConstants.ActionTypes.UPDATE_QUESTION
 			});
 		},
 
-		deleteQuestion: function(questionnaire, question) {
-			questionnaire.survey.splice([findQuestionIndex(questionnaire.survey, question)], 1);
+		deleteQuestion: function (question) {
+			QuestionnaireStore.delete(question);
 			AppDispatcher.dispatch({
-				actionType: AppConstants.ActionTypes.DELETE_QUESTION,
-				questionnaire: questionnaire
+				actionType: AppConstants.ActionTypes.DELETE_QUESTION
 			});
 		}
 

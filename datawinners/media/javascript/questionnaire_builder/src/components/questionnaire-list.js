@@ -6,7 +6,6 @@ import Question from './question';
 import Paper from 'material-ui/lib/paper';
 
 import IconButton from 'material-ui/lib/icon-button';
-import RaisedButton from 'material-ui/lib/raised-button';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import Card from 'material-ui/lib/card/card';
@@ -14,7 +13,6 @@ import CardText from 'material-ui/lib/card/card-text';
 // import SelectField from 'material-ui/lib/select-field';
 import QuestionnaireActions from '../actions/questionnaire-actions';
 // import MenuItem from 'material-ui/lib/menus/menu-item';
-import _ from 'lodash';
 import LinearProgress from 'material-ui/lib/linear-progress';
 import BuilderToolbar from './builder-toolbar';
 import Tabs from 'material-ui/lib/tabs/tabs';
@@ -70,6 +68,8 @@ export default class QuestionnaireList extends React.Component {
 				url: url,
 				dataType: 'json',
 				success: function (result) {
+					QuestionnaireStore.load(result.questionnaire);
+
 		      self.setState({
 		        questionnaire: result.questionnaire,
 						file_type: result.file_type,
@@ -89,7 +89,7 @@ export default class QuestionnaireList extends React.Component {
 	}
 
 	handleAddButtonClick() {
-		QuestionnaireActions.createQuestion(this.state.questionnaire);
+		QuestionnaireActions.createQuestion();
   }
 
 	_onChange(){
@@ -104,11 +104,11 @@ export default class QuestionnaireList extends React.Component {
 	}
 
 	onChange(question) {
-		QuestionnaireActions.updateQuestion(this.state.questionnaire, question);
+		QuestionnaireActions.updateQuestion(question);
 	}
 
 	onDelete(question) {
-		QuestionnaireActions.deleteQuestion(this.state.questionnaire, question);
+		QuestionnaireActions.deleteQuestion(question);
 	}
 
 	getListOfQuestionViews(){

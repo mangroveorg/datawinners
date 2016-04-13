@@ -2,7 +2,7 @@ import GenericQuestionForm from '../components/generic-question-form';
 import SelectQuestionForm from '../components/select-question-form';
 
 module.exports = {
-  getFormForQuestionType: function(type) {
+  getFormForQuestionType: function (type) {
     var questionForm = null;
     switch(type){
       case 'text':
