@@ -36,7 +36,7 @@ class TestEditRule(unittest.TestCase):
                                                     group_name="group_outer",
                                                     field_label="Full name please",
                                                     field_name="text2")
-        edit_label_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_label_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_hint_change(self):
@@ -47,7 +47,7 @@ class TestEditRule(unittest.TestCase):
                                                     hint="Enter your name")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     hint="Please enter your name")
-        edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_hint_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_insert_hint_node_if_not_existing(self):
@@ -57,7 +57,7 @@ class TestEditRule(unittest.TestCase):
         old_questionnaire = self._get_questionnaire(field_name="text2")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     hint="Please enter your name")
-        edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_hint_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_remove_hint_node(self):
@@ -67,7 +67,7 @@ class TestEditRule(unittest.TestCase):
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     hint="Please enter your name")
         new_questionnaire = self._get_questionnaire(field_name="text2")
-        edit_hint_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_hint_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_appearance_change(self):
@@ -77,20 +77,20 @@ class TestEditRule(unittest.TestCase):
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     appearance="multiline")
         new_questionnaire = self._get_questionnaire(field_name="text2")
-        edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_appearance_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
         old_questionnaire = self._get_questionnaire(field_name="text2")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     appearance="multiline")
-        edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_appearance_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     appearance="sample")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     appearance="multiline")
-        edit_appearance_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_appearance_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_relevant(self):
@@ -100,13 +100,13 @@ class TestEditRule(unittest.TestCase):
         old_questionnaire = self._get_questionnaire(field_name="text2")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     relevant="${number1}='1'")
-        edit_relevant_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_relevant_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     relevant="${number1}='1'")
         new_questionnaire = self._get_questionnaire(field_name="text2")
-        edit_relevant_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_relevant_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
         old_questionnaire = self._get_questionnaire(field_name="text2",
@@ -114,7 +114,7 @@ class TestEditRule(unittest.TestCase):
 
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     relevant="${number1}='2'")
-        edit_relevant_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_relevant_rule.update_xform(old_questionnaire, new_questionnaire, {})
 
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
@@ -125,20 +125,20 @@ class TestEditRule(unittest.TestCase):
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     default="18.31")
         new_questionnaire = self._get_questionnaire(field_name="text2")
-        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_default_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
         old_questionnaire = self._get_questionnaire(field_name="text2")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     default="18.31")
-        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_default_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     default="15")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     default="18.31")
-        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_default_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_required_to_optional_change(self):
@@ -149,7 +149,7 @@ class TestEditRule(unittest.TestCase):
                                                     required=True)
 
         new_questionnaire = self._get_questionnaire(field_name="text2")
-        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_default_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_optional_to_required_change(self):
@@ -160,7 +160,7 @@ class TestEditRule(unittest.TestCase):
 
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     required=True)
-        edit_default_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        edit_default_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_constraint_message_change(self):
@@ -170,23 +170,23 @@ class TestEditRule(unittest.TestCase):
         old_questionnaire = self._get_questionnaire(field_name="text2")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     constraint_message="Please enter your name")
-        edit_constraint_message_rule.update_xform(old_questionnaire=old_questionnaire,
-                                                  new_questionnaire=new_questionnaire)
+        edit_constraint_message_rule.update_xform(old_questionnaire,
+                                                  new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     constraint_message="Please enter your name")
         new_questionnaire = self._get_questionnaire(field_name="text2")
-        edit_constraint_message_rule.update_xform(old_questionnaire=old_questionnaire,
-                                                  new_questionnaire=new_questionnaire)
+        edit_constraint_message_rule.update_xform(old_questionnaire,
+                                                  new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     constraint_message="Please enter your name")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     constraint_message="Updated Please enter your name")
-        edit_constraint_message_rule.update_xform(old_questionnaire=old_questionnaire,
-                                                  new_questionnaire=new_questionnaire)
+        edit_constraint_message_rule.update_xform(old_questionnaire,
+                                                  new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_constraint_change(self):
@@ -196,31 +196,31 @@ class TestEditRule(unittest.TestCase):
         old_questionnaire = self._get_questionnaire(field_name="text2")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     xform_constraint=". > 10")
-        edit_constraint_rule.update_xform(old_questionnaire=old_questionnaire,
-                                                  new_questionnaire=new_questionnaire)
+        edit_constraint_rule.update_xform(old_questionnaire,
+                                                  new_questionnaire, {})
         self.assertEqual(ET.tostring(ET.fromstring(old_questionnaire.xform)), ET.tostring(ET.fromstring(new_questionnaire.xform)))
 
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     xform_constraint=". > 10")
         new_questionnaire = self._get_questionnaire(field_name="text2")
-        edit_constraint_rule.update_xform(old_questionnaire=old_questionnaire,
-                                                  new_questionnaire=new_questionnaire)
+        edit_constraint_rule.update_xform(old_questionnaire,
+                                                  new_questionnaire, {})
         self.assertEqual(ET.tostring(ET.fromstring(old_questionnaire.xform)), ET.tostring(ET.fromstring(new_questionnaire.xform)))
 
         old_questionnaire = self._get_questionnaire(field_name="text2",
                                                     xform_constraint=". > 10")
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     xform_constraint=". > 15")
-        edit_constraint_rule.update_xform(old_questionnaire=old_questionnaire,
-                                                  new_questionnaire=new_questionnaire)
+        edit_constraint_rule.update_xform(old_questionnaire,
+                                                  new_questionnaire, {})
         self.assertEqual(ET.tostring(ET.fromstring(old_questionnaire.xform)), ET.tostring(ET.fromstring(new_questionnaire.xform)))
 
         old_questionnaire = self._get_questionnaire(field_name="text2")
 
         new_questionnaire = self._get_questionnaire(field_name="text2",
                                                     xform_constraint="${number1}>1000")
-        edit_constraint_rule.update_xform(old_questionnaire=old_questionnaire,
-                                                  new_questionnaire=new_questionnaire)
+        edit_constraint_rule.update_xform(old_questionnaire,
+                                                  new_questionnaire, {})
         self.assertEqual(ET.tostring(ET.fromstring(old_questionnaire.xform)), ET.tostring(ET.fromstring(new_questionnaire.xform)))
 
     def test_should_update_xform_with_remove_field_change(self):
@@ -230,7 +230,7 @@ class TestEditRule(unittest.TestCase):
         old_questionnaire = self._get_questionnaire(field_name="text2")
         new_questionnaire = self._get_questionnaire_with_field_removed()
 
-        remove_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        remove_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_add_field_change(self):
@@ -240,7 +240,7 @@ class TestEditRule(unittest.TestCase):
         old_questionnaire = self._get_questionnaire_with_field_removed()
         new_questionnaire = self._get_questionnaire(field_name="text2")
 
-        add_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        add_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_edit_choice_label(self):
@@ -256,7 +256,7 @@ class TestEditRule(unittest.TestCase):
                                                                    {"text": "GBP", "val": "pound"}]
                                                     )
 
-        add_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        add_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_edit_cascade_choice(self):
@@ -298,7 +298,7 @@ class TestEditRule(unittest.TestCase):
             }
         })
 
-        add_rule.update_xform(old_questionnaire=old_questionnaire, new_questionnaire=new_questionnaire)
+        add_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def _get_cascade_questionnaire(self, cascades):

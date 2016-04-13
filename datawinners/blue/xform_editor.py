@@ -9,8 +9,8 @@ class XFormEditor(object):
         self.validator = validator
         self.questionnaire = questionnaire
 
-    def edit(self, new_questionnaire, old_questionnaire):
-        if not self.validator.valid(new_questionnaire, old_questionnaire):
+    def edit(self, new_questionnaire, old_questionnaire, activity_log_detail):
+        if not self.validator.valid(new_questionnaire, old_questionnaire, activity_log_detail):
             raise UnsupportedXformEditException()
 
         self.questionnaire.save(new_questionnaire)

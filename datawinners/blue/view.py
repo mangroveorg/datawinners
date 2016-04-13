@@ -54,11 +54,9 @@ from datawinners.project.views.views import SurveyWebQuestionnaireRequest
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.submission_index import SubmissionSearchStore
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
-from openpyxl import load_workbook
 from collections import OrderedDict
 from datawinners.blue.xlsform_utils import convert_excel_to_dict,\
     convert_json_to_excel
-import io
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
@@ -219,11 +217,12 @@ def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None
         else:
             excel_file.seek(0)
         questionnaire_wrapper = Questionnaire(excel_file)
+        activity_log_detail = {}
         XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
                     questionnaire_wrapper).edit(new_questionnaire, questionnaire)
-        
         _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict, excel_file)
-
+        UserActivityLog().log(request, action=EDITED_QUESTIONNAIRE, project=questionnaire.name,
+                              detail=json.dumps(activity_log_detail))
 
     except UnsupportedXformEditException as e:
         return HttpResponse(content_type='application/json', content=json.dumps({
@@ -517,9 +516,7 @@ def _temp_file(request, input_stream=None, file_type=None):
     return tmp_file
 
 
-
 def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
-    tmp_file = None
     try:
         file_validation_results = _perform_file_validations(request)
         if isinstance(file_validation_results, HttpResponse):

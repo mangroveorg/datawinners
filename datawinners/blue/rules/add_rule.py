@@ -12,31 +12,36 @@ class AddRule(Rule):
         xform.add_bind_node(bind_node)
         xform.add_instance_node(parent_node, instance_node)
 
-    def remove(self, parent_node, node, xform):
+    def remove(self, parent_node, node, xform, old_field, activity_log_detail):
         pass
 
-    def update_xform(self, old_questionnaire, new_questionnaire):
+    def update_xform(self, old_questionnaire, new_questionnaire, activity_log_detail):
         old_xform_model = old_questionnaire.xform_model
         new_xform_model = new_questionnaire.xform_model
         self._update_xform_with_new_fields(new_questionnaire.fields, old_questionnaire.fields,
                                            new_xform_model.get_body_node(), old_xform_model.get_body_node(),
-                                           old_xform_model, new_xform_model)
+                                           old_xform_model, new_xform_model, activity_log_detail)
 
         old_questionnaire.xform = '<?xml version="1.0" encoding="utf-8"?>%s' % ET.tostring(old_xform_model.root_node)
 
-    def _update_xform_with_new_fields(self, new_fields, old_fields, new_parent_node, old_parent_node, old_xform, new_xform):
+    def _update_xform_with_new_fields(self, new_fields, old_fields, new_parent_node, old_parent_node, old_xform,
+                                      new_xform, activity_log_detail):
         for new_field in new_fields:
             new_node = get_node(new_parent_node, new_field.code)
             old_field = [old_field for old_field in old_fields if old_field.code == new_field.code]
             if old_field:
                 if isinstance(new_field, FieldSet):
                     old_node = get_node(old_parent_node, new_field.code)
-                    self._update_xform_with_new_fields(new_field.fields, old_field[0].fields, new_node, old_node, old_xform, new_xform)
+                    self._update_xform_with_new_fields(new_field.fields, old_field[0].fields, new_node, old_node,
+                                                       old_xform, new_xform, activity_log_detail)
             else:
-                self.add(old_parent_node, new_node, new_xform.bind_node(new_node), new_xform.instance_node(new_node), old_xform)
+                self.add(old_parent_node, new_node, new_xform.bind_node(new_node), new_xform.instance_node(new_node),
+                         old_xform)
+                activity_log_detail["added"] = [new_field.label] if activity_log_detail.get("added") is None \
+                    else activity_log_detail.get("added") + [new_field.label]
 
     def update_submission(self, submission):
         return False
 
-    def edit(self, node, old_field, new_field, old_xform, new_xform):
+    def edit(self, node, old_field, new_field, old_xform, new_xform, activity_log_detail):
         pass
