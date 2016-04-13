@@ -1,3 +1,5 @@
+import re
+
 from django.utils.translation import ugettext
 
 RECEIVED_ON = 'received_on'
@@ -11,12 +13,13 @@ def get_questionnaire_detail(detail_dict):
     detail_list = []
     for edit_type in ["added", "deleted"]:
         if edit_type in detail_dict:
-            detail_list.append("%s: %s" % (ugettext("%s Questions" % edit_type.capitalize()), _html(detail_dict, edit_type)))
+            detail_list.append("%s: %s" % (ugettext("%s Questions" % edit_type.capitalize()),
+                                           _html(detail_dict, edit_type)))
 
-    for edit_type in ["", "hint", "constraint_message", "constraint", "relevant", "required", "default", "appearance", "choice"]:
-        edit_type = edit_type + "_changed" if edit_type else "changed"
+    for attr in ["", "hint", "constraint_message", "constraint", "relevant", "required", "default", "appearance", "choice"]:
+        edit_type = attr + "_changed" if attr else "changed"
         if edit_type in detail_dict:
-            detail_list.append("%s: %s" % (ugettext("Question %s Changed" % (edit_type.capitalize() if edit_type else "Label")),
+            detail_list.append("%s: %s" % (ugettext("Question %s Changed" % (re.sub("_", " ", attr).capitalize() if attr else "Label")),
                                            _html(detail_dict, edit_type)))
 
     if "changed_type" in detail_dict:
