@@ -6269,20 +6269,20 @@ msgstr "2) Soumissions comportant le même Numéro d'Identification (par questio
 msgid "help_text_for_duplicates_near_filter_content_3"
 msgstr "3) Soumissions effectuées par le même Expéditeur de Données"
 
-msgid "Before-deadline reminder updated: "
-msgstr "Rappel avant échéance mis à jour: "
+msgid "Before-deadline reminder updated: %s Day(s)"
+msgstr "Rappel avant échéance mis à jour: %s Jour(s)"
 
-msgid "After-deadline reminder updated: "
-msgstr "Rappel après échéance mis à jour: "
+msgid "After-deadline reminder updated: %s Day(s)"
+msgstr "Rappel après échéance mis à jour: %s Jour(s)"
 
-msgid "Text updated for before-deadline reminder: "
-msgstr "Texte mis à jour pour le rappel avant l’échéance"
+msgid "Text updated for before-deadline reminder: %s"
+msgstr "Texte mis à jour pour le rappel avant l’échéance: %s"
 
-msgid "Text updated for on-deadline reminder: "
-msgstr "Texte mis à jour pour le rappel le jour de l’échéance "
+msgid "Text updated for on-deadline reminder: %s"
+msgstr "Texte mis à jour pour le rappel le jour de l’échéance: %s"
 
-msgid "Text updated for after-deadline reminder: "
-msgstr "Texte mis à jour pour le rappel après l’échéance "
+msgid "Text updated for after-deadline reminder: %s"
+msgstr "Texte mis à jour pour le rappel après l’échéance: %s"
 
 msgid "Before-deadline reminder activated"
 msgstr "Rappel avant échéance activé"

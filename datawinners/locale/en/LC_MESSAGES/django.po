@@ -4996,19 +4996,19 @@ msgstr "2) Submissions with the exact same unique Identification Number (per que
 msgid "help_text_for_duplicates_near_filter_content_3"
 msgstr "3) Submissions made by the same Data Sender"
 
-msgid "Before-deadline reminder updated: "
+msgid "Before-deadline reminder updated: %s Day(s)"
 msgstr ""
 
-msgid "After-deadline reminder updated: "
+msgid "After-deadline reminder updated: %s Day(s)"
 msgstr ""
 
-msgid "Text updated for before-deadline reminder: "
+msgid "Text updated for before-deadline reminder: %s"
 msgstr ""
 
-msgid "Text updated for on-deadline reminder: "
+msgid "Text updated for on-deadline reminder: %s"
 msgstr ""
 
-msgid "Text updated for after-deadline reminder: "
+msgid "Text updated for after-deadline reminder: %s"
 msgstr ""
 
 msgid "Before-deadline reminder activated"

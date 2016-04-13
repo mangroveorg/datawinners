@@ -11,7 +11,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import convert_dmy_to_ymd, get_organization
 from datetime import date, datetime, timedelta
 from mangrove.utils.json_codecs import encode_json
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext as _, activate, get_language
 
 def convert_to_ymd(date):
     return datetime.strftime(date, "%Y-%m-%d")
@@ -54,6 +54,20 @@ def show_log(request):
     log_data = UserActivityLog.objects.select_related().filter(**args).order_by("-log_date")
     for entry in log_data:
         entry.log_date = convert_utc_to_localized(time_delta, entry.log_date)
+        action  = entry.action
+        if action == "Updated reminders":
+            current_lang = get_language()
+            activate(current_lang)
+            details = json.loads(entry.detail)
+            text_details = ""
+            text_details += "<ul>"
+            for key,value in details.iteritems():
+                if value != "":
+                    text_details += "<li>"+ _(key) % value + "</li></br>"
+                else:
+                    text_details += "<li>"+ _(key) + "</li></br>"
+            text_details += "</ul>"
+            entry.detail = text_details
     return render_to_response("activitylog/activitylog.html",
                               {
                                 'form': form,
