@@ -4,6 +4,15 @@ import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import SampleQuestionnaire from '../store/sample-questionnaire';
 import Toastr from 'toastr';
+import _ from 'lodash';
+
+var findQuestionIndex = function(survey, question) {
+	let index = _.findIndex(survey, {temp_id: question.temp_id});
+	if(index < 0){
+		index = _.findIndex(survey, {name: question.name});
+	}
+	return index;
+};
 
 var QuestionnaireActions = {
 		saveQuestionnaire : function(id, questionnaire, file_type){
@@ -44,21 +53,21 @@ var QuestionnaireActions = {
 			});
 		},
 
-		updateQuestion: function(question) {
-			var updatedQuestion = question//TODO
+		updateQuestion: function(questionnaire, question) {
 
-			Dispatcher.dispatch({
-				actionType: AppConstants.UPDATE_QUESTION,
-				question: updatedQuestion
+			questionnaire.survey[findQuestionIndex(questionnaire.survey, question)] = question;
+
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.UPDATE_QUESTION,
+				questionnaire: questionnaire
 			});
 		},
 
-		deleteQuestion: function(id) {
-			//TODO
-
-			Dispatcher.dispatch({
-				actionType: AppConstants.DELETE_QUESTION,
-				id: id
+		deleteQuestion: function(questionnaire, question) {
+			questionnaire.survey.splice([findQuestionIndex(questionnaire.survey, question)], 1);
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.DELETE_QUESTION,
+				questionnaire: questionnaire
 			});
 		}
 

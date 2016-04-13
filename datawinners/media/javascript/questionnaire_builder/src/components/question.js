@@ -5,6 +5,7 @@ import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
 import CardText from 'material-ui/lib/card/card-text';
 import AppConstants from '../constants/app-constants';
+import FormFactory from './form-factory';
 import _ from 'lodash';
 
 const style = {
@@ -24,9 +25,12 @@ export default class Question extends React.Component {
     // if(this.props.question){
     //   question = this.props.question;
     // }
-
-    this.formType = AppConstants.getFormForQuestionType(this.props.question.type);
+    this.state = {
+      question : this.props.question
+    };
+    this.formType = FormFactory.getFormForQuestionType(this.props.question.type);
     this.setQuestionState = this.setQuestionState.bind(this);
+    this.onDelete = this.onDelete.bind(this);
     this.onChangeForRequired = this.onChangeForRequired.bind(this);
     this.onChangeForQuestionType = this.onChangeForQuestionType.bind(this);
   }
@@ -36,6 +40,7 @@ export default class Question extends React.Component {
 		let value = event.target.value;
     let question = this.props.question;
     question[field] = value;
+    this.setState({question: question});
     this.props.onChange(question);
 	}
 
@@ -48,11 +53,15 @@ export default class Question extends React.Component {
   onChangeForQuestionType(event,index,value){
     this.props.question['type'] = value;
     this.props.onChange(this.props.question);
-    this.formType = AppConstants.getFormForQuestionType(value);
+    this.formType = FormFactory.getFormForQuestionType(value);
   }
 
   questionFormIsValid() {
     return true;//TODO
+  }
+
+  onDelete(event) {
+    this.props.onDelete(this.state.question);
   }
 
   render() {
@@ -72,6 +81,7 @@ export default class Question extends React.Component {
                 errors={this.errors}
                 onChangeForRequired={this.onChangeForRequired}
                 onChangeForQuestionType={this.onChangeForQuestionType}
+                onDelete={this.onDelete}
                 questionTypes={AppConstants.QuestionTypes} //Due to cyclic dependency, passing as param
                 />
 

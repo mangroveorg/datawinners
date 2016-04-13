@@ -20,6 +20,7 @@ import BuilderToolbar from './builder-toolbar';
 import Tabs from 'material-ui/lib/tabs/tabs';
 import Tab from 'material-ui/lib/tabs/tab';
 import FontIcon from 'material-ui/lib/font-icon';
+import FormFactory from './form-factory';
 
 const style = {
 	addButtonContainer: {
@@ -55,7 +56,8 @@ export default class QuestionnaireList extends React.Component {
 				questionnaire_id:props.questionnaire_id,
 			 	slideIndex: 0
 		}
-		this.onQuestionChange = this.onQuestionChange.bind(this);
+		this.onChange = this.onChange.bind(this);
+		this.onDelete = this.onDelete.bind(this);
 		this.saveQuestionnaire = this.saveQuestionnaire.bind(this);
 		this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
 		this._onChange = this._onChange.bind(this);
@@ -94,22 +96,6 @@ export default class QuestionnaireList extends React.Component {
 		this.setState({questionnaire:QuestionnaireStore.getQuestionnaire()});
 	}
 
-	onQuestionChange(updated_question){
-		let current_question_index = _.findIndex(
-																					this.state.questionnaire.survey,
-																					{temp_id: updated_question.temp_id});
-		if(current_question_index < 0){
-			current_question_index = _.findIndex(
-																						this.state.questionnaire.survey,
-																						{name:updated_question.name});
-		}
-		let questions = this.state.questionnaire.survey;
-		questions[current_question_index] = updated_question;
-		this.setState({questions: questions});
-	}
-
-
-
 	saveQuestionnaire(event) {
 		event.preventDefault();
 
@@ -117,16 +103,25 @@ export default class QuestionnaireList extends React.Component {
 											this.state.questionnaire_id,this.state.questionnaire, this.state.file_type);
 	}
 
+	onChange(question) {
+		QuestionnaireActions.updateQuestion(this.state.questionnaire, question);
+	}
+
+	onDelete(question) {
+		QuestionnaireActions.deleteQuestion(this.state.questionnaire, question);
+	}
+
 	getListOfQuestionViews(){
 		var questions = this.state.questionnaire.survey;
     var questionViews = [];
 
     for (var key in questions) {
-			if (AppConstants.getFormForQuestionType(questions[key].type)) {
+			if (FormFactory.getFormForQuestionType(questions[key].type)) {
 				questionViews.push(
 					<Question
 							question={questions[key]}
-							onChange={this.onQuestionChange}
+							onChange={this.onChange}
+							onDelete={this.onDelete}
 							/>
 				);
 			}
@@ -137,7 +132,7 @@ export default class QuestionnaireList extends React.Component {
 
 	getListOfChoiceViews(){
 		var choices = this.state.questionnaire.choices;
-		
+
 	}
 
 	render(){

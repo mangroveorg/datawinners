@@ -6,6 +6,10 @@ import Checkbox  from 'material-ui/lib/checkbox';
 import Toggle  from 'material-ui/lib/toggle';
 import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
+import RaisedButton from 'material-ui/lib/raised-button';
+import FontIcon from 'material-ui/lib/font-icon';
+import IconButton from 'material-ui/lib/icon-button';
+import QuestionnaireActions from '../actions/questionnaire-actions';
 
 const styles = {
   block: {
@@ -16,6 +20,10 @@ const styles = {
     marginBottom: 16,
     fontWeight: 'normal'
   },
+  deleteButton: {
+    float: 'right',
+    display: 'block'
+  }
 };
 
 var getQuestionTypeMenuItems = function(questionTypes) {
@@ -36,16 +44,20 @@ module.exports = {
   getSelectQuestionType: function(props, questionTypes){
       return (
         <div>
-        <SelectField
-                  floatingLabelText="Question Type"
-                  onChange={props.onChangeForQuestionType}
-                  disabled={!props.question.isNewQuestion}
-                  value={props.question.type}
-                  name='type'
-                  errorText={props.errors.type}
-                >
-                  {getQuestionTypeMenuItems(props.questionTypes)}
-        </SelectField>
+          <SelectField
+                    floatingLabelText="Question Type"
+                    onChange={props.onChangeForQuestionType}
+                    disabled={!props.question.isNewQuestion}
+                    value={props.question.type}
+                    name='type'
+                    errorText={props.errors.type}
+                  >
+                    {getQuestionTypeMenuItems(props.questionTypes)}
+          </SelectField>
+          <RaisedButton label="Delete"
+                onMouseDown={props.onDelete}
+                style={styles.deleteButton}
+                icon={<FontIcon className="material-icons" >delete</FontIcon>} />
         </div>
 
       );

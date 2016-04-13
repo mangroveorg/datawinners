@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import "babel-polyfill";
+import AppConstants from './constants/app-constants';
 import QuestionnaireList from './components/questionnaire-list';
 import QuestionnaireActions from './actions/questionnaire-actions';
 import injectTapEventPlugin from 'react-tap-event-plugin';
