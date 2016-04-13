@@ -1211,55 +1211,6 @@ _appDispatcher2.default.register(function (action) {
 	}
 });
 
-/*
-//Inheritance based store
-class QuestionnaireStore extends EventEmitter{
-	constructor(){
-		super();
-//		this.questionnaire_id = questionnaire_id;
-		this.registerWithDispatcher();
-		this.questions = [];
-	}
-
-	getAllQuestions() {
-		return this.questions;
-	}
-
-	addChangeListener(callback) {
-		this.on(CHANGE_EVENT,callback);
-	}
-
-	removeChangeListener(callback){
-		this.removeListener(CHANGE_EVENT, callback);
-	}
-
-	emitChange() {
-		this.emit(CHANGE_EVENT)
-	}
-
-	dispatchHandler(action) {
-		switch(action.type){
-			case AppConstants.ActionTypes.INITIALIZE_QUESTIONNAIRE:
-				debugger;
-			      this.questions = action.questions;
-			      this.emitChange();
-			      break;
-			 default:
-				 //pass
-
-		}
-
-	}
-
-	registerWithDispatcher(){
-		AppDispatcher.register(this.dispatchHandler);
-
-	}
-
-}
-module.exports = new QuestionnaireStore();
-*/
-
 module.exports = QuestionnaireStore;
 
 },{"../constants/app-constants":9,"../dispatcher/app-dispatcher":10,"events":306}],13:[function(require,module,exports){
