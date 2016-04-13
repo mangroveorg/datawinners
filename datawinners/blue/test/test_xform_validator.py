@@ -22,8 +22,9 @@ class TestXformValidator(unittest.TestCase):
         new_questionnaire.xform_model = Mock(Xform)
 
         old_questionnaire.xform_model.equals.return_value = True
-        self.assertTrue(Validator([rule1, rule2]).valid(new_questionnaire, old_questionnaire))
-        rule1.update_xform.assert_called_once_with(old_questionnaire, new_questionnaire)
+        activity_log_detail = {}
+        self.assertTrue(Validator([rule1, rule2]).valid(new_questionnaire, old_questionnaire, activity_log_detail))
+        rule1.update_xform.assert_called_once_with(old_questionnaire, new_questionnaire, activity_log_detail)
 
         old_questionnaire.xform_model.equals.return_value = False
-        self.assertFalse(Validator([rule1, rule2]).valid(new_questionnaire, old_questionnaire))
+        self.assertFalse(Validator([rule1, rule2]).valid(new_questionnaire, old_questionnaire, activity_log_detail))

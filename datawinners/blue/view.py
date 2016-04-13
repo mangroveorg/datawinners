@@ -219,7 +219,8 @@ def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None
         questionnaire_wrapper = Questionnaire(excel_file)
         activity_log_detail = {}
         XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
-                    questionnaire_wrapper).edit(new_questionnaire, questionnaire)
+                    questionnaire_wrapper).edit(new_questionnaire, questionnaire, activity_log_detail)
+        questionnaire = Project.get(manager, project_id)
         _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict, excel_file)
         UserActivityLog().log(request, action=EDITED_QUESTIONNAIRE, project=questionnaire.name,
                               detail=json.dumps(activity_log_detail))

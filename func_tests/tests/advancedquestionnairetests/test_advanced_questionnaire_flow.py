@@ -320,8 +320,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
 
         project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
-
-        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
         self.assertEquals(11, web_submission_page.question_count())
 
         self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire_label_change.xls', edit_flag=True)
@@ -371,3 +370,29 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         web_submission_page.select_choice(9, 0)
         self.assertFalse(web_submission_page.has_choice(10, "Klay"))
         self.assertTrue(web_submission_page.has_choice(10, "Clay"))
+
+    @attr('functional_test')
+    def test_should_verify_add_and_remove_question(self):
+        self.project_name = random_string()
+        self.client.login(username="rasitefa@mailinator.com", password="test123")
+        form_code = self._verify_questionnaire_creation(self.project_name, 'simple_advance_questionnaire.xls')
+
+        self.assertEqual(len(form_code), 3)
+
+        all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
+        all_project_page.navigate_to_project_overview_page(self.project_name)
+        self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
+
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+
+        self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        self.assertEquals(11, web_submission_page.question_count())
+
+        self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire_add_qn.xls', edit_flag=True)
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        self.assertEquals(12, web_submission_page.question_count())
+
+        self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire.xls', edit_flag=True)
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        self.assertEquals(11, web_submission_page.question_count())
