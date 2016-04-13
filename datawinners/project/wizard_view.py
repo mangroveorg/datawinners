@@ -229,7 +229,7 @@ def reminder_settings(request, project_id):
 
 
         if data['should_send_reminders_before_deadline']== False and post_data['should_send_reminders_before_deadline'] =='true':
-            details.update({"Before-deadline reminder activated"})
+            details.update({"Before-deadline reminder activated": ""})
 
         elif data['should_send_reminders_before_deadline']== True and post_data['should_send_reminders_before_deadline'] =='false':
             details.update({"Before-deadline reminder deactivated": ""})
