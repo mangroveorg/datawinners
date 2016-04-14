@@ -49,6 +49,19 @@ var QuestionnaireActions = {
 			AppDispatcher.dispatch({
 				actionType: AppConstants.ActionTypes.DELETE_QUESTION
 			});
+		},
+
+		createChoice: function(questionnaire){
+			if (!questionnaire.choices){
+				questionnaire.choices = [];
+			}
+			questionnaire.choices.push({"list name":'',name:'',label:''});
+
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.CREATE_CHOICE,
+				questionnaire: questionnaire
+			});
+
 		}
 
 };

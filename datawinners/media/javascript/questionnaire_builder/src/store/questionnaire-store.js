@@ -60,6 +60,7 @@ AppDispatcher.register(function (action) {
 		case AppConstants.ActionTypes.UPDATE_QUESTION:
 		case AppConstants.ActionTypes.CREATE_QUESTION:
 		case AppConstants.ActionTypes.DELETE_QUESTION:
+		case AppConstants.ActionTypes.CREATE_CHOICE:
 			QuestionnaireStore.emitChange();
 			break;
 		default:

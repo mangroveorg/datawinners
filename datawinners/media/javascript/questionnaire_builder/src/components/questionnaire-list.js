@@ -19,6 +19,7 @@ import Tabs from 'material-ui/lib/tabs/tabs';
 import Tab from 'material-ui/lib/tabs/tab';
 import FontIcon from 'material-ui/lib/font-icon';
 import FormFactory from './form-factory';
+import ChoiceGroup from './choice-group';
 
 const style = {
 	addButtonContainer: {
@@ -47,6 +48,16 @@ const style = {
   },
 };
 
+var transformChoices = function(choices){
+	let choicesWithoutEmpty = _.filter(
+																	choices,
+																	function(c){
+																		return !_.isEmpty(_.trim(c['list name']))
+																	});
+	let choicesGrouped = _.groupBy(choicesWithoutEmpty,'list name')
+	return choicesGrouped;
+};
+
 export default class QuestionnaireList extends React.Component {
 	constructor(props){
 		super(props);
@@ -58,6 +69,7 @@ export default class QuestionnaireList extends React.Component {
 		this.onDelete = this.onDelete.bind(this);
 		this.saveQuestionnaire = this.saveQuestionnaire.bind(this);
 		this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
+		this.handleChoiceAddButtonClick = this.handleChoiceAddButtonClick.bind(this);
 		this._onChange = this._onChange.bind(this);
 	}
 
@@ -91,6 +103,10 @@ export default class QuestionnaireList extends React.Component {
 	handleAddButtonClick() {
 		QuestionnaireActions.createQuestion();
   }
+
+	handleChoiceAddButtonClick(){
+		QuestionnaireActions.createChoice(this.state.questionnaire);
+	}
 
 	_onChange(){
 		this.setState({questionnaire:QuestionnaireStore.getQuestionnaire()});
@@ -130,9 +146,20 @@ export default class QuestionnaireList extends React.Component {
 
 	}
 
-	getListOfChoiceViews(){
-		var choices = this.state.questionnaire.choices;
 
+	getListOfChoiceGroupViews(){
+		let choices = this.state.questionnaire.choices;
+		let choicesGrouped = transformChoices(choices);
+		let choiceGroupViews = [];
+		for (var key in choicesGrouped){
+			// console.log(choicesGrouped[key]);
+			choiceGroupViews.push(
+				<ChoiceGroup
+						choiceGroup={choicesGrouped[key]}
+						/>
+			)
+		}
+		return choiceGroupViews;
 	}
 
 	render(){
@@ -156,12 +183,22 @@ export default class QuestionnaireList extends React.Component {
 				      label="Survey" value={0}
 				    >
 							{this.getListOfQuestionViews()}
+							<div style={style.addButtonContainer}>
+		            <FloatingActionButton onMouseDown={this.handleAddButtonClick}>
+		              <ContentAdd />
+		            </FloatingActionButton>
+		          </div>
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">assignment_turned_in</FontIcon>}
 				      label="Choices" value={1}
 				    >
-							{this.getListOfChoiceViews()}
+							{this.getListOfChoiceGroupViews()}
+							<div style={style.addButtonContainer}>
+		            <FloatingActionButton onMouseDown={this.handleChoiceAddButtonClick}>
+		              <ContentAdd />
+		            </FloatingActionButton>
+		          </div>
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">low_priority</FontIcon>}
@@ -171,11 +208,6 @@ export default class QuestionnaireList extends React.Component {
 						</Tab>
 				  </Tabs>
 
-          <div style={style.addButtonContainer}>
-            <FloatingActionButton onMouseDown={this.handleAddButtonClick}>
-              <ContentAdd />
-            </FloatingActionButton>
-          </div>
       </Paper>
       </div>
 				);
