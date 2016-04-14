@@ -188,7 +188,7 @@ input[disabled='disabled'][type=text] {
     background-color: #ebebeb;
 }
 /*Table Styles Temp*/
-table {
+table :not('.builder-choice-group-table'){
   margin-bottom: 10px;
   width: 100%;
   td, th {

@@ -15,38 +15,46 @@
     {{ block.super }}
 {% endblock %}
 
-{% block page_scss %}
+{% block page_css %}
+  {% flag "questionnaire_builder"%}
+    <link href="/media/css/questionnaire_builder/dist/bundle.css" rel="stylesheet"/>
+  {% else %}
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
     <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet" />
+  {% endflag %}
+
 {% endblock %}
 
 {% block page_js %}
+  {% flag "questionnaire_builder"%}
+    <script defer async type="text/javascript" src="/media/javascript/questionnaire_builder/dist/bundle.js" ></script>
+    <script type="text/javascript">
+      var project_id = "{{ project_id }}"
+    </script>
+
+  {% else %}
     {{ block.super }}
-
-        <script type="text/javascript">
-            var project_id = "{{ project_id }}"
-            var message_text = "";
-            DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/qrs/?template=help";
-        </script>
-        <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-        <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
-        <script type="text/javascript" src="/media/javascript/accordion_dialog.js"></script>
-        <script type="text/javascript" src="/media/javascript/project/upload_questionnaire.js"></script>
-        <script type="text/javascript" src="/media/javascript/project/edit_project_index.js"></script>
-
+    <script type="text/javascript">
+        var message_text = "";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/qrs/?template=help";
+    </script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/accordion_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/upload_questionnaire.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/edit_project_index.js"></script>
+  {% endflag %}
 
 {% endblock %}
 
 {% block content %}
 
 {% flag "questionnaire_builder"%}
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<div id="questionnaire_builder"></div>
- 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">	
-    <link href="/media/css/questionnaire_builder/dist/bundle.css" rel="stylesheet"/>
-	<script defer async type="text/javascript" src="/media/javascript/questionnaire_builder/dist/bundle.js" ></script>
 
   <br /><br /><br /><br />
 	<div style="background-color:bisque">

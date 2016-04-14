@@ -1,6 +1,10 @@
 import React from 'react';
 import TextField  from 'material-ui/lib/text-field';
 
+/*
+Current unused.
+Trying to use table in choice-group. If successful, this file will be deleted.
+*/
 export default class ChoiceItem extends React.Component {
   constructor(props){
     super(props);

@@ -5,14 +5,22 @@ import CardText from 'material-ui/lib/card/card-text';
 import TextField  from 'material-ui/lib/text-field';
 import ChoiceItem from './choice-item';
 
-const style = {
+import Table from 'material-ui/lib/table/table';
+import TableHeaderColumn from 'material-ui/lib/table/table-header-column';
+import TableRow from 'material-ui/lib/table/table-row';
+import TableHeader from 'material-ui/lib/table/table-header';
+import TableRowColumn from 'material-ui/lib/table/table-row-column';
+import TableBody from 'material-ui/lib/table/table-body';
+
+const styles = {
   choice_row: {
-    background: "#e8eff6",
+    background: "#BBBBBB",
     borderBottomStyle: "solid",
     borderBottomColor: "grey",
-    borderWidth: "2px"
+    borderWidth: "2px",
+    height:'initial'
   }
-}
+};
 
 export default class ChoiceGroup extends React.Component {
   constructor(props){
@@ -32,9 +40,19 @@ export default class ChoiceGroup extends React.Component {
 	}
 
   getChoiceItems(){
-    var choiceItemViews = []
-    for (var item of this.props.choiceGroup){
-      choiceItemViews.push(<ChoiceItem choiceItem={item} />);
+    var choiceItemViews = [];
+    // let striped = true;
+    for (var choiceItem of this.props.choiceGroup){
+      // choiceItemViews.push(<ChoiceItem choiceItem={item} />);
+      // striped = !striped;
+      choiceItemViews.push(
+        <TableRow>
+          <TableRowColumn displayBorder={false}>{choiceItem.name}
+          </TableRowColumn>
+          <TableRowColumn displayBorder={false}>{choiceItem.label}
+          </TableRowColumn>
+        </TableRow>
+      );
     }
     return choiceItemViews;
   }
@@ -47,12 +65,30 @@ export default class ChoiceGroup extends React.Component {
           title={_.truncate(this.props.choiceGroup[0]['list name'])}
           actAsExpander={true}
           showExpandableButton={true}
-          style={style.choice_row}
+          style={styles.choice_row}
         />
         <CardText expandable={true}>
-        
-          {this.getChoiceItems()}
+          <TextField
+            floatingLabelText="List name"
+            errorText={this.errors['list name']}
+            onChange={this.onChange}
+            disabled={true}
+            value={this.props.choiceGroup[0]['list name']}
+            name="name"
+            multiLine={true}
+          />
 
+          <Table className='builder-choice-group-table' >
+            <TableHeader displaySelectAll={false} selectable={false}>
+              <TableRow displayBorder={false}>
+                <TableHeaderColumn>Name</TableHeaderColumn>
+                <TableHeaderColumn>Label</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {this.getChoiceItems()}
+            </TableBody>
+          </Table>
         </CardText>
       </Card>
 
