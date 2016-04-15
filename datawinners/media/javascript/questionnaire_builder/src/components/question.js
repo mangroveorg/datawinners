@@ -7,12 +7,13 @@ import CardText from 'material-ui/lib/card/card-text';
 import AppConstants from '../constants/app-constants';
 import FormFactory from './form-factory';
 import _ from 'lodash';
+import Paper from 'material-ui/lib/paper';
 
 const style = {
   question_row: {
     background: "#e8eff6",
-    borderBottomStyle: "solid",
-    borderBottomColor: "grey",
+    borderTopStyle: "solid",
+    borderTopColor: "grey",
     borderWidth: "2px"
   }
 }
@@ -84,8 +85,7 @@ export default class Question extends React.Component {
                 onDelete={this.onDelete}
                 questionTypes={AppConstants.QuestionTypes} //Due to cyclic dependency, passing as param
                 />
-
-          </CardText>
+            </CardText>
         </Card>
 
       );

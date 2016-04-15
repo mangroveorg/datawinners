@@ -14,13 +14,50 @@ import TableBody from 'material-ui/lib/table/table-body';
 
 const styles = {
   choice_row: {
-    background: "#BBBBBB",
-    borderBottomStyle: "solid",
-    borderBottomColor: "grey",
+    background: "#e8eff6",
+    borderTopStyle: "solid",
+    borderTopColor: "grey",
     borderWidth: "2px",
     height:'initial'
+  },
+  table: {
+    marginBottom: '0px',
+    borderBottomWidth:'0px',
+    borderBottomStyle: "none",
+    borderWidth: "0px"
+  },
+  table_td: {
+    border: 'none',
+    padding: '0px',
+    borderBottomWidth:'0px',
+    borderBottomStyle: "none",
+    borderWidth: "0px"
+  },
+  table_th:{
+    fontWeight: 'bold',
+    padding: '0px',
+    borderBottomWidth:'0px',
+    borderBottomStyle: "none",
+    borderWidth: "0px"
+
+  },
+  table_tr:{
+    border: 'none',
+    borderBottomWidth:'0px',
+    borderBottomStyle: "none",
+    borderWidth: "0px"
+
+  },
+  headerStyle: {
+    height:'20px'
+  },
+  choiceTextField:{
+    width: '100%'
   }
+
+
 };
+
 
 export default class ChoiceGroup extends React.Component {
   constructor(props){
@@ -40,23 +77,26 @@ export default class ChoiceGroup extends React.Component {
 	}
 
   getChoiceItems(){
-    var choiceItemViews = [];
-    // let striped = true;
-    for (var choiceItem of this.props.choiceGroup){
-      // choiceItemViews.push(<ChoiceItem choiceItem={item} />);
-      // striped = !striped;
-      choiceItemViews.push(
-        <TableRow>
-          <TableRowColumn displayBorder={false}>{choiceItem.name}
-          </TableRowColumn>
-          <TableRowColumn displayBorder={false}>{choiceItem.label}
-          </TableRowColumn>
-        </TableRow>
-      );
-    }
-    return choiceItemViews;
-  }
+    return this.props.choiceGroup.map((choiceItem) => (
+      <TableRow style={styles.table_tr} selectable={false}>
+        <TableRowColumn style={styles.table_td} displayBorder={false}  >
+          <TextField
+            name='name'
+            value={choiceItem.name}
+            style={styles.choiceTextField}
+          />
 
+        </TableRowColumn>
+        <TableRowColumn style={styles.table_td} displayBorder={false}>
+        <TextField
+          name='label'
+          value={choiceItem.label}
+          style={styles.choiceTextField}
+        />
+        </TableRowColumn>
+      </TableRow>
+    ));
+  }
 
   render(){
     return (
@@ -77,21 +117,24 @@ export default class ChoiceGroup extends React.Component {
             name="name"
             multiLine={true}
           />
+          <br/><br/><br/>
 
-          <Table className='builder-choice-group-table' >
-            <TableHeader displaySelectAll={false} selectable={false}>
-              <TableRow displayBorder={false}>
-                <TableHeaderColumn>Name</TableHeaderColumn>
-                <TableHeaderColumn>Label</TableHeaderColumn>
+          <Table className='builder-choice-group-table'
+                  style={styles.table}
+                  headerStyle={styles.headerStyle}
+                  >
+            <TableHeader displaySelectAll={false} style={styles.table_th} adjustForCheckbox={false}>
+              <TableRow selectable={false} style={styles.table_tr}>
+                <TableHeaderColumn style={styles.table_td}>Name</TableHeaderColumn>
+                <TableHeaderColumn style={styles.table_td}>Label</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody displayRowCheckbox={false}>
               {this.getChoiceItems()}
             </TableBody>
           </Table>
         </CardText>
       </Card>
-
     )
   }
 }

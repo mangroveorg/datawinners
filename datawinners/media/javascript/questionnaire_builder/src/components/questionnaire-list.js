@@ -10,9 +10,7 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
-// import SelectField from 'material-ui/lib/select-field';
 import QuestionnaireActions from '../actions/questionnaire-actions';
-// import MenuItem from 'material-ui/lib/menus/menu-item';
 import LinearProgress from 'material-ui/lib/linear-progress';
 import BuilderToolbar from './builder-toolbar';
 import Tabs from 'material-ui/lib/tabs/tabs';
@@ -27,9 +25,6 @@ const style = {
     bottom: '22px',
     right: '20px',
     float: 'right'
-	},
-	appBar: {
-		backgroundColor: '#E8EFF6'
 	},
 	saveButton: {
 		backgroundColor: 'red'
@@ -48,13 +43,14 @@ const style = {
   },
 };
 
+//TODO: could move this transform to QuestionnaireStore
 var transformChoices = function(choices){
 	let choicesWithoutEmpty = _.filter(
 																	choices,
 																	function(c){
-																		return !_.isEmpty(_.trim(c['list name']))
+																		return !_.isEmpty(_.trim(c['list name']));
 																	});
-	let choicesGrouped = _.groupBy(choicesWithoutEmpty,'list name')
+	let choicesGrouped = _.groupBy(choicesWithoutEmpty,'list name');
 	return choicesGrouped;
 };
 
@@ -64,6 +60,7 @@ export default class QuestionnaireList extends React.Component {
 		this.state = {
 				questionnaire_id:props.questionnaire_id,
 			 	slideIndex: 0
+
 		}
 		this.onChange = this.onChange.bind(this);
 		this.onDelete = this.onDelete.bind(this);
@@ -88,6 +85,7 @@ export default class QuestionnaireList extends React.Component {
 						reason: result.reason,
 						details: result.details
 		      });
+
 				}
 			});
 	}
@@ -146,16 +144,15 @@ export default class QuestionnaireList extends React.Component {
 
 	}
 
-
 	getListOfChoiceGroupViews(){
 		let choices = this.state.questionnaire.choices;
 		let choicesGrouped = transformChoices(choices);
 		let choiceGroupViews = [];
 		for (var key in choicesGrouped){
-			// console.log(choicesGrouped[key]);
 			choiceGroupViews.push(
 				<ChoiceGroup
 						choiceGroup={choicesGrouped[key]}
+						onChoiceRowSelection={this.onChoiceRowSelection}
 						/>
 			)
 		}
@@ -163,6 +160,7 @@ export default class QuestionnaireList extends React.Component {
 	}
 
 	render(){
+
 		if (!this.state.questionnaire){
 			return (
 				<div>
