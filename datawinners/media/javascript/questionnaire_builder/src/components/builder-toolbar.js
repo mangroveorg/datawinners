@@ -20,7 +20,7 @@ export default class BuilderToolbar extends React.Component {
   }
 
   underConstruction(){
-    alert('Under construction');
+    $("input[name=file]").click();
   }
 
   render() {

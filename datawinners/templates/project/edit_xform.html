@@ -16,26 +16,18 @@
 {% endblock %}
 
 {% block page_css %}
-  {% flag "questionnaire_builder"%}
-    <link href="/media/css/questionnaire_builder/dist/bundle.css" rel="stylesheet"/>
-  {% else %}
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
     <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet" />
+  {% flag "questionnaire_builder"%}
+    <link href="/media/css/questionnaire_builder/dist/bundle.css" rel="stylesheet"/>
   {% endflag %}
 
 {% endblock %}
 
 {% block page_js %}
-  {% flag "questionnaire_builder"%}
-    <script defer async type="text/javascript" src="/media/javascript/questionnaire_builder/dist/bundle.js" ></script>
-    <script type="text/javascript">
-      var project_id = "{{ project_id }}"
-    </script>
-
-  {% else %}
     {{ block.super }}
     <script type="text/javascript">
         var message_text = "";
@@ -46,6 +38,13 @@
     <script type="text/javascript" src="/media/javascript/accordion_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/project/upload_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/project/edit_project_index.js"></script>
+
+    <script type="text/javascript">
+          var project_id = "{{ project_id }}"
+    </script>
+{% flag "questionnaire_builder"%}
+<script defer async type="text/javascript" src="/media/javascript/questionnaire_builder/dist/bundle.js" ></script>
+
   {% endflag %}
 
 {% endblock %}
@@ -56,18 +55,10 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<div id="questionnaire_builder"></div>
 
-  <br /><br /><br /><br />
-	<div style="background-color:bisque">
-		<h5>This section will be removed, once Builder development is complete</h5>
-		<br/>
-    <div>
-        <noscript>
-            <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
-        </noscript>
-        <div id="file_uploader" class="button upload_xls"></div>
-        <button id="uploadXLS">{% trans "Upload New XLSForm" %}</button>
-        <a id="cancel-xlx-upload" class="none" href="javascript:void(0);">{% trans "Cancel Upload" %}</a>
-        <img class="upload_spinner none" src="/media/images/ajax-loader.gif">
+    <noscript>
+        <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+    </noscript>
+    <div id="file_uploader" class="button upload_xls"></div>
     </div>
     <div id="cancel_questionnaire_edit" style="display: none;">
         {% trans "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!" %}<br/><br/>
@@ -152,14 +143,14 @@
             <a id="save_changes" class="button yes_button">{% trans "Continue" %}</a>
         </div>
     </div>
-    <div style="display: none">
-        {% include "project/inform_datasender_of_excel_questionnaire_changes.html" %}
-    </div>
 
     <div id="survey" style="height: 200px;"></div>
     <div id="choices" style="height: 200px;"></div>
     <div id="cascades" style="height: 200px;"></div>
     <div id="other" style="height: 200px;"></div>
 {% endflag %}
+    <div style="display: none">
+        {% include "project/inform_datasender_of_excel_questionnaire_changes.html" %}
+    </div>
 
 {% endblock %}
