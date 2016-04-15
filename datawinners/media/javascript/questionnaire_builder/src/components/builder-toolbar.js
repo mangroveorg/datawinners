@@ -19,8 +19,12 @@ export default class BuilderToolbar extends React.Component {
     super(props);
   }
 
-  underConstruction(){
+  onUpload() {
     $("input[name=file]").click();
+  }
+
+  onDownload() {
+    $('#download_form').attr('action', '/xlsform/download/').submit();
   }
 
   render() {
@@ -28,11 +32,17 @@ export default class BuilderToolbar extends React.Component {
       <Toolbar>
         <ToolbarGroup float='left'>
           <RaisedButton label="Upload"
-                onMouseDown={this.underConstruction}
-                icon={<FontIcon className="material-icons" >backup</FontIcon>} />
+                onMouseDown={this.onUpload}
+                icon={<FontIcon className="material-icons" tooltip="upload questionnaire excel"
+                tooltipPosition="top-center" >file_upload</FontIcon>} />
+          <RaisedButton
+            label="Download"
+            onMouseDown={this.onDownload}
+            icon={<FontIcon className="material-icons" tooltip="download questionnaire excel"
+            tooltipPosition="top-center" >file_download</FontIcon>} />
         </ToolbarGroup>
         <ToolbarGroup float="right">
-          <RaisedButton label="Save Draft" onMouseDown={this.underConstruction}/>
+          <RaisedButton label="Save Draft" onMouseDown={this.onDownload}/>
           <ToolbarSeparator />
           <RaisedButton label="Save" primary={true} onMouseDown={this.props.onSave} />
         </ToolbarGroup>

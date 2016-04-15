@@ -72,6 +72,11 @@
         </div>
     </div>
 	</div>
+    <form id="download_form" method="POST">
+        {% csrf_token %}
+        <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+        <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
+    </form>
 {% else %} <!-- if builder is not enabled, default flow -->
     <div>
         <div class="grid_8 alpha">
