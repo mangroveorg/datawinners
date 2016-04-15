@@ -201,6 +201,9 @@ DW.DuplicatesForFilter = function(postFilterSelectionCallBack) {
 
     self.init = function() {
         $("#duplicates_for").change(postFilterSelectionCallBack);
+        $("#duplicates_for").on('change', function(){
+            DW.trackEvent('submissions', 'searched-by-duplicates-for', $("#duplicates_for option:selected").val());
+        });
     };
 }
 
