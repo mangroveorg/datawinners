@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 
-from mangrove.form_model.field import FieldSet
+from mangrove.form_model.field import FieldSet, SelectField
 from mangrove.form_model.xform import get_node, add_node
 
 from datawinners.blue.rules.rule import Rule
@@ -37,6 +37,11 @@ class AddRule(Rule):
             else:
                 self.add(old_parent_node, new_node, new_xform.bind_node(new_node), new_xform.instance_node(new_node),
                          old_xform)
+                if isinstance(new_field, SelectField) and new_field.is_cascade:
+                    for translation_node in new_xform.get_translation_nodes(new_node):
+                        old_xform.add_translation_node(translation_node)
+                    old_xform.add_cascade_instance_node(new_xform.get_cascade_instance_node(new_node))
+
                 activity_log_detail["added"] = [new_field.label] if activity_log_detail.get("added") is None \
                     else activity_log_detail.get("added") + [new_field.label]
 

@@ -233,6 +233,58 @@ class TestEditRule(unittest.TestCase):
         remove_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
+    def test_should_update_xform_with_remove_cascade_field_change(self):
+        remove_rule = RemoveRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_cascade_questionnaire(cascades={
+            "respondent_district_counties": {
+                "id": "counties",
+                "options": [
+                    {"text": "Bomi", "val": "bomi"},
+                    {"text": "Bong", "val": "bong"}
+                ]
+            },
+            "respondent_districts": {
+                "id": "districts",
+                "parent": "respondent_district_counties",
+                "options": [
+                    {"text": "Klay", "val": "klay", "counties": "bomi"},
+                    {"text": "Klay 2", "val": "klay_2", "counties": "bong"}
+                ]
+            }
+        })
+        new_questionnaire = self._get_questionnaire_with_field_removed(field_type="cascade")
+
+        remove_rule.update_xform(old_questionnaire, new_questionnaire, {})
+        self.assertEqual(ET.tostring(ET.fromstring(old_questionnaire.xform)), ET.tostring(ET.fromstring(new_questionnaire.xform)))
+
+    def test_should_update_xform_with_add_cascade_field_change(self):
+        remove_rule = AddRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire_with_field_removed(field_type="cascade")
+        new_questionnaire = self._get_cascade_questionnaire(cascades={
+            "respondent_district_counties": {
+                "id": "counties",
+                "options": [
+                    {"text": "Bomi", "val": "bomi"},
+                    {"text": "Bong", "val": "bong"}
+                ]
+            },
+            "respondent_districts": {
+                "id": "districts",
+                "parent": "respondent_district_counties",
+                "options": [
+                    {"text": "Klay", "val": "klay", "counties": "bomi"},
+                    {"text": "Klay 2", "val": "klay_2", "counties": "bong"}
+                ]
+            }
+        })
+
+        remove_rule.update_xform(old_questionnaire, new_questionnaire, {})
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
     def test_should_update_xform_with_add_field_change(self):
         add_rule = AddRule()
         self.maxDiff = None
@@ -348,10 +400,10 @@ class TestEditRule(unittest.TestCase):
         return questionnaire
 
     def _get_questionnaire_with_field_removed(self, group_label="Enter the outer group details",
-                                              group_name="group_outer"):
+                                              group_name="group_outer", field_type=None):
         repeat = FieldSet(code="repeat_outer", name="repeat_outer", label="Enter the details you wanna repeat", field_set=[])
         doc = ProjectDocument()
-        doc.xform = self._build_xform(group_label=group_label)
+        doc.xform = self._build_xform(group_label=group_label, field_type=field_type)
         questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
         questionnaire.name = "q1"
         questionnaire.form_code = "007"
@@ -361,8 +413,9 @@ class TestEditRule(unittest.TestCase):
         return questionnaire
 
     def _build_xform(self, group_label=None, fields=None, field_type=None, cascades=None):
-        field_attrs = {"group_label": "" if group_label is None else group_label,
-                       "instance_node_0": "", "bind_node_0": "", "node_0": "", "translation": ""}
+        field_attrs = {"group_label": "" if group_label is None else group_label, "translation": "",
+                       "instance_node_0": "", "bind_node_0": "", "node_0": "", "cascade_instance_node_0": "",
+                       "instance_node_1": "", "bind_node_1": "", "node_1": "", "cascade_instance_node_1": "",}
         if fields:
             for index, field in enumerate(fields):
                 field_attrs["instance_node_%s" % index] = self._build_instance_node(field)

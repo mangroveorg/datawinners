@@ -17,6 +17,7 @@ from pages.loginpage.login_page import login, Page
 from pages.projectdatasenderspage.project_data_senders_page import ProjectDataSendersPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.submissionlogpage.submission_log_page import LAST_MONTH, ALL_PERIODS
+from pages.warningdialog.submission_modified_dialog import SubmissionModifiedDialog
 from tests.activateaccounttests.activate_account_data import NEW_PASSWORD
 from tests.advancedquestionnairetests.advanced_questionnaire_test_helper import perform_submission, navigate_and_verify_web_submission_page_is_loaded, verify_advanced_web_submission_page_is_loaded, \
     navigate_and_verify_advanced_web_submission_page_is_loaded
@@ -391,8 +392,16 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire_add_qn.xls', edit_flag=True)
         project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
         self.assertEquals(12, web_submission_page.question_count())
+        self.assertTrue(web_submission_page.has_choice(9, "Tamilnadu"))
+        web_submission_page.select_choice(9, 0)
+        self.assertTrue(web_submission_page.has_choice(10, "Chennai"))
+        self.global_navigation_page.navigate_to_all_data_page()
+        SubmissionModifiedDialog(self.driver).ignore_changes()
 
         self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
         self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire.xls', edit_flag=True)
         project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
         self.assertEquals(11, web_submission_page.question_count())
+        self.assertTrue(web_submission_page.has_choice(9, "Bomi"))
+        web_submission_page.select_choice(9, 0)
+        self.assertTrue(web_submission_page.has_choice(10, "Klay"))
