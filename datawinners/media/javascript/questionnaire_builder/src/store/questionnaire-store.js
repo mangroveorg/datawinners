@@ -26,13 +26,11 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	getChoicesGrouped: function() {
-		let choices = this.questionnaire.choices;
-		for (var index in choices){
-			let choice = choices[index];
-			choice.base_index = index;
+		for (var index in this.questionnaire.choices){
+			this.questionnaire.choices[index]['base_index'] = index;
 		}
 		let choicesWithoutEmpty = _.filter(
-																		choices,
+																		this.questionnaire.choices,
 																		function(c){
 																			return !_.isEmpty(_.trim(c['list name']));
 																		});
@@ -43,6 +41,18 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	questionFields: function () {
 		return Object.keys(this.questionnaire.survey[0]);
+	},
+
+	choiceFields: function() {
+		if (this.questionnaire.choices && this.questionnaire.choices[0]){
+			return Object.keys(this.questionnaire.choices[0]);
+		}else{
+			return {
+				'list name':'',
+				'name':'',
+				'label':''
+			};
+		}
 	},
 
 	findQuestionIndex: function (question) {
@@ -75,6 +85,14 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	updateChoice: function(choice) {
 		this.questionnaire.choices[this.findChoiceIndex(choice)] = choice;
+	},
+
+	deleteChoice: function(base_index){
+		this.questionnaire.choices.splice(base_index, 1);
+	},
+
+	createChoice: function(choice){
+		this.questionnaire.choices.push(choice);
 	}
 
 });
@@ -87,6 +105,7 @@ AppDispatcher.register(function (action) {
 		case AppConstants.ActionTypes.DELETE_QUESTION:
 		case AppConstants.ActionTypes.CREATE_CHOICE:
 		case AppConstants.ActionTypes.UPDATE_CHOICE:
+		case AppConstants.ActionTypes.DELETE_CHOICE:
 			QuestionnaireStore.emitChange();
 			break;
 		default:

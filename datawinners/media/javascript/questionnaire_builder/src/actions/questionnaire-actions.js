@@ -51,23 +51,31 @@ var QuestionnaireActions = {
 			});
 		},
 
-		createChoice: function(questionnaire){
-			if (!questionnaire.choices){
-				questionnaire.choices = [];
-			}
-			questionnaire.choices.push({"list name":'',name:'',label:''});
-
-			AppDispatcher.dispatch({
-				actionType: AppConstants.ActionTypes.CREATE_CHOICE,
-				questionnaire: questionnaire
-			});
-
-		},
-
 		updateChoice: function(choice) {
 			QuestionnaireStore.updateChoice(choice);
 			AppDispatcher.dispatch({
 				actionType: AppConstants.ActionTypes.UPDATE_CHOICE
+			});
+		},
+
+		deleteChoice: function(base_index) {
+			QuestionnaireStore.deleteChoice(base_index);
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.DELETE_CHOICE
+			});
+		},
+
+		createChoice: function(choiceGroupName, added_field, value) {
+			let choice = {};
+			for (let required_field in QuestionnaireStore.choiceFields){
+				choice[required_field] = '';
+			}
+			choice[added_field]=value;
+			choice['list name'] = choiceGroupName;
+
+			QuestionnaireStore.createChoice(choice);
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.CREATE_CHOICE
 			});
 		}
 

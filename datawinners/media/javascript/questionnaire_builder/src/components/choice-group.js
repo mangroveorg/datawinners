@@ -11,7 +11,10 @@ import TableRow from 'material-ui/lib/table/table-row';
 import TableHeader from 'material-ui/lib/table/table-header';
 import TableRowColumn from 'material-ui/lib/table/table-row-column';
 import TableBody from 'material-ui/lib/table/table-body';
+import FontIcon from 'material-ui/lib/font-icon';
+import FlatButton from 'material-ui/lib/flat-button';
 import _ from 'lodash';
+
 
 const styles = {
   choice_row: {
@@ -34,7 +37,7 @@ const styles = {
     borderBottomStyle: "none",
     borderWidth: "0px"
   },
-  table_th:{
+  table_th: {
     fontWeight: 'bold',
     padding: '0px',
     borderBottomWidth:'0px',
@@ -66,22 +69,33 @@ export default class ChoiceGroup extends React.Component {
     super(props);
     this.errors = {};
     this.onChange = this.onChange.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   onChange(event) {
-    //TODO - this needs refactoring..
 		let field = event.target.name;
 		let value = event.target.value;
     let base_index = _.replace(event.target.id,BUILDER_CHOICE_ID_PREFIX,'');
     let index = _.findIndex(this.props.choiceGroup, {base_index: base_index});
-    let choice = this.props.choiceGroup[index];
-    choice[field] = value;
-    this.props.onChangeForChoice(choice);
+    if (index >= 0) {
+      let choice = this.props.choiceGroup[index];
+      choice[field] = value;
+      this.props.onChangeForChoice(choice);
+    }else {
+      this.props.onCreateChoice(this.props.choiceGroupName, field, value);
+    }
 	}
 
+  onDelete(event){
+    let id = event.currentTarget.id;
+    let base_index = _.replace(id,BUILDER_CHOICE_ID_PREFIX,'');
+    this.props.onDeleteForChoice(base_index);
+  }
+
   getChoiceItems(){
-    return this.props.choiceGroup.map((choiceItem) => (
-      <TableRow style={styles.table_tr} selectable={false}>
+    let choiceItems = this.props.choiceGroup.map((choiceItem) => (
+      <TableRow style={styles.table_tr} selectable={false}
+                key={BUILDER_CHOICE_ID_PREFIX+choiceItem.base_index}>
         <TableRowColumn style={styles.table_td} displayBorder={false}  >
           <TextField
             name='name'
@@ -101,15 +115,52 @@ export default class ChoiceGroup extends React.Component {
           onChange={this.onChange}
         />
         </TableRowColumn>
+        <TableRowColumn style={styles.table_td} displayBorder={false}>
+          <FlatButton
+            id={'builder_choice_'+choiceItem.base_index}
+            label="Delete"
+            onMouseDown={this.onDelete}
+            icon={<FontIcon className="material-icons" >delete</FontIcon>}
+          />
+        </TableRowColumn>
       </TableRow>
     ));
+    choiceItems.push(
+      <TableRow style={styles.table_tr} selectable={false}
+            key={"new_choice_for_choice_group"+this.props.choiceGroupName}>
+        <TableRowColumn style={styles.table_td} displayBorder={false} >
+          <TextField
+            id={'new_choice'}
+            hintText='Name'
+            name='name'
+            style={styles.choiceTextField}
+            onChange={this.onChange}
+          />
+
+        </TableRowColumn>
+        <TableRowColumn style={styles.table_td} displayBorder={false}>
+        <TextField
+          id={'new_choice'}
+          hintText='Label'
+          name='label'
+          style={styles.choiceTextField}
+          onChange={this.onChange}
+        />
+        </TableRowColumn>
+        <TableRowColumn style={styles.table_td} displayBorder={false}>
+
+        </TableRowColumn>
+      </TableRow>
+
+    );
+    return choiceItems;
   }
 
   render(){
     return (
       <Card>
         <CardHeader
-          title={_.truncate(this.props.choiceGroup[0]['list name'])}
+          title={_.truncate(this.props.choiceGroupName)}
           actAsExpander={true}
           showExpandableButton={true}
           style={styles.choice_row}
@@ -120,7 +171,7 @@ export default class ChoiceGroup extends React.Component {
             errorText={this.errors['list name']}
             onChange={this.onChange}
             disabled={true}
-            value={this.props.choiceGroup[0]['list name']}
+            value={this.props.choiceGroupName}
             name="name"
             multiLine={true}
           />
@@ -134,6 +185,7 @@ export default class ChoiceGroup extends React.Component {
               <TableRow selectable={false} style={styles.table_tr}>
                 <TableHeaderColumn style={styles.table_td}>Name</TableHeaderColumn>
                 <TableHeaderColumn style={styles.table_td}>Label</TableHeaderColumn>
+                <TableHeaderColumn style={styles.table_td}></TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}>

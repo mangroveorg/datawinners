@@ -134,6 +134,7 @@ export default class QuestionnaireList extends React.Component {
 			if (FormFactory.getFormForQuestionType(questions[key].type)) {
 				questionViews.push(
 					<Question
+							key={'question_'+key}
 							question={questions[key]}
 							onChange={this.onChange}
 							onDelete={this.onDelete}
@@ -149,6 +150,14 @@ export default class QuestionnaireList extends React.Component {
 		QuestionnaireActions.updateChoice(choice);
 	}
 
+	onDeleteForChoice(base_index){
+		QuestionnaireActions.deleteChoice(base_index);
+	}
+
+	onCreateChoice(choiceGroupName, field, value){
+		QuestionnaireActions.createChoice(choiceGroupName, field, value);
+	}
+
 	getListOfChoiceGroupViews(){
 		// let choices = this.state.questionnaire.choices;
 		let choicesGrouped = QuestionnaireStore.getChoicesGrouped();
@@ -159,6 +168,10 @@ export default class QuestionnaireList extends React.Component {
 						choiceGroup={choicesGrouped[key]}
 						onChoiceRowSelection={this.onChoiceRowSelection}
 						onChangeForChoice={this.onChangeForChoice}
+						onDeleteForChoice={this.onDeleteForChoice}
+						onCreateChoice={this.onCreateChoice}
+						choiceGroupName={key}
+						key={'choice_group_'+key}
 						/>
 			)
 		}

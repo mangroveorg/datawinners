@@ -87,22 +87,31 @@ var QuestionnaireActions = {
 		});
 	},
 
-	createChoice: function createChoice(questionnaire) {
-		if (!questionnaire.choices) {
-			questionnaire.choices = [];
-		}
-		questionnaire.choices.push({ "list name": '', name: '', label: '' });
-
-		_appDispatcher2.default.dispatch({
-			actionType: _appConstants2.default.ActionTypes.CREATE_CHOICE,
-			questionnaire: questionnaire
-		});
-	},
-
 	updateChoice: function updateChoice(choice) {
 		_questionnaireStore2.default.updateChoice(choice);
 		_appDispatcher2.default.dispatch({
 			actionType: _appConstants2.default.ActionTypes.UPDATE_CHOICE
+		});
+	},
+
+	deleteChoice: function deleteChoice(base_index) {
+		_questionnaireStore2.default.deleteChoice(base_index);
+		_appDispatcher2.default.dispatch({
+			actionType: _appConstants2.default.ActionTypes.DELETE_CHOICE
+		});
+	},
+
+	createChoice: function createChoice(choiceGroupName, added_field, value) {
+		var choice = {};
+		for (var required_field in _questionnaireStore2.default.choiceFields) {
+			choice[required_field] = '';
+		}
+		choice[added_field] = value;
+		choice['list name'] = choiceGroupName;
+
+		_questionnaireStore2.default.createChoice(choice);
+		_appDispatcher2.default.dispatch({
+			actionType: _appConstants2.default.ActionTypes.CREATE_CHOICE
 		});
 	}
 
@@ -478,6 +487,14 @@ var _tableBody = require('material-ui/lib/table/table-body');
 
 var _tableBody2 = _interopRequireDefault(_tableBody);
 
+var _fontIcon = require('material-ui/lib/font-icon');
+
+var _fontIcon2 = _interopRequireDefault(_fontIcon);
+
+var _flatButton = require('material-ui/lib/flat-button');
+
+var _flatButton2 = _interopRequireDefault(_flatButton);
+
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -547,30 +564,42 @@ var ChoiceGroup = function (_React$Component) {
 
     _this.errors = {};
     _this.onChange = _this.onChange.bind(_this);
+    _this.onDelete = _this.onDelete.bind(_this);
     return _this;
   }
 
   _createClass(ChoiceGroup, [{
     key: 'onChange',
     value: function onChange(event) {
-      //TODO - this needs refactoring..
       var field = event.target.name;
       var value = event.target.value;
       var base_index = _lodash2.default.replace(event.target.id, BUILDER_CHOICE_ID_PREFIX, '');
       var index = _lodash2.default.findIndex(this.props.choiceGroup, { base_index: base_index });
-      var choice = this.props.choiceGroup[index];
-      choice[field] = value;
-      this.props.onChangeForChoice(choice);
+      if (index >= 0) {
+        var choice = this.props.choiceGroup[index];
+        choice[field] = value;
+        this.props.onChangeForChoice(choice);
+      } else {
+        this.props.onCreateChoice(this.props.choiceGroupName, field, value);
+      }
+    }
+  }, {
+    key: 'onDelete',
+    value: function onDelete(event) {
+      var id = event.currentTarget.id;
+      var base_index = _lodash2.default.replace(id, BUILDER_CHOICE_ID_PREFIX, '');
+      this.props.onDeleteForChoice(base_index);
     }
   }, {
     key: 'getChoiceItems',
     value: function getChoiceItems() {
       var _this2 = this;
 
-      return this.props.choiceGroup.map(function (choiceItem) {
+      var choiceItems = this.props.choiceGroup.map(function (choiceItem) {
         return _react2.default.createElement(
           _tableRow2.default,
-          { style: styles.table_tr, selectable: false },
+          { style: styles.table_tr, selectable: false,
+            key: BUILDER_CHOICE_ID_PREFIX + choiceItem.base_index },
           _react2.default.createElement(
             _tableRowColumn2.default,
             { style: styles.table_td, displayBorder: false },
@@ -592,9 +621,52 @@ var ChoiceGroup = function (_React$Component) {
               style: styles.choiceTextField,
               onChange: _this2.onChange
             })
+          ),
+          _react2.default.createElement(
+            _tableRowColumn2.default,
+            { style: styles.table_td, displayBorder: false },
+            _react2.default.createElement(_flatButton2.default, {
+              id: 'builder_choice_' + choiceItem.base_index,
+              label: 'Delete',
+              onMouseDown: _this2.onDelete,
+              icon: _react2.default.createElement(
+                _fontIcon2.default,
+                { className: 'material-icons' },
+                'delete'
+              )
+            })
           )
         );
       });
+      choiceItems.push(_react2.default.createElement(
+        _tableRow2.default,
+        { style: styles.table_tr, selectable: false,
+          key: "new_choice_for_choice_group" + this.props.choiceGroupName },
+        _react2.default.createElement(
+          _tableRowColumn2.default,
+          { style: styles.table_td, displayBorder: false },
+          _react2.default.createElement(_textField2.default, {
+            id: 'new_choice',
+            hintText: 'Name',
+            name: 'name',
+            style: styles.choiceTextField,
+            onChange: this.onChange
+          })
+        ),
+        _react2.default.createElement(
+          _tableRowColumn2.default,
+          { style: styles.table_td, displayBorder: false },
+          _react2.default.createElement(_textField2.default, {
+            id: 'new_choice',
+            hintText: 'Label',
+            name: 'label',
+            style: styles.choiceTextField,
+            onChange: this.onChange
+          })
+        ),
+        _react2.default.createElement(_tableRowColumn2.default, { style: styles.table_td, displayBorder: false })
+      ));
+      return choiceItems;
     }
   }, {
     key: 'render',
@@ -603,7 +675,7 @@ var ChoiceGroup = function (_React$Component) {
         _card2.default,
         null,
         _react2.default.createElement(_cardHeader2.default, {
-          title: _lodash2.default.truncate(this.props.choiceGroup[0]['list name']),
+          title: _lodash2.default.truncate(this.props.choiceGroupName),
           actAsExpander: true,
           showExpandableButton: true,
           style: styles.choice_row
@@ -616,7 +688,7 @@ var ChoiceGroup = function (_React$Component) {
             errorText: this.errors['list name'],
             onChange: this.onChange,
             disabled: true,
-            value: this.props.choiceGroup[0]['list name'],
+            value: this.props.choiceGroupName,
             name: 'name',
             multiLine: true
           }),
@@ -644,7 +716,8 @@ var ChoiceGroup = function (_React$Component) {
                   _tableHeaderColumn2.default,
                   { style: styles.table_td },
                   'Label'
-                )
+                ),
+                _react2.default.createElement(_tableHeaderColumn2.default, { style: styles.table_td })
               )
             ),
             _react2.default.createElement(
@@ -663,7 +736,7 @@ var ChoiceGroup = function (_React$Component) {
 
 exports.default = ChoiceGroup;
 
-},{"./choice-item":5,"lodash":366,"material-ui/lib/card/card":386,"material-ui/lib/card/card-header":384,"material-ui/lib/card/card-text":385,"material-ui/lib/table/table":443,"material-ui/lib/table/table-body":438,"material-ui/lib/table/table-header":440,"material-ui/lib/table/table-header-column":439,"material-ui/lib/table/table-row":442,"material-ui/lib/table/table-row-column":441,"material-ui/lib/text-field":447,"react":615}],5:[function(require,module,exports){
+},{"./choice-item":5,"lodash":366,"material-ui/lib/card/card":386,"material-ui/lib/card/card-header":384,"material-ui/lib/card/card-text":385,"material-ui/lib/flat-button":392,"material-ui/lib/font-icon":394,"material-ui/lib/table/table":443,"material-ui/lib/table/table-body":438,"material-ui/lib/table/table-header":440,"material-ui/lib/table/table-header-column":439,"material-ui/lib/table/table-row":442,"material-ui/lib/table/table-row-column":441,"material-ui/lib/text-field":447,"react":615}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1210,6 +1283,7 @@ var QuestionnaireList = function (_React$Component) {
 			for (var key in questions) {
 				if (_formFactory2.default.getFormForQuestionType(questions[key].type)) {
 					questionViews.push(_react2.default.createElement(_question2.default, {
+						key: 'question_' + key,
 						question: questions[key],
 						onChange: this.onChange,
 						onDelete: this.onDelete
@@ -1224,6 +1298,16 @@ var QuestionnaireList = function (_React$Component) {
 			_questionnaireActions2.default.updateChoice(choice);
 		}
 	}, {
+		key: 'onDeleteForChoice',
+		value: function onDeleteForChoice(base_index) {
+			_questionnaireActions2.default.deleteChoice(base_index);
+		}
+	}, {
+		key: 'onCreateChoice',
+		value: function onCreateChoice(choiceGroupName, field, value) {
+			_questionnaireActions2.default.createChoice(choiceGroupName, field, value);
+		}
+	}, {
 		key: 'getListOfChoiceGroupViews',
 		value: function getListOfChoiceGroupViews() {
 			// let choices = this.state.questionnaire.choices;
@@ -1233,7 +1317,11 @@ var QuestionnaireList = function (_React$Component) {
 				choiceGroupViews.push(_react2.default.createElement(_choiceGroup2.default, {
 					choiceGroup: choicesGrouped[key],
 					onChoiceRowSelection: this.onChoiceRowSelection,
-					onChangeForChoice: this.onChangeForChoice
+					onChangeForChoice: this.onChangeForChoice,
+					onDeleteForChoice: this.onDeleteForChoice,
+					onCreateChoice: this.onCreateChoice,
+					choiceGroupName: key,
+					key: 'choice_group_' + key
 				}));
 			}
 			return choiceGroupViews;
@@ -1560,12 +1648,10 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	getChoicesGrouped: function getChoicesGrouped() {
-		var choices = this.questionnaire.choices;
-		for (var index in choices) {
-			var choice = choices[index];
-			choice.base_index = index;
+		for (var index in this.questionnaire.choices) {
+			this.questionnaire.choices[index]['base_index'] = index;
 		}
-		var choicesWithoutEmpty = _lodash2.default.filter(choices, function (c) {
+		var choicesWithoutEmpty = _lodash2.default.filter(this.questionnaire.choices, function (c) {
 			return !_lodash2.default.isEmpty(_lodash2.default.trim(c['list name']));
 		});
 		var choicesGrouped = _lodash2.default.groupBy(choicesWithoutEmpty, 'list name');
@@ -1575,6 +1661,18 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	questionFields: function questionFields() {
 		return Object.keys(this.questionnaire.survey[0]);
+	},
+
+	choiceFields: function choiceFields() {
+		if (this.questionnaire.choices && this.questionnaire.choices[0]) {
+			return Object.keys(this.questionnaire.choices[0]);
+		} else {
+			return {
+				'list name': '',
+				'name': '',
+				'label': ''
+			};
+		}
 	},
 
 	findQuestionIndex: function findQuestionIndex(question) {
@@ -1607,6 +1705,14 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	updateChoice: function updateChoice(choice) {
 		this.questionnaire.choices[this.findChoiceIndex(choice)] = choice;
+	},
+
+	deleteChoice: function deleteChoice(base_index) {
+		this.questionnaire.choices.splice(base_index, 1);
+	},
+
+	createChoice: function createChoice(choice) {
+		this.questionnaire.choices.push(choice);
 	}
 
 });
@@ -1619,6 +1725,7 @@ _appDispatcher2.default.register(function (action) {
 		case _appConstants2.default.ActionTypes.DELETE_QUESTION:
 		case _appConstants2.default.ActionTypes.CREATE_CHOICE:
 		case _appConstants2.default.ActionTypes.UPDATE_CHOICE:
+		case _appConstants2.default.ActionTypes.DELETE_CHOICE:
 			QuestionnaireStore.emitChange();
 			break;
 		default:
