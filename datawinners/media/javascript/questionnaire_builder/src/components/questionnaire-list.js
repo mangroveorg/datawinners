@@ -44,15 +44,15 @@ const style = {
 };
 
 //TODO: could move this transform to QuestionnaireStore
-var transformChoices = function(choices){
-	let choicesWithoutEmpty = _.filter(
-																	choices,
-																	function(c){
-																		return !_.isEmpty(_.trim(c['list name']));
-																	});
-	let choicesGrouped = _.groupBy(choicesWithoutEmpty,'list name');
-	return choicesGrouped;
-};
+// var transformChoices = function(choices){
+// 	let choicesWithoutEmpty = _.filter(
+// 																	choices,
+// 																	function(c){
+// 																		return !_.isEmpty(_.trim(c['list name']));
+// 																	});
+// 	let choicesGrouped = _.groupBy(choicesWithoutEmpty,'list name');
+// 	return choicesGrouped;
+// };
 
 export default class QuestionnaireList extends React.Component {
 	constructor(props){
@@ -75,6 +75,7 @@ export default class QuestionnaireList extends React.Component {
 		var self = this;
 		this.serverRequest = $.ajax({
 				url: url,
+				data: {reload:reload},
 				dataType: 'json',
 				success: function (result) {
 					QuestionnaireStore.load(result.questionnaire);
@@ -144,15 +145,20 @@ export default class QuestionnaireList extends React.Component {
 
 	}
 
+	onChangeForChoice(choice) {
+		QuestionnaireActions.updateChoice(choice);
+	}
+
 	getListOfChoiceGroupViews(){
-		let choices = this.state.questionnaire.choices;
-		let choicesGrouped = transformChoices(choices);
+		// let choices = this.state.questionnaire.choices;
+		let choicesGrouped = QuestionnaireStore.getChoicesGrouped();
 		let choiceGroupViews = [];
 		for (var key in choicesGrouped){
 			choiceGroupViews.push(
 				<ChoiceGroup
 						choiceGroup={choicesGrouped[key]}
 						onChoiceRowSelection={this.onChoiceRowSelection}
+						onChangeForChoice={this.onChangeForChoice}
 						/>
 			)
 		}

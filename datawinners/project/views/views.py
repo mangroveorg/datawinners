@@ -446,6 +446,8 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
 def questionnaire(request, project_id):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
+        #TODO: on questionnaire edit page, this is loading twice, unnecessary. Need to investigate
+        #First as normal request, Second time as ajax request
         questionnaire = Project.get(manager, project_id)
         if questionnaire.is_poll:
          return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
@@ -479,6 +481,7 @@ def questionnaire(request, project_id):
                                    'file_extension':file_extension,
                                    'entity_types_with_no_registered_entities': entity_types_with_no_registered_entities,
                                    'post_url': reverse(edit_project, args=[project_id]),
+                                   'reload': request.GET.get('reload',False),
                                    'preview_links': get_preview_and_instruction_links()},
                                   context_instance=RequestContext(request))
 

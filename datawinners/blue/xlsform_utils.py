@@ -1,14 +1,13 @@
 import os
 import pyexcel as pe
-#Following imports are needed for loading excel. Please don't remove them
-from pyexcel.ext import xlsx
-from pyexcel.ext import xls
+
+from pyexcel.ext import xlsx #This import is needed for loading excel. Please don't remove them
+from pyexcel.ext import xls #This import is needed for loading excel. Please don't remove them
 from collections import OrderedDict
-from pyexcel.sources.memory import RecrodsSource
-from pyexcel.utils import yield_from_records
 
 XLSFORM_PREDEFINED_COLUMN_NAMES={
-                                 "survey": ['type','name','label','calculation','hint','required','appearance','constraint','relevant']
+                                 "survey": ['type','name','label','calculation','hint','required','appearance','constraint','relevant'],
+                                 "choices": ['list name', 'name', 'label']
                                  }
 def convert_excel_to_dict(file_name=None, file_content=None, file_type='xlsx'):
     book = pe.get_book(file_name=file_name, file_content=file_content, file_type=file_type)

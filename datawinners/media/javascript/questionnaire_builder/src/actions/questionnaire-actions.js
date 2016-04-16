@@ -62,6 +62,13 @@ var QuestionnaireActions = {
 				questionnaire: questionnaire
 			});
 
+		},
+
+		updateChoice: function(choice) {
+			QuestionnaireStore.updateChoice(choice);
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.UPDATE_CHOICE
+			});
 		}
 
 };

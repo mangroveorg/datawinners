@@ -3,6 +3,7 @@ import {EventEmitter} from 'events';
 const CHANGE_EVENT = 'change';
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
+import _ from 'lodash';
 
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	questionnaire: {},
@@ -24,6 +25,22 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		return this.questionnaire;
 	},
 
+	getChoicesGrouped: function() {
+		let choices = this.questionnaire.choices;
+		for (var index in choices){
+			let choice = choices[index];
+			choice.base_index = index;
+		}
+		let choicesWithoutEmpty = _.filter(
+																		choices,
+																		function(c){
+																			return !_.isEmpty(_.trim(c['list name']));
+																		});
+		let choicesGrouped = _.groupBy(choicesWithoutEmpty,'list name');
+
+		return choicesGrouped;
+	},
+
 	questionFields: function () {
 		return Object.keys(this.questionnaire.survey[0]);
 	},
@@ -34,6 +51,10 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	    index = _.findIndex(this.questionnaire.survey, {name: question.name});
 	  }
 	  return index;
+	},
+
+	findChoiceIndex: function(choice){
+		return _.findIndex(this.questionnaire.choices, {base_index: choice.base_index});
 	},
 
 	load: function (questionnaire) {
@@ -50,6 +71,10 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	delete: function (question) {
 		this.questionnaire.survey.splice(this.findQuestionIndex(question), 1);
+	},
+
+	updateChoice: function(choice) {
+		this.questionnaire.choices[this.findChoiceIndex(choice)] = choice;
 	}
 
 });
@@ -61,6 +86,7 @@ AppDispatcher.register(function (action) {
 		case AppConstants.ActionTypes.CREATE_QUESTION:
 		case AppConstants.ActionTypes.DELETE_QUESTION:
 		case AppConstants.ActionTypes.CREATE_CHOICE:
+		case AppConstants.ActionTypes.UPDATE_CHOICE:
 			QuestionnaireStore.emitChange();
 			break;
 		default:

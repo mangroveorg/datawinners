@@ -126,8 +126,10 @@ class ProjectBuilder(View):
     def get(self, request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
+        excel_as_dict = None
         try:
-            excel_as_dict = self._get_pre_computed_questionnaire_as_dict(questionnaire)
+            if not request.GET.get("reload", False): #Switch to handle unexpected failures
+                excel_as_dict = self._get_pre_computed_questionnaire_as_dict(questionnaire)
             raw_excel, file_type = questionnaire.has_attachment()[1:]
             if excel_as_dict is None:
                 excel_as_dict = convert_excel_to_dict(file_content=raw_excel, file_type=file_type)

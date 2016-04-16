@@ -6,7 +6,8 @@ module.exports = {
 		CREATE_QUESTION: 'CREATE_QUESTION',
 		UPDATE_QUESTION: 'UPDATE_QUESTION',
 		DELETE_QUESTION: 'DELETE_QUESTION',
-		CREATE_CHOICE: 'CREATE_CHOICE'
+		CREATE_CHOICE: 'CREATE_CHOICE',
+		UPDATE_CHOICE: 'UPDATE_CHOICE'
 	},
 	QuestionnaireUrl : '/xlsform/',
 	QuestionnaireSaveUrl : '/xlsform/',

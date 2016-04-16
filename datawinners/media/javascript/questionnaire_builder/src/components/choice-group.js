@@ -11,6 +11,7 @@ import TableRow from 'material-ui/lib/table/table-row';
 import TableHeader from 'material-ui/lib/table/table-header';
 import TableRowColumn from 'material-ui/lib/table/table-row-column';
 import TableBody from 'material-ui/lib/table/table-body';
+import _ from 'lodash';
 
 const styles = {
   choice_row: {
@@ -58,22 +59,24 @@ const styles = {
 
 };
 
+const BUILDER_CHOICE_ID_PREFIX = 'builder_choice_';
 
 export default class ChoiceGroup extends React.Component {
   constructor(props){
     super(props);
     this.errors = {};
-
+    this.onChange = this.onChange.bind(this);
   }
 
   onChange(event) {
     //TODO - this needs refactoring..
 		let field = event.target.name;
 		let value = event.target.value;
-    let choiceGroup = this.props.choiceGroup;
-    choiceGroup[field] = value;
-    // this.setState({choice: choice});
-    // this.props.onChange(choice);
+    let base_index = _.replace(event.target.id,BUILDER_CHOICE_ID_PREFIX,'');
+    let index = _.findIndex(this.props.choiceGroup, {base_index: base_index});
+    let choice = this.props.choiceGroup[index];
+    choice[field] = value;
+    this.props.onChangeForChoice(choice);
 	}
 
   getChoiceItems(){
@@ -82,16 +85,20 @@ export default class ChoiceGroup extends React.Component {
         <TableRowColumn style={styles.table_td} displayBorder={false}  >
           <TextField
             name='name'
+            id={BUILDER_CHOICE_ID_PREFIX+choiceItem.base_index}
             value={choiceItem.name}
             style={styles.choiceTextField}
+            onChange={this.onChange}
           />
 
         </TableRowColumn>
         <TableRowColumn style={styles.table_td} displayBorder={false}>
         <TextField
           name='label'
+          id={'builder_choice_'+choiceItem.base_index}
           value={choiceItem.label}
           style={styles.choiceTextField}
+          onChange={this.onChange}
         />
         </TableRowColumn>
       </TableRow>
