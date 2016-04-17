@@ -1,13 +1,13 @@
 import React from 'react';
 import QuestionActions from '../actions/questionnaire-actions';
 import Toastr from 'toastr';
-import Card from 'material-ui/lib/card/card';
-import CardHeader from 'material-ui/lib/card/card-header';
-import CardText from 'material-ui/lib/card/card-text';
+import Card from 'material-ui/Card/Card';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardText from 'material-ui/Card/CardText';
 import AppConstants from '../constants/app-constants';
 import FormFactory from './form-factory';
 import _ from 'lodash';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 
 const style = {
   question_row: {

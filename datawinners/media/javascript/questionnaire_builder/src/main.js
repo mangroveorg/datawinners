@@ -3,27 +3,19 @@ import ReactDom from 'react-dom';
 import "babel-polyfill";
 import QuestionnaireList from './components/questionnaire-list';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import darkBaseTheme from 'material-ui/lib/styles/baseThemes/darkBaseTheme';
-import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider';
-import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-// const darkMuiTheme = getMuiTheme(darkBaseTheme);
 // Needed for onTouchTap
 // Can go away when react 1.0 release
 // Check this repo:
 // https://github.com/zilverline/react-tap-event-plugin
 injectTapEventPlugin();
 
-const darkMuiTheme = getMuiTheme({
-  // palette: {
-  //   textColor: cyan500,
-  // },
-});
-
 class Main extends React.Component {
   render() {
     return (
-      <MuiThemeProvider muiTheme={darkMuiTheme}>
+      <MuiThemeProvider muiTheme={getMuiTheme()}>
         <QuestionnaireList questionnaire_id={project_id}/>
       </MuiThemeProvider>
     );

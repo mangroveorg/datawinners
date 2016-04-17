@@ -2,8 +2,8 @@
 
 import React from 'react';
 import BaseQuestions from './base-question-form';
-import SelectField from 'material-ui/lib/select-field';
-import MenuItem from 'material-ui/lib/menus/menu-item';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 export default class SelectQuestionForm extends React.Component {
     constructor(props){

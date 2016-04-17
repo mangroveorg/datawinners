@@ -1,14 +1,14 @@
 "use strict";
 import React  from 'react';
 import Select  from 'react-select';
-import TextField  from 'material-ui/lib/text-field';
-import Checkbox  from 'material-ui/lib/checkbox';
-import Toggle  from 'material-ui/lib/toggle';
-import SelectField from 'material-ui/lib/select-field';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import RaisedButton from 'material-ui/lib/raised-button';
-import FontIcon from 'material-ui/lib/font-icon';
-import IconButton from 'material-ui/lib/icon-button';
+import TextField from 'material-ui/TextField';
+import Checkbox from 'material-ui/Checkbox';
+import Toggle from 'material-ui/Toggle';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
 import QuestionnaireActions from '../actions/questionnaire-actions';
 
 const styles = {
