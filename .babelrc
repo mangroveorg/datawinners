@@ -1,3 +1,12 @@
 {
-	"presets" : ["es2015","react"]
+	"presets" : ["es2015","stage-1","react"],
+	"plugins": [
+			//this is for monitoring react render.
+			//Only during debugging
+	    /*["react-transform", {
+				"transforms": [{
+					"transform":"react-transform-render-visualizer"
+					}]
+			}]*/
+	  ]
 }

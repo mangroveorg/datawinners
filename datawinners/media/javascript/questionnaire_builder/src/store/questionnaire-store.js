@@ -26,6 +26,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	getChoicesGrouped: function() {
+		//TODO: Need not be computed everytime. Only on change of choices, this will change
 		for (var index in this.questionnaire.choices){
 			this.questionnaire.choices[index]['base_index'] = index;
 		}

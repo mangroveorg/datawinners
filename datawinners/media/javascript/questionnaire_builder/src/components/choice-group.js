@@ -3,7 +3,6 @@ import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
 import CardText from 'material-ui/lib/card/card-text';
 import TextField  from 'material-ui/lib/text-field';
-import ChoiceItem from './choice-item';
 
 import Table from 'material-ui/lib/table/table';
 import TableHeaderColumn from 'material-ui/lib/table/table-header-column';
@@ -81,7 +80,7 @@ export default class ChoiceGroup extends React.Component {
       let choice = this.props.choiceGroup[index];
       choice[field] = value;
       this.props.onChangeForChoice(choice);
-    }else {
+    } else {
       this.props.onCreateChoice(this.props.choiceGroupName, field, value);
     }
 	}

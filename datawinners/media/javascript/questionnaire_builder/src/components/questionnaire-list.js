@@ -2,7 +2,6 @@
 import React from 'react';
 import QuestionnaireStore from '../store/questionnaire-store';
 import AppConstants from '../constants/app-constants';
-import Question from './question';
 import Paper from 'material-ui/lib/paper';
 
 import IconButton from 'material-ui/lib/icon-button';
@@ -17,60 +16,29 @@ import Tabs from 'material-ui/lib/tabs/tabs';
 import Tab from 'material-ui/lib/tabs/tab';
 import FontIcon from 'material-ui/lib/font-icon';
 import FormFactory from './form-factory';
-import ChoiceGroup from './choice-group';
+import ChoicesTab from './choices-tab';
+import SurveyTab from './survey-tab';
+import _ from 'lodash';
 
 const style = {
-	addButtonContainer: {
-		position: 'relative',
-    bottom: '22px',
-    right: '20px',
-    float: 'right'
-	},
-	saveButton: {
-		backgroundColor: 'red'
-	},
 	tabs: {
 		backgroundColor: '#329CDC'
-	},
-	headline: {
-	    fontSize: 24,
-	    paddingTop: 16,
-	    marginBottom: 12,
-	    fontWeight: 400,
-	  },
-  slide: {
-    padding: 10
-  },
+	}
 };
-
-//TODO: could move this transform to QuestionnaireStore
-// var transformChoices = function(choices){
-// 	let choicesWithoutEmpty = _.filter(
-// 																	choices,
-// 																	function(c){
-// 																		return !_.isEmpty(_.trim(c['list name']));
-// 																	});
-// 	let choicesGrouped = _.groupBy(choicesWithoutEmpty,'list name');
-// 	return choicesGrouped;
-// };
 
 export default class QuestionnaireList extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 				questionnaire_id:props.questionnaire_id,
-			 	slideIndex: 0
+			 	currentTab: 'survey'
 
 		}
-		this.onChange = this.onChange.bind(this);
-		this.onDelete = this.onDelete.bind(this);
-		this.saveQuestionnaire = this.saveQuestionnaire.bind(this);
-		this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
-		this.handleChoiceAddButtonClick = this.handleChoiceAddButtonClick.bind(this);
 		this._onChange = this._onChange.bind(this);
 	}
 
 	componentDidMount(){
+		//TODO: this should happen through action
 		let url = AppConstants.QuestionnaireUrl + this.state.questionnaire_id + '/';
 		var self = this;
 		this.serverRequest = $.ajax({
@@ -99,83 +67,22 @@ export default class QuestionnaireList extends React.Component {
 		this.serverRequest.abort();
 	}
 
-	handleAddButtonClick() {
-		QuestionnaireActions.createQuestion();
-  }
-
-	handleChoiceAddButtonClick(){
-		QuestionnaireActions.createChoice(this.state.questionnaire);
+	onTabChange = (value) => {
+		let validTabs = ['survey','choices','cascades'];
+		if (_.includes(validTabs, value)){
+			this.setState({currentTab: value});
+		}
 	}
 
 	_onChange(){
 		this.setState({questionnaire:QuestionnaireStore.getQuestionnaire()});
 	}
 
-	saveQuestionnaire(event) {
+	saveQuestionnaire = (event) => {
 		event.preventDefault();
 
 		let status = QuestionnaireActions.saveQuestionnaire(
 											this.state.questionnaire_id,this.state.questionnaire, this.state.file_type);
-	}
-
-	onChange(question) {
-		QuestionnaireActions.updateQuestion(question);
-	}
-
-	onDelete(question) {
-		QuestionnaireActions.deleteQuestion(question);
-	}
-
-	getListOfQuestionViews(){
-		var questions = this.state.questionnaire.survey;
-    var questionViews = [];
-
-    for (var key in questions) {
-			if (FormFactory.getFormForQuestionType(questions[key].type)) {
-				questionViews.push(
-					<Question
-							key={'question_'+key}
-							question={questions[key]}
-							onChange={this.onChange}
-							onDelete={this.onDelete}
-							/>
-				);
-			}
-    }
-		return questionViews;
-
-	}
-
-	onChangeForChoice(choice) {
-		QuestionnaireActions.updateChoice(choice);
-	}
-
-	onDeleteForChoice(base_index){
-		QuestionnaireActions.deleteChoice(base_index);
-	}
-
-	onCreateChoice(choiceGroupName, field, value){
-		QuestionnaireActions.createChoice(choiceGroupName, field, value);
-	}
-
-	getListOfChoiceGroupViews(){
-		// let choices = this.state.questionnaire.choices;
-		let choicesGrouped = QuestionnaireStore.getChoicesGrouped();
-		let choiceGroupViews = [];
-		for (var key in choicesGrouped){
-			choiceGroupViews.push(
-				<ChoiceGroup
-						choiceGroup={choicesGrouped[key]}
-						onChoiceRowSelection={this.onChoiceRowSelection}
-						onChangeForChoice={this.onChangeForChoice}
-						onDeleteForChoice={this.onDeleteForChoice}
-						onCreateChoice={this.onCreateChoice}
-						choiceGroupName={key}
-						key={'choice_group_'+key}
-						/>
-			)
-		}
-		return choiceGroupViews;
 	}
 
 	render(){
@@ -193,33 +100,29 @@ export default class QuestionnaireList extends React.Component {
 		return (
 			<div>
       <Paper zDepth={3} >
-				<BuilderToolbar onSave={this.saveQuestionnaire}/>
-					<Tabs tabItemContainerStyle={style.tabs}>
+				<BuilderToolbar key='builder_toolbar' onSave={this.saveQuestionnaire}/>
+					<Tabs tabItemContainerStyle={style.tabs}
+								value={this.state.currentTab}
+        				onChange={this.onTabChange}>
 				    <Tab
 				      icon={<FontIcon className="material-icons">assignment</FontIcon>}
-				      label="Survey" value={0}
+				      label="Survey" value='survey'
+							key='survey'
 				    >
-							{this.getListOfQuestionViews()}
-							<div style={style.addButtonContainer}>
-		            <FloatingActionButton onMouseDown={this.handleAddButtonClick}>
-		              <ContentAdd />
-		            </FloatingActionButton>
-		          </div>
+							<SurveyTab currentTab={this.state.currentTab}
+												survey={this.state.questionnaire.survey}/>
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">assignment_turned_in</FontIcon>}
-				      label="Choices" value={1}
+				      label="Choices" value='choices'
+							key='choices'
 				    >
-							{this.getListOfChoiceGroupViews()}
-							<div style={style.addButtonContainer}>
-		            <FloatingActionButton onMouseDown={this.handleChoiceAddButtonClick}>
-		              <ContentAdd />
-		            </FloatingActionButton>
-		          </div>
+							<ChoicesTab currentTab={this.state.currentTab} />
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">low_priority</FontIcon>}
-				      label="Cascades" value={2}
+				      label="Cascades" value='cascades'
+							key='cascades'
 				    >
 							<h3>Cascades gets listed here</h3>
 						</Tab>
