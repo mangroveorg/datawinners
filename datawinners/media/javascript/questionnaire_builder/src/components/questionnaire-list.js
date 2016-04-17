@@ -50,6 +50,7 @@ export default class QuestionnaireList extends React.Component {
 
 		      self.setState({
 		        questionnaire: result.questionnaire,
+						choicesGrouped: QuestionnaireStore.getChoicesGrouped(),
 						file_type: result.file_type,
 						reason: result.reason,
 						details: result.details
@@ -75,12 +76,15 @@ export default class QuestionnaireList extends React.Component {
 	}
 
 	_onChange(){
-		this.setState({questionnaire:QuestionnaireStore.getQuestionnaire()});
+		this.setState({
+			questionnaire:QuestionnaireStore.getQuestionnaire(),
+			choicesGrouped:QuestionnaireStore.getChoicesGrouped()
+		});
 	}
 
 	saveQuestionnaire = (event) => {
 		event.preventDefault();
-
+		//TODO - should take questionnaire from store, not from here
 		let status = QuestionnaireActions.saveQuestionnaire(
 											this.state.questionnaire_id,this.state.questionnaire, this.state.file_type);
 	}
@@ -117,7 +121,8 @@ export default class QuestionnaireList extends React.Component {
 				      label="Choices" value='choices'
 							key='choices'
 				    >
-							<ChoicesTab currentTab={this.state.currentTab} />
+							<ChoicesTab currentTab={this.state.currentTab}
+													choicesGrouped={this.state.choicesGrouped}/>
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">low_priority</FontIcon>}

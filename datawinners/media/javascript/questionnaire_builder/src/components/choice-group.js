@@ -166,7 +166,7 @@ export default class ChoiceGroup extends React.Component {
             floatingLabelText="List name"
             errorText={this.errors['list name']}
             onChange={this.onChange}
-            disabled={true}
+            disabled={!this.props.isNewChoiceGroup}
             value={this.props.choiceGroupName}
             name="name"
             multiLine={true}

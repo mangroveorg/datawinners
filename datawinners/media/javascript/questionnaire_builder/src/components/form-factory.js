@@ -5,6 +5,7 @@ module.exports = {
   getFormForQuestionType: function (type) {
     var questionForm = null;
     switch(type){
+      case ''://For new question
       case 'text':
       case 'integer':
       case 'decimal':

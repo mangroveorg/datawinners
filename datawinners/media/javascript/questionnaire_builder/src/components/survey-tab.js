@@ -20,12 +20,6 @@ const style = {
 	tabs: {
 		backgroundColor: '#329CDC'
 	},
-	// headline: {
-	//     fontSize: 24,
-	//     paddingTop: 16,
-	//     marginBottom: 12,
-	//     fontWeight: 400,
-	//   }
 };
 
 export default class SurveyTab extends React.Component {
@@ -47,7 +41,7 @@ export default class SurveyTab extends React.Component {
 
 
   getListOfQuestionViews(){
-		var questions = this.props.survey;//this.state.questionnaire.survey;
+		var questions = this.props.survey;
     var questionViews = [];
 
     for (var key in questions) {

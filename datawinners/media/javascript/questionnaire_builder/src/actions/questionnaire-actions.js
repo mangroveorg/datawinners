@@ -23,7 +23,7 @@ var QuestionnaireActions = {
 		},
 
 		createQuestion: function (question_type) {
-			var new_question_type = question_type || 'text'; //Default question type
+			var new_question_type = question_type || ''; //Default question type
 			let new_question = {};
 			for (var field of QuestionnaireStore.questionFields()) {
 				new_question[field] = '';
@@ -66,16 +66,19 @@ var QuestionnaireActions = {
 		},
 
 		createChoice: function(choiceGroupName, added_field, value) {
-			let choice = {};
-			for (let required_field in QuestionnaireStore.choiceFields){
-				choice[required_field] = '';
-			}
-			choice[added_field]=value;
-			choice['list name'] = choiceGroupName;
-
-			QuestionnaireStore.createChoice(choice);
 			AppDispatcher.dispatch({
-				actionType: AppConstants.ActionTypes.CREATE_CHOICE
+				actionType: AppConstants.ActionTypes.CREATE_CHOICE,
+				data:{
+					choiceGroupName:choiceGroupName,
+					added_field: added_field,
+					value: value
+				}
+			});
+		},
+
+		createChoiceGroup: function(){
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.CREATE_CHOICE_GROUP
 			});
 		}
 

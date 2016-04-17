@@ -37,7 +37,7 @@ var QuestionnaireActions = {
 	},
 
 	createQuestion: function createQuestion(question_type) {
-		var new_question_type = question_type || 'text'; //Default question type
+		var new_question_type = question_type || ''; //Default question type
 		var new_question = {};
 		var _iteratorNormalCompletion = true;
 		var _didIteratorError = false;
@@ -102,16 +102,19 @@ var QuestionnaireActions = {
 	},
 
 	createChoice: function createChoice(choiceGroupName, added_field, value) {
-		var choice = {};
-		for (var required_field in _questionnaireStore2.default.choiceFields) {
-			choice[required_field] = '';
-		}
-		choice[added_field] = value;
-		choice['list name'] = choiceGroupName;
-
-		_questionnaireStore2.default.createChoice(choice);
 		_appDispatcher2.default.dispatch({
-			actionType: _appConstants2.default.ActionTypes.CREATE_CHOICE
+			actionType: _appConstants2.default.ActionTypes.CREATE_CHOICE,
+			data: {
+				choiceGroupName: choiceGroupName,
+				added_field: added_field,
+				value: value
+			}
+		});
+	},
+
+	createChoiceGroup: function createChoiceGroup() {
+		_appDispatcher2.default.dispatch({
+			actionType: _appConstants2.default.ActionTypes.CREATE_CHOICE_GROUP
 		});
 	}
 
@@ -120,7 +123,7 @@ var QuestionnaireActions = {
 module.exports = QuestionnaireActions;
 
 },{"../constants/app-constants":12,"../dispatcher/app-dispatcher":13,"../store/questionnaire-store":15,"toastr":692}],2:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _react = require('react');
 
@@ -657,7 +660,7 @@ var ChoiceGroup = function (_React$Component) {
             floatingLabelText: 'List name',
             errorText: this.errors['list name'],
             onChange: this.onChange,
-            disabled: true,
+            disabled: !this.props.isNewChoiceGroup,
             value: this.props.choiceGroupName,
             name: 'name',
             multiLine: true
@@ -710,7 +713,7 @@ exports.default = ChoiceGroup;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-		value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -748,84 +751,91 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
-		addButtonContainer: {
-				position: 'relative',
-				bottom: '22px',
-				right: '20px',
-				float: 'right'
-		}
+  addButtonContainer: {
+    position: 'relative',
+    bottom: '22px',
+    right: '20px',
+    float: 'right'
+  }
 };
 
 var ChoicesTab = function (_React$Component) {
-		_inherits(ChoicesTab, _React$Component);
+  _inherits(ChoicesTab, _React$Component);
 
-		function ChoicesTab(props) {
-				_classCallCheck(this, ChoicesTab);
+  function ChoicesTab(props) {
+    _classCallCheck(this, ChoicesTab);
 
-				return _possibleConstructorReturn(this, Object.getPrototypeOf(ChoicesTab).call(this, props));
-		}
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChoicesTab).call(this, props));
 
-		_createClass(ChoicesTab, [{
-				key: 'onChangeForChoice',
-				value: function onChangeForChoice(choice) {
-						_questionnaireActions2.default.updateChoice(choice);
-				}
-		}, {
-				key: 'onDeleteForChoice',
-				value: function onDeleteForChoice(base_index) {
-						_questionnaireActions2.default.deleteChoice(base_index);
-				}
-		}, {
-				key: 'onCreateChoice',
-				value: function onCreateChoice(choiceGroupName, field, value) {
-						_questionnaireActions2.default.createChoice(choiceGroupName, field, value);
-				}
-		}, {
-				key: 'getListOfChoiceGroupViews',
-				value: function getListOfChoiceGroupViews() {
-						var choicesGrouped = _questionnaireStore2.default.getChoicesGrouped();
-						var choiceGroupViews = [];
-						for (var key in choicesGrouped) {
-								choiceGroupViews.push(_react2.default.createElement(_choiceGroup2.default, {
-										choiceGroup: choicesGrouped[key],
-										onChangeForChoice: this.onChangeForChoice,
-										onDeleteForChoice: this.onDeleteForChoice,
-										onCreateChoice: this.onCreateChoice,
-										choiceGroupName: key,
-										key: 'choice_group_' + key
-								}));
-						}
-						return choiceGroupViews;
-				}
-		}, {
-				key: 'render',
-				value: function render() {
-						if (this.props.currentTab == 'choices') {
-								return _react2.default.createElement(
-										'div',
-										null,
-										this.getListOfChoiceGroupViews(),
-										_react2.default.createElement(
-												'div',
-												{ style: style.addButtonContainer },
-												_react2.default.createElement(
-														_FloatingActionButton2.default,
-														{ onMouseDown: this.handleChoiceAddButtonClick },
-														_react2.default.createElement(_add2.default, null)
-												)
-										)
-								);
-						} else {
-								return _react2.default.createElement(
-										'div',
-										null,
-										'This page will be loaded on choices tab'
-								); //To optimize performance and minimize DOM content
-						}
-				}
-		}]);
+    _this.onCreateChoiceGroup = function () {
+      _questionnaireActions2.default.createChoiceGroup();
+    };
 
-		return ChoicesTab;
+    return _this;
+  }
+
+  _createClass(ChoicesTab, [{
+    key: 'onChangeForChoice',
+    value: function onChangeForChoice(choice) {
+      _questionnaireActions2.default.updateChoice(choice);
+    }
+  }, {
+    key: 'onDeleteForChoice',
+    value: function onDeleteForChoice(base_index) {
+      _questionnaireActions2.default.deleteChoice(base_index);
+    }
+  }, {
+    key: 'onCreateChoice',
+    value: function onCreateChoice(choiceGroupName, field, value) {
+      _questionnaireActions2.default.createChoice(choiceGroupName, field, value);
+    }
+  }, {
+    key: 'getListOfChoiceGroupViews',
+    value: function getListOfChoiceGroupViews() {
+      var choicesGrouped = this.props.choicesGrouped; //QuestionnaireStore.getChoicesGrouped();
+      var choiceGroupViews = [];
+      for (var key in choicesGrouped) {
+        choiceGroupViews.push(_react2.default.createElement(_choiceGroup2.default, {
+          choiceGroup: choicesGrouped[key],
+          onChangeForChoice: this.onChangeForChoice,
+          onDeleteForChoice: this.onDeleteForChoice,
+          onCreateChoice: this.onCreateChoice,
+          choiceGroupName: key,
+          isNewChoiceGroup: choicesGrouped[key][0].isNewChoiceGroup,
+          key: 'choice_group_' + key
+        }));
+      }
+      return choiceGroupViews;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      if (this.props.currentTab == 'choices') {
+        return _react2.default.createElement(
+          'div',
+          null,
+          this.getListOfChoiceGroupViews(),
+          _react2.default.createElement(
+            'div',
+            { style: style.addButtonContainer },
+            _react2.default.createElement(
+              _FloatingActionButton2.default,
+              { onMouseDown: this.onCreateChoiceGroup },
+              _react2.default.createElement(_add2.default, null)
+            )
+          )
+        );
+      } else {
+        return _react2.default.createElement(
+          'div',
+          null,
+          'This page will be loaded on choices tab'
+        ); //To optimize performance and minimize DOM content
+      }
+    }
+  }]);
+
+  return ChoicesTab;
 }(_react2.default.Component);
 
 exports.default = ChoicesTab;
@@ -847,6 +857,7 @@ module.exports = {
   getFormForQuestionType: function getFormForQuestionType(type) {
     var questionForm = null;
     switch (type) {
+      case '': //For new question
       case 'text':
       case 'integer':
       case 'decimal':
@@ -1201,7 +1212,7 @@ var QuestionnaireList = function (_React$Component) {
 
 		_this.saveQuestionnaire = function (event) {
 			event.preventDefault();
-
+			//TODO - should take questionnaire from store, not from here
 			var status = _questionnaireActions2.default.saveQuestionnaire(_this.state.questionnaire_id, _this.state.questionnaire, _this.state.file_type);
 		};
 
@@ -1229,6 +1240,7 @@ var QuestionnaireList = function (_React$Component) {
 
 					self.setState({
 						questionnaire: result.questionnaire,
+						choicesGrouped: _questionnaireStore2.default.getChoicesGrouped(),
 						file_type: result.file_type,
 						reason: result.reason,
 						details: result.details
@@ -1249,7 +1261,10 @@ var QuestionnaireList = function (_React$Component) {
 	}, {
 		key: '_onChange',
 		value: function _onChange() {
-			this.setState({ questionnaire: _questionnaireStore2.default.getQuestionnaire() });
+			this.setState({
+				questionnaire: _questionnaireStore2.default.getQuestionnaire(),
+				choicesGrouped: _questionnaireStore2.default.getChoicesGrouped()
+			});
 		}
 	}, {
 		key: 'render',
@@ -1310,7 +1325,8 @@ var QuestionnaireList = function (_React$Component) {
 								label: 'Choices', value: 'choices',
 								key: 'choices'
 							},
-							_react2.default.createElement(_choicesTab2.default, { currentTab: this.state.currentTab })
+							_react2.default.createElement(_choicesTab2.default, { currentTab: this.state.currentTab,
+								choicesGrouped: this.state.choicesGrouped })
 						),
 						_react2.default.createElement(
 							_Tab2.default,
@@ -1417,7 +1433,7 @@ exports.default = SelectQuestionForm;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-		value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1461,97 +1477,90 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var style = {
-		addButtonContainer: {
-				position: 'relative',
-				bottom: '22px',
-				right: '20px',
-				float: 'right'
-		},
-		saveButton: {
-				backgroundColor: 'red'
-		},
-		tabs: {
-				backgroundColor: '#329CDC'
-		}
+  addButtonContainer: {
+    position: 'relative',
+    bottom: '22px',
+    right: '20px',
+    float: 'right'
+  },
+  saveButton: {
+    backgroundColor: 'red'
+  },
+  tabs: {
+    backgroundColor: '#329CDC'
+  }
 };
 
-// headline: {
-//     fontSize: 24,
-//     paddingTop: 16,
-//     marginBottom: 12,
-//     fontWeight: 400,
-//   }
-
 var SurveyTab = function (_React$Component) {
-		_inherits(SurveyTab, _React$Component);
+  _inherits(SurveyTab, _React$Component);
 
-		function SurveyTab(props) {
-				_classCallCheck(this, SurveyTab);
+  function SurveyTab(props) {
+    _classCallCheck(this, SurveyTab);
 
-				var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SurveyTab).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SurveyTab).call(this, props));
 
-				_this.onChange = function (question) {
-						_questionnaireActions2.default.updateQuestion(question);
-				};
+    _this.onChange = function (question) {
+      _questionnaireActions2.default.updateQuestion(question);
+    };
 
-				_this.onDelete = function (question) {
-						_questionnaireActions2.default.deleteQuestion(question);
-				};
+    _this.onDelete = function (question) {
+      _questionnaireActions2.default.deleteQuestion(question);
+    };
 
-				_this.handleAddButtonClick = function () {
-						_questionnaireActions2.default.createQuestion();
-				};
+    _this.handleAddButtonClick = function () {
+      _questionnaireActions2.default.createQuestion();
+    };
 
-				return _this;
-		}
+    return _this;
+  }
 
-		_createClass(SurveyTab, [{
-				key: 'getListOfQuestionViews',
-				value: function getListOfQuestionViews() {
-						var questions = this.props.survey; //this.state.questionnaire.survey;
-						var questionViews = [];
+  _createClass(SurveyTab, [{
+    key: 'getListOfQuestionViews',
+    value: function getListOfQuestionViews() {
+      var questions = this.props.survey;
+      var questionViews = [];
 
-						for (var key in questions) {
-								if (_formFactory2.default.getFormForQuestionType(questions[key].type)) {
-										questionViews.push(_react2.default.createElement(_question2.default, {
-												key: 'question_' + key,
-												question: questions[key],
-												onChange: this.onChange,
-												onDelete: this.onDelete
-										}));
-								}
-						}
-						return questionViews;
-				}
-		}, {
-				key: 'render',
-				value: function render() {
-						if (this.props.currentTab == 'survey') {
-								return _react2.default.createElement(
-										'div',
-										null,
-										this.getListOfQuestionViews(),
-										_react2.default.createElement(
-												'div',
-												{ style: style.addButtonContainer },
-												_react2.default.createElement(
-														_FloatingActionButton2.default,
-														{ onMouseDown: this.handleAddButtonClick },
-														_react2.default.createElement(_add2.default, null)
-												)
-										)
-								);
-						} else {
-								return _react2.default.createElement(
-										'div',
-										null,
-										'This page will be loaded on survey tab'
-								); //To optimize performance and minimize DOM content
-						}
-				}
-		}]);
+      for (var key in questions) {
+        if (_formFactory2.default.getFormForQuestionType(questions[key].type)) {
+          questionViews.push(_react2.default.createElement(_question2.default, {
+            key: 'question_' + key,
+            question: questions[key],
+            onChange: this.onChange,
+            onDelete: this.onDelete
+          }));
+        }
+      }
+      return questionViews;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      if (this.props.currentTab == 'survey') {
+        return _react2.default.createElement(
+          'div',
+          null,
+          this.getListOfQuestionViews(),
+          _react2.default.createElement(
+            'div',
+            { style: style.addButtonContainer },
+            _react2.default.createElement(
+              _FloatingActionButton2.default,
+              { onMouseDown: this.handleAddButtonClick },
+              _react2.default.createElement(_add2.default, null)
+            )
+          )
+        );
+      } else {
+        return _react2.default.createElement(
+          'div',
+          null,
+          'This page will be loaded on survey tab'
+        ); //To optimize performance and minimize DOM content
+      }
+    }
+  }]);
 
-		return SurveyTab;
+  return SurveyTab;
 }(_react2.default.Component);
 
 exports.default = SurveyTab;
@@ -1566,7 +1575,8 @@ module.exports = {
 		UPDATE_QUESTION: 'UPDATE_QUESTION',
 		DELETE_QUESTION: 'DELETE_QUESTION',
 		CREATE_CHOICE: 'CREATE_CHOICE',
-		UPDATE_CHOICE: 'UPDATE_CHOICE'
+		UPDATE_CHOICE: 'UPDATE_CHOICE',
+		CREATE_CHOICE_GROUP: 'CREATE_CHOICE_GROUP'
 	},
 	QuestionnaireUrl: '/xlsform/',
 	QuestionnaireSaveUrl: '/xlsform/',
@@ -1581,7 +1591,7 @@ var _flux = require('flux');
 module.exports = new _flux.Dispatcher();
 
 },{"flux":309}],14:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1672,7 +1682,51 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var CHANGE_EVENT = 'change';
 
 
-var questionnaire = {};
+var _questionnaire = {};
+
+var createChoiceGroup = function createChoiceGroup() {
+	var choice = _defaultChoice();
+	choice.isNewChoiceGroup = true;
+	_questionnaire.choices.push(choice);
+};
+
+var createChoice = function createChoice(data) {
+	var choice = _defaultChoice();
+	choice[data.added_field] = data.value;
+	choice['list name'] = data.choiceGroupName;
+	_questionnaire.choices.push(choice);
+};
+
+var _defaultChoice = function _defaultChoice() {
+	var choice = {};
+	var choiceFields = QuestionnaireStore.choiceFields();
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+		for (var _iterator = choiceFields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var required_field = _step.value;
+
+			choice[required_field] = '';
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
+	}
+
+	return choice;
+};
 
 var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
@@ -1689,16 +1743,16 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	getQuestionnaire: function getQuestionnaire() {
-		return this.questionnaire;
+		return _questionnaire;
 	},
 
 	getChoicesGrouped: function getChoicesGrouped() {
 		//TODO: Need not be computed everytime. Only on change of choices, this will change
-		for (var index in this.questionnaire.choices) {
-			this.questionnaire.choices[index]['base_index'] = index;
+		for (var index in _questionnaire.choices) {
+			_questionnaire.choices[index]['base_index'] = index;
 		}
-		var choicesWithoutEmpty = _lodash2.default.filter(this.questionnaire.choices, function (c) {
-			return !_lodash2.default.isEmpty(_lodash2.default.trim(c['list name']));
+		var choicesWithoutEmpty = _lodash2.default.filter(_questionnaire.choices, function (c) {
+			return c.isNewChoiceGroup || !_lodash2.default.isEmpty(_lodash2.default.trim(c['list name']));
 		});
 		var choicesGrouped = _lodash2.default.groupBy(choicesWithoutEmpty, 'list name');
 
@@ -1706,59 +1760,55 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	questionFields: function questionFields() {
-		return Object.keys(this.questionnaire.survey[0]);
+		return Object.keys(_questionnaire.survey[0]);
 	},
 
 	choiceFields: function choiceFields() {
-		if (this.questionnaire.choices && this.questionnaire.choices[0]) {
-			return Object.keys(this.questionnaire.choices[0]);
+		if (_questionnaire.choices && _questionnaire.choices[0]) {
+			return Object.keys(_questionnaire.choices[0]);
 		} else {
-			return {
-				'list name': '',
-				'name': '',
-				'label': ''
-			};
+			return ['list name', 'name', 'label'];
 		}
 	},
 
 	findQuestionIndex: function findQuestionIndex(question) {
-		var index = _lodash2.default.findIndex(this.questionnaire.survey, { temp_id: question.temp_id });
+		var index = _lodash2.default.findIndex(_questionnaire.survey, { temp_id: question.temp_id });
 		if (index < 0) {
-			index = _lodash2.default.findIndex(this.questionnaire.survey, { name: question.name });
+			index = _lodash2.default.findIndex(_questionnaire.survey, { name: question.name });
 		}
 		return index;
 	},
 
 	findChoiceIndex: function findChoiceIndex(choice) {
-		return _lodash2.default.findIndex(this.questionnaire.choices, { base_index: choice.base_index });
+		return _lodash2.default.findIndex(_questionnaire.choices, { base_index: choice.base_index });
 	},
 
 	load: function load(questionnaire) {
-		this.questionnaire = questionnaire;
+		_questionnaire = questionnaire;
 	},
 
 	add: function add(question) {
-		this.questionnaire.survey.push(question);
+		_questionnaire.survey.push(question);
 	},
 
 	update: function update(question) {
-		this.questionnaire.survey[this.findQuestionIndex(question)] = question;
+		_questionnaire.survey[this.findQuestionIndex(question)] = question;
 	},
 
 	delete: function _delete(question) {
-		this.questionnaire.survey.splice(this.findQuestionIndex(question), 1);
+		_questionnaire.survey.splice(this.findQuestionIndex(question), 1);
 	},
 
 	updateChoice: function updateChoice(choice) {
-		this.questionnaire.choices[this.findChoiceIndex(choice)] = choice;
+		_questionnaire.choices[this.findChoiceIndex(choice)] = choice;
 	},
 
 	deleteChoice: function deleteChoice(base_index) {
-		this.questionnaire.choices.splice(base_index, 1);
+		_questionnaire.choices.splice(base_index, 1);
 	},
 
 	createChoice: function createChoice(choice) {
-		this.questionnaire.choices.push(choice);
+		_questionnaire.choices.push(choice);
 	}
 
 });
@@ -1769,9 +1819,16 @@ _appDispatcher2.default.register(function (action) {
 		case _appConstants2.default.ActionTypes.UPDATE_QUESTION:
 		case _appConstants2.default.ActionTypes.CREATE_QUESTION:
 		case _appConstants2.default.ActionTypes.DELETE_QUESTION:
-		case _appConstants2.default.ActionTypes.CREATE_CHOICE:
 		case _appConstants2.default.ActionTypes.UPDATE_CHOICE:
 		case _appConstants2.default.ActionTypes.DELETE_CHOICE:
+			QuestionnaireStore.emitChange();
+			break;
+		case _appConstants2.default.ActionTypes.CREATE_CHOICE_GROUP:
+			createChoiceGroup();
+			QuestionnaireStore.emitChange();
+			break;
+		case _appConstants2.default.ActionTypes.CREATE_CHOICE:
+			createChoice(action.data);
 			QuestionnaireStore.emitChange();
 			break;
 		default:

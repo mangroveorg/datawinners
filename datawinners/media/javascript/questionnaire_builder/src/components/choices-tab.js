@@ -31,8 +31,12 @@ export default class ChoicesTab extends React.Component {
 		QuestionnaireActions.createChoice(choiceGroupName, field, value);
 	}
 
+  onCreateChoiceGroup = () => {
+		QuestionnaireActions.createChoiceGroup();
+  }
+
   getListOfChoiceGroupViews(){
-		let choicesGrouped = QuestionnaireStore.getChoicesGrouped();
+		let choicesGrouped = this.props.choicesGrouped;//QuestionnaireStore.getChoicesGrouped();
 		let choiceGroupViews = [];
 		for (var key in choicesGrouped){
 			choiceGroupViews.push(
@@ -42,6 +46,7 @@ export default class ChoicesTab extends React.Component {
 						onDeleteForChoice={this.onDeleteForChoice}
 						onCreateChoice={this.onCreateChoice}
 						choiceGroupName={key}
+            isNewChoiceGroup={choicesGrouped[key][0].isNewChoiceGroup}
 						key={'choice_group_'+key}
 						/>
 			)
@@ -55,7 +60,7 @@ export default class ChoicesTab extends React.Component {
         <div>
           {this.getListOfChoiceGroupViews()}
           <div style={style.addButtonContainer}>
-            <FloatingActionButton onMouseDown={this.handleChoiceAddButtonClick}>
+            <FloatingActionButton onMouseDown={this.onCreateChoiceGroup}>
               <ContentAdd />
             </FloatingActionButton>
           </div>

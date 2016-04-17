@@ -1,4 +1,3 @@
-"use strict";
 import React  from 'react';
 import Select  from 'react-select';
 import TextField from 'material-ui/TextField';
