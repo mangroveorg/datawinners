@@ -1627,8 +1627,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var CHANGE_EVENT = 'change';
 
 
+var questionnaire = {};
+
 var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
-	questionnaire: {},
 
 	addChangeListener: function addChangeListener(callback) {
 		this.on(CHANGE_EVENT, callback);
@@ -1643,7 +1644,6 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	getQuestionnaire: function getQuestionnaire() {
-		// TO DO: to be removed. we can use either this or QuestionnaireStore.questionnaire
 		return this.questionnaire;
 	},
 

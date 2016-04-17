@@ -5,8 +5,9 @@ import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import _ from 'lodash';
 
+var questionnaire = {};
+
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
-	questionnaire: {},
 
 	addChangeListener: function (callback) {
 		this.on(CHANGE_EVENT,callback);
@@ -21,7 +22,6 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	getQuestionnaire: function () {
-		// TO DO: to be removed. we can use either this or QuestionnaireStore.questionnaire
 		return this.questionnaire;
 	},
 
