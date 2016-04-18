@@ -22,7 +22,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var QuestionnaireActions = {
 	saveQuestionnaire: function saveQuestionnaire(id, questionnaire, file_type) {
 		var onSaveHandler = function onSaveHandler(data) {
-			_toastr2.default[data.status](data.details, data.reason);
+			if (data.status) {
+				_toastr2.default[data.status](data.details, data.reason);
+			} else if (data.error_msg) {
+				_toastr2.default['error'](data.error_msg, data.message_prefix);
+			}
 		};
 		$.ajax({
 			type: "POST",
@@ -539,35 +543,31 @@ var ChoiceGroup = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChoiceGroup).call(this, props));
 
+    _this.onChange = function (event) {
+      var field = event.target.name;
+      var value = event.target.value;
+      var base_index = _lodash2.default.replace(event.target.id, BUILDER_CHOICE_ID_PREFIX, '');
+      var index = _lodash2.default.findIndex(_this.props.choiceGroup, { base_index: base_index });
+      if (index >= 0) {
+        var choice = _this.props.choiceGroup[index];
+        choice[field] = value;
+        _this.props.onChangeForChoice(choice);
+      } else {
+        _this.props.onCreateChoice(_this.props.choiceGroupName, field, value);
+      }
+    };
+
+    _this.onDelete = function (event) {
+      var id = event.currentTarget.id;
+      var base_index = _lodash2.default.replace(id, BUILDER_CHOICE_ID_PREFIX, '');
+      _this.props.onDeleteForChoice(base_index);
+    };
+
     _this.errors = {};
-    _this.onChange = _this.onChange.bind(_this);
-    _this.onDelete = _this.onDelete.bind(_this);
     return _this;
   }
 
   _createClass(ChoiceGroup, [{
-    key: 'onChange',
-    value: function onChange(event) {
-      var field = event.target.name;
-      var value = event.target.value;
-      var base_index = _lodash2.default.replace(event.target.id, BUILDER_CHOICE_ID_PREFIX, '');
-      var index = _lodash2.default.findIndex(this.props.choiceGroup, { base_index: base_index });
-      if (index >= 0) {
-        var choice = this.props.choiceGroup[index];
-        choice[field] = value;
-        this.props.onChangeForChoice(choice);
-      } else {
-        this.props.onCreateChoice(this.props.choiceGroupName, field, value);
-      }
-    }
-  }, {
-    key: 'onDelete',
-    value: function onDelete(event) {
-      var id = event.currentTarget.id;
-      var base_index = _lodash2.default.replace(id, BUILDER_CHOICE_ID_PREFIX, '');
-      this.props.onDeleteForChoice(base_index);
-    }
-  }, {
     key: 'getChoiceItems',
     value: function getChoiceItems() {
       var _this2 = this;
@@ -623,7 +623,7 @@ var ChoiceGroup = function (_React$Component) {
           _Table.TableRowColumn,
           { style: styles.table_td, displayBorder: false },
           _react2.default.createElement(_TextField2.default, {
-            id: 'new_choice',
+            id: 'new_choice_name',
             hintText: 'Name',
             name: 'name',
             style: styles.choiceTextField,
@@ -634,7 +634,7 @@ var ChoiceGroup = function (_React$Component) {
           _Table.TableRowColumn,
           { style: styles.table_td, displayBorder: false },
           _react2.default.createElement(_TextField2.default, {
-            id: 'new_choice',
+            id: 'new_choice_label',
             hintText: 'Label',
             name: 'label',
             style: styles.choiceTextField,
@@ -650,7 +650,7 @@ var ChoiceGroup = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         _Card2.default,
-        null,
+        { key: 'builder_choice_' + this.props.choiceGroup[0].base_index },
         _react2.default.createElement(_CardHeader2.default, {
           title: _lodash2.default.truncate(this.props.choiceGroupName),
           actAsExpander: true,
@@ -661,12 +661,13 @@ var ChoiceGroup = function (_React$Component) {
           _CardText2.default,
           { expandable: true },
           _react2.default.createElement(_TextField2.default, {
+            id: 'builder_choice_' + this.props.choiceGroup[0].base_index,
             floatingLabelText: 'List name',
             errorText: this.errors['list name'],
             onChange: this.onChange,
             disabled: !this.props.isNewChoiceGroup,
             value: this.props.choiceGroupName,
-            name: 'name',
+            name: 'list name',
             multiLine: true
           }),
           _react2.default.createElement('br', null),
@@ -806,7 +807,7 @@ var ChoicesTab = function (_React$Component) {
           onCreateChoice: this.onCreateChoice,
           choiceGroupName: key,
           isNewChoiceGroup: choicesGrouped[key][0].isNewChoiceGroup,
-          key: 'choice_group_' + key
+          key: 'choice_group_' + choicesGrouped[key][0].base_index
         }));
       }
       return choiceGroupViews;

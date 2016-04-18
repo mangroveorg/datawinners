@@ -47,7 +47,7 @@ export default class ChoicesTab extends React.Component {
 						onCreateChoice={this.onCreateChoice}
 						choiceGroupName={key}
             isNewChoiceGroup={choicesGrouped[key][0].isNewChoiceGroup}
-						key={'choice_group_'+key}
+						key={'choice_group_'+choicesGrouped[key][0].base_index}
 						/>
 			)
 		}

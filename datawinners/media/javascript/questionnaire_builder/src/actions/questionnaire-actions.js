@@ -8,7 +8,11 @@ import Toastr from 'toastr';
 var QuestionnaireActions = {
 		saveQuestionnaire : function (id, questionnaire, file_type) {
 			var onSaveHandler = (data) => {
-				Toastr[data.status](data.details, data.reason);
+				if (data.status) {
+					Toastr[data.status](data.details, data.reason);
+				} else if (data.error_msg) {
+					Toastr['error'](data.error_msg, data.message_prefix);
+				}
 			}
 			$.ajax({
 			  type: "POST",

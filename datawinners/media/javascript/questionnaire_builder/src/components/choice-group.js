@@ -64,11 +64,9 @@ export default class ChoiceGroup extends React.Component {
   constructor(props){
     super(props);
     this.errors = {};
-    this.onChange = this.onChange.bind(this);
-    this.onDelete = this.onDelete.bind(this);
   }
 
-  onChange(event) {
+  onChange = (event) => {
 		let field = event.target.name;
 		let value = event.target.value;
     let base_index = _.replace(event.target.id,BUILDER_CHOICE_ID_PREFIX,'');
@@ -80,9 +78,9 @@ export default class ChoiceGroup extends React.Component {
     } else {
       this.props.onCreateChoice(this.props.choiceGroupName, field, value);
     }
-	}
+	};
 
-  onDelete(event){
+  onDelete = (event) => {
     let id = event.currentTarget.id;
     let base_index = _.replace(id,BUILDER_CHOICE_ID_PREFIX,'');
     this.props.onDeleteForChoice(base_index);
@@ -126,7 +124,7 @@ export default class ChoiceGroup extends React.Component {
             key={"new_choice_for_choice_group"+this.props.choiceGroupName}>
         <TableRowColumn style={styles.table_td} displayBorder={false} >
           <TextField
-            id={'new_choice'}
+            id={'new_choice_name'}
             hintText='Name'
             name='name'
             style={styles.choiceTextField}
@@ -136,7 +134,7 @@ export default class ChoiceGroup extends React.Component {
         </TableRowColumn>
         <TableRowColumn style={styles.table_td} displayBorder={false}>
         <TextField
-          id={'new_choice'}
+          id={'new_choice_label'}
           hintText='Label'
           name='label'
           style={styles.choiceTextField}
@@ -154,7 +152,7 @@ export default class ChoiceGroup extends React.Component {
 
   render(){
     return (
-      <Card>
+      <Card key={'builder_choice_'+this.props.choiceGroup[0].base_index}>
         <CardHeader
           title={_.truncate(this.props.choiceGroupName)}
           actAsExpander={true}
@@ -163,12 +161,13 @@ export default class ChoiceGroup extends React.Component {
         />
         <CardText expandable={true}>
           <TextField
+            id={'builder_choice_'+this.props.choiceGroup[0].base_index}
             floatingLabelText="List name"
             errorText={this.errors['list name']}
             onChange={this.onChange}
             disabled={!this.props.isNewChoiceGroup}
             value={this.props.choiceGroupName}
-            name="name"
+            name="list name"
             multiLine={true}
           />
           <br/><br/><br/>
