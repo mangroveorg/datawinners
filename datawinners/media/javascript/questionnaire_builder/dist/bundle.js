@@ -1789,6 +1789,9 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	load: function load(questionnaire) {
 		_questionnaire = questionnaire;
+		if (!_questionnaire.choices) {
+			_questionnaire.choices = []; //Initialize choices
+		}
 	},
 
 	add: function add(question) {

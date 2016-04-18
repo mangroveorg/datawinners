@@ -12,10 +12,11 @@ XLSFORM_PREDEFINED_COLUMN_NAMES={
 def convert_excel_to_dict(file_name=None, file_content=None, file_type='xlsx'):
     book = pe.get_book(file_name=file_name, file_content=file_content, file_type=file_type)
     excel_as_dict = OrderedDict()
-    
+    records = []
     for sheet in book:
-        sheet.name_columns_by_row(0)
-        records = _to_records(sheet) #sheet.to_records()
+        if len(sheet.array) > 0:
+            sheet.name_columns_by_row(0)
+            records = _to_records(sheet)
         excel_as_dict[sheet.name] = records
     return excel_as_dict
 
