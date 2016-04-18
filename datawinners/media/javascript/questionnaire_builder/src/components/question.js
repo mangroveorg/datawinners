@@ -21,11 +21,6 @@ const style = {
 export default class Question extends React.Component {
   constructor(props){
     super(props);
-    // let question = {};
-    this.errors = {};
-    // if(this.props.question){
-    //   question = this.props.question;
-    // }
     this.state = {
       question : this.props.question
     };
@@ -79,7 +74,7 @@ export default class Question extends React.Component {
               <this.formType
                 question={this.props.question}
                 onChange={this.setQuestionState}
-                errors={this.errors}
+                errors={this.props.errors}
                 onChangeForRequired={this.onChangeForRequired}
                 onChangeForQuestionType={this.onChangeForQuestionType}
                 onDelete={this.onDelete}

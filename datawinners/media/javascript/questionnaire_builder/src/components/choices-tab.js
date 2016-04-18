@@ -36,7 +36,7 @@ export default class ChoicesTab extends React.Component {
   }
 
   getListOfChoiceGroupViews(){
-		let choicesGrouped = this.props.choicesGrouped;//QuestionnaireStore.getChoicesGrouped();
+		let choicesGrouped = this.props.choicesGrouped;
 		let choiceGroupViews = [];
 		for (var key in choicesGrouped){
 			choiceGroupViews.push(

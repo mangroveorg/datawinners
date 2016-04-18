@@ -6,6 +6,7 @@ import AppConstants from '../constants/app-constants';
 import _ from 'lodash';
 
 var _questionnaire = {};
+var _errors = {};
 
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
@@ -62,6 +63,9 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		return choicesGrouped;
 	},
 
+	getErrors: function(){
+		return _errors;
+	},
 	questionFields: function () {
 		return Object.keys(_questionnaire.survey[0]);
 	},
@@ -115,6 +119,10 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	createChoice: function(choice){
 		_questionnaire.choices.push(choice);
+	},
+
+	updateSaveError: function(errors) {
+		_errors = errors;
 	}
 
 });
@@ -135,6 +143,10 @@ AppDispatcher.register(function (action) {
 			break;
 		case AppConstants.ActionTypes.CREATE_CHOICE:
 			createChoice(action.data);
+			QuestionnaireStore.emitChange();
+			break;
+		case AppConstants.ActionTypes.ERROR_ON_SAVE:
+			updateSaveError(action.data);
 			QuestionnaireStore.emitChange();
 			break;
 		default:

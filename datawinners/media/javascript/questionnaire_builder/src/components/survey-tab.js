@@ -46,12 +46,17 @@ export default class SurveyTab extends React.Component {
 
     for (var key in questions) {
 			if (FormFactory.getFormForQuestionType(questions[key].type)) {
+				let errors = {};
+				if (this.props.errors && this.props.errors[questions[key].name]){
+					errors = this.props.errors[questions[key].name];
+				}
 				questionViews.push(
 					<Question
 							key={'question_'+key}
 							question={questions[key]}
 							onChange={this.onChange}
 							onDelete={this.onDelete}
+							errors={errors}
 							/>
 				);
 			}

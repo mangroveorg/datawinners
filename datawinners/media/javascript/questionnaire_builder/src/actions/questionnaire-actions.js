@@ -13,6 +13,11 @@ var QuestionnaireActions = {
 				} else if (data.error_msg) {
 					Toastr['error'](data.error_msg, data.message_prefix);
 				}
+				AppDispatcher.dispatch({
+					actionType: AppConstants.ActionTypes.ERROR_ON_SAVE,
+					data: data.errors
+				});
+
 			}
 			$.ajax({
 			  type: "POST",

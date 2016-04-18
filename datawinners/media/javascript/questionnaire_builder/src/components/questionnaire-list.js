@@ -78,7 +78,8 @@ export default class QuestionnaireList extends React.Component {
 	_onChange(){
 		this.setState({
 			questionnaire:QuestionnaireStore.getQuestionnaire(),
-			choicesGrouped:QuestionnaireStore.getChoicesGrouped()
+			choicesGrouped:QuestionnaireStore.getChoicesGrouped(),
+			errors:QuestionnaireStore.getErrors()
 		});
 	}
 
@@ -114,7 +115,8 @@ export default class QuestionnaireList extends React.Component {
 							key='survey'
 				    >
 							<SurveyTab currentTab={this.state.currentTab}
-												survey={this.state.questionnaire.survey}/>
+												survey={this.state.questionnaire.survey}
+												errors={this.state.errors}/>
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">assignment_turned_in</FontIcon>}
@@ -122,7 +124,8 @@ export default class QuestionnaireList extends React.Component {
 							key='choices'
 				    >
 							<ChoicesTab currentTab={this.state.currentTab}
-													choicesGrouped={this.state.choicesGrouped}/>
+													choicesGrouped={this.state.choicesGrouped}
+													errors={this.state.errors}/>
 						</Tab>
 				    <Tab
 				      icon={<FontIcon className="material-icons">low_priority</FontIcon>}

@@ -27,6 +27,10 @@ var QuestionnaireActions = {
 			} else if (data.error_msg) {
 				_toastr2.default['error'](data.error_msg, data.message_prefix);
 			}
+			_appDispatcher2.default.dispatch({
+				actionType: _appConstants2.default.ActionTypes.ERROR_ON_SAVE,
+				data: data.errors
+			});
 		};
 		$.ajax({
 			type: "POST",
@@ -797,7 +801,7 @@ var ChoicesTab = function (_React$Component) {
   }, {
     key: 'getListOfChoiceGroupViews',
     value: function getListOfChoiceGroupViews() {
-      var choicesGrouped = this.props.choicesGrouped; //QuestionnaireStore.getChoicesGrouped();
+      var choicesGrouped = this.props.choicesGrouped;
       var choiceGroupViews = [];
       for (var key in choicesGrouped) {
         choiceGroupViews.push(_react2.default.createElement(_choiceGroup2.default, {
@@ -1009,14 +1013,8 @@ var Question = function (_React$Component) {
   function Question(props) {
     _classCallCheck(this, Question);
 
-    // let question = {};
-
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Question).call(this, props));
 
-    _this.errors = {};
-    // if(this.props.question){
-    //   question = this.props.question;
-    // }
     _this.state = {
       question: _this.props.question
     };
@@ -1085,7 +1083,7 @@ var Question = function (_React$Component) {
           _react2.default.createElement(this.formType, {
             question: this.props.question,
             onChange: this.setQuestionState,
-            errors: this.errors,
+            errors: this.props.errors,
             onChangeForRequired: this.onChangeForRequired,
             onChangeForQuestionType: this.onChangeForQuestionType,
             onDelete: this.onDelete,
@@ -1268,7 +1266,8 @@ var QuestionnaireList = function (_React$Component) {
 		value: function _onChange() {
 			this.setState({
 				questionnaire: _questionnaireStore2.default.getQuestionnaire(),
-				choicesGrouped: _questionnaireStore2.default.getChoicesGrouped()
+				choicesGrouped: _questionnaireStore2.default.getChoicesGrouped(),
+				errors: _questionnaireStore2.default.getErrors()
 			});
 		}
 	}, {
@@ -1317,7 +1316,8 @@ var QuestionnaireList = function (_React$Component) {
 								key: 'survey'
 							},
 							_react2.default.createElement(_surveyTab2.default, { currentTab: this.state.currentTab,
-								survey: this.state.questionnaire.survey })
+								survey: this.state.questionnaire.survey,
+								errors: this.state.errors })
 						),
 						_react2.default.createElement(
 							_Tab2.default,
@@ -1331,7 +1331,8 @@ var QuestionnaireList = function (_React$Component) {
 								key: 'choices'
 							},
 							_react2.default.createElement(_choicesTab2.default, { currentTab: this.state.currentTab,
-								choicesGrouped: this.state.choicesGrouped })
+								choicesGrouped: this.state.choicesGrouped,
+								errors: this.state.errors })
 						),
 						_react2.default.createElement(
 							_Tab2.default,
@@ -1438,7 +1439,7 @@ exports.default = SelectQuestionForm;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+		value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1482,90 +1483,95 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var style = {
-  addButtonContainer: {
-    position: 'relative',
-    bottom: '22px',
-    right: '20px',
-    float: 'right'
-  },
-  saveButton: {
-    backgroundColor: 'red'
-  },
-  tabs: {
-    backgroundColor: '#329CDC'
-  }
+		addButtonContainer: {
+				position: 'relative',
+				bottom: '22px',
+				right: '20px',
+				float: 'right'
+		},
+		saveButton: {
+				backgroundColor: 'red'
+		},
+		tabs: {
+				backgroundColor: '#329CDC'
+		}
 };
 
 var SurveyTab = function (_React$Component) {
-  _inherits(SurveyTab, _React$Component);
+		_inherits(SurveyTab, _React$Component);
 
-  function SurveyTab(props) {
-    _classCallCheck(this, SurveyTab);
+		function SurveyTab(props) {
+				_classCallCheck(this, SurveyTab);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SurveyTab).call(this, props));
+				var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SurveyTab).call(this, props));
 
-    _this.onChange = function (question) {
-      _questionnaireActions2.default.updateQuestion(question);
-    };
+				_this.onChange = function (question) {
+						_questionnaireActions2.default.updateQuestion(question);
+				};
 
-    _this.onDelete = function (question) {
-      _questionnaireActions2.default.deleteQuestion(question);
-    };
+				_this.onDelete = function (question) {
+						_questionnaireActions2.default.deleteQuestion(question);
+				};
 
-    _this.handleAddButtonClick = function () {
-      _questionnaireActions2.default.createQuestion();
-    };
+				_this.handleAddButtonClick = function () {
+						_questionnaireActions2.default.createQuestion();
+				};
 
-    return _this;
-  }
+				return _this;
+		}
 
-  _createClass(SurveyTab, [{
-    key: 'getListOfQuestionViews',
-    value: function getListOfQuestionViews() {
-      var questions = this.props.survey;
-      var questionViews = [];
+		_createClass(SurveyTab, [{
+				key: 'getListOfQuestionViews',
+				value: function getListOfQuestionViews() {
+						var questions = this.props.survey;
+						var questionViews = [];
 
-      for (var key in questions) {
-        if (_formFactory2.default.getFormForQuestionType(questions[key].type)) {
-          questionViews.push(_react2.default.createElement(_question2.default, {
-            key: 'question_' + key,
-            question: questions[key],
-            onChange: this.onChange,
-            onDelete: this.onDelete
-          }));
-        }
-      }
-      return questionViews;
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      if (this.props.currentTab == 'survey') {
-        return _react2.default.createElement(
-          'div',
-          null,
-          this.getListOfQuestionViews(),
-          _react2.default.createElement(
-            'div',
-            { style: style.addButtonContainer },
-            _react2.default.createElement(
-              _FloatingActionButton2.default,
-              { onMouseDown: this.handleAddButtonClick },
-              _react2.default.createElement(_add2.default, null)
-            )
-          )
-        );
-      } else {
-        return _react2.default.createElement(
-          'div',
-          null,
-          'This page will be loaded on survey tab'
-        ); //To optimize performance and minimize DOM content
-      }
-    }
-  }]);
+						for (var key in questions) {
+								if (_formFactory2.default.getFormForQuestionType(questions[key].type)) {
+										var errors = {};
+										if (this.props.errors && this.props.errors[questions[key].name]) {
+												errors = this.props.errors[questions[key].name];
+										}
+										questionViews.push(_react2.default.createElement(_question2.default, {
+												key: 'question_' + key,
+												question: questions[key],
+												onChange: this.onChange,
+												onDelete: this.onDelete,
+												errors: errors
+										}));
+								}
+						}
+						return questionViews;
+				}
+		}, {
+				key: 'render',
+				value: function render() {
+						if (this.props.currentTab == 'survey') {
+								return _react2.default.createElement(
+										'div',
+										null,
+										this.getListOfQuestionViews(),
+										_react2.default.createElement(
+												'div',
+												{ style: style.addButtonContainer },
+												_react2.default.createElement(
+														_FloatingActionButton2.default,
+														{ onMouseDown: this.handleAddButtonClick },
+														_react2.default.createElement(_add2.default, null)
+												)
+										)
+								);
+						} else {
+								return _react2.default.createElement(
+										'div',
+										null,
+										'This page will be loaded on survey tab'
+								); //To optimize performance and minimize DOM content
+						}
+				}
+		}]);
 
-  return SurveyTab;
+		return SurveyTab;
 }(_react2.default.Component);
 
 exports.default = SurveyTab;
@@ -1581,7 +1587,8 @@ module.exports = {
 		DELETE_QUESTION: 'DELETE_QUESTION',
 		CREATE_CHOICE: 'CREATE_CHOICE',
 		UPDATE_CHOICE: 'UPDATE_CHOICE',
-		CREATE_CHOICE_GROUP: 'CREATE_CHOICE_GROUP'
+		CREATE_CHOICE_GROUP: 'CREATE_CHOICE_GROUP',
+		ERROR_ON_SAVE: 'ERROR_ON_SAVE'
 	},
 	QuestionnaireUrl: '/xlsform/',
 	QuestionnaireSaveUrl: '/xlsform/',
@@ -1688,6 +1695,7 @@ var CHANGE_EVENT = 'change';
 
 
 var _questionnaire = {};
+var _errors = {};
 
 var createChoiceGroup = function createChoiceGroup() {
 	var choice = _defaultChoice();
@@ -1764,6 +1772,9 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 		return choicesGrouped;
 	},
 
+	getErrors: function getErrors() {
+		return _errors;
+	},
 	questionFields: function questionFields() {
 		return Object.keys(_questionnaire.survey[0]);
 	},
@@ -1817,6 +1828,10 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	createChoice: function createChoice(choice) {
 		_questionnaire.choices.push(choice);
+	},
+
+	updateSaveError: function updateSaveError(errors) {
+		_errors = errors;
 	}
 
 });
@@ -1837,6 +1852,10 @@ _appDispatcher2.default.register(function (action) {
 			break;
 		case _appConstants2.default.ActionTypes.CREATE_CHOICE:
 			createChoice(action.data);
+			QuestionnaireStore.emitChange();
+			break;
+		case _appConstants2.default.ActionTypes.ERROR_ON_SAVE:
+			updateSaveError(action.data);
 			QuestionnaireStore.emitChange();
 			break;
 		default:
