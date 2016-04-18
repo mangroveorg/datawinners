@@ -693,6 +693,8 @@ class XFormSubmissionProcessor():
                             other_selection.append(item)
                     answer_dict.update({field.code + "_other": ' '.join(other_selection)})
                     answer_dict.update({field.code: ' '.join(choice_selections)})
+            elif isinstance(field, SelectField):
+                answer_dict.update({field.code: answer if _is_choice_item_in_choice_list(answer, field.options) else ""})
             else:
                 answer_dict.update(self.get_dict(field, answer))
         return answer_dict
