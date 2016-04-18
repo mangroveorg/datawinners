@@ -47,7 +47,7 @@ export default class Question extends React.Component {
 
   //TODO: eventually, we need our own Toggle with name prop
   onChangeForRequired(event) {
-    this.props.question['required'] = event.target.value === 'on';
+    this.props.question['required'] = event.target.value === 'on' ? 'yes' : 'no';
     this.props.onChange(this.props.question);
   }
   //TODO: eventually, we need our own SelectField with name prop

@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import QuestionnaireActions from '../actions/questionnaire-actions';
+import _ from 'lodash';
 
 const styles = {
   block: {
@@ -75,7 +76,7 @@ module.exports = {
         multiLine={true}
       />
       <TextField
-        floatingLabelText="Data Column Name"
+        floatingLabelText="Question Name"
         errorText={props.errors.name}
         name='name'
         disabled={!props.question.isNewQuestion}
@@ -117,15 +118,15 @@ module.exports = {
       />
       <TextField
         floatingLabelText="Relevant"
-        errorText={props.errors.relavant}
-        name='relavant'
+        errorText={props.errors.relevant}
+        name='relevant'
         onChange={props.onChange}
-        value={props.question.relavant}
+        value={props.question.relevant}
         multiLine={true}
       />
       <Toggle
         label="Required"
-        defaultToggled={props.question.required == true}
+        defaultToggled={_.isEqual(props.question.required,'yes')}
         style={styles.toggle}
         onToggle={props.onChangeForRequired}
       />

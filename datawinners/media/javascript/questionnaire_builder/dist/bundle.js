@@ -169,6 +169,10 @@ var _questionnaireActions = require('../actions/questionnaire-actions');
 
 var _questionnaireActions2 = _interopRequireDefault(_questionnaireActions);
 
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var styles = {
@@ -240,7 +244,7 @@ module.exports = {
         multiLine: true
       }),
       _react2.default.createElement(_TextField2.default, {
-        floatingLabelText: 'Data Column Name',
+        floatingLabelText: 'Question Name',
         errorText: props.errors.name,
         name: 'name',
         disabled: !props.question.isNewQuestion,
@@ -282,15 +286,15 @@ module.exports = {
       }),
       _react2.default.createElement(_TextField2.default, {
         floatingLabelText: 'Relevant',
-        errorText: props.errors.relavant,
-        name: 'relavant',
+        errorText: props.errors.relevant,
+        name: 'relevant',
         onChange: props.onChange,
-        value: props.question.relavant,
+        value: props.question.relevant,
         multiLine: true
       }),
       _react2.default.createElement(_Toggle2.default, {
         label: 'Required',
-        defaultToggled: props.question.required == true,
+        defaultToggled: _lodash2.default.isEqual(props.question.required, 'yes'),
         style: styles.toggle,
         onToggle: props.onChangeForRequired
       })
@@ -298,7 +302,7 @@ module.exports = {
   }
 };
 
-},{"../actions/questionnaire-actions":1,"material-ui/Checkbox":398,"material-ui/FontIcon":407,"material-ui/IconButton":409,"material-ui/MenuItem":419,"material-ui/RaisedButton":426,"material-ui/SelectField":428,"material-ui/TextField":450,"material-ui/Toggle":452,"react":680,"react-select":506}],3:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"lodash":385,"material-ui/Checkbox":398,"material-ui/FontIcon":407,"material-ui/IconButton":409,"material-ui/MenuItem":419,"material-ui/RaisedButton":426,"material-ui/SelectField":428,"material-ui/TextField":450,"material-ui/Toggle":452,"react":680,"react-select":506}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1039,7 +1043,7 @@ var Question = function (_React$Component) {
   }, {
     key: 'onChangeForRequired',
     value: function onChangeForRequired(event) {
-      this.props.question['required'] = event.target.value === 'on';
+      this.props.question['required'] = event.target.value === 'on' ? 'yes' : 'no';
       this.props.onChange(this.props.question);
     }
     //TODO: eventually, we need our own SelectField with name prop
