@@ -69,7 +69,7 @@ export default class Question extends React.Component {
       return (
         <Card>
           <CardHeader
-            title={_.truncate(this.props.question.label)}
+            title={_.truncate(this.props.question.label , {'length': 100})}
             subtitle={this.props.question.type}
             actAsExpander={true}
             showExpandableButton={true}

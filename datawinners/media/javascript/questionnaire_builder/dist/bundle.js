@@ -1072,7 +1072,7 @@ var Question = function (_React$Component) {
         _Card2.default,
         null,
         _react2.default.createElement(_CardHeader2.default, {
-          title: _lodash2.default.truncate(this.props.question.label),
+          title: _lodash2.default.truncate(this.props.question.label, { 'length': 100 }),
           subtitle: this.props.question.type,
           actAsExpander: true,
           showExpandableButton: true,
