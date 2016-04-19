@@ -6,6 +6,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Question from './question';
 import FormFactory from './form-factory';
+import _ from 'lodash';
 
 const style = {
 	addButtonContainer: {
@@ -43,20 +44,24 @@ export default class SurveyTab extends React.Component {
   getListOfQuestionViews(){
 		var questions = this.props.survey;
     var questionViews = [];
-
     for (var key in questions) {
 			if (FormFactory.getFormForQuestionType(questions[key].type)) {
-				let errors = {};
-				if (this.props.errors && this.props.errors[questions[key].name]){
-					errors = this.props.errors[questions[key].name];
-				}
+				let questionErrors = {};
+        if (this.props.errors) {
+          for (let error of this.props.errors) {
+            if (error[questions[key].name]) { //if this is new question??
+              questionErrors = error[questions[key].name];
+            }
+          }
+        }
+
 				questionViews.push(
 					<Question
 							key={'question_'+key}
 							question={questions[key]}
 							onChange={this.onChange}
 							onDelete={this.onDelete}
-							errors={errors}
+							errors={questionErrors}
 							/>
 				);
 			}

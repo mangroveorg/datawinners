@@ -13,12 +13,21 @@ var QuestionnaireActions = {
 				} else if (data.error_msg) {
 					Toastr['error'](data.error_msg, data.message_prefix);
 				}
-				AppDispatcher.dispatch({
-					actionType: AppConstants.ActionTypes.ERROR_ON_SAVE,
-					data: data.errors
-				});
+
+				if(data.status == 'error') {
+					AppDispatcher.dispatch({
+						actionType: AppConstants.ActionTypes.ERROR_ON_SAVE,
+						data: data.errors
+					});
+				}
 
 			}
+
+			if (QuestionnaireStore.errorsPresent()) {
+				Toastr['error'](AppConstants.CommonErrorMessages.CLEAR_ALL_ERRORS, AppConstants.CommonErrorMessages.SAVE_FAILED);
+				return;
+			}
+
 			$.ajax({
 			  type: "POST",
 			  url: AppConstants.QuestionnaireSaveUrl+id+'/',

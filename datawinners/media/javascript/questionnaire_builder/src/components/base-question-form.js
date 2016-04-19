@@ -94,7 +94,7 @@ module.exports = {
       />
       <TextField
         floatingLabelText="Constraint"
-        errorText={props.errors.contraint}
+        errorText={props.errors.constraint}
         name='constraint'
         onChange={props.onChange}
         value={props.question.constraint}

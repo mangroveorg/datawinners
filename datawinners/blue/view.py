@@ -556,7 +556,7 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
                 'errors': [
                     {
                         e.field.name: {
-                            e.attribute: e.message
+                            e.attribute: e.custom_message
                         }
                     }
                 ],

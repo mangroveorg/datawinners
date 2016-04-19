@@ -11,6 +11,11 @@ module.exports = {
 		CREATE_CHOICE_GROUP: 'CREATE_CHOICE_GROUP',
 		ERROR_ON_SAVE: 'ERROR_ON_SAVE'
 	},
+	CommonErrorMessages : {
+		REQUIRED_ERROR_MESSAGE : 'This field is required',
+		SAVE_FAILED: 'Save Failed',
+		CLEAR_ALL_ERRORS: 'Clear all validation errors before saving the questionnaire'
+	},
 	QuestionnaireUrl : '/xlsform/',
 	QuestionnaireSaveUrl : '/xlsform/',
 	QuestionTypes : [

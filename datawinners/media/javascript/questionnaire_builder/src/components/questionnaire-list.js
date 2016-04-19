@@ -31,7 +31,8 @@ export default class QuestionnaireList extends React.Component {
 		super(props);
 		this.state = {
 				questionnaire_id:props.questionnaire_id,
-			 	currentTab: 'survey'
+			 	currentTab: 'survey',
+				errors:[]
 
 		}
 		this._onChange = this._onChange.bind(this);

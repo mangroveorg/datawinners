@@ -3,10 +3,11 @@ import {EventEmitter} from 'events';
 const CHANGE_EVENT = 'change';
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
+import Validator from './validator';
 import _ from 'lodash';
 
 var _questionnaire = {};
-var _errors = {};
+var _errors = [];
 
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
@@ -29,6 +30,16 @@ var _defaultChoice = () => {
 	}
 	return choice;
 }
+
+var	updateSaveError = (errors) => {
+		_errors = errors;
+}
+
+// var injectTempId = (survey) => {
+// 	_.forEach(survey, function (question) {
+// 		question.temp_id = Math.random();
+// 	});
+// };
 
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
@@ -66,6 +77,11 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	getErrors: function(){
 		return _errors;
 	},
+
+	errorsPresent: function () {
+		return _errors.length > 0;
+	},
+
 	questionFields: function () {
 		return Object.keys(_questionnaire.survey[0]);
 	},
@@ -91,6 +107,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	load: function (questionnaire) {
+		// injectTempId(questionnaire.survey);
 		_questionnaire = questionnaire;
 	},
 
@@ -100,6 +117,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	update: function (question) {
 		_questionnaire.survey[this.findQuestionIndex(question)] = question;
+		_errors = _.concat(_errors, Validator.validateQuestion(question));
 	},
 
 	delete: function (question) {
@@ -116,10 +134,6 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	createChoice: function(choice){
 		_questionnaire.choices.push(choice);
-	},
-
-	updateSaveError: function(errors) {
-		_errors = errors;
 	}
 
 });
