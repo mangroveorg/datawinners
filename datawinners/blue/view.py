@@ -20,7 +20,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
 
-from pyxform.errors import PyXFormError
+from pyxform.errors import PyXFormError, BindError
 
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException
 from mangrove.form_model.form_model import get_form_model_by_code
@@ -547,6 +547,21 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
                 'error_msg': info_list,
                 'message_prefix': _("Sorry! Current version of DataWinners does not support"),
                 'message_suffix': _("Update your XLSForm and upload again.")
+            }))
+
+    except BindError as e:
+        return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'status': 'error',
+                'errors': [
+                    {
+                        e.field.name: {
+                            e.attribute: e.message
+                        }
+                    }
+                ],
+                'reason': 'Save Failed', #TODO: i18n translation
+                'details': ''
             }))
 
     except PyXFormError as e:
