@@ -112,6 +112,9 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	load: function (questionnaire) {
 		// injectTempId(questionnaire.survey);
+		if (!questionnaire.choices) {
+			questionnaire.choices = [];
+		}
 		_questionnaire = questionnaire;
 	},
 

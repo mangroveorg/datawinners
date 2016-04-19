@@ -6,7 +6,6 @@ function resize_iframe(event) {
 }
 
 $(document).ready(function(){
-
     $.ajax({
         url: DW.help_url,
         data: {},

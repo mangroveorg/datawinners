@@ -21,13 +21,11 @@ def convert_excel_to_dict(file_name=None, file_content=None, file_type='xlsx'):
     return excel_as_dict
 
 def convert_json_to_excel(json_as_dict, file_type='xlsx'):
-#     save_file_name = '/Users/sairamk/temp/sandbox/test_output.xlsx' 
     book_content = OrderedDict()
     for sheet_name in json_as_dict:
         book_content[sheet_name] = convert_json_record_to_array(
                                                                 json_as_dict[sheet_name], 
                                                                 XLSFORM_PREDEFINED_COLUMN_NAMES.get(sheet_name))
-#     pe.save_book_as(dest_file_name=save_file_name, bookdict=book_content)
     excel_raw_stream = pe.save_book_as(dest_file_type=file_type, bookdict=book_content)
 
     return excel_raw_stream

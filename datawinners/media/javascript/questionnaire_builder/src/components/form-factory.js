@@ -1,10 +1,12 @@
 import GenericQuestionForm from '../components/generic-question-form';
 import SelectQuestionForm from '../components/select-question-form';
+import _ from 'lodash';
 
 module.exports = {
-  getFormForQuestionType: function (type) {
+  getFormForQuestionType: function (questionType) {
+    let type = _.split(questionType, ' ');
     var questionForm = null;
-    switch(type){
+    switch(type[0]){
       case ''://For new question
       case 'text':
       case 'integer':

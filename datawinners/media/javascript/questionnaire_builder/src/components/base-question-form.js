@@ -10,6 +10,7 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import QuestionnaireActions from '../actions/questionnaire-actions';
 import _ from 'lodash';
+import AppConstants from '../constants/app-constants';
 
 const styles = {
   block: {
@@ -26,13 +27,13 @@ const styles = {
   }
 };
 
-var getQuestionTypeMenuItems = function(questionTypes) {
+var getQuestionTypeMenuItems = function() {
     var question_type_menu_items = [];
-    for (var key in questionTypes){
+    for (var key in AppConstants.QuestionTypes){
       question_type_menu_items.push(
         <MenuItem
-						value={questionTypes[key].value}
-						primaryText={questionTypes[key].label}
+						value={AppConstants.QuestionTypes[key].value}
+						primaryText={AppConstants.QuestionTypes[key].label}
 						/>
       );
     }
@@ -41,18 +42,20 @@ var getQuestionTypeMenuItems = function(questionTypes) {
 
 module.exports = {
 
-  getSelectQuestionType: function(props, questionTypes){
+  getSelectQuestionType: function(props){
+    let questionType = _.split(props.question.type,' ');
+
       return (
         <div>
           <SelectField
                     floatingLabelText="Question Type"
                     onChange={props.onChangeForQuestionType}
                     disabled={!props.question.isNewQuestion}
-                    value={props.question.type}
+                    value={questionType[0]}
                     name='type'
                     errorText={props.errors.type}
                   >
-                    {getQuestionTypeMenuItems(props.questionTypes)}
+                    {getQuestionTypeMenuItems()}
           </SelectField>
           <RaisedButton label="Delete"
                 onMouseDown={props.onDelete}
@@ -63,10 +66,9 @@ module.exports = {
       );
   },
 
-  getCommonQuestions: function(props, questionTypes){
+  getCommonQuestions: function(props){
     return (
       <div>
-        {this.getSelectQuestionType(props, questionTypes)}
       <TextField
         floatingLabelText="Question Label"
         errorText={props.errors.label}

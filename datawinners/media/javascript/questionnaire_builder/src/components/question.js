@@ -22,42 +22,49 @@ export default class Question extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      question : this.props.question
+      // question : this.props.question
     };
     this.formType = FormFactory.getFormForQuestionType(this.props.question.type);
-    this.setQuestionState = this.setQuestionState.bind(this);
-    this.onDelete = this.onDelete.bind(this);
-    this.onChangeForRequired = this.onChangeForRequired.bind(this);
-    this.onChangeForQuestionType = this.onChangeForQuestionType.bind(this);
+    // this.onChange = this.setQuestionState.bind(this);
+    // this.onDelete = this.onDelete.bind(this);
+    // this.onChangeForRequired = this.onChangeForRequired.bind(this);
+    // this.onChangeForQuestionType = this.onChangeForQuestionType.bind(this);
   }
 
-  setQuestionState(event) {
+  onChange = (event) => {
 		let field = event.target.name;
 		let value = event.target.value;
     let question = this.props.question;
     question[field] = value;
-    this.setState({question: question});
+    // this.setState({question: question});
     this.props.onChange(question);
 	}
 
   //TODO: eventually, we need our own Toggle with name prop
-  onChangeForRequired(event) {
+  onChangeForRequired = (event) => {
     this.props.question['required'] = event.target.value === 'on' ? 'yes' : 'no';
     this.props.onChange(this.props.question);
   }
   //TODO: eventually, we need our own SelectField with name prop
-  onChangeForQuestionType(event,index,value){
+  onChangeForQuestionType = (event,index,value) => {
     this.props.question['type'] = value;
     this.props.onChange(this.props.question);
     this.formType = FormFactory.getFormForQuestionType(value);
+  }
+
+  onChangeForChoiceType = (event,index,value) => {
+    let questionType = _.split(this.props.question.type,' ');
+    questionType[1] = value;
+    this.props.question['type'] = _.join(questionType, ' ');
+    this.props.onChange(this.props.question);
   }
 
   questionFormIsValid() {
     return true;//TODO
   }
 
-  onDelete(event) {
-    this.props.onDelete(this.state.question);
+  onDelete = (event) => {
+    this.props.onDelete(this.props.question);
   }
 
   render() {
@@ -73,10 +80,11 @@ export default class Question extends React.Component {
           <CardText expandable={true}>
               <this.formType
                 question={this.props.question}
-                onChange={this.setQuestionState}
+                onChange={this.onChange}
                 errors={this.props.errors}
                 onChangeForRequired={this.onChangeForRequired}
                 onChangeForQuestionType={this.onChangeForQuestionType}
+                onChangeForChoiceType={this.onChangeForChoiceType}
                 onDelete={this.onDelete}
                 questionTypes={AppConstants.QuestionTypes} //Due to cyclic dependency, passing as param
                 />

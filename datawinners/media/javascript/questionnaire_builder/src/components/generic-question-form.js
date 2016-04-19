@@ -10,6 +10,7 @@ export default class GenericQuestionForm extends React.Component{
 	render() {
 		return (
 			<form className="form-horizontal">
+				{BaseQuestions.getSelectQuestionType(this.props)}
 				{BaseQuestions.getCommonQuestions(this.props)}
 			</form>
 		);
