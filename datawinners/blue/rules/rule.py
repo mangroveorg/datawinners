@@ -21,12 +21,11 @@ class Rule(object):
 
     def _update_xform(self, new_fields, old_fields, parent_node, old_xform, new_xform, activity_log_detail):
         for old_field in old_fields:
-            if hasattr(old_field, 'is_calculated') and old_field.is_calculated:
-                continue
-
             node = get_node(parent_node, old_field.code)
             new_field = [new_field for new_field in new_fields if new_field.code == old_field.code]
             if new_field:
+                if hasattr(old_field, 'is_calculated') and old_field.is_calculated:
+                    continue
                 if isinstance(old_field, FieldSet):
                     self._update_xform(new_field[0].fields, old_field.fields, node, old_xform, new_xform, activity_log_detail)
                 self.edit(node, old_field, new_field[0], old_xform, new_xform, activity_log_detail)

@@ -6,9 +6,14 @@ from datawinners.blue.rules.rule import Rule
 
 class RemoveRule(Rule):
     def remove(self, parent_node, node, xform, old_field, activity_log_detail):
-        remove_node(parent_node, node)
-        xform.remove_bind_node(node)
-        xform.remove_instance_node(parent_node, node)
+        if node is not None:
+            remove_node(parent_node, node)
+            xform.remove_bind_node(node)
+            xform.remove_instance_node(parent_node, node)
+        else:
+            xform.remove_bind_node_given_name(old_field.code)
+            xform.remove_instance_node_given_name(parent_node, old_field.code)
+
         if isinstance(old_field, SelectField) and old_field.is_cascade:
             xform.remove_translation_nodes(node)
             xform.remove_cascade_instance_node(node)
