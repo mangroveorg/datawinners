@@ -22,7 +22,12 @@ $(function () {
                 successCallBack: function (callback) {
                     callback();
                     self.params.edit = false;
-                    file_uploader._onInputChange(file_input[0]);
+                    if (responseJSON) {
+                        file_uploader._onInputChange(file_input[0]);
+                    } else {
+                        file_input.click();
+                    }
+                    self.params.edit = true
                     return false;
                 },
                 title: gettext("Warning: Changes to your Questionnaire will delete previously collected data"),
