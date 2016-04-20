@@ -6,23 +6,29 @@ var RULES = {},
     SURVEY_RULES = [];
 
 function setup () {
-  SURVEY_RULES.push(questionLabelIsMandatory);
+  SURVEY_RULES.push(requiredFieldRule);
   RULES.SurveyRules = SURVEY_RULES;
 }
 
 //TODO Extract rule into separate file when needed
-var questionLabelIsMandatory = function (question) {
+var requiredFieldRule = function (question) {
   let errors = {};
 
-  if(!question.label) {
-    errors[question.name] = errors[question.name] || {};
-    errors[question.name] = {
-      label: AppConstants.CommonErrorMessages.REQUIRED_ERROR_MESSAGE
-    };
+  let errorKey = question.name || question.temp_id || undefined;
+
+  if (!errorKey) {
+      return {};
   }
 
+  errors[errorKey] = errors[errorKey] || {};
+  _.forEach(AppConstants.REQUIRED_FIELDS, function (field) {
+    if (!question[field]) {
+      errors[errorKey][field] = AppConstants.CommonErrorMessages.REQUIRED_ERROR_MESSAGE;
+    }
+  });
+
   return errors;
-};
+}
 
 var validateQuestionnaire = function (questionnaire) {
   let errors = [];

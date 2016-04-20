@@ -36,7 +36,6 @@ var QuestionnaireActions = {
 			}
 		};
 
-		// if questionnaire is valid
 		if (_questionnaireStore2.default.errorsPresent()) {
 			_toastr2.default['error'](_appConstants2.default.CommonErrorMessages.CLEAR_ALL_ERRORS, _appConstants2.default.CommonErrorMessages.SAVE_FAILED);
 			return;
@@ -1553,8 +1552,13 @@ var SurveyTab = function (_React$Component) {
                 var error = _step.value;
 
                 if (error[questions[key].name]) {
-                  //if this is new question??
+                  //for old question
                   questionErrors = error[questions[key].name];
+                }
+
+                if (error[questions[key].temp_id]) {
+                  //for new question
+                  questionErrors = error[questions[key].temp_id];
                 }
               }
             } catch (err) {
@@ -1636,6 +1640,7 @@ module.exports = {
 		SAVE_FAILED: 'Save Failed',
 		CLEAR_ALL_ERRORS: 'Clear all validation errors before saving the questionnaire'
 	},
+	REQUIRED_FIELDS: ['label', 'name', 'type'],
 	QuestionnaireUrl: '/xlsform/',
 	QuestionnaireSaveUrl: '/xlsform/',
 	QuestionTypes: [{ value: "text", label: "Text" }, { value: "integer", label: "Integer" }, { value: "decimal", label: "Decimal" }, { value: "date", label: "Date" }, { value: "geopoint", label: "Geopoint" }, { value: "select_one", label: "Select one" }, { value: "select_multiple", label: "Select multiple" }]
@@ -1801,10 +1806,6 @@ var updateSaveError = function updateSaveError(errors) {
 // 	});
 // };
 
-var validate = function validate(questionnaire) {
-	return _validator2.default.isValid(questionnaire);
-};
-
 var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	addChangeListener: function addChangeListener(callback) {
@@ -1942,23 +1943,31 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//TODO: need to cascade & choice rules when needed
 var RULES = {},
     SURVEY_RULES = [];
 
 function setup() {
-  SURVEY_RULES.push(questionLabelIsMandatory);
+  SURVEY_RULES.push(requiredFieldRule);
   RULES.SurveyRules = SURVEY_RULES;
 }
 
-var questionLabelIsMandatory = function questionLabelIsMandatory(question) {
+//TODO Extract rule into separate file when needed
+var requiredFieldRule = function requiredFieldRule(question) {
   var errors = {};
 
-  if (!question.label) {
-    errors[question.name] = errors[question.name] || {};
-    errors[question.name] = {
-      label: _appConstants2.default.CommonErrorMessages.REQUIRED_ERROR_MESSAGE
-    };
+  var errorKey = question.name || question.temp_id || undefined;
+
+  if (!errorKey) {
+    return {};
   }
+
+  errors[errorKey] = errors[errorKey] || {};
+  _lodash2.default.forEach(_appConstants2.default.REQUIRED_FIELDS, function (field) {
+    if (!question[field]) {
+      errors[errorKey][field] = _appConstants2.default.CommonErrorMessages.REQUIRED_ERROR_MESSAGE;
+    }
+  });
 
   return errors;
 };

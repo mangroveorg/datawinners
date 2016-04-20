@@ -16,6 +16,7 @@ module.exports = {
 		SAVE_FAILED: 'Save Failed',
 		CLEAR_ALL_ERRORS: 'Clear all validation errors before saving the questionnaire'
 	},
+	REQUIRED_FIELDS : ['label', 'name', 'type'],
 	QuestionnaireUrl : '/xlsform/',
 	QuestionnaireSaveUrl : '/xlsform/',
 	QuestionTypes : [

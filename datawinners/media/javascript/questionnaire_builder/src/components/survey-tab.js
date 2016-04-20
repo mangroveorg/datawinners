@@ -49,8 +49,12 @@ export default class SurveyTab extends React.Component {
 				let questionErrors = {};
         if (this.props.errors) {
           for (let error of this.props.errors) {
-            if (error[questions[key].name]) { //if this is new question??
+            if (error[questions[key].name]) { //for old question
               questionErrors = error[questions[key].name];
+            }
+
+            if (error[questions[key].temp_id]) { //for new question
+              questionErrors = error[questions[key].temp_id];
             }
           }
         }
