@@ -107,11 +107,10 @@ DW.UploadQuestionnaire.prototype._init = function(options){
     self.file_input = $("input[name=file]");
     if (!!uploadButton) {
         uploadButton.on("click", function() {
-            if (typeof(xlsform_edit_enabled) !== 'undefined') {
-                $("input[name=file]").click();
-            } else {
-                options.promptOverwrite(null, self.file_uploader, self.file_input);
+            if(!options.preUploadValidation()){
+                return false;
             }
+            $("input[name=file]").click();
             return false;
         });
 

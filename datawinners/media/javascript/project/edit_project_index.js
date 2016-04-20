@@ -10,6 +10,14 @@ $(function () {
         postUrl: function(){
            return '/xlsform/upload/update/'+ project_id +'/';
         },
+        preUploadValidation: function() {
+            if (typeof(xlsform_edit_enabled) == 'undefined') {
+                this.promptOverwrite();
+                return false;
+            }
+            this.params.edit = true;
+            return true;
+        },
         postErrorHandler: function(responseJSON) {
             DW.trackEvent('advanced-questionnaire-edited', 'edit-questionnaire-errored');
 
@@ -22,12 +30,11 @@ $(function () {
                 successCallBack: function (callback) {
                     callback();
                     self.params.edit = false;
-                    if (responseJSON) {
+                    if (file_input) {
                         file_uploader._onInputChange(file_input[0]);
                     } else {
-                        file_input.click();
+                        $("input[name=file]").click();
                     }
-                    self.params.edit = true
                     return false;
                 },
                 title: gettext("Warning: Changes to your Questionnaire will delete previously collected data"),
