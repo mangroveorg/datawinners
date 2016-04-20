@@ -52,15 +52,16 @@
                     &nbsp&nbsp&nbsp&nbsp<span class="italic_grey">{% trans 'Choose the number of days people can respond to this poll.' %}</span>
                     <br><br>
                      &nbsp&nbsp&nbsp
-                    <span>{% trans 'Active for' %}</span>
-                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style dropdown_width"></select> <span> {% trans 'Days' %} </span>
+                   <!-- <span>{% trans 'Active for' %}</span>
+                    <select data-bind="options: days_active, value: number_of_days" class="dropdown_style dropdown_width"></select> <span> {% trans 'Days' %} </span> -->
                     &nbsp
                     <span class="bold-text italic_grey">{% trans 'From : '%} </span>
                     <span id="from_date_poll" class="date_text"
                                      data-bind="text:from_date_poll"></span>&nbsp
                         <span class="bold-text italic_grey">{% trans 'To : '%} </span>
-                    <span id="to_date_poll" class="date_text"
-                                     data-bind="text:to_date_poll"></span>
+                        <input data-bind="datepicker: endDate, datepickerOptions: { minDate: new Date(+new Date() + 86400000) }" />
+                    <!--<span id="to_date_poll" class="date_text"
+                                     data-bind="text:to_date_poll"></span>-->
 
                 </div>
                 <br>
