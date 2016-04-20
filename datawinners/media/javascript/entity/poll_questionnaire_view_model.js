@@ -3,7 +3,7 @@ function PollViewModel() {
     self.show_sms = ko.observable(gettext('Save/Create Poll'));
     self.number_of_days = ko.observable();
     self.to_date_poll = ko.observable();
-
+    self.endDate= ko.observable();
     self.show_sms.subscribe(function(){
        window.smsViewModel.clearSelection();
     });
@@ -89,11 +89,11 @@ function PollViewModel() {
 
             var data = {
                 'poll_name': window.questionnaireViewModel.projectName().trim(),
-                'active_days': self.to_date_poll,
+                'active_days': self.endDate(),
                 'question': question,
                 'selected_option' : JSON.stringify(selected_option),
                 'csrfmiddlewaretoken': $("#poll_form input[name=csrfmiddlewaretoken]").val(),
-                'end_date' : end_date.getFullYear() +"-"+ (end_date.getMonth()+1)+"-" + end_date.getDate()+"T" + end_date.getHours() +":"+ end_date.getMinutes() +":"+ end_date.getSeconds()
+                'end_date' : self.endDate().getFullYear() +"-"+ (self.endDate().getMonth()+1)+"-" + self.endDate().getDate()+"T" + self.endDate().getHours() +":"+ self.endDate().getMinutes() +":"+ self.endDate().getSeconds()
             };
             $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
             $.post(create_poll_url, data).done(function (response) {

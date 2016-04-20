@@ -19,7 +19,9 @@ var CalculateDays = function(to_date, from_date) {
     };
 
     this.get_difference_between_dates = function(){
-        return (self.to_date.getDate() - self.from_date.getDate());
+        var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+        var diffDays = Math.round(Math.abs((self.from_date.getTime() - self.to_date.getTime())/(oneDay)));
+        return diffDays;//(self.to_date.getDate() - self.from_date.getDate());
     };
 
     this.get_formatted_date_for_poll = function(date){
