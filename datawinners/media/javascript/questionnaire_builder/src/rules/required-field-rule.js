@@ -10,9 +10,9 @@ var requiredFieldRule = function (question) {
       return {};
   }
 
-  errors[errorKey] = errors[errorKey] || {};
   _.forEach(AppConstants.REQUIRED_FIELDS, function (field) {
     if (!question[field]) {
+      errors[errorKey] = errors[errorKey] || {};
       errors[errorKey][field] = AppConstants.CommonErrorMessages.REQUIRED_ERROR_MESSAGE;
     }
   });

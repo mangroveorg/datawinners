@@ -5,6 +5,8 @@ import AppConstants from '../constants/app-constants';
 import QuestionnaireStore from '../store/questionnaire-store';
 import Toastr from 'toastr';
 
+// Toastr.options.preventDuplicates = true; // Extract into separate config
+
 var QuestionnaireActions = {
 		saveQuestionnaire : function (id, questionnaire, file_type) {
 			var onSaveHandler = (data) => {

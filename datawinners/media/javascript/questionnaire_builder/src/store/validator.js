@@ -5,15 +5,21 @@ import _ from 'lodash';
 var validateQuestionnaire = function (questionnaire) {
   let errors = [];
   _.forEach(questionnaire.survey, function (question) {
-    errors = _.concat(errors, validateQuestion(question));
+      let errorsForQuestion = validateQuestion(question);
+      if (!_.isEmpty(errorsForQuestion)) {
+        errors = _.concat(errors, errorsForQuestion);
+      }
   });
-  return errors;
+  return _.compact(errors);
 };
 
 var validateQuestion = function (question) {
   let errors = [];
   _.forEach(Rules.SurveyRules, function (rule) {
-      errors.push(rule(question));
+      let errorsForQuestion = rule(question);
+      if (!_.isEmpty(errorsForQuestion)) {
+        errors.push(errorsForQuestion);
+      }
     });
   return errors;
 };

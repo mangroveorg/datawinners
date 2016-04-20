@@ -19,6 +19,8 @@ var _toastr2 = _interopRequireDefault(_toastr);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Toastr.options.preventDuplicates = true; // Extract into separate config
+
 var QuestionnaireActions = {
 	saveQuestionnaire: function saveQuestionnaire(id, questionnaire, file_type) {
 		var onSaveHandler = function onSaveHandler(data) {
@@ -1745,9 +1747,9 @@ var requiredFieldRule = function requiredFieldRule(question) {
     return {};
   }
 
-  errors[errorKey] = errors[errorKey] || {};
   _lodash2.default.forEach(_appConstants2.default.REQUIRED_FIELDS, function (field) {
     if (!question[field]) {
+      errors[errorKey] = errors[errorKey] || {};
       errors[errorKey][field] = _appConstants2.default.CommonErrorMessages.REQUIRED_ERROR_MESSAGE;
     }
   });
@@ -1893,10 +1895,10 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	errorsPresent: function errorsPresent() {
-		if (!_errors.length) {
-			_errors = _lodash2.default.concat(_errors, _validator2.default.validateQuestionnaire(_questionnaire));
-			QuestionnaireStore.emitChange();
-		}
+		_errors = [];
+		_errors = _lodash2.default.concat(_errors, _validator2.default.validateQuestionnaire(_questionnaire));
+		QuestionnaireStore.emitChange();
+		debugger;
 		return _errors.length > 0;
 	},
 
@@ -2005,15 +2007,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var validateQuestionnaire = function validateQuestionnaire(questionnaire) {
   var errors = [];
   _lodash2.default.forEach(questionnaire.survey, function (question) {
-    errors = _lodash2.default.concat(errors, validateQuestion(question));
+    var errorsForQuestion = validateQuestion(question);
+    if (!_lodash2.default.isEmpty(errorsForQuestion)) {
+      errors = _lodash2.default.concat(errors, errorsForQuestion);
+    }
   });
-  return errors;
+  return _lodash2.default.compact(errors);
 };
 
 var validateQuestion = function validateQuestion(question) {
   var errors = [];
   _lodash2.default.forEach(_rules2.default.SurveyRules, function (rule) {
-    errors.push(rule(question));
+    var errorsForQuestion = rule(question);
+    if (!_lodash2.default.isEmpty(errorsForQuestion)) {
+      errors.push(errorsForQuestion);
+    }
   });
   return errors;
 };

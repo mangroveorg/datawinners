@@ -79,10 +79,10 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	errorsPresent: function () {
-		if (!_errors.length) {
-			_errors = _.concat(_errors, Validator.validateQuestionnaire(_questionnaire));
-			QuestionnaireStore.emitChange();
-		}
+		_errors = [];
+		_errors = _.concat(_errors, Validator.validateQuestionnaire(_questionnaire));
+		QuestionnaireStore.emitChange();
+		debugger;
 		return _errors.length > 0;
 	},
 
