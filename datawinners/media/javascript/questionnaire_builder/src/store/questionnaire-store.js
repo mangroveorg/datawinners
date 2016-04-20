@@ -35,6 +35,13 @@ var	updateSaveError = (errors) => {
 		_errors = errors;
 }
 
+var removeValidationErrorsIfExists = function (question) {
+	_.remove(_errors, function (error) {
+			let errorKey = question.temp_id || question.name;
+			return error[errorKey];
+		});
+};
+
 // var injectTempId = (survey) => {
 // 	_.forEach(survey, function (question) {
 // 		question.temp_id = Math.random();
@@ -82,7 +89,6 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		_errors = [];
 		_errors = _.concat(_errors, Validator.validateQuestionnaire(_questionnaire));
 		QuestionnaireStore.emitChange();
-		debugger;
 		return _errors.length > 0;
 	},
 
@@ -93,7 +99,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	choiceFields: function() {
 			if (_questionnaire.choices && _questionnaire.choices[0]){
 				return Object.keys(_questionnaire.choices[0]);
-			}else{
+			} else {
 				return ['list name','name','label'];
 			}
 	},
@@ -124,6 +130,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	update: function (question) {
 		_questionnaire.survey[this.findQuestionIndex(question)] = question;
+		removeValidationErrorsIfExists(question);
 		_errors = _.concat(_errors, Validator.validateQuestion(question));
 	},
 
