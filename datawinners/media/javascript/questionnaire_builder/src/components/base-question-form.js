@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import QuestionnaireActions from '../actions/questionnaire-actions';
+import DialogOkayCancel from './dialog-okay-cancel'
 import _ from 'lodash';
 import AppConstants from '../constants/app-constants';
 
@@ -57,10 +58,15 @@ module.exports = {
                   >
                     {getQuestionTypeMenuItems()}
           </SelectField>
-          <RaisedButton label="Delete"
-                onMouseDown={props.onDelete}
-                style={styles.deleteButton}
-                icon={<FontIcon className="material-icons" >delete</FontIcon>} />
+          <div>
+            <DialogOkayCancel label="Delete"
+                              icon={<FontIcon className="material-icons" >delete</FontIcon>}
+                              onOkay={props.onDelete}
+                              title="Are You Sure?"
+                              message="You are about to delete the question."
+                              okayLabel="I'm Sure"
+                              cancelLabel="Cancel" />
+          </div>
         </div>
 
       );
