@@ -21,14 +21,7 @@ const style = {
 export default class Question extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      // question : this.props.question
-    };
     this.formType = FormFactory.getFormForQuestionType(this.props.question.type);
-    // this.onChange = this.setQuestionState.bind(this);
-    // this.onDelete = this.onDelete.bind(this);
-    // this.onChangeForRequired = this.onChangeForRequired.bind(this);
-    // this.onChangeForQuestionType = this.onChangeForQuestionType.bind(this);
   }
 
   onChange = (event) => {
@@ -36,7 +29,6 @@ export default class Question extends React.Component {
 		let value = event.target.value;
     let question = this.props.question;
     question[field] = value;
-    // this.setState({question: question});
     this.props.onChange(question);
 	}
 

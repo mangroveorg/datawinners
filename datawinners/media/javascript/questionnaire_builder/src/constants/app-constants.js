@@ -26,6 +26,10 @@ module.exports = {
 		{value: "date", label: "Date"},
 		{value: "geopoint", label: "Geopoint"},
 		{value: "select_one", label:"Select one"},
-		{value: "select_multiple", label:"Select multiple"}
+		{value: "select_multiple", label:"Select multiple"},
+		{value: "image", label: "Image"},
+		{value: "audio", label: "Audio"},
+		{value: "video", label: "Video"},
+		
 	]
 };

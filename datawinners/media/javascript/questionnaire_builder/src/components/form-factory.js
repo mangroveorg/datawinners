@@ -13,6 +13,9 @@ module.exports = {
       case 'decimal':
       case 'date':
       case 'geopoint':
+      case 'image':
+      case 'audio':
+      case 'video':
         questionForm = GenericQuestionForm;
         break;
       case 'select_one':
