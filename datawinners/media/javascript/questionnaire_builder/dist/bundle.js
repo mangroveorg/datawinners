@@ -1893,6 +1893,10 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	errorsPresent: function errorsPresent() {
+		if (!_errors.length) {
+			_errors = _lodash2.default.concat(_errors, _validator2.default.validateQuestionnaire(_questionnaire));
+			QuestionnaireStore.emitChange();
+		}
 		return _errors.length > 0;
 	},
 
@@ -2001,7 +2005,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var validateQuestionnaire = function validateQuestionnaire(questionnaire) {
   var errors = [];
   _lodash2.default.forEach(questionnaire.survey, function (question) {
-    errrors = _lodash2.default.concate(errors, validateQuestion(question));
+    errors = _lodash2.default.concat(errors, validateQuestion(question));
   });
   return errors;
 };

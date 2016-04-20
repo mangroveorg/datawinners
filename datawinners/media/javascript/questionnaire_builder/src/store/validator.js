@@ -5,7 +5,7 @@ import _ from 'lodash';
 var validateQuestionnaire = function (questionnaire) {
   let errors = [];
   _.forEach(questionnaire.survey, function (question) {
-    errrors = _.concate(errors, validateQuestion(question));
+    errors = _.concat(errors, validateQuestion(question));
   });
   return errors;
 };
