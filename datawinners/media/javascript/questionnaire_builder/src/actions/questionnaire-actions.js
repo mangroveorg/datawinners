@@ -10,10 +10,10 @@ import Toastr from 'toastr';
 var QuestionnaireActions = {
 		saveQuestionnaire : function (id, questionnaire, file_type) {
 			var onSaveHandler = (data) => {
-				if (data.status) {
-					AppDispatcher.dispatch({
+				AppDispatcher.dispatch({
 						actionType: AppConstants.ActionTypes.QUESTIONNAIRE_SAVED
-					});
+				});
+				if (data.status) {
 					Toastr[data.status](data.details, data.reason);
 				} else if (data.error_msg) {
 					Toastr['error'](data.error_msg, data.message_prefix);

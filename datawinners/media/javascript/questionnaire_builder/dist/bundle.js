@@ -24,10 +24,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var QuestionnaireActions = {
 	saveQuestionnaire: function saveQuestionnaire(id, questionnaire, file_type) {
 		var onSaveHandler = function onSaveHandler(data) {
+			_appDispatcher2.default.dispatch({
+				actionType: _appConstants2.default.ActionTypes.QUESTIONNAIRE_SAVED
+			});
 			if (data.status) {
-				_appDispatcher2.default.dispatch({
-					actionType: _appConstants2.default.ActionTypes.QUESTIONNAIRE_SAVED
-				});
 				_toastr2.default[data.status](data.details, data.reason);
 			} else if (data.error_msg) {
 				_toastr2.default['error'](data.error_msg, data.message_prefix);
@@ -1205,7 +1205,6 @@ var ModalLoader = function (_React$Component) {
   _createClass(ModalLoader, [{
     key: 'render',
     value: function render() {
-      debugger;
       var actions = [_react2.default.createElement(_FlatButton2.default, {
         label: this.state.cancelLabel,
         secondary: true,
