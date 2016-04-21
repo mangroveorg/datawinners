@@ -5,7 +5,7 @@ import _ from 'lodash';
 module.exports = {
   getFormForQuestionType: function (questionType) {
     let type = _.split(questionType, ' ');
-    var questionForm = null;
+    var questionForm;
     switch(type[0]){
       case ''://For new question
       case 'text':
@@ -23,7 +23,7 @@ module.exports = {
         questionForm = SelectQuestionForm;
         break;
       default:
-        questionForm = null;
+        //do nothing
     }
     return questionForm;
   }

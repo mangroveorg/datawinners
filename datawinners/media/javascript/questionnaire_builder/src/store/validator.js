@@ -2,6 +2,7 @@ import AppConstants from '../constants/app-constants';
 import Rules from '../rules/rules';
 import _ from 'lodash';
 
+
 var validateQuestionnaire = function (questionnaire) {
   let errors = [];
   _.forEach(questionnaire.survey, function (question) {
@@ -15,12 +16,14 @@ var validateQuestionnaire = function (questionnaire) {
 
 var validateQuestion = function (question) {
   let errors = [];
-  _.forEach(Rules.SurveyRules, function (rule) {
-      let errorsForQuestion = rule(question);
-      if (!_.isEmpty(errorsForQuestion)) {
-        errors.push(errorsForQuestion);
-      }
-    });
+  if(question.isSupported){
+    _.forEach(Rules.SurveyRules, function (rule) {
+        let errorsForQuestion = rule(question);
+        if (!_.isEmpty(errorsForQuestion)) {
+          errors.push(errorsForQuestion);
+        }
+      });
+  }
   return errors;
 };
 

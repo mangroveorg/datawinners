@@ -45,7 +45,8 @@ export default class SurveyTab extends React.Component {
 		var questions = this.props.survey;
     var questionViews = [];
     for (var key in questions) {
-			if (FormFactory.getFormForQuestionType(questions[key].type)) {
+			let form = FormFactory.getFormForQuestionType(questions[key].type)
+			if (form) {
 				let questionErrors = {};
         if (this.props.errors) {
           for (let error of this.props.errors) {

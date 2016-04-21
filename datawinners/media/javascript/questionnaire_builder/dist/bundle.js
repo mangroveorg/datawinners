@@ -1007,7 +1007,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 module.exports = {
   getFormForQuestionType: function getFormForQuestionType(questionType) {
     var type = _lodash2.default.split(questionType, ' ');
-    var questionForm = null;
+    var questionForm;
     switch (type[0]) {
       case '': //For new question
       case 'text':
@@ -1025,7 +1025,7 @@ module.exports = {
         questionForm = _selectQuestionForm2.default;
         break;
       default:
-        questionForm = null;
+      //do nothing
     }
     return questionForm;
   }
@@ -1699,7 +1699,8 @@ var SurveyTab = function (_React$Component) {
       var questions = this.props.survey;
       var questionViews = [];
       for (var key in questions) {
-        if (_formFactory2.default.getFormForQuestionType(questions[key].type)) {
+        var form = _formFactory2.default.getFormForQuestionType(questions[key].type);
+        if (form) {
           var questionErrors = {};
           if (this.props.errors) {
             var _iteratorNormalCompletion = true;
@@ -2020,6 +2021,20 @@ var removeValidationErrorsIfExists = function removeValidationErrorsIfExists(que
 	});
 };
 
+var removeEmptyRowsFromSurvey = function removeEmptyRowsFromSurvey() {
+	_questionnaire.survey = _lodash2.default.filter(_questionnaire.survey, function (q) {
+		return !_lodash2.default.isEmpty(_lodash2.default.trim(q.type));
+	});
+};
+
+var flagSupportedQuestionTypes = function flagSupportedQuestionTypes() {
+	_questionnaire.survey = _lodash2.default.forEach(_questionnaire.survey, function (q) {
+		var questionType = _lodash2.default.split(q.type, ' ');
+		q.isSupported = _lodash2.default.find(_appConstants2.default.QuestionTypes, { value: questionType[0] }) ? true : false;
+		return q;
+	});
+};
+
 var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	addChangeListener: function addChangeListener(callback) {
@@ -2087,8 +2102,9 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	load: function load(questionnaire) {
-		// injectTempId(questionnaire.survey);
 		_questionnaire = questionnaire;
+		removeEmptyRowsFromSurvey();
+		flagSupportedQuestionTypes();
 	},
 
 	add: function add(question) {
@@ -2181,12 +2197,14 @@ var validateQuestionnaire = function validateQuestionnaire(questionnaire) {
 
 var validateQuestion = function validateQuestion(question) {
   var errors = [];
-  _lodash2.default.forEach(_rules2.default.SurveyRules, function (rule) {
-    var errorsForQuestion = rule(question);
-    if (!_lodash2.default.isEmpty(errorsForQuestion)) {
-      errors.push(errorsForQuestion);
-    }
-  });
+  if (question.isSupported) {
+    _lodash2.default.forEach(_rules2.default.SurveyRules, function (rule) {
+      var errorsForQuestion = rule(question);
+      if (!_lodash2.default.isEmpty(errorsForQuestion)) {
+        errors.push(errorsForQuestion);
+      }
+    });
+  }
   return errors;
 };
 

@@ -45,6 +45,20 @@ var removeValidationErrorsIfExists = function (question) {
 		});
 };
 
+var removeEmptyRowsFromSurvey = () => {
+	_questionnaire.survey = _.filter(_questionnaire.survey, function(q){
+		return !_.isEmpty(_.trim(q.type));
+	});
+}
+
+var flagSupportedQuestionTypes = () => {
+	_questionnaire.survey = _.forEach(_questionnaire.survey, function(q){
+		let questionType = _.split(q.type,' ');
+		q.isSupported = _.find(AppConstants.QuestionTypes, {value: questionType[0]}) ? true : false;
+		return q;
+	});
+}
+
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	addChangeListener: function (callback) {
@@ -114,8 +128,9 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	load: function (questionnaire) {
-		// injectTempId(questionnaire.survey);
 		_questionnaire = questionnaire;
+		removeEmptyRowsFromSurvey();
+		flagSupportedQuestionTypes();
 	},
 
 	add: function (question) {
