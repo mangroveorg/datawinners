@@ -22,7 +22,7 @@ from django.views.generic.base import View
 
 from pyxform.errors import PyXFormError, BindError
 
-from mangrove.errors.MangroveException import ExceedSubmissionLimitException
+from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
@@ -74,34 +74,41 @@ class ProjectUpload(View):
     def post(self, request):
         project_name = request.GET['pname'].strip()
         manager = get_database_manager(request.user)
-        
-        xls_parser_response = _try_parse_xls(manager, request, project_name)
 
-        if isinstance(xls_parser_response, HttpResponse):
-            return xls_parser_response
+        try:
+            xls_parser_response = _try_parse_xls(manager, request, project_name)
 
-        send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
-                                                                           project_name)
-        questionnaire_code = generate_questionnaire_code(manager)
-        excel_file = _temp_file(request)
-        mangrove_service = MangroveService(request, questionnaire_code=questionnaire_code,
-                                           project_name=project_name, xls_form=excel_file,
-                                           xls_parser_response=xls_parser_response)
-        questionnaire_id, form_code = mangrove_service.create_project()
+            if isinstance(xls_parser_response, HttpResponse):
+                return xls_parser_response
 
-        if not questionnaire_id:
-            logger.info("User: %s. Upload Error: %s", request.user.username, "Questionnaire must be unique")
+            send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
+                                                                               project_name)
+            questionnaire_code = generate_questionnaire_code(manager)
+            excel_file = _temp_file(request)
+            mangrove_service = MangroveService(request, questionnaire_code=questionnaire_code,
+                                               project_name=project_name, xls_form=excel_file,
+                                               xls_parser_response=xls_parser_response)
+            questionnaire_id, form_code = mangrove_service.create_project()
 
+            if not questionnaire_id:
+                logger.info("User: %s. Upload Error: %s", request.user.username, "Questionnaire must be unique")
+
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': False,
+                    'error_msg': [_("Duplicate labels. All questions (labels) must be unique.")],
+                    'message_prefix': _("Sorry! Current version of DataWinners does not support"),
+                    'message_suffix': _("Update your XLSForm and upload again.")
+                }))
+
+            questionnaire = Project.get(manager, questionnaire_id)
+            _save_questionnaire_as_dict_for_builder(questionnaire, excel_file=excel_file)
+        except QuestionAlreadyExistsException as e:
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
-                'error_msg': [_("Duplicate labels. All questions (labels) must be unique.")],
-                'message_prefix': _("Sorry! Current version of DataWinners does not support"),
-                'message_suffix': _("Update your XLSForm and upload again.")
+                'error_msg': [
+                    _(e.message)
+                ]
             }))
-            
-        questionnaire = Project.get(manager, questionnaire_id)
-        _save_questionnaire_as_dict_for_builder(questionnaire, excel_file=excel_file)
-
         return HttpResponse(
             json.dumps(
                 {
@@ -237,6 +244,16 @@ def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None
             "status": "error",
             'reason': "Unsupported edit operation", #TODO: i18n translation
             'details': e.message
+        }))
+    except QuestionAlreadyExistsException as e:
+        return HttpResponse(content_type='application/json', content=json.dumps({
+            'success': False,
+            'error_msg': [
+                _(e.message)
+            ],
+            "status": "error",
+            'reason': "Save Failed", #TODO: i18n translation
+            'details': _(e.message)
         }))
     return HttpResponse(
         json.dumps({
