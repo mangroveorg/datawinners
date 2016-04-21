@@ -17,7 +17,9 @@ class CascadeRule(Rule):
             old_xform.add_translation_node(translation_node)
 
         old_xform.remove_cascade_instance_node(node)
-        old_xform.add_cascade_instance_node(new_xform.get_cascade_instance_node(node))
+        instance_node = new_xform.get_cascade_instance_node(node)
+        if instance_node is not None:
+            old_xform.add_cascade_instance_node(instance_node)
 
     def remove(self, parent_node, node, xform, old_field, activity_log_detail):
         pass
