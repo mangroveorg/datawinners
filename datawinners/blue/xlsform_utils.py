@@ -25,14 +25,20 @@ def convert_json_to_excel(json_as_dict, file_type='xlsx'):
     for sheet_name in json_as_dict:
         book_content[sheet_name] = convert_json_record_to_array(
                                                                 json_as_dict[sheet_name], 
-                                                                XLSFORM_PREDEFINED_COLUMN_NAMES.get(sheet_name))
+                                                                sheet_name,
+                                                                XLSFORM_PREDEFINED_COLUMN_NAMES.get(sheet_name)
+                                                                )
     excel_raw_stream = pe.save_book_as(dest_file_type=file_type, bookdict=book_content)
 
     return excel_raw_stream
 
-def convert_json_record_to_array(records, xlsform_predefined_column_names=None):
+def convert_json_record_to_array(records, sheet_name, xlsform_predefined_column_names=None):
     rows = []
     if len(records) < 1:
+        if xlsform_predefined_column_names:
+            rows.append(xlsform_predefined_column_names)
+            empty_content = ['' for k in xlsform_predefined_column_names]
+            rows.append(empty_content)
         return rows
     else:
         keys = records[0].keys()

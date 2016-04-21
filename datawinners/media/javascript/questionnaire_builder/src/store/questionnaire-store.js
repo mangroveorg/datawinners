@@ -12,6 +12,9 @@ var _errors = [];
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
 	choice.isNewChoiceGroup = true;
+	if (!_questionnaire.choices) {
+		_questionnaire.choices = [];
+	}
 	_questionnaire.choices.push(choice);
 };
 
@@ -41,12 +44,6 @@ var removeValidationErrorsIfExists = function (question) {
 			return error[errorKey];
 		});
 };
-
-// var injectTempId = (survey) => {
-// 	_.forEach(survey, function (question) {
-// 		question.temp_id = Math.random();
-// 	});
-// };
 
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
@@ -118,9 +115,6 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	load: function (questionnaire) {
 		// injectTempId(questionnaire.survey);
-		if (!questionnaire.choices) {
-			questionnaire.choices = [];
-		}
 		_questionnaire = questionnaire;
 	},
 
@@ -147,6 +141,9 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	createChoice: function(choice){
+		if (!_questionnaire.choices) {
+			_questionnaire.choices = [];
+		}
 		_questionnaire.choices.push(choice);
 	}
 
