@@ -163,11 +163,11 @@ export default class ChoiceGroup extends React.Component {
           <TextField
             id={'builder_choice_'+this.props.choiceGroup[0].base_index}
             floatingLabelText="List name"
-            errorText={this.errors['list name']}
+            errorText={this.errors['list_name']}
             onChange={this.onChange}
             disabled={!this.props.isNewChoiceGroup}
             value={this.props.choiceGroupName}
-            name="list name"
+            name="list_name"
             multiLine={true}
           />
           <br/><br/><br/>

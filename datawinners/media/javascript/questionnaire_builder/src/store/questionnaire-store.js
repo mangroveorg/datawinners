@@ -21,7 +21,7 @@ var createChoiceGroup = () => {
 var createChoice = (data) => {
 	let choice = _defaultChoice();
 	choice[data.added_field]=data.value;
-	choice['list name'] = data.choiceGroupName;
+	choice['list_name'] = data.choiceGroupName;
 	_questionnaire.choices.push(choice);
 };
 
@@ -85,9 +85,9 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		let choicesWithoutEmpty = _.filter(
 																		_questionnaire.choices,
 																		function(c){
-																			return c.isNewChoiceGroup || !_.isEmpty(_.trim(c['list name']));
+																			return c.isNewChoiceGroup || !_.isEmpty(_.trim(c['list_name']));
 																		});
-		let choicesGrouped = _.groupBy(choicesWithoutEmpty,'list name');
+		let choicesGrouped = _.groupBy(choicesWithoutEmpty,'list_name');
 
 		return choicesGrouped;
 	},
@@ -111,7 +111,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 			if (_questionnaire.choices && _questionnaire.choices[0]){
 				return Object.keys(_questionnaire.choices[0]);
 			} else {
-				return ['list name','name','label'];
+				return ['list_name','name','label'];
 			}
 	},
 

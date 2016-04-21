@@ -699,11 +699,11 @@ var ChoiceGroup = function (_React$Component) {
           _react2.default.createElement(_TextField2.default, {
             id: 'builder_choice_' + this.props.choiceGroup[0].base_index,
             floatingLabelText: 'List name',
-            errorText: this.errors['list name'],
+            errorText: this.errors['list_name'],
             onChange: this.onChange,
             disabled: !this.props.isNewChoiceGroup,
             value: this.props.choiceGroupName,
-            name: 'list name',
+            name: 'list_name',
             multiLine: true
           }),
           _react2.default.createElement('br', null),
@@ -1975,7 +1975,7 @@ var createChoiceGroup = function createChoiceGroup() {
 var createChoice = function createChoice(data) {
 	var choice = _defaultChoice();
 	choice[data.added_field] = data.value;
-	choice['list name'] = data.choiceGroupName;
+	choice['list_name'] = data.choiceGroupName;
 	_questionnaire.choices.push(choice);
 };
 
@@ -2059,9 +2059,9 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 			_questionnaire.choices[index]['base_index'] = index;
 		}
 		var choicesWithoutEmpty = _lodash2.default.filter(_questionnaire.choices, function (c) {
-			return c.isNewChoiceGroup || !_lodash2.default.isEmpty(_lodash2.default.trim(c['list name']));
+			return c.isNewChoiceGroup || !_lodash2.default.isEmpty(_lodash2.default.trim(c['list_name']));
 		});
-		var choicesGrouped = _lodash2.default.groupBy(choicesWithoutEmpty, 'list name');
+		var choicesGrouped = _lodash2.default.groupBy(choicesWithoutEmpty, 'list_name');
 
 		return choicesGrouped;
 	},
@@ -2085,7 +2085,7 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 		if (_questionnaire.choices && _questionnaire.choices[0]) {
 			return Object.keys(_questionnaire.choices[0]);
 		} else {
-			return ['list name', 'name', 'label'];
+			return ['list_name', 'name', 'label'];
 		}
 	},
 
