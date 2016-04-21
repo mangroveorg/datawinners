@@ -16,6 +16,7 @@ module.exports = {
 		SAVE_FAILED: 'Save Failed',
 		CLEAR_ALL_ERRORS: 'Clear all validation errors before saving the questionnaire'
 	},
+	MANDATORY_ASTERISK: '*',
 	REQUIRED_FIELDS : ['label', 'name', 'type'],
 	QuestionnaireUrl : '/xlsform/',
 	QuestionnaireSaveUrl : '/xlsform/',
@@ -29,6 +30,7 @@ module.exports = {
 		{value: "select_multiple", label:"Select multiple"},
 		{value: "image", label: "Image"},
 		{value: "audio", label: "Audio"},
-		{value: "video", label: "Video"}
+		{value: "video", label: "Video"},
+		{value: "dw_idnr", label: "Identification Number"}
 	]
 };

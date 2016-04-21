@@ -1,5 +1,6 @@
 import GenericQuestionForm from '../components/generic-question-form';
 import SelectQuestionForm from '../components/select-question-form';
+import UniqueIdQuestionForm from '../components/unique-id-question-form';
 import _ from 'lodash';
 
 module.exports = {
@@ -21,6 +22,9 @@ module.exports = {
       case 'select_one':
       case 'select_multiple':
         questionForm = SelectQuestionForm;
+        break;
+      case 'dw_idnr':
+        questionForm = UniqueIdQuestionForm;
         break;
       default:
         //do nothing

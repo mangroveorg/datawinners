@@ -49,7 +49,7 @@ module.exports = {
       return (
         <div>
           <SelectField
-                    floatingLabelText="Question Type"
+                    floatingLabelText={"Question Type " + AppConstants.MANDATORY_ASTERISK}
                     onChange={props.onChangeForQuestionType}
                     disabled={!props.question.isNewQuestion}
                     value={questionType[0]}
@@ -71,73 +71,84 @@ module.exports = {
 
       );
   },
-
-  getCommonQuestions: function(props){
+  getDescriptiveQuestions: function(props) {
     return (
       <div>
+        <TextField
+          floatingLabelText={"Question Label " + AppConstants.MANDATORY_ASTERISK}
+          errorText={props.errors.label}
+          onChange={props.onChange}
+          value={props.question.label}
+          name="label"
+          multiLine={true}
+        />
+        <TextField
+          floatingLabelText={"Question Name " + AppConstants.MANDATORY_ASTERISK}
+          errorText={props.errors.name}
+          name='name'
+          disabled={!props.question.isNewQuestion}
+          onChange={props.onChange}
+          value={props.question.name}
+          multiLine={true}
+        />
+        <TextField
+          floatingLabelText="Hint"
+          errorText={props.errors.hint}
+          name='hint'
+          onChange={props.onChange}
+          value={props.question.hint}
+          multiLine={true}
+        />
+      </div>
+    );
+  },
+  getControlQuestions: function(props) {
+    return (
+    <div>
       <TextField
-        floatingLabelText="Question Label"
-        errorText={props.errors.label}
-        onChange={props.onChange}
-        value={props.question.label}
-        name="label"
-        multiLine={true}
-      />
+          floatingLabelText="Appearance"
+          errorText={props.errors.appearance}
+          name='appearance'
+          onChange={props.onChange}
+          value={props.question.appearance}
+          multiLine={true}
+        />
+        <TextField
+          floatingLabelText="Relevant"
+          errorText={props.errors.relevant}
+          name='relevant'
+          onChange={props.onChange}
+          value={props.question.relevant}
+          multiLine={true}
+        />
+        <Toggle
+          label="Required"
+          defaultToggled={_.isEqual(props.question.required,'yes')}
+          style={styles.toggle}
+          onToggle={props.onChangeForRequired}
+        />
+      </div>
+    );
+  },
+  getConstraintQuestions: function(props) {
+    return (
+    <div>
       <TextField
-        floatingLabelText="Question Name"
-        errorText={props.errors.name}
-        name='name'
-        disabled={!props.question.isNewQuestion}
-        onChange={props.onChange}
-        value={props.question.name}
-        multiLine={true}
-      />
-      <TextField
-        floatingLabelText="Hint"
-        errorText={props.errors.hint}
-        name='hint'
-        onChange={props.onChange}
-        value={props.question.hint}
-        multiLine={true}
-      />
-      <TextField
-        floatingLabelText="Constraint"
-        errorText={props.errors.constraint}
-        name='constraint'
-        onChange={props.onChange}
-        value={props.question.constraint}
-        multiLine={true}
-      />
-      <TextField
-        floatingLabelText="Constraint Message"
-        errorText={props.errors.constraint_message}
-        name='constraint_message'
-        onChange={props.onChange}
-        value={props.question.constraint_message}
-        multiLine={true}
-      />
-      <TextField
-        floatingLabelText="Appearance"
-        errorText={props.errors.appearance}
-        name='appearance'
-        onChange={props.onChange}
-        value={props.question.appearance}
-        multiLine={true}
-      />
-      <TextField
-        floatingLabelText="Relevant"
-        errorText={props.errors.relevant}
-        name='relevant'
-        onChange={props.onChange}
-        value={props.question.relevant}
-        multiLine={true}
-      />
-      <Toggle
-        label="Required"
-        defaultToggled={_.isEqual(props.question.required,'yes')}
-        style={styles.toggle}
-        onToggle={props.onChangeForRequired}
-      />
+          floatingLabelText="Constraint"
+          errorText={props.errors.constraint}
+          name='constraint'
+          onChange={props.onChange}
+          value={props.question.constraint}
+          multiLine={true}
+        />
+        <TextField
+          floatingLabelText="Constraint Message"
+          errorText={props.errors.constraint_message}
+          name='constraint_message'
+          onChange={props.onChange}
+          value={props.question.constraint_message}
+          multiLine={true}
+        />
       </div>
     );
   }

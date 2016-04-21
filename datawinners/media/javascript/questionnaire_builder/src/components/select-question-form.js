@@ -6,6 +6,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import _ from 'lodash';
 import QuestionnaireStore from '../store/questionnaire-store';
+import AppConstants from '../constants/app-constants';
 
 export default class SelectQuestionForm extends React.Component {
     constructor(props){
@@ -36,7 +37,7 @@ export default class SelectQuestionForm extends React.Component {
           {BaseQuestions.getSelectQuestionType(this.props)}
           <div>
             <SelectField
-                      floatingLabelText="Choices..."
+                      floatingLabelText={"Choices " + AppConstants.MANDATORY_ASTERISK}
                       onChange={this.props.onChangeForChoiceType}
                       value={questionType[1]}
                       name='choiceType'
@@ -45,8 +46,9 @@ export default class SelectQuestionForm extends React.Component {
                     {this.getChoicesMenuItems()}
             </SelectField>
           </div>
-          {BaseQuestions.getCommonQuestions(this.props)}
-
+          {BaseQuestions.getDescriptiveQuestions(this.props)}
+          {BaseQuestions.getConstraintQuestions(this.props)}
+          {BaseQuestions.getControlQuestions(this.props)}
         </form>
       );
     }

@@ -51,6 +51,11 @@ export default class Question extends React.Component {
     this.props.onChange(this.props.question);
   }
 
+  onChangeForUniqueIdType = (event, index, value) => {
+    this.props.question['constraint'] = value;
+    this.props.onChange(this.props.question);
+  }
+
   questionFormIsValid() {
     return true;//TODO
   }
@@ -77,6 +82,7 @@ export default class Question extends React.Component {
                 onChangeForRequired={this.onChangeForRequired}
                 onChangeForQuestionType={this.onChangeForQuestionType}
                 onChangeForChoiceType={this.onChangeForChoiceType}
+                onChangeForUniqueIdType={this.onChangeForUniqueIdType}
                 onDelete={this.onDelete}
                 questionTypes={AppConstants.QuestionTypes} //Due to cyclic dependency, passing as param
                 />

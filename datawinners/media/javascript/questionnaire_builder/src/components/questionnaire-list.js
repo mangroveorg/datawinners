@@ -47,7 +47,8 @@ export default class QuestionnaireList extends React.Component {
 				data: {reload:reload},
 				dataType: 'json',
 				success: function (result) {
-					QuestionnaireStore.load(result.questionnaire);
+					QuestionnaireStore.loadQuestionnaire(result.questionnaire);
+					QuestionnaireStore.loadUniqueIdTypes(result.unique_id_types)
 
 		      self.setState({
 		        questionnaire: result.questionnaire,

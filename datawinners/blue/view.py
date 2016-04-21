@@ -19,6 +19,7 @@ from django.utils.translation import ugettext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
+from mangrove.datastore.entity_type import get_unique_id_types
 
 from pyxform.errors import PyXFormError, BindError
 
@@ -141,12 +142,14 @@ class ProjectBuilder(View):
             if excel_as_dict is None:
                 excel_as_dict = convert_excel_to_dict(file_content=raw_excel, file_type=file_type)
                 _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict)
+
             return HttpResponse(
                 json.dumps(
                     {
                         "project_id": project_id,
                         "questionnaire" : excel_as_dict,
-                        "file_type" : file_type
+                        "file_type" : file_type,
+                        "unique_id_types": get_unique_id_types(manager)
                     }),
                 content_type='application/json')
         except Exception as e:

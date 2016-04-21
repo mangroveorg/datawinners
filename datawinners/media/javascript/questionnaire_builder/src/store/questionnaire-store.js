@@ -8,6 +8,7 @@ import _ from 'lodash';
 
 var _questionnaire = {};
 var _errors = [];
+var _uniqueIdTypes = [];
 
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
@@ -77,6 +78,10 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		return _questionnaire;
 	},
 
+	getUniqueIdTypes: function () {
+		return _uniqueIdTypes;
+	},
+
 	getChoicesGrouped: function() {
 		//TODO: Need not be computed everytime. Only on change of choices, this will change
 		for (var index in _questionnaire.choices){
@@ -127,7 +132,15 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		return _.findIndex(_questionnaire.choices, {base_index: choice.base_index});
 	},
 
-	load: function (questionnaire) {
+	loadUniqueIdTypes: function (uniqueIdTypes) {
+		_uniqueIdTypes = uniqueIdTypes || [];
+	},
+
+	loadQuestionnaire: function (questionnaire) {
+		// injectTempId(questionnaire.survey);
+		if (!questionnaire.choices) {
+			questionnaire.choices = [];
+		}
 		_questionnaire = questionnaire;
 		removeEmptyRowsFromSurvey();
 		flagSupportedQuestionTypes();
