@@ -26,6 +26,10 @@ export default class BuilderToolbar extends React.Component {
     $('#download_form').attr('action', '/xlsform/download/').submit();
   }
 
+  onUnderConstruction() {
+    alert('Under Construction');
+  }
+
   render() {
     return (
       <Toolbar>
@@ -41,7 +45,7 @@ export default class BuilderToolbar extends React.Component {
             tooltipPosition="top-center" >file_download</FontIcon>} />
         </ToolbarGroup>
         <ToolbarGroup float="right">
-          <RaisedButton label="Save Draft" onMouseDown={this.onDownload}/>
+          <RaisedButton label="Save Draft" onMouseDown={this.onUnderConstruction}/>
           <ToolbarSeparator />
           <RaisedButton label="Save" primary={true} onMouseDown={this.props.onSave} />
         </ToolbarGroup>

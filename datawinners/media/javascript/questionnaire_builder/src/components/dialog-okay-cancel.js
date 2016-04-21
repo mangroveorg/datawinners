@@ -53,8 +53,9 @@ export default class DialogOkayCancel extends React.Component {
         <Dialog
           title={this.state.title}
           actions={actions}
-          modal={true}
+          modal={false}
           open={this.state.open}
+          onRequestClose={this.onClose}
         >
           {this.state.message}
         </Dialog>

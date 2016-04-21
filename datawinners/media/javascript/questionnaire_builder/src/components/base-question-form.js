@@ -58,7 +58,7 @@ module.exports = {
                   >
                     {getQuestionTypeMenuItems()}
           </SelectField>
-          <div>
+          <div style={styles.deleteButton}>
             <DialogOkayCancel label="Delete"
                               icon={<FontIcon className="material-icons" >delete</FontIcon>}
                               onOkay={props.onDelete}

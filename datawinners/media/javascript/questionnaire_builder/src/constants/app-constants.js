@@ -29,7 +29,6 @@ module.exports = {
 		{value: "select_multiple", label:"Select multiple"},
 		{value: "image", label: "Image"},
 		{value: "audio", label: "Audio"},
-		{value: "video", label: "Video"},
-		
+		{value: "video", label: "Video"}
 	]
 };
