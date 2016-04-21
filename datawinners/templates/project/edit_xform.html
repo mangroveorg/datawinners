@@ -44,13 +44,6 @@
         var reload = "{{reload}}";
     </script>
 
-{% flag "questionnaire_builder"%}
-    <script defer async type="text/javascript" src="/media/javascript/questionnaire_builder/dist/bundle.js" ></script>
-    <script type="text/javascript">
-        var xlsform_edit_enabled = true;
-    </script>
-{% endflag %}
-
 {% flag "xlsform_edit"%}
     <script type="text/javascript">
         var xlsform_edit_enabled = true;
@@ -62,6 +55,10 @@
 {% block content %}
 
 {% flag "questionnaire_builder"%}
+    <script defer async type="text/javascript" src="/media/javascript/questionnaire_builder/dist/bundle.js" ></script>
+    <script type="text/javascript">
+        var xlsform_edit_enabled = true;
+    </script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<div id="questionnaire_builder"></div>
 
