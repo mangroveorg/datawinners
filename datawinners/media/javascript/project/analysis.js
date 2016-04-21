@@ -44,11 +44,10 @@ $(document).ready(function () {
                         var date_filters = {};
                         $('input.date-question-filter').each(function(index, element){
                             var question_code = $(element).data('questionCode');
-                            var format = $(element).data('questionCode');
-                            var question_code = element.getAttribute('data-question-code');
+                            var format = $(element).data('format');
                             date_filters[question_code] = {
                                 'dateRange': element.value,
-                                'format': $(element).data('format')
+                                'format': format
                             };
                         });
                         d.dateQuestionFilters = JSON.stringify(date_filters);
@@ -502,7 +501,7 @@ $(document).ready(function () {
         self.generateCharts = function() {
             var subject_filter = {};
             $('input.subject_filter').each(function(index, element){
-                var entity_type = element.getAttribute('search-key');
+                var entity_type = element.getAttribute('entity_type');
                 var data = $(element).data('value');
                 if(data != '')
                     subject_filter[entity_type] = data;
@@ -510,13 +509,10 @@ $(document).ready(function () {
             var date_filters = {};
             $('input.date-question-filter').each(function(index, element){
                 var question_code = $(element).data('questionCode');
-                var searchKey = element.getAttribute('search-key');
-                var format = $(element).data('questionCode');
-                var question_code = element.getAttribute('data-question-code');
+                var format = $(element).data('format');
                 date_filters[question_code] = {
                     'dateRange': element.value,
-                    'searchKey': searchKey,
-                    'format': $(element).data('format')
+                    'format': format
                 };
             });
         	
