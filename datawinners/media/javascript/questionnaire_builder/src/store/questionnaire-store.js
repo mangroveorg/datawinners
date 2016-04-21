@@ -9,6 +9,7 @@ import _ from 'lodash';
 var _questionnaire = {};
 var _errors = [];
 var _uniqueIdTypes = [];
+var _saveStatus = AppConstants.QuestionnaireStatus.SAVED;
 
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
@@ -60,6 +61,10 @@ var flagSupportedQuestionTypes = () => {
 	});
 }
 
+var setSaveStatus = (status) => {
+	_saveStatus = status;
+};
+
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	addChangeListener: function (callback) {
@@ -80,6 +85,10 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	getUniqueIdTypes: function () {
 		return _uniqueIdTypes;
+	},
+
+	getSaveState: function () {
+		return _saveStatus;
 	},
 
 	getChoicesGrouped: function() {
@@ -178,7 +187,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function (action) {
-		//TODO: this needs to be updated
+		//TODO: this needs to be updated. Emit change can go inside each method instead of duplicate call?
 	switch (action.actionType) {
 		case AppConstants.ActionTypes.UPDATE_QUESTION:
 		case AppConstants.ActionTypes.CREATE_QUESTION:
@@ -193,6 +202,14 @@ AppDispatcher.register(function (action) {
 			break;
 		case AppConstants.ActionTypes.CREATE_CHOICE:
 			createChoice(action.data);
+			QuestionnaireStore.emitChange();
+			break;
+		case AppConstants.ActionTypes.QUESTIONNAIRE_SAVED:
+			setSaveStatus(AppConstants.QuestionnaireStatus.SAVED);
+			QuestionnaireStore.emitChange();
+			break;
+		case AppConstants.ActionTypes.QUESTIONNAIRE_BEING_SAVED:
+			setSaveStatus(AppConstants.QuestionnaireStatus.BEING_SAVED);
 			QuestionnaireStore.emitChange();
 			break;
 		case AppConstants.ActionTypes.ERROR_ON_SAVE:

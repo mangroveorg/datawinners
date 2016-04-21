@@ -11,6 +11,7 @@ import FlatButton from 'material-ui/FlatButton';
 import QuestionnaireActions from '../actions/questionnaire-actions';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
+import ModalLoader from './modal-loader'
 
 export default class BuilderToolbar extends React.Component {
 
@@ -47,7 +48,13 @@ export default class BuilderToolbar extends React.Component {
         <ToolbarGroup float="right">
           <RaisedButton label="Save Draft" onMouseDown={this.onUnderConstruction}/>
           <ToolbarSeparator />
-          <RaisedButton label="Save" primary={true} onMouseDown={this.props.onSave} />
+          <ModalLoader open={this.props.saveLoaderState}
+                       onCancel={this.props.onCancel}
+                       onOpen={this.props.onSave}
+                       title="Please Wait.."
+                       label="Save"
+                       message="Questionnaire is being saved..."
+                       cancelLabel="Cancel" />
         </ToolbarGroup>
       </Toolbar>
     );

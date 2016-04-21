@@ -11,6 +11,9 @@ var QuestionnaireActions = {
 		saveQuestionnaire : function (id, questionnaire, file_type) {
 			var onSaveHandler = (data) => {
 				if (data.status) {
+					AppDispatcher.dispatch({
+						actionType: AppConstants.ActionTypes.QUESTIONNAIRE_SAVED
+					});
 					Toastr[data.status](data.details, data.reason);
 				} else if (data.error_msg) {
 					Toastr['error'](data.error_msg, data.message_prefix);
@@ -29,6 +32,10 @@ var QuestionnaireActions = {
 				Toastr['error'](AppConstants.CommonErrorMessages.CLEAR_ALL_ERRORS, AppConstants.CommonErrorMessages.SAVE_FAILED);
 				return;
 			}
+
+			AppDispatcher.dispatch({
+																actionType: AppConstants.ActionTypes.QUESTIONNAIRE_BEING_SAVED
+															});
 
 			$.ajax({
 			  type: "POST",

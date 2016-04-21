@@ -32,7 +32,8 @@ export default class QuestionnaireList extends React.Component {
 		this.state = {
 				questionnaire_id:props.questionnaire_id,
 			 	currentTab: 'survey',
-				errors:[]
+				errors:[],
+				saveLoaderState:QuestionnaireStore.getSaveState()
 
 		}
 		this._onChange = this._onChange.bind(this);
@@ -81,19 +82,27 @@ export default class QuestionnaireList extends React.Component {
 		this.setState({
 			questionnaire:QuestionnaireStore.getQuestionnaire(),
 			choicesGrouped:QuestionnaireStore.getChoicesGrouped(),
-			errors:QuestionnaireStore.getErrors()
+			errors:QuestionnaireStore.getErrors(),
+			saveLoaderState:QuestionnaireStore.getSaveState()
 		});
 	}
 
 	saveQuestionnaire = (event) => {
 		event.preventDefault();
 		//TODO - should take questionnaire from store, not from here
-		let status = QuestionnaireActions.saveQuestionnaire(
-											this.state.questionnaire_id,this.state.questionnaire, this.state.file_type);
+		let status = QuestionnaireActions.saveQuestionnaire (
+			                                                    this.state.questionnaire_id,
+			                                                    this.state.questionnaire,
+																													this.state.file_type
+																												);
 	}
 
-	render(){
+	cancelSaveQuestionnaire = (event) => {
+		// TODO: implement the real one
+		console.log('Save questionnaire cancelled.');
+	};
 
+	render(){
 		if (!this.state.questionnaire){
 			return (
 				<div>
@@ -107,7 +116,11 @@ export default class QuestionnaireList extends React.Component {
 		return (
 			<div>
       <Paper zDepth={3} >
-				<BuilderToolbar key='builder_toolbar' onSave={this.saveQuestionnaire}/>
+				<BuilderToolbar key='builder_toolbar'
+												saveLoaderState={this.state.saveLoaderState}
+												onSave={this.saveQuestionnaire}
+												onCancel={this.cancelSaveQuestionnaire} />
+
 					<Tabs tabItemContainerStyle={style.tabs}
 								value={this.state.currentTab}
         				onChange={this.onTabChange}>
