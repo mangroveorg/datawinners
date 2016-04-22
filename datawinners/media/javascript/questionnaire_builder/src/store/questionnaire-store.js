@@ -6,10 +6,11 @@ import AppConstants from '../constants/app-constants';
 import Validator from './validator';
 import _ from 'lodash';
 
+var _questionnaireId = undefined;
+var _fileType = undefined;
 var _questionnaire = {};
 var _errors = [];
 var _uniqueIdTypes = [];
-var _saveStatus = AppConstants.QuestionnaireStatus.SAVED;
 
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
@@ -61,10 +62,6 @@ var flagSupportedQuestionTypes = () => {
 	});
 }
 
-var setSaveStatus = (status) => {
-	_saveStatus = status;
-};
-
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	addChangeListener: function (callback) {
@@ -79,16 +76,20 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		this.emit(CHANGE_EVENT)
 	},
 
+	getQuestionnaireId: function () {
+		return _questionnaireId;
+	},
+
+	getFileType: function () {
+		return _fileType;
+	},
+
 	getQuestionnaire: function () {
 		return _questionnaire;
 	},
 
 	getUniqueIdTypes: function () {
 		return _uniqueIdTypes;
-	},
-
-	getSaveState: function () {
-		return _saveStatus;
 	},
 
 	getChoicesGrouped: function() {
@@ -143,6 +144,14 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	loadUniqueIdTypes: function (uniqueIdTypes) {
 		_uniqueIdTypes = uniqueIdTypes || [];
+	},
+
+	loadQuestionnaireId: function (questionnaireId) {
+		_questionnaireId = questionnaireId;
+	},
+
+	loadFileType: function (fileType) {
+		_fileType = fileType;
 	},
 
 	loadQuestionnaire: function (questionnaire) {
@@ -202,14 +211,6 @@ AppDispatcher.register(function (action) {
 			break;
 		case AppConstants.ActionTypes.CREATE_CHOICE:
 			createChoice(action.data);
-			QuestionnaireStore.emitChange();
-			break;
-		case AppConstants.ActionTypes.QUESTIONNAIRE_SAVED:
-			setSaveStatus(AppConstants.QuestionnaireStatus.SAVED);
-			QuestionnaireStore.emitChange();
-			break;
-		case AppConstants.ActionTypes.QUESTIONNAIRE_BEING_SAVED:
-			setSaveStatus(AppConstants.QuestionnaireStatus.BEING_SAVED);
 			QuestionnaireStore.emitChange();
 			break;
 		case AppConstants.ActionTypes.ERROR_ON_SAVE:

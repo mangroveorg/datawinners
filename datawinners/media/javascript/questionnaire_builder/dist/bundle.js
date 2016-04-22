@@ -22,8 +22,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Toastr.options.preventDuplicates = true; // Extract into separate config
 
 var QuestionnaireActions = {
-	saveQuestionnaire: function saveQuestionnaire(id, questionnaire, file_type) {
+	saveQuestionnaire: function saveQuestionnaire(id, questionnaire, file_type, callback) {
 		var onSaveHandler = function onSaveHandler(data) {
+			callback();
 			_appDispatcher2.default.dispatch({
 				actionType: _appConstants2.default.ActionTypes.QUESTIONNAIRE_SAVED
 			});
@@ -416,9 +417,17 @@ var _DropDownMenu = require('material-ui/DropDownMenu');
 
 var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
 
-var _modalLoader = require('./modal-loader');
+var _appConstants = require('../constants/app-constants');
 
-var _modalLoader2 = _interopRequireDefault(_modalLoader);
+var _appConstants2 = _interopRequireDefault(_appConstants);
+
+var _loaderDialog = require('./loader-dialog');
+
+var _loaderDialog2 = _interopRequireDefault(_loaderDialog);
+
+var _questionnaireStore = require('../store/questionnaire-store');
+
+var _questionnaireStore2 = _interopRequireDefault(_questionnaireStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -434,25 +443,60 @@ var BuilderToolbar = function (_React$Component) {
   function BuilderToolbar(props) {
     _classCallCheck(this, BuilderToolbar);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(BuilderToolbar).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(BuilderToolbar).call(this, props));
+
+    _this.onLoading = function (message) {
+      _this.setState({
+        isLoading: true,
+        message: message
+      });
+    };
+
+    _this.onLoadingComplete = function () {
+      _this.setState({ isLoading: false });
+    };
+
+    _this.onUpload = function () {
+      self = _this;
+      $("input[name=file]").change(function () {
+        // self.onLoading(AppConstants.LoaderMessages.UPLOAD_MESSAGE);
+        console.log('upload completed');
+      });
+
+      //$('.ui-dialog .ui-widget .ui-widget-content').waypoint(function() {
+      // self.onLoadingComplete();
+      //console.log('upload done');
+      //});
+
+      $("input[name=file]").click();
+    };
+
+    _this.onDownload = function () {
+      $('#download_form').attr('action', '/xlsform/download/').submit();
+    };
+
+    _this.onSave = function () {
+      _this.onLoading(_appConstants2.default.LoaderMessages.SAVE_MESSAGE);
+      //TODO - should take questionnaire from store, not from here
+      var status = _questionnaireActions2.default.saveQuestionnaire(_questionnaireStore2.default.getQuestionnaireId(), _questionnaireStore2.default.getQuestionnaire(), _questionnaireStore2.default.getFileType(), _this.onSaveComplete);
+    };
+
+    _this.onSaveComplete = function () {
+      _this.onLoadingComplete();
+    };
+
+    _this.onUnderConstruction = function () {
+      alert('Under Construction');
+    };
+
+    _this.state = {
+      isLoading: false,
+      message: ''
+    };
+    return _this;
   }
 
   _createClass(BuilderToolbar, [{
-    key: 'onUpload',
-    value: function onUpload() {
-      $("input[name=file]").click();
-    }
-  }, {
-    key: 'onDownload',
-    value: function onDownload() {
-      $('#download_form').attr('action', '/xlsform/download/').submit();
-    }
-  }, {
-    key: 'onUnderConstruction',
-    value: function onUnderConstruction() {
-      alert('Under Construction');
-    }
-  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -484,13 +528,10 @@ var BuilderToolbar = function (_React$Component) {
           { float: 'right' },
           _react2.default.createElement(_RaisedButton2.default, { label: 'Save Draft', onMouseDown: this.onUnderConstruction }),
           _react2.default.createElement(_ToolbarSeparator2.default, null),
-          _react2.default.createElement(_modalLoader2.default, { open: this.props.saveLoaderState,
-            onCancel: this.props.onCancel,
-            onOpen: this.props.onSave,
+          _react2.default.createElement(_RaisedButton2.default, { label: 'Save', onTouchTap: this.onSave, primary: true }),
+          _react2.default.createElement(_loaderDialog2.default, { open: this.state.isLoading,
             title: 'Please Wait..',
-            label: 'Save',
-            message: 'Questionnaire is being saved...',
-            cancelLabel: 'Cancel' })
+            message: this.state.message })
         )
       );
     }
@@ -501,7 +542,7 @@ var BuilderToolbar = function (_React$Component) {
 
 exports.default = BuilderToolbar;
 
-},{"../actions/questionnaire-actions":1,"./modal-loader":9,"material-ui/DropDownMenu":411,"material-ui/FlatButton":414,"material-ui/FontIcon":418,"material-ui/IconButton":420,"material-ui/IconMenu":422,"material-ui/MenuItem":430,"material-ui/RaisedButton":437,"material-ui/Toolbar/Toolbar":466,"material-ui/Toolbar/ToolbarGroup":467,"material-ui/Toolbar/ToolbarSeparator":468,"material-ui/Toolbar/ToolbarTitle":469,"react":705}],4:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"../store/questionnaire-store":20,"./loader-dialog":9,"material-ui/DropDownMenu":411,"material-ui/FlatButton":414,"material-ui/FontIcon":418,"material-ui/IconButton":420,"material-ui/IconMenu":422,"material-ui/MenuItem":430,"material-ui/RaisedButton":437,"material-ui/Toolbar/Toolbar":466,"material-ui/Toolbar/ToolbarGroup":467,"material-ui/Toolbar/ToolbarSeparator":468,"material-ui/Toolbar/ToolbarTitle":469,"react":705}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1172,13 +1213,13 @@ var style = {
   }
 };
 
-var ModalLoader = function (_React$Component) {
-  _inherits(ModalLoader, _React$Component);
+var LoaderDialog = function (_React$Component) {
+  _inherits(LoaderDialog, _React$Component);
 
-  function ModalLoader(props) {
-    _classCallCheck(this, ModalLoader);
+  function LoaderDialog(props) {
+    _classCallCheck(this, LoaderDialog);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ModalLoader).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LoaderDialog).call(this, props));
 
     _this.onOpen = function (event) {
       _this.state.onOpen(event);
@@ -1192,17 +1233,15 @@ var ModalLoader = function (_React$Component) {
 
     _this.state = {
       open: props.open,
-      label: props.label,
       title: props.title,
       message: props.message,
       cancelLabel: props.cancelLabel,
-      onCancel: props.onCancel,
-      onOpen: props.onOpen
+      onCancel: props.onCancel
     };
     return _this;
   }
 
-  _createClass(ModalLoader, [{
+  _createClass(LoaderDialog, [{
     key: 'render',
     value: function render() {
       var actions = [_react2.default.createElement(_FlatButton2.default, {
@@ -1214,7 +1253,6 @@ var ModalLoader = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_RaisedButton2.default, { label: this.state.label, onTouchTap: this.onOpen, primary: true }),
         _react2.default.createElement(
           _Dialog2.default,
           {
@@ -1231,7 +1269,6 @@ var ModalLoader = function (_React$Component) {
               size: 60,
               left: 270,
               top: 15,
-              loadingColor: "#FF9800",
               status: 'loading',
               style: style.refresh
             })
@@ -1241,10 +1278,10 @@ var ModalLoader = function (_React$Component) {
     }
   }]);
 
-  return ModalLoader;
+  return LoaderDialog;
 }(_react2.default.Component);
 
-exports.default = ModalLoader;
+exports.default = LoaderDialog;
 
 },{"material-ui/Dialog":409,"material-ui/FlatButton":414,"material-ui/RaisedButton":437,"material-ui/RefreshIndicator":439,"react":705}],10:[function(require,module,exports){
 'use strict';
@@ -1520,12 +1557,6 @@ var QuestionnaireList = function (_React$Component) {
 			}
 		};
 
-		_this.saveQuestionnaire = function (event) {
-			event.preventDefault();
-			//TODO - should take questionnaire from store, not from here
-			var status = _questionnaireActions2.default.saveQuestionnaire(_this.state.questionnaire_id, _this.state.questionnaire, _this.state.file_type);
-		};
-
 		_this.cancelSaveQuestionnaire = function (event) {
 			// TODO: implement the real one
 			console.log('Save questionnaire cancelled.');
@@ -1534,9 +1565,7 @@ var QuestionnaireList = function (_React$Component) {
 		_this.state = {
 			questionnaire_id: props.questionnaire_id,
 			currentTab: 'survey',
-			errors: [],
-			saveLoaderState: _questionnaireStore2.default.getSaveState()
-
+			errors: []
 		};
 		_this._onChange = _this._onChange.bind(_this);
 		return _this;
@@ -1553,6 +1582,8 @@ var QuestionnaireList = function (_React$Component) {
 				data: { reload: reload },
 				dataType: 'json',
 				success: function success(result) {
+					_questionnaireStore2.default.loadQuestionnaireId(self.state.questionnaire_id);
+					_questionnaireStore2.default.loadFileType(result.file_type);
 					_questionnaireStore2.default.loadQuestionnaire(result.questionnaire);
 					_questionnaireStore2.default.loadUniqueIdTypes(result.unique_id_types);
 
@@ -1582,8 +1613,7 @@ var QuestionnaireList = function (_React$Component) {
 			this.setState({
 				questionnaire: _questionnaireStore2.default.getQuestionnaire(),
 				choicesGrouped: _questionnaireStore2.default.getChoicesGrouped(),
-				errors: _questionnaireStore2.default.getErrors(),
-				saveLoaderState: _questionnaireStore2.default.getSaveState()
+				errors: _questionnaireStore2.default.getErrors()
 			});
 		}
 	}, {
@@ -1614,8 +1644,8 @@ var QuestionnaireList = function (_React$Component) {
 					_Paper2.default,
 					{ zDepth: 3 },
 					_react2.default.createElement(_builderToolbar2.default, { key: 'builder_toolbar',
-						saveLoaderState: this.state.saveLoaderState,
 						onSave: this.saveQuestionnaire,
+						onSaveComplete: this.onSaveComplete,
 						onCancel: this.cancelSaveQuestionnaire }),
 					_react2.default.createElement(
 						_Tabs2.default,
@@ -2072,18 +2102,16 @@ module.exports = {
 		CREATE_CHOICE: 'CREATE_CHOICE',
 		UPDATE_CHOICE: 'UPDATE_CHOICE',
 		CREATE_CHOICE_GROUP: 'CREATE_CHOICE_GROUP',
-		ERROR_ON_SAVE: 'ERROR_ON_SAVE',
-		QUESTIONNAIRE_BEING_SAVED: 'QUESTIONNAIRE_BEING_SAVED',
-		QUESTIONNAIRE_SAVED: 'QUESTIONNAIRE_SAVED'
+		ERROR_ON_SAVE: 'ERROR_ON_SAVE'
 	},
 	CommonErrorMessages: {
 		REQUIRED_ERROR_MESSAGE: 'This field is required',
 		SAVE_FAILED: 'Save Failed',
 		CLEAR_ALL_ERRORS: 'Clear all validation errors before saving the questionnaire'
 	},
-	QuestionnaireStatus: {
-		SAVED: false,
-		BEING_SAVED: true
+	LoaderMessages: {
+		UPLOAD_MESSAGE: "Questionnaire being uploaded...",
+		SAVE_MESSAGE: "Questionnaire being saved"
 	},
 	MANDATORY_ASTERISK: '*',
 	REQUIRED_FIELDS: ['label', 'name', 'type'],
@@ -2246,10 +2274,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var CHANGE_EVENT = 'change';
 
 
+var _questionnaireId = undefined;
+var _fileType = undefined;
 var _questionnaire = {};
 var _errors = [];
 var _uniqueIdTypes = [];
-var _saveStatus = _appConstants2.default.QuestionnaireStatus.SAVED;
 
 var createChoiceGroup = function createChoiceGroup() {
 	var choice = _defaultChoice();
@@ -2323,10 +2352,6 @@ var flagSupportedQuestionTypes = function flagSupportedQuestionTypes() {
 	});
 };
 
-var setSaveStatus = function setSaveStatus(status) {
-	_saveStatus = status;
-};
-
 var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	addChangeListener: function addChangeListener(callback) {
@@ -2341,16 +2366,20 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 		this.emit(CHANGE_EVENT);
 	},
 
+	getQuestionnaireId: function getQuestionnaireId() {
+		return _questionnaireId;
+	},
+
+	getFileType: function getFileType() {
+		return _fileType;
+	},
+
 	getQuestionnaire: function getQuestionnaire() {
 		return _questionnaire;
 	},
 
 	getUniqueIdTypes: function getUniqueIdTypes() {
 		return _uniqueIdTypes;
-	},
-
-	getSaveState: function getSaveState() {
-		return _saveStatus;
 	},
 
 	getChoicesGrouped: function getChoicesGrouped() {
@@ -2403,6 +2432,14 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	loadUniqueIdTypes: function loadUniqueIdTypes(uniqueIdTypes) {
 		_uniqueIdTypes = uniqueIdTypes || [];
+	},
+
+	loadQuestionnaireId: function loadQuestionnaireId(questionnaireId) {
+		_questionnaireId = questionnaireId;
+	},
+
+	loadFileType: function loadFileType(fileType) {
+		_fileType = fileType;
 	},
 
 	loadQuestionnaire: function loadQuestionnaire(questionnaire) {
@@ -2462,14 +2499,6 @@ _appDispatcher2.default.register(function (action) {
 			break;
 		case _appConstants2.default.ActionTypes.CREATE_CHOICE:
 			createChoice(action.data);
-			QuestionnaireStore.emitChange();
-			break;
-		case _appConstants2.default.ActionTypes.QUESTIONNAIRE_SAVED:
-			setSaveStatus(_appConstants2.default.QuestionnaireStatus.SAVED);
-			QuestionnaireStore.emitChange();
-			break;
-		case _appConstants2.default.ActionTypes.QUESTIONNAIRE_BEING_SAVED:
-			setSaveStatus(_appConstants2.default.QuestionnaireStatus.BEING_SAVED);
 			QuestionnaireStore.emitChange();
 			break;
 		case _appConstants2.default.ActionTypes.ERROR_ON_SAVE:

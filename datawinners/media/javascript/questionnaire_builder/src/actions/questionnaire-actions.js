@@ -8,8 +8,9 @@ import Toastr from 'toastr';
 // Toastr.options.preventDuplicates = true; // Extract into separate config
 
 var QuestionnaireActions = {
-		saveQuestionnaire : function (id, questionnaire, file_type) {
+		saveQuestionnaire : function (id, questionnaire, file_type, callback) {
 			var onSaveHandler = (data) => {
+				callback();
 				AppDispatcher.dispatch({
 						actionType: AppConstants.ActionTypes.QUESTIONNAIRE_SAVED
 				});

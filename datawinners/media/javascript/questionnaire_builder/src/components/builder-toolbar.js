@@ -11,23 +11,66 @@ import FlatButton from 'material-ui/FlatButton';
 import QuestionnaireActions from '../actions/questionnaire-actions';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
-import ModalLoader from './modal-loader'
+import AppConstants from '../constants/app-constants';
+import LoaderDialog from './loader-dialog';
+import QuestionnaireStore from '../store/questionnaire-store';
 
 export default class BuilderToolbar extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state={
+                 isLoading: false,
+                 message: ''
+               };
   }
 
-  onUpload() {
+  onLoading = (message) => {
+    this.setState({
+                    isLoading: true,
+                    message: message
+                  });
+  }
+
+  onLoadingComplete = () => {
+    this.setState({isLoading: false});
+  }
+
+  onUpload = () => {
+    self = this;
+    $("input[name=file]").change(function() {
+      // self.onLoading(AppConstants.LoaderMessages.UPLOAD_MESSAGE);
+      console.log('upload completed');
+    });
+
+    //$('.ui-dialog .ui-widget .ui-widget-content').waypoint(function() {
+      // self.onLoadingComplete();
+     //console.log('upload done');
+    //});
+
     $("input[name=file]").click();
   }
 
-  onDownload() {
+  onDownload = () => {
     $('#download_form').attr('action', '/xlsform/download/').submit();
   }
 
-  onUnderConstruction() {
+  onSave = () => {
+    this.onLoading(AppConstants.LoaderMessages.SAVE_MESSAGE);
+    //TODO - should take questionnaire from store, not from here
+    let status = QuestionnaireActions.saveQuestionnaire (
+                                                          QuestionnaireStore.getQuestionnaireId(),
+                                                          QuestionnaireStore.getQuestionnaire(),
+                                                          QuestionnaireStore.getFileType(),
+                                                          this.onSaveComplete
+                                                        );
+  }
+
+  onSaveComplete = () => {
+    this.onLoadingComplete();
+  }
+
+  onUnderConstruction = () => {
     alert('Under Construction');
   }
 
@@ -48,13 +91,10 @@ export default class BuilderToolbar extends React.Component {
         <ToolbarGroup float="right">
           <RaisedButton label="Save Draft" onMouseDown={this.onUnderConstruction}/>
           <ToolbarSeparator />
-          <ModalLoader open={this.props.saveLoaderState}
-                       onCancel={this.props.onCancel}
-                       onOpen={this.props.onSave}
+          <RaisedButton label="Save" onTouchTap={this.onSave} primary={true} />
+          <LoaderDialog open={this.state.isLoading}
                        title="Please Wait.."
-                       label="Save"
-                       message="Questionnaire is being saved..."
-                       cancelLabel="Cancel" />
+                       message={this.state.message} />
         </ToolbarGroup>
       </Toolbar>
     );

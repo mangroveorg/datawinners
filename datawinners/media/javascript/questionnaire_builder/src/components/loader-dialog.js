@@ -14,17 +14,15 @@ const style = {
   },
 };
 
-export default class ModalLoader extends React.Component {
+export default class LoaderDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open : props.open,
-      label : props.label,
       title : props.title,
       message : props.message,
       cancelLabel : props.cancelLabel,
-      onCancel : props.onCancel,
-      onOpen : props.onOpen
+      onCancel : props.onCancel
     };
   }
 
@@ -49,7 +47,6 @@ export default class ModalLoader extends React.Component {
 
     return (
       <div>
-        <RaisedButton label={this.state.label} onTouchTap={this.onOpen} primary={true} />
         <Dialog
           title={this.state.title}
           actions={actions}
@@ -62,7 +59,6 @@ export default class ModalLoader extends React.Component {
               size={60}
               left={270}
               top={15}
-              loadingColor={"#FF9800"}
               status="loading"
               style={style.refresh}
             />

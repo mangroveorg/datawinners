@@ -9,18 +9,16 @@ module.exports = {
 		CREATE_CHOICE: 'CREATE_CHOICE',
 		UPDATE_CHOICE: 'UPDATE_CHOICE',
 		CREATE_CHOICE_GROUP: 'CREATE_CHOICE_GROUP',
-		ERROR_ON_SAVE: 'ERROR_ON_SAVE',
-		QUESTIONNAIRE_BEING_SAVED: 'QUESTIONNAIRE_BEING_SAVED',
-		QUESTIONNAIRE_SAVED: 'QUESTIONNAIRE_SAVED'
+		ERROR_ON_SAVE: 'ERROR_ON_SAVE'
 	},
 	CommonErrorMessages : {
 		REQUIRED_ERROR_MESSAGE : 'This field is required',
 		SAVE_FAILED: 'Save Failed',
 		CLEAR_ALL_ERRORS: 'Clear all validation errors before saving the questionnaire'
 	},
-	QuestionnaireStatus: {
-		SAVED: false,
-		BEING_SAVED: true
+	LoaderMessages : {
+		UPLOAD_MESSAGE: "Questionnaire being uploaded...",
+		SAVE_MESSAGE: "Questionnaire being saved"
 	},
 	MANDATORY_ASTERISK: '*',
 	REQUIRED_FIELDS : ['label', 'name', 'type'],
