@@ -1,5 +1,4 @@
 from mangrove.form_model.field import SelectField
-from mangrove.form_model.xform import add_node
 
 from datawinners.blue.rules.rule import Rule
 

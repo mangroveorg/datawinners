@@ -17,6 +17,9 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
         self.driver.find_visible_element(locator).send_keys(text)
         return self
 
+    def get_note(self, index):
+        return self._get_note(index).find_element(by=By.CSS_SELECTOR, value=".question-label").text
+
     def get_label(self, index):
         return self._get_question(index).find_element(by=By.CSS_SELECTOR, value=".question-label").text
 
@@ -89,6 +92,9 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
             except NoSuchElementException:
                 continue
         return False
+
+    def _get_note(self, index):
+        return self.driver.find_elements_(by_css(".note"))[index]
 
     def _get_question(self, index):
         return self._get_questions()[index]
