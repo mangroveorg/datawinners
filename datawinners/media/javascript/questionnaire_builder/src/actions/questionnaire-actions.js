@@ -7,8 +7,25 @@ import Toastr from 'toastr';
 
 // Toastr.options.preventDuplicates = true; // Extract into separate config
 
+var _persistData = (isDraft, callback) => {
+	$.ajax({
+		type: "POST",
+		url: AppConstants.QuestionnaireSaveUrl+QuestionnaireStore.getQuestionnaireId()+'/',
+		dataType: 'json',
+		headers: { "X-CSRFToken": $.cookie('csrftoken') },
+		data: {
+					file_type:QuestionnaireStore.getFileType(),
+					is_draft:isDraft,
+						data:JSON.stringify(QuestionnaireStore.getQuestionnaire())
+					}
+	}).done(callback);
+}
+
 var QuestionnaireActions = {
-		saveQuestionnaire : function (id, questionnaire, file_type, callback) {
+		saveQuestionnaire : function (callback) {
+			// let questionnaire = ;
+			// let fileType = ;
+
 			var onSaveHandler = (data) => {
 				callback();
 				AppDispatcher.dispatch({
@@ -37,17 +54,8 @@ var QuestionnaireActions = {
 			AppDispatcher.dispatch({
 																actionType: AppConstants.ActionTypes.QUESTIONNAIRE_BEING_SAVED
 															});
+			_persistData(false, onSaveHandler);
 
-			$.ajax({
-			  type: "POST",
-			  url: AppConstants.QuestionnaireSaveUrl+id+'/',
-				dataType: 'json',
-				headers: { "X-CSRFToken": $.cookie('csrftoken') },
-			  data: {
-							file_type:file_type,
-								data:JSON.stringify(questionnaire)
-							}
-			}).done(onSaveHandler);
 		},
 
 		createQuestion: function (question_type) {
@@ -108,8 +116,20 @@ var QuestionnaireActions = {
 			AppDispatcher.dispatch({
 				actionType: AppConstants.ActionTypes.CREATE_CHOICE_GROUP
 			});
-		}
+		},
 
+		saveDraft: function(callback){
+		  let questionnaire = QuestionnaireStore.getQuestionnaire();
+			var onSaveDraftHandler = (data) => {
+					callback();
+					if (data.status) {
+						Toastr[data.status](data.details, data.reason);
+					} else if (data.error_msg) {
+						Toastr['error'](data.error_msg, data.message_prefix);
+					}
+			}
+			_persistData(true, onSaveDraftHandler);
+		}
 };
 
 module.exports = QuestionnaireActions;

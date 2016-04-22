@@ -19,7 +19,8 @@ module.exports = {
 	LoaderMessages : {
 		UPLOAD_MESSAGE: "Questionnaire being uploaded...",
 		SAVE_MESSAGE: "Questionnaire being saved",
-		TITLE_MESSAGE: "Please Wait..."
+		TITLE_MESSAGE: "Please Wait...",
+		SAVE_DRAFT_MESSAGE: "Questionnaire draft being saved"
 	},
 	MANDATORY_ASTERISK: '*',
 	REQUIRED_FIELDS : ['label', 'name', 'type'],

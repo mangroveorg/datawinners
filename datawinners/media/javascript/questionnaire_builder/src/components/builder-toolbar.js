@@ -63,22 +63,18 @@ export default class BuilderToolbar extends React.Component {
 
   onSave = () => {
     this.onLoading(AppConstants.LoaderMessages.SAVE_MESSAGE);
-    //TODO - should take questionnaire from store, not from here
-    let status = QuestionnaireActions.saveQuestionnaire (
-                                                          QuestionnaireStore.getQuestionnaireId(),
-                                                          QuestionnaireStore.getQuestionnaire(),
-                                                          QuestionnaireStore.getFileType(),
-                                                          this.onSaveComplete
-                                                        );
+    let status = QuestionnaireActions.saveQuestionnaire (this.onSaveComplete);
   }
 
   onSaveComplete = () => {
     this.onLoadingComplete();
   }
 
-  onUnderConstruction = () => {
-    alert('Under Construction');
+  onSaveDraft = (event) => {
+    this.onLoading(AppConstants.LoaderMessages.SAVE_DRAFT_MESSAGE);
+     QuestionnaireActions.saveDraft(this.onSaveComplete);
   }
+
 
   render() {
     return (
@@ -95,7 +91,7 @@ export default class BuilderToolbar extends React.Component {
             tooltipPosition="top-center" >file_download</FontIcon>} />
         </ToolbarGroup>
         <ToolbarGroup float="right">
-          <RaisedButton label="Save Draft" onMouseDown={this.onUnderConstruction}/>
+          <RaisedButton label="Save Draft" onMouseDown={this.onSaveDraft}/>
           <ToolbarSeparator />
           <RaisedButton label="Save" onTouchTap={this.onSave} primary={true} />
           <LoaderDialog open={this.state.isLoading}

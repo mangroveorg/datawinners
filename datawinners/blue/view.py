@@ -168,21 +168,27 @@ class ProjectBuilder(View):
     def post(self,request, project_id):
         data = request.POST['data']
         file_type = request.POST['file_type']
+        is_draft = request.POST['is_draft']
         try:
             excel_as_dict = json.loads(data, object_pairs_hook=OrderedDict)
             excel_raw_stream = convert_json_to_excel(excel_as_dict, file_type)
             excel_file = _temp_file(request, excel_raw_stream, file_type)
+            if is_draft:
+                manager = get_database_manager(request.user)
+                questionnaire = Project.get(manager, project_id)
+                _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict, excel_file)
+                return HttpResponse(
+                    json.dumps(
+                        {
+                            "status": "success",
+                            "project_id": project_id,
+                            'reason': 'Successfully updated',
+                            'details':''
+     
+                        }),
+                    content_type='application/json')
+            
             return _edit_questionnaire(request, project_id, excel_file, excel_as_dict)
-#             return HttpResponse(
-#                 json.dumps(
-#                     {
-#                         "status": "success",
-#                         "project_id": project_id,
-#                         'reason': 'Successfully updated', #TODO: i18n translation
-#                         'details':''
-# 
-#                     }),
-#                 content_type='application/json')
  
         except Exception as e:
             logger.exception('Unable to save questionnaire from builder')
