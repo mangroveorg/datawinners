@@ -73,6 +73,12 @@ DW.UploadQuestionnaire.prototype._init = function(options){
                 uploadButton.addClass("disabled_yellow_submit_button");
             }
 
+            // Create the event
+            var event = new CustomEvent("uploadFile", { "detail": "File is currently uploaded" });
+
+            // Dispatch/Trigger/Fire the event
+            document.dispatchEvent(event);
+
             flash_message.addClass("none");
             this.params = options.params || {};
             options.onSubmit && options.onSubmit();
@@ -86,6 +92,12 @@ DW.UploadQuestionnaire.prototype._init = function(options){
                 uploadButton.removeClass("disabled_yellow_submit_button");
                 uploadButton.removeAttr("disabled");
             }
+
+            // Create the event
+            var event = new CustomEvent("uploadFileComplete", { "detail": "File upload completed" });
+
+            // Dispatch/Trigger/Fire the event
+            document.dispatchEvent(event);
 
             if (!responseJSON['success']) {
                 if (responseJSON['unsupported']) {

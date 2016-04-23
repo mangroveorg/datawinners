@@ -36,18 +36,24 @@ export default class BuilderToolbar extends React.Component {
     this.setState({isLoading: false});
   }
 
+  onUploadFile = () => {
+    this.setState({
+                    isLoading: true,
+                    message: AppConstants.LoaderMessages.UPLOAD_MESSAGE
+                  });
+    debugger;
+  }
+
+  onUploadFileComplete = () => {
+    this.setState({isLoading: false});
+  }
+
+  componentDidMount = () => {
+    document.addEventListener("uploadFile", this.onUploadFile);
+    document.addEventListener("uploadFileComplete", this.onUploadFileComplete);
+  }
+
   onUpload = () => {
-    self = this;
-    $("input[name=file]").change(function() {
-      // self.onLoading(AppConstants.LoaderMessages.UPLOAD_MESSAGE);
-      console.log('upload completed');
-    });
-
-    //$('.ui-dialog .ui-widget .ui-widget-content').waypoint(function() {
-      // self.onLoadingComplete();
-     //console.log('upload done');
-    //});
-
     $("input[name=file]").click();
   }
 
@@ -93,7 +99,7 @@ export default class BuilderToolbar extends React.Component {
           <ToolbarSeparator />
           <RaisedButton label="Save" onTouchTap={this.onSave} primary={true} />
           <LoaderDialog open={this.state.isLoading}
-                       title="Please Wait.."
+                       title={AppConstants.LoaderMessages.TITLE_MESSAGE}
                        message={this.state.message} />
         </ToolbarGroup>
       </Toolbar>

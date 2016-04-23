@@ -5,8 +5,11 @@ import RefreshIndicator from 'material-ui/RefreshIndicator';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const style = {
+  customContentStyle: {
+    width: '33%'
+  },
   container: {
-    position: 'relative',
+    position: 'relative'
   },
   refresh: {
     display: 'inline-block',
@@ -28,7 +31,6 @@ export default class LoaderDialog extends React.Component {
 
   onOpen = (event) => {
     this.state.onOpen(event);
-    // this.setState({open: true});
   };
 
   onCancel = () => {
@@ -37,28 +39,20 @@ export default class LoaderDialog extends React.Component {
   };
 
   render() {
-    const actions = [
-      <FlatButton
-        label={this.state.cancelLabel}
-        secondary={true}
-        onTouchTap={this.onCancel}
-      />
-    ];
-
     return (
       <div>
         <Dialog
           title={this.state.title}
-          actions={actions}
           modal={true}
           open={this.props.open}
+          contentStyle={style.customContentStyle}
         >
-          {this.state.message}
+          {this.props.message}
           <div style={style.container}>
             <RefreshIndicator
-              size={60}
-              left={270}
-              top={15}
+              size={50}
+              left={145}
+              top={10}
               status="loading"
               style={style.refresh}
             />
