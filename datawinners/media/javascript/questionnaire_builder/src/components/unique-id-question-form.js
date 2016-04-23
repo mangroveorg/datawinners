@@ -37,7 +37,7 @@ export default class UniqueIdQuestionForm extends React.Component {
                     floatingLabelText={"Constraint " + AppConstants.MANDATORY_ASTERISK}
                     disabled={!this.props.question.isNewQuestion}
                     onChange={this.props.onChangeForUniqueIdType}
-                    value={this.props.question.constraint}
+                    value={this.props.question.constraint.toLowerCase()}
                     name='constraint'
                     errorText={this.props.errors.type}
                   >
