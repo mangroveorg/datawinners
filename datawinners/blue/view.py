@@ -171,12 +171,10 @@ class ProjectBuilder(View):
         is_draft = request.POST['is_draft']
         try:
             excel_as_dict = json.loads(data, object_pairs_hook=OrderedDict)
-            excel_raw_stream = convert_json_to_excel(excel_as_dict, file_type)
-            excel_file = _temp_file(request, excel_raw_stream, file_type)
-            if is_draft:
+            if is_draft and is_draft.lower().strip() == 'true':
                 manager = get_database_manager(request.user)
                 questionnaire = Project.get(manager, project_id)
-                _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict, excel_file)
+                _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict=excel_as_dict)
                 return HttpResponse(
                     json.dumps(
                         {
@@ -188,6 +186,8 @@ class ProjectBuilder(View):
                         }),
                     content_type='application/json')
             
+            excel_raw_stream = convert_json_to_excel(excel_as_dict, file_type)
+            excel_file = _temp_file(request, excel_raw_stream, file_type)
             return _edit_questionnaire(request, project_id, excel_file, excel_as_dict)
  
         except Exception as e:

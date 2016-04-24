@@ -2302,6 +2302,7 @@ var _fileType = undefined;
 var _questionnaire = {};
 var _errors = [];
 var _uniqueIdTypes = [];
+var _choicesGrouped = {};
 
 var createChoiceGroup = function createChoiceGroup() {
 	var choice = _defaultChoice();
@@ -2375,6 +2376,28 @@ var flagSupportedQuestionTypes = function flagSupportedQuestionTypes() {
 	});
 };
 
+var renameChoiceListName = function renameChoiceListName() {
+	_questionnaire.choices = _lodash2.default.forEach(_questionnaire.choices, function (c) {
+		if ('list name' in c) {
+			c.list_name = c['list name'];
+			delete c['list name'];
+			delete c['']; //cleanup
+			delete c[-1]; //cleanup
+			return c;
+		}
+	});
+};
+
+var computeChoicesGrouped = function computeChoicesGrouped() {
+	for (var index in _questionnaire.choices) {
+		_questionnaire.choices[index]['base_index'] = index;
+	}
+	var choicesWithoutEmpty = _lodash2.default.filter(_questionnaire.choices, function (c) {
+		return c.isNewChoiceGroup || !_lodash2.default.isEmpty(_lodash2.default.trim(c['list_name']));
+	});
+	_choicesGrouped = _lodash2.default.groupBy(choicesWithoutEmpty, 'list_name');
+};
+
 var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	addChangeListener: function addChangeListener(callback) {
@@ -2406,16 +2429,7 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	getChoicesGrouped: function getChoicesGrouped() {
-		//TODO: Need not be computed everytime. Only on change of choices, this will change
-		for (var index in _questionnaire.choices) {
-			_questionnaire.choices[index]['base_index'] = index;
-		}
-		var choicesWithoutEmpty = _lodash2.default.filter(_questionnaire.choices, function (c) {
-			return c.isNewChoiceGroup || !_lodash2.default.isEmpty(_lodash2.default.trim(c['list_name']));
-		});
-		var choicesGrouped = _lodash2.default.groupBy(choicesWithoutEmpty, 'list_name');
-
-		return choicesGrouped;
+		return _choicesGrouped;
 	},
 
 	getErrors: function getErrors() {
@@ -2473,6 +2487,8 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 		_questionnaire = questionnaire;
 		removeEmptyRowsFromSurvey();
 		flagSupportedQuestionTypes();
+		renameChoiceListName();
+		computeChoicesGrouped();
 	},
 
 	add: function add(question) {
@@ -2491,10 +2507,12 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	updateChoice: function updateChoice(choice) {
 		_questionnaire.choices[this.findChoiceIndex(choice)] = choice;
+		computeChoicesGrouped();
 	},
 
 	deleteChoice: function deleteChoice(base_index) {
 		_questionnaire.choices.splice(base_index, 1);
+		computeChoicesGrouped();
 	},
 
 	createChoice: function createChoice(choice) {
@@ -2502,6 +2520,7 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 			_questionnaire.choices = [];
 		}
 		_questionnaire.choices.push(choice);
+		computeChoicesGrouped();
 	}
 
 });

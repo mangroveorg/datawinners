@@ -44,12 +44,12 @@ def convert_json_record_to_array(records, sheet_name, xlsform_predefined_column_
         keys = records[0].keys()
         if xlsform_predefined_column_names:
             column_names = [k for k in keys if k in xlsform_predefined_column_names]
-            rows.append(column_names)
         else:
-            rows.append(keys)
+            column_names = keys
+        rows.append(column_names)
         for r in records:
             row = []
-            for k in keys:
+            for k in column_names:
                 row.append(r[k])
             rows.append(row)
     return rows
