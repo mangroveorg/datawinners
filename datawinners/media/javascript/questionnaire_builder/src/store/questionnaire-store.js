@@ -12,7 +12,7 @@ var _questionnaire = {};
 var _errors = [];
 var _uniqueIdTypes = [];
 var _choicesGrouped = {};
-var _cascadesGrouped = {};
+var _cascadesGrouped = [];
 
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
@@ -21,13 +21,18 @@ var createChoiceGroup = () => {
 		_questionnaire.choices = [];
 	}
 	_questionnaire.choices.push(choice);
+	computeChoicesGrouped();
 };
 
 var createChoice = (data) => {
 	let choice = _defaultChoice();
 	choice[data.added_field]=data.value;
 	choice['list_name'] = data.choiceGroupName;
+	if (!_questionnaire.choices) {
+		_questionnaire.choices = [];
+	}
 	_questionnaire.choices.push(choice);
+	computeChoicesGrouped();
 };
 
 var _defaultChoice = () => {
@@ -77,6 +82,10 @@ var renameChoiceListName = () => {
 }
 
 var computeChoicesGrouped = () => {
+	if (!_questionnaire.choices){
+		_choicesGrouped = {};
+		return ;
+	}
 	for (var index in _questionnaire.choices){
 		_questionnaire.choices[index]['base_index'] = index;
 	}
@@ -90,6 +99,10 @@ var computeChoicesGrouped = () => {
 }
 
 var computeCascadesGrouped = () => {
+	if (!_questionnaire.cascades){
+		_cascadesGrouped = [];
+		return ;
+	}
 	for (let index in _questionnaire.cascades){
 		_questionnaire.cascades[index]['base_index']=index;
 	}
@@ -229,14 +242,6 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	deleteChoice: function(base_index){
 		_questionnaire.choices.splice(base_index, 1);
-		computeChoicesGrouped();
-	},
-
-	createChoice: function(choice){
-		if (!_questionnaire.choices) {
-			_questionnaire.choices = [];
-		}
-		_questionnaire.choices.push(choice);
 		computeChoicesGrouped();
 	}
 
