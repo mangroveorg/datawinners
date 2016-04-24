@@ -131,12 +131,16 @@ class ProjectBuilder(View):
             logger.info(e.message)
         return None
     
+    def _reload_required(self, request):
+        reload = request.GET.get("reload", 'false').lower().strip()
+        return reload == 'true'
+        
     def get(self, request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         excel_as_dict = None
         try:
-            if not request.GET.get("reload", False): #Switch to handle unexpected failures
+            if not self._reload_required(request): #Switch to handle unexpected failures
                 excel_as_dict = self._get_pre_computed_questionnaire_as_dict(questionnaire)
             raw_excel, file_type = questionnaire.has_attachment()[1:]
             if excel_as_dict is None:

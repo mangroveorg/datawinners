@@ -12,6 +12,7 @@ var _questionnaire = {};
 var _errors = [];
 var _uniqueIdTypes = [];
 var _choicesGrouped = {};
+var _cascadesGrouped = {};
 
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
@@ -88,6 +89,27 @@ var computeChoicesGrouped = () => {
 
 }
 
+var computeCascadesGrouped = () => {
+	for (let index in _questionnaire.cascades){
+		_questionnaire.cascades[index]['base_index']=index;
+	}
+	let cascadesWithoutEmpty = _.filter(
+																	_questionnaire.cascades,
+																	function(c){
+																		return !_.isEmpty(_.trim(c['name']));
+																	});
+	let cascadesHeader = _questionnaire.cascades[0];
+	let cascadesWithoutHeader = _.slice(_questionnaire.cascades,1);
+	let cascadesHeaderKeys = _.without(_.keys(cascadesHeader),'name','base_index');
+	_cascadesGrouped = [];
+	for (let key of cascadesHeaderKeys){
+		_cascadesGrouped.push({
+			name: key,
+			label: cascadesHeader[key]
+		});
+	}
+}
+
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	addChangeListener: function (callback) {
@@ -120,6 +142,10 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	getChoicesGrouped: function() {
 		return _choicesGrouped;
+	},
+
+	getCascadesGrouped: function(){
+		return _cascadesGrouped;
 	},
 
 	getErrors: function(){
@@ -179,6 +205,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		flagSupportedQuestionTypes();
 		renameChoiceListName();
 		computeChoicesGrouped();
+		computeCascadesGrouped();
 	},
 
 	add: function (question) {

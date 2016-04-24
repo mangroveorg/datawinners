@@ -18,6 +18,7 @@ import FontIcon from 'material-ui/FontIcon';
 import FormFactory from './form-factory';
 import ChoicesTab from './choices-tab';
 import SurveyTab from './survey-tab';
+import CascadesTab from './cascades-tab';
 import _ from 'lodash';
 
 const style = {
@@ -54,6 +55,7 @@ export default class QuestionnaireList extends React.Component {
 		      self.setState({
 		        questionnaire: result.questionnaire,
 						choicesGrouped: QuestionnaireStore.getChoicesGrouped(),
+						cascadesGrouped: QuestionnaireStore.getCascadesGrouped(),
 						file_type: result.file_type,
 						reason: result.reason,
 						details: result.details
@@ -136,7 +138,9 @@ export default class QuestionnaireList extends React.Component {
 				      label="Cascades" value='cascades'
 							key='cascades'
 				    >
-							<h3>Cascades gets listed here</h3>
+							<CascadesTab currentTab={this.state.currentTab}
+									cascadesGrouped={this.state.cascadesGrouped}
+									errors={this.state.errors} />
 						</Tab>
 				  </Tabs>
 
