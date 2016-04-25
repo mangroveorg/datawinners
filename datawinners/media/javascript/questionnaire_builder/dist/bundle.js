@@ -66,17 +66,6 @@ var QuestionnaireActions = {
 		}
 
 		_persistData(false, onSaveHandler);
-
-		$.ajax({
-			type: "POST",
-			url: _appConstants2.default.QuestionnaireSaveUrl + id + '/',
-			dataType: 'json',
-			headers: { "X-CSRFToken": $.cookie('csrftoken') },
-			data: {
-				file_type: file_type,
-				data: JSON.stringify(questionnaire)
-			}
-		}).done(onSaveHandler);
 	},
 
 	createQuestion: function createQuestion(question_type) {
