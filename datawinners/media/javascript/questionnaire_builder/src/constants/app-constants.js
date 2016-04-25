@@ -38,6 +38,7 @@ module.exports = {
 		{value: "image", label: "Image"},
 		{value: "audio", label: "Audio"},
 		{value: "video", label: "Video"},
-		{value: "dw_idnr", label: "Identification Number"}
+		{value: "dw_idnr", label: "Identification Number"},
+		{value: "note", label: "Note"}
 	]
 };

@@ -17,6 +17,7 @@ module.exports = {
       case 'image':
       case 'audio':
       case 'video':
+      case 'note':
         questionForm = GenericQuestionForm;
         break;
       case 'select_one':
