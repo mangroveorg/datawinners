@@ -371,10 +371,10 @@ def _add_reminder_info_to_project(cleaned_data, project, organization, reminder_
     details = None
     if project.reminder_and_deadline.get('deadline_month') and set_deadline == True:
         set_deadline = True
-        details = _('Deadline updated: month')
+        details = 'Deadline updated: month'
     elif project.reminder_and_deadline.get('deadline_week') and set_deadline == True:
         set_deadline = True
-        details = _('Deadline updated: week')
+        details = 'Deadline updated: week'
         
     return project, set_deadline, details
 

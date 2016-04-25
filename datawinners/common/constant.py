@@ -27,6 +27,7 @@ ADDED_DATA_SENDERS_TO_QUESTIONNAIRES = "Added Data Sender(s) to Questionnaire(s)
 REMOVED_DATA_SENDER_TO_QUESTIONNAIRES = "Removed Data Sender from Questionnaire"
 DELETED_DATA_SUBMISSION = "Deleted Data Submission(s)"
 EDITED_DATA_SUBMISSION = "Edited Data Submission(s)"
+EDITED_DATA_SUBMISSION_ADV_QUEST = "Edited Data Submission(s) for advanced questionnaire"
 ACTIVATED_REMINDERS = "Activated Reminders"
 DEACTIVATED_REMINDERS = "De-Activated Reminders"
 UPDATED_REMINDERS = "Updated reminders"

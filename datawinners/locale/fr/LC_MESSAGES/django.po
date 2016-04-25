@@ -6316,3 +6316,6 @@ msgstr "Echéance mise à jour : Mois"
 
 msgid "Deadline updated: week"
 msgstr "Echéance mise à jour : Week"
+
+msgid "Edited Data Submission(s) for advanced questionnaire"
+msgstr "Soumission(s) de données sur un questionnaire avancé modifiée(s)"
