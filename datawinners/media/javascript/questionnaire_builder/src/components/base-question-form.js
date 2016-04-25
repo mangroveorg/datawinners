@@ -123,7 +123,7 @@ module.exports = {
         />
         <Toggle
           label="Required"
-          defaultToggled={_.isEqual(props.question.required,'yes')}
+          toggled={_.isEqual(props.question.required,'yes')}
           style={styles.toggle}
           onToggle={props.onChangeForRequired}
         />

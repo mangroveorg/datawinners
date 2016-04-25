@@ -354,7 +354,7 @@ module.exports = {
       }),
       _react2.default.createElement(_Toggle2.default, {
         label: 'Required',
-        defaultToggled: _lodash2.default.isEqual(props.question.required, 'yes'),
+        toggled: _lodash2.default.isEqual(props.question.required, 'yes'),
         style: styles.toggle,
         onToggle: props.onChangeForRequired
       })
@@ -1619,7 +1619,7 @@ var Question = function (_React$Component) {
     };
 
     _this.onChangeForRequired = function (event) {
-      _this.props.question['required'] = event.target.value === 'on' ? 'yes' : 'no';
+      _this.props.question['required'] = event.target.checked ? 'yes' : '';
       _this.props.onChange(_this.props.question);
     };
 
