@@ -9,6 +9,9 @@ XLSFORM_PREDEFINED_COLUMN_NAMES={
                                  "survey": ['type','name','label','calculation','hint','required','appearance','constraint','constraint_message','relevant','default'],
                                  "choices": ['list_name','name', 'label']
                                  }
+XLSFORM_EXCLUDE_COLUMN_NAMES={
+                              "cascades":['base_index']
+                              }
 def convert_excel_to_dict(file_name=None, file_content=None, file_type='xlsx'):
     book = pe.get_book(file_name=file_name, file_content=file_content, file_type=file_type)
     excel_as_dict = OrderedDict()
@@ -28,13 +31,14 @@ def convert_json_to_excel(json_as_dict, file_type='xlsx'):
         book_content[sheet_name] = convert_json_record_to_array(
                                                                 json_as_dict[sheet_name], 
                                                                 sheet_name,
-                                                                XLSFORM_PREDEFINED_COLUMN_NAMES.get(sheet_name)
+                                                                XLSFORM_PREDEFINED_COLUMN_NAMES.get(sheet_name),
+                                                                XLSFORM_EXCLUDE_COLUMN_NAMES.get(sheet_name)
                                                                 )
     excel_raw_stream = pe.save_book_as(dest_file_type=file_type, bookdict=book_content)
 
     return excel_raw_stream
 
-def convert_json_record_to_array(records, sheet_name, xlsform_predefined_column_names=None):
+def convert_json_record_to_array(records, sheet_name, xlsform_predefined_column_names=None, xlsform_exclude_column_names=None):
     rows = []
     if len(records) < 1:
         if xlsform_predefined_column_names:
@@ -46,6 +50,8 @@ def convert_json_record_to_array(records, sheet_name, xlsform_predefined_column_
         keys = records[0].keys()
         if xlsform_predefined_column_names:
             column_names = [k for k in keys if k in xlsform_predefined_column_names]
+        elif xlsform_exclude_column_names:
+            column_names = [k for k in keys if k not in xlsform_exclude_column_names]
         else:
             column_names = keys
         rows.append(column_names)
