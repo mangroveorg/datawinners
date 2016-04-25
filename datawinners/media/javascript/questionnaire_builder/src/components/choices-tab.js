@@ -39,11 +39,6 @@ export default class ChoicesTab extends React.Component {
 		let choicesGrouped = this.props.choicesGrouped;
 		let choiceGroupViews = [];
 		for (var key in choicesGrouped) {
-      let choiceErrors = {};
-      for (let error of this.props.errors) {
-        let base_index = choicesGrouped[key][0].base_index;
-        choiceErrors[base_index] = error[base_index];
-      }
 			choiceGroupViews.push(
 				<ChoiceGroup
 						choiceGroup={choicesGrouped[key]}
@@ -51,7 +46,7 @@ export default class ChoicesTab extends React.Component {
 						onDeleteForChoice={this.onDeleteForChoice}
 						onCreateChoice={this.onCreateChoice}
 						choiceGroupName={key}
-            errors={choiceErrors}
+            errors={this.props.errors}
             isNewChoiceGroup={choicesGrouped[key][0].isNewChoiceGroup}
 						key={'choice_group_'+choicesGrouped[key][0].base_index}
 						/>

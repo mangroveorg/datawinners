@@ -81,6 +81,15 @@ var renameChoiceListName = () => {
 	});
 }
 
+var removeEmptyRowsFromChoices = () => {
+	_questionnaire.choices = _.filter(
+																	_questionnaire.choices,
+																	function(c){
+																		return !_.isEmpty(_.trim(c['list_name']));
+																	});
+
+}
+
 var computeChoicesGrouped = () => {
 	if (!_questionnaire.choices){
 		_choicesGrouped = {};
@@ -89,12 +98,7 @@ var computeChoicesGrouped = () => {
 	for (var index in _questionnaire.choices){
 		_questionnaire.choices[index]['base_index'] = index;
 	}
-	let choicesWithoutEmpty = _.filter(
-																	_questionnaire.choices,
-																	function(c){
-																		return c.isNewChoiceGroup || !_.isEmpty(_.trim(c['list_name']));
-																	});
-	_choicesGrouped = _.groupBy(choicesWithoutEmpty,'list_name');
+	_choicesGrouped = _.groupBy(_questionnaire.choices,'list_name');
 
 }
 
@@ -216,8 +220,9 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		}
 		_questionnaire = questionnaire;
 		removeEmptyRowsFromSurvey();
-		flagSupportedQuestionTypes();
 		renameChoiceListName();
+		removeEmptyRowsFromChoices();
+		flagSupportedQuestionTypes();
 		computeChoicesGrouped();
 		computeCascadesGrouped();
 	},
@@ -237,7 +242,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	updateChoice: function(choice) {
-		_errors = Validator.validateChoice(choice);
+		_errors = _.concat(_errors, Validator.validateChoice(choice));
 		_questionnaire.choices[this.findChoiceIndex(choice)] = choice;
 		computeChoicesGrouped();
 	},

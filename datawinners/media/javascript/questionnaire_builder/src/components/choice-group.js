@@ -86,6 +86,16 @@ export default class ChoiceGroup extends React.Component {
     this.props.onDeleteForChoice(base_index);
   }
 
+  extractChoiceItemError = (base_index) => {
+    let choiceItemError = {};
+    _.forEach(this.props.errors, function (error) {
+      if (error[base_index]) {
+        choiceItemError = error[base_index];
+      }
+    });
+    return choiceItemError;
+  };
+
   getChoiceItems(){
     let choiceItems = this.props.choiceGroup.map((choiceItem) => (
       <TableRow style={styles.table_tr} selectable={false}
@@ -96,7 +106,7 @@ export default class ChoiceGroup extends React.Component {
             id={BUILDER_CHOICE_ID_PREFIX+choiceItem.base_index}
             value={choiceItem.name}
             style={styles.choiceTextField}
-            errorText = {this.props.errors[choiceItem.base_index] ? this.props.errors[choiceItem.base_index].name : ''}
+            errorText = {this.extractChoiceItemError(choiceItem.base_index).name || ''}
             onChange={this.onChange}
           />
 
@@ -107,7 +117,7 @@ export default class ChoiceGroup extends React.Component {
           id={'builder_choice_'+choiceItem.base_index}
           value={choiceItem.label}
           style={styles.choiceTextField}
-          errorText = {this.props.errors[choiceItem.base_index] ? this.props.errors[choiceItem.base_index].label : ''}
+          errorText = { this.extractChoiceItemError(choiceItem.base_index).label || ''}
           onChange={this.onChange}
         />
         </TableRowColumn>
@@ -166,7 +176,7 @@ export default class ChoiceGroup extends React.Component {
             id={'builder_choice_'+this.props.choiceGroup[0].base_index}
             floatingLabelText="List name"
             onChange={this.onChange}
-            errorText = {this.props.choiceGroup[0].base_index && this.props.errors[this.props.choiceGroup[0].base_index] ? this.props.errors[this.props.choiceGroup[0].base_index].list_name : ''}
+            errorText = {this.extractChoiceItemError(this.props.choiceGroup[0].base_index).list_name}
             disabled={!this.props.isNewChoiceGroup}
             value={this.props.choiceGroupName}
             name="list_name"

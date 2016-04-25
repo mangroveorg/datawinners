@@ -12,7 +12,6 @@ var requiredChoiceRule = function (choice) {
       errors[errorKey][field] = AppConstants.CommonErrorMessages.REQUIRED_ERROR_MESSAGE;
     }
   });
-  console.log(errors);
   return errors;
 }
 
