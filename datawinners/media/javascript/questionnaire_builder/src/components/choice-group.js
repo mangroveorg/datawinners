@@ -96,6 +96,7 @@ export default class ChoiceGroup extends React.Component {
             id={BUILDER_CHOICE_ID_PREFIX+choiceItem.base_index}
             value={choiceItem.name}
             style={styles.choiceTextField}
+            errorText = {this.props.errors[choiceItem.base_index] ? this.props.errors[choiceItem.base_index].name : ''}
             onChange={this.onChange}
           />
 
@@ -106,6 +107,7 @@ export default class ChoiceGroup extends React.Component {
           id={'builder_choice_'+choiceItem.base_index}
           value={choiceItem.label}
           style={styles.choiceTextField}
+          errorText = {this.props.errors[choiceItem.base_index] ? this.props.errors[choiceItem.base_index].label : ''}
           onChange={this.onChange}
         />
         </TableRowColumn>
@@ -163,8 +165,8 @@ export default class ChoiceGroup extends React.Component {
           <TextField
             id={'builder_choice_'+this.props.choiceGroup[0].base_index}
             floatingLabelText="List name"
-            errorText={this.errors['list_name']}
             onChange={this.onChange}
+            errorText = {this.props.choiceGroup[0].base_index && this.props.errors[this.props.choiceGroup[0].base_index] ? this.props.errors[this.props.choiceGroup[0].base_index].list_name : ''}
             disabled={!this.props.isNewChoiceGroup}
             value={this.props.choiceGroupName}
             name="list_name"

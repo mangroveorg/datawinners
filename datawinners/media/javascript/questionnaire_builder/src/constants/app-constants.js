@@ -23,7 +23,8 @@ module.exports = {
 		SAVE_DRAFT_MESSAGE: "Questionnaire draft being saved"
 	},
 	MANDATORY_ASTERISK: '*',
-	REQUIRED_FIELDS : ['label', 'name', 'type'],
+	REQUIRED_QUESTION_FIELDS : ['label', 'name', 'type'],
+	REQUIRED_CHOICE_FIELDS : ['list_name', 'name', 'label'],
 	QuestionnaireUrl : '/xlsform/',
 	QuestionnaireSaveUrl : '/xlsform/',
 	QuestionTypes : [

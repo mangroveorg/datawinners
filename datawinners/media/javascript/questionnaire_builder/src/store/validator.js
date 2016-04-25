@@ -14,6 +14,28 @@ var validateQuestionnaire = function (questionnaire) {
   return _.compact(errors);
 };
 
+var validateChoices = function (questionnaire) {
+  let errors =[];
+  _.forEach(questionnaire.choices, function (choice) {
+      let errorsForChoice = validateChoice(choice);
+      if (!_.isEmpty(errorsForChoice)) {
+        errors = _.concat(errors, errorsForChoice);
+      }
+  });
+  return _.compact(errors);
+};
+
+var validateChoice = function (choice) {
+  let errors = [];
+  _.forEach(Rules.ChoiceRules, function (rule) {
+    let errorsForChoice = rule(choice);
+    if (!_.isEmpty(errorsForChoice)) {
+      errors.push(errorsForChoice);
+    }
+  });
+  return _.compact(errors);
+};
+
 var validateQuestion = function (question) {
   let errors = [];
   if(question.isSupported){
@@ -29,5 +51,7 @@ var validateQuestion = function (question) {
 
 module.exports = {
                     validateQuestion : validateQuestion,
-                    validateQuestionnaire : validateQuestionnaire
+                    validateQuestionnaire : validateQuestionnaire,
+                    validateChoice : validateChoice,
+                    validateChoices: validateChoices
                  };

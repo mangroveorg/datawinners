@@ -47,15 +47,23 @@ var QuestionnaireActions = {
 			}
 
 			if (QuestionnaireStore.errorsPresent()) {
+				callback();
 				Toastr['error'](AppConstants.CommonErrorMessages.CLEAR_ALL_ERRORS, AppConstants.CommonErrorMessages.SAVE_FAILED);
 				return;
 			}
 
-			AppDispatcher.dispatch({
-																actionType: AppConstants.ActionTypes.QUESTIONNAIRE_BEING_SAVED
-															});
 			_persistData(false, onSaveHandler);
 
+			$.ajax({
+			  type: "POST",
+			  url: AppConstants.QuestionnaireSaveUrl+id+'/',
+				dataType: 'json',
+				headers: { "X-CSRFToken": $.cookie('csrftoken') },
+			  data: {
+							file_type:file_type,
+								data:JSON.stringify(questionnaire)
+							}
+			}).done(onSaveHandler);
 		},
 
 		createQuestion: function (question_type) {

@@ -168,6 +168,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	errorsPresent: function () {
 		_errors = [];
 		_errors = _.concat(_errors, Validator.validateQuestionnaire(_questionnaire));
+		_errors = _.concat(_errors, Validator.validateChoices(_questionnaire));
 		QuestionnaireStore.emitChange();
 		return _errors.length > 0;
 	},
@@ -236,6 +237,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	updateChoice: function(choice) {
+		_errors = Validator.validateChoice(choice);
 		_questionnaire.choices[this.findChoiceIndex(choice)] = choice;
 		computeChoicesGrouped();
 	},
