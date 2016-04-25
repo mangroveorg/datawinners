@@ -9,7 +9,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"text",
@@ -20,7 +22,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"date",
@@ -31,7 +35,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"text",
@@ -42,7 +48,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"select_one result",
@@ -53,7 +61,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"text",
@@ -64,7 +74,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":"",
-         "relevant":"${result} = 'other'"
+         "relevant":"${result} = 'other'",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"date",
@@ -75,7 +87,9 @@
          "required":"",
          "appearance":"",
          "constraint":". > ${visit}",
-         "relevant":"${result} != 'completed'"
+         "relevant":"${result} != 'completed'",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"time",
@@ -86,7 +100,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":"${result} != 'completed'"
+         "relevant":"${result} != 'completed'",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"text",
@@ -97,7 +113,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"select_one sex",
@@ -108,7 +126,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"integer",
@@ -119,7 +139,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":"${sex} = 'male'"
+         "relevant":"${sex} = 'male'",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"text",
@@ -130,7 +152,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"select_one sex",
@@ -141,7 +165,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"text",
@@ -152,7 +178,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"integer",
@@ -163,7 +191,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":". >=0",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"integer",
@@ -174,7 +204,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":". <=${male_all}",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"integer",
@@ -185,7 +217,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":". <=${male_10_14}",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"integer",
@@ -196,7 +230,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":". <=${male_all} - ${male_10_14}",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"integer",
@@ -207,7 +243,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":". <=${male_15_29}",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"integer",
@@ -218,7 +256,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":". <=${male_all} - ${male_15_29}  - ${male_10_14}",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"integer",
@@ -229,7 +269,9 @@
          "required":"yes",
          "appearance":"",
          "constraint":". <=${male_30}",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"cascading_select zones",
@@ -240,7 +282,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       }
    ],
    "cascades":[
@@ -330,22 +374,22 @@
       },
       {
          "list name":"district",
-         "name":1,
+         "name":1.0,
          "label":"district 01"
       },
       {
          "list name":"district",
-         "name":2,
+         "name":2.0,
          "label":"district 02"
       },
       {
          "list name":"district",
-         "name":3,
+         "name":3.0,
          "label":"district 03"
       },
       {
          "list name":"district",
-         "name":4,
+         "name":4.0,
          "label":"district 04"
       },
       {
@@ -355,22 +399,22 @@
       },
       {
          "list name":"facility",
-         "name":1,
+         "name":1.0,
          "label":"facility 01"
       },
       {
          "list name":"facility",
-         "name":2,
+         "name":2.0,
          "label":"facility 02"
       },
       {
          "list name":"facility",
-         "name":3,
+         "name":3.0,
          "label":"facility 03"
       },
       {
          "list name":"facility",
-         "name":4,
+         "name":4.0,
          "label":"facility 04"
       },
       {
@@ -380,47 +424,47 @@
       },
       {
          "list name":"zone",
-         "name":1,
+         "name":1.0,
          "label":"zone 1"
       },
       {
          "list name":"zone",
-         "name":2,
+         "name":2.0,
          "label":"zone 2"
       },
       {
          "list name":"zone",
-         "name":3,
+         "name":3.0,
          "label":"zone 3"
       },
       {
          "list name":"zone",
-         "name":4,
+         "name":4.0,
          "label":"zone 4"
       },
       {
          "list name":"zone",
-         "name":5,
+         "name":5.0,
          "label":"zone 5"
       },
       {
          "list name":"zone",
-         "name":6,
+         "name":6.0,
          "label":"zone 6"
       },
       {
          "list name":"zone",
-         "name":7,
+         "name":7.0,
          "label":"zone 7"
       },
       {
          "list name":"zone",
-         "name":8,
+         "name":8.0,
          "label":"zone 8"
       },
       {
          "list name":"zone",
-         "name":9,
+         "name":9.0,
          "label":"zone 9"
       },
       {
@@ -710,423 +754,423 @@
       },
       {
          "list name":"age",
-         "name":7,
-         "label":7
+         "name":7.0,
+         "label":7.0
       },
       {
          "list name":"age",
-         "name":8,
-         "label":8
+         "name":8.0,
+         "label":8.0
       },
       {
          "list name":"age",
-         "name":9,
-         "label":9
+         "name":9.0,
+         "label":9.0
       },
       {
          "list name":"age",
-         "name":10,
-         "label":10
+         "name":10.0,
+         "label":10.0
       },
       {
          "list name":"age",
-         "name":11,
-         "label":11
+         "name":11.0,
+         "label":11.0
       },
       {
          "list name":"age",
-         "name":12,
-         "label":12
+         "name":12.0,
+         "label":12.0
       },
       {
          "list name":"age",
-         "name":13,
-         "label":13
+         "name":13.0,
+         "label":13.0
       },
       {
          "list name":"age",
-         "name":14,
-         "label":14
+         "name":14.0,
+         "label":14.0
       },
       {
          "list name":"age",
-         "name":15,
-         "label":15
+         "name":15.0,
+         "label":15.0
       },
       {
          "list name":"age",
-         "name":16,
-         "label":16
+         "name":16.0,
+         "label":16.0
       },
       {
          "list name":"age",
-         "name":17,
-         "label":17
+         "name":17.0,
+         "label":17.0
       },
       {
          "list name":"age",
-         "name":18,
-         "label":18
+         "name":18.0,
+         "label":18.0
       },
       {
          "list name":"age",
-         "name":19,
-         "label":19
+         "name":19.0,
+         "label":19.0
       },
       {
          "list name":"age",
-         "name":20,
-         "label":20
+         "name":20.0,
+         "label":20.0
       },
       {
          "list name":"age",
-         "name":21,
-         "label":21
+         "name":21.0,
+         "label":21.0
       },
       {
          "list name":"age",
-         "name":22,
-         "label":22
+         "name":22.0,
+         "label":22.0
       },
       {
          "list name":"age",
-         "name":23,
-         "label":23
+         "name":23.0,
+         "label":23.0
       },
       {
          "list name":"age",
-         "name":24,
-         "label":24
+         "name":24.0,
+         "label":24.0
       },
       {
          "list name":"age",
-         "name":25,
-         "label":25
+         "name":25.0,
+         "label":25.0
       },
       {
          "list name":"age",
-         "name":26,
-         "label":26
+         "name":26.0,
+         "label":26.0
       },
       {
          "list name":"age",
-         "name":27,
-         "label":27
+         "name":27.0,
+         "label":27.0
       },
       {
          "list name":"age",
-         "name":28,
-         "label":28
+         "name":28.0,
+         "label":28.0
       },
       {
          "list name":"age",
-         "name":29,
-         "label":29
+         "name":29.0,
+         "label":29.0
       },
       {
          "list name":"age",
-         "name":30,
-         "label":30
+         "name":30.0,
+         "label":30.0
       },
       {
          "list name":"age",
-         "name":31,
-         "label":31
+         "name":31.0,
+         "label":31.0
       },
       {
          "list name":"age",
-         "name":32,
-         "label":32
+         "name":32.0,
+         "label":32.0
       },
       {
          "list name":"age",
-         "name":33,
-         "label":33
+         "name":33.0,
+         "label":33.0
       },
       {
          "list name":"age",
-         "name":34,
-         "label":34
+         "name":34.0,
+         "label":34.0
       },
       {
          "list name":"age",
-         "name":35,
-         "label":35
+         "name":35.0,
+         "label":35.0
       },
       {
          "list name":"age",
-         "name":36,
-         "label":36
+         "name":36.0,
+         "label":36.0
       },
       {
          "list name":"age",
-         "name":37,
-         "label":37
+         "name":37.0,
+         "label":37.0
       },
       {
          "list name":"age",
-         "name":38,
-         "label":38
+         "name":38.0,
+         "label":38.0
       },
       {
          "list name":"age",
-         "name":39,
-         "label":39
+         "name":39.0,
+         "label":39.0
       },
       {
          "list name":"age",
-         "name":40,
-         "label":40
+         "name":40.0,
+         "label":40.0
       },
       {
          "list name":"age",
-         "name":41,
-         "label":41
+         "name":41.0,
+         "label":41.0
       },
       {
          "list name":"age",
-         "name":42,
-         "label":42
+         "name":42.0,
+         "label":42.0
       },
       {
          "list name":"age",
-         "name":43,
-         "label":43
+         "name":43.0,
+         "label":43.0
       },
       {
          "list name":"age",
-         "name":44,
-         "label":44
+         "name":44.0,
+         "label":44.0
       },
       {
          "list name":"age",
-         "name":45,
-         "label":45
+         "name":45.0,
+         "label":45.0
       },
       {
          "list name":"age",
-         "name":46,
-         "label":46
+         "name":46.0,
+         "label":46.0
       },
       {
          "list name":"age",
-         "name":47,
-         "label":47
+         "name":47.0,
+         "label":47.0
       },
       {
          "list name":"age",
-         "name":48,
-         "label":48
+         "name":48.0,
+         "label":48.0
       },
       {
          "list name":"age",
-         "name":49,
-         "label":49
+         "name":49.0,
+         "label":49.0
       },
       {
          "list name":"age",
-         "name":50,
-         "label":50
+         "name":50.0,
+         "label":50.0
       },
       {
          "list name":"age",
-         "name":51,
-         "label":51
+         "name":51.0,
+         "label":51.0
       },
       {
          "list name":"age",
-         "name":52,
-         "label":52
+         "name":52.0,
+         "label":52.0
       },
       {
          "list name":"age",
-         "name":53,
-         "label":53
+         "name":53.0,
+         "label":53.0
       },
       {
          "list name":"age",
-         "name":54,
-         "label":54
+         "name":54.0,
+         "label":54.0
       },
       {
          "list name":"age",
-         "name":55,
-         "label":55
+         "name":55.0,
+         "label":55.0
       },
       {
          "list name":"age",
-         "name":56,
-         "label":56
+         "name":56.0,
+         "label":56.0
       },
       {
          "list name":"age",
-         "name":57,
-         "label":57
+         "name":57.0,
+         "label":57.0
       },
       {
          "list name":"age",
-         "name":58,
-         "label":58
+         "name":58.0,
+         "label":58.0
       },
       {
          "list name":"age",
-         "name":59,
-         "label":59
+         "name":59.0,
+         "label":59.0
       },
       {
          "list name":"age",
-         "name":60,
-         "label":60
+         "name":60.0,
+         "label":60.0
       },
       {
          "list name":"age",
-         "name":61,
-         "label":61
+         "name":61.0,
+         "label":61.0
       },
       {
          "list name":"age",
-         "name":62,
-         "label":62
+         "name":62.0,
+         "label":62.0
       },
       {
          "list name":"age",
-         "name":63,
-         "label":63
+         "name":63.0,
+         "label":63.0
       },
       {
          "list name":"age",
-         "name":64,
-         "label":64
+         "name":64.0,
+         "label":64.0
       },
       {
          "list name":"age",
-         "name":65,
-         "label":65
+         "name":65.0,
+         "label":65.0
       },
       {
          "list name":"age",
-         "name":66,
-         "label":66
+         "name":66.0,
+         "label":66.0
       },
       {
          "list name":"age",
-         "name":67,
-         "label":67
+         "name":67.0,
+         "label":67.0
       },
       {
          "list name":"age",
-         "name":68,
-         "label":68
+         "name":68.0,
+         "label":68.0
       },
       {
          "list name":"age",
-         "name":69,
-         "label":69
+         "name":69.0,
+         "label":69.0
       },
       {
          "list name":"age",
-         "name":70,
-         "label":70
+         "name":70.0,
+         "label":70.0
       },
       {
          "list name":"age",
-         "name":71,
-         "label":71
+         "name":71.0,
+         "label":71.0
       },
       {
          "list name":"age",
-         "name":72,
-         "label":72
+         "name":72.0,
+         "label":72.0
       },
       {
          "list name":"age",
-         "name":73,
-         "label":73
+         "name":73.0,
+         "label":73.0
       },
       {
          "list name":"age",
-         "name":74,
-         "label":74
+         "name":74.0,
+         "label":74.0
       },
       {
          "list name":"age",
-         "name":75,
-         "label":75
+         "name":75.0,
+         "label":75.0
       },
       {
          "list name":"age",
-         "name":76,
-         "label":76
+         "name":76.0,
+         "label":76.0
       },
       {
          "list name":"age",
-         "name":77,
-         "label":77
+         "name":77.0,
+         "label":77.0
       },
       {
          "list name":"age",
-         "name":78,
-         "label":78
+         "name":78.0,
+         "label":78.0
       },
       {
          "list name":"age",
-         "name":79,
-         "label":79
+         "name":79.0,
+         "label":79.0
       },
       {
          "list name":"age",
-         "name":80,
-         "label":80
+         "name":80.0,
+         "label":80.0
       },
       {
          "list name":"age",
-         "name":81,
-         "label":81
+         "name":81.0,
+         "label":81.0
       },
       {
          "list name":"age",
-         "name":82,
-         "label":82
+         "name":82.0,
+         "label":82.0
       },
       {
          "list name":"age",
-         "name":83,
-         "label":83
+         "name":83.0,
+         "label":83.0
       },
       {
          "list name":"age",
-         "name":84,
-         "label":84
+         "name":84.0,
+         "label":84.0
       },
       {
          "list name":"age",
-         "name":85,
-         "label":85
+         "name":85.0,
+         "label":85.0
       },
       {
          "list name":"age",
-         "name":86,
-         "label":86
+         "name":86.0,
+         "label":86.0
       },
       {
          "list name":"age",
-         "name":87,
-         "label":87
+         "name":87.0,
+         "label":87.0
       },
       {
          "list name":"age",
-         "name":88,
-         "label":88
+         "name":88.0,
+         "label":88.0
       },
       {
          "list name":"age",
-         "name":89,
-         "label":89
+         "name":89.0,
+         "label":89.0
       },
       {
          "list name":"age",
-         "name":90,
-         "label":90
+         "name":90.0,
+         "label":90.0
       },
       {
          "list name":"",

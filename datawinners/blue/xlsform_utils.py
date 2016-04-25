@@ -6,7 +6,7 @@ from pyexcel.ext import xls #This import is needed for loading excel. Please don
 from collections import OrderedDict
 
 XLSFORM_PREDEFINED_COLUMN_NAMES={
-                                 "survey": ['type','name','label','calculation','hint','required','appearance','constraint','relevant'],
+                                 "survey": ['type','name','label','calculation','hint','required','appearance','constraint','constraint_message','relevant','default'],
                                  "choices": ['list_name','name', 'label']
                                  }
 def convert_excel_to_dict(file_name=None, file_content=None, file_type='xlsx'):
@@ -16,6 +16,8 @@ def convert_excel_to_dict(file_name=None, file_content=None, file_type='xlsx'):
     for sheet in book:
         if len(sheet.array) > 0:
             sheet.name_columns_by_row(0)
+            if sheet.name == 'survey':
+                _add_supported_attributes_that_doesnt_exists(sheet)
             records = _to_records(sheet)
         excel_as_dict[sheet.name] = records
     return excel_as_dict
@@ -83,4 +85,15 @@ def _yield_from_records(records):
             for k in keys:
                 row.append(r[k])
             yield row
+        
+def _add_supported_attributes_that_doesnt_exists(sheet):
+    supported_attributes_that_doesnt_exists = list(set(XLSFORM_PREDEFINED_COLUMN_NAMES[sheet.name]) - set(sheet.colnames))
+    additional_data = list()
+    additional_data.append(supported_attributes_that_doesnt_exists)
+    for row in sheet.rows():
+        additional_data.append(['' for x in supported_attributes_that_doesnt_exists])
+
+    additional_supported_attr_sheet = pe.Sheet(additional_data)
+    sheet.column += additional_supported_attr_sheet
+    
 
