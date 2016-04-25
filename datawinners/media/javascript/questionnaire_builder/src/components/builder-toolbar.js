@@ -41,7 +41,6 @@ export default class BuilderToolbar extends React.Component {
                     isLoading: true,
                     message: AppConstants.LoaderMessages.UPLOAD_MESSAGE
                   });
-    debugger;
   }
 
   onUploadFileComplete = () => {
