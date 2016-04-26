@@ -38,10 +38,8 @@ var _persistData = function _persistData(isDraft, callback) {
 var QuestionnaireActions = {
 	saveQuestionnaire: function saveQuestionnaire(callback) {
 		var onSaveHandler = function onSaveHandler(data) {
+
 			callback();
-			_appDispatcher2.default.dispatch({
-				actionType: _appConstants2.default.ActionTypes.QUESTIONNAIRE_SAVED
-			});
 			if (data.status) {
 				_toastr2.default[data.status](data.details, data.reason);
 			} else if (data.error_msg) {
@@ -53,6 +51,8 @@ var QuestionnaireActions = {
 					actionType: _appConstants2.default.ActionTypes.ERROR_ON_SAVE,
 					data: data.errors
 				});
+			} else {
+				QuestionnaireActions.initQuestionnaire(_questionnaireStore2.default.getQuestionnaireId(), 'true');
 			}
 		};
 

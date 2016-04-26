@@ -24,10 +24,8 @@ var _persistData = (isDraft, callback) => {
 var QuestionnaireActions = {
 		saveQuestionnaire : function (callback) {
 			var onSaveHandler = (data) => {
+
 				callback();
-				AppDispatcher.dispatch({
-						actionType: AppConstants.ActionTypes.QUESTIONNAIRE_SAVED
-				});
 				if (data.status) {
 					Toastr[data.status](data.details, data.reason);
 				} else if (data.error_msg) {
@@ -39,6 +37,8 @@ var QuestionnaireActions = {
 						actionType: AppConstants.ActionTypes.ERROR_ON_SAVE,
 						data: data.errors
 					});
+				}else {
+					QuestionnaireActions.initQuestionnaire(QuestionnaireStore.getQuestionnaireId(), 'true');
 				}
 
 			}
