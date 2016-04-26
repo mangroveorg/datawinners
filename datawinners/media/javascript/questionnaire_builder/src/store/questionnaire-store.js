@@ -230,7 +230,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		removeEmptyRowsFromChoices();
 		flagSupportedQuestionTypes();
 		computeChoicesGrouped();
-		computeCascadesGrouped();
+		// computeCascadesGrouped();
 	},
 
 	add: function (question) {
