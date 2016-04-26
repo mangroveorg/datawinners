@@ -180,7 +180,7 @@ class XlsFormParser():
 
                         if question['type'] in ['select', 'select1'] and question['has_other']:
                             other_field = {u'type': u'text', u'name': question['code'] + "_other",
-                                           u'label': question['title'] + "_other"}
+                                           u'label': question['title'] + "_other", u'is_other': True}
                             other_question, other_field_errors, x = self._create_question(other_field,
                                                                                           parent_field_code)
                             questions.append(other_question)
@@ -465,6 +465,9 @@ class XlsFormParser():
 
         if type == CALCULATE:
             question.update({"is_calculated": True})
+
+        if field.get('is_other') is not None and field.get('is_other'):
+            question.update({"is_other": True})
 
         return question
 

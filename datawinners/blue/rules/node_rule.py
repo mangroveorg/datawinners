@@ -25,6 +25,9 @@ class NodeRule(Rule):
         pass
 
     def edit(self, node, old_field, new_field, old_xform, new_xform, activity_log_detail):
+        if hasattr(new_field, 'is_other') and new_field.is_other:
+            return
+
         node_to_be_updated = [child for child in node if child.tag.endswith(self.tagname())]
         if node_to_be_updated:
             self.update_node(node_to_be_updated[0], old_field, new_field, activity_log_detail)
