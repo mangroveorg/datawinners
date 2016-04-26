@@ -284,7 +284,7 @@ module.exports = {
           ),
           onOkay: props.onDelete,
           title: 'Are You Sure?',
-          message: 'You are about to delete the question.',
+          message: 'You are about to delete the question. You will lose data for this question',
           okayLabel: 'I\'m Sure',
           cancelLabel: 'Cancel' })
       )
