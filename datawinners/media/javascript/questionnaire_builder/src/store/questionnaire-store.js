@@ -48,11 +48,17 @@ var	updateSaveError = (errors) => {
 		_errors = errors;
 }
 
-var removeValidationErrorsIfExists = function (question) {
+var removeQuestionValidationErrorsIfExists = function (question) {
 	_.remove(_errors, function (error) {
 			let errorKey = question.temp_id || question.name;
 			return error[errorKey];
 		});
+};
+
+var removeChoiceValidationErrorsIfExists = function (choice) {
+	_.remove(_errors, function (error) {
+		return error[choice.base_index];
+	});
 };
 
 var removeEmptyRowsFromSurvey = () => {
@@ -233,7 +239,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	update: function (question) {
 		_questionnaire.survey[this.findQuestionIndex(question)] = question;
-		removeValidationErrorsIfExists(question);
+		removeQuestionValidationErrorsIfExists(question);
 		_errors = _.concat(_errors, Validator.validateQuestion(question));
 	},
 
@@ -242,6 +248,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	updateChoice: function(choice) {
+		removeChoiceValidationErrorsIfExists(choice);
 		_errors = _.concat(_errors, Validator.validateChoice(choice));
 		_questionnaire.choices[this.findChoiceIndex(choice)] = choice;
 		computeChoicesGrouped();

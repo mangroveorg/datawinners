@@ -1582,6 +1582,10 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _FontIcon = require('material-ui/FontIcon');
+
+var _FontIcon2 = _interopRequireDefault(_FontIcon);
+
 var _Paper = require('material-ui/Paper');
 
 var _Paper2 = _interopRequireDefault(_Paper);
@@ -1600,6 +1604,9 @@ var style = {
     borderTopStyle: "solid",
     borderTopColor: "grey",
     borderWidth: "2px"
+  },
+  iconStyle: {
+    marginRight: 24
   }
 };
 
@@ -1666,13 +1673,32 @@ var Question = function (_React$Component) {
       return _react2.default.createElement(
         _Card2.default,
         null,
-        _react2.default.createElement(_CardHeader2.default, {
-          title: _lodash2.default.truncate(this.props.question.label, { 'length': 100 }),
-          subtitle: this.props.question.type,
-          actAsExpander: true,
-          showExpandableButton: true,
-          style: style.question_row
-        }),
+        _react2.default.createElement(
+          _CardHeader2.default,
+          {
+            title: _lodash2.default.truncate(this.props.question.label, { 'length': 100 }),
+            subtitle: this.props.question.type,
+            actAsExpander: true,
+            showExpandableButton: true,
+            style: style.question_row
+          },
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(_FontIcon2.default, {
+              className: 'arrow_upward',
+              style: style.iconStyle
+            })
+          ),
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(_FontIcon2.default, {
+              className: 'arrow_downward',
+              style: style.iconStyle
+            })
+          )
+        ),
         _react2.default.createElement(
           _CardText2.default,
           { expandable: true },
@@ -1697,7 +1723,7 @@ var Question = function (_React$Component) {
 
 exports.default = Question;
 
-},{"../actions/questionnaire-actions":1,"../constants/app-constants":17,"./form-factory":9,"lodash":397,"material-ui/Card/Card":405,"material-ui/Card/CardHeader":407,"material-ui/Card/CardText":408,"material-ui/Paper":435,"react":708,"toastr":710}],13:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../constants/app-constants":17,"./form-factory":9,"lodash":397,"material-ui/Card/Card":405,"material-ui/Card/CardHeader":407,"material-ui/Card/CardText":408,"material-ui/FontIcon":421,"material-ui/Paper":435,"react":708,"toastr":710}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2631,10 +2657,16 @@ var updateSaveError = function updateSaveError(errors) {
 	_errors = errors;
 };
 
-var removeValidationErrorsIfExists = function removeValidationErrorsIfExists(question) {
+var removeQuestionValidationErrorsIfExists = function removeQuestionValidationErrorsIfExists(question) {
 	_lodash2.default.remove(_errors, function (error) {
 		var errorKey = question.temp_id || question.name;
 		return error[errorKey];
+	});
+};
+
+var removeChoiceValidationErrorsIfExists = function removeChoiceValidationErrorsIfExists(choice) {
+	_lodash2.default.remove(_errors, function (error) {
+		return error[choice.base_index];
 	});
 };
 
@@ -2831,7 +2863,7 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	update: function update(question) {
 		_questionnaire.survey[this.findQuestionIndex(question)] = question;
-		removeValidationErrorsIfExists(question);
+		removeQuestionValidationErrorsIfExists(question);
 		_errors = _lodash2.default.concat(_errors, _validator2.default.validateQuestion(question));
 	},
 
@@ -2840,6 +2872,7 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	updateChoice: function updateChoice(choice) {
+		removeChoiceValidationErrorsIfExists(choice);
 		_errors = _lodash2.default.concat(_errors, _validator2.default.validateChoice(choice));
 		_questionnaire.choices[this.findChoiceIndex(choice)] = choice;
 		computeChoicesGrouped();
