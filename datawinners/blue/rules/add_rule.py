@@ -36,9 +36,13 @@ class AddRule(Rule):
                     self._update_xform_with_new_fields(new_field.fields, old_field[0].fields, new_node, old_node,
                                                        old_xform, new_xform, activity_log_detail)
             else:
+                if isinstance(new_field, FieldSet):
+                    return
+
                 bind_node = new_xform.get_bind_node_by_name(new_field.code) if new_node is None else new_xform.bind_node(new_node)
                 instance_node = new_xform.instance_node_given_name(new_field.code) if new_node is None else new_xform.instance_node(new_node)
                 self.add(old_parent_node, new_node, bind_node, instance_node, old_xform)
+
                 if isinstance(new_field, SelectField) and new_field.is_cascade:
                     for translation_node in new_xform.get_translation_nodes(new_node):
                         old_xform.add_translation_node(translation_node)

@@ -1,4 +1,4 @@
-from mangrove.form_model.field import SelectField
+from mangrove.form_model.field import SelectField, FieldSet
 from mangrove.form_model.xform import remove_node
 
 from datawinners.blue.rules.rule import Rule
@@ -6,6 +6,9 @@ from datawinners.blue.rules.rule import Rule
 
 class RemoveRule(Rule):
     def remove(self, parent_node, node, xform, old_field, activity_log_detail):
+        if isinstance(old_field, FieldSet):
+            return
+
         if node is not None:
             remove_node(parent_node, node)
             xform.remove_bind_node(node)
