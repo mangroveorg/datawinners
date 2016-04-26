@@ -59,6 +59,13 @@
     <script type="text/javascript">
         var xlsform_edit_enabled = true;
         var questionnaire_builder_enabled = true;
+        var raiseUploadFileCompletedEvent = function (response) {
+            if (typeof(questionnaire_builder_enabled) != 'undefined') {
+                    var event = new CustomEvent("uploadFileComplete", { detail : response });
+                    document.dispatchEvent(event);
+                    return;
+               }
+           };
     </script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<div id="questionnaire_builder"></div>

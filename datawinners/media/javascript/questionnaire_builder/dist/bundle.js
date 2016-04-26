@@ -1590,6 +1590,10 @@ var _Paper = require('material-ui/Paper');
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
+var _FlatButton = require('material-ui/FlatButton');
+
+var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1653,6 +1657,16 @@ var Question = function (_React$Component) {
       _this.props.onDelete(_this.props.question);
     };
 
+    _this.onMoveUp = function (event) {
+      alert('Move up');
+      console.log(_this.props.question);
+    };
+
+    _this.onMoveDown = function (event) {
+      alert('Move down');
+      console.log(_this.props.question);
+    };
+
     _this.formType = _formFactory2.default.getFormForQuestionType(_this.props.question.type);
     return _this;
   }
@@ -1682,22 +1696,22 @@ var Question = function (_React$Component) {
             showExpandableButton: true,
             style: style.question_row
           },
-          _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(_FontIcon2.default, {
-              className: 'arrow_upward',
-              style: style.iconStyle
-            })
-          ),
-          _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(_FontIcon2.default, {
-              className: 'arrow_downward',
-              style: style.iconStyle
-            })
-          )
+          _react2.default.createElement(_FlatButton2.default, { label: '',
+            onMouseDown: this.onMoveUp,
+            icon: _react2.default.createElement(
+              _FontIcon2.default,
+              { className: 'material-icons',
+                style: style.iconStyles },
+              'arrow_upward'
+            ) }),
+          _react2.default.createElement(_FlatButton2.default, { label: '',
+            onMouseDown: this.onMoveDown,
+            icon: _react2.default.createElement(
+              _FontIcon2.default,
+              { className: 'material-icons',
+                style: style.iconStyles },
+              'arrow_downward'
+            ) })
         ),
         _react2.default.createElement(
           _CardText2.default,
@@ -1723,7 +1737,7 @@ var Question = function (_React$Component) {
 
 exports.default = Question;
 
-},{"../actions/questionnaire-actions":1,"../constants/app-constants":17,"./form-factory":9,"lodash":397,"material-ui/Card/Card":405,"material-ui/Card/CardHeader":407,"material-ui/Card/CardText":408,"material-ui/FontIcon":421,"material-ui/Paper":435,"react":708,"toastr":710}],13:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../constants/app-constants":17,"./form-factory":9,"lodash":397,"material-ui/Card/Card":405,"material-ui/Card/CardHeader":407,"material-ui/Card/CardText":408,"material-ui/FlatButton":417,"material-ui/FontIcon":421,"material-ui/Paper":435,"react":708,"toastr":710}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

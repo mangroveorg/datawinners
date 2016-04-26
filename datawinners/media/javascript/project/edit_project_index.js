@@ -4,14 +4,6 @@ $(function () {
 
     DW.XLSSampleSectionTracker();
 
-   var raiseUploadFileCompletedEvent = function (response) {
-    if (typeof(questionnaire_builder_enabled) != 'undefined') {
-            var event = new CustomEvent("uploadFileComplete", { detail : response });
-            document.dispatchEvent(event);
-            return;
-       }
-   };
-
     new DW.UploadQuestionnaire({
         buttonText: "Upload New XLSForm",
         params: {"edit": true},

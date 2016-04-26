@@ -7,7 +7,9 @@ import CardText from 'material-ui/Card/CardText';
 import AppConstants from '../constants/app-constants';
 import FormFactory from './form-factory';
 import _ from 'lodash';
+import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
 
 const style = {
   question_row: {
