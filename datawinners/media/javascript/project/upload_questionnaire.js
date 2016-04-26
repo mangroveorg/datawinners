@@ -93,12 +93,6 @@ DW.UploadQuestionnaire.prototype._init = function(options){
                 uploadButton.removeAttr("disabled");
             }
 
-            // Create the event
-            var event = new CustomEvent("uploadFileComplete", { "detail": "File upload completed" });
-
-            // Dispatch/Trigger/Fire the event
-            document.dispatchEvent(event);
-
             if (!responseJSON['success']) {
                 if (responseJSON['unsupported']) {
                     options.promptOverwrite(responseJSON, self.file_uploader, self.file_input);

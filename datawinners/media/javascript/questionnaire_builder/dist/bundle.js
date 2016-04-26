@@ -446,6 +446,10 @@ var _questionnaireStore = require('../store/questionnaire-store');
 
 var _questionnaireStore2 = _interopRequireDefault(_questionnaireStore);
 
+var _toastr = require('toastr');
+
+var _toastr2 = _interopRequireDefault(_toastr);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -480,8 +484,17 @@ var BuilderToolbar = function (_React$Component) {
       });
     };
 
-    _this.onUploadFileComplete = function () {
+    _this.onUploadFileComplete = function (event) {
       _this.setState({ isLoading: false });
+      if (!event.detail) {
+        return;
+      }
+
+      if (event.detail.success) {
+        _toastr2.default["success"]("File Uploaded Successfully", "Upload Success");
+      } else {
+        _toastr2.default["error"](event.detail.error_msg, "Upload Failed");
+      }
     };
 
     _this.componentDidMount = function () {
@@ -564,7 +577,7 @@ var BuilderToolbar = function (_React$Component) {
 
 exports.default = BuilderToolbar;
 
-},{"../actions/questionnaire-actions":1,"../constants/app-constants":17,"../store/questionnaire-store":23,"./loader-dialog":11,"material-ui/DropDownMenu":414,"material-ui/FlatButton":417,"material-ui/FontIcon":421,"material-ui/IconButton":423,"material-ui/IconMenu":425,"material-ui/MenuItem":433,"material-ui/RaisedButton":440,"material-ui/Toolbar/Toolbar":469,"material-ui/Toolbar/ToolbarGroup":470,"material-ui/Toolbar/ToolbarSeparator":471,"material-ui/Toolbar/ToolbarTitle":472,"react":708}],4:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../constants/app-constants":17,"../store/questionnaire-store":23,"./loader-dialog":11,"material-ui/DropDownMenu":414,"material-ui/FlatButton":417,"material-ui/FontIcon":421,"material-ui/IconButton":423,"material-ui/IconMenu":425,"material-ui/MenuItem":433,"material-ui/RaisedButton":440,"material-ui/Toolbar/Toolbar":469,"material-ui/Toolbar/ToolbarGroup":470,"material-ui/Toolbar/ToolbarSeparator":471,"material-ui/Toolbar/ToolbarTitle":472,"react":708,"toastr":710}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

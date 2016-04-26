@@ -4,6 +4,14 @@ $(function () {
 
     DW.XLSSampleSectionTracker();
 
+   var raiseUploadFileCompletedEvent = function (response) {
+    if (typeof(questionnaire_builder_enabled) != 'undefined') {
+            var event = new CustomEvent("uploadFileComplete", { detail : response });
+            document.dispatchEvent(event);
+            return;
+       }
+   };
+
     new DW.UploadQuestionnaire({
         buttonText: "Upload New XLSForm",
         params: {"edit": true},
@@ -21,6 +29,7 @@ $(function () {
         postErrorHandler: function(responseJSON) {
             DW.trackEvent('advanced-questionnaire-edited', 'edit-questionnaire-errored');
 
+            raiseUploadFileCompletedEvent(responseJSON);
             DW.showError(responseJSON['error_msg'],responseJSON.message_prefix, responseJSON.message_suffix);
         },
         promptOverwrite: function(responseJSON, file_uploader, file_input) {
@@ -43,6 +52,7 @@ $(function () {
                 cancelLinkSelector: "#cancel_dialog",
                 width: 780
             };
+            raiseUploadFileCompletedEvent();
             var warningDialog = new DW.Dialog(editQuestionnaireWarningOptions).init();
             warningDialog.show();
         },

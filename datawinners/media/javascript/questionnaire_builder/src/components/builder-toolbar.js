@@ -14,6 +14,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import AppConstants from '../constants/app-constants';
 import LoaderDialog from './loader-dialog';
 import QuestionnaireStore from '../store/questionnaire-store';
+import Toastr from 'toastr';
 
 export default class BuilderToolbar extends React.Component {
 
@@ -43,8 +44,17 @@ export default class BuilderToolbar extends React.Component {
                   });
   }
 
-  onUploadFileComplete = () => {
+  onUploadFileComplete = (event) => {
     this.setState({isLoading: false});
+    if (!event.detail) {
+      return;
+    }
+
+    if (event.detail.success) {
+      Toastr["success"]("File Uploaded Successfully", "Upload Success");
+    } else {
+      Toastr["error"](event.detail.error_msg, "Upload Failed");
+    }
   }
 
   componentDidMount = () => {
