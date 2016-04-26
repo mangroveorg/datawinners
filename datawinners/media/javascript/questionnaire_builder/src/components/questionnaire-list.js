@@ -38,29 +38,7 @@ export default class QuestionnaireList extends React.Component {
 	}
 
 	componentDidMount(){
-		//TODO: this should happen through action
-		let url = AppConstants.QuestionnaireUrl + this.state.questionnaire_id + '/';
-		var self = this;
-		this.serverRequest = $.ajax({
-				url: url,
-				data: {reload:reload},
-				dataType: 'json',
-				success: function (result) {
-					QuestionnaireStore.loadQuestionnaireId(self.state.questionnaire_id);
-					QuestionnaireStore.loadFileType(result.file_type);
-					QuestionnaireStore.loadQuestionnaire(result.questionnaire);
-					QuestionnaireStore.loadUniqueIdTypes(result.unique_id_types)
-
-		      self.setState({
-		        questionnaire: result.questionnaire,
-						choicesGrouped: QuestionnaireStore.getChoicesGrouped(),
-						file_type: result.file_type,
-						reason: result.reason,
-						details: result.details
-		      });
-
-				}
-			});
+		QuestionnaireActions.initQuestionnaire(this.state.questionnaire_id, reload);
 	}
 
 	componentWillMount(){
@@ -82,7 +60,9 @@ export default class QuestionnaireList extends React.Component {
 		this.setState({
 			questionnaire:QuestionnaireStore.getQuestionnaire(),
 			choicesGrouped:QuestionnaireStore.getChoicesGrouped(),
-			errors:QuestionnaireStore.getErrors()
+			errors:QuestionnaireStore.getErrors(),
+			reason: QuestionnaireStore.getInitErrors().reason,
+			details: QuestionnaireStore.getInitErrors().details
 		});
 	}
 

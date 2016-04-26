@@ -23,9 +23,6 @@ var _persistData = (isDraft, callback) => {
 
 var QuestionnaireActions = {
 		saveQuestionnaire : function (callback) {
-			// let questionnaire = ;
-			// let fileType = ;
-
 			var onSaveHandler = (data) => {
 				callback();
 				AppDispatcher.dispatch({
@@ -56,6 +53,27 @@ var QuestionnaireActions = {
 
 		},
 
+		initQuestionnaire: function(questionnaire_id, reload){
+			let url = AppConstants.QuestionnaireUrl + questionnaire_id + '/';
+			var self = this;
+			this.serverRequest = $.ajax({
+					url: url,
+					data: {reload:reload},
+					dataType: 'json',
+					success: function (result) {
+						QuestionnaireStore.loadQuestionnaireId(questionnaire_id);
+						QuestionnaireStore.loadFileType(result.file_type);
+						QuestionnaireStore.loadQuestionnaire(result.questionnaire);
+						QuestionnaireStore.loadUniqueIdTypes(result.unique_id_types);
+						QuestionnaireStore.loadInitErrors(result.reason, result.details);
+						AppDispatcher.dispatch({
+							actionType: AppConstants.ActionTypes.INITIALIZE_QUESTIONNAIRE
+						});
+
+					}
+				});
+
+		},
 		createQuestion: function (question_type) {
 			var new_question_type = question_type || ''; //Default question type
 			let new_question = {};

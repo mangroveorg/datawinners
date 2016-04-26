@@ -37,9 +37,6 @@ var _persistData = function _persistData(isDraft, callback) {
 
 var QuestionnaireActions = {
 	saveQuestionnaire: function saveQuestionnaire(callback) {
-		// let questionnaire = ;
-		// let fileType = ;
-
 		var onSaveHandler = function onSaveHandler(data) {
 			callback();
 			_appDispatcher2.default.dispatch({
@@ -68,6 +65,25 @@ var QuestionnaireActions = {
 		_persistData(false, onSaveHandler);
 	},
 
+	initQuestionnaire: function initQuestionnaire(questionnaire_id, reload) {
+		var url = _appConstants2.default.QuestionnaireUrl + questionnaire_id + '/';
+		var self = this;
+		this.serverRequest = $.ajax({
+			url: url,
+			data: { reload: reload },
+			dataType: 'json',
+			success: function success(result) {
+				_questionnaireStore2.default.loadQuestionnaireId(questionnaire_id);
+				_questionnaireStore2.default.loadFileType(result.file_type);
+				_questionnaireStore2.default.loadQuestionnaire(result.questionnaire);
+				_questionnaireStore2.default.loadUniqueIdTypes(result.unique_id_types);
+				_questionnaireStore2.default.loadInitErrors(result.reason, result.details);
+				_appDispatcher2.default.dispatch({
+					actionType: _appConstants2.default.ActionTypes.INITIALIZE_QUESTIONNAIRE
+				});
+			}
+		});
+	},
 	createQuestion: function createQuestion(question_type) {
 		var new_question_type = question_type || ''; //Default question type
 		var new_question = {};
@@ -1627,28 +1643,7 @@ var QuestionnaireList = function (_React$Component) {
 	_createClass(QuestionnaireList, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			//TODO: this should happen through action
-			var url = _appConstants2.default.QuestionnaireUrl + this.state.questionnaire_id + '/';
-			var self = this;
-			this.serverRequest = $.ajax({
-				url: url,
-				data: { reload: reload },
-				dataType: 'json',
-				success: function success(result) {
-					_questionnaireStore2.default.loadQuestionnaireId(self.state.questionnaire_id);
-					_questionnaireStore2.default.loadFileType(result.file_type);
-					_questionnaireStore2.default.loadQuestionnaire(result.questionnaire);
-					_questionnaireStore2.default.loadUniqueIdTypes(result.unique_id_types);
-
-					self.setState({
-						questionnaire: result.questionnaire,
-						choicesGrouped: _questionnaireStore2.default.getChoicesGrouped(),
-						file_type: result.file_type,
-						reason: result.reason,
-						details: result.details
-					});
-				}
-			});
+			_questionnaireActions2.default.initQuestionnaire(this.state.questionnaire_id, reload);
 		}
 	}, {
 		key: 'componentWillMount',
@@ -1666,7 +1661,9 @@ var QuestionnaireList = function (_React$Component) {
 			this.setState({
 				questionnaire: _questionnaireStore2.default.getQuestionnaire(),
 				choicesGrouped: _questionnaireStore2.default.getChoicesGrouped(),
-				errors: _questionnaireStore2.default.getErrors()
+				errors: _questionnaireStore2.default.getErrors(),
+				reason: _questionnaireStore2.default.getInitErrors().reason,
+				details: _questionnaireStore2.default.getInitErrors().details
 			});
 		}
 	}, {
@@ -2353,6 +2350,7 @@ var _errors = [];
 var _uniqueIdTypes = [];
 var _choicesGrouped = {};
 var _cascadesGrouped = [];
+var _initErrors = {};
 
 var createChoiceGroup = function createChoiceGroup() {
 	var choice = _defaultChoice();
@@ -2552,6 +2550,10 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 		return _errors;
 	},
 
+	getInitErrors: function getInitErrors() {
+		return _initErrors;
+	},
+
 	errorsPresent: function errorsPresent() {
 		_errors = [];
 		_errors = _lodash2.default.concat(_errors, _validator2.default.validateQuestionnaire(_questionnaire));
@@ -2594,6 +2596,11 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
 	loadFileType: function loadFileType(fileType) {
 		_fileType = fileType;
+	},
+
+	loadInitErrors: function loadInitErrors(reason, details) {
+		_initErrors.reason = reason;
+		_initErrors.details = details;
 	},
 
 	loadQuestionnaire: function loadQuestionnaire(questionnaire) {
@@ -2641,6 +2648,7 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 _appDispatcher2.default.register(function (action) {
 	//TODO: this needs to be updated. Emit change can go inside each method instead of duplicate call?
 	switch (action.actionType) {
+		case _appConstants2.default.ActionTypes.INITIALIZE_QUESTIONNAIRE:
 		case _appConstants2.default.ActionTypes.UPDATE_QUESTION:
 		case _appConstants2.default.ActionTypes.CREATE_QUESTION:
 		case _appConstants2.default.ActionTypes.DELETE_QUESTION:

@@ -13,6 +13,7 @@ var _errors = [];
 var _uniqueIdTypes = [];
 var _choicesGrouped = {};
 var _cascadesGrouped = [];
+var _initErrors = {};
 
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
@@ -175,6 +176,10 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		return _errors;
 	},
 
+	getInitErrors: function(){
+		return _initErrors;
+	},
+
 	errorsPresent: function () {
 		_errors = [];
 		_errors = _.concat(_errors, Validator.validateQuestionnaire(_questionnaire));
@@ -217,6 +222,11 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
 	loadFileType: function (fileType) {
 		_fileType = fileType;
+	},
+
+	loadInitErrors: function(reason, details){
+		_initErrors.reason = reason;
+		_initErrors.details = details;
 	},
 
 	loadQuestionnaire: function (questionnaire) {
@@ -264,6 +274,7 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
 		//TODO: this needs to be updated. Emit change can go inside each method instead of duplicate call?
 	switch (action.actionType) {
+		case AppConstants.ActionTypes.INITIALIZE_QUESTIONNAIRE:
 		case AppConstants.ActionTypes.UPDATE_QUESTION:
 		case AppConstants.ActionTypes.CREATE_QUESTION:
 		case AppConstants.ActionTypes.DELETE_QUESTION:
