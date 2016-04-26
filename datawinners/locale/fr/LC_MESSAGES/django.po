@@ -4229,7 +4229,7 @@ msgid "Deleted Data Submission(s)"
 msgstr "A supprimé une/des soumission(s) de données"
 
 msgid "Edited Data Submission(s)"
-msgstr "Soumission(s) de données modifiée(s)"
+msgstr "A modifié les Soumission(s)"
 
 msgid "Submission Received on"
 msgstr "Soumission reçue le"
@@ -6318,4 +6318,4 @@ msgid "Deadline updated: week"
 msgstr "Echéance mise à jour : Week"
 
 msgid "Edited Data Submission(s) for advanced questionnaire"
-msgstr "Soumission(s) de données sur un questionnaire avancé modifiée(s)"
+msgstr "A modifié les Soumissions d’un Questionnaire avancé"
