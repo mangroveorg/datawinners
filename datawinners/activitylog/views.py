@@ -97,7 +97,7 @@ def show_log(request):
                 text_details += "</ul>"
                 entry.detail = text_details
 
-            except KeyError:
+            except :
                 entry.detail = _(entry.detail)
     return render_to_response("activitylog/activitylog.html",
                               {
