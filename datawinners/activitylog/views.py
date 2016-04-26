@@ -56,36 +56,50 @@ def show_log(request):
         entry.log_date = convert_utc_to_localized(time_delta, entry.log_date)
         action  = entry.action
         if action == "Updated reminders":
-            current_lang = get_language()
-            activate(current_lang)
-            details = json.loads(entry.detail)
-            text_details = ""
-            text_details += "<ul class='bulleted'>"
-            for key,value in details.iteritems():
-                if value != "":
-                    text_details += "<li>"+ _(key) % value + "</li>"
-                else:
-                    text_details += "<li>"+ _(key) + "</li>"
-            text_details += "</ul>"
-            entry.detail = text_details
+            try:
+                current_lang = get_language()
+                activate(current_lang)
+                details = json.loads(entry.detail)
+                text_details = ""
+                text_details += "<ul class='bulleted'>"
+                for key,value in details.iteritems():
+                    if value != "":
+                        text_details += "<li>"+ _(key) % value + "</li>"
+                    else:
+                        text_details += "<li>"+ _(key) + "</li>"
+                text_details += "</ul>"
+                entry.detail = text_details
+            except ValueError:
+                entry.detail = _(entry.detail)
+
         if action == "Set Deadline":
-            current_lang = get_language()
-            activate(current_lang)
-            entry.detail = _(entry.detail)
+            try:
+                current_lang = get_language()
+                activate(current_lang)
+                entry.detail = _(entry.detail)
+                
+            except ValueError:
+                entry.detail = _(entry.detail)
+
         if action == "Edited Data Submission(s) for advanced questionnaire":
-            current_lang = get_language()
-            activate(current_lang)
-            details = json.loads(entry.detail)
-            text_details = ""
-            text_details += _("Changed Answers:")
-            text_details += "<ul class='bulleted'>"
-            for key,value in details.iteritems():
-                question = unicode(value['question'])
-                old_data_value = str(value['old'])
-                new_data_value = str(value['new'])
-                text_details += '<li>'+ question + ': "' + old_data_value + '" ' + _("to") + ' "' + new_data_value +'"</li>'
-            text_details += "</ul>"
-            entry.detail = text_details
+            try:
+                current_lang = get_language()
+                activate(current_lang)
+                details = json.loads(entry.detail)
+                text_details = ""
+                text_details += _("Changed Answers:")
+                text_details += "<ul class='bulleted'>"
+                for key,value in details.iteritems():
+                    question = unicode(value['question'])
+                    old_data_value = str(value['old'])
+                    new_data_value = str(value['new'])
+                    text_details += '<li>'+ question + ': "' + old_data_value + '" ' + _("to") + ' "' + new_data_value +'"</li>'
+                text_details += "</ul>"
+                entry.detail = text_details
+
+            except ValueError:
+                entry.detail = _(entry.detail)
+
     return render_to_response("activitylog/activitylog.html",
                               {
                                 'form': form,

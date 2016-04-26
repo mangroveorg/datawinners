@@ -407,28 +407,35 @@ def edit_xform_submission_post(request, survey_response_id):
     for key, value in new_data_dict.iteritems():
         if key in old_data and key not in {"intro", "meta", "form_code"}:
             if new_data_dict[key] != old_data[key]:
-                for field in questionnaire._form_fields:
-                    if field.code == key:
-                        question = field.label
-                    details.update({key: {'question': question, 'old_data': old_data[key], 'new_data': new_data_dict[key]}})
+                    details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
     edit_details = dict()
     for key, value in details.iteritems():
-        if isinstance(value['new_data'],dict):
+        for field in questionnaire._form_fields:
+            if field.code == key:
+                question = field.label
+        if isinstance(value['new_data'],dict): #if its a repeat with only 1 node
             for q, val in value['new_data'].items():
                 if q in value['old_data'][0]:
                     if value['old_data'][0][q] != value['new_data'][q]:
                         for field in questionnaire._form_fields:
                             if field.code == key:
-                                question = field.label
-                        edit_details.update({q: {'question':question, 'old': value['old_data'][0][q], 'new': value['new_data'][q]}})
-        elif isinstance(value['new_data'],list):
+                                if field.fields:
+                                    for f in field.fields:
+                                        if f.code == q:
+                                            question = f.label
+                                            edit_details.update({q: {'question':question, 'old': value['old_data'][0][q], 'new': value['new_data'][q]}})
+                                else:
+                                    question = field.label
+                                    edit_details.update({q: {'question':question, 'old': value['old_data'][0][q], 'new': value['new_data'][q]}})
+
+        elif isinstance(value['new_data'],list): #if repeat with more than 1 node
             if value['old_data'] != value['new_data']:
-                for val in value['new_data']:
-                    for k,v in val.items():
-                        edit_details.update({k: {'question': question, 'new_data_val': v}})
-                for val in value['old_data']:
-                    for ky,vy in val.items():
-                        edit_details.update({ky: {'question': question, 'old_data_val': vy}})
+                    for i in value['new_data']:
+                        for j in value['old_data']:
+                            for key, value in i.items():
+                                if key in j:
+                                    if j[key] != i[key]:
+                                        edit_details.update({key: {'question': question, 'old': j[key], 'new': i[key]}})
             else:
                 edit_details.update({key: {'question': question, 'old': old_data[key], 'new': new_data_dict[key]}})
         else:
