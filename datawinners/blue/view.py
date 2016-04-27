@@ -44,7 +44,7 @@ from datawinners.blue.xform_edit.submission import Submission
 from datawinners.blue.xform_edit.validator import Validator
 from datawinners.blue.xform_editor import XFormEditor, UnsupportedXformEditException
 from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
-from datawinners.common.constant import EDITED_DATA_SUBMISSION_ADV_QUEST
+from datawinners.common.constant import EDITED_DATA_SUBMISSION_ADV_QUEST, EDITED_QUESTIONNAIRE
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager
 from datawinners.main.utils import get_database_name
